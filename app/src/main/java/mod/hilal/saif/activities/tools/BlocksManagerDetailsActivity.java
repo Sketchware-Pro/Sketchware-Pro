@@ -48,7 +48,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
     private final Intent file = new Intent(Intent.ACTION_GET_CONTENT);
     private final ArrayList<HashMap<String, Object>> filtered_list = new ArrayList<>();
     private final Intent intents = new Intent();
-    private final ArrayList<Double> reference_list = new ArrayList<>();
+    private final ArrayList<Integer> reference_list = new ArrayList<>();
     private final ArrayList<String> temp = new ArrayList<>();
     private FloatingActionButton _fab;
     private ArrayList<HashMap<String, Object>> all_blcoks_list = new ArrayList<>();
@@ -62,11 +62,11 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
     private TextView page_title;
     private ArrayList<HashMap<String, Object>> pallet_list = new ArrayList<>();
     private String pallet_path = "";
-    private double pallette = 0.0d;
+    private int pallette = 0;
     private Parcelable prcl;
     private AlertDialog.Builder remove_dialog;
     private ImageView swap;
-    private double tempN = 0.0d;
+    private int tempN = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                                 break;
 
                             case "Export blocks":
-                                String exportTo = BLOCK_EXPORT_PATH.concat(pallet_list.get(((int) pallette) - 9).get("name").toString().concat(".json"));
+                                String exportTo = new File(BLOCK_EXPORT_PATH, pallet_list.get(pallette - 9).get("name").toString() + ".json").getAbsolutePath();
                                 FileUtil.writeFile(exportTo, new Gson().toJson(filtered_list));
                                 SketchwareUtil.toast("Successfully exported blocks to:\n" + exportTo);
                                 break;
@@ -147,7 +147,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intents.setClass(getApplicationContext(), BlocksManagerCreatorActivity.class);
                 intents.putExtra("mode", "add");
-                intents.putExtra("color", pallet_list.get(((int) pallette) - 9).get("color").toString());
+                intents.putExtra("color", pallet_list.get(pallette - 9).get("color").toString());
                 intents.putExtra("path", blocks_path);
                 intents.putExtra("pallet", String.valueOf((long) pallette));
                 startActivity(intents);
@@ -250,18 +250,18 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
     }
 
     private void _receive_intents() {
-        pallette = Double.parseDouble(getIntent().getStringExtra("position"));
+        pallette = Integer.parseInt(getIntent().getStringExtra("position"));
         pallet_path = getIntent().getStringExtra("dirP");
         blocks_path = getIntent().getStringExtra("dirB");
         _refreshLists();
-        if (pallette == -1.0d) {
+        if (pallette == -1) {
             page_title.setText("Recycle bin");
-            swap.setVisibility(8);
-            import_export.setVisibility(8);
-            _fab.setVisibility(8);
+            swap.setVisibility(View.GONE);
+            import_export.setVisibility(View.GONE);
+            _fab.setVisibility(View.GONE);
             return;
         }
-        page_title.setText(pallet_list.get(((int) pallette) - 9).get("name").toString());
+        page_title.setText(pallet_list.get(pallette - 9).get("name").toString());
     }
 
     private void _refreshLists() {
@@ -282,7 +282,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         }
         for (int i = 0; i < all_blcoks_list.size(); i++) {
             if (Double.parseDouble(all_blcoks_list.get(i).get("palette").toString()) == pallette) {
-                reference_list.add((double) i);
+                reference_list.add(i);
                 filtered_list.add(all_blcoks_list.get(i));
             }
         }
@@ -302,14 +302,14 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         view.setFocusable(true);
     }
 
-    private void _swapitems(double d, double d2) {
-        Collections.swap(all_blcoks_list, (int) d, (int) d2);
+    private void _swapitems(int d, int d2) {
+        Collections.swap(all_blcoks_list, d, d2);
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
         _refreshLists();
     }
 
-    private void _showItemPopup(View view, final double d) {
-        if (pallette == -1.0d) {
+    private void _showItemPopup(View view, final int d) {
+        if (pallette == -1) {
             PopupMenu popupMenu = new PopupMenu(this, view);
             Menu menu = popupMenu.getMenu();
             menu.add("Delete permanently");
@@ -351,7 +351,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         intents.setClass(getApplicationContext(), BlocksManagerCreatorActivity.class);
                         intents.putExtra("mode", "insert");
                         intents.putExtra("path", blocks_path);
-                        intents.putExtra("color", pallet_list.get(((int) pallette) - 9).get("color").toString());
+                        intents.putExtra("color", pallet_list.get(pallette - 9).get("color").toString());
                         intents.putExtra("pos", String.valueOf((long) d));
                         startActivity(intents);
                         break;
@@ -417,11 +417,11 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         _refreshLists();
     }
 
-    private void _changePallette(final double d) {
+    private void _changePallette(final int position) {
         int i = 0;
-        if (pallette == -1.0d) {
+        if (pallette == -1) {
             temp.clear();
-            tempN = -1.0d;
+            tempN = -1;
             while (i < pallet_list.size()) {
                 temp.add(pallet_list.get(i).get("name").toString());
                 i++;
@@ -434,9 +434,9 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     })
                     .setPositiveButton("Restore", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            if (tempN != -1.0d) {
-                                all_blcoks_list.get((int) d).put("palette", String.valueOf((long) (tempN + 9.0d)));
-                                Collections.swap(all_blcoks_list, (int) d, all_blcoks_list.size() - 1);
+                            if (tempN != -1) {
+                                all_blcoks_list.get(position).put("palette", String.valueOf((long) (tempN + 9)));
+                                Collections.swap(all_blcoks_list, position, all_blcoks_list.size() - 1);
                                 FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
                                 _refreshLists();
                             }
@@ -447,21 +447,21 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             return;
         }
         temp.clear();
-        tempN = ((int) pallette) - 9;
+        tempN = pallette - 9;
         while (i < pallet_list.size()) {
             temp.add(pallet_list.get(i).get("name").toString());
             i++;
         }
         dialog.setTitle("Move to")
-                .setSingleChoiceItems(temp.toArray(new String[0]), ((int) pallette) - 9, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(temp.toArray(new String[0]), pallette - 9, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         tempN = which;
                     }
                 })
                 .setPositiveButton("Move", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int i) {
-                        all_blcoks_list.get((int) d).put("palette", String.valueOf((long) (tempN + 9.0d)));
-                        Collections.swap(all_blcoks_list, (int) d, all_blcoks_list.size() - 1);
+                        all_blcoks_list.get(position).put("palette", String.valueOf((long) (tempN + 9)));
+                        Collections.swap(all_blcoks_list, position, all_blcoks_list.size() - 1);
                         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
                         _refreshLists();
                     }
@@ -568,6 +568,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             return position;
         }
 
+        @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(2131427813, null);
@@ -620,13 +621,13 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     break;
             }
 
-            if (pallette == -1.0d) {
+            if (pallette == -1) {
                 spec.getBackground().setColorFilter(Color.parseColor("#9e9e9e"), PorterDuff.Mode.MULTIPLY);
             } else {
                 try {
                     spec.getBackground().setColorFilter(Color.parseColor(_data.get(position).get("color").toString()), PorterDuff.Mode.MULTIPLY);
                 } catch (Exception e) {
-                    spec.getBackground().setColorFilter(Color.parseColor(pallet_list.get(((int) pallette) - 9).get("color").toString()), PorterDuff.Mode.MULTIPLY);
+                    spec.getBackground().setColorFilter(Color.parseColor(pallet_list.get(pallette - 9).get("color").toString()), PorterDuff.Mode.MULTIPLY);
                 }
             }
             linearLayout3.setOnClickListener(new View.OnClickListener() {
@@ -650,7 +651,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-                if (pallette == -1.0d) {
+                if (pallette == -1) {
                     linearLayout.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             _showItemPopup(linearLayout, reference_list.get(position));
@@ -661,9 +662,9 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             intents.setClass(getApplicationContext(), BlocksManagerCreatorActivity.class);
                             intents.putExtra("mode", "edit");
-                            intents.putExtra("color", pallet_list.get(((int) pallette) - 9).get("color").toString());
+                            intents.putExtra("color", pallet_list.get(pallette - 9).get("color").toString());
                             intents.putExtra("path", blocks_path);
-                            intents.putExtra("pos", String.valueOf((long) reference_list.get(position).doubleValue()));
+                            intents.putExtra("pos", String.valueOf(reference_list.get(position)));
                             startActivity(intents);
                         }
                     });
