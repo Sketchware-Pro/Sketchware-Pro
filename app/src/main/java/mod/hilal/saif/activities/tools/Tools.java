@@ -113,24 +113,37 @@ public class Tools extends Activity {
         properties.error_dir = getExternalCacheDir();
         properties.extensions = null;
         FilePickerDialog dialog = new FilePickerDialog(this, properties);
-        dialog.setTitle("Select ");
+        dialog.setTitle("Select an entry to modify");
         dialog.setDialogSelectionListener(new DialogSelectionListener() {
             @Override
             public void onSelectedFilePaths(final String[] files) {
-                if (files.length > 1 || new File(files[0]).isDirectory()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Tools.this)
+                final boolean isDirectory = new File(files[0]).isDirectory();
+                final AlertDialog.Builder builder;
+                if (files.length > 1 || isDirectory) {
+                    builder = new AlertDialog.Builder(Tools.this)
                             .setTitle("Select an action")
                             .setSingleChoiceItems(new String[]{"Delete"}, -1, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    for (String file : files) {
-                                        FileUtil.deleteFile(file);
-                                    }
+                                    AlertDialog confirmationDialog = new AlertDialog.Builder(Tools.this)
+                                            .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
+                                            .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
+                                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    for (String file : files) {
+                                                        FileUtil.deleteFile(file);
+                                                    }
+                                                }
+                                            })
+                                            .setNegativeButton("Cancel", null)
+                                            .create();
+                                    confirmationDialog.show();
+                                    dialog.dismiss();
                                 }
                             });
-                    builder.show();
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Tools.this)
+                    builder = new AlertDialog.Builder(Tools.this)
                             .setTitle("Select an action")
                             .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, new DialogInterface.OnClickListener() {
                                 @Override
@@ -150,14 +163,25 @@ public class Tools extends Activity {
                                             break;
 
                                         case 1:
-                                            FileUtil.deleteFile(files[0]);
+                                            AlertDialog confirmationDialog = new AlertDialog.Builder(Tools.this)
+                                                    .setTitle("Delete file?")
+                                                    .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
+                                                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            FileUtil.deleteFile(files[0]);
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Cancel", null)
+                                                    .create();
+                                            confirmationDialog.show();
                                             break;
                                     }
                                     dialog.dismiss();
                                 }
                             });
-                    builder.show();
                 }
+                builder.show();
             }
         });
         dialog.show();
