@@ -109,7 +109,7 @@ public class Tools extends Activity {
         DialogProperties properties = new DialogProperties();
         properties.selection_mode = DialogConfigs.MULTI_MODE;
         properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
-        properties.root = getFilesDir();
+        properties.root = getFilesDir().getParentFile();
         properties.error_dir = getExternalCacheDir();
         properties.extensions = null;
         FilePickerDialog dialog = new FilePickerDialog(this, properties);
