@@ -54,14 +54,14 @@ public class BlocksManager extends AppCompatActivity {
     private AlertDialog.Builder dialog;
     private AlertDialog.Builder emptyDialog;
     private double insert_n = 0.0d;
-    private Intent intent = new Intent();
+    private final Intent intent = new Intent();
     private ListView listview1;
     private HashMap<String, Object> m = new HashMap<>();
-    private HashMap<String, Object> map = new HashMap<>();
+    private final HashMap<String, Object> map = new HashMap<>();
     private TextView page_title;
     private String pallet_dir = "";
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
     private LinearLayout toolbar;
 
     @Override
@@ -72,41 +72,41 @@ public class BlocksManager extends AppCompatActivity {
         initializeLogic();
     }
 
-    private void initialize(Bundle savedInstanceState) {
-        this._fab = (FloatingActionButton) findViewById(2131231054);
-        this.background = (LinearLayout) findViewById(2131232515);
-        this.toolbar = (LinearLayout) findViewById(2131231847);
-        this.listview1 = (ListView) findViewById(2131232520);
-        this.back_icon = (ImageView) findViewById(2131232519);
-        this.page_title = (TextView) findViewById(2131231582);
-        this.arrange_icon = (ImageView) findViewById(2131232518);
-        this.card2 = (LinearLayout) findViewById(2131232517);
-        this.card2_icon = (ImageView) findViewById(2131232523);
-        this.card2_sub = (TextView) findViewById(2131232522);
-        this.dia = new AlertDialog.Builder(this);
-        this.dialog = new AlertDialog.Builder(this);
-        this.emptyDialog = new AlertDialog.Builder(this);
-        this.back_icon.setOnClickListener(new View.OnClickListener() {
+    private void initialize(Bundle _savedInstanceState) {
+        _fab = findViewById(2131231054);
+        background = findViewById(2131232515);
+        toolbar = findViewById(2131231847);
+        listview1 = findViewById(2131232520);
+        back_icon = findViewById(2131232519);
+        page_title = findViewById(2131231582);
+        arrange_icon = findViewById(2131232518);
+        card2 = findViewById(2131232517);
+        card2_icon = findViewById(2131232523);
+        card2_sub = findViewById(2131232522);
+        dia = new AlertDialog.Builder(this);
+        dialog = new AlertDialog.Builder(this);
+        emptyDialog = new AlertDialog.Builder(this);
+        back_icon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
         });
         Helper.applyRippleToToolbarView(back_icon);
-        this.arrange_icon.setOnClickListener(new View.OnClickListener() {
+        arrange_icon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final AlertDialog create = new AlertDialog.Builder(BlocksManager.this).create();
-                View inflate = getLayoutInflater().inflate(2131427809, (ViewGroup) null);
+                View inflate = getLayoutInflater().inflate(2131427809, null);
                 create.setView(inflate);
                 create.requestWindowFeature(1);
                 create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                final EditText editText = (EditText) inflate.findViewById(2131232525);
+                final EditText editText = inflate.findViewById(2131232525);
                 editText.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                final EditText editText2 = (EditText) inflate.findViewById(2131232526);
+                final EditText editText2 = inflate.findViewById(2131232526);
                 editText2.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                ((TextInputLayout) inflate.findViewById(2131232527)).setVisibility(8);
-                ((TextView) inflate.findViewById(2131232528)).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(2131232527).setVisibility(View.GONE);
+                inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        HashMap<String, Object> hashMap = (HashMap<String, Object>) new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
+                        HashMap<String, Object> hashMap = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
                         hashMap.put("palletteDir", editText.getText().toString());
                         hashMap.put("blockDir", editText2.getText().toString());
                         FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap));
@@ -115,14 +115,14 @@ public class BlocksManager extends AppCompatActivity {
                         create.dismiss();
                     }
                 });
-                ((TextView) inflate.findViewById(2131232351)).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(2131232351).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         create.dismiss();
                     }
                 });
-                ((TextView) inflate.findViewById(2131232530)).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(2131232530).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        HashMap<String, Object> hashMap = (HashMap<String, Object>) new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
+                        HashMap<String, Object> hashMap = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
                         hashMap.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
                         hashMap.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
                         FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap));
@@ -135,7 +135,7 @@ public class BlocksManager extends AppCompatActivity {
             }
         });
         Helper.applyRippleToToolbarView(arrange_icon);
-        this._fab.setOnClickListener(new View.OnClickListener() {
+        _fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 insert_n = -1.0d;
                 final AlertDialog create = new AlertDialog.Builder(BlocksManager.this).create();
@@ -143,11 +143,11 @@ public class BlocksManager extends AppCompatActivity {
                 create.setView(inflate);
                 create.requestWindowFeature(1);
                 create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                final EditText editText = (EditText) inflate.findViewById(2131231561);
-                final EditText editText2 = (EditText) inflate.findViewById(2131230904);
-                ((ImageView) inflate.findViewById(2131232352)).setOnClickListener(new View.OnClickListener() {
+                final EditText editText = inflate.findViewById(2131231561);
+                final EditText editText2 = inflate.findViewById(2131230904);
+                inflate.findViewById(2131232352).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        View inflate = getLayoutInflater().inflate(2131427373, (ViewGroup) null);
+                        View inflate = getLayoutInflater().inflate(2131427373, null);
                         Zx zx = new Zx(inflate, BlocksManager.this, 0, true, false);
                         zx.a(new PCP(BlocksManager.this, editText2, create));
                         zx.setAnimationStyle(2130771968);
@@ -155,7 +155,7 @@ public class BlocksManager extends AppCompatActivity {
                         create.hide();
                     }
                 });
-                ((TextView) inflate.findViewById(2131232528)).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         try {
                             Color.parseColor(editText2.getText().toString());
@@ -166,7 +166,7 @@ public class BlocksManager extends AppCompatActivity {
                         }
                     }
                 });
-                ((TextView) inflate.findViewById(2131232351)).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(2131232351).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         insert_n = -1.0d;
                         create.dismiss();
@@ -180,8 +180,8 @@ public class BlocksManager extends AppCompatActivity {
     private void initializeLogic() {
         _readSettings();
         _refresh_list();
-        _recycleBin(this.card2);
-        this.insert_n = -1.0d;
+        _recycleBin(card2);
+        insert_n = -1.0d;
     }
 
     @Override
@@ -215,26 +215,26 @@ public class BlocksManager extends AppCompatActivity {
             FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap));
             _readSettings();
         } else if (!FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")).equals("")) {
-            HashMap<String, Object> hashMap2 = (HashMap<String, Object>) new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
+            HashMap<String, Object> hashMap2 = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
             if (hashMap2.containsKey("palletteDir")) {
-                this.pallet_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("palletteDir").toString());
+                pallet_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("palletteDir").toString());
             } else {
                 hashMap2.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
-                this.pallet_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("palletteDir").toString());
+                pallet_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("palletteDir").toString());
                 FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap2));
             }
             if (hashMap2.containsKey("blockDir")) {
-                this.blocks_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("blockDir").toString());
-                this.all_blocks_list.clear();
-                if (FileUtil.isExistFile(this.blocks_dir) && !FileUtil.readFile(this.blocks_dir).equals("")) {
+                blocks_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("blockDir").toString());
+                all_blocks_list.clear();
+                if (FileUtil.isExistFile(blocks_dir) && !FileUtil.readFile(blocks_dir).equals("")) {
                     try {
-                        this.all_blocks_list = (ArrayList<HashMap<String, Object>>) new Gson().fromJson(FileUtil.readFile(this.blocks_dir), Helper.TYPE_MAP_LIST);
+                        all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
                     } catch (Exception ignored) {
                     }
                 }
             } else {
                 hashMap2.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
-                this.blocks_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("blockDir").toString());
+                blocks_dir = FileUtil.getExternalStorageDir().concat(hashMap2.get("blockDir").toString());
                 FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap2));
             }
         } else {
@@ -248,26 +248,26 @@ public class BlocksManager extends AppCompatActivity {
 
     private void _refresh_list() {
         try {
-            if (!FileUtil.isExistFile(this.pallet_dir) || FileUtil.readFile(this.pallet_dir).equals("")) {
-                this.pallet_listmap.clear();
-                this.listview1.setAdapter((ListAdapter) new Listview1Adapter(this.pallet_listmap));
-                ((BaseAdapter) this.listview1.getAdapter()).notifyDataSetChanged();
+            if (!FileUtil.isExistFile(pallet_dir) || FileUtil.readFile(pallet_dir).equals("")) {
+                pallet_listmap.clear();
+                listview1.setAdapter(new Listview1Adapter(pallet_listmap));
+                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
             } else {
-                Parcelable onSaveInstanceState = this.listview1.onSaveInstanceState();
-                this.pallet_listmap = (ArrayList<HashMap<String, Object>>) new Gson().fromJson(FileUtil.readFile(this.pallet_dir), Helper.TYPE_MAP_LIST);
-                this.listview1.setAdapter((ListAdapter) new Listview1Adapter(this.pallet_listmap));
-                ((BaseAdapter) this.listview1.getAdapter()).notifyDataSetChanged();
-                this.listview1.onRestoreInstanceState(onSaveInstanceState);
+                Parcelable onSaveInstanceState = listview1.onSaveInstanceState();
+                pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
+                listview1.setAdapter(new Listview1Adapter(pallet_listmap));
+                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
+                listview1.onRestoreInstanceState(onSaveInstanceState);
             }
-            this.card2_sub.setText("Blocks: ".concat(String.valueOf((long) _getN(-1.0d))));
+            card2_sub.setText("Blocks: ".concat(String.valueOf((long) _getN(-1.0d))));
         } catch (Exception ignored) {
         }
     }
 
     private void _remove_pallete(final double d) {
-        this.dialog.setTitle(this.pallet_listmap.get((int) d).get("name").toString());
-        this.dialog.setMessage("Remove all blocks related to this palette?");
-        this.dialog.setNeutralButton("Remove permanently", new DialogInterface.OnClickListener() {
+        dialog.setTitle(pallet_listmap.get((int) d).get("name").toString());
+        dialog.setMessage("Remove all blocks related to this palette?");
+        dialog.setNeutralButton("Remove permanently", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 pallet_listmap.remove((int) d);
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
@@ -276,8 +276,8 @@ public class BlocksManager extends AppCompatActivity {
                 _refresh_list();
             }
         });
-        this.dialog.setNegativeButton("Cancel", null);
-        this.dialog.setPositiveButton("Move to recycle bin", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("Cancel", null);
+        dialog.setPositiveButton("Move to recycle bin", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 _moveRelatedBlocksToRecycleBin(d + 9.0d);
                 pallet_listmap.remove((int) d);
@@ -287,53 +287,53 @@ public class BlocksManager extends AppCompatActivity {
                 _refresh_list();
             }
         });
-        this.dialog.create().show();
+        dialog.create().show();
     }
 
     private double _getN(double d) {
         int i = 0;
-        for (int i2 = 0; i2 < this.all_blocks_list.size(); i2++) {
-            if (this.all_blocks_list.get(i2).get("palette").toString().equals(String.valueOf((long) d))) {
+        for (int i2 = 0; i2 < all_blocks_list.size(); i2++) {
+            if (all_blocks_list.get(i2).get("palette").toString().equals(String.valueOf((long) d))) {
                 i++;
             }
         }
-        return (double) i;
+        return i;
     }
 
     private void _createPallette(String str, String str2) {
-        this.map.put("name", str);
-        this.map.put("color", str2);
-        if (this.insert_n == -1.0d) {
-            this.pallet_listmap.add(this.map);
-            FileUtil.writeFile(this.pallet_dir, new Gson().toJson(this.pallet_listmap));
+        map.put("name", str);
+        map.put("color", str2);
+        if (insert_n == -1.0d) {
+            pallet_listmap.add(map);
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _readSettings();
             _refresh_list();
-            this.insert_n = -1.0d;
+            insert_n = -1.0d;
             return;
         }
-        this.pallet_listmap.add((int) this.insert_n, this.map);
-        FileUtil.writeFile(this.pallet_dir, new Gson().toJson(this.pallet_listmap));
+        pallet_listmap.add((int) insert_n, map);
+        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
         _readSettings();
         _refresh_list();
-        _insertBlocksAt(this.insert_n + 9.0d);
-        this.insert_n = -1.0d;
+        _insertBlocksAt(insert_n + 9.0d);
+        insert_n = -1.0d;
     }
 
     private void _showEditDial(final double d, String str, String str2) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427810, (ViewGroup) null);
+        View inflate = getLayoutInflater().inflate(2131427810, null);
         create.setView(inflate);
         create.requestWindowFeature(1);
         create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        final EditText editText = (EditText) inflate.findViewById(2131231561);
+        final EditText editText = inflate.findViewById(2131231561);
         editText.setText(str);
-        final EditText editText2 = (EditText) inflate.findViewById(2131230904);
+        final EditText editText2 = inflate.findViewById(2131230904);
         editText2.setText(str2);
         ((TextView) inflate.findViewById(2131231837)).setText("Edit palette");
-        TextView textView = (TextView) inflate.findViewById(2131232351);
-        ((ImageView) inflate.findViewById(2131232352)).setOnClickListener(new View.OnClickListener() {
+        TextView textView = inflate.findViewById(2131232351);
+        inflate.findViewById(2131232352).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                View inflate = getLayoutInflater().inflate(2131427373, (ViewGroup) null);
+                View inflate = getLayoutInflater().inflate(2131427373, null);
                 Zx zx = new Zx(inflate, BlocksManager.this, 0, true, false);
                 zx.a(new PCP(BlocksManager.this, editText2, create));
                 zx.setAnimationStyle(2130771968);
@@ -341,7 +341,7 @@ public class BlocksManager extends AppCompatActivity {
                 create.hide();
             }
         });
-        ((TextView) inflate.findViewById(2131232528)).setOnClickListener(new View.OnClickListener() {
+        inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     Color.parseColor(editText2.getText().toString());
@@ -360,28 +360,28 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _editPallete(double d, String str, String str2) {
-        this.pallet_listmap.get((int) d).put("name", str);
-        this.pallet_listmap.get((int) d).put("color", str2);
-        FileUtil.writeFile(this.pallet_dir, new Gson().toJson(this.pallet_listmap));
+        pallet_listmap.get((int) d).put("name", str);
+        pallet_listmap.get((int) d).put("color", str2);
+        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
         _readSettings();
         _refresh_list();
     }
 
     private void _MoveUp(double d) {
         if (d > 0.0d) {
-            Collections.swap(this.pallet_listmap, (int) d, (int) (-1.0d + d));
-            Parcelable onSaveInstanceState = this.listview1.onSaveInstanceState();
-            FileUtil.writeFile(this.pallet_dir, new Gson().toJson(this.pallet_listmap));
+            Collections.swap(pallet_listmap, (int) d, (int) (-1.0d + d));
+            Parcelable onSaveInstanceState = listview1.onSaveInstanceState();
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _swapRelatedBlocks(9.0d + d, 8.0d + d);
             _readSettings();
             _refresh_list();
-            this.listview1.onRestoreInstanceState(onSaveInstanceState);
+            listview1.onRestoreInstanceState(onSaveInstanceState);
         }
     }
 
     private void _recycleBin(View view) {
         _a(view);
-        this.card2.setOnClickListener(new View.OnClickListener() {
+        card2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 intent.setClass(getApplicationContext(), BlocksManagerDetailsActivity.class);
                 intent.putExtra("position", "-1");
@@ -390,10 +390,10 @@ public class BlocksManager extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        this.card2.setOnLongClickListener(new View.OnLongClickListener() {
+        card2.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 emptyDialog.setTitle("Recycle bin");
-                emptyDialog.setMessage("Are you sure you want to empty the recycle bin? Blocks inside will be deleted PERMANENTLY, you CAN NOT recover them!");
+                emptyDialog.setMessage("Are you sure you want to empty the recycle bin? Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!");
                 emptyDialog.setPositiveButton("Empty", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         _emptyRecyclebin();
@@ -410,17 +410,17 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _insert_pallete(double d) {
-        this.insert_n = d;
+        insert_n = d;
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427810, (ViewGroup) null);
+        View inflate = getLayoutInflater().inflate(2131427810, null);
         create.setView(inflate);
         create.requestWindowFeature(1);
         create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        final EditText editText = (EditText) inflate.findViewById(2131231561);
-        final EditText editText2 = (EditText) inflate.findViewById(2131230904);
-        ((ImageView) inflate.findViewById(2131232352)).setOnClickListener(new View.OnClickListener() {
+        final EditText editText = inflate.findViewById(2131231561);
+        final EditText editText2 = inflate.findViewById(2131230904);
+        inflate.findViewById(2131232352).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                View inflate = getLayoutInflater().inflate(2131427373, (ViewGroup) null);
+                View inflate = getLayoutInflater().inflate(2131427373, null);
                 Zx zx = new Zx(inflate, BlocksManager.this, 0, true, false);
                 zx.a(new PCP(BlocksManager.this, editText2, create));
                 zx.setAnimationStyle(2130771968);
@@ -428,7 +428,7 @@ public class BlocksManager extends AppCompatActivity {
                 create.hide();
             }
         });
-        ((TextView) inflate.findViewById(2131232528)).setOnClickListener(new View.OnClickListener() {
+        inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     Color.parseColor(editText2.getText().toString());
@@ -438,7 +438,7 @@ public class BlocksManager extends AppCompatActivity {
                 }
             }
         });
-        ((TextView) inflate.findViewById(2131232351)).setOnClickListener(new View.OnClickListener() {
+        inflate.findViewById(2131232351).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 create.dismiss();
             }
@@ -447,87 +447,87 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _moveDown(double d) {
-        if (d < ((double) (this.pallet_listmap.size() - 1))) {
-            Collections.swap(this.pallet_listmap, (int) d, (int) (1.0d + d));
-            Parcelable onSaveInstanceState = this.listview1.onSaveInstanceState();
-            FileUtil.writeFile(this.pallet_dir, new Gson().toJson(this.pallet_listmap));
+        if (d < ((double) (pallet_listmap.size() - 1))) {
+            Collections.swap(pallet_listmap, (int) d, (int) (1.0d + d));
+            Parcelable onSaveInstanceState = listview1.onSaveInstanceState();
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _swapRelatedBlocks(9.0d + d, 10.0d + d);
             _readSettings();
             _refresh_list();
-            this.listview1.onRestoreInstanceState(onSaveInstanceState);
+            listview1.onRestoreInstanceState(onSaveInstanceState);
         }
     }
 
     private void _removeRelatedBlocks(double d) {
-        this.temp_list.clear();
-        this.m = new HashMap<>();
-        for (int i = 0; i < this.all_blocks_list.size(); i++) {
-            if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) != d) {
-                if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) > d) {
-                    this.m = this.all_blocks_list.get(i);
-                    this.m.put("palette", String.valueOf((long) (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) - 1.0d)));
-                    this.temp_list.add(this.m);
+        temp_list.clear();
+        m = new HashMap<>();
+        for (int i = 0; i < all_blocks_list.size(); i++) {
+            if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) != d) {
+                if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) > d) {
+                    m = all_blocks_list.get(i);
+                    m.put("palette", String.valueOf((long) (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) - 1.0d)));
+                    temp_list.add(m);
                 } else {
-                    this.temp_list.add(this.all_blocks_list.get(i));
+                    temp_list.add(all_blocks_list.get(i));
                 }
             }
         }
-        FileUtil.writeFile(this.blocks_dir, new Gson().toJson(this.temp_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
         _readSettings();
         _refresh_list();
     }
 
     private void _swapRelatedBlocks(double d, double d2) {
-        for (int i = 0; i < this.all_blocks_list.size(); i++) {
-            if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) == d) {
-                this.all_blocks_list.get(i).put("palette", "123456789");
+        for (int i = 0; i < all_blocks_list.size(); i++) {
+            if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == d) {
+                all_blocks_list.get(i).put("palette", "123456789");
             }
-            if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) == d2) {
-                this.all_blocks_list.get(i).put("palette", String.valueOf((long) d));
-            }
-        }
-        for (int i2 = 0; i2 < this.all_blocks_list.size(); i2++) {
-            if (Double.parseDouble(this.all_blocks_list.get(i2).get("palette").toString()) == 1.23456789E8d) {
-                this.all_blocks_list.get(i2).put("palette", String.valueOf((long) d2));
+            if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == d2) {
+                all_blocks_list.get(i).put("palette", String.valueOf((long) d));
             }
         }
-        FileUtil.writeFile(this.blocks_dir, new Gson().toJson(this.all_blocks_list));
+        for (int i2 = 0; i2 < all_blocks_list.size(); i2++) {
+            if (Double.parseDouble(all_blocks_list.get(i2).get("palette").toString()) == 1.23456789E8d) {
+                all_blocks_list.get(i2).put("palette", String.valueOf((long) d2));
+            }
+        }
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
         _readSettings();
         _refresh_list();
     }
 
     private void _insertBlocksAt(double d) {
-        for (int i = 0; i < this.all_blocks_list.size(); i++) {
-            if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) > d || Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) == d) {
-                this.all_blocks_list.get(i).put("palette", String.valueOf((long) (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) + 1.0d)));
+        for (int i = 0; i < all_blocks_list.size(); i++) {
+            if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) > d || Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == d) {
+                all_blocks_list.get(i).put("palette", String.valueOf((long) (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) + 1.0d)));
             }
         }
-        FileUtil.writeFile(this.blocks_dir, new Gson().toJson(this.all_blocks_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
         _readSettings();
         _refresh_list();
     }
 
     private void _moveRelatedBlocksToRecycleBin(double d) {
-        this.m = new HashMap<>();
-        for (int i = 0; i < this.all_blocks_list.size(); i++) {
-            if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) == d) {
-                this.all_blocks_list.get(i).put("palette", "-1");
+        m = new HashMap<>();
+        for (int i = 0; i < all_blocks_list.size(); i++) {
+            if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == d) {
+                all_blocks_list.get(i).put("palette", "-1");
             }
         }
-        FileUtil.writeFile(this.blocks_dir, new Gson().toJson(this.all_blocks_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
         _readSettings();
         _refresh_list();
     }
 
     private void _emptyRecyclebin() {
-        this.temp_list.clear();
-        this.m = new HashMap<>();
-        for (int i = 0; i < this.all_blocks_list.size(); i++) {
-            if (Double.parseDouble(this.all_blocks_list.get(i).get("palette").toString()) != -1.0d) {
-                this.temp_list.add(this.all_blocks_list.get(i));
+        temp_list.clear();
+        m = new HashMap<>();
+        for (int i = 0; i < all_blocks_list.size(); i++) {
+            if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) != -1.0d) {
+                temp_list.add(all_blocks_list.get(i));
             }
         }
-        FileUtil.writeFile(this.blocks_dir, new Gson().toJson(this.temp_list));
+        FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
         _readSettings();
         _refresh_list();
     }
@@ -536,22 +536,22 @@ public class BlocksManager extends AppCompatActivity {
         ArrayList<HashMap<String, Object>> _data;
 
         public Listview1Adapter(ArrayList<HashMap<String, Object>> arrayList) {
-            this._data = arrayList;
+            _data = arrayList;
         }
 
         @Override
         public int getCount() {
-            return this._data.size();
+            return _data.size();
         }
 
         @Override
         public HashMap<String, Object> getItem(int position) {
-            return this._data.get(position);
+            return _data.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return (long) position;
+            return position;
         }
 
         @Override
@@ -559,11 +559,11 @@ public class BlocksManager extends AppCompatActivity {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(2131427811, null);
             }
-            final LinearLayout linearLayout = (LinearLayout) convertView.findViewById(2131232515);
+            final LinearLayout linearLayout = convertView.findViewById(2131232515);
             ((TextView) convertView.findViewById(2131231837)).setText(pallet_listmap.get(position).get("name").toString());
-            ((TextView) convertView.findViewById(2131232541)).setText("Blocks: ".concat(String.valueOf((long) _getN((double) (position + 9)))));
+            ((TextView) convertView.findViewById(2131232541)).setText("Blocks: ".concat(String.valueOf((long) _getN(position + 9))));
             card2_sub.setText("Blocks: ".concat(String.valueOf((long) _getN(-1.0d))));
-            ((LinearLayout) convertView.findViewById(2131230904)).setBackgroundColor(Color.parseColor((String) this._data.get(position).get("color")));
+            convertView.findViewById(2131230904).setBackgroundColor(Color.parseColor((String) _data.get(position).get("color")));
             _a(linearLayout);
             linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 public boolean onLongClick(View v) {
@@ -610,7 +610,7 @@ public class BlocksManager extends AppCompatActivity {
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     intent.setClass(getApplicationContext(), BlocksManagerDetailsActivity.class);
-                    intent.putExtra("position", String.valueOf((long) (position + 9)));
+                    intent.putExtra("position", String.valueOf(position + 9));
                     intent.putExtra("dirB", blocks_dir);
                     intent.putExtra("dirP", pallet_dir);
                     startActivity(intent);
