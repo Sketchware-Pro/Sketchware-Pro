@@ -1,6 +1,7 @@
 package dev.aldi.sayuti.editor.injection;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -28,7 +29,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.bB;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
@@ -79,15 +80,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         initToolbar(type);
     }
 
-    public void initToolbar(String str) {
-        ((TextView) findViewById(2131232458)).setText(str);
+    public void initToolbar(String title) {
+        ((TextView) findViewById(2131232458)).setText(title);
         ImageView imageView = findViewById(2131232457);
         Helper.applyRippleToToolbarView(imageView);
         imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
-    }
-
-    private void toggleKeyboard() {
-        ((InputMethodManager) getApplicationContext().getSystemService(INPUT_METHOD_SERVICE)).toggleSoftInput(1, 0);
     }
 
     private void makeup(View view, int i2, int i3) {
@@ -102,25 +99,25 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         view.setFocusable(true);
     }
 
-    private void dialog(final String type, final int val) {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
+    private void dialog(final String type, final int position) {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(2131427797, null);
-        create.setView(inflate);
-        create.setCanceledOnTouchOutside(false);
-        create.setCancelable(false);
-        create.getWindow().setBackgroundDrawableResource(17170445);
-        TextView textView = inflate.findViewById(2131232445);
-        TextView textView2 = inflate.findViewById(2131232444);
+        dialog.setView(inflate);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawableResource(17170445);
+        TextView save = inflate.findViewById(2131232445);
+        TextView cancel = inflate.findViewById(2131232444);
         final EditText editText = inflate.findViewById(2131232446);
         final EditText editText2 = inflate.findViewById(2131232443);
         final EditText editText3 = inflate.findViewById(2131232447);
         if (type.equals("edit")) {
-            value = listMap.get(val).get("value").toString();
+            value = listMap.get(position).get("value").toString();
             editText.setText(value.substring(0, value.indexOf(":")));
             editText2.setText(value.substring(value.indexOf(":") + 1, value.indexOf("=")));
             editText3.setText(value.substring(value.indexOf("\"") + 1, value.length() - 1));
         }
-        textView.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (!editText.getText().toString().trim().equals("") && !editText2.getText().toString().trim().equals("") && !editText3.getText().toString().trim().equals("")) {
                     if (type.equals("create")) {
@@ -128,26 +125,32 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                         map.put("type", AddCustomAttributeActivity.this.type);
                         map.put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
                         listMap.add(map);
-                        bB.a(getApplicationContext(), "Add complete!", 0).show();
+                        SketchwareUtil.toast("Added");
                     } else if (type.equals("edit")) {
-                        listMap.get(val).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
-                        bB.a(getApplicationContext(), "Edit complete!", 0).show();
+                        listMap.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                        SketchwareUtil.toast("Saved");
                     }
                     listview.setAdapter(new CustomAdapter(listMap));
                     ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-                    create.dismiss();
+                    dialog.dismiss();
                     FileUtil.writeFile(path, new Gson().toJson(listMap));
-                    toggleKeyboard();
                 }
             }
         });
-        textView2.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                create.dismiss();
-                toggleKeyboard();
+                dialog.dismiss();
             }
         });
-        create.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                SketchwareUtil.hideKeyboard();
+            }
+        });
+        dialog.show();
+        editText.requestFocus();
+        SketchwareUtil.showKeyboard();
     }
 
     private class CustomAdapter extends BaseAdapter {
@@ -209,7 +212,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                             listMap.remove(position);
                             FileUtil.writeFile(path, new Gson().toJson(listMap));
                             notifyDataSetChanged();
-                            bB.a(getApplicationContext(), "Delete complete!", 0).show();
+                            SketchwareUtil.toast("Deleted successfully");
                             return true;
                         }
                     });
