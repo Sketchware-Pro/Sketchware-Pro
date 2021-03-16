@@ -149,7 +149,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                 intents.putExtra("mode", "add");
                 intents.putExtra("color", pallet_list.get(pallette - 9).get("color").toString());
                 intents.putExtra("path", blocks_path);
-                intents.putExtra("pallet", String.valueOf((long) pallette));
+                intents.putExtra("pallet", String.valueOf(pallette));
                 startActivity(intents);
             }
         });
@@ -302,13 +302,13 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         view.setFocusable(true);
     }
 
-    private void _swapitems(int d, int d2) {
-        Collections.swap(all_blcoks_list, d, d2);
+    private void _swapitems(int sourcePosition, int targetPosition) {
+        Collections.swap(all_blcoks_list, sourcePosition, targetPosition);
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
         _refreshLists();
     }
 
-    private void _showItemPopup(View view, final int d) {
+    private void _showItemPopup(View view, final int position) {
         if (pallette == -1) {
             PopupMenu popupMenu = new PopupMenu(this, view);
             Menu menu = popupMenu.getMenu();
@@ -318,11 +318,11 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getTitle().toString()) {
                         case "Delete permanently":
-                            _deleteBlock(d);
+                            _deleteBlock(position);
                             break;
 
                         case "Restore":
-                            _changePallette(d);
+                            _changePallette(position);
                             break;
 
                         default:
@@ -344,7 +344,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getTitle().toString()) {
                     case "Duplicate":
-                        _duplicateBlock(d);
+                        _duplicateBlock(position);
                         break;
 
                     case "Insert above":
@@ -352,28 +352,28 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         intents.putExtra("mode", "insert");
                         intents.putExtra("path", blocks_path);
                         intents.putExtra("color", pallet_list.get(pallette - 9).get("color").toString());
-                        intents.putExtra("pos", String.valueOf((long) d));
+                        intents.putExtra("pos", String.valueOf((long) position));
                         startActivity(intents);
                         break;
 
                     case "Move to palette":
-                        _changePallette(d);
+                        _changePallette(position);
                         break;
 
                     case "Delete":
                         remove_dialog.setTitle("Delete block?")
                                 .setMessage("Are you sure you want to delete this block?")
-                                .setPositiveButton("Move to Recycle bin", new DialogInterface.OnClickListener() {
+                                .setPositiveButton("Recycle bin", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        _moveToRecycleBin(d);
+                                        _moveToRecycleBin(position);
                                     }
                                 })
                                 .setNegativeButton("Cancel", null)
                                 .setNeutralButton("Delete permanently", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        _deleteBlock(d);
+                                        _deleteBlock(position);
                                     }
                                 })
                                 .create().show();
@@ -388,31 +388,31 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    private void _duplicateBlock(double d) {
+    private void _duplicateBlock(int position) {
         map = new HashMap<>();
-        map = all_blcoks_list.get((int) d);
-        all_blcoks_list.add(((int) d) + 1, map);
+        map = all_blcoks_list.get(position);
+        all_blcoks_list.add(position + 1, map);
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
         _refreshLists();
         map = new HashMap<>();
-        map = all_blcoks_list.get(((int) d) + 1);
+        map = all_blcoks_list.get(position + 1);
         if (map.get("name").toString().matches("(?s).*_copy[0-9][0-9]")) {
-            map.put("name", map.get("name").toString().replaceAll("_copy[0-9][0-9]", "_copy".concat(String.valueOf((long) SketchwareUtil.getRandom(11, 99)))));
+            map.put("name", map.get("name").toString().replaceAll("_copy[0-9][0-9]", "_copy".concat(String.valueOf(SketchwareUtil.getRandom(11, 99)))));
         } else {
-            map.put("name", map.get("name").toString().concat("_copy").concat(String.valueOf((long) SketchwareUtil.getRandom(11, 99))));
+            map.put("name", map.get("name").toString().concat("_copy").concat(String.valueOf(SketchwareUtil.getRandom(11, 99))));
         }
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
         _refreshLists();
     }
 
-    private void _deleteBlock(double d) {
-        all_blcoks_list.remove((int) d);
+    private void _deleteBlock(int position) {
+        all_blcoks_list.remove(position);
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
         _refreshLists();
     }
 
-    private void _moveToRecycleBin(double d) {
-        all_blcoks_list.get((int) d).put("palette", "-1");
+    private void _moveToRecycleBin(int position) {
+        all_blcoks_list.get(position).put("palette", "-1");
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blcoks_list));
         _refreshLists();
     }
@@ -533,7 +533,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     })
                     .create().show();
         } catch (Exception e) {
-            SketchwareUtil.toast("An error occurred: " + e.getMessage());
+            SketchwareUtil.toastError("An error occurred! [" + e.getMessage() + "]");
         }
     }
 
