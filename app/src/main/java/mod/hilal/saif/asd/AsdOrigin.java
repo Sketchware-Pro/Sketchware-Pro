@@ -1,0 +1,188 @@
+package mod.hilal.saif.asd;
+
+import static mod.SketchwareUtil.getDip;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
+import android.widget.TextView;
+
+import com.besome.sketch.editor.LogicEditorActivity;
+
+import a.a.a.Ss;
+import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.hilal.saif.asd.old.AsdOldDialog;
+
+public class AsdOrigin extends Dialog {
+
+    public Activity activity;
+    public LinearLayout b;
+    public LinearLayout base;
+    public boolean boo;
+    public View c;
+    public TextView codeE;
+    public ImageView d;
+    public TextView e;
+    public EditText edi;
+    public TextView f;
+    public FrameLayout g;
+    public TextView h;
+    public TextView i;
+    public String j = "";
+    public String k = "";
+    public String l = "Yes";
+    public LogicEditorActivity lea;
+    public String m = "No";
+    public int n = -1;
+    public int o = 0;
+    public View.OnClickListener p = null;
+    public View.OnClickListener q = null;
+    public View r;
+    public Space space;
+    public Ss ss;
+
+    public AsdOrigin(Activity activity2) {
+        super(activity2);
+        activity = activity2;
+    }
+
+    public void a(String str) {
+        k = str;
+    }
+
+    public void b(String str) {
+        j = str;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(1);
+        int i2 = o;
+        if (i2 == 0) {
+            getWindow().setBackgroundDrawableResource(2131165514);
+        } else if (i2 == 1) {
+            getWindow().setBackgroundDrawableResource(2131165513);
+        } else if (i2 == 2) {
+            getWindow().setBackgroundDrawableResource(2131165512);
+        }
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        ((ViewGroup.LayoutParams) attributes).width = -1;
+        getWindow().setAttributes(attributes);
+        setContentView(2131427410);
+        space = new Space(getContext());
+        space.setLayoutParams(new LinearLayout.LayoutParams(0, 0, 1.0f));
+        base = (LinearLayout) findViewById(2131231320);
+        codeE = new TextView(getContext());
+        codeE.setText("Code Editor");
+        codeE.setTextColor(-1);
+        codeE.setTextSize((float) 14);
+        codeE.setPadding((int) getDip(12), (int) getDip(0), (int) getDip(0), (int) getDip(0));
+        codeE.setLayoutParams(new LinearLayout.LayoutParams(-2, -1, 0.0f));
+        codeE.setGravity(17);
+        codeE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ConfigActivity.isLegacyCeEnabled()) {
+                    AsdOldDialog asdOldDialog = new AsdOldDialog(activity);
+                    asdOldDialog.setCon(edi.getText().toString());
+                    asdOldDialog.show();
+                    asdOldDialog.saveLis(lea, boo, ss, asdOldDialog);
+                    asdOldDialog.cancelLis(lea, asdOldDialog);
+                } else {
+                    AsdDialog asdDialog = new AsdDialog(activity);
+                    asdDialog.setCon(edi.getText().toString());
+                    asdDialog.show();
+                    asdDialog.saveLis(lea, boo, ss, asdDialog);
+                    asdDialog.cancelLis(lea, asdDialog);
+                }
+                dismiss();
+            }
+        });
+        base.addView(space, 0);
+        base.addView(codeE, 0);
+        b = (LinearLayout) findViewById(2131231696);
+        d = (ImageView) findViewById(2131230974);
+        e = (TextView) findViewById(2131230976);
+        f = (TextView) findViewById(2131230975);
+        g = (FrameLayout) findViewById(2131230941);
+        r = findViewById(2131231320);
+        h = (TextView) findViewById(2131230973);
+        h.setText(l);
+        h.setOnClickListener(p);
+        i = (TextView) findViewById(2131230972);
+        i.setText(m);
+        i.setOnClickListener(q);
+        if (j.isEmpty()) {
+            e.setVisibility(View.GONE);
+        } else {
+            e.setVisibility(View.VISIBLE);
+            e.setText(j);
+        }
+        if (k.isEmpty()) {
+            f.setVisibility(View.GONE);
+        } else {
+            f.setVisibility(View.VISIBLE);
+            f.setText(k);
+        }
+        if (q == null) {
+            i.setVisibility(View.GONE);
+        }
+        if (p == null) {
+            h.setVisibility(View.GONE);
+        }
+        int i3 = n;
+        if (i3 == -1) {
+            d.setVisibility(View.GONE);
+        } else {
+            d.setImageResource(i3);
+        }
+        if (c != null) {
+            g.setVisibility(View.VISIBLE);
+            g.addView(c);
+            return;
+        }
+        g.setVisibility(View.GONE);
+    }
+
+    public void show() {
+        View view;
+        super.show();
+        if (p == null && q == null && (view = r) != null) {
+            view.setVisibility(View.GONE);
+        }
+    }
+
+    public void a(int i2) {
+        n = i2;
+    }
+
+    public void b(String str, View.OnClickListener onClickListener) {
+        l = str;
+        p = onClickListener;
+    }
+
+    public void a(View view) {
+        c = view;
+    }
+
+    public void a(String str, View.OnClickListener onClickListener) {
+        m = str;
+        q = onClickListener;
+    }
+
+    public void carry(LogicEditorActivity logicEditorActivity, Ss ss2, boolean z, EditText editText) {
+        ss = ss2;
+        boo = z;
+        edi = editText;
+        lea = logicEditorActivity;
+    }
+}
