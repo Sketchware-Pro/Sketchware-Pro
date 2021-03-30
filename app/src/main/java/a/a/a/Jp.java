@@ -27,6 +27,9 @@ public class Jp {
         }
     }
 
+    /**
+     * @return The library's name inside libs.zip or dexs.zip, like material-1.0.0
+     */
     public String a() {
         return a;
     }
