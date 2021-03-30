@@ -756,28 +756,6 @@ public class qq {
                     obj2 = "firebase-common-19.0.0";
                 }
                 break;
-            case 2092848339:
-                if (!str.equals("browser-1.0.0")) {
-                    obj = "play-services-base-17.1.0";
-                    obj2 = "firebase-common-19.0.0";
-                    c = (char) 65535;
-                } else {
-                    c = '=';
-                    obj = "play-services-base-17.1.0";
-                    obj2 = "firebase-common-19.0.0";
-                }
-                break;
-            case 1288729102:
-                if (!str.equals("annotations-13.0")) {
-                    obj = "play-services-base-17.1.0";
-                    obj2 = "firebase-common-19.0.0";
-                    c = (char) 65535;
-                } else {
-                    c = '=';
-                    obj = "play-services-base-17.1.0";
-                    obj2 = "firebase-common-19.0.0";
-                }
-                break;
             default:
                 obj = "play-services-base-17.1.0";
                 obj2 = "firebase-common-19.0.0";
@@ -923,6 +901,9 @@ public class qq {
                 arrayList.add("lifecycle-viewmodel-2.0.0");
                 break;
             case 27:
+            /*
+             in case 27 we always add/remove libs. because it's the best case to execute them or something related.
+            */
                 arrayList = arrayList2;
                 arrayList.add("annotation-1.1.0");
                 arrayList.add("core-1.0.0");
@@ -934,10 +915,7 @@ public class qq {
                 arrayList.add("slidingpanelayout-1.0.0");
                 arrayList.add("interpolator-1.0.0");
                 arrayList.add("swiperefreshlayout-1.0.0");
-                arrayList.add("browser-1.0.0");
                 arrayList.add("constraintlayout-1.1.3");
-                arrayList.add("annotations-13.0");
-                arrayList.add("constraintlayout-solver-1.1.3");
                 arrayList.add("asynclayoutinflater-1.0.0");
                 arrayList.add("cursoradapter-1.0.0");
                 break;
@@ -1250,39 +1228,11 @@ public class qq {
                     c = (char) 17;
                 }
                 break;
-            case 1838627278:
-                if (!str.equals("constraintlayout-solver-1.1.3")) {
-                    c = (char) 65535;
-                } else {
-                    c = (char) 18;
-                }
-                break;
-            case 1888010691:
-                if (!str.equals("drawerlayout-1.0.0")) {
-                    c = (char) 65535;
-                } else {
-                    c = (char) 15;
-                }
-                break;
             case 2041102131:
                 if (!str.equals("swiperefreshlayout-1.0.0")) {
                     c = (char) 65535;
                 } else {
                     c = (char) 16;
-                }
-                break;
-            case 2092848339:
-                if (!str.equals("browser-1.0.0")) {
-                    c = (char) 65535;
-                } else {
-                    c = (char) 19;
-                }
-                break;
-            case 1288729102:
-                if (!str.equals("annotations-13.0")) {
-                    c = (char) 65535;
-                } else {
-                    c = (char) 20;
                 }
                 break;
             default:
@@ -1295,7 +1245,6 @@ public class qq {
             case 1:
                 return "androidx.appcompat.resources";
             case 2:
-            case 19:
                 return "androidx.browser";
             case 3:
                 return "androidx.cardview";
@@ -1327,10 +1276,6 @@ public class qq {
                 return "androidx.swiperefreshlayout";
             case 17:
                 return "androidx.constraintlayout";
-            case 18:
-                return "androidx.constraintlayout.solver";
-            case 20:
-                return "org.jetbrains.annotations";
             default:
                 return b;
         }
@@ -1452,13 +1397,6 @@ public class qq {
                     c = (char) 17;
                 }
                 break;
-            case 1838627278:
-                if (!str.equals("constraintlayout-solver-1.1.3")) {
-                    c = (char) 65520;
-                } else {
-                    c = (char) 18;
-                }
-                break;
             case 1888010691:
                 if (!str.equals("drawerlayout-1.0.0")) {
                     c = (char) 65520;
@@ -1473,22 +1411,6 @@ public class qq {
                     c = (char) 16;
                 }
                 break;
-
-            case 2092848339:
-                if (!str.equals("browser-1.0.0")) {
-                    c = (char) 65520;
-                } else {
-                    c = (char) 19;
-                }
-                break;
-            case 1288729102:
-                if (!str.equals("annotations-13.0")) {
-                    c = (char) 65520;
-                } else {
-                    c = (char) 20;
-                }
-                break;
-
             default:
                 c = (char) 65520;
                 break;
@@ -1512,9 +1434,6 @@ public class qq {
             case 15:
             case 16:
             case 17:
-            case 18:
-            case 19:
-            case 20:
                 return true;
             default:
                 return c2;
