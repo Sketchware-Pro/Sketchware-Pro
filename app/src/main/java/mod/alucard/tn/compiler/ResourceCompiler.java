@@ -3,35 +3,48 @@ package mod.alucard.tn.compiler;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.besome.sketch.design.DesignActivity;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.zip.ZipInputStream;
 
 import a.a.a.Dp;
 import a.a.a.Jp;
+import a.a.a.zy;
+import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.util.LogUtil;
 
 public class ResourceCompiler {
 
-    private final File aaptFile;
-    private final String compiledBuiltInLibraryResourcesDirectory;
-    private final Dp mDp;
     /**
-     * About log tags: add ":" and the first letter of the function's name un-camelCase'd, for example in thisIsALongFunctionName, you should use this: TAG + ":tIALFN"
+     * About log tags: add ":" and the first letter of the function's name camelCase'd, for example in thisIsALongFunctionName, you should use this: TAG + ":tIALFN"
      */
     private static final String TAG = "AppBuilder";
+    private final boolean generateAndroidAppBundle;
+    private final File aaptFile;
+    private final String compiledBuiltInLibraryResourcesDirectory;
+    private final DesignActivity.a buildingDialog;
+    private final Dp mDp;
 
-    public ResourceCompiler(Dp dp, File aapt) {
+    public ResourceCompiler(Dp dp, File aapt, boolean generateAAB, DesignActivity.a dialog) {
+        generateAndroidAppBundle = generateAAB;
         aaptFile = aapt;
         compiledBuiltInLibraryResourcesDirectory = new File(dp.aapt2Dir.getParentFile(), "compiledLibs").getAbsolutePath();
         mDp = dp;
+        buildingDialog = dialog;
     }
 
-    public void compile() {
-        Log.d(TAG + ":c", "Called!");
-        String outputPath = mDp.f.t + File.separator + "res";
-        checkDir(outputPath);
+    public void compile() throws IOException {
+        String outputPath;
+        outputPath = mDp.f.t + File.separator + "res";
+        emptyOrCreateDirectory(outputPath);
         long savedTimeMillis = System.currentTimeMillis();
+        buildingDialog.c("Compiling resources with AAPT2...");
         compileProjectResources(outputPath);
         Log.d(TAG + ":c", "Compiling project generated resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         savedTimeMillis = System.currentTimeMillis();
@@ -45,84 +58,136 @@ public class ResourceCompiler {
         Log.d(TAG + ":c", "Compiling built-in library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
-    public void link() {
-        Log.d(TAG + ":l", "Called!");
+    /**
+     * Links the project's resources using AAPT2.
+     *
+     * @throws zy Thrown to be caught by DesignActivity to show an error Snackbar.
+     */
+    public void link() throws zy {
+        long savedTimeMillis = System.currentTimeMillis();
         String resourcesPath = mDp.f.t + File.separator + "res";
+        buildingDialog.c("Linking resources with AAPT2...");
 
-        ArrayList<String> commands = new ArrayList<>();
-        commands.add(aaptFile.getAbsolutePath());
-        commands.add("link");
-        //commands.add("--proto-format");
-        //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ only useful for generating app bundle
-        commands.add("--auto-add-overlay");
-        commands.add("--min-sdk-version");
-        commands.add(mDp.settings.getValue("min_sdk", "21"));
-        commands.add("--allow-reserved-package-id");
-        commands.add("--no-version-vectors");
-        commands.add("--no-version-transitions");
-        commands.add("--target-sdk-version");
-        commands.add(mDp.settings.getValue("target_sdk", "28"));
-        commands.add("--version-code");
+        ArrayList<String> args = new ArrayList<>();
+        args.add(aaptFile.getAbsolutePath());
+        args.add("link");
+        if (generateAndroidAppBundle) {
+            args.add("--proto-format");
+        }
+        args.add("--allow-reserved-package-id");
+        args.add("--auto-add-overlay");
+        args.add("--no-version-vectors");
+        args.add("--no-version-transitions");
+
+        args.add("--min-sdk-version");
+        args.add(mDp.settings.getValue("min_sdk", "21"));
+        args.add("--target-sdk-version");
+        args.add(mDp.settings.getValue("target_sdk", "28"));
+
+        args.add("--version-code");
         String versionCode = mDp.f.l;
-        commands.add((versionCode == null || versionCode.isEmpty()) ? "1" : mDp.f.l);
-        commands.add("--version-name");
+        args.add((versionCode == null || versionCode.isEmpty()) ? "1" : mDp.f.l);
+        args.add("--version-name");
         String versionName = mDp.f.m;
-        commands.add((versionName == null || versionName.isEmpty()) ? "1.0" : mDp.f.m);
-        commands.add("-I");
-        String customAndroidSdk = mDp.settings.getValue("android_sdk", "");
-        commands.add(customAndroidSdk.isEmpty() ? mDp.o : customAndroidSdk);
+        args.add((versionName == null || versionName.isEmpty()) ? "1.0" : mDp.f.m);
 
-        /* Add assets imported normally */
-        commands.add("-A");
-        commands.add(mDp.f.A);
+        args.add("-I");
+        String customAndroidSdk = mDp.settings.getValue("android_sdk", "");
+        args.add(customAndroidSdk.isEmpty() ? mDp.o : customAndroidSdk);
+
+        /* Add assets imported by vanilla method */
+        args.add("-A");
+        args.add(mDp.f.A);
 
         /* Add imported assets */
         if (FileUtil.isExistFile(mDp.fpu.getPathAssets(mDp.f.b))) {
-            commands.add("-A");
-            commands.add(mDp.fpu.getPathAssets(mDp.f.b));
+            args.add("-A");
+            args.add(mDp.fpu.getPathAssets(mDp.f.b));
         }
 
-        /* Add local libraries' assets */
-        for (Jp next : mDp.n.a()) {
-            if (next.d()) {
-                commands.add("-A");
-                commands.add(mDp.l.getAbsolutePath() + File.separator + "libs" + File.separator + next.a() + File.separator + "assets");
+        /* Add built-in libraries' assets */
+        for (Jp library : mDp.n.a()) {
+            if (library.d()) {
+                args.add("-A");
+                args.add(mDp.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "assets");
             }
         }
 
-        /* Include previously compiled "modules" */
-        for (File file : new File(resourcesPath).listFiles()) {
-            commands.add("-R");
-            commands.add(file.getAbsolutePath());
+        /* Add local libraries' assets */
+        for (String localLibraryAssetsDirectory : new ManageLocalLibrary(mDp.f.b).getAssets()) {
+            args.add("-A");
+            args.add(localLibraryAssetsDirectory);
         }
 
         /* Include compiled built-in library resources */
-        for (File file : new File(compiledBuiltInLibraryResourcesDirectory).listFiles()) {
-            commands.add("-R");
-            commands.add(file.getAbsolutePath());
+        for (Jp library : mDp.n.a()) {
+            if (library.c()) {
+                args.add("-R");
+                args.add(new File(compiledBuiltInLibraryResourcesDirectory, library.a() + ".zip").getAbsolutePath());
+            }
         }
 
-        commands.add("--manifest");
-        commands.add(mDp.f.r);
-        commands.add("--java");
-        commands.add(mDp.f.v);
-        String e = mDp.e();
-        if (!e.isEmpty()) {
-            commands.add("--extra-packages");
-            commands.add(e);
+        /* Include compiled local libraries' resources */
+        File[] filesInCompiledResourcesPath = new File(resourcesPath).listFiles();
+        if (filesInCompiledResourcesPath != null) {
+            for (File file : filesInCompiledResourcesPath) {
+                if (file.isFile()) {
+                    if (!file.getName().equals("project.zip") || !file.getName().equals("project-imported.zip")) {
+                        args.add("-R");
+                        args.add(file.getAbsolutePath());
+                    }
+                }
+            }
         }
-        commands.add("-o");
-        commands.add(mDp.f.C);
-        Log.d(TAG + ":l", "Now executing: " + commands.toString());
+
+        /* Include compiled project resources */
+        File projectArchive = new File(resourcesPath, "project.zip");
+        if (projectArchive.exists()) {
+            args.add("-R");
+            args.add(projectArchive.getAbsolutePath());
+        }
+
+        /* Include compiled imported project resources */
+        File projectImportedArchive = new File(resourcesPath, "project-imported.zip");
+        if (projectImportedArchive.exists()) {
+            args.add("-R");
+            args.add(projectImportedArchive.getAbsolutePath());
+        }
+
+        /* Add R.java */
+        args.add("--java");
+        args.add(mDp.f.v);
+
+        /* Output AAPT2's generated ProGuard rules to a.a.a.yq.aapt_rules */
+        args.add("--proguard");
+        args.add(mDp.f.aapt_rules);
+
+        /* Add AndroidManifest.xml */
+        args.add("--manifest");
+        args.add(mDp.f.r);
+
+        /* Use the generated R.java for used libraries */
+        String extraPackages = mDp.e();
+        if (!extraPackages.isEmpty()) {
+            args.add("--extra-packages");
+            args.add(extraPackages);
+        }
+
+        /* Output the APK only with resources to a.a.a.yq.C */
+        args.add("-o");
+        args.add(mDp.f.C);
+
+        Log.d(TAG + ":l", "Now executing: " + args.toString());
         BinaryExecutor executor = new BinaryExecutor();
-        executor.setCommands(commands);
+        executor.setCommands(args);
         if (!executor.execute().isEmpty()) {
             Log.e(TAG + ":l", executor.getLog());
+            throw new zy(executor.getLog());
         }
+        Log.d(TAG + ":l", "Linking resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     private void compileProjectResources(String outputPath) {
-        Log.d(TAG + ":cPR", "Called!");
         ArrayList<String> commands = new ArrayList<>();
         commands.add(aaptFile.getAbsolutePath());
         commands.add("compile");
@@ -138,17 +203,16 @@ public class ResourceCompiler {
         }
     }
 
-    private void checkDir(String str) {
-        if (FileUtil.isExistFile(str)) {
-            FileUtil.deleteFile(str);
-            FileUtil.makeDir(str);
+    private void emptyOrCreateDirectory(String path) {
+        if (FileUtil.isExistFile(path)) {
+            FileUtil.deleteFile(path);
+            FileUtil.makeDir(path);
             return;
         }
-        FileUtil.makeDir(str);
+        FileUtil.makeDir(path);
     }
 
     private void compileLocalLibraryResources(String outputPath) {
-        Log.d(TAG + ":cLLR", "Called!");
         Log.d(TAG + ":cLLR", "About to compile " + mDp.mll.getResLocalLibrary().size() + " local " + (mDp.mll.getResLocalLibrary().size() == 1 ? "library" : "libraries") + ".");
         for (String next : mDp.mll.getResLocalLibrary()) {
             ArrayList<String> commands = new ArrayList<>();
@@ -168,9 +232,8 @@ public class ResourceCompiler {
     }
 
     private void compileBuiltInLibraryResources() {
-        Log.d(TAG + ":cBILR", "Called!");
         for (Jp library : mDp.n.a()) {
-            Log.d(TAG + ":cBILR", "Dumping a a.a.a.Jp: a=" + library.a + ", b=" + library.b + ", c=" + library.c + ", d=" + library.d);
+            LogUtil.dump(TAG + ":cBILR", library);
             if (library.c()) {
                 String libraryResources = mDp.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "res";
                 if (isBuiltInLibraryRecompilingNeeded(libraryResources)) {
@@ -180,7 +243,7 @@ public class ResourceCompiler {
                     commands.add("--dir");
                     commands.add(libraryResources);
                     commands.add("-o");
-                    commands.add(compiledBuiltInLibraryResourcesDirectory + File.separator + library.a + ".zip");
+                    commands.add(compiledBuiltInLibraryResourcesDirectory + File.separator + library.a() + ".zip");
                     Log.d(TAG + ":cBILR", "Now executing: " + commands.toString());
                     BinaryExecutor executor = new BinaryExecutor();
                     executor.setCommands(commands);
@@ -195,7 +258,6 @@ public class ResourceCompiler {
     }
 
     private boolean isBuiltInLibraryRecompilingNeeded(String libraryResourcesPath) {
-        Log.d(TAG + ":iBILRN", "Called!");
         File file = new File(compiledBuiltInLibraryResourcesDirectory, new File(libraryResourcesPath).getParentFile().getName() + ".zip");
         if (file.getParentFile().mkdirs()) return true;
         if (!file.exists()) return true;
@@ -208,7 +270,6 @@ public class ResourceCompiler {
     }
 
     private void compileImportedResources(String outputPath) {
-        Log.d(TAG + ":cIR", "Called!");
         if (FileUtil.isExistFile(mDp.fpu.getPathResource(mDp.f.b)) && new File(mDp.fpu.getPathResource(mDp.f.b)).length() != 0) {
             ArrayList<String> commands = new ArrayList<>();
             commands.add(aaptFile.getAbsolutePath());
