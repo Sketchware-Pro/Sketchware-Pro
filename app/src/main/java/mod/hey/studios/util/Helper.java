@@ -24,6 +24,8 @@ public class Helper {
     }.getType();
     public static Type TYPE_STRING = new TypeToken<ArrayList<String>>() {
     }.getType();
+    public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {
+    }.getType();
 
     public static void fixFileprovider() {
         if (Build.VERSION.SDK_INT >= 24) {
@@ -31,8 +33,8 @@ public class Helper {
                 Class.forName("android.os.StrictMode").getMethod("disableDeathOnFileUriExposure").invoke(null);
             } catch (ClassNotFoundException e) {
                 throw new NoClassDefFoundError(e.getMessage());
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
