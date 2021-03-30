@@ -4,10 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.tools.r8.D8;
+import com.besome.sketch.design.DesignActivity;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 
@@ -16,12 +19,12 @@ import org.spongycastle.jce.provider.BouncyCastleProvider;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
@@ -59,6 +62,7 @@ public class Dp {
     public final String m = "libs";
     public File aapt2Dir;
     public BuildSettings build_settings;
+    public DesignActivity.a buildingDialog;
     /**
      * Command(s) to execute after extracting AAPT/AAPT2 (fill in 2 with the file name before using)
      */
@@ -67,12 +71,18 @@ public class Dp {
     public yq f;
     public FilePathUtil fpu;
     public oB g;
+    /**
+     * Directory "tmp" in files directory, where libs are extracted and compiled
+     */
     public File h;
     /**
      * File object that represents aapt
      */
     public File i;
     public Fp j;
+    /**
+     * A StringBuffer with System.err of Eclipse compiler. If compilation succeeds, it doesn't have any content, if it doesn't, there is.
+     */
     public StringBuffer k = new StringBuffer();
     /**
      * Extracted built-in libraries directory
@@ -88,6 +98,17 @@ public class Dp {
     ArrayList<String> extraDexes;
 
     public Dp(Context context, yq yqVar) {
+        /*
+         * Detect some bad behaviour of the app.
+         */
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+        );
+        /*
+         * Start logging to debug.txt stored in /Internal storage/.sketchware/.
+         */
         SystemLogPrinter.start();
         e = context;
         f = yqVar;
@@ -107,14 +128,28 @@ public class Dp {
         settings = new ProjectSettings(f.b);
         proguard = new ProguardHandler(f.b);
         build_settings = new BuildSettings(f.b);
-        o = build_settings.getValue("android_jar", o);
+        o = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, o);
+        try {
+            Toast.makeText(e.getApplicationContext(), "Hello! This is a test to see if Dp's Context field e is null.", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to toast with mDp.e: " + e.getMessage(), e);
+        }
     }
 
+    public Dp(DesignActivity.a anA, Context context, yq yqVar) {
+        this(context, yqVar);
+        buildingDialog = anA;
+    }
+
+    /**
+     * Compile resources and log time needed.
+     *
+     * @throws Exception Thrown when anything goes wrong while compiling resources
+     */
     public void a() throws Exception {
-        long currentTimeMillis = System.currentTimeMillis();
+        long savedTimeMillis = System.currentTimeMillis();
         b();
-        long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
-        Log.d(TAG, "aapt took " + currentTimeMillis2 + " ms");
+        Log.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     public void a(iI iIVar, String str) {
@@ -128,164 +163,127 @@ public class Dp {
     }
 
     /**
-     * Copy a file from assets to assets
-     * @param source Source file to copy
-     * @param to     Target to copy the file to
+     * Checks if the source file in assets has a different size than {@code compareTo}.
+     *
+     * @param fileInAssets The file in assets whose length to compare
+     * @param compareTo    The file whose length to compare
      */
-    public final boolean a(String source, String to) {
-        long j2;
-        File file = new File(to);
-        long a2 = g.a(e, source);
-        if (file.exists()) {
-            j2 = file.length();
+    public final boolean a(String fileInAssets, String compareTo) {
+        long length;
+        File compareToFile = new File(compareTo);
+        long lengthOfFileInAssets = g.a(e, fileInAssets);
+        if (compareToFile.exists()) {
+            length = compareToFile.length();
         } else {
-            j2 = 0;
+            length = 0;
         }
-        if (a2 == j2) {
+        if (lengthOfFileInAssets == length) {
             return false;
         }
-        g.a(file);
-        g.a(e, source, to);
+        g.a(compareToFile);
+        g.a(e, fileInAssets, compareTo);
         return true;
     }
 
-    public void runAapt2() {
-        /*
-        Field[] fields = f.getClass().getDeclaredFields();
-        StringBuilder toLog = new StringBuilder("Dumping yq's fields: ");
-        for (int i = 0; i < f.getClass().getDeclaredFields().length; i++) {
-            if (toLog.toString().length() > 4096) {
-                Log.d(TAG, toLog.substring(0, 4096));
-                String saved = toLog.substring(4096);
-                toLog = new StringBuilder(saved);
-            }
-            if (i == 0) {
-                toLog.append(fields[i].getName()).append("=");
-                try {
-                    toLog.append(fields[i].get(f).toString());
-                } catch (IllegalAccessException e) {
-                    toLog.append("???");
-                } catch (NullPointerException e) {
-                    toLog.append("null");
-                }
-            } else if (i == (fields.length - 1)) {
-                toLog.append(", ").append(fields[i].getName()).append("=");
-                try {
-                    toLog.append(fields[i].get(f).toString());
-                } catch (IllegalAccessException e) {
-                    toLog.append("???");
-                } catch (NullPointerException e) {
-                    toLog.append("null");
-                }
-                Log.d(TAG, toLog.toString());
-            } else {
-                toLog.append(", ").append(fields[i].getName()).append("=");
-                try {
-                    toLog.append(fields[i].get(f).toString());
-                } catch (IllegalAccessException e) {
-                    toLog.append("???");
-                } catch (NullPointerException e) {
-                    toLog.append("null");
-                }
-            }
-        }
-        */
-
-        ResourceCompiler compiler = new ResourceCompiler(this, aapt2Dir);
+    public void compileWithAapt2() throws zy, IOException {
+        LogUtil.dump(TAG, f);
+        ResourceCompiler compiler = new ResourceCompiler(
+                this,
+                aapt2Dir,
+                build_settings.getValue(
+                        BuildSettings.SETTING_OUTPUT_FORMAT,
+                        BuildSettings.SETTING_OUTPUT_FORMAT_APK
+                ).equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB),
+                buildingDialog);
         compiler.compile();
         compiler.link();
     }
 
+    /**
+     * Compile the project's resources.
+     *
+     * @throws Exception Thrown in case AAPT/AAPT2 has an error while compiling resources.
+     */
     public void b() throws Exception {
-        if (true) {
-            runAapt2();
+        if (build_settings.getValue(
+                BuildSettings.SETTING_RESOURCE_PROCESSOR,
+                BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
+        ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2)) {
+            compileWithAapt2();
             return;
         }
-        String str;
-        String str2;
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(i.getAbsolutePath());
-        arrayList.add("package");
-        String e2 = e();
-        if (!e2.isEmpty()) {
-            arrayList.add("--extra-packages");
-            arrayList.add(e2);
+
+        /* Start of generating arguments for AAPT */
+        ArrayList<String> args = new ArrayList<>();
+        args.add(i.getAbsolutePath());
+        args.add("package");
+        String extraPackages = e();
+        if (!extraPackages.isEmpty()) {
+            args.add("--extra-packages");
+            args.add(extraPackages);
         }
-        arrayList.add("--min-sdk-version");
-        arrayList.add(settings.getValue("min_sdk", "21"));
-        arrayList.add("--target-sdk-version");
-        arrayList.add(settings.getValue("target_sdk", "28"));
-        arrayList.add("--version-code");
-        String str3 = f.l;
-        if (str3 == null || str3.isEmpty()) {
-            str = "1";
-        } else {
-            str = f.l;
-        }
-        arrayList.add(str);
-        arrayList.add("--version-name");
-        String str4 = f.m;
-        if (str4 == null || str4.isEmpty()) {
-            str2 = "1.0";
-        } else {
-            str2 = f.m;
-        }
-        arrayList.add(str2);
-        arrayList.add("--auto-add-overlay");
-        arrayList.add("--generate-dependencies");
-        arrayList.add("-f");
-        arrayList.add("-m");
-        arrayList.add("--non-constant-id");
-        arrayList.add("--output-text-symbols");
-        arrayList.add(f.t);
+        args.add("--min-sdk-version");
+        args.add(settings.getValue("min_sdk", a));
+        args.add("--target-sdk-version");
+        args.add(settings.getValue("target_sdk", b));
+        args.add("--version-code");
+        args.add(((f.l == null) || f.l.isEmpty()) ? "1" : f.l);
+        args.add("--version-name");
+        args.add(((f.m == null) || f.m.isEmpty()) ? "1.0" : f.m);
+        args.add("--auto-add-overlay");
+        args.add("--generate-dependencies");
+        args.add("-f");
+        args.add("-m");
+        args.add("--non-constant-id");
+        args.add("--output-text-symbols");
+        args.add(f.t);
         if (f.N.g) {
-            arrayList.add("--no-version-vectors");
+            args.add("--no-version-vectors");
         }
-        arrayList.add("-S");
-        arrayList.add(f.w);
-        for (String s : mll.getResLocalLibrary()) {
-            arrayList.add("-S");
-            arrayList.add(s);
+        args.add("-S");
+        args.add(f.w);
+        for (String localLibraryResDirectory : mll.getResLocalLibrary()) {
+            args.add("-S");
+            args.add(localLibraryResDirectory);
         }
         if (FileUtil.isExistFile(fpu.getPathResource(f.b))) {
-            arrayList.add("-S");
-            arrayList.add(fpu.getPathResource(f.b));
+            args.add("-S");
+            args.add(fpu.getPathResource(f.b));
         }
-        arrayList.add("-A");
-        arrayList.add(f.A);
+        args.add("-A");
+        args.add(f.A);
         if (FileUtil.isExistFile(fpu.getPathAssets(f.b))) {
-            arrayList.add("-A");
-            arrayList.add(fpu.getPathAssets(f.b));
+            args.add("-A");
+            args.add(fpu.getPathAssets(f.b));
         }
-        for (String str5 : mll.getAssets()) {
-            arrayList.add("-A");
-            arrayList.add(str5);
+        for (String localLibraryAssetsDirectory : mll.getAssets()) {
+            args.add("-A");
+            args.add(localLibraryAssetsDirectory);
         }
-        for (Jp next : n.a()) {
-            if (next.c()) {
-                String str6 = l.getAbsolutePath() + c + "libs" + c + next.a() + c + "res";
-                arrayList.add("-S");
-                arrayList.add(str6);
+        for (Jp library : n.a()) {
+            if (library.d()) {
+                String str7 = l.getAbsolutePath() + c + "libs" + c + library.a() + c + "assets";
+                args.add("-A");
+                args.add(str7);
+            }
+
+            if (library.c()) {
+                String str6 = l.getAbsolutePath() + c + "libs" + c + library.a() + c + "res";
+                args.add("-S");
+                args.add(str6);
             }
         }
-        for (Jp next2 : n.a()) {
-            if (next2.d()) {
-                String str7 = l.getAbsolutePath() + c + "libs" + c + next2.a() + c + "assets";
-                arrayList.add("-A");
-                arrayList.add(str7);
-            }
-        }
-        arrayList.add("-J");
-        arrayList.add(f.v);
-        arrayList.add("-G");
-        arrayList.add(f.aapt_rules);
-        arrayList.add("-M");
-        arrayList.add(f.r);
-        arrayList.add("-I");
-        arrayList.add(o);
-        arrayList.add("-F");
-        arrayList.add(f.C);
-        if (j.a(arrayList.toArray(new String[0])) != 0) {
+        args.add("-J");
+        args.add(f.v);
+        args.add("-G");
+        args.add(f.aapt_rules);
+        args.add("-M");
+        args.add(f.r);
+        args.add("-I");
+        args.add(o);
+        args.add("-F");
+        args.add(f.C);
+        if (j.a(args.toArray(new String[0])) != 0) {
             throw new zy(j.a.toString());
         }
     }
@@ -296,7 +294,10 @@ public class Dp {
     }
 
     public boolean isD8Enabled() {
-        return build_settings.getValue("dexer", "Dx").equals("D8");
+        return build_settings.getValue(
+                BuildSettings.SETTING_DEXER,
+                BuildSettings.SETTING_DEXER_DX
+        ).equals(BuildSettings.SETTING_DEXER_D8);
     }
 
     public String getDxRunningText() {
@@ -304,7 +305,8 @@ public class Dp {
     }
 
     /**
-     * Compile Java code
+     * Compile Java classes into DEX file(s)
+     *
      * @throws Exception Thrown if the compiler has any problems compiling
      */
     public void c() throws Exception {
@@ -361,7 +363,7 @@ public class Dp {
     public final String d() {
         StringBuilder sb = new StringBuilder();
         sb.append(f.v).append(":").append(o);
-        if (!build_settings.getValue("no_http_legacy", "false").equals("true")) {
+        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
             sb.append(":");
             sb.append(l.getAbsolutePath());
             sb.append(c);
@@ -384,9 +386,9 @@ public class Dp {
         StringBuilder sb3 = new StringBuilder();
         sb3.append(sb2);
         sb3.append(mll.getJarLocalLibrary());
-        if (!build_settings.getValue("classpath", "").equals("")) {
+        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
             sb3.append(":");
-            sb3.append(build_settings.getValue("classpath", ""));
+            sb3.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
         return sb3.toString();
     }
@@ -394,7 +396,7 @@ public class Dp {
     public final String classpath() {
         StringBuilder sb = new StringBuilder();
         sb.append(f.v).append(":").append(o);
-        if (!build_settings.getValue("no_http_legacy", "false").equals("true")) {
+        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
             sb.append(":");
             sb.append(l.getAbsolutePath());
             sb.append(c);
@@ -423,9 +425,9 @@ public class Dp {
                 sb3.append(hashMap.get("jarPath").toString());
             }
         }
-        if (!build_settings.getValue("classpath", "").equals("")) {
+        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
             sb3.append(":");
-            sb3.append(build_settings.getValue("classpath", ""));
+            sb3.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
         return sb3.toString();
     }
@@ -458,33 +460,58 @@ public class Dp {
      * Get extra packages used in this project, needed for AAPT/AAPT2.
      */
     public final String e() {
-        Iterator<Jp> it = n.a().iterator();
-        StringBuilder str = new StringBuilder();
-        while (it.hasNext()) {
-            Jp next = it.next();
-            if (next.c()) {
-                str.append(next.b()).append(":");
+        StringBuilder extraPackages = new StringBuilder();
+        for (Jp library : n.a()) {
+            if (library.c()) {
+                extraPackages.append(library.b()).append(":");
             }
         }
-        return str + mll.getPackageNameLocalLibrary();
+        return extraPackages + mll.getPackageNameLocalLibrary();
     }
 
     /**
-     * Run javac to compile Java classes from Java source code
+     * Run Eclipse Compiler to compile Java classes from Java source code
+     *
      * @throws Throwable Thrown when Eclipse has problems compiling
      */
     public void f() throws Throwable {
-        long currentTimeMillis = System.currentTimeMillis();
+        long savedTimeMillis = System.currentTimeMillis();
+
+        class EclipseOutOutputStream extends OutputStream {
+
+            private final StringBuffer mBuffer = new StringBuffer();
+
+            @Override
+            public void write(int b) {
+                mBuffer.append(b);
+            }
+
+            public String getOut() {
+                return mBuffer.toString();
+            }
+        }
+
+        class EclipseErrOutputStream extends OutputStream {
+
+            @Override
+            public void write(int b) throws IOException {
+                k.append((char) b);
+            }
+        }
+
+        EclipseOutOutputStream outOutputStream = new EclipseOutOutputStream();
         /* System.out for Eclipse compiler */
-        PrintWriter printWriter = new PrintWriter(new Dp.b());
-        Dp.a aVar = new Dp.a();
+        PrintWriter outWriter = new PrintWriter(outOutputStream);
+
+        EclipseErrOutputStream errOutputStream = new EclipseErrOutputStream();
         /* System.err for Eclipse compiler */
-        PrintWriter printWriter2 = new PrintWriter(aVar);
+        PrintWriter errWriter = new PrintWriter(errOutputStream);
+
         try {
             ArrayList<String> args = new ArrayList<>();
-            args.add("-" + build_settings.getValue("java_ver", "1.7"));
+            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION, BuildSettings.SETTING_JAVA_VERSION_1_7));
             args.add("-nowarn");
-            if (build_settings.getValue("no_warn", "false").equals("false")) {
+            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS, "false").equals("true")) {
                 args.add("-deprecation");
             }
             args.add("-d");
@@ -507,32 +534,37 @@ public class Dp {
             }
 
             /* Adding built-in libraries' R.java files */
-            for (Jp next : n.a()) {
-                if (next.c()) {
-                    args.add(f.v + File.separator + next.b().replace(".", File.separator) + File.separator + "R.java");
+            for (Jp library : n.a()) {
+                if (library.c()) {
+                    args.add(f.v + File.separator + library.b().replace(".", File.separator) + File.separator + "R.java");
                 }
             }
+
             /* Adding local libraries' R.java files */
             args.addAll(mll.getGenLocalLibrary());
-            org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(printWriter, printWriter2, false, null, null);
+
+            /* Start compiling */
+            org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
             LogUtil.log(TAG, "Running Eclipse compiler with these arguments: ", "About to log Eclipse compiler's arguments in multiple lines because of length.", args);
             main.compile(args.toArray(new String[0]));
+
             if (main.globalErrorsCount <= 0) {
                 try {
-                    aVar.close();
-                    printWriter.close();
-                    printWriter2.close();
+                    outOutputStream.close();
+                    errOutputStream.close();
+                    outWriter.close();
+                    errWriter.close();
+                    LogUtil.log(TAG, "System.out of Eclipse compiler: ", "About to log System.out of Eclipse compiler on multiple lines because of length.", outOutputStream.getOut());
                     LogUtil.log(TAG, "System.err of Eclipse compiler: ", "About to log System.err of Eclipse compiler on multiple lines because of length.", k.toString());
-                    Log.d(TAG, "System.err of Eclipse compiler: " + k.toString());
                 } catch (IOException ignored) {
                 }
-                Log.d(TAG, "javac took " + (System.currentTimeMillis() - currentTimeMillis) + " ms");
-                return;
+                Log.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms.");
+            } else {
+                throw new zy(k.toString());
             }
-            throw new zy(k.toString());
-        } catch (Exception e3) {
-            Log.e(TAG, e3.getMessage(), e3);
-            throw e3;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -567,24 +599,27 @@ public class Dp {
         return i2 + 1;
     }
 
+    /**
+     * Builds an APK, used when clicking "Run" in DesignActivity
+     */
     public void g() {
         ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(f.E), null, null, System.out);
-        for (HashMap<String, Object> hashMap : mll.list) {
-            apkBuilder.addResourcesFromJar(new File(hashMap.get("jarPath").toString()));
+        for (HashMap<String, Object> localLibraries : mll.list) {
+            apkBuilder.addResourcesFromJar(new File(localLibraries.get("jarPath").toString()));
         }
         File file = new File(Environment.getExternalStorageDirectory(),
                 ".sketchware/data/".concat(f.b.concat("/files/native_libs")));
         if (FileUtil.isExistFile(file.getAbsolutePath())) {
             apkBuilder.addNativeLibraries(file);
         }
-        for (String str : mll.getNativeLibs()) {
-            apkBuilder.addNativeLibraries(new File(str));
+        for (String nativeLibrary : mll.getNativeLibs()) {
+            apkBuilder.addNativeLibraries(new File(nativeLibrary));
         }
-        for (String str2 : extraDexes) {
-            apkBuilder.addFile(new File(str2), Uri.parse(str2).getLastPathSegment());
+        for (String extraDex : extraDexes) {
+            apkBuilder.addFile(new File(extraDex), Uri.parse(extraDex).getLastPathSegment());
         }
-        for (String str3 : dexesGenerated) {
-            apkBuilder.addFile(new File(str3), Uri.parse(str3).getLastPathSegment());
+        for (String generatedDex : dexesGenerated) {
+            apkBuilder.addFile(new File(generatedDex), Uri.parse(generatedDex).getLastPathSegment());
         }
         apkBuilder.setDebugMode(false);
         apkBuilder.sealApk();
@@ -607,7 +642,7 @@ public class Dp {
         if (Build.VERSION.SDK_INT <= 23) {
             arrayList.add(l.getAbsolutePath() + c + "dexs" + c + "multidex-2.0.1" + ".dex");
         }
-        if (!build_settings.getValue("no_http_legacy", "false").equals("true")) {
+        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
             arrayList.add(l.getAbsolutePath() + c + "dexs" + c + "http-legacy-android-28" + ".dex");
         }
         for (Jp next : n.a()) {
@@ -622,9 +657,14 @@ public class Dp {
         arrayList.addAll(mll.getExtraDexes());
         a(f.F, arrayList);
         long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
-        Log.d(TAG, "Library dex files merge took " + currentTimeMillis2 + " ms");
+        Log.d(TAG, "Libraries' DEX files merge took " + currentTimeMillis2 + " ms");
     }
 
+    /**
+     * Extracts AAPT binaries (if they need to be extracted)
+     *
+     * @throws Exception If anything goes wrong while extracting
+     */
     public void i() throws Exception {
         String aaptPathInAssets;
         String aapt2PathInAssets;
@@ -651,35 +691,51 @@ public class Dp {
     }
 
     public void j() {
+        /* If l doesn't exist, create it */
         if (!g.e(l.getAbsolutePath())) {
             g.f(l.getAbsolutePath());
         }
-        String absolutePath = new File(l, "android.jar.zip").getAbsolutePath();
-        String absolutePath2 = new File(l, "dexs.zip").getAbsolutePath();
-        String absolutePath3 = new File(l, "libs.zip").getAbsolutePath();
-        String absolutePath4 = new File(l, "dexs").getAbsolutePath();
-        String absolutePath5 = new File(l, "libs").getAbsolutePath();
-        if (a("libs" + File.separator + "android.jar.zip", absolutePath)) {
+        String androidJarPath = new File(l, "android.jar.zip").getAbsolutePath();
+        String dexsArchivePath = new File(l, "dexs.zip").getAbsolutePath();
+        String libsArchivePath = new File(l, "libs.zip").getAbsolutePath();
+        String dexsDirectoryPath = new File(l, "dexs").getAbsolutePath();
+        String libsDirectoryPath = new File(l, "libs").getAbsolutePath();
+        String testkeyDirectoryPath = new File(l, "testkey").getAbsolutePath();
+        if (a(m + File.separator + "android.jar.zip", androidJarPath)) {
+            /* Delete android.jar */
             g.c(l.getAbsolutePath() + c + "android.jar");
-            new KB().a(absolutePath, l.getAbsolutePath());
+            new KB().a(androidJarPath, l.getAbsolutePath());
         }
-        if (a("libs" + File.separator + "dexs.zip", absolutePath2)) {
-            g.b(absolutePath4);
-            g.f(absolutePath4);
-            new KB().a(absolutePath2, absolutePath4);
+        if (a(m + File.separator + "dexs.zip", dexsArchivePath)) {
+            g.b(dexsDirectoryPath);
+            g.f(dexsDirectoryPath);
+            new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
-        if (a("libs" + File.separator + "libs.zip", absolutePath3)) {
-            g.b(absolutePath5);
-            g.f(absolutePath5);
-            new KB().a(absolutePath3, absolutePath5);
+        if (a(m + File.separator + "libs.zip", libsArchivePath)) {
+            g.b(libsDirectoryPath);
+            g.f(libsDirectoryPath);
+            new KB().a(libsArchivePath, libsDirectoryPath);
         }
-        String str = "libs" + File.separator + "jdk.zip";
-        String absolutePath6 = new File(l, "jdk.zip").getAbsolutePath();
-        if (a(str, absolutePath6)) {
-            String absolutePath7 = new File(l, "jdk").getAbsolutePath();
-            g.b(absolutePath7);
-            g.f(absolutePath7);
-            new KB().a(absolutePath6, absolutePath7);
+        String jdkArchivePathInAssets = m + File.separator + "jdk.zip";
+        String jdkArchivePath = new File(l, "jdk.zip").getAbsolutePath();
+        /* Check if file size has changed */
+        if (a(jdkArchivePathInAssets, jdkArchivePath)) {
+            String jdkDirectoryPath = new File(l, "jdk").getAbsolutePath();
+            /* Delete the directory? */
+            g.b(jdkDirectoryPath);
+            /* Create the directories? */
+            g.f(jdkDirectoryPath);
+            /* Extract the archive to the directory? */
+            new KB().a(jdkArchivePath, jdkDirectoryPath);
+        }
+        String testkeyArchivePathInAssets = m + File.separator + "testkey.zip";
+        String testkeyArchivePath = new File(l, "testkey.zip").getAbsolutePath();
+        if (a(testkeyArchivePathInAssets, testkeyArchivePath)) {
+            /* We need to copy testkey.zip to filesDir */
+            g.b(testkeyDirectoryPath);
+            g.f(testkeyDirectoryPath);
+            new KB().a(testkeyArchivePath, testkeyDirectoryPath);
+
         }
         if (f.N.g) {
             n.a("appcompat-1.0.0");
@@ -716,34 +772,45 @@ public class Dp {
         ExtLibSelected.a(f.N.x, n);
     }
 
+    /**
+     * Sign the APK file with testkey.
+     */
     public boolean k() {
         ZipSigner zipSigner = new ZipSigner();
         zipSigner.addAutoKeyObserver(new Cp(this));
         KeyStoreFileManager.setProvider(new BouncyCastleProvider());
         zipSigner.setKeymode("testkey");
-        yq yqVar = f;
-        zipSigner.signZip(yqVar.G, yqVar.H);
+        zipSigner.signZip(f.G, f.H);
         return true;
     }
 
-    public final void mergeDexes(String str, ArrayList<Dex> arrayList) throws Exception {
-        new DexMerger(arrayList.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(str));
-        dexesGenerated.add(str);
+    public final void mergeDexes(String target, ArrayList<Dex> dexes) throws Exception {
+        new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(target));
+        dexesGenerated.add(target);
     }
 
-    public void proguardAddLibConfigs(java.util.List<String> list) {
+    /**
+     * Adds all built-in libraries' ProGuard rules to {@code args}, if any.
+     *
+     * @param args List of arguments to add built-in libraries' ProGuard roles to.
+     */
+    public void proguardAddLibConfigs(List<String> args) {
         for (Jp jp : n.a()) {
             String str = l.getAbsolutePath() + c + jp.a() + c + "proguard.txt";
             if (FileUtil.isExistFile(str)) {
-                list.add("-include");
-                list.add(str);
+                args.add("-include");
+                args.add(str);
             }
         }
     }
 
-    public void proguardAddRjavaRules(java.util.List<String> list) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("# R.java rules");
+    /**
+     * Generates default ProGuard R.java rules and adds them to {@code args}.
+     *
+     * @param args List of arguments to add R.java rules to.
+     */
+    public void proguardAddRjavaRules(List<String> args) {
+        StringBuilder sb = new StringBuilder("# R.java rules");
         for (Jp jp : n.a()) {
             if (jp.c() && !jp.b().isEmpty()) {
                 sb.append("\n");
@@ -763,53 +830,66 @@ public class Dp {
         }
         sb.append("\n");
         FileUtil.writeFile(f.rules_generated, sb.toString());
-        list.add("-include");
-        list.add(f.rules_generated);
+        args.add("-include");
+        args.add(f.rules_generated);
     }
 
     public void runProguard() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("-include");
-        arrayList.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
-        arrayList.add("-include");
-        arrayList.add(f.aapt_rules);
-        arrayList.add("-include");
-        arrayList.add(proguard.getCustomProguardRules());
-        proguardAddLibConfigs(arrayList);
-        proguardAddRjavaRules(arrayList);
-        for (String str : mll.getPgRules()) {
-            arrayList.add("-include");
-            arrayList.add(str);
+        long savedTimeMillis = System.currentTimeMillis();
+        ArrayList<String> args = new ArrayList<>();
+
+        /* Include global ProGuard rules */
+        args.add("-include");
+        args.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
+
+        /* Include ProGuard rules generated by AAPT/AAPT2 */
+        args.add("-include");
+        args.add(f.aapt_rules);
+
+        /* Include custom ProGuard rules */
+        args.add("-include");
+        args.add(proguard.getCustomProguardRules());
+
+        proguardAddLibConfigs(args);
+        proguardAddRjavaRules(args);
+
+        /* Include local libraries' ProGuard rules */
+        for (String localLibraryProGuardRule : mll.getPgRules()) {
+            args.add("-include");
+            args.add(localLibraryProGuardRule);
         }
-        arrayList.add("-injars");
-        arrayList.add(f.u);
+
+        /* Include compiled Java classes (?) IT SAYS -in*jar*s, so why include .class es? */
+        args.add("-injars");
+        args.add(f.u);
+
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
             if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
-                arrayList.add("-injars");
-                arrayList.add(hashMap.get("jarPath").toString());
+                args.add("-injars");
+                args.add(hashMap.get("jarPath").toString());
             }
         }
-        arrayList.add("-libraryjars");
-        arrayList.add(classpath());
-        arrayList.add("-outjars");
-        arrayList.add(f.classes_proguard);
+        args.add("-libraryjars");
+        args.add(classpath());
+        args.add("-outjars");
+        args.add(f.classes_proguard);
         if (proguard.isDebugFilesEnabled()) {
-            arrayList.add("-printseeds");
-            arrayList.add(f.printseeds);
-            arrayList.add("-printusage");
-            arrayList.add(f.printusage);
-            arrayList.add("-printmapping");
-            arrayList.add(f.printmapping);
+            args.add("-printseeds");
+            args.add(f.printseeds);
+            args.add("-printusage");
+            args.add(f.printusage);
+            args.add("-printmapping");
+            args.add(f.printmapping);
         }
-        ProGuard.main(arrayList.toArray(new String[0]));
+        LogUtil.log(TAG, "About to run ProGuard with these arguments: ", "About to log ProGuard's arguments on multiple lines because of length.", args);
+        ProGuard.main(args.toArray(new String[0]));
+        Log.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms.");
     }
 
     public void runStringfog() {
         try {
-            File file = new File(f.t);
-            File file2 = new File(f.u);
-            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(file.getAbsolutePath(),
+            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(f.t,
                     "stringFogMapping.txt"));
             StringFogClassInjector stringFogClassInjector = new StringFogClassInjector(new String[0],
                     "UTF-8",
@@ -818,42 +898,10 @@ public class Dp {
                     stringFogMappingPrinter);
             stringFogMappingPrinter.startMappingOutput();
             stringFogMappingPrinter.ouputInfo("UTF-8", "com.github.megatronking.stringfog.xor.StringFogImpl");
-            stringFogClassInjector.doFog2ClassInDir(file2);
+            stringFogClassInjector.doFog2ClassInDir(new File(f.u));
             KB.a(e, "stringfog/stringfog.zip", f.u);
-        } catch (Exception e2) {
-            Log.e("Stringfog", e2.toString());
-        }
-    }
-
-    /** System.err for Eclipse compiler */
-    class a extends java.io.OutputStream {
-
-        public a() {
-        }
-
-        @Override
-        public void write(int i) {
-            k.append((char) i);
-        }
-    }
-
-    /** System.out for Eclipse compiler */
-    class b extends java.io.OutputStream {
-
-        private StringBuffer mBuffer;
-
-        public b() {
-            mBuffer = new StringBuffer();
-        }
-
-        @Override
-        public void write(int i) {
-            if (mBuffer.length() > 1023) {
-                Log.d(TAG, mBuffer.toString());
-                mBuffer = new StringBuffer(i);
-                return;
-            }
-            mBuffer.append(i);
+        } catch (Exception e) {
+            Log.e("Stringfog", e.toString());
         }
     }
 }
