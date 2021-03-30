@@ -87,8 +87,9 @@ public class LogUtil {
             index++;
         }
 
-        log(tag, "Dumping a " + obj.getClass().getCanonicalName() + ": ",
-                "Dumping a " + obj.getClass().getCanonicalName() + " over multiple lines because of message length: ",
+        log(tag,
+                "Dumping a L" + obj.getClass().getCanonicalName().replace(".", "/") + ": ",
+                "Dumping a L" + obj.getClass().getCanonicalName().replace(".", "/") + " over multiple lines because of message length: ",
                 toLog.toString());
     }
 }
