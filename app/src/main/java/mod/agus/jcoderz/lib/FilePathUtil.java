@@ -4,95 +4,80 @@ import android.os.Environment;
 import java.io.File;
 
 public class FilePathUtil {
-    public File file;
 
-    public String getPathPermission(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/permission")));
-        return file.getAbsolutePath();
+    public String getPathPermission(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/permission"))).getAbsolutePath();
     }
 
-    public String getPathImport(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/import")));
-        return file.getAbsolutePath();
+    public String getPathImport(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/import"))).getAbsolutePath();
     }
 
-    public String getPathBroadcast(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/broadcast")));
-        return file.getAbsolutePath();
+    public String getPathBroadcast(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/broadcast"))).getAbsolutePath();
     }
 
-    public String getPathService(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/service")));
-        return file.getAbsolutePath();
+    public String getPathService(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/service"))).getAbsolutePath();
     }
 
-    public String getPathAssets(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/assets")));
-        return file.getAbsolutePath();
+    public String getPathAssets(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/assets"))).getAbsolutePath();
     }
 
-    public String getPathJava(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/java")));
-        return file.getAbsolutePath();
+    public String getPathJava(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/java"))).getAbsolutePath();
     }
 
-    public String getPathResource(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/resource")));
-        return file.getAbsolutePath();
+    public String getPathResource(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/resource"))).getAbsolutePath();
     }
 
-    public String getPathLocalLibrary(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/local_library")));
-        return file.getAbsolutePath();
+    public String getPathLocalLibrary(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/local_library"))).getAbsolutePath();
     }
 
-    public String getJarPathLocalLibrary(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs/".concat(str.concat("/classes.jar")));
-        return file.getAbsolutePath();
+    public String getJarPathLocalLibrary(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs/".concat(sc_id.concat("/classes.jar"))).getAbsolutePath();
     }
 
-    public String getDexPathLocalLibrary(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs/".concat(str.concat("/classes.dex")));
-        return file.getAbsolutePath();
+    public String getDexPathLocalLibrary(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs/".concat(sc_id.concat("/classes.dex"))).getAbsolutePath();
     }
 
-    public String getResPathLocalLibrary(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs/".concat(str.concat("/res")));
-        return file.getAbsolutePath();
+    public String getResPathLocalLibrary(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/libs/local_libs/".concat(sc_id.concat("/res"))).getAbsolutePath();
     }
 
-    public String getJarPathLocalLibraryUser(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/library/jar")));
-        return file.getAbsolutePath();
+    public String getJarPathLocalLibraryUser(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/library/jar"))).getAbsolutePath();
     }
 
-    public String getDexPathLocalLibraryUser(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/library/dex")));
-        return file.getAbsolutePath();
+    public String getDexPathLocalLibraryUser(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/library/dex"))).getAbsolutePath();
     }
 
-    public String getResPathLocalLibraryUser(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/library/res")));
-        return file.getAbsolutePath();
+    public String getResPathLocalLibraryUser(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/library/res"))).getAbsolutePath();
     }
 
-    public String getManifestJava(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/java")));
-        return file.getAbsolutePath();
+    public static String getLastCompileLogPath(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/compile_log"))).getAbsolutePath();
     }
 
-    public String getManifestBroadcast(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/broadcast")));
-        return file.getAbsolutePath();
+    public String getManifestJava(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/java"))).getAbsolutePath();
     }
 
-    public String getPathNativelibs(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/files/native_libs")));
-        return file.getAbsolutePath();
+    public String getManifestBroadcast(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/broadcast"))).getAbsolutePath();
     }
 
-    public String getManifestService(String str) {
-        file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(str.concat("/service")));
-        return file.getAbsolutePath();
+    public String getPathNativelibs(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/native_libs"))).getAbsolutePath();
+    }
+
+    public String getManifestService(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/service"))).getAbsolutePath();
     }
 }
