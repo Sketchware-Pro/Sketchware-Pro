@@ -16,6 +16,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.FileUtil;
+import mod.w3wide.tools.ComponentHelper;
 
 public class ComponentsMakerCreator extends Activity {
 
@@ -52,6 +53,8 @@ public class ComponentsMakerCreator extends Activity {
         setupViews();
         if (isEdit) {
             fillUp();
+        } else {
+            initializeHelper();
         }
     }
 
@@ -93,6 +96,10 @@ public class ComponentsMakerCreator extends Activity {
         save = findViewById(2131232503);
     }
 
+    private void initializeHelper() {
+        this.coName.addTextChangedListener(new ComponentHelper(new EditText[]{this.coBuildClass, this.coVarName, this.coTypeName, this.coTypeClass}, this.coTypeClass));
+    }
+
     private void setupViews() {
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -104,7 +111,7 @@ public class ComponentsMakerCreator extends Activity {
                 if (filledIn()) {
                     save();
                 } else {
-                    SketchwareUtil.toast("Some required fields are empty!");
+                    SketchwareUtil.toast("Some required fields are empty");
                 }
             }
         });
