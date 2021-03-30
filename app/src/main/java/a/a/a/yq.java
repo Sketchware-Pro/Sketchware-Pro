@@ -20,98 +20,232 @@ import mod.hilal.saif.blocks.CommandBlock;
 
 public class yq {
 
-    /** Assets directory of current project */
+    /**
+     * Assets directory of current project
+     */
     public String A;
-    /** Imported fonts directory of current project */
+    /**
+     * Imported fonts directory of current project
+     */
     public String B;
-    /** Path of compiled resources in a ZIP file of current project, like /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.res */
+    /**
+     * Path of compiled resources in a ZIP file of current project,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.res
+     */
     public String C;
-    /** DEX file called project.dex (??), like /storage/emulated/0/.sketchware/mysc/605/bin/project.dex */
+    /**
+     * DEX file called project.dex (??),
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/project.dex
+     */
     public String D;
-    /** DEX file called classes.dex (??), like /storage/emulated/0/.sketchware/mysc/605/bin/classes.dex */
+    /**
+     * DEX file called classes.dex (??),
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/classes.dex
+     */
     public String E;
-    /** DEX file called classes2.dex (??), like /storage/emulated/0/.sketchware/mysc/605/bin/classes2.dex */
+    /**
+     * DEX file called classes2.dex (??),
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/classes2.dex
+     */
     public String F;
-    /** Unsigned APK file's path, like /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned */
+    /**
+     * Unsigned APK file's path,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned
+     */
     public String G;
-    /** Signed APK file's path, like /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk */
+    /**
+     * Signed APK file's path,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk
+     */
     public String H;
-    /** Release APK file's path, like /storage/emulated/0/sketchware/signed_apk/InternalDemo_release.apk */
+    /**
+     * Release APK file's path,
+     * like /storage/emulated/0/sketchware/signed_apk/InternalDemo_release.apk
+     */
     public String I;
-    /** Unused */
+    /**
+     * Unused
+     */
     public String J;
-    /** Unknown, like [SketchApplication.java, DebugActivity.java] */
+    /**
+     * Unknown,
+     * like [SketchApplication.java, DebugActivity.java]
+     */
     public ArrayList<String> K;
     public oB L;
     public Gson M;
     public jq N;
     public Zo O;
 
-    /** HashMap containing information about current project stored in /Internal storage/.sketchware/data/sc_id/project, like {custom_icon=false, sc_ver_code=1, my_ws_name=InternalDemo, color_accent=-1.6740915E7, my_app_name=Sketchware Pro Remod Remod Demo, sc_ver_name=1.0, sc_id=605, color_primary=-1.6740915E7, color_control_highlight=5.36907213E8, color_control_normal=-1.1026706E7, my_sc_reg_dt=20210130213630, sketchware_ver=150.0, my_sc_pkg_name=com.jbk.internal.demo, color_primary_dark=-1.674323E7} */
+    /**
+     * HashMap containing information about current project stored in
+     * /Internal storage/.sketchware/data/sc_id/project, like {custom_icon=false, sc_ver_code=1,
+     * my_ws_name=InternalDemo, color_accent=-1.6740915E7,
+     * my_app_name=Sketchware Pro Remod Remod Demo, sc_ver_name=1.0, sc_id=605,
+     * color_primary=-1.6740915E7, color_control_highlight=5.36907213E8,
+     * color_control_normal=-1.1026706E7, my_sc_reg_dt=20210130213630, sketchware_ver=150.0,
+     * my_sc_pkg_name=com.jbk.internal.demo, color_primary_dark=-1.674323E7}
+     */
     public HashMap<String, Object> a;
-    /** ProGuard rules file's path, like /storage/emulated/0/.sketchware/mysc/605/bin/aapt_rules.pro */
+    /**
+     * ProGuard rules file's path,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/aapt_rules.pro
+     */
     public String aapt_rules;
-    /** Project's sc_id, like 605 */
+    /**
+     * Project's sc_id,
+     * like 605
+     */
     public String b;
-    /** Project's mysc folder path, like /storage/emulated/0/.sketchware/mysc/605/ */
+    /**
+     * Project's mysc folder path,
+     * like /storage/emulated/0/.sketchware/mysc/605/
+     */
     public String c;
-    /** ProGuarded classes.jar file's path of current project, like /storage/emulated/0/.sketchware/mysc/605/bin/classes_proguard.jar */
+    /**
+     * ProGuarded classes.jar file's path of current project,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/classes_proguard.jar
+     */
     public String classes_proguard;
-    /** Project name of current project, like InternalDemo */
+    /**
+     * Project name of current project,
+     * like InternalDemo
+     */
     public String d;
-    /** Package name of current project, like com.jbk.internal.demo */
+    /**
+     * Package name of current project,
+     * like com.jbk.internal.demo
+     */
     public String e;
-    /** Application's name of current project, like Sketchware Pro Remod Remod Demo */
+    /**
+     * Application's name of current project,
+     * like Sketchware Pro Remod Remod Demo
+     */
     public String f;
-    /** Unknown, like -16740915 */
+    /**
+     * Unknown,
+     * like -16740915
+     */
     public int g;
-    /** Unknown, like -16740915 */
+    /**
+     * Unknown,
+     * like -16740915
+     */
     public int h;
-    /** Unknown, like -16743230 */
+    /**
+     * Unknown,
+     * like -16743230
+     */
     public int i;
-    /** Unknown, like 36907213 */
+    /**
+     * Unknown,
+     * like 36907213
+     */
     public int j;
-    /** Unknown, like -11026706 */
+    /**
+     * Unknown,
+     * like -11026706
+     */
     public int k;
-    /** Version code of current project, like 1*/
+    /**
+     * Version code of current project,
+     * like 1
+     */
     public String l;
-    /** Version name of current project, like 1.0 */
+    /**
+     * Version name of current project,
+     * like 1.0
+     */
     public String m;
-    /** Package name of current project, but "folders" separated with slashes (/) instead of periods (.), like com/jbk/internal/demo */
+    /**
+     * Package name of current project,
+     * but "folders" separated with slashes (/) instead of periods (.),
+     * like com/jbk/internal/demo
+     */
     public String n;
-    /** Project's compiled MainActivity.java file's path, like /storage/emulated/0/.sketchware/mysc/605/app/src/main/java/com/jbk/internal/demo/MainActivity.java */
+    /**
+     * Project's compiled MainActivity.java file's path,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/java/com/jbk/internal/demo/MainActivity.java
+     */
     public String o;
-    /** Project's MainActivity's full Java name, like com.jbk.internal.demo.MainActivity */
+    /**
+     * Project's MainActivity's full Java name,
+     * like com.jbk.internal.demo.MainActivity
+     */
     public String p;
-    /** Unknown, but surely ProGuard related, like /storage/emulated/0/.sketchware/mysc/605/bin/mapping.txt */
+    /**
+     * Unknown, but surely ProGuard related,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/mapping.txt
+     */
     public String printmapping;
-    /** Unknown, but surely ProGuard related, like /storage/emulated/0/.sketchware/mysc/605/bin/seeds.txt */
+    /**
+     * Unknown, but surely ProGuard related,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/seeds.txt
+     */
     public String printseeds;
-    /** Unknown, but surely ProGuard related, like /storage/emulated/0/.sketchware/mysc/605/bin/usage.txt */
+    /**
+     * Unknown, but surely ProGuard related,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/usage.txt
+     */
     public String printusage;
-    /** Current project's ProjectSettings object */
+    /**
+     * Current project's ProjectSettings object
+     */
     public ProjectSettings projectSettings;
-    /** Project's compiled SketchApplication.java's path, like /storage/emulated/0/.sketchware/mysc/605/app/src/main/java/com/jbk/internal/demo/SketchApplication.java */
+    /**
+     * Project's compiled SketchApplication.java's path,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/java/com/jbk/internal/demo/SketchApplication.java
+     */
     public String q;
-    /** Compiled AndroidManifest.xml's path of current project */
+    /**
+     * Compiled AndroidManifest.xml's path of current project,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/AndroidManifest.xml
+     */
     public String r;
-    /** Unknown, surely ProGuard related, like /storage/emulated/0/.sketchware/mysc/605/bin/rules_generated.pro */
+    /**
+     * Unknown, surely ProGuard related,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/rules_generated.pro
+     */
     public String rules_generated;
-    /** Project's generated Java files directory, like /storage/emulated/0/.sketchware/mysc/605/app/src/main */
+    /**
+     * Project's generated Java files directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main
+     */
     public String s;
-    /** Project's compiled binary directory, like /storage/emulated/0/.sketchware/mysc/605/bin */
+    /**
+     * Project's compiled binary directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin
+     */
     public String t;
-    /** Project's compiled Java classes directory, like /storage/emulated/0/.sketchware/mysc/605/bin/classes */
+    /**
+     * Project's compiled Java classes directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/bin/classes
+     */
     public String u;
-    /** Project's generated R.java files directory, like /storage/emulated/0/.sketchware/mysc/605/gen */
+    /**
+     * Project's generated R.java files directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/gen
+     */
     public String v;
-    /** Generated project resources directory, like /storage/emulated/0/.sketchware/mysc/605/app/src/main/res */
+    /**
+     * Generated project resources directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/res
+     */
     public String w;
-    /** Project's generated layout files directory, like /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/layout */
+    /**
+     * Project's generated layout files directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/layout
+     */
     public String x;
-    /** Project's generated Java files directory, like /storage/emulated/0/.sketchware/mysc/605/app/src/main/java */
+    /**
+     * Project's generated Java files directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/java
+     */
     public String y;
-    /** Project's imported sounds directory, like /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw*/
+    /**
+     * Project's imported sounds directory,
+     * like /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
+     */
     public String z;
 
     public yq(Context context, String str) {
