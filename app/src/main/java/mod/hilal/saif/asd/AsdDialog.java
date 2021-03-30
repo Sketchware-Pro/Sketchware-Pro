@@ -5,7 +5,6 @@ import static mod.SketchwareUtil.getDip;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +37,7 @@ import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
-    
+
     static SharedPreferences pref;
     public Activity act;
     public ViewGroup base;
@@ -61,29 +59,29 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         super.onCreate(savedInstanceState);
         setContentView(2131427825);
         ResHelper.isInASD = true;
-        codeEditor = (CodeEditor) findViewById(2131231015);
+        codeEditor = findViewById(2131231015);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
         codeEditor.setOverScrollEnabled(false);
-        codeEditor.setEdgeEnabled(false);
+        /* codeEditor.setEdgeEnabled(false); */
         codeEditor.setEditorLanguage(new JavaLanguage());
         codeEditor.setText(str);
         SrcCodeEditor.loadCESettings(act, codeEditor, "dlg");
         pref = SrcCodeEditor.pref;
-        ImageView imageView = (ImageView) findViewById(2131231541);
+        ImageView imageView = findViewById(2131231541);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 codeEditor.undo();
             }
         });
-        ImageView imageView2 = (ImageView) findViewById(2131231540);
+        ImageView imageView2 = findViewById(2131231540);
         imageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 codeEditor.redo();
             }
         });
-        ImageView imageView3 = (ImageView) findViewById(2131232627);
+        ImageView imageView3 = findViewById(2131232627);
         imageView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +137,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                     codeEditor.setText(sb2);
                 }
                 break;
-                
+
             case "Switch language":
                 AlertDialog.Builder title = new AlertDialog.Builder(act).setTitle("Switch language");
                 String[] strArr = new String[5];
@@ -163,14 +161,14 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         }
                         dialog.dismiss();
                     }
-                }).setNegativeButton(17039360, (OnClickListener) null).show();
+                }).setNegativeButton(17039360, null).show();
                 break;
-                
+
             case "Find & Replace":
                 codeEditor.getSearcher().stopSearch();
                 codeEditor.beginSearchMode();
                 break;
-                
+
             case "Switch theme":
                 new AlertDialog.Builder(act).setTitle("Switch theme").setSingleChoiceItems(new String[]{"Default", "GitHub", "Eclipse", "Darcula", "VS2019", "NotepadXX"}, -1, new OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -215,21 +213,21 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         }
                         dialog.dismiss();
                     }
-                }).setNegativeButton(17039360, (OnClickListener) null).show();
+                }).setNegativeButton(17039360, null).show();
                 break;
-                
+
             case "Word wrap":
                 item.setChecked(!item.isChecked());
                 codeEditor.setWordwrap(item.isChecked());
                 pref.edit().putBoolean("dlg_ww", item.isChecked()).commit();
                 break;
-                
+
             case "Auto complete":
                 item.setChecked(!item.isChecked());
-                codeEditor.isAutoCompleteEnabled = item.isChecked();
+                //codeEditor.isAutoCompleteEnabled = item.isChecked();
                 pref.edit().putBoolean("dlg_ac", item.isChecked()).commit();
                 break;
-                
+
             case "Paste":
                 codeEditor.setText(SrcCodeEditor.paste(act));
                 break;
