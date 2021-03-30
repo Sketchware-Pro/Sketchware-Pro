@@ -2,6 +2,8 @@ package com.besome.sketch.editor.manage;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +32,8 @@ import a.a.a.Ts;
 import a.a.a.bB;
 import a.a.a.kq;
 import a.a.a.xB;
+import mod.SketchwareUtil;
+import mod.w3wide.tools.ImageFactory;
 
 public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     
@@ -180,8 +184,8 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     }
 
     @Override // androidx.appcompat.app.AppCompatActivity
-    public void onPostCreate(Bundle bundle) {
-        super.onPostCreate(bundle);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         MoreBlockCollectionBean a2 = Pp.h().a(l);
         b(a2.spec);
         a(a2.blocks, 10, 10);
@@ -198,5 +202,27 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
 
     public final Rs a(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem saveImageItem = menu.add(0, 12, 0, "Save image");
+        saveImageItem.setIcon(2131165642);
+        saveImageItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == 12) {
+            if (ImageFactory.saveBitmap(m.getChildAt(0), l).exists()) {
+                SketchwareUtil.toast("Saved image to /Internal storage/sketchware/saved_block/" + l + ".png!");
+            } else {
+                SketchwareUtil.toastError("Couldn't save image");
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
