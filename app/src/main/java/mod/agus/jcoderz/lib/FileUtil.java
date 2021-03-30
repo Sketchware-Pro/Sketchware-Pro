@@ -23,6 +23,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,6 +37,9 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class FileUtil {
 
@@ -144,12 +149,19 @@ public class FileUtil {
         }
     }
 
-    public static void copyDirectory(File file, File file2) throws IOException {
-        if (!file.isDirectory()) {
-            File parentFile = file2.getParentFile();
+    /**
+     * Copies an entire directory, recursively.
+     *
+     * @param source   The directory whose contents to copy.
+     * @param copyInto The directory to copy files into.
+     * @throws IOException Thrown when something goes wrong while copying.
+     */
+    public static void copyDirectory(File source, File copyInto) throws IOException {
+        if (!source.isDirectory()) {
+            File parentFile = copyInto.getParentFile();
             if (parentFile == null || parentFile.exists() || parentFile.mkdirs()) {
-                FileInputStream fileInputStream = new FileInputStream(file);
-                FileOutputStream fileOutputStream = new FileOutputStream(file2);
+                FileInputStream fileInputStream = new FileInputStream(source);
+                FileOutputStream fileOutputStream = new FileOutputStream(copyInto);
                 byte[] bArr = new byte[2048];
                 while (true) {
                     int read = fileInputStream.read(bArr);
@@ -163,13 +175,13 @@ public class FileUtil {
             } else {
                 throw new IOException("Cannot create dir " + parentFile.getAbsolutePath());
             }
-        } else if (file2.exists() || file2.mkdirs()) {
-            String[] list = file.list();
+        } else if (copyInto.exists() || copyInto.mkdirs()) {
+            String[] list = source.list();
             for (String s : list) {
-                copyDirectory(new File(file, s), new File(file2, s));
+                copyDirectory(new File(source, s), new File(copyInto, s));
             }
         } else {
-            throw new IOException("Cannot create dir " + file2.getAbsolutePath());
+            throw new IOException("Cannot create dir " + copyInto.getAbsolutePath());
         }
     }
 
@@ -614,6 +626,56 @@ public class FileUtil {
     }
 
     public static File createNewPictureFile(Context context) {
-        return new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + (String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())) + ".jpg"));
+        return new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + (new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date()) + ".jpg"));
+    }
+
+    public static byte[] readFromInputStream(InputStream stream) {
+        int available;
+
+        try {
+            available = stream.available();
+        } catch (IOException e) {
+            available = 0;
+        }
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[available];
+
+        try {
+            for (int len = stream.read(buffer); len != -1; len = stream.read(buffer)) {
+                outputStream.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            return new byte[0];
+        }
+
+        return outputStream.toByteArray();
+    }
+
+    public static void writeBytes(File target, byte[] data) throws IOException {
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(target));
+        outputStream.write(data);
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    public static void extractZipTo(ZipInputStream input, String outPath) throws IOException {
+        File outDir = new File(outPath);
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        ZipEntry entry = input.getNextEntry();
+        while (entry != null) {
+            String entryPathExtracted = new File(outPath, entry.getName()).getAbsolutePath();
+
+            if (!entry.isDirectory()) {
+                new File(entryPathExtracted).getParentFile().mkdirs();
+                writeBytes(new File(entryPathExtracted), readFromInputStream(input));
+            }
+            input.closeEntry();
+            entry = input.getNextEntry();
+        }
+        input.close();
     }
 }
