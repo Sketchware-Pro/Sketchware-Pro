@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -45,6 +46,7 @@ import mod.hilal.saif.lib.FileUtil;
 
 public class BlockSelectorActivity extends AppCompatActivity {
 
+    private final ArrayList<String> display = new ArrayList<>();
     private LinearLayout add;
     private LinearLayout add_value;
     private ImageView back_icon;
@@ -59,7 +61,6 @@ public class BlockSelectorActivity extends AppCompatActivity {
     private ArrayList<HashMap<String, Object>> data = new ArrayList<>();
     private LinearLayout delete;
     private AlertDialog.Builder dialog_warn;
-    private ArrayList<String> display = new ArrayList<>();
     private LinearLayout edit;
     private ImageView imageview1;
     private ImageView imageview2;
@@ -342,7 +343,7 @@ public class BlockSelectorActivity extends AppCompatActivity {
                 Menu menu = popupMenu.getMenu();
                 menu.add("Import block selector menus");
                 menu.add("Export current block selector menu");
-                menu.add("Export block selector menus");
+                menu.add("Export all block selector menus");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getTitle().toString()) {
@@ -350,16 +351,16 @@ public class BlockSelectorActivity extends AppCompatActivity {
                                 ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
                                 arrayList.add(data.get((int) current_item));
                                 FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + data.get((int) current_item).get("name") + ".json", new Gson().toJson(arrayList));
-                                SketchwareUtil.toast("Successfully exported block menu to:\n/Internal storage/.sketchware/resources/block/export");
+                                SketchwareUtil.toast("Successfully exported block menu to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
                                 break;
 
                             case "Import block selector menus":
                                 openFileExplorerImport();
                                 break;
 
-                            case "Export block selector menus":
+                            case "Export all block selector menus":
                                 FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + "All_Menus.json", new Gson().toJson(data));
-                                SketchwareUtil.toast("Successfully exported block menus to:\n/Internal storage/.sketchware/resources/block/export");
+                                SketchwareUtil.toast("Successfully exported block menus to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
                                 break;
 
                             default:
@@ -410,7 +411,7 @@ public class BlockSelectorActivity extends AppCompatActivity {
                     SketchwareUtil.toastError("The selected file is empty!");
                 } else {
                     try {
-                        _importMenu((ArrayList<HashMap<String, Object>>) new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST));
+                        _importMenu(new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST));
                     } catch (Exception e) {
                         SketchwareUtil.toastError("Invalid JSON file");
                     }
@@ -433,7 +434,7 @@ public class BlockSelectorActivity extends AppCompatActivity {
 
     private void _readFile() {
         data.clear();
-        if (FileUtil.isExistFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/menu.json"))) {
+        if (new File(FileUtil.getExternalStorageDir(), ".sketchware/resources/block/My Block/menu.json").exists()) {
             data = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/menu.json")), Helper.TYPE_MAP_LIST);
         }
         for (int i = 0; i < data.size(); i++) {
