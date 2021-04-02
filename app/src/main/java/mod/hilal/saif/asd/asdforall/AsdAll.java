@@ -55,6 +55,11 @@ public class AsdAll extends Dialog {
         k = str;
     }
 
+    /**
+     * Sets the AsdAll input dialog's title.
+     *
+     * @param str The new dialog title.
+     */
     public void b(String str) {
         j = str;
     }
@@ -72,12 +77,12 @@ public class AsdAll extends Dialog {
             getWindow().setBackgroundDrawableResource(2131165512);
         }
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        ((ViewGroup.LayoutParams) attributes).width = -1;
+        attributes.width = -1;
         getWindow().setAttributes(attributes);
         setContentView(2131427410);
         space = new Space(getContext());
         space.setLayoutParams(new LinearLayout.LayoutParams(0, 0, 1.0f));
-        base = (LinearLayout) findViewById(2131231320);
+        base = findViewById(2131231320);
         codeE = new TextView(getContext());
         codeE.setText("Code Editor");
         codeE.setTextColor(-1);
@@ -98,16 +103,16 @@ public class AsdAll extends Dialog {
         });
         base.addView(space, 0);
         base.addView(codeE, 0);
-        b = (LinearLayout) findViewById(2131231696);
-        d = (ImageView) findViewById(2131230974);
-        e = (TextView) findViewById(2131230976);
-        f = (TextView) findViewById(2131230975);
-        g = (FrameLayout) findViewById(2131230941);
+        b = findViewById(2131231696);
+        d = findViewById(2131230974);
+        e = findViewById(2131230976);
+        f = findViewById(2131230975);
+        g = findViewById(2131230941);
         r = findViewById(2131231320);
-        h = (TextView) findViewById(2131230973);
+        h = findViewById(2131230973);
         h.setText(l);
         h.setOnClickListener(p);
-        i = (TextView) findViewById(2131230972);
+        i = findViewById(2131230972);
         i.setText(m);
         i.setOnClickListener(q);
         if (j.isEmpty()) {

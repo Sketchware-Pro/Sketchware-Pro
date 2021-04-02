@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -30,28 +30,55 @@ public class AsdOrigin extends Dialog {
     public View c;
     public TextView codeE;
     public ImageView d;
+    /**
+     * dialog_title
+     */
     public TextView e;
     public EditText edi;
+    /**
+     * dialog_msg
+     */
     public TextView f;
     public FrameLayout g;
+    /**
+     * dialog_btn_yes
+     */
     public TextView h;
+    /**
+     * dialog_btn_no
+     */
     public TextView i;
     public String j = "";
     public String k = "";
+    /**
+     * Text of h (dialog_btn_yes)
+     */
     public String l = "Yes";
     public LogicEditorActivity lea;
+    /**
+     * Text of i (dialog_btn_no)
+     */
     public String m = "No";
+    /**
+     * Resource ID of image in the ImageView of this dialog, -1 if none (the ImageView is hidden with View.GONE then)
+     */
     public int n = -1;
     public int o = 0;
+    /**
+     * View.OnClickListener for h (dialog_btn_yes)
+     */
     public View.OnClickListener p = null;
+    /**
+     * View.OnClickListener for i (dialog_btn_no)
+     */
     public View.OnClickListener q = null;
     public View r;
     public Space space;
     public Ss ss;
 
-    public AsdOrigin(Activity activity2) {
-        super(activity2);
-        activity = activity2;
+    public AsdOrigin(Activity activity) {
+        super(activity);
+        this.activity = activity;
     }
 
     public void a(String str) {
@@ -65,22 +92,21 @@ public class AsdOrigin extends Dialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(1);
-        int i2 = o;
-        if (i2 == 0) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (o == 0) {
             getWindow().setBackgroundDrawableResource(2131165514);
-        } else if (i2 == 1) {
+        } else if (o == 1) {
             getWindow().setBackgroundDrawableResource(2131165513);
-        } else if (i2 == 2) {
+        } else if (o == 2) {
             getWindow().setBackgroundDrawableResource(2131165512);
         }
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        ((ViewGroup.LayoutParams) attributes).width = -1;
+        attributes.width = -1;
         getWindow().setAttributes(attributes);
         setContentView(2131427410);
         space = new Space(getContext());
         space.setLayoutParams(new LinearLayout.LayoutParams(0, 0, 1.0f));
-        base = (LinearLayout) findViewById(2131231320);
+        base = findViewById(2131231320);
         codeE = new TextView(getContext());
         codeE.setText("Code Editor");
         codeE.setTextColor(-1);
@@ -109,16 +135,16 @@ public class AsdOrigin extends Dialog {
         });
         base.addView(space, 0);
         base.addView(codeE, 0);
-        b = (LinearLayout) findViewById(2131231696);
-        d = (ImageView) findViewById(2131230974);
-        e = (TextView) findViewById(2131230976);
-        f = (TextView) findViewById(2131230975);
-        g = (FrameLayout) findViewById(2131230941);
+        b = findViewById(2131231696);
+        d = findViewById(2131230974);
+        e = findViewById(2131230976);
+        f = findViewById(2131230975);
+        g = findViewById(2131230941);
         r = findViewById(2131231320);
-        h = (TextView) findViewById(2131230973);
+        h = findViewById(2131230973);
         h.setText(l);
         h.setOnClickListener(p);
-        i = (TextView) findViewById(2131230972);
+        i = findViewById(2131230972);
         i.setText(m);
         i.setOnClickListener(q);
         if (j.isEmpty()) {
@@ -139,11 +165,10 @@ public class AsdOrigin extends Dialog {
         if (p == null) {
             h.setVisibility(View.GONE);
         }
-        int i3 = n;
-        if (i3 == -1) {
+        if (n == -1) {
             d.setVisibility(View.GONE);
         } else {
-            d.setImageResource(i3);
+            d.setImageResource(n);
         }
         if (c != null) {
             g.setVisibility(View.VISIBLE);
@@ -154,35 +179,34 @@ public class AsdOrigin extends Dialog {
     }
 
     public void show() {
-        View view;
         super.show();
-        if (p == null && q == null && (view = r) != null) {
-            view.setVisibility(View.GONE);
+        if (p == null && q == null && r != null) {
+            r.setVisibility(View.GONE);
         }
     }
 
-    public void a(int i2) {
-        n = i2;
+    public void a(int imageResourceId) {
+        n = imageResourceId;
     }
 
-    public void b(String str, View.OnClickListener onClickListener) {
-        l = str;
-        p = onClickListener;
+    public void b(String dialog_btn_noText, View.OnClickListener dialog_btn_yesOnClickListener) {
+        l = dialog_btn_noText;
+        p = dialog_btn_yesOnClickListener;
     }
 
     public void a(View view) {
         c = view;
     }
 
-    public void a(String str, View.OnClickListener onClickListener) {
-        m = str;
-        q = onClickListener;
+    public void a(String dialog_btn_noText, View.OnClickListener dialog_btn_noOnClickListener) {
+        m = dialog_btn_noText;
+        q = dialog_btn_noOnClickListener;
     }
 
-    public void carry(LogicEditorActivity logicEditorActivity, Ss ss2, boolean z, EditText editText) {
-        ss = ss2;
+    public void carry(LogicEditorActivity activity, Ss ss, boolean z, EditText editText) {
+        this.ss = ss;
         boo = z;
         edi = editText;
-        lea = logicEditorActivity;
+        lea = activity;
     }
 }
