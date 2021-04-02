@@ -40,7 +40,7 @@ public class AsdHandler implements View.OnClickListener {
         } else if (editable.length() > 0 && editable.charAt(0) == '@') {
             editable = " " + editable;
         }
-        e.a(s, editable);
+        e.a(s, (Object)editable);
         SketchwareUtil.hideKeyboard();
         dialog.dismiss();
     }
