@@ -18,7 +18,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import a.a.a.Dp;
-import a.a.a.bB;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class BundleToolCompiler {
@@ -70,7 +69,7 @@ public class BundleToolCompiler {
         try {
             BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            buildingDialog.a(e.toString());
+            buildingDialog.aWithMessage(e.getMessage());
             Log.e(TAG, "Failed to build APK Set: " + e.getMessage(), e);
         }
         Log.d(TAG, "Building APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -88,7 +87,7 @@ public class BundleToolCompiler {
         try {
             BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            buildingDialog.a(e.toString());
+            buildingDialog.aWithMessage(e.getMessage());
             Log.e(TAG, "Failed to build bundle: " + e.getMessage(), e);
         }
         Log.d(TAG, "Building app bundle took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -110,9 +109,8 @@ public class BundleToolCompiler {
                 entryInApkSet = apkSetStream.getNextEntry();
             }
         } catch (IOException e) {
-            //TODO: Fix not working Toast (NPE)
-            bB.b(mDp.e, e.getMessage(), 0).show();
-            Log.e(TAG, e.getMessage(), e);
+            buildingDialog.aWithMessage(e.getMessage());
+            Log.e(TAG, "Failed to extract Install APK from APK Set: " + e.getMessage(), e);
         }
         Log.d(TAG, "Extracting universal.apk from APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
@@ -152,7 +150,7 @@ public class BundleToolCompiler {
                 }
             }
         } catch (IOException e) {
-            Log.e(TAG, "Couldn't extract testkey from assets!");
+            Log.e(TAG, "Couldn't extract testkey from assets: " + e.getMessage(), e);
         }
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
@@ -170,7 +168,7 @@ public class BundleToolCompiler {
         try {
             ApkSignerTool.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            buildingDialog.a(e.toString());
+            buildingDialog.aWithMessage(e.getMessage());
             Log.e(TAG, "Failed to sign Install-APK: " + e.getMessage(), e);
         }
         Log.d(TAG, "Signing Install-APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
