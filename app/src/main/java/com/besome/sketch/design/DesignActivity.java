@@ -17,9 +17,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -1037,7 +1039,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     public class a extends MA implements OnCancelListener {
 
+        /**
+         * The actual BuildingDialog class
+         */
         public Ep c;
+        /**
+         * Boolean indicating if building got cancelled and we should stop continuing
+         */
         public boolean d = false;
 
         public a(Context context) {
@@ -1048,6 +1056,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             c.a(false);
         }
 
+        @Override
         public void a() {
             DesignActivity.this.q.b();
             c();
@@ -1056,20 +1065,34 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             DesignActivity.this.getWindow().clearFlags(128);
         }
 
-        public void a(String var1) {
-            DesignActivity.this.q.b();
-            c();
-            bB.b(getApplicationContext(), "APK build failed", 0).show();
-            DesignActivity.this.u.setText(xB.b().a(DesignActivity.this.getApplicationContext(), 2131625030));
-            DesignActivity.this.u.setClickable(true);
-            DesignActivity.this.getWindow().clearFlags(128);
+        /**
+         * Shows a Toast about APK build having failed, closes the dialog,
+         * reverts u (the "Run"-Button) and clears the FLAG_KEEP_SCREEN_ON flag.
+         *
+         * @param str Ignored parameter, for some reason
+         */
+        @Override
+        public void a(String str) {
+            DesignActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    q.b();
+                    c();
+                    bB.b(getApplicationContext(), "APK build failed", Toast.LENGTH_SHORT).show();
+                    u.setText(xB.b().a(getApplicationContext(), 2131625030));
+                    u.setClickable(true);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            });
         }
 
-        public void onProgressUpdate(String... values) {
+        @Override
+        protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             c(values[0]);
         }
 
+        @Override
         public void b() {
             if (this.d) {
                 cancel(true);
@@ -1110,7 +1133,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     DesignActivity.this.n();
                     DesignActivity.this.q.f();
                     DesignActivity.this.q.e();
-                    Dp mDp = new Dp(this, /* super.a */ DesignActivity.this, DesignActivity.this.q);
+                    Dp mDp = new Dp(this, super.a, DesignActivity.this.q);
                     mDp.e = DesignActivity.this;
                     publishProgress(xB.b().a(super.a, 2131625316));
                     mDp.i();
@@ -1219,6 +1242,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
 
+        /**
+         * Dismiss this dialog, if DesignActivity hasn't been destroyed.
+         */
         public void c() {
             if (!DesignActivity.this.isDestroyed()) {
                 if (this.c.isShowing()) {
@@ -1236,14 +1262,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             DesignActivity.this.runOnUiThread(new DesignActRunnable(this.c, progressText));
         }
 
+        /**
+         * Try to set this dialog's OnCancelListener as this, then show, unless already showing.
+         */
         public void d() {
             if (!this.c.isShowing()) {
                 c.setOnCancelListener(this);
                 c.show();
             }
-
         }
 
+        @Override
         public void onCancel(DialogInterface dialog) {
             if (!this.c.a()) {
                 c.a(true);
@@ -1253,6 +1282,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
 
+        @Override
         public void onCancelled() {
             super.onCancelled();
             DesignActivity.this.runOnUiThread(new Runnable() {
@@ -1272,12 +1302,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             return a(voids);
         }
 
+        @Override
         public void onPreExecute() {
             super.onPreExecute();
             DesignActivity.this.u.setText("Building APK file...");
             DesignActivity.this.u.setClickable(false);
             DesignActivity.this.r.a("P1I10", true);
-            DesignActivity.this.getWindow().addFlags(128);
+            DesignActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 
