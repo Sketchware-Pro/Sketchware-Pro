@@ -116,42 +116,6 @@ public class BundleToolCompiler {
     }
 
     public void signInstallApk() {
-        try {
-            Context c = mDp.e;
-            String[] libsContent = c.getAssets().list("libs");
-            for (String fileInLibs : libsContent) {
-                if (fileInLibs.equals("testkey.zip")) {
-                    ZipInputStream testkeyZip = new ZipInputStream(
-                            c.getAssets().open(
-                                    "libs" + File.separator
-                                            + "testkey.zip"
-                            )
-                    );
-                    ZipEntry entry = testkeyZip.getNextEntry();
-
-                    while (entry != null) {
-                        if (!entry.isDirectory()) {
-                            FileUtil.writeBytes(
-                                    new File(
-                                            c.getFilesDir(),
-                                            "tmp" + File.separator
-                                                    + "testkey" + File.separator
-                                                    + entry.getName()
-                                    ),
-                                    FileUtil.readFromInputStream(
-                                            testkeyZip
-                                    )
-                            );
-                        }
-
-                        testkeyZip.closeEntry();
-                        entry = testkeyZip.getNextEntry();
-                    }
-                }
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Couldn't extract testkey from assets: " + e.getMessage(), e);
-        }
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
         args.add("sign");
