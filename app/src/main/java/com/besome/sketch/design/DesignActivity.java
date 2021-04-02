@@ -1056,13 +1056,20 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             c.a(false);
         }
 
+        /**
+         * Reverts c (the "Run"-Button) to its original state,
+         * usually called after compilation was successful.
+         *
+         * This closes the dialog, reverts u (the "Run"-Button)'s text and clickable property,
+         * and clears the FLAG_KEEP_SCREEN_ON flag.
+         */
         @Override
         public void a() {
-            DesignActivity.this.q.b();
+            q.b();
             c();
-            DesignActivity.this.u.setText(xB.b().a(DesignActivity.this.getApplicationContext(), 2131625030));
-            DesignActivity.this.u.setClickable(true);
-            DesignActivity.this.getWindow().clearFlags(128);
+            u.setText(xB.b().a(DesignActivity.this.getApplicationContext(), 2131625030));
+            u.setClickable(true);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         /**
@@ -1082,6 +1089,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     u.setText(xB.b().a(getApplicationContext(), 2131625030));
                     u.setClickable(true);
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            });
+        }
+
+        public void aWithMessage(String message) {
+            DesignActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    a();
+                    bB.b(getApplicationContext(), "APK build failed: " + message, Toast.LENGTH_LONG).show();
                 }
             });
         }
