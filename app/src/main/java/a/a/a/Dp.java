@@ -158,8 +158,15 @@ public class Dp {
         b2.signZip(yqVar.G, yqVar.I);
     }
 
-    public final void a(String str, ArrayList<String> arrayList) throws Exception {
-        dexLibraries(str, arrayList);
+    /**
+     * Dexes libraries.
+     *
+     * @param outputPath The output file, usually classes2.dex
+     * @param dexes The path of DEX files to merge
+     * @throws Exception Thrown if dexing had problems
+     */
+    public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
+        dexLibraries(outputPath, dexes);
     }
 
     /**
@@ -432,27 +439,34 @@ public class Dp {
         return sb3.toString();
     }
 
-    public final void dexLibraries(String str, ArrayList<String> arrayList) throws Exception {
+    /**
+     * Dexes libraries.
+     *
+     * @param outputPath The output file, usually classes2.dex
+     * @param dexes The path of DEX files to merge
+     * @throws Exception Thrown if dexing had problems
+     */
+    public final void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
         dexesGenerated = new ArrayList<>();
-        int findLastDexNo = findLastDexNo();
-        ArrayList<Dex> arrayList2 = new ArrayList<>();
-        int i2 = 0;
-        for (String s : arrayList) {
-            Dex dex = new Dex(new FileInputStream(s));
-            int size = dex.methodIds().size();
-            if (size + i2 >= 65536) {
-                mergeDexes(str.replace("classes2.dex", "classes" + findLastDexNo + ".dex"), arrayList2);
-                arrayList2.clear();
-                arrayList2.add(dex);
-                i2 = size;
-                findLastDexNo++;
+        int lastDexNumber = findLastDexNo();
+        ArrayList<Dex> dexObjects = new ArrayList<>();
+        int methodsMergedFile = 0;
+        for (String dexPath : dexes) {
+            Dex dex = new Dex(new FileInputStream(dexPath));
+            int currentDexMethods = dex.methodIds().size();
+            if (currentDexMethods + methodsMergedFile >= 65536) {
+                mergeDexes(outputPath.replace("classes2.dex", "classes" + lastDexNumber + ".dex"), dexObjects);
+                dexObjects.clear();
+                dexObjects.add(dex);
+                methodsMergedFile = currentDexMethods;
+                lastDexNumber++;
             } else {
-                arrayList2.add(dex);
-                i2 += size;
+                dexObjects.add(dex);
+                methodsMergedFile += currentDexMethods;
             }
         }
-        if (arrayList2.size() > 0) {
-            mergeDexes(str.replace("classes2.dex", "classes" + findLastDexNo + ".dex"), arrayList2);
+        if (dexObjects.size() > 0) {
+            mergeDexes(outputPath.replace("classes2.dex", "classes" + lastDexNumber + ".dex"), dexObjects);
         }
     }
 
@@ -625,6 +639,11 @@ public class Dp {
         apkBuilder.sealApk();
     }
 
+    /**
+     * Currently unused?
+     *
+     * @return Directory/file path with Java classes ready to get transformed to DEX file(s).
+     */
     public String getJava() {
         if (proguard.isProguardEnabled()) {
             ArrayList<String> arrayList = new ArrayList<>();
@@ -636,28 +655,34 @@ public class Dp {
         return f.u;
     }
 
+    /**
+     * Merges all DEX files, of used built-in libraries, used local libraries,
+     * and if running on Android Marshmallow and lower, also the AndroidX MultiDex library.
+     * If adding the HTTP legacy has not been disabled in Build Settings, it gets merged too.
+     *
+     * @throws Exception Thrown if merging failed
+     */
     public void h() throws Exception {
-        long currentTimeMillis = System.currentTimeMillis();
-        ArrayList<String> arrayList = new ArrayList<>();
+        long savedTimeMillis = System.currentTimeMillis();
+        ArrayList<String> dexes = new ArrayList<>();
         if (Build.VERSION.SDK_INT <= 23) {
-            arrayList.add(l.getAbsolutePath() + c + "dexs" + c + "multidex-2.0.1" + ".dex");
+            dexes.add(l.getAbsolutePath() + c + "dexs" + c + "multidex-2.0.1" + ".dex");
         }
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
-            arrayList.add(l.getAbsolutePath() + c + "dexs" + c + "http-legacy-android-28" + ".dex");
+            dexes.add(l.getAbsolutePath() + c + "dexs" + c + "http-legacy-android-28" + ".dex");
         }
-        for (Jp next : n.a()) {
-            arrayList.add(l.getAbsolutePath() + c + "dexs" + c + next.a() + ".dex");
+        for (Jp builtInLibrary : n.a()) {
+            dexes.add(l.getAbsolutePath() + c + "dexs" + c + builtInLibrary.a() + ".dex");
         }
-        for (HashMap<String, Object> hashMap : mll.list) {
-            String obj = hashMap.get("name").toString();
-            if (hashMap.containsKey("dexPath") && !proguard.libIsProguardFMEnabled(obj)) {
-                arrayList.add(hashMap.get("dexPath").toString());
+        for (HashMap<String, Object> localLibrary : mll.list) {
+            String localLibraryName = localLibrary.get("name").toString();
+            if (localLibrary.containsKey("dexPath") && !proguard.libIsProguardFMEnabled(localLibraryName)) {
+                dexes.add(localLibrary.get("dexPath").toString());
             }
         }
-        arrayList.addAll(mll.getExtraDexes());
-        a(f.F, arrayList);
-        long currentTimeMillis2 = System.currentTimeMillis() - currentTimeMillis;
-        Log.d(TAG, "Libraries' DEX files merge took " + currentTimeMillis2 + " ms");
+        dexes.addAll(mll.getExtraDexes());
+        a(f.F, dexes);
+        Log.d(TAG, "Libraries' DEX files merge took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
@@ -690,6 +715,10 @@ public class Dp {
         }
     }
 
+    /**
+     * Checks if we need to extract any library/dependency from assets to filesDir,
+     * and extracts them, if needed.
+     */
     public void j() {
         /* If l doesn't exist, create it */
         if (!g.e(l.getAbsolutePath())) {
