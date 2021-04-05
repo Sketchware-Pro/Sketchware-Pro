@@ -41,10 +41,10 @@ public class ResourcePath {
     }
 
     public static String getNativePath(String sc_id) {
-        return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/native_libs/";
+        return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/native_libs/";
     }
 
     public static String getAssetsPath(String sc_id) {
-        return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/assets/";
+        return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/assets/";
     }
 }
