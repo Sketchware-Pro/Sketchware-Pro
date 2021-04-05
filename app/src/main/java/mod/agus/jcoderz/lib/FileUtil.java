@@ -22,6 +22,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -652,7 +653,18 @@ public class FileUtil {
         return outputStream.toByteArray();
     }
 
+    /**
+     * Write bytes to a file.
+     *
+     * @param target The file to write the data to. Note that it'll get created, even parent directories
+     * @param data   The data in bytes to write to. {@link FileUtil#readFromInputStream(InputStream)}
+     *               for example reads bytes
+     * @throws IOException Thrown when any exception occurs while operating
+     */
     public static void writeBytes(File target, byte[] data) throws IOException {
+        if (!target.exists()) {
+            target.getParentFile().mkdirs();
+        }
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(target));
         outputStream.write(data);
         outputStream.flush();
@@ -667,6 +679,7 @@ public class FileUtil {
 
         ZipEntry entry = input.getNextEntry();
         while (entry != null) {
+            Log.d("FileUtil", "Extracting a ZIP archive, iterating through its entries, entry name (ZipEntry#getName): " + entry.getName());
             String entryPathExtracted = new File(outPath, entry.getName()).getAbsolutePath();
 
             if (!entry.isDirectory()) {
