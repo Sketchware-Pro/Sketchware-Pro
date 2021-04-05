@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.tools.r8.D8;
@@ -129,11 +128,6 @@ public class Dp {
         proguard = new ProguardHandler(f.b);
         build_settings = new BuildSettings(f.b);
         o = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, o);
-        try {
-            Toast.makeText(e.getApplicationContext(), "Hello! This is a test to see if Dp's Context field e is null.", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to toast with mDp.e: " + e.getMessage(), e);
-        }
     }
 
     public Dp(DesignActivity.a anA, Context context, yq yqVar) {
@@ -162,7 +156,7 @@ public class Dp {
      * Dexes libraries.
      *
      * @param outputPath The output file, usually classes2.dex
-     * @param dexes The path of DEX files to merge
+     * @param dexes      The path of DEX files to merge
      * @throws Exception Thrown if dexing had problems
      */
     public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
@@ -443,7 +437,7 @@ public class Dp {
      * Dexes libraries.
      *
      * @param outputPath The output file, usually classes2.dex
-     * @param dexes The path of DEX files to merge
+     * @param dexes      The path of DEX files to merge
      * @throws Exception Thrown if dexing had problems
      */
     public final void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
