@@ -6,10 +6,8 @@ import android.util.Log;
 import com.besome.sketch.design.DesignActivity;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.zip.ZipInputStream;
 
 import a.a.a.Dp;
 import a.a.a.Jp;
@@ -39,9 +37,8 @@ public class ResourceCompiler {
         buildingDialog = dialog;
     }
 
-    public void compile() throws IOException {
-        String outputPath;
-        outputPath = mDp.f.t + File.separator + "res";
+    public void compile() throws IOException, zy {
+        String outputPath = mDp.f.t + File.separator + "res";
         emptyOrCreateDirectory(outputPath);
         long savedTimeMillis = System.currentTimeMillis();
         buildingDialog.c("Compiling resources with AAPT2...");
@@ -187,7 +184,7 @@ public class ResourceCompiler {
         Log.d(TAG + ":l", "Linking resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
-    private void compileProjectResources(String outputPath) {
+    private void compileProjectResources(String outputPath) throws zy {
         ArrayList<String> commands = new ArrayList<>();
         commands.add(aaptFile.getAbsolutePath());
         commands.add("compile");
@@ -200,6 +197,7 @@ public class ResourceCompiler {
         executor.setCommands(commands);
         if (!executor.execute().isEmpty()) {
             Log.e(TAG, executor.getLog());
+            throw new zy(executor.getLog());
         }
     }
 
@@ -212,7 +210,7 @@ public class ResourceCompiler {
         FileUtil.makeDir(path);
     }
 
-    private void compileLocalLibraryResources(String outputPath) {
+    private void compileLocalLibraryResources(String outputPath) throws zy {
         Log.d(TAG + ":cLLR", "About to compile " + mDp.mll.getResLocalLibrary().size() + " local " + (mDp.mll.getResLocalLibrary().size() == 1 ? "library" : "libraries") + ".");
         for (String next : mDp.mll.getResLocalLibrary()) {
             ArrayList<String> commands = new ArrayList<>();
@@ -227,11 +225,12 @@ public class ResourceCompiler {
             executor.setCommands(commands);
             if (!executor.execute().isEmpty()) {
                 Log.e(TAG, executor.getLog());
+                throw new zy(executor.getLog());
             }
         }
     }
 
-    private void compileBuiltInLibraryResources() {
+    private void compileBuiltInLibraryResources() throws zy {
         for (Jp library : mDp.n.a()) {
             LogUtil.dump(TAG + ":cBILR", library);
             if (library.c()) {
@@ -249,6 +248,7 @@ public class ResourceCompiler {
                     executor.setCommands(commands);
                     if (!executor.execute().isEmpty()) {
                         Log.e(TAG + ":cBILR", executor.getLog());
+                        throw new zy(executor.getLog());
                     }
                 } else {
                     Log.d(TAG + ":cBILR", "Skipped resource recompilation for built-in library " + library.a() + ".");
@@ -269,7 +269,7 @@ public class ResourceCompiler {
         }
     }
 
-    private void compileImportedResources(String outputPath) {
+    private void compileImportedResources(String outputPath) throws zy {
         if (FileUtil.isExistFile(mDp.fpu.getPathResource(mDp.f.b)) && new File(mDp.fpu.getPathResource(mDp.f.b)).length() != 0) {
             ArrayList<String> commands = new ArrayList<>();
             commands.add(aaptFile.getAbsolutePath());
@@ -283,6 +283,7 @@ public class ResourceCompiler {
             executor.setCommands(commands);
             if (!executor.execute().isEmpty()) {
                 Log.e(TAG, executor.getLog());
+                throw new zy(executor.getLog());
             }
         }
     }
