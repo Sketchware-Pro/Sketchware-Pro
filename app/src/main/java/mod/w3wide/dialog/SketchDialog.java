@@ -17,30 +17,30 @@ import android.widget.Space;
 import android.widget.TextView;
 
 public class SketchDialog extends Dialog {
-	public Context mContext;
+	private Context mContext;
 	//initialize view by id
-	public LinearLayout sdialog_root;
-	public ImageView dialog_img;
-	public TextView dialog_title;
-	public TextView dialog_msg;
-	public FrameLayout custom_view;
-	public LinearLayout layout_button;
-	public TextView dialog_btn_no;
-	public TextView dialog_btn_yes;
+	private LinearLayout sdialog_root;
+	private ImageView dialog_img;
+	private TextView dialog_title;
+	private TextView dialog_msg;
+	private FrameLayout custom_view;
+	private LinearLayout layout_button;
+	private TextView dialog_btn_no;
+	private TextView dialog_btn_yes;
 	//View.OnClickListener
-	public View.OnClickListener mPositiveClick;// = ((View.OnClickListener) null);
-	public View.OnClickListener mNegativeClick;// = ((View.OnClickListener) null);
-	public View.OnClickListener mNeutralClick;// = ((View.OnClickListener) null);
+	private View.OnClickListener mPositiveClick;// = ((View.OnClickListener) null);
+	private View.OnClickListener mNegativeClick;// = ((View.OnClickListener) null);
+	private View.OnClickListener mNeutralClick;// = ((View.OnClickListener) null);
 	//Custom View
 	public View mCustomView;
 	//Dialog Icon
-	public int mIcon = -1;
+	private int mIcon = -1;
 	//Defaults Strings
-	public String mTitle = "";
-	public String mMessage = "";
+	private String mTitle = "";
+	private String mMessage = "";
 	public String mPostiveStr = "Yes";
 	public String mNegativeStr = "No";
-	public String mNeutralStr = "";
+	private String mNeutralStr = "";
    
 	public SketchDialog(Context mContext) {
 		super(mContext);
@@ -64,10 +64,9 @@ public class SketchDialog extends Dialog {
 		layout_button = (LinearLayout) findViewById(0x7f080258);
 		dialog_btn_no = (TextView) findViewById(0x7f0800fc);
 		dialog_btn_yes  = (TextView) findViewById(0x7f0800fd);
-		
 	}
 	
-	public void initializeLogic() {
+	private void initializeLogic() {
 		//OnClickListeners
 		dialog_btn_no.setOnClickListener(mNegativeClick);
 		dialog_btn_yes.setOnClickListener(mPositiveClick);
@@ -80,9 +79,9 @@ public class SketchDialog extends Dialog {
 		}
 		dialog_title.setText(mTitle);
 		dialog_btn_no.setText(mNegativeStr);
-		_RippleEffect(dialog_btn_no, "#ffffff");
+		applyRippleEffect(dialog_btn_no, "#ffffff");
 		dialog_btn_yes.setText(mPostiveStr);
-		_RippleEffect(dialog_btn_yes, "#ffffff");
+		applyRippleEffect(dialog_btn_yes, "#ffffff");
 		if (mNeutralStr.length() != 0) {
 			layout_button.addView(NeutralText(mNeutralStr), 0);
 			layout_button.addView(NeutralSpace(), 1);
@@ -101,7 +100,7 @@ public class SketchDialog extends Dialog {
 		}
 	}
 	
-	public TextView NeutralText(String mStr) {
+	private TextView NeutralText(String mStr) {
 		TextView mNeutral = new TextView(mContext);
 		mNeutral.setText(mStr);
 		mNeutral.setTextColor(-1);
@@ -110,11 +109,11 @@ public class SketchDialog extends Dialog {
 		mNeutral.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
 		mNeutral.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
 		mNeutral.setOnClickListener(mNeutralClick);
-		_RippleEffect(mNeutral, "#ffffff");
+		applyRippleEffect(mNeutral, "#ffffff");
 		return mNeutral;
 	}
 	
-	public Space NeutralSpace() {
+	private Space NeutralSpace() {
 		Space mSpace = new Space(mContext);
 		android.widget.LinearLayout.LayoutParams mParam = new android.widget.LinearLayout.LayoutParams(0, 0, 1.0F);
 		mSpace.setLayoutParams(mParam);
@@ -152,7 +151,7 @@ public class SketchDialog extends Dialog {
 		mNegativeClick = mClickListener;
 	}
 	
-	public void _RippleEffect (final View _view, final String _c) {
+	private void applyRippleEffect(final View _view, final String _c) {
 		ColorStateList clr = new ColorStateList(new int[][] {
 			    new int[] {}
 		}, new int[] {
