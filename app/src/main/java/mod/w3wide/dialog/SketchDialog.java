@@ -27,6 +27,7 @@ public class SketchDialog extends Dialog {
 	public LinearLayout layout_button;
 	public TextView dialog_btn_no;
 	public TextView dialog_btn_yes;
+	public TextView dialog_btn_neutral;
 	//View.OnClickListener
 	private View.OnClickListener mPositiveClick;// = ((View.OnClickListener) null);
 	private View.OnClickListener mNegativeClick;// = ((View.OnClickListener) null);
@@ -38,9 +39,9 @@ public class SketchDialog extends Dialog {
 	//Defaults Strings
 	public String mTitle = "";
 	public String mMessage = "";
-	public String mPostiveStr = "Yes";
-	public String mNegativeStr = "No";
-	public String mNeutralStr = "";
+	public String mPostiveStr = "Ok";
+	public String mNegativeStr = "Cancel";
+	public String mNeutralStr = "Neutral";
    
 	public SketchDialog(Context mContext) {
 		super(mContext);
@@ -64,10 +65,10 @@ public class SketchDialog extends Dialog {
 		layout_button = (LinearLayout) findViewById(0x7f080258);
 		dialog_btn_no = (TextView) findViewById(0x7f0800fc);
 		dialog_btn_yes  = (TextView) findViewById(0x7f0800fd);
-		
+		dialog_btn_neutral = NeutralText(mNeutralStr);
 	}
 	
-	public void initializeLogic() {
+	private void initializeLogic() {
 		//OnClickListeners
 		dialog_btn_no.setOnClickListener(mNegativeClick);
 		dialog_btn_yes.setOnClickListener(mPositiveClick);
@@ -79,12 +80,16 @@ public class SketchDialog extends Dialog {
 			dialog_img.setVisibility(View.GONE);
 		}
 		dialog_title.setText(mTitle);
+		dialog_title.setVisibility(mTitle.length() > 0 ? View.VISIBLE : View.GONE);
+		
 		dialog_btn_no.setText(mNegativeStr);
-		_RippleEffect(dialog_btn_no, "#ffffff");
+		
+		applyRippleEffect(dialog_btn_no, "#ffffff");
 		dialog_btn_yes.setText(mPostiveStr);
-		_RippleEffect(dialog_btn_yes, "#ffffff");
+		applyRippleEffect(dialog_btn_yes, "#ffffff");
+
 		if (mNeutralStr.length() != 0) {
-			layout_button.addView(NeutralText(mNeutralStr), 0);
+			layout_button.addView(dialog_btn_neutral, 0);
 			layout_button.addView(NeutralSpace(), 1);
 		}
 		if (mMessage.length() == 0) {
@@ -132,27 +137,33 @@ public class SketchDialog extends Dialog {
 	public void setTitle(String mStr) {
 		mTitle = mStr;
 	}
-	
+
 	public void setMessage(String mStr) {
 		mMessage = mStr;
 	}
 	
 	public void setPositiveButton(String mStr, View.OnClickListener mClickListener) {
-		mPostiveStr = mStr;
+		if (mStr.length() > 0) {
+			mPostiveStr = mStr;
+		}
 		mPositiveClick = mClickListener;
 	}
 	
 	public void setNeutralButton(String mStr, View.OnClickListener mClickListener) {
-		mNeutralStr = mStr;
+		if (mStr.length() > 0) {
+			mNeutralStr = mStr;
+		}
 		mNeutralClick = mClickListener;
 	}
 	
 	public void setNegativeButton(String mStr, View.OnClickListener mClickListener) {
-		mNegativeStr = mStr;
+		if (mStr.length() > 0) {
+			mNegativeStr = mStr;
+		}
 		mNegativeClick = mClickListener;
 	}
 	
-	public void _RippleEffect (final View _view, final String _c) {
+	private void applyRippleEffect(final View _view, final String _c) {
 		ColorStateList clr = new ColorStateList(new int[][] {
 			    new int[] {}
 		}, new int[] {
