@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:background="#ffffffff" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true" app:layout_behavior="@string/appbar_scrolling_view_behavior" xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:paddingBottom="24.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/side_menu_info_icon_over" />
+            <TextView android:textColor="#ffff5955" android:id="@id/tv_not_support_font" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView android:textSize="14.0sp" android:textColor="#ff7d7d7d" android:gravity="start|center" android:id="@id/language_detail_about_desc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="12.0dip" />
+        <LinearLayout android:gravity="bottom" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.besome.sketch.lib.ui.MiddleLineHeader android:id="@id/language_detail_about_headerinfo" android:paddingRight="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip" />
+            <LinearLayout android:gravity="center|left" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip">
+                <TextView android:textSize="12.0sp" android:textColor="#ff999999" android:gravity="left" android:id="@id/tv_ver_name" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="3.0" />
+                <TextView android:textSize="13.0sp" android:textColor="#ff404040" android:id="@id/language_detail_about_version" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="7.0" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center|left" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="12.0sp" android:textColor="#ff999999" android:gravity="center|left" android:id="@id/tv_last_updated" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="3.0" />
+                <TextView android:textSize="12.0sp" android:textColor="#ff404040" android:gravity="left" android:id="@id/language_detail_about_updatedt" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="7.0" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center|left" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="12.0sp" android:textColor="#ff999999" android:gravity="center|left" android:id="@id/tv_reg_dt" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="3.0" />
+                <TextView android:textSize="12.0sp" android:textColor="#ff404040" android:gravity="left" android:id="@id/language_detail_about_regdt" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_weight="7.0" />
+            </LinearLayout>
+            <View android:background="#ffc7c7c7" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginTop="16.0dip" android:layout_marginBottom="16.0dip" android:layout_marginVertical="16.0dip" />
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/language_detail_about_morelayout" android:background="?selectableItemBackground" android:paddingTop="16.0dip" android:paddingBottom="16.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/color_more_96" />
+                <TextView android:textSize="12.0sp" android:id="@id/language_detail_about_morealias" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="40.0dip" android:paddingStart="15.0dip" android:paddingEnd="15.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/browser_actions_menu_item_icon" android:paddingTop="10.0dip" android:paddingBottom="10.0dip" android:layout_width="20.0dip" android:layout_height="fill_parent" android:scaleType="centerInside" android:contentDescription="@null" />
+    <TextView android:textSize="15.0sp" android:textColor="@color/browser_actions_text_color" android:layout_gravity="center_vertical" android:id="@id/browser_actions_menu_item_text" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginStart="10.0dip" />
+</LinearLayout>

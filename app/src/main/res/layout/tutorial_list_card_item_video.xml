@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal"
+    android:id="@id/card_view"
+    android:padding="4.0dip"
+    android:layout_width="fill_parent"
+    android:layout_height="92.0dip"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.google.android.youtube.player.YouTubeThumbnailView android:id="@id/thumbnail_view" android:layout_width="168.0dip" android:layout_height="84.0dip" />
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textSize="12.0sp" android:textColor="@color/scolor_black_01" android:id="@id/tv_title" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_marginTop="4.0dip" android:layout_weight="1.0" />
+        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="#ffffffff" android:gravity="center" android:id="@id/tv_save_as_new" android:background="@drawable/bg_round_red" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="8.0dip" android:layout_marginBottom="4.0dip" />
+    </LinearLayout>
+</LinearLayout>

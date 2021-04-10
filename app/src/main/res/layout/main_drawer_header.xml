@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/layout_main_drawer_header" android:background="#fffafafa" android:layout_width="320.0dip" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="bottom" android:orientation="vertical" android:background="@drawable/side_menu_bg_puzzle" android:paddingLeft="16.0dip" android:paddingTop="8.0dip" android:paddingRight="16.0dip" android:paddingBottom="8.0dip" android:clickable="true" android:layout_width="fill_parent" android:layout_height="200.0dip" android:paddingStart="16.0dip" android:paddingEnd="16.0dip" android:elevation="8.0dip">
+        <LinearLayout android:gravity="top" android:orientation="horizontal" android:paddingTop="8.0dip" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/img_user_icon" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/google_96" />
+                <TextView android:textSize="14.0sp" android:textColor="@color/color_primary" android:gravity="center_vertical" android:layout_gravity="center_vertical" android:id="@id/tv_login_id" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:textSize="12.0sp" android:textColor="#ff576a73" android:gravity="center_vertical" android:id="@id/tv_expire_date" android:paddingLeft="4.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" />
+    </LinearLayout>
+</LinearLayout>

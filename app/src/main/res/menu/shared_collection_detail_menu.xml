@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
+    <item android:icon="@drawable/ic_heart_empty_white_48" android:id="@id/menu_like" android:orderInCategory="100" android:title="" support:showAsAction="always" />
+    <item android:icon="@drawable/ic_star_white_outlined_48dp" android:id="@id/menu_bookmark" android:orderInCategory="100" android:title="" support:showAsAction="always" />
+    <item android:icon="@drawable/edit_white_48" android:id="@id/menu_update" android:orderInCategory="100" android:title="" support:showAsAction="always" />
+    <item android:icon="@drawable/ic_delete_white_24dp" android:id="@id/menu_delete" android:orderInCategory="100" android:title="" support:showAsAction="always" />
+</menu>

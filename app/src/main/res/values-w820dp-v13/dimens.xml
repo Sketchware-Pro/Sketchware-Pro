@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">64.0dip</dimen>
+    <dimen name="activity_margin">8.0dip</dimen>
+    <dimen name="checkbox_margin">16.0dip</dimen>
+    <dimen name="toolbar_image_margin">32.0dip</dimen>
+    <dimen name="checkbox_dimens">32.0dip</dimen>
+</resources>

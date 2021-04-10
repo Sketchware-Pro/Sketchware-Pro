@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center_horizontal" android:orientation="horizontal" android:id="@id/linearLayout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true" style="?android:background"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="@null" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+    <Button android:textStyle="bold" android:textColor="@color/colorAccent" android:id="@id/cancel" android:background="?android:selectableItemBackground" android:padding="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/cancel_button_label" style="?android:buttonStyle" />
+    <Button android:textStyle="bold" android:textColor="@color/colorAccent" android:id="@id/select" android:background="?android:selectableItemBackground" android:padding="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dip" android:text="@string/choose_button_label" style="?android:buttonStyle" />
+</LinearLayout>

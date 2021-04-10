@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:background="@color/colorHeader" android:layout_width="fill_parent" android:layout_height="?android:listPreferredItemHeight"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/imageView" android:background="@null" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginLeft="@dimen/toolbar_image_margin" android:src="@mipmap/ic_directory_parent" android:scaleType="centerInside" android:layout_marginStart="@dimen/toolbar_image_margin" />
+    <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <RelativeLayout android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/textColorPrimary" android:id="@id/dname" android:background="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginStart="16.0dip" style="?android:textViewStyle" />
+            <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/textColorPrimary" android:id="@id/title" android:background="@null" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginStart="16.0dip" style="?android:textViewStyle" />
+        </RelativeLayout>
+        <TextView android:textColor="@color/textColorSecondary" android:id="@id/dir_path" android:background="@null" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginStart="16.0dip" style="?android:textViewStyle" />
+    </LinearLayout>
+</LinearLayout>

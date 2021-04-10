@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="4.0dip" android:elevation="8.0dip" app:cardBackgroundColor="#ffffffff"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="?selectableItemBackground" android:layout_width="fill_parent" android:layout_height="wrap_content"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+        <FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="60.0dip">
+            <ImageView android:id="@id/img_cover" android:background="@color/scolor_black_02" android:layout_width="fill_parent" android:layout_height="wrap_content" android:scaleType="centerCrop" />
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout_competition_header" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/ll_grade" android:background="#ffffffff" android:paddingTop="4.0dip" android:paddingBottom="4.0dip" android:layout_width="40.0dip" android:layout_height="40.0dip">
+                    <ImageView android:id="@id/img_grade" android:background="?selectableItemBackground" android:padding="4.0dip" android:layout_width="32.0dip" android:layout_height="32.0dip" android:contentDescription="@null" />
+                </LinearLayout>
+                <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#ffffffff" android:gravity="center_vertical" android:id="@id/tv_title" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_marginRight="8.0dip" android:layout_weight="1.0" />
+                <LinearLayout android:gravity="center_horizontal" android:layout_gravity="center_vertical" android:orientation="vertical" android:background="?selectableItemBackground" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <TextView android:textSize="12.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/tv_process_st" android:background="@drawable/bg_outline" android:padding="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                    <TextView android:textSize="11.0sp" android:textColor="#ffffffff" android:id="@id/tv_remaing_time_label" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+        <LinearLayout android:orientation="horizontal" android:id="@id/layout_competition_content" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/bg_outline_skyblue" android:layout_width="96.0dip" android:layout_height="96.0dip" android:layout_margin="4.0dip">
+                <RelativeLayout android:background="@color/scolor_blue_01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="1.0dip" android:layout_marginTop="4.0dip">
+                    <TextView android:textSize="26.0sp" android:textStyle="bold" android:textColor="@color/scolor_red_02" android:gravity="center" android:id="@id/tv_reward" android:background="@drawable/bg_rounded_right_bottom" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+                    <LinearLayout android:gravity="center|left" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_alignParentTop="true">
+                        <ImageView android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/gift_card_96_red" android:contentDescription="@null" />
+                        <TextView android:textSize="12.0sp" android:textColor="@color/color_primary" android:id="@id/tv_reward_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" />
+                    </LinearLayout>
+                    <ImageView android:layout_width="12.0dip" android:layout_height="12.0dip" android:layout_marginRight="1.0dip" android:layout_marginBottom="1.0dip" android:src="@drawable/google_play_96_white" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" android:contentDescription="@null" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="4.0dip">
+                <TextView android:textSize="16.0sp" android:textColor="@color/scolor_black_02" android:gravity="center_vertical" android:id="@id/tv_subject" android:layout_width="wrap_content" android:layout_height="0.0dip" android:layout_weight="1.0" />
+                <LinearLayout android:gravity="center_vertical" android:layout_gravity="bottom" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                    <ImageView android:layout_width="16.0dip" android:layout_height="16.0dip" android:src="@drawable/user_72_grey_line" android:contentDescription="@null" />
+                    <TextView android:textSize="12.0sp" android:textColor="#ff9a9a9a" android:id="@id/tv_entry_count" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_weight="1.0" />
+                    <TextView android:textSize="12.0sp" android:textColor="#ff9a9a9a" android:gravity="right" android:id="@id/tv_my_status" android:paddingLeft="4.0dip" android:paddingRight="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

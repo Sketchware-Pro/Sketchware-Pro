@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/toolbar_improved" />
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/managepermissionLinearLayout1" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <SearchView android:id="@id/search_perm" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_below="@id/managepermissionLinearLayout1">
+            <ListView android:id="@id/main_content" android:layout_width="fill_parent" android:layout_height="fill_parent" android:divider="#ffa8a8a8" android:dividerHeight="2.0dip" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
