@@ -34,7 +34,7 @@ public class SketchDialog extends Dialog {
 	//Custom View
 	public View mCustomView;
 	//Dialog Icon
-	private int mIcon = -1;
+	public int mIcon = -1;
 	//Defaults Strings
 	private String mTitle = "";
 	private String mMessage = "";
@@ -122,6 +122,10 @@ public class SketchDialog extends Dialog {
 	
 	public void setIcon(int mIcon) {
 		this.mIcon = mIcon;
+	}
+	
+	public int getIcon() {
+		return mIcon;
 	}
 	
 	public void setView(View mView) {
