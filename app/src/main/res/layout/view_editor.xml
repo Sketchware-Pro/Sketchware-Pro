@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:id="@id/layout_palette" android:background="@drawable/palette_bg" android:layout_width="120.0dip" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="horizontal" android:id="@id/palette_group" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.besome.sketch.editor.view.palette.PaletteWidget android:id="@id/palette_widget" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <com.besome.sketch.editor.view.palette.PaletteFavorite android:id="@id/palette_favorite" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </FrameLayout>
+    </LinearLayout>
+    <FrameLayout android:id="@id/shape" android:background="#fff0f0ff" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_toRightOf="@id/layout_palette" />
+    <com.besome.sketch.editor.view.ViewDummy android:id="@id/dummy" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <com.besome.sketch.editor.view.ViewProperties android:id="@id/properties" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:translationY="150.0dip" />
+    <ImageView android:id="@id/icon_delete" android:paddingBottom="8.0dip" android:layout_width="50.0dip" android:layout_height="58.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/icon_delete" android:scaleType="fitXY" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" android:contentDescription="@null" android:translationY="66.0dip" android:layout_marginStart="8.0dip" android:layout_alignParentStart="true" />
+</RelativeLayout>

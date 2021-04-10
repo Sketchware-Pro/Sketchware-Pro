@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@id/language_coordinatorlayout" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:background="#ffffffff" android:focusable="true" android:focusableInTouchMode="true" android:fitsSystemWindows="true" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <include android:id="@id/language_toolbar" layout="@layout/toolbar" />
+        <RelativeLayout android:orientation="horizontal" android:id="@id/language_categorylayout" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="40.0sp" android:layout_marginBottom="8.0sp" android:layout_below="@id/language_toolbar">
+            <TextView android:textSize="16.0sp" android:textColor="#ff535353" android:id="@id/language_categorytext" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+            <ImageView android:layout_gravity="right" android:padding="8.0sp" android:layout_width="40.0sp" android:layout_height="40.0sp" android:src="@drawable/ic_expand_more_grey600_24dp" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@id/language_refresh" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/language_categorylayout">
+            <androidx.recyclerview.widget.RecyclerView android:id="@id/language_recyclerview" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:splitMotionEvents="false" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <LinearLayout android:gravity="center|top" android:orientation="vertical" android:id="@id/loading_3balls" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="60.0dip" android:layout_below="@id/language_toolbar">
+            <com.airbnb.lottie.LottieAnimationView android:id="@id/animation_view" android:layout_width="80.0dip" android:layout_height="80.0dip" app:lottie_autoPlay="true" app:lottie_fileName="anim/loading_3balls.json" app:lottie_loop="true" />
+        </LinearLayout>
+        <include android:visibility="gone" layout="@layout/no_connection" />
+        <TextView android:textSize="18.0sp" android:textColor="@color/color_primary" android:id="@id/language_nodata" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

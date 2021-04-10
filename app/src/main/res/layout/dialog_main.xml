@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" style="?android:background"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:id="@id/header" layout="@layout/dialog_header" />
+    <include android:id="@id/fileList" android:layout_width="fill_parent" android:layout_height="wrap_content" android:dividerHeight="1.0dip" android:layout_above="@id/footer" android:layout_below="@id/header" layout="@layout/dialog_file_list" />
+    <include android:id="@id/footer" layout="@layout/dialog_footer" />
+</RelativeLayout>

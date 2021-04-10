@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:focusable="false" android:descendantFocusability="blocksDescendants" android:layout_width="fill_parent" android:layout_height="wrap_content" android:minHeight="?android:listPreferredItemHeight" style="?android:background"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/image_type" android:layout_width="wrap_content" android:layout_height="fill_parent" android:scaleType="centerInside" android:layout_marginStart="8.0dip" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:focusable="false" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:layout_marginStart="8.0dip" style="?android:background">
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:id="@id/fname" android:layout_width="fill_parent" android:layout_height="wrap_content" style="?android:textAppearanceLarge" />
+        <TextView android:textSize="12.0sp" android:id="@id/ftype" android:layout_width="fill_parent" android:layout_height="wrap_content" style="?android:textViewStyle" />
+    </LinearLayout>
+    <com.github.angads25.filepicker.widget.MaterialCheckbox android:layout_gravity="center_vertical" android:id="@id/file_mark" android:background="?android:selectableItemBackgroundBorderless" android:layout_width="@dimen/checkbox_dimens" android:layout_height="@dimen/checkbox_dimens" android:layout_marginEnd="@dimen/checkbox_margin" />
+</LinearLayout>

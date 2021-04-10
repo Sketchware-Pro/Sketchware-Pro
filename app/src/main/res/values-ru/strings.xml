@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel_button_label">Отмена</string>
+    <string name="choose_button_label">Выбрать</string>
+    <string name="label_parent_directory">Родительская директория</string>
+    <string name="last_edit">Последние изменения:</string>
+    <string name="error_dir_access">Директория недоступна</string>
+</resources>
