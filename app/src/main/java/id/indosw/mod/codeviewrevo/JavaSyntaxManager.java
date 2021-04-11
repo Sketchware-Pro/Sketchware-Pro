@@ -10,7 +10,7 @@ public class JavaSyntaxManager {
     private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
     private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
     private static final Pattern PATTERN_CHAR = Pattern.compile("'[a-zA-Z]'");
-    private static final Pattern PATTERN_COMMENT = Pattern.compile("//(?!TODO )[^\\n]*|/\\*(.|\\R)*?\\*/");
+    private static final Pattern PATTERN_COMMENT = Pattern.compile("");
     private static final Pattern PATTERN_GENERIC = Pattern.compile("<[a-zA-Z0-9,<>]+>");
     private static final Pattern PATTERN_HEX = Pattern.compile("0x[0-9a-fA-F]+");
     private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(abstract|boolean|break|byte|case|catch|char|class|continue|default|do|double|else|enum|extends|final|finally|float|for|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|transient|try|void|volatile|while)\\b");
