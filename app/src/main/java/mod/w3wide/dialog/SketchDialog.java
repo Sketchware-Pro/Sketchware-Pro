@@ -41,7 +41,7 @@ public class SketchDialog extends Dialog {
 	public String mMessage = "";
 	public String mPostiveStr = "Ok";
 	public String mNegativeStr = "Cancel";
-	public String mNeutralStr = "Neutral";
+	public String mNeutralStr = "";
    
 	public SketchDialog(Context mContext) {
 		super(mContext);
@@ -150,7 +150,7 @@ public class SketchDialog extends Dialog {
 	}
 	
 	public void setNeutralButton(String mStr, View.OnClickListener mClickListener) {
-		if (mStr.length() > 0) {
+		if (!mStr.isEmpty()) {
 			mNeutralStr = mStr;
 		}
 		mNeutralClick = mClickListener;
