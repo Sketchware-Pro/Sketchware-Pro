@@ -36,6 +36,10 @@ public class ResourcePath {
         return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/values/attrs.xml";
     }
 
+    public static String getValuesPath(String sc_id) {
+        return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/values/values.xml";
+    }
+
     public static String getXmlPath(String sc_id) {
         return FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/xml/";
     }
