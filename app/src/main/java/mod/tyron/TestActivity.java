@@ -1,21 +1,15 @@
 package mod.tyron;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.jbk.swproremodremod.R;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,12 +32,11 @@ public class TestActivity extends Activity {
         LinearLayout rootView = new LinearLayout(this);
         rootView.setOrientation(LinearLayout.VERTICAL);
 
-        setContentView(rootView );
+        setContentView(rootView);
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         }
-
 
 
         //simulate your project here
@@ -65,7 +58,7 @@ public class TestActivity extends Activity {
         ListView listView = new ListView(this);
 
         rootView.addView(listView);
-        ((LinearLayout.LayoutParams)listView.getLayoutParams()).weight = 1;
+        ((LinearLayout.LayoutParams) listView.getLayoutParams()).weight = 1;
 
         Button button = new Button(this);
         button.setText("GET MODIFIED LIST");

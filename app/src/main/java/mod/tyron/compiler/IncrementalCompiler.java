@@ -2,16 +2,12 @@ package mod.tyron.compiler;
 
 import android.util.Log;
 
-import com.android.tools.r8.w.P;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import a.a.a.yq;
@@ -32,7 +28,7 @@ public class IncrementalCompiler extends Compiler {
     private final yq projectConfig;
     private final BuildSettings buildSettings;
 
-    public IncrementalCompiler(yq projectConfig){
+    public IncrementalCompiler(yq projectConfig) {
         SAVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/mysc/" + projectConfig.b + "/incremental";
 
         this.projectConfig = projectConfig;
@@ -85,7 +81,7 @@ public class IncrementalCompiler extends Compiler {
     }
 
     /**
-     * gets all the java files that sketchware pro has generated
+     * Gets all Java source code files, that Sketchware Pro has generated.
      */
     private ArrayList<JavaFile> getSketchwareFiles() {
         ArrayList<JavaFile> arrayList = new ArrayList<>();
@@ -102,13 +98,11 @@ public class IncrementalCompiler extends Compiler {
             arrayList.addAll(findJavaFiles(filePathUtil.getPathService(projectConfig.b)));
         }
 
-
-
         return arrayList;
     }
 
     /**
-     * finds all the java files in a given directory
+     * Finds all Java source code files in a given directory.
      *
      * @param input input directory
      * @return returns a list of java files
@@ -117,11 +111,14 @@ public class IncrementalCompiler extends Compiler {
         ArrayList<JavaFile> foundFiles = new ArrayList<>();
 
         if (input.isDirectory()) {
-            for (File child : input.listFiles()) {
-                foundFiles.addAll(findJavaFiles(child));
+            File[] contents = input.listFiles();
+            if (contents != null) {
+                for (File child : contents) {
+                    foundFiles.addAll(findJavaFiles(child));
+                }
             }
-        }else{
-            if(input.getName().endsWith(".java")) {
+        } else {
+            if (input.getName().endsWith(".java")) {
                 foundFiles.add(new JavaFile(input.getPath()));
             }
         }
@@ -129,25 +126,25 @@ public class IncrementalCompiler extends Compiler {
     }
 
     /**
-     * Convenience method for string inputs
+     * Convenience method for {@link IncrementalCompiler#findJavaFiles(File)} with Strings.
      */
-    private ArrayList<JavaFile> findJavaFiles(String input){
+    private ArrayList<JavaFile> findJavaFiles(String input) {
         return findJavaFiles(new File(input));
     }
 
     /**
-     * Compares two list of java files and outputs the ones that are modified
+     * Compares two list of Java source code files, and outputs ones, that are modified.
      */
     private ArrayList<File> getModifiedFiles(ArrayList<JavaFile> oldFiles, ArrayList<JavaFile> newFiles) {
         ArrayList<File> modifiedFiles = new ArrayList<>();
 
         for (JavaFile newFile : newFiles) {
-            if(!oldFiles.contains(newFile)){
+            if (!oldFiles.contains(newFile)) {
                 modifiedFiles.add(newFile);
-            }else{
+            } else {
                 File oldFile = oldFiles.get(oldFiles.indexOf(newFile));
 
-                if (contentModified(oldFile,  newFile)) {
+                if (contentModified(oldFile, newFile)) {
                     modifiedFiles.add(newFile);
                 }
 
@@ -157,8 +154,10 @@ public class IncrementalCompiler extends Compiler {
 
         //we delete the removed classes from the original path
         for (JavaFile removedFile : oldFiles) {
-            removedFile.delete();
             Log.d(TAG, "Class no longer exists, deleting file: " + removedFile.getName());
+            if (!removedFile.delete()) {
+                Log.w(TAG, "Failed to delete file " + removedFile.getAbsolutePath());
+            }
         }
 
         return modifiedFiles;
@@ -167,15 +166,15 @@ public class IncrementalCompiler extends Compiler {
     /**
      * merges the modified classes to the non modified files so that we can compare it next compile
      */
-    public void mergeClasses(ArrayList<File> files){
-        for(File file : files){
+    public void mergeClasses(ArrayList<File> files) {
+        for (File file : files) {
             String packagePath = SAVE_PATH + "/java/" + getPackageName(file);
             FileUtil.copyFile(file.getAbsolutePath(), packagePath);
         }
     }
 
     /**
-     *  checks if contents of the file has been modified
+     * checks if contents of the file has been modified
      */
     private boolean contentModified(File old, File newFile) {
 
@@ -199,10 +198,10 @@ public class IncrementalCompiler extends Compiler {
     }
 
     /**
-     * gets the package name of a specific java file
+     * Gets the package name of a specific Java source code file.
      *
-     * @param file java file
-     * @return package name
+     * @param file The Java file
+     * @return The file's package name, in Java format
      */
     private String getPackageName(File file) {
         String packageName = "";
@@ -217,7 +216,7 @@ public class IncrementalCompiler extends Compiler {
             e.printStackTrace();
         }
 
-        if(packageName.contains("package")){
+        if (packageName.contains("package")) {
             return packageName
                     .replace("package ", "")
                     .replace(".", "/")
@@ -226,6 +225,7 @@ public class IncrementalCompiler extends Compiler {
 
         return null;
     }
+
     private static class CompilerOutputStream extends OutputStream {
 
         public StringBuffer buffer;
@@ -233,9 +233,10 @@ public class IncrementalCompiler extends Compiler {
         public CompilerOutputStream(StringBuffer buffer) {
             this.buffer = buffer;
         }
+
         @Override
         public void write(int b) throws IOException {
-           buffer.append((char)b);
+            buffer.append((char) b);
         }
     }
 }
