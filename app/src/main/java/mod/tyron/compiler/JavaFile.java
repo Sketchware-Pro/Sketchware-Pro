@@ -10,8 +10,8 @@ public class JavaFile extends File {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof JavaFile){
-            return ((JavaFile)obj).getName().equals(this.getName());
+        if (obj instanceof JavaFile) {
+            return ((JavaFile) obj).getName().equals(this.getName());
         }
         return false;
     }
