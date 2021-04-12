@@ -1,4 +1,6 @@
 # Sketchware Pro
+[![ForTheBadge built-with-swag](http://ForTheBadge.com/images/badges/built-with-swag.svg)](https://github.com/JavkhlanK) [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://github.com/JavkhlanK) [![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://github.com/JavkhlanK) 
+
 ![GitHub contributors](https://img.shields.io/github/contributors/JavkhlanK/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/JavkhlanK/Sketchware-Pro)
 
 This is for everyone who wants to contribute to **Sketchware Pro**'s development.
