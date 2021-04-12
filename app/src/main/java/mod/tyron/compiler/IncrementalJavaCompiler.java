@@ -43,12 +43,10 @@ public class IncrementalJavaCompiler extends Compiler {
 
     private Compiler.Result onResultListener;
 
-    private final ArrayList<String> deletedFiles = new ArrayList<>();
+    private final ArrayList<String> builtInLibraries = new ArrayList<>();
 
     private final oB g;
     private final File l;
-    private final Kp n;
-
 
     public IncrementalJavaCompiler(yq projectConfig) {
         SAVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/mysc/" + projectConfig.b + "/incremental";
@@ -58,7 +56,6 @@ public class IncrementalJavaCompiler extends Compiler {
         this.mll = new ManageLocalLibrary(projectConfig.b);
         this.g = new oB(false);
         this.l = new File(getContext().getFilesDir(), "libs");
-        this.n = new Kp();
 
     }
 
@@ -84,8 +81,6 @@ public class IncrementalJavaCompiler extends Compiler {
         if (onResultListener == null ) {
             throw new IllegalStateException("No result listeners were set");
         }
-
-        j();
 
         ArrayList<File> projectJavaFiles = getSourceFiles();
 
@@ -331,8 +326,8 @@ public class IncrementalJavaCompiler extends Compiler {
     private String getLibrariesJarFile() {
         StringBuilder sb = new StringBuilder();
 
-        for (Jp next : n.a()) {
-            sb.append(l.getAbsolutePath()).append("/").append("libs").append("/").append(next.a()).append("/").append("classes.jar").append(":");
+        for (String library : getBuiltInLibraries()) {
+            sb.append(library).append("/").append("classes.jar");
         }
 
         sb.append(mll.getJarLocalLibrary());
@@ -353,105 +348,46 @@ public class IncrementalJavaCompiler extends Compiler {
         }
     }
 
-    public final boolean a(String fileInAssets, String compareTo) {
-        long length;
-        File compareToFile = new File(compareTo);
-        long lengthOfFileInAssets = g.a(getContext(), fileInAssets);
-        if (compareToFile.exists()) {
-            length = compareToFile.length();
-        } else {
-            length = 0;
-        }
-        if (lengthOfFileInAssets == length) {
-            return false;
-        }
-        g.a(compareToFile);
-        g.a(getContext(), fileInAssets, compareTo);
-        return true;
-    }
-
-    public void j() {
-        /* If l doesn't exist, create it */
-        if (!g.e(l.getAbsolutePath())) {
-            g.f(l.getAbsolutePath());
-        }
-
-        String m = "libs";
-        String androidJarPath = new File(l, "android.jar.zip").getAbsolutePath();
-        String dexsArchivePath = new File(l, "dexs.zip").getAbsolutePath();
-        String libsArchivePath = new File(l, "libs.zip").getAbsolutePath();
-        String dexsDirectoryPath = new File(l, "dexs").getAbsolutePath();
-        String libsDirectoryPath = new File(l, "libs").getAbsolutePath();
-        String testkeyDirectoryPath = new File(l, "testkey").getAbsolutePath();
-        if (a(m + File.separator + "android.jar.zip", androidJarPath)) {
-            /* Delete android.jar */
-            g.c(l.getAbsolutePath() + File.separator + "android.jar");
-            new KB().a(androidJarPath, l.getAbsolutePath());
-        }
-        if (a(m + File.separator + "dexs.zip", dexsArchivePath)) {
-            g.b(dexsDirectoryPath);
-            g.f(dexsDirectoryPath);
-            new KB().a(dexsArchivePath, dexsDirectoryPath);
-        }
-        if (a(m + File.separator + "libs.zip", libsArchivePath)) {
-            g.b(libsDirectoryPath);
-            g.f(libsDirectoryPath);
-            new KB().a(libsArchivePath, libsDirectoryPath);
-        }
-        String jdkArchivePathInAssets = m + File.separator + "jdk.zip";
-        String jdkArchivePath = new File(l, "jdk.zip").getAbsolutePath();
-        /* Check if file size has changed */
-        if (a(jdkArchivePathInAssets, jdkArchivePath)) {
-            String jdkDirectoryPath = new File(l, "jdk").getAbsolutePath();
-            /* Delete the directory? */
-            g.b(jdkDirectoryPath);
-            /* Create the directories? */
-            g.f(jdkDirectoryPath);
-            /* Extract the archive to the directory? */
-            new KB().a(jdkArchivePath, jdkDirectoryPath);
-        }
-        String testkeyArchivePathInAssets = m + File.separator + "testkey.zip";
-        String testkeyArchivePath = new File(l, "testkey.zip").getAbsolutePath();
-        if (a(testkeyArchivePathInAssets, testkeyArchivePath)) {
-            /* We need to copy testkey.zip to filesDir */
-            g.b(testkeyDirectoryPath);
-            g.f(testkeyDirectoryPath);
-            new KB().a(testkeyArchivePath, testkeyDirectoryPath);
-
-        }
-
+    public ArrayList<String> getBuiltInLibraries() {
+    
+        String path = getContext().getFilesDir() + "/libs/libs/";
+        ArrayList<String> arrayList = new ArrayList<>();
+        
         if (projectConfig.N.g) {
-            n.a("appcompat-1.0.0");
-            n.a("coordinatorlayout-1.0.0");
-            n.a("material-1.0.0");
+            arrayList.add(":" + path + "appcompat-1.0.0");
+            arrayList.add(":" + path + "coordinatorlayout-1.0.0");
+            arrayList.add(":" + path + "material-1.0.0");
         }
         if (projectConfig.N.h) {
-            n.a("firebase-common-19.0.0");
+            arrayList.add(":" + path + "firebase-common-19.0.0");
         }
         if (projectConfig.N.i) {
-            n.a("firebase-auth-19.0.0");
+            arrayList.add(":" + path + "firebase-auth-19.0.0");
         }
         if (projectConfig.N.j) {
-            n.a("firebase-database-19.0.0");
+            arrayList.add(":" + path + "firebase-database-19.0.0");
         }
         if (projectConfig.N.k) {
-            n.a("firebase-storage-19.0.0");
+            arrayList.add(":" + path + "firebase-storage-19.0.0");
         }
         if (projectConfig.N.m) {
-            n.a("play-services-maps-17.0.0");
+            arrayList.add(":" + path + "play-services-maps-17.0.0");
         }
         if (projectConfig.N.l) {
-            n.a("play-services-ads-18.2.0");
+            arrayList.add(":" + path + "play-services-ads-18.2.0");
         }
         if (projectConfig.N.o) {
-            n.a("gson-2.8.0");
+            arrayList.add(":" + path + "gson-2.8.0");
         }
         if (projectConfig.N.n) {
-            n.a("glide-4.11.0");
+            arrayList.add(":" + path + "glide-4.11.0");
         }
         if (projectConfig.N.p) {
-            n.a("okhttp-3.9.1");
+            arrayList.add(":" + path + "okhttp-3.9.1");
         }
-        ExtLibSelected.a(projectConfig.N.x, n);
+        
+        return arrayList;
+        
     }
+
 }
