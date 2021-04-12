@@ -1,3 +1,6 @@
+# Sketchware Pro
+![GitHub contributors](https://img.shields.io/github/contributors/JavkhlanK/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/JavkhlanK/Sketchware-Pro)
+
 This is for everyone who wants to contribute to **Sketchware Pro**'s development.
 
 There are few things that must be taken into consideration before contributing to Sketchware Pro:
