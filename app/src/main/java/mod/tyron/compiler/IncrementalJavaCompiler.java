@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.Dp;
 import a.a.a.Jp;
 import a.a.a.KB;
 import a.a.a.Kp;
@@ -46,7 +45,6 @@ public class IncrementalJavaCompiler extends Compiler {
 
     private final ArrayList<String> deletedFiles = new ArrayList<>();
 
-    private Dp dp;
     private final oB g;
     private final File l;
     private final Kp n;
@@ -62,8 +60,6 @@ public class IncrementalJavaCompiler extends Compiler {
         this.l = new File(getContext().getFilesDir(), "libs");
         this.n = new Kp();
 
-        dp = new Dp(getContext(), projectConfig);
-        dp.j();
     }
 
     public void setOnResultListener(Compiler.Result result) {
