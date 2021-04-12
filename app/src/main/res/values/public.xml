@@ -4720,7 +4720,7 @@
     <public type="layout" name="blocks_managers_details" id="0x7f0b01e4" />
     <public type="layout" name="block_customview" id="0x7f0b01e5" />
     <public type="layout" name="blocks_manager_creator" id="0x7f0b01e6" />
-    <public type="layout" name="mod_config_activity" id="0x7f0b01e7" />
+    <!-- <public type="layout" name="mod_config_activity" id="0x7f0b01e7" /> -->
     <public type="layout" name="add_new_listener" id="0x7f0b01e8" />
     <public type="layout" name="menu_activity" id="0x7f0b01e9" />
     <public type="layout" name="manage_proguard" id="0x7f0b01ea" />
