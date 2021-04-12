@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -34,7 +36,7 @@ public class Helper {
             } catch (ClassNotFoundException e) {
                 throw new NoClassDefFoundError(e.getMessage());
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
             }
         }
     }
@@ -57,9 +59,21 @@ public class Helper {
 
     public static void applyRippleToToolbarView(View view) {
         GradientDrawable content = new GradientDrawable();
-        content.setColor(Color.parseColor("#ff008dcd"));
+        content.setColor(Color.parseColor("#008dcd"));
         content.setCornerRadius(90);
-        view.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[]{0}}, new int[]{Color.parseColor("#64B5F6")}),
+        view.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[]{0}}, new int[]{Color.parseColor("#64b5f6")}),
                 content, null));
+    }
+
+    public static void applyRippleEffect(final View target, final int rippleColor, int standardColor) {
+        RippleDrawable drawable = new RippleDrawable(new ColorStateList(new int[][]{
+                new int[]{}
+        }, new int[]{
+                rippleColor
+        }), new ColorDrawable(standardColor), null);
+        if (!target.isClickable()) {
+            target.setClickable(true);
+        }
+        target.setBackground(drawable);
     }
 }
