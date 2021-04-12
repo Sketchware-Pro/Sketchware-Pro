@@ -3,11 +3,15 @@ package mod.tyron.compiler;
 import java.io.File;
 import java.util.ArrayList;
 
+import a.a.a.zy;
+
 public abstract class Compiler {
 
-    abstract ArrayList<File> getSourceFiles();
+    public interface Result {
+        void onResult(boolean success, String message);
+    }
 
-    abstract ArrayList<File> getLibraries();
+    abstract public ArrayList<File> getSourceFiles();
 
-    abstract void compile();
+    abstract public void compile();
 }
