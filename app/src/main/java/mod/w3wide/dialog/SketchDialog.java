@@ -1,5 +1,6 @@
 package mod.w3wide.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -7,8 +8,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +19,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Space;
 import android.widget.TextView;
 
+@SuppressLint("ResourceType")
 public class SketchDialog extends Dialog {
 	private Context mContext;
 	//initialize view by id
@@ -55,7 +59,7 @@ public class SketchDialog extends Dialog {
         initialize(mBundle);
         initializeLogic();
 	}
-	
+
 	private void initialize(Bundle mBundle) {
 		sdialog_root = (LinearLayout) findViewById(0x7f0803d0);
 		dialog_img = (ImageView) findViewById(0x7f0800fe);
@@ -115,7 +119,7 @@ public class SketchDialog extends Dialog {
 		mNeutral.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
 		mNeutral.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
 		mNeutral.setOnClickListener(mNeutralClick);
-		_RippleEffect(mNeutral, "#ffffff");
+		applyRippleEffect(mNeutral, "#ffffff");
 		return mNeutral;
 	}
 	
