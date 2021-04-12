@@ -231,7 +231,7 @@ public class SketchwareUtil {
      * Show a Toast styled Sketchware-like.
      *
      * @param message The message to toast
-	 * @param length The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
+     * @param length  The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
      */
     public static void toast(String message, int length) {
         bB.a(getContext(), message, length).show();
@@ -246,14 +246,14 @@ public class SketchwareUtil {
         toast(message, Toast.LENGTH_SHORT);
     }
 
-	/**
+    /**
      * Show an error Toast styled Sketchware-like and with length {@link Toast#LENGTH_SHORT}.
      *
-	 * @param message The message to toast
-	 * @param length The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
+     * @param message The message to toast
+     * @param length  The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
      */
     public static void toastError(String message, int length) {
-		bB.b(getContext(), message, length).show();
+        bB.b(getContext(), message, length).show();
     }
 
     /**
@@ -279,4 +279,3 @@ public class SketchwareUtil {
         return (int) (dpToPx(dp) / getContext().getResources().getDisplayMetrics().scaledDensity);
     }
 }
-
