@@ -8,6 +8,7 @@ public class CompileLogSaver {
     public static String sc_id;
     public static FileUtil fileUtil;
     public static FilePathUtil filePathUtil;
+
     public CompileLogSaver(String sc_id) {
         this.sc_id = sc_id;
     }
