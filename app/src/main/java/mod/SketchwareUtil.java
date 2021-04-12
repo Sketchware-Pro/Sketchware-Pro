@@ -254,15 +254,29 @@ public class SketchwareUtil {
      */
     public static void toastError(String message, int length) {
 		bB.b(getContext(), message, length).show();
-	}
+    }
 
-	/**
+    /**
      * Show an error Toast styled Sketchware-like and with length {@link Toast#LENGTH_SHORT}.
      *
      * @param message The message to toast
      */
     public static void toastError(String message) {
         toastError(message, Toast.LENGTH_SHORT);
+    }
+
+    /**
+     * Converts dps into pixels.
+     *
+     * @param dp The amount of density-independent pixels to convert
+     * @return {@code dp} in pixels
+     */
+    public static int dpToPx(float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
+    }
+
+    public static int dpToSp(float dp) {
+        return (int) (dpToPx(dp) / getContext().getResources().getDisplayMetrics().scaledDensity);
     }
 }
 
