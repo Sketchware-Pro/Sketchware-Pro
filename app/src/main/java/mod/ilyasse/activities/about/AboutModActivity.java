@@ -209,7 +209,7 @@ public class AboutModActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     textview3.setText("Something got fucked up");
                     textview4.setText("If you're seeing this, then we missed something lol");
-                    Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AboutModActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 fab.setVisibility(View.VISIBLE);
             }
