@@ -2,11 +2,10 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 
 public class ProjectFileBean extends SelectableBean implements Parcelable {
-	
+
 	public static final Creator<ProjectFileBean> CREATOR = new Creator<ProjectFileBean>() {
 		public ProjectFileBean createFromParcel(Parcel parcel) {
 			return new ProjectFileBean(parcel);
@@ -31,7 +30,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
 	public static final int ORIENTATION_BOTH = 2;
 	public static final int ORIENTATION_LANDSCAPE = 1;
 	public static final int ORIENTATION_PORTRAIT = 0;
-	//Project File Type 
+	//Project File Type
 	public static final int PROJECT_FILE_TYPE_ACTIVITY = 0;
 	public static final int PROJECT_FILE_TYPE_CUSTOM_VIEW = 1;
 	public static final int PROJECT_FILE_TYPE_DRAWER = 2;
