@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
@@ -136,6 +137,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         m.requestLayout();
     }
 
+    @SuppressLint("ResourceType")
     public void onClick(View view) {
         if (view.getId() == 2131231681 && s.b()) {
             Pp.h().a(l, o.getText().toString(), true);
@@ -150,6 +152,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         l();
     }
 
+    @SuppressLint("ResourceType")
     @Override
     // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle bundle) {
@@ -204,6 +207,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem saveImageItem = menu.add(0, 12, 0, "Save image");
