@@ -104,6 +104,8 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileLogSaver;
 import mod.jbk.bundle.BundleToolCompiler;
+import mod.tyron.compiler.Compiler;
+import mod.tyron.compiler.IncrementalCompiler;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -1114,6 +1116,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (this.d) {
                 cancel(true);
             } else {
+
+                BuildSettings buildSettings = new BuildSettings(q.b);
+
                 try {
                     DesignActivity.this.q.c();
                     DesignActivity.this.q.c(super.a);
@@ -1160,7 +1165,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    boolean usingAapt2 = new BuildSettings(q.b)
+                    boolean usingAapt2 = buildSettings
                             .getValue(BuildSettings.SETTING_RESOURCE_PROCESSOR,
                                     BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
                             ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
@@ -1172,40 +1177,57 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     publishProgress("Java is compiling...");
-                    mDp.f();
-                    if (this.d) {
-                        cancel(true);
-                        return;
-                    }
 
-                    StringfogHandler stringfogHandler = new StringfogHandler(DesignActivity.this.q.b);
-                    stringfogHandler.start(this, mDp);
-                    if (this.d) {
-                        cancel(true);
-                        return;
-                    }
+                    boolean incrementalCompilationEnabled = buildSettings.
+                            getValue(BuildSettings.SETTING_BUILD_INCREMENTAL, "false")
+                            .equals("true");
 
-                    ProguardHandler proguardHandler = new ProguardHandler(DesignActivity.this.q.b);
-                    proguardHandler.start(this, mDp);
-                    if (this.d) {
-                        cancel(true);
-                        return;
-                    }
+                    if (incrementalCompilationEnabled) {
+                        IncrementalCompiler incrementalCompiler = new IncrementalCompiler(q);
+                        incrementalCompiler.setResultListener(new Compiler.Result() {
+                            @Override
+                            public void onResult(boolean success, String message) {
+                                if(!success){
+                                    DesignActivity.this.d(message);
+                                    return;
+                                }
+                            }
+                        });
+                    } else {
+                        mDp.f();
+                        if (this.d) {
+                            cancel(true);
+                            return;
+                        }
 
-                    publishProgress(mDp.getDxRunningText());
-                    mDp.c();
-                    if (this.d) {
-                        cancel(true);
-                        return;
-                    }
+                        StringfogHandler stringfogHandler = new StringfogHandler(DesignActivity.this.q.b);
+                        stringfogHandler.start(this, mDp);
+                        if (this.d) {
+                            cancel(true);
+                            return;
+                        }
 
-                    publishProgress("Merging libraries' DEX files...");
-                    mDp.h();
-                    if (this.d) {
-                        cancel(true);
-                        return;
-                    }
+                        ProguardHandler proguardHandler = new ProguardHandler(DesignActivity.this.q.b);
+                        proguardHandler.start(this, mDp);
+                        if (this.d) {
+                            cancel(true);
+                            return;
+                        }
 
+                        publishProgress(mDp.getDxRunningText());
+                        mDp.c();
+                        if (this.d) {
+                            cancel(true);
+                            return;
+                        }
+
+                        publishProgress("Merging libraries' DEX files...");
+                        mDp.h();
+                        if (this.d) {
+                            cancel(true);
+                            return;
+                        }
+                    }
                     boolean buildingAAB = new BuildSettings(q.b)
                             .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
                                     BuildSettings.SETTING_OUTPUT_FORMAT_APK)
