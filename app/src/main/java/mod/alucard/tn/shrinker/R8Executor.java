@@ -13,10 +13,9 @@ import java.util.ArrayList;
 
 import a.a.a.Dp;
 import a.a.a.zy;
-import mod.agus.jcoderz.lib.FileUtil;
 
 public class R8Executor {
-    
+
     private static final String TAG = "R8Executor";
     private final DesignActivity.a buildingDialog;
     private final Dp mDp;
@@ -25,31 +24,29 @@ public class R8Executor {
         buildingDialog = Dialog;
         mDp = dp;
     }
-    
     public void preparingEnvironment() {
         long savedTimeMillis = System.currentTimeMillis();
         buildingDialog.c("Compiling classes with R8...");
         Log.d(TAG + ":c", "Compiling classes with R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
-    
-    public ArrayList getSourceFile(File file, ArrayList arrayList) {
-        File[] files = file.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            file = files[i];
-            if (file.isDirectory()) {
-                getSourceFile(file, arrayList);
-            } else if (file.getName().endsWith(".class")) {
-                arrayList.add(file.getAbsolutePath());
+    public ArrayList<String> getSourceFile(File file, ArrayList<String> arrayList) {
+        if (file != null) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File value : files) {
+                    file = value;
+                    if (file.isDirectory()) {
+                        getSourceFile(file, arrayList);
+                    } else if (file.getName().endsWith(".class")) {
+                        arrayList.add(file.getAbsolutePath());
+                    }
+                }
             }
         }
         return arrayList;
     }
-    
     public void compile() throws zy {
-        String r8InOutputPath = mDp.f.t + File.separator + "Shrinked" + File.separator + "Dexes";
-        if (!FileUtil.isExistFile(r8InOutputPath)) {
-            FileUtil.makeDir(mDp.f.t + File.separator + "Shrinked" + File.separator + "Dexes");
-        }
+        String R8OutputPath = mDp.f.t;
         String androidJarPath = mDp.settings.getValue("android_sdk", "");
         ArrayList<String> args = new ArrayList<>();
         args.add("--debug");
@@ -60,7 +57,10 @@ public class R8Executor {
         }
         args.add(androidJarPath);
         args.add("--output");
-        args.add(r8InOutputPath);
+        if (R8OutputPath.isEmpty()) {
+            R8OutputPath = mDp.f.c + File.separator + "bin";
+        }
+        args.add(R8OutputPath);
         args.add("--pg-conf");
         args.add(getProguardRulesPath());
         args.addAll(getSourceFile(new File(mDp.f.t + File.separator + "classes"), new ArrayList<>()));
