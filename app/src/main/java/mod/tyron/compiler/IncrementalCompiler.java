@@ -63,5 +63,6 @@ public class IncrementalCompiler {
 
     private void mergeDexes() {
         dexMerger.compile();
+        resultListener.onResult(true, "");
     }
 }

@@ -2,6 +2,8 @@ package mod.tyron.compiler;
 
 import android.util.Log;
 
+import com.besome.sketch.SketchApplication;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 
 import a.a.a.Jp;
 import a.a.a.yq;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
@@ -48,15 +51,19 @@ public class IncrementalDexMerger extends Compiler {
             String filesDir = getContext().getFilesDir().getAbsolutePath();
 
             for (String builtInLibrary : builtInLibraries) {
-                sources.add(new Dex(new File(filesDir + "/dexs/" + builtInLibrary + ".dex")));
+                builtInLibrary = builtInLibrary.substring(builtInLibrary.lastIndexOf("/"));
+                builtInLibrary = SketchApplication.getContext().getFilesDir().getAbsolutePath() + "/libs/dexs/" + builtInLibrary + ".dex";
+                Log.d(TAG, "Adding built in library: " + builtInLibrary);
+                sources.add(new Dex(new File(builtInLibrary)));
             }
 
-            for (HashMap<String, Object> localLibrary : manageLocalLibrary.list) {
-                String localLibraryName = localLibrary.get("name").toString();
-                if (localLibrary.containsKey("dexPath")) { //TODO : handle proguard
-                    sources.add(new Dex(new File(localLibrary.getOrDefault("dexPath", "").toString())));
-                }
-            }
+           for (String string : manageLocalLibrary.getDexLocalLibrary()) {
+               sources.add(new Dex(new File(string)));
+           }
+
+           for (String string : manageLocalLibrary.getExtraDexes()) {
+               sources.add(new Dex(new File(string)));
+           }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +80,7 @@ public class IncrementalDexMerger extends Compiler {
         ArrayList<Dex> dexes = getSourceFiles();
         ArrayList<Dex> dexObjects = new ArrayList<>();
         int methodsMergedFile = 0;
-        String outputPath = projectConfig.F;
+        String outputPath = projectConfig.t + "/classes.dex";
 
         try {
             for (Dex dex : dexes) {
@@ -92,7 +99,13 @@ public class IncrementalDexMerger extends Compiler {
                 }
             }
             if (dexObjects.size() > 0) {
-                mergeDexes(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "" ) + ".dex"), dexObjects);
+                File out = new File(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "" ) + ".dex"));
+                if (out.exists()) {
+                    out.delete();
+                }
+                out.createNewFile();
+
+                mergeDexes(out.getAbsolutePath(), dexObjects);
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -103,7 +116,7 @@ public class IncrementalDexMerger extends Compiler {
 
     private void mergeDexes(String target, ArrayList<Dex> dexes) throws Exception {
         new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(target));
-        dexesGenerated.add(target);
+        //dexesGenerated.add(target);
     }
 
     private ArrayList<Dex> getGeneratedDexFiles(File input) throws IOException {

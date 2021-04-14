@@ -296,6 +296,8 @@ public class IncrementalJavaCompiler extends Compiler {
         }
         if (newFile.length() > old.length()) {
             return true;
+        }else if (newFile.length() == old.length()) {
+            return false;
         }
         return newFile.lastModified() > old.lastModified();
     }
@@ -405,12 +407,12 @@ public class IncrementalJavaCompiler extends Compiler {
         if (projectConfig.N.n) {
             arrayList.add(":" + path + "glide-4.11.0");
         }
-        //if (projectConfig.N.p) {
+        if (projectConfig.N.p) {
             arrayList.add(":" + path + "okhttp-3.9.1");
-        //}
-        //if (projectConfig.N.o) {
+        }
+        if (projectConfig.N.o) {
             arrayList.add(":" + path + "gson-2.8.0");
-        //}
+        }
         
         return arrayList;
         
