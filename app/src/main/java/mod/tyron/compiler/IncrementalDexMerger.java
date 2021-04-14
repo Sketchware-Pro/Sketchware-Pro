@@ -108,8 +108,6 @@ public class IncrementalDexMerger extends Compiler {
 
     private ArrayList<Dex> getGeneratedDexFiles(File input) throws IOException {
 
-        Log.d(TAG, "Getting generated dex files for directory: " + input.getPath());
-
         ArrayList<Dex> foundDexes = new ArrayList<>();
 
         if(input.isDirectory()) {
