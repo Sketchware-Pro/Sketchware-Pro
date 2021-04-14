@@ -68,15 +68,28 @@ public class IncrementalJavaCompiler extends Compiler {
 
         ArrayList<JavaFile> oldFiles = findJavaFiles(new File(SAVE_PATH));
 
-        //combine all the java files from sketchware and java manager
+        //combine all the java files from sketchware pro
         ArrayList<JavaFile> newFiles = new ArrayList<>(getSketchwareFiles());
-        newFiles.addAll(findJavaFiles(projectConfig.c));
+        //add original sketchware generated files
+        newFiles.addAll(findJavaFiles(projectConfig.c + "/app/src/main/java"));
+
+        //add R.java files
+        newFiles.addAll(findJavaFiles(projectConfig.c + "/gen"));
+
+        for (String library : getBuiltInLibraries()) {
+            JavaFile rFile = new JavaFile(library + "/R.java");
+            if (rFile.exists()) {
+                newFiles.add(rFile);
+            }
+        }
 
         return new ArrayList<>(getModifiedFiles(oldFiles, newFiles));
     }
 
     @Override
     public void compile() {
+
+
 
         if (onResultListener == null ) {
             throw new IllegalStateException("No result listeners were set");
@@ -89,6 +102,8 @@ public class IncrementalJavaCompiler extends Compiler {
             onResultListener.onResult(true, "Files up to date");
             return;
         }
+
+        Log.d(TAG, "Found " + projectJavaFiles.size() + " file(s) that are modified");
 
         CompilerOutputStream errorOutputStream = new CompilerOutputStream(new StringBuffer());
         PrintWriter errWriter = new PrintWriter(errorOutputStream);
@@ -108,7 +123,7 @@ public class IncrementalJavaCompiler extends Compiler {
         args.add("-proc:none");
         args.add("-cp");
 
-        args.add(l.getAbsolutePath() + "/jdk/rt.jar:" + l.getAbsolutePath() + "/android.jar:" +
+        args.add(l.getAbsolutePath() + "/jdk/rt.jar:" + l.getAbsolutePath() + "/android.jar" +
                 getLibrariesJarFile());
 
         for (File file : projectJavaFiles) {
@@ -116,16 +131,18 @@ public class IncrementalJavaCompiler extends Compiler {
         }
 
 
-
+        args.add("-sourcepath");
+        args.add(SAVE_PATH + "/java");
 
         org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
 
+        Log.d(TAG, "Started compilation");
         main.compile(args.toArray(new String[0]));
         boolean success = true;
 
         if (main.globalErrorsCount > 0) {
             success = false;
-            onResultListener.onResult(success, errorOutputStream.buffer.toString());
+            onResultListener.onResult(false, errorOutputStream.buffer.toString());
         }
 
         try {
@@ -141,7 +158,10 @@ public class IncrementalJavaCompiler extends Compiler {
         if(success) {
             Log.d(TAG, "Merging modified java files");
             mergeClasses(projectJavaFiles);
+
+            onResultListener.onResult(true, "Success");
         }
+
     }
 
     /**
@@ -172,6 +192,7 @@ public class IncrementalJavaCompiler extends Compiler {
      * @return returns a list of java files
      */
     private ArrayList<JavaFile> findJavaFiles(File input) {
+
         ArrayList<JavaFile> foundFiles = new ArrayList<>();
 
         if (input.isDirectory()) {
@@ -207,15 +228,15 @@ public class IncrementalJavaCompiler extends Compiler {
                 modifiedFiles.add(newFile);
             } else {
                 File oldFile = oldFiles.get(oldFiles.indexOf(newFile));
-
                 if (contentModified(oldFile, newFile)) {
                     modifiedFiles.add(newFile);
+                    if(oldFile.delete()) {
+                        Log.d(TAG, oldFile.getName() + ": Removed old class file that has been modified");
+                    }
                 }
-
                 oldFiles.remove(oldFile);
             }
         }
-
         //we delete the removed classes from the original path
         for (JavaFile removedFile : oldFiles) {
             Log.d(TAG, "Class no longer exists, deleting file: " + removedFile.getName());
@@ -226,7 +247,6 @@ public class IncrementalJavaCompiler extends Compiler {
                 deleteClassInDir(name, new File(SAVE_PATH + "/classes"));
             }
         }
-
         return modifiedFiles;
     }
 
@@ -243,7 +263,6 @@ public class IncrementalJavaCompiler extends Compiler {
     private boolean deleteClassInDir(String name, File dir) {
         if (dir.isDirectory()) {
             File[] children = dir.listFiles();
-
             if (children != null) {
                 for (File child : children) {
                     deleteClassInDir(name, child);
@@ -251,11 +270,9 @@ public class IncrementalJavaCompiler extends Compiler {
             }
         }else {
             String dirName = dir.getName().substring(0, dir.getName().indexOf("."));
-
             if (dirName.contains("$")) {
                 dirName = dirName.substring(0, dirName.indexOf("$"));
             }
-
             if (dirName.equals(name)) {
                 return dir.delete();
             }
@@ -268,23 +285,20 @@ public class IncrementalJavaCompiler extends Compiler {
      * checks if contents of the file has been modified
      */
     private boolean contentModified(File old, File newFile) {
-
         if (old.isDirectory() || newFile.isDirectory()) {
             throw new IllegalArgumentException("Given file must be a java file");
         }
-
         if (!old.exists()) {
             return true;
         }
-
         if (!newFile.exists()) {
             return false;
         }
-
         if (newFile.length() > old.length()) {
             return true;
+        }else if (newFile.length() == old.length()) {
+            return false;
         }
-
         return newFile.lastModified() > old.lastModified();
     }
 
@@ -327,12 +341,25 @@ public class IncrementalJavaCompiler extends Compiler {
         StringBuilder sb = new StringBuilder();
 
         for (String library : getBuiltInLibraries()) {
+            sb.append(":");
             sb.append(library).append("/").append("classes.jar");
+        }
+
+        if (buildSettings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("false")) {
+            sb.append(":");
+            sb.append(l.getAbsolutePath());
+            sb.append("/");
+            sb.append("libs");
+            sb.append("/");
+            sb.append("http-legacy-android-28");
+            sb.append("/");
+            sb.append("classes.jar");
         }
 
         sb.append(mll.getJarLocalLibrary());
 
-        return sb.toString();
+        String str = sb.toString();
+        return str;
     }
     private static class CompilerOutputStream extends OutputStream {
 
@@ -376,14 +403,15 @@ public class IncrementalJavaCompiler extends Compiler {
         if (projectConfig.N.l) {
             arrayList.add(":" + path + "play-services-ads-18.2.0");
         }
-        if (projectConfig.N.o) {
-            arrayList.add(":" + path + "gson-2.8.0");
-        }
+
         if (projectConfig.N.n) {
             arrayList.add(":" + path + "glide-4.11.0");
         }
         if (projectConfig.N.p) {
             arrayList.add(":" + path + "okhttp-3.9.1");
+        }
+        if (projectConfig.N.o) {
+            arrayList.add(":" + path + "gson-2.8.0");
         }
         
         return arrayList;
