@@ -11,7 +11,7 @@ public abstract class Compiler {
         void onResult(boolean success, String message);
     }
 
-    abstract public ArrayList<File> getSourceFiles();
+    abstract public ArrayList<?> getSourceFiles();
 
     abstract public void compile();
 }
