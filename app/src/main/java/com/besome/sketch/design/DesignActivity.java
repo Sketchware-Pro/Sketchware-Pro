@@ -1,5 +1,6 @@
 package com.besome.sketch.design;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -90,6 +91,7 @@ import id.indosw.mod.DirectEditorActivity;
 import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.alucard.tn.shrinker.R8Executor;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -104,8 +106,6 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileLogSaver;
 import mod.jbk.bundle.BundleToolCompiler;
-import mod.tyron.compiler.Compiler;
-import mod.tyron.compiler.IncrementalCompiler;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -390,6 +390,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -1116,9 +1117,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (this.d) {
                 cancel(true);
             } else {
-
-                BuildSettings buildSettings = new BuildSettings(q.b);
-
                 try {
                     DesignActivity.this.q.c();
                     DesignActivity.this.q.c(super.a);
@@ -1165,7 +1163,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    boolean usingAapt2 = buildSettings
+                    boolean usingAapt2 = new BuildSettings(q.b)
                             .getValue(BuildSettings.SETTING_RESOURCE_PROCESSOR,
                                     BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
                             ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
@@ -1177,57 +1175,49 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     publishProgress("Java is compiling...");
+                    mDp.f();
+                    if (this.d) {
+                        cancel(true);
+                        return;
+                    }
 
-                    boolean incrementalCompilationEnabled = buildSettings.
-                            getValue(BuildSettings.SETTING_BUILD_INCREMENTAL, "false")
-                            .equals("true");
-
-                    if (incrementalCompilationEnabled) {
-                        IncrementalCompiler incrementalCompiler = new IncrementalCompiler(q);
-                        incrementalCompiler.setResultListener(new Compiler.Result() {
-                            @Override
-                            public void onResult(boolean success, String message) {
-                                if(!success){
-                                    DesignActivity.this.d(message);
-                                    return;
-                                }
-                            }
-                        });
-                    } else {
-                        mDp.f();
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
-
-                        StringfogHandler stringfogHandler = new StringfogHandler(DesignActivity.this.q.b);
-                        stringfogHandler.start(this, mDp);
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
-
+                    StringfogHandler stringfogHandler = new StringfogHandler(DesignActivity.this.q.b);
+                    stringfogHandler.start(this, mDp);
+                    if (this.d) {
+                        cancel(true);
+                        return;
+                    }
+                    Boolean usingR8 = new BuildSettings(q.b)
+                            .getValue(BuildSettings.SETTING_SHRINKER,
+                                    BuildSettings.SETTING_SHRINK_WITH_PROGUARD)
+                            .equals(BuildSettings.SETTING_SHRINK_WITH_R8);
+                    if (!usingR8) {
                         ProguardHandler proguardHandler = new ProguardHandler(DesignActivity.this.q.b);
                         proguardHandler.start(this, mDp);
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
-
-                        publishProgress(mDp.getDxRunningText());
-                        mDp.c();
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
-
-                        publishProgress("Merging libraries' DEX files...");
-                        mDp.h();
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
+                    } else {
+                        R8Executor r8Executor = new R8Executor(mDp, this);
+                        r8Executor.compile();
                     }
+                    publishProgress(usingR8 ? "R8 is running" : "Proguard is running");
+                    if (this.d) {
+                        cancel(true);
+                        return;
+                    }
+
+                    publishProgress(mDp.getDxRunningText());
+                    mDp.c();
+                    if (this.d) {
+                        cancel(true);
+                        return;
+                    }
+
+                    publishProgress("Merging libraries' DEX files...");
+                    mDp.h();
+                    if (this.d) {
+                        cancel(true);
+                        return;
+                    }
+
                     boolean buildingAAB = new BuildSettings(q.b)
                             .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
                                     BuildSettings.SETTING_OUTPUT_FORMAT_APK)
