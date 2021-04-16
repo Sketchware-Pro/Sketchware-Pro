@@ -47,9 +47,9 @@ And that summarized:
    - `chore:` Code maintenance (you can also use emojis to represent commit types)
 
 Examples:
- - `feat: Added a new technique to speed up compiling`
- - `fix: Fixed crash when the app starts on certain phones`
- - `refactor: Reformatted code at File.java`
+ - `feat: Speed up compiling with new technique`
+ - `fix: Fix crash during launch on certain phones`
+ - `refactor: Reformat code at File.java`
  - ...
 
 ## Thanks for contributing
