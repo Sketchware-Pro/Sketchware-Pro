@@ -2,6 +2,8 @@ package mod.hey.studios.build;
 
 import android.os.Environment;
 
+import com.android.tools.r8.w.S;
+
 import java.io.File;
 
 import mod.hey.studios.project.ProjectSettings;
@@ -14,6 +16,7 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_RESOURCE_PROCESSOR = "resource_processor";
     public static final String SETTING_OUTPUT_FORMAT = "output_format";
     public static final String SETTING_JAVA_VERSION = "java_ver";
+    public static final String SETTING_SHRINKER = "shrinker";
     public static final String SETTING_NO_HTTP_LEGACY = "no_http_legacy";
     public static final String SETTING_NO_WARNINGS = "no_warn";
 
@@ -25,6 +28,8 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_RESOURCE_PROCESSOR_AAPT2 = "AAPT2";
     public static final String SETTING_OUTPUT_FORMAT_AAB = "AAB";
     public static final String SETTING_OUTPUT_FORMAT_APK = "APK";
+    public static final String SETTING_SHRINK_WITH_PROGUARD = "Proguard";
+    public static final String SETTING_SHRINK_WITH_R8 = "R8";
 
     public BuildSettings(String sc_id) {
         super(sc_id);
