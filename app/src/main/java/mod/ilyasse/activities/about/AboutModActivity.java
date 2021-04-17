@@ -20,11 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.annotations.NonNull;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -42,7 +42,7 @@ import java.util.TimerTask;
 public class AboutModActivity extends AppCompatActivity {
     private final Timer _timer = new Timer();
     private final Intent todiscord = new Intent();
-    androidx.viewpager.widget.ViewPager viewPager;
+    private androidx.viewpager.widget.ViewPager viewPager;
     private LinearLayout fab;
     private TextView fabtxt;
     private HashMap<String, Object> moddersMap = new HashMap<>();
@@ -207,8 +207,8 @@ public class AboutModActivity extends AppCompatActivity {
                     };
                     _timer.schedule(animTmr, 200);
                 } catch (JSONException e) {
-                    textview3.setText("Something got fucked up");
-                    textview4.setText("If you're seeing this, then we missed something lol");
+                    textview3.setText("Something went wrong");
+                    textview4.setText("If this error shows everytime, please contact us on our Discord server.");
                     Toast.makeText(AboutModActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
                 fab.setVisibility(View.VISIBLE);
@@ -270,9 +270,8 @@ public class AboutModActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         base.addView(viewPager);
-
         tablayout.setSelectedTabIndicatorColor(Color.parseColor("#008DCD"));
-        tablayout.setTabTextColors(Color.parseColor("#424242"), Color.parseColor("#008DCD"));
+        //replaced with xml attributes instead of changing texts colors programmatically
 
         tablayout.setupWithViewPager(viewPager);
 
@@ -306,7 +305,6 @@ public class AboutModActivity extends AppCompatActivity {
     public void _circularImage(final ImageView _image, final String _url) {
         Glide.with(this)
                 .load(_url)
-                .circleCrop()
                 .placeholder(R.drawable.userimg)
                 .into(_image);
 
