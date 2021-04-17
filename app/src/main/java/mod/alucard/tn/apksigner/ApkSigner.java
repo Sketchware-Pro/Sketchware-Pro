@@ -3,6 +3,8 @@ package mod.alucard.tn.apksigner;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.android.apksigner.ApkSignerTool;
 
 import java.io.File;
@@ -20,7 +22,14 @@ public class ApkSigner {
         context = c;
     }
 
-    public void signWithTestKey(String inputPath, String outputPath, LogCallback callback) {
+    /**
+     * Sign an APK with testkey.
+     *
+     * @param inputPath  The APK file to sign
+     * @param outputPath File to output the signed APK to
+     * @param callback   Callback for System.out during signing. May be null
+     */
+    public void signWithTestKey(@NonNull String inputPath, @NonNull String outputPath, @Nullable LogCallback callback) {
         Object savedAccessFlags = null;
         Object savedOut = null;
         LogWriter logger = new LogWriter(callback);
