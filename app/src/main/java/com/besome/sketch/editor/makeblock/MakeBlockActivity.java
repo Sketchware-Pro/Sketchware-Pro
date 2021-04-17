@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.Toolbar;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders;
 
 public class MakeBlockActivity extends BaseAppCompatActivity {
     public Toolbar k;
@@ -114,8 +113,6 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(MakeBlockActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public void onSaveInstanceState(Bundle bundle) {
