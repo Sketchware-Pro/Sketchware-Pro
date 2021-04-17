@@ -671,8 +671,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
 
-        super.d.setScreenName(DesignActivity.class.getSimpleName());
-        super.d.send((new ScreenViewBuilder()).build());
         long var2 = GB.c();
         if (var2 < 100L && var2 > 0L) {
             r();
