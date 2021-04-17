@@ -45,7 +45,6 @@ import com.google.ads.consent.ConsentForm;
 import com.google.ads.consent.ConsentFormListener;
 import com.google.ads.consent.ConsentInfoUpdateListener;
 import com.google.ads.consent.ConsentInformation;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -354,8 +353,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onResume() {
         Snackbar snackbar;
         super.onResume();
-        this.d.setScreenName(MainActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
         long c = GB.c();
         if (c < 100 && c > 0) {
             r();

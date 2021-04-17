@@ -48,7 +48,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdRequest.Builder;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders.ScreenViewBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
@@ -671,8 +670,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
 
-        super.d.setScreenName(DesignActivity.class.getSimpleName());
-        super.d.send((new ScreenViewBuilder()).build());
         long var2 = GB.c();
         if (var2 < 100L && var2 > 0L) {
             r();
