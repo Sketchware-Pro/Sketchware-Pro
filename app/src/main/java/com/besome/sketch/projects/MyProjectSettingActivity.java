@@ -25,7 +25,6 @@ import com.android.dx.io.Opcodes;
 import com.android.sdklib.internal.avd.AvdManager;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.flexbox.BuildConfig;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -318,8 +317,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(MyProjectSettingActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public void onStart() {
