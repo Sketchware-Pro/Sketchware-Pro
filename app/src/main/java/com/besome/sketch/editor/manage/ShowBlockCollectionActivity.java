@@ -16,7 +16,6 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,8 +166,6 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
-        d.setScreenName(ShowBlockCollectionActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public final Rs a(BlockBean blockBean) {
