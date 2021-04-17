@@ -24,7 +24,6 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.flexbox.FlexItem;
 import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -256,8 +255,6 @@ public class ComponentAddActivity extends BaseDialogActivity {
     @Override
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(ComponentAddActivity.class.getSimpleName());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public void onSaveInstanceState(Bundle bundle) {

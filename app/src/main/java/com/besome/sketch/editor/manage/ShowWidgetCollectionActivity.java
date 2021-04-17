@@ -24,7 +24,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -124,8 +123,6 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(ShowWidgetCollectionActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public sy a(ViewBean viewBean) {

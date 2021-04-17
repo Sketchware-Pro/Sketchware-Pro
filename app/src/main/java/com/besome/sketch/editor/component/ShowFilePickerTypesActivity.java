@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.gms.analytics.HitBuilders;
 
 public class ShowFilePickerTypesActivity extends BaseDialogActivity implements View.OnClickListener {
     public RadioGroup t;
@@ -57,7 +56,5 @@ public class ShowFilePickerTypesActivity extends BaseDialogActivity implements V
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(ShowFilePickerTypesActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }
