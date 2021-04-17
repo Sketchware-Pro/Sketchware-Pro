@@ -354,8 +354,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onResume() {
         Snackbar snackbar;
         super.onResume();
-        this.d.setScreenName(MainActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
         long c = GB.c();
         if (c < 100 && c > 0) {
             r();
