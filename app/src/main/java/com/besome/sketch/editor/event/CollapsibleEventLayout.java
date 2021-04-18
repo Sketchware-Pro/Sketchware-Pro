@@ -1,19 +1,20 @@
 package com.besome.sketch.editor.event;
 
-import a.a.a.Os;
-import a.a.a.Ps;
-import a.a.a.wB;
-import a.a.a.xB;
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import a.a.a.wB;
+import a.a.a.xB;
+
 public class CollapsibleEventLayout extends FrameLayout {
+
     public Context a;
     public View b;
     public View c;
@@ -36,87 +37,156 @@ public class CollapsibleEventLayout extends FrameLayout {
         a(context);
     }
 
-    @SuppressLint("ResourceType")
     public final void a(Context context) {
-        this.a = context;
-        wB.a(context, this, 2131427432);
-        this.g = (LinearLayout) findViewById(2131231612);
-        this.f = (LinearLayout) findViewById(2131231479);
-        this.h = findViewById(2131230922);
-        this.b = findViewById(2131230927);
-        this.c = findViewById(2131230923);
-        this.i = (TextView) findViewById(2131232287);
-        this.d = (TextView) findViewById(2131230929);
-        this.d.setText(xB.b().a(getContext(), 2131624980));
-        this.e = (TextView) findViewById(2131230925);
-        this.e.setText(xB.b().a(getContext(), 2131624974));
-        this.h.setVisibility(4);
-        this.f.setVisibility(8);
-        this.i.setText(xB.b().a(getContext(), 2131624941));
-        this.n = a(0, 2131165834, xB.b().a(context, 2131625027));
-        this.o = a(1, 2131165524, xB.b().a(context, 2131624986));
-        this.p = a(2, 2131165700, xB.b().a(context, 2131625576));
-        this.p.setVisibility(8);
-        this.g.addView(this.n);
-        this.g.addView(this.o);
-        this.g.addView(this.p);
-        this.j = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837513);
-        this.k = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837514);
-        this.l = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837507);
-        this.m = (AnimatorSet) AnimatorInflater.loadAnimator(context, 2130837508);
+        a = context;
+        wB.a(context, this, com.sketchware.remod.R.layout.fr_logic_list_item_buttons);
+        g = findViewById(com.sketchware.remod.R.id.project_buttons);
+        f = findViewById(com.sketchware.remod.R.id.ll_warning);
+        h = findViewById(com.sketchware.remod.R.id.confirm_layout);
+        b = findViewById(com.sketchware.remod.R.id.confirm_yes);
+        c = findViewById(com.sketchware.remod.R.id.confirm_no);
+        i = findViewById(com.sketchware.remod.R.id.tv_warning_message);
+        d = findViewById(com.sketchware.remod.R.id.confirm_yes_text);
+        d.setText(xB.b().a(
+                getContext(),
+                com.sketchware.remod.R.string.common_word_continue
+        ));
+        e = findViewById(com.sketchware.remod.R.id.confirm_no_text);
+        e.setText(xB.b().a(
+                getContext(),
+                com.sketchware.remod.R.string.common_word_cancel
+        ));
+        h.setVisibility(INVISIBLE);
+        f.setVisibility(GONE);
+        i.setText(xB.b().a(
+                getContext(),
+                com.sketchware.remod.R.string.common_message_confirm
+        ));
+        n = a(
+                0,
+                com.sketchware.remod.R.drawable.ic_reset_color_32dp,
+                xB.b().a(
+                        context,
+                        com.sketchware.remod.R.string.common_word_reset
+                )
+        );
+        o = a(
+                1,
+                com.sketchware.remod.R.drawable.delete_96,
+                xB.b().a(
+                        context,
+                        com.sketchware.remod.R.string.common_word_delete
+                )
+        );
+        p = a(
+                2,
+                com.sketchware.remod.R.drawable.ic_bookmark_red_48dp,
+                xB.b().a(
+                        context,
+                        com.sketchware.remod.R.string.logic_list_menu_add_to_collection
+                )
+        );
+        p.setVisibility(GONE);
+        g.addView(n);
+        g.addView(o);
+        g.addView(p);
+        j = (AnimatorSet) AnimatorInflater.loadAnimator(
+                context,
+                com.sketchware.remod.R.animator.flip_top_in
+        );
+        k = (AnimatorSet) AnimatorInflater.loadAnimator(
+                context,
+                com.sketchware.remod.R.animator.flip_top_out
+        );
+        l = (AnimatorSet) AnimatorInflater.loadAnimator(
+                context,
+                com.sketchware.remod.R.animator.flip_bottom_in
+        );
+        m = (AnimatorSet) AnimatorInflater.loadAnimator(
+                context,
+                com.sketchware.remod.R.animator.flip_bottom_out
+        );
     }
 
-    @SuppressLint("WrongConstant")
     public void b() {
-        this.o.setVisibility(8);
+        o.setVisibility(GONE);
     }
 
-    @SuppressLint("WrongConstant")
     public void c() {
-        this.p.setVisibility(8);
+        p.setVisibility(GONE);
     }
 
     public void d() {
-        this.k.setTarget(this.g);
-        this.j.setTarget(this.h);
+        k.setTarget(g);
+        j.setTarget(h);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(this.k).with(this.j);
-        animatorSet.addListener(new Os(this));
+        animatorSet.play(k).with(j);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                o.setEnabled(false);
+                c.setEnabled(true);
+                g.setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                f.setVisibility(VISIBLE);
+                h.setVisibility(VISIBLE);
+                o.setEnabled(false);
+                c.setEnabled(false);
+            }
+        });
         animatorSet.start();
     }
 
-    @SuppressLint("WrongConstant")
     public void e() {
-        this.o.setVisibility(0);
+        o.setVisibility(VISIBLE);
     }
 
-    @SuppressLint("WrongConstant")
     public void f() {
-        this.p.setVisibility(0);
+        p.setVisibility(VISIBLE);
     }
 
     public void setButtonOnClickListener(View.OnClickListener onClickListener) {
-        this.b.setOnClickListener(onClickListener);
-        this.c.setOnClickListener(onClickListener);
-        this.n.setOnClickListener(onClickListener);
-        this.o.setOnClickListener(onClickListener);
-        this.p.setOnClickListener(onClickListener);
+        b.setOnClickListener(onClickListener);
+        c.setOnClickListener(onClickListener);
+        n.setOnClickListener(onClickListener);
+        o.setOnClickListener(onClickListener);
+        p.setOnClickListener(onClickListener);
     }
 
-    public final CollapsibleButton a(int i2, int i3, String str) {
-        CollapsibleButton collapsibleButton = new CollapsibleButton(this.a);
-        collapsibleButton.b = i2;
-        collapsibleButton.d.setImageResource(i3);
-        collapsibleButton.e.setText(str);
+    public final CollapsibleButton a(int i, int imageResource, String text) {
+        CollapsibleButton collapsibleButton = new CollapsibleButton(a);
+        collapsibleButton.b = i;
+        collapsibleButton.d.setImageResource(imageResource);
+        collapsibleButton.e.setText(text);
         return collapsibleButton;
     }
 
     public void a() {
-        this.l.setTarget(this.g);
-        this.m.setTarget(this.h);
+        l.setTarget(g);
+        m.setTarget(h);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(this.l).with(this.m);
-        animatorSet.addListener(new Ps(this));
+        animatorSet.play(l).with(m);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                o.setEnabled(true);
+                c.setEnabled(false);
+                h.setVisibility(INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                f.setVisibility(GONE);
+                g.setVisibility(VISIBLE);
+                o.setEnabled(false);
+                c.setEnabled(false);
+            }
+        });
         animatorSet.start();
     }
 }
