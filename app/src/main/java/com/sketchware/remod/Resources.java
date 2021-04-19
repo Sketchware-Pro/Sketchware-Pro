@@ -129,6 +129,7 @@ public class Resources {
         public static final int ti_top = 0x7f080457;
         public static final int toolbar = 0x7f080467;
         public static final int tv_activity_name = 0x7f080477;
+        public static final int tv_compile_log = 0x7f0804b2;
         public static final int tv_component_title = 0x7f0804b5;
         public static final int tv_desc_file_picker = 0x7f0804cc;
         public static final int tv_desc_firebase_path = 0x7f0804cd;
@@ -150,6 +151,7 @@ public class Resources {
 
     public static final class layout {
         public static final int color_picker = 0x7f0b002d;
+        public static final int compile_log = 0x7f0b003c;
         public static final int fr_logic_list_item_button = 0x7f0b0067;
         public static final int fr_logic_list_item_buttons = 0x7f0b0068;
         public static final int logic_popup_add_component_temp = 0x7f0b00a7;
