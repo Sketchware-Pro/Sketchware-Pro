@@ -183,6 +183,7 @@ public class Resources {
 
     public static final class string {
         public static final int besome_blog_url = 0x7f0e0044;
+        public static final int common_error_an_error_occurred = 0x7f0e03cc;
         public static final int common_message_check_network = 0x7f0e03e4;
         public static final int common_message_complete_save = 0x7f0e03ea;
         public static final int common_message_confirm = 0x7f0e03ed;
