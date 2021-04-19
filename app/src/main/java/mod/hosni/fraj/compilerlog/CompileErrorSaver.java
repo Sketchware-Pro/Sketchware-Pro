@@ -22,7 +22,7 @@ public class CompileErrorSaver {
 	public CompileErrorSaver(Activity act, String str) {
 		sc_id = str ;
 		activity = act;
-                path = filePathUtil.getPathErrorLog(str);
+                path = filePathUtil.getLastCompileLogPath(str);
 		check();
 	}
 
