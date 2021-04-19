@@ -153,48 +153,6 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
 		int i = THEME_DEFAULT;
 		String str2 = "";
 		while (i < toLowerCase.length()) {
-			char charAt = toLowerCase.charAt(i);
-			StringBuilder stringBuilder2;
-			if (charAt == '_' && i < toLowerCase.length() + THEME_NONE) {
-				int i2 = i + THEME_NOACTIONBAR;
-				char charAt2 = toLowerCase.charAt(i2);
-				if (Character.isLowerCase(charAt2)) {
-					stringBuilder = new StringBuilder();
-					stringBuilder.append(str2);
-					stringBuilder.append(Character.toUpperCase(charAt2));
-					str2 = stringBuilder.toString();
-					i = i2;
-				} else {
-					stringBuilder2 = new StringBuilder();
-					stringBuilder2.append(str2);
-					stringBuilder2.append(charAt);
-					str2 = stringBuilder2.toString();
-				}
-			} else if (i == 0) {
-				stringBuilder2 = new StringBuilder();
-				stringBuilder2.append(str2);
-				stringBuilder2.append(Character.toUpperCase(charAt));
-				str2 = stringBuilder2.toString();
-			} else {
-				stringBuilder2 = new StringBuilder();
-				stringBuilder2.append(str2);
-				stringBuilder2.append(charAt);
-				str2 = stringBuilder2.toString();
-			}
-			i += THEME_NOACTIONBAR;
-		}
-		stringBuilder = new StringBuilder();
-		stringBuilder.append(str2);
-		stringBuilder.append(str.contains("_fragment") ? "" : "Activity");
-		return stringBuilder.toString();
-	}
-
-	public static String getActivityNameOld(String str) {
-		StringBuilder stringBuilder;
-		String toLowerCase = str.toLowerCase();
-		int i = THEME_DEFAULT;
-		String str2 = "";
-		while (i < toLowerCase.length()) {
 			int i2;
 			String stringBuilder2;
 			char charAt = toLowerCase.charAt(i);
