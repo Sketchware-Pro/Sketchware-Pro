@@ -1,58 +1,50 @@
 package mod.jbk.bundle;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.apksigner.ApkSignerTool;
 import com.android.tools.build.bundletool.BundleToolMain;
 import com.besome.sketch.design.DesignActivity;
 
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import a.a.a.Dp;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class BundleToolCompiler {
 
-    public static final String BUNDLE_FILE_NAME = "bundle.aab";
     public static final String MODULE_ARCHIVE_FILE_NAME = "module-main.zip";
-    public static final String MODULE_MAIN_ROOT = "module-main";
-    public static final String MODULE_DEX_DIRECTORY = new File(MODULE_MAIN_ROOT, "dex").getAbsolutePath();
-    public static final String MODULE_LIB_DIRECTORY = new File(MODULE_MAIN_ROOT, "lib").getAbsolutePath();
-    public static final String MODULE_RES_DIRECTORY = new File(MODULE_MAIN_ROOT, "res").getAbsolutePath();
-    public static final String MODULE_ROOT_DIRECTORY = new File(MODULE_MAIN_ROOT, "root").getAbsolutePath();
-    public static final String MODULE_MANIFEST_DIRECTORY = new File(MODULE_MAIN_ROOT, "manifest").getAbsolutePath();
+    public static final String MODULE_ASSETS = "assets";
+    public static final String MODULE_DEX = "dex";
+    public static final String MODULE_LIB = "lib";
+    public static final String MODULE_RES = "res";
+    public static final String MODULE_ROOT = "root";
+    public static final String MODULE_MANIFEST = "manifest";
     private static final String TAG = "BundleToolCompiler";
+    public static String BUNDLE_FILE_NAME;
     public static String APK_SET_FILE_NAME;
     private final DesignActivity.a buildingDialog;
     private final Dp mDp;
     public File mainModuleArchive;
-    public File mainModuleDirectory;
-    public File mainModuleAssetsDirectory;
-    public File mainModuleDexDirectory;
-    public File mainModuleLibDirectory;
-    public File mainModuleManifestDirectory;
-    public File mainModuleResDirectory;
-    public File mainModuleRootDirectory;
     public File appBundle;
     public File apkSet;
 
-    public BundleToolCompiler(Dp dp, DesignActivity.a designActivity) {
+    public BundleToolCompiler(Dp dp, DesignActivity.a designActivityA) {
+        BUNDLE_FILE_NAME = dp.f.d + ".aab";
+        APK_SET_FILE_NAME = dp.f.d + ".apks";
+        buildingDialog = designActivityA;
         mDp = dp;
-        buildingDialog = designActivity;
-        APK_SET_FILE_NAME = mDp.f.d + ".apks";
         mainModuleArchive = new File(mDp.f.t, MODULE_ARCHIVE_FILE_NAME);
         appBundle = new File(mDp.f.t, BUNDLE_FILE_NAME);
         apkSet = new File(mDp.f.t, APK_SET_FILE_NAME);
-        prepareModuleDirectory();
     }
 
     public void buildApkSet() {
@@ -95,18 +87,18 @@ public class BundleToolCompiler {
 
     public void extractInstallApkFromApkSet() {
         long savedTimeMillis = System.currentTimeMillis();
-        try {
-            ZipInputStream apkSetStream = new ZipInputStream(new FileInputStream(apkSet));
-            ZipEntry entryInApkSet = apkSetStream.getNextEntry();
+        try (FileInputStream apkSetInputStream = new FileInputStream(apkSet)) {
+            try (ZipInputStream apkSetStream = new ZipInputStream(apkSetInputStream)) {
+                ZipEntry entryInApkSet = apkSetStream.getNextEntry();
 
-            while (entryInApkSet != null) {
-                Log.d(TAG, "Entry in APK Set's name: " + entryInApkSet.getName());
-                if (entryInApkSet.getName().equals("universal.apk")) {
-                    FileUtil.writeBytes(new File(mDp.f.G), FileUtil.readFromInputStream(apkSetStream));
+                while (entryInApkSet != null) {
+                    if (entryInApkSet.getName().equals("universal.apk")) {
+                        FileUtil.writeBytes(new File(mDp.f.G), FileUtil.readFromInputStream(apkSetStream));
+                    }
+
+                    apkSetStream.closeEntry();
+                    entryInApkSet = apkSetStream.getNextEntry();
                 }
-
-                apkSetStream.closeEntry();
-                entryInApkSet = apkSetStream.getNextEntry();
             }
         } catch (IOException e) {
             buildingDialog.aWithMessage(e.getMessage());
@@ -138,114 +130,83 @@ public class BundleToolCompiler {
         Log.d(TAG, "Signing Install-APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
-    public void zipMainModule() {
-        ZipFile mainModuleZip = new ZipFile(mainModuleArchive);
-        File[] mainModuleDirectoryFiles = mainModuleDirectory.listFiles();
-        if (mainModuleDirectoryFiles != null) {
-            for (File file : mainModuleDirectoryFiles) {
-                try {
-                    if (file.isDirectory()) {
-                        mainModuleZip.addFolder(file);
-                    } else {
-                        mainModuleZip.addFile(file);
-                    }
-                } catch (ZipException e) {
-                    buildingDialog.a(e.toString());
-                }
-            }
-        }
-    }
+    /**
+     * Re-compresses <project name>.apk.res to module-main.zip in the right format.
+     *
+     * @throws IOException Thrown if any I/O exception occurs while creating the archive
+     */
+    public void createModuleMainArchive() throws IOException {
+        /* Get an automatically closed FileInputStream of <project name>.apk.res */
+        try (FileInputStream apkResStream = new FileInputStream(mDp.f.C)) {
+            /* Create an automatically closed ZipInputStream of <project name>.apk.res */
+            try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
+                /* Get an automatically closed FileOutputStream of module-main.zip */
+                try (FileOutputStream mainModuleStream = new FileOutputStream(mainModuleArchive)) {
+                    /* Buffer writing to module-main.zip */
+                    try (BufferedOutputStream bufferedMainModuleStream = new BufferedOutputStream(mainModuleStream)) {
+                        /* Finally, use it as ZipOutputStream */
+                        try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
 
-    private void prepareModuleDirectory() {
-        mainModuleDirectory = new File(mDp.f.t, "module-main");
-        if (!mainModuleDirectory.exists()) {
-            mainModuleDirectory.mkdirs();
-        }
+                            /* First, compress DEX files into module-main.zip */
+                            File[] binDirectoryContent = new File(mDp.f.t).listFiles();
+                            if (binDirectoryContent != null) {
+                                for (File file : binDirectoryContent) {
+                                    if (file.isFile() && file.getName().endsWith(".dex")) {
+                                        /* Create a ZIP-entry of the DEX file */
+                                        ZipEntry dexZipEntry = new ZipEntry(MODULE_DEX + File.separator + file.getName());
+                                        zipOutputStream.putNextEntry(dexZipEntry);
 
-        mainModuleAssetsDirectory = new File(mainModuleDirectory, "assets");
-        if (!mainModuleAssetsDirectory.exists()) {
-            mainModuleAssetsDirectory.mkdir();
-        }
+                                        /* Read the DEX file and compress into module-main.zip */
+                                        try (FileInputStream dexInputStream = new FileInputStream(file)) {
+                                            byte[] buffer = new byte[1024];
+                                            int length;
+                                            while ((length = dexInputStream.read(buffer)) > 0) {
+                                                zipOutputStream.write(buffer, 0, length);
+                                            }
+                                        }
+                                        zipOutputStream.closeEntry();
+                                    }
+                                }
+                            }
 
-        mainModuleDexDirectory = new File(mainModuleDirectory, "dex");
-        if (!mainModuleDexDirectory.exists()) {
-            mainModuleDexDirectory.mkdir();
-        }
+                            ZipEntry entry = zipInputStream.getNextEntry();
 
-        mainModuleLibDirectory = new File(mainModuleDirectory, "lib");
-        if (!mainModuleLibDirectory.exists()) {
-            mainModuleLibDirectory.mkdir();
-        }
+                            while (entry != null) {
+                                ZipEntry toCompress;
+                                if (entry.getName().startsWith("assets/")) {
+                                    String entryName = entry.getName().substring(7);
+                                    toCompress = new ZipEntry(MODULE_ASSETS + File.separator + entryName);
+                                } else if (entry.getName().startsWith("lib/")) {
+                                    String entryName = entry.getName().substring(4);
+                                    toCompress = new ZipEntry(MODULE_LIB + File.separator + entryName);
+                                } else if (entry.getName().startsWith("res/")) {
+                                    String entryName = entry.getName().substring(4);
+                                    toCompress = new ZipEntry(MODULE_RES + File.separator + entryName);
+                                } else if (entry.getName().equals("AndroidManifest.xml")) {
+                                    toCompress = new ZipEntry(MODULE_MANIFEST + File.separator + "AndroidManifest.xml");
+                                } else if (entry.getName().equals("resources.pb")) {
+                                    toCompress = new ZipEntry("resources.pb");
+                                } else {
+                                    String entryName = entry.getName();
+                                    toCompress = new ZipEntry(MODULE_ROOT + File.separator + entryName);
+                                }
+                                zipOutputStream.putNextEntry(toCompress);
 
-        mainModuleManifestDirectory = new File(mainModuleDirectory, "manifest");
-        if (!mainModuleManifestDirectory.exists()) {
-            mainModuleManifestDirectory.mkdir();
-        }
+                                byte[] buffer = new byte[1024];
+                                int length;
+                                while ((length = zipInputStream.read(buffer)) > 0) {
+                                    zipOutputStream.write(buffer, 0, length);
+                                }
 
-        mainModuleResDirectory = new File(mainModuleDirectory, "res");
-        if (!mainModuleResDirectory.exists()) {
-            mainModuleResDirectory.mkdir();
-        }
-
-        mainModuleRootDirectory = new File(mainModuleDirectory, "root");
-        if (!mainModuleRootDirectory.exists()) {
-            mainModuleRootDirectory.mkdirs();
-        }
-    }
-
-    private void copyDexesToMainModuleDirectory() {
-        File[] binDirectoryContent = new File(mDp.f.t).listFiles();
-        if (binDirectoryContent != null) {
-            for (File file : binDirectoryContent) {
-                if (file.getName().endsWith(".dex")) {
-                    FileUtil.copyFile(file.getAbsolutePath(), new File(mainModuleDexDirectory, file.getName()).getAbsolutePath());
-                }
-            }
-        }
-    }
-
-    public void copyFilesToMainModuleDirectory() throws IOException {
-        //TODO: Extract <project name>.apk.res to module-main directory directly and work from there instead of copying files
-        copyDexesToMainModuleDirectory();
-
-        File extractedResApkDirectory = new File(new File(mDp.f.C).getParent(), "resCompiled");
-        FileUtil.extractZipTo(new ZipInputStream(new FileInputStream(mDp.f.C)), extractedResApkDirectory.getAbsolutePath());
-
-        File[] resApkContents = extractedResApkDirectory.listFiles();
-        if (resApkContents != null) {
-            for (File resApkRootElement : resApkContents) {
-                switch (resApkRootElement.getName()) {
-                    case "assets":
-                        FileUtil.copyDirectory(resApkRootElement, mainModuleAssetsDirectory);
-                        break;
-
-                    case "lib":
-                        FileUtil.copyDirectory(resApkRootElement, mainModuleLibDirectory);
-                        break;
-
-                    case "res":
-                        FileUtil.copyDirectory(resApkRootElement, mainModuleResDirectory);
-                        break;
-
-                    case "AndroidManifest.xml":
-                        FileUtil.copyFile(resApkRootElement.getAbsolutePath(), new File(mainModuleManifestDirectory, "AndroidManifest.xml").getAbsolutePath());
-                        break;
-
-                    case "resources.pb":
-                        FileUtil.copyFile(resApkRootElement.getAbsolutePath(), new File(mainModuleDirectory, "resources.pb").getAbsolutePath());
-                        break;
-
-                    default:
-                        if (resApkRootElement.isFile()) {
-                            FileUtil.copyFile(resApkRootElement.getAbsolutePath(), new File(mainModuleRootDirectory, resApkRootElement.getName()).getAbsolutePath());
-                        } else {
-                            FileUtil.copyDirectory(resApkRootElement, new File(mainModuleRootDirectory, resApkRootElement.getName()));
+                                zipOutputStream.closeEntry();
+                                zipInputStream.closeEntry();
+                                entry = zipInputStream.getNextEntry();
+                            }
+                            bufferedMainModuleStream.flush();
                         }
-                        break;
+                    }
                 }
             }
         }
     }
-
-    //TODO: clean up module-main while extracting Install-APK from APK Set
 }
