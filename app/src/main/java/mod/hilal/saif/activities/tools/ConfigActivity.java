@@ -33,8 +33,8 @@ public class ConfigActivity extends Activity {
     private static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     private static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
     private static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
-    private static final String SETTING_SHOW_ALL_BLOCKS = "show-all-blocks";
     private static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
+    private static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
@@ -56,6 +56,29 @@ public class ConfigActivity extends Activity {
             }
         }
         return "/.sketchware/backups/";
+    }
+
+    public static boolean isNewVCEnabled() {
+        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            return false;
+        }
+
+        HashMap<String, Object> settings = new Gson().fromJson(
+                FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
+                Helper.TYPE_MAP);
+        if (settings.containsKey(SETTING_USE_NEW_VERSION_CONTROL)) {
+            Object value = settings.get(SETTING_USE_NEW_VERSION_CONTROL);
+            if (value instanceof Boolean) {
+                return (Boolean) value;
+            } else {
+                SketchwareUtil.toastError("Detected invalid preference for Advanced "
+                                + " Version Control. Restoring defaults",
+                        Toast.LENGTH_LONG);
+                settings.remove(SETTING_USE_NEW_VERSION_CONTROL);
+                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+            }
+        }
+        return false;
     }
 
     public static boolean isLegacyCeEnabled() {
@@ -118,7 +141,7 @@ public class ConfigActivity extends Activity {
                 false);
         addSwitchPreference("Show all blocks",
                 "All variable blocks will be visible, even if you don't have variables for them.",
-                SETTING_SHOW_ALL_BLOCKS,
+                SETTING_ALWAYS_SHOW_BLOCKS,
                 false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.",
@@ -147,6 +170,10 @@ public class ConfigActivity extends Activity {
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
                 SETTING_LEGACY_CODE_EDITOR,
+                false);
+        addSwitchPreference("Use new Version Control",
+                "Use advanced Version Control System Dialog",
+                SETTING_USE_NEW_VERSION_CONTROL,
                 false);
     }
 
@@ -349,7 +376,7 @@ public class ConfigActivity extends Activity {
         defaultSettings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
         defaultSettings.put(SETTING_BACKUP_DIRECTORY, "");
         defaultSettings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        defaultSettings.put(SETTING_SHOW_ALL_BLOCKS, false);
+        defaultSettings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         defaultSettings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         setting_map = defaultSettings;
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(defaultSettings));
