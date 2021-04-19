@@ -89,6 +89,7 @@ import id.indosw.mod.DirectEditorActivity;
 import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.alucard.tn.shrinker.R8Executor;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -101,7 +102,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
-import mod.hosni.fraj.compilerlog.CompileLogSaver;
+import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.bundle.BundleToolCompiler;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
@@ -207,7 +208,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
     public final void d(String error) {
-        new CompileLogSaver(q.b).setLastLog(error);
+        new CompileErrorSaver(this,q.b).setErrorText(error);
         Snackbar snackbar = Snackbar.a(this.n, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(this.getApplicationContext(), 2131625038), new OnClickListener() {
             @Override
@@ -1204,8 +1205,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
-                        ProguardHandler proguardHandler = new ProguardHandler(DesignActivity.this.q.b);
-                        proguardHandler.start(this, mDp);
+                        boolean shrinkWithR8 = buildSettings
+                                .getValue(BuildSettings.SETTING_DEX_SHRINKER,
+                                        BuildSettings.SETTING_DEX_SHRINKER_PROGUARD)
+                                .equals(BuildSettings.SETTING_FEX_SHRINKER_R8);
+                        if (shrinkWithR8) {
+                            R8Executor r8Executor = new R8Executor(mDp, this);
+                            r8Executor.compile();
+                        } else {
+                            ProguardHandler proguardHandler = new ProguardHandler(DesignActivity.this.q.b);
+                            proguardHandler.start(this, mDp);
+                        }
                         if (this.d) {
                             cancel(true);
                             return;
@@ -1232,9 +1242,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     if (buildingAAB) {
                         BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
                         publishProgress("Creating app module...");
-                        compiler.copyFilesToMainModuleDirectory();
+                        // compiler.copyFilesToMainModuleDirectory();
                         publishProgress("Compressing app module...");
-                        compiler.zipMainModule();
+                        // compiler.zipMainModule();
                         publishProgress("Building app bundle...");
                         compiler.buildBundle();
                         publishProgress("Building APK Set...");
