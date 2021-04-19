@@ -1,0 +1,306 @@
+package mod.alucard.tn.jar2dex;
+
+import static com.besome.sketch.SketchApplication.getContext;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.android.tools.r8.D8;
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.jbk.swproremodremod.R;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import mod.hey.studios.util.Helper;
+
+public class Jar2DexActivity extends Activity {
+
+    private final File getRootFiles = new File(getContext().getFilesDir(), "libs");
+    private final String androidJarPath = new File(getRootFiles, "android.jar").getAbsolutePath();
+    public static final int minApi = 23;
+    public static final String TAG = "JarToDex";
+    public TextView txToolbar;
+    public TextView logText;
+    public CheckBox c_release;
+    public CheckBox c_intermediate;
+    public CheckBox c_filePerClass;
+    public ProgressBar progressBar;
+    public ImageView back;
+    public EditText jarPath;
+    public EditText outputPath;
+    public EditText androidJar;
+    public EditText extra_args;
+    public Button run_d8;
+    public Button selectJar;
+    public Button selectOutput;
+    public Button selectAnJar;
+    public TextView clearLog;
+    public ScrollView scrollView;
+    public String[] getArrayListArgs;
+    public ArrayList<String> args = new ArrayList<>();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(0x7f0b01f4);
+        initialize(savedInstanceState);
+        initializeLogic();
+    }
+
+    public void initialize(Bundle bundle) {
+        txToolbar = findViewById(0x7f08079f);
+        back = findViewById(0x7f0807a0);
+        progressBar = findViewById(0x7f080797);
+        logText = findViewById(0x7f080796);
+        c_release = findViewById(0x7f080790);
+        c_intermediate = findViewById(0x7f080791);
+        c_filePerClass = findViewById(0x7f080792);
+        jarPath = findViewById(0x7f080786);
+        outputPath = findViewById(0x7f08078A);
+        androidJar = findViewById(0x7f08078D);
+        extra_args = findViewById(0x7f080793);
+        run_d8 = findViewById(0x7f080794);
+        selectJar = findViewById(0x7f080787);
+        selectOutput = findViewById(0x7f08078B);
+        selectAnJar = findViewById(0x7f08078E);
+        clearLog = findViewById(0x7f08079B);
+        scrollView = findViewById(0x7f0807a1);
+        Helper.applyRippleToToolbarView(back);
+        Helper.applyRipple(getContext(), run_d8);
+        Helper.fixFileprovider();
+        selectJar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogProperties dialogProperties = new DialogProperties();
+                dialogProperties.selection_mode = 0;
+                dialogProperties.selection_type = 0;
+                dialogProperties.root = new File("/mnt");
+                dialogProperties.error_dir = new File("/mnt");
+                dialogProperties.offset = new File("/mnt");
+                dialogProperties.extensions = new String[]{"jar"};
+                FilePickerDialog filePickerDialog = new FilePickerDialog(getContext(), dialogProperties);
+                filePickerDialog.setTitle("Select a jar file");
+                filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
+                    @Override
+                    public void onSelectedFilePaths(String[] strings) {
+                        jarPath.setText(strings[0]);
+
+                    }
+                });
+                filePickerDialog.show();
+            }
+        });
+        selectOutput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogProperties dialogProperties = new DialogProperties();
+                dialogProperties.selection_mode = 0;
+                dialogProperties.selection_type = 0;
+                dialogProperties.root = new File("/mnt");
+                dialogProperties.error_dir = new File("/mnt");
+                dialogProperties.offset = new File("/mnt");
+                FilePickerDialog filePickerDialog = new FilePickerDialog(getContext(), dialogProperties);
+                filePickerDialog.setTitle("Select an output directory");
+                filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
+                    @Override
+                    public void onSelectedFilePaths(String[] strings) {
+                        outputPath.setText(strings[0]);
+                    }
+                });
+                filePickerDialog.show();
+            }
+        });
+        androidJar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogProperties dialogProperties = new DialogProperties();
+                dialogProperties.selection_mode = 0;
+                dialogProperties.selection_type = 0;
+                dialogProperties.root = new File("/mnt");
+                dialogProperties.error_dir = new File("/mnt");
+                dialogProperties.offset = new File("/mnt");
+                dialogProperties.extensions = new String[]{"jar"};
+                FilePickerDialog filePickerDialog = new FilePickerDialog(getContext(), dialogProperties);
+                filePickerDialog.setTitle("Select an android jar");
+                filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
+                    @Override
+                    public void onSelectedFilePaths(String[] strings) {
+                        androidJar.setText(strings[0]);
+                    }
+                });
+                filePickerDialog.show();
+            }
+        });
+        run_d8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @Deprecated
+            public void onClick(View v) {
+                new AsyncTask<String, Integer, String>() {
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        logText.setText("Running...");
+                        run_d8.setEnabled(false);
+                        run_d8.setText("...");
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    protected String doInBackground(String... strings) {
+                        if (!(jarPath.getText().toString().length() < 1 && outputPath.getText().toString().length() < 1)) {
+                            runJarToDex();
+                        }
+                        return "";
+                    }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+                        logText.setText("Done");
+                        run_d8.setEnabled(true);
+                        run_d8.setText("RUN D8");
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }.execute("");
+            }
+        });
+    }
+
+    public void initializeLogic() {
+        progressBar.setVisibility(View.INVISIBLE);
+        txToolbar.setText("Jar To Dex");
+        OutputStream outputStream = new OutputStream() {
+            private String mCache;
+
+            @Override
+            public void write(int i) throws IOException {
+                if (mCache == null) {
+                    mCache = "";
+                }
+                if (((char) i) == '\n') {
+                    final String str = mCache;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (logText.getText().toString().length() > 7500) {
+                                logText.setText("");
+                            }
+                            logText.setText(logText.getText().toString().concat("/n".concat(str)));
+                            scrollView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollView.fullScroll(130);
+                                }
+                            });
+                        }
+                    });
+                    mCache = "";
+                    return;
+                }
+                mCache = String.valueOf(mCache) + ((char) i);
+            }
+        };
+        try {
+            Field declaredField = System.class.getDeclaredField("out");
+            Field declaredField2 = System.class.getDeclaredField("accessFlag");
+            declaredField2.setAccessible(true);
+            declaredField2.set(declaredField, Integer.valueOf(declaredField.getModifiers() & 17));
+            declaredField.setAccessible(true);
+            declaredField.set(null, new PrintStream(outputStream));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        try {
+            Field declaredField3 = System.class.getDeclaredField("err");
+            Field declaredField4 = System.class.getDeclaredField("accessFlag");
+            declaredField4.setAccessible(true);
+            declaredField4.set(declaredField3, Integer.valueOf(declaredField3.getModifiers() & 17));
+            declaredField3.setAccessible(true);
+            declaredField3.set(null, new PrintStream(outputStream));
+        } catch (IllegalAccessException | NoSuchFieldException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    /**
+     * Run Jar2Dex
+     */
+    public void runJarToDex() {
+        long savedTimeMillis = System.currentTimeMillis();
+        args.clear();
+        if (c_release.isChecked()) {
+            args.add("--release");
+        }
+        if (c_intermediate.isChecked()) {
+            args.add("--intermediate");
+        }
+        if (c_filePerClass.isChecked()) {
+            args.add("--file-per-class");
+        }
+        if (!c_release.isChecked() && !c_intermediate.isChecked() && !c_filePerClass.isChecked()) {
+            if (!args.contains("--release")) {
+                args.add(0, "--release");
+            }
+            if (!args.contains("--intermediate")) {
+                args.add(0, "--intermediate");
+            }
+        }
+        args.add("--min-api");
+        args.add(String.valueOf(minApi));
+        args.add("--lib");
+        if (androidJar.getText().toString().length() <= 0) {
+            args.add(androidJarPath);
+        } else {
+            final String customJarPath = androidJar.getText().toString();
+            args.add(customJarPath);
+        }
+        args.add("--output");
+        final String OutPathD8 = outputPath.getText().toString();
+        args.add(OutPathD8);
+        getArrayListArgs = args.toArray(new String[0]);
+        try {
+            Log.d(TAG, "Running D8 with these arguments: " + args.toString());
+            D8.main(args.toArray(new String[0]));
+            Log.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        } catch (Exception e) {
+            Log.e(TAG, "D8 error: " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public String getArgs() {
+        return Arrays.toString(getArrayListArgs);
+    }
+
+    /**
+     * String for realOwner
+     *
+     * @return HeyStudios
+     */
+    public String realOwner() {
+        return "officially created by Mike Anderson ( HeyStudios ) and ported to sketchware with my proper implementation by AlucardTN";
+    }
+}
