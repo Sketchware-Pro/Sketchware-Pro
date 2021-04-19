@@ -48,7 +48,9 @@ public class BuildSettingsDialog {
                 addSingleChoicePref(BuildSettings.SETTING_RESOURCE_PROCESSOR, new String[]{"AAPT", "AAPT2"}, "false", "Resource processor", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_DEXER, new String[]{"Dx", "D8"}, "Dx", "Dexer", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, new String[]{"1.7", "1.8"}, "1.7", "Java version", contentView),
+                addSingleChoicePref(BuildSettings.SETTING_DEX_SHRINKER, new String[]{"Proguard", "R8"}, "Proguard", "Dex Shrinker", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_OUTPUT_FORMAT, new String[]{"APK", "AAB"}, "false", "Output format", contentView),
+                addTogglePref(BuildSettings.SETTING_BUILD_INCREMENTAL, false, "Switch normal compiler to Incremental", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, false, "Hide warnings in error log", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", 12, contentView)
         };
