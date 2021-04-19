@@ -33,7 +33,6 @@ public class ConfigActivity extends Activity {
     private static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     private static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
     private static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
-    private static final String SETTING_SHOW_ALL_BLOCKS = "show-all-blocks";
     private static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
     private static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
@@ -142,7 +141,7 @@ public class ConfigActivity extends Activity {
                 false);
         addSwitchPreference("Show all blocks",
                 "All variable blocks will be visible, even if you don't have variables for them.",
-                SETTING_SHOW_ALL_BLOCKS,
+                SETTING_ALWAYS_SHOW_BLOCKS,
                 false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.",
@@ -377,7 +376,7 @@ public class ConfigActivity extends Activity {
         defaultSettings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
         defaultSettings.put(SETTING_BACKUP_DIRECTORY, "");
         defaultSettings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        defaultSettings.put(SETTING_SHOW_ALL_BLOCKS, false);
+        defaultSettings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         defaultSettings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         setting_map = defaultSettings;
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(defaultSettings));
