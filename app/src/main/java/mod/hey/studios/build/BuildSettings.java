@@ -27,8 +27,8 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_JAVA_VERSION_1_8 = "1.8";
     public static final String SETTING_RESOURCE_PROCESSOR_AAPT = "AAPT";
     public static final String SETTING_RESOURCE_PROCESSOR_AAPT2 = "AAPT2";
-    public static final String SETTING_DEX_SHRINKER_PROGUARD = "Proguard";
-    public static final String SETTING_FEX_SHRINKER_R8 = "R8";
+    public static final String SETTING_DEX_SHRINKER_PROGUARD = "ProGuard";
+    public static final String SETTING_DEX_SHRINKER_R8 = "R8";
     public static final String SETTING_OUTPUT_FORMAT_AAB = "AAB";
     public static final String SETTING_OUTPUT_FORMAT_APK = "APK";
 
