@@ -90,7 +90,7 @@ public class Lx {
             var9 = var10.toString();
             var10 = new StringBuilder();
             var10.append(var9);
-            var10.append("implementation 'com.google.android.material:material:1.3.0-alpha04'\r\n");
+            var10.append("implementation 'com.google.android.material:material:1.4.0-alpha02'\r\n");
             startString = var10.toString();
         }
 
@@ -137,15 +137,15 @@ public class Lx {
 
         var7 = new StringBuilder();
         var7.append(startString);
-        var7.append("implementation 'com.github.bumptech.glide:glide:3.7.0'\r\n");
+        var7.append("implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n");
         String var8 = var7.toString();
         var10 = new StringBuilder();
         var10.append(var8);
-        var10.append("implementation 'com.google.code.gson:gson:2.8.0'\r\n");
+        var10.append("implementation 'com.google.code.gson:gson:2.8.6'\r\n");
         var8 = var10.toString();
         var10 = new StringBuilder();
         var10.append(var8);
-        var10.append("implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n");
+        var10.append("implementation 'com.squareup.okhttp3:okhttp:3.12.0'\r\n");
         startString = var10.toString();
         var7 = new StringBuilder();
         var7.append(startString);
@@ -1650,12 +1650,11 @@ public class Lx {
         StringBuilder var3 = new StringBuilder();
         if (!var0.equals("include") && !var0.equals("#")) {
             var3.append(var1);
-            var3.append(" = (");
-            var3.append(mq.e(var0));
+            var3.append(" = ");
             if (var2) {
-                var3.append(") _view.findViewById(R.id.");
+                var3.append("_view.findViewById(R.id.");
             } else {
-                var3.append(") findViewById(R.id.");
+                var3.append("findViewById(R.id.");
             }
 
             var3.append(var1);

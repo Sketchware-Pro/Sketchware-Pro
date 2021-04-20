@@ -840,8 +840,9 @@ public class yq {
         a2.add(new SrcCodeBean("FileUtil.java", Lx.e(e)));
         a2.add(new SrcCodeBean("RequestNetwork.java", Lx.h(e)));
         a2.add(new SrcCodeBean("RequestNetworkController.java", Lx.g(e)));
-        a2.add(new SrcCodeBean("BluetoothConnect.java", Lx.b(e)));
-        a2.add(new SrcCodeBean("BluetoothController.java", Lx.c(e)));
+        // unnecessary files when exporting project to android studio
+        // a2.add(new SrcCodeBean("BluetoothConnect.java", Lx.b(e)));
+        // a2.add(new SrcCodeBean("BluetoothController.java", Lx.c(e)));
         if (N.m) {
             a2.add(new SrcCodeBean("GoogleMapController.java", Lx.f(e)));
         }
@@ -855,7 +856,7 @@ public class yq {
             mx.a("google_play_services_version", 12451000);
             if (N.h) {
                 z3 = false;
-                mx.a("firebase_database_url", "https://" + d2.data + ".firebaseio.com", false);
+                mx.a("firebase_database_url", "https://" + d2.data + ".default-rtdb.firebaseio.com", false);
                 mx.a("project_id", d2.data, false);
                 mx.a("google_app_id", d2.reserved1, false);
                 String str = d2.reserved2;
@@ -878,7 +879,9 @@ public class yq {
         h();
     }
 
-    /** Get source code files that are viewable in SrcCodeViewer (?) */
+    /**
+     * Get source code files that are viewable in SrcCodeViewer (?)
+     */
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
         a(iCVar, hCVar, eCVar, z2);
         CommandBlock.x();
