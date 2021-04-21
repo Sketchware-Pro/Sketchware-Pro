@@ -101,7 +101,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
-import mod.hosni.fraj.compilerlog.CompileLogSaver;
+import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.bundle.BundleToolCompiler;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
@@ -1184,12 +1184,30 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         incrementalCompiler.setResultListener(new Compiler.Result() {
                             @Override
                             public void onResult(boolean success, String message) {
-                                if(!success){
+                                if (!success) {
                                     DesignActivity.this.d(message);
                                     return;
+                                } else {
+                                    publishProgress("Building APK...");
+                                    mDp.g();
+
+                                    if (this.d) {
+                                        cancel(true);
+                                        return;
+                                    }
+
+                                    publishProgress("Signing APK...");
+                                    mDp.k();
+                                    if (this.d) {
+                                        cancel(true);
+                                        return;
+                                    }
+
+                                    DesignActivity.this.o();
                                 }
-                            }
+                             }
                         });
+                        incrementalCompiler.performCompilation();
                     } else {
                         mDp.f();
                         if (this.d) {
@@ -1224,42 +1242,43 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             cancel(true);
                             return;
                         }
-                    }
-                    boolean buildingAAB = new BuildSettings(q.b)
-                            .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
-                                    BuildSettings.SETTING_OUTPUT_FORMAT_APK)
-                            .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
-                    if (buildingAAB) {
-                        BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
-                        publishProgress("Creating app module...");
-                        compiler.copyFilesToMainModuleDirectory();
-                        publishProgress("Compressing app module...");
-                        compiler.zipMainModule();
-                        publishProgress("Building app bundle...");
-                        compiler.buildBundle();
-                        publishProgress("Building APK Set...");
-                        compiler.buildApkSet();
-                        publishProgress("Extracting Install-APK from APK Set...");
-                        compiler.extractInstallApkFromApkSet();
-                        publishProgress("Signing Install-APK...");
-                        compiler.signInstallApk();
-                        o();
-                    } else {
-                        publishProgress("Building APK...");
-                        mDp.g();
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
+                    
+                        boolean buildingAAB = new BuildSettings(q.b)
+                                .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
+                                        BuildSettings.SETTING_OUTPUT_FORMAT_APK)
+                                .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
+                        if (buildingAAB) {
+                            BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
+                            publishProgress("Creating app module...");
+                            compiler.copyFilesToMainModuleDirectory();
+                            publishProgress("Compressing app module...");
+                            compiler.zipMainModule();
+                            publishProgress("Building app bundle...");
+                            compiler.buildBundle();
+                            publishProgress("Building APK Set...");
+                            compiler.buildApkSet();
+                            publishProgress("Extracting Install-APK from APK Set...");
+                            compiler.extractInstallApkFromApkSet();
+                            publishProgress("Signing Install-APK...");
+                            compiler.signInstallApk();
+                            o();
+                        } else {
+                            publishProgress("Building APK...");
+                            mDp.g();
+                            if (this.d) {
+                                cancel(true);
+                                return;
+                            }
 
-                        publishProgress("Signing APK...");
-                        mDp.k();
-                        if (this.d) {
-                            cancel(true);
-                            return;
-                        }
+                            publishProgress("Signing APK...");
+                            mDp.k();
+                            if (this.d) {
+                                cancel(true);
+                                return;
+                            }
 
-                        DesignActivity.this.o();
+                            DesignActivity.this.o();
+                        }
                     }
                 } catch (Ay e) {
                     //Never thrown? Haven't found a reference to it in any classes except {@link DesignActivity} and {@link PublishActivity} (and of course {@link Ay})
