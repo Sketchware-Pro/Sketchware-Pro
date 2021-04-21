@@ -14,6 +14,7 @@ public class Resources {
 
     public static final class drawable {
         public static final int arrow_back_white_48dp = 0x7f070089;
+        public static final int add_file_48 = 0x7f070473;
         public static final int collect_48 = 0x7f07010b;
         public static final int color_more_96 = 0x7f07011c;
         public static final int color_palette_48 = 0x7f070120;
