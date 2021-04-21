@@ -101,7 +101,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
-import mod.hosni.fraj.compilerlog.CompileLogSaver;
+import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.bundle.BundleToolCompiler;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
