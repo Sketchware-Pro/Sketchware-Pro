@@ -21,6 +21,7 @@ public class Resources {
     }
 
     public static final class drawable {
+        public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int collect_48 = 0x7f07010b;
@@ -34,10 +35,12 @@ public class Resources {
         public static final int ic_user = 0x7f070143;
         public static final int delete_96 = 0x7f070154;
         public static final int facebook_50 = 0x7f0701ac;
+        public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
         public static final int high_priority_96_red = 0x7f0701e5;
         public static final int ic_bookmark_red_48dp = 0x7f070204;
+        public static final int ic_class_48 = 0x7f070215;
         public static final int ic_detail_setting_48dp = 0x7f070225;
         public static final int ic_export_his_white_48dp = 0x7f070236;
         public static final int ic_reset_color_32dp = 0x7f07028a;
