@@ -840,9 +840,8 @@ public class yq {
         a2.add(new SrcCodeBean("FileUtil.java", Lx.e(e)));
         a2.add(new SrcCodeBean("RequestNetwork.java", Lx.h(e)));
         a2.add(new SrcCodeBean("RequestNetworkController.java", Lx.g(e)));
-        // unnecessary files when exporting project to android studio
-        // a2.add(new SrcCodeBean("BluetoothConnect.java", Lx.b(e)));
-        // a2.add(new SrcCodeBean("BluetoothController.java", Lx.c(e)));
+        a2.add(new SrcCodeBean("BluetoothConnect.java", Lx.b(e)));
+        a2.add(new SrcCodeBean("BluetoothController.java", Lx.c(e)));
         if (N.m) {
             a2.add(new SrcCodeBean("GoogleMapController.java", Lx.f(e)));
         }
