@@ -1,27 +1,13 @@
 package com.besome.sketch;
 
-import a.a.a.An;
-import a.a.a.Bn;
-import a.a.a.DB;
-import a.a.a.GB;
-import a.a.a.GC;
-import a.a.a.Xf;
-import a.a.a.aB;
-import a.a.a.gg;
-import a.a.a.l;
-import a.a.a.sB;
-import a.a.a.wn;
-import a.a.a.xB;
-import a.a.a.xn;
-import a.a.a.yn;
-import a.a.a.zI;
-import a.a.a.zn;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
 import com.besome.sketch.acc.LoginActivity;
 import com.besome.sketch.acc.MyPageSettingsActivity;
 import com.besome.sketch.acc.ProfileActivity;
@@ -45,14 +33,31 @@ import com.google.ads.consent.ConsentForm;
 import com.google.ads.consent.ConsentFormListener;
 import com.google.ads.consent.ConsentInfoUpdateListener;
 import com.google.ads.consent.ConsentInformation;
+import com.google.ads.consent.ConsentStatus;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.sketchware.remod.Resources;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import a.a.a.DB;
+import a.a.a.GB;
+import a.a.a.GC;
+import a.a.a.Xf;
+import a.a.a.aB;
+import a.a.a.gg;
+import a.a.a.l;
+import a.a.a.nd;
+import a.a.a.sB;
+import a.a.a.xB;
+import a.a.a.zI;
+
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
+
+    public final int k = 2;
     public ImageView A;
     public FirebaseAnalytics B;
     public int C;
@@ -60,7 +65,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public LinearLayout E;
     public FloatingActionButton F;
     public ConsentForm G = null;
-    public final int k = 2;
     public Toolbar l;
     public DrawerLayout m;
     public l n;
@@ -68,7 +72,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public ViewPager p;
     public TabLayout q;
     public String[] r;
-    public int[] s = {2131165314, 2131165717, 2131165648};
+    public int[] s = {Resources.drawable.android_os_96, Resources.drawable.ic_class_48, Resources.drawable.globe_96};
     public DB t;
     public DB u;
     public DB v;
@@ -86,31 +90,31 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
     public void g(int i) {
         GC gc;
-        if (i == 9501 && this.p.getCurrentItem() == 0 && (gc = this.y) != null) {
+        if (i == 9501 && p.getCurrentItem() == 0 && (gc = y) != null) {
             gc.g();
         }
     }
-    
+
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
     public void h(int i) {
-        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
         startActivityForResult(intent, i);
     }
 
     public final void k(int i) {
-        for (int i2 = 0; i2 < this.r.length; i2++) {
-            TabLayout.f c = this.q.c(i2);
-            View childAt = ((ViewGroup) this.q.getChildAt(0)).getChildAt(i2);
+        for (int counter = 0; counter < r.length; counter++) {
+            TabLayout.f c = q.c(counter);
+            View childAt = ((ViewGroup) q.getChildAt(0)).getChildAt(counter);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childAt.getLayoutParams();
             layoutParams.width = -1;
-            if (i2 == i) {
-                c.b(this.r[i2]);
+            if (counter == i) {
+                c.b(r[counter]);
                 c.a((Drawable) null);
                 layoutParams.weight = 2.0f;
             } else {
                 c.b("");
-                c.b(this.s[i2]);
+                c.b(s[counter]);
                 layoutParams.weight = 1.0f;
             }
             childAt.setLayoutParams(layoutParams);
@@ -122,7 +126,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public void l(int i) {
-        ViewPager viewPager = this.p;
+        ViewPager viewPager = p;
         if (viewPager != null) {
             viewPager.a(i, true);
         }
@@ -132,7 +136,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void m() {
     }
 
-    @Override
     public Object a(ViewGroup viewGroup, int i) {
         return null;
     }
@@ -144,124 +147,134 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public void n() {
-        GC gc = this.y;
-        if (gc != null) {
-            gc.a(false);
+        if (y != null) {
+            y.a(false);
         }
     }
-    
+
     public final void o() {
-        ConsentInformation.a(getApplicationContext()).a(new String[]{"pub-7684160946124871"}, (ConsentInfoUpdateListener) new zn(this));
+        ConsentInformation.a(getApplicationContext()).a(new String[]{"pub-7684160946124871"},
+                new ConsentInfoUpdateListener() {
+                    @Override
+                    public void a(ConsentStatus consentStatus) {
+                        if (consentStatus.equals(ConsentStatus.UNKNOWN)) {
+                            p();
+                        }
+                    }
+
+                    @Override
+                    public void a(String s) {
+                    }
+                });
     }
-    
-    public void onActivityResult(int i, int i2, Intent intent) {
-        MainDrawer mainDrawer;
-        MainActivity.super.onActivityResult(i, i2, intent);
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         invalidateOptionsMenu();
-        int i3 = -1;
-        if (i == 100) {
+        if (requestCode == 100) {
             invalidateOptionsMenu();
-            if (i2 == -1) {
-                if (this.i.g().isEmpty()) {
-                    Intent intent2 = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent2.setFlags(536870912);
-                    startActivityForResult(intent2, 108);
+            if (resultCode == -1) {
+                if (i.g().isEmpty()) {
+                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivityForResult(intent, 108);
                 } else {
                     u();
                 }
             }
-            MainDrawer mainDrawer2 = this.o;
-            if (mainDrawer2 != null) {
-                mainDrawer2.i();
+            if (o != null) {
+                o.i();
             }
-        } else if (i != 105) {
-            if (i != 111) {
-                if (i != 113) {
-                    if (i != 212) {
-                        if (i == 505 && (mainDrawer = this.o) != null) {
-                            mainDrawer.i();
+        } else if (requestCode != 105) {
+            if (requestCode != 111) {
+                if (requestCode != 113) {
+                    if (requestCode != 212) {
+                        if (requestCode == 505 && o != null) {
+                            o.i();
                         }
-                    } else if (i2 == -1) {
-                        if (!(intent.getStringExtra("save_as_new_id") == null ? "" : intent.getStringExtra("save_as_new_id")).isEmpty() && super.j()) {
-                            this.y.g();
+                    } else if (resultCode == -1) {
+                        if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && super.j()) {
+                            y.g();
                         }
-                        if (intent != null) {
-                            i3 = intent.getIntExtra("shared_id", -1);
-                        }
-                        m(i3);
+                        m(data.getIntExtra("shared_id", -1));
                     }
-                } else if (i2 == -1 && intent != null && intent.getBooleanExtra("not_show_popup_anymore", false)) {
-                    this.u.a("U1I2", false);
+                } else if (resultCode == -1 && data != null && data.getBooleanExtra("not_show_popup_anymore", false)) {
+                    u.a("U1I2", false);
                 }
-            } else if (i2 == -1) {
+            } else if (resultCode == -1) {
                 invalidateOptionsMenu();
             }
-        } else if (i2 == -1) {
+        } else if (resultCode == -1) {
             l(0);
-            boolean booleanExtra = intent.getBooleanExtra("onlyConfig", true);
+            boolean booleanExtra = data.getBooleanExtra("onlyConfig", true);
             if (booleanExtra) {
-                sB.a(this, booleanExtra);
-            } else if (super.f(i)) {
-                sB.a(this, booleanExtra);
+                sB.a(this, true);
+            } else if (super.f(requestCode)) {
+                sB.a(this, false);
             }
         }
     }
-    
+
     public void onBackPressed() {
-        if (this.o.isShown()) {
-            this.m.b();
+        if (o.isShown()) {
+            m.b();
         } else {
             finish();
         }
     }
 
     public void onConfigurationChanged(Configuration configuration) {
-        MainActivity.super.onConfigurationChanged(configuration);
-        this.n.a(configuration);
+        super.onConfigurationChanged(configuration);
+        n.a(configuration);
     }
-    
+
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(2131427501);
-        this.t = new DB(getApplicationContext(), "P1");
-        this.u = new DB(getApplicationContext(), "U1");
-        this.v = new DB(getApplicationContext(), "P25");
-        this.C = this.u.a("U1I0", -1);
-        long e = this.u.e("U1I1");
+        setContentView(Resources.layout.main);
+        t = new DB(getApplicationContext(), "P1");
+        u = new DB(getApplicationContext(), "U1");
+        v = new DB(getApplicationContext(), "P25");
+        C = u.a("U1I0", -1);
+        long e = u.e("U1I1");
         if (e <= 0) {
-            this.u.a("U1I1", Long.valueOf(System.currentTimeMillis()));
+            u.a("U1I1", System.currentTimeMillis());
         }
         if (System.currentTimeMillis() - e > 86400000) {
-            this.u.a("U1I0", Integer.valueOf(this.C + 1));
+            u.a("U1I0", Integer.valueOf(C + 1));
         }
-        this.D = this.u.a("U1I2", true);
-        this.r = new String[2];
-        this.r[0] = xB.b().a(this, 2131625608);
-        this.r[1] = xB.b().a(this, 2131625610);
-        this.l = findViewById(2131231847);
-        a(this.l);
+        D = u.a("U1I2", true);
+        r = new String[2];
+        r[0] = xB.b().a(this, Resources.string.main_tab_title_myproject);
+        r[1] = xB.b().a(this, Resources.string.main_tab_title_tutorials);
+        l = findViewById(Resources.id.toolbar);
+        a(l);
         d().d(true);
         d().e(true);
-        this.A = (ImageView) findViewById(2131231193);
-        this.A.setOnClickListener(new wn(this));
-        this.o = (MainDrawer) findViewById(2131231426);
-        this.m = findViewById(2131230981);
-        this.n = new l(this, this.m, 2131624002, 2131624002);
-        this.m.setDrawerListener(this.n);
+        A = findViewById(Resources.id.img_title_logo);
+        A.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invalidateOptionsMenu();
+            }
+        });
+        o = findViewById(Resources.id.left_drawer);
+        m = findViewById(Resources.id.drawer_layout);
+        n = new l(this, m, Resources.string.app_name, Resources.string.app_name);
+        m.setDrawerListener(n);
         d().a("");
-        this.p = findViewById(2131232328);
-        this.p.setOffscreenPageLimit(2);
-        this.p.setAdapter(new a(getSupportFragmentManager(), this));
-        this.q = findViewById(2131231781);
-        this.q.setupWithViewPager(this.p);
-        this.p.a(this);
-        this.E = (LinearLayout) findViewById(2131231391);
-        this.F = findViewById(2131231054);
-        this.w = findViewById(2131231335);
+        p = findViewById(Resources.id.viewpager);
+        p.setOffscreenPageLimit(2);
+        p.setAdapter(new a(getSupportFragmentManager(), this));
+        q = findViewById(Resources.id.tab_layout);
+        q.setupWithViewPager(p);
+        p.a(this);
+        E = findViewById(Resources.id.layout_qna_bottom);
+        F = findViewById(Resources.id.fab);
+        w = findViewById(Resources.id.layout_coordinator);
         k(0);
         l(0);
-        this.B = FirebaseAnalytics.getInstance(this);
+        B = FirebaseAnalytics.getInstance(this);
         try {
             String stringExtra = getIntent().getStringExtra("auto_run_activity");
             if (stringExtra != null) {
@@ -269,31 +282,32 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     if (!"SubscribeActivity".equals(stringExtra)) {
                         if ("SharedProjectDetailActivity".equals(stringExtra)) {
                             Intent intent = new Intent(getApplicationContext(), SharedProjectDetailActivity.class);
-                            intent.setFlags(536870912);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.putExtra("shared_id", Integer.parseInt(getIntent().getStringExtra("shared_id")));
                             startActivity(intent);
                         }
                     }
                 }
-                Intent intent2 = new Intent(getApplicationContext(), SubscribeActivity.class);
-                intent2.setFlags(536870912);
-                startActivityForResult(intent2, 505);
+                Intent intent = new Intent(getApplicationContext(), SubscribeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivityForResult(intent, 505);
             }
-        } catch (Exception unused) {
+        } catch (Exception ignored) {
         }
-        if (this.C > 0 && !super.j()) {
+        if (C > 0 && !j()) {
             q();
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(2131492873, menu);
-        if (this.i.a()) {
-            menu.findItem(2131231522).setVisible(false);
-            menu.findItem(2131231526).setVisible(true);
+        getMenuInflater().inflate(Resources.menu.main_menu, menu);
+        if (i.a()) {
+            menu.findItem(Resources.id.menu_login).setVisible(false);
+            menu.findItem(Resources.id.menu_mypage).setVisible(true);
         } else {
-            menu.findItem(2131231522).setVisible(true);
-            menu.findItem(2131231526).setVisible(false);
+            menu.findItem(Resources.id.menu_login).setVisible(true);
+            menu.findItem(Resources.id.menu_mypage).setVisible(false);
         }
         return true;
     }
@@ -303,16 +317,18 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         super.onDestroy();
         xB.b().a();
     }
+
+    @Override
     public void onNewIntent(Intent intent) {
-        MainActivity.super.onNewIntent(intent);
+        super.onNewIntent(intent);
         try {
-            String stringExtra = intent.getStringExtra("auto_run_activity");
-            if (stringExtra != null) {
-                if (!"InAppActivity".equals(stringExtra)) {
-                    if (!"SubscribeActivity".equals(stringExtra)) {
-                        if ("SharedProjectDetailActivity".equals(stringExtra)) {
+            String autoRunActivity = intent.getStringExtra("auto_run_activity");
+            if (autoRunActivity != null) {
+                if (!"InAppActivity".equals(autoRunActivity)) {
+                    if (!"SubscribeActivity".equals(autoRunActivity)) {
+                        if ("SharedProjectDetailActivity".equals(autoRunActivity)) {
                             Intent intent2 = new Intent(getApplicationContext(), SharedProjectDetailActivity.class);
-                            intent2.setFlags(536870912);
+                            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent2.putExtra("shared_id", Integer.parseInt(intent.getStringExtra("shared_id")));
                             startActivity(intent2);
                             return;
@@ -321,49 +337,51 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     }
                 }
                 Intent intent3 = new Intent(getApplicationContext(), InAppActivity.class);
-                intent3.setFlags(536870912);
+                intent3.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent3, 505);
             }
-        } catch (Exception unused) {
+        } catch (Exception ignored) {
         }
     }
-    
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (this.n.a(menuItem)) {
+        if (n.a(menuItem)) {
             return true;
         }
         int itemId = menuItem.getItemId();
-        if (itemId == 2131231522 || itemId == 2131231526) {
-            if (this.i.a()) {
+        if (itemId == Resources.id.menu_login || itemId == Resources.id.menu_mypage) {
+            if (i.a()) {
                 u();
             } else {
                 t();
             }
         }
-        return MainActivity.super.onOptionsItemSelected(menuItem);
+        return super.onOptionsItemSelected(menuItem);
     }
 
-    public void onPostCreate(Bundle bundle) {
-        MainActivity.super.onPostCreate(bundle);
-        this.n.b();
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        n.b();
         o();
     }
 
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
-        Snackbar snackbar;
         super.onResume();
         long c = GB.c();
         if (c < 100 && c > 0) {
             r();
         }
-        if (j() && (snackbar = this.x) != null && snackbar.j()) {
-            this.x.c();
+        if (j() && x != null && x.j()) {
+            x.c();
         }
     }
 
+    @Override
     public void onStart() {
-        MainActivity.super.onStart();
+        super.onStart();
     }
 
     public final void p() {
@@ -374,87 +392,142 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             e.printStackTrace();
             url = null;
         }
-        this.G = new ConsentForm.Builder(this, url).a((ConsentFormListener) new An(this)).d().c().b().a();
-        this.G.a();
+        G = new ConsentForm.Builder(this, url).a(new ConsentFormListener() {
+
+            @Override
+            public void a() {
+                G.b();
+            }
+
+            @Override
+            public void a(ConsentStatus consentStatus, Boolean aBoolean) {
+                if (aBoolean) {
+                    Intent intent = new Intent(getApplicationContext(), SubscribeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("is_ads_use", false);
+                    startActivityForResult(intent, 505);
+                }
+            }
+
+            @Override
+            public void a(String s) {
+            }
+
+            @Override
+            public void b() {
+            }
+        }).d().c().b().a();
+        G.a();
     }
 
     public final void q() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131624962));
-        aBVar.a(2131165452);
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624959));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625010), new xn(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_title_storage));
+        aBVar.a(Resources.drawable.color_about_96);
+        aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aBVar.dismiss();
+                s();
+            }
+        });
         aBVar.show();
     }
 
     public final void r() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131624948));
-        aBVar.a(2131165669);
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624947));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625010), new Bn(this, aBVar));
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
+        aBVar.a(Resources.drawable.high_priority_96_red);
+        aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aBVar.dismiss();
+            }
+        });
         aBVar.show();
     }
 
     public void s() {
-        Snackbar snackbar = this.x;
-        if (snackbar == null || !snackbar.j()) {
-            this.x = Snackbar.a(this.w, xB.b().a(getApplicationContext(), 2131624958), -2);
-            this.x.a(xB.b().a(getApplicationContext(), 2131625036), new yn(this));
-            this.x.h().setAlpha(0.5f);
-            this.x.f(-256);
-            this.x.n();
+        if (x == null || !x.j()) {
+            x = Snackbar.a(w, xB.b().a(getApplicationContext(), Resources.string.common_message_permission_denied), -2);
+            x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    x.c();
+                    nd.a(MainActivity.this, new String[]{
+                                    "android.permission.WRITE_EXTERNAL_STORAGE",
+                                    "android.permission.READ_EXTERNAL_STORAGE"},
+                            9501);
+                }
+            });
+            //REMOVED: Looks ugly.
+            //x.h().setAlpha(0.5f);
+            x.f(Color.YELLOW);
+            x.n();
         }
     }
 
     public void t() {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, 100);
     }
 
     public void u() {
         Intent intent = new Intent(getApplicationContext(), MyPageSettingsActivity.class);
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, 111);
     }
 
     public void b(int i) {
-        GC gc;
         k(i);
         if (i == 0) {
-            if (super.j() && (gc = this.y) != null && gc.f() == 0) {
-                this.y.g();
+            if (j() && y != null && y.f() == 0) {
+                y.g();
             }
-            this.E.setVisibility(8);
-            this.y.h();
+            E.setVisibility(View.GONE);
+            y.h();
         } else if (i == 1) {
-            this.E.setVisibility(8);
-            this.F.c();
+            E.setVisibility(View.GONE);
+            F.c();
+        }
+    }
+
+    public void b(String str) {
+        if (p != null) {
+            p.setCurrentItem(0);
+        }
+        if (y != null) {
+            y.g();
+            y.c(str);
         }
     }
 
     public class a extends gg {
+
         public Context f;
         public GC gc;
 
         public a(Xf xf, Context context) {
             super(xf);
-            this.f = context;
+            f = context;
         }
 
         public int a() {
             return 2;
         }
 
+        @Override // a.a.a.gg, a.a.a.kk
         public Object a(ViewGroup viewGroup, int i) {
-            zI zIVar = (zI) super.a(viewGroup, i);
+            Fragment fragment = (Fragment) super.a(viewGroup, i);
             if (i == 0) {
-                MainActivity.this.y = gc;
+                y = (GC) fragment;
             } else if (i == 1) {
-                MainActivity.this.z = zIVar;
+                z = (zI) fragment;
             }
-            return zIVar;
+            return fragment;
         }
 
         public Fragment c(int i) {
@@ -465,19 +538,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         public CharSequence a(int i) {
-            return MainActivity.this.r[i];
-        }
-    }
-
-    public void b(String str) {
-        ViewPager viewPager = this.p;
-        if (viewPager != null) {
-            viewPager.setCurrentItem(0);
-        }
-        GC gc = this.y;
-        if (gc != null) {
-            gc.g();
-            this.y.c(str);
+            return r[i];
         }
     }
 }
