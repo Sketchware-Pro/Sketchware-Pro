@@ -26,7 +26,9 @@ public class CompileErrorSaver {
 		check();
 	}
 
-	public CompileErrorSaver() {}
+	public CompileErrorSaver(String str) {
+	    sc_id = str;
+	}
 
 	public void setErrorText(String str) {
 		FileUtil.deleteFile(path);
