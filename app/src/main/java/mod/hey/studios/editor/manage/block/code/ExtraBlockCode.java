@@ -1,27 +1,29 @@
 package mod.hey.studios.editor.manage.block.code;
 
-import a.a.a.Fx;
-import a.a.a.Gx;
 import com.besome.sketch.beans.BlockBean;
+
 import java.util.ArrayList;
+
+import a.a.a.Fx;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.lib.code_editor.ColorScheme;
 
 public class ExtraBlockCode {
+
     public Fx fx;
 
-    public ExtraBlockCode(Fx fx2) {
-        this.fx = fx2;
+    public ExtraBlockCode(Fx fx) {
+        this.fx = fx;
     }
 
     public int getBlockType(BlockBean blockBean, int i) {
         int i2;
-        if (((Gx) blockBean.getParamClassInfo().get(i)).b("boolean")) {
+        if (blockBean.getParamClassInfo().get(i).b("boolean")) {
             i2 = 0;
-        } else if (((Gx) blockBean.getParamClassInfo().get(i)).b("double")) {
+        } else if (blockBean.getParamClassInfo().get(i).b("double")) {
             i2 = 1;
-        } else if (((Gx) blockBean.getParamClassInfo().get(i)).b("String")) {
+        } else if (blockBean.getParamClassInfo().get(i).b("String")) {
             i2 = 2;
         } else {
             i2 = 3;
@@ -30,65 +32,62 @@ public class ExtraBlockCode {
     }
 
     public String getCodeExtraBlock(BlockBean blockBean, String str) {
-        String str2;
-        ArrayList arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < blockBean.parameters.size(); i++) {
             switch (getBlockType(blockBean, i)) {
                 case 0:
-                    if (!((String) blockBean.parameters.get(i)).toString().isEmpty()) {
-                        arrayList.add(this.fx.a(((String) blockBean.parameters.get(i)).toString(), getBlockType(blockBean, i), blockBean.opCode));
-                        break;
+                    if (!blockBean.parameters.get(i).isEmpty()) {
+                        arrayList.add(fx.a(blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
                     } else {
                         arrayList.add("true");
-                        break;
                     }
+                    break;
+
                 case 1:
-                    if (!((String) blockBean.parameters.get(i)).toString().isEmpty()) {
-                        arrayList.add(this.fx.a(((String) blockBean.parameters.get(i)).toString(), getBlockType(blockBean, i), blockBean.opCode));
-                        break;
+                    if (!blockBean.parameters.get(i).isEmpty()) {
+                        arrayList.add(fx.a(blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
                     } else {
                         arrayList.add("0");
-                        break;
                     }
+                    break;
+
                 case ColorScheme.XML /*{ENCODED_INT: 2}*/:
-                    if (!((String) blockBean.parameters.get(i)).toString().isEmpty()) {
-                        arrayList.add(this.fx.a(((String) blockBean.parameters.get(i)).toString(), getBlockType(blockBean, i), blockBean.opCode));
-                        break;
+                    if (!blockBean.parameters.get(i).isEmpty()) {
+                        arrayList.add(fx.a(blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
                     } else {
                         arrayList.add("\"\"");
-                        break;
                     }
+                    break;
+
                 default:
-                    if (!((String) blockBean.parameters.get(i)).toString().isEmpty()) {
-                        arrayList.add(this.fx.a(((String) blockBean.parameters.get(i)).toString(), getBlockType(blockBean, i), blockBean.opCode));
-                        break;
+                    if (!blockBean.parameters.get(i).isEmpty()) {
+                        arrayList.add(fx.a(blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
                     } else {
                         arrayList.add("");
-                        break;
                     }
+                    break;
             }
         }
         if (blockBean.subStack1 >= 0) {
-            arrayList.add(this.fx.a(String.valueOf(blockBean.subStack1), str));
+            arrayList.add(fx.a(String.valueOf(blockBean.subStack1), str));
         } else {
             arrayList.add(" ");
         }
         if (blockBean.subStack2 >= 0) {
-            arrayList.add(this.fx.a(String.valueOf(blockBean.subStack2), str));
+            arrayList.add(fx.a(String.valueOf(blockBean.subStack2), str));
         } else {
             arrayList.add(" ");
         }
         ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(blockBean.opCode);
         if (blockInfo.isMissing) {
-            blockInfo = BlockLoader.getBlockFromProject(this.fx.e.sc_id, blockBean.opCode);
+            blockInfo = BlockLoader.getBlockFromProject(fx.e.sc_id, blockBean.opCode);
         }
         if (arrayList.size() > 0) {
-            str2 = String.format(blockInfo.getCode(), (String[]) arrayList.toArray(new String[arrayList.size()]));
+            return String.format(blockInfo.getCode(), arrayList.toArray(new Object[0]));
         } else if (!blockInfo.getCode().isEmpty()) {
-            str2 = blockInfo.getCode();
+            return blockInfo.getCode();
         } else {
-            str2 = "";
+            return "";
         }
-        return str2;
     }
 }
