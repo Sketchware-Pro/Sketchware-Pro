@@ -1,16 +1,19 @@
 package com.besome.sketch.projects;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -21,18 +24,17 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
-import com.android.dx.io.Opcodes;
 import com.android.sdklib.internal.avd.AvdManager;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.flexbox.BuildConfig;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import a.a.a.AC;
 import a.a.a.GB;
 import a.a.a.HB;
 import a.a.a.LB;
@@ -47,24 +49,16 @@ import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.nB;
 import a.a.a.oB;
-import a.a.a.oC;
-import a.a.a.pC;
-import a.a.a.qC;
-import a.a.a.rC;
-import a.a.a.sC;
-import a.a.a.tC;
-import a.a.a.uC;
-import a.a.a.vC;
 import a.a.a.wB;
-import a.a.a.wC;
 import a.a.a.wq;
 import a.a.a.xB;
-import a.a.a.xC;
 import a.a.a.yB;
-import a.a.a.yC;
-import a.a.a.zC;
+import mod.SketchwareUtil;
 
 public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
+
+    public final String[] t = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
+    public final String[] u = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
     public EditText A;
     public EditText B;
     public EditText C;
@@ -88,15 +82,556 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     public int U;
     public int V;
     public boolean W;
-    public final String[] t = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
-    public final String[] u = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
-    public int[] v = new int[this.t.length];
+    public int[] v = new int[t.length];
+    /**
+     * The sc_id of the currently editing project
+     */
     public String w;
     public TextInputLayout x;
     public TextInputLayout y;
     public TextInputLayout z;
 
-    public class a extends LinearLayout {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            SketchwareUtil.toast("Received invalid data");
+            finish();
+            return;
+        }
+        Uri uri = data.getData();
+        if (requestCode == 207) {
+            if (resultCode == -1 && uri != null) {
+                String filename = HB.a(getApplicationContext(), uri);
+                Bitmap bitmap = iB.a(filename, 96, 96);
+                try {
+                    int attributeInt = new ExifInterface(filename).getAttributeInt("Orientation", -1);
+                    Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
+                    H.setImageBitmap(newBitmap);
+                    a(newBitmap, p());
+                    N = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            Bundle extras = data.getExtras();
+            if (requestCode == 216 && resultCode == -1 && extras != null) {
+                try {
+                    Bitmap bitmap = extras.getParcelable(AvdManager.DATA_FOLDER);
+                    H.setImageBitmap(bitmap);
+                    N = true;
+                    a(bitmap, p());
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case Resources.id.advanced_setting:
+                w();
+                return;
+
+            case Resources.id.app_icon_layout:
+                t();
+                return;
+
+            case Resources.id.common_dialog_cancel_button:
+                finish();
+                return;
+
+            case Resources.id.common_dialog_ok_button:
+                mB.a(v);
+                if (q()) {
+                    new b(getApplicationContext()).execute();
+                    return;
+                }
+                return;
+
+            case Resources.id.contents:
+            default:
+                return;
+
+            case Resources.id.img_theme_color_help:
+                if (F.getVisibility() == View.VISIBLE) {
+                    F.setVisibility(View.GONE);
+                } else {
+                    F.setVisibility(View.VISIBLE);
+                }
+                return;
+
+            case Resources.id.ver_code:
+            case Resources.id.ver_name:
+                v();
+        }
+    }
+
+    @Override
+    // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(Resources.layout.myproject_setting);
+        if (!j()) {
+            finish();
+        }
+        w = getIntent().getStringExtra("sc_id");
+        O = getIntent().getBooleanExtra("is_update", false);
+        P = getIntent().getBooleanExtra("advanced_open", false);
+        ((TextView) findViewById(Resources.id.tv_change_icon))
+                .setText(xB.b().a(this, Resources.string.myprojects_settings_description_change_icon));
+        findViewById(Resources.id.contents).setOnClickListener(this);
+        findViewById(Resources.id.app_icon_layout).setOnClickListener(this);
+        findViewById(Resources.id.advanced_setting).setOnClickListener(this);
+        I = findViewById(Resources.id.ver_code);
+        I.setOnClickListener(this);
+        J = findViewById(Resources.id.ver_name);
+        J.setOnClickListener(this);
+        x = findViewById(Resources.id.ti_app_name);
+        y = findViewById(Resources.id.ti_package_name);
+        z = findViewById(Resources.id.ti_project_name);
+        x.setHint(xB.b().a(this,
+                Resources.string.myprojects_settings_hint_enter_application_name));
+        y.setHint(xB.b().a(this,
+                Resources.string.myprojects_settings_hint_enter_package_name));
+        z.setHint(xB.b().a(this,
+                Resources.string.myprojects_settings_hint_enter_project_name));
+        A = findViewById(Resources.id.et_app_name);
+        B = findViewById(Resources.id.et_package_name);
+        C = findViewById(Resources.id.et_project_name);
+        ((TextView) findViewById(Resources.id.tv_advanced_settings))
+                .setText(xB.b().a(this, Resources.string.myprojects_settings_title_advanced_settings));
+        H = findViewById(Resources.id.app_icon);
+        M = new LB(getApplicationContext(), x);
+        K = new UB(getApplicationContext(), y);
+        L = new VB(getApplicationContext(), z);
+        B.setPrivateImeOptions("defaultInputmode=english;");
+        C.setPrivateImeOptions("defaultInputmode=english;");
+        B.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                EditText editText = (EditText) v;
+                if (!W && !editText.getText().toString().trim().contains("com.my.newproject")) {
+                    u();
+                }
+            }
+        });
+        D = findViewById(Resources.id.layout_theme_colors);
+        E = findViewById(Resources.id.img_theme_color_help);
+        E.setOnClickListener(this);
+        F = findViewById(Resources.id.img_color_guide);
+        G = findViewById(Resources.id.advanced_setting_layout);
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
+        v[0] = getResources().getColor(Resources.color.color_accent);
+        v[1] = getResources().getColor(Resources.color.color_primary);
+        v[2] = getResources().getColor(Resources.color.color_primary_dark);
+        v[3] = getResources().getColor(Resources.color.color_control_highlight);
+        v[4] = getResources().getColor(Resources.color.color_control_normal);
+        for (int i = 0; i < t.length; i++) {
+            a aVar = new a(getApplicationContext(), i);
+            aVar.e.setText(u[i]);
+            aVar.d.setBackgroundColor(Color.WHITE);
+            D.addView(aVar);
+            aVar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!mB.a()) {
+                        g((Integer) v.getTag());
+                    }
+                }
+            });
+        }
+        b(xB.b().a(this, Resources.string.common_word_cancel));
+        if (O) {
+            e(xB.b().a(getApplicationContext(), Resources.string.myprojects_settings_actionbar_title_project_settings));
+            d(xB.b().a(this, Resources.string.myprojects_settings_button_save));
+            HashMap<String, Object> map = lC.b(w);
+            B.setText(yB.c(map, "my_sc_pkg_name"));
+            C.setText(yB.c(map, "my_ws_name"));
+            A.setText(yB.c(map, "my_app_name"));
+            Q = a(yB.c(map, "sc_ver_code"), 1);
+            f(yB.c(map, "sc_ver_name"));
+            I.setText(yB.c(map, "sc_ver_code"));
+            J.setText(yB.c(map, "sc_ver_name"));
+            N = yB.a(map, "custom_icon");
+            if (N) {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    H.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", o()));
+                } else {
+                    H.setImageURI(Uri.fromFile(o()));
+                }
+            }
+            int counter = 0;
+            while (counter < t.length) {
+                int[] iArr = v;
+                iArr[counter] = yB.a(map, t[counter], iArr[counter]);
+                counter++;
+            }
+            x();
+        } else {
+            e(xB.b().a(getApplicationContext(), Resources.string.myprojects_settings_actionbar_title_new_projet));
+            d(xB.b().a(this, Resources.string.myprojects_settings_button_create_app));
+            String wsName = getIntent().getStringExtra("my_ws_name");
+            String scPkgName = getIntent().getStringExtra("my_sc_pkg_name");
+            if (w == null || w.equals("")) {
+                w = lC.b();
+                wsName = lC.c();
+                scPkgName = "com.my." + wsName.toLowerCase();
+            }
+            B.setText(scPkgName);
+            C.setText(wsName);
+            A.setText(getIntent().getStringExtra("my_app_name"));
+            String verCode = getIntent().getStringExtra("sc_ver_code");
+            String verName = getIntent().getStringExtra("sc_ver_name");
+            if (verCode == null || verCode.isEmpty()) {
+                verCode = "1";
+            }
+            if (verName == null || verName.isEmpty()) {
+                verName = BuildConfig.VERSION_NAME;
+            }
+            Q = a(verCode, 1);
+            f(verName);
+            I.setText(verCode);
+            J.setText(verName);
+            N = getIntent().getBooleanExtra("custom_icon", false);
+            if (N) {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    H.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", o()));
+                } else {
+                    H.setImageURI(Uri.fromFile(o()));
+                }
+            }
+            x();
+        }
+        if (P) {
+            G.setVisibility(View.VISIBLE);
+            B.requestFocus();
+        }
+    }
+
+    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
+    public void onResume() {
+        super.onResume();
+        if (!j()) {
+            finish();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        oB oBVar = new oB();
+        oBVar.f(wq.e() + File.separator + w);
+        oBVar.f(wq.g() + File.separator + w);
+        oBVar.f(wq.t() + File.separator + w);
+        oBVar.f(wq.d() + File.separator + w);
+        File o = o();
+        if (!o.exists()) {
+            try {
+                o.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public final void v() {
+        R = Q;
+        aB aBVar = new aB(this);
+        aBVar.a(Resources.drawable.numbers_48);
+        aBVar.b(xB.b().a(this, Resources.string.myprojects_settings_version_control_title));
+        View view = wB.a(getApplicationContext(), Resources.layout.property_popup_version_control);
+        ((TextView) view.findViewById(Resources.id.tv_code))
+                .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_code));
+        ((TextView) view.findViewById(Resources.id.tv_name))
+                .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_name));
+        NumberPicker numberPicker = view.findViewById(Resources.id.version_code);
+        NumberPicker numberPicker2 = view.findViewById(Resources.id.version_name1);
+        NumberPicker numberPicker3 = view.findViewById(Resources.id.version_name2);
+        int i = 0;
+        numberPicker.setWrapSelectorWheel(false);
+        numberPicker2.setWrapSelectorWheel(false);
+        numberPicker3.setWrapSelectorWheel(false);
+        int parseInt = Integer.parseInt(I.getText().toString());
+        int i2 = parseInt - 5;
+        int i3 = 1;
+        if (i2 <= 0) {
+            i2 = 1;
+        }
+        numberPicker.setMinValue(i2);
+        numberPicker.setMaxValue(parseInt + 5);
+        numberPicker.setValue(parseInt);
+        String[] split = J.getText().toString().split("\\.");
+        U = a(split[0], 1);
+        V = a(split[1], 0);
+        int i4 = U;
+        if (i4 - 5 > 0) {
+            i3 = i4 - 5;
+        }
+        numberPicker2.setMinValue(i3);
+        numberPicker2.setMaxValue(U + 5);
+        numberPicker2.setValue(U);
+        int i5 = V;
+        if (i5 - 20 > 0) {
+            i = i5 - 20;
+        }
+        numberPicker3.setMinValue(i);
+        numberPicker3.setMaxValue(V + 20);
+        numberPicker3.setValue(V);
+        aBVar.a(view);
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if (oldVal > newVal && newVal < Q) {
+                    picker.setValue(Q);
+                }
+            }
+        });
+        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                U = newVal;
+                if (oldVal > newVal) {
+                    if (newVal < S) {
+                        numberPicker.setValue(S);
+                    }
+                    if (U == S || V <= T) {
+                        numberPicker3.setValue(T);
+                        V = T;
+                    }
+                }
+            }
+        });
+        numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                V = newVal;
+                if (oldVal > newVal && newVal < T && U < S) {
+                    picker.setValue(T);
+                }
+            }
+        });
+        aBVar.b(xB.b().a(this, Resources.string.common_word_save), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mB.a()) {
+                    I.setText(String.valueOf(numberPicker.getValue()));
+                    J.setText(U + "." + V);
+                    aBVar.dismiss();
+                }
+            }
+        });
+        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aBVar.dismiss();
+            }
+        });
+        aBVar.show();
+    }
+
+    public final void w() {
+        if (!G.isShown()) {
+            G.setVisibility(View.VISIBLE);
+            gB.b(G, 300, null);
+            return;
+        }
+        gB.a(G, 300, new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                G.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+        });
+    }
+
+    public final void x() {
+        for (int i = 0; i < v.length; i++) {
+            ((a) D.getChildAt(i)).d.setBackgroundColor(v[i]);
+        }
+    }
+
+    public final void f(String str) {
+        try {
+            String[] split = str.split("\\.");
+            S = a(split[0], 1);
+            T = a(split[1], 0);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public final void g(int i) {
+        View view = wB.a(this, Resources.layout.color_picker);
+        view.setAnimation(AnimationUtils.loadAnimation(this, Resources.anim.abc_fade_in));
+        Zx zx = new Zx(view, this, v[i], false, false);
+        zx.a(new Zx.b() {
+            @Override
+            public void a(int i2) {
+                v[i] = i2;
+                x();
+            }
+        });
+        zx.setAnimationStyle(Resources.anim.abc_fade_in);
+        zx.showAtLocation(view, Gravity.CENTER, 0, 0);
+    }
+
+    public final void n() {
+        aB aBVar = new aB(this);
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings));
+        aBVar.a(Resources.drawable.default_icon);
+        aBVar.a(xB.b().a(this, Resources.string.myprojects_settings_confirm_reset_icon));
+        aBVar.b(xB.b().a(this, Resources.string.common_word_reset), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                H.setImageResource(Resources.drawable.default_icon);
+                N = false;
+                aBVar.dismiss();
+            }
+        });
+        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aBVar.dismiss();
+            }
+        });
+        aBVar.show();
+    }
+
+    public final File o() {
+        return new File(p());
+    }
+
+    public final String p() {
+        return wq.e() + File.separator + w + File.separator + "icon.png";
+    }
+
+    public final boolean q() {
+        return K.b() && L.b() && M.b();
+    }
+
+    public final void r() {
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= 24) {
+            Context applicationContext = getApplicationContext();
+            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", o());
+        } else {
+            uri = Uri.fromFile(o());
+        }
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        intent.putExtra("output", uri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        intent.putExtra("return-data", true);
+        startActivityForResult(Intent.createChooser(
+                intent,
+                xB.b().a(this, Resources.string.common_word_choose)),
+                207);
+    }
+
+    public final void s() {
+        Uri uri;
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        if (Build.VERSION.SDK_INT >= 24) {
+            Context applicationContext = getApplicationContext();
+            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", o());
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(o());
+        }
+        intent.setDataAndType(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 96);
+        intent.putExtra("outputY", 96);
+        intent.putExtra("scale", true);
+        intent.putExtra("output", uri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
+        intent.putExtra("return-data", true);
+        startActivityForResult(Intent.createChooser(
+                intent,
+                xB.b().a(this, Resources.string.common_word_choose)),
+                216);
+    }
+
+    public final void t() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose));
+        builder.setItems(new String[]{
+                xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery),
+                xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
+                xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery_default)
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        r();
+                        break;
+
+                    case 1:
+                        s();
+                        break;
+
+                    case 2:
+                        if (N) n();
+                        break;
+                }
+            }
+        });
+        AlertDialog create = builder.create();
+        create.setCanceledOnTouchOutside(true);
+        create.show();
+    }
+
+    public final void u() {
+        W = true;
+        aB aBVar = new aB(this);
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
+        aBVar.a(Resources.drawable.break_warning_96_red);
+        aBVar.a(xB.b().a(this, Resources.string.myprojects_settings_message_package_rename));
+        aBVar.b(xB.b().a(this, Resources.string.common_word_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aBVar.dismiss();
+            }
+        });
+        aBVar.show();
+    }
+
+    public final int a(String str, int i) {
+        try {
+            return Integer.parseInt(str);
+        } catch (Exception unused) {
+            return i;
+        }
+    }
+
+    public final void a(Bitmap bitmap, String str) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(str)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+        } catch (IOException ignored) {
+        }
+    }
+
+    public static class a extends LinearLayout {
+
         public Context a;
         public int b;
         public LinearLayout c;
@@ -109,513 +644,75 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
 
         public final void a(Context context, int i) {
-            this.a = context;
-            this.b = i;
-            setTag(Integer.valueOf(i));
-            wB.a(context, this, 2131427582);
-            this.c = (LinearLayout) findViewById(2131231413);
-            this.d = (TextView) findViewById(2131230904);
-            this.e = (TextView) findViewById(2131231561);
-        }
-    }
-
-    public void onActivityResult(int i, int i2, Intent intent) {
-        Uri data;
-        Bundle extras;
-        MyProjectSettingActivity.super.onActivityResult(i, i2, intent);
-        if (i != 207) {
-            if (i == 216 && i2 == -1 && (extras = intent.getExtras()) != null) {
-                try {
-                    Bitmap bitmap = (Bitmap) extras.getParcelable(AvdManager.DATA_FOLDER);
-                    this.H.setImageBitmap(bitmap);
-                    this.N = true;
-                    a(bitmap, p());
-                } catch (Exception unused) {
-                }
-            }
-        } else if (i2 == -1 && (data = intent.getData()) != null) {
-            String a2 = HB.a(getApplicationContext(), data);
-            Bitmap a3 = iB.a(a2, 96, 96);
-            try {
-                int attributeInt = new ExifInterface(a2).getAttributeInt("Orientation", -1);
-                Bitmap a4 = iB.a(a3, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
-                this.H.setImageBitmap(a4);
-                a(a4, p());
-                this.N = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case 2131230761:
-                w();
-                return;
-            case 2131230779:
-                t();
-                return;
-            case 2131230909:
-                finish();
-                return;
-            case 2131230914:
-                mB.a(view);
-                if (q()) {
-                    new b(getApplicationContext()).execute(new Void[0]);
-                    return;
-                }
-                return;
-            case 2131230934:
-            default:
-                return;
-            case 2131231188:
-                if (this.F.getVisibility() == 0) {
-                    this.F.setVisibility(8);
-                    return;
-                } else {
-                    this.F.setVisibility(0);
-                    return;
-                }
-            case 2131232306:
-            case 2131232307:
-                v();
-                return;
-        }
-    }
-
-    @Override // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(2131427583);
-        if (!super.j()) {
-            finish();
-        }
-        this.w = getIntent().getStringExtra("sc_id");
-        this.O = getIntent().getBooleanExtra("is_update", false);
-        this.P = getIntent().getBooleanExtra("advanced_open", false);
-        ((TextView) findViewById(2131231899)).setText(xB.b().a(this, 2131625679));
-        findViewById(2131230934).setOnClickListener(this);
-        findViewById(2131230779).setOnClickListener(this);
-        findViewById(2131230761).setOnClickListener(this);
-        this.I = (TextView) findViewById(2131232306);
-        this.I.setOnClickListener(this);
-        this.J = (TextView) findViewById(2131232307);
-        this.J.setOnClickListener(this);
-        this.x = findViewById(2131231805);
-        this.y = findViewById(2131231826);
-        this.z = findViewById(2131231828);
-        this.x.setHint(xB.b().a(this, 2131625680));
-        this.y.setHint(xB.b().a(this, 2131625681));
-        this.z.setHint(xB.b().a(this, 2131625682));
-        this.A = (EditText) findViewById(2131231024);
-        this.B = (EditText) findViewById(2131231040);
-        this.C = (EditText) findViewById(2131231041);
-        ((TextView) findViewById(2131231867)).setText(xB.b().a(this, 2131625685));
-        this.H = (ImageView) findViewById(2131230778);
-        this.M = new LB(getApplicationContext(), this.x);
-        this.K = new UB(getApplicationContext(), this.y);
-        this.L = new VB(getApplicationContext(), this.z);
-        this.B.setPrivateImeOptions("defaultInputmode=english;");
-        this.C.setPrivateImeOptions("defaultInputmode=english;");
-        this.B.setOnFocusChangeListener(new sC(this));
-        this.D = (LinearLayout) findViewById(2131231414);
-        this.E = (ImageView) findViewById(2131231188);
-        this.E.setOnClickListener(this);
-        this.F = (ImageView) findViewById(2131231125);
-        this.G = (LinearLayout) findViewById(2131230762);
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
-        this.v[0] = getResources().getColor(2131034159);
-        this.v[1] = getResources().getColor(2131034174);
-        this.v[2] = getResources().getColor(2131034176);
-        this.v[3] = getResources().getColor(2131034172);
-        this.v[4] = getResources().getColor(2131034173);
-        for (int i = 0; i < this.t.length; i++) {
-            a aVar = new a(getApplicationContext(), i);
-            aVar.e.setText(this.u[i]);
-            aVar.d.setBackgroundColor(-1);
-            this.D.addView(aVar);
-            aVar.setOnClickListener(new tC(this));
-        }
-        b(xB.b().a(this, 2131624974));
-        if (this.O) {
-            e(xB.b().a(getApplicationContext(), 2131625671));
-            d(xB.b().a(this, 2131625673));
-            HashMap b2 = lC.b(this.w);
-            this.B.setText(yB.c(b2, "my_sc_pkg_name"));
-            this.C.setText(yB.c(b2, "my_ws_name"));
-            this.A.setText(yB.c(b2, "my_app_name"));
-            this.Q = a(yB.c(b2, "sc_ver_code"), 1);
-            f(yB.c(b2, "sc_ver_name"));
-            this.I.setText(yB.c(b2, "sc_ver_code"));
-            this.J.setText(yB.c(b2, "sc_ver_name"));
-            this.N = yB.a(b2, "custom_icon");
-            if (this.N) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    this.H.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", o()));
-                } else {
-                    this.H.setImageURI(Uri.fromFile(o()));
-                }
-            }
-            int i2 = 0;
-            while (true) {
-                String[] strArr = this.t;
-                if (i2 >= strArr.length) {
-                    break;
-                }
-                int[] iArr = this.v;
-                iArr[i2] = yB.a(b2, strArr[i2], iArr[i2]);
-                i2++;
-            }
-            x();
-        } else {
-            e(xB.b().a(getApplicationContext(), 2131625670));
-            d(xB.b().a(this, 2131625672));
-            String stringExtra = getIntent().getStringExtra("my_ws_name");
-            String stringExtra2 = getIntent().getStringExtra("my_sc_pkg_name");
-            String str = this.w;
-            if (str == null || str.equals("")) {
-                this.w = lC.b();
-                stringExtra = lC.c();
-                stringExtra2 = "com.my." + stringExtra.toLowerCase();
-            }
-            this.B.setText(stringExtra2);
-            this.C.setText(stringExtra);
-            this.A.setText(getIntent().getStringExtra("my_app_name"));
-            String stringExtra3 = getIntent().getStringExtra("sc_ver_code");
-            String stringExtra4 = getIntent().getStringExtra("sc_ver_name");
-            if (stringExtra3 == null || stringExtra3.isEmpty()) {
-                stringExtra3 = "1";
-            }
-            if (stringExtra4 == null || stringExtra4.isEmpty()) {
-                stringExtra4 = BuildConfig.VERSION_NAME;
-            }
-            this.Q = a(stringExtra3, 1);
-            f(stringExtra4);
-            this.I.setText(stringExtra3);
-            this.J.setText(stringExtra4);
-            this.N = getIntent().getBooleanExtra("custom_icon", false);
-            if (this.N) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    this.H.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", o()));
-                } else {
-                    this.H.setImageURI(Uri.fromFile(o()));
-                }
-            }
-            x();
-        }
-        if (this.P) {
-            this.G.setVisibility(0);
-            this.B.requestFocus();
-        }
-    }
-
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onResume() {
-        super.onResume();
-        if (!super.j()) {
-            finish();
-        }
-    }
-
-    public void onStart() {
-        MyProjectSettingActivity.super.onStart();
-        oB oBVar = new oB();
-        oBVar.f(wq.e() + File.separator + this.w);
-        oBVar.f(wq.g() + File.separator + this.w);
-        oBVar.f(wq.t() + File.separator + this.w);
-        oBVar.f(wq.d() + File.separator + this.w);
-        File o = o();
-        if (!o.exists()) {
-            try {
-                o.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public final void v() {
-        this.R = this.Q;
-        aB aBVar = new aB(this);
-        aBVar.a(2131166000);
-        aBVar.b(xB.b().a(this, 2131625686));
-        View a2 = wB.a(getApplicationContext(), 2131427645);
-        ((TextView) a2.findViewById(2131231912)).setText(xB.b().a(this, 2131625687));
-        ((TextView) a2.findViewById(2131232055)).setText(xB.b().a(this, 2131625688));
-        NumberPicker numberPicker = (NumberPicker) a2.findViewById(2131232308);
-        NumberPicker numberPicker2 = (NumberPicker) a2.findViewById(2131232309);
-        NumberPicker numberPicker3 = (NumberPicker) a2.findViewById(2131232310);
-        int i = 0;
-        numberPicker.setWrapSelectorWheel(false);
-        numberPicker2.setWrapSelectorWheel(false);
-        numberPicker3.setWrapSelectorWheel(false);
-        int parseInt = Integer.parseInt(this.I.getText().toString());
-        int i2 = parseInt - 5;
-        int i3 = 1;
-        if (i2 <= 0) {
-            i2 = 1;
-        }
-        numberPicker.setMinValue(i2);
-        numberPicker.setMaxValue(parseInt + 5);
-        numberPicker.setValue(parseInt);
-        String[] split = this.J.getText().toString().split("\\.");
-        this.U = a(split[0], 1);
-        this.V = a(split[1], 0);
-        int i4 = this.U;
-        if (i4 - 5 > 0) {
-            i3 = i4 - 5;
-        }
-        numberPicker2.setMinValue(i3);
-        numberPicker2.setMaxValue(this.U + 5);
-        numberPicker2.setValue(this.U);
-        int i5 = this.V;
-        if (i5 - 20 > 0) {
-            i = i5 - 20;
-        }
-        numberPicker3.setMinValue(i);
-        numberPicker3.setMaxValue(this.V + 20);
-        numberPicker3.setValue(this.V);
-        aBVar.a(a2);
-        numberPicker.setOnValueChangedListener(new AC(this));
-        numberPicker2.setOnValueChangedListener(new oC(this, numberPicker3));
-        numberPicker3.setOnValueChangedListener(new pC(this));
-        aBVar.b(xB.b().a(this, 2131625031), new qC(this, numberPicker, aBVar));
-        aBVar.a(xB.b().a(this, 2131624974), new rC(this, aBVar));
-        aBVar.show();
-    }
-
-    public final void w() {
-        if (!this.G.isShown()) {
-            this.G.setVisibility(0);
-            gB.b(this.G, 300, (Animator.AnimatorListener) null);
-            return;
-        }
-        gB.a(this.G, 300, new zC(this));
-    }
-
-    public final void x() {
-        for (int i = 0; i < this.v.length; i++) {
-            ((a) this.D.getChildAt(i)).d.setBackgroundColor(this.v[i]);
-        }
-    }
-
-    public final void f(String str) {
-        try {
-            String[] split = str.split("\\.");
-            this.S = a(split[0], 1);
-            this.T = a(split[1], 0);
-        } catch (Exception unused) {
-        }
-    }
-
-    public final void g(int i) {
-        View a2 = wB.a(this, 2131427373);
-        a2.setAnimation(AnimationUtils.loadAnimation(this, 2130771968));
-        Zx zx = new Zx(a2, this, this.v[i], false, false);
-        zx.a(new uC(this, i));
-        zx.setAnimationStyle(2130771968);
-        zx.showAtLocation(a2, 17, 0, 0);
-    }
-
-    public final void n() {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625036));
-        aBVar.a(2131165521);
-        aBVar.a(xB.b().a(this, 2131625674));
-        aBVar.b(xB.b().a(this, 2131625027), new wC(this, aBVar));
-        aBVar.a(xB.b().a(this, 2131624974), new xC(this, aBVar));
-        aBVar.show();
-    }
-
-    public final File o() {
-        return new File(p());
-    }
-
-    public final String p() {
-        return wq.e() + File.separator + this.w + File.separator + "icon.png";
-    }
-
-    public final boolean q() {
-        return this.K.b() && this.L.b() && this.M.b();
-    }
-    public final void r() {
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= 24) {
-            Context applicationContext = getApplicationContext();
-            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", o());
-        } else {
-            uri = Uri.fromFile(o());
-        }
-        Intent intent = new Intent("android.intent.action.PICK", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        intent.putExtra("output", uri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-        intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, 2131624976)), (int) Opcodes.REM_DOUBLE_2ADDR);
-    }
-
-    public final void s() {
-        Uri uri;
-        Intent intent = new Intent("android.intent.action.PICK", MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-        if (Build.VERSION.SDK_INT >= 24) {
-            Context applicationContext = getApplicationContext();
-            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", o());
-            intent.addFlags(1);
-            intent.addFlags(2);
-            intent.addFlags(64);
-        } else {
-            uri = Uri.fromFile(o());
-        }
-        intent.setType("image/*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 96);
-        intent.putExtra("outputY", 96);
-        intent.putExtra("scale", true);
-        intent.putExtra("output", uri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-        intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, 2131624976)), (int) Opcodes.ADD_INT_LIT8);
-    }
-    public final void t() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(xB.b().a(this, 2131625675));
-        builder.setItems((CharSequence[]) new String[]{xB.b().a(this, 2131625676), xB.b().a(this, 2131625678), xB.b().a(this, 2131625677)}, (DialogInterface.OnClickListener) new vC(this));
-        AlertDialog create = builder.create();
-        create.setCanceledOnTouchOutside(true);
-        create.show();
-    }
-    public final void u() {
-        this.W = true;
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625047));
-        aBVar.a(2131165391);
-        aBVar.a(xB.b().a(this, 2131625684));
-        aBVar.b(xB.b().a(this, 2131625010), new yC(this, aBVar));
-        aBVar.show();
-    }
-
-    public final int a(String str, int i) {
-        try {
-            return Integer.valueOf(str).intValue();
-        } catch (Exception unused) {
-            return i;
-        }
-    }
-
-    public final void a(Bitmap bitmap, String str) {
-        Throwable th;
-        Exception e;
-        File file = new File(str);
-        FileOutputStream fileOutputStream = null;
-        try {
-            FileOutputStream fileOutputStream2 = new FileOutputStream(file);
-            try {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream2);
-                fileOutputStream2.flush();
-                try {
-                    fileOutputStream2.close();
-                } catch (IOException unused) {
-                }
-            } catch (Exception e2) {
-                e = e2;
-                fileOutputStream = fileOutputStream2;
-                try {
-                    throw e;
-                } catch (Throwable th2) {
-                    th = th2;
-                }
-            } catch (Throwable th3) {
-                th = th3;
-                fileOutputStream = fileOutputStream2;
-                if (fileOutputStream != null) {
-                    try {
-                        fileOutputStream.close();
-                    } catch (IOException unused2) {
-                    }
-                }
-                try {
-                    throw th;
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }
-        } catch (Exception e3) {
-            e = e3;
-            try {
-                throw e;
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
+            a = context;
+            b = i;
+            setTag(i);
+            wB.a(context, this, Resources.layout.myproject_color);
+            c = findViewById(Resources.id.layout_theme_color);
+            d = findViewById(Resources.id.color);
+            e = findViewById(Resources.id.name);
         }
     }
 
     class b extends MA {
+
         public b(Context context) {
             super(context);
-            MyProjectSettingActivity.this.a((MA) this);
-            MyProjectSettingActivity.this.k();
+            MyProjectSettingActivity.this.a(this);
+            k();
         }
 
         public void a() {
-            MyProjectSettingActivity.this.h();
-            Intent intent = MyProjectSettingActivity.this.getIntent();
-            MyProjectSettingActivity.this.getIntent().putExtra("sc_id", MyProjectSettingActivity.this.w);
-            MyProjectSettingActivity.this.getIntent().putExtra("is_new", !MyProjectSettingActivity.this.O);
-            MyProjectSettingActivity.this.getIntent().putExtra("index", MyProjectSettingActivity.this.getIntent().getIntExtra("index", -1));
-            MyProjectSettingActivity.this.setResult(-1, intent);
-            MyProjectSettingActivity.this.finish();
+            h();
+            Intent intent = getIntent();
+            intent.putExtra("sc_id", w);
+            intent.putExtra("is_new", !O);
+            intent.putExtra("index", intent.getIntExtra("index", -1));
+            setResult(-1, intent);
+            finish();
         }
 
         public void b() {
             int i = 0;
-            if (MyProjectSettingActivity.this.O) {
-                HashMap hashMap = new HashMap();
-                hashMap.put("sc_id", MyProjectSettingActivity.this.w);
-                hashMap.put("my_sc_pkg_name", MyProjectSettingActivity.this.B.getText().toString());
-                hashMap.put("my_ws_name", MyProjectSettingActivity.this.C.getText().toString());
-                hashMap.put("my_app_name", MyProjectSettingActivity.this.A.getText().toString());
-                hashMap.put("custom_icon", Boolean.valueOf(MyProjectSettingActivity.this.N));
-                hashMap.put("sc_ver_code", MyProjectSettingActivity.this.I.getText().toString());
-                hashMap.put("sc_ver_name", MyProjectSettingActivity.this.J.getText().toString());
-                hashMap.put("sketchware_ver", Integer.valueOf(GB.d(MyProjectSettingActivity.this.getApplicationContext())));
-                while (i < MyProjectSettingActivity.this.t.length) {
-                    hashMap.put(MyProjectSettingActivity.this.t[i], Integer.valueOf(MyProjectSettingActivity.this.v[i]));
+            if (O) {
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("sc_id", w);
+                data.put("my_sc_pkg_name", B.getText().toString());
+                data.put("my_ws_name", C.getText().toString());
+                data.put("my_app_name", A.getText().toString());
+                data.put("custom_icon", N);
+                data.put("sc_ver_code", I.getText().toString());
+                data.put("sc_ver_name", J.getText().toString());
+                data.put("sketchware_ver", GB.d(getApplicationContext()));
+                while (i < t.length) {
+                    data.put(t[i], v[i]);
                     i++;
                 }
-                lC.b(MyProjectSettingActivity.this.w, hashMap);
+                lC.b(w, data);
                 return;
             }
-            HashMap hashMap2 = new HashMap();
+            HashMap<String, Object> data = new HashMap<>();
             String a = new nB().a("yyyyMMddHHmmss");
-            hashMap2.put("sc_id", MyProjectSettingActivity.this.w);
-            hashMap2.put("my_sc_pkg_name", MyProjectSettingActivity.this.B.getText().toString());
-            hashMap2.put("my_ws_name", MyProjectSettingActivity.this.C.getText().toString());
-            hashMap2.put("my_app_name", MyProjectSettingActivity.this.A.getText().toString());
-            hashMap2.put("my_sc_reg_dt", a);
-            hashMap2.put("custom_icon", Boolean.valueOf(MyProjectSettingActivity.this.N));
-            hashMap2.put("sc_ver_code", MyProjectSettingActivity.this.I.getText().toString());
-            hashMap2.put("sc_ver_name", MyProjectSettingActivity.this.J.getText().toString());
-            hashMap2.put("sketchware_ver", Integer.valueOf(GB.d(MyProjectSettingActivity.this.getApplicationContext())));
-            while (i < MyProjectSettingActivity.this.t.length) {
-                hashMap2.put(MyProjectSettingActivity.this.t[i], Integer.valueOf(MyProjectSettingActivity.this.v[i]));
+            data.put("sc_id", w);
+            data.put("my_sc_pkg_name", B.getText().toString());
+            data.put("my_ws_name", C.getText().toString());
+            data.put("my_app_name", A.getText().toString());
+            data.put("my_sc_reg_dt", a);
+            data.put("custom_icon", N);
+            data.put("sc_ver_code", I.getText().toString());
+            data.put("sc_ver_name", J.getText().toString());
+            data.put("sketchware_ver", GB.d(getApplicationContext()));
+            while (i < t.length) {
+                data.put(t[i], v[i]);
                 i++;
             }
-            HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
-            eventBuilder.setCategory("project");
-            eventBuilder.setLabel("create");
-            eventBuilder.setAction("new");
-            MyProjectSettingActivity.this.d.send(eventBuilder.build());
-            lC.a(MyProjectSettingActivity.this.w, hashMap2);
-            wq.a(MyProjectSettingActivity.this.getApplicationContext(), MyProjectSettingActivity.this.w);
-            new oB().b(wq.b(MyProjectSettingActivity.this.w));
+            lC.a(w, data);
+            wq.a(getApplicationContext(), w);
+            new oB().b(wq.b(w));
         }
 
         public void a(String str) {
-            MyProjectSettingActivity.this.h();
+            h();
         }
 
         @Override
