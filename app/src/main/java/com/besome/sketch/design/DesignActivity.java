@@ -207,7 +207,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
     public final void d(String error) {
-        new CompileLogSaver(q.b).setLastLog(error);
+        new CompileErrorSaver(q.b).setErrorText(error);
         Snackbar snackbar = Snackbar.a(this.n, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(this.getApplicationContext(), 2131625038), new OnClickListener() {
             @Override
