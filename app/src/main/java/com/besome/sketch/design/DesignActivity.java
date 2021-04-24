@@ -1,5 +1,6 @@
 package com.besome.sketch.design;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -50,6 +51,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.HashMap;
@@ -89,6 +91,7 @@ import id.indosw.mod.DirectEditorActivity;
 import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -147,7 +150,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public final void A() {
         HashMap<String, Object> var1 = lC.b(this.l);
         if (var1 != null) {
-            var1.put("sketchware_ver", GB.d(this.getApplicationContext()));
+            var1.put("sketchware_ver", GB.d(getApplicationContext()));
             lC.b(this.l, var1);
         }
     }
@@ -185,8 +188,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * @param errorId The ID of the error message. Can be 900, 901, 1001, 1002, 1003, or any other value (the others don't get a specific error text).
      */
     public final void c(String errorId) {
-        Snackbar snackbar = Snackbar.a(this.n, nq.a(this.getApplicationContext(), errorId), -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(xB.b().a(this.getApplicationContext(), 2131625038), new OnClickListener() {
+        Snackbar snackbar = Snackbar.a(this.n, nq.a(getApplicationContext(), errorId), -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
+        snackbar.a(xB.b().a(getApplicationContext(), 2131625038), new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
@@ -209,7 +212,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public final void d(String error) {
         new CompileErrorSaver(q.b).setErrorText(error);
         Snackbar snackbar = Snackbar.a(this.n, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(xB.b().a(this.getApplicationContext(), 2131625038), new OnClickListener() {
+        snackbar.a(xB.b().a(getApplicationContext(), 2131625038), new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
@@ -230,7 +233,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     public void e(int var1) {
         if (var1 == 188) {
-            (new DesignActivity.a(this.getApplicationContext())).execute();
+            (new DesignActivity.a(getApplicationContext())).execute();
         }
 
     }
@@ -290,92 +293,100 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (!super.j.h() && (requestCode == 208 || requestCode == 209 || requestCode == 217 || requestCode == 226 || requestCode == 228 || requestCode == 233 || requestCode == 240 || requestCode == 223 || requestCode == 224) && !super.j.h()) {
+        if (!j.h() && (requestCode == 208 || requestCode == 209 || requestCode == 217 || requestCode == 226 || requestCode == 228 || requestCode == 233 || requestCode == 240 || requestCode == 223 || requestCode == 224) && !j.h()) {
             xo.k();
         }
 
-        if (requestCode != 188) {
-            if (requestCode != 217) {
-                ProjectFileSelector var7;
-                if (requestCode != 226) {
-                    if (requestCode != 228) {
-                        if (requestCode != 233) {
-                            if (requestCode != 263) {
-                                if (requestCode != 462) {
-                                    jr var6;
-                                    if (requestCode != 208) {
-                                        if (requestCode != 209) {
-                                            if (requestCode != 223) {
-                                                if (requestCode == 224 && resultCode == -1) {
-                                                    br var4 = this.y;
-                                                    if (var4 != null) {
-                                                        var4.d();
-                                                    }
-                                                }
-                                            } else if (resultCode == -1) {
-                                                rs var5 = this.x;
-                                                if (var5 != null) {
-                                                    var5.f();
-                                                }
-                                            }
-                                        } else if (resultCode == -1) {
-                                            var6 = this.w;
-                                            if (var6 != null) {
-                                                var6.i();
-                                            }
-                                        }
-                                    } else if (resultCode == -1) {
-                                        var7 = this.v;
-                                        if (var7 != null) {
-                                            var7.a();
-                                        }
+        if (requestCode == 188) {
+            new a(getApplicationContext()).execute();
+        } else {
+            if (requestCode == 217) {
+                return;
+            }
+            if (requestCode == 226) {
+                if (resultCode == -1) {
+                    br var4 = this.y;
 
-                                        var6 = this.w;
-                                        if (var6 != null) {
-                                            var6.n();
+                    if (v != null) {
+                        v.a();
+                    }
+                }
+            } else {
+                if (requestCode == 228) {
+                    return;
+                }
+                if (requestCode == 233) {
+                    if (resultCode == -1) {
+                        w.j();
+                    }
+                } else {
+                    if (requestCode == 263) {
+                        if (resultCode == -1) {
+                            ProjectFileBean var8 = data.getParcelableExtra("project_file");
+                            v.setXmlFileName(var8);
+                        }
+                    } else {
+                        if (requestCode == 462) {
+                            if (resultCode == -1 && data.getBooleanExtra("req_update_design_activity", false)) {
+                                w.j();
+                            }
+                        } else {
+                            if (requestCode == 208) {
+                                if (resultCode == -1) {
+                                    if (v != null) {
+                                        v.a();
+                                    }
+                                    if (w != null) {
+                                        w.n();
+                                    }
+                                }
+                            } else {
+                                if (requestCode == 209) {
+                                    if (resultCode == -1) {
+                                        if (w != null) {
+                                            w.i();
                                         }
                                     }
-                                } else if (resultCode == -1 && data.getBooleanExtra("req_update_design_activity", false)) {
-                                    w.j();
+                                } else {
+                                    if (requestCode == 223) {
+                                        if (resultCode == -1) {
+                                            if (x != null) {
+                                                x.f();
+                                            }
+                                        }
+                                    } else {
+                                        if (requestCode == 224 && resultCode == -1) {
+                                            if (y != null) {
+                                                y.d();
+                                            }
+                                        }
+                                    }
                                 }
-                            } else if (resultCode == -1) {
-                                ProjectFileBean var8 = data.getParcelableExtra("project_file");
-                                v.setXmlFileName(var8);
                             }
-                        } else if (resultCode == -1) {
-                            w.j();
                         }
-                    }
-                } else if (resultCode == -1) {
-                    var7 = this.v;
-                    if (var7 != null) {
-                        var7.a();
                     }
                 }
             }
-        } else {
-            (new DesignActivity.a(this.getApplicationContext())).execute();
         }
 
     }
 
     public void onBackPressed() {
-        if (this.o.f(8388613)) {
+        if (o.f(8388613)) {
             o.a(8388613);
-        } else if (this.w.g()) {
+        } else if (w.g()) {
             w.a(false);
         } else {
-            int var1 = this.E;
-            if (var1 > 0) {
-                E = var1 - 1;
-                m.setCurrentItem(this.E);
-            } else if (this.t.c("P12I2")) {
+            if (E > 0) {
+                E--;
+                m.setCurrentItem(E);
+            } else if (t.c("P12I2")) {
                 k();
-                if (!super.j.h()) {
-                    xo.a(this.I);
-                    xo.a(this.getApplicationContext(), 242);
+                if (!j.h()) {
+                    xo.a(I);
+                    xo.a(getApplicationContext(), 242);
                 } else {
-                    (new Handler()).postDelayed(new Runnable() {
+                    new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             new e(getApplicationContext()).execute();
@@ -392,19 +403,37 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            if (v.getId() == 2131230824) {
-                (new DesignActivity.a(this.getApplicationContext())).execute();
-            } else if (v.getId() == 2131232628) {
-                (new BuildSettingsDialog(this, this.l)).show();
+            if (v.getId() == Resources.id.btn_execute) {
+                new DesignActivity.a(getApplicationContext()).execute();
+            } else if (v.getId() == Resources.id.btn_compiler_opt) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Action")
+                        .setSingleChoiceItems(
+                                new String[]{
+                                        "Build Settings",
+                                        "Show last compile error"
+                                },
+                                -1,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        if (which == 0) {
+                                            new BuildSettingsDialog(DesignActivity.this, l).show();
+                                        } else if (which == 1) {
+                                            new CompileErrorSaver(l).showDialog(DesignActivity.this);
+                                        }
+                                    }
+                                })
+                        .show();
             }
         }
-
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (this.F) {
+            if (F) {
                 H.setVisibility(View.VISIBLE);
                 p.setVisibility(View.VISIBLE);
             } else {
@@ -421,24 +450,24 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427393);
-        if (!super.j()) {
+        setContentView(Resources.layout.design);
+        if (!j()) {
             finish();
         }
 
         if (savedInstanceState == null) {
-            l = this.getIntent().getStringExtra("sc_id");
+            l = getIntent().getStringExtra("sc_id");
         } else {
             l = savedInstanceState.getString("sc_id");
         }
 
-        r = new DB(this.getApplicationContext(), "P1");
-        s = new DB(this.getApplicationContext(), "P2");
-        t = new DB(this.getApplicationContext(), "P12");
+        r = new DB(getApplicationContext(), "P1");
+        s = new DB(getApplicationContext(), "P2");
+        t = new DB(getApplicationContext(), "P12");
         z = new oB();
-        k = this.findViewById(2131231847);
-        a(this.k);
-        findViewById(2131231370).setVisibility(View.GONE);
+        k = findViewById(Resources.id.toolbar);
+        a(k);
+        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().d(true);
         d().e(true);
         k.setNavigationOnClickListener(new View.OnClickListener() {
@@ -447,59 +476,57 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 onBackPressed();
             }
         });
-        k.setPopupTheme(2131689886);
+        k.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
         getSupportFragmentManager().a(new Xf.c() {
             @Override
             public void onBackStackChanged() {
             }
         });
-        p = this.findViewById(2131231310);
-        o = this.findViewById(2131230981);
+        p = findViewById(Resources.id.layout_ads);
+        o = findViewById(Resources.id.drawer_layout);
         o.setDrawerLockMode(1);
-        n = this.findViewById(2131231335);
-        u = this.findViewById(2131230824);
-        u.setText(xB.b().a(this, 2131625030));
+        n = findViewById(Resources.id.layout_coordinator);
+        u = findViewById(Resources.id.btn_execute);
+        u.setText(xB.b().a(this, Resources.string.common_word_run));
         u.setOnClickListener(this);
-        findViewById(2131232628).setOnClickListener(this);
-        A = this.findViewById(2131231164);
-        C = this.findViewById(2131231319);
-        v = this.findViewById(2131231060);
-        v.setScId(this.l);
+        findViewById(Resources.id.btn_compiler_opt).setOnClickListener(this);
+        A = findViewById(Resources.id.img_orientation);
+        C = findViewById(Resources.id.layout_btn_group);
+        v = findViewById(Resources.id.file_selector);
+        v.setScId(l);
         v.setOnSelectedFileChangeListener(new by() {
             @Override
             public void a(int i, ProjectFileBean projectFileBean) {
                 if (i == 0) {
                     if (w != null && projectFileBean != null) {
-                        int i2 = projectFileBean.orientation;
-                        if (i2 == 0) {
-                            A.setImageResource(2131165846);
-                        } else if (i2 == 1) {
-                            A.setImageResource(2131165845);
+                        int orientation = projectFileBean.orientation;
+                        if (orientation == 0) {
+                            A.setImageResource(Resources.drawable.ic_screen_portrait_grey600_24dp);
+                        } else if (orientation == 1) {
+                            A.setImageResource(Resources.drawable.ic_screen_landscape_grey600_24dp);
                         } else {
-                            A.setImageResource(2131165847);
+                            A.setImageResource(Resources.drawable.ic_screen_rotation_grey600_24dp);
                         }
                         w.a(projectFileBean);
                     }
                 } else if (i == 1) {
-                    rs rsVar = x;
-                    if (rsVar != null) {
+                    if (x != null) {
                         if (projectFileBean != null) {
-                            rsVar.a(projectFileBean);
+                            x.a(projectFileBean);
                             x.f();
                         } else {
                             return;
                         }
                     }
-                    br brVar = y;
-                    if (brVar != null && projectFileBean != null) {
-                        brVar.a(projectFileBean);
+                    if (y != null && projectFileBean != null) {
+                        y.a(projectFileBean);
                         y.d();
                     }
                 }
             }
         });
-        m = this.findViewById(2131232328);
-        m.setAdapter(new DesignActivity.g(this.getSupportFragmentManager(), this));
+        m = findViewById(Resources.id.viewpager);
+        m.setAdapter(new DesignActivity.g(getSupportFragmentManager(), this));
         m.setOffscreenPageLimit(3);
         m.a(new ViewPager.e() {
 
@@ -513,19 +540,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
             @Override
             public void b(int i) {
-                br brVar;
                 if (E == 1) {
-                    rs rsVar = x;
-                    if (rsVar != null) {
-                        rsVar.c();
+                    if (x != null) {
+                        x.c();
                     }
-                } else if (E == 2 && (brVar = y) != null) {
-                    brVar.c();
+                } else if (E == 2 && y != null) {
+                    y.c();
                 }
                 if (i == 0) {
-                    jr jrVar = w;
-                    if (jrVar != null) {
-                        jrVar.c(true);
+                    if (w != null) {
+                        w.c(true);
                         A.setVisibility(View.VISIBLE);
                         v.setFileType(0);
                         v.a();
@@ -542,9 +566,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         }
                     }
                 } else {
-                    jr jrVar2 = w;
-                    if (jrVar2 != null) {
-                        jrVar2.c(false);
+                    if (w != null) {
+                        w.c(false);
                         A.setVisibility(View.GONE);
                         v.setFileType(1);
                         v.a();
@@ -568,30 +591,30 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         };
-        H = this.findViewById(2131232313);
+        H = findViewById(Resources.id.view_ads_boader);
         m.getAdapter().b();
-        ((TabLayout) this.findViewById(2131231781)).setupWithViewPager(this.m);
-        if (!super.j.h()) {
+        ((TabLayout) findViewById(Resources.id.tab_layout)).setupWithViewPager(m);
+        if (!j.h()) {
             xo.a((uo) this);
-            xo.c(this.getApplicationContext());
+            xo.c(getApplicationContext());
             p();
         } else {
             H.setVisibility(View.GONE);
             p.setVisibility(View.GONE);
         }
-
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(2131492866, menu);
+        getMenuInflater().inflate(Resources.menu.design_menu, menu);
         return true;
     }
 
+    @Override
     public void onDestroy() {
-        AdView var1 = this.G;
-        if (var1 != null) {
+        if (G != null) {
             try {
-                var1.destroy();
+                G.destroy();
             } catch (Exception ignored) {
             }
         }
@@ -601,30 +624,31 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onDestroy();
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int var2 = item.getItemId();
-        if (var2 != 2131230965) {
-            if (var2 == 2131230971) {
+        int itemId = item.getItemId();
+        if (itemId != Resources.id.design_actionbar_titleopen_drawer) {
+            if (itemId == Resources.id.design_option_menu_title_save_project) {
                 k();
-                (new Handler()).postDelayed(new Runnable() {
+                new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         new d(getApplicationContext()).execute();
                     }
                 }, 500L);
             }
-        } else if (!this.o.f(8388613)) {
+        } else if (!o.f(8388613)) {
             o.h(8388613);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onPause() {
-        AdView var1 = this.G;
-        if (var1 != null) {
+        if (G != null) {
             try {
-                var1.pause();
+                G.pause();
             } catch (Exception ignored) {
             }
         }
@@ -632,66 +656,63 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onPause();
     }
 
+    @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         k();
-        HashMap<String, Object> var2 = lC.b(this.l);
-        D = yB.b(var2, "sketchware_ver");
-        b(yB.c(var2, "my_ws_name"));
-        String var3 = wq.d(this.l);
-        q = new yq(this.getApplicationContext(), var3, var2);
+        HashMap<String, Object> map = lC.b(l);
+        D = yB.b(map, "sketchware_ver");
+        b(yB.c(map, "my_ws_name"));
+        q = new yq(getApplicationContext(), wq.d(l), map);
         m();
 
         try {
-            Handler var6 = new Handler();
-            var6.postDelayed(new Runnable() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     new b(getBaseContext(), savedInstanceState).execute();
                 }
             }, 500L);
-        } catch (Exception var4) {
-            var4.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
+    @Override
     public void onResume() {
         super.onResume();
-        if (!super.j()) {
+        if (!j()) {
             finish();
         }
 
-        AdView var1 = this.G;
-        if (var1 != null) {
+        if (G != null) {
             try {
-                var1.resume();
+                G.resume();
             } catch (Exception ignored) {
             }
         }
 
-        long var2 = GB.c();
-        if (var2 < 100L && var2 > 0L) {
+        long c = GB.c();
+        if (c < 100L && c > 0L) {
             r();
         }
-
     }
 
+    @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", this.l);
+        outState.putString("sc_id", l);
         v.b(outState);
         super.onSaveInstanceState(outState);
-        if (!super.j()) {
+        if (!j()) {
             finish();
         }
 
-        DesignActivity.f var2 = this.J;
-        if (var2 != null && !var2.isCancelled()) {
+        if (J != null && !J.isCancelled()) {
             J.cancel(true);
         }
 
-        if (!this.B) {
-            J = new DesignActivity.f(this.getApplicationContext());
+        if (!B) {
+            J = new DesignActivity.f(getApplicationContext());
             J.execute();
         }
     }
@@ -704,9 +725,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             public void onAdFailedToLoad(int i) {
                 p.setVisibility(View.GONE);
                 F = false;
-                jr jrVar = w;
-                if (jrVar != null) {
-                    jrVar.b(false);
+                if (w != null) {
+                    w.b(false);
                 }
                 super.onAdFailedToLoad(i);
             }
@@ -717,23 +737,26 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 super.onAdLoaded();
             }
         });
-        LayoutParams var1 = new LayoutParams(-1, -2);
-        G.setLayoutParams(var1);
-        p.addView(this.G);
+        G.setLayoutParams(new LayoutParams(-1, -2));
+        p.addView(G);
         G.setAdSize(AdSize.BANNER);
         G.setAdUnitId("ca-app-pub-7978947291427601/3558354213");
     }
 
+    /**
+     * Show a dialog asking about saving the project before quitting.
+     * TODO: Include "Cancel" option as neutral choice.
+     */
     public final void q() {
-        aB var1 = new aB(this);
-        var1.b(xB.b().a(this.getApplicationContext(), 2131625311));
-        var1.a(2131165604);
-        var1.a(xB.b().a(this.getApplicationContext(), 2131625310));
-        var1.b(xB.b().a(this.getApplicationContext(), 2131625309), new OnClickListener() {
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_quit_title_exit_projet));
+        dialog.a(Resources.drawable.exit_96);
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.design_quit_message_confirm_save));
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_quit_button_save_and_exit), new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    var1.dismiss();
+                    dialog.dismiss();
                     try {
                         k();
                         if (!j.h()) {
@@ -754,11 +777,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        var1.a(xB.b().a(this.getApplicationContext(), 2131624996), new OnClickListener() {
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_exit), new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
-                    var1.dismiss();
+                    dialog.dismiss();
                     try {
                         k();
                         if (!j.h()) {
@@ -779,30 +802,33 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        var1.show();
+        dialog.show();
     }
 
+    /**
+     * Show a dialog warning the user about low free space.
+     */
     public final void r() {
-        aB var1 = new aB(this);
-        var1.b(xB.b().a(this.getApplicationContext(), 2131625047));
-        var1.a(2131165391);
-        var1.a(xB.b().a(this.getApplicationContext(), 2131624947));
-        var1.b(xB.b().a(this.getApplicationContext(), 2131625010), new OnClickListener() {
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
+        dialog.a(Resources.drawable.break_warning_96_red);
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                var1.dismiss();
+                dialog.dismiss();
             }
         });
-        var1.show();
+        dialog.show();
     }
 
     public final void s() {
         B = true;
-        aB var1 = new aB(this);
-        var1.a(2131165516);
-        var1.b(xB.b().a(this.getApplicationContext(), 2131625313));
-        var1.a(xB.b().a(this.getApplicationContext(), 2131625312));
-        var1.b(xB.b().a(this.getApplicationContext(), 2131625028), new View.OnClickListener() {
+        aB dialog = new aB(this);
+        dialog.a(Resources.drawable.data_backup_96);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_restore_data_title));
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.design_restore_data_message_confirm));
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_restore), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
@@ -840,200 +866,257 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
                     DesignActivity.this.v.a();
                     B = false;
-                    var1.dismiss();
+                    dialog.dismiss();
                 }
             }
         });
-        var1.a(xB.b().a(this.getApplicationContext(), 2131625009), new OnClickListener() {
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_no), new OnClickListener() {
             @Override
             public void onClick(View v) {
                 B = false;
-                var1.dismiss();
+                dialog.dismiss();
             }
         });
-        var1.setCancelable(false);
-        var1.show();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
+    /**
+     * Opens {@link ManageCollectionActivity}.
+     */
     public void t() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageCollectionActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivityForResult(var1, 233);
+        Intent intent = new Intent(getApplicationContext(), ManageCollectionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivityForResult(intent, 233);
     }
 
+    /**
+     * Opens {@link AndroidManifestInjection}.
+     */
     public void toAndroidManifest() {
-        Intent var1 = new Intent(this.getApplicationContext(), AndroidManifestInjection.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        var1.putExtra("file_name", this.v.g);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), AndroidManifestInjection.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        intent.putExtra("file_name", v.g);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageCustomAttributeActivity}.
+     */
     public void toAppCompatInjection() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageCustomAttributeActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        var1.putExtra("file_name", this.v.f);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageCustomAttributeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        intent.putExtra("file_name", v.f);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageAssetsActivity}.
+     */
     public void toAssets() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageAssetsActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageAssetsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageBackgroundActivity}.
+     */
     public void toBroadcast() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageBackgroundActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        var1.putExtra("pkgName", this.q.e);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageBackgroundActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        intent.putExtra("pkgName", q.e);
+        startActivity(intent);
     }
 
+    /**
+     * Shows a {@link CustomBlocksDialog}.
+     */
     public void toCustomBlocks() {
-        CustomBlocksDialog.show(this, this.l);
+        CustomBlocksDialog.show(this, l);
     }
 
+    /**
+     * Opens {@link ExportApkActivity}.
+     */
     public void toExportApk() {
-        Intent var1 = new Intent(this.getApplicationContext(), ExportApkActivity.class);
-        var1.putExtra("scId", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ExportApkActivity.class);
+        intent.putExtra("scId", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageJavaActivity}.
+     */
     public void toJava() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageJavaActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        var1.putExtra("pkgName", this.q.e);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageJavaActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        intent.putExtra("pkgName", q.e);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageLocalLibraryActivity}.
+     */
     public void toLocalLibrary() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageLocalLibraryActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageLocalLibraryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageNativelibsActivity}.
+     */
     public void toNativelibs() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageNativelibsActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageNativelibsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManagePermissionActivity}.
+     */
     public void toPermission() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManagePermissionActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManagePermissionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageProguardActivity}.
+     */
     public void toProguard() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageProguardActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageProguardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageResourceActivity}.
+     */
     public void toResource() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageResourceActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageResourceActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageStringfogActivity}.
+     */
     public void toStringfog() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageStringfogActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), ManageStringfogActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
+    /**
+     * Opens {@link ManageFontActivity}.
+     */
     public void u() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageFontActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivityForResult(var1, 228);
+        Intent intent = new Intent(getApplicationContext(), ManageFontActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivityForResult(intent, 228);
     }
 
+    /**
+     * Opens {@link ManageImageActivity}.
+     */
     public void v() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageImageActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivityForResult(var1, 209);
+        Intent intent = new Intent(getApplicationContext(), ManageImageActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivityForResult(intent, 209);
     }
 
+    /**
+     * Opens {@link ManageLibraryActivity}.
+     */
     public void w() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageLibraryActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivityForResult(var1, 226);
+        Intent intent = new Intent(getApplicationContext(), ManageLibraryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivityForResult(intent, 226);
     }
 
+    /**
+     * Opens {@link ManageViewActivity}.
+     */
     public void x() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageViewActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivityForResult(var1, 208);
+        Intent intent = new Intent(getApplicationContext(), ManageViewActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivityForResult(intent, 208);
     }
 
+    /**
+     * Opens {@link ManageSoundActivity}.
+     */
     public void y() {
-        Intent var1 = new Intent(this.getApplicationContext(), ManageSoundActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        startActivityForResult(var1, 217);
+        Intent intent = new Intent(getApplicationContext(), ManageSoundActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivityForResult(intent, 217);
     }
 
+    /**
+     * Opens {@link SrcViewerActivity}.
+     */
     public void z() {
-        Intent var1 = new Intent(this.getApplicationContext(), SrcViewerActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        boolean var10001;
-        if (this.m.getCurrentItem() == 0) {
+        Intent intent = new Intent(getApplicationContext(), SrcViewerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        if (m.getCurrentItem() == 0) {
             try {
-                var1.putExtra("current", this.w.d().getXmlName());
-            } catch (Exception var3) {
-                var10001 = false;
+                intent.putExtra("current", w.d().getXmlName());
+            } catch (Exception ignored) {
             }
-        } else if (this.m.getCurrentItem() != 1) {
-            var1.putExtra("current", "");
+        } else if (m.getCurrentItem() != 1) {
+            intent.putExtra("current", "");
         } else {
             try {
-                var1.putExtra("current", this.x.d().getJavaName());
-            } catch (Exception var4) {
-                var10001 = false;
+                intent.putExtra("current", x.d().getJavaName());
+            } catch (Exception ignored) {
             }
         }
 
-        startActivityForResult(var1, 240);
+        startActivityForResult(intent, 240);
     }
 
+    /**
+     * Opens {@link DirectEditorActivity}.
+     */
     public void zz() {
-        Intent var1 = new Intent(this.getApplicationContext(), DirectEditorActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.putExtra("sc_id", this.l);
-        boolean var10001;
-        if (this.m.getCurrentItem() == 0) {
+        Intent intent = new Intent(getApplicationContext(), DirectEditorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        if (m.getCurrentItem() == 0) {
             try {
-                var1.putExtra("current", this.w.d().getXmlName());
-            } catch (Exception var3) {
-                var10001 = false;
+                intent.putExtra("current", w.d().getXmlName());
+            } catch (Exception ignored) {
             }
-        } else if (this.m.getCurrentItem() != 1) {
-            var1.putExtra("current", "");
+        } else if (m.getCurrentItem() != 1) {
+            intent.putExtra("current", "");
         } else {
             try {
-                var1.putExtra("current", this.x.d().getJavaName());
-            } catch (Exception var4) {
-                var10001 = false;
+                intent.putExtra("current", x.d().getJavaName());
+            } catch (Exception ignored) {
             }
         }
 
-        startActivityForResult(var1, 240);
+        startActivityForResult(intent, 240);
     }
 
     public class a extends MA implements OnCancelListener {
@@ -1058,7 +1141,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         /**
          * Reverts c (the "Run"-Button) to its original state,
          * usually called after compilation was successful.
-         *
+         * <p>
          * This closes the dialog, reverts u (the "Run"-Button)'s text and clickable property,
          * and clears the FLAG_KEEP_SCREEN_ON flag.
          */
@@ -1066,7 +1149,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void a() {
             q.b();
             c();
-            u.setText(xB.b().a(DesignActivity.this.getApplicationContext(), 2131625030));
+            u.setText(xB.b().a(getApplicationContext(), 2131625030));
             u.setClickable(true);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -1079,7 +1162,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          */
         @Override
         public void a(String str) {
-            DesignActivity.this.runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     q.b();
@@ -1093,7 +1176,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         public void aWithMessage(String message) {
-            DesignActivity.this.runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     a();
@@ -1104,60 +1187,42 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
             c(values[0]);
         }
 
         @Override
         public void b() {
-            if (this.d) {
+            if (d) {
                 cancel(true);
             } else {
-
                 BuildSettings buildSettings = new BuildSettings(q.b);
 
                 try {
-                    DesignActivity.this.q.c();
-                    DesignActivity.this.q.c(super.a);
-                    DesignActivity.this.q.a();
-                    DesignActivity.this.q.a(super.a, wq.e("600"));
-                    if (yB.a(lC.b(DesignActivity.this.l), "custom_icon")) {
-                        yq var8 = DesignActivity.this.q;
-                        String var2 = wq.e() +
-                                File.separator +
-                                DesignActivity.this.l +
-                                File.separator +
-                                "icon.png";
-                        var8.a(var2);
+                    q.c();
+                    q.c(a);
+                    q.a();
+                    q.a(a, wq.e("600"));
+                    if (yB.a(lC.b(l), "custom_icon")) {
+                        q.a(wq.e()
+                                + File.separator + l
+                                + File.separator + "icon.png");
                     }
 
-                    kC kC = jC.d(DesignActivity.this.l);
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(DesignActivity.this.q.w);
-                    sb.append(File.separator);
-                    sb.append("drawable-xhdpi");
-                    kC.b(sb.toString());
-                    kC = jC.d(DesignActivity.this.l);
-                    sb = new StringBuilder();
-                    sb.append(DesignActivity.this.q.w);
-                    sb.append(File.separator);
-                    sb.append("raw");
-                    kC.c(sb.toString());
-                    kC = jC.d(DesignActivity.this.l);
-                    sb = new StringBuilder();
-                    sb.append(DesignActivity.this.q.A);
-                    sb.append(File.separator);
-                    sb.append("fonts");
-                    kC.a(sb.toString());
-                    DesignActivity.this.n();
-                    DesignActivity.this.q.f();
-                    DesignActivity.this.q.e();
-                    Dp mDp = new Dp(this, super.a, DesignActivity.this.q);
-                    mDp.e = DesignActivity.this;
-                    publishProgress(xB.b().a(super.a, 2131625316));
+                    kC kC = jC.d(l);
+                    kC.b(q.w + File.separator + "drawable-xhdpi");
+                    kC = jC.d(l);
+                    kC.c(q.w + File.separator + "raw");
+                    kC = jC.d(l);
+                    kC.a(q.A + File.separator + "fonts");
+                    n();
+                    q.f();
+                    q.e();
+                    Dp mDp = new Dp(this, a, q);
+                    publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
+                    publishProgress("Extracting built-in libraries...");
                     mDp.j();
-                    if (this.d) {
+                    if (d) {
                         cancel(true);
                         return;
                     }
@@ -1168,7 +1233,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
                     publishProgress(usingAapt2 ? "AAPT2 is running..." : "AAPT is running...");
                     mDp.a();
-                    if (this.d) {
+                    if (d) {
                         cancel(true);
                         return;
                     }
@@ -1176,8 +1241,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     publishProgress("Java is compiling...");
 
                     boolean incrementalCompilationEnabled = buildSettings.
-                            getValue(BuildSettings.SETTING_BUILD_INCREMENTAL, "false")
-                            .equals("true");
+                            getValue(BuildSettings.SETTING_INCREMENTAL_BUILD_ACTIVE, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
+                            .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
                     if (incrementalCompilationEnabled) {
                         IncrementalCompiler incrementalCompiler = new IncrementalCompiler(q);
@@ -1186,99 +1251,104 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             public void onResult(boolean success, String message) {
                                 if (!success) {
                                     DesignActivity.this.d(message);
-                                    return;
                                 } else {
                                     publishProgress("Building APK...");
                                     mDp.g();
 
-                                    if (this.d) {
+                                    if (d) {
                                         cancel(true);
                                         return;
                                     }
 
                                     publishProgress("Signing APK...");
                                     mDp.k();
-                                    if (this.d) {
+                                    if (d) {
                                         cancel(true);
                                         return;
                                     }
 
-                                    DesignActivity.this.o();
+                                    o();
                                 }
-                             }
+                            }
                         });
                         incrementalCompiler.performCompilation();
                     } else {
+                        /* Compile the regular, old way */
                         mDp.f();
-                        if (this.d) {
+                        if (d) {
                             cancel(true);
                             return;
                         }
 
-                        StringfogHandler stringfogHandler = new StringfogHandler(DesignActivity.this.q.b);
+                        StringfogHandler stringfogHandler = new StringfogHandler(q.b);
                         stringfogHandler.start(this, mDp);
-                        if (this.d) {
+                        if (d) {
                             cancel(true);
                             return;
                         }
 
-                        ProguardHandler proguardHandler = new ProguardHandler(DesignActivity.this.q.b);
+                        ProguardHandler proguardHandler = new ProguardHandler(q.b);
                         proguardHandler.start(this, mDp);
-                        if (this.d) {
+                        if (d) {
                             cancel(true);
                             return;
                         }
 
                         publishProgress(mDp.getDxRunningText());
                         mDp.c();
-                        if (this.d) {
+                        if (d) {
                             cancel(true);
                             return;
                         }
 
                         publishProgress("Merging libraries' DEX files...");
                         mDp.h();
-                        if (this.d) {
+                        if (d) {
                             cancel(true);
                             return;
                         }
-                    
-                        boolean buildingAAB = new BuildSettings(q.b)
-                                .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
-                                        BuildSettings.SETTING_OUTPUT_FORMAT_APK)
-                                .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
-                        if (buildingAAB) {
-                            BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
-                            publishProgress("Creating app module...");
-                            compiler.copyFilesToMainModuleDirectory();
-                            publishProgress("Compressing app module...");
-                            compiler.zipMainModule();
-                            publishProgress("Building app bundle...");
-                            compiler.buildBundle();
-                            publishProgress("Building APK Set...");
-                            compiler.buildApkSet();
-                            publishProgress("Extracting Install-APK from APK Set...");
-                            compiler.extractInstallApkFromApkSet();
-                            publishProgress("Signing Install-APK...");
-                            compiler.signInstallApk();
-                            o();
-                        } else {
-                            publishProgress("Building APK...");
-                            mDp.g();
-                            if (this.d) {
-                                cancel(true);
-                                return;
-                            }
+                    }
 
-                            publishProgress("Signing APK...");
-                            mDp.k();
-                            if (this.d) {
-                                cancel(true);
-                                return;
-                            }
-
-                            DesignActivity.this.o();
+                    //TODO: Remove this, move AAB export to {@link ExportProjectActivity}
+                    boolean buildingAAB = new BuildSettings(q.b)
+                            .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
+                                    BuildSettings.SETTING_OUTPUT_FORMAT_APK)
+                            .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
+                    if (buildingAAB) {
+                        BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
+                        publishProgress("Creating app module...");
+                        compiler.createModuleMainArchive();
+                        publishProgress("Building app bundle...");
+                        compiler.buildBundle();
+                        publishProgress("Building APK Set...");
+                        compiler.buildApkSet();
+                        publishProgress("Extracting Install-APK from APK Set...");
+                        compiler.extractInstallApkFromApkSet();
+                        publishProgress("Signing Install-APK...");
+                        compiler.signInstallApk();
+                        o();
+                    } else {
+                        publishProgress("Building APK...");
+                        mDp.g();
+                        if (d) {
+                            cancel(true);
+                            return;
                         }
+
+                        publishProgress("Signing APK...");
+                        if (VERSION.SDK_INT >= 26) {
+                            ApkSigner signer = new ApkSigner(a);
+                            signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
+                        } else {
+                            mDp.k();
+                        }
+                        if (d) {
+                            cancel(true);
+                            return;
+                        }
+
+                        /* Launch Intent to install APK */
+                        o();
                     }
                 } catch (Ay e) {
                     //Never thrown? Haven't found a reference to it in any classes except {@link DesignActivity} and {@link PublishActivity} (and of course {@link Ay})
@@ -1301,8 +1371,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          * Dismiss this dialog, if DesignActivity hasn't been destroyed.
          */
         public void c() {
-            if (!DesignActivity.this.isDestroyed()) {
-                if (this.c.isShowing()) {
+            if (!isDestroyed()) {
+                if (c.isShowing()) {
                     c.dismiss();
                 }
             }
@@ -1314,14 +1384,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          * @param progressText The new text to display as progress
          */
         public void c(String progressText) {
-            DesignActivity.this.runOnUiThread(new DesignActRunnable(this.c, progressText));
+            runOnUiThread(new DesignActRunnable(c, progressText));
         }
 
         /**
          * Try to set this dialog's OnCancelListener as this, then show, unless already showing.
          */
         public void d() {
-            if (!this.c.isShowing()) {
+            if (!c.isShowing()) {
                 c.setOnCancelListener(this);
                 c.show();
             }
@@ -1329,7 +1399,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            if (!this.c.a()) {
+            if (!c.a()) {
                 c.a(true);
                 d();
                 publishProgress("Canceling build...");
@@ -1340,15 +1410,15 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void onCancelled() {
             super.onCancelled();
-            DesignActivity.this.runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    u.setText(xB.b().a(getApplicationContext(), 2131625030));
+                    u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
                     u.setClickable(true);
-                    getWindow().clearFlags(128);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             });
-            DesignActivity.this.q.b();
+            q.b();
             c();
         }
 
@@ -1360,10 +1430,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void onPreExecute() {
             super.onPreExecute();
-            DesignActivity.this.u.setText("Building APK file...");
-            DesignActivity.this.u.setClickable(false);
-            DesignActivity.this.r.a("P1I10", true);
-            DesignActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            u.setText("Building APK file...");
+            u.setClickable(false);
+            r.a("P1I10", true);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 
@@ -1411,6 +1481,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
+    /**
+     * A project "saver" AsyncTask that doesn't actually save the project?
+     * Gets executed when clicking "Exit" in the "Save project?" dialog.
+     */
     public class c extends MA {
 
         public c(Context var2) {
@@ -1441,6 +1515,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
+    /**
+     * An AsyncTask saving the project.
+     */
     public class d extends MA {
 
         public d(Context var2) {
