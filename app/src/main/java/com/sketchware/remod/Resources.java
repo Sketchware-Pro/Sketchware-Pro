@@ -23,19 +23,30 @@ public class Resources {
     public static final class drawable {
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
+        public static final int block_96_blue = 0x7f0700be;
         public static final int break_warning_96_red = 0x7f0700cf;
-        public static final int add_file_48 = 0x7f070473;
+        public static final int cart_filled_48 = 0x7f0700da;
+        public static final int categorize_48 = 0x7f0700db;
+        public static final int code_icon = 0x7f070108;
         public static final int collect_48 = 0x7f07010b;
         public static final int color_about_96 = 0x7f07010c;
+        public static final int color_lock_96 = 0x7f07011b;
         public static final int color_more_96 = 0x7f07011c;
         public static final int color_palette_48 = 0x7f070120;
-        public static final int default_icon = 0x7f070151;
-        public static final int expand_48 = 0x7f0701a5;
-        public static final int ic_discord = 0x7f070141;
-        public static final int swimming_girl_flat = 0x7f070142;
+        public static final int connected_96 = 0x7f070141;
+        public static final int copy_48_grey = 0x7f070142;
         public static final int ic_user = 0x7f070143;
+        public static final int custom_dialog_inset_black = 0x7f070148;
+        public static final int custom_dialog_inset_light_grey = 0x7f070149;
+        public static final int custom_dialog_inset_white = 0x7f07014a;
+        public static final int data_backup_96 = 0x7f07014c;
+        public static final int default_icon = 0x7f070151;
         public static final int delete_96 = 0x7f070154;
+        public static final int exit_96 = 0x7f0701a4;
+        public static final int expand_48 = 0x7f0701a5;
         public static final int facebook_50 = 0x7f0701ac;
+        public static final int file_48_blue = 0x7f0701b6;
+        public static final int file_app_icon = 0x7f0701b8;
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
@@ -44,14 +55,32 @@ public class Resources {
         public static final int ic_class_48 = 0x7f070215;
         public static final int ic_detail_setting_48dp = 0x7f070225;
         public static final int ic_export_his_white_48dp = 0x7f070236;
+        public static final int ic_font_48dp = 0x7f07023b;
+        public static final int ic_picture_48dp = 0x7f070273;
         public static final int ic_reset_color_32dp = 0x7f07028a;
+        public static final int ic_screen_landscape_grey600_24dp = 0x7f070295;
+        public static final int ic_screen_portrait_grey600_24dp = 0x7f070296;
+        public static final int ic_screen_rotation_grey600_24dp = 0x7f070297;
+        public static final int ic_sound_wave_48dp = 0x7f0702a5;
         public static final int icon_file_white_96 = 0x7f0702cb;
         public static final int insert_white_space_48 = 0x7f0702e4;
+        public static final int java_96 = 0x7f0702e8;
         public static final int language_48 = 0x7f0702eb;
+        public static final int lock_48 = 0x7f070304;
+        public static final int multiple_devices_48 = 0x7f070316;
+        public static final int new_96 = 0x7f07031e;
         public static final int numbers_48 = 0x7f070330;
+        public static final int open_box_48 = 0x7f070335;
+        public static final int plugin_purple_96 = 0x7f07034a;
         public static final int side_menu_info_icon_over_white = 0x7f0703c5;
+        public static final int side_menu_setting_icon_over = 0x7f0703c8;
         public static final int side_menu_setting_icon_over_white = 0x7f0703c9;
         public static final int style_48dp = 0x7f0703e3;
+        public static final int ic_property_inject = 0x7f07046b;
+        public static final int add_file_48 = 0x7f070473;
+        public static final int icon8_code_am = 0x7f07049c;
+        public static final int notes_alt2 = 0x7f0704a8;
+        public static final int cpp = 0x7f0704ae;
     }
 
     public static final class id {
@@ -65,6 +94,7 @@ public class Resources {
         public static final int app_icon = 0x7f08003a;
         public static final int app_icon_layout = 0x7f08003b;
         public static final int btn_editproperties = 0x7f080065;
+        public static final int btn_execute = 0x7f080068;
         public static final int btn_left = 0x7f080073;
         public static final int btn_right = 0x7f080080;
         public static final int chk_bottom = 0x7f0800a6;
@@ -84,13 +114,22 @@ public class Resources {
         public static final int confirm_yes = 0x7f0800cf;
         public static final int confirm_yes_text = 0x7f0800d1;
         public static final int contents = 0x7f0800d6;
+        public static final int custom_view = 0x7f0800dd;
         public static final int desc = 0x7f0800f3;
+        public static final int design_actionbar_titleopen_drawer = 0x7f0800f5;
+        public static final int design_option_menu_title_save_project = 0x7f0800fb;
+        public static final int dialog_btn_no = 0x7f0800fc;
+        public static final int dialog_btn_yes = 0x7f0800fd;
+        public static final int dialog_img = 0x7f0800fe;
+        public static final int dialog_msg = 0x7f0800ff;
+        public static final int dialog_title = 0x7f080100;
         public static final int docs_button = 0x7f080104;
         public static final int drawer_layout = 0x7f080105;
         public static final int ed_input = 0x7f08010e;
         public static final int ed_input_file_picker = 0x7f080111;
         public static final int ed_input_filename = 0x7f080112;
         public static final int ed_input_firebase_path = 0x7f080113;
+        public static final int editor = 0x7f080127;
         public static final int et_all = 0x7f08012f;
         public static final int et_app_name = 0x7f080130;
         public static final int et_bottom = 0x7f080131;
@@ -100,6 +139,7 @@ public class Resources {
         public static final int et_right = 0x7f080142;
         public static final int et_top = 0x7f080144;
         public static final int fab = 0x7f08014e;
+        public static final int file_selector = 0x7f080154;
         public static final int hcv_property = 0x7f080165;
         public static final int icon = 0x7f080172;
         public static final int img_activity = 0x7f080180;
@@ -109,10 +149,14 @@ public class Resources {
         public static final int img_file_picker = 0x7f0801a9;
         public static final int img_icon = 0x7f0801af;
         public static final int img_left_icon = 0x7f0801b3;
+        public static final int img_orientation = 0x7f0801bc;
         public static final int img_save = 0x7f0801c9;
         public static final int img_theme_color_help = 0x7f0801d4;
         public static final int img_title_logo = 0x7f0801d9;
         public static final int img_user_icon = 0x7f0801df;
+        public static final int layout_ads = 0x7f08024e;
+        public static final int layout_bottom_menus = 0x7f080255;
+        public static final int layout_btn_group = 0x7f080257;
         public static final int layout_button = 0x7f080258;
         public static final int layout_coordinator = 0x7f080267;
         public static final int layout_description = 0x7f08026a;
@@ -120,6 +164,7 @@ public class Resources {
         public static final int layout_input_file_picker = 0x7f08027d;
         public static final int layout_inputs = 0x7f08027e;
         public static final int layout_main_logo = 0x7f08028a;
+        public static final int layout_menus = 0x7f08028d;
         public static final int layout_property_group = 0x7f08029c;
         public static final int layout_property_see_all = 0x7f08029d;
         public static final int layout_theme_color = 0x7f0802b5;
@@ -131,6 +176,8 @@ public class Resources {
         public static final int menu_list = 0x7f08031f;
         public static final int menu_login = 0x7f080322;
         public static final int menu_mypage = 0x7f080326;
+        public static final int menu_view_undo = 0x7f080334;
+        public static final int menu_view_redo = 0x7f080335;
         public static final int moreblock_create = 0x7f08033a;
         public static final int name = 0x7f080349;
         public static final int pane = 0x7f080368;
@@ -143,10 +190,14 @@ public class Resources {
         public static final int rg_content = 0x7f0803b4;
         public static final int save_button = 0x7f0803c1;
         public static final int scroll_view = 0x7f0803cc;
+        public static final int sdialog_root = 0x7f0803d0;
+        public static final int separator = 0x7f0803e0;
         public static final int social_fb = 0x7f0803ff;
         public static final int social_medium = 0x7f080400;
         public static final int social_slack = 0x7f080401;
         public static final int spn_widget = 0x7f08040c;
+        public static final int sub_separator = 0x7f080419;
+        public static final int sub_items = 0x7f080417;
         public static final int tab_layout = 0x7f080425;
         public static final int ti_all = 0x7f08043a;
         public static final int ti_app_name = 0x7f08043d;
@@ -175,8 +226,11 @@ public class Resources {
         public static final int tv_login_id = 0x7f080524;
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
+        public static final int tv_root_title = 0x7f080589;
         public static final int tv_sub_title = 0x7f0805b6;
         public static final int tv_title = 0x7f0805c3;
+        public static final int tv_title_configuration = 0x7f0805d4;
+        public static final int tv_title_global = 0x7f0805da;
         public static final int tv_value = 0x7f08060e;
         public static final int tv_warning = 0x7f08061d;
         public static final int tv_warning_message = 0x7f08061f;
@@ -185,14 +239,32 @@ public class Resources {
         public static final int version_code = 0x7f080634;
         public static final int version_name1 = 0x7f080635;
         public static final int version_name2 = 0x7f080636;
+        public static final int view_ads_boader = 0x7f080639;
         public static final int view_color = 0x7f08063e;
         public static final int view_event = 0x7f080640;
         public static final int viewpager = 0x7f080648;
+        public static final int text_title = 0x7f08066e;
+        public static final int text_content = 0x7f08066f;
+        public static final int text_cancel = 0x7f080678;
+        public static final int text_save = 0x7f080679;
+        public static final int code_editor_zoomin = 0x7f0806c7;
+        public static final int code_editor_zoomout = 0x7f0806c8;
+        public static final int codeeditor_more_options = 0x7f0806f8;
+        public static final int project_config_pref_layout = 0x7f0806fc;
+        public static final int save = 0x7f080710;
+        public static final int more = 0x7f080773;
+        public static final int btn_compiler_opt = 0x7f080774;
+        public static final int project_config_title = 0x7f080775;
+        public static final int project_config_icon = 0x7f080776;
     }
 
     public static final class layout {
         public static final int color_picker = 0x7f0b002d;
         public static final int compile_log = 0x7f0b003c;
+        public static final int design = 0x7f0b0041;
+        public static final int design_drawer = 0x7f0b0044;
+        public static final int design_drawer_item = 0x7f0b0045;
+        public static final int dialog = 0x7f0b0052;
         public static final int fr_logic_list_item_button = 0x7f0b0067;
         public static final int fr_logic_list_item_buttons = 0x7f0b0068;
         public static final int logic_popup_add_component_temp = 0x7f0b00a7;
@@ -204,6 +276,7 @@ public class Resources {
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
+        public static final int project_config_layout = 0x7f0b01de;
         public static final int property_grid_item = 0x7f0b012e;
         public static final int property_group_item = 0x7f0b012f;
         public static final int property_input_item = 0x7f0b0131;
@@ -217,10 +290,13 @@ public class Resources {
         public static final int property_selector_item = 0x7f0b0140;
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
+        public static final int view_code = 0x7f0b01cb;
         public static final int about = 0x7f0b01cf;
+        public static final int code_editor_hs = 0x7f0b01f1;
     }
 
     public static final class menu {
+        public static final int design_menu = 0x7f0c0002;
         public static final int main_menu = 0x7f0c0009;
         public static final int moreblock_menu = 0x7f0c0013;
     }
@@ -238,27 +314,59 @@ public class Resources {
         public static final int common_message_permission_need_load_project = 0x7f0e03ff;
         public static final int common_message_permission_title_storage = 0x7f0e0402;
         public static final int common_word_all = 0x7f0e040c;
-        public static final int common_word_cancel = 0x7f0e040e;
-        public static final int common_word_choose = 0x7f0e0410;
+        public static final int common_word_cancel = 2131624974;
+        public static final int common_word_choose = 2131624976;
         public static final int common_word_continue = 0x7f0e0414;
         public static final int common_word_delete = 0x7f0e041a;
+        public static final int common_word_exit = 0x7f0e0424;
+        public static final int common_word_no = 0x7f0e0431;
         public static final int common_word_ok = 0x7f0e0432;
         public static final int common_word_reset = 0x7f0e0443;
+        public static final int common_word_restore = 0x7f0e0444;
+        public static final int common_word_run = 0x7f0e0446;
         public static final int common_word_save = 0x7f0e0447;
         public static final int common_word_see_all = 0x7f0e0449;
         public static final int common_word_select = 0x7f0e044b;
         public static final int common_word_settings = 0x7f0e044c;
         public static final int common_word_warning = 0x7f0e0457;
         public static final int design_button_properties = 0x7f0e04b4;
+        public static final int design_drawer_menu_bottom_title = 0x7f0e04b5;
+        public static final int design_drawer_menu_description_collection = 0x7f0e04b6;
+        public static final int design_drawer_menu_description_font = 0x7f0e04b7;
+        public static final int design_drawer_menu_description_library = 0x7f0e04b9;
+        public static final int design_drawer_menu_description_image = 0x7f0e04b8;
+        public static final int design_drawer_menu_description_sound = 0x7f0e04ba;
+        public static final int design_drawer_menu_description_source_code = 0x7f0e04bb;
+        public static final int design_drawer_menu_description_view = 0x7f0e04bd;
+        public static final int design_drawer_menu_title = 0x7f0e04be;
+        public static final int design_drawer_menu_title_collection = 0x7f0e04bf;
+        public static final int design_drawer_menu_title_font = 0x7f0e04c0;
+        public static final int design_drawer_menu_title_image = 0x7f0e04c1;
+        public static final int design_drawer_menu_title_library = 0x7f0e04c2;
+        public static final int design_drawer_menu_title_sound = 0x7f0e04c3;
+        public static final int design_drawer_menu_title_source_code = 0x7f0e04c4;
+        public static final int design_drawer_menu_title_view = 0x7f0e04c6;
+        public static final int design_quit_button_save_and_exit = 0x7f0e055d;
+        public static final int design_quit_message_confirm_save = 0x7f0e055e;
+        public static final int design_quit_title_exit_projet = 0x7f0e055f;
+        public static final int design_restore_data_message_confirm = 0x7f0e0560;
+        public static final int design_restore_data_title = 0x7f0e0561;
+        public static final int design_run_title_ready_to_build = 0x7f0e0564;
         public static final int facebook_url = 0x7f0e05b5;
         public static final int logic_list_menu_add_to_collection = 0x7f0e0668;
+        public static final int main_drawer_context_menu_title_slack_invitation = 0x7f0e0679;
+        public static final int main_drawer_context_menu_title_slack_open = 0x7f0e067a;
         public static final int main_drawer_title_export_urls = 0x7f0e067d;
         public static final int main_drawer_title_language_settings = 0x7f0e067e;
         public static final int main_drawer_title_program_information = 0x7f0e067f;
+        public static final int main_drawer_title_purchase_list = 0x7f0e0680;
+        public static final int main_drawer_title_subscribe = 0x7f0e0685;
         public static final int main_drawer_title_system_settings = 0x7f0e0686;
         public static final int main_tab_title_myproject = 0x7f0e0688;
         public static final int main_tab_title_tutorials = 0x7f0e068a;
+        public static final int myprojects_settings_actionbar_title_new_projet = 0x7f0e06c6;
         public static final int myprojects_settings_actionbar_title_project_settings = 0x7f0e06c7;
+        public static final int myprojects_settings_button_create_app = 0x7f0e06c8;
         public static final int myprojects_settings_button_save = 0x7f0e06c9;
         public static final int myprojects_settings_confirm_reset_icon = 0x7f0e06ca;
         public static final int myprojects_settings_context_menu_title_choose = 0x7f0e06cb;
@@ -282,5 +390,33 @@ public class Resources {
         public static final int slack_url_secondary = 0x7f0e0982;
         public static final int view_widget_favorites_save_guide_new = 0x7f0e09e9;
         public static final int view_widget_favorites_save_title = 0x7f0e09ea;
+        public static final int text_title_menu_java = 0x7f0e09f2;
+        public static final int text_title_menu_resource = 0x7f0e09f3;
+        public static final int text_title_menu_assets = 0x7f0e09f4;
+        public static final int text_title_menu_permission = 0x7f0e09f5;
+        public static final int text_title_menu_local_library = 0x7f0e09f6;
+        public static final int text_subtitle_menu_java = 0x7f0e09f7;
+        public static final int text_subtitle_menu_resource = 0x7f0e09f8;
+        public static final int text_subtitle_menu_assets = 0x7f0e09f9;
+        public static final int text_subtitle_menu_permission = 0x7f0e09fa;
+        public static final int text_subtitle_menu_local_library = 0x7f0e09fb;
+        public static final int design_drawer_menu_injection = 0x7f0e0a08;
+        public static final int design_drawer_menu_injection_subtitle = 0x7f0e0a09;
+        public static final int design_drawer_menu_androidmanifest = 0x7f0e0a12;
+        public static final int design_drawer_menu_androidmanifest_subtitle = 0x7f0e0a13;
+        public static final int design_drawer_menu_proguard = 0x7f0e0a14;
+        public static final int design_drawer_menu_proguard_subtitle = 0x7f0e0a15;
+        public static final int design_drawer_menu_stringfog = 0x7f0e0a16;
+        public static final int design_drawer_menu_stringfog_subtitle = 0x7f0e0a17;
+        public static final int design_drawer_menu_title_editor_code = 0x7f0e0a18;
+        public static final int design_drawer_menu_subtitle_editor_code = 0x7f0e0a19;
+        public static final int design_drawer_menu_nativelibs = 0x7f0e0a1a;
+        public static final int design_drawer_menu_nativelibs_subtitle = 0x7f0e0a1b;
+        public static final int design_drawer_menu_customblocks = 0x7f0e0a1c;
+        public static final int design_drawer_menu_customblocks_subtitle = 0x7f0e0a1d;
+    }
+
+    public static final class style {
+        public static final int ThemeOverlay_ToolbarMenu = 0x7f0f019e;
     }
 }
