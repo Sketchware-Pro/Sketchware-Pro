@@ -16,6 +16,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 
@@ -55,10 +56,10 @@ public class ManagePermissionActivity extends Activity {
 
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427789, null);
+                convertView = getLayoutInflater().inflate(Resources.layout.view_item_permission, null);
             }
 
-            CheckBox checkBox = (CheckBox) convertView.findViewById(2131232370);
+            CheckBox checkBox = (CheckBox) convertView.findViewById(Resources.id.checkbox_content);
             checkBox.setText(namePerm.get(position));
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -130,13 +131,13 @@ public class ManagePermissionActivity extends Activity {
     }
 
     public void initToolbar() {
-        ((TextView) findViewById(2131232458)).setText("Permission Manager");
-        ImageView back = (ImageView) findViewById(2131232457);
+        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Permission Manager");
+        ImageView back = (ImageView) findViewById(Resources.id.ig_toolbar_back);
         Helper.applyRipple(this, back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        ImageView resetPermissions = findViewById(2131232459);
+        ImageView resetPermissions = findViewById(Resources.id.ig_toolbar_load_file);
         resetPermissions.setVisibility(View.VISIBLE);
-        resetPermissions.setImageResource(2131165836);
+        resetPermissions.setImageResource(Resources.drawable.ic_restore_white_24dp);
         resetPermissions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,13 +161,13 @@ public class ManagePermissionActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427786);
+        setContentView(Resources.layout.manage_permission);
         if (getIntent().hasExtra("sc_id")) {
             numProj = getIntent().getStringExtra("sc_id");
             frc = new FileResConfig(numProj);
         }
-        sv = (SearchView) findViewById(2131232363);
-        lv = (ListView) findViewById(2131232364);
+        sv = (SearchView) findViewById(Resources.id.search_perm);
+        lv = (ListView) findViewById(Resources.id.main_content);
         arrayList = new ArrayList<>();
         checkFile();
         setItems();
