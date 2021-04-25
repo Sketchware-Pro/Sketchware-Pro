@@ -3,10 +3,13 @@ package mod.agus.jcoderz.variable;
 import a.a.a.ZB;
 import a.a.a.aB;
 import a.a.a.mB;
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+
 import com.besome.sketch.editor.LogicEditorActivity;
+import com.sketchware.remod.Resources;
 
 public class DialogImport implements View.OnClickListener {
     public final ZB c;
@@ -26,12 +29,12 @@ public class DialogImport implements View.OnClickListener {
     public void onClick(View view) {
         int i = 9;
         int checkedRadioButtonId = this.radioGroup.getCheckedRadioButtonId();
-        if (checkedRadioButtonId == 2131231651) {
+        if (checkedRadioButtonId == Resources.id.rb_boolean) {
             i = 4;
-        } else if (checkedRadioButtonId != 2131231653) {
-            if (checkedRadioButtonId == 2131231657) {
+        } else if (checkedRadioButtonId != Resources.id.rb_int) {
+            if (checkedRadioButtonId == Resources.id.rb_string) {
                 i = 6;
-            } else if (checkedRadioButtonId == 2131231654) {
+            } else if (checkedRadioButtonId == Resources.id.rb_map) {
                 i = 7;
             }
         }
