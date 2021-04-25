@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.besome.sketch.editor.view;
 
 import android.content.Context;
@@ -745,7 +740,7 @@ public class ViewPane extends RelativeLayout {
                 if (this.f.h(var2.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                     ((ImageView) var1).setImageResource(this.getContext().getResources().getIdentifier(var2.image.resName, "drawable", this.getContext().getPackageName()));
                 } else if (var2.image.resName.equals("default_image")) {
-                    ((ImageView) var1).setImageResource(2131165522);
+                    ((ImageView) var1).setImageResource(com.sketchware.remod.Resources.drawable.default_image);
                 } else {
                     try {
                         var7 = BitmapFactory.decodeFile(this.f.f(var2.image.resName));
@@ -753,7 +748,7 @@ public class ViewPane extends RelativeLayout {
                         var7 = Bitmap.createScaledBitmap(var7, var7.getWidth() * var13, var7.getHeight() * var13, true);
                         ((ImageView) var1).setImageBitmap(var7);
                     } catch (Exception var11) {
-                        ((ImageView) var1).setImageResource(2131165522);
+                        ((ImageView) var1).setImageResource(com.sketchware.remod.Resources.drawable.default_image);
                     }
                 }
 
@@ -793,7 +788,7 @@ public class ViewPane extends RelativeLayout {
 
     public final void c() {
         this.e = new TextView(this.getContext());
-        this.e.setBackgroundResource(2131165670);
+        this.e.setBackgroundResource(com.sketchware.remod.Resources.drawable.highlight);
         android.widget.LinearLayout.LayoutParams var1 = new android.widget.LinearLayout.LayoutParams(-2, -2);
         this.e.setLayoutParams(var1);
         this.e.setVisibility(GONE);
