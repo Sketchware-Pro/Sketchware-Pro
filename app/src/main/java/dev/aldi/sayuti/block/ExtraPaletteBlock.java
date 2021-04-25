@@ -207,9 +207,9 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a((String) next.second, "a", kq.b(((Integer) next.first).intValue()), "getVar").setTag(next.second);
                 i4++;
             } else if (((Integer) next.first).intValue() == 5) {
-                String str = (String) next.second;
-                String substring = str.substring(0, str.indexOf(" "));
-                this.logicEditor.a(str.substring(str.indexOf(" ") + 1), ExtraBlockClassInfo.getType(substring), substring, "getVar").setTag(next.second);
+                String typeName = next.second.split(" ")[0];
+                String name = next.second.split(" ")[1];
+                this.logicEditor.a(name, ExtraBlockClassInfo.getType(typeName), typeName, "getVar").setTag(next.second);
             }
         }
         BlocksHandler.primaryBlocksA(this.logicEditor, i, i2, i3, i4);
