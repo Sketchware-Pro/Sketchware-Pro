@@ -321,6 +321,8 @@ public class Resources {
         public static final int common_message_insufficient_storage_space_title = 0x7f0e03f4;
         public static final int common_message_permission_denied = 0x7f0e03fe;
         public static final int common_message_permission_need_load_project = 0x7f0e03ff;
+        public static final int common_message_permission_storage = 0x7f0e0400;
+        public static final int common_message_permission_storage1 = 0x7f0e0401;
         public static final int common_message_permission_title_storage = 0x7f0e0402;
         public static final int common_word_all = 0x7f0e040c;
         public static final int common_word_cancel = 2131624974;
