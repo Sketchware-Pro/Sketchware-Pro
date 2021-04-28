@@ -27,6 +27,7 @@ public class Resources {
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int cart_filled_48 = 0x7f0700da;
         public static final int categorize_48 = 0x7f0700db;
+        public static final int chrome_96 = 0x7f0700e7;
         public static final int code_icon = 0x7f070108;
         public static final int collect_48 = 0x7f07010b;
         public static final int color_about_96 = 0x7f07010c;
@@ -269,6 +270,7 @@ public class Resources {
     public static final class layout {
         public static final int color_picker = 0x7f0b002d;
         public static final int compile_log = 0x7f0b003c;
+        public static final int component_add_item = 0x7f0b003d;
         public static final int design = 0x7f0b0041;
         public static final int design_drawer = 0x7f0b0044;
         public static final int design_drawer_item = 0x7f0b0045;
@@ -324,6 +326,7 @@ public class Resources {
         public static final int common_message_permission_storage = 0x7f0e0400;
         public static final int common_message_permission_storage1 = 0x7f0e0401;
         public static final int common_message_permission_title_storage = 0x7f0e0402;
+        public static final int common_word_add = 0x7f0e040a;
         public static final int common_word_all = 0x7f0e040c;
         public static final int common_word_cancel = 2131624974;
         public static final int common_word_choose = 2131624976;
@@ -340,6 +343,14 @@ public class Resources {
         public static final int common_word_select = 0x7f0e044b;
         public static final int common_word_settings = 0x7f0e044c;
         public static final int common_word_warning = 0x7f0e0457;
+        public static final int component_add_docs_button_title_go_to_docs = 0x7f0e0483;
+        public static final int component_add_message_docs_updated_soon = 0x7f0e0484;
+        public static final int component_description_file_picker_guide_mime_type_example = 0x7f0e048d;
+        public static final int component_file_hint_enter_file_name = 0x7f0e049c;
+        public static final int component_file_picker_hint_mime_type = 0x7f0e049d;
+        public static final int component_hint_enter_name = 0x7f0e04a4;
+        public static final int component_message_component_block_added = 0x7f0e04a5;
+        public static final int component_title_add_component = 0x7f0e04a7;
         public static final int design_button_properties = 0x7f0e04b4;
         public static final int design_drawer_menu_bottom_title = 0x7f0e04b5;
         public static final int design_drawer_menu_description_collection = 0x7f0e04b6;
@@ -357,6 +368,11 @@ public class Resources {
         public static final int design_drawer_menu_title_sound = 0x7f0e04c3;
         public static final int design_drawer_menu_title_source_code = 0x7f0e04c4;
         public static final int design_drawer_menu_title_view = 0x7f0e04c6;
+        public static final int design_library_admob_component_setup_first = 0x7f0e04cd;
+        public static final int design_library_firebase_guide_path_example = 0x7f0e04ff;
+        public static final int design_library_firebase_guide_setup_first = 0x7f0e0500;
+        public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
+        public static final int design_library_guide_setup_first = 0x7f0e051c;
         public static final int design_quit_button_save_and_exit = 0x7f0e055d;
         public static final int design_quit_message_confirm_save = 0x7f0e055e;
         public static final int design_quit_title_exit_projet = 0x7f0e055f;
@@ -376,12 +392,15 @@ public class Resources {
         public static final int main_drawer_title_system_settings = 0x7f0e0686;
         public static final int main_tab_title_myproject = 0x7f0e0688;
         public static final int main_tab_title_tutorials = 0x7f0e068a;
+        /* That typo exists in Sketchware from Google Play. */
+        public static final int message_compatible_chrome_brower = 0x7f0e069d;
+        public static final int message_device_not_support = 0x7f0e069e;
         public static final int myprojects_confirm_project_delete = 0x7f0e06a4;
         public static final int myprojects_list_menu_title_delete = 0x7f0e06bf;
         public static final int myprojects_list_menu_title_publish = 0x7f0e06c1;
         public static final int myprojects_list_menu_title_settings = 0x7f0e06c2;
         public static final int myprojects_list_menu_title_sign_export = 0x7f0e06c5;
-        /* That typo exists in Sketchware from Google Play. */
+        /* Typo exists in Sketchware from Google Play too. */
         public static final int myprojects_settings_actionbar_title_new_projet = 0x7f0e06c6;
         public static final int myprojects_settings_actionbar_title_project_settings = 0x7f0e06c7;
         public static final int myprojects_settings_button_create_app = 0x7f0e06c8;
@@ -406,6 +425,7 @@ public class Resources {
         public static final int property_description_edittext_ime_options = 0x7f0e075b;
         public static final int slack_url_primary = 0x7f0e0981;
         public static final int slack_url_secondary = 0x7f0e0982;
+        public static final int title_compatible_chrome_browser = 0x7f0e09ac;
         public static final int view_widget_favorites_save_guide_new = 0x7f0e09e9;
         public static final int view_widget_favorites_save_title = 0x7f0e09ea;
         public static final int text_title_menu_java = 0x7f0e09f2;
