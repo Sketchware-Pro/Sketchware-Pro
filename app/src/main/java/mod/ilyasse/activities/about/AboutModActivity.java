@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -83,19 +84,19 @@ public class AboutModActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         loadingview = findViewById(R.id.loadingview);
         tablayout = findViewById(R.id.tablayout);
-        ImageView imageview2 = findViewById(R.id.imageview2);
+        ImageView backbtn = findViewById(R.id.backbtn);
         base = findViewById(R.id.base);
         trash = findViewById(R.id.trash);
         layout1 = findViewById(R.id.layout1);
         layout2 = findViewById(R.id.layout2);
         recyclerview1 = findViewById(R.id.recyclerview1);
         recyclerview2 = findViewById(R.id.recyclerview2);
-        textview3 = findViewById(R.id.textview3);
-        textview4 = findViewById(R.id.textview4);
+        loading_txt = findViewById(R.id.loading_txt);
+        loading_txt2 = findViewById(R.id.loading_txt2);
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-        imageview2.setOnClickListener(new View.OnClickListener() {
+        backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
                 finish();
@@ -405,7 +406,7 @@ public class AboutModActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.about_moddersview, null);
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -418,18 +419,17 @@ public class AboutModActivity extends AppCompatActivity {
             View _view = _holder.itemView;
 
             final TextView title = _view.findViewById(R.id.title);
-
             final LinearLayout sidebar = _view.findViewById(R.id.sidebar);
             final ImageView userimg = _view.findViewById(R.id.userimg);
             final TextView username = _view.findViewById(R.id.username);
             final TextView description = _view.findViewById(R.id.description);
 
-            _circularImage(userimg, _data.get(_position).get("modder_img").toString());
-            username.setText(_data.get(_position).get("modder_username").toString());
-            description.setText(_data.get(_position).get("modder_description").toString());
+            _circularImage(userimg, Objects.requireNonNull(_data.get(_position).get("modder_img")).toString());
+            username.setText(Objects.requireNonNull(_data.get(_position).get("modder_username")).toString());
+            description.setText(Objects.requireNonNull(_data.get(_position).get("modder_description")).toString());
             _advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
             if ((boolean) _data.get(_position).get("isTitled")) {
-                title.setText(_data.get(_position).get("title").toString());
+                title.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
                 title.setVisibility(View.VISIBLE);
             } else {
                 title.setVisibility(View.GONE);
@@ -470,15 +470,15 @@ public class AboutModActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder _holder, final int _position) {
             View _view = _holder.itemView;
 
-            final TextView textview1 = _view.findViewById(R.id.textview1);
-            final TextView textview2 = _view.findViewById(R.id.textview2);
+            final TextView changelogtitle = _view.findViewById(R.id.changelogtitle);
+            final TextView changelogsubtitle = _view.findViewById(R.id.changelogsubtitle);
 
-            textview2.setText(_data.get(_position).get("description").toString());
+            changelogsubtitle.setText(Objects.requireNonNull(_data.get(_position).get("description")).toString());
             if ((boolean) _data.get(_position).get("isTitled")) {
-                textview1.setText(_data.get(_position).get("title").toString());
-                textview1.setVisibility(View.VISIBLE);
+                changelogtitle.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
+                changelogtitle.setVisibility(View.VISIBLE);
             } else {
-                textview1.setVisibility(View.GONE);
+                changelogtitle.setVisibility(View.GONE);
             }
         }
 
