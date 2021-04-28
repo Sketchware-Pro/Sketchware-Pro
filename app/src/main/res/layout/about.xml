@@ -1,26 +1,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeview"
+    android:id="@+id/rootrelativeview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/rootview"
+        android:id="@+id/maindataholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linear2"
+            android:id="@+id/faketoolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/imageview2"
+                android:id="@+id/backbtn"
                 android:layout_width="40dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="10dp"
@@ -28,7 +28,7 @@
                 android:src="@drawable/ic_arrow_back_grey"
                 app:tint="#424242" />
             <TextView
-                android:id="@+id/textview2"
+                android:id="@+id/tooblar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -57,14 +57,14 @@
             app:tabTextColor="#008DCD" />
 
         <LinearLayout
-            android:id="@+id/linetop"
+            android:id="@+id/toolbar_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:orientation="horizontal" />
 
         <LinearLayout
-            android:id="@+id/linear1"
+            android:id="@+id/viewpagerholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -84,7 +84,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/viewpager"
+            android:id="@+id/viewpagercontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -129,14 +129,15 @@
         app:layout_anchorGravity="center">
 
         <ImageView
-            android:id="@+id/imageview1"
+            android:id="@+id/loading_img"
+            android:padding="65dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/girl_swimming_flat" />
 
         <TextView
-            android:id="@+id/textview3"
+            android:id="@+id/loading_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -148,7 +149,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textview4"
+            android:id="@+id/loading_txt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
