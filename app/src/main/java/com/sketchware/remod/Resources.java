@@ -53,15 +53,19 @@ public class Resources {
         public static final int high_priority_96_red = 0x7f0701e5;
         public static final int ic_bookmark_red_48dp = 0x7f070204;
         public static final int ic_class_48 = 0x7f070215;
+        public static final int ic_delete_grey_48dp = 0x7f070220;
         public static final int ic_detail_setting_48dp = 0x7f070225;
+        public static final int ic_export_grey_48dp = 0x7f070235;
         public static final int ic_export_his_white_48dp = 0x7f070236;
         public static final int ic_font_48dp = 0x7f07023b;
         public static final int ic_picture_48dp = 0x7f070273;
+        public static final int ic_redo_white_48dp = 0x7f070283;
         public static final int ic_reset_color_32dp = 0x7f07028a;
         public static final int ic_screen_landscape_grey600_24dp = 0x7f070295;
         public static final int ic_screen_portrait_grey600_24dp = 0x7f070296;
         public static final int ic_screen_rotation_grey600_24dp = 0x7f070297;
         public static final int ic_sound_wave_48dp = 0x7f0702a5;
+        public static final int ic_undo_white_48dp = 0x7f0702b6;
         public static final int icon_file_white_96 = 0x7f0702cb;
         public static final int insert_white_space_48 = 0x7f0702e4;
         public static final int java_96 = 0x7f0702e8;
@@ -72,6 +76,8 @@ public class Resources {
         public static final int numbers_48 = 0x7f070330;
         public static final int open_box_48 = 0x7f070335;
         public static final int plugin_purple_96 = 0x7f07034a;
+        public static final int save_white_48 = 0x7f07036b;
+        public static final int settings_96 = 0x7f0703ac;
         public static final int side_menu_info_icon_over_white = 0x7f0703c5;
         public static final int side_menu_setting_icon_over = 0x7f0703c8;
         public static final int side_menu_setting_icon_over_white = 0x7f0703c9;
@@ -81,6 +87,7 @@ public class Resources {
         public static final int icon8_code_am = 0x7f07049c;
         public static final int notes_alt2 = 0x7f0704a8;
         public static final int cpp = 0x7f0704ae;
+        public static final int ic_backup = 0x7f0704af;
     }
 
     public static final class id {
@@ -111,6 +118,7 @@ public class Resources {
         public static final int confirm_layout = 0x7f0800ca;
         public static final int confirm_no = 0x7f0800cb;
         public static final int confirm_no_text = 0x7f0800cd;
+        public static final int confirm_title = 0x7f0800ce;
         public static final int confirm_yes = 0x7f0800cf;
         public static final int confirm_yes_text = 0x7f0800d1;
         public static final int contents = 0x7f0800d6;
@@ -274,6 +282,7 @@ public class Resources {
         public static final int make_block = 0x7f0b00b1;
         public static final int manage_collection_show_widget = 0x7f0b00b9;
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
+        public static final int myproject_buttons = 0x7f0b00fd;
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
         public static final int project_config_layout = 0x7f0b01de;
@@ -353,6 +362,7 @@ public class Resources {
         public static final int design_restore_data_title = 0x7f0e0561;
         public static final int design_run_title_ready_to_build = 0x7f0e0564;
         public static final int facebook_url = 0x7f0e05b5;
+        public static final int language_message_confirm_delete = 0x7f0e05fa;
         public static final int logic_list_menu_add_to_collection = 0x7f0e0668;
         public static final int main_drawer_context_menu_title_slack_invitation = 0x7f0e0679;
         public static final int main_drawer_context_menu_title_slack_open = 0x7f0e067a;
@@ -364,6 +374,12 @@ public class Resources {
         public static final int main_drawer_title_system_settings = 0x7f0e0686;
         public static final int main_tab_title_myproject = 0x7f0e0688;
         public static final int main_tab_title_tutorials = 0x7f0e068a;
+        public static final int myprojects_confirm_project_delete = 0x7f0e06a4;
+        public static final int myprojects_list_menu_title_delete = 0x7f0e06bf;
+        public static final int myprojects_list_menu_title_publish = 0x7f0e06c1;
+        public static final int myprojects_list_menu_title_settings = 0x7f0e06c2;
+        public static final int myprojects_list_menu_title_sign_export = 0x7f0e06c5;
+        /* That typo exists in Sketchware from Google Play. */
         public static final int myprojects_settings_actionbar_title_new_projet = 0x7f0e06c6;
         public static final int myprojects_settings_actionbar_title_project_settings = 0x7f0e06c7;
         public static final int myprojects_settings_button_create_app = 0x7f0e06c8;
