@@ -31,4 +31,4 @@
         android:text="Subtitle"
         android:textColor="#000000"
         android:textSize="14sp" />
-</LinearLayout></LinearLayout>
+</LinearLayout>
