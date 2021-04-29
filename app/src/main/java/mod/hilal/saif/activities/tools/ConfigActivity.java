@@ -35,6 +35,7 @@ public class ConfigActivity extends Activity {
     private static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     private static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
     private static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
+    private static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
@@ -58,7 +59,7 @@ public class ConfigActivity extends Activity {
         return "/.sketchware/backups/";
     }
 
-    public static boolean isNewVCEnabled() {
+    public static boolean isSettingEnabled(String keyName) {
         if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             return false;
         }
@@ -66,15 +67,14 @@ public class ConfigActivity extends Activity {
         HashMap<String, Object> settings = new Gson().fromJson(
                 FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
                 Helper.TYPE_MAP);
-        if (settings.containsKey(SETTING_USE_NEW_VERSION_CONTROL)) {
-            Object value = settings.get(SETTING_USE_NEW_VERSION_CONTROL);
+        if (settings.containsKey(keyName)) {
+            Object value = settings.get(keyName);
             if (value instanceof Boolean) {
                 return (Boolean) value;
             } else {
-                SketchwareUtil.toastError("Detected invalid preference for Advanced "
-                                + " Version Control. Restoring defaults",
+                SketchwareUtil.toastError("Detected invalid preference. Restoring defaults",
                         Toast.LENGTH_LONG);
-                settings.remove(SETTING_USE_NEW_VERSION_CONTROL);
+                settings.remove(keyName);
                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
             }
         }
@@ -174,6 +174,10 @@ public class ConfigActivity extends Activity {
         addSwitchPreference("Use new Version Control",
                 "Use advanced Version Control System Dialog",
                 SETTING_USE_NEW_VERSION_CONTROL,
+                false);
+        addSwitchPreference("Enable Asd Highlighter",
+                "Enable Java Syntax Highlighting in Add Source Directly Block in LogicEditorActivity",
+                SETTING_USE_ASD_HIGHLIGHTER,
                 false);
     }
 
@@ -378,6 +382,7 @@ public class ConfigActivity extends Activity {
         defaultSettings.put(SETTING_LEGACY_CODE_EDITOR, false);
         defaultSettings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         defaultSettings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
+        defaultSettings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
         setting_map = defaultSettings;
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(defaultSettings));
     }
