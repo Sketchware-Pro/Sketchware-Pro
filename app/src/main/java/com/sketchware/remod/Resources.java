@@ -61,6 +61,7 @@ public class Resources {
         public static final int height_96 = 0x7f0701e3;
         public static final int help_96_blue = 0x7f0701e4;
         public static final int high_priority_96_red = 0x7f0701e5;
+        public static final int horizontal_line_48 = 0x7f0701e8;
         public static final int ic_bookmark_red_48dp = 0x7f070204;
         public static final int ic_class_48 = 0x7f070215;
         public static final int ic_delete_grey_48dp = 0x7f070220;
@@ -81,14 +82,17 @@ public class Resources {
         public static final int keyboard_48 = 0x7f0702e9;
         public static final int java_96 = 0x7f0702e8;
         public static final int language_48 = 0x7f0702eb;
+        public static final int light_on_48 = 0x7f070300;
         public static final int lock_48 = 0x7f070304;
         public static final int monday_48 = 0x7f07030f;
         public static final int multiple_choice_48 = 0x7f070315;
         public static final int multiple_devices_48 = 0x7f070316;
+        public static final int natural_user_interface2_48 = 0x7f07031b;
         public static final int new_96 = 0x7f07031e;
         public static final int numbers_48 = 0x7f070330;
+        public static final int ok_48 = 0x7f070332;
         public static final int one_to_many_48 = 0x7f070333;
-        public static final int opacity_48 = 0x7f070335;
+        public static final int opacity_48 = 0x7f070334;
         public static final int open_box_48 = 0x7f070335;
         public static final int plugin_purple_96 = 0x7f07034a;
         public static final int pull_down_48 = 0x7f070355;
@@ -176,6 +180,7 @@ public class Resources {
         public static final int hcv_property = 0x7f080165;
         public static final int icon = 0x7f080172;
         public static final int img_activity = 0x7f080180;
+        public static final int img_add = 0x7f080181;
         public static final int img_back = 0x7f080188;
         public static final int img_button = 0x7f080190;
         public static final int img_color_guide = 0x7f080195;
@@ -235,6 +240,7 @@ public class Resources {
         public static final int spn_widget = 0x7f08040c;
         public static final int sub_separator = 0x7f080419;
         public static final int sub_items = 0x7f080417;
+        public static final int switch_value = 0x7f080421;
         public static final int tab_layout = 0x7f080425;
         public static final int ti_all = 0x7f08043a;
         public static final int ti_app_name = 0x7f08043d;
@@ -255,6 +261,7 @@ public class Resources {
         public static final int tv_code = 0x7f0804a8;
         public static final int tv_compile_log = 0x7f0804b2;
         public static final int tv_component_title = 0x7f0804b5;
+        public static final int tv_desc = 0x7f0804c8;
         public static final int tv_desc_file_picker = 0x7f0804cc;
         public static final int tv_desc_firebase_path = 0x7f0804cd;
         public static final int tv_description = 0x7f0804d2;
@@ -332,6 +339,9 @@ public class Resources {
         public static final int property_popup_selector_single = 0x7f0b013b;
         public static final int property_popup_version_control = 0x7f0b013d;
         public static final int property_selector_item = 0x7f0b0140;
+        public static final int property_subheader = 0x7f0b0141;
+        public static final int property_switch_item = 0x7f0b0142;
+        public static final int property_switch_item_singleline = 0x7f0b0143;
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
         public static final int view_code = 0x7f0b01cb;
