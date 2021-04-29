@@ -25,6 +25,7 @@ public class Resources {
     }
 
     public static final class drawable {
+        public static final int abc_96 = 0x7f070006;
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
         public static final int block_96_blue = 0x7f0700be;
@@ -55,6 +56,7 @@ public class Resources {
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
+        public static final int help_96_blue = 0x7f0701e4;
         public static final int high_priority_96_red = 0x7f0701e5;
         public static final int ic_bookmark_red_48dp = 0x7f070204;
         public static final int ic_class_48 = 0x7f070215;
@@ -79,15 +81,22 @@ public class Resources {
         public static final int multiple_devices_48 = 0x7f070316;
         public static final int new_96 = 0x7f07031e;
         public static final int numbers_48 = 0x7f070330;
+        public static final int one_to_many_48 = 0x7f070333;
+        public static final int opacity_48 = 0x7f070335;
         public static final int open_box_48 = 0x7f070335;
         public static final int plugin_purple_96 = 0x7f07034a;
+        public static final int rename_96_blue = 0x7f07035f;
+        public static final int resize_48 = 0x7f07036b;
         public static final int save_white_48 = 0x7f07036b;
         public static final int settings_96 = 0x7f0703ac;
         public static final int side_menu_info_icon_over_white = 0x7f0703c5;
         public static final int side_menu_setting_icon_over = 0x7f0703c8;
         public static final int side_menu_setting_icon_over_white = 0x7f0703c9;
         public static final int style_48dp = 0x7f0703e3;
+        public static final int swipe_down_48 = 0x7f0703e4;
+        public static final int swipe_right_48 = 0x7f0703e5;
         public static final int ic_property_inject = 0x7f07046b;
+        public static final int ic_property_convert = 0x7f07046c;
         public static final int add_file_48 = 0x7f070473;
         public static final int icon8_code_am = 0x7f07049c;
         public static final int notes_alt2 = 0x7f0704a8;
