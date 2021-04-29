@@ -1,15 +1,5 @@
 package com.besome.sketch.editor.property;
 
-import a.a.a.Kw;
-import a.a.a.TB;
-import a.a.a.aB;
-import a.a.a.mB;
-import a.a.a.wB;
-import a.a.a.wx;
-import a.a.a.xB;
-import a.a.a.xx;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -18,7 +8,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.Resources;
+
+import a.a.a.Kw;
+import a.a.a.TB;
+import a.a.a.aB;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+
 public class PropertySizeItem extends RelativeLayout implements View.OnClickListener {
+
     public Context a;
     public String b = "";
     public int c = 1;
@@ -36,89 +37,97 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
     }
 
     public String getKey() {
-        return this.b;
+        return b;
+    }
+
+    public void setKey(String str) {
+        b = str;
+        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+        if (identifier > 0) {
+            d.setText(xB.b().a(getResources(), identifier));
+            g = Resources.drawable.expand_48;
+            if (i.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(g);
+                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                return;
+            }
+            f.setImageResource(g);
+        }
     }
 
     public int getValue() {
-        return this.c;
+        return c;
     }
 
-    public void onClick(View view) {
+    public void setValue(int value) {
+        c = value;
+        TextView textView = e;
+        textView.setText(c + " dp");
+    }
+
+    @Override
+    public void onClick(View v) {
         if (!mB.a()) {
-            String str = this.b;
-            char c2 = 65535;
-            if (str.hashCode() == -1919612745 && str.equals("property_divider_height")) {
-                c2 = 0;
+            char type = 65535;
+            if ("property_divider_height".equals(b)) {
+                type = 0;
             }
-            if (c2 == 0) {
+            if (type == 0) {
                 a();
             }
         }
     }
 
-    @SuppressLint("ResourceType")
-    public void setKey(String str) {
-        this.b = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
-        if (identifier > 0) {
-            this.d.setText(xB.b().a(getResources(), identifier));
-            this.g = 2131165605;
-            if (this.i.getVisibility() == 0) {
-                ((ImageView) findViewById(2131231151)).setImageResource(this.g);
-                ((TextView) findViewById(2131232195)).setText(xB.b().a(getContext(), identifier));
-                return;
-            }
-            this.f.setImageResource(this.g);
-        }
-    }
-
     public void setOnPropertyValueChangeListener(Kw kw) {
-        this.j = kw;
+        j = kw;
     }
 
-    @SuppressLint("WrongConstant")
-    public void setOrientationItem(int i2) {
-        if (i2 == 0) {
-            this.h.setVisibility(8);
-            this.i.setVisibility(0);
+    public void setOrientationItem(int orientationItem) {
+        if (orientationItem == 0) {
+            h.setVisibility(GONE);
+            i.setVisibility(VISIBLE);
             return;
         }
-        this.h.setVisibility(0);
-        this.i.setVisibility(8);
+        h.setVisibility(VISIBLE);
+        i.setVisibility(GONE);
     }
 
-    public void setValue(int i2) {
-        this.c = i2;
-        TextView textView = this.e;
-        textView.setText(this.c + " dp");
-    }
-
-    @SuppressLint("ResourceType")
     public final void a(Context context, boolean z) {
-        this.a = context;
-        wB.a(context, this, 2131427633);
-        this.d = (TextView) findViewById(2131232055);
-        this.e = (TextView) findViewById(2131232270);
-        this.f = (ImageView) findViewById(2131231155);
-        this.h = findViewById(2131231626);
-        this.i = findViewById(2131231628);
+        a = context;
+        wB.a(context, this, Resources.layout.property_input_item);
+        d = findViewById(Resources.id.tv_name);
+        e = findViewById(Resources.id.tv_value);
+        f = findViewById(Resources.id.img_left_icon);
+        h = findViewById(Resources.id.property_item);
+        i = findViewById(Resources.id.property_menu_item);
         if (z) {
             setSoundEffectsEnabled(true);
             setOnClickListener(this);
         }
     }
 
-    @SuppressLint("ResourceType")
     public final void a() {
-        aB aBVar = new aB((Activity) getContext());
-        aBVar.b(this.d.getText().toString());
-        aBVar.a(this.g);
-        View a2 = wB.a(getContext(), 2131427637);
-        TB tb = new TB(this.a, a2.findViewById(2131231816), 0, 999);
-        tb.a(String.valueOf(this.c));
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), 2131625031), new wx(this, tb, (EditText) a2.findViewById(2131231034), aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new xx(this, aBVar));
-        aBVar.show();
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(d.getText().toString());
+        dialog.a(g);
+        View view = wB.a(getContext(), Resources.layout.property_popup_input_size);
+        TB tb = new TB(a, view.findViewById(Resources.id.ti_input), 0, 999);
+        tb.a(String.valueOf(c));
+        dialog.a(view);
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tb.b()) {
+                    setValue(Integer.parseInt(((EditText) view.findViewById(Resources.id.et_input)).getText().toString()));
+                    if (j != null) {
+                        j.a(b, c);
+                    }
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 }
