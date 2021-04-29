@@ -5,6 +5,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.Resources;
+
 import a.a.a.wB;
 
 public class CollapsibleButton extends LinearLayout {
@@ -27,9 +29,9 @@ public class CollapsibleButton extends LinearLayout {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
         ));
-        wB.a(context, this, com.sketchware.remod.R.layout.fr_logic_list_item_button);
-        c = findViewById(com.sketchware.remod.R.id.img_button);
-        d = findViewById(com.sketchware.remod.R.id.icon);
-        e = findViewById(com.sketchware.remod.R.id.name);
+        wB.a(context, this, Resources.layout.fr_logic_list_item_button);
+        c = findViewById(Resources.id.img_button);
+        d = findViewById(Resources.id.icon);
+        e = findViewById(Resources.id.name);
     }
 }
