@@ -18,6 +18,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import a.a.a.aB;
+
 public class Helper {
 
     public static Type TYPE_MAP = new TypeToken<HashMap<String, Object>>() {
@@ -46,6 +48,15 @@ public class Helper {
             @Override
             public void onClick(View v) {
                 activity.onBackPressed();
+            }
+        };
+    }
+
+    public static View.OnClickListener getSketchwareDialogDismissOnClickListener(final aB ab) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ab.dismiss();
             }
         };
     }
