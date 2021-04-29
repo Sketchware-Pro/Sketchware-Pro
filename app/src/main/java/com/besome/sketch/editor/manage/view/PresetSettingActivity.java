@@ -1,22 +1,24 @@
 package com.besome.sketch.editor.manage.view;
 
-import a.a.a.Gw;
-import a.a.a.Hw;
-import a.a.a.aB;
-import a.a.a.rq;
-import a.a.a.xB;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.sketchware.remod.Resources;
+
 import java.util.ArrayList;
 
+import a.a.a.aB;
+import a.a.a.rq;
+import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+
 public class PresetSettingActivity extends BaseDialogActivity implements View.OnClickListener {
+
     public boolean A = false;
     public ImageView t;
     public ImageView u;
@@ -28,7 +30,7 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
 
     public final void f(String str) {
         int i;
-        switch (this.x) {
+        switch (x) {
             case 276:
                 i = rq.e(str);
                 break;
@@ -42,100 +44,95 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
                 i = -1;
                 break;
         }
-        this.v.setImageResource(i);
-        this.w.setText(str);
+        v.setImageResource(i);
+        w.setText(str);
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for r3v0, resolved type: com.besome.sketch.editor.manage.view.PresetSettingActivity */
-    /* JADX WARN: Multi-variable type inference failed */
     public final void n() {
         Intent intent = new Intent();
-        intent.putExtra("preset_data", this.z.get(this.y));
+        intent.putExtra("preset_data", z.get(y));
         setResult(-1, intent);
         finish();
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for r4v0, resolved type: com.besome.sketch.editor.manage.view.PresetSettingActivity */
-    /* JADX WARN: Multi-variable type inference failed */
     public final void o() {
         aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625758));
-        aBVar.a(2131165733);
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.preset_setting_title));
+        aBVar.a(Resources.drawable.ic_detail_setting_48dp);
         aBVar.setCancelable(false);
-        aBVar.a(xB.b().a(getApplicationContext(), 2131625757));
-        aBVar.b(xB.b().a(getApplicationContext(), 2131625010), new Gw(this));
-        aBVar.a(xB.b().a(getApplicationContext(), 2131624974), new Hw(this, aBVar));
+        aBVar.a(xB.b().a(getApplicationContext(), Resources.string.preset_setting_edit_warning));
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                n();
+            }
+        });
+        aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
         aBVar.show();
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for r2v0, resolved type: com.besome.sketch.editor.manage.view.PresetSettingActivity */
-    /* JADX WARN: Multi-variable type inference failed */
     public void onClick(View view) {
         switch (view.getId()) {
-            case 2131230835:
-                int i = this.y;
-                if (i == 0) {
-                    this.y = this.z.size() - 1;
+            case Resources.id.btn_left:
+                if (y == 0) {
+                    y = z.size() - 1;
                 } else {
-                    this.y = i - 1;
+                    y--;
                 }
-                f(this.z.get(this.y).presetName);
+                f(z.get(y).presetName);
                 return;
-            case 2131230848:
-                if (this.y == this.z.size() - 1) {
-                    this.y = 0;
+
+            case Resources.id.btn_right:
+                if (y == z.size() - 1) {
+                    y = 0;
                 } else {
-                    this.y++;
+                    y++;
                 }
-                f(this.z.get(this.y).presetName);
+                f(z.get(y).presetName);
                 return;
-            case 2131230909:
+
+            case Resources.id.common_dialog_cancel_button:
                 setResult(0);
                 finish();
                 return;
-            case 2131230914:
-                if (!this.A) {
+
+            case Resources.id.common_dialog_ok_button:
+                if (!A) {
                     n();
-                    return;
                 } else {
                     o();
-                    return;
                 }
-            default:
-                return;
         }
     }
 
-    /* JADX DEBUG: Multi-variable search result rejected for r2v0, resolved type: com.besome.sketch.editor.manage.view.PresetSettingActivity */
-    /* JADX WARN: Multi-variable type inference failed */
-    @SuppressLint("ResourceType")
-    @Override // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(2131427561);
-        e(xB.b().a(getApplicationContext(), 2131625758));
-        this.x = getIntent().getIntExtra("request_code", -1);
+    @Override
+    // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(Resources.layout.manage_screen_activity_add_view_preset_setting);
+        e(xB.b().a(getApplicationContext(), Resources.string.preset_setting_title));
+        x = getIntent().getIntExtra("request_code", -1);
         if (getIntent().hasExtra("edit_mode")) {
-            this.A = true;
+            A = true;
         }
-        this.t = (ImageView) findViewById(2131230835);
-        this.t.setOnClickListener(this);
-        this.u = (ImageView) findViewById(2131230848);
-        this.u.setOnClickListener(this);
-        this.v = (ImageView) findViewById(2131231104);
-        this.w = (TextView) findViewById(2131231863);
-        int i = this.x;
-        if (i == 276) {
-            this.z = rq.d();
-        } else if (i == 277) {
-            this.z = rq.b();
+        t = findViewById(Resources.id.btn_left);
+        t.setOnClickListener(this);
+        u = findViewById(Resources.id.btn_right);
+        u.setOnClickListener(this);
+        v = findViewById(Resources.id.img_activity);
+        w = findViewById(Resources.id.tv_activity_name);
+        if (x == 276) {
+            z = rq.d();
+        } else if (x == 277) {
+            z = rq.b();
         } else {
-            this.z = rq.c();
+            z = rq.c();
         }
-        d(xB.b().a(getApplicationContext(), 2131625002));
-        b(xB.b().a(getApplicationContext(), 2131624974));
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
-        f(this.z.get(this.y).presetName);
+        d(xB.b().a(getApplicationContext(), Resources.string.common_word_import));
+        b(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel));
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
+        f(z.get(y).presetName);
     }
 }
