@@ -333,11 +333,12 @@ public class Resources {
         public static final int common_message_permission_title_storage = 0x7f0e0402;
         public static final int common_word_add = 0x7f0e040a;
         public static final int common_word_all = 0x7f0e040c;
-        public static final int common_word_cancel = 2131624974;
-        public static final int common_word_choose = 2131624976;
+        public static final int common_word_cancel = 0x7f0e040e;
+        public static final int common_word_choose = 0x7f0e0410;
         public static final int common_word_continue = 0x7f0e0414;
         public static final int common_word_delete = 0x7f0e041a;
         public static final int common_word_exit = 0x7f0e0424;
+        public static final int common_word_import = 0x7f0e042a;
         public static final int common_word_no = 0x7f0e0431;
         public static final int common_word_ok = 0x7f0e0432;
         public static final int common_word_reset = 0x7f0e0443;
@@ -427,6 +428,8 @@ public class Resources {
         public static final int myprojects_settings_version_control_title = 0x7f0e06d6;
         public static final int myprojects_settings_version_control_title_code = 0x7f0e06d7;
         public static final int myprojects_settings_version_control_title_name = 0x7f0e06d8;
+        public static final int preset_setting_edit_warning = 0x7f0e071d;
+        public static final int preset_setting_title = 0x7f0e071e;
         public static final int property_group_basic = 0x7f0e0760;
         public static final int property_group_event = 0x7f0e0761;
         public static final int property_group_recent = 0x7f0e0762;
