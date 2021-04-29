@@ -54,6 +54,7 @@ import a.a.a.nd;
 import a.a.a.sB;
 import a.a.a.xB;
 import a.a.a.zI;
+import mod.hey.studios.util.Helper;
 
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
 
@@ -440,12 +441,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
         aBVar.a(Resources.drawable.high_priority_96_red);
         aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                aBVar.dismiss();
-            }
-        });
+        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
         aBVar.show();
     }
 
