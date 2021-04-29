@@ -442,7 +442,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         aBVar.a(Resources.drawable.high_priority_96_red);
         aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
         aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
-                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
+                Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

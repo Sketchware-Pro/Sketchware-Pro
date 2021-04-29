@@ -213,7 +213,7 @@ public class ViewProperty extends LinearLayout implements Kw {
             }
         });
         aBVar.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
+                Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

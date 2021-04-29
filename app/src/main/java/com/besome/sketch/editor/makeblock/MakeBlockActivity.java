@@ -44,7 +44,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
             }
         });
         aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
-                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
+                Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 

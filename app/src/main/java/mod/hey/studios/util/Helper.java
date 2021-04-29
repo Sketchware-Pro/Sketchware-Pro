@@ -1,6 +1,7 @@
 package mod.hey.studios.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -17,8 +18,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import a.a.a.aB;
 
 public class Helper {
 
@@ -52,11 +51,11 @@ public class Helper {
         };
     }
 
-    public static View.OnClickListener getSketchwareDialogDismissOnClickListener(final aB ab) {
+    public static View.OnClickListener getDialogDismissListener(final Dialog dialog) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ab.dismiss();
+                dialog.dismiss();
             }
         };
     }
