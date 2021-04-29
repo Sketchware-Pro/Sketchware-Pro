@@ -20,6 +20,10 @@ public class Resources {
         public static final int color_primary_dark = 0x7f050040;
     }
 
+    public static final class dimen {
+        public static final int text_size_body_small = 0x7f0600ea;
+    }
+
     public static final class drawable {
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
