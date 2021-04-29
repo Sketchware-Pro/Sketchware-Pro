@@ -1,15 +1,5 @@
 package com.besome.sketch.editor.property;
 
-import a.a.a.Kw;
-import a.a.a.aB;
-import a.a.a.mB;
-import a.a.a.sq;
-import a.a.a.wB;
-import a.a.a.xB;
-import a.a.a.yx;
-import a.a.a.zx;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
@@ -21,7 +11,18 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.Resources;
+
+import a.a.a.Kw;
+import a.a.a.aB;
+import a.a.a.mB;
+import a.a.a.sq;
+import a.a.a.wB;
+import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+
 public class PropertyStringPairSelectorItem extends RelativeLayout implements View.OnClickListener {
+
     public String a = "";
     public String b = "";
     public TextView c;
@@ -39,109 +40,129 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
     }
 
     public String getKey() {
-        return this.a;
+        return a;
+    }
+
+    public void setKey(String str) {
+        a = str;
+        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+        if (identifier > 0) {
+            c.setText(xB.b().a(getResources(), identifier));
+            char type = 65535;
+            if (str.equals("property_progressbar_style")) {
+                type = 0;
+            }
+            if (type == 0) {
+                f = Resources.drawable.style_48dp;
+            }
+            if (h.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(f);
+                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                return;
+            }
+            e.setImageResource(f);
+        }
     }
 
     public String getValue() {
-        return this.b;
+        return b;
     }
 
-    public void onClick(View view) {
+    public void setValue(String value) {
+        b = value;
+        d.setText(value);
+    }
+
+    public void onClick(View v) {
         if (!mB.a()) {
             a();
         }
     }
 
-    @SuppressLint("ResourceType")
-    public void setKey(String str) {
-        this.a = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
-        if (identifier > 0) {
-            this.c.setText(xB.b().a(getResources(), identifier));
-            char c2 = 65535;
-            if (str.hashCode() == -78143730 && str.equals("property_progressbar_style")) {
-                c2 = 0;
-            }
-            if (c2 == 0) {
-                this.f = 2131166179;
-            }
-            if (this.h.getVisibility() == 0) {
-                ((ImageView) findViewById(2131231151)).setImageResource(this.f);
-                ((TextView) findViewById(2131232195)).setText(xB.b().a(getContext(), identifier));
-                return;
-            }
-            this.e.setImageResource(this.f);
-        }
-    }
-
     public void setOnPropertyValueChangeListener(Kw kw) {
-        this.j = kw;
+        j = kw;
     }
 
-    @SuppressLint("WrongConstant")
-    public void setOrientationItem(int i2) {
-        if (i2 == 0) {
-            this.g.setVisibility(8);
-            this.h.setVisibility(0);
+    public void setOrientationItem(int orientationItem) {
+        if (orientationItem == 0) {
+            g.setVisibility(GONE);
+            h.setVisibility(VISIBLE);
             return;
         }
-        this.g.setVisibility(0);
-        this.h.setVisibility(8);
+        g.setVisibility(VISIBLE);
+        h.setVisibility(GONE);
     }
 
-    public void setValue(String str) {
-        this.b = str;
-        this.d.setText(str);
-    }
-
-    @SuppressLint("ResourceType")
     public final void a(Context context, boolean z) {
-        wB.a(context, this, 2131427648);
-        this.c = (TextView) findViewById(2131232055);
-        this.d = (TextView) findViewById(2131232270);
-        this.e = (ImageView) findViewById(2131231155);
-        this.g = findViewById(2131231626);
-        this.h = findViewById(2131231628);
+        wB.a(context, this, Resources.layout.property_selector_item);
+        c = findViewById(Resources.id.tv_name);
+        d = findViewById(Resources.id.tv_value);
+        e = findViewById(Resources.id.img_left_icon);
+        g = findViewById(Resources.id.property_item);
+        h = findViewById(Resources.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
         }
     }
 
-    @SuppressLint("ResourceType")
     public final void a() {
-        aB aBVar = new aB((Activity) getContext());
-        aBVar.b(this.c.getText().toString());
-        aBVar.a(this.f);
-        View a2 = wB.a(getContext(), 2131427643);
-        this.i = (ViewGroup) a2.findViewById(2131231668);
-        int i2 = 0;
-        for (Pair<String, String> pair : sq.b(this.a)) {
-            this.i.addView(a(pair));
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(c.getText().toString());
+        dialog.a(f);
+        View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
+        i = view.findViewById(Resources.id.rg_content);
+        int counter = 0;
+        for (Pair<String, String> pair : sq.b(a)) {
+            i.addView(a(pair));
         }
-        int childCount = this.i.getChildCount();
+        int childCount = i.getChildCount();
         while (true) {
-            if (i2 >= childCount) {
+            if (counter >= childCount) {
                 break;
             }
-            RadioButton radioButton = (RadioButton) this.i.getChildAt(i2);
-            if (radioButton.getTag().toString().equals(this.b)) {
+            RadioButton radioButton = (RadioButton) i.getChildAt(counter);
+            if (radioButton.getTag().toString().equals(b)) {
                 radioButton.setChecked(true);
                 break;
             }
-            i2++;
+            counter++;
         }
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(getContext(), 2131625035), new yx(this, aBVar));
-        aBVar.a(xB.b().a(getContext(), 2131624974), new zx(this, aBVar));
-        aBVar.show();
+        dialog.a(view);
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int childCount = i.getChildCount();
+                int counter = 0;
+                while (true) {
+                    if (counter >= childCount) {
+                        break;
+                    }
+                    RadioButton radioButton = (RadioButton) i.getChildAt(counter);
+                    if (radioButton.isChecked()) {
+                        setValue(radioButton.getTag().toString());
+                        break;
+                    }
+                    counter++;
+                }
+                if (j != null) {
+                    j.a(a, b);
+                }
+                dialog.dismiss();
+            }
+        });
+        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public final RadioButton a(Pair<String, String> pair) {
         RadioButton radioButton = new RadioButton(getContext());
-        radioButton.setText((CharSequence) pair.second);
+        radioButton.setText(pair.second);
         radioButton.setTag(pair.first);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, (int) (wB.a(getContext(), 1.0f) * 40.0f));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) (wB.a(getContext(), 1.0f) * 40.0f));
         radioButton.setGravity(19);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
