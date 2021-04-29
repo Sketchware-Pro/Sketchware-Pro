@@ -336,8 +336,10 @@ public class Resources {
         public static final int common_word_cancel = 0x7f0e040e;
         public static final int common_word_choose = 0x7f0e0410;
         public static final int common_word_continue = 0x7f0e0414;
+        public static final int common_word_create = 0x7f0e0417;
         public static final int common_word_delete = 0x7f0e041a;
         public static final int common_word_exit = 0x7f0e0424;
+        public static final int common_word_goback = 0x7f0e0428;
         public static final int common_word_import = 0x7f0e042a;
         public static final int common_word_no = 0x7f0e0431;
         public static final int common_word_ok = 0x7f0e0432;
@@ -390,6 +392,9 @@ public class Resources {
         public static final int design_run_title_ready_to_build = 0x7f0e0564;
         public static final int facebook_url = 0x7f0e05b5;
         public static final int language_message_confirm_delete = 0x7f0e05fa;
+        public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
+        public static final int logic_editor_more_block_dialog_description_goback = 0x7f0e061c;
+        public static final int logic_editor_more_block_dialog_message_confirm_goback = 0x7f0e061d;
         public static final int logic_list_menu_add_to_collection = 0x7f0e0668;
         public static final int main_drawer_context_menu_title_slack_invitation = 0x7f0e0679;
         public static final int main_drawer_context_menu_title_slack_open = 0x7f0e067a;
