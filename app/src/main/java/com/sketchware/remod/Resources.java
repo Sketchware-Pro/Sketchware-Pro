@@ -26,6 +26,7 @@ public class Resources {
 
     public static final class drawable {
         public static final int abc_96 = 0x7f070006;
+        public static final int abc_96_color = 0x7f070007;
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
         public static final int block_96_blue = 0x7f0700be;
@@ -56,6 +57,7 @@ public class Resources {
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
+        public static final int grid_3_48 = 0x7f0701de;
         public static final int height_96 = 0x7f0701e3;
         public static final int help_96_blue = 0x7f0701e4;
         public static final int high_priority_96_red = 0x7f0701e5;
@@ -76,9 +78,12 @@ public class Resources {
         public static final int ic_undo_white_48dp = 0x7f0702b6;
         public static final int icon_file_white_96 = 0x7f0702cb;
         public static final int insert_white_space_48 = 0x7f0702e4;
+        public static final int keyboard_48 = 0x7f0702e9;
         public static final int java_96 = 0x7f0702e8;
         public static final int language_48 = 0x7f0702eb;
         public static final int lock_48 = 0x7f070304;
+        public static final int monday_48 = 0x7f07030f;
+        public static final int multiple_choice_48 = 0x7f070315;
         public static final int multiple_devices_48 = 0x7f070316;
         public static final int new_96 = 0x7f07031e;
         public static final int numbers_48 = 0x7f070330;
@@ -86,6 +91,7 @@ public class Resources {
         public static final int opacity_48 = 0x7f070335;
         public static final int open_box_48 = 0x7f070335;
         public static final int plugin_purple_96 = 0x7f07034a;
+        public static final int pull_down_48 = 0x7f070355;
         public static final int rename_96_blue = 0x7f07035f;
         public static final int resize_48 = 0x7f07036b;
         public static final int save_white_48 = 0x7f07036b;
@@ -96,6 +102,7 @@ public class Resources {
         public static final int style_48dp = 0x7f0703e3;
         public static final int swipe_down_48 = 0x7f0703e4;
         public static final int swipe_right_48 = 0x7f0703e5;
+        public static final int text_width_96 = 0x7f0703ef;
         public static final int width_96 = 0x7f070447;
         public static final int ic_property_inject = 0x7f07046b;
         public static final int ic_property_convert = 0x7f07046c;
@@ -158,6 +165,7 @@ public class Resources {
         public static final int et_all = 0x7f08012f;
         public static final int et_app_name = 0x7f080130;
         public static final int et_bottom = 0x7f080131;
+        public static final int et_input = 0x7f08013a;
         public static final int et_left = 0x7f08013e;
         public static final int et_package_name = 0x7f080140;
         public static final int et_project_name = 0x7f080141;
