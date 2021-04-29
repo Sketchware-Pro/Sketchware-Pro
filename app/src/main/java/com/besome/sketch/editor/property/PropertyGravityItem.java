@@ -16,6 +16,7 @@ import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class PropertyGravityItem extends RelativeLayout implements View.OnClickListener {
 
@@ -167,12 +168,8 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
+                Helper.getSketchwareDialogDismissOnClickListener(dialog));
         dialog.show();
     }
 }

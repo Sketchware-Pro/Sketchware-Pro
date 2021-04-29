@@ -39,6 +39,7 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
@@ -211,12 +212,8 @@ public class ViewProperty extends LinearLayout implements Kw {
                 }
             }
         });
-        aBVar.a(xB.b().a(getContext(), Resources.string.common_word_cancel), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                aBVar.dismiss();
-            }
-        });
+        aBVar.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
+                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
         aBVar.show();
     }
 
