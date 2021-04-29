@@ -292,6 +292,7 @@ public class Resources {
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
         public static final int project_config_layout = 0x7f0b01de;
+        public static final int property_color_item = 0x7f0b012c;
         public static final int property_grid_item = 0x7f0b012e;
         public static final int property_group_item = 0x7f0b012f;
         public static final int property_input_item = 0x7f0b0131;
