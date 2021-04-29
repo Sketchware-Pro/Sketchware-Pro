@@ -56,6 +56,7 @@ public class Resources {
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
+        public static final int height_96 = 0x7f0701e3;
         public static final int help_96_blue = 0x7f0701e4;
         public static final int high_priority_96_red = 0x7f0701e5;
         public static final int ic_bookmark_red_48dp = 0x7f070204;
@@ -95,6 +96,7 @@ public class Resources {
         public static final int style_48dp = 0x7f0703e3;
         public static final int swipe_down_48 = 0x7f0703e4;
         public static final int swipe_right_48 = 0x7f0703e5;
+        public static final int width_96 = 0x7f070447;
         public static final int ic_property_inject = 0x7f07046b;
         public static final int ic_property_convert = 0x7f07046c;
         public static final int add_file_48 = 0x7f070473;
@@ -145,6 +147,7 @@ public class Resources {
         public static final int dialog_img = 0x7f0800fe;
         public static final int dialog_msg = 0x7f0800ff;
         public static final int dialog_title = 0x7f080100;
+        public static final int direct_input = 0x7f080101;
         public static final int docs_button = 0x7f080104;
         public static final int drawer_layout = 0x7f080105;
         public static final int ed_input = 0x7f08010e;
@@ -209,7 +212,11 @@ public class Resources {
         public static final int property_item = 0x7f08038a;
         public static final int property_layout = 0x7f08038b;
         public static final int property_menu_item = 0x7f08038c;
+        public static final int rb_directinput = 0x7f0803a4;
+        public static final int rb_matchparent = 0x7f0803a7;
+        public static final int rb_wrapcontent = 0x7f0803aa;
         public static final int rg_content = 0x7f0803b4;
+        public static final int rg_width_height = 0x7f0803b8;
         public static final int save_button = 0x7f0803c1;
         public static final int scroll_view = 0x7f0803cc;
         public static final int sdialog_root = 0x7f0803d0;
@@ -245,7 +252,9 @@ public class Resources {
         public static final int tv_description = 0x7f0804d2;
         public static final int tv_expire_date = 0x7f0804e5;
         public static final int tv_favorites_guide = 0x7f0804e9;
+        public static final int tv_input_dp = 0x7f080507;
         public static final int tv_login_id = 0x7f080524;
+        public static final int tv_matchparent = 0x7f08052b;
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
         public static final int tv_root_title = 0x7f080589;
@@ -256,6 +265,7 @@ public class Resources {
         public static final int tv_value = 0x7f08060e;
         public static final int tv_warning = 0x7f08061d;
         public static final int tv_warning_message = 0x7f08061f;
+        public static final int tv_wrapcontent = 0x7f080623;
         public static final int ver_code = 0x7f080632;
         public static final int ver_name = 0x7f080633;
         public static final int version_code = 0x7f080634;
@@ -308,6 +318,7 @@ public class Resources {
         public static final int property_popup_input_indent = 0x7f0b0133;
         public static final int property_popup_input_size = 0x7f0b0135;
         public static final int property_popup_input_text = 0x7f0b0136;
+        public static final int property_popup_measurement = 0x7f0b0137;
         public static final int property_popup_save_to_favorite = 0x7f0b0138;
         public static final int property_popup_selector_gravity = 0x7f0b013a;
         public static final int property_popup_selector_single = 0x7f0b013b;
