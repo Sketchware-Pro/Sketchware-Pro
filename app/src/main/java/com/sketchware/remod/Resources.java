@@ -93,7 +93,7 @@ public class Resources {
         public static final int plugin_purple_96 = 0x7f07034a;
         public static final int pull_down_48 = 0x7f070355;
         public static final int rename_96_blue = 0x7f07035f;
-        public static final int resize_48 = 0x7f07036b;
+        public static final int resize_48 = 0x7f070360;
         public static final int save_white_48 = 0x7f07036b;
         public static final int settings_96 = 0x7f0703ac;
         public static final int side_menu_info_icon_over_white = 0x7f0703c5;
