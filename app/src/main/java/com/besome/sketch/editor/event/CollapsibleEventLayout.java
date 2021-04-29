@@ -10,6 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.Resources;
+
 import a.a.a.wB;
 import a.a.a.xB;
 
@@ -39,51 +41,51 @@ public class CollapsibleEventLayout extends FrameLayout {
 
     public final void a(Context context) {
         a = context;
-        wB.a(context, this, com.sketchware.remod.R.layout.fr_logic_list_item_buttons);
-        g = findViewById(com.sketchware.remod.R.id.project_buttons);
-        f = findViewById(com.sketchware.remod.R.id.ll_warning);
-        h = findViewById(com.sketchware.remod.R.id.confirm_layout);
-        b = findViewById(com.sketchware.remod.R.id.confirm_yes);
-        c = findViewById(com.sketchware.remod.R.id.confirm_no);
-        i = findViewById(com.sketchware.remod.R.id.tv_warning_message);
-        d = findViewById(com.sketchware.remod.R.id.confirm_yes_text);
+        wB.a(context, this, Resources.layout.fr_logic_list_item_buttons);
+        g = findViewById(Resources.id.project_buttons);
+        f = findViewById(Resources.id.ll_warning);
+        h = findViewById(Resources.id.confirm_layout);
+        b = findViewById(Resources.id.confirm_yes);
+        c = findViewById(Resources.id.confirm_no);
+        i = findViewById(Resources.id.tv_warning_message);
+        d = findViewById(Resources.id.confirm_yes_text);
         d.setText(xB.b().a(
                 getContext(),
-                com.sketchware.remod.R.string.common_word_continue
+                Resources.string.common_word_continue
         ));
-        e = findViewById(com.sketchware.remod.R.id.confirm_no_text);
+        e = findViewById(Resources.id.confirm_no_text);
         e.setText(xB.b().a(
                 getContext(),
-                com.sketchware.remod.R.string.common_word_cancel
+                Resources.string.common_word_cancel
         ));
         h.setVisibility(INVISIBLE);
         f.setVisibility(GONE);
         i.setText(xB.b().a(
                 getContext(),
-                com.sketchware.remod.R.string.common_message_confirm
+                Resources.string.common_message_confirm
         ));
         n = a(
                 0,
-                com.sketchware.remod.R.drawable.ic_reset_color_32dp,
+                Resources.drawable.ic_reset_color_32dp,
                 xB.b().a(
                         context,
-                        com.sketchware.remod.R.string.common_word_reset
+                        Resources.string.common_word_reset
                 )
         );
         o = a(
                 1,
-                com.sketchware.remod.R.drawable.delete_96,
+                Resources.drawable.delete_96,
                 xB.b().a(
                         context,
-                        com.sketchware.remod.R.string.common_word_delete
+                        Resources.string.common_word_delete
                 )
         );
         p = a(
                 2,
-                com.sketchware.remod.R.drawable.ic_bookmark_red_48dp,
+                Resources.drawable.ic_bookmark_red_48dp,
                 xB.b().a(
                         context,
-                        com.sketchware.remod.R.string.logic_list_menu_add_to_collection
+                        Resources.string.logic_list_menu_add_to_collection
                 )
         );
         p.setVisibility(GONE);
@@ -92,19 +94,19 @@ public class CollapsibleEventLayout extends FrameLayout {
         g.addView(p);
         j = (AnimatorSet) AnimatorInflater.loadAnimator(
                 context,
-                com.sketchware.remod.R.animator.flip_top_in
+                Resources.animator.flip_top_in
         );
         k = (AnimatorSet) AnimatorInflater.loadAnimator(
                 context,
-                com.sketchware.remod.R.animator.flip_top_out
+                Resources.animator.flip_top_out
         );
         l = (AnimatorSet) AnimatorInflater.loadAnimator(
                 context,
-                com.sketchware.remod.R.animator.flip_bottom_in
+                Resources.animator.flip_bottom_in
         );
         m = (AnimatorSet) AnimatorInflater.loadAnimator(
                 context,
-                com.sketchware.remod.R.animator.flip_bottom_out
+                Resources.animator.flip_bottom_out
         );
     }
 
