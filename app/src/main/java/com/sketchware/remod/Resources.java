@@ -378,6 +378,9 @@ public class Resources {
         public static final int design_library_firebase_guide_setup_first = 0x7f0e0500;
         public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
         public static final int design_library_guide_setup_first = 0x7f0e051c;
+        public static final int design_manager_message_edit_complete = 0x7f0e053f;
+        public static final int design_manager_widget_hint_enter_widget_name = 0x7f0e0559;
+        public static final int design_manager_widget_title_actionbar_title = 0x7f0e055a;
         public static final int design_quit_button_save_and_exit = 0x7f0e055d;
         public static final int design_quit_message_confirm_save = 0x7f0e055e;
         public static final int design_quit_title_exit_projet = 0x7f0e055f;
