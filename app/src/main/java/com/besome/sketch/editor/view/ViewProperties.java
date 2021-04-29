@@ -1,100 +1,34 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.Jw;
-import a.a.a.ky;
-import a.a.a.wB;
-import a.a.a.xB;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+
 import com.besome.sketch.ctrls.ViewIdSpinnerItem;
+import com.sketchware.remod.Resources;
+
 import java.util.ArrayList;
 
+import a.a.a.Jw;
+import a.a.a.wB;
+import a.a.a.xB;
+
 public class ViewProperties extends RelativeLayout {
+
     public Spinner a;
     public ArrayList<String> b = new ArrayList<>();
     public a c;
     public Jw d = null;
 
-    /* access modifiers changed from: package-private */
-    public class a extends BaseAdapter {
-        public Context a;
-        public int b;
-        public ArrayList<String> c;
-
-        public a(Context context, ArrayList<String> arrayList) {
-            this.a = context;
-            this.c = arrayList;
-        }
-
-        public void a(int i) {
-            this.b = i;
-        }
-
-        public int getCount() {
-            ArrayList<String> arrayList = this.c;
-            if (arrayList == null) {
-                return 0;
-            }
-            return arrayList.size();
-        }
-
-        public View getDropDownView(int i, View view, ViewGroup viewGroup) {
-            return a(i, view, viewGroup, this.b == i);
-        }
-
-        public Object getItem(int i) {
-            return this.c.get(i);
-        }
-
-        public long getItemId(int i) {
-            return (long) i;
-        }
-
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            return a(i, view, viewGroup, false);
-        }
-
-        public final ViewIdSpinnerItem a(int i, View view, ViewGroup viewGroup, boolean z) {
-            ViewIdSpinnerItem viewIdSpinnerItem;
-            if (view != null) {
-                viewIdSpinnerItem = (ViewIdSpinnerItem) view;
-            } else {
-                viewIdSpinnerItem = new ViewIdSpinnerItem(this.a);
-                viewIdSpinnerItem.setTextSize(2131099882);
-            }
-            viewIdSpinnerItem.a(0, this.c.get(i), z);
-            viewIdSpinnerItem.a(false, -12566464, -12566464);
-            return viewIdSpinnerItem;
-        }
-    }
-
     public ViewProperties(Context context) {
         super(context);
         a(context);
-    }
-
-    public void setOnPropertyTargetChangeListener(Jw jw) {
-        this.d = jw;
-    }
-
-    @SuppressLint("ResourceType")
-    public final void a(Context context) {
-        wB.a(context, this, 2131427776);
-        ((TextView) findViewById(2131230821)).setText(xB.b().a(context, 2131625140));
-        this.a = (Spinner) findViewById(2131231756);
-        this.c = new a(context, this.b);
-        this.a.setAdapter((SpinnerAdapter) this.c);
-        this.a.setSelection(0);
-        this.a.setOnItemSelectedListener(new ky(this));
     }
 
     public ViewProperties(Context context, AttributeSet attributeSet) {
@@ -102,10 +36,85 @@ public class ViewProperties extends RelativeLayout {
         a(context);
     }
 
+    public void setOnPropertyTargetChangeListener(Jw jw) {
+        d = jw;
+    }
+
+    public final void a(Context context) {
+        wB.a(context, this, Resources.layout.view_properties);
+        ((TextView) findViewById(Resources.id.btn_editproperties)).setText(xB.b().a(context, Resources.string.design_button_properties));
+        a = findViewById(Resources.id.spn_widget);
+        c = new a(context, b);
+        a.setAdapter(c);
+        a.setSelection(0);
+        a.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                c.a(position);
+                a(b.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     public final void a(String str) {
-        Jw jw = this.d;
-        if (jw != null) {
-            jw.a(str);
+        if (d != null) {
+            d.a(str);
+        }
+    }
+
+    static class a extends BaseAdapter {
+
+        public Context a;
+        public int b;
+        public ArrayList<String> c;
+
+        public a(Context context, ArrayList<String> arrayList) {
+            a = context;
+            c = arrayList;
+        }
+
+        public void a(int i) {
+            b = i;
+        }
+
+        public int getCount() {
+            if (c == null) {
+                return 0;
+            }
+            return c.size();
+        }
+
+        public View getDropDownView(int i, View view, ViewGroup viewGroup) {
+            return a(i, view, viewGroup, b == i);
+        }
+
+        public Object getItem(int position) {
+            return c.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return a(position, convertView, parent, false);
+        }
+
+        public final ViewIdSpinnerItem a(int position, View convertView, ViewGroup parent, boolean z) {
+            ViewIdSpinnerItem viewIdSpinnerItem;
+            if (convertView != null) {
+                viewIdSpinnerItem = (ViewIdSpinnerItem) convertView;
+            } else {
+                viewIdSpinnerItem = new ViewIdSpinnerItem(a);
+                viewIdSpinnerItem.setTextSize(Resources.dimen.text_size_body_small);
+            }
+            viewIdSpinnerItem.a(0, c.get(position), z);
+            viewIdSpinnerItem.a(false, 0xff404040, 0xff404040);
+            return viewIdSpinnerItem;
         }
     }
 }

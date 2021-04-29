@@ -6,9 +6,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
+
 import com.google.android.flexbox.FlexItem;
 
 public class LogicEditorScrollView extends FrameLayout {
+
     public float a = FlexItem.FLEX_GROW_DEFAULT;
     public float b = FlexItem.FLEX_GROW_DEFAULT;
     public int c = 0;
@@ -24,7 +26,7 @@ public class LogicEditorScrollView extends FrameLayout {
     }
 
     public void a(Context context) {
-        this.c = ViewConfiguration.get(context).getScaledTouchSlop();
+        c = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     public void addView(View view) {
@@ -36,38 +38,43 @@ public class LogicEditorScrollView extends FrameLayout {
     }
 
     public boolean getScrollEnabled() {
-        return this.e;
+        return e;
+    }
+
+    public void setScrollEnabled(boolean z) {
+        e = z;
     }
 
     public boolean getUseScroll() {
-        return this.f;
+        return f;
+    }
+
+    public void setUseScroll(boolean z) {
+        f = z;
     }
 
     public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
         if (!a()) {
             return false;
         }
-        int action = motionEvent.getAction();
-        if (action == 2 && this.d) {
-            return true;
+
+        switch (motionEvent.getAction()) {
+            case 2:
+                if (d) return true;
+                d = Math.abs(a - motionEvent.getX()) > c || Math.abs(b - motionEvent.getY()) > c;
+                break;
+
+            case 0:
+                a = motionEvent.getX();
+                b = motionEvent.getY();
+                d = false;
+                break;
+
+            case 1:
+                d = false;
+                break;
         }
-        float x = motionEvent.getX();
-        float y = motionEvent.getY();
-        if (action == 0) {
-            this.a = x;
-            this.b = y;
-            this.d = false;
-        } else if (action == 1) {
-            this.d = false;
-        } else if (action == 2) {
-            int abs = (int) Math.abs(this.a - x);
-            int abs2 = (int) Math.abs(this.b - y);
-            int i = this.c;
-            if (abs > i || abs2 > i) {
-                this.d = true;
-            }
-        }
-        return this.d;
+        return d;
     }
 
     public boolean onTouchEvent(MotionEvent motionEvent) {
@@ -81,27 +88,27 @@ public class LogicEditorScrollView extends FrameLayout {
         float x = motionEvent.getX();
         float y = motionEvent.getY();
         if (action == 0) {
-            this.g = x;
-            this.h = y;
+            g = x;
+            h = y;
         } else if (action == 1) {
-            this.g = -1.0f;
-            this.h = -1.0f;
+            g = -1.0f;
+            h = -1.0f;
         } else if (action == 2) {
-            if (this.g < FlexItem.FLEX_GROW_DEFAULT) {
-                this.g = x;
+            if (g < FlexItem.FLEX_GROW_DEFAULT) {
+                g = x;
             }
-            if (this.h < FlexItem.FLEX_GROW_DEFAULT) {
-                this.h = y;
+            if (h < FlexItem.FLEX_GROW_DEFAULT) {
+                h = y;
             }
-            int i3 = (int) (this.g - x);
-            int i4 = (int) (this.h - y);
-            this.g = x;
-            this.h = y;
+            int i3 = (int) (g - x);
+            int i4 = (int) (h - y);
+            g = x;
+            h = y;
             if (i3 <= 0) {
                 if (getScrollX() <= 0) {
                     i3 = 0;
                 }
-                i = Math.max(0 - getScrollX(), i3);
+                i = Math.max(-getScrollX(), i3);
             } else {
                 int right = ((childAt.getRight() - getScrollX()) - getWidth()) - getPaddingRight();
                 i = right > 0 ? Math.min(right, i3) : 0;
@@ -110,7 +117,7 @@ public class LogicEditorScrollView extends FrameLayout {
                 if (getScrollY() <= 0) {
                     i4 = 0;
                 }
-                i2 = Math.max(0 - getScrollY(), i4);
+                i2 = Math.max(-getScrollY(), i4);
             } else {
                 int bottom = ((childAt.getBottom() - getScrollY()) - getHeight()) - getPaddingBottom();
                 if (bottom > 0) {
@@ -124,25 +131,14 @@ public class LogicEditorScrollView extends FrameLayout {
         return true;
     }
 
-    public void setScrollEnabled(boolean z) {
-        this.e = z;
-    }
-
-    public void setUseScroll(boolean z) {
-        this.f = z;
-    }
-
     public boolean a() {
-        if (getChildCount() <= 0 || !this.f || !this.e) {
+        if (getChildCount() <= 0 || !f || !e) {
             return false;
         }
         View childAt = getChildAt(0);
         int width = childAt.getWidth();
         int height = childAt.getHeight();
-        if (getWidth() < width + getPaddingLeft() + getPaddingRight() || getHeight() < height + getPaddingTop() + getPaddingBottom()) {
-            return true;
-        }
-        return false;
+        return getWidth() < width + getPaddingLeft() + getPaddingRight() || getHeight() < height + getPaddingTop() + getPaddingBottom();
     }
 
     public LogicEditorScrollView(Context context, AttributeSet attributeSet) {
