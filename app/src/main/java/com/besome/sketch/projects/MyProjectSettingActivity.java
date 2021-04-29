@@ -607,7 +607,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         aBVar.a(Resources.drawable.break_warning_96_red);
         aBVar.a(xB.b().a(this, Resources.string.myprojects_settings_message_package_rename));
         aBVar.b(xB.b().a(this, Resources.string.common_word_ok),
-                Helper.getSketchwareDialogDismissOnClickListener(aBVar));
+                Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
