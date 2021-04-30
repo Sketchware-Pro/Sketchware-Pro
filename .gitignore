@@ -37,10 +37,12 @@ captures/
 .idea/tasks.xml
 .idea/gradle.xml
 .idea/assetWizardSettings.xml
+.idea/compiler.xml
 .idea/dictionaries
 .idea/libraries
 .idea/caches
 .idea/modules
+.idea/inspectionProfiles/Project_Default.xml
 
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
