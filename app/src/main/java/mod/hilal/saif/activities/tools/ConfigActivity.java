@@ -17,8 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.*;
-import android.view.*;
 
 import com.google.gson.Gson;
 
@@ -28,8 +26,6 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-
-import mod.w3wide.config.R;
 
 public class ConfigActivity extends Activity {
 
@@ -109,6 +105,27 @@ public class ConfigActivity extends Activity {
         return false;
     }
 
+    public static String getSettingValue(String keyName, String defaultStr) {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            if (settings.containsKey(keyName)) {
+                Object value = settings.get(keyName);
+                if (value instanceof String) {
+                    return (String) value;
+                } else if (value instanceof Boolean) {
+                	return (boolean) value ? "true" : "false";
+                } else {
+                    SketchwareUtil.toastError("Detected invalid preference for"
+                                    + keyName + ". Restoring defaults",
+                            Toast.LENGTH_LONG);
+                    settings.remove(keyName);
+                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+                }
+            }
+        }
+        return defaultStr;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,10 +146,10 @@ public class ConfigActivity extends Activity {
         root.setOrientation(LinearLayout.VERTICAL);
         setContentView(root);
 
-        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(R.layout.toolbar_improved, root, false);
+        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(0x7f0b01d7, root, false);
         root.addView(toolbar);
-        ImageView toolbar_back = toolbar.findViewById(R.id.ig_toolbar_back);
-        TextView toolbar_title = toolbar.findViewById(R.id.tx_toolbar_title);
+        ImageView toolbar_back = toolbar.findViewById(0x7f0806c9);
+        TextView toolbar_title = toolbar.findViewById(0x7f0806ca);
         toolbar_back.setClickable(true);
         toolbar_back.setFocusable(true);
         Helper.applyRippleToToolbarView(toolbar_back);
@@ -191,7 +208,7 @@ public class ConfigActivity extends Activity {
         view.setFocusable(true);
     }
 
-    private void addSwitchPreference(String title, String subtitle, final String keyName, boolean defaultValue) {
+    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue) {
         LinearLayout preferenceRoot = new LinearLayout(this);
         preferenceRoot.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -267,7 +284,7 @@ public class ConfigActivity extends Activity {
         );
         preferenceRoot.addView(switchContainer);
 
-        final Switch switchView = new Switch(this);
+        Switch switchView = new Switch(this);
         switchView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
