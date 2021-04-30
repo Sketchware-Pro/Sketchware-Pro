@@ -165,6 +165,21 @@ public class SketchwareUtil {
         return _outputStream.toString();
     }
 
+    /**
+     * Hide the keyboard.
+     *
+     * @param v View, which should be visible and "connected" to the currently
+     *          focused view
+     */
+    public static void hideKeyboard(View v) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * Hide the keyboard. This may show the keyboard if it's not opened.
+     * Use {@link SketchwareUtil#hideKeyboard(View)} instead, if possible.
+     */
     public static void hideKeyboard() {
         InputMethodManager _inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         _inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
