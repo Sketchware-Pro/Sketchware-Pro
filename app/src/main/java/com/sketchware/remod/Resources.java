@@ -18,6 +18,7 @@ public class Resources {
         public static final int color_control_normal = 0x7f05003d;
         public static final int color_primary = 0x7f05003e;
         public static final int color_primary_dark = 0x7f050040;
+        public static final int grey = 0x7f050069;
     }
 
     public static final class dimen {
@@ -49,6 +50,8 @@ public class Resources {
         public static final int data_backup_96 = 0x7f07014c;
         public static final int default_icon = 0x7f070151;
         public static final int delete_96 = 0x7f070154;
+        public static final int enlarge_48 = 0x7f07016b;
+        public static final int event_on_accuracy_changed_48dp = 0x7f07016e;
         public static final int exit_96 = 0x7f0701a4;
         public static final int expand_48 = 0x7f0701a5;
         public static final int facebook_50 = 0x7f0701ac;
@@ -69,6 +72,7 @@ public class Resources {
         public static final int ic_export_grey_48dp = 0x7f070235;
         public static final int ic_export_his_white_48dp = 0x7f070236;
         public static final int ic_font_48dp = 0x7f07023b;
+        public static final int ic_menu_white_24dp = 0x7f07025c;
         public static final int ic_picture_48dp = 0x7f070273;
         public static final int ic_redo_white_48dp = 0x7f070283;
         public static final int ic_reset_color_32dp = 0x7f07028a;
@@ -107,6 +111,7 @@ public class Resources {
         public static final int swipe_down_48 = 0x7f0703e4;
         public static final int swipe_right_48 = 0x7f0703e5;
         public static final int text_width_96 = 0x7f0703ef;
+        public static final int widget_admob = 0x7f07041a;
         public static final int width_96 = 0x7f070447;
         public static final int ic_property_inject = 0x7f07046b;
         public static final int ic_property_convert = 0x7f07046c;
@@ -294,8 +299,14 @@ public class Resources {
         public static final int text_content = 0x7f08066f;
         public static final int text_cancel = 0x7f080678;
         public static final int text_save = 0x7f080679;
+        public static final int dialog_input_attr = 0x7f0806bb;
+        public static final int dialog_btn_cancel = 0x7f0806bc;
+        public static final int dialog_btn_save = 0x7f0806bd;
+        public static final int dialog_input_res = 0x7f0806be;
+        public static final int dialog_input_value = 0x7f0806bf;
         public static final int code_editor_zoomin = 0x7f0806c7;
         public static final int code_editor_zoomout = 0x7f0806c8;
+        public static final int ig_toolbar_load_file = 0x7f0806cb;
         public static final int codeeditor_more_options = 0x7f0806f8;
         public static final int project_config_pref_layout = 0x7f0806fc;
         public static final int save = 0x7f080710;
@@ -346,6 +357,7 @@ public class Resources {
         public static final int view_property = 0x7f0b01c1;
         public static final int view_code = 0x7f0b01cb;
         public static final int about = 0x7f0b01cf;
+        public static final int custom_dialog_attribute = 0x7f0b01d5;
         public static final int code_editor_hs = 0x7f0b01f1;
     }
 
