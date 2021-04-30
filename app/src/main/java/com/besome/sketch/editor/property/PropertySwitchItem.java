@@ -1,8 +1,5 @@
 package com.besome.sketch.editor.property;
 
-import a.a.a.wB;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -10,7 +7,12 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.sketchware.remod.Resources;
+
+import a.a.a.wB;
+
 public class PropertySwitchItem extends RelativeLayout implements View.OnClickListener {
+
     public int a = -1;
     public boolean b = false;
     public TextView c;
@@ -22,51 +24,50 @@ public class PropertySwitchItem extends RelativeLayout implements View.OnClickLi
         a(context);
     }
 
-    @SuppressLint("ResourceType")
     public final void a(Context context) {
-        wB.a(context, this, 2131427650);
-        this.c = (TextView) findViewById(2131232055);
-        this.d = (TextView) findViewById(2131231944);
-        this.e = (Switch) findViewById(2131231777);
+        wB.a(context, this, Resources.layout.property_switch_item);
+        c = findViewById(Resources.id.tv_name);
+        d = findViewById(Resources.id.tv_desc);
+        e = findViewById(Resources.id.switch_value);
         setOnClickListener(this);
         setSoundEffectsEnabled(true);
     }
 
     public int getKey() {
-        return this.a;
-    }
-
-    public boolean getValue() {
-        return this.b;
-    }
-
-    public void onClick(View view) {
-        setValue(!this.b);
-    }
-
-    public void setDesc(String str) {
-        this.d.setText(str);
+        return a;
     }
 
     public void setKey(int i) {
-        this.a = i;
+        a = i;
+    }
+
+    public boolean getValue() {
+        return b;
+    }
+
+    public void setValue(boolean value) {
+        b = value;
+        e.setChecked(value);
+    }
+
+    public void onClick(View view) {
+        setValue(!b);
+    }
+
+    public void setDesc(String str) {
+        d.setText(str);
     }
 
     public void setName(String str) {
-        this.c.setText(str);
+        c.setText(str);
     }
 
     public void setSwitchChangedListener(CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
-        this.e.setOnCheckedChangeListener(onCheckedChangeListener);
+        e.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
-    public void setTextColor(int i) {
-        this.c.setTextColor(i);
-        this.d.setTextColor(i);
-    }
-
-    public void setValue(boolean z) {
-        this.b = z;
-        this.e.setChecked(z);
+    public void setTextColor(int textColor) {
+        c.setTextColor(textColor);
+        d.setTextColor(textColor);
     }
 }
