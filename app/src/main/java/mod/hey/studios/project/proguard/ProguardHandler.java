@@ -136,7 +136,7 @@ public class ProguardHandler {
 
     public void start(a dialog, Dp dp) {
         if (isProguardEnabled()) {
-            dialog.c("ProGuarding classes...");
+            if (dialog != null) dialog.c("ProGuarding classes...");
             dp.runProguard();
         }
     }
