@@ -41,7 +41,7 @@ public class ResourceCompiler {
         String outputPath = mDp.f.t + File.separator + "res";
         emptyOrCreateDirectory(outputPath);
         long savedTimeMillis = System.currentTimeMillis();
-        buildingDialog.c("Compiling resources with AAPT2...");
+        if (buildingDialog != null) buildingDialog.c("Compiling resources with AAPT2...");
         compileProjectResources(outputPath);
         Log.d(TAG + ":c", "Compiling project generated resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         savedTimeMillis = System.currentTimeMillis();
@@ -63,7 +63,7 @@ public class ResourceCompiler {
     public void link() throws zy {
         long savedTimeMillis = System.currentTimeMillis();
         String resourcesPath = mDp.f.t + File.separator + "res";
-        buildingDialog.c("Linking resources with AAPT2...");
+        if (buildingDialog != null) buildingDialog.c("Linking resources with AAPT2...");
 
         ArrayList<String> args = new ArrayList<>();
         args.add(aaptFile.getAbsolutePath());
