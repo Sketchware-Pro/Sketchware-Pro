@@ -59,28 +59,6 @@ public class ConfigActivity extends Activity {
         return "/.sketchware/backups/";
     }
 
-    public static boolean isSettingEnabled(String keyName) {
-        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            return false;
-        }
-
-        HashMap<String, Object> settings = new Gson().fromJson(
-                FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
-                Helper.TYPE_MAP);
-        if (settings.containsKey(keyName)) {
-            Object value = settings.get(keyName);
-            if (value instanceof Boolean) {
-                return (Boolean) value;
-            } else {
-                SketchwareUtil.toastError("Detected invalid preference. Restoring defaults",
-                        Toast.LENGTH_LONG);
-                settings.remove(keyName);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-            }
-        }
-        return false;
-    }
-
     public static boolean isLegacyCeEnabled() {
         /* The legacy Code Editor is specifically opt-in */
         if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
@@ -103,6 +81,49 @@ public class ConfigActivity extends Activity {
             }
         }
         return false;
+    }
+
+    public static boolean isSettingEnabled(String keyName) {
+        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            return false;
+        }
+
+        HashMap<String, Object> settings = new Gson().fromJson(
+                FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
+                Helper.TYPE_MAP);
+        if (settings.containsKey(keyName)) {
+            Object value = settings.get(keyName);
+            if (value instanceof Boolean) {
+                return (Boolean) value;
+            } else {
+                SketchwareUtil.toastError("Detected invalid preference. Restoring defaults",
+                        Toast.LENGTH_LONG);
+                settings.remove(keyName);
+                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+            }
+        }
+        return false;
+    }
+
+    public static String getSettingValue(String keyName, String defaultStr) {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            if (settings.containsKey(keyName)) {
+                Object value = settings.get(keyName);
+                if (value instanceof String) {
+                    return (String) value;
+                } else if (value instanceof Boolean) {
+                	return (boolean) value ? "true" : "false";
+                } else {
+                    SketchwareUtil.toastError("Detected invalid preference for"
+                                    + keyName + ". Restoring defaults",
+                            Toast.LENGTH_LONG);
+                    settings.remove(keyName);
+                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+                }
+            }
+        }
+        return defaultStr;
     }
 
     @Override
@@ -380,8 +401,8 @@ public class ConfigActivity extends Activity {
         defaultSettings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
         defaultSettings.put(SETTING_BACKUP_DIRECTORY, "");
         defaultSettings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        defaultSettings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         defaultSettings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
+        defaultSettings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         defaultSettings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
         setting_map = defaultSettings;
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(defaultSettings));
