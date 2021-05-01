@@ -1274,12 +1274,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         incrementalCompiler.performCompilation();
                     } else {
                         /* Compile the regular, old way */
+                        /* Compile Java classes */
                         mDp.f();
                         if (d) {
                             cancel(true);
                             return;
                         }
 
+                        /* Encrypt Strings in classes if enabled */
                         StringfogHandler stringfogHandler = new StringfogHandler(q.b);
                         stringfogHandler.start(this, mDp);
                         if (d) {
@@ -1287,6 +1289,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
+                        /* Obfuscate classes if enabled */
                         ProguardHandler proguardHandler = new ProguardHandler(q.b);
                         proguardHandler.start(this, mDp);
                         if (d) {
@@ -1294,6 +1297,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
+                        /* Create DEX file(s) */
                         publishProgress(mDp.getDxRunningText());
                         mDp.c();
                         if (d) {
@@ -1301,6 +1305,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
+                        /* Merge DEX file(s) with libraries' dexes */
                         publishProgress("Merging libraries' DEX files...");
                         mDp.h();
                         if (d) {
@@ -1326,7 +1331,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         compiler.extractInstallApkFromApkSet();
                         publishProgress("Signing Install-APK...");
                         compiler.signInstallApk();
-                        o();
                     } else {
                         publishProgress("Building APK...");
                         mDp.g();
@@ -1346,13 +1350,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             cancel(true);
                             return;
                         }
-
-                        /* Launch Intent to install APK */
-                        o();
                     }
+
+                    /* Launch Intent to install APK */
+                    o();
                 } catch (Ay e) {
                     //Never thrown? Haven't found a reference to it in any classes except {@link DesignActivity} and {@link PublishActivity} (and of course {@link Ay})
-                    Log.e("DesignActivity$a", Log.getStackTraceString(e), e);
+                    Log.e("DesignActivity$a", e.getMessage(), e);
                     //This seems kinda odd
                     c(e.getMessage());
                 } catch (OutOfMemoryError error) {
