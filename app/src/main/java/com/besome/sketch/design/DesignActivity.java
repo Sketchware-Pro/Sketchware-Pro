@@ -103,6 +103,7 @@ import mod.hey.studios.project.proguard.ManageProguardActivity;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.bundle.BundleToolCompiler;
@@ -470,12 +471,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().d(true);
         d().e(true);
-        k.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         k.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
         getSupportFragmentManager().a(new Xf.c() {
             @Override
