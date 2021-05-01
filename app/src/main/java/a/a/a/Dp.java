@@ -39,6 +39,7 @@ import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.compiler.ResourceCompiler;
+import mod.alucard.tn.shrinker.R8Executor;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
@@ -186,22 +187,8 @@ public class Dp {
         return true;
     }
 
-    public void compileWithAapt2() throws zy, IOException {
-        LogUtil.dump(TAG, f);
-        ResourceCompiler compiler = new ResourceCompiler(
-                this,
-                aapt2Dir,
-                build_settings.getValue(
-                        BuildSettings.SETTING_OUTPUT_FORMAT,
-                        BuildSettings.SETTING_OUTPUT_FORMAT_APK
-                ).equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB),
-                buildingDialog);
-        compiler.compile();
-        compiler.link();
-    }
-
     /**
-     * Compile the project's resources.
+     * Compile the project's resources, either with AAPT or AAPT2 automatically.
      *
      * @throws Exception Thrown in case AAPT/AAPT2 has an error while compiling resources.
      */
@@ -210,11 +197,21 @@ public class Dp {
                 BuildSettings.SETTING_RESOURCE_PROCESSOR,
                 BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
         ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2)) {
-            compileWithAapt2();
+            /* Start compiling with AAPT2 */
+            ResourceCompiler compiler = new ResourceCompiler(
+                    this,
+                    aapt2Dir,
+                    build_settings.getValue(
+                            BuildSettings.SETTING_OUTPUT_FORMAT,
+                            BuildSettings.SETTING_OUTPUT_FORMAT_APK
+                    ).equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB),
+                    buildingDialog);
+            compiler.compile();
+            compiler.link();
             return;
         }
 
-        /* Start of generating arguments for AAPT */
+        /* Start generating arguments for AAPT */
         ArrayList<String> args = new ArrayList<>();
         args.add(i.getAbsolutePath());
         args.add("package");
@@ -289,9 +286,9 @@ public class Dp {
         }
     }
 
-    public void b(String str, String str2) {
+    public void b(String password, String alias) {
         Security.addProvider(new BouncyCastleProvider());
-        CustomKeySigner.signZip(new ZipSigner(), wq.j(), str.toCharArray(), str2, str.toCharArray(), "SHA1WITHRSA", f.G, f.I);
+        CustomKeySigner.signZip(new ZipSigner(), wq.j(), password.toCharArray(), alias, password.toCharArray(), "SHA1WITHRSA", f.G, f.I);
     }
 
     public boolean isD8Enabled() {
@@ -328,6 +325,13 @@ public class Dp {
                 args.addAll(ProcessingFiles.getListResource(f.u));
             }
             try {
+                /* Not "supported"/tested out yet */
+                if (false) {
+                    Log.d(TAG, "Running R8");
+                    R8Executor r8Executor = new R8Executor(this, buildingDialog);
+                    r8Executor.preparingEnvironment();
+                    r8Executor.compile();
+                }
                 Log.d(TAG, "Running D8 with these arguments: " + args.toString());
                 D8.main(args.toArray(new String[0]));
                 Log.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -797,6 +801,7 @@ public class Dp {
 
     /**
      * Sign the APK file with testkey.
+     * This method supports APK Signature Scheme V1 (JAR signing) only.
      */
     public boolean k() {
         ZipSigner zipSigner = new ZipSigner();
