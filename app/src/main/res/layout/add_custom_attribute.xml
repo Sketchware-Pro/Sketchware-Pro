@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <include layout="@layout/toolbar_improved" />
-        <ListView android:id="@id/add_attr_listview" android:layout_width="fill_parent" android:layout_height="wrap_content" android:divider="@null" android:dividerHeight="0.0dip" android:choiceMode="none" />
-    </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton android:layout_gravity="bottom|center|right" android:id="@id/add_attr_fab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_marginBottom="32.0dip" android:src="@drawable/plus_96" app:backgroundTint="#ffffffff" app:elevation="6.0dip" app:fabSize="normal" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

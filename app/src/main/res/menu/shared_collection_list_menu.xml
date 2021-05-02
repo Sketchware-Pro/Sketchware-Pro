@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/ic_search_white_24dp" android:id="@id/menu_find" android:orderInCategory="100" android:title="" support:actionViewClass="androidx.appcompat.widget.SearchView" support:showAsAction="always" />
-    <item android:icon="@drawable/ic_star_white_filled_48dp" android:id="@id/menu_bookmark" android:orderInCategory="100" android:title="" support:showAsAction="always" />
-    <item android:icon="@drawable/ic_format_list_bulleted_white_24dp" android:id="@id/menu_myshared" android:orderInCategory="100" android:title="" support:showAsAction="always" />
-</menu>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="#fff0f0ff" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout android:id="@id/shape" android:background="#fff0f0ff" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-    <com.besome.sketch.editor.view.ViewProperties android:id="@id/properties" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true" android:translationY="150.0dip" />
-</RelativeLayout>

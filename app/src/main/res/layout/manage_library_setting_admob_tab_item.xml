@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/tab_item" android:background="@drawable/selector_palette_tab_round" android:paddingLeft="8.0dip" android:paddingTop="4.0dip" android:paddingRight="8.0dip" android:paddingBottom="4.0dip" android:layout_width="fill_parent" android:layout_height="24.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="12.0sp" android:id="@id/tab_text" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-</LinearLayout>

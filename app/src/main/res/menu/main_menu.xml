@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/selector_ic_user_line" android:id="@id/menu_login" android:orderInCategory="100" android:title="" support:showAsAction="always" />
-    <item android:icon="@drawable/selector_ic_user_filled" android:id="@id/menu_mypage" android:orderInCategory="100" android:title="" support:showAsAction="always" />
-</menu>
