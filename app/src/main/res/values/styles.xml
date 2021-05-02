@@ -3,9 +3,8 @@
     <style name="AboutPageTabLayout" parent="Base.Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
     </style>
-
     <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="textAllCaps">true</item>
     </style>
     <style name="AlertDialog.AppCompat" parent="@style/Base.AlertDialog.AppCompat" />

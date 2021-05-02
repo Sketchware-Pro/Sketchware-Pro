@@ -1,11 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -13,13 +14,12 @@
         android:layout_marginRight="10dp"
         android:focusable="false"
         android:padding="8dp"
-        android:text="Main modders"
+        android:text="Main Modders"
         android:textColor="#424242"
         android:textSize="14sp"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/modderback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -28,7 +28,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/sidebar"
+            android:id="@+id/view_leftline"
             android:layout_width="6dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
@@ -45,23 +45,22 @@
             app:cardCornerRadius="100dp">
 
             <ImageView
-                android:id="@+id/userimg"
+                android:id="@+id/img_user_icon"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:focusable="false"
                 android:scaleType="centerCrop"
-                android:src="@drawable/userimg" />
+                android:src="@drawable/ic_user" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
-            android:id="@+id/linear3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -70,13 +69,13 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="2dp"
                 android:singleLine="true"
-                android:text="TextView"
                 android:textColor="#424242"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="A Modder" />
 
             <TextView
-                android:id="@+id/description"
+                android:id="@+id/tv_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -84,9 +83,9 @@
                 android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:text="TextView"
                 android:textColor="#212121"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="Their description" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -299,6 +299,7 @@
     <item type="id" name="expand_activities_button" />
     <item type="id" name="expanded_menu" />
     <item type="id" name="fab" />
+    <item name="fab_label" type="id" />
     <item type="id" name="fab_toggle_palette" />
     <item type="id" name="feature_types" />
     <item type="id" name="file_length" />
@@ -529,6 +530,8 @@
     <item type="id" name="language_uploadnoti_version" />
     <item type="id" name="largeLabel" />
     <item type="id" name="layout" />
+    <item name="layout1" type="id" />
+    <item name="layout2" type="id" />
     <item type="id" name="layout_adchoice" />
     <item type="id" name="layout_admin" />
     <item type="id" name="layout_ads" />
@@ -703,6 +706,7 @@
     <item type="id" name="loading_export_data" />
     <item type="id" name="loading_export_src" />
     <item type="id" name="loading_sign_apk" />
+    <item name="loading_view" type="id" />
     <item type="id" name="login_content" />
     <item type="id" name="login_lottie" />
     <item type="id" name="lottie_layer_name" />
@@ -868,6 +872,8 @@
     <item type="id" name="read_more" />
     <item type="id" name="recycler_list" />
     <item type="id" name="recycler_view" />
+    <item name="recyclerview1" type="id" />
+    <item name="recyclerview2" type="id" />
     <item type="id" name="remove_area" />
     <item type="id" name="report_project" />
     <item type="id" name="rg" />
@@ -1037,6 +1043,7 @@
     <item type="id" name="trending_body" />
     <item type="id" name="trending_layout" />
     <item type="id" name="trending_no" />
+    <item name="trash" type="id" />
     <item type="id" name="try_again_btn" />
     <item type="id" name="tv_activity_name" />
     <item type="id" name="tv_add_color" />
@@ -1209,6 +1216,7 @@
     <item type="id" name="tv_likecnt" />
     <item type="id" name="tv_linked_filename" />
     <item type="id" name="tv_loading" />
+    <item name="tv_loading_desc" type="id" />
     <item type="id" name="tv_locale" />
     <item type="id" name="tv_login_desc" />
     <item type="id" name="tv_login_id" />
