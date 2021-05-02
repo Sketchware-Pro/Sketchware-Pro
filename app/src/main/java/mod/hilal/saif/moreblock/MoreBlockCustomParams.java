@@ -1,69 +1,73 @@
 package mod.hilal.saif.moreblock;
 
-import a.a.a.dt;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.Resources;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+
+import a.a.a.dt;
 
 public class MoreBlockCustomParams {
+
     public static boolean err = false;
 
-    public static void customParams(final dt dtVar) {
-        final String[] strArr = {"onCreate", "setContentView", "initialize", "initializeLogic", "getRandom", "showMessage", "getDip", "getDisplayWidthPixels", "getDisplayHeightPixels"};
-        final EditText editText = (EditText) dtVar.findViewById(2131232617);
-        final EditText editText2 = (EditText) dtVar.findViewById(2131232618);
-        final TextInputLayout parent = (TextInputLayout) editText.getParent().getParent();
-        parent.setHint("param : m.name");
-        /**
-         * idk but this getParent().setHint(String) doesn't work.
-         */
-        // editText2.getParent().getParent().setHint("variable name");
-        editText2.setHint("Variable name");
-        editText.addTextChangedListener(new TextWatcher() {
+    public static void customParams(final dt dt) {
+        final String[] m = {"onCreate", "setContentView", "initialize", "initializeLogic", "getRandom", "showMessage", "getDip", "getDisplayWidthPixels", "getDisplayHeightPixels"};
 
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                String charSequence2 = charSequence.toString();
-                if (charSequence2.matches("[mldb]\\.[a-zA-Z]+")) {
-                    MoreBlockCustomParams.err = false;
-                } else if (charSequence2.equals("")) {
-                    MoreBlockCustomParams.err = false;
+        final EditText parameter = dt.findViewById(Resources.id.parameter);
+        final EditText name = dt.findViewById(Resources.id.name);
+        final Button add = dt.findViewById(Resources.id.add);
+
+        final TextInputLayout p_input = (TextInputLayout) parameter.getParent().getParent();
+        p_input.setHint("Parameter: m.name");
+        final TextInputLayout n_input = (TextInputLayout) name.getParent().getParent();
+        n_input.setHint("Variable name");
+        parameter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                final String s = sequence.toString();
+
+                if (s.matches("[mldb]\\.[a-zA-Z]+")) {
+                    err = false;
                 } else {
-                    MoreBlockCustomParams.err = true;
+                    err = !s.equals("");
                 }
-                parent.setError("invalid format");
-                parent.setErrorEnabled(MoreBlockCustomParams.err);
+                p_input.setError("Invalid format");
+                p_input.setErrorEnabled(err);
             }
 
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-            public void afterTextChanged(Editable editable) {
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
-        ((Button) dtVar.findViewById(2131232619)).setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View view) {
-                if (!MoreBlockCustomParams.err && !editText2.equals("") && !editText.equals("")) {
-                    dtVar.l.add(new Pair<>(editText.getText().toString(), editText2.getText().toString()));
-                    dtVar.a(dtVar.b, dtVar.c, dtVar.p, dtVar.g.getText().toString(), dtVar.l);
-                    editText.setText("");
-                    editText2.setText("");
-                    ArrayList arrayList = new ArrayList(Arrays.asList(strArr));
-                    Iterator<Pair<String, String>> it = dtVar.l.iterator();
-                    while (it.hasNext()) {
-                        Pair<String, String> next = it.next();
-                        if (!((String) next.first).equals("t")) {
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!err && !name.equals("") && !parameter.equals("")) {
+                    dt.l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
+                    dt.a(dt.b, dt.c, dt.p, dt.g.getText().toString(), dt.l);
+                    parameter.setText("");
+                    name.setText("");
+                    ArrayList<Object> arrayList = new ArrayList<>(Arrays.asList(m));
+                    for (Pair<String, String> next : dt.l) {
+                        if (!(next.first).equals("t")) {
                             arrayList.add(next.second);
                         }
                     }
-                    dtVar.m.a((String[]) arrayList.toArray(new String[arrayList.size()]));
+                    dt.m.a((String[]) arrayList.toArray(new String[0]));
                 }
             }
         });
