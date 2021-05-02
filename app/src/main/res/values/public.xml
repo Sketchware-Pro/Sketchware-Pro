@@ -631,6 +631,16 @@
     <public type="attr" name="offset_dir" id="0x7f03023f" />
     <public type="attr" name="extensions" id="0x7f030240" />
     <public type="attr" name="title_text" id="0x7f030241" />
+    <public name="autoCompleteEnabled" id="0x7f030242" type="attr" />
+    <public name="cursorBlinkPeriod" id="0x7f030243" type="attr" />
+    <public name="dividerWidth" id="0x7f030244" type="attr" />
+    <public name="horizontalScrollbarEnabled" id="0x7f030245" type="attr" />
+    <public name="lineNumberVisible" id="0x7f030246" type="attr" />
+    <public name="scrollbarsEnabled" id="0x7f030247" type="attr" />
+    <public name="symbolCompletionEnabled" id="0x7f030248" type="attr" />
+    <public name="text" id="0x7f030249" type="attr" />
+    <public name="textSize" id="0x7f03024a" type="attr" />
+    <public name="verticalScrollbarEnabled" id="0x7f03024b" type="attr" />
     <public type="bool" name="abc_action_bar_embed_tabs" id="0x7f040000" />
     <public type="bool" name="abc_allow_stacked_button_bar" id="0x7f040001" />
     <public type="bool" name="abc_config_actionMenuItemAllCaps" id="0x7f040002" />
@@ -1365,6 +1375,8 @@
     <public type="drawable" name="triangle_point_left" id="0x7f0703fb" />
     <public type="drawable" name="triangle_point_left_primary" id="0x7f0703fc" />
     <public type="drawable" name="bottom_shadow" id="0x7f07044a" />
+    <public name="dummy_ae_462" id="0x7f070462" type="drawable" />
+    <public name="dummy_ae_46e" id="0x7f07046e" type="drawable" />
     <public type="drawable" name="rayenmark" id="0x7f0704b3" />
     <public type="drawable" name="abc_control_background_material" id="0x7f070018" />
     <public type="drawable" name="ic_preview_downcount" id="0x7f07027c" />
@@ -1565,6 +1577,11 @@
     <public type="drawable" name="common_google_signin_btn_icon_light_normal_background" id="0x7f070131" />
     <public type="drawable" name="common_google_signin_btn_text_dark_normal_background" id="0x7f070135" />
     <public type="drawable" name="common_google_signin_btn_text_light_normal_background" id="0x7f07013a" />
+    <public name="competition_1" id="0x7f07013b" type="drawable" />
+    <public name="competition_2" id="0x7f07013c" type="drawable" />
+    <public name="competition_3" id="0x7f07013d" type="drawable" />
+    <public name="competition_4" id="0x7f07013e" type="drawable" />
+    <public name="competition_cover" id="0x7f07013f" type="drawable" />
     <public type="drawable" name="component_96" id="0x7f070140" />
     <public type="drawable" name="connected_96" id="0x7f070141" />
     <public type="drawable" name="copy_48_gray" id="0x7f070142" />
@@ -1581,6 +1598,8 @@
     <public type="drawable" name="default_image" id="0x7f070152" />
     <public type="drawable" name="default_play" id="0x7f070153" />
     <public type="drawable" name="delete_96" id="0x7f070154" />
+    <public name="design_ic_visibility" id="0x7f070157" type="drawable" />
+    <public name="design_ic_visibility_off" id="0x7f070158" type="drawable" />
     <public type="drawable" name="discount_96" id="0x7f07015d" />
     <public type="drawable" name="discount_line_96" id="0x7f07015e" />
     <public type="drawable" name="discount_line_gray_96" id="0x7f07015f" />
@@ -2322,13 +2341,10 @@
     <public type="drawable" name="ic_cut_grey" id="0x7f0704b0" />
     <public type="drawable" name="ic_copy_grey" id="0x7f0704b1" />
     <public type="drawable" name="ic_select_all_grey" id="0x7f0704b2" />
-    <public type="drawable" name="competition_1" id="0x7f07013b" />
-    <public type="drawable" name="competition_2" id="0x7f07013c" />
-    <public type="drawable" name="competition_3" id="0x7f07013d" />
-    <public type="drawable" name="competition_4" id="0x7f07013e" />
-    <public type="drawable" name="competition_cover" id="0x7f07013f" />
-    <public type="drawable" name="design_ic_visibility" id="0x7f070157" />
-    <public type="drawable" name="design_ic_visibility_off" id="0x7f070158" />
+    <public name="about_tab_indicator" id="0x7f0704b3" type="drawable" />
+    <public name="girl_swimming_flat" id="0x7f0704b4" type="drawable" />
+    <public name="ic_discord" id="0x7f0704b5" type="drawable" />
+    <public name="ic_user" id="0x7f0704b6" type="drawable" />
     <public type="id" name="ALT" id="0x7f080000" />
     <public type="id" name="CTRL" id="0x7f080001" />
     <public type="id" name="FUNCTION" id="0x7f080002" />
@@ -4207,6 +4223,14 @@
     <public type="id" name="show_edited_code" id="0x7f080780" />
     <public type="id" name="spinner_edited" id="0x7f080781" />
     <public type="id" name="restore_all" id="0x7f080782" />
+    <public name="fab_label" id="0x7f080783" type="id" />
+    <public name="loading_view" id="0x7f080784" type="id" />
+    <public name="trash" id="0x7f080785" type="id" />
+    <public name="layout1" id="0x7f080786" type="id" />
+    <public name="layout2" id="0x7f080787" type="id" />
+    <public name="recyclerview1" id="0x7f080788" type="id" />
+    <public name="recyclerview2" id="0x7f080789" type="id" />
+    <public name="tv_loading_desc" id="0x7f08078a" type="id" />
     <public type="integer" name="abc_config_activityDefaultDur" id="0x7f090000" />
     <public type="integer" name="abc_config_activityShortDur" id="0x7f090001" />
     <public type="integer" name="app_bar_elevation_anim_duration" id="0x7f090002" />
@@ -4733,6 +4757,7 @@
     <public type="layout" name="code_editor_hs" id="0x7f0b01f1" />
     <public type="layout" name="result_item" id="0x7f0b01f2" />
     <public type="layout" name="text_compose_panel" id="0x7f0b01f3" />
+    <public name="default_completion_result_item" id="0x7f0b01f4" type="layout" />
     <public type="menu" name="contents_search_menu" id="0x7f0c0000" />
     <public type="menu" name="design_logic_menu" id="0x7f0c0001" />
     <public type="menu" name="design_menu" id="0x7f0c0002" />
@@ -7912,6 +7937,7 @@
     <public type="style" name="Base.V26.Widget.AppCompat.Toolbar" id="0x7f0f0089" />
     <public type="style" name="Base.V28.Theme.AppCompat" id="0x7f0f008a" />
     <public type="style" name="Base.V28.Theme.AppCompat.Light" id="0x7f0f008b" />
+    <public name="Base.Widget.AppCompat.DrawerArrowToggle" id="0x7f0f00aa" type="style" />
     <public type="style" name="Base.Widget.AppCompat.DrawerArrowToggle" id="0x7f0f00aa" />
     <public type="xml" name="global_tracker" id="0x7f110000" />
     <public type="xml" name="provider_paths" id="0x7f110001" />
