@@ -71,6 +71,7 @@
     </attr>
     <attr name="arrowHeadLength" format="dimension" />
     <attr name="arrowShaftLength" format="dimension" />
+    <attr name="autoCompleteEnabled" format="boolean" />
     <attr name="autoCompleteTextViewStyle" format="reference" />
     <attr name="autoSizeMaxTextSize" format="dimension" />
     <attr name="autoSizeMinTextSize" format="dimension" />
@@ -249,6 +250,7 @@
     <attr name="counterMaxLength" format="integer" />
     <attr name="counterOverflowTextAppearance" format="reference" />
     <attr name="counterTextAppearance" format="reference" />
+    <attr name="cursorBlinkPeriod" format="integer" />
     <attr name="customNavigationLayout" format="reference" />
     <attr name="defaultIntentAction" format="string" />
     <attr name="defaultIntentActivity" format="string" />
@@ -273,6 +275,7 @@
     <attr name="dividerHorizontal" format="reference" />
     <attr name="dividerPadding" format="dimension" />
     <attr name="dividerVertical" format="reference" />
+    <attr name="dividerWidth" format="dimension" />
     <attr name="documentMaxAgeSecs" format="integer" />
     <attr name="drawableSize" format="dimension" />
     <attr name="drawerArrowStyle" format="reference" />
@@ -381,6 +384,7 @@
     <attr name="hintTextAppearance" format="reference" />
     <attr name="homeAsUpIndicator" format="reference" />
     <attr name="homeLayout" format="reference" />
+    <attr name="horizontalScrollbarEnabled" format="boolean" />
     <attr name="hoveredFocusedTranslationZ" format="dimension" />
     <attr name="icon" format="reference" />
     <attr name="iconEndPadding" format="dimension" />
@@ -522,6 +526,7 @@
     <attr name="listItemLayout" format="reference" />
     <attr name="listLayout" format="reference" />
     <attr name="listMenuViewStyle" format="reference" />
+    <attr name="lineNumberVisible" format="boolean" />
     <attr name="listPopupWindowStyle" format="reference" />
     <attr name="listPreferredItemHeight" format="dimension" />
     <attr name="listPreferredItemHeightLarge" format="dimension" />
@@ -624,6 +629,7 @@
     <attr name="scrimAnimationDuration" format="integer" />
     <attr name="scrimBackground" format="reference|color" />
     <attr name="scrimVisibleHeightTrigger" format="dimension" />
+    <attr name="scrollbarsEnabled" format="boolean" />
     <attr name="searchEnabled" format="boolean" />
     <attr name="searchHintIcon" format="reference" />
     <attr name="searchIcon" format="reference" />
@@ -729,6 +735,7 @@
     <attr name="switchPadding" format="dimension" />
     <attr name="switchStyle" format="reference" />
     <attr name="switchTextAppearance" format="reference" />
+    <attr name="symbolCompletionEnabled" format="boolean" />
     <attr name="tabBackground" format="reference" />
     <attr name="tabContentStart" format="dimension" />
     <attr name="tabGravity">
@@ -773,6 +780,7 @@
     <attr name="tabTextAppearance" format="reference" />
     <attr name="tabTextColor" format="color" />
     <attr name="tabUnboundedRipple" format="boolean" />
+    <attr name="text" format="string" />
     <attr name="textAllCaps" format="reference|boolean" />
     <attr name="textAppearanceBody1" format="reference" />
     <attr name="textAppearanceBody2" format="reference" />
@@ -799,6 +807,7 @@
     <attr name="textColorSearchUrl" format="reference|color" />
     <attr name="textEndPadding" format="dimension" />
     <attr name="textInputStyle" format="reference" />
+    <attr name="textSize" format="dimension" />
     <attr name="textStartPadding" format="dimension" />
     <attr name="theme" format="reference" />
     <attr name="thickness" format="dimension" />
@@ -866,6 +875,7 @@
     <attr name="userInputSection" format="string" />
     <attr name="userInputTag" format="string" />
     <attr name="userInputValue" format="string" />
+    <attr name="verticalScrollbarEnabled" format="boolean" />
     <attr name="viewInflaterClass" format="string" />
     <attr name="voiceIcon" format="reference" />
     <attr name="windowActionBar" format="boolean" />
