@@ -259,7 +259,7 @@ public class AboutModActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initViewPager();
-        requestData.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/sw-pro/aboutus.json", "", _requestData_request_listener);
+        requestData.startRequestNetwork(RequestNetworkController.GET, "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "", _requestData_request_listener);
         rippleRound(fab, "#7289DA", "#FFFFFF", 90);
     }
 
