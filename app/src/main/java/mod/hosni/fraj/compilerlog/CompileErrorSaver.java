@@ -1,8 +1,12 @@
 package mod.hosni.fraj.compilerlog;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sketchware.remod.Resources;
@@ -13,6 +17,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.CompileLogHelper;
 
 public class CompileErrorSaver {
+
+    private static final String MESSAGE_NO_COMPILE_ERRORS_SAVED = "No compile errors have been saved yet.";
 
     public String sc_id;
     public FilePathUtil filePathUtil = new FilePathUtil();
@@ -44,52 +50,37 @@ public class CompileErrorSaver {
      *
      * @param context The context to show the dialog on
      */
-
     public void showDialog(Context context) {
-
+        ScrollView scrollView = new ScrollView(context);
         TextView errorLogTxt = new TextView(context);
         errorLogTxt.setText(CompileLogHelper.colorErrsAndWarnings(getLog()));
         errorLogTxt.setTextIsSelectable(true);
+        scrollView.addView(errorLogTxt);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(errorLogTxt)
-                .setTitle("Last compile log")
-                .setPositiveButton(Resources.string.common_word_ok, null)
-
-                .setNegativeButton("Clear", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SketchwareUtil.toast("Cleared log");
-                        clear();
-                    }
-                })
-
-                .create()
-                .show();
-
-        // if (errorLogTxt.toString().contains("No compile errors")) {
-        //   builder.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
-        // }
-    }
-    /*
-    *old method in case something went wrong
-
-    public void showDialog(Context context) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Last compile log")
-                .setMessage(CompileLogHelper.colorErrsAndWarnings(getLog()))
                 .setPositiveButton(Resources.string.common_word_ok, null)
                 .setNegativeButton("Clear", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SketchwareUtil.toast("Cleared log");
                         clear();
+                        SketchwareUtil.toast("Cleared log");
                     }
                 })
                 .create();
+
+        dialog.setView(scrollView,
+                (int) getDip(24),
+                (int) getDip(8),
+                (int) getDip(24),
+                (int) getDip(8));
+
         dialog.show();
+
+        if (errorLogTxt.getText().toString().equals(MESSAGE_NO_COMPILE_ERRORS_SAVED)) {
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.GONE);
+        }
     }
-    */
 
 
     /**
@@ -108,11 +99,11 @@ public class CompileErrorSaver {
 
     /**
      * Check if the last saved error text file exists, if not, it'll get created and
-     * "No compile errors have been saved yet." will be written to it.
+     * {@link CompileErrorSaver#MESSAGE_NO_COMPILE_ERRORS_SAVED} will be written to it.
      */
     public void check() {
         if (!FileUtil.isExistFile(path)) {
-            FileUtil.writeFile(path, "No compile errors have been saved yet.");
+            FileUtil.writeFile(path, MESSAGE_NO_COMPILE_ERRORS_SAVED);
         }
     }
 }
