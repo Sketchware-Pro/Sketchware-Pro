@@ -1,10 +1,12 @@
-package mod.ilyasse.activities.about;
+package mod;
 
 import android.annotation.SuppressLint;
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -20,12 +22,14 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RequestNetworkController {
+
     public static final String GET = "GET";
     public static final int REQUEST_PARAM = 0;
     private static final int SOCKET_TIMEOUT = 15000;
@@ -49,23 +53,23 @@ public class RequestNetworkController {
                         new X509TrustManager() {
                             @SuppressLint("TrustAllX509TrustManager")
                             @Override
-                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                            public void checkClientTrusted(X509Certificate[] chain, String authType) {
                             }
 
                             @SuppressLint("TrustAllX509TrustManager")
                             @Override
-                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                            public void checkServerTrusted(X509Certificate[] chain, String authType) {
                             }
 
                             @Override
-                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                                return new java.security.cert.X509Certificate[]{};
+                            public X509Certificate[] getAcceptedIssuers() {
+                                return new X509Certificate[]{};
                             }
                         }
                 };
 
                 final SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+                sslContext.init(null, trustAllCerts, new SecureRandom());
                 final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
                 builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
                 builder.connectTimeout(SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -134,7 +138,7 @@ public class RequestNetworkController {
                     reqBuilder.url(url).headers(headerBuilder.build()).method(method, reqBody);
                 }
             } else {
-                RequestBody reqBody = RequestBody.create(okhttp3.MediaType.parse("application/json"), new Gson().toJson(requestNetwork.getParams()));
+                RequestBody reqBody = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(requestNetwork.getParams()));
 
                 if (method.equals(GET)) {
                     reqBuilder.url(url).headers(headerBuilder.build()).get();
@@ -157,7 +161,7 @@ public class RequestNetworkController {
                 }
 
                 @Override
-                public void onResponse(Call call, final Response response) throws IOException {
+                public void onResponse(Call call, final Response response) {
                     final String responseBody = response.body().string().trim();
                     requestNetwork.getActivity().runOnUiThread(new Runnable() {
                         @Override

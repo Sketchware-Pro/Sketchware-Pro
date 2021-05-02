@@ -43,7 +43,6 @@ public class Resources {
         public static final int color_palette_48 = 0x7f070120;
         public static final int connected_96 = 0x7f070141;
         public static final int copy_48_grey = 0x7f070142;
-        public static final int ic_user = 0x7f070143;
         public static final int custom_dialog_inset_black = 0x7f070148;
         public static final int custom_dialog_inset_light_grey = 0x7f070149;
         public static final int custom_dialog_inset_white = 0x7f07014a;
@@ -120,6 +119,10 @@ public class Resources {
         public static final int notes_alt2 = 0x7f0704a8;
         public static final int cpp = 0x7f0704ae;
         public static final int ic_backup = 0x7f0704af;
+        public static final int about_tab_indicator = 0x7f0704b3;
+        public static final int girl_swimming_flat = 0x7f0704b4;
+        public static final int ic_discord = 0x7f0704b5;
+        public static final int ic_user = 0x7f0704b6;
     }
 
     public static final class id {
@@ -250,6 +253,7 @@ public class Resources {
         public static final int rb_wrapcontent = 0x7f0803aa;
         public static final int rg_content = 0x7f0803b4;
         public static final int rg_width_height = 0x7f0803b8;
+        public static final int root = 0x7f0803bd;
         public static final int save_button = 0x7f0803c1;
         public static final int scroll_view = 0x7f0803cc;
         public static final int sdialog_root = 0x7f0803d0;
@@ -300,6 +304,7 @@ public class Resources {
         public static final int tv_expire_date = 0x7f0804e5;
         public static final int tv_favorites_guide = 0x7f0804e9;
         public static final int tv_input_dp = 0x7f080507;
+        public static final int tv_loading = 0x7f080521;
         public static final int tv_login_id = 0x7f080524;
         public static final int tv_matchparent = 0x7f08052b;
         public static final int tv_menu_name = 0x7f08052c;
@@ -310,6 +315,7 @@ public class Resources {
         public static final int tv_title = 0x7f0805c3;
         public static final int tv_title_configuration = 0x7f0805d4;
         public static final int tv_title_global = 0x7f0805da;
+        public static final int tv_user_name = 0x7f08060c;
         public static final int tv_value = 0x7f08060e;
         public static final int tv_warning = 0x7f08061d;
         public static final int tv_warning_message = 0x7f08061f;
@@ -322,7 +328,9 @@ public class Resources {
         public static final int view_ads_boader = 0x7f080639;
         public static final int view_color = 0x7f08063e;
         public static final int view_event = 0x7f080640;
+        public static final int view_leftline = 0x7f080643;
         public static final int viewpager = 0x7f080648;
+        public static final int linearLayout = 0x7f08065e;
         public static final int text_title = 0x7f08066e;
         public static final int text_content = 0x7f08066f;
         public static final int text_cancel = 0x7f080678;
@@ -346,6 +354,14 @@ public class Resources {
         public static final int btn_compiler_opt = 0x7f080774;
         public static final int project_config_title = 0x7f080775;
         public static final int project_config_icon = 0x7f080776;
+        public static final int fab_label = 0x7f080783;
+        public static final int loading_view = 0x7f080784;
+        public static final int trash = 0x7f080785;
+        public static final int layout1 = 0x7f080786;
+        public static final int layout2 = 0x7f080787;
+        public static final int recyclerview1 = 0x7f080788;
+        public static final int recyclerview2 = 0x7f080789;
+        public static final int tv_loading_desc = 0x7f08078a;
     }
 
     public static final class layout {
@@ -393,6 +409,9 @@ public class Resources {
         public static final int custom_dialog_attribute = 0x7f0b01d5;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int code_editor_hs = 0x7f0b01f1;
+        public static final int about_changelog = 0x7f0b01f5;
+        public static final int about_empty_viewpager = 0x7f0b01f6;
+        public static final int about_moddersview = 0x7f0b01f7;
     }
 
     public static final class menu {

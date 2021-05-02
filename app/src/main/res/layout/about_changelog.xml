@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/changelogback"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -6,7 +7,7 @@
     android:padding="6dp">
 
     <TextView
-        android:id="@+id/changelog_title"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
@@ -15,20 +16,20 @@
         android:paddingTop="8dp"
         android:paddingRight="4dp"
         android:paddingBottom="8dp"
-        android:text="Title"
         android:textColor="#008DCD"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="Title" />
 
     <TextView
-        android:id="@+id/changelog_subtitle"
+        android:id="@+id/tv_sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:focusable="false"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:text="Subtitle"
         android:textColor="#000000"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="Subtitle" />
 </LinearLayout>

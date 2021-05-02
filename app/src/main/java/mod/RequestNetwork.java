@@ -1,4 +1,4 @@
-package mod.ilyasse.activities.about;
+package mod;
 
 import android.app.Activity;
 
