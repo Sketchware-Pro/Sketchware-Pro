@@ -1263,6 +1263,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                         return;
                                     }
 
+                                    /* Launch Intent to install APK */
                                     o();
                                 }
                             }
@@ -1308,48 +1309,48 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             cancel(true);
                             return;
                         }
-                    }
 
-                    //TODO: Remove this, move AAB export to {@link ExportProjectActivity}
-                    boolean buildingAAB = new BuildSettings(q.b)
-                            .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
-                                    BuildSettings.SETTING_OUTPUT_FORMAT_APK)
-                            .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
-                    if (buildingAAB) {
-                        BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
-                        publishProgress("Creating app module...");
-                        compiler.createModuleMainArchive();
-                        publishProgress("Building app bundle...");
-                        compiler.buildBundle();
-                        publishProgress("Building APK Set...");
-                        compiler.buildApkSet();
-                        publishProgress("Extracting Install-APK from APK Set...");
-                        compiler.extractInstallApkFromApkSet();
-                        publishProgress("Signing Install-APK...");
-                        compiler.signInstallApk();
-                    } else {
-                        publishProgress("Building APK...");
-                        mDp.g();
-                        if (d) {
-                            cancel(true);
-                            return;
-                        }
-
-                        publishProgress("Signing APK...");
-                        if (VERSION.SDK_INT >= 26) {
-                            ApkSigner signer = new ApkSigner(a);
-                            signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
+                        //TODO: Remove this, move AAB export to {@link ExportProjectActivity}
+                        boolean buildingAAB = new BuildSettings(q.b)
+                                .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
+                                        BuildSettings.SETTING_OUTPUT_FORMAT_APK)
+                                .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
+                        if (buildingAAB) {
+                            BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
+                            publishProgress("Creating app module...");
+                            compiler.createModuleMainArchive();
+                            publishProgress("Building app bundle...");
+                            compiler.buildBundle();
+                            publishProgress("Building APK Set...");
+                            compiler.buildApkSet();
+                            publishProgress("Extracting Install-APK from APK Set...");
+                            compiler.extractInstallApkFromApkSet();
+                            publishProgress("Signing Install-APK...");
+                            compiler.signInstallApk();
                         } else {
-                            mDp.k();
-                        }
-                        if (d) {
-                            cancel(true);
-                            return;
-                        }
-                    }
+                            publishProgress("Building APK...");
+                            mDp.g();
+                            if (d) {
+                                cancel(true);
+                                return;
+                            }
 
-                    /* Launch Intent to install APK */
-                    o();
+                            publishProgress("Signing APK...");
+                            if (VERSION.SDK_INT >= 26) {
+                                ApkSigner signer = new ApkSigner(a);
+                                signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
+                            } else {
+                                mDp.k();
+                            }
+                            if (d) {
+                                cancel(true);
+                                return;
+                            }
+                        }
+
+                        /* Launch Intent to install APK */
+                        o();
+                    }
                 } catch (Ay e) {
                     //Never thrown? Haven't found a reference to it in any classes except {@link DesignActivity} and {@link PublishActivity} (and of course {@link Ay})
                     Log.e("DesignActivity$a", e.getMessage(), e);
@@ -1656,7 +1657,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (var1 == 0) {
                 return new jr();
             } else {
-                return (Fragment) (var1 == 1 ? new rs() : new br());
+                return var1 == 1 ? new rs() : new br();
             }
         }
     }

@@ -3,6 +3,7 @@ package mod.hosni.fraj.compilerlog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.widget.TextView;
 
 import com.sketchware.remod.Resources;
 
@@ -43,6 +44,36 @@ public class CompileErrorSaver {
      *
      * @param context The context to show the dialog on
      */
+
+    public void showDialog(Context context) {
+
+        TextView errorLogTxt = new TextView(context);
+        errorLogTxt.setText(CompileLogHelper.colorErrsAndWarnings(getLog()));
+        errorLogTxt.setTextIsSelectable(true);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(errorLogTxt)
+                .setTitle("Last compile log")
+                .setPositiveButton(Resources.string.common_word_ok, null)
+
+                .setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SketchwareUtil.toast("Cleared log");
+                        clear();
+                    }
+                })
+
+                .create()
+                .show();
+
+        // if (errorLogTxt.toString().contains("No compile errors")) {
+        //   builder.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
+        // }
+    }
+    /*
+    *old method in case something went wrong
+
     public void showDialog(Context context) {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Last compile log")
@@ -58,6 +89,8 @@ public class CompileErrorSaver {
                 .create();
         dialog.show();
     }
+    */
+
 
     /**
      * Clear the last saved error text.
