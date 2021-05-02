@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootrelativeview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,21 +13,23 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/faketoolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <ImageView
-                android:id="@+id/backbtn"
+                android:id="@+id/img_back"
                 android:layout_width="40dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="10dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_arrow_back_grey"
+                android:src="@drawable/arrow_back_white_48dp"
                 app:tint="#424242" />
+
             <TextView
-                android:id="@+id/tooblar_title"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -42,7 +43,7 @@
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout"
+            android:id="@+id/tab_layout"
             style="@style/AboutPageTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,22 +57,20 @@
             app:tabSelectedTextColor="#008DCD"
             app:tabTextColor="#008DCD" />
 
-        <LinearLayout
-            android:id="@+id/toolbar_line"
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:orientation="horizontal" />
+            android:background="#E0E0E0" />
 
         <LinearLayout
-            android:id="@+id/viewpagerholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+            <!-- android:id="@+id/viewpagerholder" -->
 
             <LinearLayout
-                android:id="@+id/base"
+                android:id="@+id/root"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" />
@@ -84,10 +83,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/viewpagercontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+            <!-- android:id="@+id/viewpagercontent" -->
 
             <LinearLayout
                 android:id="@+id/layout1"
@@ -118,7 +117,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/loadingview"
+        android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
@@ -129,15 +128,14 @@
         app:layout_anchorGravity="center">
 
         <ImageView
-            android:id="@+id/loading_img"
-            android:padding="65dp"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@drawable/girl_swimming_flat" />
+        <!-- android:id="@+id/img_loading" -->
 
         <TextView
-            android:id="@+id/loading_txt"
+            android:id="@+id/tv_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -149,7 +147,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/loading_txt2"
+            android:id="@+id/tv_loading_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -178,19 +176,17 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:translationY="0dp"
-        app:rippleColor="#FFFFFF"
-        tools:ignore="UseCompoundDrawables">
+        app:rippleColor="#FFFFFF">
 
         <ImageView
-            android:id="@+id/fabico"
             android:layout_width="30dp"
             android:layout_height="45dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            app:srcCompat="@drawable/discord_ico" />
+            app:srcCompat="@drawable/ic_discord" />
 
         <TextView
-            android:id="@+id/fabtxt"
+            android:id="@+id/fab_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

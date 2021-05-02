@@ -3,32 +3,32 @@ package mod.ilyasse.activities.about;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import com.android.annotations.NonNull;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.sketchware.remod.Resources;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,199 +37,167 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import a.a.a.kk;
+import mod.RequestNetwork;
+import mod.RequestNetworkController;
+import mod.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 
 public class AboutModActivity extends AppCompatActivity {
-    private final Timer _timer = new Timer();
-    private final Intent todiscord = new Intent();
-    private androidx.viewpager.widget.ViewPager viewPager;
+
+    private ViewPager viewPager;
     private LinearLayout fab;
-    private TextView fabtxt;
+    private TextView fabLabel;
     private HashMap<String, Object> moddersMap = new HashMap<>();
     private HashMap<String, Object> changelogMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> moddersList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> changelogList = new ArrayList<>();
-    private LinearLayout loadingview;
     private TabLayout tablayout;
-    private LinearLayout base;
+    private LinearLayout root;
     private LinearLayout trash;
-    private LinearLayout layout1;
-    private LinearLayout layout2;
-    private RecyclerView recyclerview1;
-    private RecyclerView recyclerview2;
-    private TextView textview3;
-    private TextView textview4;
+    private LinearLayout moddersRecyclerContainer;
+    private LinearLayout changelogRecyclerContainer;
+    private RecyclerView moddersRecycler;
+    private RecyclerView changelogRecycler;
+    private TextView loadingTitle;
+    private TextView loadingDescription;
     private RequestNetwork requestData;
-    private RequestNetwork.RequestListener _requestData_request_listener;
+    private RequestNetwork.RequestListener requestDataListener;
     private SharedPreferences sharedPref;
-    private TimerTask animTmr;
-
-    public static boolean isConnected(Context _context) {
-        ConnectivityManager _connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo _activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
-        return _activeNetworkInfo != null && _activeNetworkInfo.isConnected();
-    }
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
-        setContentView(R.layout.about);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(Resources.layout.about);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        fabtxt = findViewById(R.id.fabtxt);
-        fab = findViewById(R.id.fab);
-        loadingview = findViewById(R.id.loadingview);
-        tablayout = findViewById(R.id.tablayout);
-        ImageView backbtn = findViewById(R.id.backbtn);
-        base = findViewById(R.id.base);
-        trash = findViewById(R.id.trash);
-        layout1 = findViewById(R.id.layout1);
-        layout2 = findViewById(R.id.layout2);
-        recyclerview1 = findViewById(R.id.recyclerview1);
-        recyclerview2 = findViewById(R.id.recyclerview2);
-        loading_txt = findViewById(R.id.loading_txt);
-        loading_txt2 = findViewById(R.id.loading_txt2);
+        fabLabel = findViewById(Resources.id.fab_label);
+        fab = findViewById(Resources.id.fab);
+        LinearLayout loading = findViewById(Resources.id.loading_view);
+        tablayout = findViewById(Resources.id.tab_layout);
+        ImageView back = findViewById(Resources.id.img_back);
+        root = findViewById(Resources.id.root);
+        trash = findViewById(Resources.id.trash);
+        //TODO: Rename layout1, layout2, etc. resource IDs to more descriptive names
+        moddersRecyclerContainer = findViewById(Resources.id.layout1);
+        changelogRecyclerContainer = findViewById(Resources.id.layout2);
+        moddersRecycler = findViewById(Resources.id.recyclerview1);
+        changelogRecycler = findViewById(Resources.id.recyclerview2);
+        loadingTitle = findViewById(Resources.id.tv_loading);
+        loadingDescription = findViewById(Resources.id.tv_loading_desc);
         requestData = new RequestNetwork(this);
-        sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
+        sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
-        backbtn.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+
+        // RecyclerView$OnScrollListener got obfuscated to RecyclerView$m
+        class OnScrollListener extends RecyclerView.m {
+
+            // RecyclerView$OnScrollListener.onScrolled(RecyclerView, int, int) got
+            // obfuscated to RecyclerView$m.a(RecyclerView, int, int)
             @Override
-            public void onClick(View _view) {
-                finish();
-            }
-        });
-
-        recyclerview1.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int _scrollState) {
-                super.onScrollStateChanged(recyclerView, _scrollState);
-
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int _offsetX, int _offsetY) {
-                super.onScrolled(recyclerView, _offsetX, _offsetY);
-                if (_offsetY > 0) {
-                    fabtxt.setVisibility(View.GONE);
-                } else {
-                    if (_offsetY < 0) {
-                        fabtxt.setVisibility(View.VISIBLE);
-                    }
+            public void a(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 8) {
+                    fabLabel.setVisibility(View.GONE);
+                } else if (dy < -8) {
+                    fabLabel.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        }
 
-        recyclerview2.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int _scrollState) {
-                super.onScrollStateChanged(recyclerView, _scrollState);
+        // RecyclerView.addOnScrollListener(RecyclerView$OnScrollListener) got obfuscated
+        // to RecyclerView.a(RecyclerView$m)
+        moddersRecycler.a(new OnScrollListener());
 
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int _offsetX, int _offsetY) {
-                super.onScrolled(recyclerView, _offsetX, _offsetY);
-                if (_offsetY > 0) {
-                    fabtxt.setVisibility(View.GONE);
-                } else {
-                    if (_offsetY < 0) {
-                        fabtxt.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
+        // RecyclerView.addOnScrollListener(RecyclerView$OnScrollListener) got obfuscated
+        // to RecyclerView.a(RecyclerView$m)
+        changelogRecycler.a(new OnScrollListener());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View _view) {
-                todiscord.setAction(Intent.ACTION_VIEW);
-                todiscord.setData(Uri.parse("https://discord.gg/kq39yhT4rX"));
-                startActivity(todiscord);
+            public void onClick(View v) {
+                //TODO: Include Discord server invite in JSON from server and use it
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://discord.gg/kq39yhT4rX")));
             }
         });
 
-        _requestData_request_listener = new RequestNetwork.RequestListener() {
+        requestDataListener = new RequestNetwork.RequestListener() {
             @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(String _param1, String _param2, HashMap<String, Object> _param3) {
+            public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
 
-                    JSONObject json = new JSONObject(_param2);
+                    JSONObject json = new JSONObject(response);
 
                     JSONArray modders = json.getJSONArray("moddersteam");
 
                     JSONArray changelog = json.getJSONArray("changelog");
-                    for (int modint = 0; modint < modders.length(); modint++) {
+                    for (int i = 0; i < modders.length(); i++) {
                         moddersMap = new HashMap<>();
-                        moddersMap.put("isTitled", modders.getJSONObject(modint)
+                        moddersMap.put("isTitled", modders.getJSONObject(i)
                                 .getString("isTitled"));
-                        moddersMap.put("title", modders.getJSONObject(modint)
+                        moddersMap.put("title", modders.getJSONObject(i)
                                 .getString("title"));
-                        moddersMap.put("modder_username", modders.getJSONObject(modint)
+                        moddersMap.put("modder_username", modders.getJSONObject(i)
                                 .getString("modder_username"));
-                        moddersMap.put("modder_description", modders.getJSONObject(modint)
+                        moddersMap.put("modder_description", modders.getJSONObject(i)
                                 .getString("modder_description"));
-                        moddersMap.put("modder_img", modders.getJSONObject(modint)
+                        moddersMap.put("modder_img", modders.getJSONObject(i)
                                 .getString("modder_img"));
                         moddersList.add(moddersMap);
                     }
                     sharedPref.edit().putString("moddersBackup", new Gson().toJson(moddersList)).apply();
-                    recyclerview1.setAdapter(new Recyclerview1Adapter(moddersList));
-                    for (int changeint = 0; changeint < changelog.length(); changeint++) {
+                    moddersRecycler.setAdapter(new ModdersRecyclerAdapter(moddersList));
+                    for (int i = 0; i < changelog.length(); i++) {
                         changelogMap = new HashMap<>();
-                        changelogMap.put("isTitled", changelog.getJSONObject(changeint)
+                        changelogMap.put("isTitled", changelog.getJSONObject(i)
                                 .getString("isTitled"));
-                        changelogMap.put("title", changelog.getJSONObject(changeint)
+                        changelogMap.put("title", changelog.getJSONObject(i)
                                 .getString("title"));
-                        changelogMap.put("description", changelog.getJSONObject(changeint)
+                        changelogMap.put("description", changelog.getJSONObject(i)
                                 .getString("description"));
                         changelogList.add(changelogMap);
                     }
                     sharedPref.edit().putString("changelogBackup", new Gson().toJson(changelogList)).apply();
-                    recyclerview2.setAdapter(new Recyclerview2Adapter(changelogList));
-                    _shadAnim(loadingview, "translationY", 50, 400);
-                    animTmr = new TimerTask() {
+                    changelogRecycler.setAdapter(new ChangelogRecyclerAdapter(changelogList));
+                    _shadAnim(loading, "translationY", 50, 400);
+                    new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    _shadAnim(fab, "translationY", 0, 300);
-                                    _shadAnim(fab, "alpha", 1, 300);
-                                    _shadAnim(loadingview, "translationY", -1000, 300);
-                                    _shadAnim(loadingview, "alpha", 0, 300);
-                                }
-                            });
+                            _shadAnim(fab, "translationY", 0, 300);
+                            _shadAnim(fab, "alpha", 1, 300);
+                            _shadAnim(loading, "translationY", -1000, 300);
+                            _shadAnim(loading, "alpha", 0, 300);
                         }
-                    };
-                    _timer.schedule(animTmr, 200);
+                    }, 200);
                 } catch (JSONException e) {
-                    textview3.setText("Something went wrong");
-                    textview4.setText("If this error shows everytime, please contact us on our Discord server.");
-                    Toast.makeText(AboutModActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    loadingTitle.setText("Something went wrong");
+                    loadingDescription.setText("We're sorry for any inconvenience. Please contact us on our " +
+                            "Discord server if this error keeps showing up:\n" + e.getMessage() +
+                            "\n\nStack trace: " + Log.getStackTraceString(e));
                 }
                 fab.setVisibility(View.VISIBLE);
             }
 
             @SuppressLint("SetTextI18n")
             @Override
-            public void onErrorResponse(String _param1, String _param2) {
-                if (sharedPref.getString("moddersBackup", "").equals("") || sharedPref.getString("changelogBackup", "").equals("")) {
-                    textview3.setText("Your device is offline");
-                    textview4.setText("Check your internet connection then try again");
+            public void onErrorResponse(String tag, String message) {
+                if (sharedPref.getString("moddersBackup", "").isEmpty()
+                        || sharedPref.getString("changelogBackup", "").isEmpty()) {
+                    loadingTitle.setText("Your device is offline!");
+                    loadingDescription.setText("Check your internet connection, then try again.");
                 } else {
-                    moddersList = new Gson().fromJson(sharedPref.getString("moddersBackup", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    changelogList = new Gson().fromJson(sharedPref.getString("changelogBackup", ""), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    recyclerview1.setAdapter(new Recyclerview1Adapter(moddersList));
-                    recyclerview2.setAdapter(new Recyclerview2Adapter(changelogList));
-                    loadingview.setVisibility(View.GONE);
-                    if (isConnected(getApplicationContext())) {
+                    moddersList = new Gson().fromJson(sharedPref.getString("moddersBackup", ""), Helper.TYPE_MAP_LIST);
+                    changelogList = new Gson().fromJson(sharedPref.getString("changelogBackup", ""), Helper.TYPE_MAP_LIST);
+                    moddersRecycler.setAdapter(new ModdersRecyclerAdapter(moddersList));
+                    changelogRecycler.setAdapter(new ChangelogRecyclerAdapter(changelogList));
+                    loading.setVisibility(View.GONE);
+                    if (SketchwareUtil.isConnected()) {
                         fab.setVisibility(View.VISIBLE);
                     }
                 }
@@ -238,7 +206,16 @@ public class AboutModActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _LOGIC_BACKEND();
+        moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
+        moddersRecycler.setHasFixedSize(true);
+        changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
+        changelogRecycler.setHasFixedSize(true);
+        fab.setVisibility(View.GONE);
+        getWindow().setStatusBarColor(Color.WHITE);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        initViewPager();
+        requestData.startRequestNetwork(RequestNetworkController.GET, "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "", requestDataListener);
+        rippleRound(fab, "#7289DA", "#FFFFFF", 90);
     }
 
     @Override
@@ -250,75 +227,69 @@ public class AboutModActivity extends AppCompatActivity {
         }
     }
 
-    public void _LOGIC_BACKEND() {
-        recyclerview1.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview1.setHasFixedSize(true);
-        recyclerview2.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview2.setHasFixedSize(true);
-        fab.setVisibility(View.GONE);
-        getWindow().setStatusBarColor(Color.WHITE);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        initViewPager();
-        requestData.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/sw-pro/aboutus.json", "", _requestData_request_listener);
-        rippleRound(fab, "#7289DA", "#FFFFFF", 90);
-    }
+    private void initViewPager() {
+        viewPager = new ViewPager(this);
 
-    public void initViewPager() {
-        viewPager = new androidx.viewpager.widget.ViewPager(this);
-
-        viewPager.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        viewPager.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
         MyPagerAdapter adapter = new MyPagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-        base.addView(viewPager);
+        root.addView(viewPager);
+
         tablayout.setSelectedTabIndicatorColor(Color.parseColor("#008DCD"));
         //replaced with xml attributes instead of changing texts colors programmatically
 
         tablayout.setupWithViewPager(viewPager);
 
+        // ViewPager.addOnPageChangeListener(ViewPager$OnPageChangeListener) got
+        // obfuscated to ViewPager.a(ViewPager$e)
+        // ViewPager$OnPageChangeListener got obfuscated to ViewPager$e
+        viewPager.a(new ViewPager.e() {
 
-        viewPager.addOnPageChangeListener(new androidx.viewpager.widget.ViewPager.OnPageChangeListener() {
-            public void onPageSelected(int position) {
+            // ViewPager$OnPageChangeListener.onPageScrolled(int, float, int) got obfuscated
+            // to ViewPager$e.a(int, float, int)
+            @Override
+            public void a(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
+            // ViewPager$OnPageChangeListener.onPageSelected(int) got obfuscated to
+            // ViewPager$e.b(int)
+            @Override
+            public void b(int position) {
                 if (viewPager.getCurrentItem() == 0) {
-                    fabtxt.setVisibility(View.VISIBLE);
+                    fabLabel.setVisibility(View.VISIBLE);
                 } else {
                     if (viewPager.getCurrentItem() == 1) {
-                        fabtxt.setVisibility(View.GONE);
+                        fabLabel.setVisibility(View.GONE);
                     }
                 }
             }
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            // ViewPager$OnPageChangeListener.onPageScrollStateChanged(int) got obfuscated to
+            // ViewPager$e.a(int)
+            public void a(int state) {
             }
         });
-
-
     }
 
-    public void _circularImage(final ImageView _image, final String _url) {
+    private void _circularImage(final ImageView _image, final String _url) {
         Glide.with(this)
                 .load(_url)
-                .placeholder(R.drawable.userimg)
+                .placeholder(Resources.drawable.ic_user)
                 .into(_image);
-
     }
 
-    public void _advancedCorners(final View _view, final String _color, final double _n1, final double _n2, final double _n3, final double _n4) {
-        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+    private void _advancedCorners(final View _view, final String _color, final double _n1, final double _n2, final double _n3, final double _n4) {
+        GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(_color));
         gd.setCornerRadii(new float[]{(int) _n1, (int) _n1, (int) _n2, (int) _n2, (int) _n4, (int) _n4, (int) _n3, (int) _n3});
         _view.setBackground(gd);
     }
 
-    public void _shadAnim(final View _view, final String _propertyName, final double _value, final double _duration) {
+    private void _shadAnim(final View _view, final String _propertyName, final double _value, final double _duration) {
         ObjectAnimator anim = new ObjectAnimator();
         anim.setTarget(_view);
         anim.setPropertyName(_propertyName);
@@ -327,171 +298,224 @@ public class AboutModActivity extends AppCompatActivity {
         anim.start();
     }
 
-    public void rippleRound(final View _view, final String _focus, final String _pressed, final double _round) {
-        android.graphics.drawable.GradientDrawable GG = new android.graphics.drawable.GradientDrawable();
+    private void rippleRound(final View _view, final String _focus, final String _pressed, final double _round) {
+        GradientDrawable GG = new GradientDrawable();
         GG.setColor(Color.parseColor(_focus));
         GG.setCornerRadius((float) _round);
-        android.graphics.drawable.RippleDrawable RE = new android.graphics.drawable.RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(_pressed)}), GG, null);
+        RippleDrawable RE = new RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(_pressed)}), GG, null);
         _view.setBackground(RE);
     }
 
-    private class MyPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
-        public int getCount() {
+    // PagerAdapter got obfuscated to kk
+    private class MyPagerAdapter extends kk {
+
+        // PagerAdapter.getCount() got obfuscated to kk.a()
+        @Override
+        public int a() {
             return 2;
         }
 
-        @NonNull
+        // PagerAdapter.instantiateItem(ViewGroup, int) got obfuscated to
+        // kk.a(ViewGroup, int)
         @Override
-        public Object instantiateItem(@NonNull ViewGroup collection, int position) {
+        public Object a(ViewGroup container, int position) {
 
-            LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.about_empty_viewpager, null);
+            LayoutInflater inflater = getLayoutInflater();
+            View v = inflater.inflate(Resources.layout.about_empty_viewpager, null);
 
-            LinearLayout container = v.findViewById(R.id.linear1);
+            LinearLayout viewContainer = v.findViewById(Resources.id.linearLayout);
 
             if (position == 0) {
-                ViewGroup parent = (ViewGroup) layout1.getParent();
+                ViewGroup parent = (ViewGroup) moddersRecyclerContainer.getParent();
                 if (parent != null) {
-                    parent.removeView(layout1);
+                    parent.removeView(moddersRecyclerContainer);
                 }
-                container.addView(layout1);
+                viewContainer.addView(moddersRecyclerContainer);
 
             } else if (position == 1) {
-                ViewGroup parent = (ViewGroup) layout2.getParent();
+                ViewGroup parent = (ViewGroup) changelogRecyclerContainer.getParent();
                 if (parent != null) {
-                    parent.removeView(layout2);
+                    parent.removeView(changelogRecyclerContainer);
                 }
-                container.addView(layout2);
+                viewContainer.addView(changelogRecyclerContainer);
             }
-            collection.addView(v, 0);
+            container.addView(v, 0);
             return v;
         }
 
+        // PagerAdapter.destroyItem(ViewGroup, int, Object) got obfuscated to
+        // kk.a(ViewGroup, int, Object)
         @Override
-        public void destroyItem(ViewGroup collection, int position, @NonNull Object view) {
-            collection.removeView((View) view);
-            trash.addView((View) view);
+        public void a(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+            trash.addView((View) object);
         }
 
+        // PagerAdapter.getPageTitle(int) got obfuscated to kk.a(int)
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence a(int position) {
             switch (position) {
                 case 0:
                     return "Modder Team";
+
                 case 1:
                     return "Changelog";
+
                 default:
                     return null;
             }
         }
 
+        // PagerAdapter.isViewFromObject(View, Object) got obfuscated to kk.a(View, Object)
         @Override
-        public boolean isViewFromObject(@NonNull View arg0, @NonNull Object arg1) {
-            return arg0 == arg1;
+        public boolean a(View view, Object object) {
+            return view == object;
         }
 
+        // PagerAdapter.saveState() got obfuscated to kk.c()
         @Override
-        public Parcelable saveState() {
+        public Parcelable c() {
             return null;
         }
-
     }
 
-    public class Recyclerview1Adapter extends RecyclerView.Adapter<Recyclerview1Adapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+    // RecyclerView$Adapter<T extends RecyclerView.ViewHolder> got obfuscated to
+    // RecyclerView$a<VH extends RecyclerView.v>
+    // VH stands for ViewHolder?
+    private class ModdersRecyclerAdapter extends RecyclerView.a<ModdersRecyclerAdapter.ViewHolder> {
 
-        public Recyclerview1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+        private final ArrayList<HashMap<String, Object>> modders;
+
+        public ModdersRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
+            modders = data;
         }
 
-        @NonNull
+        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onCreateViewHolder(ViewGroup, int)
+        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.about_moddersview, null);
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            LayoutInflater _inflater = getLayoutInflater();
+            View _v = _inflater.inflate(Resources.layout.about_moddersview, null);
             RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             _v.setLayoutParams(_lp);
             return new ViewHolder(_v);
         }
 
+        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
+        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
+        public void b(ViewHolder holder, final int position) {
+            // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
+            View itemView = holder.b;
 
-            final TextView title = _view.findViewById(R.id.title);
-            final LinearLayout sidebar = _view.findViewById(R.id.sidebar);
-            final ImageView userimg = _view.findViewById(R.id.userimg);
-            final TextView username = _view.findViewById(R.id.username);
-            final TextView description = _view.findViewById(R.id.description);
+            final TextView title = itemView.findViewById(Resources.id.tv_title);
 
-            _circularImage(userimg, Objects.requireNonNull(_data.get(_position).get("modder_img")).toString());
-            username.setText(Objects.requireNonNull(_data.get(_position).get("modder_username")).toString());
-            description.setText(Objects.requireNonNull(_data.get(_position).get("modder_description")).toString());
+            final LinearLayout sidebar = itemView.findViewById(Resources.id.view_leftline);
+            final ImageView userIcon = itemView.findViewById(Resources.id.img_user_icon);
+            final TextView userName = itemView.findViewById(Resources.id.tv_user_name);
+            final TextView description = itemView.findViewById(Resources.id.tv_description);
+
+            _circularImage(userIcon, Objects.requireNonNull(modders.get(position).get("modder_img")).toString());
+            userName.setText(Objects.requireNonNull(modders.get(position).get("modder_username")).toString());
+            description.setText(Objects.requireNonNull(modders.get(position).get("modder_description")).toString());
             _advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
-            if ((boolean) _data.get(_position).get("isTitled")) {
-                title.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
-                title.setVisibility(View.VISIBLE);
-            } else {
-                title.setVisibility(View.GONE);
+            Object isTitled = modders.get(position).get("isTitled");
+            if (isTitled instanceof String) {
+                if (Boolean.parseBoolean((String) isTitled)) {
+                    title.setText(Objects.requireNonNull(modders.get(position).get("title")).toString());
+                    title.setVisibility(View.VISIBLE);
+                } else {
+                    title.setVisibility(View.GONE);
+                }
+            } else if (isTitled instanceof Boolean) {
+                if ((boolean) isTitled) {
+                    title.setText(Objects.requireNonNull(modders.get(position).get("title")).toString());
+                    title.setVisibility(View.VISIBLE);
+                } else {
+                    title.setVisibility(View.GONE);
+                }
             }
         }
 
+        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
+        // to RecyclerView$a<VH extends RecyclerView.v>.a()
         @Override
-        public int getItemCount() {
-            return _data.size();
+        public int a() {
+            return modders.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.v {
+
             public ViewHolder(View v) {
                 super(v);
             }
         }
-
     }
 
-    public class Recyclerview2Adapter extends RecyclerView.Adapter<Recyclerview2Adapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> _data;
+    // RecyclerView$Adapter<T extends RecyclerView.ViewHolder> got obfuscated to
+    // RecyclerView$a<VH extends RecyclerView.v>
+    // VH stands for ViewHolder?
+    private class ChangelogRecyclerAdapter extends RecyclerView.a<ChangelogRecyclerAdapter.ViewHolder> {
 
-        public Recyclerview2Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+        private final ArrayList<HashMap<String, Object>> changelog;
+
+        public ChangelogRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
+            changelog = data;
         }
 
-        @NonNull
+        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onCreateViewHolder(ViewGroup, int)
+        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            @SuppressLint("InflateParams") View _v = _inflater.inflate(R.layout.about_changelog, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            View aboutChangelog = getLayoutInflater().inflate(Resources.layout.about_changelog, null);
+            aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            ));
+            return new ViewHolder(aboutChangelog);
         }
 
+        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
+        // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
         @Override
-        public void onBindViewHolder(ViewHolder _holder, final int _position) {
-            View _view = _holder.itemView;
+        public void b(ViewHolder holder, final int position) {
+            // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
+            View itemView = holder.b;
 
-            final TextView changelogtitle = _view.findViewById(R.id.changelogtitle);
-            final TextView changelogsubtitle = _view.findViewById(R.id.changelogsubtitle);
+            final TextView title = itemView.findViewById(Resources.id.tv_title);
+            final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
 
-            changelogsubtitle.setText(Objects.requireNonNull(_data.get(_position).get("description")).toString());
-            if ((boolean) _data.get(_position).get("isTitled")) {
-                changelogtitle.setText(Objects.requireNonNull(_data.get(_position).get("title")).toString());
-                changelogtitle.setVisibility(View.VISIBLE);
-            } else {
-                changelogtitle.setVisibility(View.GONE);
+            Object isTitled = changelog.get(position).get("isTitled");
+            if (isTitled instanceof String) {
+                if (Boolean.parseBoolean((String) isTitled)) {
+                    title.setText(Objects.requireNonNull(changelog.get(position).get("title")).toString());
+                    title.setVisibility(View.VISIBLE);
+                } else {
+                    title.setVisibility(View.GONE);
+                }
+            } else if (isTitled instanceof Boolean) {
+                if ((boolean) isTitled) {
+                    title.setText(Objects.requireNonNull(changelog.get(position).get("title")).toString());
+                    title.setVisibility(View.VISIBLE);
+                } else {
+                    title.setVisibility(View.GONE);
+                }
             }
+            subtitle.setText(Objects.requireNonNull(changelog.get(position).get("description")).toString());
         }
 
+        // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
+        // to RecyclerView$a<VH extends RecyclerView.v>.a()
         @Override
-        public int getItemCount() {
-            return _data.size();
+        public int a() {
+            return changelog.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.v {
+
             public ViewHolder(View v) {
                 super(v);
             }
         }
-
     }
 }
