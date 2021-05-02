@@ -9,18 +9,19 @@ import mod.SketchwareUtil;
 
 public class AsdHandlerCancel implements View.OnClickListener {
 
-    public final EditText a;
-    public final AsdOrigin b;
-    public final LogicEditorActivity c;
+    public final EditText editText;
+    public final AsdOrigin asdOrigin;
+    public final LogicEditorActivity logicEditorActivity;
 
     public AsdHandlerCancel(LogicEditorActivity logicEditorActivity, EditText editText, AsdOrigin asdOrigin) {
-        a = editText;
-        b = asdOrigin;
-        c = logicEditorActivity;
+        this.logicEditorActivity = logicEditorActivity;
+        this.editText = editText;
+        this.asdOrigin = asdOrigin;
     }
 
+    @Override
     public void onClick(View v) {
-        SketchwareUtil.hideKeyboard();
-        b.dismiss();
+        SketchwareUtil.hideKeyboard(editText);
+        asdOrigin.dismiss();
     }
 }

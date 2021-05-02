@@ -4,7 +4,9 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,6 +18,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
+import com.sketchware.remod.Resources;
 
 import a.a.a.Ss;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -24,57 +27,31 @@ import mod.hilal.saif.asd.old.AsdOldDialog;
 public class AsdOrigin extends Dialog {
 
     public Activity activity;
+    public LogicEditorActivity logicEditorActivity;
     public LinearLayout b;
-    public LinearLayout base;
-    public boolean boo;
     public View c;
-    public TextView codeE;
     public ImageView d;
-    /**
-     * dialog_title
-     */
-    public TextView e;
-    public EditText edi;
-    /**
-     * dialog_msg
-     */
-    public TextView f;
-    public FrameLayout g;
-    /**
-     * dialog_btn_yes
-     */
-    public TextView h;
-    /**
-     * dialog_btn_no
-     */
-    public TextView i;
-    public String j = "";
-    public String k = "";
-    /**
-     * Text of h (dialog_btn_yes)
-     */
-    public String l = "Yes";
-    public LogicEditorActivity lea;
-    /**
-     * Text of i (dialog_btn_no)
-     */
-    public String m = "No";
-    /**
-     * Resource ID of image in the ImageView of this dialog, -1 if none (the ImageView is hidden with View.GONE then)
-     */
-    public int n = -1;
-    public int o = 0;
-    /**
-     * View.OnClickListener for h (dialog_btn_yes)
-     */
-    public View.OnClickListener p = null;
-    /**
-     * View.OnClickListener for i (dialog_btn_no)
-     */
-    public View.OnClickListener q = null;
-    public View r;
-    public Space space;
+    public TextView dialog_title;
+    public TextView dialog_msg;
+    public FrameLayout custom_view;
+    public TextView dialog_btn_yes;
+    public TextView dialog_btn_no;
+    public String dialog_title_str = "";
+    public String dialog_msg_str = "";
+    public String dialog_btn_yes_str = "Yes";
+    public String dialog_btn_no_str = "No";
+    public int dialog_img_image_id = -1;
+    public int code_editor_theme = 0;
+    public View.OnClickListener dialog_btn_yes_listener = null;
+    public View.OnClickListener dialog_btn_no_listener = null;
+    public View layout_button;
+
     public Ss ss;
+    public boolean boo;
+    public EditText editText;
+
+    public TextView title;
+    public Space space;
 
     public AsdOrigin(Activity activity) {
         super(activity);
@@ -82,131 +59,149 @@ public class AsdOrigin extends Dialog {
     }
 
     public void a(String str) {
-        k = str;
+        dialog_msg_str = str;
     }
 
     public void b(String str) {
-        j = str;
+        dialog_title_str = str;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (o == 0) {
-            getWindow().setBackgroundDrawableResource(2131165514);
-        } else if (o == 1) {
-            getWindow().setBackgroundDrawableResource(2131165513);
-        } else if (o == 2) {
-            getWindow().setBackgroundDrawableResource(2131165512);
+        if (code_editor_theme == 0) {
+            getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_white);
+        } else if (code_editor_theme == 1) {
+            getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_light_grey);
+        } else if (code_editor_theme == 2) {
+            getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_black);
         }
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.width = -1;
+        attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(attributes);
-        setContentView(2131427410);
+        setContentView(Resources.layout.dialog);
+
         space = new Space(getContext());
-        space.setLayoutParams(new LinearLayout.LayoutParams(0, 0, 1.0f));
-        base = findViewById(2131231320);
-        codeE = new TextView(getContext());
-        codeE.setText("Code Editor");
-        codeE.setTextColor(-1);
-        codeE.setTextSize((float) 14);
-        codeE.setPadding((int) getDip(12), (int) getDip(0), (int) getDip(0), (int) getDip(0));
-        codeE.setLayoutParams(new LinearLayout.LayoutParams(-2, -1, 0.0f));
-        codeE.setGravity(17);
-        codeE.setOnClickListener(new View.OnClickListener() {
+        space.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                0,
+                1.0f
+        ));
+
+        LinearLayout base = findViewById(Resources.id.layout_button);
+
+        title = new TextView(getContext());
+        title.setText("Code Editor");
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(14);
+        title.setPadding(
+                (int) getDip(12),
+                (int) getDip(0),
+                (int) getDip(0),
+                (int) getDip(0)
+        );
+        title.setLayoutParams(new LinearLayout.LayoutParams(
+                -2,
+                -1,
+                0.0f
+        ));
+        title.setGravity(Gravity.CENTER);
+        title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ConfigActivity.isLegacyCeEnabled()) {
                     AsdOldDialog asdOldDialog = new AsdOldDialog(activity);
-                    asdOldDialog.setCon(edi.getText().toString());
+                    asdOldDialog.setCon(editText.getText().toString());
                     asdOldDialog.show();
-                    asdOldDialog.saveLis(lea, boo, ss, asdOldDialog);
-                    asdOldDialog.cancelLis(lea, asdOldDialog);
+                    asdOldDialog.saveLis(logicEditorActivity, boo, ss, asdOldDialog);
+                    asdOldDialog.cancelLis(logicEditorActivity, asdOldDialog);
                 } else {
                     AsdDialog asdDialog = new AsdDialog(activity);
-                    asdDialog.setCon(edi.getText().toString());
+                    asdDialog.setCon(editText.getText().toString());
                     asdDialog.show();
-                    asdDialog.saveLis(lea, boo, ss, asdDialog);
-                    asdDialog.cancelLis(lea, asdDialog);
+                    asdDialog.saveLis(logicEditorActivity, boo, ss, asdDialog);
+                    asdDialog.cancelLis(logicEditorActivity, asdDialog);
                 }
                 dismiss();
             }
         });
         base.addView(space, 0);
-        base.addView(codeE, 0);
-        b = findViewById(2131231696);
-        d = findViewById(2131230974);
-        e = findViewById(2131230976);
-        f = findViewById(2131230975);
-        g = findViewById(2131230941);
-        r = findViewById(2131231320);
-        h = findViewById(2131230973);
-        h.setText(l);
-        h.setOnClickListener(p);
-        i = findViewById(2131230972);
-        i.setText(m);
-        i.setOnClickListener(q);
-        if (j.isEmpty()) {
-            e.setVisibility(View.GONE);
+        base.addView(title, 0);
+
+        b = findViewById(Resources.id.sdialog_root);
+        d = findViewById(Resources.id.dialog_img);
+        dialog_title = findViewById(Resources.id.dialog_title);
+        dialog_msg = findViewById(Resources.id.dialog_msg);
+        custom_view = findViewById(Resources.id.custom_view);
+        layout_button = base;
+        dialog_btn_yes = findViewById(Resources.id.dialog_btn_yes);
+        dialog_btn_yes.setText(dialog_btn_yes_str);
+        dialog_btn_yes.setOnClickListener(dialog_btn_yes_listener);
+        dialog_btn_no = findViewById(Resources.id.dialog_btn_no);
+        dialog_btn_no.setText(dialog_btn_no_str);
+        dialog_btn_no.setOnClickListener(dialog_btn_no_listener);
+        if (dialog_title_str.isEmpty()) {
+            dialog_title.setVisibility(View.GONE);
         } else {
-            e.setVisibility(View.VISIBLE);
-            e.setText(j);
+            dialog_title.setVisibility(View.VISIBLE);
+            dialog_title.setText(dialog_title_str);
         }
-        if (k.isEmpty()) {
-            f.setVisibility(View.GONE);
+        if (dialog_msg_str.isEmpty()) {
+            dialog_msg.setVisibility(View.GONE);
         } else {
-            f.setVisibility(View.VISIBLE);
-            f.setText(k);
+            dialog_msg.setVisibility(View.VISIBLE);
+            dialog_msg.setText(dialog_msg_str);
         }
-        if (q == null) {
-            i.setVisibility(View.GONE);
+        if (dialog_btn_no_listener == null) {
+            dialog_btn_no.setVisibility(View.GONE);
         }
-        if (p == null) {
-            h.setVisibility(View.GONE);
+        if (dialog_btn_yes_listener == null) {
+            dialog_btn_yes.setVisibility(View.GONE);
         }
-        if (n == -1) {
+        if (dialog_img_image_id == -1) {
             d.setVisibility(View.GONE);
         } else {
-            d.setImageResource(n);
+            d.setImageResource(dialog_img_image_id);
         }
         if (c != null) {
-            g.setVisibility(View.VISIBLE);
-            g.addView(c);
+            custom_view.setVisibility(View.VISIBLE);
+            custom_view.addView(c);
             return;
         }
-        g.setVisibility(View.GONE);
+        custom_view.setVisibility(View.GONE);
     }
 
+    @Override
     public void show() {
         super.show();
-        if (p == null && q == null && r != null) {
-            r.setVisibility(View.GONE);
+        if (dialog_btn_yes_listener == null && dialog_btn_no_listener == null && layout_button != null) {
+            layout_button.setVisibility(View.GONE);
         }
     }
 
-    public void a(int imageResourceId) {
-        n = imageResourceId;
+    public void a(int i) {
+        dialog_img_image_id = i;
     }
 
-    public void b(String dialog_btn_noText, View.OnClickListener dialog_btn_yesOnClickListener) {
-        l = dialog_btn_noText;
-        p = dialog_btn_yesOnClickListener;
+    public void b(String str, View.OnClickListener onClickListener) {
+        dialog_btn_yes_str = str;
+        dialog_btn_yes_listener = onClickListener;
     }
 
     public void a(View view) {
         c = view;
     }
 
-    public void a(String dialog_btn_noText, View.OnClickListener dialog_btn_noOnClickListener) {
-        m = dialog_btn_noText;
-        q = dialog_btn_noOnClickListener;
+    public void a(String str, View.OnClickListener onClickListener) {
+        dialog_btn_no_str = str;
+        dialog_btn_no_listener = onClickListener;
     }
 
-    public void carry(LogicEditorActivity activity, Ss ss, boolean z, EditText editText) {
+    public void carry(LogicEditorActivity logicEditorActivity, Ss ss, boolean b, EditText editText) {
         this.ss = ss;
-        boo = z;
-        edi = editText;
-        lea = activity;
+        boo = b;
+        this.editText = editText;
+        this.logicEditorActivity = logicEditorActivity;
     }
 }

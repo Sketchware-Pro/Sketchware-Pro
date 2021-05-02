@@ -4,228 +4,241 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.sketchware.remod.Resources;
 
 import a.a.a.Ss;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
+import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 
 public class AsdAllEditor extends Dialog {
 
-    public Timer _timer = new Timer();
-    public Activity act;
+    public Activity activity;
     public ViewGroup base;
     public TextView cancel;
     public View.OnClickListener cancel_l = null;
-    public CodeEditorLayout codeEditor;
-    public CodeEditorEditText edito;
+    public CodeEditorLayout code_editor;
+    public CodeEditorEditText editor;
     public TextView save;
     public View.OnClickListener save_l = null;
-    public String str;
+    public String content;
     public TextView title;
-    public TimerTask uu;
-    public TextView zoomin;
-    public TextView zoomout;
+    public TextView zoom_in;
+    public TextView zoom_out;
 
     public AsdAllEditor(Activity activity) {
         super(activity);
-        act = activity;
+        this.activity = activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427787);
-        codeEditor = (CodeEditorLayout) findViewById(2131232367);
-        zoomin = (TextView) findViewById(2131232455);
-        zoomin.setOnClickListener(new View.OnClickListener() {
+        setContentView(Resources.layout.view_code);
+        code_editor = findViewById(Resources.id.text_content);
+        zoom_in = findViewById(Resources.id.code_editor_zoomin);
+        zoom_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                codeEditor.increaseTextSize();
+                code_editor.increaseTextSize();
             }
         });
-        zoomout = (TextView) findViewById(2131232456);
-        zoomout.setOnClickListener(new View.OnClickListener() {
+        zoom_out = findViewById(Resources.id.code_editor_zoomout);
+        zoom_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                codeEditor.decreaseTextSize();
+                code_editor.decreaseTextSize();
             }
         });
-        codeEditor.setLayoutParams(new LinearLayout.LayoutParams(-1, 0, 1.0f));
-        base = (ViewGroup) codeEditor.getParent();
-        base.setBackground(new GradientDrawable() {
-            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                setCornerRadius((float) i);
-                setStroke(i2, i3);
-                setColor(i4);
-                return this;
-            }
-        }.getIns((int) getDip(4), 0, -1, -1));
-        title = (TextView) findViewById(2131232366);
+        code_editor.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
+                1.0f
+        ));
+        base = (ViewGroup) code_editor.getParent();
+        base.setBackground(new DialogButtonGradientDrawable()
+                .getIns((int) getDip(4),
+                        0,
+                        Color.WHITE,
+                        Color.WHITE));
+        title = findViewById(Resources.id.text_title);
         title.setText("Code Editor");
-        addControll();
-        getWindow().setLayout(-1, -1);
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        codeEditor.start(ColorScheme.JAVA());
-        codeEditor.setText(str);
-        edito = codeEditor.getEditText();
-        codeEditor.onCreateOptionsMenu(findViewById(2131232504));
-        edito.setInputType(655361);
-        edito.setImeOptions(1);
+        addControl();
+        getWindow().setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+        );
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        code_editor.start(ColorScheme.JAVA());
+        code_editor.setText(content);
+        editor = code_editor.getEditText();
+        code_editor.onCreateOptionsMenu(findViewById(Resources.id.codeeditor_more_options));
+        editor.setInputType(655361);
+        editor.setImeOptions(1);
     }
 
-    public void addControll() {
+    public void addControl() {
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0.0f));
-        linearLayout.setPadding((int) getDip(0), (int) getDip(0), (int) getDip(0), (int) getDip(0));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0.0f
+        ));
+        linearLayout.setPadding(
+                0,
+                0,
+                0,
+                0
+        );
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        if (codeEditor.dark_theme) {
+        if (code_editor.dark_theme) {
             linearLayout.setBackgroundColor(Color.parseColor("#FF292929"));
         } else {
             linearLayout.setBackgroundColor(-1);
         }
         cancel = new TextView(getContext());
-        cancel.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1.0f));
-        ((LinearLayout.LayoutParams) cancel.getLayoutParams()).setMargins((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        cancel.setText("Cancel");
-        cancel.setTextColor(-1);
-        cancel.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
+        cancel.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f
+        ));
+        ((LinearLayout.LayoutParams) cancel.getLayoutParams())
+                .setMargins(
+                        (int) getDip(8),
+                        (int) getDip(8),
+                        (int) getDip(8),
+                        (int) getDip(8)
+                );
+        cancel.setText(Resources.string.common_word_cancel);
+        cancel.setTextColor(Color.WHITE);
+        cancel.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
         cancel.setGravity(17);
-        if (codeEditor.dark_theme) {
-            cancel.setBackgroundColor(-13421773);
+        if (code_editor.dark_theme) {
+            cancel.setBackgroundColor(0xff333333);
         } else {
-            cancel.setBackgroundColor(-16740915);
+            cancel.setBackgroundColor(0xff008dcd);
         }
-        cancel.setTextSize((float) 15);
+        cancel.setTextSize(15.0f);
         linearLayout.addView(cancel);
         save = new TextView(getContext());
-        save.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1.0f));
-        ((LinearLayout.LayoutParams) save.getLayoutParams()).setMargins((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        save.setText("Save");
-        save.setTextColor(-1);
-        save.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
+        save.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f
+        ));
+        ((LinearLayout.LayoutParams) save.getLayoutParams())
+                .setMargins(
+                        (int) getDip(8),
+                        (int) getDip(8),
+                        (int) getDip(8),
+                        (int) getDip(8)
+                );
+        save.setText(Resources.string.common_word_save);
+        save.setTextColor(Color.WHITE);
+        save.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
         save.setGravity(17);
-        if (codeEditor.dark_theme) {
-            save.setBackgroundColor(-13421773);
+        if (code_editor.dark_theme) {
+            save.setBackgroundColor(0xff333333);
         } else {
-            save.setBackgroundColor(-16740915);
+            save.setBackgroundColor(0xff008dcd);
         }
-        save.setTextSize((float) 15);
+        save.setTextSize(15.0f);
         linearLayout.addView(save);
-        if (codeEditor.dark_theme) {
-            save.setBackground(new GradientDrawable() {
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -13421773, -13421773));
-            cancel.setBackground(new GradientDrawable() {
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -13421773, -13421773));
+        if (code_editor.dark_theme) {
+            save.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4),
+                            0,
+                            0xff333333,
+                            0xff333333));
+            cancel.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4),
+                            0,
+                            0xff333333,
+                            0xff333333));
         } else {
-            save.setBackground(new GradientDrawable() {
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -14575885, -14575885));
-            cancel.setBackground(new GradientDrawable() {
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -14575885, -14575885));
+            save.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4),
+                            0,
+                            0xff2196f3,
+                            0xff2196f3));
+            cancel.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4),
+                            0,
+                            0xff2196f3,
+                            0xff2196f3));
         }
-        save.setElevation((float) ((int) getDip(1)));
-        cancel.setElevation((float) ((int) getDip(1)));
+        save.setElevation(getDip(1));
+        cancel.setElevation(getDip(1));
         base.addView(linearLayout);
-        uu = new TimerTask() {
+        Handler handler = new Handler(Looper.myLooper());
+        Runnable someRunnable = new Runnable() {
             @Override
             public void run() {
-                act.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (codeEditor.dark_theme) {
-                            linearLayout.setBackgroundColor(Color.parseColor("#FF292929"));
-                            save.setBackground(new GradientDrawable() {
-                                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                    setCornerRadius((float) i);
-                                    setStroke(i2, i3);
-                                    setColor(i4);
-                                    return this;
-                                }
-                            }.getIns((int) getDip(4), 0, -13421773, -13421773));
-                            cancel.setBackground(new GradientDrawable() {
-                                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                    setCornerRadius((float) i);
-                                    setStroke(i2, i3);
-                                    setColor(i4);
-                                    return this;
-                                }
-                            }.getIns((int) getDip(4), 0, -13421773, -13421773));
-                            return;
-                        }
-                        linearLayout.setBackgroundColor(Color.WHITE);
-                        save.setBackground(new GradientDrawable() {
-                            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                setCornerRadius((float) i);
-                                setStroke(i2, i3);
-                                setColor(i4);
-                                return this;
-                            }
-                        }.getIns((int) getDip(4), 0, -14575885, -14575885));
-                        cancel.setBackground(new GradientDrawable() {
-                            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                setCornerRadius((float) i);
-                                setStroke(i2, i3);
-                                setColor(i4);
-                                return this;
-                            }
-                        }.getIns((int) getDip(4), 0, -14575885, -14575885));
-                    }
-                });
+                if (code_editor.dark_theme) {
+                    linearLayout.setBackgroundColor(Color.parseColor("#FF292929"));
+                    save.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4),
+                                    0,
+                                    0xff333333,
+                                    0xff333333));
+                    cancel.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4),
+                                    0,
+                                    0xff333333,
+                                    0xff333333));
+                } else {
+                    linearLayout.setBackgroundColor(Color.WHITE);
+                    save.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4),
+                                    0,
+                                    0xff2196f3,
+                                    0xff2196f3));
+                    cancel.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4),
+                                    0,
+                                    0xff2196f3,
+                                    0xff2196f3));
+                }
+                handler.postDelayed(this, 500);
             }
         };
-        _timer.scheduleAtFixedRate(uu, (long) 500, (long) 500);
+        handler.postDelayed(someRunnable, 500);
     }
 
     public void saveLis(LogicEditorActivity logicEditorActivity, Ss ss, AsdAllEditor asdAllEditor) {
-        save_l = new AsdAllEditorYes(logicEditorActivity, codeEditor.getText(), ss, asdAllEditor, edito);
+        save_l = new AsdAllEditorYes(logicEditorActivity, code_editor.getText(), ss, asdAllEditor, editor);
         save.setOnClickListener(save_l);
     }
 
     public void cancelLis(LogicEditorActivity logicEditorActivity, AsdAllEditor asdAllEditor) {
-        cancel_l = new AsdAllEditorNo(logicEditorActivity, edito, asdAllEditor);
+        cancel_l = new AsdAllEditorNo(logicEditorActivity, editor, asdAllEditor);
         cancel.setOnClickListener(cancel_l);
     }
 
-    public void setCon(String str2) {
-        str = str2;
+    public void setCon(String s) {
+        content = s;
     }
 }
