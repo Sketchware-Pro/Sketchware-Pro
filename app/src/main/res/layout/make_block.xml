@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <include layout="@layout/toolbar" />
-    <LinearLayout android:orientation="vertical" android:id="@id/makeblock_view" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-</LinearLayout>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:paddingTop="32.0dip"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="@color/color_btn_ltorange_normal" android:gravity="center" android:id="@id/page_title" android:layout_width="fill_parent" android:layout_height="wrap_content" />
-    <TextView android:textSize="14.0dip" android:textColor="#ff7d7d7d" android:gravity="center" android:id="@id/page_description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip" android:maxLines="2" android:layout_marginHorizontal="16.0dip" />
-</LinearLayout>

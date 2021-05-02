@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="#ffe5e5e5" android:layout_width="130.0dip" android:layout_height="250.0dip" android:layout_marginLeft="2.0dip" android:layout_marginRight="2.0dip"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@id/img_screen" android:layout_width="130.0dip" android:layout_height="250.0dip" />
-</LinearLayout>

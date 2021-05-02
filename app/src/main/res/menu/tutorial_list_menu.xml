@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/selector_ic_restore_white_24" android:id="@id/menu_reset_tutorial" android:orderInCategory="100" android:title="@string/tutorial_option_menu_title_reset_tutorial" support:showAsAction="always" />
-</menu>

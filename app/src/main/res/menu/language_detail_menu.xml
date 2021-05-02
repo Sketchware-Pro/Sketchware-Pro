@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:support="http://schemas.android.com/apk/res-auto">
-    <item android:icon="@drawable/heart_empty_white_outline_96" android:id="@id/menu_like" android:orderInCategory="100" android:title="" support:showAsAction="always" />
-</menu>
