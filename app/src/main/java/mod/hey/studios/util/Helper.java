@@ -71,19 +71,31 @@ public class Helper {
         GradientDrawable content = new GradientDrawable();
         content.setColor(Color.parseColor("#008dcd"));
         content.setCornerRadius(90);
-        view.setBackground(new RippleDrawable(new ColorStateList(new int[][]{new int[]{0}}, new int[]{Color.parseColor("#64b5f6")}),
-                content, null));
+        view.setBackground(new RippleDrawable(new ColorStateList(
+                new int[][]{
+                        new int[]{0}},
+                new int[]{Color.parseColor("#64b5f6")}),
+                content,
+                null));
     }
 
+    /**
+     * Applies a boxy ripple effect to a view.
+     *
+     * @param target        The view to apply the effect on
+     * @param rippleColor   The effect's color
+     * @param standardColor The view's color when untouched
+     */
     public static void applyRippleEffect(final View target, final int rippleColor, int standardColor) {
-        RippleDrawable drawable = new RippleDrawable(new ColorStateList(new int[][]{
-                new int[]{}
-        }, new int[]{
-                rippleColor
-        }), new ColorDrawable(standardColor), null);
         if (!target.isClickable()) {
             target.setClickable(true);
         }
-        target.setBackground(drawable);
+        target.setBackground(new RippleDrawable(new ColorStateList(
+                new int[][]{
+                        new int[]{}},
+                new int[]{
+                        rippleColor}),
+                new ColorDrawable(standardColor),
+                null));
     }
 }
