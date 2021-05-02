@@ -1,0 +1,143 @@
+{
+
+  "moddersteam": [
+
+    {
+
+      "modder_username": "Agus JCoderz",
+
+      "modder_description": "Main modder",
+
+      "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
+
+      "isTitled": true,
+
+      "title": "Main modders"
+
+    },
+
+    {
+
+      "modder_username": "Hilal Saif",
+
+      "modder_description": "Main modder",
+
+      "modder_img": "https://i.imgur.com/uAudAvd.jpg",
+
+      "isTitled": false,
+
+      "title": "null"
+
+    },
+
+    {
+
+      "modder_username": "Aldi Sayuti",
+
+      "modder_description": "Main modder",
+
+      "modder_img": "https://i.imgur.com/08zcyKH.png",
+
+      "isTitled": false,
+
+      "title": "null"
+
+    },
+
+    {
+
+      "modder_username": "Mike Anderson",
+
+      "modder_description": "Main modder",
+
+      "modder_img": "https://i.imgur.com/c5Vetpo.jpg",
+
+      "isTitled": false,
+
+      "title": "null"
+
+    },
+
+    {
+
+      "modder_username": "Jbk0",
+
+      "modder_description": "Main modder",
+
+      "modder_img": "https://i.imgur.com/aGMz8Iz.jpg",
+
+      "isTitled": false,
+
+      "title": "null"
+
+    },
+
+    {
+
+      "modder_username": "Rayen Sbai",
+
+      "modder_description": "Main modder",
+
+      "modder_img": "https://i.imgur.com/G7F3evT.jpg",
+
+      "isTitled": false,
+
+      "title": "null"
+
+    },
+
+    {
+
+      "modder_username": "Tyron",
+
+      "modder_description": "Backup projects using intent filter",
+
+      "modder_img": "https://i.imgur.com/gP8jauO.png",
+
+      "isTitled": true,
+
+      "title": "Special Thanks"
+
+    },
+
+    {
+
+      "modder_username": "IndoSW",
+
+      "modder_description": "Direct source code editor",
+
+      "modder_img": "https://i.imgur.com/mthq123.jpg",
+
+      "isTitled": false,
+
+      "title": "null"
+
+    }
+
+  ],
+
+  "changelog": [
+
+    {
+
+      "title": "Sketchware Pro v6.3.0 Fix1",
+
+      "description": "- Added new options in command blocks (find-replace, find-replace-first (regex √), find-replace-all (regex √))\n- Fixed command blocks bug (not being able to replace the first line)\n- Enabled debug.txt by default\n- Fixed the D8 bug with projects (classnotfoundexception)\n- Fixed the Dx bug in library downloader\n- Fixed the crashing while scrolling in ASD code editor, disabled overscrolling\n- Added a menu option to disable auto complete in code editor\n- Added a menu option to paste text in code editor\n- Added \"change backup dir\" in mod configuration\n- Added \"use legacy code editor\" in mod configuration\n- Fixed the order of projects with sc_id\u003e\u003d1000 [sketchware bug]\n- Fixed restoring projects with sc_id \u003e\u003d1000\n- Some backup/restore fixes\n- Some code corrections.",
+
+      "isTitled": true
+
+    },
+
+    {
+
+      "title": "Sketchware PRO V6.3.0",
+
+      "description": "- Added \"Build Settings\" located right next to the Run button, which includes options that lets you:\n- Switch between Java7 and Java8 (enable D8 to be able to compile Java8)\n- Switch between Dx and D8\n- Use custom android.jar, custom classpath\n- Disable warnings in compile log\n\n- Added Command Blocks:\n- You can add, insert or replace any part of java/xml code with new one using these. These blocks can be used anywhere in your logic editor, there is no specific place (event) for them. They can be used to achieve tasks such as:\n- Remove onActivityResult entirely, or change its code, or add more codes to it.\n- Implement interfaces in your activity (remove/change any part of code that sketchware automatically generates.\n- Modify any part of root layout, add multiple fabs, change coordinatorLayout to FrameLayout, RelativeLayout. Change the order of root layout..\n- Inject codes in onCreate or anywhere you like... etc (supports all Java files and XML files. including AndroidManifest, styles, colors and strings.xml).\n\n\n- Changed the built-in Code Editor to a super optimized one. this new one has features such as:\n- Auto completion, various themes, pinch-to-zoom, undo-redo, find\u0026replace etc.\n- Added built-in Backup/Restore feature that provides a function to back up your project (.swb), along with the local libs and custom blocks you used.\n- Updated android.jar to API 30.\n- Local Library improvements.. now, in your local libs you can:\n- Use assets, proguard rules, native libs, multiple dex files, Java8 libraries.\n- Library Downloader can now download Java8 libraries.\n- Added ProGuard Full Mode (includes local libs in ProGuarding process)\n- Added Custom Blocks analyzer dialog that shows you the custom blocks you used in your project.\n- New Block system optimizations. Custom blocks are noticeably faster now. Also fixed the crashing bug that happens when one leaves some of the parameters empty.\n- Assets, Resource and Nativelib managers improvements.\n- Now you can navigate directly to Developer Tools from LogicEditorActivity.\n- Added import/export for components, events and blocks menus.\n- Improved import/export blocks.\n- Added uppercase support for view IDs. Now you can use IDs like \"mTextView\".\n- Added searching feature in Moreblock Importer dialog. Also fixed the critical lags there.\n- Fixed Change launcher activity bug.\n- Fixed duplicated imports.\n- Fixed some bugs and added some improvements to blocks, events and components managers.\n- Fixed block selector menu bug.\n- Added BottomSheetDialogFragment (add _bottomdialog_fragment to the end of the title when creating an Activity. requires appcompat to work.)\n- Fixed many bugs, added many features, spent many hours :)",
+
+      "isTitled": true
+
+    }
+
+  ]
+
+}
