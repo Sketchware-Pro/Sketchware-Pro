@@ -65,6 +65,7 @@ public class AboutModActivity extends AppCompatActivity {
     private RequestNetwork requestData;
     private RequestNetwork.RequestListener requestDataListener;
     private SharedPreferences sharedPref;
+    private String discordInviteLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,9 +121,8 @@ public class AboutModActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Include Discord server invite in JSON from server and use it
                 startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://discord.gg/kq39yhT4rX")));
+                        Uri.parse(discordInviteLink)));
             }
         });
 
@@ -133,6 +133,8 @@ public class AboutModActivity extends AppCompatActivity {
                 try {
 
                     JSONObject json = new JSONObject(response);
+
+                    discordInviteLink = json.getString("discordInviteLink");
 
                     JSONArray modders = json.getJSONArray("moddersteam");
 
