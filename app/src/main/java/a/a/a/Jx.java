@@ -619,6 +619,7 @@ public class Jx {
         addImport("android.webkit.*");
         addImport("android.animation.*");
         addImport("android.view.animation.*");
+        addImport("java.io*");
         addImport("java.util.*");
         addImport("java.util.regex.*");
         addImport("java.text.*");
