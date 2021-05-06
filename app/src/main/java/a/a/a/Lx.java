@@ -90,7 +90,7 @@ public class Lx {
             var9 = var10.toString();
             var10 = new StringBuilder();
             var10.append(var9);
-            var10.append("implementation 'com.google.android.material:material:1.4.0-alpha02'\r\n");
+            var10.append("implementation 'com.google.android.material:material:1.3.0'\r\n");
             startString = var10.toString();
         }
 
@@ -137,7 +137,7 @@ public class Lx {
 
         var7 = new StringBuilder();
         var7.append(startString);
-        var7.append("implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n");
+        var7.append("implementation 'com.github.bumptech.glide:glide:4.11.0'\r\n");
         String var8 = var7.toString();
         var10 = new StringBuilder();
         var10.append(var8);
@@ -145,7 +145,7 @@ public class Lx {
         var8 = var10.toString();
         var10 = new StringBuilder();
         var10.append(var8);
-        var10.append("implementation 'com.squareup.okhttp3:okhttp:3.12.0'\r\n");
+        var10.append("implementation 'com.squareup.okhttp3:okhttp:3.11.0'\r\n");
         startString = var10.toString();
         var7 = new StringBuilder();
         var7.append(startString);
