@@ -479,7 +479,7 @@ public class Ox {
             nx.a("android", "textStyle", "bold|italic");
         }
         if (viewBean.text.textColor != 0) {
-            nx.a("android", "textColor", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 16777215)));
+            nx.a("android", "textColor", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 0xffffff)));
         }
         if (viewBean.type == 5 || viewBean.type == 23 || viewBean.type == 24) {
             String str2 = viewBean.text.hint;
@@ -487,7 +487,7 @@ public class Ox {
                 nx.a("android", "hint", a(viewBean.text.hint));
             }
             if (viewBean.text.hintColor != 0) {
-                nx.a("android", "textColorHint", String.format("#%06X", Integer.valueOf(viewBean.text.hintColor & 16777215)));
+                nx.a("android", "textColorHint", String.format("#%06X", Integer.valueOf(viewBean.text.hintColor & 0xffffff)));
             }
             if (viewBean.text.singleLine != 0) {
                 nx.a("android", "singleLine", "true");
@@ -662,7 +662,7 @@ public class Ox {
             nx.a("app", "sidebar_text_size", String.valueOf(viewBean.text.textSize) + "sp");
         }
         if (viewBean.text.textColor != 0) {
-            nx.a("app", "sidebar_text_color", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 16777215)));
+            nx.a("app", "sidebar_text_color", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 0xffffff)));
         }
     }
 }
