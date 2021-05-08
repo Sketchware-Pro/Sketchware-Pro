@@ -82,17 +82,18 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public GC y = null;
     public zI z = null;
 
+    @Override
     public void a(int i) {
     }
 
+    @Override
     public void a(int i, float f, int i2) {
     }
 
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
     public void g(int i) {
-        GC gc;
-        if (i == 9501 && p.getCurrentItem() == 0 && (gc = y) != null) {
-            gc.g();
+        if (i == 9501 && p.getCurrentItem() == 0 && y != null) {
+            y.g();
         }
     }
 
@@ -127,9 +128,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public void l(int i) {
-        ViewPager viewPager = p;
-        if (viewPager != null) {
-            viewPager.a(i, true);
+        if (p != null) {
+            p.a(i, true);
         }
     }
 
@@ -137,6 +137,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void m() {
     }
 
+    @Override
     public Object a(ViewGroup viewGroup, int i) {
         return null;
     }
@@ -154,21 +155,23 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public final void o() {
-        ConsentInformation.a(getApplicationContext()).a(new String[]{"pub-7684160946124871"},
-                new ConsentInfoUpdateListener() {
-                    @Override
-                    public void a(ConsentStatus consentStatus) {
-                        if (consentStatus.equals(ConsentStatus.UNKNOWN)) {
-                            p();
-                        }
-                    }
+        ConsentInformation.a(getApplicationContext())
+                .a(new String[]{"pub-7684160946124871"},
+                        new ConsentInfoUpdateListener() {
+                            @Override
+                            public void a(ConsentStatus consentStatus) {
+                                if (consentStatus.equals(ConsentStatus.UNKNOWN)) {
+                                    p();
+                                }
+                            }
 
-                    @Override
-                    public void a(String s) {
-                    }
-                });
+                            @Override
+                            public void a(String s) {
+                            }
+                        });
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         invalidateOptionsMenu();
@@ -216,6 +219,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
+    @Override
     public void onBackPressed() {
         if (o.isShown()) {
             m.b();
@@ -224,14 +228,15 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
+    @Override
     public void onConfigurationChanged(Configuration configuration) {
         super.onConfigurationChanged(configuration);
         n.a(configuration);
     }
 
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(Resources.layout.main);
         t = new DB(getApplicationContext(), "P1");
         u = new DB(getApplicationContext(), "U1");
@@ -245,9 +250,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(C + 1));
         }
         D = u.a("U1I2", true);
-        r = new String[2];
-        r[0] = xB.b().a(this, Resources.string.main_tab_title_myproject);
-        r[1] = xB.b().a(this, Resources.string.main_tab_title_tutorials);
+        r = new String[]{
+                xB.b().a(this, Resources.string.main_tab_title_myproject),
+                xB.b().a(this, Resources.string.main_tab_title_tutorials)};
         l = findViewById(Resources.id.toolbar);
         a(l);
         d().d(true);
@@ -328,18 +333,18 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 if (!"InAppActivity".equals(autoRunActivity)) {
                     if (!"SubscribeActivity".equals(autoRunActivity)) {
                         if ("SharedProjectDetailActivity".equals(autoRunActivity)) {
-                            Intent intent2 = new Intent(getApplicationContext(), SharedProjectDetailActivity.class);
-                            intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent2.putExtra("shared_id", Integer.parseInt(intent.getStringExtra("shared_id")));
-                            startActivity(intent2);
+                            Intent launchIntent = new Intent(getApplicationContext(), SharedProjectDetailActivity.class);
+                            launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            launchIntent.putExtra("shared_id", Integer.parseInt(intent.getStringExtra("shared_id")));
+                            startActivity(launchIntent);
                             return;
                         }
                         return;
                     }
                 }
-                Intent intent3 = new Intent(getApplicationContext(), InAppActivity.class);
-                intent3.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(intent3, 505);
+                Intent launchIntent = new Intent(getApplicationContext(), InAppActivity.class);
+                launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivityForResult(launchIntent, 505);
             }
         } catch (Exception ignored) {
         }
@@ -371,8 +376,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
-        long c = GB.c();
-        if (c < 100 && c > 0) {
+        /* Check if the device is running low on storage space */
+        long freeMegaBytes = GB.c();
+        if (freeMegaBytes < 100 && freeMegaBytes > 0) {
             r();
         }
         if (j() && x != null && x.j()) {
@@ -393,57 +399,61 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             e.printStackTrace();
             url = null;
         }
-        G = new ConsentForm.Builder(this, url).a(new ConsentFormListener() {
+        G = new ConsentForm.Builder(this, url)
+                .a(new ConsentFormListener() {
+                    @Override
+                    public void a() {
+                        G.b();
+                    }
 
-            @Override
-            public void a() {
-                G.b();
-            }
+                    @Override
+                    public void a(ConsentStatus consentStatus, Boolean aBoolean) {
+                        if (aBoolean) {
+                            Intent intent = new Intent(getApplicationContext(), SubscribeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("is_ads_use", false);
+                            startActivityForResult(intent, 505);
+                        }
+                    }
 
-            @Override
-            public void a(ConsentStatus consentStatus, Boolean aBoolean) {
-                if (aBoolean) {
-                    Intent intent = new Intent(getApplicationContext(), SubscribeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("is_ads_use", false);
-                    startActivityForResult(intent, 505);
-                }
-            }
+                    @Override
+                    public void a(String s) {
+                    }
 
-            @Override
-            public void a(String s) {
-            }
-
-            @Override
-            public void b() {
-            }
-        }).d().c().b().a();
+                    @Override
+                    public void b() {
+                    }
+                })
+                .d()
+                .c()
+                .b()
+                .a();
         G.a();
     }
 
     public final void q() {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_title_storage));
-        aBVar.a(Resources.drawable.color_about_96);
-        aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_title_storage));
+        dialog.a(Resources.drawable.color_about_96);
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                aBVar.dismiss();
+                dialog.dismiss();
                 s();
             }
         });
-        aBVar.show();
+        dialog.show();
     }
 
     public final void r() {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
-        aBVar.a(Resources.drawable.high_priority_96_red);
-        aBVar.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
-                Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
+        dialog.a(Resources.drawable.high_priority_96_red);
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public void s() {
@@ -512,6 +522,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             f = context;
         }
 
+        @Override
         public int a() {
             return 2;
         }
@@ -527,6 +538,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             return fragment;
         }
 
+        @Override
         public Fragment c(int i) {
             if (i != 0) {
                 return new zI();
@@ -534,6 +546,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             return new GC();
         }
 
+        @Override
         public CharSequence a(int i) {
             return r[i];
         }
