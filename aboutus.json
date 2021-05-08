@@ -56,6 +56,20 @@
       "modder_img": "https://i.imgur.com/mthq123.jpg",
       "isTitled": false,
       "title": "null"
+    },
+    {
+      "modder_username": "Hasrat",
+      "modder_description": "Various improvements and fixes",
+      "modder_img": "https://i.imgur.com/FaIoqlG.jpg",
+      "isTitled": false,
+      "title": "null"
+    },
+    {
+      "modder_username": "Hosni Fraj",
+      "modder_description": "Advanced project Version Control",
+      "modder_img": "https://i.imgur.com/Q2Qxsjl.jpg"
+      "isTitled": false,
+      "title": "null"
     }
   ],
   "changelog": [
