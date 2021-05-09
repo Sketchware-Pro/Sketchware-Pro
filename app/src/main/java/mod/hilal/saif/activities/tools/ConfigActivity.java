@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.dpToPx;
+import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,7 +19,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.HashMap;
@@ -29,13 +32,13 @@ import mod.hey.studios.util.Helper;
 
 public class ConfigActivity extends Activity {
 
-    private static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
-    private static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
-    private static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
-    private static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
-    private static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
-    private static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
-    private static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
+    public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
+    public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
+    public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
+    public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
+    public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
+    public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
+    public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
@@ -146,10 +149,10 @@ public class ConfigActivity extends Activity {
         root.setOrientation(LinearLayout.VERTICAL);
         setContentView(root);
 
-        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(0x7f0b01d7, root, false);
+        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(Resources.layout.toolbar_improved, root, false);
         root.addView(toolbar);
-        ImageView toolbar_back = toolbar.findViewById(0x7f0806c9);
-        TextView toolbar_title = toolbar.findViewById(0x7f0806ca);
+        ImageView toolbar_back = toolbar.findViewById(Resources.id.ig_toolbar_back);
+        TextView toolbar_title = toolbar.findViewById(Resources.id.tx_toolbar_title);
         toolbar_back.setClickable(true);
         toolbar_back.setFocusable(true);
         Helper.applyRippleToToolbarView(toolbar_back);
@@ -169,23 +172,39 @@ public class ConfigActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final EditText editText = new EditText(ConfigActivity.this);
-                        editText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        editText.setTextSize(14.0f);
-                        editText.setTextColor(-16777216);
-                        editText.setText(getBackupPath());
-                        AlertDialog create = new AlertDialog.Builder(ConfigActivity.this)
-                                .setTitle("Backup directory inside Internal storage, e.g sketchware/backups")
-                                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        final TextInputLayout tilBackupDirectory = new TextInputLayout(ConfigActivity.this);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.leftMargin = (int) getDip(12);
+                        params.rightMargin = (int) getDip(12);
+                        tilBackupDirectory.setLayoutParams(params);
+                        tilBackupDirectory.setHint("Backup directory");
+                        tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
+                        // A prefix of "/Internal storage" would've been nice, but Sketchware has material-1.0.0-rc0,
+                        // and TextInputLayout prefixes are available since material-1.2.0-alpha01
+
+                        final EditText backupDirectory = new EditText(ConfigActivity.this);
+                        backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT));
+                        backupDirectory.setTextSize(14.0f);
+                        backupDirectory.setText(getBackupPath());
+                        tilBackupDirectory.addView(backupDirectory);
+
+                        AlertDialog dialog = new AlertDialog.Builder(ConfigActivity.this)
+                                .setTitle("Backup directory")
+                                .setPositiveButton(Resources.string.common_word_save, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        setting_map.put(SETTING_BACKUP_DIRECTORY, editText.getText().toString());
+                                        setting_map.put(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
                                         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                                         SketchwareUtil.toast("Saved");
                                     }
-                                }).create();
-                        create.setView(editText);
-                        create.show();
+                                })
+                                .create();
+                        dialog.setView(tilBackupDirectory);
+                        dialog.show();
                     }
                 });
         addSwitchPreference("Use legacy Code Editor",
@@ -193,11 +212,11 @@ public class ConfigActivity extends Activity {
                 SETTING_LEGACY_CODE_EDITOR,
                 false);
         addSwitchPreference("Use new Version Control",
-                "Use advanced Version Control System Dialog",
+                "Enables advanced Version Control system for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
                 false);
-        addSwitchPreference("Enable Asd Highlighter",
-                "Enable Java Syntax Highlighting in Add Source Directly Block in LogicEditorActivity",
+        addSwitchPreference("Enable ASD highlighter",
+                "Enables syntax highlighting in Add Source Directly blocks in Logic Editor.",
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
     }
@@ -397,14 +416,13 @@ public class ConfigActivity extends Activity {
     }
 
     private void restoreDefaultSettings() {
-        HashMap<String, Object> defaultSettings = new HashMap<>();
-        defaultSettings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
-        defaultSettings.put(SETTING_BACKUP_DIRECTORY, "");
-        defaultSettings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        defaultSettings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
-        defaultSettings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
-        defaultSettings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
-        setting_map = defaultSettings;
-        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(defaultSettings));
+        setting_map = new HashMap<>();
+        setting_map.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
+        setting_map.put(SETTING_BACKUP_DIRECTORY, "");
+        setting_map.put(SETTING_LEGACY_CODE_EDITOR, false);
+        setting_map.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
+        setting_map.put(SETTING_USE_NEW_VERSION_CONTROL, false);
+        setting_map.put(SETTING_USE_ASD_HIGHLIGHTER, false);
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
     }
 }

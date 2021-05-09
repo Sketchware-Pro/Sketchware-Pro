@@ -407,6 +407,7 @@ public class Resources {
         public static final int view_code = 0x7f0b01cb;
         public static final int about = 0x7f0b01cf;
         public static final int custom_dialog_attribute = 0x7f0b01d5;
+        public static final int toolbar_improved = 0x7f0b01d7;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
