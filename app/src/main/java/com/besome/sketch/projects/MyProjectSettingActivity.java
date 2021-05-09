@@ -165,7 +165,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
             case Resources.id.ver_code:
             case Resources.id.ver_name:
-                if(ConfigActivity.isSettingEnabled()){  
+                if(ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)){  
+
 	            showCustomVersionControle();
 	        } else {
 	            v();
