@@ -82,7 +82,6 @@ public class CompileErrorSaver {
         }
     }
 
-
     /**
      * Clear the last saved error text.
      */
