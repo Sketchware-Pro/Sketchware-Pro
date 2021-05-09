@@ -82,11 +82,11 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public GC y = null;
     public zI z = null;
 
-    @Override
+    @Override // androidx.viewpager.widget.ViewPager.e
     public void a(int i) {
     }
 
-    @Override
+    @Override // androidx.viewpager.widget.ViewPager.e
     public void a(int i, float f, int i2) {
     }
 
@@ -137,11 +137,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void m() {
     }
 
-    @Override
-    public Object a(ViewGroup viewGroup, int i) {
-        return null;
-    }
-
     public final void m(int i) {
         if (i > 0) {
             Log.d("DEBUG", MainActivity.class.getSimpleName() + " sharedListFragment updateProject =" + i);
@@ -171,7 +166,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                         });
     }
 
-    @Override
+    @Override // androidx.fragment.app.FragmentActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         invalidateOptionsMenu();
@@ -189,37 +184,32 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             if (o != null) {
                 o.i();
             }
-        } else if (requestCode != 105) {
-            if (requestCode != 111) {
-                if (requestCode != 113) {
-                    if (requestCode != 212) {
-                        if (requestCode == 505 && o != null) {
-                            o.i();
-                        }
-                    } else if (resultCode == -1) {
-                        if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && super.j()) {
-                            y.g();
-                        }
-                        m(data.getIntExtra("shared_id", -1));
-                    }
-                } else if (resultCode == -1 && data != null && data.getBooleanExtra("not_show_popup_anymore", false)) {
-                    u.a("U1I2", false);
-                }
-            } else if (resultCode == -1) {
+        } else if (requestCode == 105) {
+            if (resultCode == -1) {
+                l(0);
+                sB.a(this, data.getBooleanExtra("onlyConfig", true));
+            }
+        } else if (requestCode == 111) {
+            if (resultCode == -1) {
                 invalidateOptionsMenu();
             }
-        } else if (resultCode == -1) {
-            l(0);
-            boolean booleanExtra = data.getBooleanExtra("onlyConfig", true);
-            if (booleanExtra) {
-                sB.a(this, true);
-            } else if (super.f(requestCode)) {
-                sB.a(this, false);
+        } else if (requestCode == 113) {
+            if (resultCode == -1 && data != null && data.getBooleanExtra("not_show_popup_anymore", false)) {
+                u.a("U1I2", (Object) false);
             }
+        } else if (requestCode == 212) {
+            if (resultCode == -1) {
+                if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
+                    y.g();
+                }
+                m(data.getIntExtra("shared_id", -1));
+            }
+        } else if (requestCode == 505 && o != null) {
+            o.i();
         }
     }
 
-    @Override
+    @Override // androidx.fragment.app.FragmentActivity
     public void onBackPressed() {
         if (o.isShown()) {
             m.b();
@@ -228,13 +218,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
-        n.a(configuration);
+    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        n.a(newConfig);
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
+    @Override
+    // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.main);
@@ -318,13 +309,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         return true;
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
+    @Override
+    // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onDestroy() {
         super.onDestroy();
         xB.b().a();
     }
 
-    @Override
+    @Override // androidx.fragment.app.FragmentActivity
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         try {
@@ -351,11 +343,11 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (n.a(menuItem)) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (n.a(item)) {
             return true;
         }
-        int itemId = menuItem.getItemId();
+        int itemId = item.getItemId();
         if (itemId == Resources.id.menu_login || itemId == Resources.id.menu_mypage) {
             if (i.a()) {
                 u();
@@ -363,22 +355,23 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 t();
             }
         }
-        return super.onOptionsItemSelected(menuItem);
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    @Override // androidx.appcompat.app.AppCompatActivity
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         n.b();
         o();
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
+    @Override
+    // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
         /* Check if the device is running low on storage space */
-        long freeMegaBytes = GB.c();
-        if (freeMegaBytes < 100 && freeMegaBytes > 0) {
+        long freeMegabytes = GB.c();
+        if (freeMegabytes < 100 && freeMegabytes > 0) {
             r();
         }
         if (j() && x != null && x.j()) {
@@ -386,7 +379,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override
+    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
     public void onStart() {
         super.onStart();
     }
@@ -418,10 +411,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                     @Override
                     public void a(String s) {
+                        // Original obf. anon. class bytecode tells it has 2 registers, but doesn't
+                        // use any registers, probably removed.
                     }
 
                     @Override
                     public void b() {
+                        // Original obf. anon. class bytecode tells it has 1 register, but doesn't
+                        // use it, probably removed.
                     }
                 })
                 .d()
@@ -488,6 +485,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         startActivityForResult(intent, 111);
     }
 
+    @Override // androidx.viewpager.widget.ViewPager.e
     public void b(int i) {
         k(i);
         if (i == 0) {
@@ -515,14 +513,13 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public class a extends gg {
 
         public Context f;
-        public GC gc;
 
         public a(Xf xf, Context context) {
             super(xf);
             f = context;
         }
 
-        @Override
+        @Override // a.a.a.kk
         public int a() {
             return 2;
         }
@@ -538,7 +535,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             return fragment;
         }
 
-        @Override
+        @Override // a.a.a.gg
         public Fragment c(int i) {
             if (i != 0) {
                 return new zI();
@@ -546,7 +543,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             return new GC();
         }
 
-        @Override
+        @Override // a.a.a.kk
         public CharSequence a(int i) {
             return r[i];
         }
