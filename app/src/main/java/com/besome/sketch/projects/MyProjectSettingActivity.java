@@ -165,9 +165,86 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
             case Resources.id.ver_code:
             case Resources.id.ver_name:
-                v();
+                if(ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)){  
+
+	            showCustomVersionControle();
+	        } else {
+	            v();
+		}
         }
     }
+public final void showCustomVersionControle()
+	{
+
+		this.R = this.Q;
+		final aB mAb = new aB(this);
+
+		mAb.a(2131166000);
+		mAb.b("Version Control"); 
+		LinearLayout base_layout = new LinearLayout(this);
+
+		final EditText version_code_picker = new EditText(this);
+		final EditText version_name_picker = new EditText(this);
+		final EditText version_name2_picker = new EditText(this);
+
+		int sc_ver_code = Integer.parseInt(this.I.getText().toString());
+		int sc_ver_code5 = sc_ver_code - 5;
+		int min_value1 = 1;
+		if (sc_ver_code5 <= 0)
+		{ // when the v code os less than 1 so he will return t to one like  Current v: 6 min v will be 1 so he will return it to 1 but  when the current v 11 thein v will be 11 - 5
+			sc_ver_code5 = 1;
+		}
+
+		version_code_picker.setText(String.valueOf( sc_ver_code));
+
+		String[] sc_ver_name = this.J.getText().toString().split("\\.");
+		this.U = this.a(sc_ver_name[0], min_value1);
+		this.V = this.a((String)sc_ver_name[min_value1], 0);
+		int var10 = this.U;
+		if (var10 - 5 > 0)
+		{
+			min_value1 = var10 - 5;
+		}
+
+		version_name_picker.setText(String.valueOf(this.U));
+		int version_name = this.V;
+		int var12 = version_name - 20;
+		int min_value = 0;
+		if (var12 > 0)
+		{
+			min_value = version_name - 20;
+		}
+
+		version_name2_picker.setText(String.valueOf(this.V));
+		base_layout.addView(version_name_picker,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		base_layout.addView(version_name2_picker,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		base_layout.addView(version_code_picker,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+
+		mAb.a(base_layout);
+		mAb.b(xB.b().a(this, Resources.string.common_word_save), new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(!mB.a()) {
+						I.setText(version_code_picker.getText().toString());
+						
+						StringBuilder var = new StringBuilder();
+						var.append(version_name_picker.getText().toString());
+						var.append(".");
+						var.append(version_name2_picker.getText().toString());
+						J.setText(var.toString());
+						mAb.dismiss();
+					}
+				}
+			});
+
+		mAb.a(xB.b().a(this, Resources.string.common_word_cancel), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAb.dismiss();
+            }
+        });
+		mAb.show();
+	}
 
     @Override
     // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
