@@ -3,7 +3,6 @@ package com.besome.sketch.lib.base;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.sketchware.remod.Resources;
 
@@ -137,6 +136,4 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             Sp.a = true;
         }
     }
-
-    public abstract Object a(ViewGroup viewGroup, int i);
 }
