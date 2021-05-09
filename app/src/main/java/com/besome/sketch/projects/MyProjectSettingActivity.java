@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,6 +56,7 @@ import a.a.a.xB;
 import a.a.a.yB;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -129,6 +131,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
     }
 
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case Resources.id.advanced_setting:
@@ -165,86 +168,109 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
             case Resources.id.ver_code:
             case Resources.id.ver_name:
-                if(ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)){  
-
-	            showCustomVersionControle();
-	        } else {
-	            v();
-		}
+                if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
+                    showNewVersionControl();
+                } else {
+                    v();
+                }
         }
     }
-public final void showCustomVersionControle()
-	{
 
-		this.R = this.Q;
-		final aB mAb = new aB(this);
+    public final void showNewVersionControl() {
+        R = Q;
+        final aB dialog = new aB(this);
 
-		mAb.a(2131166000);
-		mAb.b("Version Control"); 
-		LinearLayout base_layout = new LinearLayout(this);
+        dialog.a(2131166000);
+        dialog.b("Version Control");
+        LinearLayout base_layout = new LinearLayout(this);
+        base_layout.setOrientation(LinearLayout.VERTICAL);
 
-		final EditText version_code_picker = new EditText(this);
-		final EditText version_name_picker = new EditText(this);
-		final EditText version_name2_picker = new EditText(this);
+        final LinearLayout version_name_container = new LinearLayout(this);
+        version_name_container.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
-		int sc_ver_code = Integer.parseInt(this.I.getText().toString());
-		int sc_ver_code5 = sc_ver_code - 5;
-		int min_value1 = 1;
-		if (sc_ver_code5 <= 0)
-		{ // when the v code os less than 1 so he will return t to one like  Current v: 6 min v will be 1 so he will return it to 1 but  when the current v 11 thein v will be 11 - 5
-			sc_ver_code5 = 1;
-		}
+        final TextInputLayout til_version_name = new TextInputLayout(this);
+        final EditText version_name_picker = new EditText(this);
+        version_name_picker.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        til_version_name.addView(version_name_picker);
+        til_version_name.setHint("Version Name");
+        til_version_name.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f));
+        version_name_container.addView(til_version_name);
 
-		version_code_picker.setText(String.valueOf( sc_ver_code));
+        final TextInputLayout til_version_name_postfix = new TextInputLayout(this);
+        final EditText version_name_postfix_picker = new EditText(this);
+        version_name_postfix_picker.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        til_version_name_postfix.addView(version_name_postfix_picker);
+        til_version_name_postfix.setHint("Version Name Postfix");
+        til_version_name_postfix.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f));
+        version_name_container.addView(til_version_name_postfix);
 
-		String[] sc_ver_name = this.J.getText().toString().split("\\.");
-		this.U = this.a(sc_ver_name[0], min_value1);
-		this.V = this.a((String)sc_ver_name[min_value1], 0);
-		int var10 = this.U;
-		if (var10 - 5 > 0)
-		{
-			min_value1 = var10 - 5;
-		}
+        final TextInputLayout til_version_code = new TextInputLayout(this);
+        final EditText version_code_picker = new EditText(this);
+        version_code_picker.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        til_version_code.addView(version_code_picker);
+        til_version_code.setHint("Version Code");
 
-		version_name_picker.setText(String.valueOf(this.U));
-		int version_name = this.V;
-		int var12 = version_name - 20;
-		int min_value = 0;
-		if (var12 > 0)
-		{
-			min_value = version_name - 20;
-		}
+        int sc_ver_code = Integer.parseInt(I.getText().toString());
+        int sc_ver_code5 = sc_ver_code - 5;
+        int min_value1 = 1;
+        if (sc_ver_code5 <= 0) {
+            // when the v code is less than 1 so he will return t to one like
+            // Current v: 6 min v will be 1 so he will return it to 1 but  when the current v 11 thein v will be 11 - 5
+            sc_ver_code5 = 1;
+        }
 
-		version_name2_picker.setText(String.valueOf(this.V));
-		base_layout.addView(version_name_picker,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		base_layout.addView(version_name2_picker,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-		base_layout.addView(version_code_picker,LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+        version_code_picker.setText(String.valueOf(sc_ver_code));
 
-		mAb.a(base_layout);
-		mAb.b(xB.b().a(this, Resources.string.common_word_save), new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if(!mB.a()) {
-						I.setText(version_code_picker.getText().toString());
-						
-						StringBuilder var = new StringBuilder();
-						var.append(version_name_picker.getText().toString());
-						var.append(".");
-						var.append(version_name2_picker.getText().toString());
-						J.setText(var.toString());
-						mAb.dismiss();
-					}
-				}
-			});
+        String[] sc_ver_name = J.getText().toString().split("\\.");
+        U = a(sc_ver_name[0], min_value1);
+        V = a(sc_ver_name[min_value1], 0);
+        if (U - 5 > 0) {
+            min_value1 = U - 5;
+        }
 
-		mAb.a(xB.b().a(this, Resources.string.common_word_cancel), new View.OnClickListener() {
+        version_name_picker.setText(String.valueOf(U));
+        int version_name = V;
+        int min_value = 0;
+        if ((version_name - 20) > 0) {
+            min_value = version_name - 20;
+        }
+
+        version_name_postfix_picker.setText(String.valueOf(V));
+        base_layout.addView(version_name_container);
+        base_layout.addView(til_version_code);
+
+        dialog.a(base_layout);
+        dialog.b(xB.b().a(this, Resources.string.common_word_save), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAb.dismiss();
+                if (!mB.a()) {
+                    I.setText(version_code_picker.getText().toString());
+                    J.setText(version_name_picker.getText().toString()
+                            + "."
+                            + version_name_postfix_picker.getText().toString());
+                    dialog.dismiss();
+                }
             }
         });
-		mAb.show();
-	}
+
+        dialog.a(xB.b().a(this, Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
+    }
 
     @Override
     // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
@@ -501,12 +527,8 @@ public final void showCustomVersionControle()
                 }
             }
         });
-        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                aBVar.dismiss();
-            }
-        });
+        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -736,6 +758,7 @@ public final void showCustomVersionControle()
             k();
         }
 
+        @Override
         public void a() {
             h();
             Intent intent = getIntent();
@@ -746,52 +769,45 @@ public final void showCustomVersionControle()
             finish();
         }
 
+        @Override
         public void b() {
-            int i = 0;
-            if (O) {
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("sc_id", w);
-                data.put("my_sc_pkg_name", B.getText().toString());
-                data.put("my_ws_name", C.getText().toString());
-                data.put("my_app_name", A.getText().toString());
-                data.put("custom_icon", N);
-                data.put("sc_ver_code", I.getText().toString());
-                data.put("sc_ver_name", J.getText().toString());
-                data.put("sketchware_ver", GB.d(getApplicationContext()));
-                while (i < t.length) {
-                    data.put(t[i], v[i]);
-                    i++;
-                }
-                lC.b(w, data);
-                return;
-            }
             HashMap<String, Object> data = new HashMap<>();
-            String a = new nB().a("yyyyMMddHHmmss");
             data.put("sc_id", w);
             data.put("my_sc_pkg_name", B.getText().toString());
             data.put("my_ws_name", C.getText().toString());
             data.put("my_app_name", A.getText().toString());
-            data.put("my_sc_reg_dt", a);
-            data.put("custom_icon", N);
-            data.put("sc_ver_code", I.getText().toString());
-            data.put("sc_ver_name", J.getText().toString());
-            data.put("sketchware_ver", GB.d(getApplicationContext()));
-            while (i < t.length) {
-                data.put(t[i], v[i]);
-                i++;
+            if (O) {
+                data.put("custom_icon", N);
+                data.put("sc_ver_code", I.getText().toString());
+                data.put("sc_ver_name", J.getText().toString());
+                data.put("sketchware_ver", GB.d(getApplicationContext()));
+                for (int i = 0; i < t.length; i++) {
+                    data.put(t[i], v[i]);
+                }
+                lC.b(w, data);
+            } else {
+                data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
+                data.put("custom_icon", N);
+                data.put("sc_ver_code", I.getText().toString());
+                data.put("sc_ver_name", J.getText().toString());
+                data.put("sketchware_ver", GB.d(getApplicationContext()));
+                for (int i = 0; i < t.length; i++) {
+                    data.put(t[i], v[i]);
+                }
+                lC.a(w, data);
+                wq.a(getApplicationContext(), w);
+                new oB().b(wq.b(w));
             }
-            lC.a(w, data);
-            wq.a(getApplicationContext(), w);
-            new oB().b(wq.b(w));
         }
 
+        @Override
         public void a(String str) {
             h();
         }
 
         @Override
         protected String doInBackground(Void... voids) {
-            return null;
+            return a(voids);
         }
     }
 }
