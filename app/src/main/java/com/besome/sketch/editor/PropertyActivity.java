@@ -41,7 +41,6 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.ro;
 import a.a.a.tx;
-import mod.hey.studios.util.Helper;
 
 public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public Toolbar k;
@@ -174,7 +173,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         d().e(true);
         this.k.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
-                Helper.getBackPressedClickListener(PropertyActivity.this);
+                onBackPressed();
             }
         });
         this.k.setPopupTheme(2131689886);
