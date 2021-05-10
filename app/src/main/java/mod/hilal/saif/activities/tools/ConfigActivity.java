@@ -172,17 +172,22 @@ public class ConfigActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        final LinearLayout container = new LinearLayout(ConfigActivity.this);
+                        container.setPadding(
+                                (int) getDip(20),
+                                (int) getDip(4),
+                                (int) getDip(20),
+                                0);
+
                         final TextInputLayout tilBackupDirectory = new TextInputLayout(ConfigActivity.this);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        tilBackupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                        params.leftMargin = (int) getDip(12);
-                        params.rightMargin = (int) getDip(12);
-                        tilBackupDirectory.setLayoutParams(params);
+                                ViewGroup.LayoutParams.WRAP_CONTENT));
                         tilBackupDirectory.setHint("Backup directory");
                         tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
-                        // A prefix of "/Internal storage" would've been nice, but Sketchware has material-1.0.0-rc0,
+                        // A prefix of "/Internal storage" would've been nice, but Sketchware has material-1.0.0-rc01,
                         // and TextInputLayout prefixes are available since material-1.2.0-alpha01
+                        container.addView(tilBackupDirectory);
 
                         final EditText backupDirectory = new EditText(ConfigActivity.this);
                         backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
@@ -203,7 +208,7 @@ public class ConfigActivity extends Activity {
                                     }
                                 })
                                 .create();
-                        dialog.setView(tilBackupDirectory);
+                        dialog.setView(container);
                         dialog.show();
                     }
                 });
