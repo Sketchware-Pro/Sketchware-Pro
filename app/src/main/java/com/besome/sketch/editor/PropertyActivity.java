@@ -264,8 +264,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         public a() {
         }
 
-        /* renamed from: a */
-        public void b(ViewHolder aVar, int i) {
+        public void a(ViewHolder aVar, int i) {
             ((Integer) PropertyActivity.this.s.get(i)).intValue();
             if (PropertyActivity.this.v == i) {
                 ef a2 = Ze.a(aVar.t);
@@ -314,7 +313,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             return PropertyActivity.this.s.size();
         }
 
-        /* renamed from: com.besome.sketch.editor.PropertyActivity$a$a  reason: collision with other inner class name */
         class ViewHolder extends RecyclerView.v implements View.OnClickListener {
             public ImageView t;
             public TextView u;
