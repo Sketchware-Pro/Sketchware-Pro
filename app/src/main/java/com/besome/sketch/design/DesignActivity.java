@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -232,31 +231,26 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         snackbar.n();
     }
 
-    public void e(int var1) {
-        if (var1 == 188) {
-            (new DesignActivity.a(getApplicationContext())).execute();
+    @Override
+    public void e(int i) {
+        if (i == 188) {
+            new a(getApplicationContext()).execute();
         }
-
     }
 
+    @Override
     public void finish() {
         jC.a();
         cC.a();
         bC.a();
-        setResult(0, this.getIntent());
+        setResult(0, getIntent());
         super.finish();
     }
 
     public final void l() {
-        boolean var1 = jC.c(this.l).g();
-        boolean var2 = jC.b(this.l).g();
-        boolean var3 = jC.d(this.l).q();
-        boolean var4 = jC.a(this.l).d();
-        boolean var5 = jC.a(this.l).c();
-        if (var1 || var2 || var3 || var4 || var5) {
+        if (jC.c(l).g() || jC.b(l).g() || jC.d(l).q() || jC.a(l).d() || jC.a(l).c()) {
             s();
         }
-
     }
 
     public final void m() {
@@ -271,7 +265,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     public void n() {
-        q.b(jC.b(this.l), jC.a(this.l), jC.c(this.l));
+        q.b(jC.b(l), jC.a(l), jC.c(l));
     }
 
     /**
@@ -280,18 +274,19 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public final void o() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (VERSION.SDK_INT >= 24) {
-            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(this.q.H));
+            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.H));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
         } else {
-            intent.setDataAndType(Uri.fromFile(new File(this.q.H)), "application/vnd.android.package-archive");
+            intent.setDataAndType(Uri.fromFile(new File(q.H)), "application/vnd.android.package-archive");
         }
 
         startActivity(intent);
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (!j.h() && (requestCode == 208 || requestCode == 209 || requestCode == 217 || requestCode == 226 || requestCode == 228 || requestCode == 233 || requestCode == 240 || requestCode == 223 || requestCode == 224) && !j.h()) {
@@ -306,8 +301,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
             if (requestCode == 226) {
                 if (resultCode == -1) {
-                    br var4 = this.y;
-
                     if (v != null) {
                         v.a();
                     }
@@ -369,9 +362,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         }
-
     }
 
+    @Override
     public void onBackPressed() {
         if (o.f(8388613)) {
             o.a(8388613);
@@ -387,12 +380,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     xo.a(I);
                     xo.a(getApplicationContext(), 242);
                 } else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            new e(getApplicationContext()).execute();
-                        }
-                    }, 500L);
+                    new e(getApplicationContext()).execute();
                 }
 
             } else {
@@ -431,6 +419,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -445,7 +434,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             H.setVisibility(View.GONE);
             p.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -473,11 +461,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         d().e(true);
         k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         k.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
-        getSupportFragmentManager().a(new Xf.c() {
-            @Override
-            public void onBackStackChanged() {
-            }
-        });
+        // Replaced empty anonymous class with null
+        getSupportFragmentManager().a((Xf.c) null);
         p = findViewById(Resources.id.layout_ads);
         o = findViewById(Resources.id.drawer_layout);
         o.setDrawerLockMode(1);
@@ -626,12 +611,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         if (itemId != Resources.id.design_actionbar_titleopen_drawer) {
             if (itemId == Resources.id.design_option_menu_title_save_project) {
                 k();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        new d(getApplicationContext()).execute();
-                    }
-                }, 500L);
+                new d(getApplicationContext()).execute();
             }
         } else if (!o.f(8388613)) {
             o.h(8388613);
@@ -663,12 +643,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         m();
 
         try {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    new b(getBaseContext(), savedInstanceState).execute();
-                }
-            }, 500L);
+            new b(getBaseContext(), savedInstanceState).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -733,7 +708,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 super.onAdLoaded();
             }
         });
-        G.setLayoutParams(new LayoutParams(-1, -2));
+        G.setLayoutParams(new LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT));
         p.addView(G);
         G.setAdSize(AdSize.BANNER);
         G.setAdUnitId("ca-app-pub-7978947291427601/3558354213");
@@ -758,14 +735,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         if (!j.h()) {
                             xo.a(I);
                             xo.a(getApplicationContext(), 242);
-                            return;
+                        } else {
+                            new e(getApplicationContext()).execute();
                         }
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                new e(getApplicationContext()).execute();
-                            }
-                        }, 500);
                     } catch (Exception e) {
                         e.printStackTrace();
                         h();
@@ -783,14 +755,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         if (!j.h()) {
                             xo.a(I);
                             xo.a(getApplicationContext(), 243);
-                            return;
+                        } else {
+                            new c(getApplicationContext()).execute();
                         }
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                new c(getApplicationContext()).execute();
-                            }
-                        }, 500);
                     } catch (Exception e) {
                         e.printStackTrace();
                         h();
@@ -809,12 +776,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
         dialog.a(Resources.drawable.break_warning_96_red);
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+                Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -1145,7 +1108,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void a() {
             q.b();
             c();
-            u.setText(xB.b().a(getApplicationContext(), 2131625030));
+            u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
             u.setClickable(true);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -1164,7 +1127,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.b();
                     c();
                     bB.b(getApplicationContext(), "APK build failed", Toast.LENGTH_SHORT).show();
-                    u.setText(xB.b().a(getApplicationContext(), 2131625030));
+                    u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
                     u.setClickable(true);
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
@@ -1442,38 +1405,38 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public Bundle c;
 
-        public b(Context var2, Bundle var3) {
-            super(var2);
+        public b(Context context, Bundle bundle) {
+            super(context);
             DesignActivity.this.a(this);
-            c = var3;
+            c = bundle;
         }
 
+        @Override
         public void a() {
-            Bundle var1 = this.c;
-            if (var1 != null) {
-                DesignActivity.this.v.a(var1);
-                if (this.c.getInt("file_selector_current_file_type") == 0) {
-                    DesignActivity.this.A.setVisibility(View.VISIBLE);
+            if (c != null) {
+                v.a(c);
+                if (c.getInt("file_selector_current_file_type") == 0) {
+                    A.setVisibility(View.VISIBLE);
                 } else {
-                    DesignActivity.this.A.setVisibility(View.GONE);
+                    A.setVisibility(View.GONE);
                 }
             }
 
-            DesignActivity.this.v.a();
-            DesignActivity.this.h();
-            if (this.c == null) {
-                DesignActivity.this.l();
+            v.a();
+            h();
+            if (c == null) {
+                l();
             }
-
         }
 
-        public void a(String var1) {
-            DesignActivity.this.h();
+        @Override
+        public void a(String str) {
+            h();
         }
 
+        @Override
         public void b() {
-            DesignActivity.this.a(this.c != null);
-
+            DesignActivity.this.a(c != null);
         }
 
         @Override
@@ -1483,31 +1446,33 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     /**
-     * A project "saver" AsyncTask that doesn't actually save the project?
+     * A project "saver" AsyncTask that doesn't actually save the project.
      * Gets executed when clicking "Exit" in the "Save project?" dialog.
      */
     public class c extends MA {
 
-        public c(Context var2) {
-            super(var2);
+        public c(Context context) {
+            super(context);
             DesignActivity.this.a(this);
         }
 
+        @Override
         public void a() {
-            DesignActivity.this.h();
-            DesignActivity.this.finish();
+            h();
+            finish();
         }
 
-        public void a(String var1) {
-            DesignActivity.this.h();
-            DesignActivity.this.finish();
+        @Override
+        public void a(String str) {
+            h();
+            finish();
         }
 
         public void b() {
             publishProgress("Now processing..");
-            jC.d(DesignActivity.this.l).v();
-            jC.d(DesignActivity.this.l).w();
-            jC.d(DesignActivity.this.l).u();
+            jC.d(l).v();
+            jC.d(l).w();
+            jC.d(l).u();
         }
 
         @Override
@@ -1517,36 +1482,39 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     /**
-     * An AsyncTask saving the project.
+     * An AsyncTask saving the project. This doesn't finish the activity, unlike {@link DesignActivity.e}.
      */
     public class d extends MA {
 
-        public d(Context var2) {
-            super(var2);
+        public d(Context context) {
+            super(context);
             DesignActivity.this.a(this);
         }
 
+        @Override
         public void a() {
-            bB.a(super.a, xB.b().a(super.a, 2131624938), 0).show();
-            DesignActivity.this.A();
-            DesignActivity.this.h();
-            jC.d(DesignActivity.this.l).f();
-            jC.d(DesignActivity.this.l).g();
-            jC.d(DesignActivity.this.l).e();
+            bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
+            A();
+            h();
+            jC.d(l).f();
+            jC.d(l).g();
+            jC.d(l).e();
         }
 
-        public void a(String var1) {
-            bB.b(super.a, xB.b().a(super.a, 2131624915), 0).show();
+        @Override
+        public void a(String str) {
+            bB.b(a, xB.b().a(a, Resources.string.common_error_failed_to_save), 0).show();
             DesignActivity.this.h();
         }
 
+        @Override
         public void b() {
             publishProgress("Now saving..");
-            jC.d(DesignActivity.this.l).a();
-            jC.b(DesignActivity.this.l).m();
-            jC.a(DesignActivity.this.l).j();
-            jC.d(DesignActivity.this.l).x();
-            jC.c(DesignActivity.this.l).l();
+            jC.d(l).a();
+            jC.b(l).m();
+            jC.a(l).j();
+            jC.d(l).x();
+            jC.c(l).l();
         }
 
         @Override
@@ -1555,33 +1523,39 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
+    /**
+     * AsyncTask that saves the project when exiting {@link DesignActivity} normally.
+     */
     public class e extends MA {
 
-        public e(Context var2) {
-            super(var2);
+        public e(Context context) {
+            super(context);
             DesignActivity.this.a(this);
         }
 
+        @Override
         public void a() {
-            bB.a(super.a, xB.b().a(super.a, 2131624938), 0).show();
-            DesignActivity.this.A();
-            DesignActivity.this.h();
-            DesignActivity.this.finish();
+            bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
+            A();
+            h();
+            finish();
         }
 
-        public void a(String var1) {
-            bB.b(super.a, xB.b().a(super.a, 2131624915), 0).show();
-            DesignActivity.this.h();
+        @Override
+        public void a(String str) {
+            bB.b(a, xB.b().a(a, Resources.string.common_error_failed_to_save), 0).show();
+            h();
         }
 
+        @Override
         public void b() {
             publishProgress("Now saving..");
-            jC.d(DesignActivity.this.l).a();
-            jC.b(DesignActivity.this.l).m();
-            jC.a(DesignActivity.this.l).j();
-            jC.d(DesignActivity.this.l).x();
-            jC.c(DesignActivity.this.l).l();
-            jC.d(DesignActivity.this.l).h();
+            jC.d(l).a();
+            jC.b(l).m();
+            jC.a(l).j();
+            jC.d(l).x();
+            jC.c(l).l();
+            jC.d(l).h();
         }
 
         @Override
@@ -1592,19 +1566,22 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     public class f extends MA {
 
-        public f(Context var2) {
-            super(var2);
+        public f(Context context) {
+            super(context);
             DesignActivity.this.a(this);
         }
 
+        @Override
         public void a() {
         }
 
+        @Override
         public void a(String var1) {
         }
 
+        @Override
         public void b() {
-            jC.a(DesignActivity.this.l).k();
+            jC.a(l).k();
         }
 
         @Override
@@ -1612,6 +1589,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             return a(voids);
         }
 
+        @Override
         public void onCancelled() {
             super.onCancelled();
         }
@@ -1623,41 +1601,44 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public String[] g;
         public Context h;
 
-        public g(Xf var2, Context var3) {
-            super(var2);
-            h = var3;
-            g = new String[3];
-            g[0] = xB.b().a(var3, 2131625319);
-            g[1] = xB.b().a(var3, 2131625318);
-            g[2] = xB.b().a(var3, 2131625317);
+        public g(Xf xf, Context context) {
+            super(xf);
+            h = context;
+            g = new String[]{
+                    xB.b().a(context, Resources.string.design_tab_title_view),
+                    xB.b().a(context, Resources.string.design_tab_title_event),
+                    xB.b().a(context, Resources.string.design_tab_title_component)};
         }
 
         public int a() {
             return 3;
         }
 
+        @Override
         public CharSequence a(int var1) {
-            return this.g[var1];
+            return g[var1];
         }
 
-        public Object a(ViewGroup var1, int var2) {
-            Fragment var3 = (Fragment) super.a(var1, var2);
-            if (var2 == 0) {
-                DesignActivity.this.w = (jr) var3;
-            } else if (var2 == 1) {
-                DesignActivity.this.x = (rs) var3;
+        @Override
+        public Object a(ViewGroup viewGroup, int i) {
+            Fragment fragment = (Fragment) super.a(viewGroup, i);
+            if (i == 0) {
+                w = (jr) fragment;
+            } else if (i == 1) {
+                x = (rs) fragment;
             } else {
-                DesignActivity.this.y = (br) var3;
+                y = (br) fragment;
             }
 
-            return var3;
+            return fragment;
         }
 
-        public Fragment c(int var1) {
-            if (var1 == 0) {
+        @Override
+        public Fragment c(int i) {
+            if (i == 0) {
                 return new jr();
             } else {
-                return var1 == 1 ? new rs() : new br();
+                return i == 1 ? new rs() : new br();
             }
         }
     }
