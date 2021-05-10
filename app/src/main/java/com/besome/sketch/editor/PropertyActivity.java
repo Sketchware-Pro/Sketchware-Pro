@@ -260,13 +260,13 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         startActivityForResult(intent, 209);
     }
 
-    class a extends RecyclerView.a<PropertyActivity.a.View$OnClickListenerC0029a> {
+    class a extends RecyclerView.a<PropertyActivity.a.ViewHolder> {
 
         public a() {
         }
 
         /* renamed from: a */
-        public void b(View$OnClickListenerC0029a aVar, int i) {
+        public void b(ViewHolder aVar, int i) {
             ((Integer) PropertyActivity.this.s.get(i)).intValue();
             if (PropertyActivity.this.v == i) {
                 ef a2 = Ze.a(aVar.t);
@@ -316,12 +316,12 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         }
 
         /* renamed from: com.besome.sketch.editor.PropertyActivity$a$a  reason: collision with other inner class name */
-        class View$OnClickListenerC0029a extends RecyclerView.v implements View.OnClickListener {
+        class ViewHolder extends RecyclerView.v implements View.OnClickListener {
             public ImageView t;
             public TextView u;
             public View v;
 
-            public View$OnClickListenerC0029a(View view) {
+            public ViewHolder(View view) {
                 super(view);
                 this.t = (ImageView) view.findViewById(2131231151);
                 this.u = (TextView) view.findViewById(2131232055);
