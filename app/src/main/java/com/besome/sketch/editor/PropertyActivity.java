@@ -239,7 +239,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         if (this.j.h()) {
             n();
         }
-        this.d.setScreenName(PropertyActivity.class.getSimpleName().toString());
+        this.d.setScreenName(PropertyActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
@@ -264,7 +264,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         public a() {
         }
 
-        public void a(ViewHolder aVar, int i) {
+        public void b(ViewHolder aVar, int i) {
             ((Integer) PropertyActivity.this.s.get(i)).intValue();
             if (PropertyActivity.this.v == i) {
                 ef a2 = Ze.a(aVar.t);
@@ -304,8 +304,8 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
-        public View$OnClickListenerC0029a b(ViewGroup viewGroup, int i) {
-            return new View$OnClickListenerC0029a(LayoutInflater.from(viewGroup.getContext()).inflate(2131427377, viewGroup, false));
+        public ViewHolder b(ViewGroup viewGroup, int i) {
+            return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(2131427377, viewGroup, false));
         }
 
         @Override // androidx.recyclerview.widget.RecyclerView.a
