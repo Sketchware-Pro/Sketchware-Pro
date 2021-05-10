@@ -425,6 +425,7 @@ public class Resources {
         public static final int app_name = 0x7f0e0042;
         public static final int besome_blog_url = 0x7f0e0044;
         public static final int common_error_an_error_occurred = 0x7f0e03cc;
+        public static final int common_error_failed_to_save = 0x7f0e03d3;
         public static final int common_message_check_network = 0x7f0e03e4;
         public static final int common_message_complete_save = 0x7f0e03ea;
         public static final int common_message_confirm = 0x7f0e03ed;
@@ -494,6 +495,9 @@ public class Resources {
         public static final int design_restore_data_message_confirm = 0x7f0e0560;
         public static final int design_restore_data_title = 0x7f0e0561;
         public static final int design_run_title_ready_to_build = 0x7f0e0564;
+        public static final int design_tab_title_component = 0x7f0e0565;
+        public static final int design_tab_title_event = 0x7f0e0566;
+        public static final int design_tab_title_view = 0x7f0e0567;
         public static final int facebook_url = 0x7f0e05b5;
         public static final int language_message_confirm_delete = 0x7f0e05fa;
         public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
