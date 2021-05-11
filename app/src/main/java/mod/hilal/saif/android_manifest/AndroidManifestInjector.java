@@ -1,27 +1,28 @@
 package mod.hilal.saif.android_manifest;
 
-import a.a.a.Nx;
 import android.net.Uri;
+
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import a.a.a.Nx;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.FileUtil;
 
 public class AndroidManifestInjector {
-    public static void getP(Nx nx, String str) {
-        new ArrayList();
-        new ArrayList();
+
+    public static void getP(Nx nx, String sc_id) {
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (FileUtil.isExistFile(concat)) {
-                ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
+                ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
                 if (arrayList.size() > 0) {
                     for (int i = 0; i < arrayList.size(); i++) {
-                        String str2 = (String) ((HashMap) arrayList.get(i)).get("value");
-                        if (((String) ((HashMap) arrayList.get(i)).get("name")).equals("_application_permissions")) {
+                        String str2 = (String) arrayList.get(i).get("value");
+                        if (((String) arrayList.get(i).get("name")).equals("_application_permissions")) {
                             Nx nx2 = new Nx("uses-permission");
                             nx2.b(str2);
                             nx.a(nx2);
@@ -29,26 +30,24 @@ public class AndroidManifestInjector {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
-    public static void getAppAttrs(Nx nx, String str) {
-        addToApp(nx, str);
+    public static void getAppAttrs(Nx nx, String sc_id) {
+        addToApp(nx, sc_id);
     }
 
-    public static boolean getActivityAttrs(Nx nx, String str, String str2) {
+    public static boolean getActivityAttrs(Nx nx, String sc_id, String str2) {
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
-            new ArrayList();
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (!FileUtil.isExistFile(concat)) {
                 return false;
             }
-            ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
+            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
-                if (((String) ((HashMap) arrayList.get(i)).get("name")).equals(str2.substring(0, str2.indexOf(".java")))) {
-                    addToAct(nx, str, str2);
+                if (((String) arrayList.get(i).get("name")).equals(str2.substring(0, str2.indexOf(".java")))) {
+                    addToAct(nx, sc_id, str2);
                     return true;
                 }
             }
@@ -58,17 +57,17 @@ public class AndroidManifestInjector {
         }
     }
 
-    public static boolean isActivityThemeUsed(Nx nx, String str, String str2) {
+    public static boolean isActivityThemeUsed(Nx nx, String sc_id, String str2) {
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
-            new ArrayList();
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (!FileUtil.isExistFile(concat)) {
                 return false;
             }
-            ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
+            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
-                if ((((String) ((HashMap) arrayList.get(i)).get("name")).equals(str2.substring(0, str2.indexOf(".java"))) || ((String) ((HashMap) arrayList.get(i)).get("name")).equals("_apply_for_all_activities")) && ((String) ((HashMap) arrayList.get(i)).get("value")).contains("android:theme")) {
+                if ((((String) arrayList.get(i).get("name")).equals(str2.substring(0, str2.indexOf(".java")))
+                        || ((String) (arrayList.get(i)).get("name")).equals("_apply_for_all_activities"))
+                        && ((String) arrayList.get(i).get("value")).contains("android:theme")) {
                     return true;
                 }
             }
@@ -78,17 +77,17 @@ public class AndroidManifestInjector {
         }
     }
 
-    public static boolean isActivityOrientationUsed(Nx nx, String str, String str2) {
+    public static boolean isActivityOrientationUsed(Nx nx, String sc_id, String str2) {
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
-            new ArrayList();
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (!FileUtil.isExistFile(concat)) {
                 return false;
             }
-            ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
+            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
-                if ((((String) ((HashMap) arrayList.get(i)).get("name")).equals(str2.substring(0, str2.indexOf(".java"))) || ((String) ((HashMap) arrayList.get(i)).get("name")).equals("_apply_for_all_activities")) && ((String) ((HashMap) arrayList.get(i)).get("value")).contains("android:screenOrientation")) {
+                if ((((String) arrayList.get(i).get("name")).equals(str2.substring(0, str2.indexOf(".java")))
+                        || ((String) arrayList.get(i).get("name")).equals("_apply_for_all_activities"))
+                        && ((String) arrayList.get(i).get("value")).contains("android:screenOrientation")) {
                     return true;
                 }
             }
@@ -98,17 +97,15 @@ public class AndroidManifestInjector {
         }
     }
 
-    public static boolean isActivityKeyboardUsed(Nx nx, String str, String str2) {
+    public static boolean isActivityKeyboardUsed(Nx nx, String sc_id, String str2) {
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
-            new ArrayList();
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (!FileUtil.isExistFile(concat)) {
                 return false;
             }
-            ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
+            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
-                if ((((String) ((HashMap) arrayList.get(i)).get("name")).equals(str2.substring(0, str2.indexOf(".java"))) || ((String) ((HashMap) arrayList.get(i)).get("name")).equals("_apply_for_all_activities")) && ((String) ((HashMap) arrayList.get(i)).get("value")).contains("android:windowSoftInputMode")) {
+                if ((((String) arrayList.get(i).get("name")).equals(str2.substring(0, str2.indexOf(".java"))) || ((String) ((HashMap) arrayList.get(i)).get("name")).equals("_apply_for_all_activities")) && ((String) ((HashMap) arrayList.get(i)).get("value")).contains("android:windowSoftInputMode")) {
                     return true;
                 }
             }
@@ -118,8 +115,8 @@ public class AndroidManifestInjector {
         }
     }
 
-    public static String getLauncherActivity(String str) {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/activity_launcher.txt");
+    public static String getLauncherActivity(String sc_id) {
+        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/activity_launcher.txt");
         if (!FileUtil.isExistFile(concat)) {
             return "main";
         }
@@ -130,27 +127,24 @@ public class AndroidManifestInjector {
         return readFile;
     }
 
-    public static void setLauncherActivity(String str, String str2) {
-        FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/activity_launcher.txt"), str2);
+    public static void setLauncherActivity(String sc_id, String launcherActivity) {
+        FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/activity_launcher.txt"), launcherActivity);
     }
 
-    public static String mHolder(String str, String str2) {
-        new ArrayList();
-        ArrayList arrayList = new ArrayList(Arrays.asList(str.split("\n")));
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str2).concat("/Injection/androidmanifest/activities_components.json");
-        new ArrayList();
+    public static String mHolder(String str, String sc_id) {
+        ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(str.split("\n")));
+        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/activities_components.json");
         if (FileUtil.isExistFile(concat)) {
-            ArrayList arrayList2 = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
+            ArrayList<HashMap<String, Object>> arrayList2 = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList2.size(); i++) {
-                String str3 = (String) ((HashMap) arrayList2.get(i)).get("name");
-                String str4 = (String) ((HashMap) arrayList2.get(i)).get("value");
-                if (!str4.trim().equals("")) {
-                    for (int i2 = 3; i2 < arrayList.size(); i2++) {
-                        String str5 = (String) arrayList.get(i2);
-                        String str6 = (String) arrayList.get(i2 - 1);
-                        if (str5.contains("android:name=\"") && str5.contains(str3) && str6.contains("<activity")) {
-                            int i3 = i2;
+                String name = (String) arrayList2.get(i).get("name");
+                String value = (String) arrayList2.get(i).get("value");
+                if (!value.trim().equals("")) {
+                    for (int j = 3; j < arrayList.size(); j++) {
+                        String str5 = (String) arrayList.get(j);
+                        String str6 = (String) arrayList.get(j - 1);
+                        if (str5.contains("android:name=\"") && str5.contains(name) && str6.contains("<activity")) {
+                            int i3 = j;
                             while (true) {
                                 if (i3 >= arrayList.size()) {
                                     break;
@@ -158,13 +152,13 @@ public class AndroidManifestInjector {
                                 String str7 = (String) arrayList.get(i3 - 1);
                                 if (((String) arrayList.get(i3)).matches("^\t\t<[a-zA-Z_-]+[^>]")) {
                                     if (str7.contains("\"/>")) {
-                                        if (!str4.trim().equals("")) {
+                                        if (!value.trim().equals("")) {
                                             arrayList.set(i3 - 1, ((String) arrayList.get(i3 - 1)).replace("\"/>", "\">"));
-                                            arrayList.set(i3 - 1, ((String) arrayList.get(i3 - 1)).concat("\r\n").concat((String) ((HashMap) arrayList2.get(i)).get("value")).concat("\r\n").concat("</activity>"));
+                                            arrayList.set(i3 - 1, ((String) arrayList.get(i3 - 1)).concat("\r\n").concat((String) arrayList2.get(i).get("value")).concat("\r\n").concat("</activity>"));
                                             break;
                                         }
-                                    } else if (!str4.trim().equals("")) {
-                                        arrayList.set(i3 - 2, ((String) arrayList.get(i3 - 2)).concat("\r\n").concat((String) ((HashMap) arrayList2.get(i)).get("value")));
+                                    } else if (!value.trim().equals("")) {
+                                        arrayList.set(i3 - 2, ((String) arrayList.get(i3 - 2)).concat("\r\n").concat((String) arrayList2.get(i).get("value")));
                                         break;
                                     }
                                 }
@@ -175,9 +169,9 @@ public class AndroidManifestInjector {
                 }
             }
         }
-        String concat2 = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str2).concat("/Injection/androidmanifest/app_components.txt");
-        if (FileUtil.isExistFile(concat2) && !FileUtil.readFile(concat2).trim().equals("")) {
-            arrayList.set(arrayList.size() - 3, ((String) arrayList.get(arrayList.size() - 3)).concat("\r\n").concat(FileUtil.readFile(concat2)));
+        String appComponentsPath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/app_components.txt");
+        if (FileUtil.isExistFile(appComponentsPath) && !FileUtil.readFile(appComponentsPath).trim().equals("")) {
+            arrayList.set(arrayList.size() - 3, ((String) arrayList.get(arrayList.size() - 3)).concat("\r\n").concat(FileUtil.readFile(appComponentsPath)));
         }
         String str8 = "";
         for (int i4 = 0; i4 < arrayList.size(); i4++) {
@@ -186,20 +180,18 @@ public class AndroidManifestInjector {
         return str8;
     }
 
-    public static void addToApp(Nx nx, String str) {
+    public static void addToApp(Nx nx, String sc_id) {
         boolean z;
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
-            new ArrayList();
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (FileUtil.isExistFile(concat)) {
-                ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
+                ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
                 int i = 0;
                 boolean z2 = false;
                 while (i < arrayList.size()) {
-                    String str2 = (String) ((HashMap) arrayList.get(i)).get("value");
-                    if (((String) ((HashMap) arrayList.get(i)).get("name")).equals("_application_attrs")) {
-                        nx.b((String) ((HashMap) arrayList.get(i)).get("value"));
+                    String str2 = (String) arrayList.get(i).get("value");
+                    if (((String) arrayList.get(i).get("name")).equals("_application_attrs")) {
+                        nx.b((String) arrayList.get(i).get("value"));
                         if (str2.contains("android:theme")) {
                             z = true;
                             i++;
@@ -217,25 +209,23 @@ public class AndroidManifestInjector {
                 return;
             }
             nx.b("android:theme=\"@style/AppTheme\"");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
-    public static void addToAct(Nx nx, String str, String str2) {
+    public static void addToAct(Nx nx, String sc_id, String str2) {
         try {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(str).concat("/Injection/androidmanifest/attributes.json");
-            new ArrayList();
+            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
             if (FileUtil.isExistFile(concat)) {
-                ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    /* class mod.hilal.saif.android_manifest.AndroidManifestInjector.AnonymousClass8 */
-                }.getType());
+                ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
                 for (int i = 0; i < arrayList.size(); i++) {
-                    if (((String) ((HashMap) arrayList.get(i)).get("name")).equals(str2.substring(0, str2.indexOf(".java"))) || ((String) ((HashMap) arrayList.get(i)).get("name")).equals("_apply_for_all_activities")) {
-                        nx.b((String) ((HashMap) arrayList.get(i)).get("value"));
+                    if (((String) (arrayList.get(i)).get("name")).equals(str2.substring(0, str2.indexOf(".java")))
+                            || ((String) (arrayList.get(i)).get("name")).equals("_apply_for_all_activities")) {
+                        nx.b((String) (arrayList.get(i)).get("value"));
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -247,12 +237,11 @@ public class AndroidManifestInjector {
         String str4;
         String str5 = "";
         try {
-            ArrayList arrayList = new ArrayList();
-            ArrayList arrayList2 = new ArrayList();
-            ArrayList arrayList3 = new ArrayList();
-            new ArrayList();
-            ArrayList arrayList4 = new ArrayList();
-            ArrayList arrayList5 = new ArrayList();
+            ArrayList<String> arrayList = new ArrayList<>();
+            ArrayList<String> arrayList2 = new ArrayList<>();
+            ArrayList<String> arrayList3 = new ArrayList<>();
+            ArrayList<Integer> arrayList4 = new ArrayList<>();
+            ArrayList<String> arrayList5 = new ArrayList<>();
             FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/HilalSaifMod/projects/").concat(str2).concat("/manifest/activity"), arrayList);
             for (int i = 0; i < arrayList.size(); i++) {
                 if (((String) arrayList.get(i)).endsWith(".java.adv")) {
@@ -262,7 +251,7 @@ public class AndroidManifestInjector {
             for (int i2 = 0; i2 < arrayList2.size(); i2++) {
                 arrayList3.add(Uri.parse((String) arrayList2.get(i2)).getLastPathSegment().replace(".java.adv", ""));
             }
-            ArrayList arrayList6 = new ArrayList(Arrays.asList(str.split("\n")));
+            ArrayList<String> arrayList6 = new ArrayList<>(Arrays.asList(str.split("\n")));
             int i3 = 0;
             String str6 = "";
             while (i3 < arrayList6.size()) {
@@ -272,7 +261,7 @@ public class AndroidManifestInjector {
                 if (!((String) arrayList6.get(i3)).contains("<activity") || str6.equals("")) {
                     str4 = str6;
                 } else {
-                    arrayList4.add(Integer.valueOf(i3 - 1));
+                    arrayList4.add(i3 - 1);
                     arrayList5.add(str6);
                     str4 = "";
                 }
@@ -281,8 +270,8 @@ public class AndroidManifestInjector {
             }
             for (int i4 = 0; i4 < arrayList3.size(); i4++) {
                 String readFile = FileUtil.readFile((String) arrayList2.get(i4));
-                int intValue = ((Integer) arrayList4.get(arrayList5.indexOf((String) arrayList3.get(i4)))).intValue();
-                if (arrayList3.get(i4) == "MainActivity") {
+                int intValue = (Integer) arrayList4.get(arrayList5.indexOf((String) arrayList3.get(i4)));
+                if (arrayList3.get(i4).equals("MainActivity")) {
                     arrayList6.set(intValue, readFile.concat("\n"));
                 } else {
                     arrayList6.set(intValue, ((String) arrayList6.get(intValue)).replace("/", "").concat("\n").concat(readFile));
@@ -302,7 +291,7 @@ public class AndroidManifestInjector {
             }
             int i6 = 0;
             while (i6 < arrayList6.size()) {
-                if (str5 == "") {
+                if (str5.equals("")) {
                     concat = (String) arrayList6.get(i6);
                 } else {
                     concat = str5.concat("\n").concat((String) arrayList6.get(i6));
@@ -312,13 +301,10 @@ public class AndroidManifestInjector {
             }
             str5.replace("\r", "");
             String concat3 = FileUtil.getExternalStorageDir().concat("/.sketchware/HilalSaifMod/projects/").concat(str2).concat("/manifest/replace/replace");
-            new ArrayList();
             if (FileUtil.isExistFile(concat3)) {
-                ArrayList arrayList7 = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat3), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    /* class mod.hilal.saif.android_manifest.AndroidManifestInjector.AnonymousClass9 */
-                }.getType());
+                ArrayList<HashMap<String, Object>> arrayList7 = new Gson().fromJson(FileUtil.readFile(concat3), Helper.TYPE_MAP_LIST);
                 for (int i7 = 0; i7 < arrayList7.size(); i7++) {
-                    str5.replace(((HashMap) arrayList7.get(i7)).get("from").toString(), ((HashMap) arrayList7.get(i7)).get("to").toString());
+                    str5.replace(arrayList7.get(i7).get("from").toString(), arrayList7.get(i7).get("to").toString());
                 }
             }
             return str5;
