@@ -43,6 +43,9 @@ import id.indosw.mod.codeviewrevo.CodeViewRevo;
 import id.indosw.mod.codeviewrevo.Language;
 import id.indosw.mod.codeviewrevo.SyntaxManager;
 
+import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
+
 public class DirectEditorActivity extends AppCompatActivity {
 
     private final Timer _timer = new Timer();
@@ -148,10 +151,10 @@ public class DirectEditorActivity extends AppCompatActivity {
             /* class id.indosw.mod.DirectEditorActivity.AnonymousClass5 */
 
             public void onClick(View view) {
-                if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
+                if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
                     spinner_edited.performClick();
                 } else {
-                    IndoswUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
+                    SketchwareUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
                 }
             }
         });
@@ -159,15 +162,15 @@ public class DirectEditorActivity extends AppCompatActivity {
             /* class id.indosw.mod.DirectEditorActivity.AnonymousClass6 */
 
             public void onClick(View view) {
-                if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string))) {
+                if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string))) {
                     dialog_deleteTask.setTitle("Restore");
                     dialog_deleteTask.setMessage("Are you sure you want to restore everything? All your edited code will be lost.");
                     dialog_deleteTask.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         /* class id.indosw.mod.DirectEditorActivity.AnonymousClass6.AnonymousClass1 */
 
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            IndoswFileUtil.deleteFile(path_SourceEdited.concat("/" + sc_id_string));
-                            IndoswUtil.showMessage(getApplicationContext(), "Successfully restored original files");
+                            FileUtil.deleteFile(path_SourceEdited.concat("/" + sc_id_string));
+                            SketchwareUtil.showMessage(getApplicationContext(), "Successfully restored original files");
                         }
                     });
                     dialog_deleteTask.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -179,37 +182,37 @@ public class DirectEditorActivity extends AppCompatActivity {
                     dialog_deleteTask.create().show();
                     return;
                 }
-                IndoswUtil.showMessage(getApplicationContext(), "Nothing needs to be restored");
+                SketchwareUtil.showMessage(getApplicationContext(), "Nothing needs to be restored");
             }
         });
         btnSaveCodeEditor.setOnClickListener(new View.OnClickListener() {
             /* class id.indosw.mod.DirectEditorActivity.AnonymousClass7 */
 
             public void onClick(View view) {
-                if (!IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string))) {
-                    IndoswFileUtil.makeDir(path_SourceEdited.concat("/" + sc_id_string));
+                if (!FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string))) {
+                    FileUtil.makeDir(path_SourceEdited.concat("/" + sc_id_string));
                 }
-                IndoswFileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/" + tempName), codeEditorLayout.getText().toString());
-                if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
-                    listMapReplace = new Gson().fromJson(IndoswFileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                FileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/" + tempName), codeEditorLayout.getText().toString());
+                if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
+                    listMapReplace = new Gson().fromJson(FileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                         /* class id.indosw.mod.DirectEditorActivity.AnonymousClass7.AnonymousClass1 */
                     }.getType());
-                    if (!IndoswFileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")).contains(tempPath)) {
+                    if (!FileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")).contains(tempPath)) {
                         mapReplace = new HashMap<>();
                         mapReplace.put("target", tempPath);
                         mapReplace.put("edited", path_SourceEdited.concat("/" + sc_id_string + "/" + tempName));
                         listMapReplace.add(mapReplace);
-                        IndoswFileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"), new Gson().toJson(listMapReplace));
+                        FileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"), new Gson().toJson(listMapReplace));
                         listMapEditedCode.clear();
-                        if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
-                            listMapEditedCode = new Gson().fromJson(IndoswFileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                        if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
+                            listMapEditedCode = new Gson().fromJson(FileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                                 /* class id.indosw.mod.DirectEditorActivity.AnonymousClass7.AnonymousClass2 */
                             }.getType());
                             Spinner spinner = spinner_edited;
                             DirectEditorActivity directEditorActivity = DirectEditorActivity.this;
                             spinner.setAdapter(new Spinner_editedAdapter(directEditorActivity.listMapEditedCode));
                         } else {
-                            IndoswUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
+                            SketchwareUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
                         }
                     }
                 } else {
@@ -217,17 +220,17 @@ public class DirectEditorActivity extends AppCompatActivity {
                     mapReplace.put("target", tempPath);
                     mapReplace.put("edited", path_SourceEdited.concat("/" + sc_id_string + "/" + tempName));
                     listMapReplace.add(mapReplace);
-                    IndoswFileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"), new Gson().toJson(listMapReplace));
+                    FileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"), new Gson().toJson(listMapReplace));
                     listMapEditedCode.clear();
-                    if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
-                        listMapEditedCode = new Gson().fromJson(IndoswFileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                    if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
+                        listMapEditedCode = new Gson().fromJson(FileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                             /* class id.indosw.mod.DirectEditorActivity.AnonymousClass7.AnonymousClass3 */
                         }.getType());
                         Spinner spinner2 = spinner_edited;
                         DirectEditorActivity directEditorActivity2 = DirectEditorActivity.this;
                         spinner2.setAdapter(new Spinner_editedAdapter(directEditorActivity2.listMapEditedCode));
                     } else {
-                        IndoswUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
+                        SketchwareUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
                     }
                 }
                 btnSaveCodeEditor.setVisibility(View.GONE);
@@ -240,16 +243,16 @@ public class DirectEditorActivity extends AppCompatActivity {
                 if (!z) {
                     return;
                 }
-                if (!IndoswFileUtil.isExistFile(path_SourceEdited + "/" + sc_id_string + "/Task.json")) {
+                if (!FileUtil.isExistFile(path_SourceEdited + "/" + sc_id_string + "/Task.json")) {
                     replace_active.setChecked(false);
-                    IndoswUtil.showMessage(getApplicationContext(), "Task Null !!!");
+                    SketchwareUtil.showMessage(getApplicationContext(), "Task Null !!!");
                     return;
                 }
-                listMapReplace = new Gson().fromJson(IndoswFileUtil.readFile(path_SourceEdited + "/" + sc_id_string + "/Task.json"), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                listMapReplace = new Gson().fromJson(FileUtil.readFile(path_SourceEdited + "/" + sc_id_string + "/Task.json"), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                     /* class id.indosw.mod.DirectEditorActivity.AnonymousClass8.AnonymousClass1 */
                 }.getType());
-                if (IndoswFileUtil.isExistFile(path_bin + "/" + nameAPK)) {
-                    IndoswFileUtil.deleteFile(path_bin + "/" + nameAPK);
+                if (FileUtil.isExistFile(path_bin + "/" + nameAPK)) {
+                    FileUtil.deleteFile(path_bin + "/" + nameAPK);
                     tmrCheck = new TimerTask() {
                         /* class id.indosw.mod.DirectEditorActivity.AnonymousClass8.AnonymousClass2 */
 
@@ -258,16 +261,16 @@ public class DirectEditorActivity extends AppCompatActivity {
                                 /* class id.indosw.mod.DirectEditorActivity.AnonymousClass8.AnonymousClass2.AnonymousClass1 */
 
                                 public void run() {
-                                    if (IndoswFileUtil.isExistFile(path_bin + "/" + nameAPK)) {
+                                    if (FileUtil.isExistFile(path_bin + "/" + nameAPK)) {
                                         replace_active.setChecked(false);
                                     }
                                     repeatReplace = 0.0d;
                                     for (int i = 0; i < listMapReplace.size(); i++) {
-                                        IndoswFileUtil.copyFile(Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("edited")).toString(), Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("target")).toString());
+                                        FileUtil.copyFile(Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("edited")).toString(), Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("target")).toString());
                                         DirectEditorActivity.access$1908(DirectEditorActivity.this);
                                     }
                                     if (!(replace_active.isChecked() || tmrCheck == null)) {
-                                        IndoswUtil.showMessage(getApplicationContext(), "Task Completed");
+                                        SketchwareUtil.showMessage(getApplicationContext(), "Task Completed");
                                         tmrCheck.cancel();
                                     }
                                 }
@@ -283,16 +286,16 @@ public class DirectEditorActivity extends AppCompatActivity {
                                 /* class id.indosw.mod.DirectEditorActivity.AnonymousClass8.AnonymousClass3.AnonymousClass1 */
 
                                 public void run() {
-                                    if (IndoswFileUtil.isExistFile(path_bin + "/" + nameAPK)) {
+                                    if (FileUtil.isExistFile(path_bin + "/" + nameAPK)) {
                                         replace_active.setChecked(false);
                                     }
                                     repeatReplace = 0.0d;
                                     for (int i = 0; i < listMapReplace.size(); i++) {
-                                        IndoswFileUtil.copyFile(Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("edited")).toString(), Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("target")).toString());
+                                        FileUtil.copyFile(Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("edited")).toString(), Objects.requireNonNull(listMapReplace.get((int) repeatReplace).get("target")).toString());
                                         DirectEditorActivity.access$1908(DirectEditorActivity.this);
                                     }
                                     if (!(replace_active.isChecked() || tmrCheck == null)) {
-                                        IndoswUtil.showMessage(getApplicationContext(), "Task Completed");
+                                        SketchwareUtil.showMessage(getApplicationContext(), "Task Completed");
                                         tmrCheck.cancel();
                                     }
                                 }
@@ -318,8 +321,8 @@ public class DirectEditorActivity extends AppCompatActivity {
         String absolutePath2 = new File("/storage/emulated/0/.sketchware/mysc/list/").getAbsolutePath();
         String str = new File("/storage/emulated/0/.sketchware/data").getAbsolutePath() + "/SourceEdited";
         path_SourceEdited = str;
-        if (!IndoswFileUtil.isExistFile(str)) {
-            IndoswFileUtil.makeDir(path_SourceEdited);
+        if (!FileUtil.isExistFile(str)) {
+            FileUtil.makeDir(path_SourceEdited);
         }
         try {
             Cipher instance = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -340,8 +343,8 @@ public class DirectEditorActivity extends AppCompatActivity {
         String str3 = absolutePath + "/" + sc_id_string + "/app/src/main/res/layout/";
         path_manifest = absolutePath + "/" + sc_id_string + "/app/src/main/AndroidManifest.xml";
         path_bin = absolutePath + "/" + sc_id_string + "/bin";
-        if (IndoswFileUtil.isExistFile(str2)) {
-            IndoswFileUtil.listDir(str2, list_file_java);
+        if (FileUtil.isExistFile(str2)) {
+            FileUtil.listDir(str2, list_file_java);
             for (int i2 = 0; i2 < list_file_java.size(); i2++) {
                 HashMap<String, Object> hashMap2 = new HashMap<>();
                 hashMap2.put("filePath", list_file_java.get((int) repeatJava));
@@ -351,8 +354,8 @@ public class DirectEditorActivity extends AppCompatActivity {
                 repeatJava += 1.0d;
             }
         }
-        if (IndoswFileUtil.isExistFile(str3)) {
-            IndoswFileUtil.listDir(str3, list_file_res);
+        if (FileUtil.isExistFile(str3)) {
+            FileUtil.listDir(str3, list_file_res);
             for (int i3 = 0; i3 < list_file_res.size(); i3++) {
                 HashMap<String, Object> hashMap3 = new HashMap<>();
                 hashMap3.put("filePath", list_file_res.get((int) repeatRes));
@@ -438,13 +441,13 @@ public class DirectEditorActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, 2131034337));
         }
-        if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
-            listMapEditedCode = new Gson().fromJson(IndoswFileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+        if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
+            listMapEditedCode = new Gson().fromJson(FileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 /* class id.indosw.mod.DirectEditorActivity.AnonymousClass17 */
             }.getType());
             spinner_edited.setAdapter(new Spinner_editedAdapter(listMapEditedCode));
         } else {
-            IndoswUtil.showMessage(getApplicationContext(), "You haven't edited anything yet");
+            SketchwareUtil.showMessage(getApplicationContext(), "You haven't edited anything yet");
         }
         codeEditorLayout.setText("//This menu reads files inside /Internal Storage/.sketchware/mysc/.\n//Make sure you build your project first, or else no files will be shown!\n\n\n//Select a class, layout or the manifest file\n//by selecting it in the dropdown menu above\n\n//then --> EDIT\n//then --> SAVE\n//and --> activate the switch\n//to run the command\n//to replace the default code\n//with the code you edited");
     }
@@ -463,7 +466,7 @@ public class DirectEditorActivity extends AppCompatActivity {
 
     public void _UpdateView(String str, String str2) {
         currentValue.setText(str2);
-        codeEditorLayout.setText(IndoswFileUtil.readFile(str));
+        codeEditorLayout.setText(FileUtil.readFile(str));
         codeEditorLayout.setEnabled(true);
         tempName = str2;
         tempPath = str;
@@ -623,19 +626,19 @@ public class DirectEditorActivity extends AppCompatActivity {
                         /* class id.indosw.mod.DirectEditorActivity.Spinner_editedAdapter.AnonymousClass2.AnonymousClass1 */
 
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            IndoswFileUtil.deleteFile(Objects.requireNonNull(_data.get(i).get("edited")).toString());
+                            FileUtil.deleteFile(Objects.requireNonNull(_data.get(i).get("edited")).toString());
                             _data.remove(i);
-                            IndoswUtil.showMessage(getApplicationContext(), "Successfully deleted");
-                            IndoswFileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"), new Gson().toJson(_data));
+                            SketchwareUtil.showMessage(getApplicationContext(), "Successfully deleted");
+                            FileUtil.writeFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"), new Gson().toJson(_data));
                             listMapEditedCode.clear();
-                            if (IndoswFileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
-                                listMapEditedCode = new Gson().fromJson(IndoswFileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                            if (FileUtil.isExistFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json"))) {
+                                listMapEditedCode = new Gson().fromJson(FileUtil.readFile(path_SourceEdited.concat("/" + sc_id_string + "/Task.json")), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                                     /* class id.indosw.mod.DirectEditorActivity.Spinner_editedAdapter.AnonymousClass2.AnonymousClass1.AnonymousClass1 */
                                 }.getType());
                                 spinner_edited.setAdapter(new Spinner_editedAdapter(listMapEditedCode));
                                 return;
                             }
-                            IndoswUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
+                            SketchwareUtil.showMessage(getApplicationContext(), "Nothing You Edited Yet");
                         }
                     });
                     dialog_deleteTask.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
