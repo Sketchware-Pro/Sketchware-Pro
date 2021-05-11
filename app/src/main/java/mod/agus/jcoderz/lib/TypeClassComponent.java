@@ -4,51 +4,50 @@ import mod.hilal.saif.components.ComponentsHandler;
 
 public class TypeClassComponent {
 
-  public static String a(String component) {
-    switch (component) {
-      case "FBAdsInterstitial":
-        return "Component.FBAdsInterstitial";
+    public static String a(String component) {
+        switch (component) {
+            case "FBAdsInterstitial":
+                return "Component.FBAdsInterstitial";
 
-      case "Videos":
-        return "Component.Videos";
+            case "Videos":
+                return "Component.Videos";
 
-      case "FirebaseAdmin":
-        return "Component.OneSignal";
+            case "FirebaseAdmin":
+                return "Component.OneSignal";
 
-      case "FirebaseCloudMessage":
-        return "Component.FirebaseCloudMessage";
+            case "FirebaseCloudMessage":
+                return "Component.FirebaseCloudMessage";
 
-      case "TimePickerDialog":
-        return "Component.TimePickerDialog";
+            case "TimePickerDialog":
+                return "Component.TimePickerDialog";
 
-      case "FBAdsBanner":
-        return "Component.FBAdsBanner";
+            case "FBAdsBanner":
+                return "Component.FBAdsBanner";
 
-      case "Notification":
-        return "Component.Notification";
+            case "Notification":
+                return "Component.Notification";
 
-      case "ProgressDialog":
-        return "Component.ProgressDialog";
+            case "ProgressDialog":
+                return "Component.ProgressDialog";
 
-      case "FirebaseGoogleLogin":
-        return "Component.FirebaseGoogleLogin";
+            case "FirebaseGoogleLogin":
+                return "Component.FirebaseGoogleLogin";
 
-      case "FirebaseDynamicLink":
-        return "Component.FirebaseDynamicLink";
+            case "FirebaseDynamicLink":
+                return "Component.FirebaseDynamicLink";
 
-      case "PopupMenu":
-        return "Component.PopupMenu";
+            case "PopupMenu":
+                return "Component.PopupMenu";
 
-      case "DatePickerDialog":
-        return "Component.DatePickerDialog";
+            case "DatePickerDialog":
+                return "Component.DatePickerDialog";
 
-      case "FirebasePhoneAuth":
-        return "Component.FirebasePhoneAuth";
+            case "FirebasePhoneAuth":
+                return "Component.FirebasePhoneAuth";
 
-      case "MediaController":
-        return "Component.MediaController";
+            case "MediaController":
+                return "Component.MediaController";
+        }
+        return ComponentsHandler.c(component);
     }
-    return ComponentsHandler.c(component);
-  }
-
 }
