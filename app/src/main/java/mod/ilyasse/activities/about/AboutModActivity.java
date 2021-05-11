@@ -167,14 +167,14 @@ public class AboutModActivity extends AppCompatActivity {
                     }
                     sharedPref.edit().putString("changelogBackup", new Gson().toJson(changelogList)).apply();
                     changelogRecycler.setAdapter(new ChangelogRecyclerAdapter(changelogList));
-                    _shadAnim(loading, "translationY", 50, 400);
+                    shadAnim(loading, "translationY", 50, 400);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            _shadAnim(fab, "translationY", 0, 300);
-                            _shadAnim(fab, "alpha", 1, 300);
-                            _shadAnim(loading, "translationY", -1000, 300);
-                            _shadAnim(loading, "alpha", 0, 300);
+                            shadAnim(fab, "translationY", 0, 300);
+                            shadAnim(fab, "alpha", 1, 300);
+                            shadAnim(loading, "translationY", -1000, 300);
+                            shadAnim(loading, "alpha", 0, 300);
                         }
                     }, 200);
                 } catch (JSONException e) {
@@ -277,35 +277,35 @@ public class AboutModActivity extends AppCompatActivity {
         });
     }
 
-    private void _circularImage(final ImageView _image, final String _url) {
+    private void circularImage(final ImageView image, final String url) {
         Glide.with(this)
-                .load(_url)
-                .placeholder(Resources.drawable.ic_user)
-                .into(_image);
+                .load(url)
+                .placeholder(Resources.drawable.icuser)
+                .into(image);
     }
 
-    private void _advancedCorners(final View _view, final String _color, final double _n1, final double _n2, final double _n3, final double _n4) {
+    private void advancedCorners(final View view, final String color, final double n1, final double n2, final double n3, final double n4) {
         GradientDrawable gd = new GradientDrawable();
-        gd.setColor(Color.parseColor(_color));
-        gd.setCornerRadii(new float[]{(int) _n1, (int) _n1, (int) _n2, (int) _n2, (int) _n4, (int) _n4, (int) _n3, (int) _n3});
-        _view.setBackground(gd);
+        gd.setColor(Color.parseColor(color));
+        gd.setCornerRadii(new float[]{(int) n1, (int) n1, (int) n2, (int) n2, (int) n4, (int) n4, (int) n3, (int) n3});
+        view.setBackground(gd);
     }
 
-    private void _shadAnim(final View _view, final String _propertyName, final double _value, final double _duration) {
+    private void shadAnim(final View view, final String propertyName, final double value, final double duration) {
         ObjectAnimator anim = new ObjectAnimator();
-        anim.setTarget(_view);
-        anim.setPropertyName(_propertyName);
-        anim.setFloatValues((float) _value);
-        anim.setDuration((long) _duration);
+        anim.setTarget(view);
+        anim.setPropertyName(propertyName);
+        anim.setFloatValues((float) value);
+        anim.setDuration((long) duration);
         anim.start();
     }
 
-    private void rippleRound(final View _view, final String _focus, final String _pressed, final double _round) {
+    private void rippleRound(final View view, final String focus, final String pressed, final double round) {
         GradientDrawable GG = new GradientDrawable();
-        GG.setColor(Color.parseColor(_focus));
-        GG.setCornerRadius((float) _round);
-        RippleDrawable RE = new RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(_pressed)}), GG, null);
-        _view.setBackground(RE);
+        GG.setColor(Color.parseColor(focus));
+        GG.setCornerRadius((float) round);
+        RippleDrawable RE = new RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        view.setBackground(RE);
     }
 
     // PagerAdapter got obfuscated to kk
@@ -396,11 +396,11 @@ public class AboutModActivity extends AppCompatActivity {
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = getLayoutInflater();
-            View _v = _inflater.inflate(Resources.layout.about_moddersview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
-            return new ViewHolder(_v);
+            LayoutInflater inflater = getLayoutInflater();
+            View v = inflater.inflate(Resources.layout.about_moddersview, null);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            v.setLayoutParams(lp);
+            return new ViewHolder(v);
         }
 
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
@@ -417,10 +417,10 @@ public class AboutModActivity extends AppCompatActivity {
             final TextView userName = itemView.findViewById(Resources.id.tv_user_name);
             final TextView description = itemView.findViewById(Resources.id.tv_description);
 
-            _circularImage(userIcon, Objects.requireNonNull(modders.get(position).get("modder_img")).toString());
+            circularImage(userIcon, Objects.requireNonNull(modders.get(position).get("modder_img")).toString());
             userName.setText(Objects.requireNonNull(modders.get(position).get("modder_username")).toString());
             description.setText(Objects.requireNonNull(modders.get(position).get("modder_description")).toString());
-            _advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
+            advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
             Object isTitled = modders.get(position).get("isTitled");
             if (isTitled instanceof String) {
                 if (Boolean.parseBoolean((String) isTitled)) {
