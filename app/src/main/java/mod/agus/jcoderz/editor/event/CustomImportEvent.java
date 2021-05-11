@@ -4,34 +4,27 @@ import java.util.ArrayList;
 import mod.hilal.saif.events.EventsHandler;
 
 public class CustomImportEvent {
-    public static void a(ArrayList arrayList, String str) {
-        switch (str.hashCode()) {
-            case -1289633697:
-                if (str.equals("OnFailureListener")) {
-                    arrayList.add("com.google.android.gms.tasks.OnFailureListener");
-                    break;
-                }
-                break;
-            case -1004134177:
-                if (str.equals("OTPListener")) {
-                    arrayList.add("affan.ahmad.otp.OTPListener");
-                    break;
-                }
-                break;
-            case -838515240:
-                if (str.equals("OnSuccessListener")) {
-                    arrayList.add("com.google.android.gms.tasks.OnSuccessListener");
-                    break;
-                }
-                break;
-            case 1448799876:
-                if (str.equals("OnCompleteListenerFCM")) {
-                    arrayList.add("com.google.android.gms.tasks.OnCompleteListener");
-                    arrayList.add("com.google.android.gms.tasks.Task");
-                    break;
-                }
-                break;
-        }
-        EventsHandler.getImports(arrayList, str);
+
+  public static void a(ArrayList importList, String listener) {
+    switch (listener) {
+      case "OnFailureListener":
+        importList.add("com.google.android.gms.tasks.OnFailureListener");
+        break;
+        
+      case "OTPListener":
+        importList.add("affan.ahmad.otp.OTPListener");
+        break;
+        
+      case "OnSuccessListener":
+        importList.add("com.google.android.gms.tasks.OnSuccessListener");
+        break;
+        
+      case "OnCompleteListenerFCM":
+        importList.add("com.google.android.gms.tasks.OnCompleteListener");
+        importList.add("com.google.android.gms.tasks.Task");
+        break;
     }
+    EventsHandler.getImports(importList, str);
+  }
+
 }
