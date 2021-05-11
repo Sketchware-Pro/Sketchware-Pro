@@ -57,9 +57,11 @@ import a.a.a.yB;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.w3wide.control.VersionDialog;
 
 public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
+    private VersionDialog mVersionDialog;
     public final String[] t = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
     public final String[] u = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
     public EditText A;
@@ -169,7 +171,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             case Resources.id.ver_code:
             case Resources.id.ver_name:
                 if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
-                    showNewVersionControl();
+                    mVersionDialog.show();
                 } else {
                     v();
                 }
@@ -413,6 +415,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             G.setVisibility(View.VISIBLE);
             B.requestFocus();
         }
+        mVersionDialog = new VersionDialog(this);
     }
 
     @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
