@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SWProRemodRemod.iml" filepath="$PROJECT_DIR$/.idea/SWProRemodRemod.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SW_Pro_Remod_Remod.iml" filepath="$PROJECT_DIR$/.idea/modules/SW_Pro_Remod_Remod.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SW_Pro_Remod_Remod.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SW_Pro_Remod_Remod.app.iml" />
     </modules>

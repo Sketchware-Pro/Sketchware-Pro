@@ -280,7 +280,7 @@ public class AboutModActivity extends AppCompatActivity {
     private void circularImage(final ImageView image, final String url) {
         Glide.with(this)
                 .load(url)
-                .placeholder(Resources.drawable.icuser)
+                .placeholder(Resources.drawable.ic_user)
                 .into(image);
     }
 
