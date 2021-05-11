@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -234,14 +235,13 @@ public class AboutModActivity extends AppCompatActivity {
 
         viewPager.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         MyPagerAdapter adapter = new MyPagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         root.addView(viewPager);
 
-        tablayout.setSelectedTabIndicatorColor(Color.parseColor("#008DCD"));
+        tablayout.setSelectedTabIndicatorColor(0xff008dcd);
         //replaced with xml attributes instead of changing texts colors programmatically
 
         tablayout.setupWithViewPager(viewPager);
@@ -280,7 +280,7 @@ public class AboutModActivity extends AppCompatActivity {
     private void circularImage(final ImageView image, final String url) {
         Glide.with(this)
                 .load(url)
-                .placeholder(Resources.drawable.icuser)
+                .placeholder(Resources.drawable.ic_user)
                 .into(image);
     }
 
@@ -304,7 +304,7 @@ public class AboutModActivity extends AppCompatActivity {
         GradientDrawable GG = new GradientDrawable();
         GG.setColor(Color.parseColor(focus));
         GG.setCornerRadius((float) round);
-        RippleDrawable RE = new RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
         view.setBackground(RE);
     }
 
@@ -396,10 +396,10 @@ public class AboutModActivity extends AppCompatActivity {
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = getLayoutInflater();
-            View v = inflater.inflate(Resources.layout.about_moddersview, null);
-            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            v.setLayoutParams(lp);
+            View v = getLayoutInflater().inflate(Resources.layout.about_moddersview, null);
+            v.setLayoutParams(new RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
             return new ViewHolder(v);
         }
 
@@ -411,31 +411,46 @@ public class AboutModActivity extends AppCompatActivity {
             View itemView = holder.b;
 
             final TextView title = itemView.findViewById(Resources.id.tv_title);
-
             final LinearLayout sidebar = itemView.findViewById(Resources.id.view_leftline);
             final ImageView userIcon = itemView.findViewById(Resources.id.img_user_icon);
             final TextView userName = itemView.findViewById(Resources.id.tv_user_name);
             final TextView description = itemView.findViewById(Resources.id.tv_description);
 
-            circularImage(userIcon, Objects.requireNonNull(modders.get(position).get("modder_img")).toString());
-            userName.setText(Objects.requireNonNull(modders.get(position).get("modder_username")).toString());
-            description.setText(Objects.requireNonNull(modders.get(position).get("modder_description")).toString());
             advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
+
+            Object modder_img = modders.get(position).get("modder_img");
+            if (modder_img instanceof String) {
+                circularImage(userIcon, (String) modder_img);
+            }
+
+            Object modder_username = modders.get(position).get("modder_username");
+            if (modder_username instanceof String) {
+                userName.setText((String) modder_username);
+            }
+
+            Object modder_description = modders.get(position).get("modder_description");
+            if (modder_description instanceof String) {
+                description.setText((String) modder_description);
+            }
+
             Object isTitled = modders.get(position).get("isTitled");
+            boolean isTitle = false;
             if (isTitled instanceof String) {
-                if (Boolean.parseBoolean((String) isTitled)) {
-                    title.setText(Objects.requireNonNull(modders.get(position).get("title")).toString());
-                    title.setVisibility(View.VISIBLE);
-                } else {
-                    title.setVisibility(View.GONE);
-                }
+                isTitle = Boolean.parseBoolean((String) isTitled);
             } else if (isTitled instanceof Boolean) {
-                if ((boolean) isTitled) {
-                    title.setText(Objects.requireNonNull(modders.get(position).get("title")).toString());
+                isTitle = (boolean) isTitled;
+            }
+
+            Object titleText = modders.get(position).get("title");
+            if (isTitle) {
+                if (titleText instanceof String) {
+                    title.setText((String) titleText);
                     title.setVisibility(View.VISIBLE);
                 } else {
                     title.setVisibility(View.GONE);
                 }
+            } else {
+                title.setVisibility(View.GONE);
             }
         }
 
@@ -488,21 +503,25 @@ public class AboutModActivity extends AppCompatActivity {
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
 
             Object isTitled = changelog.get(position).get("isTitled");
+            boolean isTitle = false;
             if (isTitled instanceof String) {
-                if (Boolean.parseBoolean((String) isTitled)) {
-                    title.setText(Objects.requireNonNull(changelog.get(position).get("title")).toString());
-                    title.setVisibility(View.VISIBLE);
-                } else {
-                    title.setVisibility(View.GONE);
-                }
+                isTitle = Boolean.parseBoolean((String) isTitled);
             } else if (isTitled instanceof Boolean) {
-                if ((boolean) isTitled) {
-                    title.setText(Objects.requireNonNull(changelog.get(position).get("title")).toString());
+                isTitle = (boolean) isTitled;
+            }
+
+            if (isTitle) {
+                Object titleText = changelog.get(position).get("title");
+                if (titleText instanceof String) {
+                    title.setText((String) titleText);
                     title.setVisibility(View.VISIBLE);
                 } else {
                     title.setVisibility(View.GONE);
                 }
+            } else {
+                title.setVisibility(View.GONE);
             }
+
             subtitle.setText(Objects.requireNonNull(changelog.get(position).get("description")).toString());
         }
 

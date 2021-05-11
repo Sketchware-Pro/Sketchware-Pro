@@ -1,16 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootrelativeview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <!-- android:id="@+id/rootrelativeview" -->
 
     <LinearLayout
-        android:id="@+id/maindataholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical">
+        <!-- android:id="@+id/maindataholder" -->
 
         <LinearLayout
             android:id="@+id/toolbar"
@@ -121,17 +121,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:gravity="center_horizontal|center_vertical"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="8dp"
-        android:visibility="visible"
-        app:layout_anchorGravity="center">
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="200dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/girl_swimming_flat" />
         <!-- android:id="@+id/img_loading" -->
 
