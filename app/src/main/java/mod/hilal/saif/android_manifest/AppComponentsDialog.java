@@ -1,267 +1,219 @@
 package mod.hilal.saif.android_manifest;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.sketchware.remod.Resources;
+
 import java.util.Timer;
 import java.util.TimerTask;
+
+import mod.SketchwareUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
+import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 import mod.hilal.saif.lib.FileUtil;
 
 public class AppComponentsDialog extends Dialog {
-    public Timer _timer = new Timer();
-    public Activity act;
-    public ViewGroup base;
-    public TextView cancel;
-    public CodeEditorLayout codeEditor;
-    public CodeEditorEditText edito;
-    public String s;
-    public TextView save;
-    public String str;
-    public TextView title;
-    public TimerTask uu;
-    public TextView zoomin;
-    public TextView zoomout;
 
-    public AppComponentsDialog(Activity activity, String str2) {
+    private static String APP_COMPONENTS_PATH;
+    private final Timer _timer = new Timer();
+    private final Activity act;
+    private ViewGroup base;
+    private TextView cancel;
+    private CodeEditorLayout codeEditor;
+    private CodeEditorEditText editor;
+    private TextView save;
+
+    public AppComponentsDialog(Activity activity, String sc_id) {
         super(activity);
+        APP_COMPONENTS_PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/app_components.txt");
         this.act = activity;
-        this.s = str2;
     }
 
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(2131427787);
-        this.codeEditor = findViewById(2131232367);
-        this.zoomin = (TextView) findViewById(2131232455);
-        this.zoomin.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                AppComponentsDialog.this.codeEditor.increaseTextSize();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(Resources.layout.view_code);
+        codeEditor = findViewById(Resources.id.text_content);
+        TextView zoom_in = (TextView) findViewById(Resources.id.code_editor_zoomin);
+        zoom_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codeEditor.increaseTextSize();
             }
         });
-        this.zoomout = (TextView) findViewById(2131232456);
-        this.zoomout.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                AppComponentsDialog.this.codeEditor.decreaseTextSize();
+        TextView zoom_out = (TextView) findViewById(Resources.id.code_editor_zoomout);
+        zoom_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                codeEditor.decreaseTextSize();
             }
         });
-        this.codeEditor.setLayoutParams(new LinearLayout.LayoutParams(-1, 0, 1.0f));
-        this.base = (ViewGroup) this.codeEditor.getParent();
-        this.base.setBackground(new GradientDrawable() {
-
-            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                setCornerRadius((float) i);
-                setStroke(i2, i3);
-                setColor(i4);
-                return this;
-            }
-        }.getIns((int) getDip(4), 0, -1, -1));
-        this.title = (TextView) findViewById(2131232366);
-        this.title.setText("App Components");
-        addControll();
+        codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                0,
+                1.0f));
+        base = (ViewGroup) codeEditor.getParent();
+        base.setBackground(new DialogButtonGradientDrawable()
+                .getIns((int) getDip(4), 0, Color.WHITE, Color.WHITE));
+        TextView title = (TextView) findViewById(Resources.id.text_title);
+        title.setText("App Components");
+        addControl();
         setListeners();
-        getWindow().setLayout(-1, -1);
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        this.codeEditor.start(ColorScheme.XML());
+        getWindow().setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        codeEditor.start(ColorScheme.XML());
         setCodeEditorText();
-        this.edito = this.codeEditor.getEditText();
-        this.codeEditor.onCreateOptionsMenu(findViewById(2131232504));
-        this.edito.setInputType(655361);
-        this.edito.setImeOptions(1);
+        editor = codeEditor.getEditText();
+        codeEditor.onCreateOptionsMenu(findViewById(Resources.id.codeeditor_more_options));
+        editor.setInputType(655361);
+        editor.setImeOptions(1);
     }
 
-    public void addControll() {
+    private void addControl() {
         final LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0.0f));
-        linearLayout.setPadding((int) getDip(0), (int) getDip(0), (int) getDip(0), (int) getDip(0));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                0.0f));
+        linearLayout.setPadding(
+                0,
+                0,
+                0,
+                0);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        if (this.codeEditor.dark_theme) {
-            linearLayout.setBackgroundColor(Color.parseColor("#FF292929"));
+        if (codeEditor.dark_theme) {
+            linearLayout.setBackgroundColor(0xff29292);
         } else {
-            linearLayout.setBackgroundColor(-1);
+            linearLayout.setBackgroundColor(Color.WHITE);
         }
-        this.cancel = new TextView(getContext());
-        this.cancel.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1.0f));
-        ((LinearLayout.LayoutParams) this.cancel.getLayoutParams()).setMargins((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        this.cancel.setText("cancel");
-        this.cancel.setTextColor(-1);
-        this.cancel.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        this.cancel.setGravity(17);
-        if (this.codeEditor.dark_theme) {
-            this.cancel.setBackgroundColor(-13421773);
+        cancel = new TextView(getContext());
+        cancel.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f));
+        ((LinearLayout.LayoutParams) cancel.getLayoutParams()).setMargins(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8));
+        cancel.setText(Resources.string.common_word_cancel);
+        cancel.setTextColor(Color.WHITE);
+        cancel.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8));
+        cancel.setGravity(17);
+        if (codeEditor.dark_theme) {
+            cancel.setBackgroundColor(0xff333333);
         } else {
-            this.cancel.setBackgroundColor(-16740915);
+            cancel.setBackgroundColor(0xff008dcd);
         }
-        this.cancel.setTextSize(15.0f);
-        linearLayout.addView(this.cancel);
-        this.save = new TextView(getContext());
-        this.save.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1.0f));
-        ((LinearLayout.LayoutParams) this.save.getLayoutParams()).setMargins((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        this.save.setText("save");
-        this.save.setTextColor(-1);
-        this.save.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        this.save.setGravity(17);
-        if (this.codeEditor.dark_theme) {
-            this.save.setBackgroundColor(-13421773);
+        cancel.setTextSize(15.0f);
+        linearLayout.addView(cancel);
+        save = new TextView(getContext());
+        save.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f));
+        ((LinearLayout.LayoutParams) save.getLayoutParams()).setMargins(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8));
+        save.setText(Resources.string.common_word_save);
+        save.setTextColor(Color.WHITE);
+        save.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8));
+        save.setGravity(17);
+        if (codeEditor.dark_theme) {
+            save.setBackgroundColor(0xff333333);
         } else {
-            this.save.setBackgroundColor(-16740915);
+            save.setBackgroundColor(0xff008dcd);
         }
-        this.save.setTextSize(15.0f);
-        linearLayout.addView(this.save);
-        if (this.codeEditor.dark_theme) {
-            this.save.setBackground(new GradientDrawable() {
-
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -13421773, -13421773));
-            this.cancel.setBackground(new GradientDrawable() {
-
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -13421773, -13421773));
+        save.setTextSize(15.0f);
+        linearLayout.addView(save);
+        if (codeEditor.dark_theme) {
+            save.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+            cancel.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
         } else {
-            this.save.setBackground(new GradientDrawable() {
-
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -14575885, -14575885));
-            this.cancel.setBackground(new GradientDrawable() {
-
-                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                    setCornerRadius((float) i);
-                    setStroke(i2, i3);
-                    setColor(i4);
-                    return this;
-                }
-            }.getIns((int) getDip(4), 0, -14575885, -14575885));
+            save.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+            cancel.setBackground(new DialogButtonGradientDrawable()
+                    .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
         }
-        this.save.setElevation((float) ((int) getDip(1)));
-        this.cancel.setElevation((float) ((int) getDip(1)));
-        this.base.addView(linearLayout);
-        this.uu = new TimerTask() {
-
+        save.setElevation(getDip(1));
+        cancel.setElevation(getDip(1));
+        base.addView(linearLayout);
+        TimerTask uu = new TimerTask() {
+            @Override
             public void run() {
-                Activity activity = AppComponentsDialog.this.act;
-                final LinearLayout LinearLayout = linearLayout;
-                activity.runOnUiThread(new Runnable() {
+                act.runOnUiThread(new Runnable() {
                     public void run() {
-                        if (AppComponentsDialog.this.codeEditor.dark_theme) {
-                            linearLayout.setBackgroundColor(Color.parseColor("#FF292929"));
-                            AppComponentsDialog.this.save.setBackground(new GradientDrawable() {
-
-                                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                    setCornerRadius((float) i);
-                                    setStroke(i2, i3);
-                                    setColor(i4);
-                                    return this;
-                                }
-                            }.getIns((int) AppComponentsDialog.this.getDip(4), 0, -13421773, -13421773));
-                            AppComponentsDialog.this.cancel.setBackground(new GradientDrawable() {
-
-                                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                    setCornerRadius((float) i);
-                                    setStroke(i2, i3);
-                                    setColor(i4);
-                                    return this;
-                                }
-                            }.getIns((int) AppComponentsDialog.this.getDip(4), 0, -13421773, -13421773));
-                            return;
+                        if (codeEditor.dark_theme) {
+                            linearLayout.setBackgroundColor(0xff292929);
+                            save.setBackground(new DialogButtonGradientDrawable()
+                                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                            cancel.setBackground(new DialogButtonGradientDrawable()
+                                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                        } else {
+                            linearLayout.setBackgroundColor(Color.WHITE);
+                            save.setBackground(new DialogButtonGradientDrawable()
+                                    .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                            cancel.setBackground(new DialogButtonGradientDrawable()
+                                    .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
                         }
-                        linearLayout.setBackgroundColor(-1);
-                        AppComponentsDialog.this.save.setBackground(new GradientDrawable() {
-
-                            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                setCornerRadius((float) i);
-                                setStroke(i2, i3);
-                                setColor(i4);
-                                return this;
-                            }
-                        }.getIns((int) AppComponentsDialog.this.getDip(4), 0, -14575885, -14575885));
-                        AppComponentsDialog.this.cancel.setBackground(new GradientDrawable() {
-
-                            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                setCornerRadius((float) i);
-                                setStroke(i2, i3);
-                                setColor(i4);
-                                return this;
-                            }
-                        }.getIns((int) AppComponentsDialog.this.getDip(4), 0, -14575885, -14575885));
                     }
                 });
             }
         };
-        this._timer.scheduleAtFixedRate(this.uu, 500, 500);
+        _timer.scheduleAtFixedRate(uu, 500, 500);
     }
 
-    public void setListeners() {
-        this.save.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(AppComponentsDialog.this.s).concat("/Injection/androidmanifest/app_components.txt"), AppComponentsDialog.this.codeEditor.getText());
-                ((InputMethodManager) AppComponentsDialog.this.act.getApplicationContext().getSystemService("input_method")).hideSoftInputFromWindow(AppComponentsDialog.this.edito.getWindowToken(), 0);
-                AppComponentsDialog.this.warn("saved");
-                AppComponentsDialog.this.dismiss();
+    private void setListeners() {
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FileUtil.writeFile(APP_COMPONENTS_PATH, codeEditor.getText());
+                SketchwareUtil.hideKeyboard(editor);
+                SketchwareUtil.toast("Saved");
+                dismiss();
             }
         });
-        this.cancel.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                ((InputMethodManager) AppComponentsDialog.this.act.getApplicationContext().getSystemService("input_method")).hideSoftInputFromWindow(AppComponentsDialog.this.edito.getWindowToken(), 0);
-                AppComponentsDialog.this.dismiss();
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SketchwareUtil.hideKeyboard(editor);
+                dismiss();
             }
         });
     }
 
-    public void setCodeEditorText() {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(this.s).concat("/Injection/androidmanifest/app_components.txt");
-        if (FileUtil.isExistFile(concat)) {
-            this.str = FileUtil.readFile(concat);
-            this.codeEditor.setText(this.str);
-            return;
+    private void setCodeEditorText() {
+        if (FileUtil.isExistFile(APP_COMPONENTS_PATH)) {
+            String str = FileUtil.readFile(APP_COMPONENTS_PATH);
+            codeEditor.setText(str);
+        } else {
+            codeEditor.setText("");
         }
-        this.codeEditor.setText("");
-    }
-
-    public void show() {
-        super.show();
-    }
-
-    public void warn(String str2) {
-        Toast.makeText(getContext(), str2, Toast.LENGTH_SHORT).show();
-    }
-
-    public float getDip(int i) {
-        return get_dip(getContext(), i);
-    }
-
-    public static float get_dip(Context context, int i) {
-        return TypedValue.applyDimension(1, (float) i, context.getResources().getDisplayMetrics());
     }
 }
