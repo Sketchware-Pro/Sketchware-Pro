@@ -379,39 +379,40 @@ public class IncrementalJavaCompiler extends Compiler {
     
         String path = getContext().getFilesDir() + "/libs/libs/";
         ArrayList<String> arrayList = new ArrayList<>();
-        
+        String classString = "/classes.jar";
+
         if (projectConfig.N.g) {
-            arrayList.add(":" + path + "appcompat-1.0.0");
-            arrayList.add(":" + path + "coordinatorlayout-1.0.0");
-            arrayList.add(":" + path + "material-1.0.0");
+            arrayList.add(":" + path + "appcompat-1.0.0" + classString);
+            arrayList.add(":" + path + "coordinatorlayout-1.0.0" + classString);
+            arrayList.add(":" + path + "material-1.0.0" + classString);
         }
         if (projectConfig.N.h) {
-            arrayList.add(":" + path + "firebase-common-19.0.0");
+            arrayList.add(":" + path + "firebase-common-19.0.0" + clasdString);
         }
         if (projectConfig.N.i) {
-            arrayList.add(":" + path + "firebase-auth-19.0.0");
+            arrayList.add(":" + path + "firebase-auth-19.0.0" + classString);
         }
         if (projectConfig.N.j) {
-            arrayList.add(":" + path + "firebase-database-19.0.0");
+            arrayList.add(":" + path + "firebase-database-19.0.0" + clasdString);
         }
         if (projectConfig.N.k) {
-            arrayList.add(":" + path + "firebase-storage-19.0.0");
+            arrayList.add(":" + path + "firebase-storage-19.0.0" + classString);
         }
         if (projectConfig.N.m) {
-            arrayList.add(":" + path + "play-services-maps-17.0.0");
+            arrayList.add(":" + path + "play-services-maps-17.0.0" + classString);
         }
         if (projectConfig.N.l) {
-            arrayList.add(":" + path + "play-services-ads-18.2.0");
+            arrayList.add(":" + path + "play-services-ads-18.2.0" + classString);
         }
 
         if (projectConfig.N.n) {
-            arrayList.add(":" + path + "glide-4.11.0");
+            arrayList.add(":" + path + "glide-4.11.0" + classString);
         }
         if (projectConfig.N.p) {
-            arrayList.add(":" + path + "okhttp-3.9.1");
+            arrayList.add(":" + path + "okhttp-3.9.1" + classString);
         }
         if (projectConfig.N.o) {
-            arrayList.add(":" + path + "gson-2.8.0");
+            arrayList.add(":" + path + "gson-2.8.0" + classString);
         }
         
         return arrayList;
