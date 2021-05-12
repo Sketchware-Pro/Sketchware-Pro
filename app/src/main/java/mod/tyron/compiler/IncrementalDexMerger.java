@@ -5,19 +5,15 @@ import android.util.Log;
 import com.besome.sketch.SketchApplication;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
-import a.a.a.Jp;
 import a.a.a.yq;
-import mod.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.tyron.compiler.Compiler;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
@@ -57,20 +53,20 @@ public class IncrementalDexMerger extends Compiler {
                 sources.add(new Dex(new File(builtInLibrary)));
             }
 
-           List<String> localDexes = manageLocalLibrary.getDexLocalLibrary();
-           if (localDexes != null) {
-               for (String string : localDexes) {
-                   sources.add(new Dex(new File(string)));
-               }
-           }
+            List<String> localDexes = manageLocalLibrary.getDexLocalLibrary();
+            if (localDexes != null) {
+                for (String string : localDexes) {
+                    sources.add(new Dex(new File(string)));
+                }
+            }
 
 
-           List<String> extraDexes = manageLocalLibrary.getExtraDexes();
-           if (extraDexes != null) {
-               for (String string : extreDexes) {
-                   sources.add(new Dex(new File(string)));
-               }
-           }
+            List<String> extraDexes = manageLocalLibrary.getExtraDexes();
+            if (extraDexes != null) {
+                for (String string : extraDexes) {
+                    sources.add(new Dex(new File(string)));
+                }
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,7 +91,7 @@ public class IncrementalDexMerger extends Compiler {
                 if (currentDexMethods + methodsMergedFile >= 65536) {
                     Log.d(TAG, "Creating dex file with index: " + currentDexNo);
 
-                    mergeDexes(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "" ) + ".dex"), dexObjects);
+                    mergeDexes(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "") + ".dex"), dexObjects);
                     dexObjects.clear();
                     dexObjects.add(dex);
                     methodsMergedFile = currentDexMethods;
@@ -106,7 +102,7 @@ public class IncrementalDexMerger extends Compiler {
                 }
             }
             if (dexObjects.size() > 0) {
-                File out = new File(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "" ) + ".dex"));
+                File out = new File(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "") + ".dex"));
                 if (out.exists()) {
                     out.delete();
                 }
@@ -114,7 +110,7 @@ public class IncrementalDexMerger extends Compiler {
 
                 mergeDexes(out.getAbsolutePath(), dexObjects);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -130,10 +126,10 @@ public class IncrementalDexMerger extends Compiler {
 
         ArrayList<Dex> foundDexes = new ArrayList<>();
 
-        if(input.isDirectory()) {
+        if (input.isDirectory()) {
             File[] files = input.listFiles();
 
-            if(files != null) {
+            if (files != null) {
                 for (File file : files) {
                     foundDexes.addAll(getGeneratedDexFiles(file));
                 }
