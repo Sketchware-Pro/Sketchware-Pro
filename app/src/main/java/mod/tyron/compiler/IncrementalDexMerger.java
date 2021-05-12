@@ -57,12 +57,19 @@ public class IncrementalDexMerger extends Compiler {
                 sources.add(new Dex(new File(builtInLibrary)));
             }
 
-           for (String string : manageLocalLibrary.getDexLocalLibrary()) {
-               sources.add(new Dex(new File(string)));
+           List<String> localDexes = manageLocalLibrary.getDexLocalLibrary();
+           if (localDexes != null) {
+               for (String string : localDexes) {
+                   sources.add(new Dex(new File(string)));
+               }
            }
 
-           for (String string : manageLocalLibrary.getExtraDexes()) {
-               sources.add(new Dex(new File(string)));
+
+           List<String> extraDexes = manageLocalLibrary.getExtraDexes();
+           if (extraDexes != null) {
+               for (String string : extreDexes) {
+                   sources.add(new Dex(new File(string)));
+               }
            }
 
         } catch (IOException e) {

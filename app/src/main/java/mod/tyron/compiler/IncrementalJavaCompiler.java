@@ -204,7 +204,14 @@ public class IncrementalJavaCompiler extends Compiler {
             }
         } else {
             if (input.getName().endsWith(".java")) {
-                foundFiles.add(new JavaFile(input.getPath()));
+                //workaround to exclude network request files when theres no component available
+                if (input.getName().contains("RequestNetwork")) {
+                    if (projectConfig.N.p) {
+                        foundFiles.add(new JavaFile(input.getPath()));
+                    }
+                } else {
+                    foundFiles.add(new JavaFile(input.getPath()));
+                }
             }
         }
         return foundFiles;
@@ -341,7 +348,6 @@ public class IncrementalJavaCompiler extends Compiler {
         StringBuilder sb = new StringBuilder();
 
         for (String library : getBuiltInLibraries()) {
-            sb.append(":");
             sb.append(library).append("/").append("classes.jar");
         }
 
@@ -379,7 +385,7 @@ public class IncrementalJavaCompiler extends Compiler {
     
         String path = getContext().getFilesDir() + "/libs/libs/";
         ArrayList<String> arrayList = new ArrayList<>();
-        
+
         if (projectConfig.N.g) {
             arrayList.add(":" + path + "appcompat-1.0.0");
             arrayList.add(":" + path + "coordinatorlayout-1.0.0");
