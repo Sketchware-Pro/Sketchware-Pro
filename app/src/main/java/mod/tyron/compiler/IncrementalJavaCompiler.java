@@ -204,7 +204,14 @@ public class IncrementalJavaCompiler extends Compiler {
             }
         } else {
             if (input.getName().endsWith(".java")) {
-                foundFiles.add(new JavaFile(input.getPath()));
+                //workaround to exclude network request files when theres no component available
+                if (input.getName().contains("RequestNetwork")) {
+                    if (projectConfig.N.p) {
+                        foundFiles.add(new JavaFile(input.getPath()));
+                    }
+                } else {
+                    foundFiles.add(new JavaFile(input.getPath()));
+                }
             }
         }
         return foundFiles;
