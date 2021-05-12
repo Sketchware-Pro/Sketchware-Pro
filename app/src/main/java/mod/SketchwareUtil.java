@@ -1,7 +1,5 @@
 package mod;
 
-import static com.besome.sketch.SketchApplication.getContext;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -32,6 +30,8 @@ import java.util.Random;
 
 import a.a.a.bB;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 public class SketchwareUtil {
 
     public static int TOP = 1;
@@ -39,9 +39,9 @@ public class SketchwareUtil {
     public static int BOTTOM = 3;
 
     public static void CustomToast(String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity) {
-        Toast _toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
-        View _view = _toast.getView();
-        TextView _textView = _view.findViewById(android.R.id.message);
+        Toast toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        TextView _textView = view.findViewById(android.R.id.message);
         _textView.setTextSize(_textSize);
         _textView.setTextColor(_textColor);
         _textView.setGravity(Gravity.CENTER);
@@ -49,24 +49,24 @@ public class SketchwareUtil {
         GradientDrawable _gradientDrawable = new GradientDrawable();
         _gradientDrawable.setColor(_bgColor);
         _gradientDrawable.setCornerRadius(_radius);
-        _view.setBackground(_gradientDrawable);
-        _view.setPadding(15, 10, 15, 10);
-        _view.setElevation(10);
+        view.setBackground(_gradientDrawable);
+        view.setPadding(15, 10, 15, 10);
+        view.setElevation(10);
 
         switch (_gravity) {
             case 1:
-                _toast.setGravity(Gravity.TOP, 0, 150);
+                toast.setGravity(Gravity.TOP, 0, 150);
                 break;
 
             case 2:
-                _toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.setGravity(Gravity.CENTER, 0, 0);
                 break;
 
             case 3:
-                _toast.setGravity(Gravity.BOTTOM, 0, 150);
+                toast.setGravity(Gravity.BOTTOM, 0, 150);
                 break;
         }
-        _toast.show();
+        toast.show();
     }
 
     public static void CustomToastWithIcon(String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity, int _icon) {
@@ -127,17 +127,17 @@ public class SketchwareUtil {
 
     public static void CropImage(Activity _activity, String _path, int _requestCode) {
         try {
-            Intent _intent = new Intent("com.android.camera.action.CROP");
+            Intent intent = new Intent("com.android.camera.action.CROP");
             File _file = new File(_path);
             Uri _contentUri = Uri.fromFile(_file);
-            _intent.setDataAndType(_contentUri, "image/*");
-            _intent.putExtra("crop", "true");
-            _intent.putExtra("aspectX", 1);
-            _intent.putExtra("aspectY", 1);
-            _intent.putExtra("outputX", 280);
-            _intent.putExtra("outputY", 280);
-            _intent.putExtra("return-data", false);
-            _activity.startActivityForResult(_intent, _requestCode);
+            intent.setDataAndType(_contentUri, "image/*");
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", 280);
+            intent.putExtra("outputY", 280);
+            intent.putExtra("return-data", false);
+            _activity.startActivityForResult(intent, _requestCode);
         } catch (ActivityNotFoundException _e) {
             Toast.makeText(_activity, "Your device doesn't support the crop action!", Toast.LENGTH_SHORT).show();
         }
@@ -190,8 +190,8 @@ public class SketchwareUtil {
         _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public static void showMessage(String _s) {
-        Toast.makeText(getContext(), _s, Toast.LENGTH_SHORT).show();
+    public static void showMessage(Context context, String _s) {
+        Toast.makeText(context, _s, Toast.LENGTH_SHORT).show();
     }
 
     public static int getLocationX(View _view) {
