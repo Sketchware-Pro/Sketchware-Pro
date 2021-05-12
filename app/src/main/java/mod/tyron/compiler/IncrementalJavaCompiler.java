@@ -387,13 +387,13 @@ public class IncrementalJavaCompiler extends Compiler {
             arrayList.add(":" + path + "material-1.0.0" + classString);
         }
         if (projectConfig.N.h) {
-            arrayList.add(":" + path + "firebase-common-19.0.0" + clasdString);
+            arrayList.add(":" + path + "firebase-common-19.0.0" + classString);
         }
         if (projectConfig.N.i) {
             arrayList.add(":" + path + "firebase-auth-19.0.0" + classString);
         }
         if (projectConfig.N.j) {
-            arrayList.add(":" + path + "firebase-database-19.0.0" + clasdString);
+            arrayList.add(":" + path + "firebase-database-19.0.0" + classString);
         }
         if (projectConfig.N.k) {
             arrayList.add(":" + path + "firebase-storage-19.0.0" + classString);
