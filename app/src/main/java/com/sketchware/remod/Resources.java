@@ -189,6 +189,7 @@ public class Resources {
         public static final int et_project_name = 0x7f080141;
         public static final int et_right = 0x7f080142;
         public static final int et_top = 0x7f080144;
+        public static final int extra_input_layout = 0x7f08070f;
         public static final int fab = 0x7f08014e;
         public static final int file_selector = 0x7f080154;
         public static final int hcv_property = 0x7f080165;
@@ -386,6 +387,7 @@ public class Resources {
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
         public static final int project_config_layout = 0x7f0b01de;
+        public static final int property_advanced_version_control = 0x7f0b01f4;
         public static final int property_color_item = 0x7f0b012c;
         public static final int property_grid_item = 0x7f0b012e;
         public static final int property_group_item = 0x7f0b012f;
