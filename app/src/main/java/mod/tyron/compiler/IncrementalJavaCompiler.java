@@ -341,7 +341,6 @@ public class IncrementalJavaCompiler extends Compiler {
         StringBuilder sb = new StringBuilder();
 
         for (String library : getBuiltInLibraries()) {
-            sb.append(":");
             sb.append(library).append("/").append("classes.jar");
         }
 
@@ -379,7 +378,7 @@ public class IncrementalJavaCompiler extends Compiler {
     
         String path = getContext().getFilesDir() + "/libs/libs/";
         ArrayList<String> arrayList = new ArrayList<>();
-        
+
         if (projectConfig.N.g) {
             arrayList.add(":" + path + "appcompat-1.0.0");
             arrayList.add(":" + path + "coordinatorlayout-1.0.0");
