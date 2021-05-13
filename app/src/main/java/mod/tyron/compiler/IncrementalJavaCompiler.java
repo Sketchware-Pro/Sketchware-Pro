@@ -99,7 +99,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
         if (projectJavaFiles.isEmpty()) {
             Log.d(TAG, "Java files are up to date, skipping compilation");
-            onResultListener.onResult(true, "Files up to date");
+            onResultListener.onResult(true, Compiler.TYPE_JAVA, "Files up to date");
             return;
         }
 
@@ -142,7 +142,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
         if (main.globalErrorsCount > 0) {
             success = false;
-            onResultListener.onResult(false, errorOutputStream.buffer.toString());
+            onResultListener.onResult(false, Compiler.TYPE_JAVA, errorOutputStream.buffer.toString());
         }
 
         try {
@@ -159,7 +159,7 @@ public class IncrementalJavaCompiler extends Compiler {
             Log.d(TAG, "Merging modified java files");
             mergeClasses(projectJavaFiles);
 
-            onResultListener.onResult(true, "Success");
+            onResultListener.onResult(true, Compiler.TYPE_JAVA, "Success.");
         }
 
     }
