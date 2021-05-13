@@ -1207,26 +1207,40 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         IncrementalCompiler incrementalCompiler = new IncrementalCompiler(q);
                         incrementalCompiler.setResultListener(new Compiler.Result() {
                             @Override
-                            public void onResult(boolean success, String message) {
+                            public void onResult(boolean success, int compileType, Object... args) {
                                 if (!success) {
-                                    DesignActivity.this.d(message);
+                                    DesignActivity.this.d(String.valueOf(args[0]));
                                 } else {
-                                    publishProgress("Building APK...");
-                                    mDp.g();
 
-                                    if (d) {
-                                        cancel(true);
-                                        return;
+                                    switch (compileType) {
+                                        case Compiler.TYPE_JAVA :
+                                            publishProgress("Running D8...");
+                                            break;
+                                        case Compiler.TYPE_D8 :
+                                            publishProgress("Merging dex...");
+                                            break;
+                                        case Compiler.TYPE_MERGE :
+                                            publishProgress("Building apk...");
+                                            break;
                                     }
 
-                                    publishProgress("Signing APK...");
+                                    publishProgress("Signing apk...");
                                     mDp.k();
-                                    if (d) {
-                                        cancel(true);
-                                        return;
-                                    }
+//                                    publishProgress("Building APK...");
+//                                    mDp.g();
+//
+//                                    if (d) {
+//                                        cancel(true);
+//                                        return;
+//                                    }
+//
+//                                    publishProgress("Signing APK...");
+//                                    mDp.k();
+//                                    if (d) {
+//                                        cancel(true);
+//                                        return;
+//                                    }
 
-                                    /* Launch Intent to install APK */
                                     o();
                                 }
                             }
