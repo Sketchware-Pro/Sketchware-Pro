@@ -25,10 +25,11 @@ public class IncrementalDexMerger extends Compiler {
 
     private final yq projectConfig;
     private final ManageLocalLibrary manageLocalLibrary;
-
-    private final ArrayList<String> dexesGenerated = new ArrayList<>();
+    private List<String> generatedDexes = new ArrayList<>();
     private final ArrayList<String> builtInLibraries;
     private int currentDexNo = 0;
+
+    private Compiler.Result mListener;
 
     public IncrementalDexMerger(yq projectConfig, ArrayList<String> builtInLibraries) {
         this.projectConfig = projectConfig;
@@ -36,6 +37,10 @@ public class IncrementalDexMerger extends Compiler {
 
         this.manageLocalLibrary = new ManageLocalLibrary(projectConfig.b);
         DEX_PATH = projectConfig.c + "/incremental/build";
+    }
+
+    public void setOnResultListener(Compiler.Result listener) {
+        mListener = listener;
     }
 
     @Override
@@ -78,7 +83,7 @@ public class IncrementalDexMerger extends Compiler {
     @Override
     public void compile() {
 
-        Log.d(TAG, "Task started");
+        Log.d(TAG, "Merge started");
 
         ArrayList<Dex> dexes = getSourceFiles();
         ArrayList<Dex> dexObjects = new ArrayList<>();
@@ -111,15 +116,15 @@ public class IncrementalDexMerger extends Compiler {
                 mergeDexes(out.getAbsolutePath(), dexObjects);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            mListener.onResult(false, Compiler.TYPE_MERGE, String.valueOf(e));
         }
-
+        mListener.onResult(true, Compiler.TYPE_MERGE, "Success", generatedDexes);
         Log.d(TAG, "Task merge: Done");
     }
 
     private void mergeDexes(String target, ArrayList<Dex> dexes) throws Exception {
         new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(target));
-        //dexesGenerated.add(target);
+        generatedDexes.add(target);
     }
 
     private ArrayList<Dex> getGeneratedDexFiles(File input) throws IOException {
