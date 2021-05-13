@@ -62,8 +62,8 @@ public class TestActivity extends Activity {
 
         compiler.setOnResultListener(new Compiler.Result() {
             @Override
-            public void onResult(boolean success, String message) {
-                Log.d("COMPILER TEST", "is successful: " + success + " message: " + message);
+            public void onResult(boolean success, int type, Object... args) {
+                Log.d("COMPILER TEST", "is successful: " + success + " message: " + args[0]);
             }
         });
 
