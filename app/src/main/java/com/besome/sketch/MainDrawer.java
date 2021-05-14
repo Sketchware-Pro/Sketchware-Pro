@@ -245,7 +245,10 @@ public class MainDrawer extends LinearLayout {
     }
 
     private void changeLogDialog(Context context) {
-        context.startActivity(new Intent(context, AboutModActivity.class));
+        Intent aboutModIntent = new Intent();
+        aboutModIntent.setClass(context, AboutModActivity.class);
+        aboutModIntent.putExtra("select", "changelog");
+        context.startActivity(aboutModIntent);
     }
 
     /**
