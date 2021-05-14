@@ -1,8 +1,10 @@
 package mod.tyron.compiler;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 import android.util.Log;
 
-import com.besome.sketch.SketchApplication;
+import org.eclipse.jdt.internal.compiler.batch.Main;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,21 +13,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import a.a.a.Jp;
-import a.a.a.KB;
-import a.a.a.Kp;
+import a.a.a.Dp;
 import a.a.a.oB;
 import a.a.a.yq;
-import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
+import mod.jbk.util.LogUtil;
 import mod.tyron.compiler.file.JavaFile;
-
-import static com.besome.sketch.SketchApplication.getContext;
 
 public class IncrementalJavaCompiler extends Compiler {
 
@@ -39,24 +36,23 @@ public class IncrementalJavaCompiler extends Compiler {
 
     private final yq projectConfig;
     private final BuildSettings buildSettings;
-    private final ManageLocalLibrary mll;
-
-    private Compiler.Result onResultListener;
-
+    private final Dp compileHelper;
+    private final ManageLocalLibrary manageLocalLibrary;
     private final ArrayList<String> builtInLibraries = new ArrayList<>();
-
-    private final oB g;
-    private final File l;
+    private final oB fileUtil;
+    private final File libs;
+    private Compiler.Result onResultListener;
 
     public IncrementalJavaCompiler(yq projectConfig) {
         SAVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/mysc/" + projectConfig.b + "/incremental";
 
         this.projectConfig = projectConfig;
-        this.buildSettings = new BuildSettings(projectConfig.b);
-        this.mll = new ManageLocalLibrary(projectConfig.b);
-        this.g = new oB(false);
-        this.l = new File(getContext().getFilesDir(), "libs");
-
+        buildSettings = new BuildSettings(projectConfig.b);
+        compileHelper = new Dp(getContext(), projectConfig);
+        compileHelper.j();
+        manageLocalLibrary = new ManageLocalLibrary(projectConfig.b);
+        fileUtil = new oB(false);
+        libs = new File(getContext().getFilesDir(), "libs");
     }
 
     public void setOnResultListener(Compiler.Result result) {
@@ -65,7 +61,6 @@ public class IncrementalJavaCompiler extends Compiler {
 
     @Override
     public ArrayList<File> getSourceFiles() {
-
         ArrayList<JavaFile> oldFiles = findJavaFiles(new File(SAVE_PATH));
 
         //combine all the java files from sketchware pro
@@ -88,10 +83,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
     @Override
     public void compile() {
-
-
-
-        if (onResultListener == null ) {
+        if (onResultListener == null) {
             throw new IllegalStateException("No result listeners were set");
         }
 
@@ -114,29 +106,35 @@ public class IncrementalJavaCompiler extends Compiler {
         ArrayList<String> args = new ArrayList<>();
 
         args.add("-" + buildSettings.getValue(BuildSettings.SETTING_JAVA_VERSION, BuildSettings.SETTING_JAVA_VERSION_1_7));
+
         args.add("-nowarn");
-        if (!buildSettings.getValue(BuildSettings.SETTING_NO_WARNINGS, "false").equals("true")) {
+
+        if (!buildSettings.getValue(BuildSettings.SETTING_NO_WARNINGS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
+                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             args.add("-deprecation");
         }
+
         args.add("-d");
         args.add(SAVE_PATH + "/classes");
-        args.add("-proc:none");
-        args.add("-cp");
 
-        args.add(l.getAbsolutePath() + "/jdk/rt.jar:" + l.getAbsolutePath() + "/android.jar" +
-                getLibrariesJarFile());
+        args.add("-proc:none");
+
+        args.add("-cp");
+        args.add(compileHelper.classpath());
 
         for (File file : projectJavaFiles) {
             args.add(file.getAbsolutePath());
         }
 
-
         args.add("-sourcepath");
         args.add(SAVE_PATH + "/java");
 
-        org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
+        Main main = new Main(outWriter, errWriter, false, null, null);
 
-        Log.d(TAG, "Started compilation");
+        Log.d(TAG, "Compiling now!");
+        LogUtil.log(TAG, "Eclipse's arguments: ",
+                "Logging Eclipse's arguments over multiple lines because of length.",
+                args);
         main.compile(args.toArray(new String[0]));
         boolean success = true;
 
@@ -155,13 +153,12 @@ public class IncrementalJavaCompiler extends Compiler {
         }
 
         //merge the classes to the non modified classes so that we can compare later
-        if(success) {
+        if (success) {
             Log.d(TAG, "Merging modified java files");
             mergeClasses(projectJavaFiles);
 
             onResultListener.onResult(true, Compiler.TYPE_JAVA, "Success.");
         }
-
     }
 
     /**
@@ -192,7 +189,6 @@ public class IncrementalJavaCompiler extends Compiler {
      * @return returns a list of java files
      */
     private ArrayList<JavaFile> findJavaFiles(File input) {
-
         ArrayList<JavaFile> foundFiles = new ArrayList<>();
 
         if (input.isDirectory()) {
@@ -205,7 +201,8 @@ public class IncrementalJavaCompiler extends Compiler {
         } else {
             if (input.getName().endsWith(".java")) {
                 //workaround to exclude network request files when theres no component available
-                if (input.getName().contains("RequestNetwork")) {
+                if (input.getName().equals("RequestNetwork.java")
+                        || input.getName().equals("RequestNetworkController.java")) {
                     if (projectConfig.N.p) {
                         foundFiles.add(new JavaFile(input.getPath()));
                     }
@@ -237,7 +234,7 @@ public class IncrementalJavaCompiler extends Compiler {
                 File oldFile = oldFiles.get(oldFiles.indexOf(newFile));
                 if (contentModified(oldFile, newFile)) {
                     modifiedFiles.add(newFile);
-                    if(oldFile.delete()) {
+                    if (oldFile.delete()) {
                         Log.d(TAG, oldFile.getName() + ": Removed old class file that has been modified");
                     }
                 }
@@ -275,7 +272,7 @@ public class IncrementalJavaCompiler extends Compiler {
                     deleteClassInDir(name, child);
                 }
             }
-        }else {
+        } else {
             String dirName = dir.getName().substring(0, dir.getName().indexOf("."));
             if (dirName.contains("$")) {
                 dirName = dirName.substring(0, dirName.indexOf("$"));
@@ -293,20 +290,20 @@ public class IncrementalJavaCompiler extends Compiler {
      */
     private boolean contentModified(File old, File newFile) {
         if (old.isDirectory() || newFile.isDirectory()) {
-            throw new IllegalArgumentException("Given file must be a java file");
+            throw new IllegalArgumentException("Given file must be a Java file");
         }
-        if (!old.exists()) {
+
+        if (!old.exists() || !newFile.exists()) {
             return true;
         }
-        if (!newFile.exists()) {
-            return false;
-        }
-        if (newFile.length() > old.length()) {
+
+        if (newFile.length() != old.length()) {
             return true;
-        }else if (newFile.length() == old.length()) {
-            return false;
         }
-        return newFile.lastModified() > old.lastModified();
+
+        int oldFileHash = FileUtil.readFile(old.getAbsolutePath()).hashCode();
+        int newFileHash = FileUtil.readFile(newFile.getAbsolutePath()).hashCode();
+        return oldFileHash == newFileHash;
     }
 
     /**
@@ -334,7 +331,7 @@ public class IncrementalJavaCompiler extends Compiler {
                     .replace(";", ".")
                     .replace(".", "/");
 
-            if(!packageName.endsWith("/")){
+            if (!packageName.endsWith("/")) {
                 packageName = packageName.concat("/");
             }
 
@@ -353,7 +350,7 @@ public class IncrementalJavaCompiler extends Compiler {
 
         if (buildSettings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("false")) {
             sb.append(":");
-            sb.append(l.getAbsolutePath());
+            sb.append(libs.getAbsolutePath());
             sb.append("/");
             sb.append("libs");
             sb.append("/");
@@ -362,27 +359,13 @@ public class IncrementalJavaCompiler extends Compiler {
             sb.append("classes.jar");
         }
 
-        sb.append(mll.getJarLocalLibrary());
+        sb.append(manageLocalLibrary.getJarLocalLibrary());
 
-        String str = sb.toString();
-        return str;
-    }
-    private static class CompilerOutputStream extends OutputStream {
-
-        public StringBuffer buffer;
-
-        public CompilerOutputStream(StringBuffer buffer) {
-            this.buffer = buffer;
-        }
-
-        @Override
-        public void write(int b)  {
-            buffer.append((char) b);
-        }
+        return sb.toString();
     }
 
     public ArrayList<String> getBuiltInLibraries() {
-    
+
         String path = getContext().getFilesDir() + "/libs/libs/";
         ArrayList<String> arrayList = new ArrayList<>();
 
@@ -419,9 +402,23 @@ public class IncrementalJavaCompiler extends Compiler {
         if (projectConfig.N.o) {
             arrayList.add(":" + path + "gson-2.8.0");
         }
-        
+
         return arrayList;
-        
+
+    }
+
+    private static class CompilerOutputStream extends OutputStream {
+
+        public StringBuffer buffer;
+
+        public CompilerOutputStream(StringBuffer buffer) {
+            this.buffer = buffer;
+        }
+
+        @Override
+        public void write(int b) {
+            buffer.append((char) b);
+        }
     }
 
 }
