@@ -15,7 +15,6 @@ import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.jbk.util.LogUtil;
 
 public class ResourceCompiler {
 
@@ -83,10 +82,10 @@ public class ResourceCompiler {
 
         args.add("--version-code");
         String versionCode = mDp.f.l;
-        args.add((versionCode == null || versionCode.isEmpty()) ? "1" : mDp.f.l);
+        args.add((versionCode == null || versionCode.isEmpty()) ? "1" : versionCode);
         args.add("--version-name");
         String versionName = mDp.f.m;
-        args.add((versionName == null || versionName.isEmpty()) ? "1.0" : mDp.f.m);
+        args.add((versionName == null || versionName.isEmpty()) ? "1.0" : versionName);
 
         args.add("-I");
         String customAndroidSdk = mDp.settings.getValue("android_sdk", "");
@@ -212,29 +211,31 @@ public class ResourceCompiler {
 
     private void compileLocalLibraryResources(String outputPath) throws zy {
         Log.d(TAG + ":cLLR", "About to compile " + mDp.mll.getResLocalLibrary().size() + " local " + (mDp.mll.getResLocalLibrary().size() == 1 ? "library" : "libraries") + ".");
-        for (String next : mDp.mll.getResLocalLibrary()) {
-            ArrayList<String> commands = new ArrayList<>();
-            commands.add(aaptFile.getAbsolutePath());
-            commands.add("compile");
-            commands.add("--dir");
-            commands.add(next);
-            commands.add("-o");
-            commands.add(outputPath + File.separator + new File(next).getParentFile().getName() + ".zip");
-            Log.d(TAG + ":cLLR", "Now executing: " + commands.toString());
-            BinaryExecutor executor = new BinaryExecutor();
-            executor.setCommands(commands);
-            if (!executor.execute().isEmpty()) {
-                Log.e(TAG, executor.getLog());
-                throw new zy(executor.getLog());
+        for (String localLibraryResDirectory : mDp.mll.getResLocalLibrary()) {
+            File localLibraryDirectory = new File(localLibraryResDirectory).getParentFile();
+            if (localLibraryDirectory != null) {
+                ArrayList<String> commands = new ArrayList<>();
+                commands.add(aaptFile.getAbsolutePath());
+                commands.add("compile");
+                commands.add("--dir");
+                commands.add(localLibraryResDirectory);
+                commands.add("-o");
+                commands.add(outputPath + File.separator + localLibraryDirectory.getName() + ".zip");
+                Log.d(TAG + ":cLLR", "Now executing: " + commands.toString());
+                BinaryExecutor executor = new BinaryExecutor();
+                executor.setCommands(commands);
+                if (!executor.execute().isEmpty()) {
+                    Log.e(TAG, executor.getLog());
+                    throw new zy(executor.getLog());
+                }
             }
         }
     }
 
     private void compileBuiltInLibraryResources() throws zy {
-        for (Jp library : mDp.n.a()) {
-            LogUtil.dump(TAG + ":cBILR", library);
-            if (library.c()) {
-                String libraryResources = mDp.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "res";
+        for (Jp builtInLibrary : mDp.n.a()) {
+            if (builtInLibrary.c()) {
+                String libraryResources = mDp.l.getAbsolutePath() + File.separator + "libs" + File.separator + builtInLibrary.a() + File.separator + "res";
                 if (isBuiltInLibraryRecompilingNeeded(libraryResources)) {
                     ArrayList<String> commands = new ArrayList<>();
                     commands.add(aaptFile.getAbsolutePath());
@@ -242,7 +243,7 @@ public class ResourceCompiler {
                     commands.add("--dir");
                     commands.add(libraryResources);
                     commands.add("-o");
-                    commands.add(compiledBuiltInLibraryResourcesDirectory + File.separator + library.a() + ".zip");
+                    commands.add(compiledBuiltInLibraryResourcesDirectory + File.separator + builtInLibrary.a() + ".zip");
                     Log.d(TAG + ":cBILR", "Now executing: " + commands.toString());
                     BinaryExecutor executor = new BinaryExecutor();
                     executor.setCommands(commands);
@@ -251,7 +252,7 @@ public class ResourceCompiler {
                         throw new zy(executor.getLog());
                     }
                 } else {
-                    Log.d(TAG + ":cBILR", "Skipped resource recompilation for built-in library " + library.a() + ".");
+                    Log.d(TAG + ":cBILR", "Skipped resource recompilation for built-in library " + builtInLibrary.a() + ".");
                 }
             }
         }
