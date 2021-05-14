@@ -2,22 +2,18 @@ package mod.tyron;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import a.a.a.yq;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -27,11 +23,10 @@ import mod.tyron.compiler.IncrementalJavaCompiler;
 
 public class TestActivity extends Activity {
 
-    private List<File> changedList = new ArrayList<>();
+    IncrementalJavaCompiler compiler;
 
     //activity for testing file changes
-
-    IncrementalJavaCompiler compiler;
+    private final List<File> changedList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +36,8 @@ public class TestActivity extends Activity {
 
         setContentView(rootView);
 
-       // if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+        // if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         //}
 
 
@@ -75,29 +70,35 @@ public class TestActivity extends Activity {
 
         Button button = new Button(this);
         button.setText("COMPILE");
-        button.setOnClickListener((v) -> {
-//            changedList = compiler.getSourceFiles();
-//            listView.setAdapter(new ArrayAdapter<File>(this, android.R.layout.simple_list_item_1, changedList));
-//            compiler.mergeClasses(new ArrayList<>(changedList));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //changedList = compiler.getSourceFiles();
+                //listView.setAdapter(new ArrayAdapter<File>(this, android.R.layout.simple_list_item_1, changedList));
+                //compiler.mergeClasses(new ArrayList<>(changedList));
 
-           // compiler.compile();
-            testAsync async = new testAsync();
-            async.execute();
+                // compiler.compile();
+                TestAsync async = new TestAsync();
+                async.execute();
 
+            }
         });
         rootView.addView(button);
 
         Button button1 = new Button(this);
         button1.setText("RUN D8");
-        button1.setOnClickListener((v) -> {
-            IncrementalD8Compiler d8Compiler = new IncrementalD8Compiler(projectConfig);
-            d8Compiler.compile();
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IncrementalD8Compiler d8Compiler = new IncrementalD8Compiler(projectConfig);
+                d8Compiler.compile();
+            }
         });
         rootView.addView(button1);
 
     }
 
-    private class testAsync extends AsyncTask<Void, Void, Void> {
+    private class TestAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
