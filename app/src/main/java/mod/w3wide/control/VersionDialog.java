@@ -1,70 +1,166 @@
 package mod.w3wide.control;
 
-import android.content.Context;
+import static mod.SketchwareUtil.getDip;
+
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.Resources;
 
 import a.a.a.mB;
-import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 import mod.w3wide.dialog.SketchDialog;
-import mod.w3wide.validator.VersionValidator;
+import mod.w3wide.validator.VersionNamePostfixValidator;
 
 public class VersionDialog {
 
-    private MyProjectSettingActivity mpsAct;
-    private VersionValidator mFilter;
+    private final MyProjectSettingActivity activity;
 
-    public VersionDialog(MyProjectSettingActivity mpsAct) {
-        this.mpsAct = mpsAct;
+    public VersionDialog(MyProjectSettingActivity activity) {
+        this.activity = activity;
     }
 
     public void show() {
-        final SketchDialog mSketch = new SketchDialog(this.mpsAct);
-        mSketch.setTitle("Advanced Version Control");
-        mSketch.setIcon(Resources.drawable.numbers_48);
-        LayoutInflater mViewInflate = (LayoutInflater) this.mpsAct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View mView = (View) mViewInflate.inflate(Resources.layout.property_advanced_version_control, null);
+        final SketchDialog dialog = new SketchDialog(activity);
+        dialog.setTitle("Advanced Version Control");
+        dialog.setIcon(Resources.drawable.numbers_48);
+        final LinearLayout root = new LinearLayout(activity);
+        root.setOrientation(LinearLayout.VERTICAL);
 
-        final TextInputLayout ver_code = (TextInputLayout) mView.findViewById(Resources.id.ver_code);
-        final EditText version_code = (EditText) mView.findViewById(Resources.id.version_code);
+        final LinearLayout regularNumbersContainer = new LinearLayout(activity);
+        final TextInputLayout tilVersionCode = new TextInputLayout(activity);
+        final LinearLayout.LayoutParams tilVersionCodeParams = new LinearLayout.LayoutParams(
+                (int) getDip(100),
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tilVersionCodeParams.setMargins(
+                (int) getDip(5),
+                (int) getDip(5),
+                (int) getDip(5),
+                (int) getDip(5)
+        );
+        tilVersionCode.setLayoutParams(tilVersionCodeParams);
+        final EditText version_code = new EditText(activity);
+        version_code.setHint("Version Code");
+        version_code.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        version_code.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        version_code.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
+        version_code.setTextSize(13);
+        tilVersionCode.addView(version_code);
+        regularNumbersContainer.addView(tilVersionCode);
 
-        final TextInputLayout ver_name = (TextInputLayout) mView.findViewById(Resources.id.ver_name);
-        final EditText version_name1 = (EditText) mView.findViewById(Resources.id.version_name1);
+        final TextInputLayout tilVersionName = new TextInputLayout(activity);
+        LinearLayout.LayoutParams tilVersionNameParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tilVersionNameParams.setMargins(
+                (int) getDip(5),
+                (int) getDip(5),
+                (int) getDip(5),
+                (int) getDip(5)
+        );
+        tilVersionName.setLayoutParams(tilVersionNameParams);
+        final EditText version_name1 = new EditText(activity);
+        version_name1.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        version_name1.setHint("Version Name");
+        version_name1.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        version_name1.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
+        version_name1.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
+        version_name1.setTextSize(13);
+        tilVersionName.addView(version_name1);
+        regularNumbersContainer.addView(tilVersionName);
+        root.addView(regularNumbersContainer);
 
-        final TextInputLayout extra_input_layout = (TextInputLayout) mView.findViewById(Resources.id.extra_input_layout);
-        mFilter = new VersionValidator(this.mpsAct, extra_input_layout);
-        final EditText version_name2 = (EditText) mView.findViewById(Resources.id.version_name2);
 
-        version_code.setText(String.valueOf(Integer.parseInt(mpsAct.I.getText().toString())));
-        version_name1.setText(mpsAct.J.getText().toString().split("-")[0]);
-        if (mpsAct.J.getText().toString().split("-").length > 1) {
-            version_name2.setText(mpsAct.J.getText().toString().split("-")[1]);
+        final LinearLayout versionNamePostfixContainer = new LinearLayout(activity);
+        versionNamePostfixContainer.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        final TextInputLayout til_version_name2 = new TextInputLayout(activity);
+        final LinearLayout.LayoutParams tilVersionNamePostfixParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tilVersionNamePostfixParams.setMargins(
+                (int) getDip(5),
+                (int) getDip(5),
+                (int) getDip(5),
+                (int) getDip(5)
+        );
+        til_version_name2.setLayoutParams(tilVersionNamePostfixParams);
+        final EditText version_name2 = new EditText(activity);
+        version_name2.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        version_name2.setHint("Version Name Extra");
+        version_name2.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        version_name2.setPadding(
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
+        version_name2.setTextSize(13);
+        til_version_name2.addView(version_name2);
+        version_name2.addTextChangedListener(new VersionNamePostfixValidator(activity, til_version_name2));
+        versionNamePostfixContainer.addView(til_version_name2);
+        root.addView(versionNamePostfixContainer);
+
+        version_code.setText(String.valueOf(Integer.parseInt(activity.I.getText().toString())));
+        version_name1.setText(activity.J.getText().toString().split("-")[0]);
+        if (activity.J.getText().toString().split("-").length > 1) {
+            version_name2.setText(activity.J.getText().toString().split("-")[1]);
         }
-        mSketch.setView(mView);
-        final String versionCode = version_code.getText().toString();
-        final String versionName1 = version_name1.getText().toString();
-        final String versionName2 = version_name2.getText().toString();
-        mSketch.setPositiveButton("Save", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!mB.a() && !TextUtils.isEmpty(versionCode) && !TextUtils.isEmpty(versionName1)) {
-                    mpsAct.I.setText(String.valueOf((long) (Integer.parseInt(versionCode))));
-                    mpsAct.J.setText(versionName2.length() > 0 ? versionName1.concat("-".concat(versionName2)) : versionName1);
-                    SketchwareUtil.showMessage(mpsAct.getApplicationContext(), "Saved");
-                    mSketch.dismiss();
-                } else {
-                    SketchwareUtil.showMessage(mpsAct.getApplicationContext(), "fill all the blanks");
-                }
-            }
-        });
-        mSketch.setNegativeButton("Cancel", Helper.getDialogDismissListener(mSketch));
-        mSketch.show();
+        dialog.setView(root);
+        dialog.setPositiveButton(activity.getString(Resources.string.common_word_save),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String versionCode = version_code.getText().toString();
+                        final String versionName = version_name1.getText().toString();
+                        final String versionNamePostfix = version_name2.getText().toString();
+
+                        boolean validVersionCode = !TextUtils.isEmpty(versionCode);
+                        boolean validVersionName = !TextUtils.isEmpty(versionName);
+
+                        if (validVersionCode) {
+                            version_code.setError(null);
+                        } else {
+                            version_code.setError("Invalid Version Code");
+                        }
+
+                        if (validVersionName) {
+                            version_name1.setError(null);
+                        } else {
+                            version_name1.setError("Invalid Version Name");
+                        }
+
+                        if (!mB.a() && validVersionCode && validVersionName) {
+                            activity.I.setText(versionCode);
+                            activity.J.setText(versionNamePostfix.length() > 0 ? (versionName + "-" + versionNamePostfix) : versionName);
+                            dialog.dismiss();
+                        }
+                    }
+                });
+        dialog.setNegativeButton(activity.getString(Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 }
