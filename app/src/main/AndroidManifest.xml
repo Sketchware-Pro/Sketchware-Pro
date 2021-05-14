@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jbk.swproremodremod">
+    package="com.sketchware.remod.sources">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -14,8 +14,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="com.android.vending.WAKE_LOCK" />
-    <uses-permission android:name="com.sketchware.remod_com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="com.sketchware.remod_com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+    <uses-permission android:name="com.sketchware.remod.sources_com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.sketchware.remod.sources_com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
 
     <application
         android:name="com.besome.sketch.SketchApplication"
@@ -38,7 +38,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.sketchware.remod.provider"
+            android:authorities="com.sketchware.remod.sources.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -685,12 +685,12 @@
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.sketchware.remod.firebaseinitprovider"
+            android:authorities="com.sketchware.remod.sources.firebaseinitprovider"
             android:exported="false"
             android:initOrder="100" />
         <provider
             android:name="com.google.android.gms.ads.MobileAdsInitProvider"
-            android:authorities="com.sketchware.remod.mobileadsinitprovider"
+            android:authorities="com.sketchware.remod.sources.mobileadsinitprovider"
             android:exported="false"
             android:initOrder="100" />
 
@@ -740,7 +740,7 @@
 
         <provider
             android:name="com.facebook.ads.AudienceNetworkContentProvider"
-            android:authorities="com.sketchware.remod.AudienceNetworkContentProvider"
+            android:authorities="com.sketchware.remod.sources.AudienceNetworkContentProvider"
             android:exported="false" />
 
         <meta-data
