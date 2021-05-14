@@ -144,6 +144,8 @@ public class AboutModActivity extends AppCompatActivity {
                         moddersMap = new HashMap<>();
                         moddersMap.put("isTitled", modders.getJSONObject(i)
                                 .getString("isTitled"));
+                        moddersMap.put("isMainModder", modders.getJSONObject(i)
+                                .getString("isMainModder"));
                         moddersMap.put("title", modders.getJSONObject(i)
                                 .getString("title"));
                         moddersMap.put("modder_username", modders.getJSONObject(i)
@@ -219,6 +221,11 @@ public class AboutModActivity extends AppCompatActivity {
         initViewPager();
         requestData.startRequestNetwork(RequestNetworkController.GET, "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "", requestDataListener);
         rippleRound(fab, "#7289DA", "#FFFFFF", 90);
+        if (getIntent().getStringExtra("select") != null) {
+            if (getIntent().getStringExtra("select").equals("changelog")) {
+                viewPager.setCurrentItem(1);
+            }
+        }
     }
 
     @Override
@@ -416,8 +423,6 @@ public class AboutModActivity extends AppCompatActivity {
             final TextView userName = itemView.findViewById(Resources.id.tv_user_name);
             final TextView description = itemView.findViewById(Resources.id.tv_description);
 
-            advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
-
             Object modder_img = modders.get(position).get("modder_img");
             if (modder_img instanceof String) {
                 circularImage(userIcon, (String) modder_img);
@@ -441,6 +446,14 @@ public class AboutModActivity extends AppCompatActivity {
                 isTitle = (boolean) isTitled;
             }
 
+            Object isMainModder = modders.get(position).get("isMainModder");
+            boolean isMainModderBool = false;
+            if (isMainModder instanceof String) {
+                isMainModderBool = Boolean.parseBoolean((String) isMainModder);
+            } else if (isMainModder instanceof Boolean) {
+                isMainModderBool = (boolean) isMainModder;
+            }
+
             Object titleText = modders.get(position).get("title");
             if (isTitle) {
                 if (titleText instanceof String) {
@@ -451,6 +464,12 @@ public class AboutModActivity extends AppCompatActivity {
                 }
             } else {
                 title.setVisibility(View.GONE);
+            }
+
+            if (isMainModderBool) {
+                advancedCorners(sidebar, "#008DCD", 0, 30, 0, 30);
+            } else {
+                advancedCorners(sidebar, "#00CDAB", 0, 30, 0, 30);
             }
         }
 
