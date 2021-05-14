@@ -5,5 +5,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "SW Pro Remod Remod"
+rootProject.name = "Sketchware Pro"
 include ':app'
