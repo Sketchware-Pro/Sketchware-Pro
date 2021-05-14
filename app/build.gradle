@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.jbk.swproremodremod"
+        applicationId 'com.sketchware.remod.sources'
         minSdkVersion 25
         targetSdkVersion 30
         versionCode 1
