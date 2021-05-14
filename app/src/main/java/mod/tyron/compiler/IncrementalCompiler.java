@@ -1,7 +1,6 @@
 package mod.tyron.compiler;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import a.a.a.yq;
-import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FileUtil;
 
@@ -30,10 +28,6 @@ public class IncrementalCompiler {
 
     private Compiler.Result resultListener;
 
-    public void setResultListener(Compiler.Result resultListener) {
-        this.resultListener = resultListener;
-    }
-
     public IncrementalCompiler(yq projectConfig) {
         this.projectConfig = projectConfig;
         this.mll = new ManageLocalLibrary(projectConfig.b);
@@ -41,27 +35,34 @@ public class IncrementalCompiler {
         d8Compiler = new IncrementalD8Compiler(projectConfig);
         dexMerger = new IncrementalDexMerger(projectConfig, javaCompiler.getBuiltInLibraries());
 
-              dexMerger.setOnResultListener((success, compileType, args) -> {
-            if (success) {
-                String message = "Dex merge successful, building APK.";
-                Log.d(TAG, message);
-                resultListener.onResult(true, Compiler.TYPE_MERGE, message);
-                //we are sure that the second argument is a list of string
-                //noinspection unchecked
-                buildApk((List<String>) args[1]);
-            } else {
-                Log.e(TAG, "Failed to merge dexes, reason: " + args[0]);
-                resultListener.onResult(false, compileType, args);
+        dexMerger.setOnResultListener(new Compiler.Result() {
+            @Override
+            public void onResult(boolean success, int compileType, Object... args) {
+                if (success) {
+                    String message = "Dex merge successful, building APK.";
+                    Log.d(TAG, message);
+                    resultListener.onResult(true, Compiler.TYPE_MERGE, message);
+                    //we are sure that the second argument is a list of string
+                    //noinspection unchecked
+                    buildApk((List<String>) args[1]);
+                } else {
+                    Log.e(TAG, "Failed to merge dexes, reason: " + args[0]);
+                    resultListener.onResult(false, compileType, args);
+                }
             }
         });
     }
 
-    public void performCompilation(){
+    public void setResultListener(Compiler.Result resultListener) {
+        this.resultListener = resultListener;
+    }
+
+    public void performCompilation() {
 
         if (resultListener == null) {
             throw new IllegalAccessError("No result listener were set");
         }
-        if(Looper.getMainLooper().getThread() == Thread.currentThread()) {
+        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
             throw new IllegalStateException("Unable to perform compilation on the main thread, call this function on a background thread");
         }
 
@@ -69,7 +70,7 @@ public class IncrementalCompiler {
     }
 
     private void compileJava() {
-        javaCompiler.setOnResultListener(new Compiler.Result(){
+        javaCompiler.setOnResultListener(new Compiler.Result() {
             @Override
             public void onResult(boolean success, int compileType, Object... args) {
                 if (success) {
