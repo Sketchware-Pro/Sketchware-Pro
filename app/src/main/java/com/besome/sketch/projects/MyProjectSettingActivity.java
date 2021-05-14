@@ -178,6 +178,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
     }
 
+    /**
+     * Shows a Project Version Control dialog, made by Hosni Fraj. Currently unused.
+     */
     public final void showNewVersionControl() {
         R = Q;
         final aB dialog = new aB(this);
