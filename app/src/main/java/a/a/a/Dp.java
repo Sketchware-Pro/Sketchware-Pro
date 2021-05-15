@@ -722,7 +722,7 @@ public class Dp {
         if (f.N.p) {
             n.a("okhttp-3.9.1");
         }
-        ExtLibSelected.a(f.N.x, n);
+        ExtLibSelected.addUsedDependencies(f.N.x, n);
     }
 
     /**
