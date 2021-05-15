@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.sdklib.build.ApkBuilder;
@@ -167,14 +168,18 @@ public class Dp {
     }
 
     /**
-     * Checks if the source file in assets has a different size than {@code compareTo}.
+     * Checks if a file on local storage differs from a file in assets, and if so,
+     * replaces the file on local storage with the one in assets.
+     * <p/>
+     * The files' sizes are compared, not content.
      *
-     * @param fileInAssets The file in assets whose length to compare
-     * @param compareTo    The file whose length to compare
+     * @param fileInAssets The file in assets relative to assets/ in the APK
+     * @param targetFile   The file on local storage
+     * @return             If the file in assets has been extracted
      */
-    public final boolean a(String fileInAssets, String compareTo) {
+    public final boolean a(String fileInAssets, String targetFile) {
         long length;
-        File compareToFile = new File(compareTo);
+        File compareToFile = new File(targetFile);
         long lengthOfFileInAssets = g.a(e, fileInAssets);
         if (compareToFile.exists()) {
             length = compareToFile.length();
@@ -184,8 +189,11 @@ public class Dp {
         if (lengthOfFileInAssets == length) {
             return false;
         }
+
+        /* Delete the file */
         g.a(compareToFile);
-        g.a(e, fileInAssets, compareTo);
+        /* Copy the file from assets to local storage */
+        g.a(e, fileInAssets, targetFile);
         return true;
     }
 
@@ -325,42 +333,60 @@ public class Dp {
     }
 
     public final String classpath() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(f.v).append(":").append(o);
-        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
-            sb.append(":");
-            sb.append(l.getAbsolutePath());
-            sb.append(c);
-            sb.append("libs");
-            sb.append(c);
-            sb.append("http-legacy-android-28");
-            sb.append(c);
-            sb.append("classes.jar");
+        StringBuilder baseClasses = new StringBuilder(f.v)
+                .append(":")
+                .append(o);
+        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
+                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+            baseClasses
+                    .append(":")
+                    .append(l.getAbsolutePath())
+                    .append(File.separator)
+                    .append("libs")
+                    .append(File.separator)
+                    .append("http-legacy-android-28")
+                    .append(File.separator)
+                    .append("classes.jar");
         }
-        sb.append(":");
-        sb.append(l.getAbsolutePath());
-        sb.append(c);
-        sb.append("jdk");
-        sb.append(c);
-        sb.append("rt.jar");
-        StringBuilder sb2 = new StringBuilder(sb.toString());
-        for (Jp next : n.a()) {
-            sb2.append(":").append(l.getAbsolutePath()).append(c).append("libs").append(c).append(next.a()).append(c).append("classes.jar");
+
+        StringBuilder builtInLibrariesClasses = new StringBuilder();
+        for (Jp builtInLibrary : n.a()) {
+            builtInLibrariesClasses
+                    .append(":")
+                    .append(l.getAbsolutePath())
+                    .append(File.separator)
+                    .append("libs")
+                    .append(File.separator)
+                    .append(builtInLibrary.a())
+                    .append(File.separator)
+                    .append("classes.jar");
         }
-        StringBuilder sb3 = new StringBuilder();
-        sb3.append(sb2);
+
+        StringBuilder localLibraryClasses = new StringBuilder();
         for (HashMap<String, Object> hashMap : mll.list) {
-            String obj = hashMap.get("name").toString();
-            if (hashMap.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(obj)) {
-                sb3.append(":");
-                sb3.append(hashMap.get("jarPath").toString());
+            Object nameObject = hashMap.get("name");
+            Object jarPathObject = hashMap.get("jarPath");
+            if (nameObject instanceof String && jarPathObject instanceof String) {
+                String name = (String) nameObject;
+                String jarPath = (String) jarPathObject;
+                if (hashMap.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(name)) {
+                    localLibraryClasses
+                            .append(":")
+                            .append(jarPath);
+                }
             }
         }
-        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
-            sb3.append(":");
-            sb3.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
+
+        String customClasspath = build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "");
+        if (!TextUtils.isEmpty(customClasspath)) {
+            localLibraryClasses
+                    .append(":")
+                    .append(customClasspath);
         }
-        return sb3.toString();
+
+        return baseClasses.toString()
+                + builtInLibrariesClasses.toString()
+                + localLibraryClasses.toString();
     }
 
     /**
@@ -610,7 +636,7 @@ public class Dp {
     }
 
     /**
-     * Extracts AAPT binaries (if they need to be extracted)
+     * Extracts AAPT binaries (if they need to be extracted).
      *
      * @throws Exception If anything goes wrong while extracting
      */
@@ -625,10 +651,13 @@ public class Dp {
             aapt2PathInAssets = "aapt/aapt2-arm";
         }
         try {
+            /* Check if we need to update aapt */
             if (a(aaptPathInAssets, i.getAbsolutePath())) {
                 d[2] = i.getAbsolutePath();
                 j.a(d);
             }
+
+            /* Check if we need to update aapt2 */
             if (a(aapt2PathInAssets, aapt2Dir.getAbsolutePath())) {
                 d[2] = aapt2Dir.getAbsolutePath();
                 j.a(d);
@@ -641,54 +670,75 @@ public class Dp {
 
     /**
      * Checks if we need to extract any library/dependency from assets to filesDir,
-     * and extracts them, if needed.
+     * and extracts them, if needed. Also initializes used built-in libraries.
      */
     public void j() {
         /* If l doesn't exist, create it */
         if (!g.e(l.getAbsolutePath())) {
             g.f(l.getAbsolutePath());
         }
-        String androidJarPath = new File(l, "android.jar.zip").getAbsolutePath();
-        String dexsArchivePath = new File(l, "dexs.zip").getAbsolutePath();
-        String libsArchivePath = new File(l, "libs.zip").getAbsolutePath();
+        String androidJarArchiveName = "android.jar.zip";
+        String dexsArchiveName = "dexs.zip";
+        String libsArchiveName = "libs.zip";
+        String jdkArchiveName = "jdk.zip";
+        String testkeyArchiveName = "testkey.zip";
+
+        String androidJarPath = new File(l, androidJarArchiveName).getAbsolutePath();
+        String dexsArchivePath = new File(l, dexsArchiveName).getAbsolutePath();
+        String libsArchivePath = new File(l, libsArchiveName).getAbsolutePath();
+        String jdkArchivePath = new File(l, jdkArchiveName).getAbsolutePath();
+        String testkeyArchivePath = new File(l, testkeyArchiveName).getAbsolutePath();
         String dexsDirectoryPath = new File(l, "dexs").getAbsolutePath();
         String libsDirectoryPath = new File(l, "libs").getAbsolutePath();
+        String jdkDirectoryPath = new File(l, "jdk").getAbsolutePath();
         String testkeyDirectoryPath = new File(l, "testkey").getAbsolutePath();
-        if (a(m + File.separator + "android.jar.zip", androidJarPath)) {
+        /* If necessary, update android.jar.zip */
+        if (a(m + File.separator + androidJarArchiveName, androidJarPath)) {
+            buildingDialog.c("Extracting built-in android.jar...");
             /* Delete android.jar */
             g.c(l.getAbsolutePath() + c + "android.jar");
+            /* Extract android.jar.zip to android.jar */
             new KB().a(androidJarPath, l.getAbsolutePath());
         }
-        if (a(m + File.separator + "dexs.zip", dexsArchivePath)) {
+        /* If necessary, update dexs.zip */
+        if (a(m + File.separator + dexsArchiveName, dexsArchivePath)) {
+            buildingDialog.c("Extracting built-in libraries' dexes...");
+            /* Delete the directory */
             g.b(dexsDirectoryPath);
+            /* Create the directories */
             g.f(dexsDirectoryPath);
+            /* Extract dexs.zip to dexs/ */
             new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
-        if (a(m + File.separator + "libs.zip", libsArchivePath)) {
+        /* If necessary, update libs.zip */
+        if (a(m + File.separator + libsArchiveName, libsArchivePath)) {
+            buildingDialog.c("Extracting built-in libraries' resources...");
+            /* Delete the directory */
             g.b(libsDirectoryPath);
+            /* Create the directories */
             g.f(libsDirectoryPath);
+            /* Extract libs.zip to libs/ */
             new KB().a(libsArchivePath, libsDirectoryPath);
         }
-        String jdkArchivePathInAssets = m + File.separator + "jdk.zip";
-        String jdkArchivePath = new File(l, "jdk.zip").getAbsolutePath();
-        /* Check if file size has changed */
-        if (a(jdkArchivePathInAssets, jdkArchivePath)) {
-            String jdkDirectoryPath = new File(l, "jdk").getAbsolutePath();
-            /* Delete the directory? */
+        /* If necessary, update jdk.zip */
+        if (a(m + File.separator + jdkArchiveName, jdkArchivePath)) {
+            buildingDialog.c("Extracting built-in runtime classes...");
+            /* Delete the directory */
             g.b(jdkDirectoryPath);
-            /* Create the directories? */
+            /* Create the directories */
             g.f(jdkDirectoryPath);
-            /* Extract the archive to the directory? */
+            /* Extract jdk.zip to jdk/ */
             new KB().a(jdkArchivePath, jdkDirectoryPath);
         }
-        String testkeyArchivePathInAssets = m + File.separator + "testkey.zip";
-        String testkeyArchivePath = new File(l, "testkey.zip").getAbsolutePath();
-        if (a(testkeyArchivePathInAssets, testkeyArchivePath)) {
-            /* We need to copy testkey.zip to filesDir */
+        /* If necessary, update testkey.zip */
+        if (a(m + File.separator + testkeyArchiveName, testkeyArchivePath)) {
+            buildingDialog.c("Extracting built-in signing keys...");
+            /* Delete the directory */
             g.b(testkeyDirectoryPath);
+            /* Create the directories */
             g.f(testkeyDirectoryPath);
+            /* Extract testkey.zip to testkey/ */
             new KB().a(testkeyArchivePath, testkeyDirectoryPath);
-
         }
         if (f.N.g) {
             n.a("appcompat-1.0.0");
@@ -840,7 +890,10 @@ public class Dp {
             args.add("-printmapping");
             args.add(f.printmapping);
         }
-        LogUtil.log(TAG, "About to run ProGuard with these arguments: ", "About to log ProGuard's arguments on multiple lines because of length.", args);
+        LogUtil.log(TAG,
+                "About to run ProGuard with these arguments: ",
+                "About to log ProGuard's arguments on multiple lines because of length.",
+                args);
         ProGuard.main(args.toArray(new String[0]));
         Log.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms.");
     }
