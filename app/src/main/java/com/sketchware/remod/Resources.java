@@ -136,6 +136,7 @@ public class Resources {
         public static final int advanced_setting_layout = 0x7f08002a;
         public static final int app_icon = 0x7f08003a;
         public static final int app_icon_layout = 0x7f08003b;
+        public static final int block_area = 0x7f080049;
         public static final int btn_editproperties = 0x7f080065;
         public static final int btn_execute = 0x7f080068;
         public static final int btn_export_apk = 0x7f080069;
@@ -162,6 +163,7 @@ public class Resources {
         public static final int confirm_title = 0x7f0800ce;
         public static final int confirm_yes = 0x7f0800cf;
         public static final int confirm_yes_text = 0x7f0800d1;
+        public static final int container = 0x7f0800d3;
         public static final int contents = 0x7f0800d6;
         public static final int custom_view = 0x7f0800dd;
         public static final int desc = 0x7f0800f3;
@@ -205,6 +207,7 @@ public class Resources {
         public static final int img_left_icon = 0x7f0801b3;
         public static final int img_orientation = 0x7f0801bc;
         public static final int img_save = 0x7f0801c9;
+        public static final int img_selected = 0x7f0801cd;
         public static final int img_theme_color_help = 0x7f0801d4;
         public static final int img_title_logo = 0x7f0801d9;
         public static final int img_user_icon = 0x7f0801df;
@@ -221,13 +224,18 @@ public class Resources {
         public static final int layout_img_icon = 0x7f080279;
         public static final int layout_input_file_picker = 0x7f08027d;
         public static final int layout_inputs = 0x7f08027e;
+        public static final int layout_item = 0x7f08027f;
         public static final int layout_main_logo = 0x7f08028a;
         public static final int layout_menus = 0x7f08028d;
         public static final int layout_property_group = 0x7f08029c;
         public static final int layout_property_see_all = 0x7f08029d;
+        public static final int layout_qna_bottom = 0x7f08029f;
         public static final int layout_theme_color = 0x7f0802b5;
         public static final int layout_theme_colors = 0x7f0802b6;
-        public static final int layout_qna_bottom = 0x7f08029f;
+        public static final int lib_desc = 0x7f0802c3;
+        public static final int lib_icon = 0x7f0802c4;
+        public static final int lib_title = 0x7f0802c6;
+        public static final int list_events = 0x7f0802d9;
         public static final int left_drawer = 0x7f0802c2;
         public static final int ll_warning = 0x7f0802f7;
         public static final int loading_export_data = 0x7f0802fa;
@@ -291,6 +299,7 @@ public class Resources {
         public static final int tv_apk_path = 0x7f080485;
         public static final int tv_apk_url = 0x7f080486;
         public static final int tv_apk_url_expire = 0x7f080487;
+        public static final int tv_block_name = 0x7f080495;
         public static final int tv_change_icon = 0x7f08049b;
         public static final int tv_code = 0x7f0804a8;
         public static final int tv_compile_log = 0x7f0804b2;
@@ -301,6 +310,7 @@ public class Resources {
         public static final int tv_desc_file_picker = 0x7f0804cc;
         public static final int tv_desc_firebase_path = 0x7f0804cd;
         public static final int tv_description = 0x7f0804d2;
+        public static final int tv_enable = 0x7f0804dd;
         public static final int tv_expire_date = 0x7f0804e5;
         public static final int tv_favorites_guide = 0x7f0804e9;
         public static final int tv_input_dp = 0x7f080507;
@@ -335,6 +345,18 @@ public class Resources {
         public static final int text_content = 0x7f08066f;
         public static final int text_cancel = 0x7f080678;
         public static final int text_save = 0x7f080679;
+        // WTF
+        public static final int linear1 = 0x7f080680;
+        public static final int linear4 = 0x7f080681;
+        public static final int textview3 = 0x7f080682;
+        public static final int linear9 = 0x7f08068f;
+        public static final int linear10 = 0x7f080692;
+        public static final int linear11 = 0x7f080694;
+        public static final int add_attr_listview = 0x7f0806b6;
+        public static final int add_attr_fab = 0x7f0806b7;
+        public static final int cus_attr_layout = 0x7f0806b8;
+        public static final int cus_attr_text = 0x7f0806b9;
+        public static final int cus_attr_btn = 0x7f0806ba;
         public static final int dialog_input_attr = 0x7f0806bb;
         public static final int dialog_btn_cancel = 0x7f0806bc;
         public static final int dialog_btn_save = 0x7f0806bd;
@@ -347,6 +369,11 @@ public class Resources {
         public static final int ig_toolbar_load_file = 0x7f0806cb;
         public static final int codeeditor_more_options = 0x7f0806f8;
         public static final int project_config_pref_layout = 0x7f0806fc;
+        // WTF
+        public static final int linear3 = 0x7f0806fe;
+        public static final int progressbar1 = 0x7f0806ff;
+        public static final int linear8 = 0x7f080701;
+        public static final int edittext1 = 0x7f080702;
         public static final int save = 0x7f080710;
         public static final int parameter = 0x7f080769;
         public static final int sw_pg_enabled = 0x7f08076f;
@@ -380,7 +407,9 @@ public class Resources {
         public static final int main_drawer_header = 0x7f0b00af;
         public static final int main_drawer_item = 0x7f0b00b0;
         public static final int make_block = 0x7f0b00b1;
+        public static final int manage_collection_popup_import_more_block_list_item = 0x7f0b00b7;
         public static final int manage_collection_show_widget = 0x7f0b00b9;
+        public static final int manage_library_base_item = 0x7f0b00d1;
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
         public static final int myproject_buttons = 0x7f0b00fd;
         public static final int myproject_color = 0x7f0b00fe;
@@ -402,12 +431,16 @@ public class Resources {
         public static final int property_subheader = 0x7f0b0141;
         public static final int property_switch_item = 0x7f0b0142;
         public static final int property_switch_item_singleline = 0x7f0b0143;
+        public static final int view_events = 0x7f0b01bf;
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
         public static final int view_code = 0x7f0b01cb;
         public static final int about = 0x7f0b01cf;
+        public static final int add_custom_attribute = 0x7f0b01d3;
+        public static final int custom_view_attribute = 0x7f0b01d4;
         public static final int custom_dialog_attribute = 0x7f0b01d5;
         public static final int toolbar_improved = 0x7f0b01d7;
+        public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
