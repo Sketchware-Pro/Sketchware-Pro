@@ -1,5 +1,7 @@
 package mod;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -30,39 +32,37 @@ import java.util.Random;
 
 import a.a.a.bB;
 
-import static com.besome.sketch.SketchApplication.getContext;
-
 public class SketchwareUtil {
 
-    public static int TOP = 1;
-    public static int CENTER = 2;
-    public static int BOTTOM = 3;
+    public static final int TOP = 1;
+    public static final int CENTER = 2;
+    public static final int BOTTOM = 3;
 
     public static void CustomToast(String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity) {
         Toast toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
         View view = toast.getView();
-        TextView _textView = view.findViewById(android.R.id.message);
-        _textView.setTextSize(_textSize);
-        _textView.setTextColor(_textColor);
-        _textView.setGravity(Gravity.CENTER);
+        TextView textView = view.findViewById(android.R.id.message);
+        textView.setTextSize(_textSize);
+        textView.setTextColor(_textColor);
+        textView.setGravity(Gravity.CENTER);
 
-        GradientDrawable _gradientDrawable = new GradientDrawable();
-        _gradientDrawable.setColor(_bgColor);
-        _gradientDrawable.setCornerRadius(_radius);
-        view.setBackground(_gradientDrawable);
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(_bgColor);
+        drawable.setCornerRadius(_radius);
+        view.setBackground(drawable);
         view.setPadding(15, 10, 15, 10);
         view.setElevation(10);
 
         switch (_gravity) {
-            case 1:
+            case TOP:
                 toast.setGravity(Gravity.TOP, 0, 150);
                 break;
 
-            case 2:
+            case CENTER:
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 break;
 
-            case 3:
+            case BOTTOM:
                 toast.setGravity(Gravity.BOTTOM, 0, 150);
                 break;
         }
@@ -70,36 +70,36 @@ public class SketchwareUtil {
     }
 
     public static void CustomToastWithIcon(String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity, int _icon) {
-        Toast _toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
-        View _view = _toast.getView();
-        TextView _textView = _view.findViewById(android.R.id.message);
-        _textView.setTextSize(_textSize);
-        _textView.setTextColor(_textColor);
-        _textView.setCompoundDrawablesWithIntrinsicBounds(_icon, 0, 0, 0);
-        _textView.setGravity(Gravity.CENTER);
-        _textView.setCompoundDrawablePadding(10);
+        Toast toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        TextView textView = view.findViewById(android.R.id.message);
+        textView.setTextSize(_textSize);
+        textView.setTextColor(_textColor);
+        textView.setCompoundDrawablesWithIntrinsicBounds(_icon, 0, 0, 0);
+        textView.setGravity(Gravity.CENTER);
+        textView.setCompoundDrawablePadding(10);
 
-        GradientDrawable _gradientDrawable = new GradientDrawable();
-        _gradientDrawable.setColor(_bgColor);
-        _gradientDrawable.setCornerRadius(_radius);
-        _view.setBackground(_gradientDrawable);
-        _view.setPadding(10, 10, 10, 10);
-        _view.setElevation(10);
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(_bgColor);
+        drawable.setCornerRadius(_radius);
+        view.setBackground(drawable);
+        view.setPadding(10, 10, 10, 10);
+        view.setElevation(10);
 
         switch (_gravity) {
-            case 1:
-                _toast.setGravity(Gravity.TOP, 0, 150);
+            case TOP:
+                toast.setGravity(Gravity.TOP, 0, 150);
                 break;
 
-            case 2:
-                _toast.setGravity(Gravity.CENTER, 0, 0);
+            case CENTER:
+                toast.setGravity(Gravity.CENTER, 0, 0);
                 break;
 
-            case 3:
-                _toast.setGravity(Gravity.BOTTOM, 0, 150);
+            case BOTTOM:
+                toast.setGravity(Gravity.BOTTOM, 0, 150);
                 break;
         }
-        _toast.show();
+        toast.show();
     }
 
     public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
@@ -144,9 +144,9 @@ public class SketchwareUtil {
     }
 
     public static boolean isConnected() {
-        ConnectivityManager _connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo _activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
-        return _activeNetworkInfo != null && _activeNetworkInfo.isConnected();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public static String copyFromInputStream(InputStream _inputStream) {
@@ -194,25 +194,24 @@ public class SketchwareUtil {
         Toast.makeText(context, _s, Toast.LENGTH_SHORT).show();
     }
 
-    public static int getLocationX(View _view) {
-        int[] _location = new int[2];
-        _view.getLocationInWindow(_location);
-        return _location[0];
+    public static int getLocationX(View view) {
+        int[] location = new int[2];
+        view.getLocationInWindow(location);
+        return location[0];
     }
 
-    public static int getLocationY(View _view) {
-        int[] _location = new int[2];
-        _view.getLocationInWindow(_location);
-        return _location[1];
+    public static int getLocationY(View view) {
+        int[] location = new int[2];
+        view.getLocationInWindow(location);
+        return location[1];
     }
 
     public static int getRandom(int _min, int _max) {
-        Random random = new Random();
-        return random.nextInt(_max - _min + 1) + _min;
+        return new Random().nextInt(_max - _min + 1) + _min;
     }
 
     public static ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-        ArrayList<Double> _result = new ArrayList<Double>();
+        ArrayList<Double> _result = new ArrayList<>();
         SparseBooleanArray _arr = _list.getCheckedItemPositions();
         for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
             if (_arr.valueAt(_iIdx))
@@ -221,8 +220,8 @@ public class SketchwareUtil {
         return _result;
     }
 
-    public static float getDip(int _input) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getContext().getResources().getDisplayMetrics());
+    public static float getDip(int input) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, input, getContext().getResources().getDisplayMetrics());
     }
 
     public static int getDisplayWidthPixels() {
