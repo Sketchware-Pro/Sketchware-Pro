@@ -1,17 +1,19 @@
 package a.a.a;
 
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
-import java.util.ArrayList;
-import java.util.Iterator;
+
 import org.apache.http.client.utils.URLEncodedUtils;
 
+import java.util.ArrayList;
+
 public class Nx {
+
     public String a;
     public int b;
     public String c;
     public boolean d;
-    public ArrayList e;
-    public ArrayList f;
+    public ArrayList<a> e;
+    public ArrayList<Nx> f;
     public String g;
 
     public Nx(String str) {
@@ -22,8 +24,8 @@ public class Nx {
         this.d = z;
         this.a = str;
         this.b = 0;
-        this.e = new ArrayList();
-        this.f = new ArrayList();
+        this.e = new ArrayList<>();
+        this.f = new ArrayList<>();
     }
 
     public final String a() {
@@ -31,11 +33,11 @@ public class Nx {
     }
 
     public final String a(int i) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for (int i2 = 0; i2 < this.b + i; i2++) {
-            str = str + "\t";
+            str.append("\t");
         }
-        return str;
+        return str.toString();
     }
 
     public void a(int i, String str, String str2, String str3) {
@@ -64,9 +66,7 @@ public class Nx {
         sb.append(a());
         sb.append("<");
         sb.append(this.a);
-        Iterator it = this.e.iterator();
-        while (it.hasNext()) {
-            a aVar = (a) it.next();
+        for (Nx.a aVar : this.e) {
             if (this.e.size() <= 1 || this.d) {
                 sb.append(MinimalPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR);
             } else {
@@ -77,31 +77,27 @@ public class Nx {
             sb.append(aVar.a());
         }
         if (this.f.size() <= 0) {
-            String str = this.c;
-            if (str == null || str.length() <= 0) {
+            if (this.c == null || this.c.length() <= 0) {
                 sb.append(" />");
-                sb.append("\r\n");
             } else {
                 sb.append(">");
                 sb.append(this.c);
                 sb.append("</");
                 sb.append(this.a);
                 sb.append(">");
-                sb.append("\r\n");
             }
         } else {
             sb.append(">");
             sb.append("\r\n");
-            Iterator it2 = this.f.iterator();
-            while (it2.hasNext()) {
-                sb.append(((Nx) it2.next()).b());
+            for (Nx nx : this.f) {
+                sb.append(nx.b());
             }
             sb.append(a());
             sb.append("</");
             sb.append(this.a);
             sb.append(">");
-            sb.append("\r\n");
         }
+        sb.append("\r\n");
         return sb.toString();
     }
 
@@ -111,11 +107,9 @@ public class Nx {
 
     public void b(int i) {
         this.b = i;
-        ArrayList arrayList = this.f;
-        if (arrayList != null) {
-            Iterator it = arrayList.iterator();
-            while (it.hasNext()) {
-                ((Nx) it.next()).b(i + 1);
+        if (this.f != null) {
+            for (Nx nx : this.f) {
+                nx.b(i + 1);
             }
         }
     }
@@ -139,11 +133,9 @@ public class Nx {
         }
 
         public String a() {
-            String str4 = this.str;
-            String str5 = this.str2;
-            if (str4 != null && str4.length() > 0) {
+            if (this.str != null && this.str.length() > 0) {
                 return this.str + ":" + this.str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + this.str3 + "\"";
-            } else if (str5 == null || str5.length() <= 0) {
+            } else if (this.str2 == null || this.str2.length() <= 0) {
                 return this.str3.replaceAll("\n", Nx.this.g);
             } else {
                 return this.str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + this.str3 + "\"";
