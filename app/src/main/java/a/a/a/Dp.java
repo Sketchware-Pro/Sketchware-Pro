@@ -40,7 +40,7 @@ import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.alucard.tn.compiler.ResourceCompiler;
+import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.alucard.tn.shrinker.R8Executor;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
@@ -195,97 +195,21 @@ public class Dp {
      * @throws Exception Thrown in case AAPT/AAPT2 has an error while compiling resources.
      */
     public void b() throws Exception {
-        if (build_settings.getValue(
+        boolean useAapt2 = build_settings.getValue(
                 BuildSettings.SETTING_RESOURCE_PROCESSOR,
                 BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
-        ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2)) {
-            /* Start compiling with AAPT2 */
-            ResourceCompiler compiler = new ResourceCompiler(
-                    this,
-                    aapt2Dir,
-                    build_settings.getValue(
-                            BuildSettings.SETTING_OUTPUT_FORMAT,
-                            BuildSettings.SETTING_OUTPUT_FORMAT_APK
-                    ).equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB),
-                    buildingDialog);
-            compiler.compile();
-            compiler.link();
-            return;
-        }
+        ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
 
-        /* Start generating arguments for AAPT */
-        ArrayList<String> args = new ArrayList<>();
-        args.add(i.getAbsolutePath());
-        args.add("package");
-        String extraPackages = e();
-        if (!extraPackages.isEmpty()) {
-            args.add("--extra-packages");
-            args.add(extraPackages);
-        }
-        args.add("--min-sdk-version");
-        args.add(settings.getValue("min_sdk", a));
-        args.add("--target-sdk-version");
-        args.add(settings.getValue("target_sdk", b));
-        args.add("--version-code");
-        args.add(((f.l == null) || f.l.isEmpty()) ? "1" : f.l);
-        args.add("--version-name");
-        args.add(((f.m == null) || f.m.isEmpty()) ? "1.0" : f.m);
-        args.add("--auto-add-overlay");
-        args.add("--generate-dependencies");
-        args.add("-f");
-        args.add("-m");
-        args.add("--non-constant-id");
-        args.add("--output-text-symbols");
-        args.add(f.t);
-        if (f.N.g) {
-            args.add("--no-version-vectors");
-        }
-        args.add("-S");
-        args.add(f.w);
-        for (String localLibraryResDirectory : mll.getResLocalLibrary()) {
-            args.add("-S");
-            args.add(localLibraryResDirectory);
-        }
-        if (FileUtil.isExistFile(fpu.getPathResource(f.b))) {
-            args.add("-S");
-            args.add(fpu.getPathResource(f.b));
-        }
-        args.add("-A");
-        args.add(f.A);
-        if (FileUtil.isExistFile(fpu.getPathAssets(f.b))) {
-            args.add("-A");
-            args.add(fpu.getPathAssets(f.b));
-        }
-        for (String localLibraryAssetsDirectory : mll.getAssets()) {
-            args.add("-A");
-            args.add(localLibraryAssetsDirectory);
-        }
-        for (Jp library : n.a()) {
-            if (library.d()) {
-                String str7 = l.getAbsolutePath() + c + "libs" + c + library.a() + c + "assets";
-                args.add("-A");
-                args.add(str7);
-            }
-
-            if (library.c()) {
-                String str6 = l.getAbsolutePath() + c + "libs" + c + library.a() + c + "res";
-                args.add("-S");
-                args.add(str6);
-            }
-        }
-        args.add("-J");
-        args.add(f.v);
-        args.add("-G");
-        args.add(f.aapt_rules);
-        args.add("-M");
-        args.add(f.r);
-        args.add("-I");
-        args.add(o);
-        args.add("-F");
-        args.add(f.C);
-        if (j.a(args.toArray(new String[0])) != 0) {
-            throw new zy(j.a.toString());
-        }
+        ResourceCompiler compiler = new ResourceCompiler(
+                this,
+                aapt2Dir,
+                build_settings.getValue(
+                        BuildSettings.SETTING_OUTPUT_FORMAT,
+                        BuildSettings.SETTING_OUTPUT_FORMAT_APK
+                ).equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB),
+                buildingDialog,
+                useAapt2);
+        compiler.compile();
     }
 
     public void b(String password, String alias) {
