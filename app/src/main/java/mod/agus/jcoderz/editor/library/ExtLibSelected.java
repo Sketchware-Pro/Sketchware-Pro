@@ -4,42 +4,43 @@ import a.a.a.Kp;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 
 public class ExtLibSelected {
-    public static void a(ConstVarComponent constVarComponent, Kp kp) {
-        if (constVarComponent.isDynamicLinkUsed) {
+
+    public static void addUsedDependencies(ConstVarComponent component, Kp kp) {
+        if (component.isDynamicLinkUsed) {
             kp.a("firebase-dynamic-links-19.0.0");
         }
-        if (constVarComponent.isFCMUsed) {
+        if (component.isFCMUsed) {
             kp.a("firebase-messaging-19.0.0");
         }
-        if (constVarComponent.isOneSignalUsed) {
+        if (component.isOneSignalUsed) {
             kp.a("OneSignal-3.14.0");
             kp.a("play-services-gcm-17.0.0");
         }
-        if (constVarComponent.isFBAdsUsed) {
+        if (component.isFBAdsUsed) {
             kp.a("audience-network-sdk-5.9.0");
         }
-        if (constVarComponent.isLottieUsed) {
+        if (component.isLottieUsed) {
             kp.a("Lottie-3.4.0");
         }
-        if (constVarComponent.isYoutubePlayerUsed) {
+        if (component.isYoutubePlayerUsed) {
             kp.a("android-youtube-player-10.0.5");
         }
-        if (constVarComponent.isCircleImageViewUsed) {
+        if (component.isCircleImageViewUsed) {
             kp.a("circle-imageview-v3.1.0");
         }
-        if (constVarComponent.isFBGoogleUsed) {
+        if (component.isFBGoogleUsed) {
             kp.a("play-services-auth-17.0.0");
         }
-        if (constVarComponent.isOTPViewUsed) {
+        if (component.isOTPViewUsed) {
             kp.a("OTPView-0.1.0");
         }
-        if (constVarComponent.isCodeViewUsed) {
+        if (component.isCodeViewUsed) {
             kp.a("code-view");
         }
-        if (constVarComponent.isPatternLockViewUsed) {
+        if (component.isPatternLockViewUsed) {
             kp.a("pattern-lock-view");
         }
-        if (constVarComponent.isWaveSideBarUsed) {
+        if (component.isWaveSideBarUsed) {
             kp.a("wave-side-bar");
         }
     }
