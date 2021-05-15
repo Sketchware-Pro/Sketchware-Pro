@@ -24,6 +24,8 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
@@ -805,7 +807,11 @@ public class Dp {
      */
     public boolean k() {
         ZipSigner zipSigner = new ZipSigner();
-        zipSigner.addAutoKeyObserver(new Cp(this));
+        zipSigner.addAutoKeyObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+            }
+        });
         KeyStoreFileManager.setProvider(new BouncyCastleProvider());
         zipSigner.setKeymode("testkey");
         zipSigner.signZip(f.G, f.H);
