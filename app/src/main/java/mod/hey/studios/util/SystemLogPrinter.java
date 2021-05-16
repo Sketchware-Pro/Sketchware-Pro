@@ -2,63 +2,50 @@ package mod.hey.studios.util;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Field;
-
 import mod.agus.jcoderz.lib.FileUtil;
 
-public class SystemLogPrinter {
+public class SystemLogPrinter 
+{
 
-    private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
+	private static final String PATH =
+    FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
 
-    public static void start() {
-        if (FileUtil.isExistFile(PATH)) {
-            FileUtil.deleteFile(PATH);
-        }
 
-        FileUtil.writeFile(PATH, "");
-        OutputStream outputStream = new OutputStream() {
+	public static void start() {
 
-            private String mCache;
+        //reset
+		FileUtil.writeFile(PATH, "");
 
-            @Override
-            public void write(int b) {
-                if (this.mCache == null) {
-                    this.mCache = "";
-                }
+		PrintStream ps = new PrintStream(new OutputStream() {
+			String cache;
 
-                if ((char) b == '\n') {
-                    String var2 = this.mCache;
-                    FileUtil.writeFile(PATH, FileUtil.readFile(PATH) + "\n" + var2);
-                    this.mCache = "";
-                } else {
-                    this.mCache = this.mCache + (char) b;
-                }
+			@Override
+			public void write(int b) {
+		        if (cache == null) cache = "";
 
-            }
-        };
+		        if (((char) b) == '\n')
+                {
+					//write each line printed to the specified path
+					FileUtil.writeFile(PATH,
+                        FileUtil.readFile(PATH) + "\n" + cache);
 
-        try {
-            Field out = System.class.getDeclaredField("out");
-            Field fieldAccessFlags = Field.class.getDeclaredField("accessFlags");
-            fieldAccessFlags.setAccessible(true);
-            int outModifiers = out.getModifiers();
-            fieldAccessFlags.set(out, outModifiers & -17);
-            out.setAccessible(true);
-            out.set(null, new PrintStream(outputStream));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+					cache = "";
+				}
+                else
+                {
+					cache += (char) b;
+				}
+		    }
+		});
 
-        try {
-            Field out = System.class.getDeclaredField("err");
-            Field fieldAccessFlags = Field.class.getDeclaredField("accessFlags");
-            fieldAccessFlags.setAccessible(true);
-            int outModifiers = out.getModifiers();
-            fieldAccessFlags.set(out, outModifiers & -17);
-            out.setAccessible(true);
-            out.set(null, new PrintStream(outputStream));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
+        System.setOut(ps);
+        System.setErr(ps);
+        
+     }
+        
 }
+
+
+        
+                
+
