@@ -69,7 +69,7 @@ public class ExtraBlockClassInfo {
   }
 
   public static String a(String str) {
-    switch (sr) {
+    switch (str) {
       case "circleimageview":
           return "CircleImageView";
         
