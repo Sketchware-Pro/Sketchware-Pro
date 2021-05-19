@@ -7,10 +7,10 @@ public enum AnnotationVisibility implements ToHuman {
     BUILD("build"),
     SYSTEM("system"),
     EMBEDDED("embedded");
-    
+
     private final String human;
 
-    private AnnotationVisibility(String str) {
+    AnnotationVisibility(String str) {
         this.human = str;
     }
 

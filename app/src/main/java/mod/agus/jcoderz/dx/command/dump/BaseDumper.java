@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.command.dump;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringWriter;
+
 import mod.agus.jcoderz.dx.cf.code.ConcreteMethod;
 import mod.agus.jcoderz.dx.cf.iface.Member;
 import mod.agus.jcoderz.dx.cf.iface.ParseObserver;
@@ -12,17 +13,17 @@ import mod.agus.jcoderz.dx.util.IndentingWriter;
 import mod.agus.jcoderz.dx.util.TwoColumnOutput;
 
 public abstract class BaseDumper implements ParseObserver {
-    protected Args args;
-    private int at;
     private final byte[] bytes;
     private final String filePath;
     private final int hexCols;
-    private int indent;
     private final PrintStream out;
     private final boolean rawBytes;
-    private String separator;
     private final boolean strictParse;
     private final int width;
+    protected Args args;
+    private int at;
+    private int indent;
+    private String separator;
 
     public BaseDumper(byte[] bArr, PrintStream printStream, String str, Args args2) {
         this.bytes = bArr;
@@ -53,7 +54,7 @@ public abstract class BaseDumper implements ParseObserver {
         this.indent += i;
         this.separator = this.rawBytes ? "|" : "";
         for (int i2 = 0; i2 < this.indent; i2++) {
-            this.separator = String.valueOf(this.separator) + "  ";
+            this.separator = this.separator + "  ";
         }
     }
 

@@ -1,7 +1,5 @@
 package mod.hosni.fraj.compilerlog;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +13,8 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.CompileLogHelper;
+
+import static mod.SketchwareUtil.getDip;
 
 public class CompileErrorSaver {
 

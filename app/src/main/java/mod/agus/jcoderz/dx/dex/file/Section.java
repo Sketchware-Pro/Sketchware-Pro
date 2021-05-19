@@ -1,30 +1,15 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.Collection;
+
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
 public abstract class Section {
     private final int alignment;
     private final DexFile file;
-    private int fileOffset;
     private final String name;
+    private int fileOffset;
     private boolean prepared;
-
-    public abstract int getAbsoluteItemOffset(Item item);
-
-    public abstract Collection<? extends Item> items();
-
-    protected abstract void prepare0();
-
-    public abstract int writeSize();
-
-    protected abstract void writeTo0(AnnotatedOutput annotatedOutput);
-
-    public static void validateAlignment(int i) {
-        if (i <= 0 || ((i - 1) & i) != 0) {
-            throw new IllegalArgumentException("invalid alignment");
-        }
-    }
 
     public Section(String str, DexFile dexFile, int i) {
         if (dexFile == null) {
@@ -37,6 +22,22 @@ public abstract class Section {
         this.fileOffset = -1;
         this.prepared = false;
     }
+
+    public static void validateAlignment(int i) {
+        if (i <= 0 || ((i - 1) & i) != 0) {
+            throw new IllegalArgumentException("invalid alignment");
+        }
+    }
+
+    public abstract int getAbsoluteItemOffset(Item item);
+
+    public abstract Collection<? extends Item> items();
+
+    protected abstract void prepare0();
+
+    public abstract int writeSize();
+
+    protected abstract void writeTo0(AnnotatedOutput annotatedOutput);
 
     public final DexFile getFile() {
         return this.file;

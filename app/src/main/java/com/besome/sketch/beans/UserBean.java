@@ -28,6 +28,15 @@ public class UserBean implements Parcelable {
     public UserBean() {
     }
 
+    public UserBean(Parcel parcel) {
+        this.userId = parcel.readInt();
+        this.loginId = parcel.readString();
+        this.loginPwd = parcel.readString();
+        this.isSnsUser = parcel.readString();
+        this.snsKind = parcel.readString();
+        this.alias = parcel.readString();
+    }
+
     public static Parcelable.Creator<UserBean> getCreator() {
         return CREATOR;
     }
@@ -43,14 +52,5 @@ public class UserBean implements Parcelable {
         parcel.writeString(this.isSnsUser);
         parcel.writeString(this.snsKind);
         parcel.writeString(this.alias);
-    }
-
-    public UserBean(Parcel parcel) {
-        this.userId = parcel.readInt();
-        this.loginId = parcel.readString();
-        this.loginPwd = parcel.readString();
-        this.isSnsUser = parcel.readString();
-        this.snsKind = parcel.readString();
-        this.alias = parcel.readString();
     }
 }

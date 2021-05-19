@@ -1,12 +1,12 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.wB;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import a.a.a.wB;
 
 public class ColorGroupItem extends RelativeLayout {
     public Context a;

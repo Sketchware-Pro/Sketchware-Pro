@@ -41,12 +41,12 @@ import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.alucard.tn.shrinker.R8Executor;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
+import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
 import proguard.ProGuard;
 
@@ -175,7 +175,7 @@ public class Dp {
      *
      * @param fileInAssets The file in assets relative to assets/ in the APK
      * @param targetFile   The file on local storage
-     * @return             If the file in assets has been extracted
+     * @return If the file in assets has been extracted
      */
     public final boolean a(String fileInAssets, String targetFile) {
         long length;

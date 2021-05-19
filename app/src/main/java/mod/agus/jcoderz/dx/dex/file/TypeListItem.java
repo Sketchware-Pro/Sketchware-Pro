@@ -49,7 +49,7 @@ public final class TypeListItem extends OffsettedItem {
         TypeIdsSection typeIds = dexFile.getTypeIds();
         int size = this.list.size();
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " type_list");
+            annotatedOutput.annotate(0, offsetString() + " type_list");
             annotatedOutput.annotate(4, "  size: " + Hex.u4(size));
             for (int i = 0; i < size; i++) {
                 Type type = this.list.getType(i);

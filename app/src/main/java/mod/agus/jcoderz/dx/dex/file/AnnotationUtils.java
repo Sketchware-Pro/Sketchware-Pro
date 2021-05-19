@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.rop.annotation.Annotation;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationVisibility;
 import mod.agus.jcoderz.dx.rop.annotation.NameValuePair;

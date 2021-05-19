@@ -4,23 +4,31 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 
 public class DeadCodeRemover {
     private int regCount;
+    private final BitSet worklist = new BitSet(this.regCount);
     private SsaMethod ssaMeth;
     private final ArrayList<SsaInsn>[] useList = this.ssaMeth.getUseListCopy();
-    private final BitSet worklist = new BitSet(this.regCount);
+
+    private DeadCodeRemover(SsaMethod ssaMethod) {
+        this.ssaMeth = ssaMethod;
+        this.regCount = ssaMethod.getRegCount();
+    }
 
     public static void process(SsaMethod ssaMethod) {
         new DeadCodeRemover(ssaMethod).run();
     }
 
-    private DeadCodeRemover(SsaMethod ssaMethod) {
-        this.ssaMeth = ssaMethod;
-        this.regCount = ssaMethod.getRegCount();
+    /* access modifiers changed from: private */
+    public static boolean hasSideEffect(SsaInsn ssaInsn) {
+        if (ssaInsn == null) {
+            return true;
+        }
+        return ssaInsn.hasSideEffect();
     }
 
     private void run() {
@@ -110,14 +118,6 @@ public class DeadCodeRemover {
             }
         }
         return true;
-    }
-
-    /* access modifiers changed from: private */
-    public static boolean hasSideEffect(SsaInsn ssaInsn) {
-        if (ssaInsn == null) {
-            return true;
-        }
-        return ssaInsn.hasSideEffect();
     }
 
     /* access modifiers changed from: private */

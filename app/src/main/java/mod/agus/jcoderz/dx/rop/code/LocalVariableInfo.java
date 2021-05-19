@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.rop.code;
 
 import java.util.HashMap;
+
 import mod.agus.jcoderz.dx.util.MutabilityControl;
 
 public final class LocalVariableInfo extends MutabilityControl {

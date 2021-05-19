@@ -5,6 +5,7 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.Insn;
@@ -15,8 +16,6 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.Rops;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
-import mod.agus.jcoderz.dx.ssa.PhiInsn;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.IntList;
 import mod.agus.jcoderz.dx.util.IntSet;
@@ -24,23 +23,19 @@ import mod.agus.jcoderz.dx.util.IntSet;
 public final class SsaBasicBlock {
     public static final Comparator<SsaBasicBlock> LABEL_COMPARATOR = new LabelComparator();
     private final ArrayList<SsaBasicBlock> domChildren;
-    private int index;
-    private ArrayList<SsaInsn> insns;
+    private final int index;
+    private final ArrayList<SsaInsn> insns;
     private IntSet liveIn;
     private IntSet liveOut;
     private int movesFromPhisAtBeginning = 0;
     private int movesFromPhisAtEnd = 0;
-    private SsaMethod parent;
+    private final SsaMethod parent;
     private BitSet predecessors;
     private int primarySuccessor = -1;
     private int reachable = -1;
-    private int ropLabel;
+    private final int ropLabel;
     private IntList successorList;
     private BitSet successors;
-
-    public interface Visitor {
-        void visitBlock(SsaBasicBlock ssaBasicBlock, SsaBasicBlock ssaBasicBlock2);
-    }
 
     public SsaBasicBlock(int i, int i2, SsaMethod ssaMethod) {
         this.parent = ssaMethod;
@@ -71,6 +66,18 @@ public final class SsaBasicBlock {
             ssaBasicBlock.primarySuccessor = primarySuccessor2 < 0 ? -1 : blocks.indexOfLabel(primarySuccessor2);
         }
         return ssaBasicBlock;
+    }
+
+    private static void setRegsUsed(BitSet bitSet, RegisterSpec registerSpec) {
+        bitSet.set(registerSpec.getReg());
+        if (registerSpec.getCategory() > 1) {
+            bitSet.set(registerSpec.getReg() + 1);
+        }
+    }
+
+    private static boolean checkRegUsed(BitSet bitSet, RegisterSpec registerSpec) {
+        int reg = registerSpec.getReg();
+        return bitSet.get(reg) || (registerSpec.getCategory() == 2 && bitSet.get(reg + 1));
     }
 
     public void addDomChild(SsaBasicBlock ssaBasicBlock) {
@@ -291,18 +298,6 @@ public final class SsaBasicBlock {
         }
     }
 
-    private static void setRegsUsed(BitSet bitSet, RegisterSpec registerSpec) {
-        bitSet.set(registerSpec.getReg());
-        if (registerSpec.getCategory() > 1) {
-            bitSet.set(registerSpec.getReg() + 1);
-        }
-    }
-
-    private static boolean checkRegUsed(BitSet bitSet, RegisterSpec registerSpec) {
-        int reg = registerSpec.getReg();
-        return bitSet.get(reg) || (registerSpec.getCategory() == 2 && bitSet.get(reg + 1));
-    }
-
     private void scheduleUseBeforeAssigned(List<SsaInsn> list) {
         int i;
         SsaInsn ssaInsn;
@@ -395,10 +390,7 @@ public final class SsaBasicBlock {
         if (this.reachable == -1) {
             this.parent.computeReachability();
         }
-        if (this.reachable == 1) {
-            return true;
-        }
-        return false;
+        return this.reachable == 1;
     }
 
     public void setReachable(int i) {
@@ -427,6 +419,10 @@ public final class SsaBasicBlock {
 
     public String toString() {
         return "{" + this.index + ":" + Hex.u2(this.ropLabel) + '}';
+    }
+
+    public interface Visitor {
+        void visitBlock(SsaBasicBlock ssaBasicBlock, SsaBasicBlock ssaBasicBlock2);
     }
 
     public static final class LabelComparator implements Comparator<SsaBasicBlock> {

@@ -4,12 +4,28 @@ import java.util.Arrays;
 
 public final class IntList extends MutabilityControl {
     public static final IntList EMPTY = new IntList(0);
+
+    static {
+        EMPTY.setImmutable();
+    }
+
     private int size;
     private boolean sorted;
     private int[] values;
 
-    static {
-        EMPTY.setImmutable();
+    public IntList() {
+        this(4);
+    }
+
+    public IntList(int i) {
+        super(true);
+        try {
+            this.values = new int[i];
+            this.size = 0;
+            this.sorted = true;
+        } catch (NegativeArraySizeException e) {
+            throw new IllegalArgumentException("size < 0");
+        }
     }
 
     public static IntList makeImmutable(int i) {
@@ -25,21 +41,6 @@ public final class IntList extends MutabilityControl {
         intList.add(i2);
         intList.setImmutable();
         return intList;
-    }
-
-    public IntList() {
-        this(4);
-    }
-
-    public IntList(int i) {
-        super(true);
-        try {
-            this.values = new int[i];
-            this.size = 0;
-            this.sorted = true;
-        } catch (NegativeArraySizeException e) {
-            throw new IllegalArgumentException("size < 0");
-        }
     }
 
     public int hashCode() {

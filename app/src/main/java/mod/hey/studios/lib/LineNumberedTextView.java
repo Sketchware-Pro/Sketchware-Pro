@@ -1,14 +1,15 @@
 package mod.hey.studios.lib;
 
-import a.a.a.wB;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import a.a.a.wB;
+
 public class LineNumberedTextView extends LinearLayout {
-    private Context context;
+    private final Context context;
     private TextView line_numbered_textview_lines;
     private TextView line_numbered_textview_main;
 

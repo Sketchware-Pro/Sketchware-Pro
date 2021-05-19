@@ -15,14 +15,21 @@ public final class ExecutionStack extends MutabilityControl {
     public ExecutionStack(int i) {
         super(true);
         boolean z;
-        if (i != 0) {
-            z = true;
-        } else {
-            z = false;
-        }
+        z = i != 0;
         this.stack = new TypeBearer[i];
         this.local = new boolean[i];
         this.stackPtr = 0;
+    }
+
+    private static String stackElementString(TypeBearer typeBearer) {
+        if (typeBearer == null) {
+            return "<invalid>";
+        }
+        return typeBearer.toString();
+    }
+
+    private static TypeBearer throwSimException(String str) {
+        throw new SimException("stack: " + str);
     }
 
     public ExecutionStack copy() {
@@ -154,16 +161,5 @@ public final class ExecutionStack extends MutabilityControl {
             executionStack.annotate(e);
             throw e;
         }
-    }
-
-    private static String stackElementString(TypeBearer typeBearer) {
-        if (typeBearer == null) {
-            return "<invalid>";
-        }
-        return typeBearer.toString();
-    }
-
-    private static TypeBearer throwSimException(String str) {
-        throw new SimException("stack: " + str);
     }
 }

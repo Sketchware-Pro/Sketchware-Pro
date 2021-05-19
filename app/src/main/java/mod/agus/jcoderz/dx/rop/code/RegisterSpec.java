@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.rop.code;
 
 import java.util.HashMap;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.type.Type;
@@ -14,6 +15,22 @@ public final class RegisterSpec implements TypeBearer, ToHuman, Comparable<Regis
     private final LocalItem local;
     private final int reg;
     private final TypeBearer type;
+
+    private RegisterSpec(int i, TypeBearer typeBearer, LocalItem localItem) {
+        if (i < 0) {
+            throw new IllegalArgumentException("reg < 0");
+        } else if (typeBearer == null) {
+            throw new NullPointerException("type == null");
+        } else {
+            this.reg = i;
+            this.type = typeBearer;
+            this.local = localItem;
+        }
+    }
+
+    /* synthetic */ RegisterSpec(int i, TypeBearer typeBearer, LocalItem localItem, RegisterSpec registerSpec) {
+        this(i, typeBearer, localItem);
+    }
 
     private static RegisterSpec intern(int i, TypeBearer typeBearer, LocalItem localItem) {
         RegisterSpec registerSpec;
@@ -47,20 +64,9 @@ public final class RegisterSpec implements TypeBearer, ToHuman, Comparable<Regis
         return PREFIX + i;
     }
 
-    private RegisterSpec(int i, TypeBearer typeBearer, LocalItem localItem) {
-        if (i < 0) {
-            throw new IllegalArgumentException("reg < 0");
-        } else if (typeBearer == null) {
-            throw new NullPointerException("type == null");
-        } else {
-            this.reg = i;
-            this.type = typeBearer;
-            this.local = localItem;
-        }
-    }
-
-    /* synthetic */ RegisterSpec(int i, TypeBearer typeBearer, LocalItem localItem, RegisterSpec registerSpec) {
-        this(i, typeBearer, localItem);
+    /* access modifiers changed from: private */
+    public static int hashCodeOf(int i, TypeBearer typeBearer, LocalItem localItem) {
+        return ((((localItem != null ? localItem.hashCode() : 0) * 31) + typeBearer.hashCode()) * 31) + i;
     }
 
     public boolean equals(Object obj) {
@@ -76,20 +82,14 @@ public final class RegisterSpec implements TypeBearer, ToHuman, Comparable<Regis
     }
 
     public boolean equalsUsingSimpleType(RegisterSpec registerSpec) {
-        if (matchesVariable(registerSpec) && this.reg == registerSpec.reg) {
-            return true;
-        }
-        return false;
+        return matchesVariable(registerSpec) && this.reg == registerSpec.reg;
     }
 
     public boolean matchesVariable(RegisterSpec registerSpec) {
         if (registerSpec == null || !this.type.getType().equals(registerSpec.type.getType())) {
             return false;
         }
-        if (this.local == registerSpec.local || (this.local != null && this.local.equals(registerSpec.local))) {
-            return true;
-        }
-        return false;
+        return this.local == registerSpec.local || (this.local != null && this.local.equals(registerSpec.local));
     }
 
     /* access modifiers changed from: private */
@@ -123,11 +123,6 @@ public final class RegisterSpec implements TypeBearer, ToHuman, Comparable<Regis
 
     public int hashCode() {
         return hashCodeOf(this.reg, this.type, this.local);
-    }
-
-    /* access modifiers changed from: private */
-    public static int hashCodeOf(int i, TypeBearer typeBearer, LocalItem localItem) {
-        return ((((localItem != null ? localItem.hashCode() : 0) * 31) + typeBearer.hashCode()) * 31) + i;
     }
 
     public String toString() {
@@ -212,11 +207,7 @@ public final class RegisterSpec implements TypeBearer, ToHuman, Comparable<Regis
         } else {
             localItem = this.local;
         }
-        if (localItem == this.local) {
-            z2 = true;
-        } else {
-            z2 = false;
-        }
+        z2 = localItem == this.local;
         if ((z && !z2) || (type2 = getType()) != registerSpec.getType()) {
             return null;
         }

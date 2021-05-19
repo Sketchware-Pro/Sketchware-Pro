@@ -2,6 +2,7 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 public class ProjectBean implements Parcelable {
@@ -32,6 +33,15 @@ public class ProjectBean implements Parcelable {
         this.images = new ArrayList<>();
     }
 
+    public ProjectBean(Parcel parcel) {
+        this.pkgName = "";
+        this.apkName = "";
+        this.pkgName = parcel.readString();
+        this.apkName = parcel.readString();
+        this.screens = (ArrayList) parcel.readSerializable();
+        this.images = (ArrayList) parcel.readSerializable();
+    }
+
     public static Parcelable.Creator<ProjectBean> getCreator() {
         return CREATOR;
     }
@@ -45,14 +55,5 @@ public class ProjectBean implements Parcelable {
         parcel.writeString(this.apkName);
         parcel.writeSerializable(this.screens);
         parcel.writeSerializable(this.images);
-    }
-
-    public ProjectBean(Parcel parcel) {
-        this.pkgName = "";
-        this.apkName = "";
-        this.pkgName = parcel.readString();
-        this.apkName = parcel.readString();
-        this.screens = (ArrayList) parcel.readSerializable();
-        this.images = (ArrayList) parcel.readSerializable();
     }
 }

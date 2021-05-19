@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.ssa.back;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
@@ -17,14 +18,14 @@ public abstract class RegisterAllocator {
     protected final InterferenceGraph interference;
     protected final SsaMethod ssaMeth;
 
-    public abstract RegisterMapper allocateRegisters();
-
-    public abstract boolean wantsParamsMovedHigh();
-
     public RegisterAllocator(SsaMethod ssaMethod, InterferenceGraph interferenceGraph) {
         this.ssaMeth = ssaMethod;
         this.interference = interferenceGraph;
     }
+
+    public abstract RegisterMapper allocateRegisters();
+
+    public abstract boolean wantsParamsMovedHigh();
 
     /* access modifiers changed from: protected */
     public final int getCategoryForSsaReg(int i) {
@@ -50,10 +51,7 @@ public abstract class RegisterAllocator {
         if (!(definitionForRegister instanceof NormalSsaInsn)) {
             return false;
         }
-        if (((NormalSsaInsn) definitionForRegister).getOpcode().getOpcode() == 3) {
-            return true;
-        }
-        return false;
+        return ((NormalSsaInsn) definitionForRegister).getOpcode().getOpcode() == 3;
     }
 
     /* access modifiers changed from: protected */

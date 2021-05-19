@@ -21,9 +21,9 @@ public final class EncodedValueReader {
     public static final int ENCODED_STRING = 23;
     public static final int ENCODED_TYPE = 24;
     private static final int MUST_READ = -1;
+    protected final ByteInput in;
     private int annotationType;
     private int arg;
-    protected final ByteInput in;
     private int type;
 
     public EncodedValueReader(ByteInput byteInput) {

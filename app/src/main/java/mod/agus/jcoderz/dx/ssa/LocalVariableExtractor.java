@@ -2,6 +2,7 @@ package mod.agus.jcoderz.dx.ssa;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecSet;
 import mod.agus.jcoderz.dx.util.IntList;
@@ -12,10 +13,6 @@ public class LocalVariableExtractor {
     private final LocalVariableInfo resultInfo;
     private final BitSet workSet;
 
-    public static LocalVariableInfo extract(SsaMethod ssaMethod) {
-        return new LocalVariableExtractor(ssaMethod).doit();
-    }
-
     private LocalVariableExtractor(SsaMethod ssaMethod) {
         if (ssaMethod == null) {
             throw new NullPointerException("method == null");
@@ -25,6 +22,10 @@ public class LocalVariableExtractor {
         this.blocks = blocks2;
         this.resultInfo = new LocalVariableInfo(ssaMethod);
         this.workSet = new BitSet(blocks2.size());
+    }
+
+    public static LocalVariableInfo extract(SsaMethod ssaMethod) {
+        return new LocalVariableExtractor(ssaMethod).doit();
     }
 
     private LocalVariableInfo doit() {

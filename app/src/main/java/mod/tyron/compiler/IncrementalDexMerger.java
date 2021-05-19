@@ -25,8 +25,8 @@ public class IncrementalDexMerger extends Compiler {
 
     private final yq projectConfig;
     private final ManageLocalLibrary manageLocalLibrary;
-    private List<String> generatedDexes = new ArrayList<>();
     private final ArrayList<String> builtInLibraries;
+    private final List<String> generatedDexes = new ArrayList<>();
     private int currentDexNo = 0;
 
     private Compiler.Result mListener;

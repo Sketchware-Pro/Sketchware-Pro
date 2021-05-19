@@ -9,10 +9,6 @@ public final class ByteArray {
     private final int size;
     private final int start;
 
-    public interface GetCursor {
-        int getCursor();
-    }
-
     public ByteArray(byte[] bArr, int i, int i2) {
         if (bArr == null) {
             throw new NullPointerException("bytes == null");
@@ -110,6 +106,19 @@ public final class ByteArray {
         return new MyInputStream();
     }
 
+    public interface GetCursor {
+        int getCursor();
+    }
+
+    public static class MyDataInputStream extends DataInputStream {
+        private final MyInputStream wrapped;
+
+        public MyDataInputStream(MyInputStream myInputStream) {
+            super(myInputStream);
+            this.wrapped = myInputStream;
+        }
+    }
+
     public class MyInputStream extends InputStream {
         private int cursor = 0;
         private int mark = 0;
@@ -157,15 +166,6 @@ public final class ByteArray {
 
         public boolean markSupported() {
             return true;
-        }
-    }
-
-    public static class MyDataInputStream extends DataInputStream {
-        private final MyInputStream wrapped;
-
-        public MyDataInputStream(MyInputStream myInputStream) {
-            super(myInputStream);
-            this.wrapped = myInputStream;
         }
     }
 }

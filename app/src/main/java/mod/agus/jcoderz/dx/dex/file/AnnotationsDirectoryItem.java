@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.annotation.Annotations;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
@@ -22,6 +23,13 @@ public final class AnnotationsDirectoryItem extends OffsettedItem {
 
     public AnnotationsDirectoryItem() {
         super(4, -1);
+    }
+
+    private static int listSize(ArrayList<?> arrayList) {
+        if (arrayList == null) {
+            return 0;
+        }
+        return arrayList.size();
     }
 
     @Override // mod.agus.jcoderz.dx.dex.file.Item
@@ -44,13 +52,15 @@ public final class AnnotationsDirectoryItem extends OffsettedItem {
         return this.classAnnotations.hashCode();
     }
 
-    /**@Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    public int compareTo0(OffsettedItem offsettedItem) {
-        if (isInternable()) {
-            return ((OffsettedItem) ((AnnotationsDirectoryItem )offsettedItem).classAnnotations).compareTo(null);
-        }
-        throw new UnsupportedOperationException("uninternable instance");
-    }**/
+    /**
+     * @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+     * public int compareTo0(OffsettedItem offsettedItem) {
+     * if (isInternable()) {
+     * return ((OffsettedItem) ((AnnotationsDirectoryItem )offsettedItem).classAnnotations).compareTo(null);
+     * }
+     * throw new UnsupportedOperationException("uninternable instance");
+     * }
+     **/
 
     public void setClassAnnotations(Annotations annotations, DexFile dexFile) {
         if (annotations == null) {
@@ -155,7 +165,7 @@ public final class AnnotationsDirectoryItem extends OffsettedItem {
         int listSize2 = listSize(this.methodAnnotations);
         int listSize3 = listSize(this.parameterAnnotations);
         if (annotates) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " annotations directory");
+            annotatedOutput.annotate(0, offsetString() + " annotations directory");
             annotatedOutput.annotate(4, "  class_annotations_off: " + Hex.u4(absoluteOffsetOr0));
             annotatedOutput.annotate(4, "  fields_size:           " + Hex.u4(listSize));
             annotatedOutput.annotate(4, "  methods_size:          " + Hex.u4(listSize2));
@@ -195,13 +205,6 @@ public final class AnnotationsDirectoryItem extends OffsettedItem {
                 it3.next().writeTo(dexFile, annotatedOutput);
             }
         }
-    }
-
-    private static int listSize(ArrayList<?> arrayList) {
-        if (arrayList == null) {
-            return 0;
-        }
-        return arrayList.size();
     }
 
     void debugPrint(PrintWriter printWriter) {

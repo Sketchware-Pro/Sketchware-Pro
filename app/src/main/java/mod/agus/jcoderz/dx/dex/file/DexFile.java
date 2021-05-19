@@ -7,9 +7,9 @@ import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.Adler32;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.dex.DexOptions;
-import mod.agus.jcoderz.dx.dex.file.MixedItemSection;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstBaseMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstEnumRef;
@@ -23,23 +23,50 @@ public final class DexFile {
     private final MixedItemSection byteData = new MixedItemSection("byte_data", this, 1, MixedItemSection.SortType.TYPE);
     private final MixedItemSection classData = new MixedItemSection(null, this, 1, MixedItemSection.SortType.NONE);
     private final ClassDefsSection classDefs = new ClassDefsSection(this);
-    private DexOptions dexOptions;
-    private int dumpWidth = 79;
     private final FieldIdsSection fieldIds = new FieldIdsSection(this);
-    private int fileSize = -1;
     private final HeaderSection header = new HeaderSection(this);
     private final MixedItemSection map = new MixedItemSection("map", this, 4, MixedItemSection.SortType.NONE);
     private final MethodIdsSection methodIds = new MethodIdsSection(this);
     private final ProtoIdsSection protoIds = new ProtoIdsSection(this);
-    private final Section[] sections = {this.header, this.stringIds, this.typeIds, this.protoIds, this.fieldIds, this.methodIds, this.classDefs, this.wordData, this.typeLists, this.stringData, this.byteData, this.classData, this.map};
     private final MixedItemSection stringData = new MixedItemSection("string_data", this, 1, MixedItemSection.SortType.INSTANCE);
     private final StringIdsSection stringIds = new StringIdsSection(this);
     private final TypeIdsSection typeIds = new TypeIdsSection(this);
     private final MixedItemSection typeLists = new MixedItemSection(null, this, 4, MixedItemSection.SortType.NONE);
     private final MixedItemSection wordData = new MixedItemSection("word_data", this, 4, MixedItemSection.SortType.TYPE);
+    private final Section[] sections = {this.header, this.stringIds, this.typeIds, this.protoIds, this.fieldIds, this.methodIds, this.classDefs, this.wordData, this.typeLists, this.stringData, this.byteData, this.classData, this.map};
+    private final DexOptions dexOptions;
+    private int dumpWidth = 79;
+    private int fileSize = -1;
 
     public DexFile(DexOptions dexOptions2) {
         this.dexOptions = dexOptions2;
+    }
+
+    private static void calcSignature(byte[] bArr) {
+        try {
+            MessageDigest instance = MessageDigest.getInstance("SHA-1");
+            instance.update(bArr, 32, bArr.length - 32);
+            try {
+                int digest = instance.digest(bArr, 12, 20);
+                if (digest != 20) {
+                    throw new RuntimeException("unexpected digest write: " + digest + " bytes");
+                }
+            } catch (DigestException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (NoSuchAlgorithmException e2) {
+            throw new RuntimeException(e2);
+        }
+    }
+
+    private static void calcChecksum(byte[] bArr) {
+        Adler32 adler32 = new Adler32();
+        adler32.update(bArr, 12, bArr.length - 12);
+        int value = (int) adler32.getValue();
+        bArr[8] = (byte) value;
+        bArr[9] = (byte) (value >> 8);
+        bArr[10] = (byte) (value >> 16);
+        bArr[11] = (byte) (value >> 24);
     }
 
     public boolean isEmpty() {
@@ -265,32 +292,5 @@ public final class DexFile {
             statistics.addAll(section);
         }
         return statistics;
-    }
-
-    private static void calcSignature(byte[] bArr) {
-        try {
-            MessageDigest instance = MessageDigest.getInstance("SHA-1");
-            instance.update(bArr, 32, bArr.length - 32);
-            try {
-                int digest = instance.digest(bArr, 12, 20);
-                if (digest != 20) {
-                    throw new RuntimeException("unexpected digest write: " + digest + " bytes");
-                }
-            } catch (DigestException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (NoSuchAlgorithmException e2) {
-            throw new RuntimeException(e2);
-        }
-    }
-
-    private static void calcChecksum(byte[] bArr) {
-        Adler32 adler32 = new Adler32();
-        adler32.update(bArr, 12, bArr.length - 12);
-        int value = (int) adler32.getValue();
-        bArr[8] = (byte) value;
-        bArr[9] = (byte) (value >> 8);
-        bArr[10] = (byte) (value >> 16);
-        bArr[11] = (byte) (value >> 24);
     }
 }

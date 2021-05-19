@@ -1,9 +1,10 @@
 package com.besome.sketch.beans;
 
-import a.a.a.FB;
-import a.a.a.nA;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import a.a.a.FB;
+import a.a.a.nA;
 
 public class TutorialStepBean extends nA implements Parcelable {
     public static final int ACTION_AUTO_SCROLL = 4;
@@ -140,6 +141,12 @@ public class TutorialStepBean extends nA implements Parcelable {
         this.delayAfter = 0;
     }
 
+    public TutorialStepBean(Parcel parcel) {
+        this.action = parcel.readInt();
+        this.targetType = parcel.readInt();
+        this.targetId = parcel.readString();
+    }
+
     public static Parcelable.Creator<TutorialStepBean> getCreator() {
         return CREATOR;
     }
@@ -161,9 +168,7 @@ public class TutorialStepBean extends nA implements Parcelable {
             if ((permitOption & 2) == 2 && parseDouble > parseDouble2) {
                 return true;
             }
-            if ((permitOption & 4) == 4 && parseDouble < parseDouble2) {
-                return true;
-            }
+            return (permitOption & 4) == 4 && parseDouble < parseDouble2;
         } else if (obj instanceof int[]) {
             int[] iArr = (int[]) obj;
             int[] iArr2 = (int[]) obj2;
@@ -179,12 +184,8 @@ public class TutorialStepBean extends nA implements Parcelable {
         } else if ((permitOption & 1) == 1 && obj2.equals(obj)) {
             return true;
         } else {
-            if ((permitOption & 6) != 6 || obj2.equals(obj)) {
-                return false;
-            }
-            return true;
+            return (permitOption & 6) == 6 && !obj2.equals(obj);
         }
-        return false;
     }
 
     public void addPermitOption(int i, int i2, Object obj) {
@@ -236,11 +237,5 @@ public class TutorialStepBean extends nA implements Parcelable {
 
     public boolean isPermitted(Object obj, Object obj2, Object obj3) {
         return isPermitted(0, obj) && isPermitted(1, obj2) && isPermitted(2, obj3);
-    }
-
-    public TutorialStepBean(Parcel parcel) {
-        this.action = parcel.readInt();
-        this.targetType = parcel.readInt();
-        this.targetId = parcel.readString();
     }
 }

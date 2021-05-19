@@ -3,18 +3,14 @@ package mod.agus.jcoderz.dx.ssa;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.util.IntSet;
 
 public class DomFront {
-    private static boolean DEBUG = false;
+    private static final boolean DEBUG = false;
     private final DomInfo[] domInfos;
     private final SsaMethod meth;
     private final ArrayList<SsaBasicBlock> nodes;
-
-    public static class DomInfo {
-        public IntSet dominanceFrontiers;
-        public int idom = -1;
-    }
 
     public DomFront(SsaMethod ssaMethod) {
         this.meth = ssaMethod;
@@ -105,5 +101,10 @@ public class DomFront {
                 }
             }
         }
+    }
+
+    public static class DomInfo {
+        public IntSet dominanceFrontiers;
+        public int idom = -1;
     }
 }

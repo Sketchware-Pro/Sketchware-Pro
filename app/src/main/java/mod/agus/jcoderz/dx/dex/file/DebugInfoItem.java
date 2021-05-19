@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.io.PrintWriter;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.dex.code.DalvCode;
 import mod.agus.jcoderz.dx.dex.code.DalvInsnList;
@@ -13,9 +14,9 @@ public class DebugInfoItem extends OffsettedItem {
     private static final int ALIGNMENT = 1;
     private static final boolean ENABLE_ENCODER_SELF_CHECK = false;
     private final DalvCode code;
-    private byte[] encoded;
     private final boolean isStatic;
     private final CstMethodRef ref;
+    private byte[] encoded;
 
     public DebugInfoItem(DalvCode dalvCode, boolean z, CstMethodRef cstMethodRef) {
         super(1, -1);
@@ -62,7 +63,7 @@ public class DebugInfoItem extends OffsettedItem {
     @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
     protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(String.valueOf(offsetString()) + " debug info");
+            annotatedOutput.annotate(offsetString() + " debug info");
             encode(dexFile, null, null, annotatedOutput, true);
         }
         annotatedOutput.write(this.encoded);

@@ -1,18 +1,23 @@
 package mod.agus.jcoderz.dx.ssa.back;
 
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.util.IntList;
 
 public class IdenticalBlockCombiner {
-    private final BasicBlockList blocks = this.ropMethod.getBlocks();
     private final BasicBlockList newBlocks = this.blocks.getMutableCopy();
     private RopMethod ropMethod;
+    private final BasicBlockList blocks = this.ropMethod.getBlocks();
 
     public IdenticalBlockCombiner(RopMethod ropMethod2) {
         this.ropMethod = ropMethod2;
+    }
+
+    private static boolean compareInsns(BasicBlock basicBlock, BasicBlock basicBlock2) {
+        return basicBlock.getInsns().contentEquals(basicBlock2.getInsns());
     }
 
     public RopMethod process() {
@@ -49,10 +54,6 @@ public class IdenticalBlockCombiner {
         this.newBlocks.shrinkToFit();
         this.newBlocks.setImmutable();
         return new RopMethod(this.newBlocks, this.ropMethod.getFirstLabel());
-    }
-
-    private static boolean compareInsns(BasicBlock basicBlock, BasicBlock basicBlock2) {
-        return basicBlock.getInsns().contentEquals(basicBlock2.getInsns());
     }
 
     private void combineBlocks(int i, IntList intList) {

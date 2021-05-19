@@ -3,9 +3,9 @@ package mod.agus.jcoderz.dx.ssa;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
-import mod.agus.jcoderz.dx.ssa.DomFront;
 import mod.agus.jcoderz.dx.util.IntIterator;
 
 public class SsaConverter {
@@ -57,10 +57,7 @@ public class SsaConverter {
     private static boolean nodeNeedsUniquePredecessor(SsaBasicBlock ssaBasicBlock) {
         int cardinality = ssaBasicBlock.getPredecessors().cardinality();
         int cardinality2 = ssaBasicBlock.getSuccessors().cardinality();
-        if (cardinality <= 1 || cardinality2 <= 1) {
-            return false;
-        }
-        return true;
+        return cardinality > 1 && cardinality2 > 1;
     }
 
     private static void edgeSplitMoveExceptionsAndResults(SsaMethod ssaMethod) {
@@ -94,10 +91,7 @@ public class SsaConverter {
     private static boolean needsNewSuccessor(SsaBasicBlock ssaBasicBlock, SsaBasicBlock ssaBasicBlock2) {
         ArrayList<SsaInsn> insns = ssaBasicBlock.getInsns();
         SsaInsn ssaInsn = insns.get(insns.size() - 1);
-        if ((ssaInsn.getResult() != null || ssaInsn.getSources().size() > 0) && ssaBasicBlock2.getPredecessors().cardinality() > 1) {
-            return true;
-        }
-        return false;
+        return (ssaInsn.getResult() != null || ssaInsn.getSources().size() > 0) && ssaBasicBlock2.getPredecessors().cardinality() > 1;
     }
 
     private static void placePhiFunctions(SsaMethod ssaMethod, LocalVariableInfo localVariableInfo, int i) {

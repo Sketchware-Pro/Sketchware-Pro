@@ -1,10 +1,12 @@
 package com.besome.sketch.beans;
 
-import a.a.a.Gx;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
+
+import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class ComponentBean extends CollapsibleBean implements Parcelable {

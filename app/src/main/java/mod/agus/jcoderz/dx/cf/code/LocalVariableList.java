@@ -8,6 +8,10 @@ import mod.agus.jcoderz.dx.util.FixedSizeList;
 public final class LocalVariableList extends FixedSizeList {
     public static final LocalVariableList EMPTY = new LocalVariableList(0);
 
+    public LocalVariableList(int i) {
+        super(i);
+    }
+
     public static LocalVariableList concat(LocalVariableList localVariableList, LocalVariableList localVariableList2) {
         if (localVariableList == EMPTY) {
             return localVariableList2;
@@ -38,10 +42,6 @@ public final class LocalVariableList extends FixedSizeList {
         }
         localVariableList3.setImmutable();
         return localVariableList3;
-    }
-
-    public LocalVariableList(int i) {
-        super(i);
     }
 
     public Item get(int i) {

@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.io;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dex.ClassDef;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.FieldId;
@@ -16,6 +17,18 @@ public final class DexIndexPrinter {
 
     public DexIndexPrinter(File file) throws IOException {
         this.dex = new Dex(file);
+    }
+
+    public static void main(String[] strArr) throws IOException {
+        DexIndexPrinter dexIndexPrinter = new DexIndexPrinter(new File(strArr[0]));
+        dexIndexPrinter.printMap();
+        dexIndexPrinter.printStrings();
+        dexIndexPrinter.printTypeIds();
+        dexIndexPrinter.printProtoIds();
+        dexIndexPrinter.printFieldIds();
+        dexIndexPrinter.printMethodIds();
+        dexIndexPrinter.printTypeLists();
+        dexIndexPrinter.printClassDefs();
     }
 
     private void printMap() {
@@ -98,17 +111,5 @@ public final class DexIndexPrinter {
             System.out.println("class def " + i + ": " + it.next());
             i++;
         }
-    }
-
-    public static void main(String[] strArr) throws IOException {
-        DexIndexPrinter dexIndexPrinter = new DexIndexPrinter(new File(strArr[0]));
-        dexIndexPrinter.printMap();
-        dexIndexPrinter.printStrings();
-        dexIndexPrinter.printTypeIds();
-        dexIndexPrinter.printProtoIds();
-        dexIndexPrinter.printFieldIds();
-        dexIndexPrinter.printMethodIds();
-        dexIndexPrinter.printTypeLists();
-        dexIndexPrinter.printClassDefs();
     }
 }

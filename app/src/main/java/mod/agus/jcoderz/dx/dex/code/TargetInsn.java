@@ -4,7 +4,7 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 
 public final class TargetInsn extends FixedSizeInsn {
-    private CodeAddress target;
+    private final CodeAddress target;
 
     public TargetInsn(Dop dop, SourcePosition sourcePosition, RegisterSpecList registerSpecList, CodeAddress codeAddress) {
         super(dop, sourcePosition, registerSpecList);

@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.dex.file;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
 public final class Statistics {
@@ -53,9 +54,9 @@ public final class Statistics {
     }
 
     private static class Data {
+        private final String name;
         private int count = 1;
         private int largestSize;
-        private final String name;
         private int smallestSize;
         private int totalSize;
 

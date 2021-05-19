@@ -5,6 +5,10 @@ import mod.agus.jcoderz.dx.util.FixedSizeList;
 public final class LineNumberList extends FixedSizeList {
     public static final LineNumberList EMPTY = new LineNumberList(0);
 
+    public LineNumberList(int i) {
+        super(i);
+    }
+
     public static LineNumberList concat(LineNumberList lineNumberList, LineNumberList lineNumberList2) {
         if (lineNumberList == EMPTY) {
             return lineNumberList2;
@@ -19,10 +23,6 @@ public final class LineNumberList extends FixedSizeList {
             lineNumberList3.set(size + i2, lineNumberList2.get(i2));
         }
         return lineNumberList3;
-    }
-
-    public LineNumberList(int i) {
-        super(i);
     }
 
     public Item get(int i) {

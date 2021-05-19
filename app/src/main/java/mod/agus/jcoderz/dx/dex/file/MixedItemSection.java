@@ -10,12 +10,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
 public final class MixedItemSection extends Section {
-    private static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType;
     private static final Comparator<OffsettedItem> TYPE_SORTER = new Comparator<OffsettedItem>() {
         /* class mod.agus.jcoderz.dx.dex.file.MixedItemSection.1 */
 
@@ -29,15 +29,16 @@ public final class MixedItemSection extends Section {
             return offsettedItem.itemType().compareTo((ItemType) offsettedItem2.itemType());
         }
     };
+    private static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType;
     private final HashMap<OffsettedItem, OffsettedItem> interns = new HashMap<>(100);
     private final ArrayList<OffsettedItem> items = new ArrayList<>(100);
     private final SortType sort;
     private int writeSize;
 
-    enum SortType {
-        NONE,
-        TYPE,
-        INSTANCE
+    public MixedItemSection(String str, DexFile dexFile, int i, SortType sortType) {
+        super(str, dexFile, i);
+        this.sort = sortType;
+        this.writeSize = -1;
     }
 
     static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType() {
@@ -59,12 +60,6 @@ public final class MixedItemSection extends Section {
             $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType = iArr;
         }
         return iArr;
-    }
-
-    public MixedItemSection(String str, DexFile dexFile, int i, SortType sortType) {
-        super(str, dexFile, i);
-        this.sort = sortType;
-        this.writeSize = -1;
     }
 
     @Override // mod.agus.jcoderz.dx.dex.file.Section
@@ -102,8 +97,8 @@ public final class MixedItemSection extends Section {
         Arrays.fill(cArr, ' ');
         String str = new String(cArr);
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(4, String.valueOf(name) + "_size:" + str + Hex.u4(i));
-            annotatedOutput.annotate(4, String.valueOf(name) + "_off: " + str + Hex.u4(fileOffset));
+            annotatedOutput.annotate(4, name + "_size:" + str + Hex.u4(i));
+            annotatedOutput.annotate(4, name + "_off: " + str + Hex.u4(fileOffset));
         }
         annotatedOutput.writeInt(i);
         annotatedOutput.writeInt(fileOffset);
@@ -156,7 +151,7 @@ public final class MixedItemSection extends Section {
             annotatedOutput.annotate(0, str);
             for (Iterator iterator = treeMap.entrySet().iterator(); iterator.hasNext(); ) {
                 Map.Entry entry = (Map.Entry) iterator.next();
-                annotatedOutput.annotate(0, String.valueOf(((OffsettedItem) entry.getValue()).offsetString()) + ' ' + ((String) entry.getKey()) + '\n');
+                annotatedOutput.annotate(0, ((OffsettedItem) entry.getValue()).offsetString() + ' ' + ((String) entry.getKey()) + '\n');
             }
         }
     }
@@ -235,5 +230,11 @@ public final class MixedItemSection extends Section {
         if (i != this.writeSize) {
             throw new RuntimeException("output size mismatch");
         }
+    }
+
+    enum SortType {
+        NONE,
+        TYPE,
+        INSTANCE
     }
 }

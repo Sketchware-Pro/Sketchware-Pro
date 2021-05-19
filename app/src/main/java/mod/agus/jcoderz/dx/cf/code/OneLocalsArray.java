@@ -15,6 +15,10 @@ public class OneLocalsArray extends LocalsArray {
         this.locals = new TypeBearer[i];
     }
 
+    private static TypeBearer throwSimException(int i, String str) {
+        throw new SimException("local " + Hex.u2(i) + ": " + str);
+    }
+
     @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
     public OneLocalsArray copy() {
         OneLocalsArray oneLocalsArray = new OneLocalsArray(this.locals.length);
@@ -155,9 +159,5 @@ public class OneLocalsArray extends LocalsArray {
     @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
     public OneLocalsArray getPrimary() {
         return this;
-    }
-
-    private static TypeBearer throwSimException(int i, String str) {
-        throw new SimException("local " + Hex.u2(i) + ": " + str);
     }
 }

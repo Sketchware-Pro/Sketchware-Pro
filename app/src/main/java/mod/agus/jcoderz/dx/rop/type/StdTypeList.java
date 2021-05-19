@@ -40,6 +40,10 @@ public final class StdTypeList extends FixedSizeList implements TypeList {
     public static final StdTypeList SHORTARR_INT = make(Type.SHORT_ARRAY, Type.INT);
     public static final StdTypeList THROWABLE = make(Type.THROWABLE);
 
+    public StdTypeList(int i) {
+        super(i);
+    }
+
     public static StdTypeList make(Type type) {
         StdTypeList stdTypeList = new StdTypeList(1);
         stdTypeList.set(0, type);
@@ -124,10 +128,6 @@ public final class StdTypeList extends FixedSizeList implements TypeList {
             return -1;
         }
         return 1;
-    }
-
-    public StdTypeList(int i) {
-        super(i);
     }
 
     @Override // mod.agus.jcoderz.dx.rop.type.TypeList

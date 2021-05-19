@@ -20,14 +20,10 @@ import mod.agus.jcoderz.dx.util.IntList;
 public class DotDumper implements ParseObserver {
     private final Args args;
     private final byte[] bytes;
-    private DirectClassFile classFile;
     private final String filePath;
     private final boolean optimize;
     private final boolean strictParse;
-
-    static void dump(byte[] bArr, String str, Args args2) {
-        new DotDumper(bArr, str, args2).run();
-    }
+    private DirectClassFile classFile;
 
     DotDumper(byte[] bArr, String str, Args args2) {
         this.bytes = bArr;
@@ -35,6 +31,10 @@ public class DotDumper implements ParseObserver {
         this.strictParse = args2.strictParse;
         this.optimize = args2.optimize;
         this.args = args2;
+    }
+
+    static void dump(byte[] bArr, String str, Args args2) {
+        new DotDumper(bArr, str, args2).run();
     }
 
     private void run() {

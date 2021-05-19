@@ -1,6 +1,7 @@
 package com.besome.sketch.beans;
 
 import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

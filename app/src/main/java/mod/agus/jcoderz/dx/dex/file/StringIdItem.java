@@ -6,8 +6,8 @@ import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
 public final class StringIdItem extends IndexedItem implements Comparable {
-    private StringDataItem data;
     private final CstString value;
+    private StringDataItem data;
 
     public StringIdItem(CstString cstString) {
         if (cstString == null) {
@@ -56,7 +56,7 @@ public final class StringIdItem extends IndexedItem implements Comparable {
     public void writeTo(DexFile dexFile, AnnotatedOutput annotatedOutput) {
         int absoluteOffset = this.data.getAbsoluteOffset();
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(indexString()) + ' ' + this.value.toQuoted(100));
+            annotatedOutput.annotate(0, indexString() + ' ' + this.value.toQuoted(100));
             annotatedOutput.annotate(4, "  string_data_off: " + Hex.u4(absoluteOffset));
         }
         annotatedOutput.writeInt(absoluteOffset);

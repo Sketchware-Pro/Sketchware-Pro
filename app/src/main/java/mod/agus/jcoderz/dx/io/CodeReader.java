@@ -11,10 +11,6 @@ public final class CodeReader {
     private Visitor stringVisitor = null;
     private Visitor typeVisitor = null;
 
-    public interface Visitor {
-        void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction);
-    }
-
     static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType() {
         int[] iArr = $SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType;
         if (iArr == null) {
@@ -126,5 +122,9 @@ public final class CodeReader {
         if (visitor != null) {
             visitor.visit(decodedInstructionArr, decodedInstruction);
         }
+    }
+
+    public interface Visitor {
+        void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction);
     }
 }

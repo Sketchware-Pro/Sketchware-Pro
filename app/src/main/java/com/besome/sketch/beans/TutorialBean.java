@@ -1,12 +1,14 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
-import a.a.a.yB;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import a.a.a.nA;
+import a.a.a.yB;
 
 public class TutorialBean extends nA implements Parcelable {
     public static final Parcelable.Creator<TutorialBean> CREATOR = new Parcelable.Creator<TutorialBean>() {
@@ -33,6 +35,17 @@ public class TutorialBean extends nA implements Parcelable {
     public int startedCnt;
 
     public TutorialBean() {
+    }
+
+    public TutorialBean(Parcel parcel) {
+        this.groupId = parcel.readInt();
+        this.groupTitle = parcel.readString();
+        this.groupDesc = parcel.readString();
+        this.progress = parcel.readInt();
+        this.startedCnt = parcel.readInt();
+        this.listHash = (ArrayList) parcel.readSerializable();
+        this.listAdvancedHash = (ArrayList) parcel.readSerializable();
+        this.listDocHash = (ArrayList) parcel.readSerializable();
     }
 
     public static Parcelable.Creator<TutorialBean> getCreator() {
@@ -164,16 +177,5 @@ public class TutorialBean extends nA implements Parcelable {
         parcel.writeSerializable(this.listHash);
         parcel.writeSerializable(this.listAdvancedHash);
         parcel.writeSerializable(this.listDocHash);
-    }
-
-    public TutorialBean(Parcel parcel) {
-        this.groupId = parcel.readInt();
-        this.groupTitle = parcel.readString();
-        this.groupDesc = parcel.readString();
-        this.progress = parcel.readInt();
-        this.startedCnt = parcel.readInt();
-        this.listHash = (ArrayList) parcel.readSerializable();
-        this.listAdvancedHash = (ArrayList) parcel.readSerializable();
-        this.listDocHash = (ArrayList) parcel.readSerializable();
     }
 }

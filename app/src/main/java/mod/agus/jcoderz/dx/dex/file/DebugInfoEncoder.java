@@ -7,6 +7,7 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.dex.code.LocalList;
 import mod.agus.jcoderz.dx.dex.code.PositionList;
@@ -22,20 +23,20 @@ import mod.agus.jcoderz.dx.util.ByteArrayAnnotatedOutput;
 
 public final class DebugInfoEncoder {
     private static final boolean DEBUG = false;
-    private int address = 0;
-    private AnnotatedOutput annotateTo;
     private final int codeSize;
-    private PrintWriter debugPrint;
     private final Prototype desc;
     private final DexFile file;
     private final boolean isStatic;
     private final LocalList.Entry[] lastEntryForReg;
-    private int line = 1;
     private final LocalList locals;
     private final ByteArrayAnnotatedOutput output;
     private final PositionList positions;
-    private String prefix;
     private final int regSize;
+    private int address = 0;
+    private AnnotatedOutput annotateTo;
+    private PrintWriter debugPrint;
+    private int line = 1;
+    private String prefix;
     private boolean shouldConsume;
 
     public DebugInfoEncoder(PositionList positionList, LocalList localList, DexFile dexFile, int i, int i2, boolean z, CstMethodRef cstMethodRef) {
@@ -50,9 +51,16 @@ public final class DebugInfoEncoder {
         this.lastEntryForReg = new LocalList.Entry[i2];
     }
 
+    private static int computeOpcode(int i, int i2) {
+        if (i >= -4 && i <= 10) {
+            return i + 4 + (i2 * 15) + 10;
+        }
+        throw new RuntimeException("Parameter out of range");
+    }
+
     private void annotate(int i, String str) {
         if (this.prefix != null) {
-            str = String.valueOf(this.prefix) + str;
+            str = this.prefix + str;
         }
         if (this.annotateTo != null) {
             AnnotatedOutput annotatedOutput = this.annotateTo;
@@ -168,7 +176,7 @@ public final class DebugInfoEncoder {
         int i;
         LocalList.Entry entry;
         String str;
-        boolean z = (this.annotateTo == null && this.debugPrint == null) ? false : true;
+        boolean z = this.annotateTo != null || this.debugPrint != null;
         int cursor = this.output.getCursor();
         if (arrayList.size() > 0) {
             this.line = arrayList.get(0).getPosition().getLine();
@@ -423,13 +431,6 @@ public final class DebugInfoEncoder {
         if (this.annotateTo != null || this.debugPrint != null) {
             annotate(1, String.format("%04x: line %d", Integer.valueOf(this.address), Integer.valueOf(this.line)));
         }
-    }
-
-    private static int computeOpcode(int i, int i2) {
-        if (i >= -4 && i <= 10) {
-            return i + 4 + (i2 * 15) + 10;
-        }
-        throw new RuntimeException("Parameter out of range");
     }
 
     private void emitAdvanceLine(int i) throws IOException {

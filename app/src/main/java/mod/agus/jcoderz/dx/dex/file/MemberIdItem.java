@@ -8,14 +8,14 @@ import mod.agus.jcoderz.dx.util.Hex;
 public abstract class MemberIdItem extends IdItem {
     private final CstMemberRef cst;
 
-    protected abstract int getTypoidIdx(DexFile dexFile);
-
-    protected abstract String getTypoidName();
-
     public MemberIdItem(CstMemberRef cstMemberRef) {
         super(cstMemberRef.getDefiningClass());
         this.cst = cstMemberRef;
     }
+
+    protected abstract int getTypoidIdx(DexFile dexFile);
+
+    protected abstract String getTypoidName();
 
     @Override // mod.agus.jcoderz.dx.dex.file.Item
     public int writeSize() {
@@ -37,7 +37,7 @@ public abstract class MemberIdItem extends IdItem {
         int indexOf2 = stringIds.indexOf(nat.getName());
         int typoidIdx = getTypoidIdx(dexFile);
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(indexString()) + ' ' + this.cst.toHuman());
+            annotatedOutput.annotate(0, indexString() + ' ' + this.cst.toHuman());
             annotatedOutput.annotate(2, "  class_idx: " + Hex.u2(indexOf));
             annotatedOutput.annotate(2, String.format("  %-10s %s", String.valueOf(getTypoidName()) + ':', Hex.u2(typoidIdx)));
             annotatedOutput.annotate(4, "  name_idx:  " + Hex.u4(indexOf2));

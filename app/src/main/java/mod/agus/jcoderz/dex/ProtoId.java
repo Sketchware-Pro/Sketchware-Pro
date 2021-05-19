@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dex;
 
-import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.util.Unsigned;
 
 public final class ProtoId implements Comparable<ProtoId> {
@@ -43,8 +42,8 @@ public final class ProtoId implements Comparable<ProtoId> {
 
     public String toString() {
         if (this.dex == null) {
-            return String.valueOf(this.shortyIndex) + " " + this.returnTypeIndex + " " + this.parametersOffset;
+            return this.shortyIndex + " " + this.returnTypeIndex + " " + this.parametersOffset;
         }
-        return String.valueOf(this.dex.strings().get(this.shortyIndex)) + ": " + this.dex.typeNames().get(this.returnTypeIndex) + " " + this.dex.readTypeList(this.parametersOffset);
+        return this.dex.strings().get(this.shortyIndex) + ": " + this.dex.typeNames().get(this.returnTypeIndex) + " " + this.dex.readTypeList(this.parametersOffset);
     }
 }

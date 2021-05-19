@@ -6,8 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import mod.agus.jcoderz.dx.cf.code.ByteCatchList;
-import mod.agus.jcoderz.dx.cf.code.LocalVariableList;
+
 import mod.agus.jcoderz.dx.cf.iface.MethodList;
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
@@ -45,7 +44,6 @@ public final class Ropper {
     private final ByteBlockList blocks;
     private final CatchInfo[] catchInfos;
     private final ExceptionSetupLabelAllocator exceptionSetupLabelAllocator;
-    private boolean hasSubroutines;
     private final RopperMachine machine;
     private final int maxLabel;
     private final int maxLocals;
@@ -55,117 +53,8 @@ public final class Ropper {
     private final Simulator sim;
     private final Frame[] startFrames;
     private final Subroutine[] subroutines;
+    private boolean hasSubroutines;
     private boolean synchNeedsExceptionHandler;
-
-    public class CatchInfo {
-        private final Map<Type, ExceptionHandlerSetup> setups;
-
-        private CatchInfo() {
-            this.setups = new HashMap();
-        }
-
-        CatchInfo(Ropper ropper, CatchInfo catchInfo) {
-            this();
-        }
-
-        public ExceptionHandlerSetup getSetup(Type type) {
-            ExceptionHandlerSetup exceptionHandlerSetup = this.setups.get(type);
-            if (exceptionHandlerSetup != null) {
-                return exceptionHandlerSetup;
-            }
-            ExceptionHandlerSetup exceptionHandlerSetup2 = new ExceptionHandlerSetup(type, Ropper.this.exceptionSetupLabelAllocator.getNextLabel());
-            this.setups.put(type, exceptionHandlerSetup2);
-            return exceptionHandlerSetup2;
-        }
-
-        public Collection<ExceptionHandlerSetup> getSetups() {
-            return this.setups.values();
-        }
-    }
-
-    public static class ExceptionHandlerSetup {
-        private Type caughtType;
-        private int label;
-
-        ExceptionHandlerSetup(Type type, int i) {
-            this.caughtType = type;
-            this.label = i;
-        }
-
-        public Type getCaughtType() {
-            return this.caughtType;
-        }
-
-        public int getLabel() {
-            return this.label;
-        }
-    }
-
-    public class Subroutine {
-        private BitSet callerBlocks;
-        private BitSet retBlocks;
-        private int startBlock;
-
-        Subroutine(int i) {
-            this.startBlock = i;
-            this.retBlocks = new BitSet(Ropper.this.maxLabel);
-            this.callerBlocks = new BitSet(Ropper.this.maxLabel);
-            Ropper.this.hasSubroutines = true;
-        }
-
-        Subroutine(Ropper ropper, int i, int i2) {
-            this(i);
-            addRetBlock(i2);
-        }
-
-        public int getStartBlock() {
-            return this.startBlock;
-        }
-
-        public void addRetBlock(int i) {
-            this.retBlocks.set(i);
-        }
-
-        public void addCallerBlock(int i) {
-            this.callerBlocks.set(i);
-        }
-
-        public IntList getSuccessors() {
-            IntList intList = new IntList(this.callerBlocks.size());
-            int nextSetBit = this.callerBlocks.nextSetBit(0);
-            while (nextSetBit >= 0) {
-                intList.add(Ropper.this.labelToBlock(nextSetBit).getSuccessors().get(0));
-                nextSetBit = this.callerBlocks.nextSetBit(nextSetBit + 1);
-            }
-            intList.setImmutable();
-            return intList;
-        }
-
-        public void mergeToSuccessors(Frame frame, int[] iArr) {
-            int nextSetBit = this.callerBlocks.nextSetBit(0);
-            while (nextSetBit >= 0) {
-                int i = Ropper.this.labelToBlock(nextSetBit).getSuccessors().get(0);
-                Frame subFrameForLabel = frame.subFrameForLabel(this.startBlock, nextSetBit);
-                if (subFrameForLabel != null) {
-                    Ropper.this.mergeAndWorkAsNecessary(i, -1, null, subFrameForLabel, iArr);
-                } else {
-                    Bits.set(iArr, nextSetBit);
-                }
-                nextSetBit = this.callerBlocks.nextSetBit(nextSetBit + 1);
-            }
-        }
-    }
-
-    public static RopMethod convert(ConcreteMethod concreteMethod, TranslationAdvice translationAdvice, MethodList methodList) {
-        try {
-            Ropper ropper = new Ropper(concreteMethod, translationAdvice, methodList);
-            ropper.doit();
-            return ropper.getRopMethod();
-        } catch (SimException e) {
-            e.addContext("...while working on method " + concreteMethod.getNat().toHuman());
-            throw e;
-        }
-    }
 
     private Ropper(ConcreteMethod concreteMethod, TranslationAdvice translationAdvice, MethodList methodList) {
         if (concreteMethod == null) {
@@ -187,6 +76,17 @@ public final class Ropper {
             this.synchNeedsExceptionHandler = false;
             this.startFrames[0] = new Frame(this.maxLocals, concreteMethod.getMaxStack());
             this.exceptionSetupLabelAllocator = new ExceptionSetupLabelAllocator();
+        }
+    }
+
+    public static RopMethod convert(ConcreteMethod concreteMethod, TranslationAdvice translationAdvice, MethodList methodList) {
+        try {
+            Ropper ropper = new Ropper(concreteMethod, translationAdvice, methodList);
+            ropper.doit();
+            return ropper.getRopMethod();
+        } catch (SimException e) {
+            e.addContext("...while working on method " + concreteMethod.getNat().toHuman());
+            throw e;
         }
     }
 
@@ -725,6 +625,84 @@ public final class Ropper {
         }
     }
 
+    private Subroutine subroutineFromRetBlock(int i) {
+        for (int length = this.subroutines.length - 1; length >= 0; length--) {
+            if (this.subroutines[length] != null) {
+                Subroutine subroutine = this.subroutines[length];
+                if (subroutine.retBlocks.get(i)) {
+                    return subroutine;
+                }
+            }
+        }
+        return null;
+    }
+
+    private InsnList filterMoveReturnAddressInsns(InsnList insnList) {
+        int i;
+        int i2 = 0;
+        int size = insnList.size();
+        int i3 = 0;
+        for (int i4 = 0; i4 < size; i4++) {
+            if (insnList.get(i4).getOpcode() != Rops.MOVE_RETURN_ADDRESS) {
+                i3++;
+            }
+        }
+        if (i3 == size) {
+            return insnList;
+        }
+        InsnList insnList2 = new InsnList(i3);
+        int i5 = 0;
+        while (i5 < size) {
+            Insn insn = insnList.get(i5);
+            if (insn.getOpcode() != Rops.MOVE_RETURN_ADDRESS) {
+                i = i2 + 1;
+                insnList2.set(i2, insn);
+            } else {
+                i = i2;
+            }
+            i5++;
+            i2 = i;
+        }
+        insnList2.setImmutable();
+        return insnList2;
+    }
+
+    private void forEachNonSubBlockDepthFirst(int i, BasicBlock.Visitor visitor) {
+        forEachNonSubBlockDepthFirst0(labelToBlock(i), visitor, new BitSet(this.maxLabel));
+    }
+
+    private void forEachNonSubBlockDepthFirst0(BasicBlock basicBlock, BasicBlock.Visitor visitor, BitSet bitSet) {
+        int labelToResultIndex;
+        visitor.visitBlock(basicBlock);
+        bitSet.set(basicBlock.getLabel());
+        IntList successors = basicBlock.getSuccessors();
+        int size = successors.size();
+        for (int i = 0; i < size; i++) {
+            int i2 = successors.get(i);
+            if (!bitSet.get(i2) && ((!isSubroutineCaller(basicBlock) || i <= 0) && (labelToResultIndex = labelToResultIndex(i2)) >= 0)) {
+                forEachNonSubBlockDepthFirst0(this.result.get(labelToResultIndex), visitor, bitSet);
+            }
+        }
+    }
+
+    public static class ExceptionHandlerSetup {
+        private final Type caughtType;
+        private final int label;
+
+        ExceptionHandlerSetup(Type type, int i) {
+            this.caughtType = type;
+            this.label = i;
+        }
+
+        public Type getCaughtType() {
+            return this.caughtType;
+        }
+
+        public int getLabel() {
+            return this.label;
+        }
+    }
+
     public static class LabelAllocator {
         int nextAvailableLabel;
 
@@ -736,6 +714,87 @@ public final class Ropper {
             int i = this.nextAvailableLabel;
             this.nextAvailableLabel = i + 1;
             return i;
+        }
+    }
+
+    public class CatchInfo {
+        private final Map<Type, ExceptionHandlerSetup> setups;
+
+        private CatchInfo() {
+            this.setups = new HashMap();
+        }
+
+        CatchInfo(Ropper ropper, CatchInfo catchInfo) {
+            this();
+        }
+
+        public ExceptionHandlerSetup getSetup(Type type) {
+            ExceptionHandlerSetup exceptionHandlerSetup = this.setups.get(type);
+            if (exceptionHandlerSetup != null) {
+                return exceptionHandlerSetup;
+            }
+            ExceptionHandlerSetup exceptionHandlerSetup2 = new ExceptionHandlerSetup(type, Ropper.this.exceptionSetupLabelAllocator.getNextLabel());
+            this.setups.put(type, exceptionHandlerSetup2);
+            return exceptionHandlerSetup2;
+        }
+
+        public Collection<ExceptionHandlerSetup> getSetups() {
+            return this.setups.values();
+        }
+    }
+
+    public class Subroutine {
+        private final BitSet callerBlocks;
+        private final BitSet retBlocks;
+        private final int startBlock;
+
+        Subroutine(int i) {
+            this.startBlock = i;
+            this.retBlocks = new BitSet(Ropper.this.maxLabel);
+            this.callerBlocks = new BitSet(Ropper.this.maxLabel);
+            Ropper.this.hasSubroutines = true;
+        }
+
+        Subroutine(Ropper ropper, int i, int i2) {
+            this(i);
+            addRetBlock(i2);
+        }
+
+        public int getStartBlock() {
+            return this.startBlock;
+        }
+
+        public void addRetBlock(int i) {
+            this.retBlocks.set(i);
+        }
+
+        public void addCallerBlock(int i) {
+            this.callerBlocks.set(i);
+        }
+
+        public IntList getSuccessors() {
+            IntList intList = new IntList(this.callerBlocks.size());
+            int nextSetBit = this.callerBlocks.nextSetBit(0);
+            while (nextSetBit >= 0) {
+                intList.add(Ropper.this.labelToBlock(nextSetBit).getSuccessors().get(0));
+                nextSetBit = this.callerBlocks.nextSetBit(nextSetBit + 1);
+            }
+            intList.setImmutable();
+            return intList;
+        }
+
+        public void mergeToSuccessors(Frame frame, int[] iArr) {
+            int nextSetBit = this.callerBlocks.nextSetBit(0);
+            while (nextSetBit >= 0) {
+                int i = Ropper.this.labelToBlock(nextSetBit).getSuccessors().get(0);
+                Frame subFrameForLabel = frame.subFrameForLabel(this.startBlock, nextSetBit);
+                if (subFrameForLabel != null) {
+                    Ropper.this.mergeAndWorkAsNecessary(i, -1, null, subFrameForLabel, iArr);
+                } else {
+                    Bits.set(iArr, nextSetBit);
+                }
+                nextSetBit = this.callerBlocks.nextSetBit(nextSetBit + 1);
+            }
         }
     }
 
@@ -762,9 +821,9 @@ public final class Ropper {
         private final LabelAllocator labelAllocator;
         private final ArrayList<IntList> labelToSubroutines;
         private final HashMap<Integer, Integer> origLabelToCopiedLabel = new HashMap<>();
+        private final BitSet workList;
         private int subroutineStart;
         private int subroutineSuccessor;
-        private final BitSet workList;
 
         SubroutineInliner(LabelAllocator labelAllocator2, ArrayList<IntList> arrayList) {
             this.workList = new BitSet(Ropper.this.maxLabel);
@@ -846,66 +905,6 @@ public final class Ropper {
             }
             this.labelToSubroutines.set(nextLabel, this.labelToSubroutines.get(i));
             return nextLabel;
-        }
-    }
-
-    private Subroutine subroutineFromRetBlock(int i) {
-        for (int length = this.subroutines.length - 1; length >= 0; length--) {
-            if (this.subroutines[length] != null) {
-                Subroutine subroutine = this.subroutines[length];
-                if (subroutine.retBlocks.get(i)) {
-                    return subroutine;
-                }
-            }
-        }
-        return null;
-    }
-
-    private InsnList filterMoveReturnAddressInsns(InsnList insnList) {
-        int i;
-        int i2 = 0;
-        int size = insnList.size();
-        int i3 = 0;
-        for (int i4 = 0; i4 < size; i4++) {
-            if (insnList.get(i4).getOpcode() != Rops.MOVE_RETURN_ADDRESS) {
-                i3++;
-            }
-        }
-        if (i3 == size) {
-            return insnList;
-        }
-        InsnList insnList2 = new InsnList(i3);
-        int i5 = 0;
-        while (i5 < size) {
-            Insn insn = insnList.get(i5);
-            if (insn.getOpcode() != Rops.MOVE_RETURN_ADDRESS) {
-                i = i2 + 1;
-                insnList2.set(i2, insn);
-            } else {
-                i = i2;
-            }
-            i5++;
-            i2 = i;
-        }
-        insnList2.setImmutable();
-        return insnList2;
-    }
-
-    private void forEachNonSubBlockDepthFirst(int i, BasicBlock.Visitor visitor) {
-        forEachNonSubBlockDepthFirst0(labelToBlock(i), visitor, new BitSet(this.maxLabel));
-    }
-
-    private void forEachNonSubBlockDepthFirst0(BasicBlock basicBlock, BasicBlock.Visitor visitor, BitSet bitSet) {
-        int labelToResultIndex;
-        visitor.visitBlock(basicBlock);
-        bitSet.set(basicBlock.getLabel());
-        IntList successors = basicBlock.getSuccessors();
-        int size = successors.size();
-        for (int i = 0; i < size; i++) {
-            int i2 = successors.get(i);
-            if (!bitSet.get(i2) && ((!isSubroutineCaller(basicBlock) || i <= 0) && (labelToResultIndex = labelToResultIndex(i2)) >= 0)) {
-                forEachNonSubBlockDepthFirst0(this.result.get(labelToResultIndex), visitor, bitSet);
-            }
         }
     }
 }

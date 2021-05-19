@@ -1,15 +1,32 @@
 package mod.agus.jcoderz.dx.rop.type;
 
-import io.github.rosemoe.editor.widget.CodeEditor;
-import java.util.HashMap;
 import org.eclipse.jdt.internal.compiler.util.Util;
+
+import java.util.HashMap;
+
+import io.github.rosemoe.editor.widget.CodeEditor;
 
 public final class Prototype implements Comparable<Prototype> {
     private static final HashMap<String, Prototype> internTable = new HashMap<>((int) CodeEditor.DEFAULT_CURSOR_BLINK_PERIOD);
     private final String descriptor;
-    private StdTypeList parameterFrameTypes;
     private final StdTypeList parameterTypes;
     private final Type returnType;
+    private StdTypeList parameterFrameTypes;
+
+    private Prototype(String str, Type type, StdTypeList stdTypeList) {
+        if (str == null) {
+            throw new NullPointerException("descriptor == null");
+        } else if (type == null) {
+            throw new NullPointerException("returnType == null");
+        } else if (stdTypeList == null) {
+            throw new NullPointerException("parameterTypes == null");
+        } else {
+            this.descriptor = str;
+            this.returnType = type;
+            this.parameterTypes = stdTypeList;
+            this.parameterFrameTypes = null;
+        }
+    }
 
     public static Prototype intern(String str) {
         Prototype prototype;
@@ -108,18 +125,15 @@ public final class Prototype implements Comparable<Prototype> {
         return intern(stringBuffer.toString());
     }
 
-    private Prototype(String str, Type type, StdTypeList stdTypeList) {
-        if (str == null) {
-            throw new NullPointerException("descriptor == null");
-        } else if (type == null) {
-            throw new NullPointerException("returnType == null");
-        } else if (stdTypeList == null) {
-            throw new NullPointerException("parameterTypes == null");
-        } else {
-            this.descriptor = str;
-            this.returnType = type;
-            this.parameterTypes = stdTypeList;
-            this.parameterFrameTypes = null;
+    private static Prototype putIntern(Prototype prototype) {
+        synchronized (internTable) {
+            String descriptor2 = prototype.getDescriptor();
+            Prototype prototype2 = internTable.get(descriptor2);
+            if (prototype2 != null) {
+                return prototype2;
+            }
+            internTable.put(descriptor2, prototype);
+            return prototype;
         }
     }
 
@@ -202,17 +216,5 @@ public final class Prototype implements Comparable<Prototype> {
         StdTypeList withFirst = this.parameterTypes.withFirst(type);
         withFirst.setImmutable();
         return putIntern(new Prototype(str, this.returnType, withFirst));
-    }
-
-    private static Prototype putIntern(Prototype prototype) {
-        synchronized (internTable) {
-            String descriptor2 = prototype.getDescriptor();
-            Prototype prototype2 = internTable.get(descriptor2);
-            if (prototype2 != null) {
-                return prototype2;
-            }
-            internTable.put(descriptor2, prototype);
-            return prototype;
-        }
     }
 }

@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.IntList;

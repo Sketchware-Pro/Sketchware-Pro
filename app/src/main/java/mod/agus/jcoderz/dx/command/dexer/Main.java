@@ -33,6 +33,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dex.util.FileUtils;
@@ -68,19 +69,19 @@ public class Main {
     private static final String MANIFEST_NAME = "META-INF/MANIFEST.MF";
     private static final int MAX_FIELD_ADDED_DURING_DEX_CREATION = 9;
     private static final int MAX_METHOD_ADDED_DURING_DEX_CREATION = 2;
-    private static List<Future<Boolean>> addToDexFutures = new ArrayList();
+    private static final List<byte[]> libraryDexBuffers = new ArrayList();
+    public static List<byte[]> dexOutputArrays = new ArrayList();
+    public static List<Future<byte[]>> dexOutputFutures = new ArrayList();
+    private static final List<Future<Boolean>> addToDexFutures = new ArrayList();
     private static volatile boolean anyFilesProcessed;
     private static Arguments args;
     private static ExecutorService classDefItemConsumer;
     private static ExecutorService classTranslatorPool;
     private static Set<String> classesInMainDex = null;
     private static ExecutorService dexOutPool;
-    public static List<byte[]> dexOutputArrays = new ArrayList();
-    public static List<Future<byte[]>> dexOutputFutures = new ArrayList();
-    private static Object dexRotationLock = new Object();
-    private static AtomicInteger errors = new AtomicInteger(0);
+    private static final Object dexRotationLock = new Object();
+    private static final AtomicInteger errors = new AtomicInteger(0);
     private static OutputStreamWriter humanOutWriter = null;
-    private static final List<byte[]> libraryDexBuffers = new ArrayList();
     private static int maxFieldIdsInProcess = 0;
     private static int maxMethodIdsInProcess = 0;
     private static long minimumFileAge = 0;
@@ -89,11 +90,7 @@ public class Main {
 
     static {
         boolean z;
-        if (!Main.class.desiredAssertionStatus()) {
-            z = true;
-        } else {
-            z = false;
-        }
+        z = !Main.class.desiredAssertionStatus();
         assertionsDisabled = z;
     }
 
@@ -402,7 +399,7 @@ public class Main {
             }
             int i = errors.get();
             if (i != 0) {
-                DxConsole.err.println(String.valueOf(i) + " error" + (i == 1 ? "" : "s") + "; aborting");
+                DxConsole.err.println(i + " error" + (i == 1 ? "" : "s") + "; aborting");
                 return assertionsDisabled;
             } else if (args.incremental && !anyFilesProcessed) {
                 return true;
@@ -591,9 +588,9 @@ public class Main {
                 return null;
             }
         } catch (Throwable th) {
-                if (humanOutWriter != null) {
-                    humanOutWriter.flush();
-                }
+            if (humanOutWriter != null) {
+                humanOutWriter.flush();
+            }
             throw th;
         }
     }
@@ -656,9 +653,9 @@ public class Main {
         if (value == null) {
             str = "";
         } else {
-            str = String.valueOf(value) + " + ";
+            str = value + " + ";
         }
-        mainAttributes.put(CREATED_BY, String.valueOf(str) + "dx 1.11");
+        mainAttributes.put(CREATED_BY, str + "dx 1.11");
         mainAttributes.putValue("Dex-Location", "classes.dex");
         return manifest;
     }
@@ -865,12 +862,10 @@ public class Main {
         public boolean forceJumbo = Main.assertionsDisabled;
         public String humanOutName = null;
         public boolean incremental = Main.assertionsDisabled;
-        private List<String> inputList = null;
         public boolean jarOutput = Main.assertionsDisabled;
         public boolean keepClassesInJar = Main.assertionsDisabled;
         public boolean localInfo = true;
         public String mainDexListFile = null;
-        private int maxNumberOfIdxPerDex = AccessFlags.ACC_CONSTRUCTOR;
         public String methodToDump = null;
         public boolean minimalMainDex = Main.assertionsDisabled;
         public boolean multiDex = Main.assertionsDisabled;
@@ -884,6 +879,8 @@ public class Main {
         public boolean verbose = Main.assertionsDisabled;
         public boolean verboseDump = Main.assertionsDisabled;
         public boolean warnings = true;
+        private List<String> inputList = null;
+        private int maxNumberOfIdxPerDex = AccessFlags.ACC_CONSTRUCTOR;
 
         public void parse(String[] strArr) {
             ArgumentsParser argumentsParser = new ArgumentsParser(strArr);
@@ -1134,7 +1131,7 @@ public class Main {
             }
             if (exc instanceof SimException) {
                 DxConsole.err.println("\nEXCEPTION FROM SIMULATION:");
-                DxConsole.err.println(String.valueOf(exc.getMessage()) + "\n");
+                DxConsole.err.println(exc.getMessage() + "\n");
                 DxConsole.err.println(((SimException) exc).getContext());
             } else {
                 DxConsole.err.println("\nUNEXPECTED TOP-LEVEL EXCEPTION:");
@@ -1309,7 +1306,7 @@ public class Main {
     }
 
     private static class DexWriter implements Callable<byte[]> {
-        private DexFile dexFile;
+        private final DexFile dexFile;
 
         private DexWriter(DexFile dexFile2) {
             this.dexFile = dexFile2;

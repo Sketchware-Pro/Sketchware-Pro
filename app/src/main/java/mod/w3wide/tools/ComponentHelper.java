@@ -5,7 +5,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 public class ComponentHelper implements TextWatcher {
-    
+
     private final EditText[] mEditArray;
     private final EditText mTypeClass;
 

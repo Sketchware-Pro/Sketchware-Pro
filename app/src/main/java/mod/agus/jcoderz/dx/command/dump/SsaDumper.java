@@ -1,11 +1,14 @@
 package mod.agus.jcoderz.dx.command.dump;
 
+import org.eclipse.jdt.internal.compiler.codegen.ConstantPool;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.cf.code.ConcreteMethod;
 import mod.agus.jcoderz.dx.cf.code.Ropper;
 import mod.agus.jcoderz.dx.cf.iface.Member;
@@ -20,18 +23,18 @@ import mod.agus.jcoderz.dx.ssa.SsaMethod;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.IntList;
-import org.eclipse.jdt.internal.compiler.codegen.ConstantPool;
 
 public class SsaDumper extends BlockDumper {
-    public static void dump(byte[] bArr, PrintStream printStream, String str, Args args) {
-        new SsaDumper(bArr, printStream, str, args).dump();
-    }
-
     private SsaDumper(byte[] bArr, PrintStream printStream, String str, Args args) {
         super(bArr, printStream, str, true, args);
     }
 
-    @Override // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.command.dump.BlockDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
+    public static void dump(byte[] bArr, PrintStream printStream, String str, Args args) {
+        new SsaDumper(bArr, printStream, str, args).dump();
+    }
+
+    @Override
+    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.command.dump.BlockDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
     public void endParsingMember(ByteArray byteArray, int i, String str, String str2, Member member) {
         SsaMethod ssaMethod;
         if ((member instanceof Method) && shouldDumpMethod(str) && (member.getAccessFlags() & 1280) == 0) {

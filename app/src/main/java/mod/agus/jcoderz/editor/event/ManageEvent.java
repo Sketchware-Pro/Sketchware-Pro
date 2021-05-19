@@ -1,7 +1,8 @@
 package mod.agus.jcoderz.editor.event;
 
-import a.a.a.Gx;
 import java.util.ArrayList;
+
+import a.a.a.Gx;
 import mod.hilal.saif.events.EventsHandler;
 
 public class ManageEvent {

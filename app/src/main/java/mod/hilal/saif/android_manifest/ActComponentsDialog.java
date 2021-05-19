@@ -1,7 +1,5 @@
 package mod.hilal.saif.android_manifest;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -27,6 +25,8 @@ import mod.hey.studios.lib.code_editor.ColorScheme;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 import mod.hilal.saif.lib.FileUtil;
+
+import static mod.SketchwareUtil.getDip;
 
 public class ActComponentsDialog extends Dialog {
 

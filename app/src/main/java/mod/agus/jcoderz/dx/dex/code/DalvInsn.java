@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.code;
 
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
@@ -10,24 +11,25 @@ import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.TwoColumnOutput;
 
 public abstract class DalvInsn {
-    private int address;
     private final Dop opcode;
     private final SourcePosition position;
     private final RegisterSpecList registers;
+    private int address;
 
-    public abstract String argString();
-
-    public abstract int codeSize();
-
-    public abstract String listingString0(boolean z);
-
-    public abstract DalvInsn withOpcode(Dop dop);
-
-    public abstract DalvInsn withRegisterOffset(int i);
-
-    public abstract DalvInsn withRegisters(RegisterSpecList registerSpecList);
-
-    public abstract void writeTo(AnnotatedOutput annotatedOutput);
+    public DalvInsn(Dop dop, SourcePosition sourcePosition, RegisterSpecList registerSpecList) {
+        if (dop == null) {
+            throw new NullPointerException("opcode == null");
+        } else if (sourcePosition == null) {
+            throw new NullPointerException("position == null");
+        } else if (registerSpecList == null) {
+            throw new NullPointerException("registers == null");
+        } else {
+            this.address = -1;
+            this.opcode = dop;
+            this.position = sourcePosition;
+            this.registers = registerSpecList;
+        }
+    }
 
     public static SimpleInsn makeMove(SourcePosition sourcePosition, RegisterSpec registerSpec, RegisterSpec registerSpec2) {
         Dop dop;
@@ -49,20 +51,19 @@ public abstract class DalvInsn {
         return new SimpleInsn(dop, sourcePosition, RegisterSpecList.make(registerSpec, registerSpec2));
     }
 
-    public DalvInsn(Dop dop, SourcePosition sourcePosition, RegisterSpecList registerSpecList) {
-        if (dop == null) {
-            throw new NullPointerException("opcode == null");
-        } else if (sourcePosition == null) {
-            throw new NullPointerException("position == null");
-        } else if (registerSpecList == null) {
-            throw new NullPointerException("registers == null");
-        } else {
-            this.address = -1;
-            this.opcode = dop;
-            this.position = sourcePosition;
-            this.registers = registerSpecList;
-        }
-    }
+    public abstract String argString();
+
+    public abstract int codeSize();
+
+    public abstract String listingString0(boolean z);
+
+    public abstract DalvInsn withOpcode(Dop dop);
+
+    public abstract DalvInsn withRegisterOffset(int i);
+
+    public abstract DalvInsn withRegisters(RegisterSpecList registerSpecList);
+
+    public abstract void writeTo(AnnotatedOutput annotatedOutput);
 
     public final String toString() {
         StringBuffer stringBuffer = new StringBuffer(100);
@@ -96,6 +97,13 @@ public abstract class DalvInsn {
             return this.address;
         }
         throw new RuntimeException("address not yet known");
+    }
+
+    public final void setAddress(int i) {
+        if (i < 0) {
+            throw new IllegalArgumentException("address < 0");
+        }
+        this.address = i;
     }
 
     public final Dop getOpcode() {
@@ -171,16 +179,9 @@ public abstract class DalvInsn {
         if (listingString0 == null) {
             return null;
         }
-        String str2 = String.valueOf(str) + identifierString() + ": ";
+        String str2 = str + identifierString() + ": ";
         int length = str2.length();
         return TwoColumnOutput.toString(str2, length, "", listingString0, i == 0 ? listingString0.length() : i - length);
-    }
-
-    public final void setAddress(int i) {
-        if (i < 0) {
-            throw new IllegalArgumentException("address < 0");
-        }
-        this.address = i;
     }
 
     public final int getNextAddress() {

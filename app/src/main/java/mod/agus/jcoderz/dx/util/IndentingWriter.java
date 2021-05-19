@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.Writer;
 
 public final class IndentingWriter extends FilterWriter {
-    private boolean collectingIndent;
-    private int column;
-    private int indent;
     private final int maxIndent;
     private final String prefix;
     private final int width;
+    private boolean collectingIndent;
+    private int column;
+    private int indent;
 
     public IndentingWriter(Writer writer, int i, String str) {
         super(writer);
@@ -95,11 +95,7 @@ public final class IndentingWriter extends FilterWriter {
     private void bol() {
         boolean z;
         this.column = 0;
-        if (this.maxIndent != 0) {
-            z = true;
-        } else {
-            z = false;
-        }
+        z = this.maxIndent != 0;
         this.collectingIndent = z;
         this.indent = 0;
     }

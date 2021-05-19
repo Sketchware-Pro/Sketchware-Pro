@@ -72,7 +72,7 @@ public final class AnnotationSetItem extends OffsettedItem {
         boolean annotates = annotatedOutput.annotates();
         int length = this.items.length;
         if (annotates) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " annotation set");
+            annotatedOutput.annotate(0, offsetString() + " annotation set");
             annotatedOutput.annotate(4, "  size: " + Hex.u4(length));
         }
         annotatedOutput.writeInt(length);

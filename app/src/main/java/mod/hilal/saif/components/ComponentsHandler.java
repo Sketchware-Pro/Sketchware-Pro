@@ -3,9 +3,11 @@ package mod.hilal.saif.components;
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import mod.hilal.saif.lib.FileUtil;
 
 public class ComponentsHandler {
@@ -312,7 +314,7 @@ public class ComponentsHandler {
             for (int i = 0; i < arrayList.size(); i++) {
                 if (str.equals((String) ((HashMap) arrayList.get(i)).get("name"))) {
                     if (!((String) ((HashMap) arrayList.get(i)).get("additionalVar")).equals("")) {
-                        return String.valueOf(str2) + "\r\n" + ((String) ((HashMap) arrayList.get(i)).get("additionalVar")).replace("###", str3);
+                        return str2 + "\r\n" + ((String) ((HashMap) arrayList.get(i)).get("additionalVar")).replace("###", str3);
                     } else {
                         return str2;
                     }

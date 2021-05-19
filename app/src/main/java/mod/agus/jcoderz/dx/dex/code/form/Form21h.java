@@ -1,6 +1,9 @@
 package mod.agus.jcoderz.dx.dex.code.form;
 
+import org.spongycastle.crypto.tls.DTLSReplayWindow;
+
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.dex.code.CstInsn;
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
@@ -8,7 +11,6 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstLiteralBits;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
-import org.spongycastle.crypto.tls.DTLSReplayWindow;
 
 public final class Form21h extends InsnFormat {
     public static final InsnFormat THE_ONE = new Form21h();
@@ -18,7 +20,7 @@ public final class Form21h extends InsnFormat {
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
     public String insnArgString(DalvInsn dalvInsn) {
-        return String.valueOf(dalvInsn.getRegisters().get(0).regString()) + ", " + literalBitsString((CstLiteralBits) ((CstInsn) dalvInsn).getConstant());
+        return dalvInsn.getRegisters().get(0).regString() + ", " + literalBitsString((CstLiteralBits) ((CstInsn) dalvInsn).getConstant());
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat

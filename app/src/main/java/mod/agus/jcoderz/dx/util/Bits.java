@@ -13,10 +13,7 @@ public final class Bits {
     }
 
     public static boolean get(int[] iArr, int i) {
-        if ((iArr[i >> 5] & (1 << (i & 31))) != 0) {
-            return true;
-        }
-        return false;
+        return (iArr[i >> 5] & (1 << (i & 31))) != 0;
     }
 
     public static void set(int[] iArr, int i, boolean z) {

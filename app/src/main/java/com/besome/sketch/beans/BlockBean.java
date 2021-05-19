@@ -1,11 +1,14 @@
 package com.besome.sketch.beans;
 
-import a.a.a.Gx;
-import a.a.a.mq;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
+
+import a.a.a.Gx;
+import a.a.a.mq;
 
 public class BlockBean extends SelectableBean implements Parcelable {
     public static final Parcelable.Creator<BlockBean> CREATOR = new Parcelable.Creator<BlockBean>() {
@@ -51,13 +54,44 @@ public class BlockBean extends SelectableBean implements Parcelable {
         this.nextBlock = -1;
     }
 
-    private void buildClassInfo() {
-        this.classInfo = mq.a(this.type, this.typeName);
-        this.paramClassInfo = mq.a(this.spec);
+    public BlockBean(String str, String str2, String str3, String str4) {
+        this(str, str2, str3, "", str4);
+    }
+
+    public BlockBean(String str, String str2, String str3, String str4, String str5) {
+        this.id = str;
+        this.spec = str2;
+        this.type = str3;
+        this.typeName = str4;
+        this.opCode = str5;
+        this.parameters = new ArrayList<>();
+        this.subStack1 = -1;
+        this.subStack2 = -1;
+        this.nextBlock = -1;
+        buildClassInfo();
+    }
+
+    public BlockBean(Parcel parcel) {
+        this.id = parcel.readString();
+        this.spec = parcel.readString();
+        this.type = parcel.readString();
+        this.typeName = parcel.readString();
+        this.opCode = parcel.readString();
+        this.color = parcel.readInt();
+        this.parameters = (ArrayList) parcel.readSerializable();
+        this.subStack1 = parcel.readInt();
+        this.subStack2 = parcel.readInt();
+        this.nextBlock = parcel.readInt();
+        buildClassInfo();
     }
 
     public static Parcelable.Creator<BlockBean> getCreator() {
         return CREATOR;
+    }
+
+    private void buildClassInfo() {
+        this.classInfo = mq.a(this.type, this.typeName);
+        this.paramClassInfo = mq.a(this.spec);
     }
 
     public void copy(BlockBean blockBean) {
@@ -143,36 +177,5 @@ public class BlockBean extends SelectableBean implements Parcelable {
         BlockBean blockBean = new BlockBean();
         blockBean.copy(this);
         return blockBean;
-    }
-
-    public BlockBean(String str, String str2, String str3, String str4) {
-        this(str, str2, str3, "", str4);
-    }
-
-    public BlockBean(String str, String str2, String str3, String str4, String str5) {
-        this.id = str;
-        this.spec = str2;
-        this.type = str3;
-        this.typeName = str4;
-        this.opCode = str5;
-        this.parameters = new ArrayList<>();
-        this.subStack1 = -1;
-        this.subStack2 = -1;
-        this.nextBlock = -1;
-        buildClassInfo();
-    }
-
-    public BlockBean(Parcel parcel) {
-        this.id = parcel.readString();
-        this.spec = parcel.readString();
-        this.type = parcel.readString();
-        this.typeName = parcel.readString();
-        this.opCode = parcel.readString();
-        this.color = parcel.readInt();
-        this.parameters = (ArrayList) parcel.readSerializable();
-        this.subStack1 = parcel.readInt();
-        this.subStack2 = parcel.readInt();
-        this.nextBlock = parcel.readInt();
-        buildClassInfo();
     }
 }

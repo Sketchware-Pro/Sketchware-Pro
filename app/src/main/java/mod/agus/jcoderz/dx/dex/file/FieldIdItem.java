@@ -12,7 +12,8 @@ public final class FieldIdItem extends MemberIdItem {
         return ItemType.TYPE_FIELD_ID_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.MemberIdItem, mod.agus.jcoderz.dx.dex.file.IdItem, mod.agus.jcoderz.dx.dex.file.Item
+    @Override
+    // mod.agus.jcoderz.dx.dex.file.MemberIdItem, mod.agus.jcoderz.dx.dex.file.IdItem, mod.agus.jcoderz.dx.dex.file.Item
     public void addContents(DexFile dexFile) {
         super.addContents(dexFile);
         dexFile.getTypeIds().intern(getFieldRef().getType());

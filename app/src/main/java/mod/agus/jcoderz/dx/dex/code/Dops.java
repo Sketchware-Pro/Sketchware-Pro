@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.dx.dex.code;
 
+import org.spongycastle.crypto.engines.IDEAEngine;
+
 import mod.agus.jcoderz.dx.dex.DexOptions;
 import mod.agus.jcoderz.dx.dex.code.form.Form10t;
 import mod.agus.jcoderz.dx.dex.code.form.Form10x;
@@ -27,7 +29,6 @@ import mod.agus.jcoderz.dx.dex.code.form.Form3rc;
 import mod.agus.jcoderz.dx.dex.code.form.Form51l;
 import mod.agus.jcoderz.dx.dex.code.form.SpecialFormat;
 import mod.agus.jcoderz.dx.io.Opcodes;
-import org.spongycastle.crypto.engines.IDEAEngine;
 
 public final class Dops {
     public static final Dop ADD_DOUBLE = new Dop(171, 171, -1, Form23x.THE_ONE, true);
@@ -88,7 +89,6 @@ public final class Dops {
     public static final Dop DIV_INT_LIT8 = new Dop(Opcodes.DIV_INT_LIT8, 147, 211, Form22b.THE_ONE, true);
     public static final Dop DIV_LONG = new Dop(158, 158, -1, Form23x.THE_ONE, true);
     public static final Dop DIV_LONG_2ADDR = new Dop(190, 158, 158, Form12x.THE_ONE, true);
-    private static final Dop[] DOPS = new Dop[IDEAEngine.BASE];
     public static final Dop DOUBLE_TO_FLOAT = new Dop(140, 140, -1, Form12x.THE_ONE, true);
     public static final Dop DOUBLE_TO_INT = new Dop(138, 138, -1, Form12x.THE_ONE, true);
     public static final Dop DOUBLE_TO_LONG = new Dop(139, 139, -1, Form12x.THE_ONE, true);
@@ -250,6 +250,7 @@ public final class Dops {
     public static final Dop XOR_INT_LIT8 = new Dop(Opcodes.XOR_INT_LIT8, 151, Opcodes.XOR_INT_LIT16, Form22b.THE_ONE, true);
     public static final Dop XOR_LONG = new Dop(162, 162, -1, Form23x.THE_ONE, true);
     public static final Dop XOR_LONG_2ADDR = new Dop(194, 162, 162, Form12x.THE_ONE, true);
+    private static final Dop[] DOPS = new Dop[IDEAEngine.BASE];
 
     static {
         set(SPECIAL_FORMAT);

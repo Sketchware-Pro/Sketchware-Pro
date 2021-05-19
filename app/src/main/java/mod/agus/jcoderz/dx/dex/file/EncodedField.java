@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.io.PrintWriter;
+
 import mod.agus.jcoderz.dex.Leb128;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
@@ -13,11 +14,6 @@ public final class EncodedField extends EncodedMember implements Comparable<Enco
     private final CstFieldRef field;
 
 
-    @Override // java.lang.Comparable
-    public int compareTo(EncodedField encodedField) {
-        return compareTo(encodedField);
-    }
-
     public EncodedField(CstFieldRef cstFieldRef, int i) {
         super(i);
         if (cstFieldRef == null) {
@@ -26,15 +22,17 @@ public final class EncodedField extends EncodedMember implements Comparable<Enco
         this.field = cstFieldRef;
     }
 
+    @Override // java.lang.Comparable
+    public int compareTo(EncodedField encodedField) {
+        return compareTo(encodedField);
+    }
+
     public int hashCode() {
         return this.field.hashCode();
     }
 
     public boolean equals(Object obj) {
-        if ((obj instanceof EncodedField) && compareTo((EncodedField) obj) == 0) {
-            return true;
-        }
-        return false;
+        return (obj instanceof EncodedField) && compareTo((EncodedField) obj) == 0;
     }
 
     public int compareToTwo(EncodedField encodedField) {

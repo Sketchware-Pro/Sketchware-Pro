@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashSet;
+
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 import mod.agus.jcoderz.dx.ssa.Optimizer;
@@ -64,9 +65,6 @@ public class OptimizerOptions {
         if (optimizeList != null) {
             return optimizeList.contains(str);
         }
-        if (dontOptimizeList == null || !dontOptimizeList.contains(str)) {
-            return true;
-        }
-        return false;
+        return dontOptimizeList == null || !dontOptimizeList.contains(str);
     }
 }

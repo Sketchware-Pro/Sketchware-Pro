@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
@@ -12,6 +13,39 @@ public final class MapItem extends OffsettedItem {
     private final Item lastItem;
     private final Section section;
     private final ItemType type;
+
+    private MapItem(ItemType itemType, Section section2, Item item, Item item2, int i) {
+        super(4, 12);
+        if (itemType == null) {
+            throw new NullPointerException("type == null");
+        } else if (section2 == null) {
+            throw new NullPointerException("section == null");
+        } else if (item == null) {
+            throw new NullPointerException("firstItem == null");
+        } else if (item2 == null) {
+            throw new NullPointerException("lastItem == null");
+        } else if (i <= 0) {
+            throw new IllegalArgumentException("itemCount <= 0");
+        } else {
+            this.type = itemType;
+            this.section = section2;
+            this.firstItem = item;
+            this.lastItem = item2;
+            this.itemCount = i;
+        }
+    }
+
+    private MapItem(Section section2) {
+        super(4, 12);
+        if (section2 == null) {
+            throw new NullPointerException("section == null");
+        }
+        this.type = ItemType.TYPE_MAP_LIST;
+        this.section = section2;
+        this.firstItem = null;
+        this.lastItem = null;
+        this.itemCount = 1;
+    }
 
     public static void addMap(Section[] sectionArr, MixedItemSection mixedItemSection) {
         if (sectionArr == null) {
@@ -46,39 +80,6 @@ public final class MapItem extends OffsettedItem {
             }
             mixedItemSection.add(new UniformListItem(ItemType.TYPE_MAP_LIST, arrayList));
         }
-    }
-
-    private MapItem(ItemType itemType, Section section2, Item item, Item item2, int i) {
-        super(4, 12);
-        if (itemType == null) {
-            throw new NullPointerException("type == null");
-        } else if (section2 == null) {
-            throw new NullPointerException("section == null");
-        } else if (item == null) {
-            throw new NullPointerException("firstItem == null");
-        } else if (item2 == null) {
-            throw new NullPointerException("lastItem == null");
-        } else if (i <= 0) {
-            throw new IllegalArgumentException("itemCount <= 0");
-        } else {
-            this.type = itemType;
-            this.section = section2;
-            this.firstItem = item;
-            this.lastItem = item2;
-            this.itemCount = i;
-        }
-    }
-
-    private MapItem(Section section2) {
-        super(4, 12);
-        if (section2 == null) {
-            throw new NullPointerException("section == null");
-        }
-        this.type = ItemType.TYPE_MAP_LIST;
-        this.section = section2;
-        this.firstItem = null;
-        this.lastItem = null;
-        this.itemCount = 1;
     }
 
     @Override // mod.agus.jcoderz.dx.dex.file.Item
@@ -116,7 +117,7 @@ public final class MapItem extends OffsettedItem {
             absoluteItemOffset = this.section.getAbsoluteItemOffset(this.firstItem);
         }
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + ' ' + this.type.getTypeName() + " map");
+            annotatedOutput.annotate(0, offsetString() + ' ' + this.type.getTypeName() + " map");
             annotatedOutput.annotate(2, "  type:   " + Hex.u2(mapValue) + " // " + this.type.toString());
             annotatedOutput.annotate(2, "  unused: 0");
             annotatedOutput.annotate(4, "  size:   " + Hex.u4(this.itemCount));

@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.dex.file;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.rop.annotation.Annotations;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
@@ -20,13 +21,13 @@ import mod.agus.jcoderz.dx.util.Writers;
 
 public final class ClassDefItem extends IndexedItem {
     private final int accessFlags;
-    private AnnotationsDirectoryItem annotationsDirectory;
     private final ClassDataItem classData;
-    private TypeListItem interfaces;
     private final CstString sourceFile;
-    private EncodedArrayItem staticValuesItem;
     private final CstType superclass;
     private final CstType thisClass;
+    private AnnotationsDirectoryItem annotationsDirectory;
+    private TypeListItem interfaces;
+    private EncodedArrayItem staticValuesItem;
 
     public ClassDefItem(CstType cstType, int i, CstType cstType2, TypeList typeList, CstString cstString) {
         if (cstType == null) {
@@ -123,7 +124,7 @@ public final class ClassDefItem extends IndexedItem {
         }
         int absoluteOffsetOr02 = OffsettedItem.getAbsoluteOffsetOr0(this.staticValuesItem);
         if (annotates) {
-            annotatedOutput.annotate(0, String.valueOf(indexString()) + ' ' + this.thisClass.toHuman());
+            annotatedOutput.annotate(0, indexString() + ' ' + this.thisClass.toHuman());
             annotatedOutput.annotate(4, "  class_idx:           " + Hex.u4(indexOf3));
             annotatedOutput.annotate(4, "  access_flags:        " + AccessFlags.classString(this.accessFlags));
             StringBuilder append = new StringBuilder("  superclass_idx:      ").append(Hex.u4(indexOf)).append(" // ");
@@ -231,7 +232,7 @@ public final class ClassDefItem extends IndexedItem {
 
     public void debugPrint(Writer writer, boolean z) {
         PrintWriter printWriterFor = Writers.printWriterFor(writer);
-        printWriterFor.println(String.valueOf(getClass().getName()) + " {");
+        printWriterFor.println(getClass().getName() + " {");
         printWriterFor.println("  accessFlags: " + Hex.u2(this.accessFlags));
         printWriterFor.println("  superclass: " + this.superclass);
         printWriterFor.println("  interfaces: " + (this.interfaces == null ? "<none>" : this.interfaces));

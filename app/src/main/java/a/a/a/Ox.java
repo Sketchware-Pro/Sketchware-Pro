@@ -5,13 +5,15 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
-import dev.aldi.sayuti.editor.injection.AppCompatInjection;
+
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import dev.aldi.sayuti.editor.injection.AppCompatInjection;
+
 public class Ox {
-    
+
     public jq a;
     public AppCompatInjection aci;
     public ProjectFileBean b;
@@ -414,20 +416,20 @@ public class Ox {
         LayoutBean layoutBean = viewBean.layout;
         int i2 = layoutBean.marginLeft;
         if (i2 == layoutBean.marginRight && (i = layoutBean.marginTop) == layoutBean.marginBottom && i2 == i && i2 > 0) {
-            nx.a("android", "layout_margin", String.valueOf(viewBean.layout.marginLeft) + "dp");
+            nx.a("android", "layout_margin", viewBean.layout.marginLeft + "dp");
             return;
         }
         if (viewBean.layout.marginLeft > 0) {
-            nx.a("android", "layout_marginLeft", String.valueOf(viewBean.layout.marginLeft) + "dp");
+            nx.a("android", "layout_marginLeft", viewBean.layout.marginLeft + "dp");
         }
         if (viewBean.layout.marginTop > 0) {
-            nx.a("android", "layout_marginTop", String.valueOf(viewBean.layout.marginTop) + "dp");
+            nx.a("android", "layout_marginTop", viewBean.layout.marginTop + "dp");
         }
         if (viewBean.layout.marginRight > 0) {
-            nx.a("android", "layout_marginRight", String.valueOf(viewBean.layout.marginRight) + "dp");
+            nx.a("android", "layout_marginRight", viewBean.layout.marginRight + "dp");
         }
         if (viewBean.layout.marginBottom > 0) {
-            nx.a("android", "layout_marginBottom", String.valueOf(viewBean.layout.marginBottom) + "dp");
+            nx.a("android", "layout_marginBottom", viewBean.layout.marginBottom + "dp");
         }
     }
 
@@ -445,20 +447,20 @@ public class Ox {
         LayoutBean layoutBean = viewBean.layout;
         int i2 = layoutBean.paddingLeft;
         if (i2 == layoutBean.paddingRight && (i = layoutBean.paddingTop) == layoutBean.paddingBottom && i2 == i && i2 > 0) {
-            nx.a("android", "padding", String.valueOf(viewBean.layout.paddingLeft) + "dp");
+            nx.a("android", "padding", viewBean.layout.paddingLeft + "dp");
             return;
         }
         if (viewBean.layout.paddingLeft > 0) {
-            nx.a("android", "paddingLeft", String.valueOf(viewBean.layout.paddingLeft) + "dp");
+            nx.a("android", "paddingLeft", viewBean.layout.paddingLeft + "dp");
         }
         if (viewBean.layout.paddingTop > 0) {
-            nx.a("android", "paddingTop", String.valueOf(viewBean.layout.paddingTop) + "dp");
+            nx.a("android", "paddingTop", viewBean.layout.paddingTop + "dp");
         }
         if (viewBean.layout.paddingRight > 0) {
-            nx.a("android", "paddingRight", String.valueOf(viewBean.layout.paddingRight) + "dp");
+            nx.a("android", "paddingRight", viewBean.layout.paddingRight + "dp");
         }
         if (viewBean.layout.paddingBottom > 0) {
-            nx.a("android", "paddingBottom", String.valueOf(viewBean.layout.paddingBottom) + "dp");
+            nx.a("android", "paddingBottom", viewBean.layout.paddingBottom + "dp");
         }
     }
 
@@ -468,7 +470,7 @@ public class Ox {
             nx.a("android", "text", a(viewBean.text.text));
         }
         if (viewBean.text.textSize > 0) {
-            nx.a("android", "textSize", String.valueOf(viewBean.text.textSize) + "sp");
+            nx.a("android", "textSize", viewBean.text.textSize + "sp");
         }
         int i = viewBean.text.textType;
         if (i == TextBean.TEXT_TYPE_BOLD) {
@@ -545,10 +547,10 @@ public class Ox {
             nx.a("android", "alpha", String.valueOf(f2));
         }
         if (0.0f != viewBean.translationX) {
-            nx.a("android", "translationX", String.valueOf(viewBean.translationX) + "dp");
+            nx.a("android", "translationX", viewBean.translationX + "dp");
         }
         if (0.0f != viewBean.translationY) {
-            nx.a("android", "translationY", String.valueOf(viewBean.translationY) + "dp");
+            nx.a("android", "translationY", viewBean.translationY + "dp");
         }
         float f3 = viewBean.scaleX;
         if (1.0f != f3) {
@@ -659,7 +661,7 @@ public class Ox {
 
     public void o(Nx nx, ViewBean viewBean) {
         if (viewBean.text.textSize > 0) {
-            nx.a("app", "sidebar_text_size", String.valueOf(viewBean.text.textSize) + "sp");
+            nx.a("app", "sidebar_text_size", viewBean.text.textSize + "sp");
         }
         if (viewBean.text.textColor != 0) {
             nx.a("app", "sidebar_text_color", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 0xffffff)));

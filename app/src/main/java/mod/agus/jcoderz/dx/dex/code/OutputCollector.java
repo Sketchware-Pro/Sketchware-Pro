@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.code;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.dex.DexOptions;
 
 public final class OutputCollector {

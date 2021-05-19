@@ -1,10 +1,12 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.ImageView;
+
 import com.google.gson.annotations.Expose;
+
+import a.a.a.nA;
 
 public class ImageBean extends nA implements Parcelable {
     public static final Parcelable.Creator<ImageBean> CREATOR = new Parcelable.Creator<ImageBean>() {
@@ -36,6 +38,12 @@ public class ImageBean extends nA implements Parcelable {
     public ImageBean() {
         this.scaleType = ImageView.ScaleType.CENTER.name();
         this.rotate = 0;
+    }
+
+    public ImageBean(Parcel parcel) {
+        this.resName = parcel.readString();
+        this.scaleType = parcel.readString();
+        this.rotate = parcel.readInt();
     }
 
     public static Parcelable.Creator<ImageBean> getCreator() {
@@ -71,10 +79,7 @@ public class ImageBean extends nA implements Parcelable {
         } else if (imageBean.scaleType != null) {
             return false;
         }
-        if (this.rotate != imageBean.rotate) {
-            return false;
-        }
-        return true;
+        return this.rotate == imageBean.rotate;
     }
 
     public void print() {
@@ -84,11 +89,5 @@ public class ImageBean extends nA implements Parcelable {
         parcel.writeString(this.resName);
         parcel.writeString(this.scaleType);
         parcel.writeInt(this.rotate);
-    }
-
-    public ImageBean(Parcel parcel) {
-        this.resName = parcel.readString();
-        this.scaleType = parcel.readString();
-        this.rotate = parcel.readInt();
     }
 }

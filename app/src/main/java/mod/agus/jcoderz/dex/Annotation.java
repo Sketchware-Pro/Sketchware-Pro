@@ -1,7 +1,5 @@
 package mod.agus.jcoderz.dex;
 
-import mod.agus.jcoderz.dex.Dex;
-
 public final class Annotation implements Comparable<Annotation> {
     private final Dex dex;
     private final EncodedValue encodedAnnotation;
@@ -38,8 +36,8 @@ public final class Annotation implements Comparable<Annotation> {
 
     public String toString() {
         if (this.dex == null) {
-            return String.valueOf((int) this.visibility) + " " + getTypeIndex();
+            return (int) this.visibility + " " + getTypeIndex();
         }
-        return String.valueOf((int) this.visibility) + " " + this.dex.typeNames().get(getTypeIndex());
+        return (int) this.visibility + " " + this.dex.typeNames().get(getTypeIndex());
     }
 }

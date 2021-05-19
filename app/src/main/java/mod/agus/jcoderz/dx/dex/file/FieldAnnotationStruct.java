@@ -8,14 +8,9 @@ import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.ToHuman;
 
 public final class FieldAnnotationStruct implements ToHuman, Comparable<FieldAnnotationStruct> {
-    private AnnotationSetItem annotations;
     private final CstFieldRef field;
+    private AnnotationSetItem annotations;
 
-
-    @Override // java.lang.Comparable
-    public /* bridge */ /* synthetic */ int compareTo(FieldAnnotationStruct fieldAnnotationStruct) {
-        return compareTo(fieldAnnotationStruct);
-    }
 
     public FieldAnnotationStruct(CstFieldRef cstFieldRef, AnnotationSetItem annotationSetItem) {
         if (cstFieldRef == null) {
@@ -26,6 +21,11 @@ public final class FieldAnnotationStruct implements ToHuman, Comparable<FieldAnn
             this.field = cstFieldRef;
             this.annotations = annotationSetItem;
         }
+    }
+
+    @Override // java.lang.Comparable
+    public /* bridge */ /* synthetic */ int compareTo(FieldAnnotationStruct fieldAnnotationStruct) {
+        return compareTo(fieldAnnotationStruct);
     }
 
     public int hashCode() {
@@ -64,7 +64,7 @@ public final class FieldAnnotationStruct implements ToHuman, Comparable<FieldAnn
 
     @Override // mod.agus.jcoderz.dx.util.ToHuman
     public String toHuman() {
-        return String.valueOf(this.field.toHuman()) + ": " + this.annotations;
+        return this.field.toHuman() + ": " + this.annotations;
     }
 
     public CstFieldRef getField() {

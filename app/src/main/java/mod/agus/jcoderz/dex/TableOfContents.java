@@ -1,39 +1,40 @@
 package mod.agus.jcoderz.dex;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import mod.agus.jcoderz.dex.Dex;
 import org.eclipse.jdt.internal.compiler.lookup.Binding;
 import org.eclipse.jdt.internal.compiler.util.Util;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public final class TableOfContents {
     public final Section annotationSetRefLists = new Section(4098);
     public final Section annotationSets = new Section(4099);
     public final Section annotations = new Section(Binding.INTERSECTION_TYPE);
     public final Section annotationsDirectories = new Section(8198);
-    public int checksum;
     public final Section classDatas = new Section(8192);
     public final Section classDefs = new Section(6);
     public final Section codes = new Section(8193);
-    public int dataOff;
-    public int dataSize;
     public final Section debugInfos = new Section(8195);
     public final Section encodedArrays = new Section(8197);
     public final Section fieldIds = new Section(4);
-    public int fileSize;
     public final Section header = new Section(0);
-    public int linkOff;
-    public int linkSize;
     public final Section mapList = new Section(4096);
     public final Section methodIds = new Section(5);
     public final Section protoIds = new Section(3);
-    public final Section[] sections = {this.header, this.stringIds, this.typeIds, this.protoIds, this.fieldIds, this.methodIds, this.classDefs, this.mapList, this.typeLists, this.annotationSetRefLists, this.annotationSets, this.classDatas, this.codes, this.stringDatas, this.debugInfos, this.annotations, this.encodedArrays, this.annotationsDirectories};
-    public byte[] signature = new byte[20];
     public final Section stringDatas = new Section(8194);
     public final Section stringIds = new Section(1);
     public final Section typeIds = new Section(2);
     public final Section typeLists = new Section(4097);
+    public final Section[] sections = {this.header, this.stringIds, this.typeIds, this.protoIds, this.fieldIds, this.methodIds, this.classDefs, this.mapList, this.typeLists, this.annotationSetRefLists, this.annotationSets, this.classDatas, this.codes, this.stringDatas, this.debugInfos, this.annotations, this.encodedArrays, this.annotationsDirectories};
+    public int checksum;
+    public int dataOff;
+    public int dataSize;
+    public int fileSize;
+    public int linkOff;
+    public int linkSize;
+    public byte[] signature = new byte[20];
 
     public void readFrom(Dex dex) throws IOException {
         readHeader(dex.open(0));
@@ -130,7 +131,7 @@ public final class TableOfContents {
     }
 
     public void writeHeader(Dex.Section section) throws IOException {
-        section.write(DexFormat.apiToMagic(13).getBytes(Util.UTF_8));
+        section.write(DexFormat.apiToMagic(13).getBytes(StandardCharsets.UTF_8));
         section.writeInt(this.checksum);
         section.write(this.signature);
         section.writeInt(this.fileSize);
@@ -175,10 +176,10 @@ public final class TableOfContents {
     }
 
     public static class Section implements Comparable<Section> {
+        public final short type;
         public int byteCount = 0;
         public int off = -1;
         public int size = 0;
-        public final short type;
 
         public Section(int i) {
             this.type = (short) i;

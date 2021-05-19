@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.merge;
 
 import java.util.Comparator;
+
 import mod.agus.jcoderz.dex.ClassDef;
 import mod.agus.jcoderz.dex.Dex;
 
@@ -28,10 +29,10 @@ final class SortableType {
             return sortableType.getTypeIndex() - sortableType2.getTypeIndex();
         }
     };
-    private ClassDef classDef;
-    private int depth = -1;
     private final Dex dex;
     private final IndexMap indexMap;
+    private final ClassDef classDef;
+    private int depth = -1;
 
     public SortableType(Dex dex2, IndexMap indexMap2, ClassDef classDef2) {
         this.dex = dex2;

@@ -8,13 +8,8 @@ import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.ToHuman;
 
 public final class MethodAnnotationStruct implements ToHuman, Comparable<MethodAnnotationStruct> {
-    private AnnotationSetItem annotations;
     private final CstMethodRef method;
-
-    @Override // java.lang.Comparable
-    public /* bridge */ /* synthetic */ int compareTo(MethodAnnotationStruct methodAnnotationStruct) {
-        return compareTo(methodAnnotationStruct);
-    }
+    private AnnotationSetItem annotations;
 
     public MethodAnnotationStruct(CstMethodRef cstMethodRef, AnnotationSetItem annotationSetItem) {
         if (cstMethodRef == null) {
@@ -25,6 +20,11 @@ public final class MethodAnnotationStruct implements ToHuman, Comparable<MethodA
             this.method = cstMethodRef;
             this.annotations = annotationSetItem;
         }
+    }
+
+    @Override // java.lang.Comparable
+    public /* bridge */ /* synthetic */ int compareTo(MethodAnnotationStruct methodAnnotationStruct) {
+        return compareTo(methodAnnotationStruct);
     }
 
     public int hashCode() {
@@ -63,7 +63,7 @@ public final class MethodAnnotationStruct implements ToHuman, Comparable<MethodA
 
     @Override // mod.agus.jcoderz.dx.util.ToHuman
     public String toHuman() {
-        return String.valueOf(this.method.toHuman()) + ": " + this.annotations;
+        return this.method.toHuman() + ": " + this.annotations;
     }
 
     public CstMethodRef getMethod() {

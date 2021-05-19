@@ -1,7 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.List;
-import mod.agus.jcoderz.dx.dex.file.OffsettedItem;
+
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
@@ -98,7 +98,7 @@ public final class UniformListItem<T extends OffsettedItem> extends OffsettedIte
     protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
         int size = this.items.size();
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " " + typeName());
+            annotatedOutput.annotate(0, offsetString() + " " + typeName());
             annotatedOutput.annotate(4, "  size: " + Hex.u4(size));
         }
         annotatedOutput.writeInt(size);

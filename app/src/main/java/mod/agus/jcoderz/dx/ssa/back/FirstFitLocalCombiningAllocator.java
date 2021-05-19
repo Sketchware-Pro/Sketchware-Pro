@@ -5,6 +5,7 @@ import java.util.BitSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dx.rop.code.CstInsn;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
@@ -28,54 +29,11 @@ public class FirstFitLocalCombiningAllocator extends RegisterAllocator {
     private final InterferenceRegisterMapper mapper;
     private final boolean minimizeRegisters;
     private final ArrayList<NormalSsaInsn> moveResultPseudoInsns;
-    private int paramRangeEnd;
     private final ArrayList<PhiInsn> phiInsns;
-    private final BitSet reservedRopRegs = new BitSet(this.paramRangeEnd * 2);
     private final BitSet ssaRegsMapped;
     private final BitSet usedRopRegs;
-
-    public enum Alignment {
-        EVEN {
-            /* access modifiers changed from: package-private */
-            @Override // mod.agus.jcoderz.dx.ssa.back.FirstFitLocalCombiningAllocator.Alignment
-            public int nextClearBit(BitSet bitSet, int i) {
-                int nextClearBit = bitSet.nextClearBit(i);
-                while (!FirstFitLocalCombiningAllocator.isEven(nextClearBit)) {
-                    nextClearBit = bitSet.nextClearBit(nextClearBit + 1);
-                }
-                return nextClearBit;
-            }
-        },
-        ODD {
-            /* access modifiers changed from: package-private */
-            @Override // mod.agus.jcoderz.dx.ssa.back.FirstFitLocalCombiningAllocator.Alignment
-            public int nextClearBit(BitSet bitSet, int i) {
-                int nextClearBit = bitSet.nextClearBit(i);
-                while (FirstFitLocalCombiningAllocator.isEven(nextClearBit)) {
-                    nextClearBit = bitSet.nextClearBit(nextClearBit + 1);
-                }
-                return nextClearBit;
-            }
-        },
-        UNSPECIFIED {
-            /* access modifiers changed from: package-private */
-            @Override // mod.agus.jcoderz.dx.ssa.back.FirstFitLocalCombiningAllocator.Alignment
-            public int nextClearBit(BitSet bitSet, int i) {
-                return bitSet.nextClearBit(i);
-            }
-        };
-
-        Alignment() {
-
-        }
-
-        /* access modifiers changed from: package-private */
-        public abstract int nextClearBit(BitSet bitSet, int i);
-
-        /* synthetic */ Alignment(Alignment alignment) {
-            this();
-        }
-    }
+    private int paramRangeEnd;
+    private final BitSet reservedRopRegs = new BitSet(this.paramRangeEnd * 2);
 
     public FirstFitLocalCombiningAllocator(SsaMethod ssaMethod, InterferenceGraph interferenceGraph, boolean z) {
         super(ssaMethod, interferenceGraph);
@@ -89,6 +47,11 @@ public class FirstFitLocalCombiningAllocator extends RegisterAllocator {
         this.moveResultPseudoInsns = new ArrayList<>();
         this.invokeRangeInsns = new ArrayList<>();
         this.phiInsns = new ArrayList<>();
+    }
+
+    /* access modifiers changed from: private */
+    public static boolean isEven(int i) {
+        return (i & 1) == 0;
     }
 
     @Override // mod.agus.jcoderz.dx.ssa.back.RegisterAllocator
@@ -209,11 +172,7 @@ public class FirstFitLocalCombiningAllocator extends RegisterAllocator {
             RegisterSpec next = it.next();
             if (!this.ssaRegsMapped.get(next.getReg())) {
                 boolean tryMapReg = tryMapReg(next, i, i2);
-                if (!tryMapReg || z2) {
-                    z2 = true;
-                } else {
-                    z2 = false;
-                }
+                z2 = !tryMapReg || z2;
                 if (tryMapReg && z) {
                     markReserved(i, next.getCategory());
                 }
@@ -335,11 +294,7 @@ public class FirstFitLocalCombiningAllocator extends RegisterAllocator {
                     } else {
                         z = z5;
                     }
-                    if (z4) {
-                        z2 = false;
-                    } else {
-                        z2 = true;
-                    }
+                    z2 = !z4;
                     if (z2 && z) {
                         z4 = tryMapReg(result, this.mapper.oldToNew(reg2), category);
                     }
@@ -352,11 +307,7 @@ public class FirstFitLocalCombiningAllocator extends RegisterAllocator {
                             findNextUnreservedRopReg = findNextUnreservedRopReg(findNextUnreservedRopReg + 1, category);
                         }
                     }
-                    if (ssaInsn.getOriginalRopInsn().getCatches().size() != 0) {
-                        z3 = true;
-                    } else {
-                        z3 = false;
-                    }
+                    z3 = ssaInsn.getOriginalRopInsn().getCatches().size() != 0;
                     int oldToNew = this.mapper.oldToNew(reg);
                     if (oldToNew != this.mapper.oldToNew(reg2) && !z3) {
                         ((NormalSsaInsn) ssaInsn).changeOneSource(0, insertMoveBefore(ssaInsn, registerSpec));
@@ -669,9 +620,47 @@ public class FirstFitLocalCombiningAllocator extends RegisterAllocator {
         }
     }
 
-    /* access modifiers changed from: private */
-    public static boolean isEven(int i) {
-        return (i & 1) == 0;
+    public enum Alignment {
+        EVEN {
+            /* access modifiers changed from: package-private */
+            @Override // mod.agus.jcoderz.dx.ssa.back.FirstFitLocalCombiningAllocator.Alignment
+            public int nextClearBit(BitSet bitSet, int i) {
+                int nextClearBit = bitSet.nextClearBit(i);
+                while (!FirstFitLocalCombiningAllocator.isEven(nextClearBit)) {
+                    nextClearBit = bitSet.nextClearBit(nextClearBit + 1);
+                }
+                return nextClearBit;
+            }
+        },
+        ODD {
+            /* access modifiers changed from: package-private */
+            @Override // mod.agus.jcoderz.dx.ssa.back.FirstFitLocalCombiningAllocator.Alignment
+            public int nextClearBit(BitSet bitSet, int i) {
+                int nextClearBit = bitSet.nextClearBit(i);
+                while (FirstFitLocalCombiningAllocator.isEven(nextClearBit)) {
+                    nextClearBit = bitSet.nextClearBit(nextClearBit + 1);
+                }
+                return nextClearBit;
+            }
+        },
+        UNSPECIFIED {
+            /* access modifiers changed from: package-private */
+            @Override // mod.agus.jcoderz.dx.ssa.back.FirstFitLocalCombiningAllocator.Alignment
+            public int nextClearBit(BitSet bitSet, int i) {
+                return bitSet.nextClearBit(i);
+            }
+        };
+
+        Alignment() {
+
+        }
+
+        /* synthetic */ Alignment(Alignment alignment) {
+            this();
+        }
+
+        /* access modifiers changed from: package-private */
+        public abstract int nextClearBit(BitSet bitSet, int i);
     }
 
     /* access modifiers changed from: private */

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
@@ -15,31 +16,22 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.Rops;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
-import mod.agus.jcoderz.dx.ssa.PhiInsn;
-import mod.agus.jcoderz.dx.ssa.SsaBasicBlock;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 import mod.agus.jcoderz.dx.util.IntList;
 
 public final class SsaMethod {
+    private final boolean isStatic;
+    private final int paramWidth;
     private boolean backMode = false;
     private ArrayList<SsaBasicBlock> blocks;
     private int borrowedSpareRegisters;
     private SsaInsn[] definitionList;
     private int entryBlockIndex;
     private int exitBlockIndex;
-    private final boolean isStatic;
     private int maxLabel;
-    private final int paramWidth;
     private int registerCount;
     private int spareRegisterBase;
     private List<SsaInsn>[] unmodifiableUseList;
     private ArrayList<SsaInsn>[] useList;
-
-    public static SsaMethod newFromRopMethod(RopMethod ropMethod, int i, boolean z) {
-        SsaMethod ssaMethod = new SsaMethod(ropMethod, i, z);
-        ssaMethod.convertRopToSsaBlocks(ropMethod);
-        return ssaMethod;
-    }
 
     private SsaMethod(RopMethod ropMethod, int i, boolean z) {
         this.paramWidth = i;
@@ -47,6 +39,12 @@ public final class SsaMethod {
         this.maxLabel = ropMethod.getBlocks().getMaxLabel();
         this.registerCount = ropMethod.getBlocks().getRegCount();
         this.spareRegisterBase = this.registerCount;
+    }
+
+    public static SsaMethod newFromRopMethod(RopMethod ropMethod, int i, boolean z) {
+        SsaMethod ssaMethod = new SsaMethod(ropMethod, i, z);
+        ssaMethod.convertRopToSsaBlocks(ropMethod);
+        return ssaMethod;
     }
 
     static BitSet bitSetFromLabelList(BasicBlockList basicBlockList, IntList intList) {
@@ -65,6 +63,10 @@ public final class SsaMethod {
             intList2.add(basicBlockList.indexOfLabel(intList.get(i)));
         }
         return intList2;
+    }
+
+    private static SsaInsn getGoto(SsaBasicBlock ssaBasicBlock) {
+        return new NormalSsaInsn(new PlainInsn(Rops.GOTO, SourcePosition.NO_INFO, (RegisterSpec) null, RegisterSpecList.EMPTY), ssaBasicBlock);
     }
 
     private void convertRopToSsaBlocks(RopMethod ropMethod) {
@@ -97,10 +99,6 @@ public final class SsaMethod {
             this.exitBlockIndex = -1;
             this.maxLabel--;
         }
-    }
-
-    private static SsaInsn getGoto(SsaBasicBlock ssaBasicBlock) {
-        return new NormalSsaInsn(new PlainInsn(Rops.GOTO, SourcePosition.NO_INFO, (RegisterSpec) null, RegisterSpecList.EMPTY), ssaBasicBlock);
     }
 
     public SsaBasicBlock makeNewGotoBlock() {

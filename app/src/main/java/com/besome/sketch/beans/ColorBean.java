@@ -1,6 +1,7 @@
 package com.besome.sketch.beans;
 
 import android.graphics.Color;
+
 import com.google.android.flexbox.FlexItem;
 
 public class ColorBean {
@@ -11,6 +12,13 @@ public class ColorBean {
 
     public ColorBean(String str, String str2, String str3, int i) {
         this(Color.parseColor(str), str2, Color.parseColor(str3), i);
+    }
+
+    public ColorBean(int i, String str, int i2, int i3) {
+        this.colorCode = i;
+        this.colorName = str;
+        this.displayNameColor = i2;
+        this.icon = i3;
     }
 
     public String getColorCode(boolean z) {
@@ -25,12 +33,5 @@ public class ColorBean {
             return String.format("#%08X", Integer.valueOf(i));
         }
         return String.format("#%06X", Integer.valueOf(i & FlexItem.MAX_SIZE));
-    }
-
-    public ColorBean(int i, String str, int i2, int i3) {
-        this.colorCode = i;
-        this.colorName = str;
-        this.displayNameColor = i2;
-        this.icon = i3;
     }
 }

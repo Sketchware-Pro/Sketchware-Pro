@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.lib;
 
 import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 

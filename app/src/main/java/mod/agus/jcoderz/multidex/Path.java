@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
 import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
 import mod.agus.jcoderz.dx.cf.direct.StdAttributeFactory;
 
@@ -18,21 +19,8 @@ public class Path {
     static final /* synthetic */ boolean $assertionsDisabled = (!Path.class.desiredAssertionStatus());
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream(40960);
     private final String definition;
-    List<ClassPathElement> elements = new ArrayList();
     private final byte[] readBuffer = new byte[20480];
-
-    static ClassPathElement getClassPathElement(File file) throws ZipException, IOException {
-        if (file.isDirectory()) {
-            return new FolderPathElement(file);
-        }
-        if (file.isFile()) {
-            return new ArchivePathElement(new ZipFile(file));
-        }
-        if (file.exists()) {
-            throw new IOException("\"" + file.getPath() + "\" is not a directory neither a zip file");
-        }
-        throw new FileNotFoundException("File \"" + file.getPath() + "\" not found");
-    }
+    List<ClassPathElement> elements = new ArrayList();
 
     Path(String str) throws IOException {
         this.definition = str;
@@ -43,6 +31,19 @@ public class Path {
                 throw new IOException("Wrong classpath: " + e.getMessage(), e);
             }
         }
+    }
+
+    static ClassPathElement getClassPathElement(File file) throws IOException {
+        if (file.isDirectory()) {
+            return new FolderPathElement(file);
+        }
+        if (file.isFile()) {
+            return new ArchivePathElement(new ZipFile(file));
+        }
+        if (file.exists()) {
+            throw new IOException("\"" + file.getPath() + "\" is not a directory neither a zip file");
+        }
+        throw new FileNotFoundException("File \"" + file.getPath() + "\" not found");
     }
 
     private static byte[] readStream(InputStream inputStream, ByteArrayOutputStream byteArrayOutputStream, byte[] bArr) throws IOException {

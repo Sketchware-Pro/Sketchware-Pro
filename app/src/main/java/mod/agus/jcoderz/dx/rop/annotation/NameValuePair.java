@@ -19,7 +19,7 @@ public final class NameValuePair implements Comparable<NameValuePair> {
     }
 
     public String toString() {
-        return String.valueOf(this.name.toHuman()) + ":" + this.value;
+        return this.name.toHuman() + ":" + this.value;
     }
 
     public int hashCode() {
@@ -31,10 +31,7 @@ public final class NameValuePair implements Comparable<NameValuePair> {
             return false;
         }
         NameValuePair nameValuePair = (NameValuePair) obj;
-        if (!this.name.equals(nameValuePair.name) || !this.value.equals(nameValuePair.value)) {
-            return false;
-        }
-        return true;
+        return this.name.equals(nameValuePair.name) && this.value.equals(nameValuePair.value);
     }
 
     public int compareTo(NameValuePair nameValuePair) {

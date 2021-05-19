@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.dex.file;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.dex.code.DalvCode;
 import mod.agus.jcoderz.dx.dex.code.DalvInsnList;
@@ -17,12 +18,12 @@ import mod.agus.jcoderz.dx.util.Hex;
 public final class CodeItem extends OffsettedItem {
     private static final int ALIGNMENT = 4;
     private static final int HEADER_SIZE = 16;
-    private CatchStructs catches;
     private final DalvCode code;
-    private DebugInfoItem debugInfo;
     private final boolean isStatic;
     private final CstMethodRef ref;
     private final TypeList throwsList;
+    private CatchStructs catches;
+    private DebugInfoItem debugInfo;
 
     public CodeItem(CstMethodRef cstMethodRef, DalvCode dalvCode, boolean z, TypeList typeList) {
         super(4, -1);
@@ -82,7 +83,7 @@ public final class CodeItem extends OffsettedItem {
     }
 
     public void debugPrint(PrintWriter printWriter, String str, boolean z) {
-        printWriter.println(String.valueOf(this.ref.toHuman()) + ":");
+        printWriter.println(this.ref.toHuman() + ":");
         DalvInsnList insns = this.code.getInsns();
         printWriter.println("regs: " + Hex.u2(getRegistersSize()) + "; ins: " + Hex.u2(getInsSize()) + "; outs: " + Hex.u2(getOutsSize()));
         try {
@@ -90,7 +91,7 @@ public final class CodeItem extends OffsettedItem {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String str2 = String.valueOf(str) + "  ";
+        String str2 = str + "  ";
         if (this.catches != null) {
             printWriter.print(str);
             printWriter.println("catches");
@@ -143,7 +144,7 @@ public final class CodeItem extends OffsettedItem {
         int triesSize = this.catches == null ? 0 : this.catches.triesSize();
         int absoluteOffset = this.debugInfo == null ? 0 : this.debugInfo.getAbsoluteOffset();
         if (annotates) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + ' ' + this.ref.toHuman());
+            annotatedOutput.annotate(0, offsetString() + ' ' + this.ref.toHuman());
             annotatedOutput.annotate(2, "  registers_size: " + Hex.u2(registersSize));
             annotatedOutput.annotate(2, "  ins_size:       " + Hex.u2(insSize));
             annotatedOutput.annotate(2, "  outs_size:      " + Hex.u2(outsSize));

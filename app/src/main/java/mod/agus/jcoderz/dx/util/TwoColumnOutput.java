@@ -14,19 +14,6 @@ public final class TwoColumnOutput {
     private final StringBuffer rightBuf;
     private final IndentingWriter rightColumn;
 
-    public static String toString(String str, int i, String str2, String str3, int i2) {
-        StringWriter stringWriter = new StringWriter((str.length() + str3.length()) * 3);
-        TwoColumnOutput twoColumnOutput = new TwoColumnOutput(stringWriter, i, i2, str2);
-        try {
-            twoColumnOutput.getLeft().write(str);
-            twoColumnOutput.getRight().write(str3);
-            twoColumnOutput.flush();
-            return stringWriter.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("shouldn't happen", e);
-        }
-    }
-
     public TwoColumnOutput(Writer writer, int i, int i2, String str) {
         if (writer == null) {
             throw new NullPointerException("out == null");
@@ -50,6 +37,33 @@ public final class TwoColumnOutput {
 
     public TwoColumnOutput(OutputStream outputStream, int i, int i2, String str) {
         this(new OutputStreamWriter(outputStream), i, i2, str);
+    }
+
+    public static String toString(String str, int i, String str2, String str3, int i2) {
+        StringWriter stringWriter = new StringWriter((str.length() + str3.length()) * 3);
+        TwoColumnOutput twoColumnOutput = new TwoColumnOutput(stringWriter, i, i2, str2);
+        try {
+            twoColumnOutput.getLeft().write(str);
+            twoColumnOutput.getRight().write(str3);
+            twoColumnOutput.flush();
+            return stringWriter.toString();
+        } catch (IOException e) {
+            throw new RuntimeException("shouldn't happen", e);
+        }
+    }
+
+    private static void appendNewlineIfNecessary(StringBuffer stringBuffer, Writer writer) throws IOException {
+        int length = stringBuffer.length();
+        if (length != 0 && stringBuffer.charAt(length - 1) != '\n') {
+            writer.write(10);
+        }
+    }
+
+    private static void writeSpaces(Writer writer, int i) throws IOException {
+        while (i > 0) {
+            writer.write(32);
+            i--;
+        }
     }
 
     public Writer getLeft() {
@@ -106,20 +120,6 @@ public final class TwoColumnOutput {
         while (this.rightBuf.length() != 0) {
             this.leftColumn.write(10);
             outputFullLines();
-        }
-    }
-
-    private static void appendNewlineIfNecessary(StringBuffer stringBuffer, Writer writer) throws IOException {
-        int length = stringBuffer.length();
-        if (length != 0 && stringBuffer.charAt(length - 1) != '\n') {
-            writer.write(10);
-        }
-    }
-
-    private static void writeSpaces(Writer writer, int i) throws IOException {
-        while (i > 0) {
-            writer.write(32);
-            i--;
         }
     }
 }

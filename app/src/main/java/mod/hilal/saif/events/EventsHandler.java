@@ -1,14 +1,17 @@
 package mod.hilal.saif.events;
 
-import a.a.a.Gx;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+
+import a.a.a.Gx;
 import mod.hilal.saif.lib.FileUtil;
-import org.json.JSONArray;
 
 public class EventsHandler {
     public static String[] getActivityEvents() {
@@ -311,19 +314,19 @@ public class EventsHandler {
             return "when " + str + " long clicked";
         }
         if (str2.equals("onTabLayoutNewTabAdded")) {
-            return String.valueOf(str) + " return tab title %d.position";
+            return str + " return tab title %d.position";
         }
         if (str2.equals("onPreExecute")) {
-            return String.valueOf(str) + " onPreExecute ";
+            return str + " onPreExecute ";
         }
         if (str2.equals("doInBackground")) {
-            return String.valueOf(str) + " doInBackground %s.param";
+            return str + " doInBackground %s.param";
         }
         if (str2.equals("onProgressUpdate")) {
-            return String.valueOf(str) + " onProgressUpdate progress %d.value";
+            return str + " onProgressUpdate progress %d.value";
         }
         if (str2.equals("onPostExecute")) {
-            return String.valueOf(str) + " onPostExecute result %s.result";
+            return str + " onPostExecute result %s.result";
         }
         String path = getPath("events");
         try {
@@ -344,10 +347,10 @@ public class EventsHandler {
         JSONArray jSONArray;
         int length;
         if (str.equals(" onLongClickListener")) {
-            return j(String.valueOf(str2) + ".setOnLongClickListener(new View.OnLongClickListener() {\r\n %s\r\n });", str3);
+            return j(str2 + ".setOnLongClickListener(new View.OnLongClickListener() {\r\n %s\r\n });", str3);
         }
         if (str.equals("onSwipeRefreshLayoutListener")) {
-            return j(String.valueOf(str2) + ".setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n%s\r\n});", str3);
+            return j(str2 + ".setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n%s\r\n});", str3);
         }
         if (str.equals("AsyncTaskClass")) {
             return j("private class " + str2 + " extends AsyncTask<String, Integer, String> {\r\n%s\r\n}", str3);

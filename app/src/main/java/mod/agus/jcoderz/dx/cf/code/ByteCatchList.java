@@ -13,6 +13,17 @@ public final class ByteCatchList extends FixedSizeList {
         super(i);
     }
 
+    private static boolean typeNotFound(Item item, Item[] itemArr, int i) {
+        CstType exceptionClass = item.getExceptionClass();
+        for (int i2 = 0; i2 < i; i2++) {
+            CstType exceptionClass2 = itemArr[i2].getExceptionClass();
+            if (exceptionClass2 == exceptionClass || exceptionClass2 == CstType.OBJECT) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public int byteLength() {
         return (size() * 8) + 2;
     }
@@ -52,17 +63,6 @@ public final class ByteCatchList extends FixedSizeList {
         }
         byteCatchList.setImmutable();
         return byteCatchList;
-    }
-
-    private static boolean typeNotFound(Item item, Item[] itemArr, int i) {
-        CstType exceptionClass = item.getExceptionClass();
-        for (int i2 = 0; i2 < i; i2++) {
-            CstType exceptionClass2 = itemArr[i2].getExceptionClass();
-            if (exceptionClass2 == exceptionClass || exceptionClass2 == CstType.OBJECT) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public IntList toTargetList(int i) {

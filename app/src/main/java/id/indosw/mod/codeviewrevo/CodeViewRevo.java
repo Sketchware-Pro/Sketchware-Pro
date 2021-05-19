@@ -17,7 +17,9 @@ import android.text.style.ReplacementSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.MultiAutoCompleteTextView;
+
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,16 +35,16 @@ public class CodeViewRevo extends AppCompatMultiAutoCompleteTextView {
     private static final Pattern PATTERN_TRAILING_WHITE_SPACE = Pattern.compile("[\\t ]+$", 8);
     private static final String TAG = "CodeViewRevo";
     private final float displayDensity;
-    private boolean hasErrors;
-    private MultiAutoCompleteTextView.Tokenizer mAutoCompleteTokenizer;
     private final TextWatcher mEditorTextWatcher;
     private final SortedMap<Integer, Integer> mErrorHashSet;
-    private List<Character> mIndentCharacterList;
-    private boolean mRemoveErrorsWhenTextChanged;
     private final Map<Pattern, Integer> mSyntaxPatternMap;
-    private int mUpdateDelayTime;
     private final Handler mUpdateHandler;
     private final Runnable mUpdateRunnable;
+    private boolean hasErrors;
+    private MultiAutoCompleteTextView.Tokenizer mAutoCompleteTokenizer;
+    private List<Character> mIndentCharacterList;
+    private boolean mRemoveErrorsWhenTextChanged;
+    private int mUpdateDelayTime;
     private boolean modified;
     private int tabWidth;
     private int tabWidthInCharacters;
@@ -398,16 +400,16 @@ public class CodeViewRevo extends AppCompatMultiAutoCompleteTextView {
         this.mSyntaxPatternMap.clear();
     }
 
-    public void setAutoIndentCharacterList(List<Character> characterList) {
-        this.mIndentCharacterList = characterList;
-    }
-
     public void clearAutoIndentCharacterList() {
         this.mIndentCharacterList.clear();
     }
 
     public List<Character> getAutoIndentCharacterList() {
         return this.mIndentCharacterList;
+    }
+
+    public void setAutoIndentCharacterList(List<Character> characterList) {
+        this.mIndentCharacterList = characterList;
     }
 
     public void addErrorLine(int lineNum, int color) {
@@ -453,12 +455,12 @@ public class CodeViewRevo extends AppCompatMultiAutoCompleteTextView {
         return this.hasErrors;
     }
 
-    public void setUpdateDelayTime(int time) {
-        this.mUpdateDelayTime = time;
-    }
-
     public int getUpdateDelayTime() {
         return this.mUpdateDelayTime;
+    }
+
+    public void setUpdateDelayTime(int time) {
+        this.mUpdateDelayTime = time;
     }
 
     public void showDropDown() {

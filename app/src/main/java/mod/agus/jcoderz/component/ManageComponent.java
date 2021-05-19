@@ -1,7 +1,9 @@
 package mod.agus.jcoderz.component;
 
 import com.besome.sketch.beans.ComponentBean;
+
 import java.util.ArrayList;
+
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class ManageComponent {

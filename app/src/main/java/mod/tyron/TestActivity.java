@@ -23,10 +23,9 @@ import mod.tyron.compiler.IncrementalJavaCompiler;
 
 public class TestActivity extends Activity {
 
-    IncrementalJavaCompiler compiler;
-
     //activity for testing file changes
     private final List<File> changedList = new ArrayList<>();
+    IncrementalJavaCompiler compiler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

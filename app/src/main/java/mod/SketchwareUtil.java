@@ -1,7 +1,5 @@
 package mod;
 
-import static com.besome.sketch.SketchApplication.getContext;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -31,6 +29,8 @@ import java.util.Map;
 import java.util.Random;
 
 import a.a.a.bB;
+
+import static com.besome.sketch.SketchApplication.getContext;
 
 public class SketchwareUtil {
 

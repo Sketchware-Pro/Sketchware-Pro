@@ -1,9 +1,11 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
+
+import a.a.a.nA;
 
 public class TextBean extends nA implements Parcelable {
     public static final Parcelable.Creator<TextBean> CREATOR = new Parcelable.Creator<TextBean>() {
@@ -74,6 +76,20 @@ public class TextBean extends nA implements Parcelable {
         this.textFont = TEXT_FONT;
     }
 
+    public TextBean(Parcel parcel) {
+        this.text = parcel.readString();
+        this.textSize = parcel.readInt();
+        this.textColor = parcel.readInt();
+        this.textType = parcel.readInt();
+        this.textFont = parcel.readString();
+        this.hint = parcel.readString();
+        this.hintColor = parcel.readInt();
+        this.singleLine = parcel.readInt();
+        this.line = parcel.readInt();
+        this.inputType = parcel.readInt();
+        this.imeOption = parcel.readInt();
+    }
+
     public static Parcelable.Creator<TextBean> getCreator() {
         return CREATOR;
     }
@@ -127,10 +143,7 @@ public class TextBean extends nA implements Parcelable {
         } else if (textBean.hint != null) {
             return false;
         }
-        if (this.hintColor == textBean.hintColor && this.singleLine == textBean.singleLine && this.line == textBean.line && this.inputType == textBean.inputType && this.imeOption == textBean.imeOption) {
-            return true;
-        }
-        return false;
+        return this.hintColor == textBean.hintColor && this.singleLine == textBean.singleLine && this.line == textBean.line && this.inputType == textBean.inputType && this.imeOption == textBean.imeOption;
     }
 
     public void print() {
@@ -148,19 +161,5 @@ public class TextBean extends nA implements Parcelable {
         parcel.writeInt(this.line);
         parcel.writeInt(this.inputType);
         parcel.writeInt(this.imeOption);
-    }
-
-    public TextBean(Parcel parcel) {
-        this.text = parcel.readString();
-        this.textSize = parcel.readInt();
-        this.textColor = parcel.readInt();
-        this.textType = parcel.readInt();
-        this.textFont = parcel.readString();
-        this.hint = parcel.readString();
-        this.hintColor = parcel.readInt();
-        this.singleLine = parcel.readInt();
-        this.line = parcel.readInt();
-        this.inputType = parcel.readInt();
-        this.imeOption = parcel.readInt();
     }
 }

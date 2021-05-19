@@ -28,6 +28,16 @@ public class InAppBean implements Parcelable {
     public InAppBean() {
     }
 
+    public InAppBean(Parcel parcel) {
+        this.sku = parcel.readString();
+        this.title = parcel.readString();
+        this.price = parcel.readString();
+        this.desc = parcel.readString();
+        this.choose = parcel.readString();
+        this.currency = parcel.readString();
+        this.priceL = parcel.readLong();
+    }
+
     public static Parcelable.Creator<InAppBean> getCreator() {
         return CREATOR;
     }
@@ -44,15 +54,5 @@ public class InAppBean implements Parcelable {
         parcel.writeString(this.choose);
         parcel.writeString(this.currency);
         parcel.writeLong(this.priceL);
-    }
-
-    public InAppBean(Parcel parcel) {
-        this.sku = parcel.readString();
-        this.title = parcel.readString();
-        this.price = parcel.readString();
-        this.desc = parcel.readString();
-        this.choose = parcel.readString();
-        this.currency = parcel.readString();
-        this.priceL = parcel.readLong();
     }
 }

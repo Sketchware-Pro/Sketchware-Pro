@@ -1,10 +1,12 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.android.flexbox.FlexItem;
 import com.google.gson.annotations.Expose;
+
+import a.a.a.nA;
 
 public class LayoutBean extends nA implements Parcelable {
     public static final Parcelable.Creator<LayoutBean> CREATOR = new Parcelable.Creator<LayoutBean>() {
@@ -140,13 +142,8 @@ public class LayoutBean extends nA implements Parcelable {
         String str = this.backgroundResource;
         if (str != null) {
             String str2 = layoutBean.backgroundResource;
-            if (str2 == null || !str.equals(str2)) {
-                return false;
-            }
-        } else if (layoutBean.backgroundResource != null) {
-            return false;
-        }
-        return true;
+            return str2 != null && str.equals(str2);
+        } else return layoutBean.backgroundResource == null;
     }
 
     public void print() {

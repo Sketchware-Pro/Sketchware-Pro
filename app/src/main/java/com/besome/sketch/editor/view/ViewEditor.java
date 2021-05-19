@@ -1,7 +1,43 @@
 package com.besome.sketch.editor.view;
 
-import static com.besome.sketch.editor.view.ViewEditor.a.ePaletteGroup_basic;
-import static com.besome.sketch.editor.view.ViewEditor.a.ePaletteGroup_favorite;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Context;
+import android.os.Handler;
+import android.os.Vibrator;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewParent;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.besome.sketch.SketchApplication;
+import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.beans.WidgetCollectionBean;
+import com.besome.sketch.editor.view.item.ItemHorizontalScrollView;
+import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
+import com.besome.sketch.editor.view.palette.IconAdView;
+import com.besome.sketch.editor.view.palette.IconBase;
+import com.besome.sketch.editor.view.palette.IconLinearHorizontal;
+import com.besome.sketch.editor.view.palette.IconLinearVertical;
+import com.besome.sketch.editor.view.palette.IconMapView;
+import com.besome.sketch.editor.view.palette.PaletteFavorite;
+import com.besome.sketch.editor.view.palette.PaletteWidget;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import a.a.a.DB;
 import a.a.a.GB;
@@ -21,46 +57,15 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.content.Context;
-import android.os.Handler;
-import android.os.Vibrator;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewParent;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import com.besome.sketch.SketchApplication;
-import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.beans.WidgetCollectionBean;
-import com.besome.sketch.editor.view.item.ItemHorizontalScrollView;
-import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
-import com.besome.sketch.editor.view.palette.IconAdView;
-import com.besome.sketch.editor.view.palette.IconBase;
-import com.besome.sketch.editor.view.palette.IconLinearHorizontal;
-import com.besome.sketch.editor.view.palette.IconLinearVertical;
-import com.besome.sketch.editor.view.palette.IconMapView;
-import com.besome.sketch.editor.view.palette.PaletteFavorite;
-import com.besome.sketch.editor.view.palette.PaletteWidget;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.ProjectFile;
 
+import static com.besome.sketch.editor.view.ViewEditor.a.ePaletteGroup_basic;
+import static com.besome.sketch.editor.view.ViewEditor.a.ePaletteGroup_favorite;
+
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
+    public final int c;
+    public final Handler s;
     public ObjectAnimator A;
     public boolean B;
     public boolean C;
@@ -84,12 +89,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public LinearLayout U;
     public b V;
     public b W;
-
     public String a;
     public LinearLayout aa;
     public String b;
     public int ba;
-    public final int c;
     public int ca;
     public int d;
     public boolean da;
@@ -108,7 +111,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ViewPane p;
     public Vibrator q;
     public View r;
-    public final Handler s;
     public boolean t;
     public float u;
     public float v;
@@ -117,13 +119,41 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ImageView y;
     public ObjectAnimator z;
 
-    public enum a {
-        ePaletteGroup_basic,
-        ePaletteGroup_favorite
-    }
-
     public ViewEditor(Context context) {
         super(context);
+        this.c = 99;
+        this.d = 99;
+        this.e = new int[20];
+        this.f = 0.0f;
+        this.r = null;
+        this.s = new Handler();
+        this.t = false;
+        this.u = 0.0f;
+        this.v = 0.0f;
+        this.w = 0;
+        this.B = false;
+        this.C = false;
+        this.D = false;
+        this.E = true;
+        this.G = new int[2];
+        this.I = 50;
+        this.J = 30;
+        this.P = true;
+        this.S = true;
+        this.T = false;
+        this.ba = 0;
+        this.da = true;
+        this.ea = new Runnable() {
+            @Override
+            public void run() {
+                e();
+            }
+        };
+        a(context);
+    }
+
+    public ViewEditor(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         this.c = 99;
         this.d = 99;
         this.e = new int[20];
@@ -188,11 +218,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         this.W.setSelected(false);
         this.W.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
         this.W.setOnClickListener(v -> {
-                n();
-                this.V.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
-                this.W.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).start();
-                this.V.setSelected(false);
-                this.W.setSelected(true);
+            n();
+            this.V.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
+            this.W.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).start();
+            this.V.setSelected(false);
+            this.W.setSelected(true);
         });
         this.U.addView(this.V);
         this.U.addView(this.W);
@@ -619,47 +649,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return g2;
     }
 
-    class b extends LinearLayout implements View.OnClickListener {
-
-        public a a;
-        public View b;
-        public ImageView c;
-
-        public b(Context context) {
-            super(context);
-            a(context);
-        }
-
-        public final void a(Context context) {
-            wB.a(context, this, 2131427608);
-            this.b = findViewById(2131231073);
-            this.c = (ImageView) findViewById(2131231148);
-        }
-
-        public void onClick(View view) {
-        }
-
-        public void a(a aVar) {
-            this.a = aVar;
-            if (aVar == ePaletteGroup_basic) {
-                this.c.setImageResource(2131166113);
-            } else {
-                this.c.setImageResource(2131166112);
-            }
-            setOnClickListener(this);
-        }
-    }
-
     public final boolean c(ViewBean viewBean) {
         int i2;
         int i3 = this.R.fileType;
         if (i3 == 1) {
             int i4 = viewBean.type;
             return (i4 == 0 || i4 == 4 || i4 == 5 || i4 == 3 || i4 == 6 || i4 == 11 || i4 == 13 || i4 == 14 || i4 != 8) ? true : true;
-        } else if (i3 == 2 && (i2 = viewBean.type) != 0 && i2 != 12 && i2 != 2 && i2 != 4 && i2 != 5 && i2 != 3 && i2 != 6 && i2 != 11 && i2 != 13 && i2 != 14 && i2 == 8) {
-            return true;
-        }
-        return false;
+        } else return i3 == 2 && (i2 = viewBean.type) != 0 && i2 != 12 && i2 != 2 && i2 != 4 && i2 != 5 && i2 != 3 && i2 != 6 && i2 != 11 && i2 != 13 && i2 != 14 && i2 == 8;
     }
 
     public void d(ViewBean viewBean) {
@@ -811,43 +807,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public final boolean b(float f2, float f3) {
         int[] iArr = new int[2];
         this.p.getLocationOnScreen(iArr);
-        if (f2 <= ((float) iArr[0]) || f2 >= ((float) iArr[0]) + (((float) this.p.getWidth()) * this.p.getScaleX()) || f3 <= ((float) iArr[1]) || f3 >= ((float) iArr[1]) + (((float) this.p.getHeight()) * this.p.getScaleY())) {
-            return false;
-        }
-        return true;
-    }
-
-    public ViewEditor(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.c = 99;
-        this.d = 99;
-        this.e = new int[20];
-        this.f = 0.0f;
-        this.r = null;
-        this.s = new Handler();
-        this.t = false;
-        this.u = 0.0f;
-        this.v = 0.0f;
-        this.w = 0;
-        this.B = false;
-        this.C = false;
-        this.D = false;
-        this.E = true;
-        this.G = new int[2];
-        this.I = 50;
-        this.J = 30;
-        this.P = true;
-        this.S = true;
-        this.T = false;
-        this.ba = 0;
-        this.da = true;
-        this.ea = new Runnable() {
-            @Override
-            public void run() {
-                e();
-            }
-        };
-        a(context);
+        return !(f2 <= ((float) iArr[0])) && !(f2 >= ((float) iArr[0]) + (((float) this.p.getWidth()) * this.p.getScaleX())) && !(f3 <= ((float) iArr[1])) && !(f3 >= ((float) iArr[1]) + (((float) this.p.getHeight()) * this.p.getScaleY()));
     }
 
     public final void b(String str) {
@@ -1146,10 +1106,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public final boolean a(float f2, float f3) {
         int[] iArr = new int[2];
         this.y.getLocationOnScreen(iArr);
-        if (f2 <= ((float) iArr[0]) || f2 >= ((float) (iArr[0] + this.y.getWidth())) || f3 <= ((float) iArr[1]) || f3 >= ((float) (iArr[1] + this.y.getHeight()))) {
-            return false;
-        }
-        return true;
+        return !(f2 <= ((float) iArr[0])) && !(f2 >= ((float) (iArr[0] + this.y.getWidth()))) && !(f3 <= ((float) iArr[1])) && !(f3 >= ((float) (iArr[1] + this.y.getHeight())));
     }
 
     public final void a(boolean z2) {
@@ -1160,6 +1117,42 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             } else {
                 this.y.setImageResource(2131165896);
             }
+        }
+    }
+
+    public enum a {
+        ePaletteGroup_basic,
+        ePaletteGroup_favorite
+    }
+
+    class b extends LinearLayout implements View.OnClickListener {
+
+        public a a;
+        public View b;
+        public ImageView c;
+
+        public b(Context context) {
+            super(context);
+            a(context);
+        }
+
+        public final void a(Context context) {
+            wB.a(context, this, 2131427608);
+            this.b = findViewById(2131231073);
+            this.c = (ImageView) findViewById(2131231148);
+        }
+
+        public void onClick(View view) {
+        }
+
+        public void a(a aVar) {
+            this.a = aVar;
+            if (aVar == ePaletteGroup_basic) {
+                this.c.setImageResource(2131166113);
+            } else {
+                this.c.setImageResource(2131166112);
+            }
+            setOnClickListener(this);
         }
     }
 }

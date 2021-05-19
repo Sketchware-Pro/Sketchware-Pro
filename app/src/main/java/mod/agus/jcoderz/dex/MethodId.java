@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dex;
 
-import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.util.Unsigned;
 
 public final class MethodId implements Comparable<MethodId> {
@@ -46,8 +45,8 @@ public final class MethodId implements Comparable<MethodId> {
 
     public String toString() {
         if (this.dex == null) {
-            return String.valueOf(this.declaringClassIndex) + " " + this.protoIndex + " " + this.nameIndex;
+            return this.declaringClassIndex + " " + this.protoIndex + " " + this.nameIndex;
         }
-        return String.valueOf(this.dex.typeNames().get(this.declaringClassIndex)) + "." + this.dex.strings().get(this.nameIndex) + this.dex.readTypeList(this.dex.protoIds().get(this.protoIndex).getParametersOffset());
+        return this.dex.typeNames().get(this.declaringClassIndex) + "." + this.dex.strings().get(this.nameIndex) + this.dex.readTypeList(this.dex.protoIds().get(this.protoIndex).getParametersOffset());
     }
 }

@@ -68,7 +68,7 @@ public final class ClassDef {
 
     public String toString() {
         if (this.buffer == null) {
-            return String.valueOf(this.typeIndex) + " " + this.supertypeIndex;
+            return this.typeIndex + " " + this.supertypeIndex;
         }
         StringBuilder sb = new StringBuilder();
         sb.append(this.buffer.typeNames().get(this.typeIndex));

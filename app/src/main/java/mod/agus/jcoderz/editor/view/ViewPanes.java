@@ -33,7 +33,7 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 
 public class ViewPanes {
-   
+
     public static View a(int i, Context context) {
         switch (i) {
             case 19:

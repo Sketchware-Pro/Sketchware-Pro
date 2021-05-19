@@ -2,7 +2,9 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -52,6 +54,19 @@ public class ProjectLibraryBean implements Parcelable {
         this.reserved3 = "";
         this.adUnits = new ArrayList<>();
         this.testDevices = new ArrayList<>();
+    }
+
+    public ProjectLibraryBean(Parcel parcel) {
+        this.libType = parcel.readInt();
+        this.useYn = parcel.readString();
+        this.data = parcel.readString();
+        this.reserved1 = parcel.readString();
+        this.reserved2 = parcel.readString();
+        this.reserved3 = parcel.readString();
+        this.adUnits = new ArrayList<>();
+        parcel.readTypedList(this.adUnits, AdUnitBean.getCreator());
+        this.testDevices = new ArrayList<>();
+        parcel.readTypedList(this.testDevices, AdTestDeviceBean.getCreator());
     }
 
     public static Parcelable.Creator<ProjectLibraryBean> getCreator() {
@@ -147,18 +162,5 @@ public class ProjectLibraryBean implements Parcelable {
         ProjectLibraryBean projectLibraryBean = new ProjectLibraryBean(this.libType);
         projectLibraryBean.copy(this);
         return projectLibraryBean;
-    }
-
-    public ProjectLibraryBean(Parcel parcel) {
-        this.libType = parcel.readInt();
-        this.useYn = parcel.readString();
-        this.data = parcel.readString();
-        this.reserved1 = parcel.readString();
-        this.reserved2 = parcel.readString();
-        this.reserved3 = parcel.readString();
-        this.adUnits = new ArrayList<>();
-        parcel.readTypedList(this.adUnits, AdUnitBean.getCreator());
-        this.testDevices = new ArrayList<>();
-        parcel.readTypedList(this.testDevices, AdTestDeviceBean.getCreator());
     }
 }

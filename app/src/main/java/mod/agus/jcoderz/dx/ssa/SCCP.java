@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.ssa;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.code.CstInsn;
 import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
@@ -18,16 +19,16 @@ public class SCCP {
     private static final int CONSTANT = 1;
     private static final int TOP = 0;
     private static final int VARYING = 2;
-    private ArrayList<SsaInsn> branchWorklist;
-    private ArrayList<SsaBasicBlock> cfgPhiWorklist = new ArrayList<>();
-    private ArrayList<SsaBasicBlock> cfgWorklist = new ArrayList<>();
-    private BitSet executableBlocks;
-    private Constant[] latticeConstants = new Constant[this.regCount];
-    private int[] latticeValues = new int[this.regCount];
+    private final ArrayList<SsaInsn> branchWorklist;
+    private final ArrayList<SsaBasicBlock> cfgPhiWorklist = new ArrayList<>();
+    private final ArrayList<SsaBasicBlock> cfgWorklist = new ArrayList<>();
+    private final BitSet executableBlocks;
     private int regCount;
-    private SsaMethod ssaMeth;
-    private ArrayList<SsaInsn> ssaWorklist;
-    private ArrayList<SsaInsn> varyingWorklist;
+    private final Constant[] latticeConstants = new Constant[this.regCount];
+    private final int[] latticeValues = new int[this.regCount];
+    private final SsaMethod ssaMeth;
+    private final ArrayList<SsaInsn> ssaWorklist;
+    private final ArrayList<SsaInsn> varyingWorklist;
 
     private SCCP(SsaMethod ssaMethod) {
         this.ssaMeth = ssaMethod;
@@ -44,6 +45,19 @@ public class SCCP {
 
     public static void process(SsaMethod ssaMethod) {
         new SCCP(ssaMethod).run();
+    }
+
+    private static String latticeValName(int i) {
+        switch (i) {
+            case 0:
+                return "TOP";
+            case 1:
+                return "CONSTANT";
+            case 2:
+                return "VARYING";
+            default:
+                return "UNKNOWN";
+        }
     }
 
     private void addBlockToWorklist(SsaBasicBlock ssaBasicBlock) {
@@ -139,19 +153,6 @@ public class SCCP {
             } else {
                 return;
             }
-        }
-    }
-
-    private static String latticeValName(int i) {
-        switch (i) {
-            case 0:
-                return "TOP";
-            case 1:
-                return "CONSTANT";
-            case 2:
-                return "VARYING";
-            default:
-                return "UNKNOWN";
         }
     }
 

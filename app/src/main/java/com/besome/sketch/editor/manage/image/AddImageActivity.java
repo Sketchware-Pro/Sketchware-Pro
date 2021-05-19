@@ -239,7 +239,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
     // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(AddImageActivity.class.getSimpleName().toString());
+        this.d.setScreenName(AddImageActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
@@ -261,7 +261,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         if (a(this.O)) {
             new Handler().postDelayed(() -> {
                 k();
-                new AddImageActivity.a(getApplicationContext()).execute(new Void[0]);
+                new AddImageActivity.a(getApplicationContext()).execute();
             }, 500);
         }
     }

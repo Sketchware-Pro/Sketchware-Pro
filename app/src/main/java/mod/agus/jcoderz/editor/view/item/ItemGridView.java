@@ -1,9 +1,5 @@
 package mod.agus.jcoderz.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,8 +7,13 @@ import android.graphics.Rect;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+
 import com.besome.sketch.beans.ViewBean;
+
 import java.util.ArrayList;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemGridView extends GridView implements sy {
 
@@ -51,12 +52,25 @@ public class ItemGridView extends GridView implements sy {
         return this.f22a;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.f22a = viewBean;
+    }
+
     public boolean getFixed() {
         return this.c;
     }
 
+    public void setFixed(boolean z) {
+        this.c = z;
+    }
+
     public boolean getSelection() {
         return this.b;
+    }
+
+    public void setSelection(boolean z) {
+        this.b = z;
+        invalidate();
     }
 
     public void onDraw(Canvas canvas) {
@@ -77,21 +91,8 @@ public class ItemGridView extends GridView implements sy {
         super.onDraw(canvas);
     }
 
-    public void setBean(ViewBean viewBean) {
-        this.f22a = viewBean;
-    }
-
-    public void setFixed(boolean z) {
-        this.c = z;
-    }
-
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.e;
         super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
-    }
-
-    public void setSelection(boolean z) {
-        this.b = z;
-        invalidate();
     }
 }

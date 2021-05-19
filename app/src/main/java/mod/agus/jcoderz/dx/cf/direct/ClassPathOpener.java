@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.dx.cf.direct;
 
+import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +13,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import mod.agus.jcoderz.dex.util.FileUtils;
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
 
 public class ClassPathOpener {
     public static final FileNameFilter acceptAll = new FileNameFilter() {
@@ -23,21 +25,9 @@ public class ClassPathOpener {
         }
     };
     private final Consumer consumer;
-    private FileNameFilter filter;
     private final String pathname;
     private final boolean sort;
-
-    public interface Consumer {
-        void onException(Exception exc);
-
-        void onProcessArchiveStart(File file);
-
-        boolean processFileBytes(String str, long j, byte[] bArr);
-    }
-
-    public interface FileNameFilter {
-        boolean accept(String str);
-    }
+    private final FileNameFilter filter;
 
     public ClassPathOpener(String str, boolean z, Consumer consumer2) {
         this(str, z, acceptAll, consumer2);
@@ -48,6 +38,11 @@ public class ClassPathOpener {
         this.sort = z;
         this.consumer = consumer2;
         this.filter = fileNameFilter;
+    }
+
+    /* access modifiers changed from: private */
+    public static int compareClassNames(String str, String str2) {
+        return str.replace('$', ExternalAnnotationProvider.NULLABLE).replace("package-info", "").compareTo(str2.replace('$', ExternalAnnotationProvider.NULLABLE).replace("package-info", ""));
     }
 
     public boolean process() {
@@ -71,11 +66,6 @@ public class ClassPathOpener {
             this.consumer.onException(e);
             return false;
         }
-    }
-
-    /* access modifiers changed from: private */
-    public static int compareClassNames(String str, String str2) {
-        return str.replace('$', ExternalAnnotationProvider.NULLABLE).replace("package-info", "").compareTo(str2.replace('$', ExternalAnnotationProvider.NULLABLE).replace("package-info", ""));
     }
 
     private boolean processDirectory(File file, boolean z) {
@@ -140,5 +130,17 @@ public class ClassPathOpener {
         }
         zipFile.close();
         return z;
+    }
+
+    public interface Consumer {
+        void onException(Exception exc);
+
+        void onProcessArchiveStart(File file);
+
+        boolean processFileBytes(String str, long j, byte[] bArr);
+    }
+
+    public interface FileNameFilter {
+        boolean accept(String str);
     }
 }

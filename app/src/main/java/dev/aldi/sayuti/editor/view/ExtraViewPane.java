@@ -1,7 +1,5 @@
 package dev.aldi.sayuti.editor.view;
 
-import a.a.a.bB;
-import a.a.a.kC;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,13 +8,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
-import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+
+import a.a.a.bB;
+import a.a.a.kC;
+import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 
 public class ExtraViewPane {
     public static void a(View view, ViewBean viewBean, ViewPane viewPane, kC kCVar) {

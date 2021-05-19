@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.cst;
 
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.cf.iface.ParseException;
 import mod.agus.jcoderz.dx.cf.iface.ParseObserver;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
@@ -21,10 +22,10 @@ import mod.agus.jcoderz.dx.util.Hex;
 
 public final class ConstantPoolParser {
     private final ByteArray bytes;
-    private int endOffset = -1;
-    private ParseObserver observer;
     private final int[] offsets;
     private final StdConstantPool pool;
+    private int endOffset = -1;
+    private ParseObserver observer;
 
     public ConstantPoolParser(ByteArray byteArray) {
         int unsignedShort = byteArray.getUnsignedShort(8);
@@ -86,7 +87,7 @@ public final class ConstantPoolParser {
                         }
                         i6++;
                     }
-                    this.observer.parsed(this.bytes, i4, i - i4, bitSet.get(i3) ? String.valueOf(Hex.u2(i3)) + ": utf8{\"" + orNull.toHuman() + "\"}" : String.valueOf(Hex.u2(i3)) + ": " + orNull.toString());
+                    this.observer.parsed(this.bytes, i4, i - i4, bitSet.get(i3) ? Hex.u2(i3) + ": utf8{\"" + orNull.toHuman() + "\"}" : Hex.u2(i3) + ": " + orNull.toString());
                 }
             }
             this.observer.changeIndent(-1);

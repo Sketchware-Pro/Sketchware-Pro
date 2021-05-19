@@ -1,9 +1,13 @@
 package mod.agus.jcoderz.dx.command.annotool;
 
+import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
+import org.eclipse.jdt.internal.compiler.util.Util;
+
 import java.io.File;
 import java.lang.annotation.ElementType;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleAnnotations;
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations;
 import mod.agus.jcoderz.dx.cf.attrib.BaseAnnotations;
@@ -12,19 +16,20 @@ import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
 import mod.agus.jcoderz.dx.cf.direct.StdAttributeFactory;
 import mod.agus.jcoderz.dx.cf.iface.Attribute;
 import mod.agus.jcoderz.dx.cf.iface.AttributeList;
-import mod.agus.jcoderz.dx.command.annotool.Main;
 import mod.agus.jcoderz.dx.rop.annotation.Annotation;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.multidex.ClassPathElement;
-import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
-import org.eclipse.jdt.internal.compiler.util.Util;
 
 public class AnnotationLister {
-    private static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType = null;
     private static final String PACKAGE_INFO = "package-info";
+    private static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType = null;
     private final Main.Arguments args;
     HashSet<String> matchInnerClassesOf = new HashSet<>();
     HashSet<String> matchPackages = new HashSet<>();
+
+    AnnotationLister(Main.Arguments arguments) {
+        this.args = arguments;
+    }
 
     static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType() {
         int[] iArr = $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType;
@@ -49,10 +54,6 @@ public class AnnotationLister {
             $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType = iArr;
         }
         return iArr;
-    }
-
-    AnnotationLister(Main.Arguments arguments) {
-        this.args = arguments;
     }
 
     public void process() {

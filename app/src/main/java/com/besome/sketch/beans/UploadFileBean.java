@@ -1,7 +1,8 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
 import com.google.common.net.MediaType;
+
+import a.a.a.nA;
 
 public class UploadFileBean extends nA {
     public String contentType;

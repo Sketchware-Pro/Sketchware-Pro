@@ -7,12 +7,12 @@ public final class CstLong extends CstLiteral64 {
     public static final CstLong VALUE_0 = make(0);
     public static final CstLong VALUE_1 = make(1);
 
-    public static CstLong make(long j) {
-        return new CstLong(j);
-    }
-
     private CstLong(long j) {
         super(j);
+    }
+
+    public static CstLong make(long j) {
+        return new CstLong(j);
     }
 
     public String toString() {

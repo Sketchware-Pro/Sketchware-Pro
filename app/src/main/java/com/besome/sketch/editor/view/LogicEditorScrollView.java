@@ -25,6 +25,11 @@ public class LogicEditorScrollView extends FrameLayout {
         a(context);
     }
 
+    public LogicEditorScrollView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        a(context);
+    }
+
     public void a(Context context) {
         c = ViewConfiguration.get(context).getScaledTouchSlop();
     }
@@ -139,10 +144,5 @@ public class LogicEditorScrollView extends FrameLayout {
         int width = childAt.getWidth();
         int height = childAt.getHeight();
         return getWidth() < width + getPaddingLeft() + getPaddingRight() || getHeight() < height + getPaddingTop() + getPaddingBottom();
-    }
-
-    public LogicEditorScrollView(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        a(context);
     }
 }

@@ -39,7 +39,7 @@ public final class ByteBlock implements LabeledItem {
     }
 
     public String toString() {
-        return String.valueOf('{') + Hex.u2(this.label) + ": " + Hex.u2(this.start) + ".." + Hex.u2(this.end) + '}';
+        return '{' + Hex.u2(this.label) + ": " + Hex.u2(this.start) + ".." + Hex.u2(this.end) + '}';
     }
 
     @Override // mod.agus.jcoderz.dx.util.LabeledItem

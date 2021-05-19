@@ -4,26 +4,10 @@ import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
 public abstract class OffsettedItem extends Item implements Comparable<OffsettedItem> {
-    private Section addedTo;
     private final int alignment;
+    private Section addedTo;
     private int offset;
     private int writeSize;
-
-    @Override // java.lang.Comparable
-    public /* bridge */ /* synthetic */ int compareTo(OffsettedItem offsettedItem) {
-        return compareTo(offsettedItem);
-    }
-
-    public abstract String toHuman();
-
-    protected abstract void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput);
-
-    public static int getAbsoluteOffsetOr0(OffsettedItem offsettedItem) {
-        if (offsettedItem == null) {
-            return 0;
-        }
-        return offsettedItem.getAbsoluteOffset();
-    }
 
     public OffsettedItem(int i, int i2) {
         Section.validateAlignment(i);
@@ -35,6 +19,22 @@ public abstract class OffsettedItem extends Item implements Comparable<Offsetted
         this.addedTo = null;
         this.offset = -1;
     }
+
+    public static int getAbsoluteOffsetOr0(OffsettedItem offsettedItem) {
+        if (offsettedItem == null) {
+            return 0;
+        }
+        return offsettedItem.getAbsoluteOffset();
+    }
+
+    @Override // java.lang.Comparable
+    public /* bridge */ /* synthetic */ int compareTo(OffsettedItem offsettedItem) {
+        return compareTo(offsettedItem);
+    }
+
+    public abstract String toHuman();
+
+    protected abstract void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput);
 
     public final boolean equals(Object obj) {
         if (this == obj) {
@@ -127,7 +127,7 @@ public abstract class OffsettedItem extends Item implements Comparable<Offsetted
     }
 
     public final String offsetString() {
-        return String.valueOf('[') + Integer.toHexString(getAbsoluteOffset()) + ']';
+        return '[' + Integer.toHexString(getAbsoluteOffset()) + ']';
     }
 
     protected int compareTo0(OffsettedItem offsettedItem) {

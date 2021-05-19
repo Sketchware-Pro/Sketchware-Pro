@@ -16,6 +16,10 @@ public final class HighRegisterPrefix extends VariableSizeInsn {
         this.insns = null;
     }
 
+    private static SimpleInsn moveInsnFor(RegisterSpec registerSpec, int i) {
+        return DalvInsn.makeMove(SourcePosition.NO_INFO, RegisterSpec.make(i, registerSpec.getType()), registerSpec);
+    }
+
     @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
     public int codeSize() {
         calculateInsnsIfNecessary();
@@ -58,7 +62,6 @@ public final class HighRegisterPrefix extends VariableSizeInsn {
         return null;
     }
 
-
     @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
     public String listingString0(boolean z) {
         int i = 0;
@@ -75,9 +78,5 @@ public final class HighRegisterPrefix extends VariableSizeInsn {
             i += registerSpec.getCategory();
         }
         return stringBuffer.toString();
-    }
-
-    private static SimpleInsn moveInsnFor(RegisterSpec registerSpec, int i) {
-        return DalvInsn.makeMove(SourcePosition.NO_INFO, RegisterSpec.make(i, registerSpec.getType()), registerSpec);
     }
 }

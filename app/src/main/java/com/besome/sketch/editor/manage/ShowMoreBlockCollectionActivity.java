@@ -37,7 +37,7 @@ import mod.hey.studios.util.Helper;
 import mod.w3wide.tools.ImageFactory;
 
 public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    
+
     public Toolbar k;
     public String l;
     public ViewBlockCollectionEditor m;

@@ -1,12 +1,17 @@
 package mod.agus.jcoderz.dx.rop.code;
 
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.FixedSizeList;
 
 public final class RegisterSpecList extends FixedSizeList implements TypeList {
     public static final RegisterSpecList EMPTY = new RegisterSpecList(0);
+
+    public RegisterSpecList(int i) {
+        super(i);
+    }
 
     public static RegisterSpecList make(RegisterSpec registerSpec) {
         RegisterSpecList registerSpecList = new RegisterSpecList(1);
@@ -36,10 +41,6 @@ public final class RegisterSpecList extends FixedSizeList implements TypeList {
         registerSpecList.set(2, registerSpec3);
         registerSpecList.set(3, registerSpec4);
         return registerSpecList;
-    }
-
-    public RegisterSpecList(int i) {
-        super(i);
     }
 
     @Override // mod.agus.jcoderz.dx.rop.type.TypeList
@@ -203,10 +204,10 @@ public final class RegisterSpecList extends FixedSizeList implements TypeList {
 
     private static class Expander {
         private int base;
-        private BitSet compatRegs;
+        private final BitSet compatRegs;
         private boolean duplicateFirst;
-        private RegisterSpecList regSpecList;
-        private RegisterSpecList result;
+        private final RegisterSpecList regSpecList;
+        private final RegisterSpecList result;
 
         private Expander(RegisterSpecList registerSpecList, BitSet bitSet, int i, boolean z) {
             this.regSpecList = registerSpecList;

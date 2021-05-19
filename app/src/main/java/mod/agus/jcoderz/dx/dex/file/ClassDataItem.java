@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstArray;
 import mod.agus.jcoderz.dx.rop.cst.CstLiteralBits;
@@ -17,13 +18,13 @@ import mod.agus.jcoderz.dx.util.Writers;
 
 public final class ClassDataItem extends OffsettedItem {
     private final ArrayList<EncodedMethod> directMethods;
-    private byte[] encodedForm;
     private final ArrayList<EncodedField> instanceFields;
     private final ArrayList<EncodedField> staticFields;
     private final HashMap<EncodedField, Constant> staticValues;
-    private CstArray staticValuesConstant;
     private final CstType thisClass;
     private final ArrayList<EncodedMethod> virtualMethods;
+    private byte[] encodedForm;
+    private CstArray staticValuesConstant;
 
     public ClassDataItem(CstType cstType) {
         super(1, -1);
@@ -37,6 +38,26 @@ public final class ClassDataItem extends OffsettedItem {
         this.directMethods = new ArrayList<>(20);
         this.virtualMethods = new ArrayList<>(20);
         this.staticValuesConstant = null;
+    }
+
+    private static void encodeSize(DexFile dexFile, AnnotatedOutput annotatedOutput, String str, int i) {
+        if (annotatedOutput.annotates()) {
+            annotatedOutput.annotate(String.format("  %-21s %08x", str + "_size:", Integer.valueOf(i)));
+        }
+        annotatedOutput.writeUleb128(i);
+    }
+
+    private static void encodeList(DexFile dexFile, AnnotatedOutput annotatedOutput, String str, ArrayList<? extends EncodedMember> arrayList) {
+        int size = arrayList.size();
+        if (size != 0) {
+            if (annotatedOutput.annotates()) {
+                annotatedOutput.annotate(0, "  " + str + ":");
+            }
+            int i = 0;
+            for (int i2 = 0; i2 < size; i2++) {
+                i = ((EncodedMember) arrayList.get(i2)).encode(dexFile, annotatedOutput, i, i2);
+            }
+        }
     }
 
     @Override // mod.agus.jcoderz.dx.dex.file.Item
@@ -194,7 +215,7 @@ public final class ClassDataItem extends OffsettedItem {
     private void encodeOutput(DexFile dexFile, AnnotatedOutput annotatedOutput) {
         boolean annotates = annotatedOutput.annotates();
         if (annotates) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " class data for " + this.thisClass.toHuman());
+            annotatedOutput.annotate(0, offsetString() + " class data for " + this.thisClass.toHuman());
         }
         encodeSize(dexFile, annotatedOutput, "static_fields", this.staticFields.size());
         encodeSize(dexFile, annotatedOutput, "instance_fields", this.instanceFields.size());
@@ -206,26 +227,6 @@ public final class ClassDataItem extends OffsettedItem {
         encodeList(dexFile, annotatedOutput, "virtual_methods", this.virtualMethods);
         if (annotates) {
             annotatedOutput.endAnnotation();
-        }
-    }
-
-    private static void encodeSize(DexFile dexFile, AnnotatedOutput annotatedOutput, String str, int i) {
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(String.format("  %-21s %08x", String.valueOf(str) + "_size:", Integer.valueOf(i)));
-        }
-        annotatedOutput.writeUleb128(i);
-    }
-
-    private static void encodeList(DexFile dexFile, AnnotatedOutput annotatedOutput, String str, ArrayList<? extends EncodedMember> arrayList) {
-        int size = arrayList.size();
-        if (size != 0) {
-            if (annotatedOutput.annotates()) {
-                annotatedOutput.annotate(0, "  " + str + ":");
-            }
-            int i = 0;
-            for (int i2 = 0; i2 < size; i2++) {
-                i = ((EncodedMember) arrayList.get(i2)).encode(dexFile, annotatedOutput, i, i2);
-            }
         }
     }
 

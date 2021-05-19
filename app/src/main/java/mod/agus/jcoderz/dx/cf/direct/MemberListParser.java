@@ -16,17 +16,9 @@ public abstract class MemberListParser {
     private final AttributeFactory attributeFactory;
     private final DirectClassFile cf;
     private final CstType definer;
+    private final int offset;
     private int endOffset;
     private ParseObserver observer;
-    private final int offset;
-
-    public abstract int getAttributeContext();
-
-    public abstract String humanAccessFlags(int i);
-
-    public abstract String humanName();
-
-    public abstract Member set(int i, int i2, CstNat cstNat, AttributeList attributeList);
 
     public MemberListParser(DirectClassFile directClassFile, CstType cstType, int i, AttributeFactory attributeFactory2) {
         if (directClassFile == null) {
@@ -43,6 +35,14 @@ public abstract class MemberListParser {
             this.endOffset = -1;
         }
     }
+
+    public abstract int getAttributeContext();
+
+    public abstract String humanAccessFlags(int i);
+
+    public abstract String humanName();
+
+    public abstract Member set(int i, int i2, CstNat cstNat, AttributeList attributeList);
 
     public int getEndOffset() {
         parseIfNecessary();
@@ -74,7 +74,7 @@ public abstract class MemberListParser {
         ByteArray bytes = this.cf.getBytes();
         ConstantPool constantPool = this.cf.getConstantPool();
         if (this.observer != null) {
-            this.observer.parsed(bytes, this.offset, 2, String.valueOf(humanName()) + "s_count: " + Hex.u2(count));
+            this.observer.parsed(bytes, this.offset, 2, humanName() + "s_count: " + Hex.u2(count));
         }
         for (int i2 = 0; i2 < count; i2++) {
             try {

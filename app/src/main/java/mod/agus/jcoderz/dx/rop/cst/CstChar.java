@@ -6,6 +6,10 @@ import mod.agus.jcoderz.dx.util.Hex;
 public final class CstChar extends CstLiteral32 {
     public static final CstChar VALUE_0 = make((char) 0);
 
+    private CstChar(char c) {
+        super(c);
+    }
+
     public static CstChar make(char c) {
         return new CstChar(c);
     }
@@ -16,10 +20,6 @@ public final class CstChar extends CstLiteral32 {
             return make(c);
         }
         throw new IllegalArgumentException("bogus char value: " + i);
-    }
-
-    private CstChar(char c) {
-        super(c);
     }
 
     public String toString() {

@@ -6,6 +6,10 @@ import mod.agus.jcoderz.dx.util.Hex;
 public final class CstShort extends CstLiteral32 {
     public static final CstShort VALUE_0 = make((short) 0);
 
+    private CstShort(short s) {
+        super(s);
+    }
+
     public static CstShort make(short s) {
         return new CstShort(s);
     }
@@ -16,10 +20,6 @@ public final class CstShort extends CstLiteral32 {
             return make(s);
         }
         throw new IllegalArgumentException("bogus short value: " + i);
-    }
-
-    private CstShort(short s) {
-        super(s);
     }
 
     public String toString() {

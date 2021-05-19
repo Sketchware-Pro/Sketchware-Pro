@@ -1,15 +1,32 @@
 package mod.agus.jcoderz.dx.rop.cst;
 
+import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+
 import mod.agus.jcoderz.dx.io.Opcodes;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
 
 public final class CstString extends TypedConstant {
     public static final CstString EMPTY_STRING = new CstString("");
     private final ByteArray bytes;
     private final String string;
+
+    public CstString(String str) {
+        if (str == null) {
+            throw new NullPointerException("string == null");
+        }
+        this.string = str.intern();
+        this.bytes = new ByteArray(stringToUtf8Bytes(str));
+    }
+
+    public CstString(ByteArray byteArray) {
+        if (byteArray == null) {
+            throw new NullPointerException("bytes == null");
+        }
+        this.bytes = byteArray;
+        this.string = utf8BytesToString(byteArray).intern();
+    }
 
     public static byte[] stringToUtf8Bytes(String str) {
         int length = str.length();
@@ -120,22 +137,6 @@ public final class CstString extends TypedConstant {
         throw new IllegalArgumentException("bad utf-8 byte " + Hex.u1(i) + " at offset " + Hex.u4(i2));
     }
 
-    public CstString(String str) {
-        if (str == null) {
-            throw new NullPointerException("string == null");
-        }
-        this.string = str.intern();
-        this.bytes = new ByteArray(stringToUtf8Bytes(str));
-    }
-
-    public CstString(ByteArray byteArray) {
-        if (byteArray == null) {
-            throw new NullPointerException("bytes == null");
-        }
-        this.bytes = byteArray;
-        this.string = utf8BytesToString(byteArray).intern();
-    }
-
     public boolean equals(Object obj) {
         if (!(obj instanceof CstString)) {
             return false;
@@ -221,7 +222,7 @@ public final class CstString extends TypedConstant {
     }
 
     public String toQuoted() {
-        return String.valueOf('\"') + toHuman() + '\"';
+        return '\"' + toHuman() + '\"';
     }
 
     public String toQuoted(int i) {
@@ -233,7 +234,7 @@ public final class CstString extends TypedConstant {
             human = human.substring(0, i - 5);
             str = "...";
         }
-        return String.valueOf('\"') + human + str + '\"';
+        return '\"' + human + str + '\"';
     }
 
     public String getString() {

@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.ssa;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
@@ -11,17 +12,12 @@ import mod.agus.jcoderz.dx.rop.code.Rop;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 import mod.agus.jcoderz.dx.util.Hex;
 
 public final class PhiInsn extends SsaInsn {
     private final ArrayList<Operand> operands = new ArrayList<>();
     private final int ropResultReg;
     private RegisterSpecList sources;
-
-    public interface Visitor {
-        void visitPhiInsn(PhiInsn phiInsn);
-    }
 
     public PhiInsn(RegisterSpec registerSpec, SsaBasicBlock ssaBasicBlock) {
         super(registerSpec, ssaBasicBlock);
@@ -209,17 +205,21 @@ public final class PhiInsn extends SsaInsn {
         } else {
             for (int i = 0; i < size; i++) {
                 stringBuffer.append(" ");
-                stringBuffer.append(String.valueOf(this.sources.get(i).toHuman()) + "[b=" + Hex.u2(this.operands.get(i).ropLabel) + "]");
+                stringBuffer.append(this.sources.get(i).toHuman() + "[b=" + Hex.u2(this.operands.get(i).ropLabel) + "]");
             }
         }
         return stringBuffer.toString();
     }
 
+    public interface Visitor {
+        void visitPhiInsn(PhiInsn phiInsn);
+    }
+
     /* access modifiers changed from: private */
     public static class Operand {
         public final int blockIndex;
-        public RegisterSpec regSpec;
         public final int ropLabel;
+        public RegisterSpec regSpec;
 
         public Operand(RegisterSpec registerSpec, int i, int i2) {
             this.regSpec = registerSpec;

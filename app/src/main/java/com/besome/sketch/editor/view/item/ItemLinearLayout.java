@@ -1,9 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.ty;
-import a.a.a.wB;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,8 +7,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.flexbox.FlexItem;
+
+import a.a.a.sy;
+import a.a.a.ty;
+import a.a.a.wB;
 
 public class ItemLinearLayout extends LinearLayout implements sy, ty {
     public ViewBean a = null;
@@ -67,16 +68,34 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         return this.a;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.a = viewBean;
+    }
+
     public boolean getFixed() {
         return this.c;
+    }
+
+    public void setFixed(boolean z) {
+        this.c = z;
     }
 
     public int getLayoutGravity() {
         return this.e;
     }
 
+    public void setLayoutGravity(int i) {
+        this.e = i;
+        super.setGravity(i);
+    }
+
     public boolean getSelection() {
         return this.b;
+    }
+
+    public void setSelection(boolean z) {
+        this.b = z;
+        invalidate();
     }
 
     public void onDraw(Canvas canvas) {
@@ -98,10 +117,6 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         super.onDraw(canvas);
     }
 
-    public void setBean(ViewBean viewBean) {
-        this.a = viewBean;
-    }
-
     public void setChildScrollEnabled(boolean z) {
         for (int i = 0; i < getChildCount(); i++) {
             ty childAt = (ty) getChildAt(i);
@@ -117,22 +132,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         }
     }
 
-    public void setFixed(boolean z) {
-        this.c = z;
-    }
-
-    public void setLayoutGravity(int i) {
-        this.e = i;
-        super.setGravity(i);
-    }
-
     public void setPadding(int i, int i2, int i3, int i4) {
         super.setPadding((int) wB.a(getContext(), (float) i), (int) wB.a(getContext(), (float) i2), (int) wB.a(getContext(), (float) i3), (int) wB.a(getContext(), (float) i4));
-    }
-
-    public void setSelection(boolean z) {
-        this.b = z;
-        invalidate();
     }
 
     public void a() {

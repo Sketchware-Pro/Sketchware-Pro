@@ -8,7 +8,8 @@ import mod.agus.jcoderz.dx.rop.type.TypeList;
 public interface ClassFile extends HasAttribute {
     int getAccessFlags();
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.HasAttribute
+    @Override
+        // mod.agus.jcoderz.dx.cf.iface.HasAttribute
     AttributeList getAttributes();
 
     ConstantPool getConstantPool();

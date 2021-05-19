@@ -30,7 +30,7 @@ public final class TypeIdItem extends IdItem {
         CstString descriptor = getDefiningClass().getDescriptor();
         int indexOf = dexFile.getStringIds().indexOf(descriptor);
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(indexString()) + ' ' + descriptor.toHuman());
+            annotatedOutput.annotate(0, indexString() + ' ' + descriptor.toHuman());
             annotatedOutput.annotate(4, "  descriptor_idx: " + Hex.u4(indexOf));
         }
         annotatedOutput.writeInt(indexOf);

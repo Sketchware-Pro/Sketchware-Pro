@@ -3,11 +3,8 @@ package mod.w3wide.tools;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-
-import com.android.annotations.NonNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +17,7 @@ public class ImageFactory {
     /**
      * Saves a bitmap of a view to storage.
      *
-     * @param view The view to save as bitmap.
+     * @param view      The view to save as bitmap.
      * @param imageName The image's name inside /Internal storage/sketchware/saved_block/.
      * @return A File object of the saved bitmap.
      */

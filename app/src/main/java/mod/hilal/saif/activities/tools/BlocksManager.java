@@ -18,7 +18,6 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -41,6 +39,9 @@ import mod.hilal.saif.lib.PCP;
 
 public class BlocksManager extends AppCompatActivity {
 
+    private final Intent intent = new Intent();
+    private final HashMap<String, Object> map = new HashMap<>();
+    private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
     private FloatingActionButton _fab;
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private ImageView arrange_icon;
@@ -54,14 +55,11 @@ public class BlocksManager extends AppCompatActivity {
     private AlertDialog.Builder dialog;
     private AlertDialog.Builder emptyDialog;
     private double insert_n = 0.0d;
-    private final Intent intent = new Intent();
     private ListView listview1;
     private HashMap<String, Object> m = new HashMap<>();
-    private final HashMap<String, Object> map = new HashMap<>();
     private TextView page_title;
     private String pallet_dir = "";
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
-    private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
     private LinearLayout toolbar;
 
     @Override

@@ -4,17 +4,13 @@ import mod.agus.jcoderz.dx.util.MutabilityControl;
 
 public final class RegisterSpecSet extends MutabilityControl {
     public static final RegisterSpecSet EMPTY = new RegisterSpecSet(0);
-    private int size;
     private final RegisterSpec[] specs;
+    private int size;
 
     public RegisterSpecSet(int i) {
         super(true);
         boolean z;
-        if (i != 0) {
-            z = true;
-        } else {
-            z = false;
-        }
+        z = i != 0;
         this.specs = new RegisterSpec[i];
         this.size = 0;
     }

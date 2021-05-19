@@ -24,11 +24,7 @@ public final class Leb128 {
         int i5 = i2;
         boolean z = true;
         while (z) {
-            if (i5 == i3 && (i5 & 1) == ((i >> 6) & 1)) {
-                z = false;
-            } else {
-                z = true;
-            }
+            z = i5 != i3 || (i5 & 1) != ((i >> 6) & 1);
             i4++;
             i = i5;
             i5 >>= 7;
@@ -92,11 +88,7 @@ public final class Leb128 {
         boolean z = true;
         int i5 = i3;
         while (z) {
-            if (i5 == i4 && (i5 & 1) == ((i >> 6) & 1)) {
-                z = false;
-            } else {
-                z = true;
-            }
+            z = i5 != i4 || (i5 & 1) != ((i >> 6) & 1);
             int i6 = i & 127;
             if (z) {
                 i2 = 128;

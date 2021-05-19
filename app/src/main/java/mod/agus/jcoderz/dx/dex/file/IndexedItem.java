@@ -22,6 +22,6 @@ public abstract class IndexedItem extends Item {
     }
 
     public final String indexString() {
-        return String.valueOf('[') + Integer.toHexString(this.index) + ']';
+        return '[' + Integer.toHexString(this.index) + ']';
     }
 }

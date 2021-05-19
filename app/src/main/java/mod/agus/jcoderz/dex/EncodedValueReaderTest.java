@@ -1,9 +1,11 @@
 package mod.agus.jcoderz.dex;
 
 import junit.framework.TestCase;
-import mod.agus.jcoderz.dex.util.ByteArrayByteInput;
+
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileConstants;
 import org.eclipse.jdt.internal.compiler.codegen.Opcodes;
+
+import mod.agus.jcoderz.dex.util.ByteArrayByteInput;
 
 public final class EncodedValueReaderTest extends TestCase {
     public void testReadByte() {

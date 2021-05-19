@@ -6,6 +6,10 @@ import java.io.File;
 
 public class FilePathUtil {
 
+    public static String getLastCompileLogPath(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/compile_log"))).getAbsolutePath();
+    }
+
     public String getPathPermission(String sc_id) {
         return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/permission"))).getAbsolutePath();
     }
@@ -60,10 +64,6 @@ public class FilePathUtil {
 
     public String getResPathLocalLibraryUser(String sc_id) {
         return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/files/library/res"))).getAbsolutePath();
-    }
-
-    public static String getLastCompileLogPath(String sc_id) {
-        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/compile_log"))).getAbsolutePath();
     }
 
     public String getManifestJava(String sc_id) {

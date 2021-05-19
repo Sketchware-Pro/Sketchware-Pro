@@ -32,62 +32,6 @@ public class ManagePermissionActivity extends Activity {
     public String numProj;
     public SearchView sv;
 
-    public class ListAdapter extends BaseAdapter {
-        public ArrayList<String> namePerm;
-        public String numProj;
-
-        public ListAdapter(ArrayList<String> arrayList, String str) {
-            namePerm = arrayList;
-            numProj = str;
-        }
-
-        public int getCount() {
-            return namePerm.size();
-        }
-
-        public String getItem(int i) {
-            return namePerm.get(i);
-        }
-
-        public long getItemId(int i) {
-            return (long) i;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427789, null);
-            }
-
-            CheckBox checkBox = (CheckBox) convertView.findViewById(2131232370);
-            checkBox.setText(namePerm.get(position));
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton button, boolean checked) {
-                    if (checked) {
-                        if (!frc.getPermissionList().contains(button.getText().toString())) {
-                            frc.listFilePermission.add(button.getText().toString());
-                        }
-                    } else {
-                        frc.listFilePermission.remove(button.getText().toString());
-                    }
-                }
-            });
-            handleChecked(checkBox, position);
-            return convertView;
-        }
-
-        public void handleChecked(CheckBox checkBox, int i) {
-            checkBox.setChecked(frc.getPermissionList().contains(namePerm.get(i)));
-        }
-
-        public void setFilter(ArrayList<String> filter) {
-            ArrayList<String> arrayList2 = new ArrayList<>();
-            namePerm = arrayList2;
-            arrayList2.addAll(filter);
-            notifyDataSetChanged();
-        }
-    }
-
     private void setItems() {
         Parcelable lvSavedState = lv.onSaveInstanceState();
         arrayList = ListPermission.getPermissions();
@@ -178,5 +122,61 @@ public class ManagePermissionActivity extends Activity {
     public void onBackPressed() {
         FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), new Gson().toJson(frc.getPermissionList()));
         super.onBackPressed();
+    }
+
+    public class ListAdapter extends BaseAdapter {
+        public ArrayList<String> namePerm;
+        public String numProj;
+
+        public ListAdapter(ArrayList<String> arrayList, String str) {
+            namePerm = arrayList;
+            numProj = str;
+        }
+
+        public int getCount() {
+            return namePerm.size();
+        }
+
+        public String getItem(int i) {
+            return namePerm.get(i);
+        }
+
+        public long getItemId(int i) {
+            return (long) i;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(2131427789, null);
+            }
+
+            CheckBox checkBox = (CheckBox) convertView.findViewById(2131232370);
+            checkBox.setText(namePerm.get(position));
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton button, boolean checked) {
+                    if (checked) {
+                        if (!frc.getPermissionList().contains(button.getText().toString())) {
+                            frc.listFilePermission.add(button.getText().toString());
+                        }
+                    } else {
+                        frc.listFilePermission.remove(button.getText().toString());
+                    }
+                }
+            });
+            handleChecked(checkBox, position);
+            return convertView;
+        }
+
+        public void handleChecked(CheckBox checkBox, int i) {
+            checkBox.setChecked(frc.getPermissionList().contains(namePerm.get(i)));
+        }
+
+        public void setFilter(ArrayList<String> filter) {
+            ArrayList<String> arrayList2 = new ArrayList<>();
+            namePerm = arrayList2;
+            arrayList2.addAll(filter);
+            notifyDataSetChanged();
+        }
     }
 }

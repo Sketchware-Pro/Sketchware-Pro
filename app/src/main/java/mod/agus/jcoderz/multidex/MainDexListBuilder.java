@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.zip.ZipFile;
+
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations;
 import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
 import mod.agus.jcoderz.dx.cf.iface.Attribute;
@@ -18,33 +19,8 @@ public class MainDexListBuilder {
     private static final String DISABLE_ANNOTATION_RESOLUTION_WORKAROUND = "--disable-annotation-resolution-workaround";
     private static final String EOL = System.getProperty("line.separator");
     private static final int STATUS_ERROR = 1;
-    private static String USAGE_MESSAGE = ("Usage:" + EOL + EOL + "Short version: Don't use this." + EOL + EOL + "Slightly longer version: This tool is used by mainDexClasses script to build" + EOL + "the main dex list." + EOL);
-    private Set<String> filesToKeep = new HashSet();
-
-    public static void main(String[] strArr) {
-        boolean z = true;
-        int i = 0;
-        while (i < strArr.length - 2) {
-            if (strArr[i].equals(DISABLE_ANNOTATION_RESOLUTION_WORKAROUND)) {
-                z = false;
-            } else {
-                System.err.println("Invalid option " + strArr[i]);
-                printUsage();
-                System.err.println("exit code 1");
-            }
-            i++;
-        }
-        if (strArr.length - i != 2) {
-            printUsage();
-            System.err.println("exit code 1");
-        }
-        try {
-            printList(new MainDexListBuilder(z, strArr[i], strArr[i + 1]).getMainDexList());
-        } catch (IOException e) {
-            System.err.println("A fatal error occured: " + e.getMessage());
-            System.err.println("exit code 1");
-        }
-    }
+    private static final String USAGE_MESSAGE = ("Usage:" + EOL + EOL + "Short version: Don't use this." + EOL + EOL + "Slightly longer version: This tool is used by mainDexClasses script to build" + EOL + "the main dex list." + EOL);
+    private final Set<String> filesToKeep = new HashSet();
 
     public MainDexListBuilder(boolean z, String str, String str2) throws IOException {
         Throwable th;
@@ -59,7 +35,7 @@ public class MainDexListBuilder {
                     classReferenceListBuilder.addRoots(zipFile2);
                     Iterator<String> it = classReferenceListBuilder.getClassNames().iterator();
                     while (it.hasNext()) {
-                        this.filesToKeep.add(String.valueOf(it.next()) + ".class");
+                        this.filesToKeep.add(it.next() + ".class");
                     }
                     if (z) {
                         keepAnnotated(path2);
@@ -119,8 +95,29 @@ public class MainDexListBuilder {
         }
     }
 
-    public Set<String> getMainDexList() {
-        return this.filesToKeep;
+    public static void main(String[] strArr) {
+        boolean z = true;
+        int i = 0;
+        while (i < strArr.length - 2) {
+            if (strArr[i].equals(DISABLE_ANNOTATION_RESOLUTION_WORKAROUND)) {
+                z = false;
+            } else {
+                System.err.println("Invalid option " + strArr[i]);
+                printUsage();
+                System.err.println("exit code 1");
+            }
+            i++;
+        }
+        if (strArr.length - i != 2) {
+            printUsage();
+            System.err.println("exit code 1");
+        }
+        try {
+            printList(new MainDexListBuilder(z, strArr[i], strArr[i + 1]).getMainDexList());
+        } catch (IOException e) {
+            System.err.println("A fatal error occured: " + e.getMessage());
+            System.err.println("exit code 1");
+        }
     }
 
     private static void printUsage() {
@@ -131,6 +128,10 @@ public class MainDexListBuilder {
         for (String str : set) {
             System.out.println(str);
         }
+    }
+
+    public Set<String> getMainDexList() {
+        return this.filesToKeep;
     }
 
     private void keepAnnotated(Path path) throws FileNotFoundException {

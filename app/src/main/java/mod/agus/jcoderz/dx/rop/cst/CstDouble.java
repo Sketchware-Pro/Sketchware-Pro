@@ -7,12 +7,12 @@ public final class CstDouble extends CstLiteral64 {
     public static final CstDouble VALUE_0 = new CstDouble(Double.doubleToLongBits(0.0d));
     public static final CstDouble VALUE_1 = new CstDouble(Double.doubleToLongBits(1.0d));
 
-    public static CstDouble make(long j) {
-        return new CstDouble(j);
-    }
-
     private CstDouble(long j) {
         super(j);
+    }
+
+    public static CstDouble make(long j) {
+        return new CstDouble(j);
     }
 
     public String toString() {

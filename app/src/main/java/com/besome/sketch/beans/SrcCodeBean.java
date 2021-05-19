@@ -24,6 +24,17 @@ public class SrcCodeBean implements Parcelable {
     public SrcCodeBean() {
     }
 
+    public SrcCodeBean(String str, String str2) {
+        this.srcFileName = str;
+        this.source = str2;
+    }
+
+    public SrcCodeBean(Parcel parcel) {
+        this.pkgName = parcel.readString();
+        this.srcFileName = parcel.readString();
+        this.source = parcel.readString();
+    }
+
     public static Parcelable.Creator<SrcCodeBean> getCreator() {
         return CREATOR;
     }
@@ -36,16 +47,5 @@ public class SrcCodeBean implements Parcelable {
         parcel.writeString(this.pkgName);
         parcel.writeString(this.srcFileName);
         parcel.writeString(this.source);
-    }
-
-    public SrcCodeBean(String str, String str2) {
-        this.srcFileName = str;
-        this.source = str2;
-    }
-
-    public SrcCodeBean(Parcel parcel) {
-        this.pkgName = parcel.readString();
-        this.srcFileName = parcel.readString();
-        this.source = parcel.readString();
     }
 }

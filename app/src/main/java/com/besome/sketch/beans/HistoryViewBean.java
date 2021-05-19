@@ -1,8 +1,9 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import a.a.a.nA;
 
 public class HistoryViewBean extends nA {
     public static final int ACTION_TYPE_ADD = 0;
