@@ -1,14 +1,15 @@
 package com.besome.sketch.editor.component;
 
-import a.a.a.xB;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
 import com.besome.sketch.lib.base.BaseDialogActivity;
+
+import a.a.a.xB;
 
 public class ShowFilePickerTypesActivity extends BaseDialogActivity implements View.OnClickListener {
     public RadioGroup t;

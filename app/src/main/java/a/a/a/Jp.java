@@ -9,13 +9,21 @@ import mod.agus.jcoderz.manage.library.ExtLibSelection;
 
 public class Jp {
 
-    /** The library's name inside libs.zip or dexs.zip, like material-1.0.0 */
+    /**
+     * The library's name inside libs.zip or dexs.zip, like material-1.0.0
+     */
     public String a;
-    /** The library's base package name, like com.google.android.material */
+    /**
+     * The library's base package name, like com.google.android.material
+     */
     public String b = "";
-    /** Unknown */
+    /**
+     * Unknown
+     */
     public boolean c;
-    /** Unknown, only been {@code false} when enabling AppCompat in Library Manger only */
+    /**
+     * Unknown, only been {@code false} when enabling AppCompat in Library Manger only
+     */
     public boolean d;
 
     public Jp(String str) {

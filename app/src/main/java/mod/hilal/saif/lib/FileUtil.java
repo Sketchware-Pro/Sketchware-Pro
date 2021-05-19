@@ -565,6 +565,6 @@ public class FileUtil {
     }
 
     public static File createNewPictureFile(Context context) {
-        return new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + (String.valueOf(new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())) + ".jpg"));
+        return new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + (new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg"));
     }
 }

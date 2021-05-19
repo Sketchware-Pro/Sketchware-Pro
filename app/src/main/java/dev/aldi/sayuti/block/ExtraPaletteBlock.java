@@ -1,29 +1,32 @@
 package dev.aldi.sayuti.block;
 
-import a.a.a.Ss;
-import a.a.a.jC;
-import a.a.a.kq;
-import a.a.a.xq;
 import android.app.Activity;
 import android.util.Pair;
+
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import a.a.a.Ss;
+import a.a.a.jC;
+import a.a.a.kq;
+import a.a.a.xq;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.blocks.BlocksHandler;
 
 public class ExtraPaletteBlock extends Activity {
-    private String eventName;
-    private FileResConfig frc;
-    private boolean isCustomView;
     public LogicEditorActivity logicEditor;
-    private HashMap<String, Object> mapSave = new HashMap<>();
-    private ExtraMenuBlock menuBlock;
+    private final String eventName;
+    private final FileResConfig frc;
+    private final boolean isCustomView;
+    private final HashMap<String, Object> mapSave = new HashMap<>();
+    private final ExtraMenuBlock menuBlock;
 
     public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity) {
         this.logicEditor = logicEditorActivity;

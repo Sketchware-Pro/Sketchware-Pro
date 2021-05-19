@@ -1,7 +1,5 @@
 package mod.hilal.saif.activities.android_manifest;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -34,6 +32,8 @@ import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.ActComponentsDialog;
 import mod.hilal.saif.lib.FileUtil;
+
+import static mod.SketchwareUtil.getDip;
 
 public class AndroidManifestInjectionDetails extends Activity {
 

@@ -212,7 +212,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(AddImageCollectionActivity.class.getSimpleName().toString());
+        this.d.setScreenName(AddImageCollectionActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
@@ -244,7 +244,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         if (a(this.L)) {
             new Handler().postDelayed(() -> {
                 k();
-                new AddImageCollectionActivity.a(getApplicationContext()).execute(new Void[0]);
+                new AddImageCollectionActivity.a(getApplicationContext()).execute();
             }, 500);
         }
     }

@@ -54,7 +54,7 @@ public final class EncodedArrayItem extends OffsettedItem {
     @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
     protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
         if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " encoded array");
+            annotatedOutput.annotate(0, offsetString() + " encoded array");
             new ValueEncoder(dexFile, annotatedOutput).writeArray(this.array, true);
             return;
         }

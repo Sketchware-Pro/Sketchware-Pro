@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+
 import mod.agus.jcoderz.dex.ClassData;
 import mod.agus.jcoderz.dex.ClassDef;
 import mod.agus.jcoderz.dex.Dex;
@@ -13,12 +14,12 @@ import mod.agus.jcoderz.dx.io.instructions.DecodedInstruction;
 
 public final class Grep {
     private final CodeReader codeReader = new CodeReader();
-    private int count = 0;
-    private ClassDef currentClass;
-    private ClassData.Method currentMethod;
     private final Dex dex;
     private final PrintWriter out;
     private final Set<Integer> stringIds;
+    private int count = 0;
+    private ClassDef currentClass;
+    private ClassData.Method currentMethod;
 
     public Grep(Dex dex2, Pattern pattern, PrintWriter printWriter) {
         this.dex = dex2;
@@ -49,7 +50,7 @@ public final class Grep {
 
     private void encounterString(int i) {
         if (this.stringIds.contains(Integer.valueOf(i))) {
-            this.out.println(String.valueOf(location()) + " " + this.dex.strings().get(i));
+            this.out.println(location() + " " + this.dex.strings().get(i));
             this.count++;
         }
     }
@@ -57,7 +58,7 @@ public final class Grep {
     private String location() {
         String str = this.dex.typeNames().get(this.currentClass.getTypeIndex());
         if (this.currentMethod != null) {
-            return String.valueOf(str) + "." + this.dex.strings().get(this.dex.methodIds().get(this.currentMethod.getMethodIndex()).getNameIndex());
+            return str + "." + this.dex.strings().get(this.dex.methodIds().get(this.currentMethod.getMethodIndex()).getNameIndex());
         }
         return str;
     }

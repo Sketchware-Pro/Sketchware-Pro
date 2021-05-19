@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.io.PrintWriter;
+
 import mod.agus.jcoderz.dex.Leb128;
 import mod.agus.jcoderz.dx.dex.code.DalvCode;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
@@ -16,11 +17,6 @@ public final class EncodedMethod extends EncodedMember implements Comparable<Enc
     private final CstMethodRef method;
 
 
-    @Override // java.lang.Comparable
-    public int compareTo(EncodedMethod encodedMethod) {
-        return compareTo(encodedMethod);
-    }
-
     public EncodedMethod(CstMethodRef cstMethodRef, int i, DalvCode dalvCode, TypeList typeList) {
         super(i);
         if (cstMethodRef == null) {
@@ -34,11 +30,13 @@ public final class EncodedMethod extends EncodedMember implements Comparable<Enc
         }
     }
 
+    @Override // java.lang.Comparable
+    public int compareTo(EncodedMethod encodedMethod) {
+        return compareTo(encodedMethod);
+    }
+
     public boolean equals(Object obj) {
-        if ((obj instanceof EncodedMethod) && compareTo((EncodedMethod) obj) == 0) {
-            return true;
-        }
-        return false;
+        return (obj instanceof EncodedMethod) && compareTo((EncodedMethod) obj) == 0;
     }
 
     public int compareToTwo(EncodedMethod encodedMethod) {
@@ -83,7 +81,7 @@ public final class EncodedMethod extends EncodedMember implements Comparable<Enc
     @Override // mod.agus.jcoderz.dx.dex.file.EncodedMember
     public void debugPrint(PrintWriter printWriter, boolean z) {
         if (this.code == null) {
-            printWriter.println(String.valueOf(getRef().toHuman()) + ": abstract or native");
+            printWriter.println(getRef().toHuman() + ": abstract or native");
         } else {
             this.code.debugPrint(printWriter, "  ", z);
         }
@@ -101,11 +99,7 @@ public final class EncodedMethod extends EncodedMember implements Comparable<Enc
         int accessFlags = getAccessFlags();
         int absoluteOffsetOr0 = OffsettedItem.getAbsoluteOffsetOr0(this.code);
         boolean z2 = absoluteOffsetOr0 != 0;
-        if ((accessFlags & 1280) == 0) {
-            z = true;
-        } else {
-            z = false;
-        }
+        z = (accessFlags & 1280) == 0;
         if (z2 != z) {
             throw new UnsupportedOperationException("code vs. access_flags mismatch");
         }

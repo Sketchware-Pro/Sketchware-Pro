@@ -12,10 +12,7 @@ public abstract class CstLiteralBits extends TypedConstant {
             return false;
         }
         int intBits = getIntBits();
-        if (((short) intBits) == intBits) {
-            return true;
-        }
-        return false;
+        return ((short) intBits) == intBits;
     }
 
     public boolean fitsIn8Bits() {
@@ -23,9 +20,6 @@ public abstract class CstLiteralBits extends TypedConstant {
             return false;
         }
         int intBits = getIntBits();
-        if (((byte) intBits) == intBits) {
-            return true;
-        }
-        return false;
+        return ((byte) intBits) == intBits;
     }
 }

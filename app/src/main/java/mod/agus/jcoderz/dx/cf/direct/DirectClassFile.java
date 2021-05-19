@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.dx.cf.direct;
 
+import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
+
 import mod.agus.jcoderz.dx.cf.attrib.AttSourceFile;
 import mod.agus.jcoderz.dx.cf.cst.ConstantPoolParser;
 import mod.agus.jcoderz.dx.cf.iface.Attribute;
@@ -20,33 +22,25 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
 
 public class DirectClassFile implements ClassFile {
     private static final int CLASS_FILE_MAGIC = -889275714;
     private static final int CLASS_FILE_MAX_MAJOR_VERSION = 51;
     private static final int CLASS_FILE_MAX_MINOR_VERSION = 0;
     private static final int CLASS_FILE_MIN_MAJOR_VERSION = 45;
+    private final ByteArray bytes;
+    private final String filePath;
+    private final boolean strictParse;
     private int accessFlags;
     private AttributeFactory attributeFactory;
     private StdAttributeList attributes;
-    private final ByteArray bytes;
     private FieldList fields;
-    private final String filePath;
     private TypeList interfaces;
     private MethodList methods;
     private ParseObserver observer;
     private StdConstantPool pool;
-    private final boolean strictParse;
     private CstType superClass;
     private CstType thisClass;
-
-    public static String stringOrNone(Object obj) {
-        if (obj == null) {
-            return "(none)";
-        }
-        return obj.toString();
-    }
 
     public DirectClassFile(ByteArray byteArray, String str, boolean z) {
         if (byteArray == null) {
@@ -63,6 +57,13 @@ public class DirectClassFile implements ClassFile {
 
     public DirectClassFile(byte[] bArr, String str, boolean z) {
         this(new ByteArray(bArr), str, z);
+    }
+
+    public static String stringOrNone(Object obj) {
+        if (obj == null) {
+            return "(none)";
+        }
+        return obj.toString();
     }
 
     public void setObserver(ParseObserver parseObserver) {
@@ -209,14 +210,8 @@ public class DirectClassFile implements ClassFile {
     private boolean isGoodVersion(int i, int i2, int i3) {
         if (i == CLASS_FILE_MAGIC && i2 >= 0) {
             if (i3 == 51) {
-                if (i2 <= 0) {
-                    return true;
-                }
-            } else if (i3 >= 51 || i3 < 45) {
-                return false;
-            } else {
-                return true;
-            }
+                return i2 <= 0;
+            } else return i3 < 51 && i3 >= 45;
         }
         return false;
     }

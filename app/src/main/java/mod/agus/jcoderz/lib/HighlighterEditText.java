@@ -11,6 +11,7 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.widget.EditText;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -100,19 +101,19 @@ public class HighlighterEditText extends EditText {
         }
     }
 
-    public void setLinesEnabled(boolean z) {
-        this.linesEnabled = z;
-    }
-
     public boolean isLinesEnabled() {
         return this.linesEnabled;
     }
 
-    public void setLinesColor(int i) {
-        this.paint.setColor(i);
+    public void setLinesEnabled(boolean z) {
+        this.linesEnabled = z;
     }
 
     public int getLinesColor() {
         return this.paint.getColor();
+    }
+
+    public void setLinesColor(int i) {
+        this.paint.setColor(i);
     }
 }

@@ -1,10 +1,12 @@
 package mod.hilal.saif.components;
 
-import a.a.a.Hx;
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import a.a.a.Hx;
 import mod.hilal.saif.lib.FileUtil;
-import org.json.JSONArray;
 
 public class ComponentExtraCode {
     public StringBuilder b;

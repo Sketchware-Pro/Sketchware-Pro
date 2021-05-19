@@ -1,7 +1,8 @@
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.util.Hex;
 import org.eclipse.jdt.internal.compiler.env.IDependent;
+
+import mod.agus.jcoderz.dx.util.Hex;
 
 public final class AccessFlags {
     public static final int ACC_ABSTRACT = 1024;
@@ -25,12 +26,12 @@ public final class AccessFlags {
     public static final int ACC_VARARGS = 128;
     public static final int ACC_VOLATILE = 64;
     public static final int CLASS_FLAGS = 30257;
-    private static final int CONV_CLASS = 1;
-    private static final int CONV_FIELD = 2;
-    private static final int CONV_METHOD = 3;
     public static final int FIELD_FLAGS = 20703;
     public static final int INNER_CLASS_FLAGS = 30239;
     public static final int METHOD_FLAGS = 204287;
+    private static final int CONV_CLASS = 1;
+    private static final int CONV_FIELD = 2;
+    private static final int CONV_METHOD = 3;
 
     private AccessFlags() {
     }

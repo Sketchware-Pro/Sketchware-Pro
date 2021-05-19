@@ -11,30 +11,6 @@ public abstract class Insn implements ToHuman {
     private final RegisterSpec result;
     private final RegisterSpecList sources;
 
-    public interface Visitor {
-        void visitFillArrayDataInsn(FillArrayDataInsn fillArrayDataInsn);
-
-        void visitPlainCstInsn(PlainCstInsn plainCstInsn);
-
-        void visitPlainInsn(PlainInsn plainInsn);
-
-        void visitSwitchInsn(SwitchInsn switchInsn);
-
-        void visitThrowingCstInsn(ThrowingCstInsn throwingCstInsn);
-
-        void visitThrowingInsn(ThrowingInsn throwingInsn);
-    }
-
-    public abstract void accept(Visitor visitor);
-
-    public abstract TypeList getCatches();
-
-    public abstract Insn withAddedCatch(Type type);
-
-    public abstract Insn withNewRegisters(RegisterSpec registerSpec, RegisterSpecList registerSpecList);
-
-    public abstract Insn withRegisterOffset(int i);
-
     public Insn(Rop rop, SourcePosition sourcePosition, RegisterSpec registerSpec, RegisterSpecList registerSpecList) {
         if (rop == null) {
             throw new NullPointerException("opcode == null");
@@ -49,6 +25,20 @@ public abstract class Insn implements ToHuman {
             this.sources = registerSpecList;
         }
     }
+
+    private static boolean equalsHandleNulls(Object obj, Object obj2) {
+        return obj == obj2 || (obj != null && obj.equals(obj2));
+    }
+
+    public abstract void accept(Visitor visitor);
+
+    public abstract TypeList getCatches();
+
+    public abstract Insn withAddedCatch(Type type);
+
+    public abstract Insn withNewRegisters(RegisterSpec registerSpec, RegisterSpecList registerSpecList);
+
+    public abstract Insn withRegisterOffset(int i);
 
     public final boolean equals(Object obj) {
         return this == obj;
@@ -112,10 +102,6 @@ public abstract class Insn implements ToHuman {
         return withRegisterOffset(0);
     }
 
-    private static boolean equalsHandleNulls(Object obj, Object obj2) {
-        return obj == obj2 || (obj != null && obj.equals(obj2));
-    }
-
     public boolean contentEquals(Insn insn) {
         return this.opcode == insn.getOpcode() && this.position.equals(insn.getPosition()) && getClass() == insn.getClass() && equalsHandleNulls(this.result, insn.getResult()) && equalsHandleNulls(this.sources, insn.getSources()) && StdTypeList.equalContents(getCatches(), insn.getCatches());
     }
@@ -169,6 +155,20 @@ public abstract class Insn implements ToHuman {
             }
         }
         return stringBuffer.toString();
+    }
+
+    public interface Visitor {
+        void visitFillArrayDataInsn(FillArrayDataInsn fillArrayDataInsn);
+
+        void visitPlainCstInsn(PlainCstInsn plainCstInsn);
+
+        void visitPlainInsn(PlainInsn plainInsn);
+
+        void visitSwitchInsn(SwitchInsn switchInsn);
+
+        void visitThrowingCstInsn(ThrowingCstInsn throwingCstInsn);
+
+        void visitThrowingInsn(ThrowingInsn throwingInsn);
     }
 
     public static class BaseVisitor implements Visitor {

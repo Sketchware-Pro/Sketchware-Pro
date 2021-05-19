@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.merge;
 
 import java.util.HashMap;
+
 import mod.agus.jcoderz.dex.Annotation;
 import mod.agus.jcoderz.dex.ClassDef;
 import mod.agus.jcoderz.dex.Dex;
@@ -18,17 +19,17 @@ import mod.agus.jcoderz.dex.util.ByteOutput;
 import mod.agus.jcoderz.dx.util.ByteArrayAnnotatedOutput;
 
 public final class IndexMap {
+    public final short[] fieldIds;
+    public final short[] methodIds;
+    public final short[] protoIds;
+    public final int[] stringIds;
+    public final short[] typeIds;
     private final HashMap<Integer, Integer> annotationDirectoryOffsets = new HashMap<>();
     private final HashMap<Integer, Integer> annotationOffsets = new HashMap<>();
     private final HashMap<Integer, Integer> annotationSetOffsets = new HashMap<>();
     private final HashMap<Integer, Integer> annotationSetRefListOffsets = new HashMap<>();
-    public final short[] fieldIds;
-    public final short[] methodIds;
-    public final short[] protoIds;
     private final HashMap<Integer, Integer> staticValuesOffsets = new HashMap<>();
-    public final int[] stringIds;
     private final Dex target;
-    public final short[] typeIds;
     private final HashMap<Integer, Integer> typeListOffsets = new HashMap<>();
 
     public IndexMap(Dex dex, TableOfContents tableOfContents) {

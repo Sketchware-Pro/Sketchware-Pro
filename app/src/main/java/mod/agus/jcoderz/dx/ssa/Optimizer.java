@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.ssa;
 
 import java.util.EnumSet;
+
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 import mod.agus.jcoderz.dx.ssa.back.LivenessAnalyzer;
@@ -9,14 +10,6 @@ import mod.agus.jcoderz.dx.ssa.back.SsaToRop;
 public class Optimizer {
     private static TranslationAdvice advice;
     private static boolean preserveLocals = true;
-
-    public enum OptionalStep {
-        MOVE_PARAM_COMBINER,
-        SCCP,
-        LITERAL_UPGRADE,
-        CONST_COLLECTOR,
-        ESCAPE_ANALYSIS
-    }
 
     public static boolean getPreserveLocals() {
         return preserveLocals;
@@ -117,5 +110,13 @@ public class Optimizer {
         runSsaFormSteps(convertToSsaMethod, enumSet);
         LivenessAnalyzer.constructInterferenceGraph(convertToSsaMethod);
         return convertToSsaMethod;
+    }
+
+    public enum OptionalStep {
+        MOVE_PARAM_COMBINER,
+        SCCP,
+        LITERAL_UPGRADE,
+        CONST_COLLECTOR,
+        ESCAPE_ANALYSIS
     }
 }

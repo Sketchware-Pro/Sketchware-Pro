@@ -8,6 +8,10 @@ import mod.agus.jcoderz.dx.util.MutabilityControl;
 import mod.agus.jcoderz.dx.util.ToHuman;
 
 public abstract class LocalsArray extends MutabilityControl implements ToHuman {
+    protected LocalsArray(boolean z) {
+        super(z);
+    }
+
     public abstract void annotate(ExceptionWithContext exceptionWithContext);
 
     public abstract LocalsArray copy();
@@ -35,8 +39,4 @@ public abstract class LocalsArray extends MutabilityControl implements ToHuman {
     public abstract void set(int i, TypeBearer typeBearer);
 
     public abstract void set(RegisterSpec registerSpec);
-
-    protected LocalsArray(boolean z) {
-        super(z);
-    }
 }

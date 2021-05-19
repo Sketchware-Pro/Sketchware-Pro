@@ -5,8 +5,8 @@ import mod.agus.jcoderz.dx.util.IntList;
 
 public final class RopMethod {
     private final BasicBlockList blocks;
-    private IntList exitPredecessors;
     private final int firstLabel;
+    private IntList exitPredecessors;
     private IntList[] predecessors;
 
     public RopMethod(BasicBlockList basicBlockList, int i) {

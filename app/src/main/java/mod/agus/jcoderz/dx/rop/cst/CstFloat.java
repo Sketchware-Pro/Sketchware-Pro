@@ -8,12 +8,12 @@ public final class CstFloat extends CstLiteral32 {
     public static final CstFloat VALUE_1 = make(Float.floatToIntBits(1.0f));
     public static final CstFloat VALUE_2 = make(Float.floatToIntBits(2.0f));
 
-    public static CstFloat make(int i) {
-        return new CstFloat(i);
-    }
-
     private CstFloat(int i) {
         super(i);
+    }
+
+    public static CstFloat make(int i) {
+        return new CstFloat(i);
     }
 
     public String toString() {

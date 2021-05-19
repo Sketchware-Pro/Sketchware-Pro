@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.util.FixedSizeList;
 
 public final class InsnList extends FixedSizeList {

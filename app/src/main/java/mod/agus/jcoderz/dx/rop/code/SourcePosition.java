@@ -1,8 +1,9 @@
 package mod.agus.jcoderz.dx.rop.code;
 
+import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
 
 public final class SourcePosition {
     public static final SourcePosition NO_INFO = new SourcePosition(null, -1, -1);

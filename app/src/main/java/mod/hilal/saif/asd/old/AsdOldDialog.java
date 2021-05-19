@@ -1,15 +1,11 @@
 package mod.hilal.saif.asd.old;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -25,8 +21,10 @@ import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
 
+import static mod.SketchwareUtil.getDip;
+
 public class AsdOldDialog extends Dialog {
-    
+
     public Timer _timer = new Timer();
     public Activity act;
     public ViewGroup base;

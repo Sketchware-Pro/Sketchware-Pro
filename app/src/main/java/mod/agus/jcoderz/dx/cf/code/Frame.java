@@ -32,6 +32,17 @@ public final class Frame {
         this(new OneLocalsArray(i), new ExecutionStack(i2));
     }
 
+    private static LocalsArray adjustLocalsForSubroutines(LocalsArray localsArray, IntList intList) {
+        if (!(localsArray instanceof LocalsArraySet)) {
+            return localsArray;
+        }
+        LocalsArraySet localsArraySet = (LocalsArraySet) localsArray;
+        if (intList.size() == 0) {
+            return localsArraySet.getPrimary();
+        }
+        return localsArraySet;
+    }
+
     public Frame copy() {
         return new Frame(this.locals.copy(), this.stack.copy(), this.subroutines);
     }
@@ -114,17 +125,6 @@ public final class Frame {
         }
         intList2.setImmutable();
         return intList2;
-    }
-
-    private static LocalsArray adjustLocalsForSubroutines(LocalsArray localsArray, IntList intList) {
-        if (!(localsArray instanceof LocalsArraySet)) {
-            return localsArray;
-        }
-        LocalsArraySet localsArraySet = (LocalsArraySet) localsArray;
-        if (intList.size() == 0) {
-            return localsArraySet.getPrimary();
-        }
-        return localsArraySet;
     }
 
     public Frame mergeWithSubroutineCaller(Frame frame, int i, int i2) {

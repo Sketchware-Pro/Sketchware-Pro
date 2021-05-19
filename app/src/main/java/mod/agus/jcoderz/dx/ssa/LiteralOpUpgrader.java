@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.ssa;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.PlainCstInsn;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
@@ -13,17 +14,16 @@ import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstLiteralBits;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 
 public class LiteralOpUpgrader {
     private final SsaMethod ssaMeth;
 
-    public static void process(SsaMethod ssaMethod) {
-        new LiteralOpUpgrader(ssaMethod).run();
-    }
-
     private LiteralOpUpgrader(SsaMethod ssaMethod) {
         this.ssaMeth = ssaMethod;
+    }
+
+    public static void process(SsaMethod ssaMethod) {
+        new LiteralOpUpgrader(ssaMethod).run();
     }
 
     public static boolean isConstIntZeroOrKnownNull(RegisterSpec registerSpec) {
@@ -31,10 +31,7 @@ public class LiteralOpUpgrader {
         if (!(typeBearer instanceof CstLiteralBits)) {
             return false;
         }
-        if (((CstLiteralBits) typeBearer).getLongBits() == 0) {
-            return true;
-        }
-        return false;
+        return ((CstLiteralBits) typeBearer).getLongBits() == 0;
     }
 
     private void run() {

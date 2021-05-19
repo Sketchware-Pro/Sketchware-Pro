@@ -4,7 +4,6 @@ import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.Rop;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 
 public final class NormalSsaInsn extends SsaInsn implements Cloneable {
     private Insn insn;
@@ -134,11 +133,7 @@ public final class NormalSsaInsn extends SsaInsn implements Cloneable {
         if (opcode.getBranchingness() != 1) {
             return true;
         }
-        if (!Optimizer.getPreserveLocals() || getLocalAssignment() == null) {
-            z = false;
-        } else {
-            z = true;
-        }
+        z = Optimizer.getPreserveLocals() && getLocalAssignment() != null;
         switch (opcode.getOpcode()) {
             case 2:
             case 5:

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 class FolderPathElement implements ClassPathElement {
-    private File baseFolder;
+    private final File baseFolder;
 
     public FolderPathElement(File file) {
         this.baseFolder = file;

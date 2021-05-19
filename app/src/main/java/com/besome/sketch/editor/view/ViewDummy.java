@@ -1,9 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.Rs;
-import a.a.a.Ts;
-import a.a.a.wB;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,9 +9,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.android.dx.rop.code.RegisterSpec;
 import com.google.android.flexbox.FlexItem;
 import com.google.android.gms.common.GoogleApiAvailabilityLight;
+
+import a.a.a.Rs;
+import a.a.a.Ts;
+import a.a.a.wB;
 
 public class ViewDummy extends RelativeLayout {
     public ImageView a;
@@ -27,6 +28,14 @@ public class ViewDummy extends RelativeLayout {
 
     public ViewDummy(Context context) {
         super(context);
+        this.d = new int[2];
+        this.e = new int[2];
+        this.f = false;
+        a(context);
+    }
+
+    public ViewDummy(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         this.d = new int[2];
         this.e = new int[2];
         this.f = false;
@@ -71,15 +80,6 @@ public class ViewDummy extends RelativeLayout {
         view.draw(new Canvas(createBitmap));
         return createBitmap;
     }
-
-    public ViewDummy(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.d = new int[2];
-        this.e = new int[2];
-        this.f = false;
-        a(context);
-    }
-
 
     @SuppressLint("ResourceType")
     public void a(Rs rs) {

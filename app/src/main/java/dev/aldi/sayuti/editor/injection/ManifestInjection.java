@@ -1,12 +1,13 @@
 package dev.aldi.sayuti.editor.injection;
 
+import java.util.ArrayList;
+
 import a.a.a.Nx;
 import a.a.a.jq;
-import java.util.ArrayList;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class ManifestInjection {
-    
+
     public ArrayList arr;
     public jq jq;
     public String path;

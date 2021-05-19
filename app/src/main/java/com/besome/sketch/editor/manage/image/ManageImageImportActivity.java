@@ -214,7 +214,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(ManageImageImportActivity.class.getSimpleName().toString());
+        this.d.setScreenName(ManageImageImportActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
@@ -12,12 +13,6 @@ public final class ParameterAnnotationStruct implements ToHuman, Comparable<Para
     private final UniformListItem<AnnotationSetRefItem> annotationsItem;
     private final AnnotationsList annotationsList;
     private final CstMethodRef method;
-
-    /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Object] */
-    @Override // java.lang.Comparable
-    public /* bridge */ /* synthetic */ int compareTo(ParameterAnnotationStruct parameterAnnotationStruct) {
-        return compareTo(parameterAnnotationStruct);
-    }
 
     public ParameterAnnotationStruct(CstMethodRef cstMethodRef, AnnotationsList annotationsList2, DexFile dexFile) {
         if (cstMethodRef == null) {
@@ -34,6 +29,12 @@ public final class ParameterAnnotationStruct implements ToHuman, Comparable<Para
             }
             this.annotationsItem = new UniformListItem<>(ItemType.TYPE_ANNOTATION_SET_REF_LIST, arrayList);
         }
+    }
+
+    /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Object] */
+    @Override // java.lang.Comparable
+    public /* bridge */ /* synthetic */ int compareTo(ParameterAnnotationStruct parameterAnnotationStruct) {
+        return compareTo(parameterAnnotationStruct);
     }
 
     public int hashCode() {

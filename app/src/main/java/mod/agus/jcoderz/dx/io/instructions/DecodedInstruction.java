@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.io.instructions;
 
 import java.io.EOFException;
+
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dx.io.IndexType;
 import mod.agus.jcoderz.dx.io.OpcodeInfo;
@@ -15,9 +16,20 @@ public abstract class DecodedInstruction {
     private final int opcode;
     private final int target;
 
-    public abstract int getRegisterCount();
-
-    public abstract DecodedInstruction withIndex(int i);
+    public DecodedInstruction(InstructionCodec instructionCodec, int i, int i2, IndexType indexType2, int i3, long j) {
+        if (instructionCodec == null) {
+            throw new NullPointerException("format == null");
+        } else if (!Opcodes.isValidShape(i)) {
+            throw new IllegalArgumentException("invalid opcode");
+        } else {
+            this.format = instructionCodec;
+            this.opcode = i;
+            this.index = i2;
+            this.indexType = indexType2;
+            this.target = i3;
+            this.literal = j;
+        }
+    }
 
     public static DecodedInstruction decode(CodeInput codeInput) throws EOFException {
         int read = codeInput.read();
@@ -37,20 +49,9 @@ public abstract class DecodedInstruction {
         return decodedInstructionArr;
     }
 
-    public DecodedInstruction(InstructionCodec instructionCodec, int i, int i2, IndexType indexType2, int i3, long j) {
-        if (instructionCodec == null) {
-            throw new NullPointerException("format == null");
-        } else if (!Opcodes.isValidShape(i)) {
-            throw new IllegalArgumentException("invalid opcode");
-        } else {
-            this.format = instructionCodec;
-            this.opcode = i;
-            this.index = i2;
-            this.indexType = indexType2;
-            this.target = i3;
-            this.literal = j;
-        }
-    }
+    public abstract int getRegisterCount();
+
+    public abstract DecodedInstruction withIndex(int i);
 
     public final InstructionCodec getFormat() {
         return this.format;

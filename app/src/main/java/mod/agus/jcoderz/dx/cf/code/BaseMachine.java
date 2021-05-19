@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.code;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
@@ -10,6 +11,7 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 
 public abstract class BaseMachine implements Machine {
+    private final Prototype prototype;
     private int argCount;
     private TypeBearer[] args;
     private SwitchList auxCases;
@@ -21,9 +23,8 @@ public abstract class BaseMachine implements Machine {
     private int localIndex;
     private boolean localInfo;
     private RegisterSpec localTarget;
-    private final Prototype prototype;
     private int resultCount;
-    private TypeBearer[] results;
+    private final TypeBearer[] results;
 
     public BaseMachine(Prototype prototype2) {
         if (prototype2 == null) {
@@ -33,6 +34,10 @@ public abstract class BaseMachine implements Machine {
         this.args = new TypeBearer[10];
         this.results = new TypeBearer[6];
         clearArgs();
+    }
+
+    public static void throwLocalMismatch(TypeBearer typeBearer, TypeBearer typeBearer2) {
+        throw new SimException("local variable type mismatch: attempt to set or access a value of type " + typeBearer.toHuman() + " using a local variable of type " + typeBearer2.toHuman() + ". This is symptomatic of .class transformation tools " + "that ignore local variable information.");
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.Machine
@@ -178,7 +183,6 @@ public abstract class BaseMachine implements Machine {
         return i;
     }
 
-
     public final TypeBearer arg(int i) {
         if (i >= this.argCount) {
             throw new IllegalArgumentException("n >= argCount");
@@ -190,46 +194,37 @@ public abstract class BaseMachine implements Machine {
         }
     }
 
-
     public final Type getAuxType() {
         return this.auxType;
     }
-
 
     public final int getAuxInt() {
         return this.auxInt;
     }
 
-
     public final Constant getAuxCst() {
         return this.auxCst;
     }
-
 
     public final int getAuxTarget() {
         return this.auxTarget;
     }
 
-
     public final SwitchList getAuxCases() {
         return this.auxCases;
     }
-
 
     public final ArrayList<Constant> getInitValues() {
         return this.auxInitValues;
     }
 
-
     public final int getLocalIndex() {
         return this.localIndex;
     }
 
-
     public final boolean getLocalInfo() {
         return this.localInfo;
     }
-
 
     public final RegisterSpec getLocalTarget(boolean z) {
         if (this.localTarget == null) {
@@ -257,11 +252,9 @@ public abstract class BaseMachine implements Machine {
         }
     }
 
-
     public final void clearResult() {
         this.resultCount = 0;
     }
-
 
     public final void setResult(TypeBearer typeBearer) {
         if (typeBearer == null) {
@@ -271,7 +264,6 @@ public abstract class BaseMachine implements Machine {
         this.resultCount = 1;
     }
 
-
     public final void addResult(TypeBearer typeBearer) {
         if (typeBearer == null) {
             throw new NullPointerException("result == null");
@@ -280,14 +272,12 @@ public abstract class BaseMachine implements Machine {
         this.resultCount++;
     }
 
-
     public final int resultCount() {
         if (this.resultCount >= 0) {
             return this.resultCount;
         }
         throw new SimException("results never set");
     }
-
 
     public final int resultWidth() {
         int i = 0;
@@ -296,7 +286,6 @@ public abstract class BaseMachine implements Machine {
         }
         return i;
     }
-
 
     public final TypeBearer result(int i) {
         if (i >= this.resultCount) {
@@ -308,7 +297,6 @@ public abstract class BaseMachine implements Machine {
             throw new IllegalArgumentException("n < 0");
         }
     }
-
 
     public final void storeResults(Frame frame) {
         if (this.resultCount < 0) {
@@ -326,9 +314,5 @@ public abstract class BaseMachine implements Machine {
                 stack.push(this.results[i]);
             }
         }
-    }
-
-    public static void throwLocalMismatch(TypeBearer typeBearer, TypeBearer typeBearer2) {
-        throw new SimException("local variable type mismatch: attempt to set or access a value of type " + typeBearer.toHuman() + " using a local variable of type " + typeBearer2.toHuman() + ". This is symptomatic of .class transformation tools " + "that ignore local variable information.");
     }
 }

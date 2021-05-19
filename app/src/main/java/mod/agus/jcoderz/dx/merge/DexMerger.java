@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dex.Annotation;
 import mod.agus.jcoderz.dex.ClassData;
 import mod.agus.jcoderz.dex.ClassDef;
@@ -39,7 +40,6 @@ public final class DexMerger {
     private final Dex.Section classDataOut;
     private final Dex.Section codeOut;
     private final CollisionPolicy collisionPolicy;
-    private int compactWasteThreshold;
     private final TableOfContents contentsOut;
     private final Dex.Section debugInfoOut;
     private final Dex dexOut;
@@ -53,6 +53,7 @@ public final class DexMerger {
     private final Dex.Section stringDataOut;
     private final Dex.Section typeListOut;
     private final WriterSizes writerSizes;
+    private int compactWasteThreshold;
 
     public DexMerger(Dex[] dexArr, CollisionPolicy collisionPolicy2) throws IOException {
         this(dexArr, collisionPolicy2, new WriterSizes(dexArr));
@@ -170,22 +171,26 @@ public final class DexMerger {
             private com.android.dex.TableOfContents contentsOut;
             private Dex.Section idsDefsOut;
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
-            /* bridge */ /* synthetic */ void write(String str) {
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+                /* bridge */ /* synthetic */ void write(String str) {
                 write(str);
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.stringIds;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             String read(Dex.Section section, IndexMap indexMap, int i) {
                 return section.readString();
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 indexMap.stringIds[i2] = i3;
             }
@@ -199,22 +204,26 @@ public final class DexMerger {
             /* class mod.agus.jcoderz.dx.merge.DexMerger.2 */
 
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void write(Integer num) {
                 write(num);
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.typeIds;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             Integer read(Dex.Section section, IndexMap indexMap, int i) {
                 return Integer.valueOf(indexMap.adjustString(section.readInt()));
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 if (i3 < 0 || i3 > 65535) {
                     throw new DexIndexOverflowException("type ID not in [0, 0xffff]: " + i3);
@@ -229,22 +238,26 @@ public final class DexMerger {
             /* class mod.agus.jcoderz.dx.merge.DexMerger.3 */
 
             /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Comparable] */
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+            // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             /* bridge */ /* synthetic */ void write(TypeList typeList) {
                 write(typeList);
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.typeLists;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TypeList read(Dex.Section section, IndexMap indexMap, int i) {
                 return indexMap.adjustTypeList(section.readTypeList());
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 indexMap.putTypeListOffset(i, this.typeListOut.getPosition());
             }
@@ -257,22 +270,26 @@ public final class DexMerger {
             /* class mod.agus.jcoderz.dx.merge.DexMerger.4 */
 
             /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Comparable] */
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+            // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void write(ProtoId protoId) {
                 write(protoId);
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.protoIds;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             ProtoId read(Dex.Section section, IndexMap indexMap, int i) {
                 return indexMap.adjust(section.readProtoId());
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 if (i3 < 0 || i3 > 65535) {
                     throw new DexIndexOverflowException("proto ID not in [0, 0xffff]: " + i3);
@@ -287,22 +304,26 @@ public final class DexMerger {
             /* class mod.agus.jcoderz.dx.merge.DexMerger.5 */
 
             /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Comparable] */
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+            // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             /* bridge */ /* synthetic */ void write(FieldId fieldId) {
                 write(fieldId);
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.fieldIds;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             FieldId read(Dex.Section section, IndexMap indexMap, int i) {
                 return indexMap.adjust(section.readFieldId());
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 if (i3 < 0 || i3 > 65535) {
                     throw new DexIndexOverflowException("field ID not in [0, 0xffff]: " + i3);
@@ -315,17 +336,20 @@ public final class DexMerger {
 
     private void mergeMethodIds() {
         new IdMerger<MethodId>(this, this.idsDefsOut) {
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.methodIds;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             MethodId read(Dex.Section section, IndexMap indexMap, int i) {
                 return indexMap.adjust(section.readMethodId());
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 if (i3 < 0 || i3 > 65535) {
                     throw new DexIndexOverflowException("method ID not in [0, 0xffff]: " + i3);
@@ -346,22 +370,26 @@ public final class DexMerger {
             /* class mod.agus.jcoderz.dx.merge.DexMerger.7 */
 
             /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Comparable] */
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+            // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             /* bridge */ /* synthetic */ void write(Annotation annotation) {
                 write(annotation);
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             TableOfContents.Section getSection(TableOfContents tableOfContents) {
                 return tableOfContents.annotations;
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             Annotation read(Dex.Section section, IndexMap indexMap, int i) {
                 return indexMap.adjust(section.readAnnotation());
             }
 
-            @Override // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
+            @Override
+                // mod.agus.jcoderz.dx.merge.DexMerger.IdMerger
             void updateIndex(int i, IndexMap indexMap, int i2, int i3) {
                 indexMap.putAnnotationOffset(i, this.annotationOut.getPosition());
             }
@@ -787,6 +815,10 @@ public final class DexMerger {
         protected Dex.Section typeListOut;
         protected Dex.Section annotationOut;
 
+        protected IdMerger(DexMerger dexMerger, Dex.Section section) {
+            this.out = section;
+        }
+
         abstract TableOfContents.Section getSection(TableOfContents tableOfContents);
 
         abstract T read(Dex.Section section, IndexMap indexMap, int i);
@@ -794,10 +826,6 @@ public final class DexMerger {
         abstract void updateIndex(int i, IndexMap indexMap, int i2, int i3);
 
         abstract void write(T t);
-
-        protected IdMerger(DexMerger dexMerger, Dex.Section section) {
-            this.out = section;
-        }
 
         /* JADX DEBUG: Multi-variable search result rejected for r15v0, resolved type: mod.agus.jcoderz.dx.merge.DexMerger$IdMerger<T extends java.lang.Comparable<T>> */
         /* JADX WARN: Multi-variable type inference failed */
@@ -846,6 +874,7 @@ public final class DexMerger {
             }
             return position;
         }
+
         public final void mergeUnsorted() {
             int i;
             getSection(DexMerger.this.contentsOut).off = this.out.getPosition();
@@ -890,17 +919,17 @@ public final class DexMerger {
             final Dex source;
             final T value;
 
-            @Override // java.lang.Comparable
-            public /* bridge */ /* synthetic */ int compareTo(IdMerger<T>.UnsortedValue unsortedValue) {
-                return compareTo(unsortedValue);
-            }
-
             UnsortedValue(Dex dex, IndexMap indexMap2, T t, int i, int i2) {
                 this.source = dex;
                 this.indexMap = indexMap2;
                 this.value = t;
                 this.index = i;
                 this.offset = i2;
+            }
+
+            @Override // java.lang.Comparable
+            public /* bridge */ /* synthetic */ int compareTo(IdMerger<T>.UnsortedValue unsortedValue) {
+                return compareTo(unsortedValue);
             }
 
             public int compareToTwo(IdMerger<T>.UnsortedValue unsortedValue) {

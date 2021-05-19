@@ -4,16 +4,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.util.MutabilityControl;
 
 public final class Annotations extends MutabilityControl implements Comparable<Annotations> {
     public static final Annotations EMPTY = new Annotations();
-    private final TreeMap<CstType, Annotation> annotations = new TreeMap<>();
 
     static {
         EMPTY.setImmutable();
     }
+
+    private final TreeMap<CstType, Annotation> annotations = new TreeMap<>();
 
     public static Annotations combine(Annotations annotations2, Annotations annotations3) {
         Annotations annotations4 = new Annotations();

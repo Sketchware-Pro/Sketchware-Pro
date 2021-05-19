@@ -1,12 +1,14 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
+
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.flexbox.FlexItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import a.a.a.sy;
 
 public class ItemFloatingActionButton extends FloatingActionButton implements sy {
     public int maincolor;
@@ -30,20 +32,20 @@ public class ItemFloatingActionButton extends FloatingActionButton implements sy
         return this.r;
     }
 
-    public boolean getFixed() {
-        return this.t;
-    }
-
-    public boolean getSelection() {
-        return this.s;
-    }
-
     public void setBean(ViewBean viewBean) {
         this.r = viewBean;
     }
 
+    public boolean getFixed() {
+        return this.t;
+    }
+
     public void setFixed(boolean z) {
         this.t = z;
+    }
+
+    public boolean getSelection() {
+        return this.s;
     }
 
     /* JADX DEBUG: Multi-variable search result rejected for r0v0, resolved type: com.besome.sketch.editor.view.item.ItemFloatingActionButton */

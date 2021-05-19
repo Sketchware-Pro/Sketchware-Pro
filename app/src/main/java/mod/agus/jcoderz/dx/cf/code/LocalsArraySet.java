@@ -1,13 +1,15 @@
 package mod.agus.jcoderz.dx.cf.code;
 
+import org.eclipse.jdt.internal.compiler.util.Util;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.eclipse.jdt.internal.compiler.util.Util;
 
 public class LocalsArraySet extends LocalsArray {
     private final OneLocalsArray primary;

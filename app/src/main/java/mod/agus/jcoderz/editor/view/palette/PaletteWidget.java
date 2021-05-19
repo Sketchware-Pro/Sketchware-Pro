@@ -24,7 +24,7 @@ import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
 
 public class PaletteWidget {
-    
+
     public static View a(String str, String str2, String str3, Context context) {
         if (str2.equals("DatePicker")) {
             return new IconDatePicker(context);

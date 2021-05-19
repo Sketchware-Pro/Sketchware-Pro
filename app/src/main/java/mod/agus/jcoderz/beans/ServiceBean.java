@@ -6,8 +6,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 
 public class ServiceBean {
     public FilePathUtil fpu = new FilePathUtil();
-    public FileResConfig frc = new FileResConfig(this.numProj);
     public String numProj;
+    public FileResConfig frc = new FileResConfig(this.numProj);
 
     public ServiceBean(String str) {
         this.numProj = str;

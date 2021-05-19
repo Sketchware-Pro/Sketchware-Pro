@@ -1,11 +1,13 @@
 package mod.agus.jcoderz.dx.io.instructions;
 
+import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+
 import java.io.EOFException;
+
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dx.io.IndexType;
 import mod.agus.jcoderz.dx.io.OpcodeInfo;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
 
 public enum InstructionCodec {
     FORMAT_00X {
@@ -523,10 +525,6 @@ public enum InstructionCodec {
 
     }
 
-    public abstract DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException;
-
-    public abstract void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput);
-
     InstructionCodec(InstructionCodec instructionCodec) {
         this();
     }
@@ -670,4 +668,8 @@ public enum InstructionCodec {
     public static int nibble3(int i) {
         return (i >> 12) & 15;
     }
+
+    public abstract DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException;
+
+    public abstract void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput);
 }

@@ -6,6 +6,10 @@ public final class CstBoolean extends CstLiteral32 {
     public static final CstBoolean VALUE_FALSE = new CstBoolean(false);
     public static final CstBoolean VALUE_TRUE = new CstBoolean(true);
 
+    private CstBoolean(boolean z) {
+        super(z ? 1 : 0);
+    }
+
     public static CstBoolean make(boolean z) {
         return z ? VALUE_TRUE : VALUE_FALSE;
     }
@@ -18,10 +22,6 @@ public final class CstBoolean extends CstLiteral32 {
             return VALUE_TRUE;
         }
         throw new IllegalArgumentException("bogus value: " + i);
-    }
-
-    private CstBoolean(boolean z) {
-        super(z ? 1 : 0);
     }
 
     public String toString() {

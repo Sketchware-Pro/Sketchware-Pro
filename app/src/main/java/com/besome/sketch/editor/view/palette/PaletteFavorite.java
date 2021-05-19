@@ -1,20 +1,24 @@
 package com.besome.sketch.editor.view.palette;
 
-import a.a.a.uy;
-import a.a.a.wB;
-import a.a.a.xB;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.besome.sketch.shared.views.SharedViewsListActivity;
+
 import java.util.ArrayList;
+
+import a.a.a.uy;
+import a.a.a.wB;
+import a.a.a.xB;
 
 public class PaletteFavorite extends LinearLayout implements View.OnClickListener {
     public LinearLayout a;
@@ -23,6 +27,11 @@ public class PaletteFavorite extends LinearLayout implements View.OnClickListene
 
     public PaletteFavorite(Context context) {
         super(context);
+        a(context);
+    }
+
+    public PaletteFavorite(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         a(context);
     }
 
@@ -53,11 +62,6 @@ public class PaletteFavorite extends LinearLayout implements View.OnClickListene
         } else {
             this.b.a();
         }
-    }
-
-    public PaletteFavorite(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        a(context);
     }
 
     public void a() {

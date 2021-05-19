@@ -3,25 +3,14 @@ package mod.agus.jcoderz.dx.ssa;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
-import mod.agus.jcoderz.dx.ssa.DomFront;
-import mod.agus.jcoderz.dx.ssa.SsaBasicBlock;
 
 public final class Dominators {
-    private ArrayList<SsaBasicBlock> blocks;
     private final DomFront.DomInfo[] domInfos;
-    private final DFSInfo[] info = new DFSInfo[(this.blocks.size() + 2)];
     private final SsaMethod meth;
     private final boolean postdom;
     private final ArrayList<SsaBasicBlock> vertex = new ArrayList<>();
-
-    /* access modifiers changed from: private */
-    public static final class DFSInfo {
-        public SsaBasicBlock ancestor;
-        public ArrayList<SsaBasicBlock> bucket = new ArrayList<>();
-        public SsaBasicBlock parent;
-        public SsaBasicBlock rep;
-        public int semidom;
-    }
+    private ArrayList<SsaBasicBlock> blocks;
+    private final DFSInfo[] info = new DFSInfo[(this.blocks.size() + 2)];
 
     private Dominators(SsaMethod ssaMethod, DomFront.DomInfo[] domInfoArr, boolean z) {
         this.meth = ssaMethod;
@@ -128,6 +117,15 @@ public final class Dominators {
                 this.domInfos[ssaBasicBlock3.getIndex()].idom = this.domInfos[this.domInfos[ssaBasicBlock3.getIndex()].idom].idom;
             }
         }
+    }
+
+    /* access modifiers changed from: private */
+    public static final class DFSInfo {
+        public SsaBasicBlock ancestor;
+        public ArrayList<SsaBasicBlock> bucket = new ArrayList<>();
+        public SsaBasicBlock parent;
+        public SsaBasicBlock rep;
+        public int semidom;
     }
 
     /* access modifiers changed from: private */

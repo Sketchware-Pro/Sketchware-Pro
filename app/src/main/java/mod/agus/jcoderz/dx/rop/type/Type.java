@@ -1,16 +1,16 @@
 package mod.agus.jcoderz.dx.rop.type;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
-import io.github.rosemoe.editor.widget.CodeEditor;
-import java.util.HashMap;
-import mod.agus.jcoderz.dx.util.Hex;
+
 import org.eclipse.jdt.internal.compiler.util.Util;
 
+import java.util.HashMap;
+
+import io.github.rosemoe.editor.widget.CodeEditor;
+import mod.agus.jcoderz.dx.util.Hex;
+
 public final class Type implements TypeBearer, Comparable<Type> {
-    public static final Type ANNOTATION = intern("Ljava/lang/annotation/Annotation;");
     public static final Type BOOLEAN = new Type("Z", 1);
-    public static final Type BOOLEAN_ARRAY = BOOLEAN.getArrayType();
-    public static final Type BOOLEAN_CLASS = intern("Ljava/lang/Boolean;");
     public static final int BT_ADDR = 10;
     public static final int BT_BOOLEAN = 1;
     public static final int BT_BYTE = 2;
@@ -24,45 +24,41 @@ public final class Type implements TypeBearer, Comparable<Type> {
     public static final int BT_SHORT = 8;
     public static final int BT_VOID = 0;
     public static final Type BYTE = new Type("B", 2);
+    public static final Type CHAR = new Type("C", 3);
+    public static final Type DOUBLE = new Type("D", 4);
+    public static final Type FLOAT = new Type("F", 5);
+    public static final Type INT = new Type("I", 6);
+    public static final Type KNOWN_NULL = new Type("<null>", 9);
+    public static final Type LONG = new Type("J", 7);
+    public static final Type RETURN_ADDRESS = new Type("<addr>", 10);
+    public static final Type SHORT = new Type("S", 8);
+    public static final Type VOID = new Type("V", 0);
+    private static final HashMap<String, Type> internTable = new HashMap<>((int) CodeEditor.DEFAULT_CURSOR_BLINK_PERIOD);
+    public static final Type ANNOTATION = intern("Ljava/lang/annotation/Annotation;");
+    public static final Type BOOLEAN_ARRAY = BOOLEAN.getArrayType();
+    public static final Type BOOLEAN_CLASS = intern("Ljava/lang/Boolean;");
     public static final Type BYTE_ARRAY = BYTE.getArrayType();
     public static final Type BYTE_CLASS = intern("Ljava/lang/Byte;");
-    public static final Type CHAR = new Type("C", 3);
     public static final Type CHARACTER_CLASS = intern("Ljava/lang/Character;");
     public static final Type CHAR_ARRAY = CHAR.getArrayType();
     public static final Type CLASS = intern("Ljava/lang/Class;");
     public static final Type CLONEABLE = intern("Ljava/lang/Cloneable;");
-    public static final Type DOUBLE = new Type("D", 4);
     public static final Type DOUBLE_ARRAY = DOUBLE.getArrayType();
     public static final Type DOUBLE_CLASS = intern("Ljava/lang/Double;");
-    public static final Type FLOAT = new Type("F", 5);
     public static final Type FLOAT_ARRAY = FLOAT.getArrayType();
     public static final Type FLOAT_CLASS = intern("Ljava/lang/Float;");
-    public static final Type INT = new Type("I", 6);
     public static final Type INTEGER_CLASS = intern("Ljava/lang/Integer;");
     public static final Type INT_ARRAY = INT.getArrayType();
-    public static final Type KNOWN_NULL = new Type("<null>", 9);
-    public static final Type LONG = new Type("J", 7);
     public static final Type LONG_ARRAY = LONG.getArrayType();
     public static final Type LONG_CLASS = intern("Ljava/lang/Long;");
     public static final Type OBJECT = intern("Ljava/lang/Object;");
     public static final Type OBJECT_ARRAY = OBJECT.getArrayType();
-    public static final Type RETURN_ADDRESS = new Type("<addr>", 10);
     public static final Type SERIALIZABLE = intern("Ljava/io/Serializable;");
-    public static final Type SHORT = new Type("S", 8);
     public static final Type SHORT_ARRAY = SHORT.getArrayType();
     public static final Type SHORT_CLASS = intern("Ljava/lang/Short;");
     public static final Type STRING = intern("Ljava/lang/String;");
     public static final Type THROWABLE = intern("Ljava/lang/Throwable;");
-    public static final Type VOID = new Type("V", 0);
     public static final Type VOID_CLASS = intern("Ljava/lang/Void;");
-    private static final HashMap<String, Type> internTable = new HashMap<>((int) CodeEditor.DEFAULT_CURSOR_BLINK_PERIOD);
-    private Type arrayType;
-    private final int basicType;
-    private String className;
-    private Type componentType;
-    private final String descriptor;
-    private Type initializedType;
-    private final int newAt;
 
     static {
         putIntern(BOOLEAN);
@@ -73,6 +69,35 @@ public final class Type implements TypeBearer, Comparable<Type> {
         putIntern(INT);
         putIntern(LONG);
         putIntern(SHORT);
+    }
+
+    private final int basicType;
+    private final String descriptor;
+    private final int newAt;
+    private Type arrayType;
+    private String className;
+    private Type componentType;
+    private Type initializedType;
+
+    private Type(String str, int i, int i2) {
+        if (str == null) {
+            throw new NullPointerException("descriptor == null");
+        } else if (i < 0 || i >= 11) {
+            throw new IllegalArgumentException("bad basicType");
+        } else if (i2 < -1) {
+            throw new IllegalArgumentException("newAt < -1");
+        } else {
+            this.descriptor = str;
+            this.basicType = i;
+            this.newAt = i2;
+            this.arrayType = null;
+            this.componentType = null;
+            this.initializedType = null;
+        }
+    }
+
+    private Type(String str, int i) {
+        this(str, i, -1);
     }
 
     public static Type intern(String str) {
@@ -134,29 +159,20 @@ public final class Type implements TypeBearer, Comparable<Type> {
         } else if (str.startsWith("[")) {
             return intern(str);
         } else {
-            return intern(String.valueOf('L') + str + ';');
+            return intern('L' + str + ';');
         }
     }
 
-    private Type(String str, int i, int i2) {
-        if (str == null) {
-            throw new NullPointerException("descriptor == null");
-        } else if (i < 0 || i >= 11) {
-            throw new IllegalArgumentException("bad basicType");
-        } else if (i2 < -1) {
-            throw new IllegalArgumentException("newAt < -1");
-        } else {
-            this.descriptor = str;
-            this.basicType = i;
-            this.newAt = i2;
-            this.arrayType = null;
-            this.componentType = null;
-            this.initializedType = null;
+    private static Type putIntern(Type type) {
+        synchronized (internTable) {
+            String descriptor2 = type.getDescriptor();
+            Type type2 = internTable.get(descriptor2);
+            if (type2 != null) {
+                return type2;
+            }
+            internTable.put(descriptor2, type);
+            return type;
         }
-    }
-
-    private Type(String str, int i) {
-        this(str, i, -1);
     }
 
     public boolean equals(Object obj) {
@@ -204,7 +220,7 @@ public final class Type implements TypeBearer, Comparable<Type> {
                 return "short";
             case 9:
                 if (isArray()) {
-                    return String.valueOf(getComponentType().toHuman()) + "[]";
+                    return getComponentType().toHuman() + "[]";
                 }
                 return getClassName().replace(DialogConfigs.DIRECTORY_SEPERATOR, ".");
             default:
@@ -376,7 +392,7 @@ public final class Type implements TypeBearer, Comparable<Type> {
 
     public Type getArrayType() {
         if (this.arrayType == null) {
-            this.arrayType = putIntern(new Type(String.valueOf((char) Util.C_ARRAY) + this.descriptor, 9));
+            this.arrayType = putIntern(new Type((char) Util.C_ARRAY + this.descriptor, 9));
         }
         return this.arrayType;
     }
@@ -399,21 +415,9 @@ public final class Type implements TypeBearer, Comparable<Type> {
         } else if (isUninitialized()) {
             throw new IllegalArgumentException("already uninitialized: " + this.descriptor);
         } else {
-            Type type = new Type(String.valueOf('N') + Hex.u2(i) + this.descriptor, 9, i);
+            Type type = new Type('N' + Hex.u2(i) + this.descriptor, 9, i);
             type.initializedType = this;
             return putIntern(type);
-        }
-    }
-
-    private static Type putIntern(Type type) {
-        synchronized (internTable) {
-            String descriptor2 = type.getDescriptor();
-            Type type2 = internTable.get(descriptor2);
-            if (type2 != null) {
-                return type2;
-            }
-            internTable.put(descriptor2, type);
-            return type;
         }
     }
 }

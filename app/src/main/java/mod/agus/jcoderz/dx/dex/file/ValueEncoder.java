@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.Collection;
+
 import mod.agus.jcoderz.dex.EncodedValueCodec;
 import mod.agus.jcoderz.dx.rop.annotation.Annotation;
 import mod.agus.jcoderz.dx.rop.annotation.NameValuePair;
@@ -53,6 +54,89 @@ public final class ValueEncoder {
         } else {
             this.file = dexFile;
             this.out = annotatedOutput;
+        }
+    }
+
+    private static int constantToValueType(Constant constant) {
+        if (constant instanceof CstByte) {
+            return 0;
+        }
+        if (constant instanceof CstShort) {
+            return 2;
+        }
+        if (constant instanceof CstChar) {
+            return 3;
+        }
+        if (constant instanceof CstInteger) {
+            return 4;
+        }
+        if (constant instanceof CstLong) {
+            return 6;
+        }
+        if (constant instanceof CstFloat) {
+            return 16;
+        }
+        if (constant instanceof CstDouble) {
+            return 17;
+        }
+        if (constant instanceof CstString) {
+            return 23;
+        }
+        if (constant instanceof CstType) {
+            return 24;
+        }
+        if (constant instanceof CstFieldRef) {
+            return 25;
+        }
+        if (constant instanceof CstMethodRef) {
+            return 26;
+        }
+        if (constant instanceof CstEnumRef) {
+            return 27;
+        }
+        if (constant instanceof CstArray) {
+            return 28;
+        }
+        if (constant instanceof CstAnnotation) {
+            return 29;
+        }
+        if (constant instanceof CstKnownNull) {
+            return 30;
+        }
+        if (constant instanceof CstBoolean) {
+            return 31;
+        }
+        throw new RuntimeException("Shouldn't happen");
+    }
+
+    public static String constantToHuman(Constant constant) {
+        if (constantToValueType(constant) == 30) {
+            return "null";
+        }
+        return constant.typeName() + ' ' + constant.toHuman();
+    }
+
+    public static void addContents(DexFile dexFile, Annotation annotation) {
+        TypeIdsSection typeIds = dexFile.getTypeIds();
+        StringIdsSection stringIds = dexFile.getStringIds();
+        typeIds.intern(annotation.getType());
+        for (NameValuePair nameValuePair : annotation.getNameValuePairs()) {
+            stringIds.intern(nameValuePair.getName());
+            addContents(dexFile, nameValuePair.getValue());
+        }
+    }
+
+    public static void addContents(DexFile dexFile, Constant constant) {
+        if (constant instanceof CstAnnotation) {
+            addContents(dexFile, ((CstAnnotation) constant).getAnnotation());
+        } else if (constant instanceof CstArray) {
+            CstArray.List list = ((CstArray) constant).getList();
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                addContents(dexFile, list.get(i));
+            }
+        } else {
+            dexFile.internIfAppropriate(constant);
         }
     }
 
@@ -124,58 +208,6 @@ public final class ValueEncoder {
         }
     }
 
-    private static int constantToValueType(Constant constant) {
-        if (constant instanceof CstByte) {
-            return 0;
-        }
-        if (constant instanceof CstShort) {
-            return 2;
-        }
-        if (constant instanceof CstChar) {
-            return 3;
-        }
-        if (constant instanceof CstInteger) {
-            return 4;
-        }
-        if (constant instanceof CstLong) {
-            return 6;
-        }
-        if (constant instanceof CstFloat) {
-            return 16;
-        }
-        if (constant instanceof CstDouble) {
-            return 17;
-        }
-        if (constant instanceof CstString) {
-            return 23;
-        }
-        if (constant instanceof CstType) {
-            return 24;
-        }
-        if (constant instanceof CstFieldRef) {
-            return 25;
-        }
-        if (constant instanceof CstMethodRef) {
-            return 26;
-        }
-        if (constant instanceof CstEnumRef) {
-            return 27;
-        }
-        if (constant instanceof CstArray) {
-            return 28;
-        }
-        if (constant instanceof CstAnnotation) {
-            return 29;
-        }
-        if (constant instanceof CstKnownNull) {
-            return 30;
-        }
-        if (constant instanceof CstBoolean) {
-            return 31;
-        }
-        throw new RuntimeException("Shouldn't happen");
-    }
-
     public void writeArray(CstArray cstArray, boolean z) {
         boolean z2 = z && this.out.annotates();
         CstArray.List list = cstArray.getList();
@@ -234,37 +266,6 @@ public final class ValueEncoder {
         }
         if (z2) {
             this.out.endAnnotation();
-        }
-    }
-
-    public static String constantToHuman(Constant constant) {
-        if (constantToValueType(constant) == 30) {
-            return "null";
-        }
-        return constant.typeName() + ' ' + constant.toHuman();
-    }
-
-    public static void addContents(DexFile dexFile, Annotation annotation) {
-        TypeIdsSection typeIds = dexFile.getTypeIds();
-        StringIdsSection stringIds = dexFile.getStringIds();
-        typeIds.intern(annotation.getType());
-        for (NameValuePair nameValuePair : annotation.getNameValuePairs()) {
-            stringIds.intern(nameValuePair.getName());
-            addContents(dexFile, nameValuePair.getValue());
-        }
-    }
-
-    public static void addContents(DexFile dexFile, Constant constant) {
-        if (constant instanceof CstAnnotation) {
-            addContents(dexFile, ((CstAnnotation) constant).getAnnotation());
-        } else if (constant instanceof CstArray) {
-            CstArray.List list = ((CstArray) constant).getList();
-            int size = list.size();
-            for (int i = 0; i < size; i++) {
-                addContents(dexFile, list.get(i));
-            }
-        } else {
-            dexFile.internIfAppropriate(constant);
         }
     }
 }

@@ -1,12 +1,15 @@
 package mod.hey.studios.moreblock;
 
-import a.a.a.MB;
-import a.a.a.xB;
 import android.content.Context;
 import android.text.Spanned;
+
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import a.a.a.MB;
+import a.a.a.xB;
 
 public class MoreblockValidator extends MB {
     public String[] f;

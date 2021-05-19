@@ -8,16 +8,16 @@ import mod.agus.jcoderz.dx.ssa.RegisterMapper;
 public final class LocalStart extends ZeroSizeInsn {
     private final RegisterSpec local;
 
-    public static String localString(RegisterSpec registerSpec) {
-        return String.valueOf(registerSpec.regString()) + ' ' + registerSpec.getLocalItem().toString() + ": " + registerSpec.getTypeBearer().toHuman();
-    }
-
     public LocalStart(SourcePosition sourcePosition, RegisterSpec registerSpec) {
         super(sourcePosition);
         if (registerSpec == null) {
             throw new NullPointerException("local == null");
         }
         this.local = registerSpec;
+    }
+
+    public static String localString(RegisterSpec registerSpec) {
+        return registerSpec.regString() + ' ' + registerSpec.getLocalItem().toString() + ": " + registerSpec.getTypeBearer().toHuman();
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.ZeroSizeInsn, mod.agus.jcoderz.dx.dex.code.DalvInsn

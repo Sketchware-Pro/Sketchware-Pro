@@ -35,7 +35,7 @@ public class AttributeFactory {
                 }
                 return parse0(directClassFile, i, cstString2.getString(), i2 + 6, i3, parseObserver);
             } catch (ParseException e) {
-                e.addContext("...while parsing " + (0 != 0 ? String.valueOf(cstString.toHuman()) + " " : "") + "attribute at offset " + Hex.u4(i2));
+                e.addContext("...while parsing " + (0 != 0 ? cstString.toHuman() + " " : "") + "attribute at offset " + Hex.u4(i2));
                 throw e;
             }
         }

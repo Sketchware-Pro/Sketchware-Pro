@@ -1,7 +1,5 @@
 package mod.hilal.saif.asd;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -37,6 +35,8 @@ import mod.SketchwareUtil;
 import mod.hey.studios.code.ResHelper;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
+
+import static mod.SketchwareUtil.getDip;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
 

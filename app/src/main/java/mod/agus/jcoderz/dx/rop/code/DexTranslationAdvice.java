@@ -4,9 +4,9 @@ import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.type.Type;
 
 public final class DexTranslationAdvice implements TranslationAdvice {
-    private static final int MIN_INVOKE_IN_ORDER = 6;
     public static final DexTranslationAdvice NO_SOURCES_IN_ORDER = new DexTranslationAdvice(true);
     public static final DexTranslationAdvice THE_ONE = new DexTranslationAdvice();
+    private static final int MIN_INVOKE_IN_ORDER = 6;
     private final boolean disableSourcesInOrder;
 
     private DexTranslationAdvice() {

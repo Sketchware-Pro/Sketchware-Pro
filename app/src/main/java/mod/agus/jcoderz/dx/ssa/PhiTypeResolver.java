@@ -2,6 +2,7 @@ package mod.agus.jcoderz.dx.ssa;
 
 import java.util.BitSet;
 import java.util.List;
+
 import mod.agus.jcoderz.dx.cf.code.Merger;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
@@ -9,16 +10,20 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 
 public class PhiTypeResolver {
-    SsaMethod ssaMeth;
     private final BitSet worklist;
+    SsaMethod ssaMeth;
+
+    private PhiTypeResolver(SsaMethod ssaMethod) {
+        this.ssaMeth = ssaMethod;
+        this.worklist = new BitSet(ssaMethod.getRegCount());
+    }
 
     public static void process(SsaMethod ssaMethod) {
         new PhiTypeResolver(ssaMethod).run();
     }
 
-    private PhiTypeResolver(SsaMethod ssaMethod) {
-        this.ssaMeth = ssaMethod;
-        this.worklist = new BitSet(ssaMethod.getRegCount());
+    private static boolean equalsHandlesNulls(LocalItem localItem, LocalItem localItem2) {
+        return localItem == localItem2 || (localItem != null && localItem.equals(localItem2));
     }
 
     private void run() {
@@ -48,10 +53,6 @@ public class PhiTypeResolver {
                 return;
             }
         }
-    }
-
-    private static boolean equalsHandlesNulls(LocalItem localItem, LocalItem localItem2) {
-        return localItem == localItem2 || (localItem != null && localItem.equals(localItem2));
     }
 
     /* access modifiers changed from: package-private */

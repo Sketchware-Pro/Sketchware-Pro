@@ -1,8 +1,9 @@
 package mod.agus.jcoderz.editor.manifest;
 
-import a.a.a.Nx;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import a.a.a.Nx;
 
 public class EditorManifest {
     public static void writeAttrIntentFilter(Nx nx, HashMap<String, ArrayList> hashMap) {
@@ -166,7 +167,7 @@ public class EditorManifest {
         if (!str.isEmpty()) {
             Nx nx3 = new Nx("provider");
             nx3.a("android", "name", "com.facebook.ads.AudienceNetworkContentProvider");
-            nx3.a("android", "authorities", String.valueOf(str) + ".AudienceNetworkContentProvider");
+            nx3.a("android", "authorities", str + ".AudienceNetworkContentProvider");
             nx3.a("android", "exported", "false");
             nx.a(nx3);
         }

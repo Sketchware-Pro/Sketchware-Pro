@@ -1,13 +1,16 @@
 package dev.aldi.sayuti.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+
 import androidx.appcompat.widget.AppCompatTextView;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemWaveSideBar extends AppCompatTextView implements sy {
     public ViewBean d;
@@ -37,12 +40,25 @@ public class ItemWaveSideBar extends AppCompatTextView implements sy {
         return this.d;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.d = viewBean;
+    }
+
     public boolean getFixed() {
         return this.f;
     }
 
+    public void setFixed(boolean z) {
+        this.f = z;
+    }
+
     public boolean getSelection() {
         return this.e;
+    }
+
+    public void setSelection(boolean z) {
+        this.e = z;
+        invalidate();
     }
 
     public void onDraw(Canvas canvas) {
@@ -52,21 +68,8 @@ public class ItemWaveSideBar extends AppCompatTextView implements sy {
         ItemWaveSideBar.super.onDraw(canvas);
     }
 
-    public void setBean(ViewBean viewBean) {
-        this.d = viewBean;
-    }
-
-    public void setFixed(boolean z) {
-        this.f = z;
-    }
-
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.h;
         ItemWaveSideBar.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
-    }
-
-    public void setSelection(boolean z) {
-        this.e = z;
-        invalidate();
     }
 }

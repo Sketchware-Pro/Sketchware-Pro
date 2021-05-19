@@ -42,7 +42,6 @@ import javax.crypto.spec.SecretKeySpec;
 import id.indosw.mod.codeviewrevo.CodeViewRevo;
 import id.indosw.mod.codeviewrevo.Language;
 import id.indosw.mod.codeviewrevo.SyntaxManager;
-
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 

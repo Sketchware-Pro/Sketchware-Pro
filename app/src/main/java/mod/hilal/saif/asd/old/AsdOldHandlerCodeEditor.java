@@ -1,7 +1,6 @@
 package mod.hilal.saif.asd.old;
 
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.besome.sketch.editor.LogicEditorActivity;
 
@@ -10,7 +9,7 @@ import mod.SketchwareUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 
 public class AsdOldHandlerCodeEditor implements View.OnClickListener {
-    
+
     public final boolean b;
     public final String con;
     public final AsdOldDialog dialog;

@@ -4,8 +4,8 @@ import mod.agus.jcoderz.dx.rop.type.Prototype;
 import mod.agus.jcoderz.dx.rop.type.Type;
 
 public abstract class CstBaseMethodRef extends CstMemberRef {
-    private Prototype instancePrototype = null;
     private final Prototype prototype = Prototype.intern(getNat().getDescriptor().getString());
+    private Prototype instancePrototype = null;
 
     CstBaseMethodRef(CstType cstType, CstNat cstNat) {
         super(cstType, cstNat);

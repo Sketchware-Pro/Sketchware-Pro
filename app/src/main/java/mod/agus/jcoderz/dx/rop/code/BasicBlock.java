@@ -11,10 +11,6 @@ public final class BasicBlock implements LabeledItem {
     private final int primarySuccessor;
     private final IntList successors;
 
-    public interface Visitor {
-        void visitBlock(BasicBlock basicBlock);
-    }
-
     public BasicBlock(int i, InsnList insnList, IntList intList, int i2) {
         if (i < 0) {
             throw new IllegalArgumentException("label < 0");
@@ -114,6 +110,10 @@ public final class BasicBlock implements LabeledItem {
     }
 
     public String toString() {
-        return String.valueOf('{') + Hex.u2(this.label) + '}';
+        return '{' + Hex.u2(this.label) + '}';
+    }
+
+    public interface Visitor {
+        void visitBlock(BasicBlock basicBlock);
     }
 }

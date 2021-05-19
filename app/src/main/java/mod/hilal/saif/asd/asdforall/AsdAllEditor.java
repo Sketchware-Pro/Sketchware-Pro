@@ -1,7 +1,5 @@
 package mod.hilal.saif.asd.asdforall;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -23,6 +21,8 @@ import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
+
+import static mod.SketchwareUtil.getDip;
 
 public class AsdAllEditor extends Dialog {
 

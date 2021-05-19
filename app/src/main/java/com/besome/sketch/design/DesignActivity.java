@@ -1213,13 +1213,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                 } else {
 
                                     switch (compileType) {
-                                        case Compiler.TYPE_JAVA :
+                                        case Compiler.TYPE_JAVA:
                                             publishProgress("Running D8...");
                                             break;
-                                        case Compiler.TYPE_D8 :
+                                        case Compiler.TYPE_D8:
                                             publishProgress("Merging dex...");
                                             break;
-                                        case Compiler.TYPE_MERGE :
+                                        case Compiler.TYPE_MERGE:
                                             publishProgress("Building apk...");
                                             break;
                                     }

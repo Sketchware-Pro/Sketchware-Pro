@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
@@ -14,19 +13,16 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.Rops;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.rop.type.Type;
-import mod.agus.jcoderz.dx.ssa.PhiInsn;
-import mod.agus.jcoderz.dx.ssa.SsaBasicBlock;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 import mod.agus.jcoderz.dx.util.IntList;
 
 public class SsaRenamer implements Runnable {
     private static final boolean DEBUG = false;
-    private int nextSsaReg;
     private final int ropRegCount;
     private final SsaMethod ssaMeth;
     private final ArrayList<LocalItem> ssaRegToLocalItems;
-    private IntList ssaRegToRopReg;
     private final RegisterSpec[][] startsForBlocks;
+    private int nextSsaReg;
+    private IntList ssaRegToRopReg;
     private int threshold;
 
     public SsaRenamer(SsaMethod ssaMethod) {
@@ -48,6 +44,16 @@ public class SsaRenamer implements Runnable {
         this.threshold = i;
     }
 
+    public static RegisterSpec[] dupArray(RegisterSpec[] registerSpecArr) {
+        RegisterSpec[] registerSpecArr2 = new RegisterSpec[registerSpecArr.length];
+        System.arraycopy(registerSpecArr, 0, registerSpecArr2, 0, registerSpecArr.length);
+        return registerSpecArr2;
+    }
+
+    public static boolean equalsHandlesNulls(Object obj, Object obj2) {
+        return obj == obj2 || (obj != null && obj.equals(obj2));
+    }
+
     public void run() {
         this.ssaMeth.forEachBlockDepthFirstDom(new SsaBasicBlock.Visitor() {
 
@@ -60,18 +66,13 @@ public class SsaRenamer implements Runnable {
         this.ssaMeth.onInsnsChanged();
     }
 
-    public static RegisterSpec[] dupArray(RegisterSpec[] registerSpecArr) {
-        RegisterSpec[] registerSpecArr2 = new RegisterSpec[registerSpecArr.length];
-        System.arraycopy(registerSpecArr, 0, registerSpecArr2, 0, registerSpecArr.length);
-        return registerSpecArr2;
-    }
-
     private LocalItem getLocalForNewReg(int i) {
         if (i < this.ssaRegToLocalItems.size()) {
             return this.ssaRegToLocalItems.get(i);
         }
         return null;
     }
+
     private void setNameForSsaReg(RegisterSpec registerSpec) {
         int reg = registerSpec.getReg();
         LocalItem localItem = registerSpec.getLocalItem();
@@ -90,10 +91,6 @@ public class SsaRenamer implements Runnable {
         return i < this.ropRegCount;
     }
 
-    public static boolean equalsHandlesNulls(Object obj, Object obj2) {
-        return obj == obj2 || (obj != null && obj.equals(obj2));
-    }
-
     private class BlockRenamer implements SsaInsn.Visitor {
         private final SsaBasicBlock block;
         private final RegisterSpec[] currentMapping;
@@ -105,24 +102,6 @@ public class SsaRenamer implements Runnable {
             this.block = ssaBasicBlock;
             this.currentMapping = SsaRenamer.this.startsForBlocks[ssaBasicBlock.getIndex()];
             SsaRenamer.this.startsForBlocks[ssaBasicBlock.getIndex()] = null;
-        }
-
-        private class RenamingMapper extends RegisterMapper {
-            public RenamingMapper() {
-            }
-
-            @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
-            public int getNewRegisterCount() {
-                return SsaRenamer.this.nextSsaReg;
-            }
-
-            @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
-            public RegisterSpec map(RegisterSpec registerSpec) {
-                if (registerSpec == null) {
-                    return null;
-                }
-                return registerSpec.withReg(BlockRenamer.this.currentMapping[registerSpec.getReg()].getReg());
-            }
         }
 
         public void process() {
@@ -245,6 +224,24 @@ public class SsaRenamer implements Runnable {
             BitSet successors = this.block.getSuccessors();
             for (int nextSetBit = successors.nextSetBit(0); nextSetBit >= 0; nextSetBit = successors.nextSetBit(nextSetBit + 1)) {
                 SsaRenamer.this.ssaMeth.getBlocks().get(nextSetBit).forEachPhiInsn(r2);
+            }
+        }
+
+        private class RenamingMapper extends RegisterMapper {
+            public RenamingMapper() {
+            }
+
+            @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
+            public int getNewRegisterCount() {
+                return SsaRenamer.this.nextSsaReg;
+            }
+
+            @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
+            public RegisterSpec map(RegisterSpec registerSpec) {
+                if (registerSpec == null) {
+                    return null;
+                }
+                return registerSpec.withReg(BlockRenamer.this.currentMapping[registerSpec.getReg()].getReg());
             }
         }
     }

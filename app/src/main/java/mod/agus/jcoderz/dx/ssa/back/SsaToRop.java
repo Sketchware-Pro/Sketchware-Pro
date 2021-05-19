@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.InsnList;
@@ -28,14 +29,14 @@ public class SsaToRop {
     private final boolean minimizeRegisters;
     private final SsaMethod ssaMeth;
 
-    public static RopMethod convertToRopMethod(SsaMethod ssaMethod, boolean z) {
-        return new SsaToRop(ssaMethod, z).convert();
-    }
-
     private SsaToRop(SsaMethod ssaMethod, boolean z) {
         this.minimizeRegisters = z;
         this.ssaMeth = ssaMethod;
         this.interference = LivenessAnalyzer.constructInterferenceGraph(ssaMethod);
+    }
+
+    public static RopMethod convertToRopMethod(SsaMethod ssaMethod, boolean z) {
+        return new SsaToRop(ssaMethod, z).convert();
     }
 
     private RopMethod convert() {
@@ -79,25 +80,6 @@ public class SsaToRop {
         Iterator<SsaBasicBlock> it2 = blocks.iterator();
         while (it2.hasNext()) {
             it2.next().scheduleMovesFromPhis();
-        }
-    }
-
-    /* access modifiers changed from: private */
-    public static class PhiVisitor implements PhiInsn.Visitor {
-        private final ArrayList<SsaBasicBlock> blocks;
-
-        public PhiVisitor(ArrayList<SsaBasicBlock> arrayList) {
-            this.blocks = arrayList;
-        }
-
-        @Override // mod.agus.jcoderz.dx.ssa.PhiInsn.Visitor
-        public void visitPhiInsn(PhiInsn phiInsn) {
-            RegisterSpecList sources = phiInsn.getSources();
-            RegisterSpec result = phiInsn.getResult();
-            int size = sources.size();
-            for (int i = 0; i < size; i++) {
-                this.blocks.get(phiInsn.predBlockIndexForSourcesIndex(i)).addMoveToEnd(result, sources.get(i));
-            }
         }
     }
 
@@ -189,5 +171,24 @@ public class SsaToRop {
             iArr[i2] = numArr[i2].intValue();
         }
         return iArr;
+    }
+
+    /* access modifiers changed from: private */
+    public static class PhiVisitor implements PhiInsn.Visitor {
+        private final ArrayList<SsaBasicBlock> blocks;
+
+        public PhiVisitor(ArrayList<SsaBasicBlock> arrayList) {
+            this.blocks = arrayList;
+        }
+
+        @Override // mod.agus.jcoderz.dx.ssa.PhiInsn.Visitor
+        public void visitPhiInsn(PhiInsn phiInsn) {
+            RegisterSpecList sources = phiInsn.getSources();
+            RegisterSpec result = phiInsn.getResult();
+            int size = sources.size();
+            for (int i = 0; i < size; i++) {
+                this.blocks.get(phiInsn.predBlockIndexForSourcesIndex(i)).addMoveToEnd(result, sources.get(i));
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.direct;
 
 import java.io.IOException;
+
 import mod.agus.jcoderz.dx.cf.attrib.AttAnnotationDefault;
 import mod.agus.jcoderz.dx.cf.attrib.AttCode;
 import mod.agus.jcoderz.dx.cf.attrib.AttConstantValue;
@@ -39,6 +40,18 @@ import mod.agus.jcoderz.dx.util.Hex;
 
 public class StdAttributeFactory extends AttributeFactory {
     public static final StdAttributeFactory THE_ONE = new StdAttributeFactory();
+
+    private static Attribute throwSeverelyTruncated() {
+        throw new ParseException("severely truncated attribute");
+    }
+
+    private static Attribute throwTruncated() {
+        throw new ParseException("truncated attribute");
+    }
+
+    private static Attribute throwBadLength(int i) {
+        throw new ParseException("bad attribute length; expected length " + Hex.u4(i));
+    }
 
     /* access modifiers changed from: protected */
     @Override // mod.agus.jcoderz.dx.cf.direct.AttributeFactory
@@ -198,7 +211,7 @@ public class StdAttributeFactory extends AttributeFactory {
             CstType cstType = (CstType) constantPool.get0Ok(bytes.getUnsignedShort(i12 + 6));
             byteCatchList.set(i10, unsignedShort4, unsignedShort5, unsignedShort6, cstType);
             if (parseObserver != null) {
-                StringBuilder append = new StringBuilder(String.valueOf(Hex.u2(unsignedShort4))).append("..").append(Hex.u2(unsignedShort5)).append(" -> ").append(Hex.u2(unsignedShort6)).append(" ");
+                StringBuilder append = new StringBuilder(Hex.u2(unsignedShort4)).append("..").append(Hex.u2(unsignedShort5)).append(" -> ").append(Hex.u2(unsignedShort6)).append(" ");
                 if (cstType == null) {
                     human = "<any>";
                 } else {
@@ -337,7 +350,7 @@ public class StdAttributeFactory extends AttributeFactory {
             int unsignedShort3 = bytes.getUnsignedShort(i3 + 2);
             lineNumberList.set(i4, unsignedShort2, unsignedShort3);
             if (parseObserver != null) {
-                parseObserver.parsed(bytes, i3, 4, String.valueOf(Hex.u2(unsignedShort2)) + " " + unsignedShort3);
+                parseObserver.parsed(bytes, i3, 4, Hex.u2(unsignedShort2) + " " + unsignedShort3);
             }
             i3 += 4;
         }
@@ -393,7 +406,7 @@ public class StdAttributeFactory extends AttributeFactory {
                 }
                 localVariableList.set(i2, readUnsignedShort, readUnsignedShort2, cstString, cstString3, cstString4, readUnsignedShort5);
                 if (parseObserver != null) {
-                    parseObserver.parsed(byteArray, i2 * 10, 10, String.valueOf(Hex.u2(readUnsignedShort)) + ".." + Hex.u2(readUnsignedShort + readUnsignedShort2) + " " + Hex.u2(readUnsignedShort5) + " " + cstString.toHuman() + " " + cstString2.toHuman());
+                    parseObserver.parsed(byteArray, i2 * 10, 10, Hex.u2(readUnsignedShort) + ".." + Hex.u2(readUnsignedShort + readUnsignedShort2) + " " + Hex.u2(readUnsignedShort5) + " " + cstString.toHuman() + " " + cstString2.toHuman());
                 }
             } catch (IOException e) {
                 throw new RuntimeException("shouldn't happen", e);
@@ -462,17 +475,5 @@ public class StdAttributeFactory extends AttributeFactory {
             return throwBadLength(0);
         }
         return new AttSynthetic();
-    }
-
-    private static Attribute throwSeverelyTruncated() {
-        throw new ParseException("severely truncated attribute");
-    }
-
-    private static Attribute throwTruncated() {
-        throw new ParseException("truncated attribute");
-    }
-
-    private static Attribute throwBadLength(int i) {
-        throw new ParseException("bad attribute length; expected length " + Hex.u4(i));
     }
 }

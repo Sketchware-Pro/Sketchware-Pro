@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
 import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.ConstantPool;
@@ -93,7 +94,7 @@ public class ClassReferenceListBuilder {
     private void addClassWithHierachy(String str) {
         if (!this.classNames.contains(str)) {
             try {
-                DirectClassFile directClassFile = this.path.getClass(String.valueOf(str) + ".class");
+                DirectClassFile directClassFile = this.path.getClass(str + ".class");
                 this.classNames.add(str);
                 CstType superclass = directClassFile.getSuperclass();
                 if (superclass != null) {

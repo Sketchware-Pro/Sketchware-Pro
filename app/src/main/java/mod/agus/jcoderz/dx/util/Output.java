@@ -15,7 +15,8 @@ public interface Output extends ByteOutput {
 
     void write(byte[] bArr, int i, int i2);
 
-    @Override // mod.agus.jcoderz.dex.util.ByteOutput
+    @Override
+        // mod.agus.jcoderz.dex.util.ByteOutput
     void writeByte(int i);
 
     void writeInt(int i);

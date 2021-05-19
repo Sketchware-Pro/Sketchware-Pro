@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.code.Exceptions;
 import mod.agus.jcoderz.dx.rop.code.FillArrayDataInsn;
 import mod.agus.jcoderz.dx.rop.code.Insn;
@@ -26,40 +27,19 @@ import mod.agus.jcoderz.dx.rop.cst.Zeroes;
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
-import mod.agus.jcoderz.dx.ssa.SsaBasicBlock;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 
 public class EscapeAnalysis {
-    private ArrayList<EscapeSet> latticeValues = new ArrayList<>();
-    private int regCount;
-    private SsaMethod ssaMeth;
-
-    public enum EscapeState {
-        TOP,
-        NONE,
-        METHOD,
-        INTER,
-        GLOBAL
-    }
-
-    /* access modifiers changed from: package-private */
-    public static class EscapeSet {
-        ArrayList<EscapeSet> childSets = new ArrayList<>();
-        EscapeState escape;
-        ArrayList<EscapeSet> parentSets = new ArrayList<>();
-        BitSet regSet;
-        boolean replaceableArray = false;
-
-        EscapeSet(int i, int i2, EscapeState escapeState) {
-            this.regSet = new BitSet(i2);
-            this.regSet.set(i);
-            this.escape = escapeState;
-        }
-    }
+    private final ArrayList<EscapeSet> latticeValues = new ArrayList<>();
+    private final int regCount;
+    private final SsaMethod ssaMeth;
 
     private EscapeAnalysis(SsaMethod ssaMethod) {
         this.ssaMeth = ssaMethod;
         this.regCount = ssaMethod.getRegCount();
+    }
+
+    public static void process(SsaMethod ssaMethod) {
+        new EscapeAnalysis(ssaMethod).run();
     }
 
     private int findSetIndex(RegisterSpec registerSpec) {
@@ -103,10 +83,6 @@ public class EscapeAnalysis {
             next2.parentSets.add(escapeSet);
             escapeSet.childSets.add(next2);
         }
-    }
-
-    public static void process(SsaMethod ssaMethod) {
-        new EscapeAnalysis(ssaMethod).run();
     }
 
     /* access modifiers changed from: private */
@@ -372,7 +348,7 @@ public class EscapeAnalysis {
                 final RegisterSpec registerSpec = definitionForRegister.getSources().get(0);
                 final RegisterSpec result = definitionForRegister.getResult();
                 if (registerSpec.getReg() >= this.regCount || result.getReg() >= this.regCount) {
-                    RegisterMapper registerMapper  = new RegisterMapper() {
+                    RegisterMapper registerMapper = new RegisterMapper() {
                         /* class mod.agus.jcoderz.dx.ssa.EscapeAnalysis.AnonymousClass1 */
 
                         @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
@@ -488,5 +464,28 @@ public class EscapeAnalysis {
         ArrayList<SsaInsn> insns = ssaInsn.getBlock().getInsns();
         insns.add(insns.lastIndexOf(ssaInsn), normalSsaInsn);
         this.ssaMeth.onInsnAdded(normalSsaInsn);
+    }
+
+    public enum EscapeState {
+        TOP,
+        NONE,
+        METHOD,
+        INTER,
+        GLOBAL
+    }
+
+    /* access modifiers changed from: package-private */
+    public static class EscapeSet {
+        ArrayList<EscapeSet> childSets = new ArrayList<>();
+        EscapeState escape;
+        ArrayList<EscapeSet> parentSets = new ArrayList<>();
+        BitSet regSet;
+        boolean replaceableArray = false;
+
+        EscapeSet(int i, int i2, EscapeState escapeState) {
+            this.regSet = new BitSet(i2);
+            this.regSet.set(i);
+            this.escape = escapeState;
+        }
     }
 }

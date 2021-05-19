@@ -1,8 +1,9 @@
 package mod.agus.jcoderz.dx.io;
 
+import org.spongycastle.crypto.engines.IDEAEngine;
+
 import mod.agus.jcoderz.dx.io.instructions.InstructionCodec;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.spongycastle.crypto.engines.IDEAEngine;
 
 public final class OpcodeInfo {
     public static final Info ADD_DOUBLE = new Info(171, "add-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
@@ -95,7 +96,6 @@ public final class OpcodeInfo {
     public static final Info IGET_OBJECT = new Info(84, "iget-object", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
     public static final Info IGET_SHORT = new Info(88, "iget-short", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
     public static final Info IGET_WIDE = new Info(83, "iget-wide", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    private static final Info[] INFO = new Info[IDEAEngine.BASE];
     public static final Info INSTANCE_OF = new Info(32, "instance-of", InstructionCodec.FORMAT_22C, IndexType.TYPE_REF);
     public static final Info INT_TO_BYTE = new Info(141, "int-to-byte", InstructionCodec.FORMAT_12X, IndexType.NONE);
     public static final Info INT_TO_CHAR = new Info(142, "int-to-char", InstructionCodec.FORMAT_12X, IndexType.NONE);
@@ -228,6 +228,7 @@ public final class OpcodeInfo {
     public static final Info XOR_INT_LIT8 = new Info(Opcodes.XOR_INT_LIT8, "xor-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
     public static final Info XOR_LONG = new Info(162, "xor-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
     public static final Info XOR_LONG_2ADDR = new Info(194, "xor-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
+    private static final Info[] INFO = new Info[IDEAEngine.BASE];
 
     static {
         set(SPECIAL_FORMAT);

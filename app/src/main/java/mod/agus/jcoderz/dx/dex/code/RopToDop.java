@@ -1,6 +1,9 @@
 package mod.agus.jcoderz.dx.dex.code;
 
+import org.eclipse.jdt.internal.compiler.ClassFile;
+
 import java.util.HashMap;
+
 import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.Rop;
@@ -10,13 +13,9 @@ import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
-import org.eclipse.jdt.internal.compiler.ClassFile;
 
 public final class RopToDop {
     private static final HashMap<Rop, Dop> MAP = new HashMap<>((int) ClassFile.INITIAL_CONTENTS_SIZE);
-
-    private RopToDop() {
-    }
 
     static {
         MAP.put(Rops.NOP, Dops.NOP);
@@ -169,6 +168,9 @@ public final class RopToDop {
         MAP.put(Rops.PUT_STATIC_FLOAT, Dops.SPUT);
         MAP.put(Rops.PUT_STATIC_DOUBLE, Dops.SPUT_WIDE);
         MAP.put(Rops.PUT_STATIC_OBJECT, Dops.SPUT_OBJECT);
+    }
+
+    private RopToDop() {
     }
 
     public static Dop dopFor(Insn insn) {

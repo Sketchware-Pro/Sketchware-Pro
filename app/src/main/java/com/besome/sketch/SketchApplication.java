@@ -18,6 +18,10 @@ public class SketchApplication extends MultiDexApplication {
     public Tracker a;
     private Thread.UncaughtExceptionHandler uncaughtExceptionHandler;
 
+    public static Context getContext() {
+        return mApplicationContext;
+    }
+
     public synchronized Tracker a() {
         if (a == null) {
             a = GoogleAnalytics.getInstance(this).newTracker("UA-80718117-1");
@@ -44,9 +48,5 @@ public class SketchApplication extends MultiDexApplication {
             }
         });
         super.onCreate();
-    }
-
-    public static Context getContext() {
-        return mApplicationContext;
     }
 }

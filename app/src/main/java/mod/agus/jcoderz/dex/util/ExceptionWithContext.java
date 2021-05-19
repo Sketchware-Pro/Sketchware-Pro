@@ -4,18 +4,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 public class ExceptionWithContext extends RuntimeException {
-    private StringBuffer context;
-
-    public static ExceptionWithContext withContext(Throwable th, String str) {
-        ExceptionWithContext exceptionWithContext;
-        if (th instanceof ExceptionWithContext) {
-            exceptionWithContext = (ExceptionWithContext) th;
-        } else {
-            exceptionWithContext = new ExceptionWithContext(th);
-        }
-        exceptionWithContext.addContext(str);
-        return exceptionWithContext;
-    }
+    private final StringBuffer context;
 
     public ExceptionWithContext(String str) {
         this(str, null);
@@ -34,6 +23,17 @@ public class ExceptionWithContext extends RuntimeException {
             return;
         }
         this.context = new StringBuffer(200);
+    }
+
+    public static ExceptionWithContext withContext(Throwable th, String str) {
+        ExceptionWithContext exceptionWithContext;
+        if (th instanceof ExceptionWithContext) {
+            exceptionWithContext = (ExceptionWithContext) th;
+        } else {
+            exceptionWithContext = new ExceptionWithContext(th);
+        }
+        exceptionWithContext.addContext(str);
+        return exceptionWithContext;
     }
 
     @Override // java.lang.Throwable

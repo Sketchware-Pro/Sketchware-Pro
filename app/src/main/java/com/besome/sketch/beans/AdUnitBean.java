@@ -2,6 +2,7 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 
 public class AdUnitBean implements Parcelable {
@@ -26,6 +27,16 @@ public class AdUnitBean implements Parcelable {
         this("", "");
     }
 
+    public AdUnitBean(String str, String str2) {
+        id = str;
+        name = str2;
+    }
+
+    public AdUnitBean(Parcel parcel) {
+        id = parcel.readString();
+        name = parcel.readString();
+    }
+
     public static Parcelable.Creator<AdUnitBean> getCreator() {
         return CREATOR;
     }
@@ -47,20 +58,10 @@ public class AdUnitBean implements Parcelable {
         parcel.writeString(name);
     }
 
-    public AdUnitBean(String str, String str2) {
-        id = str;
-        name = str2;
-    }
-
     @Override // java.lang.Object
     public AdUnitBean clone() {
         AdUnitBean adUnitBean = new AdUnitBean();
         adUnitBean.copy(this);
         return adUnitBean;
-    }
-
-    public AdUnitBean(Parcel parcel) {
-        id = parcel.readString();
-        name = parcel.readString();
     }
 }

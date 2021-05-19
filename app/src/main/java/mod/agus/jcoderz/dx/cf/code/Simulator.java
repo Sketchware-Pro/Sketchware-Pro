@@ -1,8 +1,7 @@
 package mod.agus.jcoderz.dx.cf.code;
 
 import java.util.ArrayList;
-import mod.agus.jcoderz.dx.cf.code.BytecodeArray;
-import mod.agus.jcoderz.dx.cf.code.LocalVariableList;
+
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
@@ -34,6 +33,23 @@ public class Simulator {
         }
     }
 
+    public static SimException illegalTos() {
+        return new SimException("stack mismatch: illegal top-of-stack for opcode");
+    }
+
+    public static Type requiredArrayTypeFor(Type type, Type type2) {
+        if (type2 == Type.KNOWN_NULL) {
+            return type.getArrayType();
+        }
+        if (type == Type.OBJECT && type2.isArray() && type2.getComponentType().isReference()) {
+            return type2;
+        }
+        if (type == Type.BYTE && type2 == Type.BOOLEAN_ARRAY) {
+            return Type.BOOLEAN_ARRAY;
+        }
+        return type.getArrayType();
+    }
+
     public void simulate(ByteBlock byteBlock, Frame frame) {
         int end = byteBlock.getEnd();
         this.visitor.setFrame(frame);
@@ -55,26 +71,9 @@ public class Simulator {
         return this.code.parseInstruction(i, this.visitor);
     }
 
-    public static SimException illegalTos() {
-        return new SimException("stack mismatch: illegal top-of-stack for opcode");
-    }
-
-    public static Type requiredArrayTypeFor(Type type, Type type2) {
-        if (type2 == Type.KNOWN_NULL) {
-            return type.getArrayType();
-        }
-        if (type == Type.OBJECT && type2.isArray() && type2.getComponentType().isReference()) {
-            return type2;
-        }
-        if (type == Type.BYTE && type2 == Type.BOOLEAN_ARRAY) {
-            return Type.BOOLEAN_ARRAY;
-        }
-        return type.getArrayType();
-    }
-
     public class SimVisitor implements BytecodeArray.Visitor {
-        private Frame frame = null;
         private final Machine machine;
+        private Frame frame = null;
         private int previousOffset;
 
         public SimVisitor() {
@@ -506,13 +505,13 @@ public class Simulator {
         }
 
         @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-        public void setPreviousOffset(int i) {
-            this.previousOffset = i;
+        public int getPreviousOffset() {
+            return this.previousOffset;
         }
 
         @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-        public int getPreviousOffset() {
-            return this.previousOffset;
+        public void setPreviousOffset(int i) {
+            this.previousOffset = i;
         }
     }
 }

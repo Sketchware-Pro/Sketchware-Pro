@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.direct;
 
 import java.io.IOException;
+
 import mod.agus.jcoderz.dx.cf.iface.ParseException;
 import mod.agus.jcoderz.dx.cf.iface.ParseObserver;
 import mod.agus.jcoderz.dx.rop.annotation.Annotation;
@@ -33,8 +34,8 @@ public final class AnnotationParser {
     private final DirectClassFile cf;
     private final ByteArray.MyDataInputStream input;
     private final ParseObserver observer;
-    private int parseCursor;
     private final ConstantPool pool;
+    private int parseCursor;
 
     public AnnotationParser(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
         if (directClassFile == null) {

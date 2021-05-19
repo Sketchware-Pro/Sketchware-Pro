@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dx.dex.DexOptions;
-import mod.agus.jcoderz.dx.dex.code.DalvCode;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
@@ -20,27 +20,19 @@ import mod.agus.jcoderz.dx.ssa.BasicRegisterMapper;
 
 public final class OutputFinisher {
     private final DexOptions dexOptions;
+    private final int paramSize;
+    private final int unreservedRegCount;
     private boolean hasAnyLocalInfo = false;
     private boolean hasAnyPositionInfo = false;
     private ArrayList<DalvInsn> insns;
-    private final int paramSize;
     private int reservedCount = -1;
     private int reservedParameterCount;
-    private final int unreservedRegCount;
 
     public OutputFinisher(DexOptions dexOptions2, int i, int i2, int i3) {
         this.dexOptions = dexOptions2;
         this.unreservedRegCount = i2;
         this.insns = new ArrayList<>(i);
         this.paramSize = i3;
-    }
-
-    public boolean hasAnyPositionInfo() {
-        return this.hasAnyPositionInfo;
-    }
-
-    public boolean hasAnyLocalInfo() {
-        return this.hasAnyLocalInfo;
     }
 
     private static boolean hasLocalInfo(DalvInsn dalvInsn) {
@@ -52,23 +44,12 @@ public final class OutputFinisher {
                     return true;
                 }
             }
-        } else if ((dalvInsn instanceof LocalStart) && hasLocalInfo(((LocalStart) dalvInsn).getLocal())) {
-            return true;
-        }
+        } else return (dalvInsn instanceof LocalStart) && hasLocalInfo(((LocalStart) dalvInsn).getLocal());
         return false;
     }
 
     private static boolean hasLocalInfo(RegisterSpec registerSpec) {
-        return (registerSpec == null || registerSpec.getLocalItem().getName() == null) ? false : true;
-    }
-
-    public HashSet<Constant> getAllConstants() {
-        HashSet<Constant> hashSet = new HashSet<>(20);
-        Iterator<DalvInsn> it = this.insns.iterator();
-        while (it.hasNext()) {
-            addConstants(hashSet, it.next());
-        }
-        return hashSet;
+        return registerSpec != null && registerSpec.getLocalItem().getName() != null;
     }
 
     private static void addConstants(HashSet<Constant> hashSet, DalvInsn dalvInsn) {
@@ -101,6 +82,35 @@ public final class OutputFinisher {
                 hashSet.add(signature);
             }
         }
+    }
+
+    private static void assignIndices(CstInsn cstInsn, DalvCode.AssignIndicesCallback assignIndicesCallback) {
+        int index;
+        Constant constant = cstInsn.getConstant();
+        int index2 = assignIndicesCallback.getIndex(constant);
+        if (index2 >= 0) {
+            cstInsn.setIndex(index2);
+        }
+        if ((constant instanceof CstMemberRef) && (index = assignIndicesCallback.getIndex(((CstMemberRef) constant).getDefiningClass())) >= 0) {
+            cstInsn.setClassIndex(index);
+        }
+    }
+
+    public boolean hasAnyPositionInfo() {
+        return this.hasAnyPositionInfo;
+    }
+
+    public boolean hasAnyLocalInfo() {
+        return this.hasAnyLocalInfo;
+    }
+
+    public HashSet<Constant> getAllConstants() {
+        HashSet<Constant> hashSet = new HashSet<>(20);
+        Iterator<DalvInsn> it = this.insns.iterator();
+        while (it.hasNext()) {
+            addConstants(hashSet, it.next());
+        }
+        return hashSet;
     }
 
     public void add(DalvInsn dalvInsn) {
@@ -140,18 +150,6 @@ public final class OutputFinisher {
             if (next instanceof CstInsn) {
                 assignIndices((CstInsn) next, assignIndicesCallback);
             }
-        }
-    }
-
-    private static void assignIndices(CstInsn cstInsn, DalvCode.AssignIndicesCallback assignIndicesCallback) {
-        int index;
-        Constant constant = cstInsn.getConstant();
-        int index2 = assignIndicesCallback.getIndex(constant);
-        if (index2 >= 0) {
-            cstInsn.setIndex(index2);
-        }
-        if ((constant instanceof CstMemberRef) && (index = assignIndicesCallback.getIndex(((CstMemberRef) constant).getDefiningClass())) >= 0) {
-            cstInsn.setClassIndex(index);
         }
     }
 
@@ -389,11 +387,7 @@ public final class OutputFinisher {
                 while (i10 < registers.size()) {
                     RegisterSpec registerSpec = registers.get(i10);
                     if (registerSpec.isCategory2()) {
-                        if (registerSpec.getReg() >= i) {
-                            z = true;
-                        } else {
-                            z = false;
-                        }
+                        z = registerSpec.getReg() >= i;
                         if (registerSpec.isEvenRegister()) {
                             if (z) {
                                 i6++;

@@ -1,8 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,7 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemProgressBar extends LinearLayout implements sy {
     public ViewBean a;
@@ -44,12 +45,25 @@ public class ItemProgressBar extends LinearLayout implements sy {
         return this.a;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.a = viewBean;
+    }
+
     public boolean getFixed() {
         return this.c;
     }
 
+    public void setFixed(boolean z) {
+        this.c = z;
+    }
+
     public boolean getSelection() {
         return this.b;
+    }
+
+    public void setSelection(boolean z) {
+        this.b = z;
+        invalidate();
     }
 
     public synchronized void onDraw(Canvas canvas) {
@@ -57,14 +71,6 @@ public class ItemProgressBar extends LinearLayout implements sy {
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
         }
         super.onDraw(canvas);
-    }
-
-    public void setBean(ViewBean viewBean) {
-        this.a = viewBean;
-    }
-
-    public void setFixed(boolean z) {
-        this.c = z;
     }
 
     public void setPadding(int i, int i2, int i3, int i4) {
@@ -103,10 +109,5 @@ public class ItemProgressBar extends LinearLayout implements sy {
         c2 = 65535;
         if (c2 == 0) {
         }
-    }
-
-    public void setSelection(boolean z) {
-        this.b = z;
-        invalidate();
     }
 }

@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.dex.file;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dx.dex.code.CatchHandlerList;
 import mod.agus.jcoderz.dx.dex.code.CatchTable;
 import mod.agus.jcoderz.dx.dex.code.DalvCode;
@@ -20,6 +21,14 @@ public final class CatchStructs {
 
     public CatchStructs(DalvCode dalvCode) {
         this.code = dalvCode;
+    }
+
+    private static void annotateAndConsumeHandlers(CatchHandlerList catchHandlerList, int i, int i2, String str, PrintWriter printWriter, AnnotatedOutput annotatedOutput) {
+        String human = catchHandlerList.toHuman(str, Hex.u2(i) + ": ");
+        if (printWriter != null) {
+            printWriter.println(human);
+        }
+        annotatedOutput.annotate(i2, human);
     }
 
     private void finishProcessingIfNecessary() {
@@ -107,16 +116,16 @@ public final class CatchStructs {
         int i2 = z ? 6 : 0;
         int i3 = z ? 2 : 0;
         int size = this.table.size();
-        String str2 = String.valueOf(str) + "  ";
+        String str2 = str + "  ";
         if (z) {
-            annotatedOutput.annotate(0, String.valueOf(str) + "tries:");
+            annotatedOutput.annotate(0, str + "tries:");
         } else {
-            printWriter.println(String.valueOf(str) + "tries:");
+            printWriter.println(str + "tries:");
         }
         for (int i4 = 0; i4 < size; i4++) {
             CatchTable.Entry entry = this.table.get(i4);
             CatchHandlerList handlers = entry.getHandlers();
-            String str3 = String.valueOf(str2) + "try " + Hex.u2or4(entry.getStart()) + ".." + Hex.u2or4(entry.getEnd());
+            String str3 = str2 + "try " + Hex.u2or4(entry.getStart()) + ".." + Hex.u2or4(entry.getEnd());
             String human = handlers.toHuman(str2, "");
             if (z) {
                 annotatedOutput.annotate(i2, str3);
@@ -127,8 +136,8 @@ public final class CatchStructs {
             }
         }
         if (z) {
-            annotatedOutput.annotate(0, String.valueOf(str) + "handlers:");
-            annotatedOutput.annotate(this.encodedHandlerHeaderSize, String.valueOf(str2) + "size: " + Hex.u2(this.handlerOffsets.size()));
+            annotatedOutput.annotate(0, str + "handlers:");
+            annotatedOutput.annotate(this.encodedHandlerHeaderSize, str2 + "size: " + Hex.u2(this.handlerOffsets.size()));
             CatchHandlerList catchHandlerList = null;
             for (Map.Entry<CatchHandlerList, Integer> entry2 : this.handlerOffsets.entrySet()) {
                 CatchHandlerList key = entry2.getKey();
@@ -141,13 +150,5 @@ public final class CatchStructs {
             }
             annotateAndConsumeHandlers(catchHandlerList, i, this.encodedHandlers.length - i, str2, printWriter, annotatedOutput);
         }
-    }
-
-    private static void annotateAndConsumeHandlers(CatchHandlerList catchHandlerList, int i, int i2, String str, PrintWriter printWriter, AnnotatedOutput annotatedOutput) {
-        String human = catchHandlerList.toHuman(str, String.valueOf(Hex.u2(i)) + ": ");
-        if (printWriter != null) {
-            printWriter.println(human);
-        }
-        annotatedOutput.annotate(i2, human);
     }
 }

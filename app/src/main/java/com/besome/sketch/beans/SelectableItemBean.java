@@ -1,8 +1,9 @@
 package com.besome.sketch.beans;
 
-import a.a.a.nA;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import a.a.a.nA;
 
 public class SelectableItemBean extends nA implements Parcelable {
     public static final Parcelable.Creator<SelectableItemBean> CREATOR = new Parcelable.Creator<SelectableItemBean>() {
@@ -41,39 +42,6 @@ public class SelectableItemBean extends nA implements Parcelable {
         this.reserved1 = 0;
         this.reserved2 = 0;
         this.reserved3 = 0;
-    }
-
-    public static Parcelable.Creator<SelectableItemBean> getCreator() {
-        return CREATOR;
-    }
-
-    public void copy(SelectableItemBean selectableItemBean) {
-        this.isSelected = selectableItemBean.isSelected;
-        this.type = selectableItemBean.type;
-        this.name = selectableItemBean.name;
-        this.desc = selectableItemBean.desc;
-        this.isNew = selectableItemBean.isNew;
-        this.reserved1 = selectableItemBean.reserved1;
-        this.reserved2 = selectableItemBean.reserved2;
-        this.reserved3 = selectableItemBean.reserved3;
-    }
-
-    public int describeContents() {
-        return 0;
-    }
-
-    public void print() {
-    }
-
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.isSelected ? 1 : 0);
-        parcel.writeInt(this.type);
-        parcel.writeString(this.name);
-        parcel.writeString(this.desc);
-        parcel.writeInt(this.isNew ? 1 : 0);
-        parcel.writeInt(this.reserved1);
-        parcel.writeInt(this.reserved2);
-        parcel.writeInt(this.reserved3);
     }
 
     public SelectableItemBean(String str) {
@@ -159,9 +127,42 @@ public class SelectableItemBean extends nA implements Parcelable {
         this.type = parcel.readInt();
         this.name = parcel.readString();
         this.desc = parcel.readString();
-        this.isNew = parcel.readInt() != 0 ? true : z;
+        this.isNew = parcel.readInt() != 0 || z;
         this.reserved1 = parcel.readInt();
         this.reserved2 = parcel.readInt();
         this.reserved3 = parcel.readInt();
+    }
+
+    public static Parcelable.Creator<SelectableItemBean> getCreator() {
+        return CREATOR;
+    }
+
+    public void copy(SelectableItemBean selectableItemBean) {
+        this.isSelected = selectableItemBean.isSelected;
+        this.type = selectableItemBean.type;
+        this.name = selectableItemBean.name;
+        this.desc = selectableItemBean.desc;
+        this.isNew = selectableItemBean.isNew;
+        this.reserved1 = selectableItemBean.reserved1;
+        this.reserved2 = selectableItemBean.reserved2;
+        this.reserved3 = selectableItemBean.reserved3;
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void print() {
+    }
+
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.isSelected ? 1 : 0);
+        parcel.writeInt(this.type);
+        parcel.writeString(this.name);
+        parcel.writeString(this.desc);
+        parcel.writeInt(this.isNew ? 1 : 0);
+        parcel.writeInt(this.reserved1);
+        parcel.writeInt(this.reserved2);
+        parcel.writeInt(this.reserved3);
     }
 }

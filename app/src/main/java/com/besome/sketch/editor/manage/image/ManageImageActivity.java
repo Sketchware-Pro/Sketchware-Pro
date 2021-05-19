@@ -45,7 +45,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override // a.a.a.to
     public void d(int i) {
-        new b(getApplicationContext()).execute(new Void[0]);
+        new b(getApplicationContext()).execute();
     }
 
     public void f(int i) {
@@ -71,7 +71,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         try {
             if (this.j.h()) {
                 new Handler().postDelayed(() -> {
-                    new ManageImageActivity.b(getApplicationContext()).execute(new Void[0]);
+                    new ManageImageActivity.b(getApplicationContext()).execute();
                 }, 500);
             } else {
                 xo.a(getApplicationContext());
@@ -134,7 +134,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(ManageImageActivity.class.getSimpleName().toString());
+        this.d.setScreenName(ManageImageActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

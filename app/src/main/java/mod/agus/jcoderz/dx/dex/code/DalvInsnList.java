@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstBaseMethodRef;
@@ -15,6 +16,11 @@ import mod.agus.jcoderz.dx.util.IndentingWriter;
 public final class DalvInsnList extends FixedSizeList {
     private final int regCount;
 
+    public DalvInsnList(int i, int i2) {
+        super(i);
+        this.regCount = i2;
+    }
+
     public static DalvInsnList makeImmutable(ArrayList<DalvInsn> arrayList, int i) {
         int size = arrayList.size();
         DalvInsnList dalvInsnList = new DalvInsnList(size, i);
@@ -23,11 +29,6 @@ public final class DalvInsnList extends FixedSizeList {
         }
         dalvInsnList.setImmutable();
         return dalvInsnList;
-    }
-
-    public DalvInsnList(int i, int i2) {
-        super(i);
-        this.regCount = i2;
     }
 
     public DalvInsn get(int i) {
@@ -100,11 +101,7 @@ public final class DalvInsnList extends FixedSizeList {
                 if (!(constant instanceof CstBaseMethodRef)) {
                     parameterWordCount = i2;
                 } else {
-                    if (dalvInsn.getOpcode().getFamily() == 113) {
-                        z = true;
-                    } else {
-                        z = false;
-                    }
+                    z = dalvInsn.getOpcode().getFamily() == 113;
                     parameterWordCount = ((CstBaseMethodRef) constant).getParameterWordCount(z);
                     if (parameterWordCount <= i2) {
                         parameterWordCount = i2;

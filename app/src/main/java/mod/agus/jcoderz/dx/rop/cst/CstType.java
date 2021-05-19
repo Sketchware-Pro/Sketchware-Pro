@@ -1,12 +1,15 @@
 package mod.agus.jcoderz.dx.rop.cst;
 
-import java.util.HashMap;
-import mod.agus.jcoderz.dx.rop.type.Type;
-import mod.agus.jcoderz.multidex.ClassPathElement;
 import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
 import org.eclipse.jdt.internal.compiler.util.Util;
 
+import java.util.HashMap;
+
+import mod.agus.jcoderz.dx.rop.type.Type;
+import mod.agus.jcoderz.multidex.ClassPathElement;
+
 public final class CstType extends TypedConstant {
+    private static final HashMap<Type, CstType> interns = new HashMap<>(100);
     public static final CstType BOOLEAN = intern(Type.BOOLEAN_CLASS);
     public static final CstType BOOLEAN_ARRAY = intern(Type.BOOLEAN_ARRAY);
     public static final CstType BYTE = intern(Type.BYTE_CLASS);
@@ -25,9 +28,19 @@ public final class CstType extends TypedConstant {
     public static final CstType SHORT = intern(Type.SHORT_CLASS);
     public static final CstType SHORT_ARRAY = intern(Type.SHORT_ARRAY);
     public static final CstType VOID = intern(Type.VOID_CLASS);
-    private static final HashMap<Type, CstType> interns = new HashMap<>(100);
-    private CstString descriptor;
     private final Type type;
+    private CstString descriptor;
+
+    public CstType(Type type2) {
+        if (type2 == null) {
+            throw new NullPointerException("type == null");
+        } else if (type2 == Type.KNOWN_NULL) {
+            throw new UnsupportedOperationException("KNOWN_NULL is not representable");
+        } else {
+            this.type = type2;
+            this.descriptor = null;
+        }
+    }
 
     public static CstType forBoxedPrimitiveType(Type type2) {
         switch (type2.getBasicType()) {
@@ -66,22 +79,8 @@ public final class CstType extends TypedConstant {
         return cstType;
     }
 
-    public CstType(Type type2) {
-        if (type2 == null) {
-            throw new NullPointerException("type == null");
-        } else if (type2 == Type.KNOWN_NULL) {
-            throw new UnsupportedOperationException("KNOWN_NULL is not representable");
-        } else {
-            this.type = type2;
-            this.descriptor = null;
-        }
-    }
-
     public boolean equals(Object obj) {
-        if ((obj instanceof CstType) && this.type == ((CstType) obj).type) {
-            return true;
-        }
-        return false;
+        return (obj instanceof CstType) && this.type == ((CstType) obj).type;
     }
 
     public int hashCode() {

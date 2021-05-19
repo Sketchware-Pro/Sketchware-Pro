@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.direct;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.cf.code.ByteOps;
 import mod.agus.jcoderz.dx.cf.code.BytecodeArray;
 import mod.agus.jcoderz.dx.cf.code.SwitchList;
@@ -54,9 +55,9 @@ public class CodeObserver implements BytecodeArray.Visitor {
         }
         String str2 = "";
         if (type.isCategory2()) {
-            str2 = String.valueOf(z ? "," : " //") + " category-2";
+            str2 = (z ? "," : " //") + " category-2";
         }
-        this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + (z ? " // " : " ") + u1 + str + str2);
+        this.observer.parsed(this.bytes, i2, i3, header(i2) + (z ? " // " : " ") + u1 + str + str2);
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
@@ -75,18 +76,18 @@ public class CodeObserver implements BytecodeArray.Visitor {
             String str = "";
             if (i4 != 0) {
                 if (i == 197) {
-                    str = String.valueOf(", ") + Hex.u1(i4);
+                    str = ", " + Hex.u1(i4);
                 } else {
-                    str = String.valueOf(", ") + Hex.u2(i4);
+                    str = ", " + Hex.u2(i4);
                 }
             }
-            this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + " " + constant + str);
+            this.observer.parsed(this.bytes, i2, i3, header(i2) + " " + constant + str);
         }
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
     public void visitBranch(int i, int i2, int i3, int i4) {
-        this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + " " + (i3 <= 3 ? Hex.u2(i4) : Hex.u4(i4)));
+        this.observer.parsed(this.bytes, i2, i3, header(i2) + " " + (i3 <= 3 ? Hex.u2(i4) : Hex.u4(i4)));
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
@@ -112,11 +113,7 @@ public class CodeObserver implements BytecodeArray.Visitor {
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
     public void visitNewarray(int i, int i2, CstType cstType, ArrayList<Constant> arrayList) {
-        this.observer.parsed(this.bytes, i, i2, String.valueOf(header(i)) + (i2 == 1 ? " // " : " ") + cstType.getClassType().getComponentType().toHuman());
-    }
-
-    @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-    public void setPreviousOffset(int i) {
+        this.observer.parsed(this.bytes, i, i2, header(i) + (i2 == 1 ? " // " : " ") + cstType.getClassType().getComponentType().toHuman());
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
@@ -124,13 +121,17 @@ public class CodeObserver implements BytecodeArray.Visitor {
         return -1;
     }
 
+    @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+    public void setPreviousOffset(int i) {
+    }
+
     private String header(int i) {
         int unsignedByte = this.bytes.getUnsignedByte(i);
         String opName = ByteOps.opName(unsignedByte);
         if (unsignedByte == 196) {
-            opName = String.valueOf(opName) + " " + ByteOps.opName(this.bytes.getUnsignedByte(i + 1));
+            opName = opName + " " + ByteOps.opName(this.bytes.getUnsignedByte(i + 1));
         }
-        return String.valueOf(Hex.u2(i)) + ": " + opName;
+        return Hex.u2(i) + ": " + opName;
     }
 
     private void visitLiteralInt(int i, int i2, int i3, int i4) {
@@ -144,7 +145,7 @@ public class CodeObserver implements BytecodeArray.Visitor {
         } else {
             str = "#" + Hex.s4(i4);
         }
-        this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + str2 + str);
+        this.observer.parsed(this.bytes, i2, i3, header(i2) + str2 + str);
     }
 
     private void visitLiteralLong(int i, int i2, int i3, long j) {
@@ -155,14 +156,14 @@ public class CodeObserver implements BytecodeArray.Visitor {
         } else {
             s8 = Hex.s8(j);
         }
-        this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + str + s8);
+        this.observer.parsed(this.bytes, i2, i3, header(i2) + str + s8);
     }
 
     private void visitLiteralFloat(int i, int i2, int i3, int i4) {
-        this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + (i3 != 1 ? " #" + Hex.u4(i4) : "") + " // " + Float.intBitsToFloat(i4));
+        this.observer.parsed(this.bytes, i2, i3, header(i2) + (i3 != 1 ? " #" + Hex.u4(i4) : "") + " // " + Float.intBitsToFloat(i4));
     }
 
     private void visitLiteralDouble(int i, int i2, int i3, long j) {
-        this.observer.parsed(this.bytes, i2, i3, String.valueOf(header(i2)) + (i3 != 1 ? " #" + Hex.u8(j) : "") + " // " + Double.longBitsToDouble(j));
+        this.observer.parsed(this.bytes, i2, i3, header(i2) + (i3 != 1 ? " #" + Hex.u8(j) : "") + " // " + Double.longBitsToDouble(j));
     }
 }

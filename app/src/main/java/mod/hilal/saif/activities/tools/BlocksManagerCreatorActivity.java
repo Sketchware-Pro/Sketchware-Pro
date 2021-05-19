@@ -43,16 +43,20 @@ import mod.hilal.saif.lib.PCP;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
+    private final ArrayList<String> id_detector = new ArrayList<>();
+    private final ArrayList<String> temp = new ArrayList<>();
     private AlertDialog.Builder block_type_dialog;
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
     private EditText code;
     private EditText colour;
     private HorizontalScrollView hscroll1;
-    private final ArrayList<String> id_detector = new ArrayList<>();
-
-    /** Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another */
+    /**
+     * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
+     */
     private String mod = "";
-    /** Position of current editing/adding/inserting block in palette */
+    /**
+     * Position of current editing/adding/inserting block in palette
+     */
     private int n = 0;
     private EditText name;
     private TextInputLayout name_lay;
@@ -64,7 +68,6 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     private EditText spec;
     private EditText spec2;
     private TextInputLayout spec2_lay;
-    private final ArrayList<String> temp = new ArrayList<>();
     private HashMap<String, Object> tempMap = new HashMap<>();
     private double tempN = 0.0d;
     private EditText type;

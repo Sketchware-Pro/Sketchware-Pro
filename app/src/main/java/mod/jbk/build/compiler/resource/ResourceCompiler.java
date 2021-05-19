@@ -22,9 +22,6 @@ import mod.agus.jcoderz.lib.FileUtil;
  */
 public class ResourceCompiler {
 
-    private final boolean useAapt2;
-    private final boolean willBuildAppBundle;
-
     /**
      * About log tags: add ":" and the first letter of the function's name camelCase'd.
      * For example, in thisIsALongFunctionName, you should use this:
@@ -33,7 +30,8 @@ public class ResourceCompiler {
      * </pre>
      */
     private static final String TAG = "AppBuilder";
-
+    private final boolean useAapt2;
+    private final boolean willBuildAppBundle;
     private final File aaptFile;
     private final DesignActivity.a buildingDialog;
     private final Dp dp;
@@ -255,7 +253,8 @@ public class ResourceCompiler {
             String outputPath = buildHelper.f.t + File.separator + "res";
             emptyOrCreateDirectory(outputPath);
             long savedTimeMillis = System.currentTimeMillis();
-            if (progressListener != null) progressListener.onProgressUpdate("Compiling resources with AAPT2...");
+            if (progressListener != null)
+                progressListener.onProgressUpdate("Compiling resources with AAPT2...");
             compileProjectResources(outputPath);
             Log.d(TAG + ":c", "Compiling project generated resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             savedTimeMillis = System.currentTimeMillis();
@@ -277,7 +276,8 @@ public class ResourceCompiler {
         public void link() throws zy {
             long savedTimeMillis = System.currentTimeMillis();
             String resourcesPath = buildHelper.f.t + File.separator + "res";
-            if (progressListener != null) progressListener.onProgressUpdate("Linking resources with AAPT2...");
+            if (progressListener != null)
+                progressListener.onProgressUpdate("Linking resources with AAPT2...");
 
             ArrayList<String> args = new ArrayList<>();
             args.add(aapt2.getAbsolutePath());

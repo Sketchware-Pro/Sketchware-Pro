@@ -3,18 +3,19 @@ package mod.agus.jcoderz.dx.util;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dex.Leb128;
 import mod.agus.jcoderz.dex.util.ByteOutput;
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 
 public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutput {
     private static final int DEFAULT_SIZE = 1000;
+    private final boolean stretchy;
     private int annotationWidth;
     private ArrayList<Annotation> annotations;
     private int cursor;
     private byte[] data;
     private int hexCols;
-    private final boolean stretchy;
     private boolean verbose;
 
     public ByteArrayAnnotatedOutput(byte[] bArr) {
@@ -40,6 +41,10 @@ public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutp
         this.annotations = null;
         this.annotationWidth = 0;
         this.hexCols = 0;
+    }
+
+    private static void throwBounds() {
+        throw new IndexOutOfBoundsException("attempt to write past the end");
     }
 
     public byte[] getArray() {
@@ -341,10 +346,6 @@ public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutp
         twoColumnOutput.flush();
     }
 
-    private static void throwBounds() {
-        throw new IndexOutOfBoundsException("attempt to write past the end");
-    }
-
     private void ensureCapacity(int i) {
         if (this.data.length < i) {
             byte[] bArr = new byte[((i * 2) + 1000)];
@@ -355,9 +356,9 @@ public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutp
 
     /* access modifiers changed from: private */
     public static class Annotation {
-        private int end;
         private final int start;
         private final String text;
+        private int end;
 
         public Annotation(int i, int i2, String str) {
             this.start = i;
@@ -375,16 +376,16 @@ public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutp
             }
         }
 
-        public void setEnd(int i) {
-            this.end = i;
-        }
-
         public int getStart() {
             return this.start;
         }
 
         public int getEnd() {
             return this.end;
+        }
+
+        public void setEnd(int i) {
+            this.end = i;
         }
 
         public String getText() {

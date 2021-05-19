@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.dex.file;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 
 public final class HeaderSection extends UniformItemSection {

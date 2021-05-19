@@ -1,21 +1,18 @@
 package mod.agus.jcoderz.dx.dex.code;
 
 import java.util.HashSet;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.type.Type;
 
 public final class DalvCode {
+    private final int positionInfo;
     private CatchTable catches;
     private DalvInsnList insns;
     private LocalList locals;
-    private final int positionInfo;
     private PositionList positions;
     private CatchBuilder unprocessedCatches;
     private OutputFinisher unprocessedInsns;
-
-    public interface AssignIndicesCallback {
-        int getIndex(Constant constant);
-    }
 
     public DalvCode(int i, OutputFinisher outputFinisher, CatchBuilder catchBuilder) {
         if (outputFinisher == null) {
@@ -86,5 +83,9 @@ public final class DalvCode {
     public LocalList getLocals() {
         finishProcessingIfNecessary();
         return this.locals;
+    }
+
+    public interface AssignIndicesCallback {
+        int getIndex(Constant constant);
     }
 }

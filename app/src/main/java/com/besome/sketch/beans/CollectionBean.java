@@ -10,12 +10,12 @@ public class CollectionBean {
         this.data = str2;
     }
 
-    public void print() {
-    }
-
     public CollectionBean(String str, String str2, String str3) {
         this.name = str;
         this.data = str2;
         this.reserved1 = str3;
+    }
+
+    public void print() {
     }
 }

@@ -1,7 +1,5 @@
 package mod.tyron.compiler;
 
-import static com.besome.sketch.SketchApplication.getContext;
-
 import android.util.Log;
 
 import org.eclipse.jdt.internal.compiler.batch.Main;
@@ -23,6 +21,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.jbk.util.LogUtil;
 import mod.tyron.compiler.file.JavaFile;
+
+import static com.besome.sketch.SketchApplication.getContext;
 
 public class IncrementalJavaCompiler extends Compiler {
 

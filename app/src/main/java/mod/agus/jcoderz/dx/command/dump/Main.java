@@ -1,10 +1,13 @@
 package mod.agus.jcoderz.dx.command.dump;
 
+import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
+
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
 import mod.agus.jcoderz.dex.util.FileUtils;
 import mod.agus.jcoderz.dx.cf.iface.ParseException;
 import mod.agus.jcoderz.dx.util.HexParser;
-import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
 
 public class Main {
     static Args parsedArgs = new Args();
@@ -58,11 +61,7 @@ public class Main {
                 System.out.println("reading " + str2 + "...");
                 byte[] readFile = FileUtils.readFile(str2);
                 if (!str2.endsWith(SuffixConstants.SUFFIX_STRING_class)) {
-                    try {
-                        readFile = HexParser.parse(new String(readFile, "utf-8"));
-                    } catch (UnsupportedEncodingException e) {
-                        throw new RuntimeException("shouldn't happen", e);
-                    }
+                    readFile = HexParser.parse(new String(readFile, StandardCharsets.UTF_8));
                 }
                 processOne(str2, readFile);
             } catch (ParseException e2) {

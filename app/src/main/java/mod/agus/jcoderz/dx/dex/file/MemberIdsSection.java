@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import mod.agus.jcoderz.dex.DexIndexOverflowException;
 import mod.agus.jcoderz.dx.command.dexer.Main;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;

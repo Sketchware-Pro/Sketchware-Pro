@@ -5,6 +5,10 @@ import mod.agus.jcoderz.dx.util.FixedSizeList;
 public final class AnnotationsList extends FixedSizeList {
     public static final AnnotationsList EMPTY = new AnnotationsList(0);
 
+    public AnnotationsList(int i) {
+        super(i);
+    }
+
     public static AnnotationsList combine(AnnotationsList annotationsList, AnnotationsList annotationsList2) {
         int size = annotationsList.size();
         if (size != annotationsList2.size()) {
@@ -16,10 +20,6 @@ public final class AnnotationsList extends FixedSizeList {
         }
         annotationsList3.setImmutable();
         return annotationsList3;
-    }
-
-    public AnnotationsList(int i) {
-        super(i);
     }
 
     public Annotations get(int i) {

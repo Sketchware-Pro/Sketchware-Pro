@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.dex;
 
+import org.bouncycastle.pqc.jcajce.spec.McElieceCCA2KeyGenParameterSpec;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,28 +25,26 @@ import java.util.stream.Stream;
 import java.util.zip.Adler32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import mod.agus.jcoderz.dex.ClassData;
-import mod.agus.jcoderz.dex.Code;
+
 import mod.agus.jcoderz.dex.util.ByteInput;
 import mod.agus.jcoderz.dex.util.ByteOutput;
 import mod.agus.jcoderz.dex.util.FileUtils;
-import org.bouncycastle.pqc.jcajce.spec.McElieceCCA2KeyGenParameterSpec;
 
 public final class Dex {
+    static final short[] EMPTY_SHORT_ARRAY = new short[0];
     private static final int CHECKSUM_OFFSET = 8;
     private static final int CHECKSUM_SIZE = 4;
-    static final short[] EMPTY_SHORT_ARRAY = new short[0];
     private static final int SIGNATURE_OFFSET = 12;
     private static final int SIGNATURE_SIZE = 20;
-    private ByteBuffer data;
     private final FieldIdTable fieldIds;
     private final MethodIdTable methodIds;
-    private int nextSectionStart;
     private final ProtoIdTable protoIds;
     private final StringTable strings;
     private final TableOfContents tableOfContents;
     private final TypeIndexToDescriptorIndexTable typeIds;
     private final TypeIndexToDescriptorTable typeNames;
+    private ByteBuffer data;
+    private int nextSectionStart;
 
     public Dex(byte[] bArr) throws IOException {
         this(ByteBuffer.wrap(bArr));
@@ -127,6 +127,13 @@ public final class Dex {
         return new Dex(byteBuffer);
     }
 
+    /* access modifiers changed from: private */
+    public static void checkBounds(int i, int i2) {
+        if (i < 0 || i >= i2) {
+            throw new IndexOutOfBoundsException("index:" + i + ", length=" + i2);
+        }
+    }
+
     private void loadFrom(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         byte[] bArr = new byte[8192];
@@ -140,13 +147,6 @@ public final class Dex {
                 return;
             }
             byteArrayOutputStream.write(bArr, 0, read);
-        }
-    }
-
-    /* access modifiers changed from: private */
-    public static void checkBounds(int i, int i2) {
-        if (i < 0 || i >= i2) {
-            throw new IndexOutOfBoundsException("index:" + i + ", length=" + i2);
         }
     }
 
@@ -938,8 +938,8 @@ public final class Dex {
     }
 
     private final class ClassDefIterator implements Iterator<ClassDef> {
-        private int count;
         private final Section in;
+        private int count;
 
         private ClassDefIterator() {
             this.in = Dex.this.open(Dex.this.tableOfContents.classDefs.off);
@@ -984,7 +984,7 @@ public final class Dex {
         @Override // java.lang.Iterable
         public Iterator<? extends Object> iterator() {
             if (!Dex.this.tableOfContents.classDefs.exists()) {
-                return Collections.emptySet().iterator();
+                return Collections.emptyIterator();
             }
             return new ClassDefIterator(Dex.this, null);
         }

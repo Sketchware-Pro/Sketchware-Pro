@@ -1,8 +1,7 @@
 package mod.agus.jcoderz.dx.cf.code;
 
 import java.util.ArrayList;
-import mod.agus.jcoderz.dx.cf.code.ByteCatchList;
-import mod.agus.jcoderz.dx.cf.code.BytecodeArray;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstMemberRef;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
@@ -16,15 +15,9 @@ public final class BasicBlocker implements BytecodeArray.Visitor {
     private final ByteCatchList[] catchLists;
     private final int[] liveSet;
     private final ConcreteMethod method;
-    private int previousOffset;
     private final IntList[] targetLists;
     private final int[] workSet;
-
-    public static ByteBlockList identifyBlocks(ConcreteMethod concreteMethod) {
-        BasicBlocker basicBlocker = new BasicBlocker(concreteMethod);
-        basicBlocker.doit();
-        return basicBlocker.getBlockList();
-    }
+    private int previousOffset;
 
     private BasicBlocker(ConcreteMethod concreteMethod) {
         if (concreteMethod == null) {
@@ -38,6 +31,12 @@ public final class BasicBlocker implements BytecodeArray.Visitor {
         this.targetLists = new IntList[size];
         this.catchLists = new ByteCatchList[size];
         this.previousOffset = -1;
+    }
+
+    public static ByteBlockList identifyBlocks(ConcreteMethod concreteMethod) {
+        BasicBlocker basicBlocker = new BasicBlocker(concreteMethod);
+        basicBlocker.doit();
+        return basicBlocker.getBlockList();
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
@@ -254,12 +253,12 @@ public final class BasicBlocker implements BytecodeArray.Visitor {
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-    public void setPreviousOffset(int i) {
-        this.previousOffset = i;
+    public int getPreviousOffset() {
+        return this.previousOffset;
     }
 
     @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-    public int getPreviousOffset() {
-        return this.previousOffset;
+    public void setPreviousOffset(int i) {
+        this.previousOffset = i;
     }
 }

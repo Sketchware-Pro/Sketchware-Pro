@@ -9,10 +9,6 @@ public final class LocalVariableExtractor {
     private final LocalVariableInfo resultInfo;
     private final int[] workSet;
 
-    public static LocalVariableInfo extract(RopMethod ropMethod) {
-        return new LocalVariableExtractor(ropMethod).doit();
-    }
-
     private LocalVariableExtractor(RopMethod ropMethod) {
         if (ropMethod == null) {
             throw new NullPointerException("method == null");
@@ -23,6 +19,10 @@ public final class LocalVariableExtractor {
         this.blocks = blocks2;
         this.resultInfo = new LocalVariableInfo(ropMethod);
         this.workSet = Bits.makeBitSet(maxLabel);
+    }
+
+    public static LocalVariableInfo extract(RopMethod ropMethod) {
+        return new LocalVariableExtractor(ropMethod).doit();
     }
 
     private LocalVariableInfo doit() {

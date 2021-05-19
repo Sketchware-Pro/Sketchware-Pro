@@ -28,10 +28,7 @@ public final class Form30t extends InsnFormat {
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
     public boolean isCompatible(DalvInsn dalvInsn) {
-        if (!(dalvInsn instanceof TargetInsn) || dalvInsn.getRegisters().size() != 0) {
-            return false;
-        }
-        return true;
+        return dalvInsn instanceof TargetInsn && dalvInsn.getRegisters().size() == 0;
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat

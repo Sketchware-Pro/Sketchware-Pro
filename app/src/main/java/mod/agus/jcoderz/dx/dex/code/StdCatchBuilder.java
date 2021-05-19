@@ -2,7 +2,7 @@ package mod.agus.jcoderz.dx.dex.code;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import mod.agus.jcoderz.dx.dex.code.CatchTable;
+
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
@@ -29,38 +29,6 @@ public final class StdCatchBuilder implements CatchBuilder {
             this.order = iArr;
             this.addresses = blockAddresses;
         }
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.code.CatchBuilder
-    public CatchTable build() {
-        return build(this.method, this.order, this.addresses);
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.code.CatchBuilder
-    public boolean hasAnyCatches() {
-        BasicBlockList blocks = this.method.getBlocks();
-        int size = blocks.size();
-        for (int i = 0; i < size; i++) {
-            if (blocks.get(i).getLastInsn().getCatches().size() != 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.code.CatchBuilder
-    public HashSet<Type> getCatchTypes() {
-        HashSet<Type> hashSet = new HashSet<>(20);
-        BasicBlockList blocks = this.method.getBlocks();
-        int size = blocks.size();
-        for (int i = 0; i < size; i++) {
-            TypeList catches = blocks.get(i).getLastInsn().getCatches();
-            int size2 = catches.size();
-            for (int i2 = 0; i2 < size2; i2++) {
-                hashSet.add(catches.getType(i2));
-            }
-        }
-        return hashSet;
     }
 
     public static CatchTable build(RopMethod ropMethod, int[] iArr, BlockAddresses blockAddresses) {
@@ -156,5 +124,37 @@ public final class StdCatchBuilder implements CatchBuilder {
         } else {
             return blockAddresses.getEnd(basicBlock2).getAddress() - blockAddresses.getLast(basicBlock).getAddress() <= 65535;
         }
+    }
+
+    @Override // mod.agus.jcoderz.dx.dex.code.CatchBuilder
+    public CatchTable build() {
+        return build(this.method, this.order, this.addresses);
+    }
+
+    @Override // mod.agus.jcoderz.dx.dex.code.CatchBuilder
+    public boolean hasAnyCatches() {
+        BasicBlockList blocks = this.method.getBlocks();
+        int size = blocks.size();
+        for (int i = 0; i < size; i++) {
+            if (blocks.get(i).getLastInsn().getCatches().size() != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override // mod.agus.jcoderz.dx.dex.code.CatchBuilder
+    public HashSet<Type> getCatchTypes() {
+        HashSet<Type> hashSet = new HashSet<>(20);
+        BasicBlockList blocks = this.method.getBlocks();
+        int size = blocks.size();
+        for (int i = 0; i < size; i++) {
+            TypeList catches = blocks.get(i).getLastInsn().getCatches();
+            int size2 = catches.size();
+            for (int i2 = 0; i2 < size2; i2++) {
+                hashSet.add(catches.getType(i2));
+            }
+        }
+        return hashSet;
     }
 }

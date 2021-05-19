@@ -217,6 +217,9 @@ public final class Rops {
     public static final Rop XOR_INT = new Rop(22, Type.INT, StdTypeList.INT_INT, "xor-int");
     public static final Rop XOR_LONG = new Rop(22, Type.LONG, StdTypeList.LONG_LONG, "xor-long");
 
+    private Rops() {
+    }
+
     public static Rop ropFor(int i, TypeBearer typeBearer, TypeList typeList, Constant constant) {
         Type componentType;
         Type componentType2;
@@ -883,9 +886,6 @@ public final class Rops {
             case 9:
                 return MARK_LOCAL_OBJECT;
         }
-    }
-
-    private Rops() {
     }
 
     private static Rop throwBadType(TypeBearer typeBearer) {

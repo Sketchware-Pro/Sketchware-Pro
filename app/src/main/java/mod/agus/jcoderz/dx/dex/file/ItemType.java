@@ -25,12 +25,12 @@ public enum ItemType implements ToHuman {
     TYPE_TYPE_ITEM(-1, "type_item"),
     TYPE_EXCEPTION_HANDLER_ITEM(-1, "exception_handler_item"),
     TYPE_ANNOTATION_SET_REF_ITEM(-1, "annotation_set_ref_item");
-    
+
     private final String humanName;
     private final int mapValue;
     private final String typeName;
 
-    private ItemType(int i, String str) {
+    ItemType(int i, String str) {
         this.mapValue = i;
         this.typeName = str;
         this.humanName = (str.endsWith("_item") ? str.substring(0, str.length() - 5) : str).replace('_', ' ');

@@ -49,10 +49,7 @@ public final class ReturnAddress implements TypeBearer {
     }
 
     public boolean equals(Object obj) {
-        if ((obj instanceof ReturnAddress) && this.subroutineAddress == ((ReturnAddress) obj).subroutineAddress) {
-            return true;
-        }
-        return false;
+        return (obj instanceof ReturnAddress) && this.subroutineAddress == ((ReturnAddress) obj).subroutineAddress;
     }
 
     public int hashCode() {

@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.code;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.cf.iface.Method;
 import mod.agus.jcoderz.dx.cf.iface.MethodList;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
@@ -33,21 +34,21 @@ final class RopperMachine extends ValueAwareMachine {
     private static final CstType ARRAY_REFLECT_TYPE = new CstType(Type.internClassName("java/lang/reflect/Array"));
     private static final CstMethodRef MULTIANEWARRAY_METHOD = new CstMethodRef(ARRAY_REFLECT_TYPE, new CstNat(new CstString("newInstance"), new CstString("(Ljava/lang/Class;[I)Ljava/lang/Object;")));
     private final TranslationAdvice advice;
+    private final ArrayList<Insn> insns;
+    private final int maxLocals;
+    private final ConcreteMethod method;
+    private final MethodList methods;
+    private final Ropper ropper;
     private boolean blockCanThrow;
     private TypeList catches;
     private boolean catchesUsed;
     private int extraBlockCount;
     private boolean hasJsr;
-    private final ArrayList<Insn> insns;
-    private final int maxLocals;
-    private final ConcreteMethod method;
-    private final MethodList methods;
     private int primarySuccessorIndex;
     private ReturnAddress returnAddress;
     private Rop returnOp;
     private SourcePosition returnPosition;
     private boolean returns;
-    private final Ropper ropper;
 
     public RopperMachine(Ropper ropper2, ConcreteMethod concreteMethod, TranslationAdvice translationAdvice, MethodList methodList) {
         super(concreteMethod.getEffectiveDescriptor());

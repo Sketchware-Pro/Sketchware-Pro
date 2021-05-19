@@ -1,6 +1,9 @@
 package mod.agus.jcoderz.dx.command.dump;
 
+import org.eclipse.jdt.internal.compiler.codegen.ConstantPool;
+
 import java.io.PrintStream;
+
 import mod.agus.jcoderz.dx.cf.code.BasicBlocker;
 import mod.agus.jcoderz.dx.cf.code.ByteBlock;
 import mod.agus.jcoderz.dx.cf.code.ByteBlockList;
@@ -24,23 +27,22 @@ import mod.agus.jcoderz.dx.ssa.Optimizer;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.IntList;
-import org.eclipse.jdt.internal.compiler.codegen.ConstantPool;
 
 public class BlockDumper extends BaseDumper {
     protected DirectClassFile classFile = null;
-    private boolean first = true;
-    private boolean optimize;
-    private boolean rop;
     protected boolean suppressDump = true;
-
-    public static void dump(byte[] bArr, PrintStream printStream, String str, boolean z, Args args) {
-        new BlockDumper(bArr, printStream, str, z, args).dump();
-    }
+    private boolean first = true;
+    private final boolean optimize;
+    private final boolean rop;
 
     BlockDumper(byte[] bArr, PrintStream printStream, String str, boolean z, Args args) {
         super(bArr, printStream, str, args);
         this.rop = z;
         this.optimize = args.optimize;
+    }
+
+    public static void dump(byte[] bArr, PrintStream printStream, String str, boolean z, Args args) {
+        new BlockDumper(bArr, printStream, str, z, args).dump();
     }
 
     public void dump() {
@@ -54,14 +56,16 @@ public class BlockDumper extends BaseDumper {
         directClassFile.getMagic();
     }
 
-    @Override // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
+    @Override
+    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
     public void changeIndent(int i) {
         if (!this.suppressDump) {
             super.changeIndent(i);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
+    @Override
+    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
     public void parsed(ByteArray byteArray, int i, int i2, String str) {
         if (!this.suppressDump) {
             super.parsed(byteArray, i, i2, str);
@@ -73,7 +77,8 @@ public class BlockDumper extends BaseDumper {
         return this.args.method == null || this.args.method.equals(str);
     }
 
-    @Override // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
+    @Override
+    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
     public void startParsingMember(ByteArray byteArray, int i, String str, String str2) {
         if (str2.indexOf(40) >= 0 && shouldDumpMethod(str)) {
             setAt(byteArray, i);
@@ -88,7 +93,8 @@ public class BlockDumper extends BaseDumper {
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
+    @Override
+    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
     public void endParsingMember(ByteArray byteArray, int i, String str, String str2, Member member) {
         if ((member instanceof Method) && shouldDumpMethod(str) && (member.getAccessFlags() & 1280) == 0) {
             ConcreteMethod concreteMethod = new ConcreteMethod((Method) member, this.classFile, true, true);

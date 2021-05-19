@@ -1,18 +1,18 @@
 package mod.agus.jcoderz.dx.cf.cst;
 
 public interface ConstantTags {
-    public static final int CONSTANT_Class = 7;
-    public static final int CONSTANT_Double = 6;
-    public static final int CONSTANT_Fieldref = 9;
-    public static final int CONSTANT_Float = 4;
-    public static final int CONSTANT_Integer = 3;
-    public static final int CONSTANT_InterfaceMethodref = 11;
-    public static final int CONSTANT_InvokeDynamic = 18;
-    public static final int CONSTANT_Long = 5;
-    public static final int CONSTANT_MethodHandle = 15;
-    public static final int CONSTANT_MethodType = 16;
-    public static final int CONSTANT_Methodref = 10;
-    public static final int CONSTANT_NameAndType = 12;
-    public static final int CONSTANT_String = 8;
-    public static final int CONSTANT_Utf8 = 1;
+    int CONSTANT_Class = 7;
+    int CONSTANT_Double = 6;
+    int CONSTANT_Fieldref = 9;
+    int CONSTANT_Float = 4;
+    int CONSTANT_Integer = 3;
+    int CONSTANT_InterfaceMethodref = 11;
+    int CONSTANT_InvokeDynamic = 18;
+    int CONSTANT_Long = 5;
+    int CONSTANT_MethodHandle = 15;
+    int CONSTANT_MethodType = 16;
+    int CONSTANT_Methodref = 10;
+    int CONSTANT_NameAndType = 12;
+    int CONSTANT_String = 8;
+    int CONSTANT_Utf8 = 1;
 }

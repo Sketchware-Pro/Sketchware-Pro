@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecSet;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
@@ -12,132 +13,11 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.util.FixedSizeList;
 
 public final class LocalList extends FixedSizeList {
-    private static final boolean DEBUG = false;
     public static final LocalList EMPTY = new LocalList(0);
-
-    public enum Disposition {
-        START,
-        END_SIMPLY,
-        END_REPLACED,
-        END_MOVED,
-        END_CLOBBERED_BY_PREV,
-        END_CLOBBERED_BY_NEXT
-    }
+    private static final boolean DEBUG = false;
 
     public LocalList(int i) {
         super(i);
-    }
-
-    public Entry get(int i) {
-        return (Entry) get0(i);
-    }
-
-    public void set(int i, Entry entry) {
-        set0(i, entry);
-    }
-
-    public void debugPrint(PrintStream printStream, String str) {
-        int size = size();
-        for (int i = 0; i < size; i++) {
-            printStream.print(str);
-            printStream.println(get(i));
-        }
-    }
-
-    public static class Entry implements Comparable<Entry> {
-        private final int address;
-        private final Disposition disposition;
-        private final RegisterSpec spec;
-        private final CstType type;
-
-        public Entry(int i, Disposition disposition2, RegisterSpec registerSpec) {
-            if (i < 0) {
-                throw new IllegalArgumentException("address < 0");
-            } else if (disposition2 == null) {
-                throw new NullPointerException("disposition == null");
-            } else {
-                try {
-                    if (registerSpec.getLocalItem() == null) {
-                        throw new NullPointerException("spec.getLocalItem() == null");
-                    }
-                    this.address = i;
-                    this.disposition = disposition2;
-                    this.spec = registerSpec;
-                    this.type = CstType.intern(registerSpec.getType());
-                } catch (NullPointerException e) {
-                    throw new NullPointerException("spec == null");
-                }
-            }
-        }
-
-        public String toString() {
-            return String.valueOf(Integer.toHexString(this.address)) + " " + this.disposition + " " + this.spec;
-        }
-
-        public boolean equals(Object obj) {
-            if ((obj instanceof Entry) && compareTo((Entry) obj) == 0) {
-                return true;
-            }
-            return false;
-        }
-
-        public int compareTo(Entry entry) {
-            if (this.address < entry.address) {
-                return -1;
-            }
-            if (this.address > entry.address) {
-                return 1;
-            }
-            boolean isStart = isStart();
-            if (isStart != entry.isStart()) {
-                return !isStart ? -1 : 1;
-            }
-            return this.spec.compareTo(entry.spec);
-        }
-
-        public int getAddress() {
-            return this.address;
-        }
-
-        public Disposition getDisposition() {
-            return this.disposition;
-        }
-
-        public boolean isStart() {
-            return this.disposition == Disposition.START;
-        }
-
-        public CstString getName() {
-            return this.spec.getLocalItem().getName();
-        }
-
-        public CstString getSignature() {
-            return this.spec.getLocalItem().getSignature();
-        }
-
-        public CstType getType() {
-            return this.type;
-        }
-
-        public int getRegister() {
-            return this.spec.getReg();
-        }
-
-        public RegisterSpec getRegisterSpec() {
-            return this.spec;
-        }
-
-        public boolean matches(RegisterSpec registerSpec) {
-            return this.spec.equalsUsingSimpleType(registerSpec);
-        }
-
-        public boolean matches(Entry entry) {
-            return matches(entry.spec);
-        }
-
-        public Entry withDisposition(Disposition disposition2) {
-            return disposition2 == this.disposition ? this : new Entry(this.address, disposition2, this.spec);
-        }
     }
 
     public static LocalList make(DalvInsnList dalvInsnList) {
@@ -208,15 +88,140 @@ public final class LocalList extends FixedSizeList {
         }
     }
 
+    public Entry get(int i) {
+        return (Entry) get0(i);
+    }
+
+    public void set(int i, Entry entry) {
+        set0(i, entry);
+    }
+
+    public void debugPrint(PrintStream printStream, String str) {
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            printStream.print(str);
+            printStream.println(get(i));
+        }
+    }
+
+    public enum Disposition {
+        START,
+        END_SIMPLY,
+        END_REPLACED,
+        END_MOVED,
+        END_CLOBBERED_BY_PREV,
+        END_CLOBBERED_BY_NEXT
+    }
+
+    public static class Entry implements Comparable<Entry> {
+        private final int address;
+        private final Disposition disposition;
+        private final RegisterSpec spec;
+        private final CstType type;
+
+        public Entry(int i, Disposition disposition2, RegisterSpec registerSpec) {
+            if (i < 0) {
+                throw new IllegalArgumentException("address < 0");
+            } else if (disposition2 == null) {
+                throw new NullPointerException("disposition == null");
+            } else {
+                try {
+                    if (registerSpec.getLocalItem() == null) {
+                        throw new NullPointerException("spec.getLocalItem() == null");
+                    }
+                    this.address = i;
+                    this.disposition = disposition2;
+                    this.spec = registerSpec;
+                    this.type = CstType.intern(registerSpec.getType());
+                } catch (NullPointerException e) {
+                    throw new NullPointerException("spec == null");
+                }
+            }
+        }
+
+        public String toString() {
+            return Integer.toHexString(this.address) + " " + this.disposition + " " + this.spec;
+        }
+
+        public boolean equals(Object obj) {
+            return (obj instanceof Entry) && compareTo((Entry) obj) == 0;
+        }
+
+        public int compareTo(Entry entry) {
+            if (this.address < entry.address) {
+                return -1;
+            }
+            if (this.address > entry.address) {
+                return 1;
+            }
+            boolean isStart = isStart();
+            if (isStart != entry.isStart()) {
+                return !isStart ? -1 : 1;
+            }
+            return this.spec.compareTo(entry.spec);
+        }
+
+        public int getAddress() {
+            return this.address;
+        }
+
+        public Disposition getDisposition() {
+            return this.disposition;
+        }
+
+        public boolean isStart() {
+            return this.disposition == Disposition.START;
+        }
+
+        public CstString getName() {
+            return this.spec.getLocalItem().getName();
+        }
+
+        public CstString getSignature() {
+            return this.spec.getLocalItem().getSignature();
+        }
+
+        public CstType getType() {
+            return this.type;
+        }
+
+        public int getRegister() {
+            return this.spec.getReg();
+        }
+
+        public RegisterSpec getRegisterSpec() {
+            return this.spec;
+        }
+
+        public boolean matches(RegisterSpec registerSpec) {
+            return this.spec.equalsUsingSimpleType(registerSpec);
+        }
+
+        public boolean matches(Entry entry) {
+            return matches(entry.spec);
+        }
+
+        public Entry withDisposition(Disposition disposition2) {
+            return disposition2 == this.disposition ? this : new Entry(this.address, disposition2, this.spec);
+        }
+    }
+
     public static class MakeState {
+        private final ArrayList<Entry> result;
         private int[] endIndices = null;
-        private int lastAddress = 0;
+        private final int lastAddress = 0;
         private int nullResultCount = 0;
         private RegisterSpecSet regs = null;
-        private final ArrayList<Entry> result;
 
         public MakeState(int i) {
             this.result = new ArrayList<>(i);
+        }
+
+        private static RegisterSpec filterSpec(RegisterSpec registerSpec) {
+            if (registerSpec == null || registerSpec.getType() != Type.KNOWN_NULL) {
+                return registerSpec;
+            }
+            return registerSpec.withType(Type.OBJECT);
         }
 
         private void aboutToProcess(int i, int i2) {
@@ -349,13 +354,6 @@ public final class LocalList extends FixedSizeList {
                 }
             }
             return true;
-        }
-
-        private static RegisterSpec filterSpec(RegisterSpec registerSpec) {
-            if (registerSpec == null || registerSpec.getType() != Type.KNOWN_NULL) {
-                return registerSpec;
-            }
-            return registerSpec.withType(Type.OBJECT);
         }
 
         private void add(int i, Disposition disposition, RegisterSpec registerSpec) {

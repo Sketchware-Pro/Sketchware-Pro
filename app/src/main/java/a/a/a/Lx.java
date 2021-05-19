@@ -6,8 +6,10 @@
 package a.a.a;
 
 import com.besome.sketch.beans.ViewBean;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.editor.event.ManageEventComponent;
 import mod.agus.jcoderz.handle.code.CodeResult;
@@ -17,12 +19,6 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Lx {
-
-    enum a {
-        a, // = MODE_PRIVATE
-        b, // = MODE_PROTECTED
-        c // = MODE_PUBLIC
-    }
 
     public static String a() {
         return "include ':app'";
@@ -219,9 +215,10 @@ public class Lx {
     public static String a(String var0, String var1) {
         String var2;
         byte var3;
-        label251: {
+        label251:
+        {
             var2 = ManageEvent.f(var0, var1);
-            switch(var0.hashCode()) {
+            switch (var0.hashCode()) {
                 case -2117913147:
                     if (var0.equals("onStartTrackingTouch")) {
                         var3 = 17;
@@ -575,7 +572,7 @@ public class Lx {
         }
 
         var0 = var1;
-        switch(var3) {
+        switch (var3) {
             case 0:
                 var0 = String.format("@Override\r\npublic void onClick(View _view) {\r\n%s\r\n}", var1);
             case 55:
@@ -959,7 +956,7 @@ public class Lx {
 
         StringBuilder var8;
         StringBuilder var9;
-        for(int var5 = 0; var5 < var10.size(); ++var5) {
+        for (int var5 = 0; var5 < var10.size(); ++var5) {
             String var6 = var10.get(var5);
             if (var6.charAt(0) == '%') {
                 if (var6.charAt(1) == 'b') {
@@ -1050,7 +1047,7 @@ public class Lx {
         Iterator<ViewBean> var7 = var2.iterator();
 
         StringBuilder var6;
-        for(var0 = ""; var7.hasNext(); var0 = var6.toString()) {
+        for (var0 = ""; var7.hasNext(); var0 = var6.toString()) {
             ViewBean var5 = var7.next();
             var6 = new StringBuilder();
             var6.append(var0);
@@ -1130,9 +1127,10 @@ public class Lx {
 
     public static String a(String var0, String var1, String... var2) {
         byte var3;
-        label84: {
+        label84:
+        {
             var1 = TypeVarComponent.b(var0);
-            switch(var0.hashCode()) {
+            switch (var0.hashCode()) {
                 case -2099895620:
                     if (var0.equals("Intent")) {
                         var3 = 7;
@@ -1222,7 +1220,7 @@ public class Lx {
         }
 
         StringBuilder var4;
-        switch(var3) {
+        switch (var3) {
             case 0:
                 var0 = "false";
                 break;
@@ -1334,7 +1332,7 @@ public class Lx {
 
             var6 = "if (";
 
-            for(var1 = 0; var1 < var4.size(); ++var1) {
+            for (var1 = 0; var1 < var4.size(); ++var1) {
                 var8 = var4.get(var1);
                 var7 = var6;
                 if (var1 != 0) {
@@ -1356,7 +1354,7 @@ public class Lx {
             var9 = var11.toString();
             var6 = "ActivityCompat.requestPermissions(this, new String[] {";
 
-            for(var1 = var3; var1 < var5.size(); ++var1) {
+            for (var1 = var3; var1 < var5.size(); ++var1) {
                 var8 = var5.get(var1);
                 var7 = var6;
                 if (var1 != 0) {
@@ -1433,7 +1431,7 @@ public class Lx {
             var10.append("if (");
             var6 = var10.toString();
 
-            for(var1 = 0; var1 < var4.size(); ++var1) {
+            for (var1 = 0; var1 < var4.size(); ++var1) {
                 var8 = var4.get(var1);
                 var7 = var6;
                 if (var1 != 0) {
@@ -1455,7 +1453,7 @@ public class Lx {
             var9 = var11.toString();
             var6 = "requestPermissions(new String[] {";
 
-            for(var1 = var2; var1 < var5.size(); ++var1) {
+            for (var1 = var2; var1 < var5.size(); ++var1) {
                 var8 = var5.get(var1);
                 var7 = var6;
                 if (var1 != 0) {
@@ -1518,7 +1516,7 @@ public class Lx {
     }
 
     public static void a(StringBuilder var0, int var1) {
-        for(int var2 = 0; var2 < var1; ++var2) {
+        for (int var2 = 0; var2 < var1; ++var2) {
             var0.append('\t');
         }
 
@@ -1534,8 +1532,9 @@ public class Lx {
 
     public static String b(String var0, String var1, String var2) {
         byte var3;
-        label68: {
-            switch(var0.hashCode()) {
+        label68:
+        {
+            switch (var0.hashCode()) {
                 case -1401315045:
                     if (var0.equals("onDestroy")) {
                         var3 = 5;
@@ -1717,8 +1716,9 @@ public class Lx {
 
     public static String b(String var0, String var1, String... var2) {
         byte var3;
-        label87: {
-            switch(var0.hashCode()) {
+        label87:
+        {
+            switch (var0.hashCode()) {
                 case -1965257499:
                     if (var0.equals("Gyroscope")) {
                         var3 = 3;
@@ -1810,7 +1810,7 @@ public class Lx {
         var0 = ManageEventComponent.b(var0, var1);
         StringBuilder var4;
         StringBuilder var5;
-        switch(var3) {
+        switch (var3) {
             case 0:
                 if (var2[0] != null && !var2[0].isEmpty()) {
                     var0 = var2[0].replace(";", var0);
@@ -2041,9 +2041,10 @@ public class Lx {
     public static String d(String var0, String var1, String var2) {
         String var3;
         byte var4;
-        label131: {
+        label131:
+        {
             var3 = ManageEvent.g(var0, var1, var2);
-            switch(var0.hashCode()) {
+            switch (var0.hashCode()) {
                 case -2054042947:
                     if (var0.equals("onClickListener")) {
                         var4 = 0;
@@ -2217,7 +2218,7 @@ public class Lx {
         }
 
         StringBuilder var5;
-        switch(var4) {
+        switch (var4) {
             case 0:
                 var5 = new StringBuilder();
                 var5.append(var1);
@@ -2641,11 +2642,12 @@ public class Lx {
         boolean var8 = false;
 
         int var20;
-        for(boolean var9 = false; var3 < var2; var7 = var20) {
+        for (boolean var9 = false; var3 < var2; var7 = var20) {
             boolean var17;
             boolean var18;
             int var19;
-            label81: {
+            label81:
+            {
                 char var10 = var15[var3];
                 boolean var11;
                 int var16;
@@ -2663,7 +2665,8 @@ public class Lx {
                 } else {
                     char var14;
                     if (var5) {
-                        label78: {
+                        label78:
+                        {
                             if (var10 == '*') {
                                 var20 = var3 + 1;
                                 var14 = var15[var20];
@@ -2714,7 +2717,8 @@ public class Lx {
                             var16 = var3;
                         }
                     } else {
-                        label87: {
+                        label87:
+                        {
                             if (var10 == '/') {
                                 var20 = var3 + 1;
                                 var14 = var15[var20];
@@ -2807,7 +2811,7 @@ public class Lx {
         Iterator<ViewBean> var7 = var2.iterator();
 
         StringBuilder var6;
-        for(var0 = ""; var7.hasNext(); var0 = var6.toString()) {
+        for (var0 = ""; var7.hasNext(); var0 = var6.toString()) {
             ViewBean var5 = var7.next();
             var6 = new StringBuilder();
             var6.append(var0);
@@ -2918,8 +2922,8 @@ public class Lx {
         Iterator<?> var7 = var2.iterator();
 
         StringBuilder var6;
-        for(var0 = ""; var7.hasNext(); var0 = var6.toString()) {
-            ViewBean var5 = (ViewBean)var7.next();
+        for (var0 = ""; var7.hasNext(); var0 = var6.toString()) {
+            ViewBean var5 = (ViewBean) var7.next();
             var6 = new StringBuilder();
             var6.append(var0);
             var6.append(a(var5));
@@ -2998,5 +3002,11 @@ public class Lx {
                 "\r\n" +
                 "\r\n" +
                 "}";
+    }
+
+    enum a {
+        a, // = MODE_PRIVATE
+        b, // = MODE_PROTECTED
+        c // = MODE_PUBLIC
     }
 }

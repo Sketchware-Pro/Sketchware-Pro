@@ -33,7 +33,7 @@ public class EventsMakerDetails extends Activity {
     private AlertDialog.Builder dia;
     private FloatingActionButton fab;
     private String lisName;
-    private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
     private ListView listView;
 
     @Override

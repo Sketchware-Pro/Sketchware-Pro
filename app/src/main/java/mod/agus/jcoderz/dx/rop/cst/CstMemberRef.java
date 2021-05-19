@@ -22,10 +22,7 @@ public abstract class CstMemberRef extends TypedConstant {
             return false;
         }
         CstMemberRef cstMemberRef = (CstMemberRef) obj;
-        if (!this.definingClass.equals(cstMemberRef.definingClass) || !this.nat.equals(cstMemberRef.nat)) {
-            return false;
-        }
-        return true;
+        return this.definingClass.equals(cstMemberRef.definingClass) && this.nat.equals(cstMemberRef.nat);
     }
 
     public final int hashCode() {

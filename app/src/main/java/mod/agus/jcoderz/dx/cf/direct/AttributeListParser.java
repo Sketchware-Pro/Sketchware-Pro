@@ -11,10 +11,10 @@ public final class AttributeListParser {
     private final AttributeFactory attributeFactory;
     private final DirectClassFile cf;
     private final int context;
-    private int endOffset;
     private final StdAttributeList list;
-    private ParseObserver observer;
     private final int offset;
+    private int endOffset;
+    private ParseObserver observer;
 
     public AttributeListParser(DirectClassFile directClassFile, int i, int i2, AttributeFactory attributeFactory2) {
         if (directClassFile == null) {

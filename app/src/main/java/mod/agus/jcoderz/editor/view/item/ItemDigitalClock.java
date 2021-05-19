@@ -1,13 +1,15 @@
 package mod.agus.jcoderz.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.widget.DigitalClock;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 @Deprecated
 public class ItemDigitalClock extends DigitalClock implements sy {
@@ -35,12 +37,25 @@ public class ItemDigitalClock extends DigitalClock implements sy {
         return this.O;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.O = viewBean;
+    }
+
     public boolean getFixed() {
         return this.Q;
     }
 
+    public void setFixed(boolean z) {
+        this.Q = z;
+    }
+
     public boolean getSelection() {
         return this.P;
+    }
+
+    public void setSelection(boolean z) {
+        this.P = z;
+        invalidate();
     }
 
     @Deprecated
@@ -51,21 +66,8 @@ public class ItemDigitalClock extends DigitalClock implements sy {
         super.onDraw(canvas);
     }
 
-    public void setBean(ViewBean viewBean) {
-        this.O = viewBean;
-    }
-
-    public void setFixed(boolean z) {
-        this.Q = z;
-    }
-
     public void setPadding(int i, int i2, int i3, int i4) {
         float f = this.S;
         super.setPadding((int) (((float) i) * f), (int) (((float) i2) * f), (int) (((float) i3) * f), (int) (f * ((float) i4)));
-    }
-
-    public void setSelection(boolean z) {
-        this.P = z;
-        invalidate();
     }
 }

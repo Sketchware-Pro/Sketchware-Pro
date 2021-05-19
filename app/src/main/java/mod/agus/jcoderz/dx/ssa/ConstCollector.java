@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.PlainCstInsn;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
@@ -23,18 +24,18 @@ import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 
 public class ConstCollector {
-    private static boolean COLLECT_ONE_LOCAL = false;
-    private static boolean COLLECT_STRINGS = false;
     private static final int MAX_COLLECTED_CONSTANTS = 5;
+    private static final boolean COLLECT_ONE_LOCAL = false;
+    private static final boolean COLLECT_STRINGS = false;
     private final SsaMethod ssaMeth;
     private Object RegisterMapper;
 
-    public static void process(SsaMethod ssaMethod) {
-        new ConstCollector(ssaMethod).run();
-    }
-
     private ConstCollector(SsaMethod ssaMethod) {
         this.ssaMeth = ssaMethod;
+    }
+
+    public static void process(SsaMethod ssaMethod) {
+        new ConstCollector(ssaMethod).run();
     }
 
     private void run() {
@@ -78,7 +79,7 @@ public class ConstCollector {
                     }
                     if (!definitionForRegister.canThrow() || ((typedConstant instanceof CstString) && COLLECT_STRINGS && definitionForRegister.getBlock().getSuccessors().cardinality() <= 1)) {
                         if (this.ssaMeth.isRegALocal(result)) {
-                            if (COLLECT_ONE_LOCAL && !hashSet.contains(typedConstant)) {
+                            if (COLLECT_ONE_LOCAL) {
                                 hashSet.add(typedConstant);
                             }
                         }

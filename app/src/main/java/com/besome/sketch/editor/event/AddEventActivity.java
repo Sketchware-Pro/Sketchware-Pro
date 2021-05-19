@@ -384,7 +384,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (this.l != null) {
             m();
         }
-        this.d.setScreenName(AddEventActivity.class.getSimpleName().toString());
+        this.d.setScreenName(AddEventActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
@@ -445,11 +445,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 aVar.x.setText(eventBean.targetId);
             }
             aVar.y.setText(oq.a(eventBean.eventName, AddEventActivity.this.getApplicationContext()));
-            if (eventBean.isSelected) {
-                aVar.z.setChecked(true);
-            } else {
-                aVar.z.setChecked(false);
-            }
+            aVar.z.setChecked(eventBean.isSelected);
             this.e = false;
         }
 

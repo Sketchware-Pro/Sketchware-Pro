@@ -2,6 +2,7 @@ package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.Arrays;
 import java.util.Comparator;
+
 import mod.agus.jcoderz.dx.rop.annotation.Annotation;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationVisibility;
 import mod.agus.jcoderz.dx.rop.annotation.NameValuePair;
@@ -9,15 +10,26 @@ import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.ByteArrayAnnotatedOutput;
 
 public final class AnnotationItem extends OffsettedItem {
-    private static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$rop$annotation$AnnotationVisibility = null;
     private static final int ALIGNMENT = 1;
     private static final TypeIdSorter TYPE_ID_SORTER = new TypeIdSorter(null);
     private static final int VISIBILITY_BUILD = 0;
     private static final int VISIBILITY_RUNTIME = 1;
     private static final int VISIBILITY_SYSTEM = 2;
+    private static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$rop$annotation$AnnotationVisibility = null;
     private final Annotation annotation;
     private byte[] encodedForm;
     private TypeIdItem type;
+
+    public AnnotationItem(Annotation annotation2, DexFile dexFile) {
+        super(1, -1);
+        if (annotation2 == null) {
+            throw new NullPointerException("annotation == null");
+        }
+        this.annotation = annotation2;
+        this.type = null;
+        this.encodedForm = null;
+        addContents(dexFile);
+    }
 
     static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$rop$annotation$AnnotationVisibility() {
         int[] iArr = $SWITCH_TABLE$mod$agus$jcoderz$dx$rop$annotation$AnnotationVisibility;
@@ -44,45 +56,8 @@ public final class AnnotationItem extends OffsettedItem {
         return iArr;
     }
 
-    private static class TypeIdSorter implements Comparator<AnnotationItem> {
-        @Override
-        public int compare(AnnotationItem annotationItem, AnnotationItem annotationItem2) {
-            return compare(annotationItem, annotationItem2);
-        }
-
-        private TypeIdSorter() {
-        }
-
-        TypeIdSorter(TypeIdSorter typeIdSorter) {
-            this();
-        }
-
-        public int compareTwo(AnnotationItem annotationItem1, AnnotationItem annotationItem2) {
-            int index = annotationItem1.type.getIndex();
-            int index2 = annotationItem2.type.getIndex();
-            if (index < index2) {
-                return -1;
-            }
-            if (index > index2) {
-                return 1;
-            }
-            return 0;
-        }
-    }
-
     public static void sortByTypeIdIndex(AnnotationItem[] annotationItemArr) {
         Arrays.sort(annotationItemArr, TYPE_ID_SORTER);
-    }
-
-    public AnnotationItem(Annotation annotation2, DexFile dexFile) {
-        super(1, -1);
-        if (annotation2 == null) {
-            throw new NullPointerException("annotation == null");
-        }
-        this.annotation = annotation2;
-        this.type = null;
-        this.encodedForm = null;
-        addContents(dexFile);
     }
 
     @Override // mod.agus.jcoderz.dx.dex.file.Item
@@ -119,10 +94,10 @@ public final class AnnotationItem extends OffsettedItem {
     }
 
     public void annotateTo(AnnotatedOutput annotatedOutput, String str) {
-        annotatedOutput.annotate(0, String.valueOf(str) + "visibility: " + this.annotation.getVisibility().toHuman());
-        annotatedOutput.annotate(0, String.valueOf(str) + "type: " + this.annotation.getType().toHuman());
+        annotatedOutput.annotate(0, str + "visibility: " + this.annotation.getVisibility().toHuman());
+        annotatedOutput.annotate(0, str + "type: " + this.annotation.getType().toHuman());
         for (NameValuePair nameValuePair : this.annotation.getNameValuePairs()) {
-            annotatedOutput.annotate(0, String.valueOf(str) + nameValuePair.getName().toHuman() + ": " + ValueEncoder.constantToHuman(nameValuePair.getValue()));
+            annotatedOutput.annotate(0, str + nameValuePair.getName().toHuman() + ": " + ValueEncoder.constantToHuman(nameValuePair.getValue()));
         }
     }
 
@@ -131,7 +106,7 @@ public final class AnnotationItem extends OffsettedItem {
         boolean annotates = annotatedOutput.annotates();
         AnnotationVisibility visibility = this.annotation.getVisibility();
         if (annotates) {
-            annotatedOutput.annotate(0, String.valueOf(offsetString()) + " annotation");
+            annotatedOutput.annotate(0, offsetString() + " annotation");
             annotatedOutput.annotate(1, "  visibility: VISBILITY_" + visibility);
         }
         switch ($SWITCH_TABLE$mod$agus$jcoderz$dx$rop$annotation$AnnotationVisibility()[visibility.ordinal()]) {
@@ -151,6 +126,32 @@ public final class AnnotationItem extends OffsettedItem {
             new ValueEncoder(dexFile, annotatedOutput).writeAnnotation(this.annotation, true);
         } else {
             annotatedOutput.write(this.encodedForm);
+        }
+    }
+
+    private static class TypeIdSorter implements Comparator<AnnotationItem> {
+        private TypeIdSorter() {
+        }
+
+        TypeIdSorter(TypeIdSorter typeIdSorter) {
+            this();
+        }
+
+        @Override
+        public int compare(AnnotationItem annotationItem, AnnotationItem annotationItem2) {
+            return compare(annotationItem, annotationItem2);
+        }
+
+        public int compareTwo(AnnotationItem annotationItem1, AnnotationItem annotationItem2) {
+            int index = annotationItem1.type.getIndex();
+            int index2 = annotationItem2.type.getIndex();
+            if (index < index2) {
+                return -1;
+            }
+            if (index > index2) {
+                return 1;
+            }
+            return 0;
         }
     }
 }

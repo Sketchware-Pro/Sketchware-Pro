@@ -13,11 +13,6 @@ import java.util.zip.ZipFile;
 public class ArchivePathElement implements ClassPathElement {
     private final ZipFile archive;
 
-    static class DirectoryEntryException extends IOException {
-        DirectoryEntryException() {
-        }
-    }
-
     public ArchivePathElement(ZipFile zipFile) {
         this.archive = zipFile;
     }
@@ -51,7 +46,7 @@ public class ArchivePathElement implements ClassPathElement {
             @Override // java.lang.Iterable
             public Iterator<String> iterator() {
                 return new Iterator<String>() {
-                    Enumeration<? extends ZipEntry> delegate;
+                    final Enumeration<? extends ZipEntry> delegate;
                     ZipEntry next = null;
 
                     {
@@ -65,10 +60,7 @@ public class ArchivePathElement implements ClassPathElement {
                                 this.next = null;
                             }
                         }
-                        if (this.next != null) {
-                            return true;
-                        }
-                        return false;
+                        return this.next != null;
                     }
 
                     @Override // java.util.Iterator
@@ -87,5 +79,10 @@ public class ArchivePathElement implements ClassPathElement {
                 };
             }
         };
+    }
+
+    static class DirectoryEntryException extends IOException {
+        DirectoryEntryException() {
+        }
     }
 }

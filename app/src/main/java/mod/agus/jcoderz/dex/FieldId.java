@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dex;
 
-import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.util.Unsigned;
 
 public final class FieldId implements Comparable<FieldId> {
@@ -46,8 +45,8 @@ public final class FieldId implements Comparable<FieldId> {
 
     public String toString() {
         if (this.dex == null) {
-            return String.valueOf(this.declaringClassIndex) + " " + this.typeIndex + " " + this.nameIndex;
+            return this.declaringClassIndex + " " + this.typeIndex + " " + this.nameIndex;
         }
-        return String.valueOf(this.dex.typeNames().get(this.typeIndex)) + "." + this.dex.strings().get(this.nameIndex);
+        return this.dex.typeNames().get(this.typeIndex) + "." + this.dex.strings().get(this.nameIndex);
     }
 }

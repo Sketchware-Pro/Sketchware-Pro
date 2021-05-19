@@ -4,9 +4,9 @@ import mod.agus.jcoderz.dx.util.IntList;
 import mod.agus.jcoderz.dx.util.MutabilityControl;
 
 public final class SwitchList extends MutabilityControl {
-    private int size;
     private final IntList targets;
     private final IntList values;
+    private int size;
 
     public SwitchList(int i) {
         super(true);
@@ -38,14 +38,6 @@ public final class SwitchList extends MutabilityControl {
         return this.targets.get(this.size);
     }
 
-    public IntList getTargets() {
-        return this.targets;
-    }
-
-    public IntList getValues() {
-        return this.values;
-    }
-
     public void setDefaultTarget(int i) {
         throwIfImmutable();
         if (i < 0) {
@@ -55,6 +47,14 @@ public final class SwitchList extends MutabilityControl {
         } else {
             this.targets.add(i);
         }
+    }
+
+    public IntList getTargets() {
+        return this.targets;
+    }
+
+    public IntList getValues() {
+        return this.values;
     }
 
     public void add(int i, int i2) {

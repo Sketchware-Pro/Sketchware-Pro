@@ -35,6 +35,27 @@ public final class SwitchData extends VariableSizeInsn {
         }
     }
 
+    private static long packedCodeSize(IntList intList) {
+        long j = (((((long) intList.get(intList.size() - 1)) - ((long) intList.get(0))) + 1) * 2) + 4;
+        if (j <= 2147483647L) {
+            return j;
+        }
+        return -1;
+    }
+
+    private static long sparseCodeSize(IntList intList) {
+        return (((long) intList.size()) * 4) + 2;
+    }
+
+    private static boolean shouldPack(IntList intList) {
+        if (intList.size() < 2) {
+            return true;
+        }
+        long packedCodeSize = packedCodeSize(intList);
+        long sparseCodeSize = sparseCodeSize(intList);
+        return packedCodeSize >= 0 && packedCodeSize <= (sparseCodeSize * 5) / 4;
+    }
+
     @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
     public int codeSize() {
         if (this.packed) {
@@ -119,29 +140,5 @@ public final class SwitchData extends VariableSizeInsn {
             stringBuffer.append(Hex.s4(address2 - address));
         }
         return stringBuffer.toString();
-    }
-
-    private static long packedCodeSize(IntList intList) {
-        long j = (((((long) intList.get(intList.size() - 1)) - ((long) intList.get(0))) + 1) * 2) + 4;
-        if (j <= 2147483647L) {
-            return j;
-        }
-        return -1;
-    }
-
-    private static long sparseCodeSize(IntList intList) {
-        return (((long) intList.size()) * 4) + 2;
-    }
-
-    private static boolean shouldPack(IntList intList) {
-        if (intList.size() < 2) {
-            return true;
-        }
-        long packedCodeSize = packedCodeSize(intList);
-        long sparseCodeSize = sparseCodeSize(intList);
-        if (packedCodeSize < 0 || packedCodeSize > (sparseCodeSize * 5) / 4) {
-            return false;
-        }
-        return true;
     }
 }

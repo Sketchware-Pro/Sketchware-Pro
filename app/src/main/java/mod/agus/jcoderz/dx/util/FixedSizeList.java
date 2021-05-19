@@ -30,13 +30,13 @@ public class FixedSizeList extends MutabilityControl implements ToHuman {
 
     public String toString() {
         String name = getClass().getName();
-        return toString0(String.valueOf(name.substring(name.lastIndexOf(46) + 1)) + '{', ", ", "}", false);
+        return toString0(name.substring(name.lastIndexOf(46) + 1) + '{', ", ", "}", false);
     }
 
     @Override // mod.agus.jcoderz.dx.util.ToHuman
     public String toHuman() {
         String name = getClass().getName();
-        return toString0(String.valueOf(name.substring(name.lastIndexOf(46) + 1)) + '{', ", ", "}", true);
+        return toString0(name.substring(name.lastIndexOf(46) + 1) + '{', ", ", "}", true);
     }
 
     public String toString(String str, String str2, String str3) {

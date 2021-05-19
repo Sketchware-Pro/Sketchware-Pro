@@ -103,10 +103,7 @@ public final class CatchHandlerList extends FixedSizeList implements Comparable<
         }
 
         public boolean equals(Object obj) {
-            if (!(obj instanceof Entry) || compareTo((Entry) obj) != 0) {
-                return false;
-            }
-            return true;
+            return obj instanceof Entry && compareTo((Entry) obj) == 0;
         }
 
         public int compareTo(Entry entry) {

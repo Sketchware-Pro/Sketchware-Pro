@@ -1,22 +1,10 @@
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
 
 public final class ThrowingInsn extends Insn {
     private final TypeList catches;
-
-    public static String toCatchString(TypeList typeList) {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append("catch");
-        int size = typeList.size();
-        for (int i = 0; i < size; i++) {
-            stringBuffer.append(" ");
-            stringBuffer.append(typeList.getType(i).toHuman());
-        }
-        return stringBuffer.toString();
-    }
 
     public ThrowingInsn(Rop rop, SourcePosition sourcePosition, RegisterSpecList registerSpecList, TypeList typeList) {
         super(rop, sourcePosition, null, registerSpecList);
@@ -27,6 +15,17 @@ public final class ThrowingInsn extends Insn {
         } else {
             this.catches = typeList;
         }
+    }
+
+    public static String toCatchString(TypeList typeList) {
+        StringBuffer stringBuffer = new StringBuffer(100);
+        stringBuffer.append("catch");
+        int size = typeList.size();
+        for (int i = 0; i < size; i++) {
+            stringBuffer.append(" ");
+            stringBuffer.append(typeList.getType(i).toHuman());
+        }
+        return stringBuffer.toString();
     }
 
     @Override // mod.agus.jcoderz.dx.rop.code.Insn

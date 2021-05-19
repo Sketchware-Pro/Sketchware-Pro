@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+
 import mod.agus.jcoderz.dex.ClassData;
 import mod.agus.jcoderz.dex.ClassDef;
 import mod.agus.jcoderz.dex.Dex;
@@ -17,12 +18,12 @@ import mod.agus.jcoderz.dx.io.instructions.DecodedInstruction;
 
 public final class FindUsages {
     private final CodeReader codeReader = new CodeReader();
-    private ClassDef currentClass;
-    private ClassData.Method currentMethod;
     private final Dex dex;
     private final Set<Integer> fieldIds;
     private final Set<Integer> methodIds;
     private final PrintWriter out;
+    private ClassDef currentClass;
+    private ClassData.Method currentMethod;
 
     public FindUsages(final Dex dex2, String str, String str2, final PrintWriter printWriter) {
         this.dex = dex2;
@@ -61,7 +62,7 @@ public final class FindUsages {
             public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
                 int index = decodedInstruction.getIndex();
                 if (FindUsages.this.fieldIds.contains(Integer.valueOf(index))) {
-                    printWriter.println(String.valueOf(FindUsages.this.location()) + ": field reference " + dex2.fieldIds().get(index) + " (" + OpcodeInfo.getName(decodedInstruction.getOpcode()) + ")");
+                    printWriter.println(FindUsages.this.location() + ": field reference " + dex2.fieldIds().get(index) + " (" + OpcodeInfo.getName(decodedInstruction.getOpcode()) + ")");
                 }
             }
         });
@@ -71,7 +72,7 @@ public final class FindUsages {
             public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
                 int index = decodedInstruction.getIndex();
                 if (FindUsages.this.methodIds.contains(Integer.valueOf(index))) {
-                    printWriter.println(String.valueOf(FindUsages.this.location()) + ": method reference " + dex2.methodIds().get(index) + " (" + OpcodeInfo.getName(decodedInstruction.getOpcode()) + ")");
+                    printWriter.println(FindUsages.this.location() + ": method reference " + dex2.methodIds().get(index) + " (" + OpcodeInfo.getName(decodedInstruction.getOpcode()) + ")");
                 }
             }
         });
@@ -80,7 +81,7 @@ public final class FindUsages {
     private String location() {
         String str = this.dex.typeNames().get(this.currentClass.getTypeIndex());
         if (this.currentMethod != null) {
-            return String.valueOf(str) + "." + this.dex.strings().get(this.dex.methodIds().get(this.currentMethod.getMethodIndex()).getNameIndex());
+            return str + "." + this.dex.strings().get(this.dex.methodIds().get(this.currentMethod.getMethodIndex()).getNameIndex());
         }
         return str;
     }
@@ -95,7 +96,7 @@ public final class FindUsages {
                     for (ClassData.Field field : readClassData.allFields()) {
                         int fieldIndex = field.getFieldIndex();
                         if (this.fieldIds.contains(Integer.valueOf(fieldIndex))) {
-                            this.out.println(String.valueOf(location()) + " field declared " + this.dex.fieldIds().get(fieldIndex));
+                            this.out.println(location() + " field declared " + this.dex.fieldIds().get(fieldIndex));
                         }
                     }
                     ClassData.Method[] allMethods = readClassData.allMethods();
@@ -103,7 +104,7 @@ public final class FindUsages {
                         this.currentMethod = method;
                         int methodIndex = method.getMethodIndex();
                         if (this.methodIds.contains(Integer.valueOf(methodIndex))) {
-                            this.out.println(String.valueOf(location()) + " method declared " + this.dex.methodIds().get(methodIndex));
+                            this.out.println(location() + " method declared " + this.dex.methodIds().get(methodIndex));
                         }
                         if (method.getCodeOffset() != 0) {
                             this.codeReader.visitAll(this.dex.readCode(method).getInstructions());

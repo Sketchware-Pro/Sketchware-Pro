@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.dex.code.form;
 
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.dex.code.CstInsn;
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
@@ -17,7 +18,7 @@ public final class Form11n extends InsnFormat {
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
     public String insnArgString(DalvInsn dalvInsn) {
-        return String.valueOf(dalvInsn.getRegisters().get(0).regString()) + ", " + literalBitsString((CstLiteralBits) ((CstInsn) dalvInsn).getConstant());
+        return dalvInsn.getRegisters().get(0).regString() + ", " + literalBitsString((CstLiteralBits) ((CstInsn) dalvInsn).getConstant());
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat

@@ -15,6 +15,10 @@ public final class StdConstantPool extends MutabilityControl implements Constant
         this.entries = new Constant[i];
     }
 
+    private static Constant throwInvalid(int i) {
+        throw new ExceptionWithContext("invalid constant pool index " + Hex.u2(i));
+    }
+
     @Override // mod.agus.jcoderz.dx.rop.cst.ConstantPool
     public int size() {
         return this.entries.length;
@@ -73,9 +77,5 @@ public final class StdConstantPool extends MutabilityControl implements Constant
             this.entries[i - 1] = null;
         }
         this.entries[i] = constant;
-    }
-
-    private static Constant throwInvalid(int i) {
-        throw new ExceptionWithContext("invalid constant pool index " + Hex.u2(i));
     }
 }

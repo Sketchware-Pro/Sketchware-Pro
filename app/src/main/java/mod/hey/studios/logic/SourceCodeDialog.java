@@ -1,6 +1,5 @@
 package mod.hey.studios.logic;
 
-import a.a.a.mB;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +9,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import a.a.a.mB;
 
 public class SourceCodeDialog {
     public static void show(Context context, String str) {

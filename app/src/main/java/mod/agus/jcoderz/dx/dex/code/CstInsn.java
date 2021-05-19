@@ -5,8 +5,8 @@ import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 
 public final class CstInsn extends FixedSizeInsn {
-    private int classIndex;
     private final Constant constant;
+    private int classIndex;
     private int index;
 
     public CstInsn(Dop dop, SourcePosition sourcePosition, RegisterSpecList registerSpecList, Constant constant2) {
@@ -54,10 +54,6 @@ public final class CstInsn extends FixedSizeInsn {
         throw new RuntimeException("index not yet set for " + this.constant);
     }
 
-    public boolean hasIndex() {
-        return this.index >= 0;
-    }
-
     public void setIndex(int i) {
         if (i < 0) {
             throw new IllegalArgumentException("index < 0");
@@ -68,15 +64,15 @@ public final class CstInsn extends FixedSizeInsn {
         }
     }
 
+    public boolean hasIndex() {
+        return this.index >= 0;
+    }
+
     public int getClassIndex() {
         if (this.classIndex >= 0) {
             return this.classIndex;
         }
         throw new RuntimeException("class index not yet set");
-    }
-
-    public boolean hasClassIndex() {
-        return this.classIndex >= 0;
     }
 
     public void setClassIndex(int i) {
@@ -87,6 +83,10 @@ public final class CstInsn extends FixedSizeInsn {
         } else {
             this.classIndex = i;
         }
+    }
+
+    public boolean hasClassIndex() {
+        return this.classIndex >= 0;
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn

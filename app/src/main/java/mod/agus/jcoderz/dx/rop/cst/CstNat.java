@@ -1,7 +1,8 @@
 package mod.agus.jcoderz.dx.rop.cst;
 
-import mod.agus.jcoderz.dx.rop.type.Type;
 import org.eclipse.jdt.internal.compiler.util.Util;
+
+import mod.agus.jcoderz.dx.rop.type.Type;
 
 public final class CstNat extends Constant {
     public static final CstNat PRIMITIVE_TYPE_NAT = new CstNat(new CstString("TYPE"), new CstString("Ljava/lang/Class;"));
@@ -24,10 +25,7 @@ public final class CstNat extends Constant {
             return false;
         }
         CstNat cstNat = (CstNat) obj;
-        if (!this.name.equals(cstNat.name) || !this.descriptor.equals(cstNat.descriptor)) {
-            return false;
-        }
-        return true;
+        return this.name.equals(cstNat.name) && this.descriptor.equals(cstNat.descriptor);
     }
 
     public int hashCode() {
@@ -66,7 +64,7 @@ public final class CstNat extends Constant {
 
     @Override // mod.agus.jcoderz.dx.util.ToHuman
     public String toHuman() {
-        return String.valueOf(this.name.toHuman()) + Util.C_COLON + this.descriptor.toHuman();
+        return this.name.toHuman() + Util.C_COLON + this.descriptor.toHuman();
     }
 
     public Type getFieldType() {

@@ -9,6 +9,10 @@ public final class PositionList extends FixedSizeList {
     public static final int LINES = 2;
     public static final int NONE = 1;
 
+    public PositionList(int i) {
+        super(i);
+    }
+
     public static PositionList make(DalvInsnList dalvInsnList, int i) {
         switch (i) {
             case 1:
@@ -44,10 +48,6 @@ public final class PositionList extends FixedSizeList {
             default:
                 throw new IllegalArgumentException("bogus howMuch");
         }
-    }
-
-    public PositionList(int i) {
-        super(i);
     }
 
     public Entry get(int i) {

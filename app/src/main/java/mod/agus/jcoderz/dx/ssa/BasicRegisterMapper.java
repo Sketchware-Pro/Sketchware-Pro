@@ -4,7 +4,7 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.util.IntList;
 
 public class BasicRegisterMapper extends RegisterMapper {
-    private IntList oldToNew;
+    private final IntList oldToNew;
     private int runningCountNewRegisters;
 
     public BasicRegisterMapper(int i) {

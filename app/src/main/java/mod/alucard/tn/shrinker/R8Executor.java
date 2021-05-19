@@ -24,11 +24,13 @@ public class R8Executor {
         buildingDialog = Dialog;
         mDp = dp;
     }
+
     public void preparingEnvironment() {
         long savedTimeMillis = System.currentTimeMillis();
         buildingDialog.c("Compiling classes with R8...");
         Log.d(TAG + ":c", "Compiling classes with R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
+
     public ArrayList<String> getSourceFile(File file, ArrayList<String> arrayList) {
         if (file != null) {
             File[] files = file.listFiles();
@@ -45,6 +47,7 @@ public class R8Executor {
         }
         return arrayList;
     }
+
     public void compile() throws zy {
         String R8OutputPath = mDp.f.t;
         String androidJarPath = mDp.settings.getValue("android_sdk", "");
@@ -53,7 +56,7 @@ public class R8Executor {
         args.add("--dex");
         args.add("--lib");
         if (androidJarPath.isEmpty()) {
-         androidJarPath = mDp.o;
+            androidJarPath = mDp.o;
         }
         args.add(androidJarPath);
         args.add("--output");

@@ -3,12 +3,12 @@ package mod.agus.jcoderz.dx.rop.cst;
 import mod.agus.jcoderz.dx.rop.type.Type;
 
 public final class CstFieldRef extends CstMemberRef {
-    public static CstFieldRef forPrimitiveType(Type type) {
-        return new CstFieldRef(CstType.forBoxedPrimitiveType(type), CstNat.PRIMITIVE_TYPE_NAT);
-    }
-
     public CstFieldRef(CstType cstType, CstNat cstNat) {
         super(cstType, cstNat);
+    }
+
+    public static CstFieldRef forPrimitiveType(Type type) {
+        return new CstFieldRef(CstType.forBoxedPrimitiveType(type), CstNat.PRIMITIVE_TYPE_NAT);
     }
 
     @Override // mod.agus.jcoderz.dx.rop.cst.Constant

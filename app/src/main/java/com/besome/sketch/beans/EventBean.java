@@ -2,6 +2,7 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 
 public class EventBean extends CollapsibleBean implements Parcelable {
@@ -38,6 +39,13 @@ public class EventBean extends CollapsibleBean implements Parcelable {
         this.targetType = i2;
         this.targetId = str;
         this.eventName = str2;
+    }
+
+    public EventBean(Parcel parcel) {
+        this.eventType = parcel.readInt();
+        this.targetType = parcel.readInt();
+        this.targetId = parcel.readString();
+        this.eventName = parcel.readString();
     }
 
     public static Parcelable.Creator<EventBean> getCreator() {
@@ -97,12 +105,5 @@ public class EventBean extends CollapsibleBean implements Parcelable {
         parcel.writeInt(this.targetType);
         parcel.writeString(this.targetId);
         parcel.writeString(this.eventName);
-    }
-
-    public EventBean(Parcel parcel) {
-        this.eventType = parcel.readInt();
-        this.targetType = parcel.readInt();
-        this.targetId = parcel.readString();
-        this.eventName = parcel.readString();
     }
 }

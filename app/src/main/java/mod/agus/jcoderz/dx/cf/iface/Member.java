@@ -7,7 +7,8 @@ import mod.agus.jcoderz.dx.rop.cst.CstType;
 public interface Member extends HasAttribute {
     int getAccessFlags();
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.HasAttribute
+    @Override
+        // mod.agus.jcoderz.dx.cf.iface.HasAttribute
     AttributeList getAttributes();
 
     CstType getDefiningClass();

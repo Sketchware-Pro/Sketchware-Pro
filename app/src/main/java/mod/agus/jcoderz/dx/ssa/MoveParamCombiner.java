@@ -2,21 +2,21 @@ package mod.agus.jcoderz.dx.ssa;
 
 import java.util.HashSet;
 import java.util.List;
+
 import mod.agus.jcoderz.dx.rop.code.CstInsn;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.cst.CstInteger;
-import mod.agus.jcoderz.dx.ssa.SsaInsn;
 
 public class MoveParamCombiner {
     private final SsaMethod ssaMeth;
 
-    public static void process(SsaMethod ssaMethod) {
-        new MoveParamCombiner(ssaMethod).run();
-    }
-
     private MoveParamCombiner(SsaMethod ssaMethod) {
         this.ssaMeth = ssaMethod;
+    }
+
+    public static void process(SsaMethod ssaMethod) {
+        new MoveParamCombiner(ssaMethod).run();
     }
 
     private void run() {

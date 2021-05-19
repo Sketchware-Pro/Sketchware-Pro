@@ -1,17 +1,18 @@
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.Collection;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
 public abstract class UniformItemSection extends Section {
-    public abstract IndexedItem get(Constant constant);
-
-    protected abstract void orderItems();
-
     public UniformItemSection(String str, DexFile dexFile, int i) {
         super(str, dexFile, i);
     }
+
+    public abstract IndexedItem get(Constant constant);
+
+    protected abstract void orderItems();
 
     @Override // mod.agus.jcoderz.dx.dex.file.Section
     public final int writeSize() {

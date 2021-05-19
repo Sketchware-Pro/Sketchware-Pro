@@ -2,6 +2,7 @@ package mod.hilal.saif.events;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import mod.hilal.saif.lib.FileUtil;
 
 public class LogicHandler {
@@ -19,7 +20,7 @@ public class LogicHandler {
                 if (((String) arrayList2.get(i)).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) {
                     z = false;
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ") ? true : z;
+                boolean z2 = ((String) arrayList2.get(i)).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ") || z;
                 i++;
                 z = z2;
             }
@@ -48,7 +49,7 @@ public class LogicHandler {
                 if (z) {
                     arrayList.add((String) arrayList2.get(i));
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF") ? true : z;
+                boolean z2 = ((String) arrayList2.get(i)).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF") || z;
                 i++;
                 z = z2;
             }
@@ -77,7 +78,7 @@ public class LogicHandler {
                 if (z) {
                     arrayList.add((String) arrayList2.get(i));
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//AndroidManifest_Start") ? true : z;
+                boolean z2 = ((String) arrayList2.get(i)).contains("//AndroidManifest_Start") || z;
                 i++;
                 z = z2;
             }
@@ -105,7 +106,7 @@ public class LogicHandler {
                 if (z) {
                     arrayList.add((String) arrayList2.get(i));
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//Define Variables_Start") ? true : z;
+                boolean z2 = ((String) arrayList2.get(i)).contains("//Define Variables_Start") || z;
                 i++;
                 z = z2;
             }

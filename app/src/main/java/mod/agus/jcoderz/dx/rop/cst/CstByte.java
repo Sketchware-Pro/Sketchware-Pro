@@ -6,6 +6,10 @@ import mod.agus.jcoderz.dx.util.Hex;
 public final class CstByte extends CstLiteral32 {
     public static final CstByte VALUE_0 = make((byte) 0);
 
+    private CstByte(byte b) {
+        super(b);
+    }
+
     public static CstByte make(byte b) {
         return new CstByte(b);
     }
@@ -16,10 +20,6 @@ public final class CstByte extends CstLiteral32 {
             return make(b);
         }
         throw new IllegalArgumentException("bogus byte value: " + i);
-    }
-
-    private CstByte(byte b) {
-        super(b);
     }
 
     public String toString() {

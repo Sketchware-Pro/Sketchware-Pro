@@ -1,12 +1,14 @@
 package mod.agus.jcoderz.variable;
 
-import a.a.a.ZB;
-import a.a.a.aB;
-import a.a.a.mB;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+
 import com.besome.sketch.editor.LogicEditorActivity;
+
+import a.a.a.ZB;
+import a.a.a.aB;
+import a.a.a.mB;
 
 public class DialogImport implements View.OnClickListener {
     public final ZB c;

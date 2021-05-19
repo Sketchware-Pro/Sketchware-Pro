@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.component;
 
-import a.a.a.wB;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.ColorMatrix;
@@ -10,7 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.google.android.flexbox.FlexItem;
+
+import a.a.a.wB;
 
 public class ComponentEventButton extends LinearLayout {
     public LinearLayout a;

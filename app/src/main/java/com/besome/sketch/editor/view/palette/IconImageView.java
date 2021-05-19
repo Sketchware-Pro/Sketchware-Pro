@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.view.palette;
 
 import android.content.Context;
+
 import com.besome.sketch.beans.ViewBean;
 
 public class IconImageView extends IconBase {

@@ -7,10 +7,10 @@ import mod.agus.jcoderz.dx.io.instructions.DecodedInstruction;
 import mod.agus.jcoderz.dx.io.instructions.ShortArrayCodeOutput;
 
 final class InstructionTransformer {
+    private final CodeReader reader = new CodeReader();
     private IndexMap indexMap;
     private int mappedAt;
     private DecodedInstruction[] mappedInstructions;
-    private final CodeReader reader = new CodeReader();
 
     public InstructionTransformer() {
         this.reader.setAllVisitors(new GenericVisitor(this, null));
@@ -18,6 +18,12 @@ final class InstructionTransformer {
         this.reader.setTypeVisitor(new TypeVisitor(this, null));
         this.reader.setFieldVisitor(new FieldVisitor(this, null));
         this.reader.setMethodVisitor(new MethodVisitor(this, null));
+    }
+
+    public static void jumboCheck(boolean z, int i) {
+        if (!z && i > 65535) {
+            throw new DexIndexOverflowException("Cannot merge new index " + i + " into a non-jumbo instruction!");
+        }
     }
 
     public short[] transform(IndexMap indexMap2, short[] sArr) throws DexException {
@@ -133,12 +139,6 @@ final class InstructionTransformer {
             int i = instructionTransformer.mappedAt;
             instructionTransformer.mappedAt = i + 1;
             decodedInstructionArr2[i] = decodedInstruction.withIndex(adjustMethod);
-        }
-    }
-
-    public static void jumboCheck(boolean z, int i) {
-        if (!z && i > 65535) {
-            throw new DexIndexOverflowException("Cannot merge new index " + i + " into a non-jumbo instruction!");
         }
     }
 }

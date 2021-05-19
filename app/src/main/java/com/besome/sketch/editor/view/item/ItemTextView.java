@@ -1,13 +1,16 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+
 import androidx.appcompat.widget.AppCompatTextView;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemTextView extends AppCompatTextView implements sy {
     public ViewBean d;
@@ -34,12 +37,27 @@ public class ItemTextView extends AppCompatTextView implements sy {
         return this.d;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.d = viewBean;
+    }
+
     public boolean getFixed() {
         return this.f;
     }
 
+    public void setFixed(boolean z) {
+        this.f = z;
+    }
+
     public boolean getSelection() {
         return this.e;
+    }
+
+    /* JADX DEBUG: Multi-variable search result rejected for r0v0, resolved type: com.besome.sketch.editor.view.item.ItemTextView */
+    /* JADX WARN: Multi-variable type inference failed */
+    public void setSelection(boolean z) {
+        this.e = z;
+        invalidate();
     }
 
     /* JADX DEBUG: Multi-variable search result rejected for r4v0, resolved type: com.besome.sketch.editor.view.item.ItemTextView */
@@ -51,25 +69,10 @@ public class ItemTextView extends AppCompatTextView implements sy {
         ItemTextView.super.onDraw(canvas);
     }
 
-    public void setBean(ViewBean viewBean) {
-        this.d = viewBean;
-    }
-
-    public void setFixed(boolean z) {
-        this.f = z;
-    }
-
     /* JADX DEBUG: Multi-variable search result rejected for r1v0, resolved type: com.besome.sketch.editor.view.item.ItemTextView */
     /* JADX WARN: Multi-variable type inference failed */
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.h;
         ItemTextView.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (((float) i4) * f2));
-    }
-
-    /* JADX DEBUG: Multi-variable search result rejected for r0v0, resolved type: com.besome.sketch.editor.view.item.ItemTextView */
-    /* JADX WARN: Multi-variable type inference failed */
-    public void setSelection(boolean z) {
-        this.e = z;
-        invalidate();
     }
 }

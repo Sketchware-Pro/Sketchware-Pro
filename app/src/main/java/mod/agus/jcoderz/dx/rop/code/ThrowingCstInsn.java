@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.type.Type;
@@ -30,7 +29,7 @@ public final class ThrowingCstInsn extends CstInsn {
         } else {
             str = human;
         }
-        return String.valueOf(str) + " " + ThrowingInsn.toCatchString(this.catches);
+        return str + " " + ThrowingInsn.toCatchString(this.catches);
     }
 
     @Override // mod.agus.jcoderz.dx.rop.code.Insn

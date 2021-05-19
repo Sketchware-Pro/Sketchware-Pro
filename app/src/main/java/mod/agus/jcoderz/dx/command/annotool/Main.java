@@ -1,12 +1,28 @@
 package mod.agus.jcoderz.dx.command.annotool;
 
+import org.eclipse.jdt.internal.compiler.util.Util;
+
 import java.lang.annotation.ElementType;
 import java.util.EnumSet;
 import java.util.Locale;
+
 import mod.agus.jcoderz.multidex.ClassPathElement;
-import org.eclipse.jdt.internal.compiler.util.Util;
 
 public class Main {
+
+    private Main() {
+    }
+
+    public static void main(String[] strArr) {
+        Arguments arguments = new Arguments();
+        try {
+            arguments.parse(strArr);
+            new AnnotationLister(arguments).process();
+        } catch (InvalidArgumentException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException("usage");
+        }
+    }
 
     public enum PrintType {
         CLASS,
@@ -87,20 +103,6 @@ public class Main {
             if (!clone.isEmpty()) {
                 throw new InvalidArgumentException("only --element parameters 'type' and 'package' supported");
             }
-        }
-    }
-
-    private Main() {
-    }
-
-    public static void main(String[] strArr) {
-        Arguments arguments = new Arguments();
-        try {
-            arguments.parse(strArr);
-            new AnnotationLister(arguments).process();
-        } catch (InvalidArgumentException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException("usage");
         }
     }
 }

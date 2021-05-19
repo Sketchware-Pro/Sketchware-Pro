@@ -3,6 +3,7 @@ package com.besome.sketch.editor.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
 import com.besome.sketch.editor.logic.BlockPane;
 
 public class ViewLogicEditor extends LogicEditorScrollView {
@@ -13,6 +14,13 @@ public class ViewLogicEditor extends LogicEditorScrollView {
 
     public ViewLogicEditor(Context context) {
         super(context);
+        this.k = true;
+        this.l = new int[2];
+        a(context);
+    }
+
+    public ViewLogicEditor(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         this.k = true;
         this.l = new int[2];
         a(context);
@@ -38,13 +46,6 @@ public class ViewLogicEditor extends LogicEditorScrollView {
             this.j.b();
             this.k = false;
         }
-    }
-
-    public ViewLogicEditor(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.k = true;
-        this.l = new int[2];
-        a(context);
     }
 
     public boolean a(float f, float f2) {

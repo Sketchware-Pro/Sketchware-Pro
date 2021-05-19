@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.ssa.back;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.ssa.PhiInsn;
 import mod.agus.jcoderz.dx.ssa.SsaBasicBlock;
@@ -11,21 +12,22 @@ import mod.agus.jcoderz.dx.ssa.SsaMethod;
 
 public class LivenessAnalyzer {
     private static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$ssa$back$LivenessAnalyzer$NextFunction;
-    private SsaBasicBlock blockN;
     private final InterferenceGraph interference;
     private final BitSet liveOutBlocks;
-    private NextFunction nextFunction;
     private final int regV;
     private final SsaMethod ssaMeth;
-    private int statementIndex;
     private final BitSet visitedBlocks;
+    private SsaBasicBlock blockN;
+    private NextFunction nextFunction;
+    private int statementIndex;
 
-    /* access modifiers changed from: private */
-    public enum NextFunction {
-        LIVE_IN_AT_STATEMENT,
-        LIVE_OUT_AT_STATEMENT,
-        LIVE_OUT_AT_BLOCK,
-        DONE
+    private LivenessAnalyzer(SsaMethod ssaMethod, int i, InterferenceGraph interferenceGraph) {
+        int size = ssaMethod.getBlocks().size();
+        this.ssaMeth = ssaMethod;
+        this.regV = i;
+        this.visitedBlocks = new BitSet(size);
+        this.liveOutBlocks = new BitSet(size);
+        this.interference = interferenceGraph;
     }
 
     static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$ssa$back$LivenessAnalyzer$NextFunction() {
@@ -63,13 +65,19 @@ public class LivenessAnalyzer {
         return interferenceGraph;
     }
 
-    private LivenessAnalyzer(SsaMethod ssaMethod, int i, InterferenceGraph interferenceGraph) {
-        int size = ssaMethod.getBlocks().size();
-        this.ssaMeth = ssaMethod;
-        this.regV = i;
-        this.visitedBlocks = new BitSet(size);
-        this.liveOutBlocks = new BitSet(size);
-        this.interference = interferenceGraph;
+    private static void coInterferePhis(SsaMethod ssaMethod, InterferenceGraph interferenceGraph) {
+        Iterator<SsaBasicBlock> it = ssaMethod.getBlocks().iterator();
+        while (it.hasNext()) {
+            List<SsaInsn> phiInsns = it.next().getPhiInsns();
+            int size = phiInsns.size();
+            for (int i = 0; i < size; i++) {
+                for (int i2 = 0; i2 < size; i2++) {
+                    if (i != i2) {
+                        interferenceGraph.add(phiInsns.get(i).getResult().getReg(), phiInsns.get(i2).getResult().getReg());
+                    }
+                }
+            }
+        }
     }
 
     private void handleTailRecursion() {
@@ -153,18 +161,11 @@ public class LivenessAnalyzer {
         }
     }
 
-    private static void coInterferePhis(SsaMethod ssaMethod, InterferenceGraph interferenceGraph) {
-        Iterator<SsaBasicBlock> it = ssaMethod.getBlocks().iterator();
-        while (it.hasNext()) {
-            List<SsaInsn> phiInsns = it.next().getPhiInsns();
-            int size = phiInsns.size();
-            for (int i = 0; i < size; i++) {
-                for (int i2 = 0; i2 < size; i2++) {
-                    if (i != i2) {
-                        interferenceGraph.add(phiInsns.get(i).getResult().getReg(), phiInsns.get(i2).getResult().getReg());
-                    }
-                }
-            }
-        }
+    /* access modifiers changed from: private */
+    public enum NextFunction {
+        LIVE_IN_AT_STATEMENT,
+        LIVE_OUT_AT_STATEMENT,
+        LIVE_OUT_AT_BLOCK,
+        DONE
     }
 }

@@ -168,7 +168,7 @@ public class CfTranslator {
                     DexTranslationAdvice dexTranslationAdvice = DexTranslationAdvice.THE_ONE;
                     RopMethod convert = Ropper.convert(concreteMethod, dexTranslationAdvice, methods);
                     int parameterWordCount = cstMethodRef.getParameterWordCount(isStatic);
-                    String str = String.valueOf(thisClass.getClassType().getDescriptor()) + "." + method.getName().getString();
+                    String str = thisClass.getClassType().getDescriptor() + "." + method.getName().getString();
                     if (!cfOptions.optimize || !OptimizerOptions.shouldOptimize(str)) {
                         ropMethod = convert;
                         convert = null;

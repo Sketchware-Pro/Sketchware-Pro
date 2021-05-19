@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.dex;
 
-import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.util.ByteArrayByteInput;
 import mod.agus.jcoderz.dex.util.ByteInput;
 
@@ -34,6 +33,6 @@ public final class EncodedValue implements Comparable<EncodedValue> {
     }
 
     public String toString() {
-        return String.valueOf(Integer.toHexString(this.data[0] & 255)) + "...(" + this.data.length + ")";
+        return Integer.toHexString(this.data[0] & 255) + "...(" + this.data.length + ")";
     }
 }

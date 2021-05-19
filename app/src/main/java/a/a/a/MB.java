@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.widget.EditText;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 public abstract class MB implements TextWatcher, InputFilter {

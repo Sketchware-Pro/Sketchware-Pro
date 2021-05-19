@@ -3,6 +3,7 @@ package mod.agus.jcoderz.dx.dex.file;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
+
 import mod.agus.jcoderz.dex.DexIndexOverflowException;
 import mod.agus.jcoderz.dx.command.dexer.Main;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;

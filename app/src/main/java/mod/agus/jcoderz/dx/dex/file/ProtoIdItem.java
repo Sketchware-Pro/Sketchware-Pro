@@ -8,9 +8,9 @@ import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
 public final class ProtoIdItem extends IndexedItem {
-    private TypeListItem parameterTypes;
     private final Prototype prototype;
     private final CstString shortForm;
+    private TypeListItem parameterTypes;
 
     public ProtoIdItem(Prototype prototype2) {
         TypeListItem typeListItem;
@@ -87,7 +87,7 @@ public final class ProtoIdItem extends IndexedItem {
                 sb.append(parameterTypes2.getType(i).toHuman());
             }
             sb.append(")");
-            annotatedOutput.annotate(0, String.valueOf(indexString()) + ' ' + sb.toString());
+            annotatedOutput.annotate(0, indexString() + ' ' + sb.toString());
             annotatedOutput.annotate(4, "  shorty_idx:      " + Hex.u4(indexOf) + " // " + this.shortForm.toQuoted());
             annotatedOutput.annotate(4, "  return_type_idx: " + Hex.u4(indexOf2) + " // " + this.prototype.getReturnType().toHuman());
             annotatedOutput.annotate(4, "  parameters_off:  " + Hex.u4(absoluteOffsetOr0));

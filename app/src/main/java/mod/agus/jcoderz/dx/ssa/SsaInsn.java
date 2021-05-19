@@ -11,12 +11,16 @@ public abstract class SsaInsn implements ToHuman, Cloneable {
     private final SsaBasicBlock block;
     private RegisterSpec result;
 
-    public interface Visitor {
-        void visitMoveInsn(NormalSsaInsn normalSsaInsn);
+    protected SsaInsn(RegisterSpec registerSpec, SsaBasicBlock ssaBasicBlock) {
+        if (ssaBasicBlock == null) {
+            throw new NullPointerException("block == null");
+        }
+        this.block = ssaBasicBlock;
+        this.result = registerSpec;
+    }
 
-        void visitNonMoveInsn(NormalSsaInsn normalSsaInsn);
-
-        void visitPhiInsn(PhiInsn phiInsn);
+    public static SsaInsn makeFromRop(Insn insn, SsaBasicBlock ssaBasicBlock) {
+        return new NormalSsaInsn(insn, ssaBasicBlock);
     }
 
     public abstract void accept(Visitor visitor);
@@ -36,18 +40,6 @@ public abstract class SsaInsn implements ToHuman, Cloneable {
     public abstract void mapSourceRegisters(RegisterMapper registerMapper);
 
     public abstract Insn toRopInsn();
-
-    protected SsaInsn(RegisterSpec registerSpec, SsaBasicBlock ssaBasicBlock) {
-        if (ssaBasicBlock == null) {
-            throw new NullPointerException("block == null");
-        }
-        this.block = ssaBasicBlock;
-        this.result = registerSpec;
-    }
-
-    public static SsaInsn makeFromRop(Insn insn, SsaBasicBlock ssaBasicBlock) {
-        return new NormalSsaInsn(insn, ssaBasicBlock);
-    }
 
     @Override // java.lang.Object
     public SsaInsn clone() {
@@ -117,5 +109,13 @@ public abstract class SsaInsn implements ToHuman, Cloneable {
 
     public boolean isMoveException() {
         return false;
+    }
+
+    public interface Visitor {
+        void visitMoveInsn(NormalSsaInsn normalSsaInsn);
+
+        void visitNonMoveInsn(NormalSsaInsn normalSsaInsn);
+
+        void visitPhiInsn(PhiInsn phiInsn);
     }
 }

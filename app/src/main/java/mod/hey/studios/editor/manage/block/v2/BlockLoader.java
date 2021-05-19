@@ -2,12 +2,15 @@ package mod.hey.studios.editor.manage.block.v2;
 
 import android.graphics.Color;
 import android.os.Environment;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import dev.aldi.sayuti.block.ExtraBlockFile;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
@@ -16,11 +19,11 @@ public class BlockLoader {
     private static ArrayList<ExtraBlockInfo> blocks;
     private static ArrayList<HashMap<String, Object>> palettes;
 
-    public static void log(String str) {
-    }
-
     static {
         loadCustomBlocks();
+    }
+
+    public static void log(String str) {
     }
 
     public static ExtraBlockInfo getBlockInfo(String str) {

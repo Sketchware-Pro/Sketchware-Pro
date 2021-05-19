@@ -1,6 +1,7 @@
 package mod.agus.jcoderz.dx.cf.code;
 
 import java.util.ArrayList;
+
 import mod.agus.jcoderz.dx.cf.iface.ParseException;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.ConstantPool;
@@ -20,26 +21,6 @@ public final class BytecodeArray {
     public static final Visitor EMPTY_VISITOR = new BaseVisitor();
     private final ByteArray bytes;
     private final ConstantPool pool;
-
-    public interface Visitor {
-        int getPreviousOffset();
-
-        void setPreviousOffset(int i);
-
-        void visitBranch(int i, int i2, int i3, int i4);
-
-        void visitConstant(int i, int i2, int i3, Constant constant, int i4);
-
-        void visitInvalid(int i, int i2, int i3);
-
-        void visitLocal(int i, int i2, int i3, int i4, Type type, int i5);
-
-        void visitNewarray(int i, int i2, CstType cstType, ArrayList<Constant> arrayList);
-
-        void visitNoArgs(int i, int i2, int i3, Type type);
-
-        void visitSwitch(int i, int i2, int i3, SwitchList switchList, int i4);
-    }
 
     public BytecodeArray(ByteArray byteArray, ConstantPool constantPool) {
         if (byteArray == null) {
@@ -746,6 +727,26 @@ public final class BytecodeArray {
         }
     }
 
+    public interface Visitor {
+        int getPreviousOffset();
+
+        void setPreviousOffset(int i);
+
+        void visitBranch(int i, int i2, int i3, int i4);
+
+        void visitConstant(int i, int i2, int i3, Constant constant, int i4);
+
+        void visitInvalid(int i, int i2, int i3);
+
+        void visitLocal(int i, int i2, int i3, int i4, Type type, int i5);
+
+        void visitNewarray(int i, int i2, CstType cstType, ArrayList<Constant> arrayList);
+
+        void visitNoArgs(int i, int i2, int i3, Type type);
+
+        void visitSwitch(int i, int i2, int i3, SwitchList switchList, int i4);
+    }
+
     public static class BaseVisitor implements Visitor {
         private int previousOffset = -1;
 
@@ -781,13 +782,13 @@ public final class BytecodeArray {
         }
 
         @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-        public void setPreviousOffset(int i) {
-            this.previousOffset = i;
+        public int getPreviousOffset() {
+            return this.previousOffset;
         }
 
         @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-        public int getPreviousOffset() {
-            return this.previousOffset;
+        public void setPreviousOffset(int i) {
+            this.previousOffset = i;
         }
     }
 
@@ -804,50 +805,59 @@ public final class BytecodeArray {
             this.length = 0;
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitInvalid(int i, int i2, int i3) {
             clear();
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitNoArgs(int i, int i2, int i3, Type type) {
             clear();
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitLocal(int i, int i2, int i3, int i4, Type type, int i5) {
             clear();
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitConstant(int i, int i2, int i3, Constant constant, int i4) {
             this.cst = constant;
             this.length = i3;
             this.value = i4;
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitBranch(int i, int i2, int i3, int i4) {
             clear();
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitSwitch(int i, int i2, int i3, SwitchList switchList, int i4) {
             clear();
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public void visitNewarray(int i, int i2, CstType cstType, ArrayList<Constant> arrayList) {
             clear();
         }
 
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
-        public void setPreviousOffset(int i) {
-        }
-
-        @Override // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
         public int getPreviousOffset() {
             return -1;
+        }
+
+        @Override
+        // mod.agus.jcoderz.dx.cf.code.BytecodeArray.BaseVisitor, mod.agus.jcoderz.dx.cf.code.BytecodeArray.Visitor
+        public void setPreviousOffset(int i) {
         }
     }
 }

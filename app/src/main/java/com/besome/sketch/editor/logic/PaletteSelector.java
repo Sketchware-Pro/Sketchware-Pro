@@ -1,17 +1,18 @@
 package com.besome.sketch.editor.logic;
 
-import a.a.a.Vs;
-import a.a.a.Ws;
-import a.a.a.wB;
-import a.a.a.xB;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import java.util.HashMap;
 import java.util.Iterator;
+
+import a.a.a.Vs;
+import a.a.a.Ws;
+import a.a.a.wB;
+import a.a.a.xB;
 
 public class PaletteSelector extends LinearLayout implements View.OnClickListener {
     public Context a;
@@ -19,6 +20,11 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     public PaletteSelector(Context context) {
         super(context);
+        a(context);
+    }
+
+    public PaletteSelector(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         a(context);
     }
 
@@ -53,11 +59,6 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
 
     public void setOnBlockCategorySelectListener(Vs vs) {
         this.b = vs;
-    }
-
-    public PaletteSelector(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        a(context);
     }
 
     public final void a() {

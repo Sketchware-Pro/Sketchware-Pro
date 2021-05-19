@@ -2,6 +2,7 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 
 public class ProjectResourceBean extends SelectableBean implements Parcelable {
@@ -47,8 +48,28 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         this.flipHorizontal = 1;
     }
 
+    public ProjectResourceBean(Parcel parcel) {
+        this.resType = parcel.readInt();
+        this.resName = parcel.readString();
+        this.resFullName = parcel.readString();
+        boolean z = true;
+        this.isEdited = parcel.readInt() != 0;
+        this.isDuplicateCollection = parcel.readInt() != 0;
+        this.curSoundPosition = parcel.readInt();
+        this.totalSoundDuration = parcel.readInt();
+        this.rotate = parcel.readInt();
+        this.flipVertical = parcel.readInt();
+        this.flipHorizontal = parcel.readInt();
+        this.savedPos = parcel.readInt();
+        this.isNew = parcel.readInt() != 0 && z;
+    }
+
     public static Parcelable.Creator<ProjectResourceBean> getCreator() {
         return CREATOR;
+    }
+
+    public static boolean isNinePatch(String str) {
+        return str.endsWith(".9.png");
     }
 
     public void copy(ProjectResourceBean projectResourceBean) {
@@ -92,30 +113,10 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         parcel.writeInt(this.isNew ? 1 : 0);
     }
 
-    public static boolean isNinePatch(String str) {
-        return str.endsWith(".9.png");
-    }
-
     @Override // java.lang.Object
     public ProjectResourceBean clone() {
         ProjectResourceBean projectResourceBean = new ProjectResourceBean(this.resType, this.resName, this.resFullName);
         projectResourceBean.copy(this);
         return projectResourceBean;
-    }
-
-    public ProjectResourceBean(Parcel parcel) {
-        this.resType = parcel.readInt();
-        this.resName = parcel.readString();
-        this.resFullName = parcel.readString();
-        boolean z = true;
-        this.isEdited = parcel.readInt() != 0;
-        this.isDuplicateCollection = parcel.readInt() != 0;
-        this.curSoundPosition = parcel.readInt();
-        this.totalSoundDuration = parcel.readInt();
-        this.rotate = parcel.readInt();
-        this.flipVertical = parcel.readInt();
-        this.flipHorizontal = parcel.readInt();
-        this.savedPos = parcel.readInt();
-        this.isNew = parcel.readInt() == 0 ? false : z;
     }
 }

@@ -7,23 +7,16 @@ public class LocalItem implements Comparable<LocalItem> {
     private final CstString name;
     private final CstString signature;
 
-    public static LocalItem make(CstString cstString, CstString cstString2) {
-        if (cstString == null && cstString2 == null) {
-            return null;
-        }
-        return new LocalItem(cstString, cstString2);
-    }
-
     private LocalItem(CstString cstString, CstString cstString2) {
         this.name = cstString;
         this.signature = cstString2;
     }
 
-    public boolean equals(Object obj) {
-        if ((obj instanceof LocalItem) && compareTo((LocalItem) obj) == 0) {
-            return true;
+    public static LocalItem make(CstString cstString, CstString cstString2) {
+        if (cstString == null && cstString2 == null) {
+            return null;
         }
-        return false;
+        return new LocalItem(cstString, cstString2);
     }
 
     private static int compareHandlesNulls(CstString cstString, CstString cstString2) {
@@ -37,6 +30,10 @@ public class LocalItem implements Comparable<LocalItem> {
             return 1;
         }
         return cstString.compareTo((Constant) cstString2);
+    }
+
+    public boolean equals(Object obj) {
+        return (obj instanceof LocalItem) && compareTo((LocalItem) obj) == 0;
     }
 
     public int compareTo(LocalItem localItem) {

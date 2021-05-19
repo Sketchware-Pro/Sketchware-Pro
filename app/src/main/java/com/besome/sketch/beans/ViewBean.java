@@ -1,11 +1,13 @@
 package com.besome.sketch.beans;
 
-import a.a.a.Gx;
-import a.a.a.nA;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.google.android.flexbox.FlexItem;
 import com.google.gson.annotations.Expose;
+
+import a.a.a.Gx;
+import a.a.a.nA;
 import mod.agus.jcoderz.beans.ViewBeans;
 
 public class ViewBean extends nA implements Parcelable {
@@ -619,13 +621,8 @@ public class ViewBean extends nA implements Parcelable {
         String str5 = this.customView;
         if (str5 != null) {
             String str6 = viewBean.customView;
-            if (str6 == null || !str5.equals(str6)) {
-                return false;
-            }
-        } else if (viewBean.customView != null) {
-            return false;
-        }
-        return true;
+            return str6 != null && str5.equals(str6);
+        } else return viewBean.customView == null;
     }
 
     public void print() {

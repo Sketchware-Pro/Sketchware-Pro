@@ -1,6 +1,9 @@
 package mod.agus.jcoderz.dx.dex.code;
 
+import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+
 import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
@@ -11,45 +14,9 @@ import mod.agus.jcoderz.dx.rop.cst.CstLiteralBits;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
 
 public abstract class InsnFormat {
     public static boolean ALLOW_EXTENDED_OPCODES = true;
-
-    public abstract int codeSize();
-
-    public abstract String insnArgString(DalvInsn dalvInsn);
-
-    public abstract String insnCommentString(DalvInsn dalvInsn, boolean z);
-
-    public abstract boolean isCompatible(DalvInsn dalvInsn);
-
-    public abstract void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn);
-
-    public final String listingString(DalvInsn dalvInsn, boolean z) {
-        String name = dalvInsn.getOpcode().getName();
-        String insnArgString = insnArgString(dalvInsn);
-        String insnCommentString = insnCommentString(dalvInsn, z);
-        StringBuilder sb = new StringBuilder(100);
-        sb.append(name);
-        if (insnArgString.length() != 0) {
-            sb.append(' ');
-            sb.append(insnArgString);
-        }
-        if (insnCommentString.length() != 0) {
-            sb.append(" // ");
-            sb.append(insnCommentString);
-        }
-        return sb.toString();
-    }
-
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
-        return new BitSet();
-    }
-
-    public boolean branchFits(TargetInsn targetInsn) {
-        return false;
-    }
 
     protected static String regListString(RegisterSpecList registerSpecList) {
         int size = registerSpecList.size();
@@ -310,5 +277,40 @@ public abstract class InsnFormat {
 
     protected static void write(AnnotatedOutput annotatedOutput, short s, long j) {
         write(annotatedOutput, s, (short) ((int) j), (short) ((int) (j >> 16)), (short) ((int) (j >> 32)), (short) ((int) (j >> 48)));
+    }
+
+    public abstract int codeSize();
+
+    public abstract String insnArgString(DalvInsn dalvInsn);
+
+    public abstract String insnCommentString(DalvInsn dalvInsn, boolean z);
+
+    public abstract boolean isCompatible(DalvInsn dalvInsn);
+
+    public abstract void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn);
+
+    public final String listingString(DalvInsn dalvInsn, boolean z) {
+        String name = dalvInsn.getOpcode().getName();
+        String insnArgString = insnArgString(dalvInsn);
+        String insnCommentString = insnCommentString(dalvInsn, z);
+        StringBuilder sb = new StringBuilder(100);
+        sb.append(name);
+        if (insnArgString.length() != 0) {
+            sb.append(' ');
+            sb.append(insnArgString);
+        }
+        if (insnCommentString.length() != 0) {
+            sb.append(" // ");
+            sb.append(insnCommentString);
+        }
+        return sb.toString();
+    }
+
+    public BitSet compatibleRegs(DalvInsn dalvInsn) {
+        return new BitSet();
+    }
+
+    public boolean branchFits(TargetInsn targetInsn) {
+        return false;
     }
 }

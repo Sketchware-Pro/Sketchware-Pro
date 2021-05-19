@@ -266,8 +266,29 @@ public class ManageAssetsActivity extends Activity {
         }
     }
 
+    private void toast(String s) {
+        bB.a(this, s, 0).show();
+    }
+
+    private void sort(ArrayList<String> paths) {
+        ArrayList<String> directories = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        for (String path : paths) {
+            if (FileUtil.isDirectory(path)) {
+                directories.add(path);
+            } else {
+                files.add(path);
+            }
+        }
+        Collections.sort(directories, String.CASE_INSENSITIVE_ORDER);
+        Collections.sort(files, String.CASE_INSENSITIVE_ORDER);
+        paths.clear();
+        paths.addAll(directories);
+        paths.addAll(files);
+    }
+
     public class MyAdapter extends BaseAdapter {
-        
+
         @Override
         public int getCount() {
             return currentTree.size();
@@ -354,26 +375,5 @@ public class ManageAssetsActivity extends Activity {
                 startActivity(viewIntent);
             }
         }
-    }
-
-    private void toast(String s) {
-        bB.a(this, s, 0).show();
-    }
-
-    private void sort(ArrayList<String> paths) {
-        ArrayList<String> directories = new ArrayList<>();
-        ArrayList<String> files = new ArrayList<>();
-        for (String path : paths) {
-            if (FileUtil.isDirectory(path)) {
-                directories.add(path);
-            } else {
-                files.add(path);
-            }
-        }
-        Collections.sort(directories, String.CASE_INSENSITIVE_ORDER);
-        Collections.sort(files, String.CASE_INSENSITIVE_ORDER);
-        paths.clear();
-        paths.addAll(directories);
-        paths.addAll(files);
     }
 }

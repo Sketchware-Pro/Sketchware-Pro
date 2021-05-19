@@ -17,7 +17,7 @@ public final class Form3rc extends InsnFormat {
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
     public String insnArgString(DalvInsn dalvInsn) {
-        return String.valueOf(regRangeString(dalvInsn.getRegisters())) + ", " + cstString(dalvInsn);
+        return regRangeString(dalvInsn.getRegisters()) + ", " + cstString(dalvInsn);
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
@@ -49,10 +49,7 @@ public final class Form3rc extends InsnFormat {
         }
         RegisterSpecList registers = cstInsn.getRegisters();
         registers.size();
-        if (registers.size() == 0 || (isRegListSequential(registers) && unsignedFitsInShort(registers.get(0).getReg()) && unsignedFitsInByte(registers.getWordCount()))) {
-            return true;
-        }
-        return false;
+        return registers.size() == 0 || (isRegListSequential(registers) && unsignedFitsInShort(registers.get(0).getReg()) && unsignedFitsInByte(registers.getWordCount()));
     }
 
     @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
