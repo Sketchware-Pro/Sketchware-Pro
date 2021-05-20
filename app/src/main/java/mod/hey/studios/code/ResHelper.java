@@ -1,21 +1,22 @@
 package mod.hey.studios.code;
 
 public class ResHelper {
+
     public static boolean isInASD = false;
 
     public static int select_all() {
-        return isInASD ? 2131166386 : 2131165220;
+        return isInASD ? 0x7F0704B2 : 0x7f070024;
     }
 
     public static int cut() {
-        return isInASD ? 2131166384 : 2131165217;
+        return isInASD ? 0x7F0704B0 : 0x7f070021;
     }
 
     public static int copy() {
-        return isInASD ? 2131166385 : 2131165722;
+        return isInASD ? 0x7F0704B1 : 0x7f07021a;
     }
 
     public static int paste() {
-        return isInASD ? 2131165723 : 2131165724;
+        return isInASD ? 0x7F07021B : 0x7f07021c;
     }
 }
