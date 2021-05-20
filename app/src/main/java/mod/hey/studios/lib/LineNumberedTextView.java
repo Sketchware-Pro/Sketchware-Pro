@@ -6,76 +6,83 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.Resources;
+
 import a.a.a.wB;
 
 public class LineNumberedTextView extends LinearLayout {
+
     private final Context context;
-    private TextView line_numbered_textview_lines;
+
     private TextView line_numbered_textview_main;
+    private TextView line_numbered_textview_lines;
 
-    public LineNumberedTextView(Context context2) {
-        super(context2);
-        this.context = context2;
+    public LineNumberedTextView(Context context) {
+        super(context);
+        this.context = context;
         initialize();
     }
 
-    public LineNumberedTextView(Context context2, AttributeSet attributeSet) {
-        super(context2, attributeSet);
-        this.context = context2;
+    public LineNumberedTextView(Context context, AttributeSet attr) {
+        super(context, attr);
+        this.context = context;
         initialize();
     }
 
-    public LineNumberedTextView(Context context2, AttributeSet attributeSet, int i) {
-        super(context2, attributeSet, i);
-        this.context = context2;
+    public LineNumberedTextView(Context context, AttributeSet attr, int defStyle) {
+        super(context, attr, defStyle);
+        this.context = context;
         initialize();
     }
 
     private void initialize() {
-        View a = wB.a(this.context, this, 2131427801);
-        this.line_numbered_textview_main = (TextView) a.findViewById(2131232467);
-        this.line_numbered_textview_lines = (TextView) a.findViewById(2131232466);
+        View view = wB.a(context, this, Resources.layout.line_numbered_textview_layout); //View.inflate(context, 0x7F0B01D9, this);
+
+        line_numbered_textview_main = view.findViewById(Resources.id.line_numbered_textview_main);
+        line_numbered_textview_lines = view.findViewById(Resources.id.line_numbered_textview_lines);
     }
 
-    public void setText(CharSequence charSequence) {
-        this.line_numbered_textview_main.setText(charSequence);
-        refreshLines(charSequence.toString());
+    public void setText(CharSequence c) {
+        line_numbered_textview_main.setText(c);
+        refreshLines(c.toString());
     }
 
-    private void refreshLines(String str) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= str.split("\n").length; i++) {
-            sb.append(i);
-            sb.append("\n");
+    private void refreshLines(String text) {
+        StringBuilder b = new StringBuilder();
+
+        for (int i = 1; i <= text.split("\n").length; i++) {
+            b.append(i);
+            b.append("\n");
         }
-        this.line_numbered_textview_lines.setText(sb.toString().trim());
+
+        line_numbered_textview_lines.setText(b.toString().trim());
     }
 
-    public void setTextSize(float f) {
-        this.line_numbered_textview_main.setTextSize(f);
-        this.line_numbered_textview_lines.setTextSize(f);
+    public void setTextSize(float size) {
+        line_numbered_textview_main.setTextSize(size);
+        line_numbered_textview_lines.setTextSize(size);
     }
 
-    public void setTextColor(int i) {
-        this.line_numbered_textview_main.setTextColor(i);
+    public void setTextColor(int color) {
+        line_numbered_textview_main.setTextColor(color);
     }
 
-    public void setTextIsSelectable(boolean z) {
-        this.line_numbered_textview_main.setTextIsSelectable(z);
-    }
-
-    @Override
-    public void setHorizontalScrollBarEnabled(boolean z) {
-        this.line_numbered_textview_main.setHorizontalScrollBarEnabled(z);
+    public void setTextIsSelectable(boolean textIsSelectable) {
+        line_numbered_textview_main.setTextIsSelectable(textIsSelectable);
     }
 
     @Override
-    public void setOnLongClickListener(View.OnLongClickListener onLongClickListener) {
-        this.line_numbered_textview_main.setOnLongClickListener(onLongClickListener);
+    public void setHorizontalScrollBarEnabled(boolean horizontalScrollBarEnabled) {
+        line_numbered_textview_main.setHorizontalScrollBarEnabled(horizontalScrollBarEnabled);
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        this.line_numbered_textview_main.setPadding(i, i2, i3, i4);
+    public void setOnLongClickListener(View.OnLongClickListener l) {
+        line_numbered_textview_main.setOnLongClickListener(l);
+    }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        line_numbered_textview_main.setPadding(left, top, right, bottom);
     }
 }

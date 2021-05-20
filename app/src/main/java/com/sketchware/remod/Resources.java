@@ -367,6 +367,8 @@ public class Resources {
         public static final int ig_toolbar_back = 0x7f0806c9;
         public static final int tx_toolbar_title = 0x7f0806ca;
         public static final int ig_toolbar_load_file = 0x7f0806cb;
+        public static final int line_numbered_textview_lines = 0x7f0806d2;
+        public static final int line_numbered_textview_main = 0x7f0806d3;
         public static final int codeeditor_more_options = 0x7f0806f8;
         public static final int project_config_pref_layout = 0x7f0806fc;
         // WTF
@@ -440,6 +442,7 @@ public class Resources {
         public static final int custom_view_attribute = 0x7f0b01d4;
         public static final int custom_dialog_attribute = 0x7f0b01d5;
         public static final int toolbar_improved = 0x7f0b01d7;
+        public static final int line_numbered_textview_layout = 0x7f0b01d9;
         public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int code_editor_hs = 0x7f0b01f1;
