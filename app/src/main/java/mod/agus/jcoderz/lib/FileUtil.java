@@ -22,7 +22,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -627,7 +626,7 @@ public class FileUtil {
     }
 
     public static File createNewPictureFile(Context context) {
-        return new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + (new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date()) + ".jpg"));
+        return new File(context.getExternalFilesDir(Environment.DIRECTORY_DCIM).getAbsolutePath() + File.separator + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date()) + ".jpg");
     }
 
     public static byte[] readFromInputStream(InputStream stream) {
@@ -658,7 +657,7 @@ public class FileUtil {
      *
      * @param target The file to write the data to. Note that it'll get created, even parent directories
      * @param data   The data in bytes to write to. {@link FileUtil#readFromInputStream(InputStream)}
-     *               for example reads bytes
+     *               for example, reads bytes
      * @throws IOException Thrown when any exception occurs while operating
      */
     public static void writeBytes(File target, byte[] data) throws IOException {
@@ -679,7 +678,6 @@ public class FileUtil {
 
         ZipEntry entry = input.getNextEntry();
         while (entry != null) {
-            Log.d("FileUtil", "Extracting a ZIP archive, iterating through its entries, entry name (ZipEntry#getName): " + entry.getName());
             String entryPathExtracted = new File(outPath, entry.getName()).getAbsolutePath();
 
             if (!entry.isDirectory()) {
