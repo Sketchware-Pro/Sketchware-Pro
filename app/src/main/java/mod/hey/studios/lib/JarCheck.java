@@ -2,58 +2,71 @@ package mod.hey.studios.lib;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public final class JarCheck {
-    private static final int chunkLength = 8;
-    private static final byte[] expectedMagicNumber = {-54, -2, -70, -66};
+//used to check the java version of a JAR file
 
-    public static boolean checkJar(String str, int i, int i2) {
-        boolean z = true;
-        ZipInputStream zipInputStream = null;
+public final class JarCheck {
+
+    private static final int chunkLength = 8;
+    private static final byte[] expectedMagicNumber =
+            {(byte) 0xca, (byte) 0xfe, (byte) 0xba, (byte) 0xbe};
+
+    public static boolean checkJar(String jarFilename, int low, int high) {
+        boolean success = true;
+        FileInputStream fis;
+        ZipInputStream zip = null; //Iterator i;
         try {
-            zipInputStream = new ZipInputStream(new FileInputStream(str));
-            while (true) {
-                ZipEntry nextEntry = zipInputStream.getNextEntry();
-                if (nextEntry == null) {
-                    break;
-                } else if (nextEntry.getName().endsWith(".class")) {
-                    byte[] bArr = new byte[chunkLength];
-                    int read = zipInputStream.read(bArr, 0, chunkLength);
-                    zipInputStream.closeEntry();
-                    if (read != chunkLength) {
-                        z = false;
-                    } else {
-                        int i3 = 0;
-                        while (true) {
-                            if (i3 >= expectedMagicNumber.length) {
-                                int i4 = ((bArr[6] & 255) << chunkLength) + (bArr[7] & 255);
-                                if (i > i4 || i4 > i2) {
-                                    z = false;
-                                }
-                            } else if (bArr[i3] != expectedMagicNumber[i3]) {
-                                z = false;
-                                break;
-                            } else {
-                                i3++;
-                            }
+            try {
+                fis = new FileInputStream(jarFilename);
+                zip = new ZipInputStream(fis);
+
+                entryLoop:
+                while (true) {
+                    ZipEntry entry = zip.getNextEntry();
+                    if (entry == null) {
+                        break;
+                    }
+
+                    String elementName = entry.getName();
+                    if (!elementName.endsWith(".class")) {
+
+                        continue;
+                    }
+                    byte[] chunk = new byte[chunkLength];
+                    int bytesRead = zip.read(chunk, 0, chunkLength);
+                    zip.closeEntry();
+                    if (bytesRead != chunkLength) {
+                        success = false;
+                        continue;
+                    }
+
+                    for (int i = 0; i < expectedMagicNumber.length; i++) {
+                        if (chunk[i] != expectedMagicNumber[i]) {
+                            success = false;
+                            continue entryLoop;
                         }
                     }
+
+                    int major =
+                            ((chunk[chunkLength - 2] & 0xff) << 8) + (
+                                    chunk[chunkLength - 1]
+                                            & 0xff);
+
+                    if (low <= major && major <= high) {
+
+                    } else {
+                        success = false;
+                    }
                 }
+            } catch (EOFException ignored) {
             }
-        } catch (EOFException e) {
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            zip.close();
+            return success;
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            zipInputStream.close();
-            return z;
-        } catch (IOException e2) {
+
             return false;
         }
     }
