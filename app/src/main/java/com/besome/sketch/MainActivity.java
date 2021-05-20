@@ -54,7 +54,10 @@ import a.a.a.nd;
 import a.a.a.sB;
 import a.a.a.xB;
 import a.a.a.zI;
+import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
+import mod.tyron.backup.CallBackTask;
+import mod.tyron.backup.SingleCopyAsyncTask;
 
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
 
@@ -293,6 +296,26 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
         if (C > 0 && !j()) {
             q();
+        }
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+            Uri data = getIntent().getData();
+            if (data != null) {
+                //TODO: Progress indicator while restoring project, possibly from background + notifications
+                new SingleCopyAsyncTask(data, this, new CallBackTask() {
+                    @Override
+                    public void onCopyPreExecute() {
+                    }
+
+                    @Override
+                    public void onCopyProgressUpdate(int progress) {
+                    }
+
+                    @Override
+                    public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
+                        new BackupRestoreManager(MainActivity.this).doRestore(path, true);
+                    }
+                }).execute(data);
+            }
         }
     }
 
