@@ -1,4 +1,4 @@
-package mod.jbk.bundle;
+package mod.jbk.build.compiler.bundle;
 
 import android.util.Log;
 
@@ -19,7 +19,7 @@ import java.util.zip.ZipOutputStream;
 import a.a.a.Dp;
 import mod.agus.jcoderz.lib.FileUtil;
 
-public class BundleToolCompiler {
+public class AppBundleCompiler {
 
     public static final String MODULE_ARCHIVE_FILE_NAME = "module-main.zip";
     public static final String MODULE_ASSETS = "assets";
@@ -28,7 +28,7 @@ public class BundleToolCompiler {
     public static final String MODULE_RES = "res";
     public static final String MODULE_ROOT = "root";
     public static final String MODULE_MANIFEST = "manifest";
-    private static final String TAG = "BundleToolCompiler";
+    private static final String TAG = AppBundleCompiler.class.getSimpleName();
     public static String BUNDLE_FILE_NAME;
     public static String APK_SET_FILE_NAME;
     private final DesignActivity.a buildingDialog;
@@ -37,7 +37,7 @@ public class BundleToolCompiler {
     public File appBundle;
     public File apkSet;
 
-    public BundleToolCompiler(Dp dp, DesignActivity.a designActivityA) {
+    public AppBundleCompiler(Dp dp, DesignActivity.a designActivityA) {
         BUNDLE_FILE_NAME = dp.f.d + ".aab";
         APK_SET_FILE_NAME = dp.f.d + ".apks";
         buildingDialog = designActivityA;
