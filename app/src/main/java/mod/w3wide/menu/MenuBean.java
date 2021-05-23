@@ -24,9 +24,11 @@ public class MenuBean {
     private static final String[] pixelFormat = {"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
 
     private final LogicEditorActivity logic;
+    public String javaName;
     public String sc_id;
 
     public MenuBean(LogicEditorActivity activity) {
+        javaName = activity.M.getJavaName();
         logic = activity;
         sc_id = activity.B;
     }
@@ -157,21 +159,21 @@ public class MenuBean {
 
             case "Variable":
                 asdAll.b("Select a Variable");
-                for (Pair<Integer, String> integerStringPair : jC.a(sc_id).k(logic.M.getJavaName())) {
+                for (Pair<Integer, String> integerStringPair : jC.a(sc_id).k(javaName)) {
                     selectableItems.add(integerStringPair.second.replaceFirst("^\\w+[\\s]+(\\w+)", "$1"));
                 }
                 break;
 
             case "Component":
                 asdAll.b("Select a Component");
-                for (ComponentBean componentBean : jC.a(sc_id).e(logic.M.getJavaName())) {
+                for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
                     selectableItems.add(componentBean.componentId);
                 }
                 break;
 
             case "CustomVar":
                 asdAll.b("Select a Custom Variable");
-                for (String s : jC.a(sc_id).e(logic.M.getJavaName(), 5)) {
+                for (String s : jC.a(sc_id).e(javaName, 5)) {
                     Matcher matcher = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
                     while (matcher.find()) {
                         selectableItems.add(matcher.group(2));
@@ -180,7 +182,7 @@ public class MenuBean {
                 break;
         }
 
-        for (String s : jC.a(sc_id).e(logic.M.getJavaName(), 5)) {
+        for (String s : jC.a(sc_id).e(javaName, 5)) {
             Matcher matcher2 = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
             while (matcher2.find()) {
                 if (menuName.equals(matcher2.group(1))) {
@@ -189,7 +191,7 @@ public class MenuBean {
                 }
             }
         }
-        for (ComponentBean componentBean : jC.a(sc_id).e(logic.M.getJavaName())) {
+        for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
             if (componentBean.type > 36 && menuName.equals(ComponentBean.getComponentTypeName(componentBean.type))) {
                 asdAll.b("Select a " + ComponentBean.getComponentTypeName(componentBean.type));
                 selectableItems.add(componentBean.componentId);
