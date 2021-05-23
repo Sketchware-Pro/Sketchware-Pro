@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mod.hilal.saif.lib.FileUtil;
+import mod.w3wide.blocks.ExtraBlocks;
 
 public class BlocksHandler {
     public static void builtInBlocks(ArrayList arrayList) {
+        ExtraBlocks.extraBlocks(arrayList);
         HashMap hashMap = new HashMap();
         hashMap.put("name", "CommandBlockJava");
         hashMap.put("type", "c");
@@ -2351,28 +2353,28 @@ public class BlocksHandler {
         return false;
     }
 
-    public static void primaryBlocksA(LogicEditorActivity logicEditorActivity, int i, int i2, int i3, int i4) {
+    public static void primaryBlocksA(LogicEditorActivity logicEditorActivity, boolean isBoolUsed, boolean isIntUsed, boolean isStrUsed, boolean isMapUsed) {
         if (config("A")) {
             checkDir();
         }
         logicEditorActivity.a("Blocks", -11184811);
-        if (config("B") || i > 0) {
+        if (config("B") || isBoolUsed) {
             logicEditorActivity.a(" ", "setVarBoolean");
         }
-        if (config("B") || i2 > 0) {
+        if (config("B") || isIntUsed) {
             logicEditorActivity.a(" ", "setVarInt");
             logicEditorActivity.a(" ", "increaseInt");
             logicEditorActivity.a(" ", "decreaseInt");
         }
-        if (config("B") || i3 > 0) {
+        if (config("B") || isStrUsed) {
             logicEditorActivity.a(" ", "setVarString");
         }
-        if (config("B") || i4 > 0) {
+        if (config("B") || isMapUsed) {
             logicEditorActivity.a(" ", "mapCreateNew");
             logicEditorActivity.a("Map sign values", -11184811);
             logicEditorActivity.a(" ", "mapPut");
         }
-        if (config("A") && (config("B") || i4 > 0)) {
+        if (config("A") && (config("B") || isMapUsed)) {
             logicEditorActivity.a(" ", "hashmapPutNumber");
             logicEditorActivity.a(" ", "hashmapPutNumber2");
             logicEditorActivity.a(" ", "hashmapPutBoolean");
@@ -2380,18 +2382,18 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "hashmapPutListstr");
             logicEditorActivity.a(" ", "hashmapPutListmap");
         }
-        if (config("B") || i4 > 0) {
+        if (config("B") || isMapUsed) {
             logicEditorActivity.a("Map get values", -11184811);
             logicEditorActivity.a("s", "mapGet");
         }
-        if (config("A") && (config("B") || i4 > 0)) {
+        if (config("A") && (config("B") || isMapUsed)) {
             logicEditorActivity.a("d", "hashmapGetNumber");
             logicEditorActivity.a("b", "hashmapGetBoolean");
             logicEditorActivity.a("a", "hashmapGetMap");
             logicEditorActivity.a("", "l", "List String", "hashmapListstr");
             logicEditorActivity.a("", "l", "List Map", "hashmapGetListmap");
         }
-        if (config("B") || i4 > 0) {
+        if (config("B") || isMapUsed) {
             logicEditorActivity.a("Map general", -11184811);
             logicEditorActivity.a("b", "mapIsEmpty");
             logicEditorActivity.a("b", "mapContainKey");
@@ -2403,11 +2405,11 @@ public class BlocksHandler {
         }
     }
 
-    public static void primaryBlocksB(LogicEditorActivity logicEditorActivity, int i, int i2, int i3, String str) {
+    public static void primaryBlocksB(LogicEditorActivity logicEditorActivity, boolean isListNumUsed, boolean isListStrUsed, boolean isListMapUsed, String eventName) {
         if (config("A")) {
             checkDir();
         }
-        if (config("B") || i > 0) {
+        if (config("B") || isListNumUsed) {
             logicEditorActivity.a("List number", -11184811);
             logicEditorActivity.a("b", "containListInt");
             logicEditorActivity.a("d", "getAtListInt");
@@ -2415,13 +2417,13 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "addListInt");
             logicEditorActivity.a(" ", "insertListInt");
         }
-        if (config("A") && (config("B") || i > 0)) {
+        if (config("A") && (config("B") || isListNumUsed)) {
             logicEditorActivity.a(" ", "setAtPosListnum");
         }
-        if (config("A") && (config("B") || i > 0)) {
+        if (config("A") && (config("B") || isListNumUsed)) {
             logicEditorActivity.a(" ", "sortListnum");
         }
-        if (config("B") || i2 > 0) {
+        if (config("B") || isListStrUsed) {
             logicEditorActivity.a("List string", -11184811);
             logicEditorActivity.a("b", "containListStr");
             logicEditorActivity.a("d", "indexListStr");
@@ -2429,13 +2431,13 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "addListStr");
             logicEditorActivity.a(" ", "insertListStr");
         }
-        if (config("A") && (config("B") || i2 > 0)) {
+        if (config("A") && (config("B") || isListStrUsed)) {
             logicEditorActivity.a(" ", "setAtPosListstr");
         }
-        if (config("B") || i2 > 0) {
+        if (config("B") || isListStrUsed) {
             logicEditorActivity.a(" ", "sortList");
         }
-        if (config("B") || i3 > 0 || str.equals("onBindCustomView")) {
+        if (config("B") || isListMapUsed || eventName.equals("onBindCustomView")) {
             logicEditorActivity.a("List map", -11184811);
             logicEditorActivity.a("b", "containListMap");
             logicEditorActivity.a("s", "getAtListMap");
@@ -2447,7 +2449,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "setListMap");
             logicEditorActivity.a(" ", "setMapAtPosListmap");
         }
-        if (config("B") || i3 > 0) {
+        if (config("B") || isListMapUsed) {
             logicEditorActivity.a(" ", "addMapToList");
             logicEditorActivity.a(" ", "insertMapToList");
             logicEditorActivity.a(" ", "getMapInList");
@@ -2455,7 +2457,8 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "sortListmap");
         }
         logicEditorActivity.a("General", -11184811);
-        if (config("B") || i3 > 0 || i2 > 0 || i > 0 || str.equals("onBindCustomView")) {
+        if (config("B") || isListMapUsed || isListStrUsed || isListNumUsed || eventName.equals("onBindCustomView")) {
+            logicEditorActivity.a(" ", "listAddAll");
             logicEditorActivity.a("d", "lengthList");
             logicEditorActivity.a(" ", "deleteList");
             logicEditorActivity.a(" ", "clearList");
@@ -2483,9 +2486,13 @@ public class BlocksHandler {
         logicEditorActivity.a("c", "if");
         logicEditorActivity.a("e", "ifElse");
         if (config("A")) {
+            logicEditorActivity.a("b", "instanceOfOperator");
+            logicEditorActivity.a("b", "isEmpty");
             logicEditorActivity.a("c", "switchStr");
+            logicEditorActivity.a(" ", "caseStrAnd");
             logicEditorActivity.a("c", "caseStr");
             logicEditorActivity.a("c", "switchNum");
+            logicEditorActivity.a(" ", "caseNumAnd");
             logicEditorActivity.a("c", "caseNum");
             logicEditorActivity.a("c", "defaultSwitch");
             logicEditorActivity.a("e", "tryCatch");
@@ -2499,6 +2506,7 @@ public class BlocksHandler {
             logicEditorActivity.a("f", "returnListMap");
             logicEditorActivity.a("f", "returnView");
             logicEditorActivity.a("f", "break");
+            logicEditorActivity.a("f", "continue");
         }
     }
 
@@ -2525,6 +2533,9 @@ public class BlocksHandler {
         logicEditorActivity.a("d", "stringIndex");
         logicEditorActivity.a("d", "stringLastIndex");
         logicEditorActivity.a("s", "stringSub");
+        if (config("A")) {
+            logicEditorActivity.a("s", "stringSubSingle");
+        }
         logicEditorActivity.a("b", "stringEquals");
         logicEditorActivity.a("b", "stringContains");
         if (config("A")) {
@@ -2541,6 +2552,7 @@ public class BlocksHandler {
         logicEditorActivity.a("s", "toUpperCase");
         logicEditorActivity.a("s", "toLowerCase");
         logicEditorActivity.a("d", "toNumber");
+        logicEditorActivity.a("d", "strParseInteger");
         logicEditorActivity.a("d", "toHashCode");
         logicEditorActivity.a("s", "toString");
         logicEditorActivity.a("s", "toStringWithDecimal");
@@ -2562,74 +2574,4 @@ public class BlocksHandler {
         logicEditorActivity.a("s", "asdString");
     }
 
-    public static void primaryBlocksE(LogicEditorActivity logicEditorActivity) {
-        logicEditorActivity.a("d", "mathGetDip");
-        logicEditorActivity.a("d", "mathGetDisplayWidth");
-        logicEditorActivity.a("d", "mathGetDisplayHeight");
-        logicEditorActivity.a("d", "mathPi");
-        logicEditorActivity.a("d", "mathE");
-        logicEditorActivity.a("d", "mathPow");
-        logicEditorActivity.a("d", "mathMin");
-        logicEditorActivity.a("d", "mathMax");
-        logicEditorActivity.a("d", "mathSqrt");
-        logicEditorActivity.a("d", "mathAbs");
-        logicEditorActivity.a("d", "mathRound");
-        logicEditorActivity.a("d", "mathCeil");
-        logicEditorActivity.a("d", "mathFloor");
-        logicEditorActivity.a("d", "mathSin");
-        logicEditorActivity.a("d", "mathCos");
-        logicEditorActivity.a("d", "mathTan");
-        logicEditorActivity.a("d", "mathAsin");
-        logicEditorActivity.a("d", "mathAcos");
-        logicEditorActivity.a("d", "mathAtan");
-        logicEditorActivity.a("d", "mathExp");
-        logicEditorActivity.a("d", "mathLog");
-        logicEditorActivity.a("d", "mathLog10");
-        logicEditorActivity.a("d", "mathToRadian");
-        logicEditorActivity.a("d", "mathToDegree");
-    }
-
-    public static void primaryBlocksF(LogicEditorActivity logicEditorActivity) {
-        logicEditorActivity.a("s", "fileutilread");
-        logicEditorActivity.a(" ", "fileutilwrite");
-        logicEditorActivity.a(" ", "fileutilcopy");
-        logicEditorActivity.a(" ", "fileutilmove");
-        logicEditorActivity.a(" ", "fileutildelete");
-        logicEditorActivity.a("b", "fileutilisexist");
-        logicEditorActivity.a(" ", "fileutilmakedir");
-        logicEditorActivity.a(" ", "fileutillistdir");
-        logicEditorActivity.a("b", "fileutilisdir");
-        logicEditorActivity.a("b", "fileutilisfile");
-        logicEditorActivity.a("d", "fileutillength");
-        logicEditorActivity.a("b", "fileutilStartsWith");
-        logicEditorActivity.a("b", "fileutilEndsWith");
-        logicEditorActivity.a("s", "fileutilGetLastSegmentPath");
-        logicEditorActivity.a("s", "getExternalStorageDir");
-        logicEditorActivity.a("s", "getPackageDataDir");
-        logicEditorActivity.a("s", "getPublicDir");
-        logicEditorActivity.a(" ", "resizeBitmapFileRetainRatio");
-        logicEditorActivity.a(" ", "resizeBitmapFileToSquare");
-        logicEditorActivity.a(" ", "resizeBitmapFileToCircle");
-        logicEditorActivity.a(" ", "resizeBitmapFileWithRoundedBorder");
-        logicEditorActivity.a(" ", "cropBitmapFileFromCenter");
-        logicEditorActivity.a(" ", "rotateBitmapFile");
-        logicEditorActivity.a(" ", "scaleBitmapFile");
-        logicEditorActivity.a(" ", "skewBitmapFile");
-        logicEditorActivity.a(" ", "setBitmapFileColorFilter");
-        logicEditorActivity.a(" ", "setBitmapFileBrightness");
-        logicEditorActivity.a(" ", "setBitmapFileContrast");
-        logicEditorActivity.a("d", "getJpegRotate");
-    }
-
-    public static void primaryBlocksG() {
-        checkDir();
-    }
-
-    public static void primaryBlocksH() {
-        checkDir();
-    }
-
-    public static void primaryBlocksI() {
-        checkDir();
-    }
 }
