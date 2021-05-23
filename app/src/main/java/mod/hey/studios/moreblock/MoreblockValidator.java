@@ -12,13 +12,14 @@ import a.a.a.MB;
 import a.a.a.xB;
 
 public class MoreblockValidator extends MB {
+
     public String[] f;
     public String[] g;
-    public ArrayList h;
+    public ArrayList<String> h;
     public String i;
-    public Pattern j = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_\\<\\>\\,\\|\\[\\] ]*");
+    public Pattern j = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_<>,|\\[\\] ]*");
 
-    public MoreblockValidator(Context context, TextInputLayout textInputLayout, String[] strArr, String[] strArr2, ArrayList arrayList) {
+    public MoreblockValidator(Context context, TextInputLayout textInputLayout, String[] strArr, String[] strArr2, ArrayList<String> arrayList) {
         super(context, textInputLayout);
         this.f = strArr;
         this.g = strArr2;
