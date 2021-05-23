@@ -116,6 +116,10 @@ public class Resources {
         public static final int ic_property_convert = 0x7f07046c;
         public static final int add_file_48 = 0x7f070473;
         public static final int icon8_code_am = 0x7f07049c;
+        public static final int block_boolean = 0x7f0704a1;
+        public static final int block_num = 0x7f0704a2;
+        public static final int block_ori = 0x7f0704a3;
+        public static final int block_string = 0x7f0704a5;
         public static final int notes_alt2 = 0x7f0704a8;
         public static final int cpp = 0x7f0704ae;
         public static final int ic_backup = 0x7f0704af;
@@ -377,6 +381,7 @@ public class Resources {
         public static final int linear8 = 0x7f080701;
         public static final int edittext1 = 0x7f080702;
         public static final int save = 0x7f080710;
+        public static final int spec = 0x7f080729;
         public static final int parameter = 0x7f080769;
         public static final int sw_pg_enabled = 0x7f08076f;
         public static final int more = 0x7f080773;
@@ -444,6 +449,7 @@ public class Resources {
         public static final int toolbar_improved = 0x7f0b01d7;
         public static final int line_numbered_textview_layout = 0x7f0b01d9;
         public static final int library_downloader_dialog = 0x7f0b01df;
+        public static final int block_customview = 0x7f0b01e5;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
