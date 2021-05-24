@@ -86,25 +86,25 @@ public class ExtraBlocks {
     }
     
     public static void extraBlocks(ArrayList arrayList) {
-        arrayList.add(0, addBlock("caseStrAnd", " ", "", "case %s:", "#E1A92A", "case %s and"));//✓
-        arrayList.add(0, addBlock("caseNumAnd", " ", "", "case ((int)%s):", "#e1a92a", "case %d and"));//✓
-        arrayList.add(0, addBlock("continue", "f", "", "continue;", "#e1a92a", "continue"));//✓
-        arrayList.add(0, addBlock("isEmpty", "b", "", "%s.isEmpty()", "#e1a92a", "%s isEmpty"));//✓
-        arrayList.add(0, addBlock("fileutilcopydir", " ", "", "FileUtil.copyDir(%1$s, %2$s);", "#A1887F", "copy dir path %s to path %s"));//✓
-        arrayList.add(0, addBlock("instanceOfOperator", "b", "", "%1$s instanceof %2$s", "#e1a92a", "%s instanceOf %s"));//✓
-        arrayList.add(0, addBlock("checkViewVisibility", "b", "", "%s.getVisibility() == View.%s", "#4A6CD4", "visibility of %m.view equals %m.visible"));//✓
-        arrayList.add(0, addBlock("intentHasExtra", "b", "", "getIntent().hasExtra(%s)", "#2CA5E2", "Activity hasExtra key %s"));//✓
-        arrayList.add(0, addBlock("intentSetType", " ", "", "%s.setType(%s);", "#2CA5E2", "%m.intent setType %s"));//✓
-        arrayList.add(0, addBlock("intentRemoveExtra", " ", "", "%s.removeExtra(%s);", "#2CA5E2", "%m.intent removeExtra key %s"));//✓
-        arrayList.add(0, addBlock("fileContainsData", "b", "", "%1$s.contains(%2$s)", "#2CA5E2", "%m.file contains %s"));//✓
-        arrayList.add(0, addBlock("viewGetChildAt", "v", "View", "%1$s.getChildAt(%2$s)", "#4A6CD4", "%m.view getChildAt %d"));//✓
+        arrayList.add(0, addBlock("caseStrAnd", " ", "", "case %s:", "#E1A92A", "case %s and"));
+        arrayList.add(0, addBlock("caseNumAnd", " ", "", "case ((int)%s):", "#e1a92a", "case %d and"));
+        arrayList.add(0, addBlock("continue", "f", "", "continue;", "#e1a92a", "continue"));
+        arrayList.add(0, addBlock("isEmpty", "b", "", "%s.isEmpty()", "#e1a92a", "%s isEmpty"));
+        arrayList.add(0, addBlock("fileutilcopydir", " ", "", "FileUtil.copyDir(%1$s, %2$s);", "#A1887F", "copy dir path %s to path %s"));
+        arrayList.add(0, addBlock("instanceOfOperator", "b", "", "%1$s instanceof %2$s", "#e1a92a", "%s instanceOf %s"));
+        arrayList.add(0, addBlock("checkViewVisibility", "b", "", "%s.getVisibility() == View.%s", "#4A6CD4", "visibility of %m.view equals %m.visible"));
+        arrayList.add(0, addBlock("intentHasExtra", "b", "", "getIntent().hasExtra(%s)", "#2CA5E2", "Activity hasExtra key %s"));
+        arrayList.add(0, addBlock("intentSetType", " ", "", "%s.setType(%s);", "#2CA5E2", "%m.intent setType %s"));
+        arrayList.add(0, addBlock("intentRemoveExtra", " ", "", "%s.removeExtra(%s);", "#2CA5E2", "%m.intent removeExtra key %s"));
+        arrayList.add(0, addBlock("fileContainsData", "b", "", "%1$s.contains(%2$s)", "#2CA5E2", "%m.file contains %s"));
+        arrayList.add(0, addBlock("viewGetChildAt", "v", "View", "%1$s.getChildAt(%2$s)", "#4A6CD4", "%m.view getChildAt %d"));
         arrayList.add(0, addBlock("strParseInteger", "d", "", "Integer.parseInt(%s)", "#5cb722", "Integer parseInt %s"));
-        arrayList.add(0, addBlock("stringSubSingle","s", "", "%1$s.substring(%2$s)", "#5cb722", "%s subString %d"));//✓
-        arrayList.add(0, addBlock("webviewGetProgress","d","","%1$s.getProgress()","#2CA5E2","%m.webview getProgress"));//✓
-        arrayList.add(0, addBlock("menuItemSetVisible", " ", "", "%1$s.setVisible(%2$s);", "#4A6CD4", "%m.MenuItem setVisible %b"));//✓
-        arrayList.add(0, addBlock("menuItemSetEnabled", " ", "", "%1$s.setEnabled(%2$s);", "#4A6CD4", "%m.MenuItem setEnabled %b"));//✓
-        arrayList.add(0, addBlock("menuFindItem", "v", "MenuItem", "menu.findItem(%s)", "#4A6CD4", "MenuItem findItem %s.inputOnly"));//✓
-        arrayList.add(0, addBlock("listAddAll", " ", "", "%1$s.addAll(%2$s);", "#cc5b22", "%m.listStr addAll from %m.list"));//✓
+        arrayList.add(0, addBlock("stringSubSingle","s", "", "%1$s.substring(%2$s)", "#5cb722", "%s subString %d"));
+        arrayList.add(0, addBlock("webviewGetProgress","d","","%1$s.getProgress()","#2CA5E2","%m.webview getProgress"));
+        arrayList.add(0, addBlock("menuItemSetVisible", " ", "", "%1$s.setVisible(%2$s);", "#4A6CD4", "%m.MenuItem setVisible %b"));
+        arrayList.add(0, addBlock("menuItemSetEnabled", " ", "", "%1$s.setEnabled(%2$s);", "#4A6CD4", "%m.MenuItem setEnabled %b"));
+        arrayList.add(0, addBlock("menuFindItem", "v", "MenuItem", "menu.findItem(%s)", "#4A6CD4", "MenuItem findItem %s.inputOnly"));
+        arrayList.add(0, addBlock("listAddAll", " ", "", "%1$s.addAll(%2$s);", "#cc5b22", "%m.listStr addAll from %m.list"));
         //File Blocks
         arrayList.add(0, addBlock("fileCanExecute", "b", "", "%s.canExecute()", "#a1887f", "%m.File canExecute"));
         arrayList.add(0, addBlock("fileCanRead", "b", "", "%s.canRead()", "#a1887f", "%m.File canRead"));
