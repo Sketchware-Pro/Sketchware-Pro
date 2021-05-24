@@ -1,82 +1,460 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:background="#fff5f5f5" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff5f5f5"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
-    <ScrollView android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
-        <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip">
-                <RelativeLayout android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <ImageView android:id="@id/icon_apk" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/ic_apk_color_48dp" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
-                    <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/scolor_black_01" android:id="@id/title_sign_apk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_toRightOf="@id/icon_apk" android:layout_alignParentTop="true" />
-                    <Button android:theme="@style/AppTheme.Button.Indigo" android:textSize="14.0sp" android:textColor="#ffffffff" android:id="@id/btn_sign_apk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="40.0dip" android:layout_marginBottom="16.0dip" android:layout_centerHorizontal="true" />
-                    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="32.0dip" android:layout_marginBottom="8.0dip">
-                        <LinearLayout android:orientation="vertical" android:id="@id/layout_apk_path" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip">
-                                <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/ic_folder_48dp" />
-                                <TextView android:textSize="14.0sp" android:textStyle="bold" android:id="@id/title_apk_path" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@id/icon_apk"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_apk_color_48dp" />
+
+                    <TextView
+                        android:id="@id/title_sign_apk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/icon_apk"
+                        android:textColor="@color/scolor_black_01"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@id/btn_sign_apk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="#ffffffff"
+                        android:textSize="14sp"
+                        android:theme="@style/AppTheme.Button.Indigo" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@id/layout_apk_path"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/ic_folder_48dp" />
+
+                                <TextView
+                                    android:id="@id/title_apk_path"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
                             </LinearLayout>
-                            <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_round_light_grey" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="16.0dip">
-                                <HorizontalScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-                                    <TextView android:textSize="13.0sp" android:textColor="@color/scolor_black_01" android:gravity="center_vertical" android:id="@id/tv_apk_path" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:lines="1" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginRight="16dp"
+                                android:background="@drawable/bg_round_light_grey"
+                                android:orientation="horizontal">
+
+                                <HorizontalScrollView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@id/tv_apk_path"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:lines="1"
+                                        android:paddingLeft="8dp"
+                                        android:paddingRight="8dp"
+                                        android:textColor="@color/scolor_black_01"
+                                        android:textSize="13sp" />
                                 </HorizontalScrollView>
                             </LinearLayout>
-                            <Button android:theme="@style/AppTheme.Button.Pink" android:textSize="12.0sp" android:textColor="#ffffffff" android:layout_gravity="right" android:id="@id/btn_export_apk" android:layout_width="wrap_content" android:layout_height="40.0dip" android:layout_marginRight="16.0dip" />
+
+                            <Button
+                                android:id="@id/btn_export_apk"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_gravity="right"
+                                android:layout_marginRight="16dp"
+                                android:textColor="#ffffffff"
+                                android:textSize="12sp"
+                                android:theme="@style/AppTheme.Button.Pink" />
                         </LinearLayout>
-                        <LinearLayout android:orientation="vertical" android:id="@id/layout_apk_url" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="16.0dip">
-                            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip">
-                                <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/globe_96" />
-                                <TextView android:textSize="14.0sp" android:textStyle="bold" android:id="@id/title_apk_url" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+
+                        <LinearLayout
+                            android:id="@id/layout_apk_url"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:src="@drawable/globe_96" />
+
+                                <TextView
+                                    android:id="@id/title_apk_url"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
                             </LinearLayout>
-                            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="16.0dip">
-                                <HorizontalScrollView android:background="@drawable/bg_round_light_grey" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
-                                    <TextView android:textSize="13.0sp" android:textColor="@color/scolor_black_01" android:gravity="center_vertical" android:id="@id/tv_apk_url" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:lines="1" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginRight="16dp"
+                                android:orientation="horizontal">
+
+                                <HorizontalScrollView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1.0"
+                                    android:background="@drawable/bg_round_light_grey">
+
+                                    <TextView
+                                        android:id="@id/tv_apk_url"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:lines="1"
+                                        android:paddingLeft="8dp"
+                                        android:paddingRight="8dp"
+                                        android:textColor="@color/scolor_black_01"
+                                        android:textSize="13sp" />
                                 </HorizontalScrollView>
-                                <ImageView android:id="@id/img_copy_apk_url" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/ic_copy_grey_32dp" />
+
+                                <ImageView
+                                    android:id="@id/img_copy_apk_url"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:src="@drawable/ic_copy_grey_32dp" />
                             </LinearLayout>
-                            <TextView android:textSize="13.0sp" android:textColor="@color/scolor_red_01" android:id="@id/tv_apk_url_expire" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" android:layout_marginTop="8.0dip" />
+
+                            <TextView
+                                android:id="@id/tv_apk_url_expire"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:layout_marginTop="8dp"
+                                android:textColor="@color/scolor_red_01"
+                                android:textSize="13sp" />
                         </LinearLayout>
-                        <com.airbnb.lottie.LottieAnimationView android:id="@id/loading_sign_apk" android:layout_width="fill_parent" android:layout_height="60.0dip" app:lottie_autoPlay="false" app:lottie_fileName="anim/loading_simple_gray.json" app:lottie_loop="true" />
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@id/loading_sign_apk"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            app:lottie_autoPlay="false"
+                            app:lottie_fileName="anim/loading_simple_gray.json"
+                            app:lottie_loop="true" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip">
-                <RelativeLayout android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <ImageView android:id="@id/icon_data" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/sketch_app_icon" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
-                    <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/scolor_black_01" android:id="@id/title_export_data" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_toRightOf="@id/icon_data" android:layout_alignParentTop="true" />
-                    <Button android:theme="@style/AppTheme.Button.Pink" android:textSize="14.0sp" android:textColor="#ffffffff" android:id="@id/btn_export_data" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="48.0dip" android:layout_marginBottom="16.0dip" android:layout_centerHorizontal="true" />
-                    <com.airbnb.lottie.LottieAnimationView android:id="@id/loading_export_data" android:layout_width="fill_parent" android:layout_height="60.0dip" android:layout_marginTop="40.0dip" app:lottie_autoPlay="false" app:lottie_fileName="anim/loading_simple_gray.json" app:lottie_loop="true" />
-                    <LinearLayout android:orientation="vertical" android:id="@id/layout_export_data" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="32.0dip" android:layout_marginBottom="8.0dip">
-                        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip">
-                            <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/globe_96" />
-                            <TextView android:textSize="14.0sp" android:textStyle="bold" android:id="@id/title_data_url" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@id/icon_data"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/sketch_app_icon" />
+
+                    <TextView
+                        android:id="@id/title_export_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/icon_data"
+                        android:textColor="@color/scolor_black_01"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@id/btn_export_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="#ffffffff"
+                        android:textSize="14sp"
+                        android:theme="@style/AppTheme.Button.Pink" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@id/loading_export_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="40dp"
+                        app:lottie_autoPlay="false"
+                        app:lottie_fileName="anim/loading_simple_gray.json"
+                        app:lottie_loop="true" />
+
+                    <LinearLayout
+                        android:id="@id/layout_export_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/globe_96" />
+
+                            <TextView
+                                android:id="@id/title_data_url"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
-                        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="16.0dip">
-                            <HorizontalScrollView android:background="@drawable/bg_round_light_grey" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
-                                <TextView android:textSize="13.0sp" android:textColor="@color/scolor_black_01" android:gravity="center_vertical" android:id="@id/tv_data_url" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:lines="1" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="horizontal">
+
+                            <HorizontalScrollView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.0"
+                                android:background="@drawable/bg_round_light_grey">
+
+                                <TextView
+                                    android:id="@id/tv_data_url"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:lines="1"
+                                    android:paddingLeft="8dp"
+                                    android:paddingRight="8dp"
+                                    android:textColor="@color/scolor_black_01"
+                                    android:textSize="13sp" />
                             </HorizontalScrollView>
-                            <ImageView android:id="@id/img_copy_data_url" android:layout_width="24.0dip" android:layout_height="24.0dip" android:layout_marginLeft="8.0dip" android:src="@drawable/ic_copy_grey_32dp" />
+
+                            <ImageView
+                                android:id="@id/img_copy_data_url"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginLeft="8dp"
+                                android:src="@drawable/ic_copy_grey_32dp" />
                         </LinearLayout>
-                        <TextView android:textSize="13.0sp" android:textColor="@color/scolor_red_01" android:id="@id/tv_data_url_expire" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dip" android:layout_marginTop="8.0dip" />
+
+                        <TextView
+                            android:id="@id/tv_data_url_expire"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginTop="8dp"
+                            android:textColor="@color/scolor_red_01"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="8.0dip">
-                <RelativeLayout android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                    <ImageView android:id="@id/icon_src" android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/android_icon" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
-                    <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/scolor_black_01" android:id="@id/title_export_src" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:layout_toRightOf="@id/icon_src" android:layout_alignParentTop="true" />
-                    <Button android:theme="@style/AppTheme.Button.Indigo" android:textSize="14.0sp" android:textColor="#ffffffff" android:id="@id/btn_export_src" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="48.0dip" android:layout_marginBottom="16.0dip" android:layout_centerHorizontal="true" />
-                    <com.airbnb.lottie.LottieAnimationView android:id="@id/loading_export_src" android:layout_width="fill_parent" android:layout_height="60.0dip" android:layout_marginTop="40.0dip" app:lottie_autoPlay="false" app:lottie_fileName="anim/loading_simple_gray.json" app:lottie_loop="true" />
-                    <LinearLayout android:orientation="vertical" android:id="@id/layout_export_src" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="32.0dip" android:layout_marginBottom="8.0dip">
-                        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip">
-                            <ImageView android:layout_width="24.0dip" android:layout_height="24.0dip" android:src="@drawable/ic_folder_48dp" />
-                            <TextView android:textSize="14.0sp" android:textStyle="bold" android:id="@id/title_src_path" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@id/icon_src"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/android_icon" />
+
+                    <TextView
+                        android:id="@id/title_export_src"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/icon_src"
+                        android:textColor="@color/scolor_black_01"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@id/btn_export_src"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="#ffffffff"
+                        android:textSize="14sp"
+                        android:theme="@style/AppTheme.Button.Indigo" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@id/loading_export_src"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="40dp"
+                        app:lottie_autoPlay="false"
+                        app:lottie_fileName="anim/loading_simple_gray.json"
+                        app:lottie_loop="true" />
+
+                    <LinearLayout
+                        android:id="@id/layout_export_src"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_folder_48dp" />
+
+                            <TextView
+                                android:id="@id/title_src_path"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
-                        <LinearLayout android:orientation="horizontal" android:background="@drawable/bg_round_light_grey" android:layout_width="fill_parent" android:layout_height="24.0dip" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="16.0dip">
-                            <HorizontalScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-                                <TextView android:textSize="13.0sp" android:textColor="@color/scolor_black_01" android:gravity="center_vertical" android:id="@id/tv_src_path" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:lines="1" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@drawable/bg_round_light_grey"
+                            android:orientation="horizontal">
+
+                            <HorizontalScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@id/tv_src_path"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:lines="1"
+                                    android:paddingLeft="8dp"
+                                    android:paddingRight="8dp"
+                                    android:textColor="@color/scolor_black_01"
+                                    android:textSize="13sp" />
                             </HorizontalScrollView>
                         </LinearLayout>
-                        <Button android:theme="@style/AppTheme.Button.Green" android:textSize="12.0sp" android:textColor="#ffffffff" android:layout_gravity="right" android:id="@id/btn_send_src" android:layout_width="wrap_content" android:layout_height="40.0dip" android:layout_marginRight="16.0dip" />
+
+                        <Button
+                            android:id="@id/btn_send_src"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="16dp"
+                            android:textColor="#ffffffff"
+                            android:textSize="12sp"
+                            android:theme="@style/AppTheme.Button.Green" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
