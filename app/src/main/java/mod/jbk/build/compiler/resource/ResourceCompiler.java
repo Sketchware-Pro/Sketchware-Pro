@@ -55,7 +55,7 @@ public class ResourceCompiler {
         resourceCompiler.setProgressListener(new Compiler.ProgressListener() {
             @Override
             void onProgressUpdate(String newProgress) {
-                buildingDialog.c(newProgress);
+                if (buildingDialog != null) buildingDialog.c(newProgress);
             }
         });
         resourceCompiler.compile();
@@ -266,6 +266,10 @@ public class ResourceCompiler {
             savedTimeMillis = System.currentTimeMillis();
             compileBuiltInLibraryResources();
             Log.d(TAG + ":c", "Compiling built-in library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+
+            savedTimeMillis = System.currentTimeMillis();
+            link();
+            Log.d(TAG + ":c", "Linking resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         }
 
         /**
