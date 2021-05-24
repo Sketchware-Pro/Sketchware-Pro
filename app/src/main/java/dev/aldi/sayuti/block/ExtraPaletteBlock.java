@@ -8,6 +8,9 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
+import dev.aldi.sayuti.block.ExtraBlockFile;
+import dev.aldi.sayuti.block.ExtraMenuBlock;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,24 +19,47 @@ import a.a.a.Ss;
 import a.a.a.jC;
 import a.a.a.kq;
 import a.a.a.xq;
+
 import mod.agus.jcoderz.lib.FileResConfig;
+import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.blocks.BlocksHandler;
+import mod.w3wide.blocks.ExtraBlocks;
+import mod.w3wide.control.logic.LogicClickListener;
+import mod.w3wide.menu.ExtraMenuBean;
 
 public class ExtraPaletteBlock extends Activity {
+
+    private String eventName;
+    private String javaName;
+    private String xmlName;
+    private String sc_id;
+    
+    private FileResConfig frc;
+    private boolean isCustomView;
     public LogicEditorActivity logicEditor;
-    private final String eventName;
-    private final FileResConfig frc;
-    private final boolean isCustomView;
-    private final HashMap<String, Object> mapSave = new HashMap<>();
-    private final ExtraMenuBlock menuBlock;
+    private HashMap<String, Object> mapSave = new HashMap<>();
+    private ExtraMenuBlock menuBlock;
+    private ExtraMenuBean emBean;
+    private ProjectFileBean projectFile;
+    private ExtraBlocks extraBlocks;
+    private static LogicClickListener clickListener;
 
     public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity) {
         this.logicEditor = logicEditorActivity;
-        this.menuBlock = new ExtraMenuBlock(logicEditorActivity);
         this.eventName = logicEditorActivity.D;
-        this.frc = new FileResConfig(this.logicEditor.B);
         this.isCustomView = this.logicEditor.D.equals("onBindCustomView");
+
+        projectFile = this.logicEditor.M;
+        javaName = this.projectFile.getJavaName();
+        xmlName = this.projectFile.getXmlName();
+        sc_id = this.logicEditor.B;
+
+        menuBlock = new ExtraMenuBlock(logicEditor);
+        frc = new FileResConfig(sc_id);
+        emBean = new ExtraMenuBean(logicEditor, sc_id);
+        extraBlocks = new ExtraBlocks(logicEditor);
+        clickListener = new LogicClickListener(logicEditor);
     }
 
     private boolean isWidgetUsed(String str) {
@@ -41,9 +67,9 @@ public class ExtraPaletteBlock extends Activity {
             return ((Boolean) this.mapSave.get(str)).booleanValue();
         }
         if (this.eventName.equals("onBindCustomView")) {
-            String str2 = jC.a(this.logicEditor.B).c(this.logicEditor.M.getXmlName(), this.logicEditor.C).customView;
+            String str2 = jC.a(sc_id).c(xmlName, this.logicEditor.C).customView;
             if (str2 != null && str2.length() > 0) {
-                Iterator<ViewBean> it = jC.a(this.logicEditor.B).d(ProjectFileBean.getXmlName(str2)).iterator();
+                Iterator<ViewBean> it = jC.a(sc_id).d(ProjectFileBean.getXmlName(str2)).iterator();
                 while (it.hasNext()) {
                     if (it.next().getClassInfo().a(str)) {
                         this.mapSave.put(str, true);
@@ -51,7 +77,7 @@ public class ExtraPaletteBlock extends Activity {
                     }
                 }
             }
-        } else if (jC.a(this.logicEditor.B).y(this.logicEditor.M.getXmlName(), str)) {
+        } else if (jC.a(sc_id).y(xmlName, str)) {
             this.mapSave.put(str, true);
             return true;
         }
@@ -60,9 +86,12 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     public void f(Ss ss) {
+        String menuName = ss.getMenuName();
         if (ss.b.equals("m")) {
-            if (ss.getMenuName().matches("cardview|collapsingtoolbar|textinputlayout|swiperefreshlayout|radiogroup|lottie|otpview|youtubeview|codeview|recyclerview|datepicker|timepicker")) {
+            if (menuName.matches("cardview|collapsingtoolbar|textinputlayout|swiperefreshlayout|radiogroup|lottie|otpview|youtubeview|codeview|recyclerview|datepicker|timepicker")) {
                 this.logicEditor.f(ss);
+            } else if (menuName.matches("Assets|NativeLib")) {
+                emBean.pathSelectorMenu(ss);
             } else {
                 this.logicEditor.g(ss);
             }
@@ -73,112 +102,112 @@ public class ExtraPaletteBlock extends Activity {
         switch (str.hashCode()) {
             case -1861588048:
                 if (str.equals("circleimageview")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 43, str2);
+                    return jC.a(sc_id).g(xmlName, 43, str2);
                 }
                 break;
             case -1787283314:
                 if (str.equals("onesignal")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 32, str2);
+                    return jC.a(sc_id).d(javaName, 32, str2);
                 }
                 break;
             case -1706714623:
                 if (str.equals("asynctask")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 36, str2);
+                    return jC.a(sc_id).d(javaName, 36, str2);
                 }
                 break;
             case -1138271152:
                 if (str.equals("otpview")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 46, str2);
+                    return jC.a(sc_id).g(xmlName, 46, str2);
                 }
                 break;
             case -1096937569:
                 if (str.equals("lottie")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 44, str2);
+                    return jC.a(sc_id).g(xmlName, 44, str2);
                 }
                 break;
             case -1028606954:
                 if (str.equals("phoneauth")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 28, str2);
+                    return jC.a(sc_id).d(javaName, 28, str2);
                 }
                 break;
             case -897829429:
                 if (str.equals("fbadbanner")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 33, str2);
+                    return jC.a(sc_id).d(javaName, 33, str2);
                 }
                 break;
             case -866964974:
                 if (str.equals("codeview")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 47, str2);
+                    return jC.a(sc_id).g(xmlName, 47, str2);
                 }
                 break;
             case -400432284:
                 if (str.equals("recyclerview")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 48, str2);
+                    return jC.a(sc_id).g(xmlName, 48, str2);
                 }
                 break;
             case -322859824:
                 if (str.equals("googlelogin")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 31, str2);
+                    return jC.a(sc_id).d(javaName, 31, str2);
                 }
                 break;
             case -257959751:
                 if (str.equals("dynamiclink")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 29, str2);
+                    return jC.a(sc_id).d(javaName, 29, str2);
                 }
                 break;
             case -75883448:
                 if (str.equals("youtubeview")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 45, str2);
+                    return jC.a(sc_id).g(xmlName, 45, str2);
                 }
                 break;
             case -7230027:
                 if (str.equals("cardview")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 36, str2);
+                    return jC.a(sc_id).g(xmlName, 36, str2);
                 }
                 break;
             case 5318500:
                 if (str.equals("radiogroup")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 40, str2);
+                    return jC.a(sc_id).g(xmlName, 40, str2);
                 }
                 break;
             case 710961803:
                 if (str.equals("fbadinterstitial")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 34, str2);
+                    return jC.a(sc_id).d(javaName, 34, str2);
                 }
                 break;
             case 893026343:
                 if (str.equals("textinputlayout")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 38, str2);
+                    return jC.a(sc_id).g(xmlName, 38, str2);
                 }
                 break;
             case 1096269585:
                 if (str.equals("collapsingtoolbar")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 37, str2);
+                    return jC.a(sc_id).g(xmlName, 37, str2);
                 }
                 break;
             case 1177398322:
                 if (str.equals("cloudmessage")) {
-                    return jC.a(this.logicEditor.B).d(this.logicEditor.M.getJavaName(), 30, str2);
+                    return jC.a(sc_id).d(javaName, 30, str2);
                 }
                 break;
             case 1351679420:
                 if (str.equals("datepicker")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 27, str2);
+                    return jC.a(sc_id).g(xmlName, 27, str2);
                 }
                 break;
             case 1611547126:
                 if (str.equals("customVar")) {
-                    return jC.a(this.logicEditor.B).f(this.logicEditor.M.getXmlName(), 5, str2);
+                    return jC.a(sc_id).f(xmlName, 5, str2);
                 }
                 break;
             case 1612926363:
                 if (str.equals("timepicker")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 28, str2);
+                    return jC.a(sc_id).g(xmlName, 28, str2);
                 }
                 break;
             case 2107542731:
                 if (str.equals("swiperefreshlayout")) {
-                    return jC.a(this.logicEditor.B).g(this.logicEditor.M.getXmlName(), 39, str2);
+                    return jC.a(sc_id).g(xmlName, 39, str2);
                 }
                 break;
         }
@@ -186,62 +215,67 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     public final void moreBlocks() {
-        ReturnMoreblockManager.listMoreblocks(jC.a(this.logicEditor.B).i(this.logicEditor.M.getJavaName()).iterator(), this.logicEditor);
+        ReturnMoreblockManager.listMoreblocks(jC.a(sc_id).i(javaName).iterator(), this.logicEditor);
     }
 
     public final void var() {
-        Iterator<Pair<Integer, String>> it = jC.a(this.logicEditor.B).k(this.logicEditor.M.getJavaName()).iterator();
-        int i = 0;
-        int i2 = 0;
-        int i3 = 0;
-        int i4 = 0;
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
-            if (((Integer) next.first).intValue() == 0) {
-                this.logicEditor.a((String) next.second, "b", "getVar").setTag(next.second);
-                i++;
-            } else if (((Integer) next.first).intValue() == 1) {
-                this.logicEditor.a((String) next.second, "d", "getVar").setTag(next.second);
-                i2++;
-            } else if (((Integer) next.first).intValue() == 2) {
-                this.logicEditor.a((String) next.second, "s", "getVar").setTag(next.second);
-                i3++;
-            } else if (((Integer) next.first).intValue() == 3) {
-                this.logicEditor.a((String) next.second, "a", kq.b(((Integer) next.first).intValue()), "getVar").setTag(next.second);
-                i4++;
-            } else if (((Integer) next.first).intValue() == 5) {
-                String typeName = next.second.split(" ")[0];
-                String name = next.second.split(" ")[1];
-                this.logicEditor.a(name, ExtraBlockClassInfo.getType(typeName), typeName, "getVar").setTag(next.second);
+        for (Pair<Integer, String> isp : jC.a(sc_id).k(javaName)) {
+            switch (isp.first) {
+                case 0:
+                case 1:
+                case 2:
+                  this.logicEditor.a(isp.second, getType(isp.first), "getVar").setTag(isp.second);
+                case 3:
+                  this.logicEditor.a(isp.second, getType(isp.first), kq.b(((Integer) isp.first).intValue()), "getVar").setTag(isp.second);
+                case 5:
+                  String typeName = isp.second.split(" ")[0];
+                  String name = isp.second.split(" ")[1];
+                  this.logicEditor.a(name, getType(isp.first), typeName, "getVar").setTag(isp.second);
+                  
             }
         }
-        BlocksHandler.primaryBlocksA(this.logicEditor, i, i2, i3, i4);
+        BlocksHandler.primaryBlocksA(this.logicEditor, extraBlocks.isVariableUsed(0), extraBlocks.isVariableUsed(1), extraBlocks.isVariableUsed(2), extraBlocks.isVariableUsed(3));
         blockCustomViews();
         blockDrawer();
         blockEvents();
+        extraBlocks.eventBlocks();
         blockComponents();
+    }
+
+    private String getType(int id) {
+        switch(id) {
+            case 0:
+              return "b";
+            case 1:
+              return "d";
+            case 2:
+              return "s";
+            case 3:
+              return "a";
+            default:
+              return "v";
+        }
     }
 
     public final void blockComponents() {
         this.logicEditor.a("Components", -11184811);
-        Iterator<ComponentBean> it = jC.a(this.logicEditor.B).e(this.logicEditor.M.getJavaName()).iterator();
-        while (it.hasNext()) {
-            ComponentBean next = it.next();
-            if (next.type != 27) {
-                this.logicEditor.a(next.componentId, "p", ComponentBean.getComponentTypeName(next.type), "getVar").setTag(next.componentId);
+        for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
+            if (componentBean.type != 27) {
+                this.logicEditor.a(componentBean.componentId, "p", ComponentBean.getComponentTypeName(componentBean.type), "getVar").setTag(componentBean.componentId);
             }
         }
     }
 
     public final void blockCustomViews() {
         if (this.eventName.equals("onBindCustomView")) {
-            String str = jC.a(this.logicEditor.B).c(this.logicEditor.M.getXmlName(), this.logicEditor.C).customView;
-            if (str != null && str.length() > 0) {
+            String customView = jC.a(sc_id).c(xmlName, this.logicEditor.C).customView;
+            if (customView != null && customView.length() > 0) {
                 this.logicEditor.a("Custom Views", -11184811);
-                Iterator<ViewBean> it = jC.a(this.logicEditor.B).d(ProjectFileBean.getXmlName(str)).iterator();
-                while (it.hasNext()) {
-                    ViewBean next = it.next();
-                    this.logicEditor.a(next.id, "v", ViewBean.getViewTypeName(next.type), "getVar").setTag(next.id);
+                for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
+                    if (!viewBean.convert.equals("include")) {
+                        String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
+                        this.logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
+                    }
                 }
             }
             this.logicEditor.a(" ", "notifyDataSetChanged");
@@ -252,25 +286,25 @@ public class ExtraPaletteBlock extends Activity {
             return;
         }
         this.logicEditor.a("Views", -11184811);
-        Iterator<ViewBean> it2 = jC.a(this.logicEditor.B).d(this.logicEditor.M.getXmlName()).iterator();
-        while (it2.hasNext()) {
-            ViewBean next2 = it2.next();
-            this.logicEditor.a(next2.id, "v", ViewBean.getViewTypeName(next2.type), "getVar").setTag(next2.id);
+        for (ViewBean viewBean : jC.a(sc_id).d(xmlName)) {
+            if (!viewBean.convert.equals("include")) {
+                String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
+                this.logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
+            }
         }
-        this.logicEditor.M.hasActivityOption(8);
-        this.logicEditor.M.hasActivityOption(4);
     }
 
     public final void blockDrawer() {
-        if (this.logicEditor.M.hasActivityOption(4)) {
+        if (projectFile.hasActivityOption(4)) {
             this.logicEditor.a("Drawer Views", -11184811);
-            ArrayList<ViewBean> d = jC.a(this.logicEditor.B).d(this.logicEditor.M.getDrawerXmlName());
-            if (d != null) {
-                Iterator<ViewBean> it = d.iterator();
-                while (it.hasNext()) {
-                    ViewBean next = it.next();
-                    String str = "_drawer_" + next.id;
-                    this.logicEditor.a(str, "v", ViewBean.getViewTypeName(next.type), "getVar").setTag(str);
+            ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(projectFile.getDrawerXmlName());
+            if (viewBeans != null) {
+                for (ViewBean viewBean : viewBeans) {
+                    if (!viewBean.convert.equals("include")) {
+                        String id = "_drawer_" + viewBean.id;
+                        String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
+                        this.logicEditor.a(id, "v", typeName, "getVar").setTag(id);
+                    }
                 }
             }
         }
@@ -310,25 +344,10 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     public final void list() {
-        Iterator<Pair<Integer, String>> it = jC.a(this.logicEditor.B).j(this.logicEditor.M.getJavaName()).iterator();
-        int i = 0;
-        int i2 = 0;
-        int i3 = 0;
-        while (it.hasNext()) {
-            Pair<Integer, String> next = it.next();
-            if (((Integer) next.first).intValue() == 1) {
-                i++;
-            } else if (((Integer) next.first).intValue() == 2) {
-                i2++;
-            } else {
-                i3++;
-            }
-            this.logicEditor.a((String) next.second, "l", kq.a(((Integer) next.first).intValue()), "getVar").setTag(next.second);
-            i = i;
-            i2 = i2;
-            i3 = i3;
+        for (Pair<Integer, String> intStrPair : jC.a(sc_id).j(javaName)) {
+            this.logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first.intValue()), "getVar").setTag(intStrPair.second);
         }
-        BlocksHandler.primaryBlocksB(this.logicEditor, i, i2, i3, this.eventName);
+        BlocksHandler.primaryBlocksB(this.logicEditor, extraBlocks.isListUsed(1), extraBlocks.isListUsed(2), extraBlocks.isListUsed(3), this.eventName);
     }
 
     public void setBlock(int i, int i2) {
@@ -342,12 +361,13 @@ public class ExtraPaletteBlock extends Activity {
         switch (i) {
             case 0:
                 this.logicEditor.b("Add variable", "variableAdd");
-                this.logicEditor.b("Add custom variable", "variableAddNew");
+                this.logicEditor.b("Add custom variable", "variableAddNew", clickListener);
                 this.logicEditor.b("Remove variable", "variableRemove");
                 var();
                 return;
             case 1:
                 this.logicEditor.b("Add list", "listAdd");
+                this.logicEditor.b("Add Custom List", "listAddCustom", clickListener);
                 this.logicEditor.b("Remove list", "listRemove");
                 list();
                 return;
@@ -384,6 +404,8 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a("d", "mathToDegree");
                 return;
             case 5:
+                extraBlocks.fileBlocks();
+                this.logicEditor.a("FileUtil Blocks", -11184811);
                 if (this.frc.getAssetsFile().size() > 0) {
                     this.logicEditor.a(" ", "getAssetFile");
                     this.logicEditor.a("s", "copyAssetFile");
@@ -391,6 +413,7 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a("s", "fileutilread");
                 this.logicEditor.a(" ", "fileutilwrite");
                 this.logicEditor.a(" ", "fileutilcopy");
+                this.logicEditor.a(" ", "fileutilcopydir");
                 this.logicEditor.a(" ", "fileutilmove");
                 this.logicEditor.a(" ", "fileutildelete");
                 this.logicEditor.a(" ", "renameFile");
@@ -423,6 +446,7 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a(" ", "setEnable");
                 this.logicEditor.a("b", "getEnable");
                 this.logicEditor.a(" ", "setVisible");
+                this.logicEditor.a("b", "checkViewVisibility");
                 this.logicEditor.a(" ", "setElevation");
                 this.logicEditor.a(" ", "setRotate");
                 this.logicEditor.a("d", "getRotate");
@@ -444,6 +468,7 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a(" ", "removeView");
                 this.logicEditor.a(" ", "removeViews");
                 this.logicEditor.a(" ", "addView");
+                this.logicEditor.a("v", "viewGetChildAt");
                 this.logicEditor.a(" ", "addViews");
                 this.logicEditor.a(" ", "setGravity");
                 this.logicEditor.a(" ", "setColorFilterView");
@@ -455,14 +480,14 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a(" ", "setGradientBackground");
                 this.logicEditor.a(" ", "setRadiusAndStrokeView");
                 this.logicEditor.a("Widgets", -11184811);
-                if (isWidgetUsed("TextView") || isWidgetUsed("EditText")) {
+                if (isWidgetUsed("TextView") || extraBlocks.isCustomVarUsed("TextView")|| isWidgetUsed("EditText") || extraBlocks.isCustomVarUsed("EditText")) {
                     this.logicEditor.a(" ", "setText");
                     this.logicEditor.a("s", "getText");
                     this.logicEditor.a(" ", "setTypeface");
                     this.logicEditor.a(" ", "setTextColor");
                     this.logicEditor.a(" ", "setTextSize");
                 }
-                if (isWidgetUsed("EditText")) {
+                if (isWidgetUsed("EditText") || extraBlocks.isCustomVarUsed("EditText")) {
                     this.logicEditor.a(" ", "setHint");
                     this.logicEditor.a(" ", "setHintTextColor");
                     this.logicEditor.a(" ", "EditTextdiableSuggestion");
@@ -487,7 +512,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "setThreshold");
                     this.logicEditor.a(" ", "setTokenizer");
                 }
-                if (isWidgetUsed("ImageView") || isWidgetUsed("CircleImageView")) {
+                if (isWidgetUsed("ImageView") || extraBlocks.isCustomVarUsed("ImageView")|| isWidgetUsed("CircleImageView")) {
                     this.logicEditor.a(" ", "setImage");
                     this.logicEditor.a(" ", "setImageCustomRes");
                     this.logicEditor.a(" ", "setImageIdentifier");
@@ -495,22 +520,22 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "setImageUrl");
                     this.logicEditor.a(" ", "setColorFilter");
                 }
-                if (isWidgetUsed("RatingBar")) {
+                if (isWidgetUsed("RatingBar") || extraBlocks.isCustomVarUsed("RatingBar")) {
                     this.logicEditor.a("d", "getRating");
                     this.logicEditor.a(" ", "setRating");
                     this.logicEditor.a(" ", "setNumStars");
                     this.logicEditor.a(" ", "setStepSize");
                 }
-                if (isWidgetUsed("SeekBar")) {
+                if (isWidgetUsed("SeekBar") || extraBlocks.isCustomVarUsed("SeekBar")) {
                     this.logicEditor.a(" ", "seekBarSetProgress");
                     this.logicEditor.a("d", "seekBarGetProgress");
                     this.logicEditor.a(" ", "seekBarSetMax");
                     this.logicEditor.a("d", "seekBarGetMax");
                 }
-                if (isWidgetUsed("ProgressBar")) {
+                if (isWidgetUsed("ProgressBar") || extraBlocks.isCustomVarUsed("ProgressBar")) {
                     this.logicEditor.a(" ", "progressBarSetIndeterminate");
                 }
-                if (isWidgetUsed("VideoView")) {
+                if (isWidgetUsed("VideoView") || extraBlocks.isCustomVarUsed("VideoView")) {
                     this.logicEditor.a(" ", "videoviewSetVideoUri");
                     this.logicEditor.a(" ", "videoviewStart");
                     this.logicEditor.a(" ", "videoviewPause");
@@ -522,9 +547,10 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a("d", "videoviewGetCurrentPosition");
                     this.logicEditor.a("d", "videoviewGetDuration");
                 }
-                if (isWidgetUsed("WebView")) {
+                if (isWidgetUsed("WebView") || extraBlocks.isCustomVarUsed("WebView")) {
                     this.logicEditor.a(" ", "webViewLoadUrl");
                     this.logicEditor.a("s", "webViewGetUrl");
+                    this.logicEditor.a("d", "webviewGetProgress");
                     this.logicEditor.a(" ", "webViewSetCacheMode");
                     this.logicEditor.a("b", "webViewCanGoBack");
                     this.logicEditor.a("b", "webViewCanGoForward");
@@ -567,7 +593,7 @@ public class ExtraPaletteBlock extends Activity {
                         this.logicEditor.a(" ", "recyclerSmoothScrollToPosition");
                         this.logicEditor.a(" ", "recyclerScrollToPositionWithOffset");
                     }
-                    if (isWidgetUsed("GridView")) {
+                    if (isWidgetUsed("GridView") || extraBlocks.isCustomVarUsed("GridView")) {
                         this.logicEditor.a(" ", "gridSetCustomViewData");
                         this.logicEditor.a(" ", "gridSetNumColumns");
                         this.logicEditor.a(" ", "gridSetColumnWidth");
@@ -588,12 +614,12 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "setRecyclerViewLayoutParams");
                 }
                 this.logicEditor.a("AndroidX", -11184811);
-                if (this.logicEditor.M.hasActivityOption(4)) {
+                if (projectFile.hasActivityOption(4)) {
                     this.logicEditor.a("b", "isDrawerOpen");
                     this.logicEditor.a(" ", "openDrawer");
                     this.logicEditor.a(" ", "closeDrawer");
                 }
-                if (this.logicEditor.M.hasActivityOption(8)) {
+                if (projectFile.hasActivityOption(8)) {
                     this.logicEditor.a(" ", "fabIcon");
                     this.logicEditor.a(" ", "fabSize");
                     this.logicEditor.a(" ", "fabVisibility");
@@ -621,7 +647,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "setSelectedTabIndicatorColor");
                     this.logicEditor.a(" ", "setSelectedTabIndicatorHeight");
                 }
-                if (isWidgetUsed("TextInputLayout")) {
+                if (isWidgetUsed("TextInputLayout") || extraBlocks.isCustomVarUsed("TextInputLayout")) {
                     this.logicEditor.a(" ", "tilSetBoxBgColor");
                     this.logicEditor.a(" ", "tilSetBoxStrokeColor");
                     this.logicEditor.a(" ", "tilSetBoxBgMode");
@@ -684,7 +710,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "YTPVLifecycle");
                     this.logicEditor.a("c", "YTPVSetListener");
                 }
-                if (jC.c(this.logicEditor.B).b().useYn.equals("Y")) {
+                if (jC.c(sc_id).b().useYn.equals("Y")) {
                     this.logicEditor.a(" ", "adViewLoadAd");
                 }
                 if (isWidgetUsed("MapView")) {
@@ -729,19 +755,22 @@ public class ExtraPaletteBlock extends Activity {
                 this.logicEditor.a(" ", "doToast");
                 this.logicEditor.a(" ", "copyToClipboard");
                 this.logicEditor.a(" ", "setTitle");
-                if (xq.a(this.logicEditor.B) || xq.b(this.logicEditor.B)) {
+                if (xq.a(sc_id) || xq.b(sc_id)) {
+                    this.logicEditor.a("b", "intentHasExtra");
                     this.logicEditor.a("s", "intentGetString");
                     this.logicEditor.a("f", "finishActivity");
                     this.logicEditor.a("f", "finishAffinity");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 1)) {
+                if (extraBlocks.isComponentUsed(1) || extraBlocks.isCustomVarUsed("Intent")) {
                     this.logicEditor.a("Intent", -11184811);
                     this.logicEditor.a(" ", "intentSetAction");
                     this.logicEditor.a(" ", "intentSetData");
-                    if (xq.a(this.logicEditor.B) || xq.b(this.logicEditor.B)) {
+                    this.logicEditor.a(" ", "intentSetType");
+                    if (xq.a(sc_id) || xq.b(sc_id)) {
                         this.logicEditor.a(" ", "intentSetScreen");
                         this.logicEditor.a(" ", "launchApp");
                         this.logicEditor.a(" ", "intentPutExtra");
+                        this.logicEditor.a(" ", "intentRemoveExtra");
                     }
                     this.logicEditor.a(" ", "intentSetFlags");
                     this.logicEditor.a(" ", "startActivity");
@@ -756,21 +785,22 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "startService");
                     this.logicEditor.a(" ", "stopService");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 2)) {
+                if (extraBlocks.isComponentUsed(2)) {
                     this.logicEditor.a("Shared preferences", -11184811);
+                    this.logicEditor.a("b", "fileContainsData");
                     this.logicEditor.a("s", "fileGetData");
                     this.logicEditor.a(" ", "fileSetData");
                     this.logicEditor.a(" ", "fileRemoveData");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 24)) {
+                if (extraBlocks.isComponentUsed(24)) {
                     this.logicEditor.a("Date picker dialog", -11184811);
                     this.logicEditor.a(" ", "datePickerDialogShow");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 25)) {
+                if (extraBlocks.isComponentUsed(25)) {
                     this.logicEditor.a("Time picker dialog", -11184811);
                     this.logicEditor.a(" ", "timePickerDialogShow");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 3)) {
+                if (extraBlocks.isComponentUsed(3)) {
                     this.logicEditor.a("Calendar", -11184811);
                     this.logicEditor.a(" ", "calendarGetNow");
                     this.logicEditor.a(" ", "calendarAdd");
@@ -780,22 +810,22 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a("d", "calendarGetTime");
                     this.logicEditor.a(" ", "calendarSetTime");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 4)) {
+                if (extraBlocks.isComponentUsed(4)) {
                     this.logicEditor.a("Vibrator", -11184811);
                     this.logicEditor.a(" ", "vibratorAction");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 5)) {
+                if (extraBlocks.isComponentUsed(5) || extraBlocks.isCustomVarUsed("Timer")) {
                     this.logicEditor.a("Timer", -11184811);
                     this.logicEditor.a("c", "timerAfter");
                     this.logicEditor.a("c", "timerEvery");
                     this.logicEditor.a(" ", "timerCancel");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 36)) {
+                if (extraBlocks.isComponentUsed(36)) {
                     this.logicEditor.a("AsyncTask", -11184811);
                     this.logicEditor.a(" ", "AsyncTaskExecute");
                     this.logicEditor.a(" ", "AsyncTaskPublishProgress");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 7)) {
+                if (extraBlocks.isComponentUsed(7) ||extraBlocks.isCustomVarUsed("Dialog")) {
                     this.logicEditor.a("Dialog", -11184811);
                     this.logicEditor.a(" ", "dialogSetTitle");
                     this.logicEditor.a(" ", "Dialog SetIcon");
@@ -805,7 +835,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a("c", "dialogNeutralButton");
                     this.logicEditor.a(" ", "dialogShow");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 8)) {
+                if (extraBlocks.isComponentUsed(8)) {
                     this.logicEditor.a("Media player", -11184811);
                     this.logicEditor.a(" ", "mediaplayerCreate");
                     this.logicEditor.a(" ", "mediaplayerStart");
@@ -819,14 +849,14 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "mediaplayerReset");
                     this.logicEditor.a(" ", "mediaplayerRelease");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 9)) {
+                if (extraBlocks.isComponentUsed(9)) {
                     this.logicEditor.a("SoundPool", -11184811);
                     this.logicEditor.a(" ", "soundpoolCreate");
                     this.logicEditor.a("d", "soundpoolLoad");
                     this.logicEditor.a("d", "soundpoolStreamPlay");
                     this.logicEditor.a(" ", "soundpoolStreamStop");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 10)) {
+                if (extraBlocks.isComponentUsed(10)) {
                     this.logicEditor.a("Object animator", -11184811);
                     this.logicEditor.a(" ", "objectanimatorSetTarget");
                     this.logicEditor.a(" ", "objectanimatorSetProperty");
@@ -840,7 +870,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "objectanimatorCancel");
                     this.logicEditor.a("b", "objectanimatorIsRunning");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 6)) {
+                if (extraBlocks.isComponentUsed(6)) {
                     this.logicEditor.a("Firebase", -11184811);
                     this.logicEditor.a(" ", "firebaseAdd");
                     this.logicEditor.a(" ", "firebasePush");
@@ -850,7 +880,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "firebaseStartListen");
                     this.logicEditor.a(" ", "firebaseStopListen");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 12)) {
+                if (extraBlocks.isComponentUsed(12)) {
                     this.logicEditor.a("FirebaseAuth", -11184811);
                     this.logicEditor.a("b", "firebaseauthIsLoggedIn");
                     this.logicEditor.a("s", "firebaseauthGetCurrentUser");
@@ -861,47 +891,47 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "firebaseauthResetPassword");
                     this.logicEditor.a(" ", "firebaseauthSignOutUser");
                 }
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 28);
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 29);
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 30);
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 31);
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 32);
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 33);
-                jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 34);
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 11)) {
+                jC.a(sc_id).f(javaName, 28);
+                jC.a(sc_id).f(javaName, 29);
+                jC.a(sc_id).f(javaName, 30);
+                jC.a(sc_id).f(javaName, 31);
+                jC.a(sc_id).f(javaName, 32);
+                jC.a(sc_id).f(javaName, 33);
+                jC.a(sc_id).f(javaName, 34);
+                if(extraBlocks.isComponentUsed(11)) {
                     this.logicEditor.a("Gyroscope", -11184811);
                     this.logicEditor.a(" ", "gyroscopeStartListen");
                     this.logicEditor.a(" ", "gyroscopeStopListen");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 13)) {
+                if (extraBlocks.isComponentUsed(13)) {
                     this.logicEditor.a("Admob", -11184811);
                     this.logicEditor.a(" ", "interstitialadCreate");
                     this.logicEditor.a(" ", "interstitialadLoadAd");
                     this.logicEditor.a(" ", "interstitialadShow");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 14)) {
+                if (extraBlocks.isComponentUsed(14)) {
                     this.logicEditor.a("Firebase Storage", -11184811);
                     this.logicEditor.a(" ", "firebasestorageUploadFile");
                     this.logicEditor.a(" ", "firebasestorageDownloadFile");
                     this.logicEditor.a(" ", "firebasestorageDelete");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 15)) {
+                if (extraBlocks.isComponentUsed(15)) {
                     this.logicEditor.a("Camera", -11184811);
                     this.logicEditor.a(" ", "camerastarttakepicture");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 16)) {
+                if (extraBlocks.isComponentUsed(16)) {
                     this.logicEditor.a("File picker", -11184811);
                     this.logicEditor.a(" ", "filepickerstartpickfiles");
                     this.logicEditor.a(" ", "imageCrop");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 17)) {
+                if (extraBlocks.isComponentUsed(17)) {
                     this.logicEditor.a("Request network", -11184811);
                     this.logicEditor.a("b", "isConnected");
                     this.logicEditor.a(" ", "requestnetworkSetParams");
                     this.logicEditor.a(" ", "requestnetworkSetHeaders");
                     this.logicEditor.a(" ", "requestnetworkStartRequestNetwork");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 18)) {
+                if (extraBlocks.isComponentUsed(18)) {
                     this.logicEditor.a("Text to speech", -11184811);
                     this.logicEditor.a("b", "textToSpeechIsSpeaking");
                     this.logicEditor.a(" ", "textToSpeechSetPitch");
@@ -910,13 +940,13 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "textToSpeechStop");
                     this.logicEditor.a(" ", "textToSpeechShutdown");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 19)) {
+                if (extraBlocks.isComponentUsed(19)) {
                     this.logicEditor.a("Speech to text", -11184811);
                     this.logicEditor.a(" ", "speechToTextStartListening");
                     this.logicEditor.a(" ", "speechToTextStopListening");
                     this.logicEditor.a(" ", "speechToTextShutdown");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 20)) {
+                if (extraBlocks.isComponentUsed(20)) {
                     this.logicEditor.a("Bluetooth", -11184811);
                     this.logicEditor.a("b", "bluetoothConnectIsBluetoothEnabled");
                     this.logicEditor.a("b", "bluetoothConnectIsBluetoothActivated");
@@ -930,12 +960,12 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "bluetoothConnectActivateBluetooth");
                     this.logicEditor.a(" ", "bluetoothConnectGetPairedDevices");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 21)) {
+                if (extraBlocks.isComponentUsed(21)) {
                     this.logicEditor.a("Location manager", -11184811);
                     this.logicEditor.a(" ", "locationManagerRequestLocationUpdates");
                     this.logicEditor.a(" ", "locationManagerRemoveUpdates");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 22)) {
+                if (extraBlocks.isComponentUsed(22)) {
                     this.logicEditor.a("Video ad", -11184811);
                     this.logicEditor.a(" ", "videoAdCreate");
                     this.logicEditor.a(" ", "videoAdLoad");
@@ -945,7 +975,7 @@ public class ExtraPaletteBlock extends Activity {
                     this.logicEditor.a(" ", "videoAdPause");
                     this.logicEditor.a(" ", "videoAdDestroy");
                 }
-                if (jC.a(this.logicEditor.B).f(this.logicEditor.M.getJavaName(), 23) || this.eventName.equals("onPreExecute") || this.eventName.equals("onProgressUpdate") || this.eventName.equals("onPostExecute")) {
+                if (extraBlocks.isComponentUsed(23) || extraBlocks.isCustomVarUsed("ProgressDialog")|| this.eventName.equals("onPreExecute") || this.eventName.equals("onProgressUpdate") || this.eventName.equals("onPostExecute")) {
                     this.logicEditor.a("Progress dialog", -11184811);
                     this.logicEditor.a(" ", "progressdialogCreate");
                     this.logicEditor.a(" ", "progressdialogSetTitle");
