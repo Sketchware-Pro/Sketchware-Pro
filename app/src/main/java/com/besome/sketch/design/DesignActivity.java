@@ -105,7 +105,7 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
-import mod.jbk.bundle.BundleToolCompiler;
+import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
 
@@ -1293,7 +1293,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                         BuildSettings.SETTING_OUTPUT_FORMAT_APK)
                                 .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
                         if (buildingAAB) {
-                            BundleToolCompiler compiler = new BundleToolCompiler(mDp, this);
+                            AppBundleCompiler compiler = new AppBundleCompiler(mDp, this);
                             publishProgress("Creating app module...");
                             compiler.createModuleMainArchive();
                             publishProgress("Building app bundle...");
