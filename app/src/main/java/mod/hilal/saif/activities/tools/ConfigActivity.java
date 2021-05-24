@@ -1,5 +1,8 @@
 package mod.hilal.saif.activities.tools;
 
+import static mod.SketchwareUtil.dpToPx;
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,9 +29,6 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-
-import static mod.SketchwareUtil.dpToPx;
-import static mod.SketchwareUtil.getDip;
 
 public class ConfigActivity extends Activity {
 
@@ -175,7 +175,7 @@ public class ConfigActivity extends Activity {
                         final LinearLayout container = new LinearLayout(ConfigActivity.this);
                         container.setPadding(
                                 (int) getDip(20),
-                                (int) getDip(4),
+                                (int) getDip(8),
                                 (int) getDip(20),
                                 0);
 
