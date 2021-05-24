@@ -482,6 +482,7 @@ public class Resources {
         public static final int common_word_all = 0x7f0e040c;
         public static final int common_word_cancel = 0x7f0e040e;
         public static final int common_word_choose = 0x7f0e0410;
+        public static final int common_word_close = 0x7f0e0411;
         public static final int common_word_continue = 0x7f0e0414;
         public static final int common_word_create = 0x7f0e0417;
         public static final int common_word_delete = 0x7f0e041a;
