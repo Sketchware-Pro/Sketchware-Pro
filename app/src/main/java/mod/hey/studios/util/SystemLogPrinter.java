@@ -10,14 +10,12 @@ public class SystemLogPrinter {
     private static final String PATH =
             FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
 
-
     public static void start() {
-
         //reset
         FileUtil.writeFile(PATH, "");
 
         PrintStream ps = new PrintStream(new OutputStream() {
-            String cache;
+            private String cache;
 
             @Override
             public void write(int b) {
@@ -37,12 +35,5 @@ public class SystemLogPrinter {
 
         System.setOut(ps);
         System.setErr(ps);
-
     }
-
 }
-
-
-        
-                
-
