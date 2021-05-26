@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,7 +154,11 @@ public class Dp {
     public void a(iI iIVar, String str) {
         ZipSigner b2 = iIVar.b(new CB().a(str));
         yq yqVar = f;
-        b2.signZip(yqVar.G, yqVar.I);
+        try {
+            b2.signZip(yqVar.G, yqVar.I);
+        } catch (IOException | GeneralSecurityException e) {
+            Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
+        }
     }
 
     /**
@@ -222,7 +227,11 @@ public class Dp {
 
     public void b(String password, String alias) {
         Security.addProvider(new BouncyCastleProvider());
-        CustomKeySigner.signZip(new ZipSigner(), wq.j(), password.toCharArray(), alias, password.toCharArray(), "SHA1WITHRSA", f.G, f.I);
+        try {
+            CustomKeySigner.signZip(new ZipSigner(), wq.j(), password.toCharArray(), alias, password.toCharArray(), "SHA1WITHRSA", f.G, f.I);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
+        }
     }
 
     public boolean isD8Enabled() {
@@ -780,16 +789,21 @@ public class Dp {
      * This method supports APK Signature Scheme V1 (JAR signing) only.
      */
     public boolean k() {
-        ZipSigner zipSigner = new ZipSigner();
-        zipSigner.addAutoKeyObserver(new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-            }
-        });
-        KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-        zipSigner.setKeymode("testkey");
-        zipSigner.signZip(f.G, f.H);
-        return true;
+        try {
+            ZipSigner zipSigner = new ZipSigner();
+            zipSigner.addAutoKeyObserver(new Observer() {
+                @Override
+                public void update(Observable o, Object arg) {
+                }
+            });
+            KeyStoreFileManager.setProvider(new BouncyCastleProvider());
+            zipSigner.setKeymode("testkey");
+            zipSigner.signZip(f.G, f.H);
+            return true;
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
+            Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
+        }
+        return false;
     }
 
     public final void mergeDexes(String target, ArrayList<Dex> dexes) throws Exception {
