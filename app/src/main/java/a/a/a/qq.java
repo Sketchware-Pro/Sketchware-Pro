@@ -916,6 +916,7 @@ public class qq {
                 arrayList.add("interpolator-1.0.0");
                 arrayList.add("swiperefreshlayout-1.0.0");
                 arrayList.add("constraintlayout-1.1.3");
+                arrayList.add("constraintlayout-solver-1.1.3");
                 arrayList.add("asynclayoutinflater-1.0.0");
                 arrayList.add("cursoradapter-1.0.0");
                 break;
