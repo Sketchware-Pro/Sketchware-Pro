@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.FileUtil;
 
 public class CommandBlock {
@@ -20,7 +21,7 @@ public class CommandBlock {
             if (!FileUtil.isExistFile(concat) || FileUtil.readFile(concat).equals("") || FileUtil.readFile(concat).equals("[]")) {
                 return str2;
             }
-            ArrayList arrayList = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            ArrayList arrayList = new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
             int i = 0;
             String str4 = str2;
@@ -192,7 +193,7 @@ public class CommandBlock {
         ArrayList arrayList2 = new ArrayList();
         try {
             if (FileUtil.isExistFile(concat) && !FileUtil.readFile(concat).equals("") && !FileUtil.readFile(concat).equals("[]")) {
-                arrayList2 = (ArrayList) new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                arrayList2 = new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
             }
         } catch (Exception e) {
@@ -375,9 +376,9 @@ public class CommandBlock {
         return str5;
     }
 
-    public static int getIndex(ArrayList arrayList, String str) {
+    public static int getIndex(ArrayList<String> arrayList, String str) {
         for (int i = 0; i < arrayList.size(); i++) {
-            if (((String) arrayList.get(i)).contains(str)) {
+            if (arrayList.get(i).contains(str)) {
                 return i;
             }
         }
@@ -385,60 +386,59 @@ public class CommandBlock {
     }
 
     public static String rCCs(String str, String str2, String str3) {
-        ArrayList arrayList = new ArrayList(Arrays.asList(str.split("\n")));
-        ArrayList arrayList2 = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(str.split("\n")));
+        ArrayList<String> arrayList2 = new ArrayList<>();
         boolean z = true;
         for (int i = 0; i < arrayList.size(); i++) {
-            if (z && !((String) arrayList.get(i)).contains(str2)) {
-                arrayList2.add((String) arrayList.get(i));
+            if (z && !arrayList.get(i).contains(str2)) {
+                arrayList2.add(arrayList.get(i));
             }
-            if (((String) arrayList.get(i)).contains(str2)) {
+            if (arrayList.get(i).contains(str2)) {
                 z = false;
             }
-            if (((String) arrayList.get(i)).contains(str3)) {
+            if (arrayList.get(i).contains(str3)) {
                 z = true;
             }
         }
         String str4 = "";
         for (int i2 = 0; i2 < arrayList2.size(); i2++) {
-            if (str4 == "") {
-                str4 = (String) arrayList2.get(i2);
+            if (str4.equals("")) {
+                str4 = arrayList2.get(i2);
             } else {
-                str4 = str4.concat("\n").concat((String) arrayList2.get(i2));
+                str4 = str4.concat("\n").concat(arrayList2.get(i2));
             }
         }
         return str4;
     }
 
-    public static void aC(ArrayList arrayList, ArrayList<HashMap<String, Object>> arrayList2, Pair<Integer, Integer> pair) {
+    public static void aC(ArrayList<String> arrayList, ArrayList<HashMap<String, Object>> arrayList2, Pair<Integer, Integer> pair) {
         String concat;
         int i = 0;
         String str = "";
-        String str2 = (String) arrayList.get(((Integer) pair.first).intValue() + 1);
-        Object obj = (String) ((ArrayList) new Gson().fromJson(str2.substring(str2.indexOf(">") + 1), new TypeToken<ArrayList<String>>() {
-        }.getType())).get(0);
-        String str3 = (String) arrayList.get(((Integer) pair.first).intValue() + 2);
-        int intValue = Integer.valueOf(str3.substring(str3.indexOf(">") + 1)).intValue();
-        String str4 = (String) arrayList.get(((Integer) pair.first).intValue() + 3);
-        int intValue2 = Integer.valueOf(str4.substring(str4.indexOf(">") + 1)).intValue();
-        String str5 = (String) arrayList.get(((Integer) pair.first).intValue() + 4);
-        int intValue3 = Integer.valueOf(str5.substring(str5.indexOf(">") + 1)).intValue();
-        String str6 = (String) arrayList.get(((Integer) pair.first).intValue() + 5);
+        String str2 = arrayList.get(pair.first + 1);
+        Object obj = ((ArrayList<String>) new Gson().fromJson(str2.substring(str2.indexOf(">") + 1), Helper.TYPE_STRING)).get(0);
+        String str3 = arrayList.get(pair.first + 2);
+        int intValue = Integer.parseInt(str3.substring(str3.indexOf(">") + 1));
+        String str4 = arrayList.get(pair.first + 3);
+        int intValue2 = Integer.parseInt(str4.substring(str4.indexOf(">") + 1));
+        String str5 = arrayList.get(pair.first + 4);
+        int intValue3 = Integer.parseInt(str5.substring(str5.indexOf(">") + 1));
+        String str6 = arrayList.get(pair.first + 5);
         Object substring = str6.substring(str6.indexOf(">") + 1);
-        while (i < (((Integer) pair.second).intValue() - ((Integer) pair.first).intValue()) - 6) {
+        while (i < (pair.second - pair.first) - 6) {
             if (i == 0) {
-                concat = (String) arrayList.get(((Integer) pair.first).intValue() + i + 6);
+                concat = arrayList.get(pair.first + i + 6);
             } else {
-                concat = str.concat("\n").concat((String) arrayList.get(((Integer) pair.first).intValue() + i + 6));
+                concat = str.concat("\n").concat(arrayList.get(pair.first + i + 6));
             }
             i++;
             str = concat;
         }
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("reference", obj);
-        hashMap.put("distance", Integer.valueOf(intValue));
-        hashMap.put("after", Integer.valueOf(intValue2));
-        hashMap.put("before", Integer.valueOf(intValue3));
+        hashMap.put("distance", intValue);
+        hashMap.put("after", intValue2);
+        hashMap.put("before", intValue3);
         hashMap.put("command", substring);
         hashMap.put("input", str);
         arrayList2.add(hashMap);
