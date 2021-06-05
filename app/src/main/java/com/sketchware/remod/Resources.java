@@ -111,6 +111,7 @@ public class Resources {
         public static final int swipe_right_48 = 0x7f0703e5;
         public static final int text_width_96 = 0x7f0703ef;
         public static final int widget_admob = 0x7f07041a;
+        public static final int widget_source = 0x7f07043e;
         public static final int width_96 = 0x7f070447;
         public static final int ic_property_inject = 0x7f07046b;
         public static final int ic_property_convert = 0x7f07046c;
@@ -373,6 +374,27 @@ public class Resources {
         public static final int ig_toolbar_load_file = 0x7f0806cb;
         public static final int line_numbered_textview_lines = 0x7f0806d2;
         public static final int line_numbered_textview_main = 0x7f0806d3;
+        public static final int custom_view_pro_background = 0x7f0806d4;
+        public static final int custom_view_pro_img = 0x7f0806d5;
+        public static final int custom_view_pro_title = 0x7f0806d6;
+        public static final int custom_view_pro_subtitle = 0x7f0806d7;
+        public static final int events_creator_scrollview = 0x7f0806d8;
+        public static final int events_creator_eventname = 0x7f0806d9;
+        public static final int events_creator_varname = 0x7f0806da;
+        public static final int events_creator_listenername = 0x7f0806db;
+        public static final int events_creator_icon = 0x7f0806dc;
+        public static final int events_creator_chooseicon = 0x7f0806dd;
+        public static final int events_creator_desc = 0x7f0806de;
+        public static final int events_creator_params = 0x7f0806df;
+        public static final int events_creator_spec = 0x7f0806e0;
+        public static final int events_creator_code = 0x7f0806e1;
+        public static final int events_creator_checkbox = 0x7f0806e2;
+        public static final int events_creator_hide = 0x7f0806e3;
+        public static final int events_creator_listenernameA = 0x7f0806e4;
+        public static final int events_creator_listenercode = 0x7f0806e5;
+        public static final int events_creator_listenercustomimport = 0x7f0806e6;
+        public static final int events_creator_cancel = 0x7f0806e7;
+        public static final int events_creator_save = 0x7f0806e8;
         public static final int codeeditor_more_options = 0x7f0806f8;
         public static final int project_config_pref_layout = 0x7f0806fc;
         // WTF
@@ -421,7 +443,6 @@ public class Resources {
         public static final int myproject_buttons = 0x7f0b00fd;
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
-        public static final int project_config_layout = 0x7f0b01de;
         public static final int property_color_item = 0x7f0b012c;
         public static final int property_grid_item = 0x7f0b012e;
         public static final int property_group_item = 0x7f0b012f;
@@ -448,6 +469,9 @@ public class Resources {
         public static final int custom_dialog_attribute = 0x7f0b01d5;
         public static final int toolbar_improved = 0x7f0b01d7;
         public static final int line_numbered_textview_layout = 0x7f0b01d9;
+        public static final int custom_view_pro = 0x7f0b01da;
+        public static final int events_creator = 0x7f0b01db;
+        public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int block_customview = 0x7f0b01e5;
         public static final int manage_stringfog = 0x7f0b01ee;

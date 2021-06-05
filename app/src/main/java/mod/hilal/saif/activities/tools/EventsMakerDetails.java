@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +38,9 @@ public class EventsMakerDetails extends Activity {
     private ListView listView;
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(2131427795);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(Resources.layout.add_custom_attribute);
         if (getIntent().hasExtra("lis_name")) {
             lisName = getIntent().getStringExtra("lis_name");
         }
@@ -54,7 +55,7 @@ public class EventsMakerDetails extends Activity {
     }
 
     private void setupViews() {
-        fab = findViewById(2131232439);
+        fab = findViewById(Resources.id.add_attr_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -63,7 +64,7 @@ public class EventsMakerDetails extends Activity {
                 startActivity(intent);
             }
         });
-        listView = findViewById(2131232438);
+        listView = findViewById(Resources.id.add_attr_listview);
         refreshList();
     }
 
@@ -110,18 +111,15 @@ public class EventsMakerDetails extends Activity {
         }
     }
 
-    public void setToolbar() {
+    private void setToolbar() {
+        TextView tx_toolbar_title = findViewById(Resources.id.tx_toolbar_title);
         if (lisName.equals("")) {
-            ((TextView) findViewById(2131232458)).setText("Activity events");
+            tx_toolbar_title.setText("Activity events");
         } else {
-            ((TextView) findViewById(2131232458)).setText(lisName);
+            tx_toolbar_title.setText(lisName);
         }
-        ImageView back_icon = findViewById(2131232457);
-        back_icon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ImageView back_icon = findViewById(Resources.id.ig_toolbar_back);
+        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
     }
 
@@ -151,15 +149,15 @@ public class EventsMakerDetails extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427802, null);
+                convertView = getLayoutInflater().inflate(Resources.layout.custom_view_pro, null);
             }
-            LinearLayout linearLayout = convertView.findViewById(2131232468);
+            LinearLayout linearLayout = convertView.findViewById(Resources.id.custom_view_pro_background);
             a(linearLayout, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView imageView = convertView.findViewById(2131232469);
-            TextView textView = convertView.findViewById(2131232470);
-            TextView textView2 = convertView.findViewById(2131232471);
+            ImageView imageView = convertView.findViewById(Resources.id.custom_view_pro_img);
+            TextView textView = convertView.findViewById(Resources.id.custom_view_pro_title);
+            TextView textView2 = convertView.findViewById(Resources.id.custom_view_pro_subtitle);
             if (lisName.equals("")) {
-                imageView.setImageResource(2131166270);
+                imageView.setImageResource(Resources.drawable.widget_source);
             } else {
                 imageView.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
             }
@@ -171,6 +169,7 @@ public class EventsMakerDetails extends Activity {
                 textView2.setText((String) _data.get(position).get("var"));
             }
             linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
                     intent.setClass(getApplicationContext(), EventsMakerCreator.class);
@@ -189,6 +188,7 @@ public class EventsMakerDetails extends Activity {
                 }
             });
             linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
                 public boolean onLongClick(View v) {
                     dia = new AlertDialog.Builder(EventsMakerDetails.this)
                             .setTitle((String) _data.get(position).get("name"))
