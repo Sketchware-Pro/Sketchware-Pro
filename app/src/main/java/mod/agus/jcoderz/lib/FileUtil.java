@@ -72,7 +72,7 @@ public class FileUtil {
             fr = new FileReader(path);
 
             char[] buff = new char[1024];
-            int length = 0;
+            int length;
 
             while ((length = fr.read(buff)) > 0) {
                 sb.append(new String(buff, 0, length));
@@ -124,7 +124,7 @@ public class FileUtil {
             fos = new FileOutputStream(destPath, false);
 
             byte[] buff = new byte[1024];
-            int length = 0;
+            int length;
 
             while ((length = fis.read(buff)) > 0) {
                 fos.write(buff, 0, length);
@@ -407,11 +407,11 @@ public class FileUtil {
         int width = decodeFile.getWidth();
         int height = decodeFile.getHeight();
         if (width > height) {
-            int i3 = (int) ((((float) i) / ((float) width)) * ((float) height));
+            int i3 = i / width * height;
             i2 = i;
             i = i3;
         } else {
-            i2 = (int) (((float) width) * (((float) i) / ((float) height)));
+            i2 = width * i / height;
         }
         return Bitmap.createScaledBitmap(decodeFile, i2, i, true);
     }
@@ -455,39 +455,39 @@ public class FileUtil {
     }
 
     public static void resizeBitmapFileToCircle(String fromPath, String destPath) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(createBitmap);
-            Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(-12434878);
-            canvas.drawCircle((float) (decodeFile.getWidth() / 2), (float) (decodeFile.getHeight() / 2), (float) (decodeFile.getWidth() / 2), paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(decodeFile, rect, rect, paint);
-            saveBitmap(createBitmap, destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(createBitmap);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(-12434878);
+        canvas.drawCircle((float) (decodeFile.getWidth() / 2), (float) (decodeFile.getHeight() / 2), (float) (decodeFile.getWidth() / 2), paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(decodeFile, rect, rect, paint);
+        saveBitmap(createBitmap, destPath);
     }
 
     public static void resizeBitmapFileWithRoundedBorder(String fromPath, String destPath, int pixels) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(createBitmap);
-            Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
-            RectF rectF = new RectF(rect);
-            float f = (float) pixels;
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(-12434878);
-            canvas.drawRoundRect(rectF, f, f, paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(decodeFile, rect, rect, paint);
-            saveBitmap(createBitmap, destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(createBitmap);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
+        RectF rectF = new RectF(rect);
+        float f = (float) pixels;
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(-12434878);
+        canvas.drawRoundRect(rectF, f, f, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(decodeFile, rect, rect, paint);
+        saveBitmap(createBitmap, destPath);
     }
 
     public static void cropBitmapFileFromCenter(String fromPath, String destPath, int w, int h) {
@@ -523,82 +523,82 @@ public class FileUtil {
     }
 
     public static void rotateBitmapFile(String fromPath, String destPath, float angle) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(angle);
-            saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
     }
 
     public static void scaleBitmapFile(String fromPath, String destPath, float x, float y) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Matrix matrix = new Matrix();
-            matrix.postScale(x, y);
-            saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Matrix matrix = new Matrix();
+        matrix.postScale(x, y);
+        saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
     }
 
     public static void skewBitmapFile(String fromPath, String destPath, float x, float y) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Matrix matrix = new Matrix();
-            matrix.postSkew(x, y);
-            saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Matrix matrix = new Matrix();
+        matrix.postSkew(x, y);
+        saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
     }
 
     public static void setBitmapFileColorFilter(String fromPath, String destPath, int color) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Bitmap createBitmap = Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth() - 1, decodeFile.getHeight() - 1);
-            Paint paint = new Paint();
-            paint.setColorFilter(new LightingColorFilter(color, 1));
-            new Canvas(createBitmap).drawBitmap(createBitmap, 0.0f, 0.0f, paint);
-            saveBitmap(createBitmap, destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth() - 1, decodeFile.getHeight() - 1);
+        Paint paint = new Paint();
+        paint.setColorFilter(new LightingColorFilter(color, 1));
+        new Canvas(createBitmap).drawBitmap(createBitmap, 0.0f, 0.0f, paint);
+        saveBitmap(createBitmap, destPath);
     }
 
     public static void setBitmapFileBrightness(String fromPath, String destPath, float brightness) {
-        if (isExistFile(fromPath)) {
-            Bitmap src = BitmapFactory.decodeFile(fromPath);
-            ColorMatrix cm = new ColorMatrix(new float[]
-                    {
-                            1, 0, 0, 0, brightness,
-                            0, 1, 0, 0, brightness,
-                            0, 0, 1, 0, brightness,
-                            0, 0, 0, 1, 0
-                    });
+        if (!isExistFile(fromPath)) return;
 
-            Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            paint.setColorFilter(new ColorMatrixColorFilter(cm));
-            canvas.drawBitmap(src, 0, 0, paint);
-            saveBitmap(bitmap, destPath);
-        }
+        Bitmap src = BitmapFactory.decodeFile(fromPath);
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        1, 0, 0, 0, brightness,
+                        0, 1, 0, 0, brightness,
+                        0, 0, 1, 0, brightness,
+                        0, 0, 0, 1, 0
+                });
+
+        Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(src, 0, 0, paint);
+        saveBitmap(bitmap, destPath);
     }
 
     public static void setBitmapFileContrast(String fromPath, String destPath, float contrast) {
-        if (isExistFile(fromPath)) {
-            Bitmap src = BitmapFactory.decodeFile(fromPath);
-            ColorMatrix cm = new ColorMatrix(new float[]
-                    {
-                            contrast, 0, 0, 0, 0,
-                            0, contrast, 0, 0, 0,
-                            0, 0, contrast, 0, 0,
-                            0, 0, 0, 1, 0
-                    });
+        if (!isExistFile(fromPath)) return;
 
-            Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            paint.setColorFilter(new ColorMatrixColorFilter(cm));
-            canvas.drawBitmap(src, 0, 0, paint);
+        Bitmap src = BitmapFactory.decodeFile(fromPath);
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        contrast, 0, 0, 0, 0,
+                        0, contrast, 0, 0, 0,
+                        0, 0, contrast, 0, 0,
+                        0, 0, 0, 1, 0
+                });
 
-            saveBitmap(bitmap, destPath);
-        }
+        Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(src, 0, 0, paint);
+
+        saveBitmap(bitmap, destPath);
     }
 
     public static int getJpegRotate(String filePath) {
