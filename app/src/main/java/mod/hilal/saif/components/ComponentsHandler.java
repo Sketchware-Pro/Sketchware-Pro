@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import mod.hilal.saif.lib.FileUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 
 public class ComponentsHandler {
     public static int id(String str) {

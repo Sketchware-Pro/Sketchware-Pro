@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.android_manifest;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -31,13 +33,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.android_manifest.AppComponentsDialog;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
-import mod.hilal.saif.lib.FileUtil;
-
-import static mod.SketchwareUtil.getDip;
 
 public class AndroidManifestInjection extends Activity {
 
