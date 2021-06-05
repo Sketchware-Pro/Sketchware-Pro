@@ -7,16 +7,17 @@ import mod.agus.jcoderz.lib.FileUtil;
 public class ServiceBean {
     public FilePathUtil fpu = new FilePathUtil();
     public String numProj;
-    public FileResConfig frc = new FileResConfig(this.numProj);
+    public FileResConfig frc = new FileResConfig(numProj);
 
     public ServiceBean(String str) {
-        this.numProj = str;
+        numProj = str;
     }
 
     public String[] getServiceValue() {
-        if (FileUtil.isExistFile(this.fpu.getManifestService(this.numProj))) {
-            return (String[]) this.frc.getServiceManifestList().toArray(new String[this.frc.getServiceManifestList().size()]);
+        if (FileUtil.isExistFile(fpu.getManifestService(numProj))) {
+            return frc.getServiceManifestList().toArray(new String[0]);
         }
+
         return new String[0];
     }
 

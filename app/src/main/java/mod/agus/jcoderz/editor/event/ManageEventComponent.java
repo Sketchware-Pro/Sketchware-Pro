@@ -97,8 +97,6 @@ public class ManageEventComponent {
                 }
                 break;
             case 1472283236:
-                if (!str.equals("DatePickerDialog")) {
-                }
                 break;
             case 1908493505:
                 if (str.equals("com.facebook.ads.AdView")) {

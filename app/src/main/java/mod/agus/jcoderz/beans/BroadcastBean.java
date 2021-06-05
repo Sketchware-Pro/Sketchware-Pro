@@ -7,16 +7,17 @@ import mod.agus.jcoderz.lib.FileUtil;
 public class BroadcastBean {
     public FilePathUtil fpu = new FilePathUtil();
     public String numProj;
-    public FileResConfig frc = new FileResConfig(this.numProj);
+    public FileResConfig frc = new FileResConfig(numProj);
 
     public BroadcastBean(String str) {
-        this.numProj = str;
+        numProj = str;
     }
 
     public String[] getBroadcastValue() {
-        if (FileUtil.isExistFile(this.fpu.getManifestBroadcast(this.numProj))) {
-            return (String[]) this.frc.getBroadcastManifestList().toArray(new String[this.frc.getBroadcastManifestList().size()]);
+        if (FileUtil.isExistFile(fpu.getManifestBroadcast(numProj))) {
+            return frc.getBroadcastManifestList().toArray(new String[0]);
         }
+
         return new String[0];
     }
 
