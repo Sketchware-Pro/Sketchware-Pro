@@ -224,17 +224,28 @@ public class ExtraPaletteBlock extends Activity {
                 case 0:
                 case 1:
                 case 2:
-                  this.logicEditor.a(isp.second, getType(isp.first), "getVar").setTag(isp.second);
+                    logicEditor.a(isp.second, getType(isp.first), "getVar").setTag(isp.second);
+                    break;
+
                 case 3:
-                  this.logicEditor.a(isp.second, getType(isp.first), kq.b(((Integer) isp.first).intValue()), "getVar").setTag(isp.second);
+                    logicEditor.a(isp.second, getType(isp.first), kq.b(isp.first), "getVar").setTag(isp.second);
+                    break;
+
                 case 5:
-                  String typeName = isp.second.split(" ")[0];
-                  String name = isp.second.split(" ")[1];
-                  this.logicEditor.a(name, getType(isp.first), typeName, "getVar").setTag(isp.second);
-                  
+                    String[] split = isp.second.split(" ");
+                    if (split.length > 1) {
+                        logicEditor.a(split[1], getType(isp.first), split[0], "getVar").setTag(isp.second);
+                    } else {
+                        SketchwareUtil.toastError("Received invalid data, content: {" + isp.first + ":\"" + isp.second + "\"}");
+                    }
+                    break;
             }
         }
-        BlocksHandler.primaryBlocksA(this.logicEditor, extraBlocks.isVariableUsed(0), extraBlocks.isVariableUsed(1), extraBlocks.isVariableUsed(2), extraBlocks.isVariableUsed(3));
+        BlocksHandler.primaryBlocksA(logicEditor,
+                extraBlocks.isVariableUsed(0),
+                extraBlocks.isVariableUsed(1),
+                extraBlocks.isVariableUsed(2),
+                extraBlocks.isVariableUsed(3));
         blockCustomViews();
         blockDrawer();
         blockEvents();
