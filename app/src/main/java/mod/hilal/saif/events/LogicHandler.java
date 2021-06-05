@@ -6,121 +6,133 @@ import java.util.Arrays;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class LogicHandler {
-    public static String base(String str) {
+
+    public static String base(String codes) {
         try {
-            new ArrayList();
-            ArrayList arrayList = new ArrayList();
-            ArrayList arrayList2 = new ArrayList(Arrays.asList(str.split("\n")));
-            int i = 0;
-            boolean z = true;
-            while (i < arrayList2.size()) {
-                if (z && !((String) arrayList2.get(i)).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) {
-                    arrayList.add((String) arrayList2.get(i));
+            int n = 1;
+            String newStr = "";
+            ArrayList<String> arr;
+            ArrayList<String> arr2 = new ArrayList<>();
+            arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
+            for (int i = 0; i < (int) (arr.size()); i++) {
+                if (n == 1) {
+                    if (!arr.get(i).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) { //it doesn't contain the starting code.
+                        arr2.add(arr.get(i));
+                    }
                 }
-                if (((String) arrayList2.get(i)).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) {
-                    z = false;
+                if (arr.get(i).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) { // if it contains the starting code, then stop injection.
+                    n = 0;
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ") || z;
-                i++;
-                z = z2;
+                if (arr.get(i).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ")) { // if it contains the ending code, keep going.
+                    n = 1;
+                }
             }
-            String str2 = "";
-            for (int i2 = 0; i2 < arrayList.size(); i2++) {
-                if (str2 == "") {
-                    str2 = (String) arrayList.get(i2);
+            //assemble
+            for (int i = 0; i < (int) (arr2.size()); i++) {
+                if (newStr.equals("")) {
+                    newStr = arr2.get(i);
                 } else {
-                    str2 = str2.concat("\n").concat((String) arrayList.get(i2));
+                    newStr = newStr.concat("\n").concat(arr2.get(i));
                 }
             }
-            return str2;
+            return newStr;
         } catch (Exception e) {
-            return str;
+            return codes;
         }
     }
 
-    public static String imports(String str) {
+    public static String imports(String codes) {
         try {
-            new ArrayList();
-            ArrayList arrayList = new ArrayList();
-            ArrayList arrayList2 = new ArrayList(Arrays.asList(str.split("\n")));
-            int i = 0;
-            boolean z = false;
-            while (i < arrayList2.size() && !((String) arrayList2.get(i)).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ")) {
-                if (z) {
-                    arrayList.add((String) arrayList2.get(i));
+            int n = 0;
+            String newStr = "";
+            ArrayList<String> arr;
+            ArrayList<String> arr2 = new ArrayList<>();
+            arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
+            for (int i = 0; i < (int) (arr.size()); i++) {
+                if (arr.get(i).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ")) {//end
+                    break;
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF") || z;
-                i++;
-                z = z2;
+                if (n == 1) {
+                    arr2.add(arr.get(i));
+                }
+                if (arr.get(i).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) {//start
+                    n = 1;
+                }
             }
-            String str2 = "";
-            for (int i2 = 0; i2 < arrayList.size(); i2++) {
-                if (str2 == "") {
-                    str2 = (String) arrayList.get(i2);
+            //assemble
+            for (int i = 0; i < (int) (arr2.size()); i++) {
+                if (newStr.equals("")) {
+                    newStr = arr2.get(i);
                 } else {
-                    str2 = str2.concat("\n").concat((String) arrayList.get(i2));
+                    newStr = newStr.concat("\n").concat(arr2.get(i));
                 }
             }
-            return str2;
+            return newStr;
         } catch (Exception e) {
-            return str;
+            return codes;
         }
     }
 
-    public static void android(String str, String str2) {
+    public static void android(String codes, String javaName) {
         try {
-            new ArrayList();
-            ArrayList arrayList = new ArrayList();
-            ArrayList arrayList2 = new ArrayList(Arrays.asList(str.split("\n")));
-            int i = 0;
-            boolean z = false;
-            while (i < arrayList2.size() && !((String) arrayList2.get(i)).contains("//F45d45FDs4f56iq")) {
-                if (z) {
-                    arrayList.add((String) arrayList2.get(i));
+            int n = 0;
+            String newStr = "";
+            ArrayList<String> arr;
+            ArrayList<String> arr2 = new ArrayList<>();
+            arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
+            for (int i = 0; i < (int) (arr.size()); i++) {
+                if (arr.get(i).contains("//F45d45FDs4f56iq")) {
+                    break;
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//AndroidManifest_Start") || z;
-                i++;
-                z = z2;
+                if (n == 1) {
+                    arr2.add(arr.get(i));
+                }
+                if (arr.get(i).contains("//AndroidManifest_Start")) {
+                    n = 1;
+                }
             }
-            String str3 = "";
-            for (int i2 = 0; i2 < arrayList.size(); i2++) {
-                if (str3 == "") {
-                    str3 = (String) arrayList.get(i2);
+            //assemble
+            for (int i = 0; i < (int) (arr2.size()); i++) {
+                if (newStr.equals("")) {
+                    newStr = arr2.get(i);
                 } else {
-                    str3 = str3.concat("\n").concat((String) arrayList.get(i2));
+                    newStr = newStr.concat("\n").concat(arr2.get(i));
                 }
             }
-            FileUtil.writeFile(str3, FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/temp/").concat(str2));
-        } catch (Exception e) {
+            FileUtil.writeFile(newStr, FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/temp/").concat(javaName));
+        } catch (Exception ignored) {
         }
     }
 
-    public static String deVar(String str) {
+    public static String deVar(String codes) {
         try {
-            new ArrayList();
-            ArrayList arrayList = new ArrayList();
-            ArrayList arrayList2 = new ArrayList(Arrays.asList(str.split("\n")));
-            int i = 0;
-            boolean z = false;
-            while (i < arrayList2.size() && !((String) arrayList2.get(i)).contains("//F45d45FDs4f56ic")) {
-                if (z) {
-                    arrayList.add((String) arrayList2.get(i));
+            int n = 0;
+            String newStr = "";
+            ArrayList<String> arr;
+            ArrayList<String> arr2 = new ArrayList<>();
+            arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
+            for (int i = 0; i < (int) (arr.size()); i++) {
+                if (arr.get(i).contains("//F45d45FDs4f56ic")) {
+                    break;
                 }
-                boolean z2 = ((String) arrayList2.get(i)).contains("//Define Variables_Start") || z;
-                i++;
-                z = z2;
+                if (n == 1) {
+                    arr2.add(arr.get(i));
+                }
+                if (arr.get(i).contains("//Define Variables_Start")) {
+                    n = 1;
+                }
             }
-            String str2 = "";
-            for (int i2 = 0; i2 < arrayList.size(); i2++) {
-                if (str2 == "") {
-                    str2 = (String) arrayList.get(i2);
+            //assemble
+            for (int i = 0; i < (int) (arr2.size()); i++) {
+                if (newStr.equals("")) {
+                    newStr = arr2.get(i);
                 } else {
-                    str2 = str2.concat("\n").concat((String) arrayList.get(i2));
+                    newStr = newStr.concat("\n").concat(arr2.get(i));
                 }
             }
-            return str2;
+            return newStr;
         } catch (Exception e) {
-            return str;
+            return codes;
         }
     }
 
