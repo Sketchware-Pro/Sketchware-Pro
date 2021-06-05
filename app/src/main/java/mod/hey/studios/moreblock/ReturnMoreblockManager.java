@@ -8,8 +8,9 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import java.util.Iterator;
 
 public class ReturnMoreblockManager {
+
     public static String getLogicEditorTitle(String str) {
-        return str.replaceAll("\\[.*\\]", new StringBuffer().append(new StringBuffer().append(" (returns ").append(getMbTypeList(str)).toString()).append(")").toString());
+        return str.replaceAll("\\[.*]", " (returns " + getMbTypeList(str) + ")");
     }
 
     public static String getMbEnd(String str) {
@@ -27,7 +28,7 @@ public class ReturnMoreblockManager {
         if (str.contains("[")) {
             str2 = str;
             if (str.contains("]")) {
-                str2 = str.replaceAll("\\[.*\\]", "");
+                str2 = str.replaceAll("\\[.*]", "");
             }
         }
         return str2;
@@ -86,20 +87,36 @@ public class ReturnMoreblockManager {
     }
 
     public static String getMbTypeFromRadioButton(RadioGroup radioGroup) {
-        String str;
+        String type;
         switch (radioGroup.getCheckedRadioButtonId()) {
-            case 2131232433:
-                str = " ";
-                break;
             case 2131232434:
-                str = "s";
+                type = "s";
                 break;
+
             case 2131232435:
-                str = "d";
+                type = "d";
                 break;
+
             case 2131232436:
-                str = "b";
+                type = "b";
                 break;
+
+            case 2131232448:
+                type = "a|Map";
+                break;
+
+            case 2131232449:
+                type = "l|List String";
+                break;
+
+            case 2131232450:
+                type = "l|List Map";
+                break;
+
+            case 2131232451:
+                type = "v|View";
+                break;
+
             case 2131232437:
             case 2131232438:
             case 2131232439:
@@ -112,27 +129,15 @@ public class ReturnMoreblockManager {
             case 2131232446:
             case 2131232447:
             default:
-                str = " ";
-                break;
-            case 2131232448:
-                str = "a|Map";
-                break;
-            case 2131232449:
-                str = "l|List String";
-                break;
-            case 2131232450:
-                str = "l|List Map";
-                break;
-            case 2131232451:
-                str = "v|View";
+                type = " ";
                 break;
         }
-        return str;
+        return type;
     }
 
-    public static void listMoreblocks(Iterator it, LogicEditorActivity logicEditorActivity) {
+    public static void listMoreblocks(Iterator<Pair<String, String>> it, LogicEditorActivity logicEditorActivity) {
         while (it.hasNext()) {
-            String str = (String) ((Pair) it.next()).second;
+            String str = it.next().second;
             String moreblockChar = getMoreblockChar(str);
             if (moreblockChar.contains("|")) {
                 String[] split = moreblockChar.split("\\|");
@@ -181,9 +186,9 @@ public class ReturnMoreblockManager {
     public static String injectToMbName(String str, String str2, String str3) {
         String replaceFirst;
         if (str.equals(str2)) {
-            replaceFirst = new StringBuffer().append(new StringBuffer().append(new StringBuffer().append(str).append("[").toString()).append(str3).toString()).append("]").toString();
+            replaceFirst = str + "[" + str3 + "]";
         } else {
-            replaceFirst = str.replaceFirst(str2, new StringBuffer().append(new StringBuffer().append(new StringBuffer().append(str2).append("[").toString()).append(str3).toString()).append("]").toString());
+            replaceFirst = str.replaceFirst(str2, str2 + "[" + str3 + "]");
         }
         return replaceFirst;
     }
