@@ -122,10 +122,8 @@ public class BackupFactory {
 
     public static boolean unzip(File zipFile, File destinationDir) {
         int DEFAULT_BUFFER = 2048;
-        ZipFile zip = null;
-        try {
+        try (ZipFile zip = new ZipFile(zipFile)) {
             destinationDir.mkdirs();
-            zip = new ZipFile(zipFile);
             Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
             while (zipFileEntries.hasMoreElements()) {
                 ZipEntry entry = zipFileEntries.nextElement();
@@ -136,49 +134,33 @@ public class BackupFactory {
                     destinationParent.mkdirs();
                 }
                 if (!entry.isDirectory()) {
-                    BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-                    int currentByte;
-                    byte[] data = new byte[DEFAULT_BUFFER];
-                    FileOutputStream fos = new FileOutputStream(destFile);
-                    BufferedOutputStream dest = new BufferedOutputStream(fos, DEFAULT_BUFFER);
-                    while ((currentByte = is.read(data, 0, DEFAULT_BUFFER)) != -1/*EOF*/) {
-                        dest.write(data, 0, currentByte);
+                    try (BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry))) {
+                        int currentByte;
+                        byte[] data = new byte[DEFAULT_BUFFER];
+                        try (FileOutputStream fos = new FileOutputStream(destFile)) {
+                            try (BufferedOutputStream dest = new BufferedOutputStream(fos, DEFAULT_BUFFER)) {
+                                while ((currentByte = is.read(data, 0, DEFAULT_BUFFER)) != -1 /*EOF*/) {
+                                    dest.write(data, 0, currentByte);
+                                }
+                                dest.flush();
+                            }
+                        }
                     }
-                    dest.flush();
-                    dest.close();
-                    is.close();
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
-        } finally {
-            if (zip != null) {
-                try {
-                    zip.close();
-                } catch (IOException ignored) {
-                }
-            }
         }
         return true;
     }
 
     public static void zipFolder(File srcFolder, File destZipFile) throws Exception {
-        /*try (FileOutputStream fileWriter = new FileOutputStream(destZipFile);
-        ZipOutputStream zip = new ZipOutputStream(fileWriter)) {
-
-            addFolderToZip(srcFolder, srcFolder, zip);
-        }*/
-
-        ZipOutputStream zip = null;
-        FileOutputStream fileWriter = null;
-
-        fileWriter = new FileOutputStream(destZipFile);
-        zip = new ZipOutputStream(fileWriter);
-
-        addFolderToZip(srcFolder, srcFolder, zip);
-
-        zip.flush();
-        zip.close();
+        try (FileOutputStream fileWriter = new FileOutputStream(destZipFile)) {
+            try (ZipOutputStream zip = new ZipOutputStream(fileWriter)) {
+                addFolderToZip(srcFolder, srcFolder, zip);
+                zip.flush();
+            }
+        }
     }
 
     private static void addFileToZip(File rootPath, File srcFile, ZipOutputStream zip) throws Exception {
