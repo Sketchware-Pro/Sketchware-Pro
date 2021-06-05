@@ -8,12 +8,8 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
-import dev.aldi.sayuti.block.ExtraBlockFile;
-import dev.aldi.sayuti.block.ExtraMenuBlock;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import a.a.a.Ss;
 import a.a.a.jC;
@@ -23,6 +19,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.blocks.BlocksHandler;
 import mod.w3wide.blocks.ExtraBlocks;
 import mod.w3wide.control.logic.LogicClickListener;
@@ -30,58 +27,60 @@ import mod.w3wide.menu.ExtraMenuBean;
 
 public class ExtraPaletteBlock extends Activity {
 
-    private String eventName;
-    private String javaName;
-    private String xmlName;
-    private String sc_id;
-    
-    private FileResConfig frc;
-    private boolean isCustomView;
+    private final String eventName;
+    private final String javaName;
+    private final String xmlName;
+    private final String sc_id;
+
+    private final LogicClickListener clickListener;
+    private final ExtraBlocks extraBlocks;
+    private final FileResConfig frc;
+    private final HashMap<String, Object> mapSave = new HashMap<>();
+    private final ProjectFileBean projectFile;
     public LogicEditorActivity logicEditor;
-    private HashMap<String, Object> mapSave = new HashMap<>();
-    private ExtraMenuBlock menuBlock;
-    private ExtraMenuBean emBean;
-    private ProjectFileBean projectFile;
-    private ExtraBlocks extraBlocks;
-    private static LogicClickListener clickListener;
 
     public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity) {
-        this.logicEditor = logicEditorActivity;
-        this.eventName = logicEditorActivity.D;
-        this.isCustomView = this.logicEditor.D.equals("onBindCustomView");
+        logicEditor = logicEditorActivity;
+        eventName = logicEditorActivity.D;
 
-        projectFile = this.logicEditor.M;
-        javaName = this.projectFile.getJavaName();
-        xmlName = this.projectFile.getXmlName();
-        sc_id = this.logicEditor.B;
+        projectFile = logicEditor.M;
+        javaName = projectFile.getJavaName();
+        xmlName = projectFile.getXmlName();
+        sc_id = logicEditor.B;
 
-        menuBlock = new ExtraMenuBlock(logicEditor);
         frc = new FileResConfig(sc_id);
-        emBean = new ExtraMenuBean(logicEditor, sc_id);
         extraBlocks = new ExtraBlocks(logicEditor);
         clickListener = new LogicClickListener(logicEditor);
     }
 
     private boolean isWidgetUsed(String str) {
-        if (this.mapSave.containsKey(str)) {
-            return ((Boolean) this.mapSave.get(str)).booleanValue();
+        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS)) {
+            return true;
         }
-        if (this.eventName.equals("onBindCustomView")) {
-            String str2 = jC.a(sc_id).c(xmlName, this.logicEditor.C).customView;
+
+        if (mapSave.containsKey(str)) {
+            Object strValueInMapSave = mapSave.get(str);
+            if (strValueInMapSave instanceof Boolean) {
+                return (boolean) strValueInMapSave;
+            } else {
+                return false;
+            }
+        }
+        if (eventName.equals("onBindCustomView")) {
+            String str2 = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
             if (str2 != null && str2.length() > 0) {
-                Iterator<ViewBean> it = jC.a(sc_id).d(ProjectFileBean.getXmlName(str2)).iterator();
-                while (it.hasNext()) {
-                    if (it.next().getClassInfo().a(str)) {
-                        this.mapSave.put(str, true);
+                for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(str2))) {
+                    if (viewBean.getClassInfo().a(str)) {
+                        mapSave.put(str, true);
                         return true;
                     }
                 }
             }
         } else if (jC.a(sc_id).y(xmlName, str)) {
-            this.mapSave.put(str, true);
+            mapSave.put(str, true);
             return true;
         }
-        this.mapSave.put(str, false);
+        mapSave.put(str, false);
         return false;
     }
 
@@ -89,136 +88,91 @@ public class ExtraPaletteBlock extends Activity {
         String menuName = ss.getMenuName();
         if (ss.b.equals("m")) {
             if (menuName.matches("cardview|collapsingtoolbar|textinputlayout|swiperefreshlayout|radiogroup|lottie|otpview|youtubeview|codeview|recyclerview|datepicker|timepicker")) {
-                this.logicEditor.f(ss);
+                logicEditor.f(ss);
             } else if (menuName.matches("Assets|NativeLib")) {
-                emBean.pathSelectorMenu(ss);
+                ExtraMenuBean.pathSelectorMenu(ss);
             } else {
-                this.logicEditor.g(ss);
+                logicEditor.g(ss);
             }
         }
     }
 
     public boolean e(String str, String str2) {
-        switch (str.hashCode()) {
-            case -1861588048:
-                if (str.equals("circleimageview")) {
-                    return jC.a(sc_id).g(xmlName, 43, str2);
-                }
-                break;
-            case -1787283314:
-                if (str.equals("onesignal")) {
-                    return jC.a(sc_id).d(javaName, 32, str2);
-                }
-                break;
-            case -1706714623:
-                if (str.equals("asynctask")) {
-                    return jC.a(sc_id).d(javaName, 36, str2);
-                }
-                break;
-            case -1138271152:
-                if (str.equals("otpview")) {
-                    return jC.a(sc_id).g(xmlName, 46, str2);
-                }
-                break;
-            case -1096937569:
-                if (str.equals("lottie")) {
-                    return jC.a(sc_id).g(xmlName, 44, str2);
-                }
-                break;
-            case -1028606954:
-                if (str.equals("phoneauth")) {
-                    return jC.a(sc_id).d(javaName, 28, str2);
-                }
-                break;
-            case -897829429:
-                if (str.equals("fbadbanner")) {
-                    return jC.a(sc_id).d(javaName, 33, str2);
-                }
-                break;
-            case -866964974:
-                if (str.equals("codeview")) {
-                    return jC.a(sc_id).g(xmlName, 47, str2);
-                }
-                break;
-            case -400432284:
-                if (str.equals("recyclerview")) {
-                    return jC.a(sc_id).g(xmlName, 48, str2);
-                }
-                break;
-            case -322859824:
-                if (str.equals("googlelogin")) {
-                    return jC.a(sc_id).d(javaName, 31, str2);
-                }
-                break;
-            case -257959751:
-                if (str.equals("dynamiclink")) {
-                    return jC.a(sc_id).d(javaName, 29, str2);
-                }
-                break;
-            case -75883448:
-                if (str.equals("youtubeview")) {
-                    return jC.a(sc_id).g(xmlName, 45, str2);
-                }
-                break;
-            case -7230027:
-                if (str.equals("cardview")) {
-                    return jC.a(sc_id).g(xmlName, 36, str2);
-                }
-                break;
-            case 5318500:
-                if (str.equals("radiogroup")) {
-                    return jC.a(sc_id).g(xmlName, 40, str2);
-                }
-                break;
-            case 710961803:
-                if (str.equals("fbadinterstitial")) {
-                    return jC.a(sc_id).d(javaName, 34, str2);
-                }
-                break;
-            case 893026343:
-                if (str.equals("textinputlayout")) {
-                    return jC.a(sc_id).g(xmlName, 38, str2);
-                }
-                break;
-            case 1096269585:
-                if (str.equals("collapsingtoolbar")) {
-                    return jC.a(sc_id).g(xmlName, 37, str2);
-                }
-                break;
-            case 1177398322:
-                if (str.equals("cloudmessage")) {
-                    return jC.a(sc_id).d(javaName, 30, str2);
-                }
-                break;
-            case 1351679420:
-                if (str.equals("datepicker")) {
-                    return jC.a(sc_id).g(xmlName, 27, str2);
-                }
-                break;
-            case 1611547126:
-                if (str.equals("customVar")) {
-                    return jC.a(sc_id).f(xmlName, 5, str2);
-                }
-                break;
-            case 1612926363:
-                if (str.equals("timepicker")) {
-                    return jC.a(sc_id).g(xmlName, 28, str2);
-                }
-                break;
-            case 2107542731:
-                if (str.equals("swiperefreshlayout")) {
-                    return jC.a(sc_id).g(xmlName, 39, str2);
-                }
-                break;
+        switch (str) {
+            case "circleimageview":
+                return jC.a(sc_id).g(xmlName, 43, str2);
+
+            case "onesignal":
+                return jC.a(sc_id).d(javaName, 32, str2);
+
+            case "asynctask":
+                return jC.a(sc_id).d(javaName, 36, str2);
+
+            case "otpview":
+                return jC.a(sc_id).g(xmlName, 46, str2);
+
+            case "lottie":
+                return jC.a(sc_id).g(xmlName, 44, str2);
+
+            case "phoneauth":
+                return jC.a(sc_id).d(javaName, 28, str2);
+
+            case "fbadbanner":
+                return jC.a(sc_id).d(javaName, 33, str2);
+
+            case "codeview":
+                return jC.a(sc_id).g(xmlName, 47, str2);
+
+            case "recyclerview":
+                return jC.a(sc_id).g(xmlName, 48, str2);
+
+            case "googlelogin":
+                return jC.a(sc_id).d(javaName, 31, str2);
+
+            case "dynamiclink":
+                return jC.a(sc_id).d(javaName, 29, str2);
+
+            case "youtubeview":
+                return jC.a(sc_id).g(xmlName, 45, str2);
+
+            case "cardview":
+                return jC.a(sc_id).g(xmlName, 36, str2);
+
+            case "radiogroup":
+                return jC.a(sc_id).g(xmlName, 40, str2);
+
+            case "fbadinterstitial":
+                return jC.a(sc_id).d(javaName, 34, str2);
+
+            case "textinputlayout":
+                return jC.a(sc_id).g(xmlName, 38, str2);
+
+            case "collapsingtoolbar":
+                return jC.a(sc_id).g(xmlName, 37, str2);
+
+            case "cloudmessage":
+                return jC.a(sc_id).d(javaName, 30, str2);
+
+            case "datepicker":
+                return jC.a(sc_id).g(xmlName, 27, str2);
+
+            case "customVar":
+                return jC.a(sc_id).f(xmlName, 5, str2);
+
+            case "timepicker":
+                return jC.a(sc_id).g(xmlName, 28, str2);
+
+            case "swiperefreshlayout":
+                return jC.a(sc_id).g(xmlName, 39, str2);
         }
         return true;
     }
 
     public final void moreBlocks() {
-        ReturnMoreblockManager.listMoreblocks(jC.a(sc_id).i(javaName).iterator(), this.logicEditor);
+        ReturnMoreblockManager.listMoreblocks(jC.a(sc_id).i(javaName).iterator(), logicEditor);
     }
 
-    public final void var() {
+    private void variables() {
         for (Pair<Integer, String> isp : jC.a(sc_id).k(javaName)) {
             switch (isp.first) {
                 case 0:
@@ -254,67 +208,71 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     private String getType(int id) {
-        switch(id) {
+        switch (id) {
             case 0:
-              return "b";
+                return "b";
+
             case 1:
-              return "d";
+                return "d";
+
             case 2:
-              return "s";
+                return "s";
+
             case 3:
-              return "a";
+                return "a";
+
             default:
-              return "v";
+                return "v";
         }
     }
 
     public final void blockComponents() {
-        this.logicEditor.a("Components", -11184811);
+        logicEditor.a("Components", 0xff555555);
         for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
             if (componentBean.type != 27) {
-                this.logicEditor.a(componentBean.componentId, "p", ComponentBean.getComponentTypeName(componentBean.type), "getVar").setTag(componentBean.componentId);
+                logicEditor.a(componentBean.componentId, "p", ComponentBean.getComponentTypeName(componentBean.type), "getVar").setTag(componentBean.componentId);
             }
         }
     }
 
     public final void blockCustomViews() {
-        if (this.eventName.equals("onBindCustomView")) {
-            String customView = jC.a(sc_id).c(xmlName, this.logicEditor.C).customView;
+        if (eventName.equals("onBindCustomView")) {
+            String customView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
             if (customView != null && customView.length() > 0) {
-                this.logicEditor.a("Custom Views", -11184811);
+                logicEditor.a("Custom Views", 0xff555555);
                 for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
                     if (!viewBean.convert.equals("include")) {
                         String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-                        this.logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
+                        logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
                     }
                 }
             }
-            this.logicEditor.a(" ", "notifyDataSetChanged");
-            this.logicEditor.a("c", "viewOnClick");
-            this.logicEditor.a("c", "viewOnLongClick");
-            this.logicEditor.a("c", "checkboxOnChecked");
-            this.logicEditor.a("b", "checkboxIsChecked");
+            logicEditor.a(" ", "notifyDataSetChanged");
+            logicEditor.a("c", "viewOnClick");
+            logicEditor.a("c", "viewOnLongClick");
+            logicEditor.a("c", "checkboxOnChecked");
+            logicEditor.a("b", "checkboxIsChecked");
             return;
         }
-        this.logicEditor.a("Views", -11184811);
+        logicEditor.a("Views", 0xff555555);
         for (ViewBean viewBean : jC.a(sc_id).d(xmlName)) {
             if (!viewBean.convert.equals("include")) {
                 String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-                this.logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
+                logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
             }
         }
     }
 
     public final void blockDrawer() {
         if (projectFile.hasActivityOption(4)) {
-            this.logicEditor.a("Drawer Views", -11184811);
+            logicEditor.a("Drawer Views", 0xff555555);
             ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(projectFile.getDrawerXmlName());
             if (viewBeans != null) {
                 for (ViewBean viewBean : viewBeans) {
                     if (!viewBean.convert.equals("include")) {
                         String id = "_drawer_" + viewBean.id;
                         String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-                        this.logicEditor.a(id, "v", typeName, "getVar").setTag(id);
+                        logicEditor.a(id, "v", typeName, "getVar").setTag(id);
                     }
                 }
             }
@@ -322,137 +280,148 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     public final void blockEvents() {
-        if (this.eventName.equals("onTabAdded") || this.eventName.equals("onFragmentAdded") || this.eventName.equals("onTabLayoutNewTabAdded")) {
-            this.logicEditor.a("Fragment & TabLayout", -11184811);
-            if (this.eventName.equals("onTabAdded") || this.eventName.equals("onTabLayoutNewTabAdded")) {
-                this.logicEditor.a("f", "returnTitle");
+        if (eventName.equals("onTabAdded") || eventName.equals("onFragmentAdded") || eventName.equals("onTabLayoutNewTabAdded")) {
+            logicEditor.a("Fragment & TabLayout", 0xff555555);
+            if (eventName.equals("onTabAdded") || eventName.equals("onTabLayoutNewTabAdded")) {
+                logicEditor.a("f", "returnTitle");
             }
-            if (this.eventName.equals("onFragmentAdded")) {
-                this.logicEditor.a("f", "returnFragment");
+            if (eventName.equals("onFragmentAdded")) {
+                logicEditor.a("f", "returnFragment");
             }
         }
-        if (this.eventName.equals("onScrollChanged")) {
-            this.logicEditor.a("ListView", -11184811);
-            this.logicEditor.a("d", "listscrollparam");
-            this.logicEditor.a("d", "getLastVisiblePosition");
+        if (eventName.equals("onScrollChanged")) {
+            logicEditor.a("ListView", 0xff555555);
+            logicEditor.a("d", "listscrollparam");
+            logicEditor.a("d", "getLastVisiblePosition");
         }
-        if (this.eventName.equals("onScrollChanged2")) {
-            this.logicEditor.a("RecyclerView", -11184811);
-            this.logicEditor.a("d", "recyclerscrollparam");
+        if (eventName.equals("onScrollChanged2")) {
+            logicEditor.a("RecyclerView", 0xff555555);
+            logicEditor.a("d", "recyclerscrollparam");
         }
-        if (this.eventName.equals("onPageChanged")) {
-            this.logicEditor.a("ViewPager", -11184811);
-            this.logicEditor.a("d", "pagerscrollparam");
+        if (eventName.equals("onPageChanged")) {
+            logicEditor.a("ViewPager", 0xff555555);
+            logicEditor.a("d", "pagerscrollparam");
         }
-        if (this.eventName.equals("onCreateOptionsMenu")) {
-            this.logicEditor.a("Menu", -11184811);
-            this.logicEditor.a(" ", "menuInflater");
-            this.logicEditor.a(" ", "menuAddItem");
-            this.logicEditor.a(" ", "menuAddMenuItem");
-            this.logicEditor.a("c", "menuAddSubmenu");
-            this.logicEditor.a(" ", "submenuAddItem");
+        if (eventName.equals("onCreateOptionsMenu")) {
+            logicEditor.a("Menu", 0xff555555);
+            logicEditor.a(" ", "menuInflater");
+            logicEditor.a(" ", "menuAddItem");
+            logicEditor.a(" ", "menuAddMenuItem");
+            logicEditor.a("c", "menuAddSubmenu");
+            logicEditor.a(" ", "submenuAddItem");
         }
     }
 
     public final void list() {
         for (Pair<Integer, String> intStrPair : jC.a(sc_id).j(javaName)) {
-            this.logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first.intValue()), "getVar").setTag(intStrPair.second);
+            logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first), "getVar").setTag(intStrPair.second);
         }
-        BlocksHandler.primaryBlocksB(this.logicEditor, extraBlocks.isListUsed(1), extraBlocks.isListUsed(2), extraBlocks.isListUsed(3), this.eventName);
+        BlocksHandler.primaryBlocksB(logicEditor,
+                extraBlocks.isListUsed(1),
+                extraBlocks.isListUsed(2),
+                extraBlocks.isListUsed(3),
+                eventName);
     }
 
     public void setBlock(int i, int i2) {
-        this.logicEditor.m.a();
-        if (this.eventName.equals("Import")) {
-            this.logicEditor.a("Enter the path without import & semicolon", -11184811);
-            this.logicEditor.a(" ", "customImport");
-            this.logicEditor.a(" ", "customImport2");
+        logicEditor.m.a();
+        if (eventName.equals("Import")) {
+            logicEditor.a("Enter the path without import & semicolon", 0xff555555);
+            logicEditor.a(" ", "customImport");
+            logicEditor.a(" ", "customImport2");
             return;
         }
+
         switch (i) {
             case 0:
-                this.logicEditor.b("Add variable", "variableAdd");
-                this.logicEditor.b("Add custom variable", "variableAddNew", clickListener);
-                this.logicEditor.b("Remove variable", "variableRemove");
-                var();
+                logicEditor.b("Add variable", "variableAdd");
+                logicEditor.b("Add custom variable", "variableAddNew", clickListener);
+                logicEditor.b("Remove variable", "variableRemove");
+                variables();
                 return;
+
             case 1:
-                this.logicEditor.b("Add list", "listAdd");
-                this.logicEditor.b("Add Custom List", "listAddCustom", clickListener);
-                this.logicEditor.b("Remove list", "listRemove");
+                logicEditor.b("Add list", "listAdd");
+                logicEditor.b("Add custom List", "listAddCustom", clickListener);
+                logicEditor.b("Remove list", "listRemove");
                 list();
                 return;
+
             case 2:
-                BlocksHandler.primaryBlocksC(this.logicEditor);
+                BlocksHandler.primaryBlocksC(logicEditor);
                 return;
+
             case 3:
-                BlocksHandler.primaryBlocksD(this.logicEditor);
+                BlocksHandler.primaryBlocksD(logicEditor);
                 return;
+
             case 4:
-                this.logicEditor.a("d", "mathGetDip");
-                this.logicEditor.a("d", "mathGetDisplayWidth");
-                this.logicEditor.a("d", "mathGetDisplayHeight");
-                this.logicEditor.a("d", "mathPi");
-                this.logicEditor.a("d", "mathE");
-                this.logicEditor.a("d", "mathPow");
-                this.logicEditor.a("d", "mathMin");
-                this.logicEditor.a("d", "mathMax");
-                this.logicEditor.a("d", "mathSqrt");
-                this.logicEditor.a("d", "mathAbs");
-                this.logicEditor.a("d", "mathRound");
-                this.logicEditor.a("d", "mathCeil");
-                this.logicEditor.a("d", "mathFloor");
-                this.logicEditor.a("d", "mathSin");
-                this.logicEditor.a("d", "mathCos");
-                this.logicEditor.a("d", "mathTan");
-                this.logicEditor.a("d", "mathAsin");
-                this.logicEditor.a("d", "mathAcos");
-                this.logicEditor.a("d", "mathAtan");
-                this.logicEditor.a("d", "mathExp");
-                this.logicEditor.a("d", "mathLog");
-                this.logicEditor.a("d", "mathLog10");
-                this.logicEditor.a("d", "mathToRadian");
-                this.logicEditor.a("d", "mathToDegree");
+                logicEditor.a("d", "mathGetDip");
+                logicEditor.a("d", "mathGetDisplayWidth");
+                logicEditor.a("d", "mathGetDisplayHeight");
+                logicEditor.a("d", "mathPi");
+                logicEditor.a("d", "mathE");
+                logicEditor.a("d", "mathPow");
+                logicEditor.a("d", "mathMin");
+                logicEditor.a("d", "mathMax");
+                logicEditor.a("d", "mathSqrt");
+                logicEditor.a("d", "mathAbs");
+                logicEditor.a("d", "mathRound");
+                logicEditor.a("d", "mathCeil");
+                logicEditor.a("d", "mathFloor");
+                logicEditor.a("d", "mathSin");
+                logicEditor.a("d", "mathCos");
+                logicEditor.a("d", "mathTan");
+                logicEditor.a("d", "mathAsin");
+                logicEditor.a("d", "mathAcos");
+                logicEditor.a("d", "mathAtan");
+                logicEditor.a("d", "mathExp");
+                logicEditor.a("d", "mathLog");
+                logicEditor.a("d", "mathLog10");
+                logicEditor.a("d", "mathToRadian");
+                logicEditor.a("d", "mathToDegree");
                 return;
+
             case 5:
                 extraBlocks.fileBlocks();
-                this.logicEditor.a("FileUtil Blocks", -11184811);
-                if (this.frc.getAssetsFile().size() > 0) {
-                    this.logicEditor.a(" ", "getAssetFile");
-                    this.logicEditor.a("s", "copyAssetFile");
+                logicEditor.a("FileUtil Blocks", 0xff555555);
+                if (frc.getAssetsFile().size() > 0) {
+                    logicEditor.a(" ", "getAssetFile");
+                    logicEditor.a("s", "copyAssetFile");
                 }
-                this.logicEditor.a("s", "fileutilread");
-                this.logicEditor.a(" ", "fileutilwrite");
-                this.logicEditor.a(" ", "fileutilcopy");
-                this.logicEditor.a(" ", "fileutilcopydir");
-                this.logicEditor.a(" ", "fileutilmove");
-                this.logicEditor.a(" ", "fileutildelete");
-                this.logicEditor.a(" ", "renameFile");
-                this.logicEditor.a("b", "fileutilisexist");
-                this.logicEditor.a(" ", "fileutilmakedir");
-                this.logicEditor.a(" ", "fileutillistdir");
-                this.logicEditor.a("b", "fileutilisdir");
-                this.logicEditor.a("b", "fileutilisfile");
-                this.logicEditor.a("d", "fileutillength");
-                this.logicEditor.a("b", "fileutilStartsWith");
-                this.logicEditor.a("b", "fileutilEndsWith");
-                this.logicEditor.a("s", "fileutilGetLastSegmentPath");
-                this.logicEditor.a("s", "getExternalStorageDir");
-                this.logicEditor.a("s", "getPackageDataDir");
-                this.logicEditor.a("s", "getPublicDir");
-                this.logicEditor.a(" ", "resizeBitmapFileRetainRatio");
-                this.logicEditor.a(" ", "resizeBitmapFileToSquare");
-                this.logicEditor.a(" ", "resizeBitmapFileToCircle");
-                this.logicEditor.a(" ", "resizeBitmapFileWithRoundedBorder");
-                this.logicEditor.a(" ", "cropBitmapFileFromCenter");
-                this.logicEditor.a(" ", "rotateBitmapFile");
-                this.logicEditor.a(" ", "scaleBitmapFile");
-                this.logicEditor.a(" ", "skewBitmapFile");
-                this.logicEditor.a(" ", "setBitmapFileColorFilter");
-                this.logicEditor.a(" ", "setBitmapFileBrightness");
-                this.logicEditor.a(" ", "setBitmapFileContrast");
-                this.logicEditor.a("d", "getJpegRotate");
+                logicEditor.a("s", "fileutilread");
+                logicEditor.a(" ", "fileutilwrite");
+                logicEditor.a(" ", "fileutilcopy");
+                logicEditor.a(" ", "fileutilcopydir");
+                logicEditor.a(" ", "fileutilmove");
+                logicEditor.a(" ", "fileutildelete");
+                logicEditor.a(" ", "renameFile");
+                logicEditor.a("b", "fileutilisexist");
+                logicEditor.a(" ", "fileutilmakedir");
+                logicEditor.a(" ", "fileutillistdir");
+                logicEditor.a("b", "fileutilisdir");
+                logicEditor.a("b", "fileutilisfile");
+                logicEditor.a("d", "fileutillength");
+                logicEditor.a("b", "fileutilStartsWith");
+                logicEditor.a("b", "fileutilEndsWith");
+                logicEditor.a("s", "fileutilGetLastSegmentPath");
+                logicEditor.a("s", "getExternalStorageDir");
+                logicEditor.a("s", "getPackageDataDir");
+                logicEditor.a("s", "getPublicDir");
+                logicEditor.a(" ", "resizeBitmapFileRetainRatio");
+                logicEditor.a(" ", "resizeBitmapFileToSquare");
+                logicEditor.a(" ", "resizeBitmapFileToCircle");
+                logicEditor.a(" ", "resizeBitmapFileWithRoundedBorder");
+                logicEditor.a(" ", "cropBitmapFileFromCenter");
+                logicEditor.a(" ", "rotateBitmapFile");
+                logicEditor.a(" ", "scaleBitmapFile");
+                logicEditor.a(" ", "skewBitmapFile");
+                logicEditor.a(" ", "setBitmapFileColorFilter");
+                logicEditor.a(" ", "setBitmapFileBrightness");
+                logicEditor.a(" ", "setBitmapFileContrast");
+                logicEditor.a("d", "getJpegRotate");
                 return;
+
             case 6:
                 this.logicEditor.a(" ", "setEnable");
                 this.logicEditor.a("b", "getEnable");
@@ -1001,19 +970,20 @@ public class ExtraPaletteBlock extends Activity {
                     return;
                 }
                 return;
+
             case 8:
-                this.logicEditor.b("Create", "blockAdd");
-                this.logicEditor.b("Import From Collection", "blockImport");
-                this.logicEditor.b("Explore Shared Collection", "sharedMoreBlock");
-                if (BlocksHandler.config("A")) {
-                    this.logicEditor.a(" ", "customToast");
-                    this.logicEditor.a(" ", "customToastWithIcon");
+                logicEditor.b("Create", "blockAdd");
+                logicEditor.b("Import From Collection", "blockImport");
+                logicEditor.b("Explore Shared Collection", "sharedMoreBlock");
+                if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS)) {
+                    logicEditor.a(" ", "customToast");
+                    logicEditor.a(" ", "customToastWithIcon");
                 }
                 moreBlocks();
-                if (BlocksHandler.config("A")) {
-                    this.logicEditor.a("Command Blocks", -11184811);
-                    this.logicEditor.a("c", "CommandBlockJava");
-                    this.logicEditor.a("c", "CommandBlockXML");
+                if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS)) {
+                    logicEditor.a("Command Blocks", 0xff555555);
+                    logicEditor.a("c", "CommandBlockJava");
+                    logicEditor.a("c", "CommandBlockXML");
                     return;
                 }
                 return;
