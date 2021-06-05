@@ -1,296 +1,59 @@
 package mod.agus.jcoderz.beans;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
+
 public class ViewBeans {
+
+    // Id : ViewName
+    static BiMap<Integer, String> views;
+
+    static {
+        // Initialize the views variable
+        views = new ImmutableBiMap.Builder<Integer, String>()
+                .put(19, "RadioButton")
+                .put(20, "RatingBar")
+                .put(21, "VideoView")
+                .put(22, "SearchView")
+                .put(23, "AutoCompleteTextView")
+                .put(24, "MultiAutoCompleteTextView")
+                .put(25, "GridView")
+                .put(26, "AnalogClock")
+                .put(27, "DatePicker")
+                .put(28, "TimePicker")
+                .put(29, "DigitalClock")
+                .put(30, "TabLayout")
+                .put(31, "ViewPager")
+                .put(32, "BottomNavigationView")
+                .put(33, "BadgeView")
+                .put(34, "PatternLockView")
+                .put(35, "WaveSideBar")
+                .put(36, "CardView")
+                .put(37, "CollapsingToolbarLayout")
+                .put(38, "TextInputLayout")
+                .put(39, "SwipeRefreshLayout")
+                .put(40, "RadioGroup")
+                .put(41, "MaterialButton")
+                .put(42, "SignInButton")
+                .put(43, "CircleImageView")
+                .put(44, "LottieAnimationView")
+                .put(45, "YoutubePlayerView")
+                .put(46, "OTPView")
+                .put(47, "CodeView")
+                .put(48, "RecyclerView")
+                .build();
+    }
+
     public static String buildClassInfo(int i) {
-        switch (i) {
-            case 19:
-                return "RadioButton";
-            case 20:
-                return "RatingBar";
-            case 21:
-                return "VideoView";
-            case 22:
-                return "SearchView";
-            case 23:
-                return "AutoCompleteTextView";
-            case 24:
-                return "MultiAutoCompleteTextView";
-            case 25:
-                return "GridView";
-            case 26:
-                return "AnalogClock";
-            case 27:
-                return "DatePicker";
-            case 28:
-                return "TimePicker";
-            case 29:
-                return "DigitalClock";
-            case 30:
-                return "TabLayout";
-            case 31:
-                return "ViewPager";
-            case 32:
-                return "BottomNavigationView";
-            case 33:
-                return "BadgeView";
-            case 34:
-                return "PatternLockView";
-            case 35:
-                return "WaveSideBar";
-            case 36:
-                return "CardView";
-            case 37:
-                return "CollapsingToolbarLayout";
-            case 38:
-                return "TextInputLayout";
-            case 39:
-                return "SwipeRefreshLayout";
-            case 40:
-                return "RadioGroup";
-            case 41:
-                return "MaterialButton";
-            case 42:
-                return "SignInButton";
-            case 43:
-                return "CircleImageView";
-            case 44:
-                return "LottieAnimationView";
-            case 45:
-                return "YoutubePlayerView";
-            case 46:
-                return "OTPView";
-            case 47:
-                return "CodeView";
-            case 48:
-                return "RecyclerView";
-            default:
-                return "";
-        }
+        return getViewTypeName(i);
     }
 
     public static int getViewTypeByTypeName(String str) {
-        switch (str.hashCode()) {
-            case -1946472170:
-                if (str.equals("RatingBar")) {
-                    return 20;
-                }
-                return -1;
-            case -1865955844:
-                if (!str.equals("DatePicker")) {
-                    return 27;
-                }
-                break;
-            case -1604708901:
-                if (str.equals("TimePicker")) {
-                    return 28;
-                }
-                break;
-            case -1390941494:
-                if (str.equals("LottieAnimationView")) {
-                    return 44;
-                }
-                break;
-            case -1346021293:
-                if (str.equals("MultiAutoCompleteTextView")) {
-                    return 24;
-                }
-                break;
-            case -957993568:
-                if (str.equals("VideoView")) {
-                    return 21;
-                }
-                break;
-            case -903281921:
-                if (str.equals("TabLayout")) {
-                    return 30;
-                }
-                break;
-            case -855591024:
-                if (str.equals("CircleImageView")) {
-                    return 43;
-                }
-                break;
-            case -803274158:
-                if (str.equals("CodeView")) {
-                    return 47;
-                }
-                break;
-            case -463051541:
-                if (str.equals("SwipeRefreshLayout")) {
-                    return 39;
-                }
-                break;
-            case -420256688:
-                if (str.equals("OTPView")) {
-                    return 46;
-                }
-                break;
-            case -386865015:
-                if (str.equals("YoutubePlayerView")) {
-                    return 45;
-                }
-                break;
-            case -344433152:
-                if (str.equals("PatternLockView")) {
-                    return 34;
-                }
-                break;
-            case -237065308:
-                if (str.equals("RecyclerView")) {
-                    return 48;
-                }
-                break;
-            case -178200376:
-                if (str.equals("BadgeView")) {
-                    return 33;
-                }
-                break;
-            case 56460789:
-                if (str.equals("CardView")) {
-                    return 36;
-                }
-                break;
-            case 269377782:
-                if (str.equals("DigitalClock")) {
-                    return 29;
-                }
-                break;
-            case 382765867:
-                if (str.equals("GridView")) {
-                    return 25;
-                }
-                break;
-            case 416531454:
-                if (str.equals("ViewPager")) {
-                    return 31;
-                }
-                break;
-            case 647744519:
-                if (str.equals("TextInputLayout")) {
-                    return 38;
-                }
-                break;
-            case 776382189:
-                if (str.equals("RadioButton")) {
-                    return 19;
-                }
-                if (!str.equals("DatePicker")) {
-                }
-                break;
-            case 1200917337:
-                if (str.equals("MaterialButton")) {
-                    return 41;
-                }
-                break;
-            case 1283054733:
-                if (str.equals("SearchView")) {
-                    return 22;
-                }
-                break;
-            case 1413872058:
-                if (str.equals("AutoCompleteTextView")) {
-                    return 23;
-                }
-                break;
-            case 1550886371:
-                if (str.equals("WaveSideBar")) {
-                    return 35;
-                }
-                break;
-            case 1581407579:
-                if (str.equals("CollapsingToolbarLayout")) {
-                    return 37;
-                }
-                break;
-            case 1623488948:
-                if (str.equals("SignInButton")) {
-                    return 42;
-                }
-                break;
-            case 1657963012:
-                if (str.equals("BottomNavigationView")) {
-                    return 32;
-                }
-                break;
-            case 1778827486:
-                if (str.equals("AnalogClock")) {
-                    return 26;
-                }
-                break;
-            case 1969230692:
-                if (str.equals("RadioGroup")) {
-                    return 40;
-                }
-                break;
-        }
-        return 0;
+        return views.inverse().containsKey(str) ? views.inverse().get(str) : 0;
     }
 
     public static String getViewTypeName(int i) {
-        switch (i) {
-            case 19:
-                return "RadioButton";
-            case 20:
-                return "RatingBar";
-            case 21:
-                return "VideoView";
-            case 22:
-                return "SearchView";
-            case 23:
-                return "AutoCompleteTextView";
-            case 24:
-                return "MultiAutoCompleteTextView";
-            case 25:
-                return "GridView";
-            case 26:
-                return "AnalogClock";
-            case 27:
-                return "DatePicker";
-            case 28:
-                return "TimePicker";
-            case 29:
-                return "DigitalClock";
-            case 30:
-                return "TabLayout";
-            case 31:
-                return "ViewPager";
-            case 32:
-                return "BottomNavigationView";
-            case 33:
-                return "BadgeView";
-            case 34:
-                return "PatternLockView";
-            case 35:
-                return "WaveSideBar";
-            case 36:
-                return "CardView";
-            case 37:
-                return "CollapsingToolbarLayout";
-            case 38:
-                return "TextInputLayout";
-            case 39:
-                return "SwipeRefreshLayout";
-            case 40:
-                return "RadioGroup";
-            case 41:
-                return "MaterialButton";
-            case 42:
-                return "SignInButton";
-            case 43:
-                return "CircleImageView";
-            case 44:
-                return "LottieAnimationView";
-            case 45:
-                return "YoutubePlayerView";
-            case 46:
-                return "OTPView";
-            case 47:
-                return "CodeView";
-            case 48:
-                return "RecyclerView";
-            default:
-                return "";
-        }
+        return views.containsKey(i) ? views.get(i) : "";
     }
 
     public static int getViewTypeResId(int i) {
@@ -308,15 +71,14 @@ public class ViewBeans {
             case 38:
                 return 2131166242;
             case 25:
+            case 48:
                 return 2131165662;
             case 26:
+            case 28:
+            case 29:
                 return 2131166276;
             case 27:
                 return 2131165519;
-            case 28:
-                return 2131166276;
-            case 29:
-                return 2131166276;
             case 30:
                 return 2131166303;
             case 31:
@@ -351,8 +113,6 @@ public class ViewBeans {
                 return 2131166346;
             case 47:
                 return 2131166357;
-            case 48:
-                return 2131165662;
             default:
                 return i;
         }

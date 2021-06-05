@@ -18,27 +18,33 @@ public class DialogImport implements View.OnClickListener {
     public final RadioGroup radioGroup;
 
     public DialogImport(LogicEditorActivity logicEditorActivity, RadioGroup radioGroup2, EditText editText2, ZB zb, aB aBVar) {
-        this.e = logicEditorActivity;
-        this.radioGroup = radioGroup2;
-        this.editText = editText2;
-        this.c = zb;
-        this.dialog = aBVar;
+        e = logicEditorActivity;
+        radioGroup = radioGroup2;
+        editText = editText2;
+        c = zb;
+        dialog = aBVar;
     }
 
     public void onClick(View view) {
         int i = 9;
-        int checkedRadioButtonId = this.radioGroup.getCheckedRadioButtonId();
-        if (checkedRadioButtonId == 2131231651) {
-            i = 4;
-        } else if (checkedRadioButtonId != 2131231653) {
-            if (checkedRadioButtonId == 2131231657) {
+        int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+
+        switch (checkedRadioButtonId) {
+            case 2131231651:
+                i = 4;
+                break;
+
+            case 2131231657:
                 i = 6;
-            } else if (checkedRadioButtonId == 2131231654) {
+                break;
+
+            case 2131231654:
                 i = 7;
-            }
+                break;
         }
-        this.e.b(i, this.editText.getText().toString());
-        mB.a(this.e.getApplicationContext(), this.editText);
-        this.dialog.dismiss();
+
+        e.b(i, editText.getText().toString());
+        mB.a(e.getApplicationContext(), editText);
+        dialog.dismiss();
     }
 }
