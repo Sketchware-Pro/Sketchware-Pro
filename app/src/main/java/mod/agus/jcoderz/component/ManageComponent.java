@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class ManageComponent {
-    public static void a(ArrayList arrayList) {
+    public static void a(ArrayList<ComponentBean> arrayList) {
         arrayList.add(new ComponentBean(27));
         ComponentsHandler.add(arrayList);
         arrayList.add(new ComponentBean(28));
