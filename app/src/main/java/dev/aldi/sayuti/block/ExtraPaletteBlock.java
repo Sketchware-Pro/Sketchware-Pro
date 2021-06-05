@@ -423,453 +423,572 @@ public class ExtraPaletteBlock extends Activity {
                 return;
 
             case 6:
-                this.logicEditor.a(" ", "setEnable");
-                this.logicEditor.a("b", "getEnable");
-                this.logicEditor.a(" ", "setVisible");
-                this.logicEditor.a("b", "checkViewVisibility");
-                this.logicEditor.a(" ", "setElevation");
-                this.logicEditor.a(" ", "setRotate");
-                this.logicEditor.a("d", "getRotate");
-                this.logicEditor.a(" ", "setAlpha");
-                this.logicEditor.a("d", "getAlpha");
-                this.logicEditor.a(" ", "setTranslationX");
-                this.logicEditor.a("d", "getTranslationX");
-                this.logicEditor.a(" ", "setTranslationY");
-                this.logicEditor.a("d", "getTranslationY");
-                this.logicEditor.a(" ", "setScaleX");
-                this.logicEditor.a("d", "getScaleX");
-                this.logicEditor.a(" ", "setScaleY");
-                this.logicEditor.a("d", "getScaleY");
-                this.logicEditor.a("d", "getLocationX");
-                this.logicEditor.a("d", "getLocationY");
-                this.logicEditor.a("d", "getHeight");
-                this.logicEditor.a("d", "getWidth");
-                this.logicEditor.a(" ", "requestFocus");
-                this.logicEditor.a(" ", "removeView");
-                this.logicEditor.a(" ", "removeViews");
-                this.logicEditor.a(" ", "addView");
-                this.logicEditor.a("v", "viewGetChildAt");
-                this.logicEditor.a(" ", "addViews");
-                this.logicEditor.a(" ", "setGravity");
-                this.logicEditor.a(" ", "setColorFilterView");
-                this.logicEditor.a(" ", "setBgColor");
-                this.logicEditor.a(" ", "setBgResource");
-                this.logicEditor.a(" ", "setBgDrawable");
-                this.logicEditor.a(" ", "setStrokeView");
-                this.logicEditor.a(" ", "setCornerRadiusView");
-                this.logicEditor.a(" ", "setGradientBackground");
-                this.logicEditor.a(" ", "setRadiusAndStrokeView");
-                this.logicEditor.a("Widgets", -11184811);
-                if (isWidgetUsed("TextView") || extraBlocks.isCustomVarUsed("TextView")|| isWidgetUsed("EditText") || extraBlocks.isCustomVarUsed("EditText")) {
-                    this.logicEditor.a(" ", "setText");
-                    this.logicEditor.a("s", "getText");
-                    this.logicEditor.a(" ", "setTypeface");
-                    this.logicEditor.a(" ", "setTextColor");
-                    this.logicEditor.a(" ", "setTextSize");
+                logicEditor.a(" ", "setEnable");
+                logicEditor.a("b", "getEnable");
+                logicEditor.a(" ", "setVisible");
+                logicEditor.a("b", "checkViewVisibility");
+                logicEditor.a(" ", "setElevation");
+                logicEditor.a(" ", "setRotate");
+                logicEditor.a("d", "getRotate");
+                logicEditor.a(" ", "setAlpha");
+                logicEditor.a("d", "getAlpha");
+                logicEditor.a(" ", "setTranslationX");
+                logicEditor.a("d", "getTranslationX");
+                logicEditor.a(" ", "setTranslationY");
+                logicEditor.a("d", "getTranslationY");
+                logicEditor.a(" ", "setScaleX");
+                logicEditor.a("d", "getScaleX");
+                logicEditor.a(" ", "setScaleY");
+                logicEditor.a("d", "getScaleY");
+                logicEditor.a("d", "getLocationX");
+                logicEditor.a("d", "getLocationY");
+                logicEditor.a("d", "getHeight");
+                logicEditor.a("d", "getWidth");
+                logicEditor.a(" ", "requestFocus");
+                logicEditor.a(" ", "removeView");
+                logicEditor.a(" ", "removeViews");
+                logicEditor.a(" ", "addView");
+                logicEditor.a("v", "viewGetChildAt");
+                logicEditor.a(" ", "addViews");
+                logicEditor.a(" ", "setGravity");
+                logicEditor.a(" ", "setColorFilterView");
+                logicEditor.a(" ", "setBgColor");
+                logicEditor.a(" ", "setBgResource");
+                logicEditor.a(" ", "setBgDrawable");
+                logicEditor.a(" ", "setStrokeView");
+                logicEditor.a(" ", "setCornerRadiusView");
+                logicEditor.a(" ", "setGradientBackground");
+                logicEditor.a(" ", "setRadiusAndStrokeView");
+            {
+                boolean editTextUsed = isWidgetUsed("EditText")
+                        || extraBlocks.isCustomVarUsed("EditText");
+                boolean textViewUsed = isWidgetUsed("TextView")
+                        || extraBlocks.isCustomVarUsed("TextView") || editTextUsed;
+                boolean compoundButtonUsed = isWidgetUsed("CompoundButton")
+                        || extraBlocks.isCustomVarUsed("CompoundButton")
+                        || extraBlocks.isCustomVarUsed("CheckBox")
+                        || extraBlocks.isCustomVarUsed("RadioButton")
+                        || extraBlocks.isCustomVarUsed("Switch")
+                        || extraBlocks.isCustomVarUsed("ToggleButton");
+                boolean autoCompleteTextViewUsed = isWidgetUsed("AutoCompleteTextView")
+                        || extraBlocks.isCustomVarUsed("AutoCompleteTextView");
+                boolean multiAutoCompleteTextViewUsed = isWidgetUsed("MultiAutoCompleteTextView")
+                        || extraBlocks.isCustomVarUsed("MultiAutoCompleteTextView");
+                boolean imageViewUsed = isWidgetUsed("ImageView") || isWidgetUsed("CircleImageView")
+                        || extraBlocks.isCustomVarUsed("ImageView");
+                boolean ratingBarUsed = isWidgetUsed("RatingBar")
+                        || extraBlocks.isCustomVarUsed("RatingBar");
+                boolean seekBarUsed = isWidgetUsed("SeekBar")
+                        || extraBlocks.isCustomVarUsed("SeekBar");
+                boolean progressBarUsed = isWidgetUsed("ProgressBar")
+                        || extraBlocks.isCustomVarUsed("ProgressBar");
+                boolean videoViewUsed = isWidgetUsed("VideoView")
+                        || extraBlocks.isCustomVarUsed("VideoView");
+                boolean webViewUsed = isWidgetUsed("WebView")
+                        || extraBlocks.isCustomVarUsed("WebView");
+
+                if (textViewUsed || compoundButtonUsed || autoCompleteTextViewUsed
+                        || multiAutoCompleteTextViewUsed || imageViewUsed || ratingBarUsed
+                        || seekBarUsed || progressBarUsed || videoViewUsed || webViewUsed) {
+                    logicEditor.a("Widgets", 0xff555555);
                 }
-                if (isWidgetUsed("EditText") || extraBlocks.isCustomVarUsed("EditText")) {
-                    this.logicEditor.a(" ", "setHint");
-                    this.logicEditor.a(" ", "setHintTextColor");
-                    this.logicEditor.a(" ", "EditTextdiableSuggestion");
-                    this.logicEditor.a(" ", "EditTextLines");
-                    this.logicEditor.a(" ", "EditTextSingleLine");
-                    this.logicEditor.a(" ", "EditTextShowError");
-                    this.logicEditor.a(" ", "EditTextSelectAll");
-                    this.logicEditor.a(" ", "EditTextSetSelection");
-                    this.logicEditor.a(" ", "EditTextSetMaxLines");
-                    this.logicEditor.a("d", "EdittextGetselectionStart");
-                    this.logicEditor.a("d", "EdittextGetselectionEnd");
+
+                if (textViewUsed) {
+                    logicEditor.a(" ", "setText");
+                    logicEditor.a("s", "getText");
+                    logicEditor.a(" ", "setTypeface");
+                    logicEditor.a(" ", "setTextColor");
+                    logicEditor.a(" ", "setTextSize");
                 }
-                if (isWidgetUsed("CompoundButton")) {
-                    this.logicEditor.a(" ", "setChecked");
-                    this.logicEditor.a("b", "getChecked");
+
+                if (editTextUsed) {
+                    logicEditor.a(" ", "setHint");
+                    logicEditor.a(" ", "setHintTextColor");
+                    logicEditor.a(" ", "EditTextdiableSuggestion");
+                    logicEditor.a(" ", "EditTextLines");
+                    logicEditor.a(" ", "EditTextSingleLine");
+                    logicEditor.a(" ", "EditTextShowError");
+                    logicEditor.a(" ", "EditTextSelectAll");
+                    logicEditor.a(" ", "EditTextSetSelection");
+                    logicEditor.a(" ", "EditTextSetMaxLines");
+                    logicEditor.a("d", "EdittextGetselectionStart");
+                    logicEditor.a("d", "EdittextGetselectionEnd");
                 }
-                if (isWidgetUsed("AutoCompleteTextView")) {
-                    this.logicEditor.a(" ", "autoComSetData");
+
+                if (compoundButtonUsed) {
+                    logicEditor.a(" ", "setChecked");
+                    logicEditor.a("b", "getChecked");
                 }
-                if (isWidgetUsed("MultiAutoCompleteTextView")) {
-                    this.logicEditor.a(" ", "multiAutoComSetData");
-                    this.logicEditor.a(" ", "setThreshold");
-                    this.logicEditor.a(" ", "setTokenizer");
+
+                if (autoCompleteTextViewUsed) {
+                    logicEditor.a(" ", "autoComSetData");
                 }
-                if (isWidgetUsed("ImageView") || extraBlocks.isCustomVarUsed("ImageView")|| isWidgetUsed("CircleImageView")) {
-                    this.logicEditor.a(" ", "setImage");
-                    this.logicEditor.a(" ", "setImageCustomRes");
-                    this.logicEditor.a(" ", "setImageIdentifier");
-                    this.logicEditor.a(" ", "setImageFilePath");
-                    this.logicEditor.a(" ", "setImageUrl");
-                    this.logicEditor.a(" ", "setColorFilter");
+
+                if (multiAutoCompleteTextViewUsed) {
+                    logicEditor.a(" ", "multiAutoComSetData");
+                    logicEditor.a(" ", "setThreshold");
+                    logicEditor.a(" ", "setTokenizer");
                 }
-                if (isWidgetUsed("RatingBar") || extraBlocks.isCustomVarUsed("RatingBar")) {
-                    this.logicEditor.a("d", "getRating");
-                    this.logicEditor.a(" ", "setRating");
-                    this.logicEditor.a(" ", "setNumStars");
-                    this.logicEditor.a(" ", "setStepSize");
+
+                if (imageViewUsed) {
+                    logicEditor.a(" ", "setImage");
+                    logicEditor.a(" ", "setImageCustomRes");
+                    logicEditor.a(" ", "setImageIdentifier");
+                    logicEditor.a(" ", "setImageFilePath");
+                    logicEditor.a(" ", "setImageUrl");
+                    logicEditor.a(" ", "setColorFilter");
                 }
-                if (isWidgetUsed("SeekBar") || extraBlocks.isCustomVarUsed("SeekBar")) {
-                    this.logicEditor.a(" ", "seekBarSetProgress");
-                    this.logicEditor.a("d", "seekBarGetProgress");
-                    this.logicEditor.a(" ", "seekBarSetMax");
-                    this.logicEditor.a("d", "seekBarGetMax");
+
+                if (ratingBarUsed) {
+                    logicEditor.a("d", "getRating");
+                    logicEditor.a(" ", "setRating");
+                    logicEditor.a(" ", "setNumStars");
+                    logicEditor.a(" ", "setStepSize");
                 }
-                if (isWidgetUsed("ProgressBar") || extraBlocks.isCustomVarUsed("ProgressBar")) {
-                    this.logicEditor.a(" ", "progressBarSetIndeterminate");
+
+                if (seekBarUsed) {
+                    logicEditor.a(" ", "seekBarSetProgress");
+                    logicEditor.a("d", "seekBarGetProgress");
+                    logicEditor.a(" ", "seekBarSetMax");
+                    logicEditor.a("d", "seekBarGetMax");
                 }
-                if (isWidgetUsed("VideoView") || extraBlocks.isCustomVarUsed("VideoView")) {
-                    this.logicEditor.a(" ", "videoviewSetVideoUri");
-                    this.logicEditor.a(" ", "videoviewStart");
-                    this.logicEditor.a(" ", "videoviewPause");
-                    this.logicEditor.a(" ", "videoviewStop");
-                    this.logicEditor.a("b", "videoviewIsPlaying");
-                    this.logicEditor.a("b", "videoviewCanPause");
-                    this.logicEditor.a("b", "videoviewCanSeekForward");
-                    this.logicEditor.a("b", "videoviewCanSeekBackward");
-                    this.logicEditor.a("d", "videoviewGetCurrentPosition");
-                    this.logicEditor.a("d", "videoviewGetDuration");
+
+                if (progressBarUsed) {
+                    logicEditor.a(" ", "progressBarSetIndeterminate");
                 }
-                if (isWidgetUsed("WebView") || extraBlocks.isCustomVarUsed("WebView")) {
-                    this.logicEditor.a(" ", "webViewLoadUrl");
-                    this.logicEditor.a("s", "webViewGetUrl");
-                    this.logicEditor.a("d", "webviewGetProgress");
-                    this.logicEditor.a(" ", "webViewSetCacheMode");
-                    this.logicEditor.a("b", "webViewCanGoBack");
-                    this.logicEditor.a("b", "webViewCanGoForward");
-                    this.logicEditor.a(" ", "webViewGoBack");
-                    this.logicEditor.a(" ", "webViewGoForward");
-                    this.logicEditor.a(" ", "webViewClearCache");
-                    this.logicEditor.a(" ", "webViewClearHistory");
-                    this.logicEditor.a(" ", "webViewStopLoading");
-                    this.logicEditor.a(" ", "webViewZoomIn");
-                    this.logicEditor.a(" ", "webViewZoomOut");
+
+                if (videoViewUsed) {
+                    logicEditor.a(" ", "videoviewSetVideoUri");
+                    logicEditor.a(" ", "videoviewStart");
+                    logicEditor.a(" ", "videoviewPause");
+                    logicEditor.a(" ", "videoviewStop");
+                    logicEditor.a("b", "videoviewIsPlaying");
+                    logicEditor.a("b", "videoviewCanPause");
+                    logicEditor.a("b", "videoviewCanSeekForward");
+                    logicEditor.a("b", "videoviewCanSeekBackward");
+                    logicEditor.a("d", "videoviewGetCurrentPosition");
+                    logicEditor.a("d", "videoviewGetDuration");
                 }
-                this.logicEditor.a("List", -11184811);
-                if (isWidgetUsed("Spinner")) {
-                    this.logicEditor.a(" ", "spnSetData");
-                    this.logicEditor.a(" ", "spnSetCustomViewData");
-                    this.logicEditor.a(" ", "spnRefresh");
-                    this.logicEditor.a(" ", "spnSetSelection");
-                    this.logicEditor.a("d", "spnGetSelection");
+
+                if (webViewUsed) {
+                    logicEditor.a(" ", "webViewLoadUrl");
+                    logicEditor.a("s", "webViewGetUrl");
+                    logicEditor.a("d", "webviewGetProgress");
+                    logicEditor.a(" ", "webViewSetCacheMode");
+                    logicEditor.a("b", "webViewCanGoBack");
+                    logicEditor.a("b", "webViewCanGoForward");
+                    logicEditor.a(" ", "webViewGoBack");
+                    logicEditor.a(" ", "webViewGoForward");
+                    logicEditor.a(" ", "webViewClearCache");
+                    logicEditor.a(" ", "webViewClearHistory");
+                    logicEditor.a(" ", "webViewStopLoading");
+                    logicEditor.a(" ", "webViewZoomIn");
+                    logicEditor.a(" ", "webViewZoomOut");
                 }
-                if (!this.eventName.equals("onBindCustomView")) {
-                    if (isWidgetUsed("ListView")) {
-                        this.logicEditor.a(" ", "listSetData");
-                        this.logicEditor.a(" ", "listSetCustomViewData");
-                        this.logicEditor.a(" ", "listRefresh");
-                        this.logicEditor.a(" ", "refreshingList");
-                        this.logicEditor.a(" ", "listSmoothScrollTo");
-                        this.logicEditor.a(" ", "listViewSetSelection");
-                        this.logicEditor.a(" ", "listSetTranscriptMode");
-                        this.logicEditor.a(" ", "listSetStackFromBottom");
-                        this.logicEditor.a(" ", "ListViewAddHeader");
-                        this.logicEditor.a(" ", "listViewRemoveHeader");
-                        this.logicEditor.a(" ", "ListViewAddFooter");
-                        this.logicEditor.a(" ", "listViewRemoveFooter");
+            }
+            {
+                boolean inOnBindCustomView = eventName.equals("onBindCustomView");
+                boolean spinnerUsed = isWidgetUsed("Spinner");
+                boolean listViewUsed = isWidgetUsed("ListView");
+                boolean recyclerViewUsed = isWidgetUsed("RecyclerView");
+                boolean gridViewUsed = isWidgetUsed("GridView") || extraBlocks.isCustomVarUsed("GridView");
+                boolean viewPagerUsed = isWidgetUsed("ViewPager");
+
+                if (spinnerUsed || listViewUsed || recyclerViewUsed || gridViewUsed || viewPagerUsed) {
+                    logicEditor.a("List", 0xff555555);
+                }
+
+                if (spinnerUsed) {
+                    logicEditor.a(" ", "spnSetData");
+                    logicEditor.a(" ", "spnSetCustomViewData");
+                    logicEditor.a(" ", "spnRefresh");
+                    logicEditor.a(" ", "spnSetSelection");
+                    logicEditor.a("d", "spnGetSelection");
+                }
+
+                if (inOnBindCustomView) {
+                    if (listViewUsed) {
+                        logicEditor.a(" ", "listSetData");
+                        logicEditor.a(" ", "listSetCustomViewData");
+                        logicEditor.a(" ", "listRefresh");
+                        logicEditor.a(" ", "refreshingList");
+                        logicEditor.a(" ", "listSmoothScrollTo");
+                        logicEditor.a(" ", "listViewSetSelection");
+                        logicEditor.a(" ", "listSetTranscriptMode");
+                        logicEditor.a(" ", "listSetStackFromBottom");
+                        logicEditor.a(" ", "ListViewAddHeader");
+                        logicEditor.a(" ", "listViewRemoveHeader");
+                        logicEditor.a(" ", "ListViewAddFooter");
+                        logicEditor.a(" ", "listViewRemoveFooter");
                     }
-                    if (isWidgetUsed("RecyclerView")) {
-                        this.logicEditor.a(" ", "recyclerSetCustomViewData");
-                        this.logicEditor.a(" ", "recyclerSetLayoutManager");
-                        this.logicEditor.a(" ", "recyclerSetLayoutManagerHorizontal");
-                        this.logicEditor.a(" ", "recyclerSetHasFixedSize");
-                        this.logicEditor.a(" ", "recyclerSmoothScrollToPosition");
-                        this.logicEditor.a(" ", "recyclerScrollToPositionWithOffset");
+
+                    if (recyclerViewUsed) {
+                        logicEditor.a(" ", "recyclerSetCustomViewData");
+                        logicEditor.a(" ", "recyclerSetLayoutManager");
+                        logicEditor.a(" ", "recyclerSetLayoutManagerHorizontal");
+                        logicEditor.a(" ", "recyclerSetHasFixedSize");
+                        logicEditor.a(" ", "recyclerSmoothScrollToPosition");
+                        logicEditor.a(" ", "recyclerScrollToPositionWithOffset");
                     }
-                    if (isWidgetUsed("GridView") || extraBlocks.isCustomVarUsed("GridView")) {
-                        this.logicEditor.a(" ", "gridSetCustomViewData");
-                        this.logicEditor.a(" ", "gridSetNumColumns");
-                        this.logicEditor.a(" ", "gridSetColumnWidth");
-                        this.logicEditor.a(" ", "gridSetVerticalSpacing");
-                        this.logicEditor.a(" ", "gridSetHorizontalSpacing");
-                        this.logicEditor.a(" ", "gridSetStretchMode");
+
+                    if (gridViewUsed) {
+                        logicEditor.a(" ", "gridSetCustomViewData");
+                        logicEditor.a(" ", "gridSetNumColumns");
+                        logicEditor.a(" ", "gridSetColumnWidth");
+                        logicEditor.a(" ", "gridSetVerticalSpacing");
+                        logicEditor.a(" ", "gridSetHorizontalSpacing");
+                        logicEditor.a(" ", "gridSetStretchMode");
                     }
-                    if (isWidgetUsed("ViewPager")) {
-                        this.logicEditor.a(" ", "pagerSetCustomViewData");
-                        this.logicEditor.a(" ", "pagerSetFragmentAdapter");
-                        this.logicEditor.a("d", "pagerGetOffscreenPageLimit");
-                        this.logicEditor.a(" ", "pagerSetOffscreenPageLimit");
-                        this.logicEditor.a("d", "pagerGetCurrentItem");
-                        this.logicEditor.a(" ", "pagerSetCurrentItem");
-                        this.logicEditor.a(" ", "ViewPagerNotifyOnDtatChange");
+
+                    if (viewPagerUsed) {
+                        logicEditor.a(" ", "pagerSetCustomViewData");
+                        logicEditor.a(" ", "pagerSetFragmentAdapter");
+                        logicEditor.a("d", "pagerGetOffscreenPageLimit");
+                        logicEditor.a(" ", "pagerSetOffscreenPageLimit");
+                        logicEditor.a("d", "pagerGetCurrentItem");
+                        logicEditor.a(" ", "pagerSetCurrentItem");
+                        logicEditor.a(" ", "ViewPagerNotifyOnDtatChange");
                     }
                 } else {
-                    this.logicEditor.a(" ", "setRecyclerViewLayoutParams");
+                    logicEditor.a(" ", "setRecyclerViewLayoutParams");
                 }
-                this.logicEditor.a("AndroidX", -11184811);
-                if (projectFile.hasActivityOption(4)) {
-                    this.logicEditor.a("b", "isDrawerOpen");
-                    this.logicEditor.a(" ", "openDrawer");
-                    this.logicEditor.a(" ", "closeDrawer");
+            }
+            {
+                boolean drawerUsed = projectFile.hasActivityOption(4);
+                boolean fabUsed = projectFile.hasActivityOption(8);
+                boolean bottomNavigationViewUsed = isWidgetUsed("BottomNavigationView");
+                boolean swipeRefreshLayoutUsed = isWidgetUsed("SwipeRefreshLayout");
+                boolean cardViewUsed = isWidgetUsed("CardView");
+                boolean tabLayoutUsed = isWidgetUsed("TabLayout");
+                boolean textInputLayoutUsed = isWidgetUsed("TextInputLayout") || extraBlocks.isCustomVarUsed("TextInputLayout");
+
+                if (drawerUsed || fabUsed || bottomNavigationViewUsed || swipeRefreshLayoutUsed || cardViewUsed || tabLayoutUsed || textInputLayoutUsed) {
+                    logicEditor.a("AndroidX components", 0xff555555);
                 }
-                if (projectFile.hasActivityOption(8)) {
-                    this.logicEditor.a(" ", "fabIcon");
-                    this.logicEditor.a(" ", "fabSize");
-                    this.logicEditor.a(" ", "fabVisibility");
+
+                if (drawerUsed) {
+                    logicEditor.a("b", "isDrawerOpen");
+                    logicEditor.a(" ", "openDrawer");
+                    logicEditor.a(" ", "closeDrawer");
                 }
-                if (isWidgetUsed("BottomNavigationView")) {
-                    this.logicEditor.a(" ", "bottomMenuAddItem");
+
+                if (fabUsed) {
+                    logicEditor.a(" ", "fabIcon");
+                    logicEditor.a(" ", "fabSize");
+                    logicEditor.a(" ", "fabVisibility");
                 }
-                if (isWidgetUsed("SwipeRefreshLayout")) {
-                    this.logicEditor.a("c", "onSwipeRefreshLayout");
-                    this.logicEditor.a(" ", "setRefreshing");
+
+                if (bottomNavigationViewUsed) {
+                    logicEditor.a(" ", "bottomMenuAddItem");
                 }
-                if (isWidgetUsed("CardView")) {
-                    this.logicEditor.a(" ", "setCardBackgroundColor");
-                    this.logicEditor.a(" ", "setCardRadius");
-                    this.logicEditor.a(" ", "setCardElevation");
-                    this.logicEditor.a(" ", "setPreventCornerOverlap");
-                    this.logicEditor.a(" ", "setUseCompatPadding");
+
+                if (swipeRefreshLayoutUsed) {
+                    logicEditor.a("c", "onSwipeRefreshLayout");
+                    logicEditor.a(" ", "setRefreshing");
                 }
-                if (isWidgetUsed("TabLayout")) {
-                    this.logicEditor.a(" ", "addTab");
-                    this.logicEditor.a(" ", "setupWithViewPager");
-                    this.logicEditor.a(" ", "setInlineLabel");
-                    this.logicEditor.a(" ", "setTabTextColors");
-                    this.logicEditor.a(" ", "setTabRippleColor");
-                    this.logicEditor.a(" ", "setSelectedTabIndicatorColor");
-                    this.logicEditor.a(" ", "setSelectedTabIndicatorHeight");
+
+                if (cardViewUsed) {
+                    logicEditor.a(" ", "setCardBackgroundColor");
+                    logicEditor.a(" ", "setCardRadius");
+                    logicEditor.a(" ", "setCardElevation");
+                    logicEditor.a(" ", "setPreventCornerOverlap");
+                    logicEditor.a(" ", "setUseCompatPadding");
                 }
-                if (isWidgetUsed("TextInputLayout") || extraBlocks.isCustomVarUsed("TextInputLayout")) {
-                    this.logicEditor.a(" ", "tilSetBoxBgColor");
-                    this.logicEditor.a(" ", "tilSetBoxStrokeColor");
-                    this.logicEditor.a(" ", "tilSetBoxBgMode");
-                    this.logicEditor.a(" ", "tilSetBoxCornerRadii");
-                    this.logicEditor.a(" ", "tilSetError");
-                    this.logicEditor.a(" ", "tilSetErrorEnabled");
-                    this.logicEditor.a(" ", "tilSetCounterEnabled");
-                    this.logicEditor.a(" ", "tilSetCounterMaxLength");
-                    this.logicEditor.a("d", "tilGetCounterMaxLength");
+
+                if (tabLayoutUsed) {
+                    logicEditor.a(" ", "addTab");
+                    logicEditor.a(" ", "setupWithViewPager");
+                    logicEditor.a(" ", "setInlineLabel");
+                    logicEditor.a(" ", "setTabTextColors");
+                    logicEditor.a(" ", "setTabRippleColor");
+                    logicEditor.a(" ", "setSelectedTabIndicatorColor");
+                    logicEditor.a(" ", "setSelectedTabIndicatorHeight");
                 }
-                this.logicEditor.a("Library", -11184811);
-                if (isWidgetUsed("WaveSideBar")) {
-                    this.logicEditor.a(" ", "setCustomLetter");
+
+                if (textInputLayoutUsed) {
+                    logicEditor.a(" ", "tilSetBoxBgColor");
+                    logicEditor.a(" ", "tilSetBoxStrokeColor");
+                    logicEditor.a(" ", "tilSetBoxBgMode");
+                    logicEditor.a(" ", "tilSetBoxCornerRadii");
+                    logicEditor.a(" ", "tilSetError");
+                    logicEditor.a(" ", "tilSetErrorEnabled");
+                    logicEditor.a(" ", "tilSetCounterEnabled");
+                    logicEditor.a(" ", "tilSetCounterMaxLength");
+                    logicEditor.a("d", "tilGetCounterMaxLength");
                 }
-                if (isWidgetUsed("BadgeView")) {
-                    this.logicEditor.a("d", "getBadgeCount");
-                    this.logicEditor.a(" ", "setBadgeNumber");
-                    this.logicEditor.a(" ", "setBadgeString");
-                    this.logicEditor.a(" ", "setBadgeBackground");
-                    this.logicEditor.a(" ", "setBadgeTextColor");
-                    this.logicEditor.a(" ", "setBadgeTextSize");
+            }
+            {
+                boolean waveSideBarUsed = isWidgetUsed("WaveSideBar");
+                boolean badgeViewUsed = isWidgetUsed("BadgeView");
+                boolean bubbleLayoutUsed = isWidgetUsed("BubbleLayout");
+                boolean patternLockViewUsed = isWidgetUsed("PatternLockView");
+                boolean codeViewUsed = isWidgetUsed("CodeView");
+                boolean lottieAnimationViewUsed = isWidgetUsed("LottieAnimationView");
+                // Where are its built-in blocks?
+                // boolean otpViewUsed = isWidgetUsed("OTPView");
+
+                if (waveSideBarUsed || badgeViewUsed || bubbleLayoutUsed || patternLockViewUsed || codeViewUsed || lottieAnimationViewUsed) {
+                    logicEditor.a("Library", 0xff555555);
                 }
-                if (isWidgetUsed("BubbleLayout")) {
-                    this.logicEditor.a(" ", "setBubbleColor");
-                    this.logicEditor.a(" ", "setBubbleStrokeColor");
-                    this.logicEditor.a(" ", "setBubbleStrokeWidth");
-                    this.logicEditor.a(" ", "setBubbleCornerRadius");
-                    this.logicEditor.a(" ", "setBubbleArrowHeight");
-                    this.logicEditor.a(" ", "setBubbleArrowWidth");
-                    this.logicEditor.a(" ", "setBubbleArrowPosition");
+
+                if (waveSideBarUsed) {
+                    logicEditor.a(" ", "setCustomLetter");
                 }
-                if (isWidgetUsed("PatternLockView")) {
-                    this.logicEditor.a("s", "patternToString");
-                    this.logicEditor.a("s", "patternToMD5");
-                    this.logicEditor.a("s", "patternToSha1");
-                    this.logicEditor.a(" ", "patternSetDotCount");
-                    this.logicEditor.a(" ", "patternSetNormalStateColor");
-                    this.logicEditor.a(" ", "patternSetCorrectStateColor");
-                    this.logicEditor.a(" ", "patternSetWrongStateColor");
-                    this.logicEditor.a(" ", "patternSetViewMode");
-                    this.logicEditor.a(" ", "patternLockClear");
+
+                if (badgeViewUsed) {
+                    logicEditor.a("d", "getBadgeCount");
+                    logicEditor.a(" ", "setBadgeNumber");
+                    logicEditor.a(" ", "setBadgeString");
+                    logicEditor.a(" ", "setBadgeBackground");
+                    logicEditor.a(" ", "setBadgeTextColor");
+                    logicEditor.a(" ", "setBadgeTextSize");
                 }
-                if (isWidgetUsed("CodeView")) {
-                    this.logicEditor.a(" ", "codeviewSetCode");
-                    this.logicEditor.a(" ", "codeviewSetLanguage");
-                    this.logicEditor.a(" ", "codeviewSetTheme");
-                    this.logicEditor.a(" ", "codeviewApply");
+
+                if (bubbleLayoutUsed) {
+                    logicEditor.a(" ", "setBubbleColor");
+                    logicEditor.a(" ", "setBubbleStrokeColor");
+                    logicEditor.a(" ", "setBubbleStrokeWidth");
+                    logicEditor.a(" ", "setBubbleCornerRadius");
+                    logicEditor.a(" ", "setBubbleArrowHeight");
+                    logicEditor.a(" ", "setBubbleArrowWidth");
+                    logicEditor.a(" ", "setBubbleArrowPosition");
                 }
-                if (isWidgetUsed("LottieAnimationView")) {
-                    this.logicEditor.a(" ", "lottieSetAnimationFromAsset");
-                    this.logicEditor.a(" ", "lottieSetAnimationFromJson");
-                    this.logicEditor.a(" ", "lottieSetAnimationFromUrl");
-                    this.logicEditor.a(" ", "lottieSetRepeatCount");
-                    this.logicEditor.a(" ", "lottieSetSpeed");
+
+                if (patternLockViewUsed) {
+                    logicEditor.a("s", "patternToString");
+                    logicEditor.a("s", "patternToMD5");
+                    logicEditor.a("s", "patternToSha1");
+                    logicEditor.a(" ", "patternSetDotCount");
+                    logicEditor.a(" ", "patternSetNormalStateColor");
+                    logicEditor.a(" ", "patternSetCorrectStateColor");
+                    logicEditor.a(" ", "patternSetWrongStateColor");
+                    logicEditor.a(" ", "patternSetViewMode");
+                    logicEditor.a(" ", "patternLockClear");
                 }
-                isWidgetUsed("OTPView");
-                this.logicEditor.a("Google", -11184811);
-                isWidgetUsed("SignInButton");
-                if (isWidgetUsed("YoutubePlayerView")) {
-                    this.logicEditor.a(" ", "YTPVLifecycle");
-                    this.logicEditor.a("c", "YTPVSetListener");
+
+                if (codeViewUsed) {
+                    logicEditor.a(" ", "codeviewSetCode");
+                    logicEditor.a(" ", "codeviewSetLanguage");
+                    logicEditor.a(" ", "codeviewSetTheme");
+                    logicEditor.a(" ", "codeviewApply");
                 }
-                if (jC.c(sc_id).b().useYn.equals("Y")) {
-                    this.logicEditor.a(" ", "adViewLoadAd");
+
+                if (lottieAnimationViewUsed) {
+                    logicEditor.a(" ", "lottieSetAnimationFromAsset");
+                    logicEditor.a(" ", "lottieSetAnimationFromJson");
+                    logicEditor.a(" ", "lottieSetAnimationFromUrl");
+                    logicEditor.a(" ", "lottieSetRepeatCount");
+                    logicEditor.a(" ", "lottieSetSpeed");
                 }
-                if (isWidgetUsed("MapView")) {
-                    this.logicEditor.a(" ", "mapViewSetMapType");
-                    this.logicEditor.a(" ", "mapViewMoveCamera");
-                    this.logicEditor.a(" ", "mapViewZoomTo");
-                    this.logicEditor.a(" ", "mapViewZoomIn");
-                    this.logicEditor.a(" ", "mapViewZoomOut");
-                    this.logicEditor.a(" ", "mapViewAddMarker");
-                    this.logicEditor.a(" ", "mapViewSetMarkerInfo");
-                    this.logicEditor.a(" ", "mapViewSetMarkerPosition");
-                    this.logicEditor.a(" ", "mapViewSetMarkerColor");
-                    this.logicEditor.a(" ", "mapViewSetMarkerIcon");
-                    this.logicEditor.a(" ", "mapViewSetMarkerVisible");
+            }
+            {
+                // Where are its built-in blocks?
+                // boolean signInButtonUsed = isWidgetUsed("SignInButton");
+                boolean youtubePlayerViewUsed = isWidgetUsed("YoutubePlayerView");
+                boolean adMobUsed = jC.c(sc_id).b().useYn.equals("Y");
+                boolean mapViewUsed = isWidgetUsed("MapView");
+
+                if (youtubePlayerViewUsed || adMobUsed || mapViewUsed) {
+                    logicEditor.a("Google", 0xff555555);
                 }
-                this.logicEditor.a("Date & Time", -11184811);
-                if (isWidgetUsed("TimePicker")) {
-                    this.logicEditor.a(" ", "timepickerSetHour");
-                    this.logicEditor.a(" ", "timepickerSetMinute");
-                    this.logicEditor.a(" ", "timepickerSetCurrentHour");
-                    this.logicEditor.a(" ", "timepickerSetCurrentMinute");
-                    this.logicEditor.a(" ", "timepickerSetIs24Hour");
+
+                if (youtubePlayerViewUsed) {
+                    logicEditor.a(" ", "YTPVLifecycle");
+                    logicEditor.a("c", "YTPVSetListener");
                 }
-                if (isWidgetUsed("CalendarView")) {
-                    this.logicEditor.a(" ", "calendarViewSetDate");
-                    this.logicEditor.a(" ", "calendarViewSetMinDate");
-                    this.logicEditor.a(" ", "calnedarViewSetMaxDate");
+
+                if (adMobUsed) {
+                    logicEditor.a(" ", "adViewLoadAd");
                 }
-                this.logicEditor.a("Function", -11184811);
-                this.logicEditor.a(" ", "performClick");
-                this.logicEditor.a("c", "viewOnClick");
-                this.logicEditor.a("c", "viewOnLongClick");
-                this.logicEditor.a("c", "viewOnTouch");
-                this.logicEditor.a("c", "showSnackbar");
-                return;
+
+                if (mapViewUsed) {
+                    logicEditor.a(" ", "mapViewSetMapType");
+                    logicEditor.a(" ", "mapViewMoveCamera");
+                    logicEditor.a(" ", "mapViewZoomTo");
+                    logicEditor.a(" ", "mapViewZoomIn");
+                    logicEditor.a(" ", "mapViewZoomOut");
+                    logicEditor.a(" ", "mapViewAddMarker");
+                    logicEditor.a(" ", "mapViewSetMarkerInfo");
+                    logicEditor.a(" ", "mapViewSetMarkerPosition");
+                    logicEditor.a(" ", "mapViewSetMarkerColor");
+                    logicEditor.a(" ", "mapViewSetMarkerIcon");
+                    logicEditor.a(" ", "mapViewSetMarkerVisible");
+                }
+            }
+            {
+                boolean timePickerUsed = isWidgetUsed("TimePicker");
+                boolean calendarViewUsed = isWidgetUsed("CalendarView");
+
+                if (timePickerUsed || calendarViewUsed) {
+                    logicEditor.a("Date & Time", 0xff555555);
+                }
+
+                if (timePickerUsed) {
+                    logicEditor.a(" ", "timepickerSetHour");
+                    logicEditor.a(" ", "timepickerSetMinute");
+                    logicEditor.a(" ", "timepickerSetCurrentHour");
+                    logicEditor.a(" ", "timepickerSetCurrentMinute");
+                    logicEditor.a(" ", "timepickerSetIs24Hour");
+                }
+
+                if (calendarViewUsed) {
+                    logicEditor.a(" ", "calendarViewSetDate");
+                    logicEditor.a(" ", "calendarViewSetMinDate");
+                    logicEditor.a(" ", "calnedarViewSetMaxDate");
+                }
+            }
+            logicEditor.a("Function", 0xff555555);
+            logicEditor.a(" ", "performClick");
+            logicEditor.a("c", "viewOnClick");
+            logicEditor.a("c", "viewOnLongClick");
+            logicEditor.a("c", "viewOnTouch");
+            logicEditor.a("c", "showSnackbar");
+            return;
+
             case 7:
-                this.logicEditor.b("Add component", "componentAdd");
-                this.logicEditor.a(" ", "changeStatebarColour");
-                this.logicEditor.a(" ", "LightStatusBar");
-                this.logicEditor.a(" ", "showKeyboard");
-                this.logicEditor.a(" ", "hideKeyboard");
-                this.logicEditor.a(" ", "doToast");
-                this.logicEditor.a(" ", "copyToClipboard");
-                this.logicEditor.a(" ", "setTitle");
+                logicEditor.b("Add component", "componentAdd");
+                logicEditor.a(" ", "changeStatebarColour");
+                logicEditor.a(" ", "LightStatusBar");
+                logicEditor.a(" ", "showKeyboard");
+                logicEditor.a(" ", "hideKeyboard");
+                logicEditor.a(" ", "doToast");
+                logicEditor.a(" ", "copyToClipboard");
+                logicEditor.a(" ", "setTitle");
                 if (xq.a(sc_id) || xq.b(sc_id)) {
-                    this.logicEditor.a("b", "intentHasExtra");
-                    this.logicEditor.a("s", "intentGetString");
-                    this.logicEditor.a("f", "finishActivity");
-                    this.logicEditor.a("f", "finishAffinity");
+                    logicEditor.a("b", "intentHasExtra");
+                    logicEditor.a("s", "intentGetString");
+                    logicEditor.a("f", "finishActivity");
+                    logicEditor.a("f", "finishAffinity");
                 }
                 if (extraBlocks.isComponentUsed(1) || extraBlocks.isCustomVarUsed("Intent")) {
-                    this.logicEditor.a("Intent", -11184811);
-                    this.logicEditor.a(" ", "intentSetAction");
-                    this.logicEditor.a(" ", "intentSetData");
-                    this.logicEditor.a(" ", "intentSetType");
+                    logicEditor.a("Intent", 0xff555555);
+                    logicEditor.a(" ", "intentSetAction");
+                    logicEditor.a(" ", "intentSetData");
+                    logicEditor.a(" ", "intentSetType");
                     if (xq.a(sc_id) || xq.b(sc_id)) {
-                        this.logicEditor.a(" ", "intentSetScreen");
-                        this.logicEditor.a(" ", "launchApp");
-                        this.logicEditor.a(" ", "intentPutExtra");
-                        this.logicEditor.a(" ", "intentRemoveExtra");
+                        logicEditor.a(" ", "intentSetScreen");
+                        logicEditor.a(" ", "launchApp");
+                        logicEditor.a(" ", "intentPutExtra");
+                        logicEditor.a(" ", "intentRemoveExtra");
                     }
-                    this.logicEditor.a(" ", "intentSetFlags");
-                    this.logicEditor.a(" ", "startActivity");
-                    this.logicEditor.a(" ", "startActivityWithChooser");
+                    logicEditor.a(" ", "intentSetFlags");
+                    logicEditor.a(" ", "startActivity");
+                    logicEditor.a(" ", "startActivityWithChooser");
                 }
-                if (this.frc.getBroadcastFile().size() > 0) {
-                    this.logicEditor.a("Broadcast", -11184811);
-                    this.logicEditor.a(" ", "sendBroadcast");
+                if (frc.getBroadcastFile().size() > 0) {
+                    logicEditor.a("Broadcast", 0xff555555);
+                    logicEditor.a(" ", "sendBroadcast");
                 }
-                if (this.frc.getServiceFile().size() > 0) {
-                    this.logicEditor.a("Service", -11184811);
-                    this.logicEditor.a(" ", "startService");
-                    this.logicEditor.a(" ", "stopService");
+                if (frc.getServiceFile().size() > 0) {
+                    logicEditor.a("Service", 0xff555555);
+                    logicEditor.a(" ", "startService");
+                    logicEditor.a(" ", "stopService");
                 }
                 if (extraBlocks.isComponentUsed(2)) {
-                    this.logicEditor.a("Shared preferences", -11184811);
-                    this.logicEditor.a("b", "fileContainsData");
-                    this.logicEditor.a("s", "fileGetData");
-                    this.logicEditor.a(" ", "fileSetData");
-                    this.logicEditor.a(" ", "fileRemoveData");
+                    logicEditor.a("SharedPreferences", 0xff555555);
+                    logicEditor.a("b", "fileContainsData");
+                    logicEditor.a("s", "fileGetData");
+                    logicEditor.a(" ", "fileSetData");
+                    logicEditor.a(" ", "fileRemoveData");
                 }
                 if (extraBlocks.isComponentUsed(24)) {
-                    this.logicEditor.a("Date picker dialog", -11184811);
-                    this.logicEditor.a(" ", "datePickerDialogShow");
+                    logicEditor.a("DatePickerDialog", 0xff555555);
+                    logicEditor.a(" ", "datePickerDialogShow");
                 }
                 if (extraBlocks.isComponentUsed(25)) {
-                    this.logicEditor.a("Time picker dialog", -11184811);
-                    this.logicEditor.a(" ", "timePickerDialogShow");
+                    logicEditor.a("TimePickerDialog", 0xff555555);
+                    logicEditor.a(" ", "timePickerDialogShow");
                 }
                 if (extraBlocks.isComponentUsed(3)) {
-                    this.logicEditor.a("Calendar", -11184811);
-                    this.logicEditor.a(" ", "calendarGetNow");
-                    this.logicEditor.a(" ", "calendarAdd");
-                    this.logicEditor.a(" ", "calendarSet");
-                    this.logicEditor.a("s", "calendarFormat");
-                    this.logicEditor.a("d", "calendarDiff");
-                    this.logicEditor.a("d", "calendarGetTime");
-                    this.logicEditor.a(" ", "calendarSetTime");
+                    logicEditor.a("Calendar", 0xff555555);
+                    logicEditor.a(" ", "calendarGetNow");
+                    logicEditor.a(" ", "calendarAdd");
+                    logicEditor.a(" ", "calendarSet");
+                    logicEditor.a("s", "calendarFormat");
+                    logicEditor.a("d", "calendarDiff");
+                    logicEditor.a("d", "calendarGetTime");
+                    logicEditor.a(" ", "calendarSetTime");
                 }
                 if (extraBlocks.isComponentUsed(4)) {
-                    this.logicEditor.a("Vibrator", -11184811);
-                    this.logicEditor.a(" ", "vibratorAction");
+                    logicEditor.a("Vibrator", 0xff555555);
+                    logicEditor.a(" ", "vibratorAction");
                 }
                 if (extraBlocks.isComponentUsed(5) || extraBlocks.isCustomVarUsed("Timer")) {
-                    this.logicEditor.a("Timer", -11184811);
-                    this.logicEditor.a("c", "timerAfter");
-                    this.logicEditor.a("c", "timerEvery");
-                    this.logicEditor.a(" ", "timerCancel");
+                    logicEditor.a("Timer", 0xff555555);
+                    logicEditor.a("c", "timerAfter");
+                    logicEditor.a("c", "timerEvery");
+                    logicEditor.a(" ", "timerCancel");
                 }
                 if (extraBlocks.isComponentUsed(36)) {
-                    this.logicEditor.a("AsyncTask", -11184811);
-                    this.logicEditor.a(" ", "AsyncTaskExecute");
-                    this.logicEditor.a(" ", "AsyncTaskPublishProgress");
+                    logicEditor.a("AsyncTask", 0xff555555);
+                    logicEditor.a(" ", "AsyncTaskExecute");
+                    logicEditor.a(" ", "AsyncTaskPublishProgress");
                 }
-                if (extraBlocks.isComponentUsed(7) ||extraBlocks.isCustomVarUsed("Dialog")) {
-                    this.logicEditor.a("Dialog", -11184811);
-                    this.logicEditor.a(" ", "dialogSetTitle");
-                    this.logicEditor.a(" ", "Dialog SetIcon");
-                    this.logicEditor.a(" ", "dialogSetMessage");
-                    this.logicEditor.a("c", "dialogOkButton");
-                    this.logicEditor.a("c", "dialogCancelButton");
-                    this.logicEditor.a("c", "dialogNeutralButton");
-                    this.logicEditor.a(" ", "dialogShow");
+                if (extraBlocks.isComponentUsed(7) || extraBlocks.isCustomVarUsed("Dialog")) {
+                    logicEditor.a("Dialog", 0xff555555);
+                    logicEditor.a(" ", "dialogSetTitle");
+                    logicEditor.a(" ", "Dialog SetIcon");
+                    logicEditor.a(" ", "dialogSetMessage");
+                    logicEditor.a("c", "dialogOkButton");
+                    logicEditor.a("c", "dialogCancelButton");
+                    logicEditor.a("c", "dialogNeutralButton");
+                    logicEditor.a(" ", "dialogShow");
                 }
                 if (extraBlocks.isComponentUsed(8)) {
-                    this.logicEditor.a("Media player", -11184811);
-                    this.logicEditor.a(" ", "mediaplayerCreate");
-                    this.logicEditor.a(" ", "mediaplayerStart");
-                    this.logicEditor.a(" ", "mediaplayerPause");
-                    this.logicEditor.a(" ", "mediaplayerSeek");
-                    this.logicEditor.a("d", "mediaplayerGetCurrent");
-                    this.logicEditor.a("d", "mediaplayerGetDuration");
-                    this.logicEditor.a("b", "mediaplayerIsPlaying");
-                    this.logicEditor.a(" ", "mediaplayerSetLooping");
-                    this.logicEditor.a("b", "mediaplayerIsLooping");
-                    this.logicEditor.a(" ", "mediaplayerReset");
-                    this.logicEditor.a(" ", "mediaplayerRelease");
+                    logicEditor.a("MediaPlayer", 0xff555555);
+                    logicEditor.a(" ", "mediaplayerCreate");
+                    logicEditor.a(" ", "mediaplayerStart");
+                    logicEditor.a(" ", "mediaplayerPause");
+                    logicEditor.a(" ", "mediaplayerSeek");
+                    logicEditor.a("d", "mediaplayerGetCurrent");
+                    logicEditor.a("d", "mediaplayerGetDuration");
+                    logicEditor.a("b", "mediaplayerIsPlaying");
+                    logicEditor.a(" ", "mediaplayerSetLooping");
+                    logicEditor.a("b", "mediaplayerIsLooping");
+                    logicEditor.a(" ", "mediaplayerReset");
+                    logicEditor.a(" ", "mediaplayerRelease");
                 }
                 if (extraBlocks.isComponentUsed(9)) {
-                    this.logicEditor.a("SoundPool", -11184811);
-                    this.logicEditor.a(" ", "soundpoolCreate");
-                    this.logicEditor.a("d", "soundpoolLoad");
-                    this.logicEditor.a("d", "soundpoolStreamPlay");
-                    this.logicEditor.a(" ", "soundpoolStreamStop");
+                    logicEditor.a("SoundPool", 0xff555555);
+                    logicEditor.a(" ", "soundpoolCreate");
+                    logicEditor.a("d", "soundpoolLoad");
+                    logicEditor.a("d", "soundpoolStreamPlay");
+                    logicEditor.a(" ", "soundpoolStreamStop");
                 }
                 if (extraBlocks.isComponentUsed(10)) {
-                    this.logicEditor.a("Object animator", -11184811);
-                    this.logicEditor.a(" ", "objectanimatorSetTarget");
-                    this.logicEditor.a(" ", "objectanimatorSetProperty");
-                    this.logicEditor.a(" ", "objectanimatorSetValue");
-                    this.logicEditor.a(" ", "objectanimatorSetFromTo");
-                    this.logicEditor.a(" ", "objectanimatorSetDuration");
-                    this.logicEditor.a(" ", "objectanimatorSetRepeatMode");
-                    this.logicEditor.a(" ", "objectanimatorSetRepeatCount");
-                    this.logicEditor.a(" ", "objectanimatorSetInterpolator");
-                    this.logicEditor.a(" ", "objectanimatorStart");
-                    this.logicEditor.a(" ", "objectanimatorCancel");
-                    this.logicEditor.a("b", "objectanimatorIsRunning");
+                    logicEditor.a("ObjectAnimator", 0xff555555);
+                    logicEditor.a(" ", "objectanimatorSetTarget");
+                    logicEditor.a(" ", "objectanimatorSetProperty");
+                    logicEditor.a(" ", "objectanimatorSetValue");
+                    logicEditor.a(" ", "objectanimatorSetFromTo");
+                    logicEditor.a(" ", "objectanimatorSetDuration");
+                    logicEditor.a(" ", "objectanimatorSetRepeatMode");
+                    logicEditor.a(" ", "objectanimatorSetRepeatCount");
+                    logicEditor.a(" ", "objectanimatorSetInterpolator");
+                    logicEditor.a(" ", "objectanimatorStart");
+                    logicEditor.a(" ", "objectanimatorCancel");
+                    logicEditor.a("b", "objectanimatorIsRunning");
                 }
                 if (extraBlocks.isComponentUsed(6)) {
-                    this.logicEditor.a("Firebase", -11184811);
-                    this.logicEditor.a(" ", "firebaseAdd");
-                    this.logicEditor.a(" ", "firebasePush");
-                    this.logicEditor.a("s", "firebaseGetPushKey");
-                    this.logicEditor.a(" ", "firebaseDelete");
-                    this.logicEditor.a("c", "firebaseGetChildren");
-                    this.logicEditor.a(" ", "firebaseStartListen");
-                    this.logicEditor.a(" ", "firebaseStopListen");
+                    logicEditor.a("Firebase", 0xff555555);
+                    logicEditor.a(" ", "firebaseAdd");
+                    logicEditor.a(" ", "firebasePush");
+                    logicEditor.a("s", "firebaseGetPushKey");
+                    logicEditor.a(" ", "firebaseDelete");
+                    logicEditor.a("c", "firebaseGetChildren");
+                    logicEditor.a(" ", "firebaseStartListen");
+                    logicEditor.a(" ", "firebaseStopListen");
                 }
                 if (extraBlocks.isComponentUsed(12)) {
-                    this.logicEditor.a("FirebaseAuth", -11184811);
-                    this.logicEditor.a("b", "firebaseauthIsLoggedIn");
-                    this.logicEditor.a("s", "firebaseauthGetCurrentUser");
-                    this.logicEditor.a("s", "firebaseauthGetUid");
-                    this.logicEditor.a(" ", "firebaseauthCreateUser");
-                    this.logicEditor.a(" ", "firebaseauthSignInUser");
-                    this.logicEditor.a(" ", "firebaseauthSignInAnonymously");
-                    this.logicEditor.a(" ", "firebaseauthResetPassword");
-                    this.logicEditor.a(" ", "firebaseauthSignOutUser");
+                    logicEditor.a("FirebaseAuth", 0xff555555);
+                    logicEditor.a("b", "firebaseauthIsLoggedIn");
+                    logicEditor.a("s", "firebaseauthGetCurrentUser");
+                    logicEditor.a("s", "firebaseauthGetUid");
+                    logicEditor.a(" ", "firebaseauthCreateUser");
+                    logicEditor.a(" ", "firebaseauthSignInUser");
+                    logicEditor.a(" ", "firebaseauthSignInAnonymously");
+                    logicEditor.a(" ", "firebaseauthResetPassword");
+                    logicEditor.a(" ", "firebaseauthSignOutUser");
                 }
                 jC.a(sc_id).f(javaName, 28);
                 jC.a(sc_id).f(javaName, 29);
@@ -878,95 +997,95 @@ public class ExtraPaletteBlock extends Activity {
                 jC.a(sc_id).f(javaName, 32);
                 jC.a(sc_id).f(javaName, 33);
                 jC.a(sc_id).f(javaName, 34);
-                if(extraBlocks.isComponentUsed(11)) {
-                    this.logicEditor.a("Gyroscope", -11184811);
-                    this.logicEditor.a(" ", "gyroscopeStartListen");
-                    this.logicEditor.a(" ", "gyroscopeStopListen");
+                if (extraBlocks.isComponentUsed(11)) {
+                    logicEditor.a("Gyroscope", 0xff555555);
+                    logicEditor.a(" ", "gyroscopeStartListen");
+                    logicEditor.a(" ", "gyroscopeStopListen");
                 }
                 if (extraBlocks.isComponentUsed(13)) {
-                    this.logicEditor.a("Admob", -11184811);
-                    this.logicEditor.a(" ", "interstitialadCreate");
-                    this.logicEditor.a(" ", "interstitialadLoadAd");
-                    this.logicEditor.a(" ", "interstitialadShow");
+                    logicEditor.a("AdMob", 0xff555555);
+                    logicEditor.a(" ", "interstitialadCreate");
+                    logicEditor.a(" ", "interstitialadLoadAd");
+                    logicEditor.a(" ", "interstitialadShow");
                 }
                 if (extraBlocks.isComponentUsed(14)) {
-                    this.logicEditor.a("Firebase Storage", -11184811);
-                    this.logicEditor.a(" ", "firebasestorageUploadFile");
-                    this.logicEditor.a(" ", "firebasestorageDownloadFile");
-                    this.logicEditor.a(" ", "firebasestorageDelete");
+                    logicEditor.a("Firebase Storage", 0xff555555);
+                    logicEditor.a(" ", "firebasestorageUploadFile");
+                    logicEditor.a(" ", "firebasestorageDownloadFile");
+                    logicEditor.a(" ", "firebasestorageDelete");
                 }
                 if (extraBlocks.isComponentUsed(15)) {
-                    this.logicEditor.a("Camera", -11184811);
-                    this.logicEditor.a(" ", "camerastarttakepicture");
+                    logicEditor.a("Camera", 0xff555555);
+                    logicEditor.a(" ", "camerastarttakepicture");
                 }
                 if (extraBlocks.isComponentUsed(16)) {
-                    this.logicEditor.a("File picker", -11184811);
-                    this.logicEditor.a(" ", "filepickerstartpickfiles");
-                    this.logicEditor.a(" ", "imageCrop");
+                    logicEditor.a("FilePicker", 0xff555555);
+                    logicEditor.a(" ", "filepickerstartpickfiles");
+                    logicEditor.a(" ", "imageCrop");
                 }
                 if (extraBlocks.isComponentUsed(17)) {
-                    this.logicEditor.a("Request network", -11184811);
-                    this.logicEditor.a("b", "isConnected");
-                    this.logicEditor.a(" ", "requestnetworkSetParams");
-                    this.logicEditor.a(" ", "requestnetworkSetHeaders");
-                    this.logicEditor.a(" ", "requestnetworkStartRequestNetwork");
+                    logicEditor.a("RequestNetwork", 0xff555555);
+                    logicEditor.a("b", "isConnected");
+                    logicEditor.a(" ", "requestnetworkSetParams");
+                    logicEditor.a(" ", "requestnetworkSetHeaders");
+                    logicEditor.a(" ", "requestnetworkStartRequestNetwork");
                 }
                 if (extraBlocks.isComponentUsed(18)) {
-                    this.logicEditor.a("Text to speech", -11184811);
-                    this.logicEditor.a("b", "textToSpeechIsSpeaking");
-                    this.logicEditor.a(" ", "textToSpeechSetPitch");
-                    this.logicEditor.a(" ", "textToSpeechSetSpeechRate");
-                    this.logicEditor.a(" ", "textToSpeechSpeak");
-                    this.logicEditor.a(" ", "textToSpeechStop");
-                    this.logicEditor.a(" ", "textToSpeechShutdown");
+                    logicEditor.a("TextToSpeech", 0xff555555);
+                    logicEditor.a("b", "textToSpeechIsSpeaking");
+                    logicEditor.a(" ", "textToSpeechSetPitch");
+                    logicEditor.a(" ", "textToSpeechSetSpeechRate");
+                    logicEditor.a(" ", "textToSpeechSpeak");
+                    logicEditor.a(" ", "textToSpeechStop");
+                    logicEditor.a(" ", "textToSpeechShutdown");
                 }
                 if (extraBlocks.isComponentUsed(19)) {
-                    this.logicEditor.a("Speech to text", -11184811);
-                    this.logicEditor.a(" ", "speechToTextStartListening");
-                    this.logicEditor.a(" ", "speechToTextStopListening");
-                    this.logicEditor.a(" ", "speechToTextShutdown");
+                    logicEditor.a("SpeechToText", 0xff555555);
+                    logicEditor.a(" ", "speechToTextStartListening");
+                    logicEditor.a(" ", "speechToTextStopListening");
+                    logicEditor.a(" ", "speechToTextShutdown");
                 }
                 if (extraBlocks.isComponentUsed(20)) {
-                    this.logicEditor.a("Bluetooth", -11184811);
-                    this.logicEditor.a("b", "bluetoothConnectIsBluetoothEnabled");
-                    this.logicEditor.a("b", "bluetoothConnectIsBluetoothActivated");
-                    this.logicEditor.a("s", "bluetoothConnectGetRandomUuid");
-                    this.logicEditor.a(" ", "bluetoothConnectReadyConnection");
-                    this.logicEditor.a(" ", "bluetoothConnectReadyConnectionToUuid");
-                    this.logicEditor.a(" ", "bluetoothConnectStartConnection");
-                    this.logicEditor.a(" ", "bluetoothConnectStartConnectionToUuid");
-                    this.logicEditor.a(" ", "bluetoothConnectStopConnection");
-                    this.logicEditor.a(" ", "bluetoothConnectSendData");
-                    this.logicEditor.a(" ", "bluetoothConnectActivateBluetooth");
-                    this.logicEditor.a(" ", "bluetoothConnectGetPairedDevices");
+                    logicEditor.a("Bluetooth", 0xff555555);
+                    logicEditor.a("b", "bluetoothConnectIsBluetoothEnabled");
+                    logicEditor.a("b", "bluetoothConnectIsBluetoothActivated");
+                    logicEditor.a("s", "bluetoothConnectGetRandomUuid");
+                    logicEditor.a(" ", "bluetoothConnectReadyConnection");
+                    logicEditor.a(" ", "bluetoothConnectReadyConnectionToUuid");
+                    logicEditor.a(" ", "bluetoothConnectStartConnection");
+                    logicEditor.a(" ", "bluetoothConnectStartConnectionToUuid");
+                    logicEditor.a(" ", "bluetoothConnectStopConnection");
+                    logicEditor.a(" ", "bluetoothConnectSendData");
+                    logicEditor.a(" ", "bluetoothConnectActivateBluetooth");
+                    logicEditor.a(" ", "bluetoothConnectGetPairedDevices");
                 }
                 if (extraBlocks.isComponentUsed(21)) {
-                    this.logicEditor.a("Location manager", -11184811);
-                    this.logicEditor.a(" ", "locationManagerRequestLocationUpdates");
-                    this.logicEditor.a(" ", "locationManagerRemoveUpdates");
+                    logicEditor.a("LocationManager", 0xff555555);
+                    logicEditor.a(" ", "locationManagerRequestLocationUpdates");
+                    logicEditor.a(" ", "locationManagerRemoveUpdates");
                 }
                 if (extraBlocks.isComponentUsed(22)) {
-                    this.logicEditor.a("Video ad", -11184811);
-                    this.logicEditor.a(" ", "videoAdCreate");
-                    this.logicEditor.a(" ", "videoAdLoad");
-                    this.logicEditor.a("b", "videoAdIsLoaded");
-                    this.logicEditor.a(" ", "videoAdShow");
-                    this.logicEditor.a(" ", "videoAdResume");
-                    this.logicEditor.a(" ", "videoAdPause");
-                    this.logicEditor.a(" ", "videoAdDestroy");
+                    logicEditor.a("Video Ad", 0xff555555);
+                    logicEditor.a(" ", "videoAdCreate");
+                    logicEditor.a(" ", "videoAdLoad");
+                    logicEditor.a("b", "videoAdIsLoaded");
+                    logicEditor.a(" ", "videoAdShow");
+                    logicEditor.a(" ", "videoAdResume");
+                    logicEditor.a(" ", "videoAdPause");
+                    logicEditor.a(" ", "videoAdDestroy");
                 }
-                if (extraBlocks.isComponentUsed(23) || extraBlocks.isCustomVarUsed("ProgressDialog")|| this.eventName.equals("onPreExecute") || this.eventName.equals("onProgressUpdate") || this.eventName.equals("onPostExecute")) {
-                    this.logicEditor.a("Progress dialog", -11184811);
-                    this.logicEditor.a(" ", "progressdialogCreate");
-                    this.logicEditor.a(" ", "progressdialogSetTitle");
-                    this.logicEditor.a(" ", "progressdialogSetMessage");
-                    this.logicEditor.a(" ", "progressdialogSetMax");
-                    this.logicEditor.a(" ", "progressdialogSetProgress");
-                    this.logicEditor.a(" ", "progressdialogSetCancelable");
-                    this.logicEditor.a(" ", "progressdialogSetCanceledOutside");
-                    this.logicEditor.a(" ", "progressdialogSetStyle");
-                    this.logicEditor.a(" ", "progressdialogShow");
-                    this.logicEditor.a(" ", "progressdialogDismiss");
+                if (extraBlocks.isComponentUsed(23) || extraBlocks.isCustomVarUsed("ProgressDialog") || eventName.equals("onPreExecute") || eventName.equals("onProgressUpdate") || eventName.equals("onPostExecute")) {
+                    logicEditor.a("ProgressDialog", 0xff555555);
+                    logicEditor.a(" ", "progressdialogCreate");
+                    logicEditor.a(" ", "progressdialogSetTitle");
+                    logicEditor.a(" ", "progressdialogSetMessage");
+                    logicEditor.a(" ", "progressdialogSetMax");
+                    logicEditor.a(" ", "progressdialogSetProgress");
+                    logicEditor.a(" ", "progressdialogSetCancelable");
+                    logicEditor.a(" ", "progressdialogSetCanceledOutside");
+                    logicEditor.a(" ", "progressdialogSetStyle");
+                    logicEditor.a(" ", "progressdialogShow");
+                    logicEditor.a(" ", "progressdialogDismiss");
                     return;
                 }
                 return;
