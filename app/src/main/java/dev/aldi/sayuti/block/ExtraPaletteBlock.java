@@ -19,7 +19,7 @@ import a.a.a.Ss;
 import a.a.a.jC;
 import a.a.a.kq;
 import a.a.a.xq;
-
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -1017,21 +1017,51 @@ public class ExtraPaletteBlock extends Activity {
                     return;
                 }
                 return;
+
             default:
-                ArrayList extraBlockData = ExtraBlockFile.getExtraBlockData();
-                for (int i3 = 0; i3 < extraBlockData.size(); i3++) {
-                    HashMap hashMap = (HashMap) extraBlockData.get(i3);
-                    if (hashMap.get("palette").equals(String.valueOf(i))) {
-                        if (hashMap.get("type").equals("h")) {
-                            this.logicEditor.a(hashMap.get("spec").toString(), -11184811);
-                        } else if (hashMap.containsKey("typeName")) {
-                            this.logicEditor.a("", hashMap.get("type").toString(), hashMap.get("typeName").toString(), hashMap.get("name").toString());
-                        } else {
-                            this.logicEditor.a("", hashMap.get("type").toString(), "", hashMap.get("name").toString());
+                ArrayList<HashMap<String, Object>> extraBlockData = ExtraBlockFile.getExtraBlockData();
+                for (HashMap<String, Object> map : extraBlockData) {
+                    Object palette = map.get("palette");
+                    if (palette instanceof String) {
+                        String paletteString = (String) palette;
+
+                        if (paletteString.equals(String.valueOf(i))) {
+                            Object type = map.get("type");
+                            if (type instanceof String) {
+                                String typeString = (String) type;
+
+                                if (typeString.equals("h")) {
+                                    Object spec = map.get("spec");
+                                    if (spec instanceof String) {
+                                        String specString = (String) spec;
+
+                                        logicEditor.a(specString, 0xff555555);
+                                    }
+                                } else {
+                                    Object name = map.get("name");
+                                    if (name instanceof String) {
+                                        String nameString = (String) name;
+
+                                        Object typeName = map.get("typeName");
+                                        if (typeName instanceof String) {
+                                            String typeNameString = (String) typeName;
+
+                                            logicEditor.a("", typeString, typeNameString, nameString);
+                                        } else {
+                                            logicEditor.a("", typeString, "", nameString);
+                                        }
+                                    } else {
+                                        SketchwareUtil.toastError("Detected invalid Custom Block! Check the \"name\" key's type/value");
+                                    }
+                                }
+                            } else {
+                                SketchwareUtil.toastError("Detected invalid Custom Block! Check the \"type\" key's type/value");
+                            }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Detected invalid Custom Block! Check the \"palette\" key's type/value");
                     }
                 }
-                return;
         }
     }
 }
