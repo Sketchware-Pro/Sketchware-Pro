@@ -1,8 +1,6 @@
 package mod.hilal.saif.blocks;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +10,8 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.w3wide.blocks.ExtraBlocks;
 
 public class BlocksHandler {
-    public static void builtInBlocks(ArrayList arrayList) {
+
+    public static void builtInBlocks(ArrayList<HashMap<String, Object>> arrayList) {
         ExtraBlocks.extraBlocks(arrayList);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("name", "CommandBlockJava");
@@ -2317,65 +2316,43 @@ public class BlocksHandler {
         arrayList.add(0, hashMap);
     }
 
-    public static void builtInPallettes(ArrayList arrayList) {
-    }
-
-    public static void checkDir() {
+    private static void checkDir() {
         String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/block.json");
         if (!FileUtil.isExistFile(concat) || FileUtil.readFile(concat).equals("")) {
             FileUtil.writeFile(concat, "[]");
         }
     }
 
-    public static boolean config(String str) {
-        HashMap hashMap = new HashMap();
-        if (FileUtil.isDirectory(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"))) {
-            FileUtil.deleteFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"));
-        }
-        if (FileUtil.isExistFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"))) {
-            hashMap = (HashMap) new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), new TypeToken<HashMap<String, Object>>() {
-            }.getType());
-            if (!hashMap.containsKey("built-in-blocks") || !hashMap.containsKey("always-show-blocks")) {
-                hashMap.put("always-show-blocks", false);
-                hashMap.put("built-in-blocks", false);
-                FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap));
-            }
-        } else {
-            hashMap.put("always-show-blocks", false);
-            hashMap.put("built-in-blocks", false);
-            FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(hashMap));
-        }
-        if (str.equals("A")) {
-            return ((Boolean) hashMap.get("built-in-blocks")).booleanValue();
-        }
-        if (str.equals("B")) {
-            return ((Boolean) hashMap.get("always-show-blocks")).booleanValue();
-        }
-        return false;
+    private static boolean showAll() {
+        return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS);
+    }
+
+    private static boolean showBuiltIn() {
+        return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS);
     }
 
     public static void primaryBlocksA(LogicEditorActivity logicEditorActivity, boolean isBoolUsed, boolean isIntUsed, boolean isStrUsed, boolean isMapUsed) {
-        if (config("A")) {
+        if (showBuiltIn()) {
             checkDir();
         }
-        logicEditorActivity.a("Blocks", -11184811);
-        if (config("B") || isBoolUsed) {
+        logicEditorActivity.a("Blocks", 0xff555555);
+        if (showAll() || isBoolUsed) {
             logicEditorActivity.a(" ", "setVarBoolean");
         }
-        if (config("B") || isIntUsed) {
+        if (showAll() || isIntUsed) {
             logicEditorActivity.a(" ", "setVarInt");
             logicEditorActivity.a(" ", "increaseInt");
             logicEditorActivity.a(" ", "decreaseInt");
         }
-        if (config("B") || isStrUsed) {
+        if (showAll() || isStrUsed) {
             logicEditorActivity.a(" ", "setVarString");
         }
-        if (config("B") || isMapUsed) {
+        if (showAll() || isMapUsed) {
             logicEditorActivity.a(" ", "mapCreateNew");
-            logicEditorActivity.a("Map sign values", -11184811);
+            logicEditorActivity.a("Map put values", 0xff555555);
             logicEditorActivity.a(" ", "mapPut");
         }
-        if (config("A") && (config("B") || isMapUsed)) {
+        if (showBuiltIn() && (showAll() || isMapUsed)) {
             logicEditorActivity.a(" ", "hashmapPutNumber");
             logicEditorActivity.a(" ", "hashmapPutNumber2");
             logicEditorActivity.a(" ", "hashmapPutBoolean");
@@ -2383,19 +2360,19 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "hashmapPutListstr");
             logicEditorActivity.a(" ", "hashmapPutListmap");
         }
-        if (config("B") || isMapUsed) {
-            logicEditorActivity.a("Map get values", -11184811);
+        if (showAll() || isMapUsed) {
+            logicEditorActivity.a("Map get values", 0xff555555);
             logicEditorActivity.a("s", "mapGet");
         }
-        if (config("A") && (config("B") || isMapUsed)) {
+        if (showBuiltIn() && (showAll() || isMapUsed)) {
             logicEditorActivity.a("d", "hashmapGetNumber");
             logicEditorActivity.a("b", "hashmapGetBoolean");
             logicEditorActivity.a("a", "hashmapGetMap");
             logicEditorActivity.a("", "l", "List String", "hashmapListstr");
             logicEditorActivity.a("", "l", "List Map", "hashmapGetListmap");
         }
-        if (config("B") || isMapUsed) {
-            logicEditorActivity.a("Map general", -11184811);
+        if (showAll() || isMapUsed) {
+            logicEditorActivity.a("Map general", 0xff555555);
             logicEditorActivity.a("b", "mapIsEmpty");
             logicEditorActivity.a("b", "mapContainKey");
             logicEditorActivity.a("b", "mapContainValue");
@@ -2407,42 +2384,42 @@ public class BlocksHandler {
     }
 
     public static void primaryBlocksB(LogicEditorActivity logicEditorActivity, boolean isListNumUsed, boolean isListStrUsed, boolean isListMapUsed, String eventName) {
-        if (config("A")) {
+        if (showBuiltIn()) {
             checkDir();
         }
-        if (config("B") || isListNumUsed) {
-            logicEditorActivity.a("List number", -11184811);
+        if (showAll() || isListNumUsed) {
+            logicEditorActivity.a("List Number", 0xff555555);
             logicEditorActivity.a("b", "containListInt");
             logicEditorActivity.a("d", "getAtListInt");
             logicEditorActivity.a("d", "indexListInt");
             logicEditorActivity.a(" ", "addListInt");
             logicEditorActivity.a(" ", "insertListInt");
         }
-        if (config("A") && (config("B") || isListNumUsed)) {
+        if (showBuiltIn() && (showAll() || isListNumUsed)) {
             logicEditorActivity.a(" ", "setAtPosListnum");
         }
-        if (config("A") && (config("B") || isListNumUsed)) {
+        if (showBuiltIn() && (showAll() || isListNumUsed)) {
             logicEditorActivity.a(" ", "sortListnum");
         }
-        if (config("B") || isListStrUsed) {
-            logicEditorActivity.a("List string", -11184811);
+        if (showAll() || isListStrUsed) {
+            logicEditorActivity.a("List String", 0xff555555);
             logicEditorActivity.a("b", "containListStr");
             logicEditorActivity.a("d", "indexListStr");
             logicEditorActivity.a("s", "getAtListStr");
             logicEditorActivity.a(" ", "addListStr");
             logicEditorActivity.a(" ", "insertListStr");
         }
-        if (config("A") && (config("B") || isListStrUsed)) {
+        if (showBuiltIn() && (showAll() || isListStrUsed)) {
             logicEditorActivity.a(" ", "setAtPosListstr");
         }
-        if (config("B") || isListStrUsed) {
+        if (showAll() || isListStrUsed) {
             logicEditorActivity.a(" ", "sortList");
         }
-        if (config("B") || isListMapUsed || eventName.equals("onBindCustomView")) {
-            logicEditorActivity.a("List map", -11184811);
+        if (showAll() || isListMapUsed || eventName.equals("onBindCustomView")) {
+            logicEditorActivity.a("List Map", 0xff555555);
             logicEditorActivity.a("b", "containListMap");
             logicEditorActivity.a("s", "getAtListMap");
-            if (config("A")) {
+            if (showBuiltIn()) {
                 logicEditorActivity.a("a", "getMapAtPosListmap");
             }
             logicEditorActivity.a(" ", "addListMap");
@@ -2450,20 +2427,20 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "setListMap");
             logicEditorActivity.a(" ", "setMapAtPosListmap");
         }
-        if (config("B") || isListMapUsed) {
+        if (showAll() || isListMapUsed) {
             logicEditorActivity.a(" ", "addMapToList");
             logicEditorActivity.a(" ", "insertMapToList");
             logicEditorActivity.a(" ", "getMapInList");
             logicEditorActivity.a(" ", "deleteMapFromListmap");
             logicEditorActivity.a(" ", "sortListmap");
         }
-        logicEditorActivity.a("General", -11184811);
-        if (config("B") || isListMapUsed || isListStrUsed || isListNumUsed || eventName.equals("onBindCustomView")) {
+        if (showAll() || isListMapUsed || isListStrUsed || isListNumUsed || eventName.equals("onBindCustomView")) {
+            logicEditorActivity.a("General", 0xff555555);
             logicEditorActivity.a(" ", "listAddAll");
             logicEditorActivity.a("d", "lengthList");
             logicEditorActivity.a(" ", "deleteList");
             logicEditorActivity.a(" ", "clearList");
-            if (config("A")) {
+            if (showBuiltIn()) {
                 logicEditorActivity.a(" ", "reverseList");
                 logicEditorActivity.a(" ", "shuffleList");
                 logicEditorActivity.a(" ", "swapInList");
@@ -2472,21 +2449,21 @@ public class BlocksHandler {
     }
 
     public static void primaryBlocksC(LogicEditorActivity logicEditorActivity) {
-        if (config("A")) {
+        if (showBuiltIn()) {
             checkDir();
         }
         logicEditorActivity.a("c", "repeat");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a("c", "repeatKnownNum");
             logicEditorActivity.a("c", "RepeatKnownNumDescending");
         }
         logicEditorActivity.a("c", "forever");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a("c", "whileLoop");
         }
         logicEditorActivity.a("c", "if");
         logicEditorActivity.a("e", "ifElse");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a("b", "instanceOfOperator");
             logicEditorActivity.a("b", "isEmpty");
             logicEditorActivity.a("c", "switchStr");
@@ -2512,7 +2489,7 @@ public class BlocksHandler {
     }
 
     public static void primaryBlocksD(LogicEditorActivity logicEditorActivity) {
-        if (config("A")) {
+        if (showBuiltIn()) {
             checkDir();
         }
         logicEditorActivity.a("b", "true");
@@ -2534,16 +2511,16 @@ public class BlocksHandler {
         logicEditorActivity.a("d", "stringIndex");
         logicEditorActivity.a("d", "stringLastIndex");
         logicEditorActivity.a("s", "stringSub");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a("s", "stringSubSingle");
         }
         logicEditorActivity.a("b", "stringEquals");
         logicEditorActivity.a("b", "stringContains");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a("b", "stringMatches");
         }
         logicEditorActivity.a("s", "stringReplace");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a("s", "stringReplaceFirst");
             logicEditorActivity.a("s", "stringReplaceAll");
             logicEditorActivity.a("s", "reverse");
@@ -2562,17 +2539,16 @@ public class BlocksHandler {
         logicEditorActivity.a("s", "mapToStr");
         logicEditorActivity.a(" ", "strToListMap");
         logicEditorActivity.a("s", "listMapToStr");
-        if (config("A")) {
+        if (showBuiltIn()) {
             logicEditorActivity.a(" ", "GsonStringToListString");
             logicEditorActivity.a(" ", "GsonStringToListNumber");
             logicEditorActivity.a("s", "GsonListTojsonString");
             logicEditorActivity.a(" ", "stringSplitToList");
         }
-        logicEditorActivity.a("add source directly", -11184811);
+        logicEditorActivity.a("add source directly", 0xff555555);
         logicEditorActivity.a(" ", "addSourceDirectly");
         logicEditorActivity.a("b", "asdBoolean");
         logicEditorActivity.a("d", "asdNumber");
         logicEditorActivity.a("s", "asdString");
     }
-
 }
