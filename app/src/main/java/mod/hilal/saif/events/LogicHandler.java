@@ -3,7 +3,7 @@ package mod.hilal.saif.events;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import mod.hilal.saif.lib.FileUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 
 public class LogicHandler {
     public static String base(String str) {
