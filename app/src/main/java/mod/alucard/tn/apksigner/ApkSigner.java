@@ -129,25 +129,25 @@ public class ApkSigner {
 
         @Override
         public void write(int b) {
-            if (isLoggingEnabled()) {
-                mCache += (char) b;
+            if (isLoggingDisabled()) return;
 
-                if (((char) b) == '\n') {
-                    mCallback.onNewLineLogged(mCache);
-                }
+            mCache += (char) b;
+
+            if (((char) b) == '\n') {
+                mCallback.onNewLineLogged(mCache);
             }
         }
 
         private void write(String s) {
-            if (isLoggingEnabled()) {
-                for (byte b : s.getBytes()) {
-                    write(b);
-                }
+            if (isLoggingDisabled()) return;
+
+            for (byte b : s.getBytes()) {
+                write(b);
             }
         }
 
-        private boolean isLoggingEnabled() {
-            return mCallback != null;
+        private boolean isLoggingDisabled() {
+            return mCallback == null;
         }
     }
 }
