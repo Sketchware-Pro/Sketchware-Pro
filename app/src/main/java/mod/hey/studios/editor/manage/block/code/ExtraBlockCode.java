@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import a.a.a.Fx;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
-import mod.hey.studios.lib.code_editor.ColorScheme;
 
 public class ExtraBlockCode {
 
@@ -41,6 +40,7 @@ public class ExtraBlockCode {
                     } else {
                         arrayList.add("true");
                     }
+
                     break;
 
                 case 1:
@@ -49,14 +49,16 @@ public class ExtraBlockCode {
                     } else {
                         arrayList.add("0");
                     }
+
                     break;
 
-                case ColorScheme.XML /*{ENCODED_INT: 2}*/:
+                case 2:
                     if (!blockBean.parameters.get(i).isEmpty()) {
                         arrayList.add(fx.a(blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
                     } else {
                         arrayList.add("\"\"");
                     }
+
                     break;
 
                 default:
@@ -65,23 +67,29 @@ public class ExtraBlockCode {
                     } else {
                         arrayList.add("");
                     }
+
                     break;
             }
         }
+
         if (blockBean.subStack1 >= 0) {
             arrayList.add(fx.a(String.valueOf(blockBean.subStack1), str));
         } else {
             arrayList.add(" ");
         }
+
         if (blockBean.subStack2 >= 0) {
             arrayList.add(fx.a(String.valueOf(blockBean.subStack2), str));
         } else {
             arrayList.add(" ");
         }
+
         ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(blockBean.opCode);
+
         if (blockInfo.isMissing) {
             blockInfo = BlockLoader.getBlockFromProject(fx.e.sc_id, blockBean.opCode);
         }
+
         if (arrayList.size() > 0) {
             return String.format(blockInfo.getCode(), arrayList.toArray(new Object[0]));
         } else if (!blockInfo.getCode().isEmpty()) {

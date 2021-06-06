@@ -13,16 +13,20 @@ public class ProjectFile {
 
     private static int getDefaultColor(String str) {
         int var1;
+
         switch (str) {
             case "color_primary_dark":
                 var1 = Color.parseColor("#ff0084c2");
                 break;
+
             case "color_control_highlight":
                 var1 = Color.parseColor("#20008dcd");
                 break;
+
             case "color_control_normal":
                 var1 = Color.parseColor("#ff57beee");
                 break;
+
             default:
                 var1 = Color.parseColor("#ff008dcd");
                 break;
