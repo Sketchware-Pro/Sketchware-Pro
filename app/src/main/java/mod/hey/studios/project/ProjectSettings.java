@@ -24,6 +24,7 @@ public class ProjectSettings {
     public ProjectSettings(String id) {
         sc_id = id;
         path = getPath();
+
         if (FileUtil.isExistFile(path)) {
             try {
                 hashmap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_STRING_MAP);
@@ -34,7 +35,6 @@ public class ProjectSettings {
         } else {
             hashmap = new HashMap<>();
         }
-
     }
 
     private String getCheckedRbValue(RadioGroup radioGroup) {
@@ -86,18 +86,19 @@ public class ProjectSettings {
             if (view.getTag() != null) {
                 String tag = (String) view.getTag();
                 String value;
+
                 if (view instanceof EditText) {
                     value = ((EditText) view).getText().toString();
+
                 } else if (view instanceof CheckBox) {
                     if (((CheckBox) view).isChecked()) {
                         value = "true";
                     } else {
                         value = "false";
                     }
+
                 } else {
-                    if (!(view instanceof RadioGroup)) {
-                        continue;
-                    }
+                    if (!(view instanceof RadioGroup)) continue;
 
                     value = getCheckedRbValue((RadioGroup) view);
                 }
