@@ -3,11 +3,9 @@ package mod.hey.studios.project.backup;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Environment;
 
-import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.Resources;
@@ -23,10 +21,10 @@ public class BackupRestoreManager {
 
     private final Activity act;
 
-    //needed to refresh the project list after restoring
+    // Needed to refresh the project list after restoring
     private GC gc;
 
-    //private AlertDialog backup_dlg;
+    // Private AlertDialog backup_dlg;
     private HashMap<Integer, Boolean> bckpDialogStates;
 
     public BackupRestoreManager(Activity act) {
@@ -39,7 +37,6 @@ public class BackupRestoreManager {
     }
 
     public void backup(final String sc_id, final String project_name) {
-
         bckpDialogStates = new HashMap<>();
         bckpDialogStates.put(0, false);
         bckpDialogStates.put(1, false);
@@ -52,22 +49,15 @@ public class BackupRestoreManager {
                         "Include used custom blocks"
                 },
                 null,
-                new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        bckpDialogStates.put(which, isChecked);
-                    }
-                });
-        dialog.setPositiveButton(Resources.string.common_word_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface p1, int p2) {
-                //if(backup_dlg != null) {
-                //final SparseBooleanArray arr = backup_dlg.getListView().getCheckedItemPositions();
+                (dialog1, which, isChecked) -> bckpDialogStates.put(which, isChecked));
 
-                doBackup(sc_id, project_name);
-                //}
-            }
+        dialog.setPositiveButton(Resources.string.common_word_ok, (p1, p2) -> {
+            //if(backup_dlg != null) {
+            //final SparseBooleanArray arr = backup_dlg.getListView().getCheckedItemPositions();
+            doBackup(sc_id, project_name);
+            //}
         });
+
         dialog.setNegativeButton(Resources.string.common_word_cancel, null);
 
         AlertDialog backup_dlg = dialog.create();
@@ -90,14 +80,9 @@ public class BackupRestoreManager {
 
             @Override
             protected String doInBackground(String... params) {
-
                 bm = new BackupFactory(sc_id);
-                if (true) {
-                    bm.setBackupLocalLibs(bckpDialogStates.get(0));
-                }
-                if (true) {
-                    bm.setBackupCustomBlocks(bckpDialogStates.get(1));
-                }
+                bm.setBackupLocalLibs(bckpDialogStates.get(0));
+                bm.setBackupCustomBlocks(bckpDialogStates.get(1));
 
                 //     try {
                 bm.backup(project_name);
@@ -136,38 +121,25 @@ public class BackupRestoreManager {
 
         FilePickerDialog fpd = new FilePickerDialog(act, properties);
         fpd.setTitle("Select a backup file (" + BackupFactory.EXTENSION + ")");
-        fpd.setDialogSelectionListener(new DialogSelectionListener() {
-            @Override
-            public void onSelectedFilePaths(final String[] files) {
-                final String file = files[0];
+        fpd.setDialogSelectionListener(files -> {
+            final String file = files[0];
 
-                //boolean custom_blocks = BackupFactory.zipContainsFile(file, "custom_blocks");
-                final boolean local_libs = BackupFactory.zipContainsFile(file, "local_libs");
+            //boolean custom_blocks = BackupFactory.zipContainsFile(file, "custom_blocks");
+            final boolean local_libs = BackupFactory.zipContainsFile(file, "local_libs");
 
-                if (local_libs) {
-                    new AlertDialog.Builder(act)
-                            .setTitle("Warning")
-                            .setMessage("Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?")
-                            .setPositiveButton("Copy", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    doRestore(file, true);
-                                }
-                            })
-                            .setNegativeButton("Don't copy", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    doRestore(file, false);
-                                }
-                            })
-                            .setNeutralButton(Resources.string.common_word_cancel, null)
-                            .create().show();
-                } else {
-                    doRestore(file, false);
-                }
-
+            if (local_libs) {
+                new AlertDialog.Builder(act)
+                        .setTitle("Warning")
+                        .setMessage("Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?")
+                        .setPositiveButton("Copy", (dialog, which) -> doRestore(file, true))
+                        .setNegativeButton("Don't copy", (dialog, which) -> doRestore(file, false))
+                        .setNeutralButton(Resources.string.common_word_cancel, null)
+                        .create().show();
+            } else {
+                doRestore(file, false);
             }
         });
+
         fpd.show();
     }
 
@@ -188,10 +160,8 @@ public class BackupRestoreManager {
 
             @Override
             protected String doInBackground(String... params) {
-
                 //changed in 6.3.0 fix1
                 bm = new BackupFactory(lC.b()/*BackupFactory.getNewScId()*/);
-
                 bm.setBackupLocalLibs(restoreLocalLibs);
 
                 try {
@@ -206,28 +176,21 @@ public class BackupRestoreManager {
 
             @Override
             protected void onPostExecute(String _result) {
-
                 dlg.dismiss();
 
-                if (bm.isRestoreSuccess() && !error) {
-
-                    if (gc != null) {
-                        //refreshes the main list
-                        gc.g();
-
-                        //toast
-                        bB.a(act, "Restored successfully", 0).show();
-                    } else {
-                        bB.a(act, "Restored successfully. You can refresh the list", 1).show();
-                    }
-
-                } else {
+                if (!bm.isRestoreSuccess() || error) {
                     bB.a(act, "Couldn't restore: " + bm.error, 0).show();
+                    return;
+                }
+
+                if (gc != null) {
+                    // Refreshes the main list
+                    gc.g();
+                    bB.a(act, "Restored successfully", 0).show();
+                } else {
+                    bB.a(act, "Restored successfully. You can refresh the list", 1).show();
                 }
             }
-
         }.execute("");
     }
-
-
 }

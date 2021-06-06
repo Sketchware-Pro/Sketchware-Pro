@@ -1,7 +1,5 @@
 package mod.hey.studios.project.custom_blocks;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.ViewGroup;
@@ -18,6 +16,8 @@ import java.util.ArrayList;
 import a.a.a.Rs;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 
+import static mod.SketchwareUtil.getDip;
+
 public class CustomBlocksDialog {
 
     /* Note by Hey! Studios DEV */
@@ -29,9 +29,11 @@ public class CustomBlocksDialog {
 
     public static void show(Context c, String sc_id) {
         ScrollView background = new ScrollView(c);
+
         background.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+
         background.setPadding(
                 (int) getDip(24),
                 (int) getDip(8),
@@ -54,7 +56,9 @@ public class CustomBlocksDialog {
             noteNone.setText("None");
             noteNone.setTextColor(0xff000000);
             noteNone.setTextSize(14f);
+
             blockContainer.addView(noteNone);
+
         } else {
             for (int i = 0; i < list.size(); i++) {
                 BlockBean block = list.get(i);
@@ -82,12 +86,14 @@ public class CustomBlocksDialog {
         LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) getDip(1));
+
         prm.setMargins(
                 0,
                 (int) getDip(20),
                 0,
                 (int) getDip(10)
         );
+
         lin.setLayoutParams(prm);
         lin.setBackgroundColor(0xff9e9e9e);
         lin.setOrientation(LinearLayout.VERTICAL);
@@ -100,19 +106,19 @@ public class CustomBlocksDialog {
         tw.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
+
         tw.setTextColor(0xff424242);
         tw.setTextSize(14f);
 
         String append = "";
 
         if (BlockLoader.getBlockInfo(bean.opCode).isMissing /*getCode().equals(BlockLoader.NOT_FOUND)*/) {
-            //this block is missing
+            // This block is missing
             if (BlockLoader.getBlockFromProject(sc_id, bean.opCode).isMissing) {
                 append = " (Missing)";
             } else {
                 append = " (Found in data/" + sc_id + "/custom_blocks)";
             }
-
         }
 
         tw.setText(bean.opCode + append);
@@ -122,6 +128,7 @@ public class CustomBlocksDialog {
                 0,
                 (int) getDip(10)
         );
+
         return tw;
     }
 
@@ -133,8 +140,10 @@ public class CustomBlocksDialog {
                         var1.spec,
                         var1.type,
                         var1.typeName,
-                        var1.opCode);
+                        var1.opCode
+                );
         var2.e = var1.color;
+
         return var2;
     }
 }
