@@ -10,17 +10,12 @@ import mod.hilal.saif.blocks.BlocksHandler;
 import mod.hilal.saif.lib.FileUtil;
 
 public class ExtraBlockFile {
-    public static ArrayList getExtraBlockData() {
-        ArrayList arrayList = (ArrayList) new Gson().fromJson(getExtraBlockFile(), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-
-        }.getType());
-        ArrayList arrayList2 = new ArrayList();
+    public static ArrayList<HashMap<String, Object>> getExtraBlockData() {
+        ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(getExtraBlockFile(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
+        ArrayList<HashMap<String, Object>> arrayList2 = new ArrayList<>();
         BlocksHandler.builtInBlocks(arrayList2);
-        if (arrayList2.size() > 0) {
-            for (int i = 0; i < arrayList2.size(); i++) {
-                arrayList.add(arrayList2.get(i));
-            }
-        }
+
+        arrayList.addAll(arrayList2);
         return arrayList;
     }
 

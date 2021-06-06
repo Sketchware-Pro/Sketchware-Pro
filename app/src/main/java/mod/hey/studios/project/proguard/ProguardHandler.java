@@ -13,21 +13,18 @@ import mod.agus.jcoderz.lib.FileUtil;
 
 public class ProguardHandler {
 
-    public static final Type type = (new TypeToken<HashMap<String, String>>() {
-    }).getType();
-    public static final Type type2 = (new TypeToken<ArrayList<String>>() {
-    }).getType();
+    public static final Type hashMapStringStringType = (new TypeToken<HashMap<String, String>>() {}).getType();
+    public static final Type arrayListStringType = (new TypeToken<ArrayList<String>>() {}).getType();
     public static String ANDROID_PROGUARD_RULES_PATH = createAndroidRules();
     public static String DEFAULT_PROGUARD_RULES_PATH = "";
     private final String config_path;
     private final String fm_config_path;
-    private final String sc_id;
 
     public ProguardHandler(String sc_id) {
-        this.sc_id = sc_id;
         DEFAULT_PROGUARD_RULES_PATH = createDefaultRules(sc_id);
         config_path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/proguard");
         fm_config_path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/proguard_fm");
+
         if (!FileUtil.isExistFile(config_path)) {
             FileUtil.writeFile(config_path, getDefaultConfig());
         }
@@ -35,6 +32,7 @@ public class ProguardHandler {
 
     private static String createAndroidRules() {
         String rulePath = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/android-proguard-rules.pro");
+
         if (!FileUtil.isExistFile(rulePath)) {
             FileUtil.writeFile(rulePath, "-dontusemixedcaseclassnames\n-dontskipnonpubliclibraryclasses\n-verbose\n\n-dontoptimize\n-dontpreverify\n\n-keepattributes *Annotation*\n-keep public class com.google.vending.licensing.ILicensingService\n-keep public class com.android.vending.licensing.ILicensingService\n\n-keepclasseswithmembernames class * {\n    native <methods>;\n}\n\n-keepclassmembers public class * extends android.view.View {\n   void set*(***);\n   *** get*();\n}\n\n-keepclassmembers class * extends android.app.Activity {\n   public void *(android.view.View);\n}\n\n-keepclassmembers enum * {\n    public static **[] values();\n    public static ** valueOf(java.lang.String);\n}\n\n-keepclassmembers class * implements android.os.Parcelable {\n  public static final android.os.Parcelable$Creator CREATOR;\n}\n\n-keepclassmembers class **.R$* {\n    public static <fields>;\n}\n\n-dontwarn android.support.**\n\n-keep class android.support.annotation.Keep\n\n-keep @android.support.annotation.Keep class * {*;}\n\n-keepclasseswithmembers class * {\n    @android.support.annotation.Keep <methods>;\n}\n\n-keepclasseswithmembers class * {\n    @android.support.annotation.Keep <fields>;\n}\n\n-keepclasseswithmembers class * {\n    @android.support.annotation.Keep <init>(...);\n}\n\n-dontwarn android.arch.**\n-dontwarn android.lifecycle.**\n-keep class android.arch.** { *; }\n-keep class android.lifecycle.** { *; }\n\n-dontwarn androidx.arch.**\n-dontwarn androidx.lifecycle.**\n-keep class androidx.arch.** { *; }\n-keep class androidx.lifecycle.** { *; }\n");
         }
@@ -44,6 +42,7 @@ public class ProguardHandler {
 
     private static String createDefaultRules(String sc_id) {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/proguard-rules.pro");
+
         if (!FileUtil.isExistFile(path)) {
             FileUtil.writeFile(path, "-repackageclasses\n-ignorewarnings\n-dontwarn\n-dontnote");
         }
@@ -53,8 +52,10 @@ public class ProguardHandler {
 
     private String getDefaultConfig() {
         HashMap<String, String> defaultConfig = new HashMap<>();
+
         defaultConfig.put("enabled", "false");
         defaultConfig.put("debug", "false");
+
         return new Gson().toJson(defaultConfig);
     }
 
@@ -66,14 +67,14 @@ public class ProguardHandler {
         boolean debugFiles = true;
         if (FileUtil.isExistFile(config_path)) {
             try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), type);
-                if (config.containsKey("debug")) {
-                    if (config.get("debug") != null) {
-                        debugFiles = config.get("debug").equals("true");
-                    }
-                } else {
-                    return false;
+                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
+
+                if (!config.containsKey("debug")) return false;
+
+                if (config.get("debug") != null) {
+                    debugFiles = config.get("debug").equals("true");
                 }
+
             } catch (Exception e) {
                 debugFiles = false;
             }
@@ -86,12 +87,14 @@ public class ProguardHandler {
         boolean proguardEnabled = true;
         if (FileUtil.isExistFile(config_path)) {
             try {
-                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), type);
+                HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
+
                 if (config.containsKey("enabled")) {
                     proguardEnabled = config.get("enabled").equals("true");
                 } else {
                     proguardEnabled = false;
                 }
+
             } catch (Exception e) {
                 proguardEnabled = false;
             }
@@ -101,8 +104,9 @@ public class ProguardHandler {
     }
 
     public void setProguardEnabled(boolean proguardEnabled) {
-        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), type);
+        HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
         config.put("enabled", String.valueOf(proguardEnabled));
+
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }
 
@@ -110,23 +114,24 @@ public class ProguardHandler {
         boolean enabled;
         if (isProguardEnabled() && FileUtil.isExistFile(fm_config_path)) {
             String configContent = FileUtil.readFile(fm_config_path);
+
             if (configContent.isEmpty()) {
                 return false;
             }
 
             try {
-                enabled = ((ArrayList<String>) new Gson().fromJson(configContent, type2)).contains(library);
+                enabled = ((ArrayList<String>) new Gson().fromJson(configContent, arrayListStringType)).contains(library);
                 return enabled;
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) { }
         }
 
         return false;
     }
 
     public void setDebugEnabled(boolean debugEnabled) {
-        HashMap<String, Object> config = new Gson().fromJson(FileUtil.readFile(config_path), type);
+        HashMap<String, Object> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
         config.put("debug", String.valueOf(debugEnabled));
+
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }
 
