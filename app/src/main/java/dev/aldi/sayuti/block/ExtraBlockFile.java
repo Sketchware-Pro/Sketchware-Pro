@@ -15,9 +15,8 @@ public class ExtraBlockFile {
         ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(getExtraBlockFile(), Helper.TYPE_MAP_LIST);
         ArrayList<HashMap<String, Object>> arrayList2 = new ArrayList<>();
         BlocksHandler.builtInBlocks(arrayList2);
-        if (arrayList2.size() > 0) {
-            arrayList.addAll(arrayList2);
-        }
+
+        arrayList.addAll(arrayList2);
         return arrayList;
     }
 

@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
@@ -100,7 +99,6 @@ public class BackupFactory {
             raf.write(encrypted);
 
             return true;
-
         } catch (Exception e) {
             return false;
         }
@@ -112,7 +110,7 @@ public class BackupFactory {
 
         ArrayList<String> list = new ArrayList<>();
         FileUtil.listDir(myscList.getAbsolutePath(), list);
-        Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
+        list.sort(String.CASE_INSENSITIVE_ORDER);
 
         int id = list.size() == 0 ? 600 : Integer.parseInt(new File(list.get(list.size() - 1)).getName());
         return String.valueOf(id + 1);
@@ -204,9 +202,7 @@ public class BackupFactory {
 
     public static void copy(File source, File destination) {
         if (source.isDirectory()) {
-            if (!destination.exists()) {
-                destination.mkdirs();
-            }
+            if (!destination.exists()) destination.mkdirs();
 
             String[] files = source.list();
 
@@ -218,9 +214,7 @@ public class BackupFactory {
             }
         } else {
             //skip .nomedia files
-            if (source.getName().equals(".nomedia")) {
-                return;
-            }
+            if (source.getName().equals(".nomedia")) return;
 
             InputStream in = null;
             OutputStream out = null;
@@ -237,15 +231,13 @@ public class BackupFactory {
                 }
             } catch (Exception e) {
                 try {
-                    if (in != null)
-                        in.close();
+                    if (in != null) in.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
 
                 try {
-                    if (out != null)
-                        out.close();
+                    if (out != null) out.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -258,31 +250,22 @@ public class BackupFactory {
         try {
             ZipInputStream zp = new ZipInputStream(new FileInputStream(new File(zipPath)));
 
-            ZipEntry en = null;
+            ZipEntry en;
 
             while ((en = zp.getNextEntry()) != null) {
                 String name = en.getName();
 
                 if (name.equals(fileName) || name.startsWith(fileName + File.separator)) {
-                    try {
-                        zp.close();
-                    } catch (Exception e) {
-                    }
-
+                    zp.close();
                     return true;
                 }
             }
 
-            try {
-                zp.close();
-            } catch (Exception e) {
-            }
+            zp.close();
 
-        } catch (Exception e) {
-        }
+        } catch (Exception ignored) { }
 
         return false;
-
     }
 
     /************************ BACKUP ************************/
@@ -291,30 +274,30 @@ public class BackupFactory {
 
         createBackupsFolder();
 
-        //init temporary backup folder
+        // Init temporary backup folder
         File outFolder = new File(getBackupDir(),
                 app_name);
 
-        //init output zip file
+        // Init output zip file
         File outZip = new File(getBackupDir(),
                 app_name + "." + EXTENSION);
 
-        //create a duplicate if already exists
+        // Create a duplicate if already exists
         if (outFolder.exists() || outZip.exists()) {
             backup(app_name + "_d");
             return;
         }
 
-        //create temp folder
+        // Create temp folder
         FileUtil.makeDir(outFolder.getAbsolutePath());
 
-        //copy data
+        // Copy data
         File dataF = new File(outFolder, "data");
         FileUtil.makeDir(dataF.getAbsolutePath());
         //6.3.0 fix1
         copySafe(getDataDir(), dataF);
 
-        //copy res
+        // Copy res
         File resF = new File(outFolder, "resources");
         FileUtil.makeDir(resF.getAbsolutePath());
 
@@ -325,7 +308,7 @@ public class BackupFactory {
             //6.3.0 fix1
             copySafe(getResDir(subfolder), resSubf);
 
-            //write an empty file inside each folder (except icons)
+            // Write an empty file inside each folder (except icons)
             if (!subfolder.equals("icons")) {
                 //6.3.0 fix1
                 createNomediaFileIn(resSubf);
@@ -333,11 +316,11 @@ public class BackupFactory {
             }
         }
 
-        //copy project
+        // Copy project
         File projectF = new File(outFolder, "project");
         copy(getProjectPath(), projectF);
 
-        //find local libs used and include them in the backup
+        // Find local libs used and include them in the backup
         if (backupLocalLibs) {
             File localLibs = getLocalLibsPath();
 
@@ -356,13 +339,11 @@ public class BackupFactory {
 
                     }
 
-                } catch (Exception ignored) {
-
-                }
+                } catch (Exception ignored) { }
             }
         }
 
-        //find custom blocks used and include them in the backup
+        // Find custom blocks used and include them in the backup
         if (backupCustomBlocks) {
             CustomBlocksManager cbm = new CustomBlocksManager(sc_id);
 
@@ -377,11 +358,11 @@ public class BackupFactory {
             FileUtil.writeFile(customBlocksF.getAbsolutePath(), json);
         }
 
-        //zip final folder
+        // Zip final folder
         try {
             zipFolder(outFolder, outZip);
         } catch (Exception e) {
-            //error occurred
+            // An error occurred
 
             StringBuilder sb = new StringBuilder();
             for (StackTraceElement el : e.getStackTrace()) {
@@ -392,15 +373,13 @@ public class BackupFactory {
             error = sb.toString();
             outPath = null;
 
-            // throw e;
-
             return;
         }
 
-        //delete the temporary folder
+        // Delete the temporary folder
         FileUtil.deleteFile(outFolder.getAbsolutePath());
 
-        //put outZip to global variable
+        // Put outZip to global variable
         outPath = outZip;
     }
 
@@ -431,93 +410,83 @@ public class BackupFactory {
 
         createBackupsFolder();
 
-        //init temporary restore folder for unzipping
+        // Init temporary restore folder for unzipping
         File outFolder = new File(getBackupDir(),
                 name);
 
-        //create a duplicate if already exists
+        // Create a duplicate if already exists
         if (outFolder.exists()) {
             restore(swbPath, name + "_d");
             return;
         }
 
-        //unzip
-        if (unzip(swbPath, outFolder)) {
-
-            //init files
-            File project = new File(outFolder, "project");
-            File data = new File(outFolder, "data");
-            File res = new File(outFolder, "resources");
-
-            HashMap<String, Object> map = getProject(project);
-
-            if (map != null) {
-
-                //put new sc_id
-                map.put("sc_id", sc_id);
-
-                //write new file
-                if (writeEncrypted(project, new Gson().toJson(map))) {
-
-                    //copy data
-                    copy(data, getDataDir());
-
-                    //copy res
-                    for (String subfolder : resSubfolders) {
-                        File subf = new File(res, subfolder);
-
-                        copySafe(subf, getResDir(subfolder));
-                    }
-
-                    //create parent folder
-                    getProjectPath().getParentFile().mkdirs();
-
-                    //copy project
-                    copy(project, getProjectPath());
-
-
-                    //copy local libs if they do not exist
-                    if (backupLocalLibs) {
-
-                        File local_libs = new File(outFolder, "local_libs");
-
-                        if (local_libs.exists()) {
-                            for (File local_lib : local_libs.listFiles()) {
-
-                                File local_lib_real_path = new File(getAllLocalLibsDir(), local_lib.getName());
-
-                                if (!local_lib_real_path.exists()) {
-                                    local_lib_real_path.mkdirs();
-                                    copy(local_lib, local_lib_real_path);
-                                }
-                            }
-                        }
-                    }
-
-
-                    //delete temp folder
-                    FileUtil.deleteFile(outFolder.getAbsolutePath());
-
-                    restoreSuccess = true;
-                    return;
-
-                } else {
-                    error = "couldn't write to the project file";
-                    restoreSuccess = false;
-                    return;
-                }
-
-            } else {
-                error = "couldn't read the project file";
-                restoreSuccess = false;
-                return;
-            }
-
-        } else {
+        if (!unzip(swbPath, outFolder)) {
             error = "couldn't unzip the backup";
             restoreSuccess = false;
             return;
         }
+
+        // Unzip
+        // Init files
+        File project = new File(outFolder, "project");
+        File data = new File(outFolder, "data");
+        File res = new File(outFolder, "resources");
+
+        HashMap<String, Object> map = getProject(project);
+
+        if (map == null) {
+            error = "couldn't read the project file";
+            restoreSuccess = false;
+            return;
+        }
+
+        // Put new sc_id
+        map.put("sc_id", sc_id);
+
+        if (!writeEncrypted(project, new Gson().toJson(map))) {
+            error = "couldn't write to the project file";
+            restoreSuccess = false;
+            return;
+        }
+
+        // Write new file
+        // Copy data
+        copy(data, getDataDir());
+
+        // Copy res
+        for (String subfolder : resSubfolders) {
+            File subf = new File(res, subfolder);
+
+            copySafe(subf, getResDir(subfolder));
+        }
+
+        // Create parent folder
+        getProjectPath().getParentFile().mkdirs();
+
+        // Copy project
+        copy(project, getProjectPath());
+
+        // Copy local libs if they do not exist
+        if (backupLocalLibs) {
+            File local_libs = new File(outFolder, "local_libs");
+
+            if (local_libs.exists()) {
+                for (File local_lib : local_libs.listFiles()) {
+
+                    File local_lib_real_path = new File(getAllLocalLibsDir(), local_lib.getName());
+
+                    if (!local_lib_real_path.exists()) {
+                        local_lib_real_path.mkdirs();
+                        copy(local_lib, local_lib_real_path);
+                    }
+                }
+            }
+        }
+
+        // Delete temp folder
+        FileUtil.deleteFile(outFolder.getAbsolutePath());
+
+        restoreSuccess = true;
     }
 
     public String getError() {
@@ -531,29 +500,25 @@ public class BackupFactory {
     /************************ SW METHODS ************************/
 
     private void createBackupsFolder() {
-        // create the backups folder if not exists
+        // Create the backups folder if it doesn't exist
         String backupsPath = getBackupDir();
 
         FileUtil.makeDir(backupsPath);
     }
 
     private File getDataDir() {
-        return new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/data/" + sc_id);
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/" + sc_id);
     }
 
     private File getResDir(String subfolder) {
-        return new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/resources/" + subfolder + "/" + sc_id);
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/resources/" + subfolder + "/" + sc_id);
     }
 
     private File getProjectPath() {
-        return new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/mysc/list/" + sc_id + "/project");
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/mysc/list/" + sc_id + "/project");
     }
 
     private File getLocalLibsPath() {
-        return new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/data/" + sc_id + "/local_library");
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/" + sc_id + "/local_library");
     }
 }
