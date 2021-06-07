@@ -2,7 +2,6 @@ package mod.hey.studios.project.proguard;
 
 import com.besome.sketch.design.DesignActivity.a;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -10,11 +9,12 @@ import java.util.HashMap;
 
 import a.a.a.Dp;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 
 public class ProguardHandler {
 
-    public static final Type hashMapStringStringType = (new TypeToken<HashMap<String, String>>() {}).getType();
-    public static final Type arrayListStringType = (new TypeToken<ArrayList<String>>() {}).getType();
+    public static final Type hashMapStringStringType = Helper.TYPE_STRING_MAP;
+    public static final Type arrayListStringType = Helper.TYPE_STRING;
     public static String ANDROID_PROGUARD_RULES_PATH = createAndroidRules();
     public static String DEFAULT_PROGUARD_RULES_PATH = "";
     private final String config_path;
@@ -122,7 +122,8 @@ public class ProguardHandler {
             try {
                 enabled = ((ArrayList<String>) new Gson().fromJson(configContent, arrayListStringType)).contains(library);
                 return enabled;
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         }
 
         return false;
