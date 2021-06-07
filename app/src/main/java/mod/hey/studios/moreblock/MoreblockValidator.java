@@ -41,25 +41,20 @@ public class MoreblockValidator extends MB {
         int num = 1;
         if (length < 1) {
             b.setErrorEnabled(true);
-            TextInputLayout textInputLayout = b;
             xB b = xB.b();
-            Context context = a;
             Object[] objArr = new Object[1];
             objArr[0] = num;
-            textInputLayout.setError(b.a(context, 2131625433, objArr));
+            this.b.setError(b.a(a, 2131625433, objArr));
             d = false;
         } else if (charSequence.toString().trim().length() > 60) {
             b.setErrorEnabled(true);
-            TextInputLayout textInputLayout2 = b;
             xB b2 = xB.b();
-            Context context2 = a;
             Object[] objArr2 = new Object[1];
             objArr2[0] = 60;
-            textInputLayout2.setError(b2.a(context2, 2131625432, objArr2));
+            b.setError(b2.a(a, 2131625432, objArr2));
             d = false;
         } else {
-            String str = i;
-            if (str != null && str.length() > 0 && charSequence.toString().equals(i)) {
+            if (i != null && i.length() > 0 && charSequence.toString().equals(i)) {
                 b.setErrorEnabled(false);
                 d = true;
             } else if (h.contains(charSequence.toString())) {
@@ -67,15 +62,14 @@ public class MoreblockValidator extends MB {
                 b.setError(xB.b().a(a, 2131624950, new Object[0]));
                 d = false;
             } else {
-                String[] strArr = g;
-                int length2 = strArr.length;
+                int length2 = g.length;
                 int i5 = 0;
                 while (true) {
                     if (i5 >= length2) {
                         z = false;
                         break;
                     }
-                    if (charSequence.toString().equals(strArr[i5])) {
+                    if (charSequence.toString().equals(g[i5])) {
                         z = true;
                         break;
                     }
@@ -87,15 +81,14 @@ public class MoreblockValidator extends MB {
                     d = false;
                     return;
                 }
-                String[] strArr2 = f;
-                int length3 = strArr2.length;
+                int length3 = f.length;
                 int i6 = 0;
                 while (true) {
                     if (i6 >= length3) {
                         z2 = false;
                         break;
                     }
-                    if (charSequence.toString().equals(strArr2[i6])) {
+                    if (charSequence.toString().equals(f[i6])) {
                         z2 = true;
                         break;
                     }
@@ -120,12 +113,10 @@ public class MoreblockValidator extends MB {
                     }
                     if (charSequence.toString().trim().length() < 1) {
                         b.setErrorEnabled(true);
-                        TextInputLayout textInputLayout3 = b;
                         xB b3 = xB.b();
-                        Context context3 = a;
                         Object[] objArr3 = new Object[1];
                         objArr3[0] = num;
-                        textInputLayout3.setError(b3.a(context3, 2131625433, objArr3));
+                        b.setError(b3.a(a, 2131625433, objArr3));
                         d = false;
                     }
                 }
