@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -26,12 +28,12 @@ public class Helper {
     public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {}.getType();
 
     public static void fixFileprovider() {
-        try {
-            Class.forName("android.os.StrictMode").getMethod("disableDeathOnFileUriExposure").invoke(null);
-        } catch (ClassNotFoundException e) {
-            throw new NoClassDefFoundError(e.getMessage());
-        } catch (Exception e) {
-            Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
+                StrictMode.class.getMethod("disableDeathOnFileUriExposure").invoke(null);
+            } catch (Exception e) {
+                Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
+            }
         }
     }
 
