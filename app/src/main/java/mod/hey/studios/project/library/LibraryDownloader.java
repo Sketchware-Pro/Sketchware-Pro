@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.tools.r8.D8;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -37,183 +37,213 @@ import mod.hey.studios.lib.JarCheck;
 import mod.hey.studios.lib.prdownloader.PRDownloader;
 import mod.hey.studios.lib.prdownloader.PRDownloader.OnDownloadListener;
 import mod.hey.studios.lib.prdownloader.PRDownloader.Status;
-
-//import com.android.dx.command.Main;
-//import com.mycompany.myapp.R;
+import mod.hey.studios.util.Helper;
 
 //changed in 6.3.0
 
 public class LibraryDownloader {
-	Activity context;
 
+    private final String downloadPath;
+    private final ArrayList<String> repoUrls = new ArrayList<>();
+    private final ArrayList<String> repoNames = new ArrayList<>();
+    Activity context;
     boolean use_d8;
+    private OnCompleteListener listener;
+    private AlertDialog dialog;
+    private boolean isAarAvailable = false, isAarDownloaded = false;
+    private int downloadId;
+    private String libName = "";
+    private String currentRepo = "";
+    private double counter = 0;
+    private ArrayList<HashMap<String, Object>> repoMap = new ArrayList<>();
+    private ProgressDialog progressDialog;
 
-	public LibraryDownloader(Activity context, boolean use_d8) {
-		this.context = context;
+    public LibraryDownloader(Activity context, boolean use_d8) {
+        this.context = context;
         this.use_d8 = use_d8;
 
-		downloadPath = FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs/";
-	}
+        downloadPath = FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs/";
+    }
 
-	public interface OnCompleteListener {
-		void onComplete();
-	}
+    private static void mkdirs(File file, String str) {
+        File file2 = new File(file, str);
+        if (!file2.exists()) {
+            file2.mkdirs();
+        }
+    }
 
-	private OnCompleteListener listener;
+    private static String dirpart(String str) {
+        int lastIndexOf = str.lastIndexOf(File.separatorChar);
+        if (lastIndexOf == -1) {
+            return null;
+        }
 
-	private AlertDialog dialog;
+        return str.substring(0, lastIndexOf);
+    }
 
-	@SuppressLint("ResourceType")
-	public void showDialog(OnCompleteListener listener) {
-		this.listener = listener;
+    private static void extractFile(ZipInputStream zipInputStream, File file, String str) throws IOException {
+        byte[] bArr = new byte[4096];
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(file, str)));
+        while (true) {
+            int read = zipInputStream.read(bArr);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		LayoutInflater inflater = context.getLayoutInflater();
-		View view = inflater.inflate(0x7F0B01DF /* R.layout.library_downloader_dialog */, null);
+            if (read == -1) {
+                bufferedOutputStream.close();
+                return;
+            }
 
-		final LinearLayout linear1 = view.findViewById(0x7F080680); // R.id.linear1
-		final LinearLayout linear3 = view.findViewById(0x7F0806FE); // R.id.linear3
-		final ProgressBar progressbar1 = view.findViewById(0x7F0806FF); // R.id.progressbar1
-		final LinearLayout linear4 = view.findViewById(0x7F080700); // R.id.linear4
-		final TextView textview3 = view.findViewById(0x7F080682); // R.id.textview3
-		final LinearLayout linear8 = view.findViewById(0x7F080701); // R.id.linear8
-		final LinearLayout linear9 = view.findViewById(0x7F08068F); // R.id.linear9
-		final LinearLayout linear10 = view.findViewById(0x7F080692); // R.id.linear10
-		final LinearLayout linear11 = view.findViewById(0x7F080694); // R.id.linear11
-		final EditText edittext1 = view.findViewById(0x7F080702); // R.id.edittext1
+            bufferedOutputStream.write(bArr, 0, read);
+        }
+    }
 
-		linear1.removeView(linear3);
+    @SuppressLint("ResourceType")
+    public void showDialog(OnCompleteListener listener) {
+        this.listener = listener;
 
-		builder.setView(view);
-		dialog = builder.create();
-		dialog.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = context.getLayoutInflater();
+        View view = inflater.inflate(0x7F0B01DF /* R.layout.library_downloader_dialog */, null);
 
-		linear8.setOnClickListener(p1 -> {
-			if (edittext1.getText().toString().trim().isEmpty()) {
-				bB.a(context, "Dependency can't be empty", 0).show();
+        final LinearLayout linear1 = view.findViewById(0x7F080680); // R.id.linear1
+        final LinearLayout linear3 = view.findViewById(0x7F0806FE); // R.id.linear3
+        final ProgressBar progressbar1 = view.findViewById(0x7F0806FF); // R.id.progressbar1
+        final LinearLayout linear4 = view.findViewById(0x7F080681); // R.id.linear4
+        final TextView textview3 = view.findViewById(0x7F080682); // R.id.textview3
+        final LinearLayout linear8 = view.findViewById(0x7F080701); // R.id.linear8
+        final LinearLayout linear9 = view.findViewById(0x7F08068F); // R.id.linear9
+        final LinearLayout linear10 = view.findViewById(0x7F080692); // R.id.linear10
+        final LinearLayout linear11 = view.findViewById(0x7F080694); // R.id.linear11
+        final EditText edittext1 = view.findViewById(0x7F080702); // R.id.edittext1
 
-			} else if (!edittext1.getText().toString().contains(":")) {
-				bB.a(context, "Invalid dependency", 0).show();
+        linear1.removeView(linear3);
 
-			} else {
-				libName = downloadPath + _getLibName(edittext1.getText().toString());
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.show();
 
-				if (!FileUtil.isExistFile(libName)) {
-					FileUtil.makeDir(libName);
-				}
+        linear8.setOnClickListener(v1 -> {
+            if (edittext1.getText().toString().trim().isEmpty()) {
+                bB.a(context, "Dependency can't be empty", 0).show();
 
-				isAarDownloaded = false;
-				isAarAvailable = false;
+            } else if (!edittext1.getText().toString().contains(":")) {
+                bB.a(context, "Invalid dependency", 0).show();
 
-				_getRepository();
-				counter = 0;
-				currentRepo = repoUrls.get((int)counter);
+            } else {
+                libName = downloadPath + _getLibName(edittext1.getText().toString());
 
-				downloadId = _download(
-					currentRepo.concat(_getAarDownloadLink(edittext1.getText().toString())),
-					downloadPath,
-					_getLibName(edittext1.getText().toString()).concat(".zip"),
-					edittext1,
-					textview3,
-					linear3,
-					linear4,
-					   linear8,
-					linear9,
-					linear10,
-					linear11,
-					progressbar1
-				);
-			}
-		});
+                if (!FileUtil.isExistFile(libName)) {
+                    FileUtil.makeDir(libName);
+                }
 
-		linear9.setOnClickListener(p1 -> {
-			if (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
-				PRDownloader.pause(downloadId);
-			}
-		});
+                isAarDownloaded = false;
+                isAarAvailable = false;
 
-		linear10.setOnClickListener(p1 -> {
-			if (PRDownloader.getStatus(downloadId) == Status.PAUSED) {
-				PRDownloader.resume(downloadId);
-			}
-		});
+                _getRepository();
+                counter = 0;
+                currentRepo = repoUrls.get((int) counter);
 
-		linear11.setOnClickListener(p1 -> {
-			PRDownloader.cancel(downloadId);
-			edittext1.setEnabled(false);
-			dialog.dismiss();
-		});
-	}
+                downloadId = _download(
+                        currentRepo.concat(_getAarDownloadLink(edittext1.getText().toString())),
+                        downloadPath,
+                        _getLibName(edittext1.getText().toString()).concat(".zip"),
+                        edittext1,
+                        textview3,
+                        linear3,
+                        linear4,
+                        linear8,
+                        linear9,
+                        linear10,
+                        linear11,
+                        progressbar1
+                );
+            }
+        });
 
-	private String _getAarDownloadLink(String str) {
-		String[] split = str.split(":");
-		String str2 = "/";
+        linear9.setOnClickListener(v1 -> {
+            if (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
+                PRDownloader.pause(downloadId);
+            }
+        });
 
-		for (int i = 0; i < split.length - 1; i++) {
-			str2 = str2.concat(split[i].replace(".", "/") + "/");
-		}
+        linear10.setOnClickListener(v1 -> {
+            if (PRDownloader.getStatus(downloadId) == Status.PAUSED) {
+                PRDownloader.resume(downloadId);
+            }
+        });
 
-		return str2.concat(split[split.length - 1]).concat("/").concat(_getAarName(str));
-	}
+        linear11.setOnClickListener(v1 -> {
+            PRDownloader.cancel(downloadId);
+            edittext1.setEnabled(false);
+            dialog.dismiss();
+        });
+    }
 
-	private String _getAarName(String str) {
-		String[] split = str.split(":");
-		return split[split.length - 2] + "-" + split[split.length - 1] + ".aar";
-	}
+    private String _getAarDownloadLink(String str) {
+        String[] split = str.split(":");
+        String str2 = "/";
 
-	private String _getLibName(String str) {
-		String[] split = str.split(":");
-		return split[split.length - 2] + "_V_" + split[split.length - 1];
-	}
+        for (int i = 0; i < split.length - 1; i++) {
+            str2 = str2.concat(split[i].replace(".", "/") + "/");
+        }
 
-	private void _jar2dex(String _path) throws Exception {
-		try {
-			// 6.3.0
+        return str2.concat(split[split.length - 1]).concat("/").concat(_getAarName(str));
+    }
+
+    private String _getAarName(String str) {
+        String[] split = str.split(":");
+        return split[split.length - 2] + "-" + split[split.length - 1] + ".aar";
+    }
+
+    private String _getLibName(String str) {
+        String[] split = str.split(":");
+        return split[split.length - 2] + "_V_" + split[split.length - 1];
+    }
+
+    private void _jar2dex(String _path) throws Exception {
+        try {
+            // 6.3.0
             if (use_d8) {
                 File libs = new File(context.getFilesDir(), "libs");
 
-                ArrayList<String> cm = new ArrayList<String>() {{
-					add("--release");
-					add("--intermediate");
+                ArrayList<String> cm = new ArrayList<>();
+                cm.add("--release");
+                cm.add("--intermediate");
 
-					add("--lib");
-					add(new File(libs, "android.jar").getAbsolutePath());
+                cm.add("--lib");
+                cm.add(new File(libs, "android.jar").getAbsolutePath());
 
-					add("--classpath");
-					add(new File(libs, "jdk/rt.jar").getAbsolutePath());
+                cm.add("--classpath");
+                cm.add(new File(libs, "jdk/rt.jar").getAbsolutePath());
 
-					add("--output");
-					add(new File(_path).getParentFile().getAbsolutePath());
+                cm.add("--output");
+                cm.add(new File(_path).getParentFile().getAbsolutePath());
 
-					// Input
-					add(_path);
-				}};
+                // Input
+                cm.add(_path);
 
-                com.android.tools.r8.D8.main(cm.toArray(new String[0]));
+                D8.main(cm.toArray(new String[0]));
             } else {
-            	// 6.3.0 fix2
+                // 6.3.0 fix2
                 Main.dexOutputArrays = new ArrayList<>();
                 Main.dexOutputFutures = new ArrayList<>();
 
                 // dx
-                Main.main(new String[] {
-                              // 6.3.0 fix1
-                              // "--dex",
-                              "--debug",
-                              "--verbose",
-                              "--multi-dex",
-                              "--output=" + new File(_path).getParentFile().getAbsolutePath(),
-                              _path
-                          });
+                Main.main(new String[]{
+                        // 6.3.0 fix1
+                        // "--dex",
+                        "--debug",
+                        "--verbose",
+                        "--multi-dex",
+                        "--output=" + new File(_path).getParentFile().getAbsolutePath(),
+                        _path
+                });
             }
-		} catch (java.lang.Exception e) {
+        } catch (Exception e) {
             throw e;
-		}
-	}
+        }
+    }
 
-	private boolean isAarAvailable = false, isAarDownloaded = false;
-
-	private void _unZipFile(String str, String str2) {
+    private void _unZipFile(String str, String str2) {
         try {
             File file = new File(str2);
             ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(str));
@@ -246,304 +276,266 @@ public class LibraryDownloader {
         }
     }
 
-	private static void mkdirs(File file, String str) {
-        File file2 = new File(file, str);
-        if (!file2.exists()) {
-            file2.mkdirs();
-        }
+    private String getLastSegment(String path) {
+        return Uri.parse(path).getLastPathSegment();
     }
 
-	private static String dirpart(String str) {
-        int lastIndexOf = str.lastIndexOf(File.separatorChar);
-        if (lastIndexOf == -1) {
-            return null;
-        }
+    private String findPackageName(String path, String defaultValue) {
+        ArrayList<String> files = new ArrayList<>();
+        FileUtil.listDir(path, files);
 
-        return str.substring(0, lastIndexOf);
-    }
+        // Method 1: use manifest
+        for (String f : files) {
+            if (getLastSegment(f).equals("AndroidManifest.xml")) {
+                String content = FileUtil.readFile(f);
 
-	private static void extractFile(ZipInputStream zipInputStream, File file, String str) throws IOException {
-        byte[] bArr = new byte[4096];
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(file, str)));
-        while (true) {
-            int read = zipInputStream.read(bArr);
+                Pattern p = Pattern.compile("<manifest.*package=\"(.*?)\"", Pattern.DOTALL);
+                Matcher m = p.matcher(content);
 
-            if (read == -1) {
-                bufferedOutputStream.close();
-                return;
+                if (m.find()) {
+                    return m.group(1);
+                }
             }
-
-            bufferedOutputStream.write(bArr, 0, read);
         }
+
+        // Method 2: screw manifest. use dependency
+        if (defaultValue.contains(":")) {
+            return defaultValue.split(":")[0];
+        }
+
+        // Method 3: nothing worked. return empty string (lmao) (yeah lmao)
+        return "";
     }
 
-	private String getLastSegment(String path) {
-		return Uri.parse(path).getLastPathSegment();
-	}
-
-	private String findPackageName(String path, String defaultValue) {
-		ArrayList<String> files = new ArrayList<>();
-		FileUtil.listDir(path, files);
-
-		// Method 1: use manifest
-		for (String f : files) {
-			if (getLastSegment(f).equals("AndroidManifest.xml")) {
-				String content = FileUtil.readFile(f);
-
-				Pattern p = Pattern.compile("<manifest.*package=\"(.*?)\"", Pattern.DOTALL);
-				Matcher m = p.matcher(content);
-
-				if (m.find()) {
-					return m.group(1);
-				}
-			}
-		}
-
-		// Method 2: screw manifest. use dependency
-		if (defaultValue.contains(":")) {
-			return defaultValue.split(":")[0];
-		}
-
-		// Method 3: nothing worked. return empty string (lmao)
-		return "";
-	}
-
-
-	private void deleteUnnecessaryFiles(String path) {
+    private void deleteUnnecessaryFiles(String path) {
 
         // 6.3.0
-		String[] list = {
-			"res",
-			"classes.dex",
-			"classes.jar",
-			"config",
-			"AndroidManifest.xml",
-            "jni",
-            "assets",
-            "proguard.txt"
-		};
+        String[] list = {
+                "res",
+                "classes.dex",
+                "classes.jar",
+                "config",
+                "AndroidManifest.xml",
+                "jni",
+                "assets",
+                "proguard.txt"
+        };
 
-		List<String> validFiles = new ArrayList<>(Arrays.asList(list));
-		ArrayList<String> files = new ArrayList<>();
-		FileUtil.listDir(path, files);
+        List<String> validFiles = new ArrayList<>(Arrays.asList(list));
+        ArrayList<String> files = new ArrayList<>();
+        FileUtil.listDir(path, files);
 
-		for (String f : files) {
+        for (String f : files) {
             // 6.3.0
             // Skip all dex files
             String p = getLastSegment(f);
 
             if (p.startsWith("classes") && p.endsWith(".dex")) continue;
             if (!validFiles.contains(p)) FileUtil.deleteFile(f);
-		}
-	}
+        }
+    }
 
-	private int _download(
-		final String url,
-		final String path,
-		final String name,
+    private int _download(
+            final String url,
+            final String path,
+            final String name,
 
-		final EditText edittext1 /* edittext */,
-		final TextView textview3 /* info */,
-		final LinearLayout linear3, /* progressbar linear */
-		final LinearLayout linear4, /* edittext linear */
+            final EditText edittext1 /* edittext */,
+            final TextView textview3 /* info */,
+            final LinearLayout linear3, /* progressbar linear */
+            final LinearLayout linear4, /* edittext linear */
 
-		final LinearLayout linear8 /* start */,
-		final LinearLayout linear9 /* pause */,
-		final LinearLayout linear10 /* resume */,
-		final LinearLayout linear11 /* cancel */,
+            final LinearLayout linear8 /* start */,
+            final LinearLayout linear9 /* pause */,
+            final LinearLayout linear10 /* resume */,
+            final LinearLayout linear11 /* cancel */,
 
-		final ProgressBar progressbar1) {
+            final ProgressBar progressbar1) {
 
-		return PRDownloader.download(url, path, name).build().setOnStartOrResumeListener(() -> {
-				textview3.setText("Library found. Downloading...");
+        return PRDownloader
+                .download(url, path, name)
+                .build()
+                .setOnStartOrResumeListener(() -> {
+                    textview3.setText("Library found. Downloading...");
 
-				linear4.removeAllViews();
-				linear4.addView(linear3);
+                    linear4.removeAllViews();
+                    linear4.addView(linear3);
 
-				linear8.setEnabled(false);
-				linear9.setEnabled(true);
-				linear10.setEnabled(false);
-				linear11.setEnabled(true);
-			})
-			.setOnPauseListener(() -> {
-				textview3.setText("Downloading paused.");
+                    linear8.setEnabled(false);
+                    linear9.setEnabled(true);
+                    linear10.setEnabled(false);
+                    linear11.setEnabled(true);
+                })
+                .setOnPauseListener(() -> {
+                    textview3.setText("Downloading paused.");
 
-				linear8.setEnabled(false);
-				linear9.setEnabled(false);
-				linear10.setEnabled(true);
-				linear11.setEnabled(true);
-			})
-			.setOnCancelListener(() -> {
-				linear8.setEnabled(true);
-				linear9.setEnabled(false);
-				linear10.setEnabled(false);
-				linear11.setEnabled(false);
-			})
-			.setOnProgressListener(progress -> {
-				int progressPercent = (int) (progress.currentBytes * 100 / progress.totalBytes);
-				progressbar1.setProgress(progressPercent);
-			})
-			.start(new OnDownloadListener() {
-				@Override
-				public void onDownloadComplete() {
-					isAarAvailable = true;
-					isAarDownloaded = true;
+                    linear8.setEnabled(false);
+                    linear9.setEnabled(false);
+                    linear10.setEnabled(true);
+                    linear11.setEnabled(true);
+                })
+                .setOnCancelListener(() -> {
+                    linear8.setEnabled(true);
+                    linear9.setEnabled(false);
+                    linear10.setEnabled(false);
+                    linear11.setEnabled(false);
+                })
+                .setOnProgressListener(progress -> {
+                    int progressPercent = (int) (progress.currentBytes * 100 / progress.totalBytes);
+                    progressbar1.setProgress(progressPercent);
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                        isAarAvailable = true;
+                        isAarDownloaded = true;
 
-					StringBuilder path2 = new StringBuilder();
-					//path2.append(FileUtil.getExternalStorageDir());
-					//path2.append("/Manager/libs/");
-					path2.append(downloadPath);
-					path2.append(_getLibName(edittext1.getText().toString()).concat(".zip"));
+                        StringBuilder path2 = new StringBuilder();
+                        //path2.append(FileUtil.getExternalStorageDir());
+                        //path2.append("/Manager/libs/");
+                        path2.append(downloadPath);
+                        path2.append(_getLibName(edittext1.getText().toString()).concat(".zip"));
 
-					if (isAarDownloaded && isAarAvailable) {
-						_unZipFile(path2.toString(), libName);
-						if (FileUtil.isExistFile(libName.concat("/classes.jar"))) {
-							if (use_d8 || JarCheck.checkJar(libName.concat("/classes.jar"), 44, 51)) {
-								textview3.setText("Download completed.");
+                        if (isAarDownloaded && isAarAvailable) {
+                            _unZipFile(path2.toString(), libName);
+                            if (FileUtil.isExistFile(libName.concat("/classes.jar"))) {
+                                if (use_d8 || JarCheck.checkJar(libName.concat("/classes.jar"), 44, 51)) {
+                                    textview3.setText("Download completed.");
 
-								String[] test = new String[]{libName.concat("/classes.jar")};
-								new BackTask().execute(test);
-								FileUtil.deleteFile(path2.toString());
+                                    String[] test = new String[]{libName.concat("/classes.jar")};
+                                    new BackTask().execute(test);
+                                    FileUtil.deleteFile(path2.toString());
 
-								FileUtil.writeFile(libName + "/config", findPackageName(libName + "/", edittext1.getText().toString()));
+                                    FileUtil.writeFile(libName + "/config", findPackageName(libName + "/", edittext1.getText().toString()));
 
-								deleteUnnecessaryFiles(libName + "/");
+                                    deleteUnnecessaryFiles(libName + "/");
 
-							} else {
-								textview3.setText("This jar is not supported by Dx since Dx only supports up to Java 1.7. In order to proceed, you need to switch to D8 (if your Android version is 8+)");
-								FileUtil.deleteFile(path2.toString());
-							}
-						} else {
-							textview3.setText("Library doesn't contain a jar file.");
-							FileUtil.deleteFile(path2.toString());
-						}
-					}
+                                } else {
+                                    textview3.setText("This jar is not supported by Dx since Dx only supports up to Java 1.7. In order to proceed, you need to switch to D8 (if your Android version is 8+)");
+                                    FileUtil.deleteFile(path2.toString());
+                                }
+                            } else {
+                                textview3.setText("Library doesn't contain a jar file.");
+                                FileUtil.deleteFile(path2.toString());
+                            }
+                        }
 
-					linear8.setEnabled(true);
-					linear9.setEnabled(false);
-					linear10.setEnabled(false);
-					linear11.setEnabled(true);
-				}
+                        linear8.setEnabled(true);
+                        linear9.setEnabled(false);
+                        linear10.setEnabled(false);
+                        linear11.setEnabled(true);
+                    }
 
-				@Override
-				public void onError(PRDownloader.Error e) {
-					if (e.isServerError()) {
-						if (!(isAarDownloaded || isAarAvailable)) {
-							if (counter < repoUrls.size()) {
-								currentRepo = repoUrls.get((int) counter);
-								String name = repoNames.get((int) counter);
+                    @Override
+                    public void onError(PRDownloader.Error e) {
+                        if (e.isServerError()) {
+                            if (!(isAarDownloaded || isAarAvailable)) {
+                                if (counter < repoUrls.size()) {
+                                    currentRepo = repoUrls.get((int) counter);
+                                    String name = repoNames.get((int) counter);
 
-								counter++;
-								textview3.setText("Searching... " + counter + "/" + repoUrls.size() + " [" + name + "]");
+                                    counter++;
+                                    textview3.setText("Searching... " + counter + "/" + repoUrls.size() + " [" + name + "]");
 
-								downloadId = _download(
-										currentRepo + _getAarDownloadLink(edittext1.getText().toString()),
-										downloadPath,
-										_getLibName(edittext1.getText().toString()) + ".zip",
-										edittext1,
-										textview3,
-										linear3,
-										linear4,
-										linear8,
-										linear9,
-										linear10,
-										linear11,
-										progressbar1
-								);
+                                    downloadId = _download(
+                                            currentRepo + _getAarDownloadLink(edittext1.getText().toString()),
+                                            downloadPath,
+                                            _getLibName(edittext1.getText().toString()) + ".zip",
+                                            edittext1,
+                                            textview3,
+                                            linear3,
+                                            linear4,
+                                            linear8,
+                                            linear9,
+                                            linear10,
+                                            linear11,
+                                            progressbar1
+                                    );
 
-							} else {
-								FileUtil.deleteFile(libName);
-								textview3.setText("Library is not found in saved repositories");
+                                } else {
+                                    FileUtil.deleteFile(libName);
+                                    textview3.setText("Library is not found in saved repositories");
 
-								linear8.setEnabled(true);
-								linear9.setEnabled(false);
-								linear10.setEnabled(false);
-								linear11.setEnabled(true);
-							}
-						}
-					} else {
-						if (e.isConnectionError()) {
-							textview3.setText("Downloading failed. No network");
+                                    linear8.setEnabled(true);
+                                    linear9.setEnabled(false);
+                                    linear10.setEnabled(false);
+                                    linear11.setEnabled(true);
+                                }
+                            }
+                        } else {
+                            if (e.isConnectionError()) {
+                                textview3.setText("Downloading failed. No network");
 
-							linear8.setEnabled(true);
-							linear9.setEnabled(false);
-							linear10.setEnabled(false);
-							linear11.setEnabled(true);
-						}
-					}
-				}
-			});
-	}
+                                linear8.setEnabled(true);
+                                linear9.setEnabled(false);
+                                linear10.setEnabled(false);
+                                linear11.setEnabled(true);
+                            }
+                        }
+                    }
+                });
+    }
 
-	private int downloadId;
-	private final String downloadPath;
+    private void _getRepository() {
+        repoUrls.clear();
+        repoMap.clear();
+        repoNames.clear();
+        counter = 0;
+        repoMap = new Gson().fromJson("[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]",
+                Helper.TYPE_MAP_LIST);
 
-	private void _getRepository() {
-		repoUrls.clear();
-		repoMap.clear();
-		repoNames.clear();
-		counter = 0;
-		repoMap = new Gson().fromJson("[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]",
-				new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
+        for (int _repeat14 = 0; _repeat14 < repoMap.size(); _repeat14++) {
+            repoUrls.add(repoMap.get((int) counter).get("url").toString());
+            repoNames.add(repoMap.get((int) counter).get("name").toString());
 
-		for (int _repeat14 = 0; _repeat14 < repoMap.size(); _repeat14++) {
-			repoUrls.add(repoMap.get((int) counter).get("url").toString());
-			repoNames.add(repoMap.get((int) counter).get("name").toString());
+            counter++;
+        }
+    }
 
-			counter++;
-		}
-	}
+    public interface OnCompleteListener {
+        void onComplete();
+    }
 
-	private String libName = "";
-	private String currentRepo = "";
-	private double counter = 0;
+    private class BackTask extends AsyncTask<String, String, String> {
+        boolean success = false;
 
-	private final ArrayList<String> repoUrls = new ArrayList<>();
-	private ArrayList<HashMap<String, Object>> repoMap = new ArrayList<>();
-	private final ArrayList<String> repoNames = new ArrayList<>();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage((use_d8 ? "D8" : "Dx") + " is running...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
 
-	private ProgressDialog progressDialog;
-
-	private class BackTask extends AsyncTask<String, String, String> {
-		boolean success = false;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			progressDialog = new ProgressDialog(context);
-			progressDialog.setTitle("Please wait");
-			progressDialog.setMessage((use_d8 ? "D8" : "Dx") + " is running...");
-			progressDialog.setCancelable(false);
-			progressDialog.show();
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			try {
-				_jar2dex(params[0]);
-				success = true;
-			} catch (Exception e) {
-				success = false;
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                _jar2dex(params[0]);
+                success = true;
+            } catch (Exception e) {
+                success = false;
                 return e.toString();
-			}
+            }
 
-			return "true";
-		}
+            return "true";
+        }
 
-		@Override
-		protected void onPostExecute(String s) {
-			if (success) {
-				bB.a(context, "The library has been downloaded and imported to local libraries successfully.", 1).show();
-				listener.onComplete();
-			} else {
+        @Override
+        protected void onPostExecute(String s) {
+            if (success) {
+                bB.a(context, "The library has been downloaded and imported to local libraries successfully.", 1).show();
+                listener.onComplete();
+            } else {
                 bB.a(context, "Dexing failed: " + s, 1).show();
             }
 
-			if (dialog != null && dialog.isShowing()) {
-				dialog.dismiss();
-			}
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
 
-			progressDialog.dismiss();
-		}
-	}
+            progressDialog.dismiss();
+        }
+    }
 }
