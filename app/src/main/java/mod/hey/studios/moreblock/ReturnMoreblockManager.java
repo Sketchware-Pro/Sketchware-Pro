@@ -14,15 +14,12 @@ public class ReturnMoreblockManager {
     }
 
     public static String getMbEnd(String str) {
-        String str2;
-
         if (str.equals(" ")) {
-            str2 = ";";
+            str = ";";
         } else {
-            str2 = "";
+            str = "";
         }
-
-        return str2;
+        return str;
     }
 
     public static String getMbName(String str) {
@@ -40,8 +37,7 @@ public class ReturnMoreblockManager {
 
     public static String getMbType(String str) {
         try {
-            if (!str.contains("]") || !str.contains("["))
-                return "void";
+            if (!str.contains("]") || !str.contains("[")) return "void";
 
             return str.substring(str.indexOf("[") + 1, str.lastIndexOf("]"));
         } catch (Exception e) {
@@ -160,17 +156,24 @@ public class ReturnMoreblockManager {
     }
 
     public static String getMoreblockChar(String str) {
-        String str2;
+        String moreBlockChar;
         String mbType = getMbType(str);
 
-        if (mbType.equals("void"))              str2 = " ";
-        else if (mbType.equals("String"))       str2 = "s";
-        else if (mbType.equals("double"))       str2 = "d";
-        else if (mbType.equals("boolean"))      str2 = "b";
-        else if (mbType.contains("|"))          return mbType;
-        else                                    str2 = " ";
+        if (mbType.equals("void")) {
+            moreBlockChar = " ";
+        } else if (mbType.equals("String")) {
+            moreBlockChar = "s";
+        } else if (mbType.equals("double")) {
+            moreBlockChar = "d";
+        } else if (mbType.equals("boolean")) {
+            moreBlockChar = "b";
+        } else if (mbType.contains("|")) {
+            return mbType;
+        } else {
+            moreBlockChar = " ";
+        }
 
-        return str2;
+        return moreBlockChar;
     }
 
     public static String injectMbType(String str, String str2, String str3) {
