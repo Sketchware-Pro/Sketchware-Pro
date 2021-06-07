@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import a.a.a.Nx;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.lib.FileUtil;
 
 public class AndroidManifestInjector {
 

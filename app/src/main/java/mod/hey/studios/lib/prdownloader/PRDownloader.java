@@ -6,21 +6,42 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PRDownloader {
 
-    private PRDownloader() {
-    }
+    private PRDownloader() { }
 
     public static void initialize(Context context) {
         initialize(context, PRDownloaderConfig.newBuilder().build());
@@ -111,11 +132,11 @@ public class PRDownloader {
     public interface HttpClient extends Cloneable {
         HttpClient clone();
 
-        void connect(DownloadRequest request) throws java.io.IOException;
+        void connect(DownloadRequest request) throws IOException;
 
-        int getResponseCode() throws java.io.IOException;
+        int getResponseCode() throws IOException;
 
-        InputStream getInputStream() throws java.io.IOException;
+        InputStream getInputStream() throws IOException;
 
         long getContentLength();
 
@@ -147,15 +168,15 @@ public class PRDownloader {
     }
 
     public interface FileDownloadOutputStream {
-        void write(byte[] b, int off, int len) throws java.io.IOException;
+        void write(byte[] b, int off, int len) throws IOException;
 
-        void flushAndSync() throws java.io.IOException;
+        void flushAndSync() throws IOException;
 
-        void close() throws java.io.IOException;
+        void close() throws IOException;
 
-        void seek(long offset) throws java.io.IOException, IllegalAccessException;
+        void seek(long offset) throws IOException, IllegalAccessException;
 
-        void setLength(final long newLength) throws java.io.IOException, IllegalAccessException;
+        void setLength(final long newLength) throws IOException, IllegalAccessException;
     }
 
     public interface DbHelper {
@@ -213,7 +234,7 @@ public class PRDownloader {
         }
     }
 
-    public static class Progress implements java.io.Serializable {
+    public static class Progress implements Serializable {
         public long currentBytes;
         public long totalBytes;
 
@@ -222,6 +243,7 @@ public class PRDownloader {
             this.totalBytes = totalBytes;
         }
 
+        @NotNull
         @Override
         public String toString() {
             return "Progress{" +
@@ -340,8 +362,7 @@ public class PRDownloader {
         public static final int HTTP_TEMPORARY_REDIRECT = 307;
         public static final int HTTP_PERMANENT_REDIRECT = 308;
 
-        private Constants() {
-        }
+        private Constants() { }
     }
 
     public static class Error {
@@ -375,23 +396,19 @@ public class PRDownloader {
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Constants.UPDATE:
-                    if (listener != null) {
-                        final Progress progress = (Progress) msg.obj;
-                        listener.onProgress(progress);
-                    }
-                    break;
-
-                default:
-                    super.handleMessage(msg);
-                    break;
+            if (msg.what == Constants.UPDATE) {
+                if (listener != null) {
+                    final Progress progress = (Progress) msg.obj;
+                    listener.onProgress(progress);
+                }
+            } else {
+                super.handleMessage(msg);
             }
         }
     }
 
     public static class DefaultHttpClient implements HttpClient {
-        private java.net.URLConnection connection;
+        private URLConnection connection;
 
         public DefaultHttpClient() {
         }
@@ -402,35 +419,44 @@ public class PRDownloader {
         }
 
         @Override
-        public void connect(DownloadRequest request) throws java.io.IOException {
-            connection = new java.net.URL(request.getUrl()).openConnection();
+        public void connect(DownloadRequest request) throws IOException {
+            connection = new URL(request.getUrl()).openConnection();
             connection.setReadTimeout(request.getReadTimeout());
             connection.setConnectTimeout(request.getConnectTimeout());
-            final String range = String.format(Locale.ENGLISH,
-                    "bytes=%d-", request.getDownloadedBytes());
+
+            final String range = String.format(
+                    Locale.ENGLISH,
+                    "bytes=%d-",
+                    request.getDownloadedBytes()
+            );
+
             connection.addRequestProperty(Constants.RANGE, range);
             connection.addRequestProperty(Constants.USER_AGENT, request.getUserAgent());
+
             addHeaders(request);
             connection.connect();
         }
 
         @Override
-        public int getResponseCode() throws java.io.IOException {
+        public int getResponseCode() throws IOException {
             int responseCode = 0;
-            if (connection instanceof java.net.HttpURLConnection) {
-                responseCode = ((java.net.HttpURLConnection) connection).getResponseCode();
+
+            if (connection instanceof HttpURLConnection) {
+                responseCode = ((HttpURLConnection) connection).getResponseCode();
             }
+
             return responseCode;
         }
 
         @Override
-        public InputStream getInputStream() throws java.io.IOException {
+        public InputStream getInputStream() throws IOException {
             return connection.getInputStream();
         }
 
         @Override
         public long getContentLength() {
             String length = connection.getHeaderField("Content-Length");
+
             try {
                 return Long.parseLong(length);
             } catch (NumberFormatException e) {
@@ -444,16 +470,17 @@ public class PRDownloader {
         }
 
         @Override
-        public void close() {
-        }
+        public void close() { }
 
         private void addHeaders(DownloadRequest request) {
             final HashMap<String, List<String>> headers = request.getHeaders();
+
             if (headers != null) {
                 Set<Map.Entry<String, List<String>>> entries = headers.entrySet();
                 for (Map.Entry<String, List<String>> entry : entries) {
                     String name = entry.getKey();
                     List<String> list = entry.getValue();
+
                     if (list != null) {
                         for (String value : list) {
                             connection.addRequestProperty(name, value);
@@ -601,6 +628,7 @@ public class PRDownloader {
             if (userAgent == null) {
                 userAgent = ComponentHolder.getInstance().getUserAgent();
             }
+
             return userAgent;
         }
 
@@ -663,13 +691,11 @@ public class PRDownloader {
         public void deliverError(final Error error) {
             if (status != Status.CANCELLED) {
                 Core.getInstance().getExecutorSupplier().forMainThreadTasks()
-                        .execute(new Runnable() {
-                            public void run() {
-                                if (onDownloadListener != null) {
-                                    onDownloadListener.onError(error);
-                                }
-                                finish();
+                        .execute(() -> {
+                            if (onDownloadListener != null) {
+                                onDownloadListener.onError(error);
                             }
+                            finish();
                         });
             }
         }
@@ -678,13 +704,11 @@ public class PRDownloader {
             if (status != Status.CANCELLED) {
                 setStatus(Status.COMPLETED);
                 Core.getInstance().getExecutorSupplier().forMainThreadTasks()
-                        .execute(new Runnable() {
-                            public void run() {
-                                if (onDownloadListener != null) {
-                                    onDownloadListener.onDownloadComplete();
-                                }
-                                finish();
+                        .execute(() -> {
+                            if (onDownloadListener != null) {
+                                onDownloadListener.onDownloadComplete();
                             }
+                            finish();
                         });
             }
         }
@@ -692,11 +716,9 @@ public class PRDownloader {
         public void deliverStartEvent() {
             if (status != Status.CANCELLED) {
                 Core.getInstance().getExecutorSupplier().forMainThreadTasks()
-                        .execute(new Runnable() {
-                            public void run() {
-                                if (onStartOrResumeListener != null) {
-                                    onStartOrResumeListener.onStartOrResume();
-                                }
+                        .execute(() -> {
+                            if (onStartOrResumeListener != null) {
+                                onStartOrResumeListener.onStartOrResume();
                             }
                         });
             }
@@ -705,11 +727,9 @@ public class PRDownloader {
         public void deliverPauseEvent() {
             if (status != Status.CANCELLED) {
                 Core.getInstance().getExecutorSupplier().forMainThreadTasks()
-                        .execute(new Runnable() {
-                            public void run() {
-                                if (onPauseListener != null) {
-                                    onPauseListener.onPause();
-                                }
+                        .execute(() -> {
+                            if (onPauseListener != null) {
+                                onPauseListener.onPause();
                             }
                         });
             }
@@ -717,11 +737,9 @@ public class PRDownloader {
 
         private void deliverCancelEvent() {
             Core.getInstance().getExecutorSupplier().forMainThreadTasks()
-                    .execute(new Runnable() {
-                        public void run() {
-                            if (onCancelListener != null) {
-                                onCancelListener.onCancel();
-                            }
+                    .execute(() -> {
+                        if (onCancelListener != null) {
+                            onCancelListener.onCancel();
                         }
                     });
         }
@@ -755,7 +773,6 @@ public class PRDownloader {
         private int getConnectTimeoutFromConfig() {
             return ComponentHolder.getInstance().getConnectTimeout();
         }
-
     }
 
     public static class DownloadRequestBuilder implements RequestBuilder {
@@ -780,14 +797,17 @@ public class PRDownloader {
             if (headerMap == null) {
                 headerMap = new HashMap<>();
             }
+
             List<String> list = headerMap.get(name);
             if (list == null) {
                 list = new ArrayList<>();
                 headerMap.put(name, list);
             }
+
             if (!list.contains(value)) {
                 list.add(value);
             }
+
             return this;
         }
 
@@ -829,28 +849,29 @@ public class PRDownloader {
     public static final class Utils {
         private final static int MAX_REDIRECTION = 10;
 
-        private Utils() {
-        }
+        private Utils() { }
 
         public static String getPath(String dirPath, String fileName) {
-            return dirPath + java.io.File.separator + fileName;
+            return dirPath + File.separator + fileName;
         }
 
         public static String getTempPath(String dirPath, String fileName) {
             return getPath(dirPath, fileName) + ".temp";
         }
 
-        public static void renameFileName(String oldPath, String newPath) throws java.io.IOException {
-            final java.io.File oldFile = new java.io.File(oldPath);
+        public static void renameFileName(String oldPath, String newPath) throws IOException {
+            final File oldFile = new File(oldPath);
             try {
-                final java.io.File newFile = new java.io.File(newPath);
+                final File newFile = new File(newPath);
+
                 if (newFile.exists()) {
                     if (!newFile.delete()) {
-                        throw new java.io.IOException("Deletion Failed");
+                        throw new IOException("Deletion Failed");
                     }
                 }
+
                 if (!oldFile.renameTo(newFile)) {
-                    throw new java.io.IOException("Rename Failed");
+                    throw new IOException("Rename Failed");
                 }
             } finally {
                 if (oldFile.exists()) {
@@ -861,34 +882,31 @@ public class PRDownloader {
 
         public static void deleteTempFileAndDatabaseEntryInBackground(final String path, final int downloadId) {
             Core.getInstance().getExecutorSupplier().forBackgroundTasks()
-                    .execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            ComponentHolder.getInstance().getDbHelper().remove(downloadId);
-                            java.io.File file = new java.io.File(path);
-                            if (file.exists()) {
-                                file.delete();
-                            }
+                    .execute(() -> {
+                        ComponentHolder.getInstance().getDbHelper().remove(downloadId);
+                        File file = new File(path);
+
+                        if (file.exists()) {
+                            file.delete();
                         }
                     });
         }
 
         public static void deleteUnwantedModelsAndTempFiles(final int days) {
             Core.getInstance().getExecutorSupplier().forBackgroundTasks()
-                    .execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            List<DownloadModel> models = ComponentHolder.getInstance()
-                                    .getDbHelper()
-                                    .getUnwantedModels(days);
-                            if (models != null) {
-                                for (DownloadModel model : models) {
-                                    final String tempPath = getTempPath(model.getDirPath(), model.getFileName());
-                                    ComponentHolder.getInstance().getDbHelper().remove(model.getId());
-                                    java.io.File file = new java.io.File(tempPath);
-                                    if (file.exists()) {
-                                        file.delete();
-                                    }
+                    .execute(() -> {
+                        List<DownloadModel> models = ComponentHolder.getInstance()
+                                .getDbHelper()
+                                .getUnwantedModels(days);
+
+                        if (models != null) {
+                            for (DownloadModel model : models) {
+                                final String tempPath = getTempPath(model.getDirPath(), model.getFileName());
+                                ComponentHolder.getInstance().getDbHelper().remove(model.getId());
+                                File file = new File(tempPath);
+
+                                if (file.exists()) {
+                                    file.delete();
                                 }
                             }
                         }
@@ -896,26 +914,29 @@ public class PRDownloader {
         }
 
         public static int getUniqueId(String url, String dirPath, String fileName) {
-            String string = url + java.io.File.separator + dirPath + java.io.File.separator + fileName;
+            String string = url + File.separator + dirPath + File.separator + fileName;
             byte[] hash;
+
             try {
-                hash = java.security.MessageDigest.getInstance("MD5").digest(string.getBytes(StandardCharsets.UTF_8));
-            } catch (java.security.NoSuchAlgorithmException e) {
+                hash = MessageDigest.getInstance("MD5").digest(string.getBytes(StandardCharsets.UTF_8));
+            } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException("NoSuchAlgorithmException", e);
             }
+
             StringBuilder hex = new StringBuilder(hash.length * 2);
 
             for (byte b : hash) {
                 if ((b & 0xFF) < 0x10) hex.append("0");
                 hex.append(Integer.toHexString(b & 0xFF));
             }
+
             return hex.toString().hashCode();
 
         }
 
         public static HttpClient getRedirectedConnectionIfAny(HttpClient httpClient,
                                                               DownloadRequest request)
-                throws java.io.IOException, IllegalAccessException {
+                throws IOException, IllegalAccessException {
             int redirectTimes = 0;
             int code = httpClient.getResponseCode();
             String location = httpClient.getResponseHeader("Location");
@@ -938,10 +959,10 @@ public class PRDownloader {
         }
 
         private static boolean isRedirection(int code) {
-            return code == java.net.HttpURLConnection.HTTP_MOVED_PERM
-                    || code == java.net.HttpURLConnection.HTTP_MOVED_TEMP
-                    || code == java.net.HttpURLConnection.HTTP_SEE_OTHER
-                    || code == java.net.HttpURLConnection.HTTP_MULT_CHOICE
+            return code == HttpURLConnection.HTTP_MOVED_PERM
+                    || code == HttpURLConnection.HTTP_MOVED_TEMP
+                    || code == HttpURLConnection.HTTP_SEE_OTHER
+                    || code == HttpURLConnection.HTTP_MULT_CHOICE
                     || code == Constants.HTTP_TEMPORARY_REDIRECT
                     || code == Constants.HTTP_PERMANENT_REDIRECT;
         }
@@ -977,7 +998,7 @@ public class PRDownloader {
         }
     }
 
-    public static class PriorityThreadFactory implements java.util.concurrent.ThreadFactory {
+    public static class PriorityThreadFactory implements ThreadFactory {
         private final int mThreadPriority;
 
         PriorityThreadFactory(int threadPriority) {
@@ -1017,9 +1038,9 @@ public class PRDownloader {
         private final Executor mainThreadExecutor;
 
         DefaultExecutorSupplier() {
-            java.util.concurrent.ThreadFactory backgroundPriorityThreadFactory = new PriorityThreadFactory(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+            ThreadFactory backgroundPriorityThreadFactory = new PriorityThreadFactory(android.os.Process.THREAD_PRIORITY_BACKGROUND);
             networkExecutor = new DownloadExecutor(DEFAULT_MAX_NUM_THREADS, backgroundPriorityThreadFactory);
-            backgroundExecutor = java.util.concurrent.Executors.newSingleThreadExecutor();
+            backgroundExecutor = Executors.newSingleThreadExecutor();
             mainThreadExecutor = new MainThreadExecutor();
         }
 
@@ -1040,44 +1061,44 @@ public class PRDownloader {
     }
 
     public static class FileDownloadRandomAccessFile implements FileDownloadOutputStream {
-        private final java.io.BufferedOutputStream out;
-        private final java.io.FileDescriptor fd;
-        private final java.io.RandomAccessFile randomAccess;
+        private final BufferedOutputStream out;
+        private final FileDescriptor fd;
+        private final RandomAccessFile randomAccess;
 
-        private FileDownloadRandomAccessFile(java.io.File file) throws java.io.IOException {
-            randomAccess = new java.io.RandomAccessFile(file, "rw");
+        private FileDownloadRandomAccessFile(File file) throws IOException {
+            randomAccess = new RandomAccessFile(file, "rw");
             fd = randomAccess.getFD();
-            out = new java.io.BufferedOutputStream(new java.io.FileOutputStream(randomAccess.getFD()));
+            out = new BufferedOutputStream(new FileOutputStream(randomAccess.getFD()));
         }
 
-        public static FileDownloadOutputStream create(java.io.File file) throws java.io.IOException {
+        public static FileDownloadOutputStream create(File file) throws IOException {
             return new FileDownloadRandomAccessFile(file);
         }
 
         @Override
-        public void write(byte[] b, int off, int len) throws java.io.IOException {
+        public void write(byte[] b, int off, int len) throws IOException {
             out.write(b, off, len);
         }
 
         @Override
-        public void flushAndSync() throws java.io.IOException {
+        public void flushAndSync() throws IOException {
             out.flush();
             fd.sync();
         }
 
         @Override
-        public void close() throws java.io.IOException {
+        public void close() throws IOException {
             out.close();
             randomAccess.close();
         }
 
         @Override
-        public void seek(long offset) throws java.io.IOException {
+        public void seek(long offset) throws IOException {
             randomAccess.seek(offset);
         }
 
         @Override
-        public void setLength(long totalBytes) throws java.io.IOException {
+        public void setLength(long totalBytes) throws IOException {
             randomAccess.setLength(totalBytes);
         }
     }
@@ -1241,7 +1262,7 @@ public class PRDownloader {
                     progressHandler = new ProgressHandler(request.getOnProgressListener());
                 }
                 tempPath = Utils.getTempPath(request.getDirPath(), request.getFileName());
-                java.io.File file = new java.io.File(tempPath);
+                File file = new File(tempPath);
                 DownloadModel model = getDownloadModelIfAlreadyPresentInDatabase();
                 if (model != null) {
                     if (file.exists()) {
@@ -1341,7 +1362,7 @@ public class PRDownloader {
                 if (isResumeSupported) {
                     removeNoMoreNeededModelFromDatabase();
                 }
-            } catch (java.io.IOException | IllegalAccessException e) {
+            } catch (IOException | IllegalAccessException e) {
                 if (!isResumeSupported) {
                     deleteTempFile();
                 }
@@ -1355,22 +1376,22 @@ public class PRDownloader {
         }
 
         private void deleteTempFile() {
-            java.io.File file = new java.io.File(tempPath);
+            File file = new File(tempPath);
             if (file.exists()) {
                 file.delete();
             }
         }
 
         private boolean isSuccessful() {
-            return responseCode >= java.net.HttpURLConnection.HTTP_OK
-                    && responseCode < java.net.HttpURLConnection.HTTP_MULT_CHOICE;
+            return responseCode >= HttpURLConnection.HTTP_OK
+                    && responseCode < HttpURLConnection.HTTP_MULT_CHOICE;
         }
 
         private void setResumeSupportedOrNot() {
-            isResumeSupported = (responseCode == java.net.HttpURLConnection.HTTP_PARTIAL);
+            isResumeSupported = (responseCode == HttpURLConnection.HTTP_PARTIAL);
         }
 
-        private boolean checkIfFreshStartRequiredAndStart(DownloadModel model) throws java.io.IOException,
+        private boolean checkIfFreshStartRequiredAndStart(DownloadModel model) throws IOException,
                 IllegalAccessException {
             if (responseCode == Constants.HTTP_RANGE_NOT_SATISFIABLE || isETagChanged(model)) {
                 if (model != null) {
@@ -1442,7 +1463,7 @@ public class PRDownloader {
             try {
                 outputStream.flushAndSync();
                 success = true;
-            } catch (java.io.IOException e) {
+            } catch (IOException e) {
                 success = false;
                 e.printStackTrace();
             }
@@ -1465,7 +1486,7 @@ public class PRDownloader {
             if (inputStream != null) {
                 try {
                     inputStream.close();
-                } catch (java.io.IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -1482,7 +1503,7 @@ public class PRDownloader {
                 if (outputStream != null)
                     try {
                         outputStream.close();
-                    } catch (java.io.IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
             }
@@ -1492,11 +1513,11 @@ public class PRDownloader {
     public static class DownloadRequestQueue {
         private static DownloadRequestQueue instance;
         private final Map<Integer, DownloadRequest> currentRequestMap;
-        private final java.util.concurrent.atomic.AtomicInteger sequenceGenerator;
+        private final AtomicInteger sequenceGenerator;
 
         private DownloadRequestQueue() {
-            currentRequestMap = new java.util.concurrent.ConcurrentHashMap<>();
-            sequenceGenerator = new java.util.concurrent.atomic.AtomicInteger();
+            currentRequestMap = new ConcurrentHashMap<>();
+            sequenceGenerator = new AtomicInteger();
         }
 
         public static void initialize() {
@@ -1879,7 +1900,7 @@ public class PRDownloader {
         }
     }
 
-    public static class DownloadFutureTask extends java.util.concurrent.FutureTask<DownloadRunnable> implements Comparable<DownloadFutureTask> {
+    public static class DownloadFutureTask extends FutureTask<DownloadRunnable> implements Comparable<DownloadFutureTask> {
         private final DownloadRunnable runnable;
 
         DownloadFutureTask(DownloadRunnable downloadRunnable) {
@@ -1895,10 +1916,10 @@ public class PRDownloader {
         }
     }
 
-    public static class DownloadExecutor extends java.util.concurrent.ThreadPoolExecutor {
-        DownloadExecutor(int maxNumThreads, java.util.concurrent.ThreadFactory threadFactory) {
-            super(maxNumThreads, maxNumThreads, 0, java.util.concurrent.TimeUnit.MILLISECONDS,
-                    new java.util.concurrent.PriorityBlockingQueue<>(), threadFactory);
+    public static class DownloadExecutor extends ThreadPoolExecutor {
+        DownloadExecutor(int maxNumThreads, ThreadFactory threadFactory) {
+            super(maxNumThreads, maxNumThreads, 0, TimeUnit.MILLISECONDS,
+                    new PriorityBlockingQueue<>(), threadFactory);
         }
 
         @Override

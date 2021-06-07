@@ -1,5 +1,5 @@
 # Sketchware Pro
-![GitHub contributors](https://img.shields.io/github/contributors/JavkhlanK/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/JavkhlanK/Sketchware-Pro)
+![GitHub contributors](https://img.shields.io/github/contributors/Sketchware-Pro/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/Sketchware-Pro/Sketchware-Pro) ![Discord server stats](https://img.shields.io/discord/790686719753846785)
 
 This is for everyone who wants to contribute to **Sketchware Pro**'s development.
 
@@ -19,14 +19,15 @@ There are few things that must be taken into consideration before contributing t
  - The repository members will review your pull request, and merge it when they are accepted.
 
 ### Source code map
- - Jx -> Responsible for generating the source code of activities.
- - Lx -> Responsible for generating source codes of stuff such as listeners etc.
- - Ox -> Responsible for generating the xml source of layouts.
- - Dp -> Responsible for the whole compilation process of projects. Was modified to fix MultiDex bug and to add library support.
- - yq -> Organizes Sketchware projects' file paths.
- - tq -> Responsible for compilation dialog quizzes.
+ - `La/a/a/Ix` -> Responsible for generating AndroidManifest.xml
+ - `La/a/a/Jx` -> Generates source code of activities
+ - `La/a/a/Lx` -> Generates source code of components, such as listeners, etc.
+ - `La/a/a/Ox `-> Responsible for generating XML files of layouts
+ - `La/a/a/Dp` -> Class for compiling a whole project
+ - `La/a/a/yq` -> Organizes Sketchware projects' file paths
+ - `La/a/a/tq` -> Responsible for the compiling dialog's quizzes
  
-You may also check ```mod``` path that has the majority of contributors changes.
+You may also check the `mod` package that has the majority of contributors' changes.
 
 Some guidelines for commits follow.
 
@@ -58,11 +59,13 @@ Thanks, they help to keep **Sketchware Pro** alive. It's better to have multiple
 gets noted down in the "About Modders" activity. We'll contact you how to note your contributions to Sketchware Pro.
 
 ## Discord
-Join our Discord Server: [**Sketchware Pro**](https://discord.com/invite/p7D5Nt687K)
+Wanna chat with us, talk about changes or just hang out? We have a Discord server just for that!
+
+[![Join our Discord server!](https://invidget.switchblade.xyz/kq39yhT4rX)](http://discord.gg/kq39yhT4rX)
 
 ## Disclaimer
 This mod was not meant for any harmful purposes, such as harming Sketchware; Quite the opposite actually. It was made to keep Sketchware alive by the community for the community.
 Please use it at your own discretion and buy the Sketchware Premium subscription every month to support the original Sketchware team, even if you don't use it. 
 
 We love Sketchware very much, and we are grateful to Sketchware's developers for making such an amazing app, but unfortunately, we haven't received updates for a long time.
-That's why we decided to keep Sketchware alive by making this mod, plus we don't demand any money, it's completely free. :)
+That's why we decided to keep Sketchware alive by making this mod, plus we don't demand any money, it's completely free. :\)

@@ -1,26 +1,22 @@
 package dev.aldi.sayuti.block;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.blocks.BlocksHandler;
-import mod.hilal.saif.lib.FileUtil;
 
 public class ExtraBlockFile {
-    public static ArrayList getExtraBlockData() {
-        ArrayList arrayList = (ArrayList) new Gson().fromJson(getExtraBlockFile(), new TypeToken<ArrayList<HashMap<String, Object>>>() {
 
-        }.getType());
-        ArrayList arrayList2 = new ArrayList();
+    public static ArrayList<HashMap<String, Object>> getExtraBlockData() {
+        ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(getExtraBlockFile(), Helper.TYPE_MAP_LIST);
+        ArrayList<HashMap<String, Object>> arrayList2 = new ArrayList<>();
         BlocksHandler.builtInBlocks(arrayList2);
-        if (arrayList2.size() > 0) {
-            for (int i = 0; i < arrayList2.size(); i++) {
-                arrayList.add(arrayList2.get(i));
-            }
-        }
+
+        arrayList.addAll(arrayList2);
         return arrayList;
     }
 
