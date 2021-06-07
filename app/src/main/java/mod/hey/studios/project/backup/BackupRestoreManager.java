@@ -24,7 +24,7 @@ public class BackupRestoreManager {
     // Needed to refresh the project list after restoring
     private GC gc;
 
-    // Private AlertDialog backup_dlg;
+    //private AlertDialog backup_dlg;
     private HashMap<Integer, Boolean> bckpDialogStates;
 
     public BackupRestoreManager(Activity act) {
@@ -51,7 +51,7 @@ public class BackupRestoreManager {
                 null,
                 (dialog1, which, isChecked) -> bckpDialogStates.put(which, isChecked));
 
-        dialog.setPositiveButton(Resources.string.common_word_ok, (p1, p2) -> {
+        dialog.setPositiveButton(Resources.string.common_word_ok, (dialog1, which) -> {
             //if(backup_dlg != null) {
             //final SparseBooleanArray arr = backup_dlg.getListView().getCheckedItemPositions();
             doBackup(sc_id, project_name);
