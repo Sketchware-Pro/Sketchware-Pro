@@ -7,31 +7,45 @@ import a.a.a.yB;
 
 public class ProjectFile {
 
-    public static int getColor(String str, String str2) {
-        return yB.a(lC.b(str), str2, getDefaultColor(str2));
+    public static int getColor(String sc_id, String color) {
+        return yB.a(lC.b(sc_id), color, getDefaultColor(color));
+        /*
+        Old in-progress by Mike?
+        HashMap<String, Object> hashMap = lC.b(sc_id);
+
+        return 0;//yB.a(hashMap, color, getDefaultColor(color));
+        */
     }
 
-    private static int getDefaultColor(String str) {
-        int var1;
+	/*
+	 // comment by Jbk0
+	 // the smali files say something completely different lol
 
-        switch (str) {
+	 package a.a.a;
+	 import java.util.Map;
+
+	 public class yB {
+	 public static int a(Map<String, Object> paramMap, String paramString, int paramInt) {
+
+	 return 0;
+
+	 }
+	 }
+	*/
+
+    private static int getDefaultColor(String color) {
+        switch (color) {
             case "color_primary_dark":
-                var1 = Color.parseColor("#ff0084c2");
-                break;
+                return Color.parseColor("#ff0084c2");
 
             case "color_control_highlight":
-                var1 = Color.parseColor("#20008dcd");
-                break;
+                return Color.parseColor("#20008dcd");
 
             case "color_control_normal":
-                var1 = Color.parseColor("#ff57beee");
-                break;
+                return Color.parseColor("#ff57beee");
 
             default:
-                var1 = Color.parseColor("#ff008dcd");
-                break;
+                return Color.parseColor("#ff008dcd");
         }
-
-        return var1;
     }
 }
