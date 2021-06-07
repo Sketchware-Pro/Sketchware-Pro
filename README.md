@@ -22,7 +22,7 @@ There are few things that must be taken into consideration before contributing t
  - `La/a/a/Ix` -> Responsible for generating AndroidManifest.xml
  - `La/a/a/Jx` -> Generates source code of activities
  - `La/a/a/Lx` -> Generates source code of components, such as listeners, etc.
- - `La/a/a/Ox `-> Responsible for generating XML files of layouts
+ - `La/a/a/Ox` -> Responsible for generating XML files of layouts
  - `La/a/a/Dp` -> Class for compiling a whole project
  - `La/a/a/yq` -> Organizes Sketchware projects' file paths
  - `La/a/a/tq` -> Responsible for the compiling dialog's quizzes
