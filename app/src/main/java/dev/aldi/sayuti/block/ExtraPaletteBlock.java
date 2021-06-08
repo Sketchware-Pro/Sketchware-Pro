@@ -90,7 +90,7 @@ public class ExtraPaletteBlock extends Activity {
             if (menuName.matches("cardview|collapsingtoolbar|textinputlayout|swiperefreshlayout|radiogroup|lottie|otpview|youtubeview|codeview|recyclerview|datepicker|timepicker")) {
                 logicEditor.f(ss);
             } else if (menuName.matches("Assets|NativeLib")) {
-                ExtraMenuBean.pathSelectorMenu(ss);
+                new ExtraMenuBean(logicEditor, sc_id).pathSelectorMenu(ss);
             } else {
                 logicEditor.g(ss);
             }
