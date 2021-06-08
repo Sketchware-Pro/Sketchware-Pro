@@ -2,11 +2,11 @@ package mod.hey.studios.lib.prdownloader;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -196,6 +196,7 @@ public class PRDownloader {
     }
 
     public static class Response {
+
         private Error error;
         private boolean isSuccessful;
         private boolean isPaused;
@@ -235,6 +236,7 @@ public class PRDownloader {
     }
 
     public static class Progress implements Serializable {
+
         public long currentBytes;
         public long totalBytes;
 
@@ -243,7 +245,6 @@ public class PRDownloader {
             this.totalBytes = totalBytes;
         }
 
-        @NotNull
         @Override
         public String toString() {
             return "Progress{" +
@@ -254,6 +255,7 @@ public class PRDownloader {
     }
 
     public static class PRDownloaderConfig {
+
         private int readTimeout;
         private int connectTimeout;
         private String userAgent;
@@ -313,6 +315,7 @@ public class PRDownloader {
         }
 
         public static class Builder {
+
             int readTimeout = Constants.DEFAULT_READ_TIMEOUT_IN_MILLS;
             int connectTimeout = Constants.DEFAULT_CONNECT_TIMEOUT_IN_MILLS;
             String userAgent = Constants.DEFAULT_USER_AGENT;
@@ -351,6 +354,7 @@ public class PRDownloader {
     }
 
     public static final class Constants {
+
         public static final int UPDATE = 0x01;
         public static final String RANGE = "Range";
         public static final String ETAG = "ETag";
@@ -366,6 +370,7 @@ public class PRDownloader {
     }
 
     public static class Error {
+
         private boolean isServerError;
         private boolean isConnectionError;
 
@@ -387,6 +392,7 @@ public class PRDownloader {
     }
 
     public static class ProgressHandler extends Handler {
+
         private final OnProgressListener listener;
 
         public ProgressHandler(OnProgressListener listener) {
@@ -408,6 +414,7 @@ public class PRDownloader {
     }
 
     public static class DefaultHttpClient implements HttpClient {
+
         private URLConnection connection;
 
         public DefaultHttpClient() {
@@ -493,6 +500,7 @@ public class PRDownloader {
     }
 
     public static class DownloadRequest {
+
         private final HashMap<String, List<String>> headerMap;
         private Priority priority;
         private Object tag;
@@ -776,6 +784,7 @@ public class PRDownloader {
     }
 
     public static class DownloadRequestBuilder implements RequestBuilder {
+
         String url;
         String dirPath;
         String fileName;
@@ -847,6 +856,7 @@ public class PRDownloader {
     }
 
     public static final class Utils {
+
         private final static int MAX_REDIRECTION = 10;
 
         private Utils() { }
@@ -969,6 +979,7 @@ public class PRDownloader {
     }
 
     public static class Core {
+
         private static Core instance = null;
         private final ExecutorSupplier executorSupplier;
 
@@ -999,6 +1010,7 @@ public class PRDownloader {
     }
 
     public static class PriorityThreadFactory implements ThreadFactory {
+
         private final int mThreadPriority;
 
         PriorityThreadFactory(int threadPriority) {
@@ -1023,6 +1035,7 @@ public class PRDownloader {
     }
 
     public static class MainThreadExecutor implements Executor {
+
         private final Handler handler = new Handler(Looper.getMainLooper());
 
         @Override
@@ -1032,6 +1045,7 @@ public class PRDownloader {
     }
 
     public static class DefaultExecutorSupplier implements ExecutorSupplier {
+
         private static final int DEFAULT_MAX_NUM_THREADS = 2 * Runtime.getRuntime().availableProcessors() + 1;
         private final DownloadExecutor networkExecutor;
         private final Executor backgroundExecutor;
@@ -1061,6 +1075,7 @@ public class PRDownloader {
     }
 
     public static class FileDownloadRandomAccessFile implements FileDownloadOutputStream {
+
         private final BufferedOutputStream out;
         private final FileDescriptor fd;
         private final RandomAccessFile randomAccess;
@@ -1104,6 +1119,7 @@ public class PRDownloader {
     }
 
     public static class DownloadRunnable implements Runnable {
+
         public final Priority priority;
         public final int sequence;
         public final DownloadRequest request;
@@ -1132,6 +1148,7 @@ public class PRDownloader {
     }
 
     public static class SynchronousCall {
+
         public final DownloadRequest request;
 
         public SynchronousCall(DownloadRequest request) {
@@ -1145,6 +1162,7 @@ public class PRDownloader {
     }
 
     public static class ComponentHolder {
+
         private final static ComponentHolder INSTANCE = new ComponentHolder();
         private int readTimeout;
         private int connectTimeout;
@@ -1224,6 +1242,7 @@ public class PRDownloader {
     }
 
     public static class DownloadTask {
+
         private static final int BUFFER_SIZE = 1024 * 4;
         private static final long TIME_GAP_FOR_SYNC = 2000;
         private static final long MIN_BYTES_FOR_SYNC = 65536;
@@ -1511,6 +1530,7 @@ public class PRDownloader {
     }
 
     public static class DownloadRequestQueue {
+
         private static DownloadRequestQueue instance;
         private final Map<Integer, DownloadRequest> currentRequestMap;
         private final AtomicInteger sequenceGenerator;
@@ -1615,6 +1635,7 @@ public class PRDownloader {
     }
 
     public static class DownloadModel {
+
         static final String ID = "id";
         static final String URL = "url";
         static final String ETAG = "etag";
@@ -1700,7 +1721,7 @@ public class PRDownloader {
     public static class AppDbHelper implements DbHelper {
 
         public static final String TABLE_NAME = "prdownloader";
-        private final android.database.sqlite.SQLiteDatabase db;
+        private final SQLiteDatabase db;
 
         public AppDbHelper(Context context) {
             DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(context);
@@ -1709,7 +1730,7 @@ public class PRDownloader {
 
         @Override
         public DownloadModel find(int id) {
-            android.database.Cursor cursor = null;
+            Cursor cursor = null;
             DownloadModel model = null;
             try {
                 cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " +
@@ -1797,7 +1818,7 @@ public class PRDownloader {
         @Override
         public List<DownloadModel> getUnwantedModels(int days) {
             List<DownloadModel> models = new ArrayList<>();
-            android.database.Cursor cursor = null;
+            Cursor cursor = null;
             try {
                 final long daysInMillis = days * 24 * 60 * 60 * 1000L;
                 final long beforeTimeInMillis = System.currentTimeMillis() - daysInMillis;
@@ -1838,6 +1859,7 @@ public class PRDownloader {
     }
 
     public static class DatabaseOpenHelper extends android.database.sqlite.SQLiteOpenHelper {
+
         private static final String DATABASE_NAME = "prdownloader.db";
         private static final int DATABASE_VERSION = 1;
 
@@ -1846,7 +1868,7 @@ public class PRDownloader {
         }
 
         @Override
-        public void onCreate(android.database.sqlite.SQLiteDatabase db) {
+        public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " +
                     AppDbHelper.TABLE_NAME + "( " +
                     DownloadModel.ID + " INTEGER PRIMARY KEY, " +
@@ -1861,11 +1883,12 @@ public class PRDownloader {
         }
 
         @Override
-        public void onUpgrade(android.database.sqlite.SQLiteDatabase db, int i, int i1) {
+        public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         }
     }
 
     public static class NoOpsDbHelper implements DbHelper {
+
         public NoOpsDbHelper() {
         }
 
@@ -1901,6 +1924,7 @@ public class PRDownloader {
     }
 
     public static class DownloadFutureTask extends FutureTask<DownloadRunnable> implements Comparable<DownloadFutureTask> {
+
         private final DownloadRunnable runnable;
 
         DownloadFutureTask(DownloadRunnable downloadRunnable) {
@@ -1917,6 +1941,7 @@ public class PRDownloader {
     }
 
     public static class DownloadExecutor extends ThreadPoolExecutor {
+
         DownloadExecutor(int maxNumThreads, ThreadFactory threadFactory) {
             super(maxNumThreads, maxNumThreads, 0, TimeUnit.MILLISECONDS,
                     new PriorityBlockingQueue<>(), threadFactory);
