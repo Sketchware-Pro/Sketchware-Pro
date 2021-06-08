@@ -1,6 +1,7 @@
 package mod.hey.studios.editor.manage.block;
 
 public class ExtraBlockInfo {
+
     public transient boolean isMissing;
     private String code = "";
     private int color = 0;
@@ -10,50 +11,50 @@ public class ExtraBlockInfo {
     private String spec2 = "";
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String str) {
-        this.name = str;
+        name = str;
     }
 
     public String getCode() {
-        return this.code;
+        return code;
     }
 
     public void setCode(String str) {
-        this.code = str;
+        code = str;
     }
 
     public int getColor() {
-        return this.color;
+        return color;
     }
 
     public void setColor(int i) {
-        this.color = i;
+        color = i;
     }
 
     public int getPaletteColor() {
-        return this.paletteColor;
+        return paletteColor;
     }
 
     public void setPaletteColor(int i) {
-        this.paletteColor = i;
+        paletteColor = i;
     }
 
     public String getSpec() {
-        return this.spec;
+        return spec;
     }
 
     public void setSpec(String str) {
-        this.spec = str;
+        spec = str;
     }
 
     public String getSpec2() {
-        return this.spec2;
+        return spec2;
     }
 
     public void setSpec2(String str) {
-        this.spec2 = str;
+        spec2 = str;
     }
 }
