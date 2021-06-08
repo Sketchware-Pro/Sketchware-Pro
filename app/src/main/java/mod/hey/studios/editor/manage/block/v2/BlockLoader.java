@@ -15,96 +15,134 @@ import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 
+//6.3.0
+
 public class BlockLoader {
+
     private static ArrayList<ExtraBlockInfo> blocks;
+    private static ArrayList<HashMap<String, Object>> palettes;
+
+    //public static final String NOT_FOUND = "/*BLOCK NOT FOUND*/";
+
 
     static {
         loadCustomBlocks();
     }
 
-    public static void log(String str) {
-        // May be used for debugging
-    }
+    //NEW CLASS FOR OPTIMIZED CUSTOM BLOCK LOADING
 
-    public static ExtraBlockInfo getBlockInfo(String str) {
+    public static ExtraBlockInfo getBlockInfo(String block_name) {
+
         if (blocks == null) {
             loadCustomBlocks();
         }
 
-        for (ExtraBlockInfo extraBlockInfo : blocks) {
-            if (extraBlockInfo.getName().equals(str)) {
-                return extraBlockInfo;
+        for (ExtraBlockInfo info : blocks) {
+            if (info.getName().equals(block_name)) {
+                return info;
             }
         }
 
-        ExtraBlockInfo extraBlockInfo2 = new ExtraBlockInfo();
-        extraBlockInfo2.setName(str);
-        extraBlockInfo2.isMissing = true;
-        return extraBlockInfo2;
+        ExtraBlockInfo in = new ExtraBlockInfo();
+        in.setName(block_name);
+        //in.setCode(NOT_FOUND);
+        in.isMissing = true;
+        return in;
     }
 
-    public static ExtraBlockInfo getBlockFromProject(String str, String str2) {
-        File file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/" + str + "/custom_blocks");
+
+    //6.3.0
+    public static ExtraBlockInfo getBlockFromProject(String sc_id, String block_name) {
+        File file = new File(Environment.getExternalStorageDirectory(),
+                ".sketchware/data/" + sc_id + "/custom_blocks");
 
         if (file.exists()) {
+
             try {
-                ArrayList<ExtraBlockInfo> arrayList = new Gson().fromJson(FileUtil.readFile(file.getAbsolutePath()), new TypeToken<ArrayList<ExtraBlockInfo>>() {}.getType());
-                log("getBlockFromProject read success:" + new Gson().toJson(arrayList));
 
-                for (ExtraBlockInfo extraBlockInfo : arrayList) {
-                    if (str2.equals(extraBlockInfo.getName())) {
-                        return extraBlockInfo;
+                ArrayList<ExtraBlockInfo> infos = new Gson().fromJson(
+                        FileUtil.readFile(file.getAbsolutePath()),
+                        new TypeToken<ArrayList<ExtraBlockInfo>>() {
+                        }.getType()
+                );
 
+                //TODO
+
+                //   log("getBlockFromProject read success:" + new Gson().toJson(infos));
+
+                for (ExtraBlockInfo inf : infos) {
+                    if (block_name.equals(inf.getName())) {
+                        return inf;
                     }
                 }
+
             } catch (Exception e) {
-                log("getBlockFromProject catch:" + e.toString());
+                //TODO
+                // log("getBlockFromProject catch:" + e.toString());
             }
         }
 
-        ExtraBlockInfo extraBlockInfo2 = new ExtraBlockInfo();
-        extraBlockInfo2.setName(str2);
-        extraBlockInfo2.isMissing = true;
-
-        return extraBlockInfo2;
+        ExtraBlockInfo in = new ExtraBlockInfo();
+        in.setName(block_name);
+        in.isMissing = true;
+        return in;
     }
 
+    public static void log(String s) {
+        /*String path = new File(Environment.getExternalStorageDirectory(), ".sketchware/debug.txt").getAbsolutePath();
+
+        FileUtil.writeFile(path,
+                       FileUtil.readFile(path) + "\n" + s);*/
+    }
+
+
     private static void loadCustomBlocks() {
-        ArrayList<HashMap<String, Object>> palettes = new PaletteSelector().getPaletteSelector();
+        //ExtraBlockClassInfo.loadEBCI();
+
+        palettes = new PaletteSelector().getPaletteSelector();
+
         blocks = new ArrayList<>();
 
-        ArrayList<HashMap<String, Object>> extraBlockData = ExtraBlockFile.getExtraBlockData();
-        for (int i = 0; i < extraBlockData.size(); i++) {
-            HashMap<String, Object> hashMap = extraBlockData.get(i);
+        ArrayList<HashMap<String, Object>> arrList = ExtraBlockFile.getExtraBlockData();
 
-            if (hashMap.containsKey("name")) {
-                ExtraBlockInfo extraBlockInfo = new ExtraBlockInfo();
-                extraBlockInfo.setName(hashMap.get("name").toString());
+        for (int j = 0; j < arrList.size(); j++) {
+            HashMap<String, Object> map = arrList.get(j);
 
-                if (hashMap.containsKey("spec")) {
-                    extraBlockInfo.setSpec(hashMap.get("spec").toString());
-                }
+            if (!map.containsKey("name")) {
+                continue;
+            }
 
-                if (hashMap.containsKey("spec2")) {
-                    extraBlockInfo.setSpec2(hashMap.get("spec2").toString());
-                }
+            ExtraBlockInfo info = new ExtraBlockInfo();
 
-                if (hashMap.containsKey("code")) {
-                    extraBlockInfo.setCode(hashMap.get("code").toString());
-                }
+            info.setName(map.get("name").toString());
 
-                if (hashMap.containsKey("color")) {
-                    extraBlockInfo.setColor(Color.parseColor(hashMap.get("color").toString()));
-                } else if (hashMap.containsKey("palette")) {
-                    for (int i2 = 0; i2 < palettes.size(); i2++) {
-                        if (Integer.valueOf(hashMap.get("palette").toString()) == palettes.get(i2).get("index")) {
-                            extraBlockInfo.setPaletteColor((Integer) palettes.get(i2).get("color"));
+            if (map.containsKey("spec")) {
+                info.setSpec(map.get("spec").toString());
+            }
+
+            if (map.containsKey("spec2")) {
+                info.setSpec2(map.get("spec2").toString());
+            }
+
+            if (map.containsKey("code")) {
+                info.setCode(map.get("code").toString());
+            }
+
+            if (map.containsKey("color")) {
+                info.setColor(Color.parseColor(map.get("color").toString()));
+            } else {
+                if (!map.containsKey("palette")) {
+                    continue;
+                } else {
+                    for (int m = 0; m < palettes.size(); m++) {
+                        if (Integer.valueOf(map.get("palette").toString()) == palettes.get(m).get("index")) {
+                            info.setPaletteColor((Integer) palettes.get(m).get("color"));
                         }
                     }
                 }
-
-                blocks.add(extraBlockInfo);
             }
+
+            blocks.add(info);
         }
     }
 
