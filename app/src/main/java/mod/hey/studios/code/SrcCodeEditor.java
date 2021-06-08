@@ -202,6 +202,8 @@ public class SrcCodeEditor extends Activity {
                         }
 
                         var1.append(var11);
+                        //add indents for commented lines
+                        if(var11==10) a(var1,var8);
                     }
                 } else if (var7) {
                     var1.append(var11);
