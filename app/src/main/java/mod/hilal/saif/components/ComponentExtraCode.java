@@ -9,73 +9,89 @@ import a.a.a.Hx;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class ComponentExtraCode {
+
     public StringBuilder b;
     public Hx hx;
 
-    public ComponentExtraCode(Hx hx2, StringBuilder sb) {
-        this.b = sb;
-        this.hx = hx2;
+    public ComponentExtraCode(Hx h, StringBuilder st) {
+        this.b = st;
+        this.hx = h;
     }
 
     public void s(String str) {
+        // Aldi's original Components
         if (str.contains("DatePickerFragment")) {
-            this.hx.l = str;
-        } else if (str.contains("FragmentStatePagerAdapter")) {
-            String str2 = this.hx.k;
-            if (str2.equals("")) {
-                this.hx.k = str;
-                return;
+            hx.l = str;
+            return;
+        }
+        if (str.contains("FragmentStatePagerAdapter")) {
+            String temp = hx.k;
+            if (temp.equals("")) {
+                hx.k = str;
+            } else {
+                hx.k = temp.concat("\r\n\r\n").concat(str);
             }
-            this.hx.k = str2.concat("\r\n\r\n").concat(str);
-        } else if (str.contains("extends AsyncTask<String, Integer, String>")) {
-            String str3 = this.hx.k;
-            if (str3.equals("")) {
-                this.hx.k = str;
-                return;
+            return;
+        }
+        if (str.contains("extends AsyncTask<String, Integer, String>")) {
+            String temp = hx.k;
+            if (temp.equals("")) {
+                hx.k = str;
+            } else {
+                hx.k = temp.concat("\r\n\r\n").concat(str);
             }
-            this.hx.k = str3.concat("\r\n\r\n").concat(str);
-        } else {
-            String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/listeners.json");
-            try {
-                if (FileUtil.isExistFile(concat) && !FileUtil.readFile(concat).equals("") && !FileUtil.readFile(concat).equals("[]")) {
-                    JSONArray jSONArray = new JSONArray(FileUtil.readFile(concat));
-                    if (jSONArray.length() > 0) {
-                        for (int i = 0; i < jSONArray.length(); i++) {
-                            String firstLine = getFirstLine(jSONArray.getJSONObject(i).getString("code"));
-                            if (!jSONArray.getJSONObject(i).isNull("s") && str.contains(firstLine) && jSONArray.getJSONObject(i).getString("s").equals("true")) {
-                                String str4 = this.hx.k;
-                                if (str4.equals("")) {
-                                    this.hx.k = str.replace(firstLine, "");
+            return;
+        }
+
+        // Hilal's components
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/listeners.json");
+        try {
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                if (arr.length() > 0) {
+                    for (int i = 0; i < (int) (arr.length()); i++) {
+                        String c = arr.getJSONObject(i).getString("code");
+                        String f = getFirstLine(c);
+                        if (!arr.getJSONObject(i).isNull("s") && str.contains(f)) {
+                            String q = arr.getJSONObject(i).getString("s");
+                            if (q.equals("true")) {
+                                String temp = hx.k;
+                                if (temp.equals("")) {
+                                    hx.k = str.replace(f, "");
+                                    return;
+                                } else {
+                                    hx.k = temp.concat("\r\n\r\n").concat(str.replace(f, ""));
                                     return;
                                 }
-                                this.hx.k = str4.concat("\r\n\r\n").concat(str.replace(firstLine, ""));
-                                return;
                             }
                         }
                     }
                 }
-            } catch (Exception e) {
-                if (this.b.length() > 0 && str.length() > 0) {
-                    this.b.append("\r\n");
-                    this.b.append("\r\n");
-                    this.b.append(str);
-                }
             }
-            if (this.b.length() > 0 && str.length() > 0) {
-                this.b.append("\r\n");
-                this.b.append("\r\n");
+        } catch (Exception e) {
+            if (b.length() > 0 && str.length() > 0) {
+                b.append("\r\n");
+                b.append("\r\n");
+                b.append(str);
             }
-            this.b.append(str);
         }
+
+
+        ///others
+        if (b.length() > 0 && str.length() > 0) {
+            b.append("\r\n");
+            b.append("\r\n");
+        }
+        b.append(str);
     }
 
-    public String getFirstLine(String str) {
-        ArrayList arrayList = new ArrayList(Arrays.asList(str.split("\n")));
-        if (arrayList.size() > 0) {
-            for (int i = 0; i < arrayList.size(); i++) {
-                String str2 = (String) arrayList.get(i);
-                if (!str2.equals("")) {
-                    return str2.trim();
+    public String getFirstLine(String con) {
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(con.split("\n")));
+        if (list.size() > 0) {
+            for (int i = 0; i < (int) (list.size()); i++) {
+                String a = list.get(i);
+                if (!a.equals("")) {
+                    return a.trim();
                 }
             }
         }
