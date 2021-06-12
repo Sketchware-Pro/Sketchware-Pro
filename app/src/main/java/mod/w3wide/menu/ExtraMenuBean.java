@@ -23,8 +23,7 @@ public class ExtraMenuBean {
     private final LogicEditorActivity logicEditor;
     private final DialogProperties mProperty = new DialogProperties();
     private final String sc_id;
-    
-    private String path;
+
     private String splitter;
 
     public ExtraMenuBean(LogicEditorActivity logicA) {
@@ -38,13 +37,15 @@ public class ExtraMenuBean {
             AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
             asdOldDialog.setCon(menu.getArgValue().toString());
             asdOldDialog.show();
-            asdOldDialog.saveLis(logicEditor, false/*'true' is for number.*/, menu, asdOldDialog);
+            /* p2 as true is for number */
+            asdOldDialog.saveLis(logicEditor, false, menu, asdOldDialog);
             asdOldDialog.cancelLis(logicEditor, asdOldDialog);
         } else {
             AsdDialog asdDialog = new AsdDialog(logicEditor);
             asdDialog.setCon(menu.getArgValue().toString());
             asdDialog.show();
-            asdDialog.saveLis(logicEditor, false/*'true' is for number.*/, menu, asdDialog);
+            /* p2 as true is for number */
+            asdDialog.saveLis(logicEditor, false, menu, asdDialog);
             asdDialog.cancelLis(logicEditor, asdDialog);
         }
     }
@@ -53,105 +54,109 @@ public class ExtraMenuBean {
         String menuType = ss.b;
         String menuName = ss.getMenuName();
 
-        if (menuType.equals("d")) {
-            logicEditor.a(ss, true);
-        } else if (menuType.equals("s")) {
-            switch (menuName) {
-                case "intentData":
-                    logicEditor.e(ss);
-                    return;
+        switch (menuType) {
+            case "d":
+                logicEditor.a(ss, true);
+                break;
 
-                case "url":
-                    logicEditor.c(ss);
-                    return;
+            case "s":
+                switch (menuName) {
+                    case "intentData":
+                        logicEditor.e(ss);
+                        return;
 
-                case "inputCode":
-                    codeMenu(ss);
-                    return;
+                    case "url":
+                        logicEditor.c(ss);
+                        return;
 
-                default:
-                    logicEditor.cusA(ss, false);
-                    return;
-            }
-        } else if (menuType.equals("m")) {            
-            switch(menuName) {
-                case "resource":
-                    logicEditor.a(ss, "property_image");
-                    return;
-                    
-                case "resource_bg":
-                    logicEditor.a(ss, "property_background_resource");
-                    return;
+                    case "inputCode":
+                        codeMenu(ss);
+                        return;
 
-                case "sound":
-                    logicEditor.h(ss);
-                    return;
+                    default:
+                        logicEditor.cusA(ss, false);
+                }
+                break;
 
-                case "font":
-                    logicEditor.d(ss);
-                    return;
+            case "m":
+                switch (menuName) {
+                    case "resource":
+                        logicEditor.a(ss, "property_image");
+                        return;
 
-                case "typeface":
-                    logicEditor.i(ss);
-                    return;
+                    case "resource_bg":
+                        logicEditor.a(ss, "property_background_resource");
+                        return;
 
-                case "color":
-                    logicEditor.b(ss);
-                    return;
+                    case "sound":
+                        logicEditor.h(ss);
+                        return;
 
-                case "view":
-                case "textview":
-                case "edittext":
-                case "imageview":
-                case "listview":
-                case "spinner":
-                case "listSpn":
-                case "webview":
-                case "checkbox":
-                case "switch":
-                case "seekbar":
-                case "calendarview":
-                case "compoundButton":
-                case "adview":
-                case "progressbar":
-                case "mapview":
-                case "radiobutton":
-                case "ratingbar":
-                case "searchview":
-                case "videoview":
-                case "gridview":
-                case "actv":
-                case "mactv":
-                case "tablayout":
-                case "viewpager":
-                case "bottomnavigation":
-                case "badgeview":
-                case "patternview":
-                case "sidebar":
-                case "recyclerview":
-                case "cardview":
-                case "collapsingtoolbar":
-                case "textinputlayout":
-                case "swiperefreshlayout":
-                case "radiogroup":
-                case "lottie":
-                case "otpview":
-                case "youtubeview":
-                case "codeview":
-                case "datepicker":
-                case "timepicker":
-                    logicEditor.f(ss);
-                    return;
+                    case "font":
+                        logicEditor.d(ss);
+                        return;
 
-                case "Assets":
-                case "NativeLib":
-                    pathSelectorMenu(ss);
-                    return;
+                    case "typeface":
+                        logicEditor.i(ss);
+                        return;
 
-                default:
-                    logicEditor.g(ss);
-                    return;
-            }
+                    case "color":
+                        logicEditor.b(ss);
+                        return;
+
+                    case "view":
+                    case "textview":
+                    case "edittext":
+                    case "imageview":
+                    case "listview":
+                    case "spinner":
+                    case "listSpn":
+                    case "webview":
+                    case "checkbox":
+                    case "switch":
+                    case "seekbar":
+                    case "calendarview":
+                    case "compoundButton":
+                    case "adview":
+                    case "progressbar":
+                    case "mapview":
+                    case "radiobutton":
+                    case "ratingbar":
+                    case "searchview":
+                    case "videoview":
+                    case "gridview":
+                    case "actv":
+                    case "mactv":
+                    case "tablayout":
+                    case "viewpager":
+                    case "bottomnavigation":
+                    case "badgeview":
+                    case "patternview":
+                    case "sidebar":
+                    case "recyclerview":
+                    case "cardview":
+                    case "collapsingtoolbar":
+                    case "textinputlayout":
+                    case "swiperefreshlayout":
+                    case "radiogroup":
+                    case "lottie":
+                    case "otpview":
+                    case "youtubeview":
+                    case "codeview":
+                    case "datepicker":
+                    case "timepicker":
+                        logicEditor.f(ss);
+                        return;
+
+                    case "Assets":
+                    case "NativeLib":
+                        pathSelectorMenu(ss);
+                        return;
+
+                    default:
+                        logicEditor.g(ss);
+                }
+                break;
         }
     }
     
@@ -161,6 +166,7 @@ public class ExtraMenuBean {
 
         mProperty.selection_mode = DialogConfigs.SINGLE_MODE;
         mProperty.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
+        String path;
         if (menuName.equals("Assets")) {
             fpd.setTitle("Select an Asset");
             path = String.format(ASSETS_PATH, sc_id);
