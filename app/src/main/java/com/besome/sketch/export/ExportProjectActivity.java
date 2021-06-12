@@ -26,7 +26,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.beans.UploadFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.tools.ExportApkActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.net.MediaType;
 import com.sketchware.remod.Resources;
@@ -414,11 +413,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), 0x7f0e06b7)));
-            HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
-            eventBuilder.setCategory("export");
-            eventBuilder.setAction("send");
-            eventBuilder.setLabel("project");
-            d.send(eventBuilder.build());
         }
     }
 
@@ -656,8 +650,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 c.b(keystoreAliasPassword, keystoreAliasName);
                 publishProgress("Release Apk ready.");
             } catch (OutOfMemoryError error) {
-                Log.e("AppExporter", error.getMessage(), error);
                 System.gc();
+                Log.e("AppExporter", error.getMessage(), error);
                 runOnUiThread(new ErrorRunOnUiThreadRunnable(error.getMessage()));
             } catch (Throwable throwable) {
                 Log.e("AppExporter", throwable.getMessage(), throwable);
