@@ -1,5 +1,6 @@
 package mod.jbk.build.compiler.bundle;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.apksigner.ApkSignerTool;
@@ -17,6 +18,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import a.a.a.Dp;
+import a.a.a.yq;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class AppBundleCompiler {
@@ -42,9 +44,14 @@ public class AppBundleCompiler {
         APK_SET_FILE_NAME = dp.f.d + ".apks";
         buildingDialog = designActivityA;
         mDp = dp;
-        mainModuleArchive = new File(mDp.f.t, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(mDp.f.t, BUNDLE_FILE_NAME);
-        apkSet = new File(mDp.f.t, APK_SET_FILE_NAME);
+        mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(dp.f.t, BUNDLE_FILE_NAME);
+        apkSet = new File(dp.f.t, APK_SET_FILE_NAME);
+    }
+
+    public static File getDefaultAppBundleOutputFile(Context context, String sc_id) {
+        yq projectMetadata = new yq(context, sc_id);
+        return new File(projectMetadata.t, projectMetadata.d + ".aab");
     }
 
     public void buildApkSet() {
@@ -57,7 +64,7 @@ public class AppBundleCompiler {
         args.add("--mode=universal");
         args.add("--aapt2=" + mDp.aapt2Dir.getAbsolutePath());
 
-        Log.d(TAG, "Running BundleToolMain with these arguments: " + args.toString());
+        Log.d(TAG, "Running BundleToolMain with these arguments: " + args);
         try {
             BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
@@ -65,24 +72,6 @@ public class AppBundleCompiler {
             Log.e(TAG, "Failed to build APK Set: " + e.getMessage(), e);
         }
         Log.d(TAG, "Building APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-    }
-
-    public void buildBundle() {
-        long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> args = new ArrayList<>();
-        args.add("build-bundle");
-        args.add("--modules=" + mainModuleArchive.getAbsolutePath());
-        args.add("--overwrite");
-        args.add("--output=" + appBundle.getAbsolutePath());
-
-        Log.d(TAG, "Running BundleToolMain with these arguments: " + args.toString());
-        try {
-            BundleToolMain.main(args.toArray(new String[0]));
-        } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
-            Log.e(TAG, "Failed to build bundle: " + e.getMessage(), e);
-        }
-        Log.d(TAG, "Building app bundle took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     public void extractInstallApkFromApkSet() {
@@ -107,27 +96,22 @@ public class AppBundleCompiler {
         Log.d(TAG, "Extracting universal.apk from APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
-    public void signInstallApk() {
+    public void buildBundle() {
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
-        args.add("sign");
-        args.add("--in");
-        args.add(mDp.f.G);
-        args.add("--out");
-        args.add(mDp.f.H);
-        args.add("--key");
-        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.pk8");
-        args.add("--cert");
-        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.x509.pem");
+        args.add("build-bundle");
+        args.add("--modules=" + mainModuleArchive.getAbsolutePath());
+        args.add("--overwrite");
+        args.add("--output=" + appBundle.getAbsolutePath());
 
-        Log.d(TAG, "Running ApkSignerTool with these arguments: " + args.toString());
+        Log.d(TAG, "Running BundleToolMain with these arguments: " + args);
         try {
-            ApkSignerTool.main(args.toArray(new String[0]));
+            BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
             if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
-            Log.e(TAG, "Failed to sign Install-APK: " + e.getMessage(), e);
+            Log.e(TAG, "Failed to build bundle: " + e.getMessage(), e);
         }
-        Log.d(TAG, "Signing Install-APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        Log.d(TAG, "Building app bundle took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
@@ -208,5 +192,28 @@ public class AppBundleCompiler {
                 }
             }
         }
+    }
+
+    public void signInstallApk() {
+        long savedTimeMillis = System.currentTimeMillis();
+        ArrayList<String> args = new ArrayList<>();
+        args.add("sign");
+        args.add("--in");
+        args.add(mDp.f.G);
+        args.add("--out");
+        args.add(mDp.f.H);
+        args.add("--key");
+        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.pk8");
+        args.add("--cert");
+        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.x509.pem");
+
+        Log.d(TAG, "Running ApkSignerTool with these arguments: " + args);
+        try {
+            ApkSignerTool.main(args.toArray(new String[0]));
+        } catch (Exception e) {
+            if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
+            Log.e(TAG, "Failed to sign Install-APK: " + e.getMessage(), e);
+        }
+        Log.d(TAG, "Signing Install-APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 }
