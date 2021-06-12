@@ -229,7 +229,7 @@ public class ManageAssetsActivity extends Activity {
 
         currentTree.clear();
         FileUtil.listDir(current_path, currentTree);
-        sort(currentTree);
+        Helper.sortPaths(currentTree);
 
         myadp = new MyAdapter();
 

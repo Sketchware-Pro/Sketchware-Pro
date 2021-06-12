@@ -20,6 +20,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import mod.agus.jcoderz.lib.FileUtil;
+
 public class Helper {
 
     public static Type TYPE_MAP = new TypeToken<HashMap<String, Object>>() {}.getType();
@@ -84,13 +86,36 @@ public class Helper {
 
         target.setBackground(
                 new RippleDrawable(
-                    new ColorStateList(
-                        new int[][]{ new int[]{} },
-                        new int[]{ rippleColor }
-                    ),
-                    new ColorDrawable(standardColor),
-                    null
+                        new ColorStateList(
+                                new int[][]{new int[]{}},
+                                new int[]{rippleColor}
+                        ),
+                        new ColorDrawable(standardColor),
+                        null
                 )
         );
+    }
+
+    public static String trimPath(String path) {
+        return path.endsWith("/") ? path.substring(0, path.length() - 1) : path;
+    }
+
+    public static void sortPaths(ArrayList<String> paths) {
+        ArrayList<String> directories = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+
+        for (String str : paths) {
+            if (FileUtil.isDirectory(str)) {
+                directories.add(str);
+            } else {
+                files.add(str);
+            }
+        }
+
+        directories.sort(String.CASE_INSENSITIVE_ORDER);
+        files.sort(String.CASE_INSENSITIVE_ORDER);
+        paths.clear();
+        paths.addAll(directories);
+        paths.addAll(files);
     }
 }
