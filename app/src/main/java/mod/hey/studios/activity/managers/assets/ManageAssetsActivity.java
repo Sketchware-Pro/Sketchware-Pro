@@ -1,6 +1,5 @@
 package mod.hey.studios.activity.managers.assets;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -17,7 +16,6 @@ import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -30,14 +28,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import a.a.a.bB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class ManageAssetsActivity extends Activity {
 
     private final ArrayList<String> currentTree = new ArrayList<>();
@@ -51,7 +47,7 @@ public class ManageAssetsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427785);
+        setContentView(Resources.layout.manage_file);
 
         sc_id = getIntent().getStringExtra("sc_id");
         Helper.fixFileprovider();
@@ -64,21 +60,21 @@ public class ManageAssetsActivity extends Activity {
     }
 
     private void setupUI() {
-        gridView = findViewById(2131232359);
+        gridView = findViewById(Resources.id.list_file);
         gridView.setNumColumns(1);
 
-        FloatingActionButton fab = findViewById(2131232360);
+        FloatingActionButton fab = findViewById(Resources.id.fab_plus);
         fab.setOnClickListener(v -> showCreateDialog());
 
-        tv_nofiles = findViewById(2131232361);
+        tv_nofiles = findViewById(Resources.id.text_info);
         tv_nofiles.setText("No files");
 
-        ((TextView) findViewById(2131232458)).setText("Asset Manager");
-        ImageView imageView = findViewById(2131232457);
+        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Asset Manager");
+        ImageView imageView = findViewById(Resources.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(imageView);
         imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        ImageView ig_load_file = findViewById(2131232459);
+        ImageView ig_load_file = findViewById(Resources.id.ig_toolbar_load_file);
         ig_load_file.setVisibility(View.VISIBLE);
 
         Helper.applyRippleToToolbarView(ig_load_file);
@@ -103,30 +99,30 @@ public class ManageAssetsActivity extends Activity {
     private void showCreateDialog() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
 
-        View inflate = getLayoutInflater().inflate(2131427800, null);
-        final EditText fileName = inflate.findViewById(2131232463);
-        TextView cancel = inflate.findViewById(2131232464);
-        TextView save = inflate.findViewById(2131232465);
-        final RadioGroup folderOrFile = inflate.findViewById(2131232460);
+        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
+        final EditText fileName = inflate.findViewById(Resources.id.dialog_edittext_name);
+        TextView cancel = inflate.findViewById(Resources.id.dialog_text_cancel);
+        TextView save = inflate.findViewById(Resources.id.dialog_text_save);
+        final RadioGroup folderOrFile = inflate.findViewById(Resources.id.dialog_radio_filetype);
 
-        inflate.findViewById(2131232462).setVisibility(View.GONE);
-        ((RadioButton) inflate.findViewById(2131232461)).setText("File");
+        inflate.findViewById(Resources.id.dialog_radio_filetype_activity).setVisibility(View.GONE);
+        ((RadioButton) inflate.findViewById(Resources.id.dialog_radio_filetype_class)).setText("File");
 
         cancel.setOnClickListener(v -> create.dismiss());
         save.setOnClickListener(v -> {
             if (fileName.getText().toString().isEmpty()) {
-                bB.b(ManageAssetsActivity.this, "Invalid file name", Toast.LENGTH_SHORT).show();
+                SketchwareUtil.toastError("Invalid file name");
                 return;
             }
 
             String editable = fileName.getText().toString();
 
             switch (folderOrFile.getCheckedRadioButtonId()) {
-                case 2131232461:
+                case Resources.id.dialog_radio_filetype_class:
                     FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
                     break;
 
-                case 2131232624:
+                case Resources.id.radio_button_folder:
                     FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
                     break;
 
@@ -168,7 +164,7 @@ public class ManageAssetsActivity extends Activity {
                     FileUtil.copyDirectory(file, new File(current_path, file.getName()));
                     refresh();
                 } catch (IOException e) {
-                    bB.b(ManageAssetsActivity.this, "Couldn't import file! [" + e.getMessage() + "]", Toast.LENGTH_SHORT).show();
+                    SketchwareUtil.toastError("Couldn't import file! [" + e.getMessage() + "]");
                 }
             }
         });
@@ -178,12 +174,12 @@ public class ManageAssetsActivity extends Activity {
 
     private void showRenameDialog(final int position) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427790, null);
-        final EditText newFileName = inflate.findViewById(2131232375);
+        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
+        final EditText newFileName = inflate.findViewById(Resources.id.edittext_change_name);
         newFileName.setText(myadp.getFileName(position));
-        TextView cancel = inflate.findViewById(2131232376);
+        TextView cancel = inflate.findViewById(Resources.id.text_cancel);
 
-        inflate.findViewById(2131232377).setOnClickListener(v -> {
+        inflate.findViewById(Resources.id.text_save).setOnClickListener(v -> {
             if (!newFileName.getText().toString().isEmpty()) {
                 FileUtil.renameFile(myadp.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
                 refresh();
@@ -267,15 +263,15 @@ public class ManageAssetsActivity extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427823, null);
+                convertView = getLayoutInflater().inflate(Resources.layout.manage_java_item_hs, null);
             }
 
-            TextView name = convertView.findViewById(2131231837);
-            ImageView icon = convertView.findViewById(2131231090);
-            ImageView more = convertView.findViewById(2131232627);
+            TextView name = convertView.findViewById(Resources.id.title);
+            ImageView icon = convertView.findViewById(Resources.id.icon);
+            ImageView more = convertView.findViewById(Resources.id.more);
 
             name.setText(getFileName(position));
-            icon.setImageResource(isFolder(position) ? 2131165754 : 2131165622);
+            icon.setImageResource(isFolder(position) ? Resources.drawable.ic_folder_48dp : Resources.drawable.file_48_blue);
             Helper.applyRipple(ManageAssetsActivity.this, more);
             more.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageAssetsActivity.this, v);
@@ -336,7 +332,7 @@ public class ManageAssetsActivity extends Activity {
                 Intent viewIntent = new Intent(Intent.ACTION_VIEW);
 
                 viewIntent.setDataAndType(Uri.fromFile(new File(getItem(position))), "*/*");
-                viewIntent.addFlags(268435456);
+                viewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 startActivity(viewIntent);
             }
