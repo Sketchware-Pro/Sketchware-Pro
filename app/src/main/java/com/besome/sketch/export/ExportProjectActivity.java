@@ -539,13 +539,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         btn_export_src = findViewById(Resources.id.btn_export_src);
         loading_export_src = findViewById(Resources.id.loading_export_src);
         layout_export_src = findViewById(Resources.id.layout_export_src);
-        TextView o1 = findViewById(Resources.id.title_src_path);
+        TextView title_src_path = findViewById(Resources.id.title_src_path);
         tv_src_path = findViewById(Resources.id.tv_src_path);
-        Button q1 = findViewById(Resources.id.btn_send_src);
+        Button btn_send_src = findViewById(Resources.id.btn_send_src);
         title_export_src.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_export_src));
         btn_export_src.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_button_export_src));
-        o1.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_local_path));
-        q1.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_button_send_src_zip));
+        title_src_path.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_local_path));
+        btn_send_src.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_button_send_src_zip));
         loading_export_src.setVisibility(View.GONE);
         layout_export_src.setVisibility(View.GONE);
         btn_export_src.setOnClickListener(new View.OnClickListener() {
@@ -564,7 +564,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }.start();
             }
         });
-        q1.setOnClickListener(v -> q());
+        btn_send_src.setOnClickListener(v -> q());
     }
 
     /**
