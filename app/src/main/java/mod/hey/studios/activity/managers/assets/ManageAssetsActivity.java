@@ -63,7 +63,7 @@ public class ManageAssetsActivity extends Activity {
         refresh();
     }
 
-    public void setupUI() {
+    private void setupUI() {
         gridView = findViewById(2131232359);
         gridView.setNumColumns(1);
 
@@ -100,11 +100,7 @@ public class ManageAssetsActivity extends Activity {
         refresh();
     }
 
-    public String trimPath(String path) {
-        return path.endsWith(DialogConfigs.DIRECTORY_SEPERATOR) ? path.substring(0, path.length() - 1) : path;
-    }
-
-    public void showCreateDialog() {
+    private void showCreateDialog() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
 
         View inflate = getLayoutInflater().inflate(2131427800, null);
@@ -135,13 +131,13 @@ public class ManageAssetsActivity extends Activity {
                     break;
 
                 default:
-                    toast("Select a file type");
+                    SketchwareUtil.toast("Select a file type");
                     return;
             }
 
             // This piece of code will be executed when the switch is 2131232461 or 2131232624
             refresh();
-            toast("File was created successfully");
+            SketchwareUtil.toast("File was created successfully");
             create.dismiss();
         });
 
@@ -153,7 +149,7 @@ public class ManageAssetsActivity extends Activity {
         SketchwareUtil.showKeyboard();
     }
 
-    public void showLoadDialog() {
+    private void showLoadDialog() {
         DialogProperties properties = new DialogProperties();
 
         properties.selection_mode = 1;
@@ -180,7 +176,7 @@ public class ManageAssetsActivity extends Activity {
         dialog.show();
     }
 
-    public void showRenameDialog(final int position) {
+    private void showRenameDialog(final int position) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(2131427790, null);
         final EditText newFileName = inflate.findViewById(2131232375);
@@ -191,7 +187,7 @@ public class ManageAssetsActivity extends Activity {
             if (!newFileName.getText().toString().isEmpty()) {
                 FileUtil.renameFile(myadp.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
                 refresh();
-                toast("Renamed successfully");
+                SketchwareUtil.toast("Renamed successfully");
             }
 
             create.dismiss();
@@ -206,7 +202,7 @@ public class ManageAssetsActivity extends Activity {
         SketchwareUtil.showKeyboard();
     }
 
-    public void showDeleteDialog(final int position) {
+    private void showDeleteDialog(final int position) {
         new AlertDialog.Builder(this)
                 .setTitle(myadp.getFileName(position))
                 .setMessage("Are you sure you want to delete this " + (myadp.isFolder(position) ? "folder" : "file") + "? "
@@ -214,14 +210,14 @@ public class ManageAssetsActivity extends Activity {
                 .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> {
                     FileUtil.deleteFile(myadp.getItem(position));
                     refresh();
-                    toast("Deleted successfully");
+                    SketchwareUtil.toast("Deleted successfully");
                 })
                 .setNegativeButton(Resources.string.common_word_cancel, null)
                 .create()
                 .show();
     }
 
-    public void refresh() {
+    private void refresh() {
         if (!FileUtil.isExistFile(fpu.getPathAssets(sc_id))) {
             FileUtil.makeDir(fpu.getPathAssets(sc_id));
             refresh();
@@ -251,31 +247,7 @@ public class ManageAssetsActivity extends Activity {
         }
     }
 
-    private void toast(String s) {
-        bB.a(this, s, 0).show();
-    }
-
-    private void sort(ArrayList<String> paths) {
-        ArrayList<String> directories = new ArrayList<>();
-        ArrayList<String> files = new ArrayList<>();
-
-        for (String path : paths) {
-            if (FileUtil.isDirectory(path)) {
-                directories.add(path);
-            } else {
-                files.add(path);
-            }
-        }
-
-        directories.sort(String.CASE_INSENSITIVE_ORDER);
-        files.sort(String.CASE_INSENSITIVE_ORDER);
-
-        paths.clear();
-        paths.addAll(directories);
-        paths.addAll(files);
-    }
-
-    public class MyAdapter extends BaseAdapter {
+    private class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
