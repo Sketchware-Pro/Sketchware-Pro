@@ -289,6 +289,10 @@ public class ManageJavaActivity extends Activity {
             }
             myadp.goEditFile(position);
         });
+        gridView.setOnItemLongClickListener((parent, view, position, id) -> {
+            myadp.itemContextMenu(view, position, Gravity.CENTER);
+            return true;
+        });
 
         tv_nofiles.setVisibility(currentTree.size() == 0 ? View.VISIBLE : View.GONE);
     }
@@ -409,97 +413,99 @@ public class ManageJavaActivity extends Activity {
 
             Helper.applyRipple(ManageJavaActivity.this, more);
 
-            more.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(ManageJavaActivity.this, v);
-                popupMenu.inflate(2131492893);
-
-                Menu popupMenuMenu = popupMenu.getMenu();
-                popupMenuMenu.clear();
-
-                boolean isActivityInManifest = frc.getJavaManifestList().contains(getFullName(position));
-                boolean isServiceInManifest = frc.getServiceManifestList().contains(getFullName(position));
-
-                if (!isFolder(position)) {
-                    if (isActivityInManifest) {
-                        popupMenuMenu.add("Remove Activity from manifest");
-                    } else if (!isServiceInManifest) {
-                        popupMenuMenu.add("Add as Activity to manifest");
-                    }
-
-                    if (isServiceInManifest) {
-                        popupMenuMenu.add("Remove Service from manifest");
-                    } else if (!isActivityInManifest) {
-                        popupMenuMenu.add("Add as Service to manifest");
-                    }
-
-                    popupMenuMenu.add("Edit");
-                    popupMenuMenu.add("Edit with...");
-                }
-
-                popupMenuMenu.add("Rename");
-                popupMenuMenu.add("Delete");
-
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getTitle().toString()) {
-                        case "Add as Activity to manifest":
-                            frc.getJavaManifestList().add(getFullName(position));
-                            FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                            SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Activity to AndroidManifest");
-                            break;
-
-                        case "Remove Activity from manifest":
-                            if (frc.getJavaManifestList().remove(getFullName(position))) {
-                                FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                                SketchwareUtil.toast("Successfully removed Activity " + getFileNameWoExt(position) + " from AndroidManifest");
-                            } else {
-                                SketchwareUtil.toast("Activity was not defined in AndroidManifest.");
-                            }
-                            break;
-
-                        case "Add as Service to manifest":
-                            frc.getServiceManifestList().add(getFullName(position));
-                            FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
-                            SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Service to AndroidManifest");
-                            break;
-
-                        case "Remove Service from manifest":
-                            if (frc.getServiceManifestList().remove(getFullName(position))) {
-                                FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
-                                SketchwareUtil.toast("Successfully removed Service " + getFileNameWoExt(position) + " from AndroidManifest");
-                            } else {
-                                SketchwareUtil.toast("Service was not defined in AndroidManifest.");
-                            }
-                            break;
-
-                        case "Edit":
-                            goEditFile(position);
-                            break;
-
-                        case "Edit with...":
-                            Intent launchIntent = new Intent(Intent.ACTION_VIEW);
-                            launchIntent.setDataAndType(Uri.fromFile(new File(getItem(position))), "text/plain");
-                            startActivity(launchIntent);
-                            break;
-
-                        case "Rename":
-                            showRenameDialog(position);
-                            break;
-
-                        case "Delete":
-                            showDeleteDialog(position);
-                            break;
-
-                        default:
-                            return false;
-                    }
-
-                    return true;
-                });
-
-                popupMenu.show();
-            });
+            more.setOnClickListener(v -> itemContextMenu(more, position, Gravity.RIGHT));
 
             return convertView;
+        }
+
+        private void itemContextMenu(View v, int position, int gravity) {
+            PopupMenu popupMenu = new PopupMenu(ManageJavaActivity.this, v, gravity);
+            popupMenu.inflate(Resources.menu.popup_menu_double);
+
+            Menu popupMenuMenu = popupMenu.getMenu();
+            popupMenuMenu.clear();
+
+            boolean isActivityInManifest = frc.getJavaManifestList().contains(getFullName(position));
+            boolean isServiceInManifest = frc.getServiceManifestList().contains(getFullName(position));
+
+            if (!isFolder(position)) {
+                if (isActivityInManifest) {
+                    popupMenuMenu.add("Remove Activity from manifest");
+                } else if (!isServiceInManifest) {
+                    popupMenuMenu.add("Add as Activity to manifest");
+                }
+
+                if (isServiceInManifest) {
+                    popupMenuMenu.add("Remove Service from manifest");
+                } else if (!isActivityInManifest) {
+                    popupMenuMenu.add("Add as Service to manifest");
+                }
+
+                popupMenuMenu.add("Edit");
+                popupMenuMenu.add("Edit with...");
+            }
+
+            popupMenuMenu.add("Rename");
+            popupMenuMenu.add("Delete");
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getTitle().toString()) {
+                    case "Add as Activity to manifest":
+                        frc.getJavaManifestList().add(getFullName(position));
+                        FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                        SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Activity to AndroidManifest");
+                        break;
+
+                    case "Remove Activity from manifest":
+                        if (frc.getJavaManifestList().remove(getFullName(position))) {
+                            FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                            SketchwareUtil.toast("Successfully removed Activity " + getFileNameWoExt(position) + " from AndroidManifest");
+                        } else {
+                            SketchwareUtil.toast("Activity was not defined in AndroidManifest.");
+                        }
+                        break;
+
+                    case "Add as Service to manifest":
+                        frc.getServiceManifestList().add(getFullName(position));
+                        FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
+                        SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Service to AndroidManifest");
+                        break;
+
+                    case "Remove Service from manifest":
+                        if (frc.getServiceManifestList().remove(getFullName(position))) {
+                            FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
+                            SketchwareUtil.toast("Successfully removed Service " + getFileNameWoExt(position) + " from AndroidManifest");
+                        } else {
+                            SketchwareUtil.toast("Service was not defined in AndroidManifest.");
+                        }
+                        break;
+
+                    case "Edit":
+                        goEditFile(position);
+                        break;
+
+                    case "Edit with...":
+                        Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+                        launchIntent.setDataAndType(Uri.fromFile(new File(getItem(position))), "text/plain");
+                        startActivity(launchIntent);
+                        break;
+
+                    case "Rename":
+                        showRenameDialog(position);
+                        break;
+
+                    case "Delete":
+                        showDeleteDialog(position);
+                        break;
+
+                    default:
+                        return false;
+                }
+
+                return true;
+            });
+
+            popupMenu.show();
         }
     }
 }
