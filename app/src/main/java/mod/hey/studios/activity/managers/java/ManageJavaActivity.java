@@ -1,12 +1,12 @@
 package mod.hey.studios.activity.managers.java;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
-@SuppressLint("ResourceType")
 public class ManageJavaActivity extends Activity {
 
     private static final String ACTIVITY_TEMPLATE = "package %s;\n\nimport android.app.Activity;\nimport android.os.Bundle;\n\npublic class %s extends Activity {\n     \n      @Override\n     protected void onCreate(Bundle savedInstanceState) {\n              super.onCreate(savedInstanceState);\n       }\n     \n}";
@@ -51,7 +51,7 @@ public class ManageJavaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427785);
+        setContentView(Resources.layout.manage_file);
 
         sc_id = getIntent().getStringExtra("sc_id");
         Helper.fixFileprovider();
@@ -62,23 +62,23 @@ public class ManageJavaActivity extends Activity {
         refresh();
     }
 
-    public void setupUI() {
-        gridView = findViewById(2131232359);
+    private void setupUI() {
+        gridView = findViewById(Resources.id.list_file);
         gridView.setNumColumns(1);
 
-        FloatingActionButton fab = findViewById(2131232360);
+        FloatingActionButton fab = findViewById(Resources.id.fab_plus);
         fab.setOnClickListener(v -> showCreateDialog());
 
-        tv_nofiles = findViewById(2131232361);
+        tv_nofiles = findViewById(Resources.id.text_info);
         tv_nofiles.setText("No files");
 
-        ((TextView) findViewById(2131232458)).setText("Java Manager");
-        ImageView back = findViewById(2131232457);
+        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Java Manager");
+        ImageView back = findViewById(Resources.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back);
 
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        ImageView ig_load_file = findViewById(2131232459);
+        ImageView ig_load_file = findViewById(Resources.id.ig_toolbar_load_file);
         ig_load_file.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(ig_load_file);
         ig_load_file.setOnClickListener(v -> showLoadDialog());
@@ -98,11 +98,11 @@ public class ManageJavaActivity extends Activity {
         refresh();
     }
 
-    public String trimPath(String str) {
+    private String trimPath(String str) {
         return str.endsWith("/") ? str.substring(0, str.length() - 1) : str;
     }
 
-    public String getCurrentPkgName() {
+    private String getCurrentPkgName() {
         String pkgName = getIntent().getStringExtra("pkgName");
 
         try {
@@ -124,15 +124,15 @@ public class ManageJavaActivity extends Activity {
         }
     }
 
-    public void showCreateDialog() {
+    private void showCreateDialog() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427800, null);
+        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
 
-        final EditText editText = inflate.findViewById(2131232463);
-        inflate.findViewById(2131232464).setOnClickListener(v -> create.dismiss());
+        final EditText editText = inflate.findViewById(Resources.id.dialog_edittext_name);
+        inflate.findViewById(Resources.id.dialog_text_cancel).setOnClickListener(v -> create.dismiss());
 
-        final RadioGroup radio_fileType = inflate.findViewById(2131232460);
-        inflate.findViewById(2131232465).setOnClickListener(v -> {
+        final RadioGroup radio_fileType = inflate.findViewById(Resources.id.dialog_radio_filetype);
+        inflate.findViewById(Resources.id.dialog_text_save).setOnClickListener(v -> {
             String format;
 
             if (editText.getText().toString().isEmpty()) {
@@ -144,15 +144,15 @@ public class ManageJavaActivity extends Activity {
             String currentPkgName = getCurrentPkgName();
 
             switch (radio_fileType.getCheckedRadioButtonId()) {
-                case 2131232461:
+                case Resources.id.dialog_radio_filetype_class:
                     format = String.format(CLASS_TEMPLATE, currentPkgName, name);
                     break;
 
-                case 2131232462:
+                case Resources.id.dialog_radio_filetype_activity:
                     format = String.format(ACTIVITY_TEMPLATE, currentPkgName, name);
                     break;
 
-                case 2131232624:
+                case Resources.id.radio_button_folder:
                     FileUtil.makeDir(new File(current_path, name).getAbsolutePath());
                     refresh();
                     SketchwareUtil.toast("Folder was created successfully");
@@ -178,7 +178,7 @@ public class ManageJavaActivity extends Activity {
         SketchwareUtil.showKeyboard();
     }
 
-    public void showLoadDialog() {
+    private void showLoadDialog() {
         DialogProperties properties = new DialogProperties();
 
         properties.selection_mode = 1;
@@ -209,15 +209,15 @@ public class ManageJavaActivity extends Activity {
         pickerDialog.show();
     }
 
-    public void showRenameDialog(final int position) {
+    private void showRenameDialog(final int position) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427790, null);
+        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
 
-        final EditText fileName = inflate.findViewById(2131232375);
+        final EditText fileName = inflate.findViewById(Resources.id.edittext_change_name);
         fileName.setText(myadp.getFileName(position));
 
-        inflate.findViewById(2131232376).setOnClickListener(v -> create.dismiss());
-        inflate.findViewById(2131232377).setOnClickListener(view -> {
+        inflate.findViewById(Resources.id.text_cancel).setOnClickListener(v -> create.dismiss());
+        inflate.findViewById(Resources.id.text_save).setOnClickListener(view -> {
             if (!fileName.getText().toString().isEmpty()) {
                 if (!myadp.isFolder(position) && frc.getJavaManifestList().contains(myadp.getFullName(position))) {
                     frc.getJavaManifestList().remove(myadp.getFullName(position));
@@ -241,7 +241,7 @@ public class ManageJavaActivity extends Activity {
         SketchwareUtil.showKeyboard();
     }
 
-    public void showDeleteDialog(final int position) {
+    private void showDeleteDialog(final int position) {
         final boolean isInManifest = frc.getJavaManifestList().contains(myadp.getFullName(position));
 
         new AlertDialog.Builder(this)
@@ -263,7 +263,7 @@ public class ManageJavaActivity extends Activity {
                 .create().show();
     }
 
-    public void refresh() {
+    private void refresh() {
         if (!FileUtil.isExistFile(fpu.getPathJava(sc_id))) {
             FileUtil.makeDir(fpu.getPathJava(sc_id));
             refresh();
@@ -314,7 +314,7 @@ public class ManageJavaActivity extends Activity {
         paths.addAll(files);
     }
 
-    public class MyAdapter extends BaseAdapter {
+    private class MyAdapter extends BaseAdapter {
 
         @Override
         public String getItem(int position) {
@@ -397,15 +397,15 @@ public class ManageJavaActivity extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427823, null);
+                convertView = getLayoutInflater().inflate(Resources.layout.manage_java_item_hs, null);
             }
 
-            TextView name = convertView.findViewById(2131231837);
-            ImageView icon = convertView.findViewById(2131231090);
-            ImageView more = convertView.findViewById(2131232627);
+            TextView name = convertView.findViewById(Resources.id.title);
+            ImageView icon = convertView.findViewById(Resources.id.icon);
+            ImageView more = convertView.findViewById(Resources.id.more);
 
             name.setText(getFileName(position));
-            icon.setImageResource(isFolder(position) ? 2131165754 : 2131165928);
+            icon.setImageResource(isFolder(position) ? Resources.drawable.ic_folder_48dp : Resources.drawable.java_96);
 
             Helper.applyRipple(ManageJavaActivity.this, more);
 
