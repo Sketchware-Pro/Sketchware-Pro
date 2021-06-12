@@ -72,6 +72,7 @@ import a.a.a.yB;
 import a.a.a.yq;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
@@ -480,7 +481,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 // loadingExportAppBundle.setVisibility(View.VISIBLE);
                 // loadingExportAppBundle.j();
 
-                c task = new c(getBaseContext());
+                BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                 task.enableAppBundleBuild();
                 task.configureResultJarSigning(
                         wq.j(),
@@ -629,7 +630,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 loading_sign_apk.setVisibility(View.VISIBLE);
                 loading_sign_apk.j();
 
-                c task = new c(getBaseContext());
+                BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                 task.configureResultJarSigning(
                         wq.j(),
                         et_password.getText().toString().toCharArray(),
@@ -764,7 +765,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    class c extends MA implements DialogInterface.OnCancelListener {
+    private class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener {
 
         public Dp c;
         /**
@@ -782,7 +783,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private char[] signingAliasPassword = new char[0];
         private String signingAlgorithm = "";
 
-        public c(Context context) {
+        public BuildingAsyncTask(Context context) {
             super(context);
             ExportProjectActivity.this.a((MA) this);
             ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
@@ -923,6 +924,15 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                     /* Sign the generated .aab file */
                     publishProgress("Signing app bundle...");
+
+                    String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(
+                            ExportProjectActivity.this, sc_id)
+                            .getAbsolutePath();
+                    String signedAppBundleDirectoryPath = FileUtil.getExternalStorageDir()
+                            + File.separator + "sketchware"
+                            + File.separator + "signed_aab";
+                    FileUtil.makeDir(signedAppBundleDirectoryPath);
+
                     Security.addProvider(new BouncyCastleProvider());
                     CustomKeySigner.signZip(
                             new ZipSigner(),
@@ -931,8 +941,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                             signingAliasName,
                             signingAliasPassword,
                             signingAlgorithm,
-                            "appBundlePath",
-                            "outputPath"
+                            createdBundlePath,
+                            signedAppBundleDirectoryPath
+                                    + File.separator + Uri.fromFile(new File(createdBundlePath)).getLastPathSegment()
                     );
                 } else {
                     publishProgress("Building APK...");
