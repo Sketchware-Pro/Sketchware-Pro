@@ -300,6 +300,7 @@ public class Resources {
         public static final int ti_project_name = 0x7f080454;
         public static final int ti_right = 0x7f080455;
         public static final int ti_top = 0x7f080457;
+        public static final int title = 0x7f08045d;
         public static final int title_apk_path = 0x7f08045f;
         public static final int title_apk_url = 0x7f080460;
         public static final int title_data_url = 0x7f080461;
@@ -355,8 +356,12 @@ public class Resources {
         public static final int view_leftline = 0x7f080643;
         public static final int viewpager = 0x7f080648;
         public static final int linearLayout = 0x7f08065e;
+        public static final int list_file = 0x7f080667;
+        public static final int fab_plus = 0x7f080668;
+        public static final int text_info = 0x7f080669;
         public static final int text_title = 0x7f08066e;
         public static final int text_content = 0x7f08066f;
+        public static final int edittext_change_name = 0x7f080677;
         public static final int text_cancel = 0x7f080678;
         public static final int text_save = 0x7f080679;
         // WTF
@@ -382,6 +387,12 @@ public class Resources {
         public static final int ig_toolbar_back = 0x7f0806c9;
         public static final int tx_toolbar_title = 0x7f0806ca;
         public static final int ig_toolbar_load_file = 0x7f0806cb;
+        public static final int dialog_radio_filetype = 0x7f0806cc;
+        public static final int dialog_radio_filetype_class = 0x7f0806cd;
+        public static final int dialog_radio_filetype_activity = 0x7f0806ce;
+        public static final int dialog_edittext_name = 0x7f0806cf;
+        public static final int dialog_text_cancel = 0x7f0806d0;
+        public static final int dialog_text_save = 0x7f0806d1;
         public static final int line_numbered_textview_lines = 0x7f0806d2;
         public static final int line_numbered_textview_main = 0x7f0806d3;
         public static final int custom_view_pro_background = 0x7f0806d4;
@@ -419,6 +430,7 @@ public class Resources {
         public static final int sw_pg_debug = 0x7f08076d;
         public static final int ln_pg_rules = 0x7f08076e;
         public static final int sw_pg_enabled = 0x7f08076f;
+        public static final int radio_button_folder = 0x7f080770;
         public static final int more = 0x7f080773;
         public static final int btn_compiler_opt = 0x7f080774;
         public static final int project_config_title = 0x7f080775;
@@ -477,13 +489,16 @@ public class Resources {
         public static final int view_events = 0x7f0b01bf;
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
+        public static final int manage_file = 0x7f0b01c9;
         public static final int view_code = 0x7f0b01cb;
+        public static final int dialog_input_layout = 0x7f0b01ce;
         public static final int about = 0x7f0b01cf;
         public static final int add_custom_attribute = 0x7f0b01d3;
         public static final int custom_view_attribute = 0x7f0b01d4;
         public static final int custom_dialog_attribute = 0x7f0b01d5;
         public static final int code_editor_layout = 0x7f0b01d6;
         public static final int toolbar_improved = 0x7f0b01d7;
+        public static final int dialog_create_new_file_layout = 0x7f0b01d8;
         public static final int line_numbered_textview_layout = 0x7f0b01d9;
         public static final int custom_view_pro = 0x7f0b01da;
         public static final int events_creator = 0x7f0b01db;
@@ -493,6 +508,7 @@ public class Resources {
         public static final int block_customview = 0x7f0b01e5;
         public static final int manage_proguard = 0x7f0b01ea;
         public static final int manage_stringfog = 0x7f0b01ee;
+        public static final int manage_java_item_hs = 0x7f0b01ef;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
         public static final int about_empty_viewpager = 0x7f0b01f6;
@@ -503,6 +519,7 @@ public class Resources {
         public static final int design_menu = 0x7f0c0002;
         public static final int main_menu = 0x7f0c0009;
         public static final int moreblock_menu = 0x7f0c0013;
+        public static final int popup_menu_double = 0x7f0c001d;
     }
 
     public static final class string {
