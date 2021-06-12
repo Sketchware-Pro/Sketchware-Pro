@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -279,40 +280,29 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
         relativeLayout.addView(titleExportAppBundle);
 
-        Button btnExportAppBundle;
+        Button btnExportAppBundle = new Button(this);
         {
-            LinearLayout btnExportAppBundleContainer = new LinearLayout(this);
+            RelativeLayout.LayoutParams btnExportAppBundleParams = (RelativeLayout.LayoutParams) btn_export_src.getLayoutParams();
+            btnExportAppBundleParams.setMargins(
+                    0,
+                    (int) getDip(48),
+                    0,
+                    (int) getDip(16)
+            );
+            btnExportAppBundle.setLayoutParams(btnExportAppBundleParams);
+            btnExportAppBundle.setAllCaps(false);
+            btnExportAppBundle.setTextColor(Color.WHITE);
+            btnExportAppBundle.setTextSize(14f);
             {
-                btnExportAppBundleContainer.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayout.LayoutParams btnExportAppBundleContainerParams = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                btnExportAppBundleContainerParams.gravity = Gravity.CENTER_HORIZONTAL;
-                btnExportAppBundleContainer.setLayoutParams(btnExportAppBundleContainerParams);
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setColor(0xffff5955);
+                drawable.setCornerRadius(6);
+                btnExportAppBundle.setBackground(drawable);
             }
-
-            btnExportAppBundle = new Button(this);
-            {
-                LinearLayout.LayoutParams btnExportAppBundleParams = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                btnExportAppBundleParams.setMargins(
-                        0,
-                        (int) getDip(48),
-                        0,
-                        (int) getDip(16)
-                );
-                btnExportAppBundle.setLayoutParams(btnExportAppBundleParams);
-                btnExportAppBundle.setAllCaps(false);
-                btnExportAppBundle.setTextColor(Color.WHITE);
-                btnExportAppBundle.setTextSize(14f);
-                btnExportAppBundle.setBackgroundColor(0xffff5955);
-                btnExportAppBundle.setHighlightColor(0xffff8784);
-            }
-            btnExportAppBundleContainer.addView(btnExportAppBundle);
-
-            relativeLayout.addView(btnExportAppBundleContainer);
+            btnExportAppBundle.setHighlightColor(0xffff8784);
         }
+
+        relativeLayout.addView(btnExportAppBundle);
 
         LinearLayout layoutExportAppBundle = new LinearLayout(this);
         {
