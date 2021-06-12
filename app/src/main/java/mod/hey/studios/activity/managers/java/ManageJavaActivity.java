@@ -98,15 +98,11 @@ public class ManageJavaActivity extends Activity {
         refresh();
     }
 
-    private String trimPath(String str) {
-        return str.endsWith("/") ? str.substring(0, str.length() - 1) : str;
-    }
-
     private String getCurrentPkgName() {
         String pkgName = getIntent().getStringExtra("pkgName");
 
         try {
-            String trimmedPath = trimPath(fpu.getPathJava(sc_id));
+            String trimmedPath = Helper.trimPath(fpu.getPathJava(sc_id));
             String substring = current_path.substring(current_path.indexOf(trimmedPath) + trimmedPath.length());
 
             if (substring.endsWith("/")) {
@@ -276,7 +272,7 @@ public class ManageJavaActivity extends Activity {
 
         currentTree.clear();
         FileUtil.listDir(current_path, currentTree);
-        sort(currentTree);
+        Helper.sortPaths(currentTree);
 
         myadp = new MyAdapter();
 
@@ -295,27 +291,6 @@ public class ManageJavaActivity extends Activity {
         });
 
         tv_nofiles.setVisibility(currentTree.size() == 0 ? View.VISIBLE : View.GONE);
-    }
-
-    // This sort function also appears on ManageAssetsActivity
-    // better put this on a helper somewhere to reduce some bytes
-    void sort(ArrayList<String> paths) {
-        ArrayList<String> directories = new ArrayList<>();
-        ArrayList<String> files = new ArrayList<>();
-
-        for (String str : paths) {
-            if (FileUtil.isDirectory(str)) {
-                directories.add(str);
-            } else {
-                files.add(str);
-            }
-        }
-
-        directories.sort(String.CASE_INSENSITIVE_ORDER);
-        files.sort(String.CASE_INSENSITIVE_ORDER);
-        paths.clear();
-        paths.addAll(directories);
-        paths.addAll(files);
     }
 
     private class MyAdapter extends BaseAdapter {
