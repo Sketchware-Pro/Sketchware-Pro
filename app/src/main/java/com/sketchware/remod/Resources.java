@@ -14,11 +14,14 @@ public class Resources {
 
     public static final class color {
         public static final int color_accent = 0x7f05002f;
+        public static final int color_btn_green_highlight = 0x7f050032;
         public static final int color_control_highlight = 0x7f05003c;
         public static final int color_control_normal = 0x7f05003d;
         public static final int color_primary = 0x7f05003e;
         public static final int color_primary_dark = 0x7f050040;
         public static final int grey = 0x7f050069;
+        public static final int scolor_black_01 = 0x7f0500aa;
+        public static final int scolor_green_normal = 0x7f0500b0;
     }
 
     public static final class dimen {
@@ -28,8 +31,10 @@ public class Resources {
     public static final class drawable {
         public static final int abc_96 = 0x7f070006;
         public static final int abc_96_color = 0x7f070007;
+        public static final int add_96_blue = 0x7f070072;
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
+        public static final int bg_round_light_grey = 0x7f0700b3;
         public static final int block_96_blue = 0x7f0700be;
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int cart_filled_48 = 0x7f0700da;
@@ -70,6 +75,7 @@ public class Resources {
         public static final int ic_detail_setting_48dp = 0x7f070225;
         public static final int ic_export_grey_48dp = 0x7f070235;
         public static final int ic_export_his_white_48dp = 0x7f070236;
+        public static final int ic_folder_48dp = 0x7f07023a;
         public static final int ic_font_48dp = 0x7f07023b;
         public static final int ic_menu_white_24dp = 0x7f07025c;
         public static final int ic_picture_48dp = 0x7f070273;
@@ -88,6 +94,7 @@ public class Resources {
         public static final int light_on_48 = 0x7f070300;
         public static final int lock_48 = 0x7f070304;
         public static final int monday_48 = 0x7f07030f;
+        public static final int more_block_96dp = 0x7f070310;
         public static final int multiple_choice_48 = 0x7f070315;
         public static final int multiple_devices_48 = 0x7f070316;
         public static final int natural_user_interface2_48 = 0x7f07031b;
@@ -200,6 +207,8 @@ public class Resources {
         public static final int file_selector = 0x7f080154;
         public static final int hcv_property = 0x7f080165;
         public static final int icon = 0x7f080172;
+        public static final int icon_apk = 0x7f080173;
+        public static final int icon_src = 0x7f080179;
         public static final int img_activity = 0x7f080180;
         public static final int img_add = 0x7f080181;
         public static final int img_back = 0x7f080188;
@@ -367,6 +376,7 @@ public class Resources {
         public static final int dialog_btn_save = 0x7f0806bd;
         public static final int dialog_input_res = 0x7f0806be;
         public static final int dialog_input_value = 0x7f0806bf;
+        public static final int code_editor_edittext = 0x7f0806c6;
         public static final int code_editor_zoomin = 0x7f0806c7;
         public static final int code_editor_zoomout = 0x7f0806c8;
         public static final int ig_toolbar_back = 0x7f0806c9;
@@ -396,6 +406,7 @@ public class Resources {
         public static final int events_creator_cancel = 0x7f0806e7;
         public static final int events_creator_save = 0x7f0806e8;
         public static final int codeeditor_more_options = 0x7f0806f8;
+        public static final int code_editor_layoutScrollView = 0x7f0806f9;
         public static final int project_config_pref_layout = 0x7f0806fc;
         // WTF
         public static final int linear3 = 0x7f0806fe;
@@ -405,11 +416,15 @@ public class Resources {
         public static final int save = 0x7f080710;
         public static final int spec = 0x7f080729;
         public static final int parameter = 0x7f080769;
+        public static final int sw_pg_debug = 0x7f08076d;
+        public static final int ln_pg_rules = 0x7f08076e;
         public static final int sw_pg_enabled = 0x7f08076f;
         public static final int more = 0x7f080773;
         public static final int btn_compiler_opt = 0x7f080774;
         public static final int project_config_title = 0x7f080775;
         public static final int project_config_icon = 0x7f080776;
+        // WOOO!
+        public static final int ln_pg_fm = 0x7f080777;
         public static final int fab_label = 0x7f080783;
         public static final int loading_view = 0x7f080784;
         public static final int trash = 0x7f080785;
@@ -467,13 +482,16 @@ public class Resources {
         public static final int add_custom_attribute = 0x7f0b01d3;
         public static final int custom_view_attribute = 0x7f0b01d4;
         public static final int custom_dialog_attribute = 0x7f0b01d5;
+        public static final int code_editor_layout = 0x7f0b01d6;
         public static final int toolbar_improved = 0x7f0b01d7;
         public static final int line_numbered_textview_layout = 0x7f0b01d9;
         public static final int custom_view_pro = 0x7f0b01da;
         public static final int events_creator = 0x7f0b01db;
+        public static final int code_editor_layout_nowrap = 0x7f0b01dd;
         public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int block_customview = 0x7f0b01e5;
+        public static final int manage_proguard = 0x7f0b01ea;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
@@ -657,6 +675,7 @@ public class Resources {
     }
 
     public static final class style {
+        public static final int AppTheme_Button_Indigo = 0x7f0f000c;
         public static final int ThemeOverlay_ToolbarMenu = 0x7f0f019e;
     }
 }
