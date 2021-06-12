@@ -66,6 +66,7 @@ public class Dp {
     public final String m = "libs";
     public File aapt2Dir;
     public BuildSettings build_settings;
+    private boolean buildAppBundle = false;
     public DesignActivity.a buildingDialog;
     /**
      * Command(s) to execute after extracting AAPT/AAPT2 (fill in 2 with the file name before using)
@@ -140,6 +141,11 @@ public class Dp {
         buildingDialog = anA;
     }
 
+    public Dp(Context context, yq yq, boolean buildAppBundle) {
+        this(context, yq);
+        this.buildAppBundle = buildAppBundle;
+    }
+
     /**
      * Compile resources and log time needed.
      *
@@ -152,10 +158,9 @@ public class Dp {
     }
 
     public void a(iI iIVar, String str) {
-        ZipSigner b2 = iIVar.b(new CB().a(str));
-        yq yqVar = f;
+        ZipSigner signer = iIVar.b(new CB().a(str));
         try {
-            b2.signZip(yqVar.G, yqVar.I);
+            signer.signZip(f.G, f.I);
         } catch (IOException | GeneralSecurityException e) {
             Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
@@ -208,7 +213,7 @@ public class Dp {
      * @throws Exception Thrown in case AAPT/AAPT2 has an error while compiling resources.
      */
     public void b() throws Exception {
-        boolean useAapt2 = build_settings.getValue(
+        boolean useAapt2 = buildAppBundle || build_settings.getValue(
                 BuildSettings.SETTING_RESOURCE_PROCESSOR,
                 BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
         ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
@@ -216,10 +221,7 @@ public class Dp {
         ResourceCompiler compiler = new ResourceCompiler(
                 this,
                 aapt2Dir,
-                build_settings.getValue(
-                        BuildSettings.SETTING_OUTPUT_FORMAT,
-                        BuildSettings.SETTING_OUTPUT_FORMAT_APK
-                ).equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB),
+                buildAppBundle,
                 buildingDialog,
                 useAapt2);
         compiler.compile();
@@ -228,7 +230,16 @@ public class Dp {
     public void b(String password, String alias) {
         Security.addProvider(new BouncyCastleProvider());
         try {
-            CustomKeySigner.signZip(new ZipSigner(), wq.j(), password.toCharArray(), alias, password.toCharArray(), "SHA1WITHRSA", f.G, f.I);
+            CustomKeySigner.signZip(
+                    new ZipSigner(),
+                    wq.j(),
+                    password.toCharArray(),
+                    alias,
+                    password.toCharArray(),
+                    "SHA1WITHRSA",
+                    f.G,
+                    f.I
+            );
         } catch (Exception e) {
             Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
@@ -275,7 +286,7 @@ public class Dp {
                     r8Executor.preparingEnvironment();
                     r8Executor.compile();
                 }
-                Log.d(TAG, "Running D8 with these arguments: " + args.toString());
+                Log.d(TAG, "Running D8 with these arguments: " + args);
                 D8.main(args.toArray(new String[0]));
                 Log.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
@@ -297,7 +308,7 @@ public class Dp {
                 args.add(f.u);
             }
             try {
-                Log.d(TAG, "Running Dx with these arguments: " + args.toString());
+                Log.d(TAG, "Running Dx with these arguments: " + args);
                 Main.main(args.toArray(new String[0]));
                 Log.d(TAG, "Dx took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
@@ -394,8 +405,8 @@ public class Dp {
         }
 
         return baseClasses.toString()
-                + builtInLibrariesClasses.toString()
-                + localLibraryClasses.toString();
+                + builtInLibrariesClasses
+                + localLibraryClasses;
     }
 
     /**
