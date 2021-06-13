@@ -56,6 +56,8 @@ public class EventsHandler {
             array.add("onStart");
             array.add("onPostCreate");
             array.add("onBackPressed");
+            array.add("onActivityResult");
+            array.add("initializeLogic");
             array.add("Import");
             ///array.add("AndroidManifest");
 
@@ -63,7 +65,7 @@ public class EventsHandler {
 
             return array.toArray(new String[0]);
         } catch (Exception e) {
-            return new String[]{"Import", "onBackPressed", "onPostCreate", "onStart", "onResume",
+            return new String[]{"Import", "initializeLogic", "onActivityResult", "onBackPressed", "onPostCreate", "onStart", "onResume",
                     "onPause", "onStop", "onDestroy", "onSaveInstanceState", "onRestoreInstanceState",
                     "onCreateOptionsMenu", "onOptionsItemSelected", "onCreateContextMenu",
                     "onContextItemSelected", "onTabLayoutNewTabAdded"};
@@ -196,7 +198,7 @@ public class EventsHandler {
 
     // Events' properties
     public static int getIcon(String name) {
-        if (name.equals("Import")) {
+        if (name.equals("Import") || name.equals("onActivityResult") || name.equals("initializeLogic")) {
             return 2131166270;
         }
 
@@ -278,6 +280,12 @@ public class EventsHandler {
         if (name.equals("Import")) {
             return "add custom imports";
         }
+        if (name.equals("onActivityResult")) {
+            return "onActivityResult";
+        }
+        if (name.equals("initializeLogic")) {
+            return "initializeLogic";
+        }
         if (name.equals("onSwipeRefreshLayout")) {
             return "On SwipeRefreshLayout swipe";
         }
@@ -327,6 +335,10 @@ public class EventsHandler {
     public static String getEventCode(String name, String param) {
         if (name.equals("Import")) {
             return j("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF\n%s\n//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ", param);
+        }
+        
+        if (name.equals("onActivityResult") || name.equals("initializeLogic")) {
+            return "";
         }
 
         if (name.equals("onSwipeRefreshLayout")) {
@@ -383,8 +395,11 @@ public class EventsHandler {
     }
 
     public static String getBlocks(String name) {
-        if (name.equals("Import")) {
+        if (name.equals("Import") || name.equals("initializeLogic")) {
             return "";
+        }
+        if (name.equals("onActivityResult")){
+            return "%d.requestCode %d.resultCode %m.intent";
         }
         if (name.equals("onSwipeRefreshLayout")) {
             return "";
@@ -441,6 +456,14 @@ public class EventsHandler {
     public static String getSpec(String name, String event) {
         if (event.equals("Import")) {
             return "create new import";
+        }
+        
+        if (event.equals("onActivityResult")) {
+            return "OnActivityResult %d.requestCode %d.resultCode %m.intent.data";
+        }
+        
+        if (event.equals("initializeLogic")) {
+            return "initializeLogic";
         }
 
         if (event.equals("onSwipeRefreshLayout")) {
