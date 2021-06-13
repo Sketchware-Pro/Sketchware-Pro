@@ -23,7 +23,6 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.blocks.BlocksHandler;
 import mod.w3wide.blocks.ExtraBlocks;
 import mod.w3wide.control.logic.LogicClickListener;
-import mod.w3wide.menu.ExtraMenuBean;
 
 public class ExtraPaletteBlock extends Activity {
 
@@ -84,19 +83,10 @@ public class ExtraPaletteBlock extends Activity {
         return false;
     }
 
-    public void f(Ss ss) {
-        String menuName = ss.getMenuName();
-        if (ss.b.equals("m")) {
-            if (menuName.matches("cardview|collapsingtoolbar|textinputlayout|swiperefreshlayout|radiogroup|lottie|otpview|youtubeview|codeview|recyclerview|datepicker|timepicker")) {
-                logicEditor.f(ss);
-            } else if (menuName.matches("Assets|NativeLib")) {
-                new ExtraMenuBean(logicEditor).defineMenuSelector(ss);
-            } else {
-                logicEditor.g(ss);
-            }
-        }
-    }
-
+    /**
+    * ExtraPaletteBlock#f(Ss) moved to mod.w3wide.menu.ExtraMenuBean#defineMenuSelector(Ss)
+    * for better block menu selections and to add new stuff easily.
+    */
     public boolean e(String str, String str2) {
         switch (str) {
             case "circleimageview":
@@ -1103,6 +1093,9 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("Command Blocks", 0xff555555);
                     logicEditor.a("c", "CommandBlockJava");
                     logicEditor.a("c", "CommandBlockXML");
+                    logicEditor.a("Permission Command Blocks", 0xff555555);
+                    logicEditor.a(" ", "addPermission");
+                    logicEditor.a(" ", "removePermission");
                     return;
                 }
                 return;
