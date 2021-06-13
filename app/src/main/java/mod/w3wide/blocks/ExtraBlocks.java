@@ -3,6 +3,7 @@ package mod.w3wide.blocks;
 import android.util.Pair;
 
 import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class ExtraBlocks {
     private final String eventName;
     private final String javaName;
     private final String sc_id;
+    private final String xmlName;
     private final LogicEditorActivity logicEditor;
     private final ProjectFileBean projectFile;
 
@@ -27,6 +29,7 @@ public class ExtraBlocks {
         projectFile = logicEditor.M;
         javaName = projectFile.getJavaName();
         sc_id = logicEditor.B;
+        xmlName = projectFile.getXmlName();
     }
 
     public static void extraBlocks(ArrayList<HashMap<String, Object>> arrayList) {
@@ -57,6 +60,9 @@ public class ExtraBlocks {
         arrayList.add(0, addBlock("fileGetParent", "s", "", "%s.getParent()", "#a1887f", "%m.File getParent"));
         arrayList.add(0, addBlock("fileGetPath", "s", "", "%s.getPath()", "#a1887f", "%m.File getPath"));
         arrayList.add(0, addBlock("fileIsHidden", "b", "", "%s.isHidden()", "#a1887f", "%m.File isHidden"));
+        //Basically Command Block
+        arrayList.add(0, addBlock("addPermission", " ", "", "", "#493F5A", "Permission Command Block : add %m.Permission"));
+        arrayList.add(0, addBlock("removePermission", " ", "", "", "#493F5A", "Permission Command Block : remove %m.Permission"));
     }
 
     /**
