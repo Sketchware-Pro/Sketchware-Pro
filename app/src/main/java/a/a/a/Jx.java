@@ -8,7 +8,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -17,6 +16,7 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
+import mod.jbk.util.LogUtil;
 import mod.w3wide.control.logic.PermissionManager;
 import mod.w3wide.control.logic.SourceHandler;
 
@@ -24,19 +24,35 @@ public class Jx {
 
     public static String a = "\r\n";
     private final ProjectSettings settings;
-    private PermissionManager permMan;
-    private SourceHandler sourceHandler;
+    private final PermissionManager permMan;
+    private final SourceHandler sourceHandler;
+    /**
+     * Currently generating class' package name,
+     * e.g. com.jbk.internal.demo
+     */
     public String b;
     public ProjectFileBean c;
     public eC d;
     public Hx e;
     public jq f;
+    /**
+     * Imports to be added to the currently generating class,
+     * e.g. {"com.google.firebase.FirebaseApp"}
+     */
     public ArrayList<String> g = new ArrayList<>();
     public ArrayList<String> h = new ArrayList<>();
+    /**
+     * Fields of the currently generating class,
+     * e.g. {"private FloatingActionBar _fab;"}
+     */
     public ArrayList<String> i = new ArrayList<>();
     public ArrayList<String> j = new ArrayList<>();
     public ArrayList<String> k = new ArrayList<>();
     public ArrayList<String> l = new ArrayList<>();
+    /**
+     * Statements to be added to initialize(Bundle),
+     * e.g. {"_drawer.addDrawerListener(_toggle);"}
+     */
     public ArrayList<String> m = new ArrayList<>();
     public ManageLocalLibrary mll;
     public ArrayList<String> n = new ArrayList<>();
@@ -57,7 +73,7 @@ public class Jx {
         permMan = new PermissionManager(d.a, c.getJavaName());
         sourceHandler = new SourceHandler(d.a, c.getJavaName());
     }
-    
+
     private void extraVariables() {
         for (String variable : sourceHandler.customVariables()) {
             i.add(variable);
@@ -69,13 +85,12 @@ public class Jx {
 
     public void removeExtraImports() {
         ArrayList<String> arrayList = new ArrayList<>();
-        for (Object value : this.g) {
-            String str = (String) value;
-            if (!arrayList.contains(str)) {
-                arrayList.add(str);
+        for (String value : g) {
+            if (!arrayList.contains(value)) {
+                arrayList.add(value);
             }
         }
-        this.g = arrayList;
+        g = arrayList;
     }
 
     public String getLauncherActivity(String str) {
@@ -134,7 +149,7 @@ public class Jx {
         f();
         j();
         StringBuilder sb = new StringBuilder(8192);
-        sb.append("package ").append(this.b).append(";");
+        sb.append("package ").append(b).append(";");
         sb.append(a);
         sb.append(a);
         if (this.c.getActivityName().equals("MainActivity")) {
@@ -194,7 +209,7 @@ public class Jx {
                 sb2.append("AppCompatActivity");
             }
             sb2.append(" {");
-            sb.append(sb2.toString());
+            sb.append(sb2);
         } else {
             StringBuilder sb3 = new StringBuilder();
             sb3.append("public class ");
@@ -211,7 +226,7 @@ public class Jx {
                 sb3.append("Activity");
             }
             sb3.append(" {");
-            sb.append(sb3.toString());
+            sb.append(sb3);
         }
         for (String str : this.r) {
             if (str.length() > 0) {
@@ -219,57 +234,52 @@ public class Jx {
                 sb.append(str);
             }
         }
-        for (Object value : this.h) {
-            String str2 = (String) value;
-            if (str2.length() > 0) {
+        for (String value : this.h) {
+            if (value.length() > 0) {
                 sb.append(a);
-                sb.append(str2);
+                sb.append(value);
             }
         }
-        if (this.i.size() > 0) {
+        if (i.size() > 0) {
             sb.append(a);
         }
-        for (String str3 : this.i) {
+        for (String str3 : i) {
             if (str3.length() > 0) {
                 sb.append(a);
                 sb.append(str3);
             }
         }
-        if (this.j.size() > 0) {
+        if (j.size() > 0) {
             sb.append(a);
         }
-        for (Object value : this.j) {
-            String str4 = (String) value;
-            if (str4.length() > 0) {
+        for (String value : j) {
+            if (value.length() > 0) {
                 sb.append(a);
-                sb.append(str4);
+                sb.append(value);
             }
         }
-        if (this.k.size() > 0) {
+        if (k.size() > 0) {
             sb.append(a);
         }
-        for (Object value : this.k) {
-            String str5 = (String) value;
-            if (str5.length() > 0) {
+        for (String value : k) {
+            if (value.length() > 0) {
                 sb.append(a);
-                sb.append(str5);
+                sb.append(value);
             }
         }
-        if (this.l.size() > 0) {
+        if (l.size() > 0) {
             sb.append(a);
         }
-        for (Object value : this.l) {
-            String str6 = (String) value;
-            if (str6.length() > 0) {
+        for (String value : l) {
+            if (value.length() > 0) {
                 sb.append(a);
-                sb.append(str6);
+                sb.append(value);
             }
         }
         if (this.c.fileName.contains("_fragment")) {
-            if (this.f.g) {
-                String str7 = a;
-                sb.append(str7);
-                sb.append(str7);
+            if (f.g) {
+                sb.append(a);
+                sb.append(a);
                 sb.append("@NonNull");
                 sb.append(a);
                 sb.append("@Override");
@@ -277,38 +287,36 @@ public class Jx {
                 sb.append("public View onCreateView(@NonNull LayoutInflater _inflater, @Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {");
                 sb.append(a);
             } else {
-                String str8 = a;
-                sb.append(str8);
-                sb.append(str8);
+                sb.append(a);
+                sb.append(a);
                 sb.append("@Override");
                 sb.append(a);
                 sb.append("public View onCreateView(LayoutInflater _inflater, ViewGroup _container, Bundle _savedInstanceState) {");
                 sb.append(a);
             }
             sb.append("View _view = _inflater.inflate(R.layout.");
-            sb.append(this.c.fileName);
+            sb.append(c.fileName);
             sb.append(", _container, false);");
             sb.append(a);
             sb.append("initialize(_savedInstanceState, _view);");
             sb.append(a);
         } else {
-            String str9 = a;
-            sb.append(str9);
-            sb.append(str9);
+            sb.append(a);
+            sb.append(a);
             sb.append("@Override");
             sb.append(a);
             sb.append("protected void onCreate(Bundle _savedInstanceState) {");
             sb.append(a);
             sb.append("super.onCreate(_savedInstanceState);");
             sb.append(a);
-            sb.append("setContentView(R.layout.").append(this.c.fileName).append(");");
+            sb.append("setContentView(R.layout.").append(c.fileName).append(");");
             sb.append(a);
             sb.append("initialize(_savedInstanceState);");
             sb.append(a);
         }
-        if (this.f.h) {
+        if (f.h) {
             addImport("com.google.firebase.FirebaseApp");
-            if (this.c.fileName.contains("_fragment")) {
+            if (c.fileName.contains("_fragment")) {
                 sb.append("com.google.firebase.FirebaseApp.initializeApp(getContext());");
             } else {
                 sb.append("com.google.firebase.FirebaseApp.initializeApp(this);");
@@ -316,12 +324,10 @@ public class Jx {
             sb.append(a);
         }
         sb.append(a);
-        if (!this.c.fileName.contains("_fragment")) {
-            jq jqVar = this.f;
-            //sb.append(Lx.a(jqVar.g, jqVar.a(this.c.getActivityName()).c));
-            sb.append(permMan.writePermission(jqVar.g, jqVar.a(this.c.getActivityName()).c));
+        if (!c.fileName.contains("_fragment")) {
+            sb.append(permMan.writePermission(f.g, f.a(c.getActivityName()).c));
         }
-        if (this.c.fileName.contains("_fragment")) {
+        if (c.fileName.contains("_fragment")) {
             sb.append("initializeLogic();");
             sb.append(a);
             sb.append("return _view;");
@@ -329,7 +335,7 @@ public class Jx {
         }
         sb.append("}");
         sb.append(a);
-        if (permMan.hasPermission && !this.c.fileName.contains("_fragment")) {
+        if (permMan.hasPermission && !c.fileName.contains("_fragment")) {
             sb.append(a);
             sb.append("@Override");
             sb.append(a);
@@ -346,7 +352,7 @@ public class Jx {
             sb.append("}");
             sb.append(a);
         }
-        if (this.c.fileName.contains("_fragment")) {
+        if (c.fileName.contains("_fragment")) {
             sb.append(a);
             sb.append("private void initialize(Bundle _savedInstanceState, View _view) {");
         } else {
@@ -355,43 +361,37 @@ public class Jx {
         }
         sb.append(a);
         sb.append(sourceHandler.initializeLogic(f, c.getActivityName()));
-        for (Object value : this.m) {
-            String str10 = (String) value;
-            if (str10.length() > 0) {
+        for (String value : m) {
+            if (value.length() > 0) {
                 sb.append(a);
-                sb.append(str10);
+                sb.append(value);
             }
         }
-        for (Object value : this.n) {
-            String str11 = (String) value;
-            if (str11.length() > 0) {
+        for (String value : n) {
+            if (value.length() > 0) {
                 sb.append(a);
-                sb.append(str11);
+                sb.append(value);
             }
         }
-        String g2 = this.e.g();
-        if (g2.length() > 0) {
+        if (e.g().length() > 0) {
             sb.append(a);
             sb.append(a);
-            sb.append(g2);
+            sb.append(e.g());
         }
-        String c2 = this.e.c();
-        if (c2.length() > 0) {
+        if (e.c().length() > 0) {
             sb.append(a);
             sb.append(a);
-            sb.append(c2);
+            sb.append(e.c());
         }
-        String d2 = this.e.d();
-        if (d2.length() > 0) {
+        if (e.d().length() > 0) {
             sb.append(a);
             sb.append(a);
-            sb.append(d2);
+            sb.append(e.d());
         }
-        String f2 = this.e.f();
-        if (f2.length() > 0) {
+        if (e.f().length() > 0) {
             sb.append(a);
             sb.append(a);
-            sb.append(f2);
+            sb.append(e.f());
         }
         sb.append(a);
         sb.append("}");
@@ -408,21 +408,21 @@ public class Jx {
         sb.append(a);
         sb.append("@Override");
         sb.append(a);
-        if (this.c.fileName.contains("_fragment")) {
+        if (c.fileName.contains("_fragment")) {
             sb.append("public ");
         } else {
             sb.append("protected ");
         }
         sb.append("void onActivityResult(int _requestCode, int _resultCode, Intent _data) {");
         sb.append(a);
-        sb.append(CodeResult.c(this.f.x));
+        sb.append(CodeResult.c(f.x));
         sb.append("super.onActivityResult(_requestCode, _resultCode, _data);");
         sb.append(a);
         sb.append(sourceHandler.activityResult(f, c.getActivityName()));
         sb.append(a);
         sb.append("switch (_requestCode) {");
         sb.append(a);
-        sb.append(this.e.a());
+        sb.append(e.a());
         sb.append(a);
         sb.append("default:");
         sb.append(a);
@@ -432,53 +432,50 @@ public class Jx {
         sb.append(a);
         sb.append("}");
         sb.append(a);
-        if (this.c.hasActivityOption(4)) {
-            this.e.a("onBackPressed", "DrawerLayout", "_drawer");
+        if (c.hasActivityOption(4)) {
+            e.a("onBackPressed", "DrawerLayout", "_drawer");
         }
-        ArrayList<ViewBean> d3 = this.d.d(this.c.getXmlName());
-        if (d3.size() > 0) {
-            for (ViewBean next : d3) {
+        ArrayList<ViewBean> beans = d.d(c.getXmlName());
+        if (beans.size() > 0) {
+            for (ViewBean next : beans) {
                 if (next.type == 18) {
-                    this.e.a("onStart", "MapView", next.id);
-                    this.e.a("onResume", "MapView", next.id);
-                    this.e.a("onPause", "MapView", next.id);
-                    this.e.a("onStop", "MapView", next.id);
-                    this.e.a("onDestroy", "MapView", next.id);
+                    e.a("onStart", "MapView", next.id);
+                    e.a("onResume", "MapView", next.id);
+                    e.a("onPause", "MapView", next.id);
+                    e.a("onStop", "MapView", next.id);
+                    e.a("onDestroy", "MapView", next.id);
                 }
             }
         }
-        String str12 = this.e.k;
-        if (str12.length() > 0) {
+        if (e.k.length() > 0) {
             sb.append(a);
-            sb.append(str12);
-            sb.append(a);
-        }
-        String str13 = this.e.l;
-        if (str13.length() > 0) {
-            sb.append(a);
-            sb.append(str13);
+            sb.append(e.k);
             sb.append(a);
         }
-        String base = LogicHandler.base(this.e.b());
+        if (e.l.length() > 0) {
+            sb.append(a);
+            sb.append(e.l);
+            sb.append(a);
+        }
+        String base = LogicHandler.base(e.b());
         if (base.length() > 0) {
             sb.append(a);
             sb.append(base);
         }
-        this.is = base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {");
-        for (Object value : this.p) {
+        is = base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {");
+        for (String value : p) {
             sb.append(a);
-            sb.append((String) value);
+            sb.append(value);
             sb.append(a);
         }
-        for (Object value : this.q) {
-            String str14 = (String) value;
-            if (this.is || !str14.contains("return onTabLayoutNewTabAdded(pos);")) {
+        for (String value : q) {
+            if (is || !value.contains("return onTabLayoutNewTabAdded(pos);")) {
                 sb.append(a);
-                sb.append(str14);
+                sb.append(value);
                 sb.append(a);
             } else {
                 sb.append(a);
-                sb.append(str14.replace("return onTabLayoutNewTabAdded(pos);", "// use the activitiy event (onTabLayoutNewTabAdded) in order to use this method\r\nreturn \"page \" + String.valueOf(pos);"));
+                sb.append(value.replace("return onTabLayoutNewTabAdded(pos);", "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method\r\nreturn \"page \" + String.valueOf(pos);"));
                 sb.append(a);
             }
         }
@@ -489,11 +486,25 @@ public class Jx {
         sb.append(a);
         String sb4 = sb.toString();
         if (this.c.fileName.contains("_fragment")) {
-            sb4 = sb4.replaceAll("getApplicationContext|getBaseContext", "getContext").replace("(ClipboardManager) getSystemService", "(ClipboardManager) getContext().getSystemService").replace("(Vibrator) getSystemService", "(Vibrator) getContext().getSystemService").replace("(SensorManager) getSystemService", "(SensorManager) getContext().getSystemService").replace("Typeface.createFromAsset(getAssets()", "Typeface.createFromAsset(getContext().getAssets()").replace("= getAssets().open", "= getContext().getAssets().open").replace("getSharedPreferences", "getContext().getSharedPreferences").replace("AlertDialog.Builder(this);", "AlertDialog.Builder(getContext());").replace("SpeechRecognizer.createSpeechRecognizer(this);", "SpeechRecognizer.createSpeechRecognizer(getContext());").replace("new RequestNetwork(this);", "new RequestNetwork((Activity)getContext());").replace("new BluetoothConnect(this);", "new BluetoothConnect((Activity)getContext());").replace("MobileAds.getRewardedVideoAdInstance(this);", "MobileAds.getRewardedVideoAdInstance(getContext());").replace("runOnUiThread(new", "getActivity().runOnUiThread(new").replace(".setLayoutManager(new LinearLayoutManager(this", ".setLayoutManager(new LinearLayoutManager(getContext()");
+            sb4 = sb4.replaceAll("getApplicationContext|getBaseContext", "getContext")
+                    .replace("(ClipboardManager) getSystemService", "(ClipboardManager) getContext().getSystemService")
+                    .replace("(Vibrator) getSystemService", "(Vibrator) getContext().getSystemService")
+                    .replace("(SensorManager) getSystemService", "(SensorManager) getContext().getSystemService")
+                    .replace("Typeface.createFromAsset(getAssets()", "Typeface.createFromAsset(getContext().getAssets()")
+                    .replace("= getAssets().open", "= getContext().getAssets().open")
+                    .replace("getSharedPreferences", "getContext().getSharedPreferences")
+                    .replace("AlertDialog.Builder(this);", "AlertDialog.Builder(getContext());")
+                    .replace("SpeechRecognizer.createSpeechRecognizer(this);", "SpeechRecognizer.createSpeechRecognizer(getContext());")
+                    .replace("new RequestNetwork(this);", "new RequestNetwork((Activity)getContext());")
+                    .replace("new BluetoothConnect(this);", "new BluetoothConnect((Activity)getContext());")
+                    .replace("MobileAds.getRewardedVideoAdInstance(this);", "MobileAds.getRewardedVideoAdInstance(getContext());")
+                    .replace("runOnUiThread(new", "getActivity().runOnUiThread(new")
+                    .replace(".setLayoutManager(new LinearLayoutManager(this", ".setLayoutManager(new LinearLayoutManager(getContext()");
         }
         if (this.f.g) {
             sb4 = sb4.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
+        LogUtil.dump("Jx", this);
         return CommandBlock.CB(Lx.j(sb4));
     }
 
@@ -525,13 +536,106 @@ public class Jx {
     }
 
     public final void deprecatedMethods(StringBuilder sb) {
-        sb.append(a).append("@Deprecated").append(a).append("public void showMessage(String _s) {").append(a).append("Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public int getLocationX(View _v) {").append(a).append("int _location[] = new int[2];").append(a).append("_v.getLocationInWindow(_location);").append(a).append("return _location[0];").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public int getLocationY(View _v) {").append(a).append("int _location[] = new int[2];").append(a).append("_v.getLocationInWindow(_location);").append(a).append("return _location[1];").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public int getRandom(int _min, int _max) {").append(a).append("Random random = new Random();").append(a).append("return random.nextInt(_max - _min + 1) + _min;").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {").append(a).append("ArrayList<Double> _result = new ArrayList<Double>();").append(a).append("SparseBooleanArray _arr = _list.getCheckedItemPositions();").append(a).append("for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {").append(a).append("if (_arr.valueAt(_iIdx))").append(a).append("_result.add((double)_arr.keyAt(_iIdx));").append(a).append("}").append(a).append("return _result;").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public float getDip(int _input) {").append(a).append("return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public int getDisplayWidthPixels() {").append(a).append("return getResources().getDisplayMetrics().widthPixels;").append(a).append("}").append(a).append(a).append("@Deprecated").append(a).append("public int getDisplayHeightPixels() {").append(a).append("return getResources().getDisplayMetrics().heightPixels;").append(a).append("}").append(a);
+        sb.append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public void showMessage(String _s) {")
+                .append(a)
+                .append("Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public int getLocationX(View _v) {")
+                .append(a)
+                .append("int _location[] = new int[2];")
+                .append(a)
+                .append("_v.getLocationInWindow(_location);")
+                .append(a)
+                .append("return _location[0];")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public int getLocationY(View _v) {")
+                .append(a)
+                .append("int _location[] = new int[2];")
+                .append(a)
+                .append("_v.getLocationInWindow(_location);")
+                .append(a)
+                .append("return _location[1];")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public int getRandom(int _min, int _max) {")
+                .append(a)
+                .append("Random random = new Random();")
+                .append(a)
+                .append("return random.nextInt(_max - _min + 1) + _min;")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {")
+                .append(a)
+                .append("ArrayList<Double> _result = new ArrayList<Double>();")
+                .append(a)
+                .append("SparseBooleanArray _arr = _list.getCheckedItemPositions();")
+                .append(a)
+                .append("for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {")
+                .append(a)
+                .append("if (_arr.valueAt(_iIdx))")
+                .append(a)
+                .append("_result.add((double)_arr.keyAt(_iIdx));")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append("return _result;")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public float getDip(int _input) {")
+                .append(a)
+                .append("return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public int getDisplayWidthPixels() {")
+                .append(a)
+                .append("return getResources().getDisplayMetrics().widthPixels;")
+                .append(a)
+                .append("}")
+                .append(a)
+                .append(a)
+                .append("@Deprecated")
+                .append(a)
+                .append("public int getDisplayHeightPixels() {")
+                .append(a)
+                .append("return getResources().getDisplayMetrics().heightPixels;")
+                .append(a)
+                .append("}")
+                .append(a);
     }
 
-    public final void a(ArrayList arrayList) {
+    public final void a(ArrayList<String> arrayList) {
         if (arrayList != null && arrayList.size() > 0) {
-            for (Object value : arrayList) {
-                addImport(value.toString());
+            for (String value : arrayList) {
+                addImport(value);
             }
         }
     }
@@ -556,19 +660,18 @@ public class Jx {
     }
 
     public final void handleAppCompat() {
-        String str;
-        if (this.f.g) {
+        if (f.g) {
             addImport("androidx.appcompat.app.AppCompatActivity");
             addImport("androidx.annotation.*");
         } else {
             addImport("android.app.Activity");
         }
-        if (this.f.g) {
-            if (this.c.hasActivityOption(1) && !this.c.fileName.contains("_fragment")) {
+        if (f.g) {
+            if (c.hasActivityOption(1) && !c.fileName.contains("_fragment")) {
                 StringBuilder sb = new StringBuilder();
-                this.i.add("private Toolbar _toolbar;");
-                this.i.add("private AppBarLayout _app_bar;");
-                this.i.add("private CoordinatorLayout _coordinator;");
+                i.add("private Toolbar _toolbar;");
+                i.add("private AppBarLayout _app_bar;");
+                i.add("private CoordinatorLayout _coordinator;");
                 sb.append("_app_bar = (AppBarLayout) findViewById(R.id._app_bar);");
                 sb.append(a);
                 sb.append("_coordinator = (CoordinatorLayout) findViewById(R.id._coordinator);");
@@ -592,31 +695,32 @@ public class Jx {
                 sb.append("}");
                 sb.append(a);
                 sb.append("});");
-                this.m.add(sb.toString());
+                m.add(sb.toString());
                 addImport("androidx.appcompat.widget.Toolbar");
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");
                 addImport("com.google.android.material.appbar.AppBarLayout");
             }
-            if (this.c.hasActivityOption(8)) {
-                this.i.add("private FloatingActionButton _fab;");
-                StringBuilder sb2 = new StringBuilder();
-                if (this.c.fileName.contains("_fragment")) {
-                    sb2.append("_fab = (FloatingActionButton) _view.findViewById(R.id._fab);");
+            if (c.hasActivityOption(8)) {
+                i.add("private FloatingActionButton _fab;");
+                StringBuilder fab = new StringBuilder();
+                if (c.fileName.contains("_fragment")) {
+                    fab.append("_fab = (FloatingActionButton) _view.findViewById(R.id._fab);");
                 } else {
-                    sb2.append("_fab = (FloatingActionButton) findViewById(R.id._fab);");
+                    fab.append("_fab = (FloatingActionButton) findViewById(R.id._fab);");
                 }
-                sb2.append(a);
-                this.m.add(sb2.toString());
+                fab.append(a);
+                m.add(fab.toString());
                 addImport("com.google.android.material.floatingactionbutton.FloatingActionButton");
             }
-            if (this.c.hasActivityOption(4) && !this.c.fileName.contains("_fragment")) {
-                this.i.add("private DrawerLayout _drawer;");
-                if (this.c.hasActivityOption(1)) {
-                    str = "_drawer = (DrawerLayout) findViewById(R.id._drawer);" + a + "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" + this.c.getActivityName() + ".this, _drawer, _toolbar, R.string.app_name, R.string.app_name);" + a;
+            if (c.hasActivityOption(4) && !c.fileName.contains("_fragment")) {
+                i.add("private DrawerLayout _drawer;");
+                String str;
+                if (c.hasActivityOption(1)) {
+                    str = "_drawer = (DrawerLayout) findViewById(R.id._drawer);" + a + "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" + c.getActivityName() + ".this, _drawer, _toolbar, R.string.app_name, R.string.app_name);" + a;
                 } else {
-                    str = "_drawer = (DrawerLayout) findViewById(R.id._drawer);" + a + "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" + this.c.getActivityName() + ".this, _drawer, R.string.app_name, R.string.app_name);" + a;
+                    str = "_drawer = (DrawerLayout) findViewById(R.id._drawer);" + a + "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" + c.getActivityName() + ".this, _drawer, R.string.app_name, R.string.app_name);" + a;
                 }
-                this.m.add(str + "_drawer.addDrawerListener(_toggle);" + a + "_toggle.syncState();" + a + a + "LinearLayout _nav_view = (LinearLayout) findViewById(R.id._nav_view);" + a);
+                m.add(str + "_drawer.addDrawerListener(_toggle);" + a + "_toggle.syncState();" + a + a + "LinearLayout _nav_view = (LinearLayout) findViewById(R.id._nav_view);" + a);
                 addImport("androidx.core.view.GravityCompat");
                 addImport("androidx.drawerlayout.widget.DrawerLayout");
                 addImport("androidx.appcompat.app.ActionBarDrawerToggle");
@@ -645,7 +749,7 @@ public class Jx {
         addImport("java.util.regex.*");
         addImport("java.text.*");
         addImport("org.json.*");
-        this.o = new Fx(this.c.getActivityName(), this.f, "onCreate_initializeLogic", this.d.a(this.c.getJavaName(), "onCreate_initializeLogic")).a();
+        o = new Fx(c.getActivityName(), f, "onCreate_initializeLogic", d.a(c.getJavaName(), "onCreate_initializeLogic")).a();
     }
 
     public final String c(ViewBean viewBean) {
@@ -679,7 +783,7 @@ public class Jx {
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
         }
-        if (this.c.fileName.contains("_fragment")) {
+        if (c.fileName.contains("_fragment")) {
             return Lx.b(replaceAll, viewBean.id, true);
         }
         return Lx.b(replaceAll, viewBean.id, false);
@@ -687,101 +791,102 @@ public class Jx {
 
     public final void d() {
         String javaName = this.c.getJavaName();
-        for (Pair<String, String> next : this.d.i(javaName)) {
+        for (Pair<String, String> next : d.i(javaName)) {
             String str = next.first + "_" + "moreBlock";
-            this.c.hasActivityOption(4);
+            // Why is the result unused?
+            // this.c.hasActivityOption(4);
             this.p.add(Lx.a(next.first, next.second, new Fx(this.c.getActivityName(), this.f, str, this.d.a(javaName, str)).a()));
         }
     }
 
     public final void e() {
-        this.e = new Hx(this.f, this.c, this.d);
-        a(this.e.e());
+        e = new Hx(f, c, d);
+        a(e.e());
     }
 
     public final void f() {
-        for (Map.Entry<String, ArrayList<BlockBean>> entry : this.d.b(this.c.getJavaName()).entrySet()) {
+        for (Map.Entry<String, ArrayList<BlockBean>> entry : d.b(c.getJavaName()).entrySet()) {
             for (BlockBean blockBean : entry.getValue()) {
-                String str = blockBean.opCode;
-                char c2 = 65535;
-                switch (str.hashCode()) {
+                String opCode = blockBean.opCode;
+                char type = 65535;
+                switch (opCode.hashCode()) {
                     case -1975568730:
-                        if (str.equals("copyToClipboard")) {
-                            c2 = 7;
+                        if (opCode.equals("copyToClipboard")) {
+                            type = 7;
                             break;
                         }
                         break;
                     case -1435533117:
-                        if (str.equals("listStrToStr")) {
-                            c2 = 11;
+                        if (opCode.equals("listStrToStr")) {
+                            type = 11;
                             break;
                         }
                         break;
                     case -1149848189:
-                        if (str.equals("toStringFormat")) {
-                            c2 = 1;
+                        if (opCode.equals("toStringFormat")) {
+                            type = 1;
                             break;
                         }
                         break;
                     case -733318734:
-                        if (str.equals("strToListMap")) {
-                            c2 = 3;
+                        if (opCode.equals("strToListMap")) {
+                            type = 3;
                             break;
                         }
                         break;
                     case -733312377:
-                        if (str.equals("strToListStr")) {
-                            c2 = '\n';
+                        if (opCode.equals("strToListStr")) {
+                            type = '\n';
                             break;
                         }
                         break;
                     case -208762465:
-                        if (str.equals("toStringWithDecimal")) {
-                            c2 = 0;
+                        if (opCode.equals("toStringWithDecimal")) {
+                            type = 0;
                             break;
                         }
                         break;
                     case -101305250:
                     case 308049309:
                     case 41072934:
-                        c2 = '\n';
+                        type = '\n';
                         break;
                     case 168740282:
-                        if (str.equals("mapToStr")) {
-                            c2 = 4;
+                        if (opCode.equals("mapToStr")) {
+                            type = 4;
                             break;
                         }
                         break;
                     case 470160234:
-                        if (str.equals("fileutilGetLastSegmentPath")) {
-                            c2 = '\b';
+                        if (opCode.equals("fileutilGetLastSegmentPath")) {
+                            type = '\b';
                             break;
                         }
                         break;
                     case 1129709718:
-                        if (str.equals("setImageUrl")) {
-                            c2 = '\t';
+                        if (opCode.equals("setImageUrl")) {
+                            type = '\t';
                             break;
                         }
                         break;
                     case 1252547704:
-                        if (str.equals("listMapToStr")) {
-                            c2 = 5;
+                        if (opCode.equals("listMapToStr")) {
+                            type = 5;
                             break;
                         }
                         break;
                     case 1313527577:
-                        if (str.equals("setTypeface")) {
-                            c2 = 6;
+                        if (opCode.equals("setTypeface")) {
+                            type = 6;
                             break;
                         }
                         break;
                     case 1775620400:
-                        str.equals("strToMap");
-                        c2 = '\n';
+                        opCode.equals("strToMap");
+                        type = '\n';
                         break;
                 }
-                switch (c2) {
+                switch (type) {
                     case 0:
                     case 1:
                         addImport("java.text.DecimalFormat");
@@ -816,111 +921,91 @@ public class Jx {
     }
 
     public final void g() {
-        String xmlName = this.c.getXmlName();
-        String javaName = this.c.getJavaName();
-        ArrayList<ViewBean> d2 = this.d.d(xmlName);
-        if (d2.size() > 0) {
-            for (ViewBean viewBean : d2) {
-                this.m.add(d(viewBean));
+        ArrayList<ViewBean> viewBeans = d.d(c.getXmlName());
+        if (viewBeans.size() > 0) {
+            for (ViewBean viewBean : viewBeans) {
+                m.add(d(viewBean));
             }
         }
-        if (this.c.hasActivityOption(4)) {
-            ArrayList<ViewBean> d3 = this.d.d(this.c.getDrawerXmlName());
-            if (d3.size() > 0) {
-                for (ViewBean viewBean : d3) {
-                    this.m.add(c(viewBean));
+        if (c.hasActivityOption(4)) {
+            ArrayList<ViewBean> drawerBeans = d.d(c.getDrawerXmlName());
+            if (drawerBeans.size() > 0) {
+                for (ViewBean viewBean : drawerBeans) {
+                    m.add(c(viewBean));
                 }
             }
         }
-        ArrayList<ComponentBean> e2 = this.d.e(javaName);
-        if (e2.size() > 0) {
-            for (ComponentBean componentBean : e2) {
-                this.n.add(b(componentBean));
+        ArrayList<ComponentBean> componentBeans = d.e(c.getJavaName());
+        if (componentBeans.size() > 0) {
+            for (ComponentBean componentBean : componentBeans) {
+                n.add(b(componentBean));
             }
         }
     }
 
     public final void h() {
-        Iterator<ComponentBean> it = this.d.e(this.c.getJavaName()).iterator();
         int i2 = 100;
-        while (it.hasNext()) {
-            ComponentBean next = it.next();
-            int i3 = next.type;
-            if (i3 == 15 || i3 == 31 || i3 == 16) {
-                ArrayList<String> arrayList = this.r;
-                String str = next.componentId;
+        for (ComponentBean next : d.e(c.getJavaName())) {
+            if (next.type == 15 || next.type == 31 || next.type == 16) {
                 int i4 = i2 + 1;
-                arrayList.add(Lx.a(str, i4));
+                r.add(Lx.a(next.componentId, i4));
                 i2 = i4;
             }
         }
     }
 
     public final void i() {
-        boolean z = false;
-        String xmlName = this.c.getXmlName();
         String javaName = this.c.getJavaName();
-        ArrayList<Pair<Integer, String>> k2 = this.d.k(javaName);
-        if (k2.size() > 0) {
-            for (Pair<Integer, String> next : k2) {
-                int intValue = next.first;
-                String str = next.second;
-                if (intValue == 9) {
-                    addImport(str);
-                } else {
-                    this.i.add(b(intValue, str));
-                }
+        ArrayList<Pair<Integer, String>> k2 = d.k(javaName);
+        for (Pair<Integer, String> next : k2) {
+            int intValue = next.first;
+            String str = next.second;
+            if (intValue == 9) {
+                addImport(str);
+            } else {
+                this.i.add(b(intValue, str));
             }
         }
-        ArrayList<Pair<Integer, String>> j2 = this.d.j(javaName);
-        if (j2.size() > 0) {
-            for (Pair<Integer, String> next2 : j2) {
-                this.j.add(a(next2.first, next2.second));
-            }
+        ArrayList<Pair<Integer, String>> j2 = d.j(javaName);
+        for (Pair<Integer, String> next2 : j2) {
+            this.j.add(a(next2.first, next2.second));
         }
-        ArrayList<ViewBean> d2 = this.d.d(xmlName);
-        if (d2.size() > 0) {
-            for (ViewBean viewBean : d2) {
-                this.k.add(b(viewBean));
-            }
+        ArrayList<ViewBean> d2 = d.d(c.getXmlName());
+        for (ViewBean viewBean : d2) {
+            this.k.add(b(viewBean));
         }
         if (this.c.hasActivityOption(4)) {
-            ArrayList<ViewBean> d3 = this.d.d(this.c.getDrawerXmlName());
-            if (d3.size() > 0) {
-                for (ViewBean viewBean : d3) {
-                    this.k.add(a(viewBean));
-                }
+            ArrayList<ViewBean> d3 = d.d(this.c.getDrawerXmlName());
+            for (ViewBean viewBean : d3) {
+                this.k.add(a(viewBean));
             }
         }
-        ArrayList<ComponentBean> e2 = this.d.e(javaName);
-        if (e2.size() > 0) {
-            for (ComponentBean componentBean : e2) {
-                this.l.add(a(componentBean));
-            }
+        ArrayList<ComponentBean> componentBeans = d.e(javaName);
+        for (ComponentBean bean : componentBeans) {
+            l.add(a(bean));
         }
-        if (e2.size() > 0) {
-            Iterator<ComponentBean> it6 = e2.iterator();
-            boolean z2 = false;
-            boolean z3 = false;
-            while (it6.hasNext()) {
-                ComponentBean next3 = it6.next();
-                if (next3.type == 5) {
-                    z2 = true;
+        if (componentBeans.size() > 0) {
+            boolean hasTimer = false;
+            boolean hasFirebaseDB = false;
+            boolean hasFirebaseStorage = false;
+            for (ComponentBean bean : componentBeans) {
+                if (bean.type == 5) {
+                    hasTimer = true;
                 }
-                if (next3.type == 6) {
-                    z3 = true;
+                if (bean.type == 6) {
+                    hasFirebaseDB = true;
                 }
-                if (next3.type == 14) {
-                    z = true;
+                if (bean.type == 14) {
+                    hasFirebaseStorage = true;
                 }
             }
-            if (z2) {
+            if (hasTimer) {
                 this.h.add(Lx.d("Timer"));
             }
-            if (z3) {
+            if (hasFirebaseDB) {
                 this.h.add(Lx.d("FirebaseDB"));
             }
-            if (z) {
+            if (hasFirebaseStorage) {
                 this.h.add(Lx.d("FirebaseStorage"));
             }
         }
