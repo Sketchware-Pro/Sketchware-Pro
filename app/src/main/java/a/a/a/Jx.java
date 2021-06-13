@@ -17,11 +17,15 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
+import mod.w3wide.control.logic.PermissionManager;
+import mod.w3wide.control.logic.SourceHandler;
 
 public class Jx {
 
     public static String a = "\r\n";
     private final ProjectSettings settings;
+    private PermissionManager permMan;
+    private SourceHandler sourceHandler;
     public String b;
     public ProjectFileBean c;
     public eC d;
@@ -50,6 +54,17 @@ public class Jx {
         this.d = eCVar;
         this.mll = new ManageLocalLibrary(this.d.a);
         this.settings = new ProjectSettings(this.d.a);
+        permMan = new PermissionManager(d.a, c.getJavaName());
+        sourceHandler = new SourceHandler(d.a, c.getJavaName());
+    }
+    
+    private void extraVariables() {
+        for (String variable : sourceHandler.customVariables()) {
+            i.add(variable);
+        }
+        for (String binds : sourceHandler.viewBinds()) {
+            m.add(binds);
+        }
     }
 
     public void removeExtraImports() {
@@ -108,6 +123,7 @@ public class Jx {
     }
 
     public String a() {
+        extraVariables();
         handleAppCompat();
         i();
         g();
@@ -148,7 +164,7 @@ public class Jx {
             sb.append("import android.app.DialogFragment;");
             sb.append(a);
         }
-        if (this.f.a(this.c.getActivityName()).a()) {
+        if (permMan.hasNewPermission() || this.f.a(this.c.getActivityName()).a()) {
             if (this.f.g) {
                 sb.append("import androidx.core.content.ContextCompat;");
                 sb.append(a);
@@ -299,20 +315,21 @@ public class Jx {
             }
             sb.append(a);
         }
-        if (!this.f.a(this.c.getActivityName()).a() || this.c.fileName.contains("_fragment")) {
-            sb.append("initializeLogic();");
-            sb.append(a);
-        } else {
+        sb.append(a);
+        if (!this.c.fileName.contains("_fragment")) {
             jq jqVar = this.f;
-            sb.append(Lx.a(jqVar.g, jqVar.a(this.c.getActivityName()).c));
+            //sb.append(Lx.a(jqVar.g, jqVar.a(this.c.getActivityName()).c));
+            sb.append(permMan.writePermission(jqVar.g, jqVar.a(this.c.getActivityName()).c));
         }
         if (this.c.fileName.contains("_fragment")) {
+            sb.append("initializeLogic();");
+            sb.append(a);
             sb.append("return _view;");
             sb.append(a);
         }
         sb.append("}");
         sb.append(a);
-        if (this.f.a(this.c.getActivityName()).a() && !this.c.fileName.contains("_fragment")) {
+        if (permMan.hasPermission && !this.c.fileName.contains("_fragment")) {
             sb.append(a);
             sb.append("@Override");
             sb.append(a);
@@ -336,6 +353,8 @@ public class Jx {
             sb.append(a);
             sb.append("private void initialize(Bundle _savedInstanceState) {");
         }
+        sb.append(a);
+        sb.append(sourceHandler.initializeLogic(f, c.getActivityName()));
         for (Object value : this.m) {
             String str10 = (String) value;
             if (str10.length() > 0) {
@@ -398,6 +417,8 @@ public class Jx {
         sb.append(a);
         sb.append(CodeResult.c(this.f.x));
         sb.append("super.onActivityResult(_requestCode, _resultCode, _data);");
+        sb.append(a);
+        sb.append(sourceHandler.activityResult(f, c.getActivityName()));
         sb.append(a);
         sb.append("switch (_requestCode) {");
         sb.append(a);
