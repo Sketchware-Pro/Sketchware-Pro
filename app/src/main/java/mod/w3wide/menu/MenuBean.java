@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -22,8 +23,8 @@ public class MenuBean {
     private static final String[] defaultColor = new String[]{"colorAccent", "colorControlHighlight", "colorControlNormal", "colorPrimary", "colorPrimaryDark"};
     private static final String[] intentKey = new String[]{"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
     private static final String[] pixelFormat = new String[]{"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
-    private static final String[] patternFlags = new String[]{"CANON_EQ","CASE_INSENSITIVE","COMMENTS","DOTALL","LITERAL","MULTILINE","UNICODE_CASE","UNIX_LINES"};
-    private static String[] permission;
+    private static final String[] patternFlags = new String[]{"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
+    private static final String[] permission;
 
     private final LogicEditorActivity logic;
     public String javaName;
@@ -32,7 +33,7 @@ public class MenuBean {
     static {
         ArrayList<String> permissions = new ArrayList<>();
         for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
-            permissions.add("Manifest.permission." + String.valueOf(permissionField.getName()));
+            permissions.add("Manifest.permission." + permissionField.getName());
         }
         permission = permissions.toArray(new String[0]);
     }
