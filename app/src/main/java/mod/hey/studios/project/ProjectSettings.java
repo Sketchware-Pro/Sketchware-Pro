@@ -1,5 +1,7 @@
 package mod.hey.studios.project;
 
+import android.app.Application;
+import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,96 +19,116 @@ import mod.hey.studios.util.Helper;
 
 public class ProjectSettings {
 
+    /**
+     * Setting for the final app's {@code minSdkVersion}
+     *
+     * @see ApplicationInfo#minSdkVersion
+     */
+    public static final String SETTING_MINIMUM_SDK_VERSION = "min_sdk";
+    /**
+     * Setting to make the app's main theme inherit from fully material-styled themes, and not *.Bridge ones
+     */
+    public static final String SETTING_ENABLE_BRIDGELESS_THEMES = "enable_bridgeless_themes";
+    /**
+     * Setting for the final app's {@link Application} class
+     *
+     * @see Application
+     */
+    public static final String SETTING_APPLICATION_CLASS = "app_class";
+    /**
+     * Setting for the final app's {@code targetSdkVersion}
+     *
+     * @see ApplicationInfo#targetSdkVersion
+     */
+    public static final String SETTING_TARGET_SDK_VERSION = "target_sdk";
+    /**
+     * Setting to disable showing deprecated methods included in every generated class, e.g. showMessage(String)
+     */
+    public static final String SETTING_DISABLE_OLD_METHODS = "disable_old_methods";
+    /**
+     * Setting to disable adding <code>android:largeHeap="true"</code> to the <code>&lt;application&gt;</code> tag in AndroidManifest.xml
+     */
+    public static final String SETTING_DISABLE_LARGE_HEAP = "disable_large_heap";
+
     private final String path;
     public String sc_id;
     private HashMap<String, String> hashmap;
 
-    public ProjectSettings(String id) {
-        sc_id = id;
+    public ProjectSettings(String s) {
+        this.sc_id = s;
+
         path = getPath();
 
         if (FileUtil.isExistFile(path)) {
             try {
-                hashmap = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_STRING_MAP);
-            } catch (Exception var4) {
+                hashmap = new Gson().fromJson(FileUtil.readFile(path).trim(), Helper.TYPE_MAP_LIST);
+            } catch (Exception e) {
                 hashmap = new HashMap<>();
                 save();
             }
         } else {
             hashmap = new HashMap<>();
+            //save();
         }
-    }
-
-    private String getCheckedRbValue(RadioGroup radioGroup) {
-        int counter = 0;
-        String value;
-
-        while (true) {
-            if (counter >= radioGroup.getChildCount()) {
-                value = "";
-                break;
-            }
-
-            RadioButton var3 = (RadioButton) radioGroup.getChildAt(counter);
-            if (var3.isChecked()) {
-                value = var3.getText().toString();
-                break;
-            }
-
-            ++counter;
-        }
-
-        return value;
-    }
-
-    private void save() {
-        FileUtil.writeFile(path, (new Gson()).toJson(hashmap));
     }
 
     public String getPath() {
-        return (new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/project_config")))).getAbsolutePath();
+        File file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/project_config")));
+        return file.getAbsolutePath();
     }
 
-    public String getValue(String key, String ifEmpty) {
+    public String getValue(String key, String defaultValue) {
         if (hashmap.containsKey(key)) {
             if (!hashmap.get(key).isEmpty()) {
-                key = hashmap.get(key);
+                return hashmap.get(key);
             } else {
-                key = ifEmpty;
+                return defaultValue;
             }
         } else {
-            key = ifEmpty;
+            return defaultValue;
         }
-
-        return key;
     }
 
-    public void setValues(View[] views) {
-        for (View view : views) {
-            if (view.getTag() != null) {
-                String tag = (String) view.getTag();
+    public void setValues(View... views) {
+        for (View v : views) {
+            if (v.getTag() != null) {
+                String key = (String) v.getTag();  // v.getTag(0);
+                //String value = (String) v.getTag(1);
                 String value;
 
-                if (view instanceof EditText) {
-                    value = ((EditText) view).getText().toString();
+                if (v instanceof EditText) {
+                    value = ((EditText) v).getText().toString();
+                } else if (v instanceof CheckBox) {
+                    value = ((CheckBox) v).isChecked() ? "true" : "false";
+                } else if (v instanceof RadioGroup) {
 
-                } else if (view instanceof CheckBox) {
-                    if (((CheckBox) view).isChecked()) {
-                        value = "true";
-                    } else {
-                        value = "false";
-                    }
+                    value = getCheckedRbValue((RadioGroup) v);
 
+
+                    //value = ((RadioGroup)v).getCheckedRadioButtonId()
                 } else {
-                    if (!(view instanceof RadioGroup)) continue;
-
-                    value = getCheckedRbValue((RadioGroup) view);
+                    continue;
                 }
 
-                hashmap.put(tag, value);
+                hashmap.put(key, value);
+            }
+        }
+        save();
+    }
+
+    private String getCheckedRbValue(RadioGroup rg) {
+        for (int i = 0; i < rg.getChildCount(); i++) {
+            RadioButton rb = (RadioButton) rg.getChildAt(i);
+
+            if (rb.isChecked()) {
+                return rb.getText().toString();
             }
         }
 
-        save();
+        return "";
+    }
+
+    private void save() {
+        FileUtil.writeFile(path, new Gson().toJson(hashmap));
     }
 }
