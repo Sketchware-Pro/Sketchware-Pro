@@ -23,10 +23,19 @@ public class MenuBean {
     private static final String[] intentKey = new String[]{"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
     private static final String[] pixelFormat = new String[]{"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
     private static final String[] patternFlags = new String[]{"CANON_EQ","CASE_INSENSITIVE","COMMENTS","DOTALL","LITERAL","MULTILINE","UNICODE_CASE","UNIX_LINES"};
+	private static String[] permission;
 
     private final LogicEditorActivity logic;
     public String javaName;
     public String sc_id;
+
+	static {
+        ArrayList<String> permissions = new ArrayList<>();
+        for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
+            permissions.add("Manifest.permission." + String.valueOf(permissionField.getName()));
+        }
+        permission = permissions.toArray(new String[0]);
+    }
 
     public MenuBean(LogicEditorActivity activity) {
         javaName = activity.M.getJavaName();
@@ -151,6 +160,11 @@ public class MenuBean {
             case "PatternFlag":
                 asdAll.b("Select a Pattern Flags");
                 selectableItems.addAll(new ArrayList<>(Arrays.asList(patternFlags)));
+                break;
+
+            case "Permission":
+                asdAll.b("Select a Permission");
+                selectableItems.addAll(new ArrayList<>(Arrays.asList(permission)));
                 break;
 
             case "AdSize":
