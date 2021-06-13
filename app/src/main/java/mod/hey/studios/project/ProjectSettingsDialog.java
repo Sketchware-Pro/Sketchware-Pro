@@ -22,12 +22,10 @@ import mod.hey.studios.util.Helper;
 public class ProjectSettingsDialog {
 
     private final Activity activity;
-    private final String sc_id;
     private final ProjectSettings settings;
 
     public ProjectSettingsDialog(Activity activity, String sc_id) {
         this.activity = activity;
-        this.sc_id = sc_id;
         this.settings = new ProjectSettings(sc_id);
     }
 
@@ -45,34 +43,40 @@ public class ProjectSettingsDialog {
 
         int numberType = InputType.TYPE_CLASS_NUMBER;
 
-        EditText et_minsdk = addInputPref("min_sdk",
+        EditText et_minsdk = addInputPref(
+                ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
                 "21",
                 "Minimum SDK version",
                 numberType, prefs);
 
-        EditText et_targetsdk = addInputPref("target_sdk",
+        EditText et_targetsdk = addInputPref(
+                ProjectSettings.SETTING_TARGET_SDK_VERSION,
                 "28",
                 "Target SDK version",
                 numberType,
                 prefs);
 
-        EditText et_app_class = addInputPref("app_class",
+        EditText et_app_class = addInputPref(
+                ProjectSettings.SETTING_APPLICATION_CLASS,
                 ".SketchApplication",
                 "Application class name",
                 InputType.TYPE_CLASS_TEXT,
                 prefs);
 
-        CheckBox cb_oldmethods = addTogglePref("disable_old_methods",
+        CheckBox cb_oldmethods = addTogglePref(
+                ProjectSettings.SETTING_DISABLE_OLD_METHODS,
                 false,
                 "Remove old deprecated methods in files, like showMessage, getDip, etc.",
                 prefs);
 
-        CheckBox cb_largeheap = addTogglePref("disable_large_heap",
+        CheckBox cb_largeheap = addTogglePref(
+                ProjectSettings.SETTING_DISABLE_LARGE_HEAP,
                 false,
                 "Disable large heap for App",
                 prefs);
 
-        CheckBox cb_appthemeparent = addTogglePref("enable_bridgeless_themes",
+        CheckBox cb_appthemeparent = addTogglePref(
+                ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                 false,
                 "Use new MaterialComponents AppTheme (will replace e.g. Button with MaterialButton, be careful!)",
                 prefs);
@@ -101,13 +105,10 @@ public class ProjectSettingsDialog {
 
         text_cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
 
-        text_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                settings.setValues(pref_views);
+        text_save.setOnClickListener(v -> {
+            settings.setValues(pref_views);
 
-                dialog.dismiss();
-            }
+            dialog.dismiss();
         });
 
     }
@@ -173,7 +174,7 @@ public class ProjectSettingsDialog {
         e.setTextSize(16);
         e.setTextColor(Color.BLACK);
         e.setHint(hint);
-        e.setHintTextColor(Color.parseColor("#607D8B"));
+        e.setHintTextColor(0xff607d8b);
         e.setText(settings.getValue(key, defaultValue));
 		/*e.setTag(0, key);
 		e.setTag(1, e.getText().toString());*/
