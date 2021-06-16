@@ -1,18 +1,32 @@
 package mod.w3wide.menu;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import a.a.a.Ss;
+import a.a.a.wB;
+import a.a.a.xB;
+
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
+import mod.hilal.saif.asd.AsdHandler;
+import mod.hilal.saif.asd.AsdHandlerCancel;
+import mod.hilal.saif.asd.AsdOrigin;
 import mod.hilal.saif.asd.old.AsdOldDialog;
+import mod.w3wide.highlighter.SimpleHighlighter;
 
 public class ExtraMenuBean {
 
@@ -74,7 +88,7 @@ public class ExtraMenuBean {
                         return;
 
                     default:
-                        logicEditor.cusA(ss, false);
+                        cusA(ss, false);
                 }
                 break;
 
@@ -159,7 +173,38 @@ public class ExtraMenuBean {
                 break;
         }
     }
-    
+
+    public void cusA(Ss ss, boolean isNum) {
+        AsdOrigin asdOr = new AsdOrigin(logicEditor);
+        if(isNum) {
+            asdOr.b(xB.b().a(getContext(), Resources.string.logic_editor_title_enter_number_value));
+        } else {
+            asdOr.b(xB.b().a(getContext(), Resources.string.logic_editor_title_enter_string_value));
+        }
+        asdOr.a(Resources.drawable.rename_96_blue);
+
+        View root = wB.a(logicEditor, Resources.layout.property_popup_input_text);
+        EditText edittext = (EditText) root.findViewById(Resources.id.ed_input);
+        if(isNum) {
+            edittext.setInputType(12290);
+            edittext.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            edittext.setMaxLines(1);
+        } else {
+            edittext.setInputType(655361);
+            edittext.setImeOptions(EditorInfo.IME_ACTION_NONE);
+        }
+        if (!isNum && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_ASD_HIGHLIGHTER)) {
+            new SimpleHighlighter(edittext);
+        }
+        edittext.setText(ss.getArgValue().toString());
+        asdOr.a(root);
+        asdOr.carry(logicEditor, ss, isNum, edittext);
+
+        asdOr.b(xB.b().a(getContext(), Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, isNum, ss, asdOr));
+        asdOr.a(xB.b().a(getContext(), Resources.string.common_word_cancel), new AsdHandlerCancel(logicEditor, edittext, asdOr));
+        asdOr.show();
+    }
+
     private void pathSelectorMenu(final Ss ss) {
         String menuName = ss.getMenuName();
         ArrayList<String> markedPath = new ArrayList<>();
