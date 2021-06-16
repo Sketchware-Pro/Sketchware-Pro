@@ -605,6 +605,8 @@ public class Resources {
         public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
         public static final int logic_editor_more_block_dialog_description_goback = 0x7f0e061c;
         public static final int logic_editor_more_block_dialog_message_confirm_goback = 0x7f0e061d;
+        public static final int logic_editor_title_enter_number_value = 0x7f0e0631;
+        public static final int logic_editor_title_enter_string_value = 0x7fe0632;
         public static final int logic_list_menu_add_to_collection = 0x7f0e0668;
         public static final int main_drawer_context_menu_title_slack_invitation = 0x7f0e0679;
         public static final int main_drawer_context_menu_title_slack_open = 0x7f0e067a;
