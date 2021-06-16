@@ -63,6 +63,8 @@ public class ExtraBlocks {
         //Basically Command Block
         arrayList.add(0, addBlock("addPermission", " ", "", "", "#493F5A", "Permission Command Block : add %m.Permission"));
         arrayList.add(0, addBlock("removePermission", " ", "", "", "#493F5A", "Permission Command Block : remove %m.Permission"));
+        arrayList.add(0, addBlock("addCustomVariable", " ", "", "", "#493F5A", "Custom Variable Block : add variable %s"));
+        arrayList.add(0, addBlock("addInitializer", " ", "", "", "#493F5A", "Initializer Block : add initializer %s"));
     }
 
     /**
