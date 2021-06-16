@@ -1096,6 +1096,9 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("Permission Command Blocks", 0xff555555);
                     logicEditor.a(" ", "addPermission");
                     logicEditor.a(" ", "removePermission");
+                    logicEditor.a("Other Command Blocks", 0xff555555);
+                    logicEditor.a(" ", "addCustomVariable");
+                    logicEditor.a(" ", "addInitializer");
                     return;
                 }
                 return;
