@@ -47,7 +47,7 @@ public class SourceHandler {
         ArrayList<String> ids = new ArrayList<>();
         for (Entry<String, ArrayList<BlockBean>> blocks : jC.a(sc_id).b(javaName).entrySet()) {
             for (BlockBean block : blocks.getValue()) {
-                if (block.opCode.equals("addFindViewById") && !block.parameters.get(0).trim().isEmpty()) {
+                if (block.opCode.equals("addInitializer") && !block.parameters.get(0).trim().isEmpty()) {
                     ids.add(block.parameters.get(0));
                 }
             }
