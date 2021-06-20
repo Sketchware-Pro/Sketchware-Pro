@@ -83,10 +83,11 @@ public class ExtraPaletteBlock extends Activity {
         return false;
     }
 
-    /**
+    /*
     * ExtraPaletteBlock#f(Ss) moved to mod.w3wide.menu.ExtraMenuBean#defineMenuSelector(Ss)
     * for better block menu selections and to add new stuff easily.
     */
+
     public boolean e(String str, String str2) {
         switch (str) {
             case "circleimageview":
@@ -217,23 +218,35 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     public final void blockComponents() {
-        logicEditor.a("Components", 0xff555555);
-        for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
-            if (componentBean.type != 27) {
-                logicEditor.a(componentBean.componentId, "p", ComponentBean.getComponentTypeName(componentBean.type), "getVar").setTag(componentBean.componentId);
+        ArrayList<ComponentBean> components = jC.a(sc_id).e(javaName);
+        for (int i = 0, componentsSize = components.size(); i < componentsSize; i++) {
+            ComponentBean component = components.get(i);
+
+            if (i == 0) {
+                logicEditor.a("Components", 0xff555555);
+            }
+
+            if (component.type != 27) {
+                logicEditor.a(component.componentId, "p", ComponentBean.getComponentTypeName(component.type), "getVar").setTag(component.componentId);
             }
         }
     }
 
     public final void blockCustomViews() {
         if (eventName.equals("onBindCustomView")) {
-            String customView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
-            if (customView != null && customView.length() > 0) {
-                logicEditor.a("Custom Views", 0xff555555);
-                for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
-                    if (!viewBean.convert.equals("include")) {
-                        String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-                        logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
+            String viewBeanCustomView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
+            if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
+                ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
+                for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
+                    ViewBean customView = customViews.get(i);
+
+                    if (i == 0) {
+                        logicEditor.a("Custom Views", 0xff555555);
+                    }
+
+                    if (!customView.convert.equals("include")) {
+                        String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
+                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
                     }
                 }
             }
@@ -244,24 +257,35 @@ public class ExtraPaletteBlock extends Activity {
             logicEditor.a("b", "checkboxIsChecked");
             return;
         }
-        logicEditor.a("Views", 0xff555555);
-        for (ViewBean viewBean : jC.a(sc_id).d(xmlName)) {
-            if (!viewBean.convert.equals("include")) {
-                String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-                logicEditor.a(viewBean.id, "v", typeName, "getVar").setTag(viewBean.id);
+        ArrayList<ViewBean> views = jC.a(sc_id).d(xmlName);
+        for (int i = 0, viewsSize = views.size(); i < viewsSize; i++) {
+            ViewBean view = views.get(i);
+
+            if (i == 0) {
+                logicEditor.a("Views", 0xff555555);
+            }
+
+            if (!view.convert.equals("include")) {
+                String typeName = view.convert.isEmpty() ? ViewBean.getViewTypeName(view.type) : IdGenerator.getLastPath(view.convert);
+                logicEditor.a(view.id, "v", typeName, "getVar").setTag(view.id);
             }
         }
     }
 
     public final void blockDrawer() {
         if (projectFile.hasActivityOption(4)) {
-            logicEditor.a("Drawer Views", 0xff555555);
-            ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(projectFile.getDrawerXmlName());
-            if (viewBeans != null) {
-                for (ViewBean viewBean : viewBeans) {
-                    if (!viewBean.convert.equals("include")) {
-                        String id = "_drawer_" + viewBean.id;
-                        String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
+            ArrayList<ViewBean> drawerViews = jC.a(sc_id).d(projectFile.getDrawerXmlName());
+            if (drawerViews != null) {
+                for (int i = 0, drawerViewsSize = drawerViews.size(); i < drawerViewsSize; i++) {
+                    ViewBean drawerView = drawerViews.get(i);
+
+                    if (i == 0) {
+                        logicEditor.a("Drawer Views", 0xff555555);
+                    }
+
+                    if (!drawerView.convert.equals("include")) {
+                        String id = "_drawer_" + drawerView.id;
+                        String typeName = drawerView.convert.isEmpty() ? ViewBean.getViewTypeName(drawerView.type) : IdGenerator.getLastPath(drawerView.convert);
                         logicEditor.a(id, "v", typeName, "getVar").setTag(id);
                     }
                 }
