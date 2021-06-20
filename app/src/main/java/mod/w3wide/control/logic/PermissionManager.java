@@ -1,17 +1,17 @@
 package mod.w3wide.control.logic;
 
-import a.a.a.jC;
 import com.besome.sketch.beans.BlockBean;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map.Entry;
 
+import a.a.a.jC;
+
 public class PermissionManager {
-        
+
+    private final String javaName;
+    private final String sc_id;
     public boolean hasPermission = false;
-    
-    private String javaName = "";
-    private String sc_id = "";
 
     public PermissionManager(String id, String javaName) {
         this.javaName = javaName;
@@ -31,7 +31,7 @@ public class PermissionManager {
     }
 
     private String formatPermission(boolean isAppCompat, String permission) {
-        if(isAppCompat) {
+        if (isAppCompat) {
             return String.format("ContextCompat.checkSelfPermission(this, %s) == PackageManager.PERMISSION_DENIED", permission);
         } else {
             return String.format("checkSelfPermission(%s) == PackageManager.PERMISSION_DENIED", permission);
@@ -44,7 +44,7 @@ public class PermissionManager {
             reqPerm.add(permission);
         }
     }
-    
+
     private void removePermission(boolean isAppCompat, ArrayList<String> checkPerm, ArrayList<String> reqPerm) {
         for (Entry<String, ArrayList<BlockBean>> blocks : jC.a(sc_id).b(javaName).entrySet()) {
             for (BlockBean block : blocks.getValue()) {
@@ -57,16 +57,16 @@ public class PermissionManager {
     }
 
     public boolean hasNewPermission() {
-        return addedPermissions().size() != 0 && addedPermissions() != null;
+        return addedPermissions().size() != 0;
     }
-    
+
     public String writePermission(boolean isAppCompat, int var1) {
         ArrayList<String> checkPerm = new ArrayList<>();
         ArrayList<String> addPerm = new ArrayList<>();
-        String permissionCode = "";
-        
+        StringBuilder permissionCode = new StringBuilder();
+
         addReqPermission(isAppCompat, checkPerm, addPerm);
-        
+
         if (isAppCompat) {
             if ((var1 & 1) == 1) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED");
@@ -93,25 +93,25 @@ public class PermissionManager {
                 addPerm.add("Manifest.permission.ACCESS_FINE_LOCATION");
             }
             removePermission(true, checkPerm, addPerm);
-            
+
             if (checkPerm.size() != 0 && addPerm.size() != 0) {
-                permissionCode += "if (";
-                
-                for(int i = 0; i < checkPerm.size(); i++) {
-                    if (i != 0) permissionCode += "\r\n||";
-                    permissionCode += checkPerm.get(i);
+                permissionCode.append("if (");
+
+                for (int i = 0; i < checkPerm.size(); i++) {
+                    if (i != 0) permissionCode.append("\r\n|| ");
+                    permissionCode.append(checkPerm.get(i));
                 }
-                
-                permissionCode += ") {\r\nActivityCompat.requestPermissions(this, new String[] {";
-                
-                for(int i = 0; i < addPerm.size(); i++) {
-                    if (i != 0) permissionCode += ", ";
-                    permissionCode += addPerm.get(i);
+
+                permissionCode.append(") {\r\nActivityCompat.requestPermissions(this, new String[] {");
+
+                for (int i = 0; i < addPerm.size(); i++) {
+                    if (i != 0) permissionCode.append(", ");
+                    permissionCode.append(addPerm.get(i));
                 }
-                
-                permissionCode += "}, 1000);\r\n} else {\r\ninitializeLogic();\r\n}\r\n";
+
+                permissionCode.append("}, 1000);\r\n} else {\r\ninitializeLogic();\r\n}\r\n");
             }
-            
+
         } else {
             if ((var1 & 1) == 1) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED");
@@ -138,33 +138,32 @@ public class PermissionManager {
                 addPerm.add("Manifest.permission.ACCESS_FINE_LOCATION");
             }
             removePermission(false, checkPerm, addPerm);
-            
+
             if (checkPerm.size() != 0 && addPerm.size() != 0) {
-                permissionCode += "if (Build.VERSION.SDK_INT >= 23) {\r\nif (";
-                
-                for(int i = 0; i < checkPerm.size(); i++) {
-                    if (i != 0) permissionCode += "\r\n||";
-                    permissionCode += checkPerm.get(i);
+                permissionCode.append("if (Build.VERSION.SDK_INT >= 23) {\r\nif (");
+
+                for (int i = 0; i < checkPerm.size(); i++) {
+                    if (i != 0) permissionCode.append("\r\n||");
+                    permissionCode.append(checkPerm.get(i));
                 }
-                
-                permissionCode += ") {\r\nrequestPermissions(new String[] {";
-                
-                for(int i = 0; i < addPerm.size(); i++) {
-                    if (i != 0) permissionCode += ", ";
-                    permissionCode += addPerm.get(i);
+
+                permissionCode.append(") {\r\nrequestPermissions(new String[] {");
+
+                for (int i = 0; i < addPerm.size(); i++) {
+                    if (i != 0) permissionCode.append(", ");
+                    permissionCode.append(addPerm.get(i));
                 }
-                
-                permissionCode += "}, 1000);\r\n} else {\r\ninitializeLogic();\r\n}\r\n} else {\r\ninitializeLogic();\r\n}\r\n";
+
+                permissionCode.append("}, 1000);\r\n} else {\r\ninitializeLogic();\r\n}\r\n} else {\r\ninitializeLogic();\r\n}\r\n");
             }
         }
-    
+
         hasPermission = checkPerm.size() != 0 || addPerm.size() != 0;
-        
-        if (permissionCode.trim().isEmpty()) {
+
+        if (permissionCode.toString().trim().isEmpty()) {
             return "initializeLogic();\r\n";
         } else {
-            return permissionCode;
+            return permissionCode.toString();
         }
     }
-
 }
