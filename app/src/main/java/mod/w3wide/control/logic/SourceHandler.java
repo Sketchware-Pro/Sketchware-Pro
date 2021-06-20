@@ -1,20 +1,19 @@
 package mod.w3wide.control.logic;
 
+import com.besome.sketch.beans.BlockBean;
+
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import a.a.a.Fx;
 import a.a.a.Lx;
 import a.a.a.jC;
 import a.a.a.jq;
 
-import com.besome.sketch.beans.BlockBean;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map.Entry;
-
 public class SourceHandler {
 
-    private String javaName;
-    private String sc_id;
+    private final String javaName;
+    private final String sc_id;
 
     public SourceHandler(String id, String javaName) {
         this.javaName = javaName;
