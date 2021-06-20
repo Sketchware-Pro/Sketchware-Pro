@@ -13,6 +13,7 @@ public class BlocksHandler {
 
     public static void builtInBlocks(ArrayList<HashMap<String, Object>> arrayList) {
         ExtraBlocks.extraBlocks(arrayList);
+
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("name", "CommandBlockJava");
         hashMap.put("type", "c");
@@ -22,6 +23,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "Java Command Block: reference %s distance %d frontend %d backend %d command %m.Command");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "CommandBlockXML");
         hashMap.put("type", "c");
@@ -31,6 +33,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "XML Command Block: reference %s distance %d frontend %d backend %d command %m.Command xml name %s.inputOnly");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "viewOnClick");
         hashMap.put("type", "c");
@@ -40,6 +43,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "When %m.view clicked");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setRecyclerViewLayoutParams");
         hashMap.put("type", " ");
@@ -49,6 +53,7 @@ public class BlocksHandler {
         hashMap.put("palette", "7");
         hashMap.put("spec", "set RecyclerViewLayoutParams width %m.LayoutParam height %m.LayoutParam");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "refreshingList");
         hashMap.put("type", " ");
@@ -58,6 +63,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.listview invalidate views");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "ListViewAddHeader");
         hashMap.put("type", " ");
@@ -67,6 +73,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.listview add Header view %m.view data %s selectable? %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "ListViewAddFooter");
         hashMap.put("type", " ");
@@ -76,6 +83,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.listview add Footer view %m.view data %s selectable? %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listViewRemoveHeader");
         hashMap.put("type", " ");
@@ -85,6 +93,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.listview remove Header %m.view");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listViewRemoveFooter");
         hashMap.put("type", " ");
@@ -94,6 +103,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.listview remove Footer %m.view");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogCreate");
         hashMap.put("type", " ");
@@ -103,6 +113,7 @@ public class BlocksHandler {
         hashMap.put("palette", "7");
         hashMap.put("spec", "%m.progressdialog Create in %m.activity");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listViewSetSelection");
         hashMap.put("type", " ");
@@ -112,6 +123,7 @@ public class BlocksHandler {
         hashMap.put("palette", "7");
         hashMap.put("spec", "%m.listview set selection %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextdiableSuggestion");
         hashMap.put("type", " ");
@@ -121,6 +133,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext disable suggestions");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextLines");
         hashMap.put("type", " ");
@@ -130,6 +143,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext set lines %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextSingleLine");
         hashMap.put("type", " ");
@@ -139,6 +153,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext singleLine? %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextShowError");
         hashMap.put("type", " ");
@@ -148,6 +163,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext show error %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextSelectAll");
         hashMap.put("type", " ");
@@ -157,6 +173,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext select all text");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextSetSelection");
         hashMap.put("type", " ");
@@ -166,6 +183,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext set selection start %d end %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EditTextSetMaxLines");
         hashMap.put("type", " ");
@@ -175,6 +193,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext set max lines %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EdittextGetselectionStart");
         hashMap.put("type", "d");
@@ -184,6 +203,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext get selection start");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "EdittextGetselectionEnd");
         hashMap.put("type", "d");
@@ -193,6 +213,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.edittext get selection end");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "performClick");
         hashMap.put("type", " ");
@@ -201,6 +222,7 @@ public class BlocksHandler {
         hashMap.put("palette", "0");
         hashMap.put("spec", "%m.view performClick");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "AsyncTaskExecute");
         hashMap.put("type", " ");
@@ -210,6 +232,7 @@ public class BlocksHandler {
         hashMap.put("palette", "7");
         hashMap.put("spec", "%m.asynctask execute message %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "AsyncTaskPublishProgress");
         hashMap.put("type", " ");
@@ -219,6 +242,7 @@ public class BlocksHandler {
         hashMap.put("palette", "7");
         hashMap.put("spec", "publish progress %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetCanceledOutside");
         hashMap.put("type", " ");
@@ -228,6 +252,7 @@ public class BlocksHandler {
         hashMap.put("palette", "7");
         hashMap.put("spec", "%m.progressdialog setCancelableWhenTouchOutside %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "datePickerDialogShow");
         hashMap.put("type", " ");
@@ -236,6 +261,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "DatePickerDialog show");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "timePickerDialogShow");
         hashMap.put("type", " ");
@@ -244,6 +270,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepickerdialog show");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "imageCrop");
         hashMap.put("type", " ");
@@ -252,6 +279,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "CropImageView fromFilePath %s RequestCode %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "isConnected");
         hashMap.put("type", " ");
@@ -260,6 +288,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "isConnected");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "customImport");
         hashMap.put("type", " ");
@@ -268,6 +297,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "import %s.inputOnly");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "customImport2");
         hashMap.put("type", " ");
@@ -276,6 +306,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "import %m.import");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "customToast");
         hashMap.put("type", " ");
@@ -284,6 +315,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "CustomToast %s textColor %m.color textSize %d bgColor %m.color cornerRadius %d gravity %m.gravity_t");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "customToastWithIcon");
         hashMap.put("type", " ");
@@ -292,6 +324,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "CustomToastWithIcon %s textColor %m.color textSize %d bgColor %m.color cornerRadius %d gravity %m.gravity_t Icon %m.resource");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdCreate");
         hashMap.put("type", " ");
@@ -300,6 +333,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "VideoAd create APP_ID %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdLoad");
         hashMap.put("type", " ");
@@ -308,6 +342,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad load REWARD_ID %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdIsLoaded");
         hashMap.put("type", "b");
@@ -316,6 +351,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad isLoaded");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdShow");
         hashMap.put("type", " ");
@@ -324,6 +360,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad show");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdResume");
         hashMap.put("type", " ");
@@ -332,6 +369,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad resume");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdPause");
         hashMap.put("type", " ");
@@ -340,6 +378,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad pause");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoAdDestroy");
         hashMap.put("type", " ");
@@ -348,6 +387,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad destroy");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "LightStatusBar");
         hashMap.put("type", " ");
@@ -356,6 +396,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "LightStatusBar");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hideKeyboard");
         hashMap.put("type", " ");
@@ -364,6 +405,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Hide keyboard");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "showKeyboard");
         hashMap.put("type", " ");
@@ -372,6 +414,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Show keyboard");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetTitle");
         hashMap.put("type", " ");
@@ -380,6 +423,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setTitle %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetMessage");
         hashMap.put("type", " ");
@@ -388,6 +432,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setMessage %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetMax");
         hashMap.put("type", " ");
@@ -396,6 +441,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setMax %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetProgress");
         hashMap.put("type", " ");
@@ -404,6 +450,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setProgress %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetCancelable");
         hashMap.put("type", " ");
@@ -412,6 +459,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setCancelable %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetCanceled");
         hashMap.put("type", " ");
@@ -420,6 +468,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setCanceledOnTouchOutside %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetStyle");
         hashMap.put("type", " ");
@@ -428,6 +477,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setProgressStyle %m.styleprogress");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogDismiss");
         hashMap.put("type", " ");
@@ -436,6 +486,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog dismiss");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogShow");
         hashMap.put("type", " ");
@@ -444,6 +495,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog show");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "startService");
         hashMap.put("type", " ");
@@ -452,6 +504,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "startService %m.activity");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "stopService");
         hashMap.put("type", " ");
@@ -460,6 +513,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "stopService %m.activity");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "sendBroadcast");
         hashMap.put("type", " ");
@@ -468,6 +522,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "sendBroadcast %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "startActivityWithChooser");
         hashMap.put("type", " ");
@@ -476,6 +531,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "StartActivity %m.intent with Chooser %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "finishAffinity");
         hashMap.put("type", "f");
@@ -484,6 +540,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Finish Affinity");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "ternaryString");
         hashMap.put("type", "s");
@@ -492,6 +549,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%b ? %s : %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "ternaryNumber");
         hashMap.put("type", "d");
@@ -500,6 +558,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%b ? %d : %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "forLoopIncrease");
         hashMap.put("type", "c");
@@ -508,6 +567,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "for %m.varInt = %d; %b; %m.varInt++");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "notifyDataSetChanged");
         hashMap.put("type", " ");
@@ -516,6 +576,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "RefreshData");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getLastVisiblePosition");
         hashMap.put("type", "d");
@@ -524,6 +585,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.listview getLastVisiblePosition");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listscrollparam");
         hashMap.put("type", "d");
@@ -532,6 +594,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.listscrollparam");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "menuInflater");
         hashMap.put("type", " ");
@@ -540,6 +603,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Menu get menu from file %m.menu");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "menuAddItem");
         hashMap.put("type", " ");
@@ -548,6 +612,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Menu add id %d title %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "menuAddMenuItem");
         hashMap.put("type", " ");
@@ -556,6 +621,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.menuitem add id %d title %s icon %m.resource showAsAction %m.menuaction");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "menuAddSubmenu");
         hashMap.put("type", "c");
@@ -564,6 +630,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Menu add %m.submenu title %s;");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "submenuAddItem");
         hashMap.put("type", " ");
@@ -572,6 +639,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.submenu add id %d title %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getAssetFile");
         hashMap.put("type", " ");
@@ -580,6 +648,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.inputstream getFileFromAsset path %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "renameFile");
         hashMap.put("type", " ");
@@ -588,6 +657,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "rename file path %s to %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "copyAssetFile");
         hashMap.put("type", "s");
@@ -596,6 +666,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.inputstream to String");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "sortListmap");
         hashMap.put("type", " ");
@@ -604,6 +675,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "sort %m.listMap key %s isNumber %b isAscending %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "deleteMapFromListmap");
         hashMap.put("type", "a");
@@ -612,6 +684,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "delete %m.varMap of %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "html");
         hashMap.put("type", "s");
@@ -621,6 +694,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "html %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "reverse");
         hashMap.put("type", "s");
@@ -629,6 +703,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "reverse %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "toHashCode");
         hashMap.put("type", "d");
@@ -637,6 +712,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "toHashCode %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "stringMatches");
         hashMap.put("type", "b");
@@ -645,6 +721,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%s matches RegExp %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "stringReplaceFirst");
         hashMap.put("type", "s");
@@ -653,6 +730,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%s replace first RegExp %s with %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "stringReplaceAll");
         hashMap.put("type", "s");
@@ -661,6 +739,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%s replace all RegExp %s with %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "stringSplitToList");
         hashMap.put("type", " ");
@@ -669,6 +748,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "split %s RegExp %s into %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "mapContainValue");
         hashMap.put("type", "b");
@@ -677,6 +757,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.varMap contain value %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getHeight");
         hashMap.put("type", "d");
@@ -686,6 +767,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view getHeight");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getWidth");
         hashMap.put("type", "d");
@@ -695,6 +777,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view getWidth");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "removeView");
         hashMap.put("type", " ");
@@ -704,6 +787,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view removeView %m.view");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "removeViews");
         hashMap.put("type", " ");
@@ -713,6 +797,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view removeAllViews");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "addView");
         hashMap.put("type", " ");
@@ -722,6 +807,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view addView %m.view");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "addViews");
         hashMap.put("type", " ");
@@ -731,6 +817,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view addView %m.view index %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setGravity");
         hashMap.put("type", " ");
@@ -739,6 +826,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setGravity %m.gravity_v %m.gravity_h");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setImageIdentifier");
         hashMap.put("type", " ");
@@ -747,6 +835,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.imageview set image by name %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setImageCustomRes");
         hashMap.put("type", " ");
@@ -755,6 +844,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.imageview setImage %m.image");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getRating");
         hashMap.put("type", "d");
@@ -763,6 +853,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.ratingbar getRating");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setRating");
         hashMap.put("type", " ");
@@ -771,6 +862,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.ratingbar setRating%d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setNumStars");
         hashMap.put("type", " ");
@@ -779,6 +871,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.ratingbar setNumStars %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setStepSize");
         hashMap.put("type", " ");
@@ -787,6 +880,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.ratingbar setStepSize %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "timepickerSetIs24Hour");
         hashMap.put("type", " ");
@@ -795,6 +889,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepicker setIs24Hour %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "timepickerSetCurrentHour");
         hashMap.put("type", " ");
@@ -803,6 +898,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepicker setCurrentHour %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "timepickerSetCurrentMinute");
         hashMap.put("type", " ");
@@ -811,6 +907,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepicker setCurrentMinute%d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "timepickerSetHour");
         hashMap.put("type", " ");
@@ -819,6 +916,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepicker setHour %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "timepickerSetMinute");
         hashMap.put("type", " ");
@@ -827,6 +925,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepicker setMinute%d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "autoComSetData");
         hashMap.put("type", " ");
@@ -835,6 +934,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.actv setListData %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setThreshold");
         hashMap.put("type", " ");
@@ -843,6 +943,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.mactv setThreshold %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setTokenizer");
         hashMap.put("type", " ");
@@ -851,6 +952,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.mactv CommaTokenizer");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "multiAutoComSetData");
         hashMap.put("type", " ");
@@ -859,6 +961,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.mactv setListData %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listSetSelector");
         hashMap.put("type", " ");
@@ -867,6 +970,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.listview setSelector %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "gridSetCustomViewData");
         hashMap.put("type", " ");
@@ -875,6 +979,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.gridview setGridCustomViewData %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "gridSetNumColumns");
         hashMap.put("type", " ");
@@ -883,6 +988,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.gridview setNumColumns %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "gridSetColumnWidth");
         hashMap.put("type", " ");
@@ -891,6 +997,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.gridview setColumnWidth %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "gridSetVerticalSpacing");
         hashMap.put("type", " ");
@@ -899,6 +1006,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.gridview setVerticalSpacing %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "gridSetHorizontalSpacing");
         hashMap.put("type", " ");
@@ -907,6 +1015,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.gridview setHorizontalSpacing %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "gridSetStretchMode");
         hashMap.put("type", " ");
@@ -915,6 +1024,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.gridview setStretchMode %m.gridstretchmode");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewSetVideoUri");
         hashMap.put("type", " ");
@@ -923,6 +1033,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview setVideoUri %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewStart");
         hashMap.put("type", " ");
@@ -931,6 +1042,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview start");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewPause");
         hashMap.put("type", " ");
@@ -939,6 +1051,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview pause");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewStop");
         hashMap.put("type", " ");
@@ -947,6 +1060,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview stopPlayback");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewIsPlaying");
         hashMap.put("type", "b");
@@ -955,6 +1069,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview isPlaying");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewCanPause");
         hashMap.put("type", "b");
@@ -963,6 +1078,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview canPause");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewCanSeekForward");
         hashMap.put("type", "b");
@@ -971,6 +1087,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview canSeekForward");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewCanSeekBackward");
         hashMap.put("type", "b");
@@ -979,6 +1096,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview canSeekBackward");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewGetDuration");
         hashMap.put("type", "d");
@@ -987,6 +1105,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview getDuration");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "videoviewGetCurrentPosition");
         hashMap.put("type", "d");
@@ -995,6 +1114,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoview getCurrentPosition");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listSetTranscriptMode");
         hashMap.put("type", " ");
@@ -1004,6 +1124,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.listview setTranscriptMode %m.transcriptmode");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "listSetStackFromBottom");
         hashMap.put("type", " ");
@@ -1013,6 +1134,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.listview setStackFromBottom %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setElevation");
         hashMap.put("type", " ");
@@ -1021,6 +1143,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setElevation %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setTextSize");
         hashMap.put("type", " ");
@@ -1029,6 +1152,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textview setTextSize %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setColorFilterView");
         hashMap.put("type", " ");
@@ -1037,6 +1161,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setColorFilter %m.color with %m.porterduff");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setCornerRadiusView");
         hashMap.put("type", " ");
@@ -1045,6 +1170,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setCornerRadius %d color %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setGradientBackground");
         hashMap.put("type", " ");
@@ -1053,6 +1179,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setGradientBackground %m.color and %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setStrokeView");
         hashMap.put("type", " ");
@@ -1061,6 +1188,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setStroke %d strokeColor %m.color bgColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setRadiusAndStrokeView");
         hashMap.put("type", " ");
@@ -1069,6 +1197,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setCornerRadius %d stroke %d strokeColor %m.color bgColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "showSnackbar");
         hashMap.put("type", "c");
@@ -1077,6 +1206,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view showSnackbar text %s actionText %s onClick");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "addTab");
         hashMap.put("type", " ");
@@ -1085,6 +1215,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout addTabTitle %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setupWithViewPager");
         hashMap.put("type", " ");
@@ -1093,6 +1224,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setupWithViewPager %m.viewpager");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setInlineLabel");
         hashMap.put("type", " ");
@@ -1101,6 +1233,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setInlineLabel %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setTabTextColors");
         hashMap.put("type", " ");
@@ -1109,6 +1242,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setTabTextColors Normal %m.color Selected %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setTabRippleColor");
         hashMap.put("type", " ");
@@ -1117,6 +1251,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setTabRippleColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setSelectedTabIndicatorColor");
         hashMap.put("type", " ");
@@ -1125,6 +1260,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setSelectedTabIndicatorColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setSelectedTabIndicatorHeight");
         hashMap.put("type", " ");
@@ -1133,6 +1269,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setSelectedTabIndicatorHeight %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnTitle");
         hashMap.put("type", "f");
@@ -1141,6 +1278,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return Title %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnFragment");
         hashMap.put("type", "f");
@@ -1149,6 +1287,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return Fragment %m.activity");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "bottomMenuAddItem");
         hashMap.put("type", " ");
@@ -1157,6 +1296,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.bottomnavigation add item id %d title %s icon %m.resource");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "codeviewSetCode");
         hashMap.put("type", " ");
@@ -1165,6 +1305,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.codeview setCode %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "codeviewSetTheme");
         hashMap.put("type", " ");
@@ -1173,6 +1314,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.codeview setTheme %m.cv_theme");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "codeviewSetLanguage");
         hashMap.put("type", " ");
@@ -1181,6 +1323,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.codeview setLanguage %m.cv_language");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "codeviewApply");
         hashMap.put("type", " ");
@@ -1189,6 +1332,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.codeview apply");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "fabIcon");
         hashMap.put("type", " ");
@@ -1197,6 +1341,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "FAB set icon %m.resource");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "fabSize");
         hashMap.put("type", " ");
@@ -1205,6 +1350,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "FAB setSize %m.fabsize");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "fabVisibility");
         hashMap.put("type", " ");
@@ -1213,6 +1359,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "FAB setVisibility %m.fabvisible");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBgDrawable");
         hashMap.put("type", " ");
@@ -1221,6 +1368,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setBackgroundDrawable %m.drawable");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setCardBackgroundColor");
         hashMap.put("type", " ");
@@ -1229,6 +1377,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.cardview setCardBackgroundColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setCardRadius");
         hashMap.put("type", " ");
@@ -1237,6 +1386,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.cardview setCornerRadius %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setCardElevation");
         hashMap.put("type", " ");
@@ -1245,6 +1395,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.cardview setCardElevation %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setPreventCornerOverlap");
         hashMap.put("type", " ");
@@ -1253,6 +1404,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.cardview setPreventCornerOverlap %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setUseCompatPadding");
         hashMap.put("type", " ");
@@ -1261,6 +1413,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.cardview setUseCompatPadding %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "spnSetCustomViewData");
         hashMap.put("type", " ");
@@ -1269,6 +1422,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.spinner setSpinnerCustomViewData %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "lottieSetAnimationFromAsset");
         hashMap.put("type", " ");
@@ -1277,6 +1431,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.lottie settAnimationFromAsset %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "lottieSetAnimationFromJson");
         hashMap.put("type", " ");
@@ -1285,6 +1440,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.lottie setAnimationFromJson %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "lottieSetAnimationFromUrl");
         hashMap.put("type", " ");
@@ -1293,6 +1449,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.lottie setAnimationFromUrl %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "lottieSetRepeatCount");
         hashMap.put("type", " ");
@@ -1301,6 +1458,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.lottie setRepeatCount %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "lottieSetSpeed");
         hashMap.put("type", " ");
@@ -1309,6 +1467,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.lottie setSpeed %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerSetCustomViewData");
         hashMap.put("type", " ");
@@ -1317,6 +1476,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview setRecyclerCustomViewData %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerSetLayoutManager");
         hashMap.put("type", " ");
@@ -1325,6 +1485,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview setLayoutManager");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerSetLayoutManagerHorizontal");
         hashMap.put("type", " ");
@@ -1333,6 +1494,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview set Horizontal LayoutManager");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerSetHasFixedSize");
         hashMap.put("type", " ");
@@ -1341,6 +1503,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview setHasFixedSize %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerSmoothScrollToPosition");
         hashMap.put("type", " ");
@@ -1349,6 +1512,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview smoothScrollToPosition %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerScrollToPositionWithOffset");
         hashMap.put("type", " ");
@@ -1357,6 +1521,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview scrollToPosition %d offset %d ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerscrollparam");
         hashMap.put("type", "d");
@@ -1365,6 +1530,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerscrollparam");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerscrollparam");
         hashMap.put("type", "d");
@@ -1373,6 +1539,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.pagerscrollparam");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerSetCustomViewData");
         hashMap.put("type", " ");
@@ -1381,6 +1548,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager setPagerCustomViewData %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerSetFragmentAdapter");
         hashMap.put("type", " ");
@@ -1389,6 +1557,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager setFragmentAdapter TabCount %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerGetOffscreenPageLimit");
         hashMap.put("type", "d");
@@ -1397,6 +1566,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager getOffscreenPageLimit");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerSetOffscreenPageLimit");
         hashMap.put("type", " ");
@@ -1405,6 +1575,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager setOffscreenPageLimit %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerGetCurrentItem");
         hashMap.put("type", "d");
@@ -1413,6 +1584,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager getCurrentItem");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerSetCurrentItem");
         hashMap.put("type", " ");
@@ -1421,6 +1593,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager setCurrentItem %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "onSwipeRefreshLayout");
         hashMap.put("type", "c");
@@ -1429,6 +1602,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.swiperefreshlayout refreshed");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setRefreshing");
         hashMap.put("type", " ");
@@ -1437,6 +1611,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.swiperefreshlayout setRefreshing %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "viewOnLongClick");
         hashMap.put("type", "c");
@@ -1445,6 +1620,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.view long clicked");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "viewOnTouch");
         hashMap.put("type", "c");
@@ -1453,6 +1629,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.view touched");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "checkboxOnChecked");
         hashMap.put("type", "c");
@@ -1461,6 +1638,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.checkbox checked");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "checkboxIsChecked");
         hashMap.put("type", "b");
@@ -1469,6 +1647,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "isChecked");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getBadgeCount");
         hashMap.put("type", "d");
@@ -1477,6 +1656,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.badgeview getBadgeCount");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBadgeNumber");
         hashMap.put("type", " ");
@@ -1485,6 +1665,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.badgeview setBadgeNumber %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBadgeString");
         hashMap.put("type", " ");
@@ -1493,6 +1674,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.badgeview setBadgeString %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBadgeBackground");
         hashMap.put("type", " ");
@@ -1501,6 +1683,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.badgeview setBadgeBackground %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBadgeTextColor");
         hashMap.put("type", " ");
@@ -1509,6 +1692,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.badgeview setBadgeTextColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBadgeTextSize");
         hashMap.put("type", " ");
@@ -1517,6 +1701,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.badgeview setBadgeTextSize %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setCustomLetter");
         hashMap.put("type", " ");
@@ -1525,6 +1710,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.sidebar setCustomLetter String[] %s.inputOnly");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleColor");
         hashMap.put("type", " ");
@@ -1533,6 +1719,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setBubbleColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleStrokeColor");
         hashMap.put("type", " ");
@@ -1541,6 +1728,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setStrokeColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleStrokeWidth");
         hashMap.put("type", " ");
@@ -1549,6 +1737,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setStrokeWidth %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleCornerRadius");
         hashMap.put("type", " ");
@@ -1557,6 +1746,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setCornerRadius %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleArrowHeight");
         hashMap.put("type", " ");
@@ -1565,6 +1755,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setArrowHeight %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleArrowWidth");
         hashMap.put("type", " ");
@@ -1573,6 +1764,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setArrowWidth %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setBubbleArrowPosition");
         hashMap.put("type", " ");
@@ -1581,6 +1773,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "BubbleLayout %m.view setArrowPosition %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternToString");
         hashMap.put("type", "s");
@@ -1589,6 +1782,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview getPattern from %m.listStr to String ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternToMD5");
         hashMap.put("type", "s");
@@ -1597,6 +1791,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview getPattern from %m.listStr to MD5");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternToSha1");
         hashMap.put("type", "s");
@@ -1605,6 +1800,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview getPattern from %m.listStr to SHA1");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternSetDotCount");
         hashMap.put("type", " ");
@@ -1613,6 +1809,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview setDotCount %d ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternSetNormalStateColor");
         hashMap.put("type", " ");
@@ -1621,6 +1818,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview setNormalStateColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternSetCorrectStateColor");
         hashMap.put("type", " ");
@@ -1629,6 +1827,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview setCorrectStateColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternSetWrongStateColor");
         hashMap.put("type", " ");
@@ -1637,6 +1836,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview setWrongStateColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternSetViewMode");
         hashMap.put("type", " ");
@@ -1645,6 +1845,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview setViewMode %m.patternviewmode");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "patternLockClear");
         hashMap.put("type", " ");
@@ -1653,6 +1854,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.patternview clearPattern");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetBoxBgColor");
         hashMap.put("type", " ");
@@ -1661,6 +1863,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setBoxBackgroundColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetBoxStrokeColor");
         hashMap.put("type", " ");
@@ -1669,6 +1872,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setBoxStrokeColor %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetBoxBgMode");
         hashMap.put("type", " ");
@@ -1677,6 +1881,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setBoxBackgroundMode %m.til_box_mode");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetBoxCornerRadii");
         hashMap.put("type", " ");
@@ -1685,6 +1890,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setBoxCornerRadius TL %d TR %d BL %d BR %d ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetError");
         hashMap.put("type", " ");
@@ -1693,6 +1899,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setError %s ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetErrorEnabled");
         hashMap.put("type", " ");
@@ -1701,6 +1908,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setErrorEnabled %b ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetCounterEnabled");
         hashMap.put("type", " ");
@@ -1709,6 +1917,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setCounterEnabled %b ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilSetCounterMaxLength");
         hashMap.put("type", " ");
@@ -1717,6 +1926,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout setCounterMaxLength %d ");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tilGetCounterMaxLength");
         hashMap.put("type", "d");
@@ -1725,6 +1935,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.textinputlayout getCounterMaxLength");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "YTPVLifecycle");
         hashMap.put("type", " ");
@@ -1733,6 +1944,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.youtubeview geLifecycle");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "YTPVSetListener");
         hashMap.put("type", "c");
@@ -1741,6 +1953,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.youtubeview addYouTubePlayerListener VideoID %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "launchApp");
         hashMap.put("type", " ");
@@ -1749,6 +1962,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.intent set app package %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "changeStatebarColour");
         hashMap.put("type", " ");
@@ -1757,6 +1971,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.activity set statebar color %m.color");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "Dialog SetIcon");
         hashMap.put("type", " ");
@@ -1765,6 +1980,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.dialog setIcon %m.resource_bg");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "ViewPagerNotifyOnDtatChange");
         hashMap.put("type", " ");
@@ -1773,6 +1989,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.viewpager notifyDataSetChanged");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnMap");
         hashMap.put("type", " ");
@@ -1782,6 +1999,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %m.varMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnListStr");
         hashMap.put("type", " ");
@@ -1791,6 +2009,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnListMap");
         hashMap.put("type", " ");
@@ -1800,6 +2019,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnView");
         hashMap.put("type", " ");
@@ -1809,6 +2029,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %m.view");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "repeatKnownNum");
         hashMap.put("type", "c");
@@ -1818,6 +2039,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "repeat %d: %s.inputOnly++");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "whileLoop");
         hashMap.put("type", "c");
@@ -1827,6 +2049,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "while %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "tryCatch");
         hashMap.put("type", "e");
@@ -1837,6 +2060,7 @@ public class BlocksHandler {
         hashMap.put("spec", "try");
         hashMap.put("spec2", "catch");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "switchStr");
         hashMap.put("type", "c");
@@ -1846,6 +2070,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "switch %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "switchNum");
         hashMap.put("type", "c");
@@ -1855,6 +2080,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "switch %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "caseStr");
         hashMap.put("type", "c");
@@ -1864,6 +2090,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "case %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "caseNum");
         hashMap.put("type", "c");
@@ -1873,6 +2100,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "case %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "defaultSwitch");
         hashMap.put("type", "c");
@@ -1882,6 +2110,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "default");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnString");
         hashMap.put("type", " ");
@@ -1891,6 +2120,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnNumber");
         hashMap.put("type", " ");
@@ -1900,6 +2130,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "returnBoolean");
         hashMap.put("type", " ");
@@ -1909,6 +2140,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "return %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "reverseList");
         hashMap.put("type", " ");
@@ -1918,6 +2150,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "reverse %m.list");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "shuffleList");
         hashMap.put("type", " ");
@@ -1927,6 +2160,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "shuffle %m.list");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "sortList");
         hashMap.put("type", " ");
@@ -1936,6 +2170,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "sort %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "sortListnum");
         hashMap.put("type", " ");
@@ -1945,6 +2180,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "sort %m.listInt");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "swapInList");
         hashMap.put("type", " ");
@@ -1954,6 +2190,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "swap %m.list position %d with %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "getMapAtPosListmap");
         hashMap.put("type", "a");
@@ -1963,6 +2200,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "get Map at %d of %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setMapAtPosListmap");
         hashMap.put("type", " ");
@@ -1972,6 +2210,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "set %m.varMap at %d of %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setAtPosListstr");
         hashMap.put("type", " ");
@@ -1981,6 +2220,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "set %s at %d of %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "setAtPosListnum");
         hashMap.put("type", " ");
@@ -1990,6 +2230,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "set %d at %d of %m.listInt");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "GsonListTojsonString");
         hashMap.put("type", "s");
@@ -1999,6 +2240,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.list to JSON String");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "GsonStringToListString");
         hashMap.put("type", " ");
@@ -2008,6 +2250,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "JSON %s to %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "GsonStringToListNumber");
         hashMap.put("type", " ");
@@ -2017,6 +2260,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "JSON %s to %m.listInt");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapGetNumber");
         hashMap.put("type", "d");
@@ -2025,6 +2269,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap get number key %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapPutNumber");
         hashMap.put("type", " ");
@@ -2033,6 +2278,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap put key %s value int %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapPutNumber2");
         hashMap.put("type", " ");
@@ -2041,6 +2287,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap put key %s value double %d");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapGetBoolean");
         hashMap.put("type", "b");
@@ -2049,6 +2296,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap get boolean key %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapPutBoolean");
         hashMap.put("type", " ");
@@ -2057,6 +2305,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap put key %s value %b");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapGetMap");
         hashMap.put("type", "a");
@@ -2065,6 +2314,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap get Map key %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapPutMap");
         hashMap.put("type", " ");
@@ -2073,6 +2323,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap put key %s value %m.varMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapListstr");
         hashMap.put("type", "l");
@@ -2082,6 +2333,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap get List String key %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapPutListstr");
         hashMap.put("type", " ");
@@ -2090,6 +2342,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap put key %s value %m.listStr");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapGetListmap");
         hashMap.put("type", "l");
@@ -2099,6 +2352,7 @@ public class BlocksHandler {
         hashMap.put("color", "#ee7d15");
         hashMap.put("spec", "%m.varMap get List Map key %s");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "hashmapPutListmap");
         hashMap.put("type", " ");
@@ -2107,6 +2361,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.varMap put key %s value %m.listMap");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "addSourceDirectly");
         hashMap.put("type", " ");
@@ -2116,6 +2371,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "add source directly %s.inputOnly");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "asdBoolean");
         hashMap.put("type", "b");
@@ -2125,6 +2381,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "boolean %s.inputOnly");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "asdNumber");
         hashMap.put("type", "d");
@@ -2134,6 +2391,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "number %s.inputOnly");
         arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "asdString");
         hashMap.put("type", "s");
@@ -2143,168 +2401,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "string %s.inputOnly");
         arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdMap");
-        hashMap.put("type", "a");
-        hashMap.put("typeName", "");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "map %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdListstr");
-        hashMap.put("type", "l");
-        hashMap.put("typeName", "List String");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "list string %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdListnum");
-        hashMap.put("type", "l");
-        hashMap.put("typeName", "List Number");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "ListNumber %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdListmap");
-        hashMap.put("type", "l");
-        hashMap.put("typeName", "List Map");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "ListMap %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdView");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "View");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "View %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdTextView");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "TextView");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "TextView %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdEditText");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "EditText");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "EditText %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdButton");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "Button");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "Button %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdImageView");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "ImageView");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "Imageview %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdCheckbox");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "CheckBox");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "Checkbox %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdListView");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "ListView");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "Listview %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "asdSpinner");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "Spinner");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "Spinner %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "TablayoutSourceCode");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "TabLayout");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "Tablayout %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "webViewAsd");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "WebView");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "webView %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "SeekBarAsd");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "SeekBar");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "SeekBar %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "ProgressBarAsd");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "ProgressBar");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "ProgressBar %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "MapViewAsd");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "MapView");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "MapView %s.inputOnly");
-        arrayList.add(0, hashMap);
-        hashMap = new HashMap<>();
-        hashMap.put("name", "AdViewAsd");
-        hashMap.put("type", "v");
-        hashMap.put("typeName", "AdView");
-        hashMap.put("code", "%s");
-        hashMap.put("color", "#5cb722");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "AdView %s.inputOnly");
-        arrayList.add(0, hashMap);
+
         hashMap = new HashMap<>();
         hashMap.put("name", "RepeatKnownNumDescending");
         hashMap.put("type", "c");
