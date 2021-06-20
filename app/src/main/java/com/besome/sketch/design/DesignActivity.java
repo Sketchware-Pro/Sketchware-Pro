@@ -292,74 +292,75 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             xo.k();
         }
 
-        if (requestCode == 188) {
-            new a(getApplicationContext()).execute();
-        } else {
-            if (requestCode == 217) {
-                return;
-            }
-            if (requestCode == 226) {
+        switch (requestCode) {
+            case 188:
+                new a(getApplicationContext()).execute();
+                break;
+
+            case 208:
+                if (resultCode == -1) {
+                    if (v != null) {
+                        v.a();
+                    }
+                    if (w != null) {
+                        w.n();
+                    }
+                }
+                break;
+
+            case 209:
+                if (resultCode == -1) {
+                    if (w != null) {
+                        w.i();
+                    }
+                }
+                break;
+
+            case 217:
+            case 228:
+                break;
+
+            case 223:
+                if (resultCode == -1) {
+                    if (x != null) {
+                        x.f();
+                    }
+                }
+                break;
+
+            case 224:
+                if (resultCode == -1) {
+                    if (y != null) {
+                        y.d();
+                    }
+                }
+                break;
+
+            case 226:
                 if (resultCode == -1) {
                     if (v != null) {
                         v.a();
                     }
                 }
-            } else {
-                if (requestCode == 228) {
-                    return;
+                break;
+
+            case 233:
+                if (resultCode == -1) {
+                    w.j();
                 }
-                if (requestCode == 233) {
-                    if (resultCode == -1) {
-                        w.j();
-                    }
-                } else {
-                    if (requestCode == 263) {
-                        if (resultCode == -1) {
-                            ProjectFileBean var8 = data.getParcelableExtra("project_file");
-                            v.setXmlFileName(var8);
-                        }
-                    } else {
-                        if (requestCode == 462) {
-                            if (resultCode == -1 && data.getBooleanExtra("req_update_design_activity", false)) {
-                                w.j();
-                            }
-                        } else {
-                            if (requestCode == 208) {
-                                if (resultCode == -1) {
-                                    if (v != null) {
-                                        v.a();
-                                    }
-                                    if (w != null) {
-                                        w.n();
-                                    }
-                                }
-                            } else {
-                                if (requestCode == 209) {
-                                    if (resultCode == -1) {
-                                        if (w != null) {
-                                            w.i();
-                                        }
-                                    }
-                                } else {
-                                    if (requestCode == 223) {
-                                        if (resultCode == -1) {
-                                            if (x != null) {
-                                                x.f();
-                                            }
-                                        }
-                                    } else {
-                                        if (requestCode == 224 && resultCode == -1) {
-                                            if (y != null) {
-                                                y.d();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                break;
+
+            case 263:
+                if (resultCode == -1) {
+                    v.setXmlFileName(data.getParcelableExtra("project_file"));
                 }
-            }
+                break;
+
+            case 462:
+                if (resultCode == -1 && data.getBooleanExtra("req_update_design_activity", false)) {
+                    w.j();
+                }
+                break;
         }
     }
 
