@@ -1,6 +1,5 @@
 package com.besome.sketch.design;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -21,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -105,7 +105,6 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
-import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
 
@@ -395,26 +394,31 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (v.getId() == Resources.id.btn_execute) {
                 new DesignActivity.a(getApplicationContext()).execute();
             } else if (v.getId() == Resources.id.btn_compiler_opt) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Action")
-                        .setSingleChoiceItems(
-                                new String[]{
-                                        "Build Settings",
-                                        "Show last compile error"
-                                },
-                                -1,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        if (which == 0) {
-                                            new BuildSettingsDialog(DesignActivity.this, l).show();
-                                        } else if (which == 1) {
-                                            new CompileErrorSaver(l).showDialog(DesignActivity.this);
-                                        }
-                                    }
-                                })
-                        .show();
+                PopupMenu popupMenu = new PopupMenu(this, findViewById(Resources.id.btn_compiler_opt));
+                Menu menu = popupMenu.getMenu();
+
+                // TODO: Add nice title item (that's smaller, can't be selected, etc.)
+                menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
+                menu.add(Menu.NONE, 2, Menu.NONE, "Show last compile error");
+
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case 1:
+                            new BuildSettingsDialog(DesignActivity.this, l).show();
+                            break;
+
+                        case 2:
+                            new CompileErrorSaver(l).showDialog(DesignActivity.this);
+                            break;
+
+                        default:
+                            return false;
+                    }
+
+                    return true;
+                });
+
+                popupMenu.show();
             }
         }
     }
@@ -1176,9 +1180,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     n();
                     q.f();
                     q.e();
+
                     Dp mDp = new Dp(this, a, q);
+
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
+                    if (d) {
+                        cancel(true);
+                        return;
+                    }
+
                     publishProgress("Extracting built-in libraries...");
                     mDp.j();
                     if (d) {
@@ -1287,42 +1298,23 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
-                        //TODO: Remove this, move AAB export to {@link ExportProjectActivity}
-                        boolean buildingAAB = new BuildSettings(q.b)
-                                .getValue(BuildSettings.SETTING_OUTPUT_FORMAT,
-                                        BuildSettings.SETTING_OUTPUT_FORMAT_APK)
-                                .equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB);
-                        if (buildingAAB) {
-                            AppBundleCompiler compiler = new AppBundleCompiler(mDp, this);
-                            publishProgress("Creating app module...");
-                            compiler.createModuleMainArchive();
-                            publishProgress("Building app bundle...");
-                            compiler.buildBundle();
-                            publishProgress("Building APK Set...");
-                            compiler.buildApkSet();
-                            publishProgress("Extracting Install-APK from APK Set...");
-                            compiler.extractInstallApkFromApkSet();
-                            publishProgress("Signing Install-APK...");
-                            compiler.signInstallApk();
-                        } else {
-                            publishProgress("Building APK...");
-                            mDp.g();
-                            if (d) {
-                                cancel(true);
-                                return;
-                            }
+                        publishProgress("Building APK...");
+                        mDp.g();
+                        if (d) {
+                            cancel(true);
+                            return;
+                        }
 
-                            publishProgress("Signing APK...");
-                            if (VERSION.SDK_INT >= 26) {
-                                ApkSigner signer = new ApkSigner(a);
-                                signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
-                            } else {
-                                mDp.k();
-                            }
-                            if (d) {
-                                cancel(true);
-                                return;
-                            }
+                        publishProgress("Signing APK...");
+                        if (VERSION.SDK_INT >= 26) {
+                            ApkSigner signer = new ApkSigner(a);
+                            signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
+                        } else {
+                            mDp.k();
+                        }
+                        if (d) {
+                            cancel(true);
+                            return;
                         }
 
                         /* Launch Intent to install APK */
