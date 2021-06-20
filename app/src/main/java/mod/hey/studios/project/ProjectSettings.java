@@ -61,7 +61,7 @@ public class ProjectSettings {
 
         if (FileUtil.isExistFile(path)) {
             try {
-                hashmap = new Gson().fromJson(FileUtil.readFile(path).trim(), Helper.TYPE_MAP_LIST);
+                hashmap = new Gson().fromJson(FileUtil.readFile(path).trim(), Helper.TYPE_STRING_MAP);
             } catch (Exception e) {
                 hashmap = new HashMap<>();
                 save();
