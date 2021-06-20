@@ -2,8 +2,6 @@ package mod.w3wide.blocks;
 
 import android.util.Pair;
 
-import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import java.util.ArrayList;
@@ -19,17 +17,13 @@ public class ExtraBlocks {
     private final String eventName;
     private final String javaName;
     private final String sc_id;
-    private final String xmlName;
     private final LogicEditorActivity logicEditor;
-    private final ProjectFileBean projectFile;
 
     public ExtraBlocks(LogicEditorActivity logicEditor) {
         eventName = logicEditor.D;
         this.logicEditor = logicEditor;
-        projectFile = logicEditor.M;
-        javaName = projectFile.getJavaName();
+        javaName = logicEditor.M.getJavaName();
         sc_id = logicEditor.B;
-        xmlName = projectFile.getXmlName();
     }
 
     public static void extraBlocks(ArrayList<HashMap<String, Object>> arrayList) {
@@ -52,7 +46,7 @@ public class ExtraBlocks {
         arrayList.add(0, addBlock("menuItemSetEnabled", " ", "", "%1$s.setEnabled(%2$s);", "#4a6cd4", "%m.MenuItem setEnabled %b"));
         arrayList.add(0, addBlock("menuFindItem", "v", "MenuItem", "menu.findItem(%s)", "#4a6cd4", "MenuItem findItem %s.inputOnly"));
         arrayList.add(0, addBlock("listAddAll", " ", "", "%1$s.addAll(%2$s);", "#cc5b22", "%m.listStr addAll from %m.list"));
-        //File Blocks
+        // File Blocks
         arrayList.add(0, addBlock("fileCanExecute", "b", "", "%s.canExecute()", "#a1887f", "%m.File canExecute"));
         arrayList.add(0, addBlock("fileCanRead", "b", "", "%s.canRead()", "#a1887f", "%m.File canRead"));
         arrayList.add(0, addBlock("fileCanWrite", "b", "", "%s.canWrite()", "#a1887f", "%m.File canWrite"));
@@ -60,23 +54,15 @@ public class ExtraBlocks {
         arrayList.add(0, addBlock("fileGetParent", "s", "", "%s.getParent()", "#a1887f", "%m.File getParent"));
         arrayList.add(0, addBlock("fileGetPath", "s", "", "%s.getPath()", "#a1887f", "%m.File getPath"));
         arrayList.add(0, addBlock("fileIsHidden", "b", "", "%s.isHidden()", "#a1887f", "%m.File isHidden"));
-        //Basically Command Block
-        arrayList.add(0, addBlock("addPermission", " ", "", "", "#493F5A", "Permission Command Block : add %m.Permission"));
-        arrayList.add(0, addBlock("removePermission", " ", "", "", "#493F5A", "Permission Command Block : remove %m.Permission"));
-        arrayList.add(0, addBlock("addCustomVariable", " ", "", "", "#493F5A", "Custom Variable Block : add variable %s"));
-        arrayList.add(0, addBlock("addInitializer", " ", "", "", "#493F5A", "Initializer Block : add initializer %s"));
+        // Basically Command Block
+        arrayList.add(0, addBlock("addPermission", " ", "", "", "#493F5A", "Permission Command Block: add %m.Permission"));
+        arrayList.add(0, addBlock("removePermission", " ", "", "", "#493F5A", "Permission Command Block: remove %m.Permission"));
+        arrayList.add(0, addBlock("addCustomVariable", " ", "", "", "#493F5A", "Custom Variable Block: add variable %s"));
+        arrayList.add(0, addBlock("addInitializer", " ", "", "", "#493F5A", "Initializer Block: add initializer %s"));
     }
 
     /**
-     * Get full block code in HashMap<String, Object> format
-     *
-     * @param name,     The Block's Name
-     * @param type,     The Block's Type
-     * @param typeName, The Block's TypeName
-     * @param code,     The Block's Code
-     * @param color,    The Block's Color
-     * @param spec,     The Block's Spec
-     * @return The full Block in HashMap<String, Object> format
+     * @return A block as HashMap&lt;String, Object&gt;.
      */
     private static HashMap<String, Object> addBlock(String name, String type, String typeName, String code, String color, String spec) {
         HashMap<String, Object> map = new HashMap<>();
@@ -91,16 +77,7 @@ public class ExtraBlocks {
     }
 
     /**
-     * Get full block code in HashMap<String, Object> format with spec2 (c type Blocks)
-     *
-     * @param name,     The Block's Name
-     * @param type,     The Block's Type
-     * @param typeName, The Block's TypeName
-     * @param code,     The Block's Code
-     * @param color,    The Block's Color
-     * @param spec,     The Block's Spec
-     * @param spec2,    The Second Spec of Block (type c)
-     * @return The full Block in HashMap<String, Object> format with spec2 (c type Blocks)
+     * @return A block as HashMap&lt;String, Object&gt; with spec2 (<code>c</code> type blocks)
      */
     private static HashMap<String, Object> addBlock(String name, String type, String typeName, String code, String color, String spec, String spec2) {
         HashMap<String, Object> map = new HashMap<>();
