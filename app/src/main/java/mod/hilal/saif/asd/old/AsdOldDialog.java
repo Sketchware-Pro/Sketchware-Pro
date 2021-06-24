@@ -7,15 +7,14 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-
-import java.util.Timer;
-import java.util.TimerTask;
 import com.sketchware.remod.Resources;
 
 import a.a.a.Ss;
@@ -55,9 +54,11 @@ public class AsdOldDialog extends Dialog {
                 .getIns((int) getDip(4), 0, Color.WHITE, Color.WHITE));
         TextView title = findViewById(Resources.id.text_title);
         title.setText("Code Editor");
-        addControll();
-        getWindow().setLayout(-1, -1);
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        addControl();
+        getWindow().setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         codeEditor.start(ColorScheme.JAVA());
         codeEditor.setText(str);
         editor = codeEditor.getEditText();
@@ -66,7 +67,7 @@ public class AsdOldDialog extends Dialog {
         editor.setImeOptions(1);
     }
 
-    public void addControll() {
+    private void addControl() {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -151,54 +152,30 @@ public class AsdOldDialog extends Dialog {
         save.setElevation(getDip(1));
         cancel.setElevation(getDip(1));
         base.addView(linearLayout);
-        uu = new TimerTask() {
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        Runnable task = new Runnable() {
             @Override
             public void run() {
-                act.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (codeEditor.dark_theme) {
-                            linearLayout.setBackgroundColor(Color.parseColor("#FF292929"));
-                            save.setBackground(new GradientDrawable() {
-                                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                    setCornerRadius((float) i);
-                                    setStroke(i2, i3);
-                                    setColor(i4);
-                                    return this;
-                                }
-                            }.getIns((int) getDip(4), 0, -13421773, -13421773));
-                            cancel.setBackground(new GradientDrawable() {
-                                public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                    setCornerRadius((float) i);
-                                    setStroke(i2, i3);
-                                    setColor(i4);
-                                    return this;
-                                }
-                            }.getIns((int) getDip(4), 0, -13421773, -13421773));
-                            return;
-                        }
-                        linearLayout.setBackgroundColor(-1);
-                        save.setBackground(new GradientDrawable() {
-                            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                setCornerRadius((float) i);
-                                setStroke(i2, i3);
-                                setColor(i4);
-                                return this;
-                            }
-                        }.getIns((int) getDip(4), 0, -14575885, -14575885));
-                        cancel.setBackground(new GradientDrawable() {
-                            public GradientDrawable getIns(int i, int i2, int i3, int i4) {
-                                setCornerRadius((float) i);
-                                setStroke(i2, i3);
-                                setColor(i4);
-                                return this;
-                            }
-                        }.getIns((int) getDip(4), 0, -14575885, -14575885));
-                    }
-                });
+                if (codeEditor.dark_theme) {
+                    linearLayout.setBackgroundColor(0xff292929);
+                    save.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                    cancel.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                    return;
+                }
+                linearLayout.setBackgroundColor(Color.WHITE);
+                save.setBackground(new DialogButtonGradientDrawable()
+                        .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                cancel.setBackground(new DialogButtonGradientDrawable()
+                        .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+
+                handler.postDelayed(this, 500);
             }
         };
-        _timer.scheduleAtFixedRate(uu, (long) 500, (long) 500);
+
+        handler.postDelayed(task, 500);
     }
 
     public void saveLis(LogicEditorActivity activity, boolean isNumber, Ss ss, AsdOldDialog asdOldDialog) {
