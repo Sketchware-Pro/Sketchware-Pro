@@ -9,18 +9,15 @@ import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 
 public class AsdOldHandlerCodeEditorCancel implements View.OnClickListener {
 
-    public final CodeEditorEditText a;
-    public final AsdOldDialog b;
-    public final LogicEditorActivity c;
+    private final AsdOldDialog asdOldDialog;
 
-    public AsdOldHandlerCodeEditorCancel(LogicEditorActivity logicEditorActivity, CodeEditorEditText codeEditorEditText, AsdOldDialog asdOldDialog) {
-        a = codeEditorEditText;
-        b = asdOldDialog;
-        c = logicEditorActivity;
+    public AsdOldHandlerCodeEditorCancel(AsdOldDialog asdOldDialog) {
+        this.asdOldDialog = asdOldDialog;
     }
 
+    @Override
     public void onClick(View v) {
-        SketchwareUtil.hideKeyboard();
-        b.dismiss();
+        SketchwareUtil.hideKeyboard(v);
+        asdOldDialog.dismiss();
     }
 }

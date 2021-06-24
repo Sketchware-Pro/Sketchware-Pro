@@ -218,9 +218,8 @@ public class AsdOldDialog extends Dialog {
         save.setOnClickListener(save_l);
     }
 
-    public void cancelLis(LogicEditorActivity logicEditorActivity, AsdOldDialog asdOldDialog) {
-        cancel_l = new AsdOldHandlerCodeEditorCancel(logicEditorActivity, edito, asdOldDialog);
-        cancel.setOnClickListener(cancel_l);
+    public void cancelLis(LogicEditorActivity activity, AsdOldDialog asdOldDialog) {
+        cancel.setOnClickListener(new AsdOldHandlerCodeEditorCancel(asdOldDialog));
     }
 
     public void setCon(String str2) {
