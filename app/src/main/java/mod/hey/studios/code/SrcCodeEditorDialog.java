@@ -66,11 +66,11 @@ public class SrcCodeEditorDialog {
         Helper.applyRipple(c, ig_save);
         Helper.applyRipple(c, ig_more);
 
-        ig_undo.setOnClickListener(_view -> editor.undo());
-        ig_redo.setOnClickListener(_view -> editor.redo());
-        ig_save.setOnClickListener(_view -> bB.a(c, "Saved i guess.", 0));
-        ig_more.setOnClickListener(_view -> {
-            PopupMenu pm = new PopupMenu(c, _view);
+        ig_undo.setOnClickListener(v -> editor.undo());
+        ig_redo.setOnClickListener(v -> editor.redo());
+        ig_save.setOnClickListener(v -> bB.a(c, "Saved i guess.", 0));
+        ig_more.setOnClickListener(v -> {
+            PopupMenu pm = new PopupMenu(c, v);
             //pm.inflate(R.menu.menu_main);
             populateMenu(pm.getMenu());
 
@@ -86,7 +86,7 @@ public class SrcCodeEditorDialog {
                 .setView(ed)
                 .create();
 
-        dlg.setOnDismissListener(p1 -> {
+        dlg.setOnDismissListener(dialog -> {
             float scaledDensity = c.getResources().getDisplayMetrics().scaledDensity;
             pref.edit().putInt("dlg_ts", (int) (editor.getTextSizePx() / scaledDensity)).apply();
         });
@@ -129,9 +129,10 @@ public class SrcCodeEditorDialog {
                 new AlertDialog.Builder(c)
                         .setTitle("Switch language")
                         .setSingleChoiceItems(new String[] {"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1, (dialog, which) -> {
-                                    EditorLanguage editorLanguage = null;
+                            EditorLanguage editorLanguage;
 
                                     switch (which) {
+                                        default:
                                         case 0:
                                             editorLanguage = new UniversalLanguage(new CDescription());
                                             break;
