@@ -10,40 +10,39 @@ import mod.hey.studios.lib.code_editor.CodeEditorEditText;
 
 public class AsdOldHandlerCodeEditor implements View.OnClickListener {
 
-    public final boolean b;
-    public final String con;
-    public final AsdOldDialog dialog;
-    public final LogicEditorActivity e;
-    public final CodeEditorEditText editt;
-    public final Ss s;
+    private final CodeEditorEditText codeEditorEditText;
+    private final AsdOldDialog dialog;
+    private final boolean isNumber;
+    private final LogicEditorActivity logicEditorActivity;
+    private final Ss ss;
 
-    public AsdOldHandlerCodeEditor(LogicEditorActivity logicEditorActivity, String str, boolean z, Ss ss, AsdOldDialog asdOldDialog, CodeEditorEditText codeEditorEditText) {
-        e = logicEditorActivity;
-        con = str;
-        b = z;
-        s = ss;
+    public AsdOldHandlerCodeEditor(LogicEditorActivity activity, boolean isNumber, Ss ss, AsdOldDialog asdOldDialog, CodeEditorEditText codeEditorEditText) {
+        this.logicEditorActivity = activity;
+        this.isNumber = isNumber;
+        this.ss = ss;
         dialog = asdOldDialog;
-        editt = codeEditorEditText;
+        this.codeEditorEditText = codeEditorEditText;
     }
 
+    @Override
     public void onClick(View v) {
-        String str = "";
-        String editable = editt.getText().toString();
-        if (b) {
+        String editable = codeEditorEditText.getText().toString();
+        if (isNumber) {
+            String parsedDouble = "";
             try {
                 double parseDouble = Double.parseDouble(editable);
                 if (!Double.isNaN(parseDouble) && !Double.isInfinite(parseDouble)) {
-                    str = editable;
+                    parsedDouble = editable;
                 }
-            } catch (NumberFormatException e2) {
-                e2.printStackTrace();
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
-            editable = str;
+            editable = parsedDouble;
         } else if (editable.length() > 0 && editable.charAt(0) == '@') {
             editable = " " + editable;
         }
-        e.a(s, (Object) editable);
-        SketchwareUtil.hideKeyboard();
+        logicEditorActivity.a(ss, (Object) editable);
+        SketchwareUtil.hideKeyboard(v);
         dialog.dismiss();
     }
 }
