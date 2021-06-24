@@ -1,14 +1,15 @@
 package mod.hey.studios.lib.code_editor;
 
 import android.app.Activity;
-import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Build.VERSION;
+import android.os.Build;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.Layout;
 import android.text.Selection;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
@@ -16,785 +17,734 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import java.util.Collection;
+import com.sketchware.remod.Resources;
+
 import java.util.List;
 import java.util.regex.Matcher;
 
+import a.a.a.Lx;
 import a.a.a.wB;
+import mod.SketchwareUtil;
+
+/**
+ * A lightweight Code Editor with syntax highlighting, auto indentation, word wrap and lines.
+ *
+ * @author Hey! Studios DEV - 28.07.2020
+ * <p>
+ * <p>
+ * <p>
+ * //do not use this source to modify this library, use the other workaround i sent.
+ */
 
 public class CodeEditorLayout extends LinearLayout implements TextWatcher {
-    private static final int DEFAULT_LAYOUT = 2131427798;
-    private static final int EDITTEXT_RES = 2131232454;
+
+    private static final int DEFAULT_LAYOUT = Resources.layout.code_editor_layout; //7F0B01D6
+    private static final int NOWRAP_LAYOUT = Resources.layout.code_editor_layout_nowrap; //7F0B01DD
+
+    private static final int EDITTEXT_RES = Resources.id.code_editor_edittext; //7F0806C6
+    private static final int SCROLLVIEW_RES = Resources.id.code_editor_layoutScrollView; //7F0806F9
+
     private static final boolean INDENTABLE = true;
     private static final String INDENT_STR = "    ";
-    private static final double KEYBOARD_RATIO = 0.25D;
-    private static final int NOWRAP_LAYOUT = 2131427805;
-    private static final int SCROLLVIEW_RES = 2131232505;
-    private static final int UPDATE_DELAY = 128;
-    private final CodeEditorLayout.BeforeTextChangeInfo beforeInfo = new CodeEditorLayout.BeforeTextChangeInfo();
+    private final static double KEYBOARD_RATIO = 0.25;
+    private final static int UPDATE_DELAY = 128;
     private final Context context;
+    private final BeforeTextChangeInfo beforeInfo = new BeforeTextChangeInfo();
     public boolean dark_theme;
-    private boolean complete_brackets;
     private CodeEditorEditText editText;
-    private List<ColorScheme> highlightList;
     private ScrollView scrollView;
+    //SharedPref start
     private SharedPreferences sharedpref;
-    private int type;
-    private Runnable updateHighlight;
+    private boolean exit_confirmation_dialog;
     private boolean word_wrap;
+    private boolean complete_brackets;
+    private int type;
+    private List<ColorScheme> highlightList;
+    private Runnable updateHighlight;
 
-    private boolean enableddialog;
 
-    public CodeEditorLayout(Context var1) {
-        super(var1);
-        this.context = var1;
-        this.loadPreferences();
-    }
+    //Options menu start
 
-    public CodeEditorLayout(Context var1, AttributeSet var2) {
-        super(var1, var2);
-        this.context = var1;
-        this.loadPreferences();
-    }
 
-    public CodeEditorLayout(Context var1, AttributeSet var2, int var3) {
-        super(var1, var2, var3);
-        this.context = var1;
-        this.loadPreferences();
-    }
-
-    public static void a(StringBuilder var0, int var1) {
-        for (int var2 = 0; var2 < var1; ++var2) {
-            var0.append('\t');
-        }
+    public CodeEditorLayout(Context context) {
+        super(context);
+        this.context = context;
+        loadPreferences();
 
     }
 
-    public static String j(String var0) {
-        StringBuilder var1 = new StringBuilder(4096);
-        char[] var15 = var0.toCharArray();
-        int var2 = var15.length;
-        int var3 = 0;
-        boolean var4 = false;
-        boolean var5 = false;
-        boolean var6 = false;
-        int var7 = 0;
-        boolean var8 = false;
-
-        boolean var18;
-        for (boolean var9 = false; var3 < var2; var8 = var18) {
-            boolean var16;
-            int var17;
-            label85:
-            {
-                char var10 = var15[var3];
-                if (var4) {
-                    if (var10 == '\n') {
-                        var1.append(var10);
-                        a(var1, var7);
-                        var4 = false;
-                    } else {
-                        var1.append(var10);
-                    }
-                } else {
-                    int var11;
-                    char var12;
-                    if (var5) {
-                        label82:
-                        {
-                            if (var10 == '*') {
-                                var11 = var3 + 1;
-                                var12 = var15[var11];
-                                if (var12 == '/') {
-                                    var1.append(var10);
-                                    var1.append(var12);
-                                    var3 = var11;
-                                    var5 = false;
-                                    break label82;
-                                }
-                            }
-
-                            var1.append(var10);
-                        }
-                    } else if (var6) {
-                        var1.append(var10);
-                        var6 = false;
-                    } else if (var10 == '\\') {
-                        var1.append(var10);
-                        var6 = true;
-                    } else if (var8) {
-                        if (var10 == '\'') {
-                            var1.append(var10);
-                            var8 = false;
-                        } else {
-                            var1.append(var10);
-                        }
-                    } else if (var9) {
-                        if (var10 == '"') {
-                            var1.append(var10);
-                            var9 = false;
-                        } else {
-                            var1.append(var10);
-                        }
-                    } else {
-                        label91:
-                        {
-                            if (var10 == '/') {
-                                var11 = var3 + 1;
-                                var12 = var15[var11];
-                                if (var12 == '/') {
-                                    var1.append(var10);
-                                    var1.append(var12);
-                                    var4 = true;
-                                    var3 = var11;
-                                    break label91;
-                                }
-
-                                if (var12 == '*') {
-                                    var1.append(var10);
-                                    var1.append(var12);
-                                    var5 = true;
-                                    var3 = var11;
-                                    break label91;
-                                }
-                            }
-
-                            if (var10 != '\n') {
-                                if (var10 == '\'') {
-                                    var8 = true;
-                                }
-
-                                if (var10 == '"') {
-                                    var9 = true;
-                                }
-
-                                if (var10 == '{') {
-                                    var11 = var7 + 1;
-                                } else {
-                                    var11 = var7;
-                                }
-
-                                var7 = var11;
-                                if (var10 == '}') {
-                                    --var11;
-                                    var7 = var11;
-                                    if (var1.charAt(-1 + var1.length()) == '\t') {
-                                        var1.deleteCharAt(-1 + var1.length());
-                                        var7 = var11;
-                                    }
-                                }
-
-                                var1.append(var10);
-                                boolean var13 = var5;
-                                boolean var14 = var8;
-                                var17 = var3;
-                                var5 = var4;
-                                var16 = var13;
-                                var8 = var6;
-                                var6 = var14;
-                                break label85;
-                            }
-
-                            var1.append(var10);
-                            a(var1, var7);
-                        }
-                    }
-                }
-
-                var16 = var6;
-                var6 = var8;
-                var8 = var16;
-                var16 = var5;
-                var5 = var4;
-                var17 = var3;
-            }
-
-            var18 = var6;
-            var3 = var17 + 1;
-            var4 = var5;
-            var5 = var16;
-            var6 = var8;
-        }
-
-        return var1.toString();
-    }
-
-    private void checkHighlight() {
-        CodeEditorEditText var1 = this.editText;
-        if (this.updateHighlight == null) {
-            this.updateHighlight = new Runnable() {
-                @Override
-                public void run() {
-                    CodeEditorLayout.this.highlightText();
-                }
-            };
-        }
-
-        var1.removeCallbacks(this.updateHighlight);
-        var1.postDelayed(this.updateHighlight, UPDATE_DELAY);
-    }
-
-    private int getCurrentCursorLine() {
-        int var1 = Selection.getSelectionStart(this.editText.getText());
-        Layout var2 = this.editText.getLayout();
-        if (var2 == null) {
-            var1 = -1;
-        } else if (var1 != -1) {
-            var1 = var2.getLineForOffset(var1);
-        }
-
-        return var1;
-    }
-
-    private String getLine(int var1, boolean var2) {
-        Editable var3 = this.editText.getEditableText();
-
-        String var10;
-        label39:
-        {
-            int var4;
-            int var5;
-            try {
-                var4 = this.editText.getLayout().getLineEnd(var1);
-                var5 = this.editText.getLayout().getLineStart(var1);
-            } catch (Exception var8) {
-                break label39;
-            }
-
-            byte var9;
-            label30:
-            {
-                label29:
-                {
-                    if (var2) {
-                        try {
-                            if (var4 == this.editText.length()) {
-                                break label29;
-                            }
-                        } catch (Exception var7) {
-                            break label39;
-                        }
-                    }
-
-                    var9 = 1;
-                    break label30;
-                }
-
-                var9 = 0;
-            }
-
-            try {
-                var10 = var3.subSequence(var5, var4 - var9).toString();
-                return var10;
-            } catch (Exception ignored) {
-            }
-        }
-
-        var10 = "";
-        return var10;
-    }
-
-    private void highlightText() {
-        CodeEditorEditText var1 = this.editText;
-        int var2 = this.scrollView.getScrollY();
-        int var3 = this.scrollView.getHeight();
-        int var4 = var1.getLayout().getLineForVertical(var2);
-        int var5 = var1.getLayout().getLineStart(var4);
-        var4 = var1.getLayout().getLineStart(var4 + 1);
-        var3 = var1.getLayout().getLineForVertical(var2 + var3);
-        var2 = var1.getLayout().getLineEnd(var3);
-        if (var3 == 0) {
-            var3 = var2;
-        } else {
-            var3 = var1.getLayout().getLineStart(var3 - 1);
-        }
-
-        if (var1.getSelectionStart() < var5) {
-            var1.setSelection(var4);
-        }
-
-        if (var1.getSelectionStart() > var2) {
-            var1.setSelection(var3);
-        }
-
-        Editable var10 = var1.getEditableText();
-        var3 = var10.length();
-
-        ForegroundColorSpan[] var11 = (ForegroundColorSpan[]) var10.getSpans(0, var3, ForegroundColorSpan.class);
-
-        for (var3 = 0; var3 < var11.length; ++var3) {
-            var10.removeSpan(var11[var3]);
-        }
-
-        for (Object o : (Collection) this.highlightList) {
-            ColorScheme var8 = (ColorScheme) o;
-            Matcher var12 = var8.pattern.matcher(var10);
-            var12.region(var5, var2);
-
-            while (var12.find()) {
-                var10.setSpan(new ForegroundColorSpan(var8.color), var12.start(), var12.end(), 33);
-            }
-        }
+    public CodeEditorLayout(Context context, AttributeSet attr) {
+        super(context, attr);
+        this.context = context;
+        loadPreferences();
 
     }
 
-    private void initEditorColors(ColorTheme var1) {
-        this.scrollView.setBackgroundColor(var1.BACKGROUND_COLOR);
-        this.editText.setTextColor(var1.TEXT_COLOR);
-        this.editText.setLineHighlightColor(var1.LINE_HIGHLIGHT_COLOR);
-        this.editText.setLineNumbersColor(var1.LINE_NUMBERS_COLOR);
+    public CodeEditorLayout(Context context, AttributeSet attr, int defStyle) {
+        super(context, attr, defStyle);
+        this.context = context;
+        loadPreferences();
+
     }
 
-    private void initialize(int var1) {
-        View var2 = wB.a(this.context, this, var1);
-        this.editText = (CodeEditorEditText) var2.findViewById(EDITTEXT_RES);
-        this.scrollView = (ScrollView) var2.findViewById(SCROLLVIEW_RES);
-        this.editText.setRawInputType(524433);
-        if (this.context instanceof Activity) {
-            ((Activity) this.context).getWindow().setSoftInputMode(2);
-        }
+	/*   private void debug(Object b) {
+	 Toast.makeText(context, b.toString(), 0).show();
+	 }   */
 
+    private void setPreference(String key, boolean value) {
+        sharedpref.edit().putBoolean(key, value).commit();
+    }
+
+    private void setPreference(String key, float value) {
+        sharedpref.edit().putFloat(key, value).commit();
     }
 
     private void loadPreferences() {
-        this.sharedpref = this.context.getSharedPreferences("code_editor_pref", 0);
-        this.dark_theme = this.sharedpref.getBoolean("dark_theme", false);
-        this.word_wrap = this.sharedpref.getBoolean("word_wrap", false);
-        float var1 = this.sharedpref.getFloat("text_size", 12.0F);
-        this.complete_brackets = this.sharedpref.getBoolean("complete_brackets", true);
-        this.enableddialog = this.sharedpref.getBoolean("enable_dialog", false);
-        int var2;
-        if (this.word_wrap) {
-            var2 = DEFAULT_LAYOUT;
-        } else {
-            var2 = NOWRAP_LAYOUT;
-        }
+        sharedpref = context.getSharedPreferences("code_editor_pref", Activity.MODE_PRIVATE);
 
-        this.initialize(var2);
-        this.setTextSize(var1);
+        dark_theme = sharedpref.getBoolean("dark_theme", false);
+        word_wrap = sharedpref.getBoolean("word_wrap", false);
+        float text_size = sharedpref.getFloat("text_size", 12f);
+
+        complete_brackets = sharedpref.getBoolean("complete_brackets", true);
+        exit_confirmation_dialog = sharedpref.getBoolean("exit_confirmation_dialog", false);
+
+        initialize(word_wrap ? DEFAULT_LAYOUT : NOWRAP_LAYOUT);
+
+        setTextSize(text_size);
     }
 
-    private void onOptionsItemSelected(MenuItem var1) {
-        String var2 = var1.getTitle().toString();
-        if (var2.equals("Font size")) {
-            Builder var10 = new Builder(this.context);
-            final NumberPicker var7 = new NumberPicker(this.context);
-            var7.setMinValue(5);
-            var7.setMaxValue(20);
-            var7.setValue((int) this.editText.getTextSize());
-            var7.setDescendantFocusability(393216);
-            var10.setView(var7);
-            var10.setTitle("Select font size");
-            var10.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface var112, int var21) {
-                    CodeEditorLayout.this.setTextSize((float) var7.getValue());
-                    var112.dismiss();
-                }
-            });
-            var10.setNegativeButton("CANCEL", null);
-            var10.create().show();
-        } else {
-            boolean var3;
-            switch (var2) {
+    public void onCreateOptionsMenu(View v) {
+        final PopupMenu popup = new PopupMenu(context, v);
+        Menu menu = popup.getMenu();
+
+        menu.add("Font size")
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        menu.add("Word wrap")
+                .setCheckable(true)
+                .setChecked(word_wrap)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        menu.add("Complete brackets")
+                .setCheckable(true)
+                .setChecked(complete_brackets)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        menu.add("Dark theme")
+                .setCheckable(true)
+                .setChecked(dark_theme)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        menu.add("Pretty print")
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        menu.add("Exit confirmation")
+                .setCheckable(true)
+                .setChecked(exit_confirmation_dialog)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getTitle().toString()) {
+                case "Font size":
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                    final NumberPicker numPicker = new NumberPicker(context);
+                    numPicker.setMinValue(5);
+                    numPicker.setMaxValue(20);
+                    numPicker.setValue((int) editText.getTextSize());
+                    numPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+                    builder.setView(numPicker)
+                            .setTitle("Select font size")
+                            .setPositiveButton(Resources.string.common_word_save, (dialog, which) -> {
+                                setTextSize(numPicker.getValue());
+                                dialog.dismiss();
+                            })
+                            .setNegativeButton(Resources.string.common_word_cancel, null)
+                            .show();
+                    break;
+
                 case "Word wrap":
-                    var3 = !var1.isChecked();
-
-                    var1.setChecked(var3);
-                    this.setWordWrap(var1.isChecked());
+                    item.setChecked(!item.isChecked());
+                    setWordWrap(item.isChecked());
                     break;
+
                 case "Complete brackets":
-                    var3 = !var1.isChecked();
-
-                    var1.setChecked(var3);
-                    this.complete_brackets = var1.isChecked();
-                    this.setPreference("complete_brackets", this.complete_brackets);
+                    item.setChecked(!item.isChecked());
+                    complete_brackets = item.isChecked();
+                    setPreference("complete_brackets", complete_brackets);
                     break;
+
                 case "Dark theme":
-                    var3 = !var1.isChecked();
+                    item.setChecked(!item.isChecked());
+                    dark_theme = item.isChecked();
+                    editText.removeTextChangedListener(this);
+                    startHighlighting(type);
+                    break;
 
-                    var1.setChecked(var3);
-                    this.dark_theme = var1.isChecked();
-                    this.editText.removeTextChangedListener(this);
-                    this.startHighlighting(this.type);
-                    break;
-                case "Save Dialog":
-                    var3 = !var1.isChecked();
-                    var1.setChecked(var3);
-                    this.enableddialog = var1.isChecked();
-                    this.setPreference("enable_dialog", this.enableddialog);
-                    break;
                 case "Pretty print":
-                    StringBuilder var11 = new StringBuilder();
-                    String[] var8 = this.getText().split("\n");
+                    StringBuilder string = new StringBuilder();
+                    String[] lines = getText().split("\n");
 
-                    for (String s : var8) {
-                        String var5 = s;
-                        var5 = (var5 + "X").trim();
-                        var11.append(var5.substring(0, var5.length() - 1));
-                        var11.append("\n");
+                    for (String line : lines) {
+                        String tmp = line;
+                        tmp = (tmp + "X").trim();
+                        string.append(tmp.substring(0, tmp.length() - 1));
+                        string.append("\n");
                     }
 
-                    String var9 = var11.toString();
+                    String prettifiedString = string.toString();
 
                     try {
-                        var9 = j(j(var9));
-                    } catch (Exception var6) {
-                        Toast.makeText(this.context, "Error: Your code contains incorrectly nested parentheses", Toast.LENGTH_SHORT).show();
-                        return;
+                        prettifiedString = Lx.j(Lx.j(prettifiedString));
+                    } catch (Exception e) {
+                        SketchwareUtil.toastError("Error: Your code contains incorrectly nested parentheses");
+                        break;
                     }
 
-                    this.setText(var9);
+                    setText(prettifiedString);
+                    break;
+
+                case "Exit confirmation":
+                    exit_confirmation_dialog = !item.isChecked();
+                    item.setChecked(exit_confirmation_dialog);
+                    setPreference("exit_confirmation_dialog", exit_confirmation_dialog);
                     break;
             }
+            return true;
+        });
 
-        }
+        v.setOnClickListener(v1 -> popup.show());
     }
 
-    private String safeSubstring(String var1, int var2, int var3) {
-        try {
-            var1 = var1.substring(var2, var3);
-        } catch (Exception var4) {
-            var1 = "";
-        }
+    public void setWordWrap(boolean b) {
+		/* Editable c = editText.getEditableText();
+		 int i = (int)editText.getTextSize();
 
-        return var1;
-    }
+		 final int cur = editText.getSelectionStart();
+		 final int scr = scrollView.getScrollY();
 
-    private void setListeners() {
-        CodeEditorEditText var1 = this.editText;
-        if (var1 != null) {
-            var1.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    InputMethodManager var3 = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (!hasFocus) {
-                        var3.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    }
+		 this.removeAllViews();
+		 if (b) {
+		 initialize(DEFAULT_LAYOUT);
+		 } else {
+		 initialize(NOWRAP_LAYOUT);
+		 }
 
-                    if (updateHighlight != null) {
-                        v.removeCallbacks(updateHighlight);
-                        v.postDelayed(updateHighlight, UPDATE_DELAY);
-                    }
+		 setText(c);
+		 setTextSize(i);
 
-                }
-            });
-            var1.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-                private boolean keyboard;
+		 postDelayed(new Runnable() {
 
-                @Override
-                public void onGlobalLayout() {
-                    if (updateHighlight != null) {
-                        int var1 = scrollView.getRootView().getHeight();
-                        boolean var2;
-                        var2 = !((double) (var1 - scrollView.getHeight()) / (double) var1 <= KEYBOARD_RATIO);
+		 @Override
+		 public void run() {
+		 scrollView.scrollTo(0, scr);
+		 editText.setSelection(cur);
+		 }
 
-                        if (!var2) {
-                            if (!this.keyboard) {
-                                return;
-                            }
-                        } else if (this.keyboard) {
-                            return;
-                        }
 
-                        if (!var2) {
-                            removeCallbacks(updateHighlight);
-                            postDelayed(updateHighlight, (long) UPDATE_DELAY);
-                        }
+		 }, 500);
 
-                        this.keyboard = var2;
-                    }
 
-                }
-            });
-        }
 
-        if (this.scrollView != null) {
-            if (VERSION.SDK_INT >= 23) {
-                this.scrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        if (updateHighlight != null) {
-                            removeCallbacks(updateHighlight);
-                            postDelayed(updateHighlight, (long) UPDATE_DELAY);
-                        }
+		 start(type);
+		 //start(highlightList);*/
 
-                    }
-                });
-            } else {
-                this.scrollView.getViewTreeObserver().addOnScrollChangedListener(new OnScrollChangedListener() {
-                    @Override
-                    public void onScrollChanged() {
-                        if (updateHighlight != null) {
-                            removeCallbacks(updateHighlight);
-                            postDelayed(updateHighlight, (long) UPDATE_DELAY);
-                        }
 
-                    }
-                });
+        // :) Hack.
+
+        if (b) {
+            if (editText.getParent() instanceof HorizontalScrollView
+                    && scrollView.getChildAt(0) instanceof HorizontalScrollView) {
+
+                //Toast.makeText(context, "if", 0).show();
+
+                HorizontalScrollView hrz = (HorizontalScrollView) scrollView.getChildAt(0);
+
+                hrz.removeView(editText);
+
+                scrollView.removeView(hrz);
+
+                scrollView.addView(editText);
+
+
+                editText.invalidate();
             }
+        } else if (editText.getParent() instanceof ScrollView
+                && scrollView.getChildAt(0) instanceof EditText) {
+
+            HorizontalScrollView hrz = new HorizontalScrollView(context);
+            hrz.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            hrz.setFillViewport(true);
+            hrz.setOverScrollMode(OVER_SCROLL_NEVER);
+            hrz.setHorizontalScrollBarEnabled(false);
+
+            scrollView.removeView(editText);
+
+            scrollView.addView(hrz);
+
+            hrz.addView(editText);
+
+
+            editText.invalidate();
         }
 
+        setPreference("word_wrap", b);
     }
 
-    private void setPreference(String var1, float var2) {
-        this.sharedpref.edit().putFloat(var1, var2).commit();
-    }
+    private void initialize(int res) {
+        View convertView = wB.a(context, this, res);
 
-    private void setPreference(String var1, boolean var2) {
-        this.sharedpref.edit().putBoolean(var1, var2).commit();
-    }
+        editText = convertView.findViewById(EDITTEXT_RES);
+        scrollView = convertView.findViewById(SCROLLVIEW_RES);
 
-    private boolean strOnlyContainsSpaces(String var1) {
-        char[] var5 = var1.toCharArray();
-        boolean var2;
-        if (var5.length < 1) {
-            var2 = false;
-        } else {
-            int var3 = 0;
+        //hide suggestions in edittext
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
-            while (true) {
-                if (var3 >= var5.length) {
-                    var2 = true;
-                    break;
-                }
-
-                char var4 = var5[var3];
-                if (!String.valueOf(var4).equals(" ") && !String.valueOf(var4).equals("   ") && !String.valueOf(var4).equals("\t")) {
-                    var2 = false;
-                    break;
-                }
-
-                ++var3;
-            }
+        //hide keyboard
+        if (context instanceof Activity) {
+            ((Activity) context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
-
-        return var2;
     }
 
-    @Override
-    public void afterTextChanged(Editable var1) {
-        if (this.beforeInfo.backspaceClicked) {
-            int var2 = this.editText.getSelectionStart();
-            if (this.strOnlyContainsSpaces(this.beforeInfo.currentLine) && (this.editText.getLayout().getLineEnd(this.getCurrentCursorLine()) - 1 == var2 || this.editText.length() == var2)) {
-                int var3 = this.editText.getLayout().getLineStart(this.getCurrentCursorLine()) - 1;
-                if (var3 > -1) {
-                    var1.delete(var3, var2);
-                }
+    public void setTextSize(float size) {
+        editText.setTextSize(size);
 
-                this.beforeInfo.backspaceClicked = false;
-            }
-        }
-
-        CodeEditorEditText var4 = this.editText;
-        if (this.updateHighlight != null) {
-            var4.removeCallbacks(this.updateHighlight);
-            var4.postDelayed(this.updateHighlight, (long) UPDATE_DELAY);
-        }
-
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence var1, int var2, int var3, int var4) {
-        this.beforeInfo.currentLine = this.getLine(this.getCurrentCursorLine(), true);
-        boolean var5;
-        var5 = var4 + 1 == var3;
-
-        this.beforeInfo.backspaceClicked = var5;
-    }
-
-    public void decreaseTextSize() {
-        this.setTextSize(this.editText.getTextSize() - 2.0F);
-    }
-
-    public CodeEditorEditText getEditText() {
-        return this.editText;
-    }
-
-    public String getText() {
-        return this.editText.getText().toString();
-    }
-
-    public void setText(CharSequence var1) {
-        this.editText.setText(var1);
+        setPreference("text_size", size);
     }
 
     public void increaseTextSize() {
-        this.setTextSize(this.editText.getTextSize() + 2.0F);
+        setTextSize(editText.getTextSize() + 2.0f);
     }
 
-    public void insert(String var1) {
-        this.editText.getText().insert(this.editText.getSelectionStart(), var1);
+    public void decreaseTextSize() {
+        setTextSize(editText.getTextSize() - 2.0f);
     }
 
-    public void onCreateOptionsMenu(View view) {
-        final PopupMenu var2 = new PopupMenu(this.context, view);
-        Menu var3 = var2.getMenu();
-        var3.add("Font size").setShowAsAction(0);
-        var3.add("Word wrap").setCheckable(true).setChecked(this.word_wrap).setShowAsAction(0);
-        var3.add("Complete brackets").setCheckable(true).setChecked(this.complete_brackets).setShowAsAction(0);
-        var3.add("Dark theme").setCheckable(true).setChecked(this.dark_theme).setShowAsAction(0);
-        var3.add("Pretty print").setShowAsAction(0);
-        var3.add("Save Dialog").setCheckable(true).setChecked(enableddialog).setShowAsAction(0);
-        var2.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onOptionsItemSelected(item);
-                return true;
-            }
-        });
-        view.setOnClickListener(new android.view.View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                var2.show();
-            }
-        });
+    public CodeEditorEditText getEditText() {
+        return editText;
     }
 
-    public void onPause() {
-        this.editText.removeCallbacks(this.updateHighlight);
+    public String getText() {
+        return editText.getText().toString();
+    }
+
+    public void setText(CharSequence c) {
+        editText.setText(c);
+    }
+
+    public void start(List<ColorScheme> list) {
+        //this method might look nonsense, don't worry it's just for
+        //backwards compatibility. use startHighlighting(int) instead
+
+        int color = list.get(0).color;
+
+        startHighlighting(color);
+
+		/*if(color == ColorScheme.JAVA) {
+		 startHighlighting(ColorScheme.JAVA);
+		 } else if (color == ColorScheme.XML) {
+		 startHighlighting(ColorScheme.XML);
+		 }*/
+
+    }
+
+    public void startHighlighting(int type) {
+        this.type = type;
+
+        ColorTheme colorTheme = ColorTheme.getTheme(dark_theme);
+        setPreference("dark_theme", dark_theme);
+
+        if (type == ColorScheme.JAVA) {
+            this.highlightList = ColorScheme.TYPE_JAVA(colorTheme);
+        } else if (type == ColorScheme.XML) {
+            this.highlightList = ColorScheme.TYPE_XML(colorTheme);
+        } else {
+            return;
+        }
+
+
+        initEditorColors(colorTheme);
+
+        //  this.highlightList = highlightList;
+
+        checkHighlight();
+
+        editText.addTextChangedListener(this);
+
+        setListeners();
+    }
+
+    private void initEditorColors(ColorTheme colorTheme) {
+        scrollView.setBackgroundColor(colorTheme.BACKGROUND_COLOR);
+        editText.setTextColor(colorTheme.TEXT_COLOR);
+        editText.setLineHighlightColor(colorTheme.LINE_HIGHLIGHT_COLOR);
+        editText.setLineNumbersColor(colorTheme.LINE_NUMBERS_COLOR);
+    }
+
+    private int getCurrentCursorLine() {
+        int selectionStart = Selection.getSelectionStart(editText.getText());
+        Layout layout = editText.getLayout();
+
+        if (layout == null) {
+            return -1;
+        }
+
+        if (!(selectionStart == -1)) {
+            return layout.getLineForOffset(selectionStart);
+        }
+
+        return -1;
+    }
+
+    private String getLine(int lineNo, boolean deleting) {
+        Editable e = editText.getEditableText();
+
+        try {
+
+            int end = editText.getLayout().getLineEnd(lineNo);
+
+            return e.subSequence(
+                    editText.getLayout().getLineStart(lineNo),
+                    end - ((deleting && end == editText.length()) ? 0 : 1)
+            ).toString();
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    private boolean strOnlyContainsSpaces(String str) {
+        char[] chars = str.toCharArray();
+
+        if (chars.length < 1) {
+            return false;
+        }
+
+        for (char c : chars) {
+            if (!String.valueOf(c).equals(" ") && !String.valueOf(c).equals("   ")) //" ", "   "
+                return false;
+        }
+
+        return true;
+    }
+
+    public void insert(String str) {
+        editText.getText().insert(editText.getSelectionStart(), str);
+    }
+
+    private String safeSubstring(String main, int start, int end) {
+        try {
+            return main.substring(start, end);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        beforeInfo.currentLine = getLine(getCurrentCursorLine(), true);
+        beforeInfo.backspaceClicked = after + 1 == count;
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String var5 = s.toString();
-        final String substring = var5.substring(start, start + count);
-        if (substring.equals("\n")) {
-            String var6 = this.getLine(this.getCurrentCursorLine() - 1, false);
-            String var8;
-            if (this.strOnlyContainsSpaces(var6)) {
-                var8 = var6;
-            } else {
-                var8 = var6.substring(0, var6.indexOf(var6.trim()));
+        //Indentation
+        if (INDENTABLE) {
+
+            String charSeq = s.toString();
+
+            // if the last character entered is a line break:
+            final String substring = charSeq.substring(start, start + count);
+            if (substring.equals("\n")) {
+
+                String previousLine = getLine(getCurrentCursorLine() - 1, false);
+
+                String spacesToInsert = "";
+
+                if (strOnlyContainsSpaces(previousLine)) {
+                    // if the previous line only contains spaces,
+                    // get all of it and indent the next line.
+                    spacesToInsert = previousLine;
+                } else {
+                    // if not, get the spaces from the previous line using trim
+                    // and use it to indent the next line.
+                    spacesToInsert = previousLine.substring(0, previousLine.indexOf(previousLine.trim()));
+                }
+
+                // auto indent when user clicks enter inside {} or ()
+                int selection = editText.getSelectionStart();
+                if (
+                        (safeSubstring(charSeq, selection - 2, selection - 1).equals("{")
+                                && safeSubstring(charSeq, selection, selection + 1).equals("}"))
+                                ||
+                                (safeSubstring(charSeq, selection - 2, selection - 1).equals("(")
+                                        && safeSubstring(charSeq, selection, selection + 1).equals(")"))
+                ) {
+                    // indent :)
+                    insert(spacesToInsert + INDENT_STR + "\n" + spacesToInsert);
+
+                    // restore cursor position
+                    editText.setSelection(editText.getSelectionStart() - "\n".length() - spacesToInsert.length());
+
+                    return;
+                }
+
+                // if the previous line ends with a { or (, increase the indentation
+                if (previousLine.endsWith("{") || previousLine.endsWith("(")) {
+                    spacesToInsert += INDENT_STR;
+                }
+
+                // insert the final indentation
+                if (!TextUtils.isEmpty(spacesToInsert)) {
+                    insert(spacesToInsert);
+                }
+
             }
 
-            before = this.editText.getSelectionStart();
-            if (this.safeSubstring(var5, before - 2, before - 1).equals("{") && this.safeSubstring(var5, before, before + 1).equals("}") || this.safeSubstring(var5, before - 2, before - 1).equals("(") && this.safeSubstring(var5, before, before + 1).equals(")")) {
-                this.insert(var8 + INDENT_STR + "\n" + var8);
-                this.editText.setSelection(this.editText.getSelectionStart() - "\n".length() - var8.length());
-                return;
-            }
+            //Complete brackets
 
-            String var7;
-            label60:
-            {
-                if (!var6.endsWith("{")) {
-                    var7 = var8;
-                    if (!var6.endsWith("(")) {
-                        break label60;
+            if (complete_brackets) {
+
+                // checks the latest character entered to complete it:
+                switch (substring) {
+                    case "{":
+                        insert("}");
+                        editText.setSelection(editText.getSelectionStart() - 1);
+                        break;
+
+                    case "(":
+                        insert(")");
+                        editText.setSelection(editText.getSelectionStart() - 1);
+                        break;
+
+                    case "[":
+                        insert("]");
+                        editText.setSelection(editText.getSelectionStart() - 1);
+                        break;
+                }
+
+                // Prevents user from closing a bracket that is already closed
+                int selection = editText.getSelectionStart();
+                switch (substring) {
+                    case "}":
+                        if (safeSubstring(charSeq, selection - 2, selection - 1).equals("{")) {
+                            if (safeSubstring(charSeq, selection, selection + 1).equals("}")) {
+                                editText.getEditableText().delete(selection, selection + 1);
+                            }
+                        }
+                        break;
+
+                    case ")":
+                        if (safeSubstring(charSeq, selection - 2, selection - 1).equals("(")) {
+                            if (safeSubstring(charSeq, selection, selection + 1).equals(")")) {
+                                editText.getEditableText().delete(selection, selection + 1);
+                            }
+                        }
+                        break;
+
+                    case "]":
+                        if (safeSubstring(charSeq, selection - 2, selection - 1).equals("[")) {
+                            if (safeSubstring(charSeq, selection, selection + 1).equals("]")) {
+                                editText.getEditableText().delete(selection, selection + 1);
+                            }
+                        }
+                        break;
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        //Indentation with Backspace
+        if (beforeInfo.backspaceClicked) {
+
+            int selection = editText.getSelectionStart();
+
+            if (strOnlyContainsSpaces(beforeInfo.currentLine)
+                    && (
+                    editText.getLayout().getLineEnd(getCurrentCursorLine()) - 1 == selection
+                            ||
+                            editText.length() == selection
+            )
+            ) {
+
+                int deleteStart = editText.getLayout().getLineStart(getCurrentCursorLine()) - 1;
+
+                if (deleteStart > -1) {
+                    s.delete(deleteStart, selection);
+                }
+
+                beforeInfo.backspaceClicked = false;
+            }
+        }
+
+        //Syntax highlighting (new, relatively optimized)
+        EditText textView = editText;
+
+        if (updateHighlight != null) {
+            textView.removeCallbacks(updateHighlight);
+            textView.postDelayed(updateHighlight, UPDATE_DELAY);
+        }
+    }
+
+    private void setListeners() {
+        final EditText textView = editText;
+
+        if (textView != null) {
+
+            // onFocusChange
+            textView.setOnFocusChangeListener((v, hasFocus) -> {
+
+                // Hide keyboard
+                InputMethodManager imm = (InputMethodManager)
+                        context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (!hasFocus)
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                if (updateHighlight != null) {
+                    textView.removeCallbacks(updateHighlight);
+                    textView.postDelayed(updateHighlight, UPDATE_DELAY);
+                }
+            });
+
+            textView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        private boolean keyboard;
+
+                        // onGlobalLayout
+                        @Override
+                        public void onGlobalLayout() {
+                            if (updateHighlight != null) {
+                                int rootHeight = scrollView.getRootView().getHeight();
+                                int height = scrollView.getHeight();
+
+                                boolean shown = (((rootHeight - height) /
+                                        (double) rootHeight) >
+                                        KEYBOARD_RATIO);
+
+                                if (shown != keyboard) {
+                                    if (!shown) {
+                                        textView.removeCallbacks(updateHighlight);
+                                        textView.postDelayed(updateHighlight,
+                                                UPDATE_DELAY);
+                                    }
+
+                                    keyboard = shown;
+                                }
+                            }
+                        }
+                    });
+        }
+
+        if (scrollView != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // onScrollChange
+                scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    if (updateHighlight != null) {
+                        textView.removeCallbacks(updateHighlight);
+                        textView.postDelayed(updateHighlight, UPDATE_DELAY);
                     }
-                }
+                });
 
-                var7 = var8 + INDENT_STR;
-            }
-
-            if (!TextUtils.isEmpty(var7)) {
-                this.insert(var7);
-            }
-        }
-
-        if (this.complete_brackets) {
-            switch (substring) {
-                case "{":
-                    this.insert("}");
-                    this.editText.setSelection(this.editText.getSelectionStart() - 1);
-                    break;
-                case "(":
-                    this.insert(")");
-                    this.editText.setSelection(this.editText.getSelectionStart() - 1);
-                    break;
-                case "[":
-                    this.insert("]");
-                    this.editText.setSelection(this.editText.getSelectionStart() - 1);
-                    break;
-            }
-
-            before = this.editText.getSelectionStart();
-            if (substring.equals("}")) {
-                if (this.safeSubstring(var5, before - 2, before - 1).equals("{") && this.safeSubstring(var5, before, before + 1).equals("}")) {
-                    this.editText.getEditableText().delete(before, before + 1);
-                }
-            } else if (substring.equals(")")) {
-                if (this.safeSubstring(var5, before - 2, before - 1).equals("(") && this.safeSubstring(var5, before, before + 1).equals(")")) {
-                    this.editText.getEditableText().delete(before, before + 1);
-                }
-            } else if (substring.equals("]") && this.safeSubstring(var5, before - 2, before - 1).equals("[") && this.safeSubstring(var5, before, before + 1).equals("]")) {
-                this.editText.getEditableText().delete(before, before + 1);
+            } else {
+                // onScrollChange
+                scrollView.getViewTreeObserver()
+                        .addOnScrollChangedListener(() -> {
+                            if (updateHighlight != null) {
+                                textView.removeCallbacks(updateHighlight);
+                                textView.postDelayed(updateHighlight, UPDATE_DELAY);
+                            }
+                        });
             }
         }
-
     }
 
-    public void setTextSize(float var1) {
-        this.editText.setTextSize(var1);
-        this.setPreference("text_size", var1);
+    private void checkHighlight() {
+        EditText textView = editText;
+
+        if (updateHighlight == null)
+            updateHighlight = this::highlightText;
+
+        textView.removeCallbacks(updateHighlight);
+        textView.postDelayed(updateHighlight, UPDATE_DELAY);
     }
 
-    public void setWordWrap(boolean var1) {
-        HorizontalScrollView var2;
-        if (var1) {
-            if (this.editText.getParent() instanceof HorizontalScrollView && this.scrollView.getChildAt(0) instanceof HorizontalScrollView) {
-                var2 = (HorizontalScrollView) this.scrollView.getChildAt(0);
-                var2.removeView(this.editText);
-                this.scrollView.removeView(var2);
-                this.scrollView.addView(this.editText);
-                this.editText.invalidate();
+    public void onPause() {
+        editText.removeCallbacks(updateHighlight);
+    }
+
+    //Optimized highlighting by Editor in Github
+    private void highlightText() {
+        EditText textView = editText;
+
+        // Get visible extent
+        int top = scrollView.getScrollY();
+        int height = scrollView.getHeight();
+
+        int line = textView.getLayout().getLineForVertical(top);
+        int start = textView.getLayout().getLineStart(line);
+        int first = textView.getLayout().getLineStart(line + 1);
+
+        line = textView.getLayout().getLineForVertical(top + height);
+        int end = textView.getLayout().getLineEnd(line);
+        int last = (line == 0) ? end :
+                textView.getLayout().getLineStart(line - 1);
+
+        // Move selection if outside range
+        if (textView.getSelectionStart() < start)
+            textView.setSelection(first);
+
+        if (textView.getSelectionStart() > end)
+            textView.setSelection(last);
+
+        // Get editable
+        Editable editable = textView.getEditableText();
+
+        // Get current spans
+        ForegroundColorSpan[] spans =
+                editable.getSpans(0, editable.length(),/*start, end,*/ ForegroundColorSpan.class);
+        // Remove spans
+        for (ForegroundColorSpan span : spans)
+            editable.removeSpan(span);
+
+        Matcher matcher;
+
+        // Highlight it
+        for (ColorScheme colorScheme : highlightList) {
+
+            matcher = colorScheme.pattern.matcher(editable);
+            matcher.region(start, end);
+            while (matcher.find()) {
+                ForegroundColorSpan span = new ForegroundColorSpan(colorScheme.color);
+
+                editable.setSpan(span, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                /*if(colorScheme.textStyle != 0) {
+                 StyleSpan span2 = new StyleSpan(colorScheme.textStyle);
+                 editable.setSpan(span2, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                 }*/
             }
-        } else if (this.editText.getParent() instanceof ScrollView && this.scrollView.getChildAt(0) instanceof EditText) {
-            var2 = new HorizontalScrollView(this.context);
-            var2.setLayoutParams(new LayoutParams(-1, -2));
-            var2.setFillViewport(true);
-            var2.setOverScrollMode(2);
-            var2.setHorizontalScrollBarEnabled(false);
-            this.scrollView.removeView(this.editText);
-            this.scrollView.addView(var2);
-            var2.addView(this.editText);
-            this.editText.invalidate();
         }
-
-        this.setPreference("word_wrap", var1);
     }
 
-    public void start(List<ColorScheme> var1) {
-        this.startHighlighting(((ColorScheme) var1.get(0)).color);
-    }
+    private static class BeforeTextChangeInfo {
 
-    public void startHighlighting(int var1) {
-        this.type = var1;
-        ColorTheme var2 = ColorTheme.getTheme(this.dark_theme);
-        this.setPreference("dark_theme", this.dark_theme);
-        if (var1 == 1) {
-            this.highlightList = ColorScheme.TYPE_JAVA(var2);
-        } else {
-            if (var1 != 2) {
-                return;
-            }
-
-            this.highlightList = ColorScheme.TYPE_XML(var2);
-        }
-
-        this.initEditorColors(var2);
-        this.checkHighlight();
-        this.editText.addTextChangedListener(this);
-        this.setListeners();
-    }
-
-    private class BeforeTextChangeInfo {
         boolean backspaceClicked;
-        String currentLine;
+        String currentLine = "";
     }
 }
-
-
