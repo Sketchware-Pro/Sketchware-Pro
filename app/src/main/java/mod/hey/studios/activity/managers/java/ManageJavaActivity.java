@@ -38,7 +38,7 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 public class ManageJavaActivity extends Activity {
 
     private static final String ACTIVITY_TEMPLATE = "package %s;\n\nimport android.app.Activity;\nimport android.os.Bundle;\n\npublic class %s extends Activity {\n     \n      @Override\n     protected void onCreate(Bundle savedInstanceState) {\n              super.onCreate(savedInstanceState);\n       }\n     \n}";
-    private static final String CLASS_TEMPLATE = "package %s;\n\npublic class %s {\n        \n}";
+    private static final String CLASS_TEMPLATE = "package %s;\n\npublic class %s {\n    \n}";
     private final ArrayList<String> currentTree = new ArrayList<>();
     private String current_path;
     private FilePathUtil fpu;
@@ -317,8 +317,9 @@ public class ManageJavaActivity extends Activity {
             if (!readFile.contains("package ") || !readFile.contains(";")) {
                 return getFileNameWoExt(position);
             }
+            int packageIndex = readFile.indexOf("package ") + 8;
 
-            return readFile.substring(readFile.indexOf("package ") + 8, readFile.indexOf(";")) + "." + getFileNameWoExt(position);
+            return readFile.substring(packageIndex, readFile.indexOf(";", packageIndex)) + "." + getFileNameWoExt(position);
         }
 
         /**
@@ -339,13 +340,7 @@ public class ManageJavaActivity extends Activity {
          * @return The file's file name without extension
          */
         public String getFileNameWoExt(int position) {
-            String fileName = getFileName(position);
-
-            if (fileName.contains(".")) {
-                return fileName.substring(0, fileName.lastIndexOf("."));
-            }
-
-            return fileName;
+            return FileUtil.getFileNameNoExtension(getItem(position));
         }
 
         public boolean isFolder(int position) {
