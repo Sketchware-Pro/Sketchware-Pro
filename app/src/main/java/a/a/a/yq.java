@@ -20,6 +20,8 @@ import mod.hilal.saif.blocks.CommandBlock;
 
 public class yq {
 
+     // Regex Pattern of Firebase Project id matcher
+    private String _fbasepidRegex = "(-default-rtdb)?\.[a-z](.?)+";
     /**
      * Assets directory of current project
      */
@@ -856,7 +858,7 @@ public class yq {
             if (N.h) {
                 z3 = false;
                 mx.a("firebase_database_url", "https://" + d2.data , false);
-                mx.a("project_id", d2.data.trim().replaceAll("\.[a-z](.?)+" , ""), false);
+                mx.a("project_id", d2.data.trim().replaceAll(_fbasepidRegex , ""), false);
                 mx.a("google_app_id", d2.reserved1, false);
                 String str = d2.reserved2;
                 if (str != null && str.length() > 0) {
