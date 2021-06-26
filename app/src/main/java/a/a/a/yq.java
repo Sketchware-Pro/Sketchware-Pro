@@ -855,8 +855,8 @@ public class yq {
             mx.a("google_play_services_version", 12451000);
             if (N.h) {
                 z3 = false;
-                mx.a("firebase_database_url", "https://" + d2.data + ".default-rtdb.firebaseio.com", false);
-                mx.a("project_id", d2.data, false);
+                mx.a("firebase_database_url", "https://" + d2.data , false);
+                mx.a("project_id", d2.data.trim().replaceAll("\.[a-z](.?)+" , ""), false);
                 mx.a("google_app_id", d2.reserved1, false);
                 String str = d2.reserved2;
                 if (str != null && str.length() > 0) {
