@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.widget.TextView;
+
 public class DebugActivity extends Activity {
     private final String[] exceptionMessages = {"Invalid string operation\n", "Invalid list operation\n", "Invalid arithmetical operation\n", "Invalid toNumber block operation\n", "Invalid intent operation"};
     private final String[] exceptionTypes = {"StringIndexOutOfBoundsException", "IndexOutOfBoundsException", "ArithmeticException", "NumberFormatException", "ActivityNotFoundException"};
@@ -40,15 +42,20 @@ public class DebugActivity extends Activity {
                 message = new StringBuilder(error);
             }
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("An error occurred");
-        builder.setMessage(message.toString());
-        builder.setPositiveButton("End Application", new DialogInterface.OnClickListener() {
+        AlertDialog builder = new AlertDialog.Builder(this)
+        .setTitle("An error occurred")
+        .setMessage(message.toString())
+        .setPositiveButton("End Application", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
-        });
-        builder.create().show();
+        })
+        .create();
+        builder.show();
+        TextView messageView=(TextView) builder.findViewById(android.R.id.message);
+        if (messageView != null) {
+            messageView.setTextIsSelectable(true);
+        }
     }
 }
