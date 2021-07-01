@@ -361,6 +361,7 @@ public class Resources {
         public static final int text_info = 0x7f080669;
         public static final int text_title = 0x7f08066e;
         public static final int text_content = 0x7f08066f;
+        public static final int dialoginputlayoutLinearLayout2 = 0x7f080676;
         public static final int edittext_change_name = 0x7f080677;
         public static final int text_cancel = 0x7f080678;
         public static final int text_save = 0x7f080679;
