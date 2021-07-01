@@ -206,34 +206,56 @@ public class ManageJavaActivity extends Activity {
     }
 
     private void showRenameDialog(final int position) {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
+        boolean isFolder = adapter.isFolder(position);
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        LinearLayout root = (LinearLayout) getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
 
-        final EditText fileName = inflate.findViewById(Resources.id.edittext_change_name);
-        fileName.setText(myadp.getFileName(position));
+        final EditText filename = root.findViewById(Resources.id.edittext_change_name);
+        filename.setText(adapter.getFileName(position));
 
-        inflate.findViewById(Resources.id.text_cancel).setOnClickListener(v -> create.dismiss());
-        inflate.findViewById(Resources.id.text_save).setOnClickListener(view -> {
-            if (!fileName.getText().toString().isEmpty()) {
-                if (!myadp.isFolder(position) && frc.getJavaManifestList().contains(myadp.getFullName(position))) {
-                    frc.getJavaManifestList().remove(myadp.getFullName(position));
-                    FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                    SketchwareUtil.toast("NOTE: Removed activity from manifest");
-                }
-
-                FileUtil.renameFile(myadp.getItem(position), new File(current_path, fileName.getText().toString()).getAbsolutePath());
-                refresh();
-                SketchwareUtil.toast("Renamed successfully");
+        final CheckBox renameOccurrences;
+        if (!isFolder) {
+            {
+                renameOccurrences = new CheckBox(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(
+                        (int) getDip(16),
+                        (int) getDip(8),
+                        (int) getDip(16),
+                        (int) getDip(10)
+                );
+                renameOccurrences.setLayoutParams(params);
             }
+            renameOccurrences.setText("Rename occurrences of " + adapter.getFileNameWoExt(position) + " in file");
+            root.addView(renameOccurrences, 2);
+        }
 
-            create.dismiss();
-        });
+        root.findViewById(Resources.id.text_cancel)
+                .setOnClickListener(Helper.getDialogDismissListener(dialog));
+        root.findViewById(Resources.id.text_save)
+                .setOnClickListener(view -> {
+                    if (!filename.getText().toString().isEmpty()) {
+                        if (!adapter.isFolder(position) && frc.getJavaManifestList().contains(adapter.getFullName(position))) {
+                            frc.getJavaManifestList().remove(adapter.getFullName(position));
+                            FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                            SketchwareUtil.toast("NOTE: Removed Activity from manifest");
+                        }
 
-        create.setView(inflate);
-        create.setOnDismissListener(dialog -> SketchwareUtil.hideKeyboard());
-        create.show();
+                        FileUtil.renameFile(adapter.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
+                        refresh();
+                        SketchwareUtil.toast("Renamed successfully");
+                    }
 
-        fileName.requestFocus();
+                    dialog.dismiss();
+                });
+
+        dialog.setView(root);
+        dialog.setOnDismissListener(dialogInterface -> SketchwareUtil.hideKeyboard());
+        dialog.show();
+
+        filename.requestFocus();
         SketchwareUtil.showKeyboard();
     }
 
