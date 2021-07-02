@@ -1,8 +1,9 @@
 package mod.hilal.saif.activities.tools;
 
+import static mod.hilal.saif.activities.tools.EventsMaker.EVENTS_FILE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -31,9 +32,7 @@ import mod.hey.studios.util.Helper;
 public class EventsMakerDetails extends Activity {
 
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
-    private ViewGroup base;
     private AlertDialog.Builder dia;
-    private FloatingActionButton fab;
     private String lisName;
     private ListView listView;
 
@@ -55,14 +54,12 @@ public class EventsMakerDetails extends Activity {
     }
 
     private void setupViews() {
-        fab = findViewById(Resources.id.add_attr_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), EventsMakerCreator.class);
-                intent.putExtra("lis_name", lisName);
-                startActivity(intent);
-            }
+        FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), EventsMakerCreator.class);
+            intent.putExtra("lis_name", lisName);
+            startActivity(intent);
         });
         listView = findViewById(Resources.id.add_attr_listview);
         refreshList();
@@ -71,7 +68,7 @@ public class EventsMakerDetails extends Activity {
     private void a(View view, int i, int i2, boolean z) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setCornerRadii(new float[]{(float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f, (float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f});
+        gradientDrawable.setCornerRadii(new float[]{i, i, i / 2f, i / 2f, i, i, i / 2f, i / 2f});
         gradientDrawable.setColor(Color.parseColor("#ffffff"));
         RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
         view.setElevation((float) i2);
@@ -82,12 +79,12 @@ public class EventsMakerDetails extends Activity {
 
     public void refreshList() {
         listMap.clear();
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
-        if (FileUtil.isExistFile(concat)) {
-            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
-            for (int i = 0; i < arrayList.size(); i++) {
-                if (arrayList.get(i).get("listener").equals(lisName)) {
-                    listMap.add(arrayList.get(i));
+        if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
+            ArrayList<HashMap<String, Object>> events = new Gson()
+                    .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+            for (int i = 0; i < events.size(); i++) {
+                if (events.get(i).get("listener").equals(lisName)) {
+                    listMap.add(events.get(i));
                 }
             }
             listView.setAdapter(new ListAdapter(listMap));
@@ -97,16 +94,16 @@ public class EventsMakerDetails extends Activity {
 
     private void deleteItem(int position) {
         listMap.remove(position);
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
-        if (FileUtil.isExistFile(concat)) {
-            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
-            for (int size = arrayList.size() - 1; size > -1; size--) {
-                if (arrayList.get(size).get("listener").equals(lisName)) {
-                    arrayList.remove(size);
+        if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
+            ArrayList<HashMap<String, Object>> events = new Gson()
+                    .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+            for (int i = events.size() - 1; i > -1; i--) {
+                if (events.get(i).get("listener").equals(lisName)) {
+                    events.remove(i);
                 }
             }
-            arrayList.addAll(listMap);
-            FileUtil.writeFile(concat, new Gson().toJson(arrayList));
+            events.addAll(listMap);
+            FileUtil.writeFile(EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
             refreshList();
         }
     }
@@ -151,75 +148,63 @@ public class EventsMakerDetails extends Activity {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(Resources.layout.custom_view_pro, null);
             }
-            LinearLayout linearLayout = convertView.findViewById(Resources.id.custom_view_pro_background);
-            a(linearLayout, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView imageView = convertView.findViewById(Resources.id.custom_view_pro_img);
-            TextView textView = convertView.findViewById(Resources.id.custom_view_pro_title);
-            TextView textView2 = convertView.findViewById(Resources.id.custom_view_pro_subtitle);
+            LinearLayout root = convertView.findViewById(Resources.id.custom_view_pro_background);
+            a(root, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
+            ImageView icon = convertView.findViewById(Resources.id.custom_view_pro_img);
+            TextView title = convertView.findViewById(Resources.id.custom_view_pro_title);
+            TextView subtitle = convertView.findViewById(Resources.id.custom_view_pro_subtitle);
             if (lisName.equals("")) {
-                imageView.setImageResource(Resources.drawable.widget_source);
+                icon.setImageResource(Resources.drawable.widget_source);
             } else {
-                imageView.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
+                icon.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
             }
-            ((LinearLayout) imageView.getParent()).setGravity(17);
-            textView.setText((String) _data.get(position).get("name"));
+            ((LinearLayout) icon.getParent()).setGravity(17);
+            title.setText((String) _data.get(position).get("name"));
             if (_data.get(position).get("var").equals("")) {
-                textView2.setText("Activity event");
+                subtitle.setText("Activity event");
             } else {
-                textView2.setText((String) _data.get(position).get("var"));
+                subtitle.setText((String) _data.get(position).get("var"));
             }
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(getApplicationContext(), EventsMakerCreator.class);
-                    intent.putExtra("lis_name", lisName);
-                    intent.putExtra("event", (String) _data.get(position).get("name"));
-                    intent.putExtra("_pos", String.valueOf(position));
-                    intent.putExtra("_name", (String) _data.get(position).get("name"));
-                    intent.putExtra("_var", (String) _data.get(position).get("var"));
-                    intent.putExtra("_lis", (String) _data.get(position).get("listener"));
-                    intent.putExtra("_icon", (String) _data.get(position).get("icon"));
-                    intent.putExtra("_desc", (String) _data.get(position).get("description"));
-                    intent.putExtra("_par", (String) _data.get(position).get("parameters"));
-                    intent.putExtra("_spec", (String) _data.get(position).get("headerSpec"));
-                    intent.putExtra("_code", (String) _data.get(position).get("code"));
-                    startActivity(intent);
-                }
+            root.setOnClickListener(v -> {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), EventsMakerCreator.class);
+                intent.putExtra("lis_name", lisName);
+                intent.putExtra("event", (String) _data.get(position).get("name"));
+                intent.putExtra("_pos", String.valueOf(position));
+                intent.putExtra("_name", (String) _data.get(position).get("name"));
+                intent.putExtra("_var", (String) _data.get(position).get("var"));
+                intent.putExtra("_lis", (String) _data.get(position).get("listener"));
+                intent.putExtra("_icon", (String) _data.get(position).get("icon"));
+                intent.putExtra("_desc", (String) _data.get(position).get("description"));
+                intent.putExtra("_par", (String) _data.get(position).get("parameters"));
+                intent.putExtra("_spec", (String) _data.get(position).get("headerSpec"));
+                intent.putExtra("_code", (String) _data.get(position).get("code"));
+                startActivity(intent);
             });
-            linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    dia = new AlertDialog.Builder(EventsMakerDetails.this)
-                            .setTitle((String) _data.get(position).get("name"))
-                            .setMessage("Delete this event?")
-                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    deleteItem(position);
-                                }
-                            })
-                            .setNeutralButton("Edit", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int which) {
-                                    Intent intent = new Intent();
-                                    intent.setClass(getApplicationContext(), EventsMakerCreator.class);
-                                    intent.putExtra("lis_name", lisName);
-                                    intent.putExtra("event", (String) _data.get(position).get("name"));
-                                    intent.putExtra("_pos", String.valueOf(position));
-                                    intent.putExtra("_name", (String) _data.get(position).get("name"));
-                                    intent.putExtra("_var", (String) _data.get(position).get("var"));
-                                    intent.putExtra("_lis", (String) _data.get(position).get("listener"));
-                                    intent.putExtra("_icon", (String) _data.get(position).get("icon"));
-                                    intent.putExtra("_desc", (String) _data.get(position).get("description"));
-                                    intent.putExtra("_par", (String) _data.get(position).get("parameters"));
-                                    intent.putExtra("_spec", (String) _data.get(position).get("headerSpec"));
-                                    intent.putExtra("_code", (String) _data.get(position).get("code"));
-                                    startActivity(intent);
-                                }
-                            })
-                            .setNegativeButton("Cancel", null);
-                    dia.show();
-                    return true;
-                }
+            root.setOnLongClickListener(v -> {
+                dia = new AlertDialog.Builder(EventsMakerDetails.this)
+                        .setTitle((String) _data.get(position).get("name"))
+                        .setMessage("Delete this event?")
+                        .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> deleteItem(position))
+                        .setNeutralButton(Resources.string.common_word_edit, (dialog, which) -> {
+                            Intent intent = new Intent();
+                            intent.setClass(getApplicationContext(), EventsMakerCreator.class);
+                            intent.putExtra("lis_name", lisName);
+                            intent.putExtra("event", (String) _data.get(position).get("name"));
+                            intent.putExtra("_pos", String.valueOf(position));
+                            intent.putExtra("_name", (String) _data.get(position).get("name"));
+                            intent.putExtra("_var", (String) _data.get(position).get("var"));
+                            intent.putExtra("_lis", (String) _data.get(position).get("listener"));
+                            intent.putExtra("_icon", (String) _data.get(position).get("icon"));
+                            intent.putExtra("_desc", (String) _data.get(position).get("description"));
+                            intent.putExtra("_par", (String) _data.get(position).get("parameters"));
+                            intent.putExtra("_spec", (String) _data.get(position).get("headerSpec"));
+                            intent.putExtra("_code", (String) _data.get(position).get("code"));
+                            startActivity(intent);
+                        })
+                        .setNegativeButton(Resources.string.common_word_cancel, null);
+                dia.show();
+                return true;
             });
             return convertView;
         }
