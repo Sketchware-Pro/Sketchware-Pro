@@ -206,11 +206,11 @@ public class ConfigActivity extends Activity {
                 SETTING_LEGACY_CODE_EDITOR,
                 false);
         addSwitchPreference("Use new Version Control",
-                "Enables advanced Version Control system for projects.",
+                "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
                 false);
         addSwitchPreference("Enable ASD highlighter",
-                "Enables syntax highlighting in Add Source Directly blocks in Logic Editor.",
+                "Enables syntax highlighting in Add Source Directly blocks.",
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
     }
