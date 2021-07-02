@@ -198,6 +198,7 @@ public class mq {
             case "File (Shared Preferences)":
                 return "SharedPreferences";
 
+            case "calendar":
             case "Calendar":
                 return "Calendar";
 
@@ -302,9 +303,6 @@ public class mq {
 
             case "mapview":
                 return "MapView";
-
-            case "calendar":
-                return "Calendar";
 
             case "timer":
                 return "Timer";
@@ -664,8 +662,8 @@ public class mq {
         }
     }
 
-    public static ArrayList d(String listener) {
-        ArrayList importList = new ArrayList();
+    public static ArrayList<String> d(String listener) {
+        ArrayList<String> importList = new ArrayList();
 
         switch (listener) {
             case "onClickListener":
