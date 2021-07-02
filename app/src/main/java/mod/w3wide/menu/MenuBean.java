@@ -71,6 +71,20 @@ public class MenuBean {
         String menuName = ss.getMenuName();
         asdAll.b("Select " + menuName);
         switch (menuName) {
+        	case "SignButtonColor":
+                asdAll.b("Select a SignInButton Color");
+                selectableItems.add("COLOR_AUTO");
+                selectableItems.add("COLOR_DARK");
+                selectableItems.add("COLOR_LIGHT");
+                break;
+
+        	case "SignButtonSize":
+                asdAll.b("Select SignInButton Size");
+                selectableItems.add("SIZE_ICON_ONLY");
+                selectableItems.add("SIZE_STANDARD");
+                selectableItems.add("SIZE_WIDE");
+                break;
+
             case "ResString":
                 asdAll.b("Select a resource String");
                 selectableItems.add("app_name");
@@ -141,14 +155,12 @@ public class MenuBean {
 
             case "AdUnit":
                 asdAll.a(2131166209);
-                //asdAll.a("If no Ad Units were found, then add and save Project to get added Ad Units.");
                 asdAll.b("Select an AdUnit");
                 selectableItems.addAll(AdmobReader.getAdUnits(sc_id));
                 break;
 
             case "TestDevice":
                 asdAll.a(2131165866);
-                //asdAll.a("If no Test Device Found !.\nthen add and save Project to get saved Test Devices.");
                 asdAll.b("Select a test device");
                 selectableItems.addAll(AdmobReader.getTestDevices(sc_id));
                 break;
@@ -190,6 +202,11 @@ public class MenuBean {
                 for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
                     selectableItems.add(componentBean.componentId);
                 }
+                break;
+                
+            case "pageadapter":
+                asdAll.b("Select a PageAdapter");
+                selectableItems.addAll(jC.a(sc_id).b(javaName, -649047648));
                 break;
 
             case "CustomVar":
