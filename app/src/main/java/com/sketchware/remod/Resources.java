@@ -56,6 +56,7 @@ public class Resources {
         public static final int delete_96 = 0x7f070154;
         public static final int enlarge_48 = 0x7f07016b;
         public static final int event_on_accuracy_changed_48dp = 0x7f07016e;
+        public static final int event_on_response_48dp = 0x7f070199;
         public static final int exit_96 = 0x7f0701a4;
         public static final int expand_48 = 0x7f0701a5;
         public static final int facebook_50 = 0x7f0701ac;
@@ -78,6 +79,7 @@ public class Resources {
         public static final int ic_folder_48dp = 0x7f07023a;
         public static final int ic_font_48dp = 0x7f07023b;
         public static final int ic_menu_white_24dp = 0x7f07025c;
+        public static final int ic_more_vert_white_24dp = 0x7f07025f;
         public static final int ic_picture_48dp = 0x7f070273;
         public static final int ic_redo_white_48dp = 0x7f070283;
         public static final int ic_reset_color_32dp = 0x7f07028a;
@@ -356,6 +358,7 @@ public class Resources {
         public static final int view_leftline = 0x7f080643;
         public static final int viewpager = 0x7f080648;
         public static final int linearLayout = 0x7f08065e;
+        public static final int cancel = 0x7f08065f;
         public static final int list_file = 0x7f080667;
         public static final int fab_plus = 0x7f080668;
         public static final int text_info = 0x7f080669;
@@ -427,7 +430,10 @@ public class Resources {
         public static final int edittext1 = 0x7f080702;
         public static final int save = 0x7f080710;
         public static final int spec = 0x7f080729;
+        public static final int code = 0x7f080742;
+        public static final int customimport = 0x7f08074e;
         public static final int parameter = 0x7f080769;
+        public static final int separate = 0x7f08076c;
         public static final int sw_pg_debug = 0x7f08076d;
         public static final int ln_pg_rules = 0x7f08076e;
         public static final int sw_pg_enabled = 0x7f08076f;
@@ -507,6 +513,7 @@ public class Resources {
         public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int block_customview = 0x7f0b01e5;
+        public static final int add_new_listener = 0x7f0b01e8;
         public static final int manage_proguard = 0x7f0b01ea;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int manage_java_item_hs = 0x7f0b01ef;
@@ -545,6 +552,7 @@ public class Resources {
         public static final int common_word_close = 0x7f0e0411;
         public static final int common_word_continue = 0x7f0e0414;
         public static final int common_word_create = 0x7f0e0417;
+        public static final int common_word_edit = 0x7f0e0420;
         public static final int common_word_delete = 0x7f0e041a;
         public static final int common_word_exit = 0x7f0e0424;
         public static final int common_word_goback = 0x7f0e0428;
