@@ -59,6 +59,21 @@ public class ExtraBlocks {
         arrayList.add(0, addBlock("removePermission", " ", "", "", "#493F5A", "Permission Command Block: remove %m.Permission"));
         arrayList.add(0, addBlock("addCustomVariable", " ", "", "", "#493F5A", "Custom Variable Block: add variable %s"));
         arrayList.add(0, addBlock("addInitializer", " ", "", "", "#493F5A", "Initializer Block: add initializer %s"));
+        //OtpView Blocks
+        arrayList.add(0, addBlock("otpViewSetFieldCount", " ", "", "%1$s.setFieldCount(%2$s);", "#4a6cd4", "%m.otpview setFieldCount %d"));
+        arrayList.add(0, addBlock("otpViewSetOTPText", " ", "", "%1$s.setOTPText(%2$s);", "#4a6cd4", "%m.otpview setOTPText %s"));
+        arrayList.add(0, addBlock("otpViewGetOTPText", "s", "", "%1$s.getOTPText()", "#4a6cd4", "%m.otpview getOTPText"));
+        arrayList.add(0, addBlock("otpViewSetOTPListener", "c", "", "%1$s.setOTPListener(new OTPListener() {\r\npublic void onOTPEntered(String _otp) {\r\n%2$s\r\n}\r\n});", "#4a6cd4", "%m.otpview onOTPEntered -> _otp"));
+        //SignInButton Blocks
+        arrayList.add(0, addBlock("signInButtonSetColorScheme", " ", "", "%1$s.setColorScheme(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setColorScheme %m.SignButtonColor"));
+        arrayList.add(0, addBlock("signInButtonSetSize", " ", "", "%1$s.setSize(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setSize %m.SignButtonSize"));
+        //PageAdapter Blocks
+        arrayList.add(0, addBlock("pageAdapterAddFragment", " ", "", "%1$s.addFragment(new %2$s(), %3$s);", "#2ca5e2", "%m.pageadapter addFragment %m.activity title %s"));
+        arrayList.add(0, addBlock("pageAdapterGetCount", "d", "", "(int)%s.getCount()", "#2ca5e2", "%m.pageadapter getCount"));
+        arrayList.add(0, addBlock("pageAdapterGetPageTitle", "s", "", "%1$s.getPageTitle(%2$s)", "#2ca5e2", "%m.pageadapter getPageTitle %d position"));
+        arrayList.add(0, addBlock("pageAdapterGetItem", "v", "Class", "(Fragment)%1$s.getItem(%2$s)", "#2ca5e2", "%m.pageadapter getItem %d position"));
+        arrayList.add(0, addBlock("pageAdapterGetPageWidth", "d", "", "(float)%1$s.getPageWidth(%2$s)", "#2ca5e2", "%m.pageadapter getPageWidth %d position"));
+        arrayList.add(0, addBlock("pageAdapterRemoveItem", " ", "", "%1$s.removeItem(%2$s)", "#2ca5e2", "%m.pageadapter removeItem %d position"));
     }
 
     /**
@@ -77,7 +92,7 @@ public class ExtraBlocks {
     }
 
     /**
-     * @return A block as HashMap&lt;String, Object&gt; with spec2 (<code>c</code> type blocks)
+     * @return A block as HashMap&lt;String, Object&gt; with spec2 (<code>e</code> type blocks)
      */
     private static HashMap<String, Object> addBlock(String name, String type, String typeName, String code, String color, String spec, String spec2) {
         HashMap<String, Object> map = new HashMap<>();
