@@ -94,11 +94,17 @@ public class EventsMakerCreator extends Activity {
     }
 
     private boolean filledIn() {
-        return !eventName.getText().toString().equals("")
-                && !eventVar.getText().toString().equals("")
-                && !eventIcon.getText().toString().equals("")
-                && !eventSpec.getText().toString().equals("")
-                && !eventCode.getText().toString().equals("");
+        if (isActivityEvent) {
+            return !eventName.getText().toString().isEmpty()
+                    && !eventSpec.getText().toString().isEmpty()
+                    && !eventCode.getText().toString().isEmpty();
+        } else {
+            return !eventName.getText().toString().isEmpty()
+                    && !eventVar.getText().toString().isEmpty()
+                    && !eventIcon.getText().toString().isEmpty()
+                    && !eventSpec.getText().toString().isEmpty()
+                    && !eventCode.getText().toString().isEmpty();
+        }
     }
 
     private void getViewsById() {
