@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -26,32 +24,23 @@ public class EventsMakerCreator extends Activity {
     private String _code;
     private String _desc;
     private String _icon;
-    private String _lis;
     private String _name;
     private String _par;
-    private int _pos;
     private String _spec;
     private String _var;
     private MaterialButton cancel;
-    private CheckBox check;
     private EditText eventCode;
     private EditText eventDesc;
     private EditText eventIcon;
-    private EditText eventListener;
     private EditText eventName;
     private EditText eventParams;
     private EditText eventSpec;
     private EditText eventVar;
     private String event_name = "";
-    private LinearLayout hide;
     private boolean isActivityEvent = false;
     private boolean isEdit = false;
     private String lisName;
-    private EditText listenerCode;
-    private EditText listenerImport;
-    private EditText listenerName;
     private MaterialButton save;
-    private ScrollView scroll;
     private ImageView selectIcon;
 
     @Override
@@ -65,10 +54,8 @@ public class EventsMakerCreator extends Activity {
         if (getIntent().hasExtra("event")) {
             event_name = getIntent().getStringExtra("event");
             isEdit = true;
-            _pos = Integer.parseInt(getIntent().getStringExtra("_pos"));
             _name = getIntent().getStringExtra("_name");
             _var = getIntent().getStringExtra("_var");
-            _lis = getIntent().getStringExtra("_lis");
             _icon = getIntent().getStringExtra("_icon");
             _desc = getIntent().getStringExtra("_desc");
             _par = getIntent().getStringExtra("_par");
@@ -108,10 +95,9 @@ public class EventsMakerCreator extends Activity {
     }
 
     private void getViewsById() {
-        scroll = findViewById(Resources.id.events_creator_scrollview);
         eventName = findViewById(Resources.id.events_creator_eventname);
         eventVar = findViewById(Resources.id.events_creator_varname);
-        eventListener = findViewById(Resources.id.events_creator_listenername);
+        EditText eventListener = findViewById(Resources.id.events_creator_listenername);
         ((View) eventListener.getParent().getParent()).setVisibility(View.GONE);
         eventIcon = findViewById(Resources.id.events_creator_icon);
         eventDesc = findViewById(Resources.id.events_creator_desc);
@@ -120,12 +106,8 @@ public class EventsMakerCreator extends Activity {
         eventCode = findViewById(Resources.id.events_creator_code);
         selectIcon = findViewById(Resources.id.events_creator_chooseicon);
         selectIcon.setImageResource(Resources.drawable.add_96_blue);
-        check = findViewById(Resources.id.events_creator_checkbox);
+        CheckBox check = findViewById(Resources.id.events_creator_checkbox);
         check.setVisibility(View.GONE);
-        hide = findViewById(Resources.id.events_creator_hide);
-        listenerName = findViewById(Resources.id.events_creator_listenernameA);
-        listenerCode = findViewById(Resources.id.events_creator_listenercode);
-        listenerImport = findViewById(Resources.id.events_creator_listenercustomimport);
         cancel = findViewById(Resources.id.events_creator_cancel);
         save = findViewById(Resources.id.events_creator_save);
         if (isActivityEvent) {
@@ -138,18 +120,8 @@ public class EventsMakerCreator extends Activity {
 
     private void setupViews() {
         cancel.setOnClickListener(Helper.getBackPressedClickListener(this));
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                save();
-            }
-        });
-        selectIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showIconSelectorDialog();
-            }
-        });
+        save.setOnClickListener(v -> save());
+        selectIcon.setOnClickListener(v -> showIconSelectorDialog());
     }
 
     private void showIconSelectorDialog() {
