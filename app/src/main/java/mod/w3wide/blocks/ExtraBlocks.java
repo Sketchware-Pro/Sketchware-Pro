@@ -74,6 +74,11 @@ public class ExtraBlocks {
         arrayList.add(0, addBlock("pageAdapterGetItem", "v", "Class", "(Fragment)%1$s.getItem(%2$s)", "#2ca5e2", "%m.pageadapter getItem %d position"));
         arrayList.add(0, addBlock("pageAdapterGetPageWidth", "d", "", "(float)%1$s.getPageWidth(%2$s)", "#2ca5e2", "%m.pageadapter getPageWidth %d position"));
         arrayList.add(0, addBlock("pageAdapterRemoveItem", " ", "", "%1$s.removeItem(%2$s)", "#2ca5e2", "%m.pageadapter removeItem %d position"));
+        //Code Editor menu blocks
+        arrayList.add(0, addBlock("addCodeDirectly", " ", "", "%s", "#5cb722", "add Code Directly %s.inputCode"));
+        arrayList.add(0, addBlock("acdString", "s", "", "%s", "#5cb722", "string %s.inputCode"));
+        arrayList.add(0, addBlock("acdBoolean", "b", "", "%s", "#5cb722", "boolean %s.inputCode"));
+        arrayList.add(0, addBlock("acdNumber", "d", "", "%s", "#5cb722", "number %s.inputCode"));
     }
 
     /**
