@@ -2647,5 +2647,11 @@ public class BlocksHandler {
         logicEditorActivity.a("b", "asdBoolean");
         logicEditorActivity.a("d", "asdNumber");
         logicEditorActivity.a("s", "asdString");
+
+        logicEditorActivity.a("add code directly", 0xff555555);
+        logicEditorActivity.a(" ", "addCodeDirectly");
+        logicEditorActivity.a("b", "acdBoolean");
+        logicEditorActivity.a("d", "acdNumber");
+        logicEditorActivity.a("s", "acdString");
     }
 }
