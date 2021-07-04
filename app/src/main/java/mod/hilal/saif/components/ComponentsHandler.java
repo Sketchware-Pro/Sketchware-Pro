@@ -24,8 +24,6 @@ public class ComponentsHandler {
     public static int id(final String name) {
         if (name.equals("AsyncTask")) {
             return 36;
-        } else if (name.equals("PageAdapter")) {
-        	return -649047648;
         }
 
         final String path = getPath();
@@ -53,8 +51,6 @@ public class ComponentsHandler {
     public static String typeName(int id) {
         if (id == 36) {
             return "AsyncTask";
-        } else if (id == -649047648) {
-        	return "PageAdapter";
         }
 
         String path = getPath();
@@ -79,8 +75,6 @@ public class ComponentsHandler {
     public static String name(int id) {
         if (id == 36) {
             return "AsyncTask";
-        } else if (id == -649047648) {
-        	return "PageAdapter";
         }
 
         String path = getPath();
@@ -106,8 +100,6 @@ public class ComponentsHandler {
     public static int icon(int id) {
         if (id == 36) {
             return 2131165726;
-        } else if (id == -649047648) {
-        	return 2131166352;
         }
 
         String path = getPath();
@@ -239,9 +231,6 @@ public class ComponentsHandler {
             case 36:
                 return "AsyncTask is used to perform heavy tasks in the background while keeping the UI thread and application more responsive";
 
-            case -649047648:
-                return "PageAdapter is also used with TabLayout and ViewPager to manage each page";
-
             default:
                 return description2(id);
         }
@@ -268,7 +257,7 @@ public class ComponentsHandler {
 
     // √give id and return docs url
     public static String docs(int id) {
-        if (id == 36 || id == -649047648) {
+        if (id == 36) {
             return "";
         }
 
@@ -294,8 +283,6 @@ public class ComponentsHandler {
     public static String c(int id) {
         if (id == 36) {
             return "AsyncTask";
-        } else if (id == -649047648) {
-        	return "PageAdapter";
         }
 
         String path = getPath();
@@ -321,7 +308,6 @@ public class ComponentsHandler {
     // √ add components to sk
     //structure : list.add(new ComponentBean(27));
     public static void add(ArrayList<ComponentBean> list) {
-        list.add(new ComponentBean(-649047648));
         list.add(new ComponentBean(36));
         String path = getPath();
         ArrayList<HashMap<String, Object>> data;
@@ -341,8 +327,6 @@ public class ComponentsHandler {
     public static String var(int id) {
         if (id == 36) {
             return "#";
-        } else if(id == -649047648) {
-        	return "PageAdapter";
         }
 
         String path = getPath();
@@ -367,8 +351,6 @@ public class ComponentsHandler {
     public static String c(String name) {
         if (name.equals("AsyncTask")) {
             return "Component.AsyncTask";
-        } else if (name.equals("PageAdapter")) {
-        	return "Component.PageAdapter";
         }
 
         String path = getPath();
@@ -416,10 +398,6 @@ public class ComponentsHandler {
 
     //√√
     public static String defineExtraVar(String name, String varName) {
-        if (name.equals("PageAdapter")) {
-        	return varName + " = new PageAdapter(getSupportFragmentManager());";
-        }
-        
         String path = getPath();
         ArrayList<HashMap<String, Object>> data;
         try {
