@@ -54,31 +54,4 @@ public class SourceHandler {
         return ids;
     }
 
-    public String viewPageAdapter() {
-        StringBuilder pager = new StringBuilder();
-        pager.append("\r\npublic class PageAdapter extends FragmentStatePagerAdapter {\r\n")
-        .append("private final List<Fragment> mFragments = new ArrayList<>();\r\n")
-        .append("private final List<String> mTitles = new ArrayList<>();\r\n\r\n")
-        .append("public PageAdapter(FragmentManager fm) {\r\n")
-        .append("super(fm);\r\n}\r\n\r\n")
-        .append("public void addFragment(final Fragment fragment, final String title) {\r\n")
-        .append("mFragments.add(fragment);\r\n")
-        .append("mTitles.add(title);\r\n}\r\n\r\n")
-        .append("@Override\r\npublic int getCount(){\r\n")
-        .append("return mFragments.size();\r\n}\r\n\r\n")
-        .append("@Override\r\npublic CharSequence getPageTitle(int position) {\r\n")
-        .append("return mTitles.get(position);\r\n}\r\n\r\n")
-        .append("@Override\r\npublic Fragment getItem(int position) {\r\n")
-        .append("return mFragments.get(position);\r\n}\r\n\r\n")
-        .append("@Override\r\npublic float getPageWidth(int position) {\r\n")
-        .append("return super.getPageWidth(position);\r\n}\r\n\r\n")
-        .append("public void removeItem(int position) {\r\n")
-        .append("if (mFragments != null) {\r\n")
-        .append("mFragments.remove(position);\r\n")
-        .append("mTitles.remove(getPageTitle(position));\r\n")
-        .append("notifyDataSetChanged();\r\n}\r\n}\r\n\r\n}\r\n");
-        
-        return pager.toString();
-    }
-
 }
