@@ -84,7 +84,7 @@ public class ExtraBlockClassInfo {
                 return "AsyncTask";
 
             case "activity":
-                return "Class";
+                return "Context";
 
             case "otpview":
                 return "OTPView";
@@ -148,6 +148,9 @@ public class ExtraBlockClassInfo {
 
             case "swiperefreshlayout":
                 return "SwipeRefreshLayout";
+
+            case "signinbutton":
+                return "SignInButton";
 
             default:
                 return str;
