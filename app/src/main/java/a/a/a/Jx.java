@@ -479,9 +479,6 @@ public class Jx {
                 sb.append(a);
             }
         }
-        if (jC.a(d.a).f(c.getJavaName(), -649047648)) {
-        	sb.append(sourceHandler.viewPageAdapter());
-        }
         if (!this.c.fileName.contains("_fragment") && this.settings.getValue("disable_old_methods", "false").equals("false")) {
             deprecatedMethods(sb);
         }
