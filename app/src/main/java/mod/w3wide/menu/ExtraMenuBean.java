@@ -155,6 +155,7 @@ public class ExtraMenuBean {
                     case "radiogroup":
                     case "lottie":
                     case "otpview":
+                    case "signinbutton":
                     case "youtubeview":
                     case "codeview":
                     case "datepicker":
