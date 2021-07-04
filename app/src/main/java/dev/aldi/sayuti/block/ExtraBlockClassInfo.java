@@ -149,9 +149,6 @@ public class ExtraBlockClassInfo {
             case "swiperefreshlayout":
                 return "SwipeRefreshLayout";
 
-            case "pageadapter":
-                return "PageAdapter";
-
             case "signinbutton":
                 return "SignInButton";
 
