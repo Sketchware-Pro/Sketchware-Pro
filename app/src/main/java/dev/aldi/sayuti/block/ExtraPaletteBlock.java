@@ -936,15 +936,6 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("d", "calendarGetTime");
                     logicEditor.a(" ", "calendarSetTime");
                 }
-                if (extraBlocks.isComponentUsed(-649047648)) {
-                    logicEditor.a("PageAdapter", 0xff555555);
-                    logicEditor.a(" ", "pageAdapterAddFragment");
-                    logicEditor.a("d", "pageAdapterGetCount");
-                    logicEditor.a("s", "pageAdapterGetPageTitle");
-                    logicEditor.a("v", "pageAdapterGetItem");
-                    logicEditor.a("d", "pageAdapterGetPageWidth");
-                    logicEditor.a(" ", "pageAdapterRemoveItem");
-                }
                 if (extraBlocks.isComponentUsed(4)) {
                     logicEditor.a("Vibrator", 0xff555555);
                     logicEditor.a(" ", "vibratorAction");
