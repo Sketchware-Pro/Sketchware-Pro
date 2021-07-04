@@ -21,7 +21,7 @@ import mod.hilal.saif.blocks.CommandBlock;
 public class yq {
 
      // Regex Pattern of Firebase Project id matcher
-    private String _fbasepidRegex = "(-default-rtdb)?\.[a-z](.?)+";
+    private String _fbasepidRegex = "(-default-rtdb)?\\.[a-z](.?)+";
     /**
      * Assets directory of current project
      */
