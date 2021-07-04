@@ -67,18 +67,6 @@ public class ExtraBlocks {
         //SignInButton Blocks
         arrayList.add(0, addBlock("signInButtonSetColorScheme", " ", "", "%1$s.setColorScheme(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setColorScheme %m.SignButtonColor"));
         arrayList.add(0, addBlock("signInButtonSetSize", " ", "", "%1$s.setSize(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setSize %m.SignButtonSize"));
-        //PageAdapter Blocks
-        arrayList.add(0, addBlock("pageAdapterAddFragment", " ", "", "%1$s.addFragment(new %2$s(), %3$s);", "#2ca5e2", "%m.pageadapter addFragment %m.activity title %s"));
-        arrayList.add(0, addBlock("pageAdapterGetCount", "d", "", "(int)%s.getCount()", "#2ca5e2", "%m.pageadapter getCount"));
-        arrayList.add(0, addBlock("pageAdapterGetPageTitle", "s", "", "%1$s.getPageTitle(%2$s)", "#2ca5e2", "%m.pageadapter getPageTitle %d position"));
-        arrayList.add(0, addBlock("pageAdapterGetItem", "v", "Class", "(Fragment)%1$s.getItem(%2$s)", "#2ca5e2", "%m.pageadapter getItem %d position"));
-        arrayList.add(0, addBlock("pageAdapterGetPageWidth", "d", "", "(float)%1$s.getPageWidth(%2$s)", "#2ca5e2", "%m.pageadapter getPageWidth %d position"));
-        arrayList.add(0, addBlock("pageAdapterRemoveItem", " ", "", "%1$s.removeItem(%2$s)", "#2ca5e2", "%m.pageadapter removeItem %d position"));
-        //Code Editor menu blocks
-        arrayList.add(0, addBlock("addCodeDirectly", " ", "", "%s", "#5cb722", "add Code Directly %s.inputCode"));
-        arrayList.add(0, addBlock("acdString", "s", "", "%s", "#5cb722", "string %s.inputCode"));
-        arrayList.add(0, addBlock("acdBoolean", "b", "", "%s", "#5cb722", "boolean %s.inputCode"));
-        arrayList.add(0, addBlock("acdNumber", "d", "", "%s", "#5cb722", "number %s.inputCode"));
     }
 
     /**
