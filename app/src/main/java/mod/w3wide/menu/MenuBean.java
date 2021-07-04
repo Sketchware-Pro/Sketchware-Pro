@@ -203,11 +203,6 @@ public class MenuBean {
                     selectableItems.add(componentBean.componentId);
                 }
                 break;
-                
-            case "pageadapter":
-                asdAll.b("Select a PageAdapter");
-                selectableItems.addAll(jC.a(sc_id).b(javaName, -649047648));
-                break;
 
             case "CustomVar":
                 asdAll.b("Select a Custom Variable");
