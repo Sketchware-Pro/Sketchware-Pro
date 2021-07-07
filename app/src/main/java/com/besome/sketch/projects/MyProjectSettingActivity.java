@@ -386,7 +386,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             if (w == null || w.equals("")) {
                 w = lC.b();
                 wsName = lC.c();
-                scPkgName = "com.my." + wsName.toLowerCase();
+                scPkgName = ConfigActivity.getSettingsValue("package-name", "com.my.") + wsName.toLowerCase();
             }
             B.setText(scPkgName);
             C.setText(wsName);
