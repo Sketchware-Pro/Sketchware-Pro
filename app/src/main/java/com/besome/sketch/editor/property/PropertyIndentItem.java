@@ -81,6 +81,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         return c;
     }
 
+    @Override
     public void onClick(View v) {
         if (!mB.a()) {
             char c2 = 65535;
@@ -176,27 +177,24 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             et_right.setEnabled(true);
             et_bottom.setEnabled(true);
         }
-        chk_pty_all.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (chk_pty_all.isChecked()) {
-                    et_all.setEnabled(true);
-                    et_left.clearFocus();
-                    et_top.clearFocus();
-                    et_right.clearFocus();
-                    et_bottom.clearFocus();
-                    et_left.setEnabled(false);
-                    et_top.setEnabled(false);
-                    et_right.setEnabled(false);
-                    et_bottom.setEnabled(false);
-                } else {
-                    et_all.clearFocus();
-                    et_all.setEnabled(false);
-                    et_left.setEnabled(true);
-                    et_top.setEnabled(true);
-                    et_right.setEnabled(true);
-                    et_bottom.setEnabled(true);
-                }
+        chk_pty_all.setOnClickListener(v -> {
+            if (chk_pty_all.isChecked()) {
+                et_all.setEnabled(true);
+                et_left.clearFocus();
+                et_top.clearFocus();
+                et_right.clearFocus();
+                et_bottom.clearFocus();
+                et_left.setEnabled(false);
+                et_top.setEnabled(false);
+                et_right.setEnabled(false);
+                et_bottom.setEnabled(false);
+            } else {
+                et_all.clearFocus();
+                et_all.setEnabled(false);
+                et_left.setEnabled(true);
+                et_top.setEnabled(true);
+                et_right.setEnabled(true);
+                et_bottom.setEnabled(true);
             }
         });
         et_all.addTextChangedListener(new TextWatcher() {
@@ -217,22 +215,9 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             }
         });
         aBVar.a(view);
-        aBVar.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (chk_pty_all.isChecked()) {
-                    if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
-                        int left = Integer.parseInt(et_left.getText().toString());
-                        int top = Integer.parseInt(et_top.getText().toString());
-                        int right = Integer.parseInt(et_right.getText().toString());
-                        int bottom = Integer.parseInt(et_bottom.getText().toString());
-                        a(left, top, right, bottom);
-                        if (n != null) {
-                            n.a(b, new int[]{left, top, right, bottom});
-                            aBVar.dismiss();
-                        }
-                    }
-                } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
+        aBVar.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (chk_pty_all.isChecked()) {
+                if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
                     int left = Integer.parseInt(et_left.getText().toString());
                     int top = Integer.parseInt(et_top.getText().toString());
                     int right = Integer.parseInt(et_right.getText().toString());
@@ -242,6 +227,16 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                         n.a(b, new int[]{left, top, right, bottom});
                         aBVar.dismiss();
                     }
+                }
+            } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
+                int left = Integer.parseInt(et_left.getText().toString());
+                int top = Integer.parseInt(et_top.getText().toString());
+                int right = Integer.parseInt(et_right.getText().toString());
+                int bottom = Integer.parseInt(et_bottom.getText().toString());
+                a(left, top, right, bottom);
+                if (n != null) {
+                    n.a(b, new int[]{left, top, right, bottom});
+                    aBVar.dismiss();
                 }
             }
         });

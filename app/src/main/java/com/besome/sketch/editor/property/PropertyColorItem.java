@@ -87,10 +87,10 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         if (orientationItem == 0) {
             i.setVisibility(GONE);
             j.setVisibility(VISIBLE);
-            return;
+        } else {
+            i.setVisibility(VISIBLE);
+            j.setVisibility(GONE);
         }
-        i.setVisibility(VISIBLE);
-        j.setVisibility(GONE);
     }
 
     public final void a(Context context, boolean z) {
@@ -121,13 +121,10 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             z = false;
         }
         Zx zx = new Zx(view, (Activity) a, c, z2, z);
-        zx.a(new Zx.b() {
-            @Override
-            public void a(int i) {
-                setValue(i);
-                if (k != null) {
-                    k.a(b, c);
-                }
+        zx.a(i -> {
+            setValue(i);
+            if (k != null) {
+                k.a(b, c);
             }
         });
         zx.setAnimationStyle(Resources.anim.abc_fade_in);
