@@ -76,7 +76,7 @@ public class SrcCodeEditor extends Activity {
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
-        EditorColorScheme scheme;
+        EditorColorScheme scheme = new EditorColorScheme();
 
         switch (which) {
             case 0:

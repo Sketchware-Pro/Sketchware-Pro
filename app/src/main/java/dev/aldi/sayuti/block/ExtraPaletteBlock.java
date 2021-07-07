@@ -126,6 +126,9 @@ public class ExtraPaletteBlock extends Activity {
             case "youtubeview":
                 return jC.a(sc_id).g(xmlName, 45, str2);
 
+            case "signinbutton":
+                return jC.a(sc_id).g(xmlName, 42, str2);
+
             case "cardview":
                 return jC.a(sc_id).g(xmlName, 36, str2);
 
@@ -620,7 +623,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("d", "spnGetSelection");
                 }
 
-                if (inOnBindCustomView) {
+                if (!inOnBindCustomView) {
                     if (listViewUsed) {
                         logicEditor.a(" ", "listSetData");
                         logicEditor.a(" ", "listSetCustomViewData");
@@ -738,11 +741,17 @@ public class ExtraPaletteBlock extends Activity {
                 boolean patternLockViewUsed = isWidgetUsed("PatternLockView");
                 boolean codeViewUsed = isWidgetUsed("CodeView");
                 boolean lottieAnimationViewUsed = isWidgetUsed("LottieAnimationView");
-                // Where are its built-in blocks?
-                // boolean otpViewUsed = isWidgetUsed("OTPView");
+                boolean otpViewUsed = isWidgetUsed("OTPView");
 
                 if (waveSideBarUsed || badgeViewUsed || bubbleLayoutUsed || patternLockViewUsed || codeViewUsed || lottieAnimationViewUsed) {
                     logicEditor.a("Library", 0xff555555);
+                }
+
+                if (otpViewUsed) {
+                    logicEditor.a(" ", "otpViewSetFieldCount");
+                    logicEditor.a(" ", "otpViewSetOTPText");
+                    logicEditor.a("s", "otpViewGetOTPText");
+                    logicEditor.a("c", "otpViewSetOTPListener");
                 }
 
                 if (waveSideBarUsed) {
@@ -796,14 +805,18 @@ public class ExtraPaletteBlock extends Activity {
                 }
             }
             {
-                // Where are its built-in blocks?
-                // boolean signInButtonUsed = isWidgetUsed("SignInButton");
+                boolean signInButtonUsed = isWidgetUsed("SignInButton");
                 boolean youtubePlayerViewUsed = isWidgetUsed("YoutubePlayerView");
                 boolean adMobUsed = jC.c(sc_id).b().useYn.equals("Y");
                 boolean mapViewUsed = isWidgetUsed("MapView");
 
-                if (youtubePlayerViewUsed || adMobUsed || mapViewUsed) {
+                if (signInButtonUsed || youtubePlayerViewUsed || adMobUsed || mapViewUsed) {
                     logicEditor.a("Google", 0xff555555);
+                }
+
+                if (signInButtonUsed) {
+                    logicEditor.a(" ", "signInButtonSetColorScheme");
+                    logicEditor.a(" ", "signInButtonSetSize");
                 }
 
                 if (youtubePlayerViewUsed) {

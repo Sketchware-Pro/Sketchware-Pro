@@ -57,6 +57,14 @@ Examples:
  - `refactor: Reformat code at File.java`
  - ...
 
+## Contributing
+
+Please fork this repository and contribute back using
+[pull requests](https://github.com/Sketchware-Pro/Sketchware-Pro/pulls).
+
+Any contributions, large or small, major features, bug fixes, are welcomed and appreciated
+but will be thoroughly reviewed.
+
 ## Thanks for contributing
 Thanks, they help to keep **Sketchware Pro** alive. It's better to have multiple people work on a project, for more ideas, less bugs
 (sadly sometimes more), and generally quicker development. Each (helpful) contribution that gets thankfully accepted,

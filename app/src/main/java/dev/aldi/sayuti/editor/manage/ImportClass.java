@@ -100,8 +100,8 @@ public class ImportClass {
             imports.add("com.google.firebase.iid.InstanceIdResult");
             imports.add("com.google.firebase.messaging.FirebaseMessaging");
         }
-        if (componentName.equals("OSPermissionSubscriptionState")) {
-            imports.add("com.onesignal.OSPermissionSubscriptionState");
+        if (componentName.equals("OSSubscriptionObserver")) {
+            imports.add("com.onesignal.OSSubscriptionObserver");
             imports.add("com.onesignal.OneSignal");
             imports.add("org.json.JSONObject");
         }
