@@ -35,6 +35,7 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
     public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
+    public static final String SETTING_PACKAGE_NAME = "package-name";
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
@@ -59,7 +60,24 @@ public class ConfigActivity extends Activity {
         }
         return "/.sketchware/backups/";
     }
-
+public static String getPackageName() {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            if (settings.containsKey(SETTING_PACKAGE_NAME)) {
+                Object value = settings.get(SETTING_PACKAGE_NAME);
+                if (value instanceof String) {
+                    return (String) value;
+                } else {
+                    SketchwareUtil.toastError("Detected invalid preference "
+                                    + "for the package name. Restoring defaults",
+                            Toast.LENGTH_LONG);
+                    settings.remove(SETTING_BACKUP_DIRECTORY);
+                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+                }
+            }
+        }
+        return "com.my.";
+    }
     public static boolean isLegacyCeEnabled() {
         /* The legacy Code Editor is specifically opt-in */
         if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
@@ -194,6 +212,42 @@ public class ConfigActivity extends Activity {
                             .setTitle("Backup directory")
                             .setPositiveButton(Resources.string.common_word_save, (dialog1, which) -> {
                                 setting_map.put(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
+                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                                SketchwareUtil.toast("Saved");
+                            })
+                            .create();
+                    dialog.setView(container);
+                    dialog.show();
+                });
+         addTextInputPreference("Custom package name",
+                "The default package is 'com.my.'", v -> {
+                    final LinearLayout container = new LinearLayout(ConfigActivity.this);
+                    container.setPadding(
+                            (int) getDip(20),
+                            (int) getDip(8),
+                            (int) getDip(20),
+                            0);
+
+                    final TextInputLayout tilCustomPackage = new TextInputLayout(ConfigActivity.this);
+                    tilCustomPackage.setLayoutParams(new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    tilCustomPackage.setHint("Package Name");
+                    tilCustomPackage.setHelperText("it must finish with a point e.g. com.besome.");
+                    container.addView(tilCustomPackage);
+
+                    final EditText customPackage = new EditText(ConfigActivity.this);
+                    customPackage.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT));
+                    customPackage.setTextSize(14.0f);
+                    customPackage.setText(getPackageName());
+                    tilBackupDirectory.addView(backupDirectory);
+
+                    AlertDialog dialog = new AlertDialog.Builder(ConfigActivity.this)
+                            .setTitle("Package Name")
+                            .setPositiveButton(Resources.string.common_word_save, (dialog1, which) -> {
+                                setting_map.put(SETTING_PACKAGE_NAME, customPackage.getText().toString());
                                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                                 SketchwareUtil.toast("Saved");
                             })
@@ -409,6 +463,7 @@ public class ConfigActivity extends Activity {
         setting_map.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         setting_map.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         setting_map.put(SETTING_USE_ASD_HIGHLIGHTER, false);
+        setting_map.put(SETTING_PACKAGE_NAME, "");
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
     }
 }
