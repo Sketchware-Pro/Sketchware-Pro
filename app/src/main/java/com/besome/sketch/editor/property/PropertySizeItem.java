@@ -49,9 +49,9 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
             if (i.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(g);
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
-                return;
+            } else {
+                f.setImageResource(g);
             }
-            f.setImageResource(g);
         }
     }
 
@@ -86,10 +86,10 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         if (orientationItem == 0) {
             h.setVisibility(GONE);
             i.setVisibility(VISIBLE);
-            return;
+        } else {
+            h.setVisibility(VISIBLE);
+            i.setVisibility(GONE);
         }
-        h.setVisibility(VISIBLE);
-        i.setVisibility(GONE);
     }
 
     public final void a(Context context, boolean z) {
@@ -114,16 +114,13 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         TB tb = new TB(a, view.findViewById(Resources.id.ti_input), 0, 999);
         tb.a(String.valueOf(c));
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tb.b()) {
-                    setValue(Integer.parseInt(((EditText) view.findViewById(Resources.id.et_input)).getText().toString()));
-                    if (j != null) {
-                        j.a(b, c);
-                    }
-                    dialog.dismiss();
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (tb.b()) {
+                setValue(Integer.parseInt(((EditText) view.findViewById(Resources.id.et_input)).getText().toString()));
+                if (j != null) {
+                    j.a(b, c);
                 }
+                dialog.dismiss();
             }
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
