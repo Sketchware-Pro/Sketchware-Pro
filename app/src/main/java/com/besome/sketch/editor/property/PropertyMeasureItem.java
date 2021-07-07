@@ -23,18 +23,18 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyMeasureItem extends RelativeLayout implements View.OnClickListener {
 
-    public String a = "";
-    public int b = -1;
-    public TextView c;
-    public TextView d;
-    public ImageView e;
-    public View f;
-    public View g;
-    public Kw h;
-    public boolean i = true;
-    public boolean j = true;
-    public boolean k = true;
-    public int l;
+    private String key = "";
+    private int measureValue = -1;
+    private TextView tvName;
+    private TextView tvValue;
+    private ImageView imgLeftIcon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private Kw listener;
+    private boolean isMatchParent = true;
+    private boolean isWrapContent = true;
+    private boolean isCustomValue = true;
+    private int imgLeftIconDrawableResId;
 
     public PropertyMeasureItem(Context context, boolean z) {
         super(context);
@@ -42,81 +42,81 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     }
 
     private void setIcon(ImageView imageView) {
-        if ("property_layout_width".equals(a)) {
-            l = Resources.drawable.width_96;
-        } else if ("property_layout_height".equals(a)) {
-            l = Resources.drawable.height_96;
+        if (key.equals("property_layout_width")) {
+            imgLeftIconDrawableResId = Resources.drawable.width_96;
+        } else if (key.equals("property_layout_height")) {
+            imgLeftIconDrawableResId = Resources.drawable.height_96;
         }
-        imageView.setImageResource(l);
+        imageView.setImageResource(imgLeftIconDrawableResId);
     }
 
     public String getKey() {
-        return a;
+        return key;
     }
 
-    public void setKey(String str) {
-        a = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+    public void setKey(String key) {
+        this.key = key;
+        int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            c.setText(xB.b().a(getResources(), identifier));
-            if (this.g.getVisibility() == VISIBLE) {
+            tvName.setText(xB.b().a(getResources(), identifier));
+            if (this.propertyMenuItem.getVisibility() == VISIBLE) {
                 setIcon(findViewById(Resources.id.img_icon));
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            setIcon(e);
+            setIcon(imgLeftIcon);
         }
     }
 
     public int getValue() {
-        return b;
+        return measureValue;
     }
 
     public void setValue(int value) {
-        b = value;
-        if (!j && value == -2) {
-            d.setText(sq.a(a, -1));
-        } else if (k || value < 0) {
-            d.setText(sq.a(a, value));
+        measureValue = value;
+        if (!isWrapContent && value == LayoutParams.WRAP_CONTENT) {
+            tvValue.setText(sq.a(key, LayoutParams.MATCH_PARENT));
+        } else if (isCustomValue || value < 0) {
+            tvValue.setText(sq.a(key, value));
         } else {
-            d.setText(sq.a(a, -2));
+            tvValue.setText(sq.a(key, LayoutParams.WRAP_CONTENT));
         }
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (!mB.a()) {
             a();
         }
     }
 
     public void setItemEnabled(int itemEnabled) {
-        i = (itemEnabled & 1) == 1;
-        j = (itemEnabled & 2) == 2;
-        k = (itemEnabled & 4) == 4;
+        isMatchParent = (itemEnabled & 1) == 1;
+        isWrapContent = (itemEnabled & 2) == 2;
+        isCustomValue = (itemEnabled & 4) == 4;
     }
 
     public void setOnPropertyValueChangeListener(Kw kw) {
-        h = kw;
+        listener = kw;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            f.setVisibility(GONE);
-            g.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
         } else {
-            f.setVisibility(VISIBLE);
-            g.setVisibility(GONE);
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
     }
 
     public final void a(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
-        c = findViewById(Resources.id.tv_name);
-        d = findViewById(Resources.id.tv_value);
-        e = findViewById(Resources.id.img_left_icon);
-        f = findViewById(Resources.id.property_item);
-        g = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -125,100 +125,85 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
 
     public final void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(c.getText().toString());
-        dialog.a(l);
+        dialog.b(tvName.getText().toString());
+        dialog.a(imgLeftIconDrawableResId);
+
         View view = wB.a(getContext(), Resources.layout.property_popup_measurement);
         EditText ed_input = view.findViewById(Resources.id.ed_input);
         RadioGroup rg_width_height = view.findViewById(Resources.id.rg_width_height);
         TB tb = new TB(getContext(), view.findViewById(Resources.id.ti_input), 0, 999);
-        rg_width_height.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == Resources.id.rb_directinput) {
-                    ed_input.setEnabled(true);
-                    tb.a(ed_input.getText().toString());
-                } else {
-                    ed_input.setEnabled(false);
-                }
+
+        RadioButton rb_matchparent = view.findViewById(Resources.id.rb_matchparent);
+        View tv_matchparent = view.findViewById(Resources.id.tv_matchparent);
+        RadioButton rb_wrapcontent = view.findViewById(Resources.id.rb_wrapcontent);
+        TextView tv_wrapcontent = view.findViewById(Resources.id.tv_wrapcontent);
+        RadioButton rb_directinput = view.findViewById(Resources.id.rb_directinput);
+        View direct_input = view.findViewById(Resources.id.direct_input);
+        TextView tv_input_dp = view.findViewById(Resources.id.tv_input_dp);
+
+        rg_width_height.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == Resources.id.rb_directinput) {
+                ed_input.setEnabled(true);
+                tb.a(ed_input.getText().toString());
+            } else {
+                ed_input.setEnabled(false);
             }
         });
         ed_input.setEnabled(false);
         rg_width_height.clearCheck();
-        if (b >= 0) {
-            if (k) {
+        if (measureValue >= 0) {
+            if (isCustomValue) {
                 rg_width_height.check(Resources.id.rb_directinput);
                 ed_input.setEnabled(true);
-                tb.a(String.valueOf(b));
+                tb.a(String.valueOf(measureValue));
             } else {
                 rg_width_height.check(Resources.id.rb_wrapcontent);
             }
-        } else if (b == -1) {
+        } else if (measureValue == LayoutParams.MATCH_PARENT) {
             rg_width_height.check(Resources.id.rb_matchparent);
-        } else if (j) {
+        } else if (isWrapContent) {
             rg_width_height.check(Resources.id.rb_wrapcontent);
         } else {
             rg_width_height.check(Resources.id.rb_matchparent);
         }
-        view.findViewById(Resources.id.tv_matchparent).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((RadioButton) view.findViewById(Resources.id.rb_matchparent)).setChecked(true);
-            }
-        });
-        RadioButton rb_matchparent = view.findViewById(Resources.id.rb_matchparent);
-        View tv_wrapcontent = view.findViewById(Resources.id.tv_wrapcontent);
-        if (j) {
+        tv_matchparent.setOnClickListener(v -> rb_matchparent.setChecked(true));
+        if (isWrapContent) {
             rb_matchparent.setEnabled(true);
             tv_wrapcontent.setClickable(true);
-            ((TextView) tv_wrapcontent).setTextColor(0xff757575);
-            tv_wrapcontent.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rb_matchparent.setChecked(true);
-                }
-            });
+            tv_wrapcontent.setTextColor(0xff757575);
+            tv_wrapcontent.setOnClickListener(v -> rb_wrapcontent.setChecked(true));
         } else {
             rb_matchparent.setEnabled(false);
             tv_wrapcontent.setClickable(false);
-            ((TextView) tv_wrapcontent).setTextColor(0xffdddddd);
+            tv_wrapcontent.setTextColor(0xffdddddd);
         }
-        RadioButton rb_directinput = view.findViewById(Resources.id.rb_directinput);
-        View direct_input = view.findViewById(Resources.id.direct_input);
-        TextView tv_input_dp = view.findViewById(Resources.id.tv_input_dp);
-        if (k) {
+        if (isCustomValue) {
             rb_directinput.setEnabled(true);
             direct_input.setClickable(true);
             tv_input_dp.setTextColor(0xff757575);
-            direct_input.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rb_directinput.setChecked(true);
-                }
-            });
+            direct_input.setOnClickListener(v -> rb_directinput.setChecked(true));
         } else {
             rb_directinput.setEnabled(false);
             direct_input.setClickable(false);
             tv_input_dp.setTextColor(0xffdddddd);
         }
         dialog.a(view);
-        // this, rg_width_height, tb, ed_input, dialog
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (rg_width_height.getCheckedRadioButtonId() == Resources.id.rb_matchparent) {
-                    setValue(-1);
-                } else if (rg_width_height.getCheckedRadioButtonId() == Resources.id.rb_wrapcontent) {
-                    setValue(-2);
-                } else if (tb.b()) {
-                    setValue(Integer.parseInt(ed_input.getText().toString()));
-                } else {
-                    return;
-                }
-                if (h != null) {
-                    h.a(a, b);
-                }
-                dialog.dismiss();
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+            int checkedRadioButtonId = rg_width_height.getCheckedRadioButtonId();
+
+            if (checkedRadioButtonId == Resources.id.rb_matchparent) {
+                setValue(LayoutParams.MATCH_PARENT);
+            } else if (checkedRadioButtonId == Resources.id.rb_wrapcontent) {
+                setValue(LayoutParams.WRAP_CONTENT);
+            } else if (tb.b()) {
+                setValue(Integer.parseInt(ed_input.getText().toString()));
+            } else {
+                return;
             }
+            if (listener != null) {
+                listener.a(key, measureValue);
+            }
+            dialog.dismiss();
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
