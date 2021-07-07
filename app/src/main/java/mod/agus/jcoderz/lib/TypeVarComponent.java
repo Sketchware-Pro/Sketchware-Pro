@@ -14,7 +14,7 @@ public class TypeVarComponent {
             case 31:
                 return "GoogleSignInClient";
             case 32:
-                return "OSPermissionSubscriptionState";
+                return "OSSubscriptionObserver";
             case 33:
                 return "com.facebook.ads.AdView";
             case 34:

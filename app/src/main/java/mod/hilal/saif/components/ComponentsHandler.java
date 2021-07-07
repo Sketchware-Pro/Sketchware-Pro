@@ -398,7 +398,6 @@ public class ComponentsHandler {
 
     //√√
     public static String defineExtraVar(String name, String varName) {
-
         String path = getPath();
         ArrayList<HashMap<String, Object>> data;
         try {
