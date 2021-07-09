@@ -166,14 +166,11 @@ public class SketchwareUtil {
     }
 
     /**
-     * Hide the keyboard.
-     *
-     * @param v View, which should be visible and "connected" to the currently
-     *          focused view
+     * @param v A View which should be visible and "connected" to the currently focused view
      */
     public static void hideKeyboard(View v) {
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     /**
@@ -182,9 +179,20 @@ public class SketchwareUtil {
      */
     public static void hideKeyboard() {
         InputMethodManager _inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        _inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    /**
+     * @param v A View which should be focused (and wants to receive IME input)
+     */
+    public static void showKeyboard(View v) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(v, 0);
+    }
+
+    /**
+     * Use {@link SketchwareUtil#showKeyboard(View)} instead, if possible.
+     */
     public static void showKeyboard() {
         InputMethodManager _inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         _inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
