@@ -3,6 +3,7 @@ package mod.hey.studios.project;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -68,6 +69,7 @@ public class ProjectSettings {
             try {
                 hashmap = new Gson().fromJson(FileUtil.readFile(path).trim(), Helper.TYPE_STRING_MAP);
             } catch (Exception e) {
+                Log.e("ProjectSettings", "Failed to read project settings for project " + sc_id + "!", e);
                 hashmap = new HashMap<>();
                 save();
             }
