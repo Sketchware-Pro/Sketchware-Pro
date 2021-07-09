@@ -251,7 +251,7 @@ public class InitActivity extends BaseAppCompatActivity {
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.init_language_setting_dialog_message));
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> toLanguageActivity());
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel), v -> {
-            toVideoGuideActivity();
+            continueToMainActivity();
             dialog.dismiss();
         });
         dialog.show();
@@ -307,11 +307,6 @@ public class InitActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void toVideoGuideActivity() {
-        startActivityForResult(new Intent(getApplicationContext(), VideoGuideActivity.class),
-                221);
-    }
-
     private void toLanguageActivity() {
         startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
     }
@@ -323,11 +318,11 @@ public class InitActivity extends BaseAppCompatActivity {
             continueToMainActivity();
         } else if (Locale.KOREAN.getDisplayLanguage().equals(defaultDisplayLanguage)
                 || Locale.ENGLISH.getDisplayLanguage().equals(defaultDisplayLanguage)) {
-            toVideoGuideActivity();
+            continueToMainActivity();
         } else if (!j()) {
             showLanguageSettingsDialog();
         } else if (new oB().e(wq.l())) {
-            toVideoGuideActivity();
+            continueToMainActivity();
         } else {
             showLanguageSettingsDialog();
         }
