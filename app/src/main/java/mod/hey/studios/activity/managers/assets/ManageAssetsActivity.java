@@ -131,7 +131,8 @@ public class ManageAssetsActivity extends Activity {
                     return;
             }
 
-            // This piece of code will be executed when the switch is 2131232461 or 2131232624
+            // This piece of code will be executed when the switch is
+            // Resources.id.dialog_radio_filetype_class or Resources.id.radio_button_folder
             refresh();
             SketchwareUtil.toast("File was created successfully");
             create.dismiss();
