@@ -429,7 +429,7 @@ public class CommandBlock {
                         int from = 1;
                         int to = after + 1;
                         if (to > (a.size() - 1)) {
-                            to = (int) (a.size() - 1);
+                            to = a.size() - 1;
                         }
                         a.subList(from, to).clear();
                         a.set(0, input);
