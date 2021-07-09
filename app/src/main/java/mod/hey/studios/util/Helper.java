@@ -3,6 +3,7 @@ package mod.hey.studios.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,14 +21,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
 public class Helper {
 
-    public static Type TYPE_MAP = new TypeToken<HashMap<String, Object>>() {}.getType();
-    public static Type TYPE_MAP_LIST = new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType();
-    public static Type TYPE_STRING = new TypeToken<ArrayList<String>>() {}.getType();
-    public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {}.getType();
+    public static Type TYPE_MAP = new TypeToken<HashMap<String, Object>>() {
+    }.getType();
+    public static Type TYPE_MAP_LIST = new TypeToken<ArrayList<HashMap<String, Object>>>() {
+    }.getType();
+    public static Type TYPE_STRING = new TypeToken<ArrayList<String>>() {
+    }.getType();
+    public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {
+    }.getType();
 
     public static void fixFileprovider() {
         if (Build.VERSION.SDK_INT >= 24) {
@@ -43,8 +49,22 @@ public class Helper {
         return v -> activity.onBackPressed();
     }
 
-    public static View.OnClickListener getDialogDismissListener(final Dialog dialog) {
-        return v -> dialog.dismiss();
+    public static DialogDismissListener getDialogDismissListener(final Dialog dialog) {
+        return new DialogDismissListener(dialog);
+    }
+
+    /**
+     * @return A {@link DialogInterface.OnDismissListener} that hides the keyboard
+     */
+    public static DialogDismissListener getDialogOnDismissKeyboardHider() {
+        return new DialogDismissListener();
+    }
+
+    /**
+     * @return A {@link DialogInterface.OnCancelListener} that hides the keyboard
+     */
+    public static DialogDismissListener getDialogOnCancelKeyboardHider() {
+        return new DialogDismissListener();
     }
 
     public static void applyRipple(Context context, View view) {
@@ -62,12 +82,12 @@ public class Helper {
 
         view.setBackground(
                 new RippleDrawable(
-                    new ColorStateList(
-                        new int[][] { new int[]{0} },
-                        new int[] { Color.parseColor("#64b5f6") }
-                    ),
-                    content,
-                    null
+                        new ColorStateList(
+                                new int[][]{new int[]{0}},
+                                new int[]{Color.parseColor("#64b5f6")}
+                        ),
+                        content,
+                        null
                 )
         );
     }
@@ -117,5 +137,77 @@ public class Helper {
         paths.clear();
         paths.addAll(directories);
         paths.addAll(files);
+    }
+
+    /**
+     * A listener class for dismissing {@link Dialog}s.
+     */
+    public static class DialogDismissListener implements View.OnClickListener,
+            DialogInterface.OnDismissListener, DialogInterface.OnCancelListener {
+
+        private Dialog dialog;
+        private boolean hideKeyboard = false;
+        private View hideKeyboardView;
+
+        /**
+         * Constructor for {@link Helper#getDialogDismissListener(Dialog)}.
+         */
+        private DialogDismissListener(Dialog dialog) {
+            this.dialog = dialog;
+        }
+
+        /**
+         * Constructor for {@link Helper#getDialogOnDismissKeyboardHider()}
+         * or {@link Helper#getDialogOnCancelKeyboardHider()
+         */
+        private DialogDismissListener() {
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("Helper", "onClick!");
+            dialog.dismiss();
+
+            hideKeyboard();
+        }
+
+        /**
+         * Makes the {@link View.OnClickListener} also hide the keyboard when clicked.
+         *
+         * @param hide        Whether the keyboard should be hidden or not
+         * @param visibleView A {@link View} which should be visible and "connected"
+         *                    to the currently focused View.
+         *                    Can be <code>null</code> if <code>hide</code> is <code>false</code>.
+         *                    If <code>null</code>, the listener will call {@link SketchwareUtil#hideKeyboard()}
+         *                    instead of {@link SketchwareUtil#hideKeyboard(View)}
+         * @return The current {@link DialogDismissListener} object
+         */
+        public DialogDismissListener setHideKeyboard(boolean hide, View visibleView) {
+            hideKeyboard = hide;
+            hideKeyboardView = visibleView;
+            return this;
+        }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            Log.d("Helper", "onDismiss!");
+            hideKeyboard();
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            Log.d("Helper", "onCancel!");
+            hideKeyboard();
+        }
+
+        private void hideKeyboard() {
+            if (hideKeyboard) {
+                if (hideKeyboardView == null) {
+                    SketchwareUtil.hideKeyboard();
+                } else {
+                    SketchwareUtil.hideKeyboard(hideKeyboardView);
+                }
+            }
+        }
     }
 }
