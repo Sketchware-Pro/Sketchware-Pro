@@ -38,7 +38,7 @@
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="20dp"
-        android:paddingBottom="0dp">
+        android:paddingBottom="10dp">
 
         <EditText
             android:id="@id/edittext_change_name"
