@@ -25,26 +25,31 @@ public class ProjectSettings {
      * @see ApplicationInfo#minSdkVersion
      */
     public static final String SETTING_MINIMUM_SDK_VERSION = "min_sdk";
+
     /**
      * Setting to make the app's main theme inherit from fully material-styled themes, and not *.Bridge ones
      */
     public static final String SETTING_ENABLE_BRIDGELESS_THEMES = "enable_bridgeless_themes";
+
     /**
      * Setting for the final app's {@link Application} class
      *
      * @see Application
      */
     public static final String SETTING_APPLICATION_CLASS = "app_class";
+
     /**
      * Setting for the final app's {@code targetSdkVersion}
      *
      * @see ApplicationInfo#targetSdkVersion
      */
     public static final String SETTING_TARGET_SDK_VERSION = "target_sdk";
+
     /**
      * Setting to disable showing deprecated methods included in every generated class, e.g. showMessage(String)
      */
     public static final String SETTING_DISABLE_OLD_METHODS = "disable_old_methods";
+
     /**
      * Setting to disable adding <code>android:largeHeap="true"</code> to the <code>&lt;application&gt;</code> tag in AndroidManifest.xml
      */
@@ -68,13 +73,11 @@ public class ProjectSettings {
             }
         } else {
             hashmap = new HashMap<>();
-            //save();
         }
     }
 
     public String getPath() {
-        File file = new File(Environment.getExternalStorageDirectory(), ".sketchware/data/".concat(sc_id.concat("/project_config")));
-        return file.getAbsolutePath();
+        return new File(Environment.getExternalStorageDirectory(), ".sketchware/data/" + sc_id + "/project_config").getAbsolutePath();
     }
 
     public String getValue(String key, String defaultValue) {
