@@ -48,34 +48,33 @@ public class FileUtil {
     }
 
     /**
-    * Return the name of file without extension.
-    *
-    * @param filePath The path of file.
-    * @return the name of file without extension
-    */
+     * @return A filename without its extension,
+     * e.g. "FileUtil" for "FileUtil.java", or "FileUtil" for "/sdcard/Documents/FileUtil.java"
+     */
     public static String getFileNameNoExtension(String filePath) {
         if (filePath.trim().isEmpty()) return "";
+
         int lastPos = filePath.lastIndexOf('.');
         int lastSep = filePath.lastIndexOf(File.separator);
+
         if (lastSep == -1) {
             return (lastPos == -1 ? filePath : filePath.substring(0, lastPos));
-        }
-        if (lastPos == -1 || lastSep > lastPos) {
+        } else if (lastPos == -1 || lastSep > lastPos) {
             return filePath.substring(lastSep + 1);
         }
         return filePath.substring(lastSep + 1, lastPos);
     }
 
     /**
-     * Return the extension of file.
-     *
-     * @param filePath The path of file.
-     * @return the extension of file
+     * @return A file's filename extension,
+     * e.g. "java" for "/sdcard/Documents/FileUtil.java", but "" for "/sdcard/Documents/fileWithoutExtension"
      */
     public static String getFileExtension(String filePath) {
         if (filePath.isEmpty()) return "";
+
         int last = filePath.lastIndexOf('.');
         int lastSep = filePath.lastIndexOf(File.separator);
+
         if (last == -1 || lastSep >= last) return "";
         return filePath.substring(last + 1);
     }
