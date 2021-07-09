@@ -96,6 +96,9 @@ public class Dp {
     public DexMerge merge;
     public ManageLocalLibrary mll;
     public Kp n;
+    /**
+     * Path of the android.jar to use
+     */
     public String o;
     public ProguardHandler proguard;
     public ProjectSettings settings;
@@ -268,7 +271,7 @@ public class Dp {
             args.add("--release");
             args.add("--intermediate");
             args.add("--min-api");
-            args.add(settings.getValue("min_sdk", "21"));
+            args.add(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
             args.add("--lib");
             args.add(o);
             args.add("--output");
@@ -320,38 +323,82 @@ public class Dp {
     }
 
     public final String d() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(f.v).append(":").append(o);
-        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
-            sb.append(":");
-            sb.append(l.getAbsolutePath());
-            sb.append(c);
-            sb.append("libs");
-            sb.append(c);
-            sb.append("http-legacy-android-28");
-            sb.append(c);
-            sb.append("classes.jar");
+        StringBuilder classpath = new StringBuilder();
+
+        /* Add android.jar */
+        classpath.append(f.v)
+                .append(":")
+                .append(o);
+
+        /* Add HTTP legacy files if wanted */
+        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY,
+                BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+            classpath.append(":")
+                    .append(l.getAbsolutePath())
+                    .append(File.separator)
+                    .append("libs")
+                    .append(File.separator)
+                    .append("http-legacy-android-28")
+                    .append(File.separator)
+                    .append("classes.jar");
         }
-        sb.append(":");
-        sb.append(l.getAbsolutePath());
-        sb.append(c);
-        sb.append("jdk");
-        sb.append(c);
-        sb.append("rt.jar");
-        StringBuilder sb2 = new StringBuilder(sb.toString());
-        for (Jp next : n.a()) {
-            sb2.append(":").append(l.getAbsolutePath()).append(c).append("libs").append(c).append(next.a()).append(c).append("classes.jar");
+
+        /* Include MultiDex library if needed */
+        int minSdkVersion;
+        try {
+            minSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
+                    "21"));
+        } catch (NumberFormatException e) {
+            minSdkVersion = 21;
         }
-        StringBuilder sb3 = new StringBuilder();
-        sb3.append(sb2);
-        sb3.append(mll.getJarLocalLibrary());
+        if (minSdkVersion < 21) {
+            classpath.append(":")
+                    .append(l.getAbsolutePath())
+                    .append(File.separator)
+                    .append("libs")
+                    .append(File.separator)
+                    .append("multidex-2.0.1")
+                    .append(File.separator)
+                    .append("classes.jar");
+        }
+
+        /* Add lambda helper classes */
+        if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
+                BuildSettings.SETTING_JAVA_VERSION_1_7)
+                .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
+            classpath.append(":")
+                    .append(l.getAbsolutePath())
+                    .append(File.separator)
+                    .append("core-lambda-stubs.jar");
+        }
+
+        /* Add used built-in libraries to the classpath */
+        for (Jp library : n.a()) {
+            classpath.append(":")
+                    .append(l.getAbsolutePath())
+                    .append(File.separator)
+                    .append("libs")
+                    .append(File.separator)
+                    .append(library.a())
+                    .append(File.separator)
+                    .append("classes.jar");
+        }
+
+        /* Add local libraries to the classpath */
+        classpath.append(mll.getJarLocalLibrary());
+
+        /* Append user's custom classpath */
         if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
-            sb3.append(":");
-            sb3.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
+            classpath.append(":");
+            classpath.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
-        return sb3.toString();
+
+        return classpath.toString();
     }
 
+    /**
+     * @return Similar to {@link Dp#d}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
+     */
     public final String classpath() {
         StringBuilder baseClasses = new StringBuilder(f.v)
                 .append(":")
@@ -635,21 +682,40 @@ public class Dp {
     public void h() throws Exception {
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> dexes = new ArrayList<>();
-        if (Build.VERSION.SDK_INT <= 23) {
+
+        /* Add AndroidX MultiDex library if needed */
+        int minSdkVersion;
+        try {
+            minSdkVersion = Integer.parseInt(
+                    settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
+                            "21"));
+        } catch (NumberFormatException e) {
+            minSdkVersion = 21;
+        }
+
+        if (minSdkVersion < 21) {
             dexes.add(l.getAbsolutePath() + c + "dexs" + c + "multidex-2.0.1" + ".dex");
         }
+
+        /* Add HTTP legacy files if wanted */
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
             dexes.add(l.getAbsolutePath() + c + "dexs" + c + "http-legacy-android-28" + ".dex");
         }
+
+        /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : n.a()) {
             dexes.add(l.getAbsolutePath() + c + "dexs" + c + builtInLibrary.a() + ".dex");
         }
+
+        /* Add local libraries' main DEX files */
         for (HashMap<String, Object> localLibrary : mll.list) {
             String localLibraryName = localLibrary.get("name").toString();
             if (localLibrary.containsKey("dexPath") && !proguard.libIsProguardFMEnabled(localLibraryName)) {
                 dexes.add(localLibrary.get("dexPath").toString());
             }
         }
+
+        /* Add local libraries' extra DEX files */
         dexes.addAll(mll.getExtraDexes());
         a(f.F, dexes);
         Log.d(TAG, "Libraries' DEX files merge took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -699,18 +765,17 @@ public class Dp {
         }
         String androidJarArchiveName = "android.jar.zip";
         String dexsArchiveName = "dexs.zip";
+        String coreLambdaStubsJarName = "core-lambda-stubs.jar";
         String libsArchiveName = "libs.zip";
-        String jdkArchiveName = "jdk.zip";
         String testkeyArchiveName = "testkey.zip";
 
         String androidJarPath = new File(l, androidJarArchiveName).getAbsolutePath();
         String dexsArchivePath = new File(l, dexsArchiveName).getAbsolutePath();
+        String coreLambdaStubsJarPath = new File(l, coreLambdaStubsJarName).getAbsolutePath();
         String libsArchivePath = new File(l, libsArchiveName).getAbsolutePath();
-        String jdkArchivePath = new File(l, jdkArchiveName).getAbsolutePath();
         String testkeyArchivePath = new File(l, testkeyArchiveName).getAbsolutePath();
         String dexsDirectoryPath = new File(l, "dexs").getAbsolutePath();
         String libsDirectoryPath = new File(l, "libs").getAbsolutePath();
-        String jdkDirectoryPath = new File(l, "jdk").getAbsolutePath();
         String testkeyDirectoryPath = new File(l, "testkey").getAbsolutePath();
         /* If necessary, update android.jar.zip */
         if (a(m + File.separator + androidJarArchiveName, androidJarPath)) {
@@ -722,7 +787,7 @@ public class Dp {
         }
         /* If necessary, update dexs.zip */
         if (a(m + File.separator + dexsArchiveName, dexsArchivePath)) {
-            buildingDialog.c("Extracting built-in libraries' dexes...");
+            buildingDialog.c("Extracting built-in libraries' DEX files...");
             /* Delete the directory */
             g.b(dexsDirectoryPath);
             /* Create the directories */
@@ -740,16 +805,8 @@ public class Dp {
             /* Extract libs.zip to libs/ */
             new KB().a(libsArchivePath, libsDirectoryPath);
         }
-        /* If necessary, update jdk.zip */
-        if (a(m + File.separator + jdkArchiveName, jdkArchivePath)) {
-            buildingDialog.c("Extracting built-in runtime classes...");
-            /* Delete the directory */
-            g.b(jdkDirectoryPath);
-            /* Create the directories */
-            g.f(jdkDirectoryPath);
-            /* Extract jdk.zip to jdk/ */
-            new KB().a(jdkArchivePath, jdkDirectoryPath);
-        }
+        /* If necessary, update core-lambda-stubs.jar */
+        a(m + File.separator + coreLambdaStubsJarName, coreLambdaStubsJarPath);
         /* If necessary, update testkey.zip */
         if (a(m + File.separator + testkeyArchiveName, testkeyArchivePath)) {
             buildingDialog.c("Extracting built-in signing keys...");
@@ -802,13 +859,8 @@ public class Dp {
     public boolean k() {
         try {
             ZipSigner zipSigner = new ZipSigner();
-            zipSigner.addAutoKeyObserver(new Observer() {
-                @Override
-                public void update(Observable o, Object arg) {
-                }
-            });
             KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-            zipSigner.setKeymode("testkey");
+            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
             zipSigner.signZip(f.G, f.H);
             return true;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
