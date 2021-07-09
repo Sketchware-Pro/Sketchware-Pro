@@ -2,6 +2,10 @@ package mod.w3wide.menu;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -14,11 +18,6 @@ import java.util.ArrayList;
 import a.a.a.Ss;
 import a.a.a.wB;
 import a.a.a.xB;
-
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
@@ -45,7 +44,7 @@ public class ExtraMenuBean {
         logicEditor = logicA;
         sc_id = logicA.B;
     }
-    
+
     private void codeMenu(Ss menu) {
         if (ConfigActivity.isLegacyCeEnabled()) {
             AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
@@ -63,7 +62,7 @@ public class ExtraMenuBean {
             asdDialog.cancelLis(logicEditor, asdDialog);
         }
     }
-    
+
     public void defineMenuSelector(Ss ss) {
         String menuType = ss.b;
         String menuName = ss.getMenuName();
@@ -177,7 +176,7 @@ public class ExtraMenuBean {
 
     public void cusA(Ss ss, boolean isNum) {
         AsdOrigin asdOr = new AsdOrigin(logicEditor);
-        if(isNum) {
+        if (isNum) {
             asdOr.b(xB.b().a(getContext(), Resources.string.logic_editor_title_enter_number_value));
         } else {
             asdOr.b(xB.b().a(getContext(), Resources.string.logic_editor_title_enter_string_value));
@@ -185,8 +184,8 @@ public class ExtraMenuBean {
         asdOr.a(Resources.drawable.rename_96_blue);
 
         View root = wB.a(logicEditor, Resources.layout.property_popup_input_text);
-        EditText edittext = (EditText) root.findViewById(Resources.id.ed_input);
-        if(isNum) {
+        EditText edittext = root.findViewById(Resources.id.ed_input);
+        if (isNum) {
             edittext.setInputType(12290);
             edittext.setImeOptions(EditorInfo.IME_ACTION_DONE);
             edittext.setMaxLines(1);
