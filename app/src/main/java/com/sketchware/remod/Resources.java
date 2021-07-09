@@ -566,6 +566,7 @@ public class Resources {
         public static final int common_word_see_all = 0x7f0e0449;
         public static final int common_word_select = 0x7f0e044b;
         public static final int common_word_settings = 0x7f0e044c;
+        public static final int common_word_show = 0x7f0e044e;
         public static final int common_word_warning = 0x7f0e0457;
         public static final int component_add_docs_button_title_go_to_docs = 0x7f0e0483;
         public static final int component_add_message_docs_updated_soon = 0x7f0e0484;
