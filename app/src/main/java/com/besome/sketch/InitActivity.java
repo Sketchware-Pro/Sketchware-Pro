@@ -20,6 +20,7 @@ import com.besome.sketch.language.LanguageActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.sketchware.remod.Resources;
+import com.sketchware.remod.sources.R;
 
 import java.io.File;
 import java.util.HashMap;
@@ -77,7 +78,7 @@ public class InitActivity extends BaseAppCompatActivity {
 
     private void onLoginFail() {
         i.q();
-        bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.account_error_failed_login), 0).show();
+        bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.account_error_failed_login), 0).show();
         z();
     }
 
@@ -120,7 +121,7 @@ public class InitActivity extends BaseAppCompatActivity {
             return;
         }
 
-        setContentView(Resources.layout.init);
+        setContentView(R.layout.init);
         try {
             Uri data = getIntent().getData();
             for (String str : data.getQueryParameterNames()) {
@@ -133,7 +134,7 @@ public class InitActivity extends BaseAppCompatActivity {
         }
         sharedPreferenceP1 = new DB(getApplicationContext(), "P1");
         sharedPreferenceP16 = new DB(getApplicationContext(), "P16");
-        ImageView img_bi = findViewById(Resources.id.img_bi);
+        ImageView img_bi = findViewById(R.id.img_bi);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet
                 .play(ObjectAnimator.ofFloat(img_bi, View.SCALE_X, 0.2f, 1.0f))
@@ -179,10 +180,10 @@ public class InitActivity extends BaseAppCompatActivity {
 
     private void showUpdateAvailableDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.update_available_title));
-        dialog.a(Resources.drawable.color_new_96);
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.update_available_description));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_update), v -> {
+        dialog.b(xB.b().a(getApplicationContext(), R.string.update_available_title));
+        dialog.a(R.drawable.color_new_96);
+        dialog.a(xB.b().a(getApplicationContext(), R.string.update_available_description));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_update), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("market://details?id=com.besome.sketch&referrer=utm_source%3Din_sketchware%26utm_medium%3Dcheck_update"));
@@ -218,7 +219,7 @@ public class InitActivity extends BaseAppCompatActivity {
         }
         if (xB.b().b(getApplicationContext())) {
             bB.a(getApplicationContext(),
-                    xB.b().a(getApplicationContext(), Resources.string.message_strings_xml_loaded),
+                    xB.b().a(getApplicationContext(), R.string.message_strings_xml_loaded),
                     0, 80, 0.0f, 128.0f).show();
         }
         z();
@@ -230,10 +231,10 @@ public class InitActivity extends BaseAppCompatActivity {
 
     private void showAccountSuspendedDialog() {
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.color_ban_96);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.account_dialog_suspended_title));
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.account_dialog_suspended_description, i.e()));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
+        dialog.a(R.drawable.color_ban_96);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.account_dialog_suspended_title));
+        dialog.a(xB.b().a(getApplicationContext(), R.string.account_dialog_suspended_description, i.e()));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 i.q();
@@ -246,9 +247,9 @@ public class InitActivity extends BaseAppCompatActivity {
     private void showLanguageSettingsDialog() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.main_drawer_title_language_settings));
-        dialog.a(Resources.drawable.language_translate_96);
+        dialog.a(R.drawable.language_translate_96);
         dialog.setCancelable(false);
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.init_language_setting_dialog_message));
+        dialog.a(xB.b().a(getApplicationContext(), R.string.init_language_setting_dialog_message));
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> toLanguageActivity());
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel), v -> {
             continueToMainActivity();

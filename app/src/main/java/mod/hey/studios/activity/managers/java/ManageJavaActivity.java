@@ -11,9 +11,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -34,6 +36,8 @@ import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+
+import static mod.SketchwareUtil.getDip;
 
 public class ManageJavaActivity extends Activity {
 
@@ -206,12 +210,12 @@ public class ManageJavaActivity extends Activity {
     }
 
     private void showRenameDialog(final int position) {
-        boolean isFolder = adapter.isFolder(position);
+        boolean isFolder = myadp.isFolder(position);
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         LinearLayout root = (LinearLayout) getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
 
         final EditText filename = root.findViewById(Resources.id.edittext_change_name);
-        filename.setText(adapter.getFileName(position));
+        filename.setText(myadp.getFileName(position));
 
         final CheckBox renameOccurrences;
         if (!isFolder) {
@@ -228,7 +232,7 @@ public class ManageJavaActivity extends Activity {
                 );
                 renameOccurrences.setLayoutParams(params);
             }
-            renameOccurrences.setText("Rename occurrences of " + adapter.getFileNameWoExt(position) + " in file");
+            renameOccurrences.setText("Rename occurrences of " + myadp.getFileNameWoExt(position) + " in file");
             root.addView(renameOccurrences, 2);
         }
 
@@ -237,13 +241,13 @@ public class ManageJavaActivity extends Activity {
         root.findViewById(Resources.id.text_save)
                 .setOnClickListener(view -> {
                     if (!filename.getText().toString().isEmpty()) {
-                        if (!adapter.isFolder(position) && frc.getJavaManifestList().contains(adapter.getFullName(position))) {
-                            frc.getJavaManifestList().remove(adapter.getFullName(position));
+                        if (!myadp.isFolder(position) && frc.getJavaManifestList().contains(myadp.getFullName(position))) {
+                            frc.getJavaManifestList().remove(myadp.getFullName(position));
                             FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
                             SketchwareUtil.toast("NOTE: Removed Activity from manifest");
                         }
 
-                        FileUtil.renameFile(adapter.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
+                        FileUtil.renameFile(myadp.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
                         refresh();
                         SketchwareUtil.toast("Renamed successfully");
                     }
