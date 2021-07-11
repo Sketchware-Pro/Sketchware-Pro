@@ -146,6 +146,14 @@ public class tq {
         a.add(new QuizBean("How do you set a number keyboard type for EditText?", 1, "ime", "numberDecimal"));
         a.add(new QuizBean("Which lifecycle event gets called when an activity is restarted?", 0, "onResume", "onStop"));
         a.add(new QuizBean("Which property gets applied if you apply both \"singleLine=true\" and \"lines=3\" property on EditText?", 0, "singleLine", "lines=3"));
+        a.add(new QuizBean("Do you know sketchware pro is openSource?", 0));
+        a.add(new QuizBean("There is a discord server that can help you", 0));
+        a.add(new QuizBean("Can you create sketchware inside sketchware?", 0));
+        a.add(new QuizBean("You Can use command blocks to edit java and xml codes from the source code", 0));
+        a.add(new QuizBean("You can use custom libraries and native libraries", 0));
+        a.add(new QuizBean("You can backup and restore your projects?", 0));
+        a.add(new QuizBean("You can create your own components and blocks in sketchware", 0));
+        a.add(new QuizBean("You can export sketchware projects in .AAb format", 0));
         return a;
     }
 }
