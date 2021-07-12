@@ -465,6 +465,7 @@ public class Resources {
         public static final int export_project = 0x7f0b0058;
         public static final int fr_logic_list_item_button = 0x7f0b0067;
         public static final int fr_logic_list_item_buttons = 0x7f0b0068;
+        public static final int init = 0x7f0b0086;
         public static final int logic_popup_add_component_temp = 0x7f0b00a7;
         public static final int main = 0x7f0b00ad;
         public static final int main_drawer_header = 0x7f0b00af;
