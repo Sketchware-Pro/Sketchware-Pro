@@ -35,6 +35,7 @@ import a.a.a.wB;
 import a.a.a.xB;
 import mod.hilal.saif.activities.tools.Tools;
 import mod.ilyasse.activities.about.AboutModActivity;
+import mod.nethical.mod.CleanerActivity;
 
 public class MainDrawer extends LinearLayout {
 
@@ -168,6 +169,10 @@ public class MainDrawer extends LinearLayout {
         DrawerItem aboutModdersItem = DrawerItem.eMenu_orders;
         aboutModdersItem.i = Resources.drawable.side_menu_info_icon_over_white;
         aboutModdersItem.h = "About Modders";
+
+        DrawerItem cleanerItem = DrawerItem.eMenu_cleaner;
+        cleanerItem.i = Resources.drawable.side_menu_cleaner.png;
+        cleanerItem.h = "Cleaner";
 
         DrawerItem docsItem = DrawerItem.eMenu_docs;
         docsItem.i = Resources.drawable.icon_file_white_96;
@@ -385,6 +390,12 @@ public class MainDrawer extends LinearLayout {
                                 Intent intent = new Intent(activity, AboutModActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 activity.startActivity(intent);
+
+                            } else if (id == DrawerItem.eMenu_cleaner.ordinal()) {
+                                Intent intent = new Intent(activity, CleanerActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                activity.startActivity(intent);
+
                             } else if (id == DrawerItem.eMenu_docs.ordinal()) {
                                 MainDrawer.this.h();
                             } else if (id == DrawerItem.eMenu_system_settings.ordinal()) {
