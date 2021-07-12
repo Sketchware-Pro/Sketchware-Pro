@@ -66,7 +66,7 @@ public class CleanerActivity extends  Activity {
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
-		setContentView(R.layout.cleaner);
+		setContentView(Resources.layout.cleaner);
 		initialize(_savedInstanceState);
 		if (Build.VERSION.SDK_INT >= 23) {
 			if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
