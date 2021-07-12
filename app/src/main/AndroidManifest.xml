@@ -511,6 +511,10 @@
             android:name="mod.ilyasse.activities.about.AboutModActivity"
             android:configChanges="orientation|screenSize" />
         <activity
+            android:name="mod.nethical.mod.CleanerActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
             android:name="com.besome.sketch.competition.CompetitionDetailActivity"
             android:configChanges="orientation|screenSize" />
         <activity
