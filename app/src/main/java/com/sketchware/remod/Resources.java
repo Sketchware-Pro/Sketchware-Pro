@@ -43,8 +43,10 @@ public class Resources {
         public static final int code_icon = 0x7f070108;
         public static final int collect_48 = 0x7f07010b;
         public static final int color_about_96 = 0x7f07010c;
+        public static final int color_ban_96 = 0x7f07010e;
         public static final int color_lock_96 = 0x7f07011b;
         public static final int color_more_96 = 0x7f07011c;
+        public static final int color_new_96 = 0x7f07011d;
         public static final int color_palette_48 = 0x7f070120;
         public static final int connected_96 = 0x7f070141;
         public static final int copy_48_grey = 0x7f070142;
@@ -93,6 +95,7 @@ public class Resources {
         public static final int keyboard_48 = 0x7f0702e9;
         public static final int java_96 = 0x7f0702e8;
         public static final int language_48 = 0x7f0702eb;
+        public static final int language_translate_96 = 0x7f0702f0;
         public static final int light_on_48 = 0x7f070300;
         public static final int lock_48 = 0x7f070304;
         public static final int monday_48 = 0x7f07030f;
@@ -214,6 +217,7 @@ public class Resources {
         public static final int img_activity = 0x7f080180;
         public static final int img_add = 0x7f080181;
         public static final int img_back = 0x7f080188;
+        public static final int img_bi = 0x7f08018e;
         public static final int img_button = 0x7f080190;
         public static final int img_color_guide = 0x7f080195;
         public static final int img_copy_apk_url = 0x7f080197;
@@ -337,6 +341,7 @@ public class Resources {
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
         public static final int tv_root_title = 0x7f080589;
+        public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
         public static final int tv_sub_title = 0x7f0805b6;
         public static final int tv_title = 0x7f0805c3;
@@ -532,6 +537,9 @@ public class Resources {
     }
 
     public static final class string {
+        public static final int account_dialog_suspended_description = 0x7f0e002d;
+        public static final int account_error_failed_login = 0x7f0e0032;
+        public static final int account_dialog_suspended_title = 0x7f0e002e;
         public static final int app_name = 0x7f0e0042;
         public static final int besome_blog_url = 0x7f0e0044;
         public static final int common_error_an_error_occurred = 0x7f0e03cc;
@@ -568,6 +576,7 @@ public class Resources {
         public static final int common_word_select = 0x7f0e044b;
         public static final int common_word_settings = 0x7f0e044c;
         public static final int common_word_show = 0x7f0e044e;
+        public static final int common_word_update = 0x7f0e0453;
         public static final int common_word_warning = 0x7f0e0457;
         public static final int component_add_docs_button_title_go_to_docs = 0x7f0e0483;
         public static final int component_add_message_docs_updated_soon = 0x7f0e0484;
@@ -612,6 +621,7 @@ public class Resources {
         public static final int design_tab_title_event = 0x7f0e0566;
         public static final int design_tab_title_view = 0x7f0e0567;
         public static final int facebook_url = 0x7f0e05b5;
+        public static final int init_language_setting_dialog_message = 0x7f0e05cb;
         public static final int language_message_confirm_delete = 0x7f0e05fa;
         public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
         public static final int logic_editor_more_block_dialog_description_goback = 0x7f0e061c;
@@ -632,6 +642,7 @@ public class Resources {
         /* That typo exists in Sketchware from Google Play. */
         public static final int message_compatible_chrome_brower = 0x7f0e069d;
         public static final int message_device_not_support = 0x7f0e069e;
+        public static final int message_strings_xml_loaded = 0x7f0e06a2;
         public static final int myprojects_confirm_project_delete = 0x7f0e06a4;
         public static final int myprojects_export_project_actionbar_title = 0x7f0e06a8;
         public static final int myprojects_export_project_button_export_src = 0x7f0e06a9;
@@ -676,6 +687,8 @@ public class Resources {
         public static final int slack_url_primary = 0x7f0e0981;
         public static final int slack_url_secondary = 0x7f0e0982;
         public static final int title_compatible_chrome_browser = 0x7f0e09ac;
+        public static final int update_available_description = 0x7f0e09dd;
+        public static final int update_available_title = 0x7f0e09de;
         public static final int view_widget_favorites_save_guide_new = 0x7f0e09e9;
         public static final int view_widget_favorites_save_title = 0x7f0e09ea;
         public static final int text_title_menu_java = 0x7f0e09f2;

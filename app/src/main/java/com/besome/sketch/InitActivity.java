@@ -476,8 +476,8 @@ public class InitActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void onPreExecute() {
-            b();
+        protected void onPostExecute(String s) {
+            b(s);
         }
     }
 }
