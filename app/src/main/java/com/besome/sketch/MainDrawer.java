@@ -35,9 +35,9 @@ import a.a.a.wB;
 import a.a.a.xB;
 import mod.hilal.saif.activities.tools.Tools;
 import mod.ilyasse.activities.about.AboutModActivity;
-
+import mod.w3wide.tools.Cleaner.Cleaner;
 public class MainDrawer extends LinearLayout {
-
+    private String cleaner_output = "";
     public Context a;
     public a b;
     public ImageView c;
@@ -169,6 +169,10 @@ public class MainDrawer extends LinearLayout {
         aboutModdersItem.i = Resources.drawable.side_menu_info_icon_over_white;
         aboutModdersItem.h = "About Modders";
 
+        DrawerItem cleanerItem = DrawerItem.eMenu_cleaner;
+        cleanerItem.i = Resources.drawable.side_menu_setting_icon_over_white;
+        cleanerItem.h = "Clean Project Trash";
+
         DrawerItem docsItem = DrawerItem.eMenu_docs;
         docsItem.i = Resources.drawable.icon_file_white_96;
         docsItem.h = "Changelog";
@@ -258,6 +262,7 @@ public class MainDrawer extends LinearLayout {
         eMenu_orders,
         eMenu_docs,
         eMenu_system_settings,
+        eMenu_cleaner,
         eMenu_program_info,
         eMenu_language_settings,
         eMenu_export_urls,
@@ -385,8 +390,10 @@ public class MainDrawer extends LinearLayout {
                                 Intent intent = new Intent(activity, AboutModActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 activity.startActivity(intent);
-                            } else if (id == DrawerItem.eMenu_docs.ordinal()) {
-                                MainDrawer.this.h();
+                            } else if (id == DrawerItem.eMenu_cleaner.ordinal()) {
+                                Cleaner clean = new Cleaner();
+                                cleaner_output = clean.Cleaner();
+                                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();                            } else if (id == DrawerItem.eMenu_docs.ordinal()) {
                             } else if (id == DrawerItem.eMenu_system_settings.ordinal()) {
                                 Intent intent = new Intent(activity, SystemSettingActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
