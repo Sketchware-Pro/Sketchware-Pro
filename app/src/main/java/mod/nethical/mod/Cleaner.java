@@ -8,7 +8,7 @@ import java.util.regex.*;
 import java.text.*;
 public class Cleaner {
 	static boolean cashe = false;
-    static double temp2 = 0;
+        static double temp2 = 0;
 	static double temp = 0;
 	static String filepath = "";
 	static String tmp = "";
