@@ -119,27 +119,20 @@ public class AboutModActivity extends AppCompatActivity {
         // to RecyclerView.a(RecyclerView$m)
         changelogRecycler.a(new OnScrollListener());
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(discordInviteLink)));
-            }
-        });
+        fab.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse(discordInviteLink))));
 
         requestDataListener = new RequestNetwork.RequestListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
-
                     JSONObject json = new JSONObject(response);
 
                     discordInviteLink = json.getString("discordInviteLink");
+                    sharedPref.edit().putString("discordInviteLinkBackup", discordInviteLink).apply();
 
                     JSONArray modders = json.getJSONArray("moddersteam");
-
-                    JSONArray changelog = json.getJSONArray("changelog");
                     for (int i = 0; i < modders.length(); i++) {
                         moddersMap = new HashMap<>();
                         moddersMap.put("isTitled", modders.getJSONObject(i)
@@ -158,6 +151,8 @@ public class AboutModActivity extends AppCompatActivity {
                     }
                     sharedPref.edit().putString("moddersBackup", new Gson().toJson(moddersList)).apply();
                     moddersRecycler.setAdapter(new ModdersRecyclerAdapter(moddersList));
+
+                    JSONArray changelog = json.getJSONArray("changelog");
                     for (int i = 0; i < changelog.length(); i++) {
                         changelogMap = new HashMap<>();
                         changelogMap.put("isTitled", changelog.getJSONObject(i)
@@ -170,15 +165,13 @@ public class AboutModActivity extends AppCompatActivity {
                     }
                     sharedPref.edit().putString("changelogBackup", new Gson().toJson(changelogList)).apply();
                     changelogRecycler.setAdapter(new ChangelogRecyclerAdapter(changelogList));
+
                     shadAnim(loading, "translationY", 50, 400);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            shadAnim(fab, "translationY", 0, 300);
-                            shadAnim(fab, "alpha", 1, 300);
-                            shadAnim(loading, "translationY", -1000, 300);
-                            shadAnim(loading, "alpha", 0, 300);
-                        }
+                    new Handler().postDelayed(() -> {
+                        shadAnim(fab, "translationY", 0, 300);
+                        shadAnim(fab, "alpha", 1, 300);
+                        shadAnim(loading, "translationY", -1000, 300);
+                        shadAnim(loading, "alpha", 0, 300);
                     }, 200);
                 } catch (JSONException e) {
                     loadingTitle.setText("Something went wrong");
@@ -221,10 +214,8 @@ public class AboutModActivity extends AppCompatActivity {
         initViewPager();
         requestData.startRequestNetwork(RequestNetworkController.GET, "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "", requestDataListener);
         rippleRound(fab, "#7289DA", "#FFFFFF", 90);
-        if (getIntent().getStringExtra("select") != null) {
-            if (getIntent().getStringExtra("select").equals("changelog")) {
-                viewPager.setCurrentItem(1);
-            }
+        if ("changelog".equals(getIntent().getStringExtra("select"))) {
+            viewPager.setCurrentItem(1);
         }
     }
 
@@ -243,14 +234,11 @@ public class AboutModActivity extends AppCompatActivity {
         viewPager.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        MyPagerAdapter adapter = new MyPagerAdapter();
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(new PagerAdapter());
         viewPager.setCurrentItem(0);
         root.addView(viewPager);
 
         tablayout.setSelectedTabIndicatorColor(0xff008dcd);
-        //replaced with xml attributes instead of changing texts colors programmatically
-
         tablayout.setupWithViewPager(viewPager);
 
         // ViewPager.addOnPageChangeListener(ViewPager$OnPageChangeListener) got
@@ -316,7 +304,7 @@ public class AboutModActivity extends AppCompatActivity {
     }
 
     // PagerAdapter got obfuscated to kk
-    private class MyPagerAdapter extends kk {
+    private class PagerAdapter extends kk {
 
         // PagerAdapter.getCount() got obfuscated to kk.a()
         @Override
