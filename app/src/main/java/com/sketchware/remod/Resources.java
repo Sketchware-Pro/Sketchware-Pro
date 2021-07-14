@@ -172,6 +172,7 @@ public class Resources {
         public static final int chk_vcenter = 0x7f0800af;
         public static final int color = 0x7f0800b8;
         public static final int common_dialog_cancel_button = 0x7f0800bd;
+        public static final int common_dialog_default_button = 0x7f0800c0;
         public static final int common_dialog_ok_button = 0x7f0800c2;
         public static final int components_list = 0x7f0800c7;
         public static final int confirm_layout = 0x7f0800ca;

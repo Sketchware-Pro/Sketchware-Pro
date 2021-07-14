@@ -2,6 +2,7 @@ package com.besome.sketch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -40,6 +41,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.Resources;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -252,12 +255,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         d().d(true);
         d().e(true);
         A = findViewById(Resources.id.img_title_logo);
-        A.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invalidateOptionsMenu();
-            }
-        });
+        A.setOnClickListener(v -> invalidateOptionsMenu());
         o = findViewById(Resources.id.left_drawer);
         m = findViewById(Resources.id.drawer_layout);
         n = new l(this, m, Resources.string.app_name, Resources.string.app_name);
@@ -265,7 +263,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         d().a("");
         p = findViewById(Resources.id.viewpager);
         p.setOffscreenPageLimit(2);
-        p.setAdapter(new a(getSupportFragmentManager(), this));
+        p.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         q = findViewById(Resources.id.tab_layout);
         q.setupWithViewPager(p);
         p.a(this);
@@ -316,6 +314,39 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     }
                 }).execute(data);
             }
+        }
+
+        File skipBetaWarningDialog = new File(getFilesDir(), ".skip_beta_warning");
+        if (!skipBetaWarningDialog.exists()) {
+            aB dialog = new aB(this);
+            dialog.a(0x7f0701e5);
+            dialog.b("Beta version");
+            dialog.a("First of all, join our Discord server for more information about this build!\n" +
+                    "Secondly, this is a beta version of Sketchware Pro, which means it could be unstable " +
+                    "and even break projects! Please back up /Internal storage/.sketchware/ if possible.\n" +
+                    "\n" +
+                    "If you have found any bugs or have comments, tell us in the Discord server.\n" +
+                    "Thank you for testing Sketchware Pro v6.4.0 out before it gets officially released, " +
+                    "and enjoy new features such as AAPT2!");
+            dialog.a("Discord", v -> {
+                SharedPreferences aboutUsStore = getSharedPreferences("AboutMod", Context.MODE_PRIVATE);
+                String inviteLink = aboutUsStore.getString("discordInviteLinkBackup", "");
+                if (!"".equals(inviteLink)) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink)));
+                }
+            });
+            dialog.configureDefaultButton("Don't show anymore", v -> {
+                try {
+                    skipBetaWarningDialog.createNewFile();
+                } catch (IOException e1) {
+                    Log.e("MainActivity", "IOException while trying to write \"Don't show Beta warning\" file: "
+                            + e1.getMessage(), e1);
+                }
+                dialog.dismiss();
+            });
+            dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+                    Helper.getDialogDismissListener(dialog));
+            dialog.show();
         }
     }
 
@@ -407,7 +438,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         super.onStart();
     }
 
-    public final void p() {
+    private void p() {
         URL url;
         try {
             url = new URL("http://sketchware.io/terms.html");
@@ -434,14 +465,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                     @Override
                     public void a(String s) {
-                        // Original obf. anon. class bytecode tells it has 2 registers, but doesn't
-                        // use any registers, probably removed.
                     }
 
                     @Override
                     public void b() {
-                        // Original obf. anon. class bytecode tells it has 1 register, but doesn't
-                        // use it, probably removed.
                     }
                 })
                 .d()
@@ -451,22 +478,19 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         G.a();
     }
 
-    public final void q() {
+    private void q() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_title_storage));
         dialog.a(Resources.drawable.color_about_96);
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                s();
-            }
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
+            dialog.dismiss();
+            s();
         });
         dialog.show();
     }
 
-    public final void r() {
+    private void r() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
         dialog.a(Resources.drawable.high_priority_96_red);
@@ -479,30 +503,25 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void s() {
         if (x == null || !x.j()) {
             x = Snackbar.a(w, xB.b().a(getApplicationContext(), Resources.string.common_message_permission_denied), -2);
-            x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    x.c();
-                    nd.a(MainActivity.this, new String[]{
-                                    "android.permission.WRITE_EXTERNAL_STORAGE",
-                                    "android.permission.READ_EXTERNAL_STORAGE"},
-                            9501);
-                }
+            x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
+                x.c();
+                nd.a(MainActivity.this, new String[]{
+                                "android.permission.WRITE_EXTERNAL_STORAGE",
+                                "android.permission.READ_EXTERNAL_STORAGE"},
+                        9501);
             });
-            //REMOVED: Looks ugly.
-            //x.h().setAlpha(0.5f);
             x.f(Color.YELLOW);
             x.n();
         }
     }
 
-    public void t() {
+    private void t() {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, 100);
     }
 
-    public void u() {
+    private void u() {
         Intent intent = new Intent(getApplicationContext(), MyPageSettingsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, 111);
@@ -533,13 +552,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    public class a extends gg {
+    private class PagerAdapter extends gg {
 
-        public Context f;
-
-        public a(Xf xf, Context context) {
+        public PagerAdapter(Xf xf) {
             super(xf);
-            f = context;
         }
 
         @Override // a.a.a.kk
