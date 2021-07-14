@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -176,7 +177,7 @@ public class Ix {
     /**
      * Registers a {@link Service} in AndroidManifest.
      *
-     * @param nx  AndroidManiefst {@link Nx} object
+     * @param nx  AndroidManifest {@link Nx} object
      * @param str The component name of the service
      */
     public final void writeService(Nx nx, String str) {
@@ -200,43 +201,43 @@ public class Ix {
         a.a("", "package", c.a);
         if (!c.a()) {
             if (c.b(1)) {
-                a(a, "android.permission.CALL_PHONE");
+                a(a, Manifest.permission.CALL_PHONE);
             }
             if (c.b(2)) {
-                a(a, "android.permission.INTERNET");
+                a(a, Manifest.permission.INTERNET);
             }
             if (c.b(4)) {
-                a(a, "android.permission.VIBRATE");
+                a(a, Manifest.permission.VIBRATE);
             }
             if (c.b(8)) {
-                a(a, "android.permission.ACCESS_NETWORK_STATE");
+                a(a, Manifest.permission.ACCESS_NETWORK_STATE);
             }
             if (c.b(16)) {
-                a(a, "android.permission.CAMERA");
+                a(a, Manifest.permission.CAMERA);
             }
             if (c.b(32)) {
                 try {
-                    if (Integer.parseInt(settings.getValue("target_sdk", "28")) >= 28) {
+                    if (Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 28) {
                         addRequestLegacyExternalStorage = true;
                     }
                 } catch (NumberFormatException ignored) {
                 }
-                a(a, "android.permission.READ_EXTERNAL_STORAGE");
+                a(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (c.b(64)) {
-                a(a, "android.permission.WRITE_EXTERNAL_STORAGE");
+                a(a, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
             if (c.b(128)) {
-                a(a, "android.permission.RECORD_AUDIO");
+                a(a, Manifest.permission.RECORD_AUDIO);
             }
             if (c.b(256)) {
-                a(a, "android.permission.BLUETOOTH");
+                a(a, Manifest.permission.BLUETOOTH);
             }
             if (c.b(512)) {
-                a(a, "android.permission.BLUETOOTH_ADMIN");
+                a(a, Manifest.permission.BLUETOOTH_ADMIN);
             }
             if (c.b(1024)) {
-                a(a, "android.permission.ACCESS_FINE_LOCATION");
+                a(a, Manifest.permission.ACCESS_FINE_LOCATION);
             }
         }
         if (FileUtil.isExistFile(fpu.getPathPermission(c.sc_id))) {
@@ -253,10 +254,8 @@ public class Ix {
             applicationTag.a("android", "requestLegacyExternalStorage", "true");
         }
         applicationTag.a("android", "icon", "@drawable/app_icon");
-        if (settings.getValue("disable_large_heap", "false").equals("false")) {
-            applicationTag.a("android", "largeHeap", "true");
-        }
-        if (buildSettings.getValue("no_http_legacy", "false").equals("false")) {
+        if (!buildSettings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
+                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             applicationTag.a("android", "usesCleartextTraffic", "true");
         }
         if (c.f) {
@@ -278,29 +277,29 @@ public class Ix {
                         if (projectFileBean.hasActivityOption(2)) {
                             activityTag.a("android", "theme", "@style/AppTheme.FullScreen");
                         }
-                    } else if (projectFileBean.hasActivityOption(2)) {
-                        if (projectFileBean.hasActivityOption(1)) {
+                    } else if (projectFileBean.hasActivityOption(ProjectFileBean.PROJECT_FILE_TYPE_DRAWER)) {
+                        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                             activityTag.a("android", "theme", "@style/NoStatusBar");
                         } else {
                             activityTag.a("android", "theme", "@style/FullScreen");
                         }
-                    } else if (!projectFileBean.hasActivityOption(1)) {
+                    } else if (!projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                         activityTag.a("android", "theme", "@style/NoActionBar");
                     }
                 }
                 if (!AndroidManifestInjector.isActivityOrientationUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
-                    int i = projectFileBean.orientation;
-                    if (i == 0) {
+                    int orientation = projectFileBean.orientation;
+                    if (orientation == ProjectFileBean.ORIENTATION_PORTRAIT) {
                         activityTag.a("android", "screenOrientation", "portrait");
-                    } else if (i == 1) {
+                    } else if (orientation == ProjectFileBean.ORIENTATION_LANDSCAPE) {
                         activityTag.a("android", "screenOrientation", "landscape");
                     }
                 }
                 f(activityTag);
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
-                    String a2 = vq.a(projectFileBean.keyboardSetting);
-                    if (a2.length() > 0) {
-                        activityTag.a("android", "windowSoftInputMode", a2);
+                    String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
+                    if (keyboardSetting.length() > 0) {
+                        activityTag.a("android", "windowSoftInputMode", keyboardSetting);
                     }
                 }
                 if (projectFileBean.fileName.equals(AndroidManifestInjector.getLauncherActivity(c.sc_id))) {
