@@ -6,7 +6,8 @@ import a.a.a.Gx;
 import mod.hilal.saif.events.EventsHandler;
 
 public class ManageEvent {
-    public static void a(Gx gx, ArrayList arrayList) {
+
+    public static void a(Gx gx, ArrayList<String> arrayList) {
         if (gx.a("RatingBar")) {
             arrayList.add("onRatingChanged");
         }
@@ -68,7 +69,7 @@ public class ManageEvent {
         EventsHandler.addEvents(gx, arrayList);
     }
 
-    public static void b(Gx gx, ArrayList arrayList) {
+    public static void b(Gx gx, ArrayList<String> arrayList) {
         if (gx.a("RatingBar")) {
             arrayList.add("OnRatingBarChangeListener");
         }
@@ -152,7 +153,7 @@ public class ManageEvent {
         EventsHandler.addListeners(gx, arrayList);
     }
 
-    public static void c(String str, ArrayList arrayList) {
+    public static void c(String str, ArrayList<String> arrayList) {
         switch (str.hashCode()) {
             case -2013506289:
                 if (str.equals("OnCompletionListener")) {
@@ -379,7 +380,6 @@ public class ManageEvent {
                 return;
             default:
                 EventsHandler.addEventsToListener(str, arrayList);
-                return;
         }
     }
 
@@ -1914,7 +1914,7 @@ public class ManageEvent {
         return "";
     }
 
-    public static void h(Gx gx, ArrayList arrayList) {
+    public static void h(Gx gx, ArrayList<String> arrayList) {
         if (gx.a("FragmentAdapter")) {
             arrayList.add("onTabAdded");
             arrayList.add("onFragmentAdded");
