@@ -105,7 +105,7 @@ import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
-
+import mod.nethical.mod.Cleaner;
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
     public ImageView A;
@@ -140,7 +140,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public rs x = null;
     public br y = null;
     public oB z;
+    public Button mcleanbtn;
 
+ 
     public DesignActivity() {
     }
 
@@ -381,6 +383,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
+
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
@@ -413,6 +416,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                 popupMenu.show();
             }
+        }
+    }
+
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId()) {
+        case R.id.button_send:
+            // Do something
         }
     }
 
@@ -466,6 +479,15 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         n = findViewById(Resources.id.layout_coordinator);
         u = findViewById(Resources.id.btn_execute);
         u.setText(xB.b().a(this, Resources.string.common_word_run));
+        mcleanbtn = findViewById(Resources.id.btn_clean);
+        mcleanbtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+            public void onClick(View view)
+            {
+                Cleaner clean = new Cleaner();
+                Toast.makeText(getApplicationContext(),clean.Cleaner(),Toast.LENGTH_SHORT).show();
+            }
+            });
         u.setOnClickListener(this);
         findViewById(Resources.id.btn_compiler_opt).setOnClickListener(this);
         A = findViewById(Resources.id.img_orientation);

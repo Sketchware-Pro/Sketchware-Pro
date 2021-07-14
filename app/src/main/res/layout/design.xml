@@ -86,6 +86,16 @@
                         android:src="@drawable/sorting_options_48"
                         android:theme="@style/AppTheme.Button.LightBlue" />
 
+                    <ImageButton
+                        android:id="@+id/btn_clean"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="8dp"
+                        android:elevation="4dp"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_delete_btn_white_96dp.png"
+                        android:theme="@style/AppTheme.Button.LightBlue" />
+
                     <Button
                         android:id="@+id/btn_execute"
                         android:layout_width="wrap_content"
