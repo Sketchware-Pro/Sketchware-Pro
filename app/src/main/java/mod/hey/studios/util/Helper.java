@@ -35,6 +35,9 @@ public class Helper {
     public static Type TYPE_STRING_MAP = new TypeToken<HashMap<String, String>>() {
     }.getType();
 
+    private Helper() {
+    }
+
     public static void fixFileprovider() {
         if (Build.VERSION.SDK_INT >= 24) {
             try {
