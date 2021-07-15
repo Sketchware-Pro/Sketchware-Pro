@@ -331,7 +331,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             dialog.a("Discord", v -> {
                 SharedPreferences aboutUsStore = getSharedPreferences("AboutMod", Context.MODE_PRIVATE);
                 String inviteLink = aboutUsStore.getString("discordInviteLinkBackup", "");
-                if (!"".equals(inviteLink)) {
+                if ("".equals(inviteLink)) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/p7D5Nt687K")));
+                } else {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink)));
                 }
             });
