@@ -34,7 +34,7 @@ public class CommandBlock {
                 //writeLog("the file is found and has content :)");
                 data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
                 //writeLog("get gson from file is done");
-                for (int i = 0; i < (int) (data.size()); i++) {
+                for (int i = 0; i < data.size(); i++) {
                     //writeLog("element : " + i);
                     if (getFirstLine((String) data.get(i).get("input")).contains(fileName)) {
                         //writeLog("element : " + i + " > find a target !!");
@@ -524,8 +524,7 @@ public class CommandBlock {
         int af;
         int be;
         String c;
-        StringBuilder input = new StringBuilder();
-
+        String input = "";
 
         String v = arr.get(p.first + 1);
         String kk = v.substring(v.indexOf(">") + 1);
@@ -533,22 +532,22 @@ public class CommandBlock {
         ref = aa.get(0);
 
         v = arr.get(p.first + 2);
-        dis = Integer.parseInt(v + (v.indexOf(">") + 1));
+        dis = Integer.parseInt(v.substring(v.indexOf(">") + 1));
 
         v = arr.get(p.first + 3);
-        af = Integer.parseInt(v + (v.indexOf(">") + 1));
+        af = Integer.parseInt(v.substring(v.indexOf(">") + 1));
 
         v = arr.get(p.first + 4);
-        be = Integer.parseInt(v + (v.indexOf(">") + 1));
+        be = Integer.parseInt(v.substring(v.indexOf(">") + 1));
 
         v = arr.get(p.first + 5);
         c = v.substring(v.indexOf(">") + 1);
 
         for (int i = 0; i < (p.second - p.first - 6); i++) {
             if (i == 0) {
-                input = new StringBuilder(arr.get(p.first + i + 6));
+                input = arr.get(p.first + i + 6);
             } else {
-                input.append("\n").append(arr.get(p.first + i + 6));
+                input = input.concat("\n").concat(arr.get(p.first + i + 6));
             }
         }
 
@@ -558,7 +557,7 @@ public class CommandBlock {
         hm.put("after", af);
         hm.put("before", be);
         hm.put("command", c);
-        hm.put("input", input.toString());
+        hm.put("input", input);
         arr2.add(hm);
     }
 }
