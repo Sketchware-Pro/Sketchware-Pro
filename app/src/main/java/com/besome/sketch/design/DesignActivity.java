@@ -754,6 +754,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
+        dialog.configureDefaultButton(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
