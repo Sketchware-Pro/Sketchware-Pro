@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-
+impoet android.widget.EditText.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -146,6 +146,7 @@ public class DirectEditorActivity extends AppCompatActivity {
                 directEditorActivity.startActivity(directEditorActivity.i);
             }
         });
+
         show_list_editedcode.setOnClickListener(new View.OnClickListener() {
             /* class id.indosw.mod.DirectEditorActivity.AnonymousClass5 */
 
@@ -157,6 +158,7 @@ public class DirectEditorActivity extends AppCompatActivity {
                 }
             }
         });
+
         findViewById(2131232642).setOnClickListener(new View.OnClickListener() {
             /* class id.indosw.mod.DirectEditorActivity.AnonymousClass6 */
 
@@ -177,7 +179,8 @@ public class DirectEditorActivity extends AppCompatActivity {
 
                         public void onClick(DialogInterface dialogInterface, int i) {
                         }
-                    });
+                    }); 
+
                     dialog_deleteTask.create().show();
                     return;
                 }
@@ -656,3 +659,19 @@ public class DirectEditorActivity extends AppCompatActivity {
         }
     }
 }
+Fial New Speed Mod For Editext Mod By Ninja Coder = Edittext.setsizeText=("12sp");
+MOD.MORGE.IN.SIZEEDITTEXT.IN.VERTICAL();
+FILEIS.MORE.IS.MAINNEW();
+GETLINE(0~999999999);
+LINESTART(0)
+LINEFINALEND(999999999)
+if0=0
+{
+get.text(ninjacoder);
+set Speed Is String New = New
+}
+   }
+      };
+
+////Mod By Is Ninja Coder
+Code Is Java J2 And C#
