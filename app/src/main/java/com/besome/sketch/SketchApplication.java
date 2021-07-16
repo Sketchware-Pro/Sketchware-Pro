@@ -8,9 +8,9 @@ import android.os.Process;
 import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
-
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
+//DONT EDIT
+////import com.google.android.gms.analytics.GoogleAnalytics;
+////import com.google.android.gms.analytics.Tracker;
 
 public class SketchApplication extends MultiDexApplication {
 
