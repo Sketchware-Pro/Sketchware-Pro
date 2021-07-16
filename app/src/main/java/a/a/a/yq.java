@@ -550,263 +550,162 @@ public class yq {
                     N.a(next.getActivityName(), 512);
                 }
                 if (next2.type == 21) {
-                    Log.d("location", "permission location : activity");
                     N.a(next.getActivityName(), 1024);
                 }
             }
             for (Map.Entry<String, ArrayList<BlockBean>> entry : eCVar.b(next.getJavaName()).entrySet()) {
-                for (BlockBean next3 : entry.getValue()) {
-                    N.x.setParams(next3.parameters, e, next3.opCode);
-                    String str = next3.opCode;
-                    switch (str.hashCode()) {
-                        case -2135695280:
-                            if (str.equals("webViewLoadUrl")) {
-                                c2 = '!';
-                                break;
-                            }
-                            c2 = 65535;
+                for (BlockBean bean : entry.getValue()) {
+                    N.x.setParams(bean.parameters, e, bean.opCode);
+                    String opCode = bean.opCode;
+                    switch (opCode) {
+                        case "webViewLoadUrl":
+                            c2 = '!';
                             break;
-                        case -2055793167:
-                            if (str.equals("fileutillistdir")) {
-                                c2 = 3;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutillistdir":
+                            c2 = 3;
                             break;
-                        case -1834369666:
-                            if (str.equals("setBitmapFileBrightness")) {
-                                c2 = 26;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "setBitmapFileBrightness":
+                            c2 = 26;
                             break;
-                        case -1483954587:
-                            if (str.equals("fileutilisdir")) {
-                                c2 = 4;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilisdir":
+                            c2 = 4;
                             break;
-                        case -1471049951:
-                            if (str.equals("fileutilwrite")) {
-                                c2 = '\f';
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilwrite":
+                            c2 = '\f';
                             break;
-                        case -1405157727:
-                            if (str.equals("fileutilmakedir")) {
-                                c2 = 16;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilmakedir":
+                            c2 = 16;
                             break;
-                        case -1063598745:
-                            if (str.equals("resizeBitmapFileRetainRatio")) {
-                                c2 = 17;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "resizeBitmapFileRetainRatio":
+                            c2 = 17;
                             break;
-                        case -917343271:
-                            if (str.equals("getJpegRotate")) {
-                                c2 = '\t';
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "getJpegRotate":
+                            c2 = '\t';
                             break;
-                        case -903177036:
-                            if (str.equals("resizeBitmapFileWithRoundedBorder")) {
-                                c2 = 20;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "resizeBitmapFileWithRoundedBorder":
+                            c2 = 20;
                             break;
-                        case -733318734:
-                            if (str.equals("strToListMap")) {
-                                c2 = 30;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "strToListMap":
+                            c2 = 30;
                             break;
-                        case -602241037:
-                            if (str.equals("fileutilcopy")) {
-                                c2 = '\r';
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilcopy":
+                            c2 = '\r';
                             break;
-                        case -601942961:
-                            if (str.equals("fileutilmove")) {
-                                c2 = 14;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilmove":
+                            c2 = 14;
                             break;
-                        case -601804268:
-                            if (str.equals("fileutilread")) {
-                                c2 = 1;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilread":
+                            c2 = 1;
                             break;
-                        case -149850417:
-                            if (str.equals("fileutilisexist")) {
-                                c2 = 2;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilisexist":
+                            c2 = 2;
                             break;
-                        case 16308074:
-                            if (str.equals("resizeBitmapFileToCircle")) {
-                                c2 = 19;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "resizeBitmapFileToCircle":
+                            c2 = 19;
                             break;
-                        case 56167279:
-                            if (str.equals("setBitmapFileContrast")) {
-                                c2 = 27;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "setBitmapFileContrast":
+                            c2 = 27;
                             break;
-                        case 163812602:
-                            if (str.equals("cropBitmapFileFromCenter")) {
-                                c2 = 21;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "cropBitmapFileFromCenter":
+                            c2 = 21;
                             break;
-                        case 168740282:
-                            if (str.equals("mapToStr")) {
-                                c2 = 29;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "mapToStr":
+                            c2 = 29;
                             break;
-                        case 470160234:
-                            if (str.equals("fileutilGetLastSegmentPath")) {
-                                c2 = 11;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilGetLastSegmentPath":
+                            c2 = 11;
                             break;
-                        case 481850295:
-                            if (str.equals("resizeBitmapFileToSquare")) {
-                                c2 = 18;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "resizeBitmapFileToSquare":
+                            c2 = 18;
                             break;
-                        case 571046965:
-                            if (str.equals("scaleBitmapFile")) {
-                                c2 = 23;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "scaleBitmapFile":
+                            c2 = 23;
                             break;
-                        case 725249532:
-                            if (str.equals("intentSetAction")) {
-                                c2 = 0;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "intentSetAction":
+                            c2 = 0;
                             break;
-                        case 950609198:
-                            if (str.equals("setBitmapFileColorFilter")) {
-                                c2 = 25;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "setBitmapFileColorFilter":
+                            c2 = 25;
                             break;
-                        case 1086207657:
-                            if (str.equals("fileutildelete")) {
-                                c2 = 15;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutildelete":
+                            c2 = 15;
                             break;
-                        case 1129709718:
-                            if (str.equals("setImageUrl")) {
-                                c2 = ' ';
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "setImageUrl":
+                            c2 = ' ';
                             break;
-                        case 1156598140:
-                            if (str.equals("fileutilEndsWith")) {
-                                c2 = '\b';
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilEndsWith":
+                            c2 = '\b';
                             break;
-                        case 1242107556:
-                            if (str.equals("fileutilisfile")) {
-                                c2 = 5;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilisfile":
+                            c2 = 5;
                             break;
-                        case 1252547704:
-                            if (str.equals("listMapToStr")) {
-                                c2 = 31;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "listMapToStr":
+                            c2 = 31;
                             break;
-                        case 1315302372:
-                            if (str.equals("fileutillength")) {
-                                c2 = 6;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutillength":
+                            c2 = 6;
                             break;
-                        case 1695890133:
-                            if (str.equals("fileutilStartsWith")) {
-                                c2 = 7;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "fileutilStartsWith":
+                            c2 = 7;
                             break;
-                        case 1775620400:
-                            if (str.equals("strToMap")) {
-                                c2 = 28;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "strToMap":
+                            c2 = 28;
                             break;
-                        case 1792552710:
-                            if (str.equals("rotateBitmapFile")) {
-                                c2 = 22;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "rotateBitmapFile":
+                            c2 = 22;
                             break;
-                        case 1974249461:
-                            if (str.equals("skewBitmapFile")) {
-                                c2 = 24;
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "skewBitmapFile":
+                            c2 = 24;
                             break;
-                        case 1976325370:
-                            if (str.equals("setImageFilePath")) {
-                                c2 = '\n';
-                                break;
-                            }
-                            c2 = 65535;
+
+                        case "setImageFilePath":
+                            c2 = '\n';
                             break;
+
                         default:
                             c2 = 65535;
                             break;
                     }
+
                     switch (c2) {
                         case 0:
-                            if (next3.parameters.get(1).equals(uq.c[1])) {
+                            if (bean.parameters.get(1).equals(uq.c[1])) {
                                 N.a(next.getActivityName(), 1);
                             }
                             break;
+
                         case 1:
                         case 2:
                         case 3:
@@ -820,6 +719,7 @@ public class yq {
                         case 11:
                             N.a(next.getActivityName(), 32);
                             break;
+
                         case '\f':
                         case '\r':
                         case 14:
@@ -839,18 +739,21 @@ public class yq {
                             N.a(next.getActivityName(), 32);
                             N.a(next.getActivityName(), 64);
                             break;
+
                         case 28:
                         case 29:
                         case 30:
                         case 31:
                             N.o = true;
                             break;
+
                         case ' ':
                             jq jqVar10 = N;
                             jqVar10.n = true;
                             jqVar10.a(2);
                             N.a(8);
                             break;
+
                         case '!':
                             N.a(2);
                             N.a(8);
