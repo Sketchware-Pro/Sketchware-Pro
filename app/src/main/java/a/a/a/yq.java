@@ -9,6 +9,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -310,11 +311,16 @@ public class yq {
         f = yB.c(hashMap, "my_app_name");
         l = yB.c(hashMap, "sc_ver_code");
         m = yB.c(hashMap, "sc_ver_name");
-        g = yB.a(hashMap, "color_accent", context.getResources().getColor(2131034159));
-        h = yB.a(hashMap, "color_primary", context.getResources().getColor(2131034174));
-        i = yB.a(hashMap, "color_primary_dark", context.getResources().getColor(2131034176));
-        j = yB.a(hashMap, "color_control_highlight", context.getResources().getColor(2131034172));
-        k = yB.a(hashMap, "color_control_normal", context.getResources().getColor(2131034173));
+        g = yB.a(hashMap, "color_accent", context.getResources()
+                .getColor(Resources.color.color_accent, context.getTheme()));
+        h = yB.a(hashMap, "color_primary", context.getResources()
+                .getColor(Resources.color.color_primary, context.getTheme()));
+        i = yB.a(hashMap, "color_primary_dark", context.getResources()
+                .getColor(Resources.color.color_primary_dark, context.getTheme()));
+        j = yB.a(hashMap, "color_control_highlight", context.getResources()
+                .getColor(Resources.color.color_control_highlight, context.getTheme()));
+        k = yB.a(hashMap, "color_control_normal", context.getResources()
+                .getColor(Resources.color.color_control_normal, context.getTheme()));
         projectSettings = new ProjectSettings(b);
         b(context);
     }
