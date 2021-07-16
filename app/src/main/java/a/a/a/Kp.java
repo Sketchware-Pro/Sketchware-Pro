@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class Kp {
 
-    public ArrayList<String> a = new ArrayList<>();
-    public ArrayList<Jp> b = new ArrayList<>();
+    private final ArrayList<String> libraryNames = new ArrayList<>();
+    private final ArrayList<Jp> libraries = new ArrayList<>();
 
     /**
      * Add a built-in library to the project libraries list.
@@ -19,31 +19,26 @@ public class Kp {
      * @param libraryName The built-in library's name, e.g. material-1.0.0
      */
     public void a(String libraryName) {
-        Log.d(Dp.TAG, "Trying to add built-in library \"" + libraryName + "\"");
-        if (!a.contains(libraryName)) {
+        if (!libraryNames.contains(libraryName)) {
             Log.d(Dp.TAG, "Added built-in library \"" + libraryName + "\" to project's dependencies");
-            a.add(libraryName);
-            b.add(new Jp(libraryName));
-            b(libraryName);
+            libraryNames.add(libraryName);
+            libraries.add(new Jp(libraryName));
+            addDependencies(libraryName);
+        } else {
+            Log.v(Dp.TAG, "Didn't add built-in library \"" + libraryName + "\" to project's dependencies again");
         }
     }
 
-    /**
-     * Process a built-in library to add its dependencies if needed.
-     *
-     * @param libraryName The built-in library's name, e.g. material-1.0.0
-     * @implNote          Could probably be made <code>private</code>
-     */
-    public void b(String libraryName) {
+    private void addDependencies(String libraryName) {
         for (String libraryDependency : qq.a(libraryName)) {
             a(libraryDependency);
         }
     }
 
     /**
-     * @return {@link Kp#b}
+     * @return {@link Kp#libraries}
      */
     public ArrayList<Jp> a() {
-        return b;
+        return libraries;
     }
 }
