@@ -444,17 +444,37 @@ public class yq {
     }
 
     public void a(Context context) {
-        oB oBVar = L;
-        String replaceAll = oBVar.b(context, "debug" + File.separator + "DebugActivity.java").replaceAll("<\\?package_name\\?>", e);
-        oB oBVar2 = L;
-        oBVar2.b(y + File.separator + n + File.separator + "DebugActivity.java", replaceAll);
-        oB oBVar3 = L;
-        String sb = "debug" +
-                File.separator +
-                "SketchApplication.java";
-        String replaceAll2 = oBVar3.b(context, sb).replaceAll("<\\?package_name\\?>", e);
-        oB oBVar4 = L;
-        oBVar4.b(y + File.separator + n + File.separator + "SketchApplication.java", replaceAll2);
+        int minSdkVersion;
+        try {
+            minSdkVersion = Integer.parseInt(projectSettings.getValue(
+                    ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
+        } catch (NumberFormatException e) {
+            minSdkVersion = 21;
+        }
+        boolean applyMultiDex = minSdkVersion < 21;
+
+        L.b(y + File.separator
+                        + n + File.separator
+                        + "DebugActivity.java",
+                L.b(
+                        context,
+                        "debug" + File.separator
+                                + "DebugActivity.java"
+                ).replaceAll("<\\?package_name\\?>", e));
+
+        String sketchApplicationFileContent = L.b(
+                context,
+                "debug" + File.separator + "SketchApplication.java"
+        ).replaceAll("<\\?package_name\\?>", e);
+        if (applyMultiDex) {
+            sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
+                    "Application \\{", "androidx.multidex.MultiDexApplication \\{");
+        }
+
+        L.b(y + File.separator
+                        + n + File.separator
+                        + "SketchApplication.java",
+                sketchApplicationFileContent);
     }
 
     public void a(String str, String str2) {
