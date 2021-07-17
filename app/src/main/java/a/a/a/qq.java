@@ -7,9 +7,9 @@ import mod.agus.jcoderz.manage.library.ExtLibSelection;
 public class qq {
 
     /**
-     * @param name  A built-in library's name, e.g. material-1.0.0
-     * @return     A set of known dependencies for a built-in library
-     * @apiNote    Won't return the dependencies' sub-dependencies!
+     * @param name A built-in library's name, e.g. material-1.0.0
+     * @return A set of known dependencies for a built-in library
+     * @apiNote Won't return the dependencies' sub-dependencies!
      */
     public static String[] a(String name) {
         ArrayList<String> knownDependencies = new ArrayList<>();
@@ -154,9 +154,9 @@ public class qq {
                 break;
 
             case "firebase-common-19.0.0":
+                knownDependencies.add("auto-value-annotations-1.6.5");
                 knownDependencies.add("play-services-basement-17.0.0");
                 knownDependencies.add("play-services-tasks-17.0.0");
-                knownDependencies.add("auto-value-annotations-1.6.5");
                 break;
 
             case "play-services-measurement-impl-17.0.0":
@@ -172,14 +172,6 @@ public class qq {
                 knownDependencies.add("fragment-1.0.0");
                 knownDependencies.add("play-services-base-17.1.0");
                 knownDependencies.add("play-services-basement-17.0.0");
-                break;
-
-            case "gson-2.8.0":
-            case "annotation-1.1.0":
-            case "Okio-1.17.4":
-            case "play-services-ads-base-18.2.0":
-            case "firebase-database-collection-17.0.0":
-                knownDependencies = ExtLibSelection.a(name);
                 break;
 
             case "firebase-storage-19.0.0":
@@ -361,13 +353,17 @@ public class qq {
                 knownDependencies.add("core-common-2.0.0");
                 knownDependencies.add("annotation-1.1.0");
                 break;
+
+            default:
+                knownDependencies = ExtLibSelection.a(name);
+                break;
         }
         return knownDependencies.toArray(new String[0]);
     }
 
     /**
-     * @param name  Built-in library name, e.g. material-1.0.0
-     * @return     Package name of built-in library, e.g. com.google.android.material
+     * @param name Built-in library name, e.g. material-1.0.0
+     * @return Package name of built-in library, e.g. com.google.android.material
      */
     public static String b(String name) {
         switch (name) {
@@ -432,7 +428,7 @@ public class qq {
 
     /**
      * @param str The built-in library's name, e.g. material-1.0.0
-     * @return    Whether the built-in library has resources that need to be mapped to a R.java file by a resource processor
+     * @return Whether the built-in library has resources that need to be mapped to a R.java file by a resource processor
      */
     public static boolean c(String str) {
         switch (str) {

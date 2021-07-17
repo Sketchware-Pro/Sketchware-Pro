@@ -453,14 +453,15 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             l = savedInstanceState.getString("sc_id");
         }
-        
-        getSupportActionBar().setSubtitle(this.l);
+
 
         r = new DB(getApplicationContext(), "P1");
         s = new DB(getApplicationContext(), "P2");
         t = new DB(getApplicationContext(), "P12");
         z = new oB();
         k = findViewById(Resources.id.toolbar);
+        k.setSubtitle(l);
+
         a(k);
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().d(true);
