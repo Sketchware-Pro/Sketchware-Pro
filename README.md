@@ -46,6 +46,10 @@ Fork this repository and contribute back using
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated, but will
 be thoroughly reviewed.
 
+## Note 
+
+The repository use `Java 8`
+
 ### Commit message
 
 When you've made changes to one or more files, you have to *commit* that file. You also need a *
