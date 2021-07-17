@@ -234,7 +234,6 @@ public class dt extends LinearLayout {
     }
 
     public void initRefresh() {
-        this.radio_mb_type.setOnCheckedChangeListener(new a(this));
         radiobutton1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup radioGroup, int i) {
