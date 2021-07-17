@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.io.*;
 
 import a.a.a.bB;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -207,18 +208,40 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             ((ImageView) convertView.findViewById(2131231132)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
-                    popupMenu.getMenu().add(0, 0, 0, "Delete");
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
-                            bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
-                            loadFiles();
-                            return true;
-                        }
-                    });
-                    popupMenu.show();
+                    @Override
+    public boolean onMenuItemClick(MenuItem item){
+        switch (item.getTitle().toString()){
+	        case "Delete":
+			    FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
+				loadFiles();
+				break;
+			case "Rename":
+			    final AlertDialog dialog = new AlertDialog.Builder(this).create();
+				LinearLayout root = (LinearLayout) getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
+				final EditText filename = root.findViewById(Resources.id.edittext_change_name);
+				filename.setText(checkBox.getText().toString());
+				root.findViewById(Resources.id.text_cancel)
+					.setOnClickListener(Helper.getDialogDismissListener(dialog));
+				root.findViewById(Resources.id.text_save)
+					.setOnClickListener(view -> {
+					    {
+							java.io.File input = new java.io.File(local_libs_path.concat(checkBox.getText().toString()));
+							java.io.File output = new java.io.File(local_libs_path.concat(Filename.getText().toString()));
+							input.renameTo(output);
+						}
+					dialog.dismiss();
+					});
+			dialog.setView(root);
+			dialog.setOnDismissListener(dialogInterface -> SketchwareUtil.hideKeyboard());
+			dialog.show();
+
+			filename.requestFocus();
+			SketchwareUtil.showKeyboard();
+			break;}
+			return true;
+			}
+			    });
+			popup.show();
                 }
             });
             return convertView;
