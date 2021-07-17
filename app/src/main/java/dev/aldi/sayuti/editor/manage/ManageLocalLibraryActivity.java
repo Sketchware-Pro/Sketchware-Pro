@@ -209,7 +209,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 @Override
                 public void onClick(View v) {
                     @Override
-    public boolean onMenuItemClick(MenuItem item){
+                    public boolean onMenuItemClick(MenuItem item){
         switch (item.getTitle().toString()){
 	        case "Delete":
 			    FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
