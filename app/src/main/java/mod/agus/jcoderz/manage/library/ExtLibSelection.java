@@ -172,41 +172,44 @@ public class ExtLibSelection {
      */
     public static String b(String name) {
         switch (name) {
-            case "Lottie-3.4.0":
-                return "com.airbnb.lottie";
+            case "android-youtube-player-10.0.5":
+                return "com.pierfrancescosoffritti.androidyoutubeplayer";
 
             case "circle-imageview-v3.1.0":
                 return "de.hdodenhof.circleimageview";
 
-            case "glide-4.11.0":
-                return "com.bumptech.glide";
-
             case "code-view":
                 return "br.tiagohm.codeview";
-
-            case "wave-side-bar":
-                return "com.sayuti.lib";
-
-            case "play-services-auth-17.0.0":
-                return "com.google.android.gms.auth.api";
 
             case "constraintlayout-1.1.3":
                 return "androidx.constraintlayout.widget";
 
-            case "pattern-lock-view":
-                return "com.andrognito.patternlockview";
-
             case "firebase-messaging-19.0.0":
                 return "com.google.firebase.messaging";
 
-            case "android-youtube-player-10.0.5":
-                return "com.pierfrancescosoffritti.androidyoutubeplayer";
+            case "glide-4.11.0":
+                return "com.bumptech.glide";
+
+            case "Lottie-3.4.0":
+                return "com.airbnb.lottie";
 
             case "OneSignal-3.14.0":
                 return "com.onesignal";
 
             case "OTPView-0.1.0":
                 return "affan.ahmad.otp";
+
+            case "pattern-lock-view":
+                return "com.andrognito.patternlockview";
+
+            case "play-services-auth-17.0.0":
+                return "com.google.android.gms.auth.api";
+
+            case "play-services-gcm-17.0.0":
+                return "com.google.android.gms.gcm";
+
+            case "wave-side-bar":
+                return "com.sayuti.lib";
 
             default:
                 return "";
@@ -218,18 +221,19 @@ public class ExtLibSelection {
      */
     public static boolean c(String name) {
         switch (name) {
-            case "Lottie-3.4.0":
-            case "circle-imageview-v3.1.0":
-            case "glide-4.11.0":
-            case "code-view":
-            case "wave-side-bar":
-            case "play-services-auth-17.0.0":
-            case "constraintlayout-1.1.3":
-            case "pattern-lock-view":
-            case "firebase-messaging-19.0.0":
             case "android-youtube-player-10.0.5":
+            case "circle-imageview-v3.1.0":
+            case "code-view":
+            case "constraintlayout-1.1.3":
+            case "firebase-messaging-19.0.0":
+            case "glide-4.11.0":
+            case "Lottie-3.4.0":
             case "OneSignal-3.14.0":
             case "OTPView-0.1.0":
+            case "pattern-lock-view":
+            case "play-services-auth-17.0.0":
+            case "play-services-gcm-17.0.0":
+            case "wave-side-bar":
                 return true;
 
             default:
