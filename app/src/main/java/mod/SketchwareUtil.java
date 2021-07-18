@@ -1,5 +1,7 @@
 package mod;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -29,8 +31,6 @@ import java.util.Map;
 import java.util.Random;
 
 import a.a.a.bB;
-
-import static com.besome.sketch.SketchApplication.getContext;
 
 public class SketchwareUtil {
 
@@ -167,6 +167,7 @@ public class SketchwareUtil {
 
     /**
      * @param v A View which should be visible and "connected" to the currently focused view
+     * @see SketchwareUtil#hideKeyboard()
      */
     public static void hideKeyboard(View v) {
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -176,6 +177,8 @@ public class SketchwareUtil {
     /**
      * Hide the keyboard. This may show the keyboard if it's not opened.
      * Use {@link SketchwareUtil#hideKeyboard(View)} instead, if possible.
+     *
+     * @see SketchwareUtil#hideKeyboard(View)
      */
     public static void hideKeyboard() {
         InputMethodManager _inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
