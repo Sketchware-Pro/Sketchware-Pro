@@ -22,8 +22,8 @@ public class ProguardHandler {
 
     public ProguardHandler(String sc_id) {
         DEFAULT_PROGUARD_RULES_PATH = createDefaultRules(sc_id);
-        config_path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/proguard");
-        fm_config_path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/proguard_fm");
+        config_path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard";
+        fm_config_path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard_fm";
 
         if (!FileUtil.isExistFile(config_path)) {
             FileUtil.writeFile(config_path, getDefaultConfig());
@@ -31,7 +31,7 @@ public class ProguardHandler {
     }
 
     private static String createAndroidRules() {
-        String rulePath = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/android-proguard-rules.pro");
+        String rulePath = FileUtil.getExternalStorageDir() + "/.sketchware/libs/android-proguard-rules.pro";
 
         if (!FileUtil.isExistFile(rulePath)) {
             FileUtil.writeFile(rulePath, "-dontusemixedcaseclassnames\n-dontskipnonpubliclibraryclasses\n-verbose\n\n-dontoptimize\n-dontpreverify\n\n-keepattributes *Annotation*\n-keep public class com.google.vending.licensing.ILicensingService\n-keep public class com.android.vending.licensing.ILicensingService\n\n-keepclasseswithmembernames class * {\n    native <methods>;\n}\n\n-keepclassmembers public class * extends android.view.View {\n   void set*(***);\n   *** get*();\n}\n\n-keepclassmembers class * extends android.app.Activity {\n   public void *(android.view.View);\n}\n\n-keepclassmembers enum * {\n    public static **[] values();\n    public static ** valueOf(java.lang.String);\n}\n\n-keepclassmembers class * implements android.os.Parcelable {\n  public static final android.os.Parcelable$Creator CREATOR;\n}\n\n-keepclassmembers class **.R$* {\n    public static <fields>;\n}\n\n-dontwarn android.support.**\n\n-keep class android.support.annotation.Keep\n\n-keep @android.support.annotation.Keep class * {*;}\n\n-keepclasseswithmembers class * {\n    @android.support.annotation.Keep <methods>;\n}\n\n-keepclasseswithmembers class * {\n    @android.support.annotation.Keep <fields>;\n}\n\n-keepclasseswithmembers class * {\n    @android.support.annotation.Keep <init>(...);\n}\n\n-dontwarn android.arch.**\n-dontwarn android.lifecycle.**\n-keep class android.arch.** { *; }\n-keep class android.lifecycle.** { *; }\n\n-dontwarn androidx.arch.**\n-dontwarn androidx.lifecycle.**\n-keep class androidx.arch.** { *; }\n-keep class androidx.lifecycle.** { *; }\n");
@@ -41,7 +41,7 @@ public class ProguardHandler {
     }
 
     private static String createDefaultRules(String sc_id) {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/proguard-rules.pro");
+        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard-rules.pro";
 
         if (!FileUtil.isExistFile(path)) {
             FileUtil.writeFile(path, "-repackageclasses\n-ignorewarnings\n-dontwarn\n-dontnote");
@@ -71,8 +71,9 @@ public class ProguardHandler {
 
                 if (!config.containsKey("debug")) return false;
 
-                if (config.get("debug") != null) {
-                    debugFiles = config.get("debug").equals("true");
+                String debug = config.get("debug");
+                if (debug != null) {
+                    debugFiles = debug.equals("true");
                 }
 
             } catch (Exception e) {
@@ -89,10 +90,11 @@ public class ProguardHandler {
             try {
                 HashMap<String, String> config = new Gson().fromJson(FileUtil.readFile(config_path), hashMapStringStringType);
 
-                if (config.containsKey("enabled")) {
-                    proguardEnabled = config.get("enabled").equals("true");
-                } else {
+                String enabled = config.get("enabled");
+                if (enabled == null) {
                     proguardEnabled = false;
+                } else {
+                    proguardEnabled = enabled.equals("true");
                 }
 
             } catch (Exception e) {
