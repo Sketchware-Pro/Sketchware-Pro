@@ -27,14 +27,16 @@ There are a few things that you should consider before contributing to Sketchwar
 
 ### Source code map
 
-- `La/a/a/Dp;` -> Helper for compiling an entire project
-- `La/a/a/Ix;` -> Responsible for generating AndroidManifest.xml
-- `La/a/a/Jx;` -> Generates source code of activities
-- `La/a/a/Lx;` -> Generates source code of components, such as listeners, etc.
-- `La/a/a/Ox;` -> Responsible for generating XML files of layouts
-- `La/a/a/qq;` -> Registry of built-in libraries' dependencies
-- `La/a/a/tq;` -> Responsible for the compiling dialog's quizzes
-- `La/a/a/yq;` -> Organizes Sketchware projects' file paths
+| Class | Role |
+| --- | --- |
+| `La/a/a/Dp;` | Helper for compiling an entire project |
+| `La/a/a/Ix;` | Responsible for generating AndroidManifest.xml |
+| `La/a/a/Jx;` | Generates source code of activities |
+| `La/a/a/Lx;` | Generates source code of components, such as listeners, etc. |
+| `La/a/a/Ox;` | Responsible for generating XML files of layouts |
+| `La/a/a/qq;` | Registry of built-in libraries' dependencies |
+| `La/a/a/tq;` | Responsible for the compiling dialog's quizzes |
+| `La/a/a/yq;` | Organizes Sketchware projects' |
 
 You can also check the `mod` package that has the majority of contributors' changes.
 
