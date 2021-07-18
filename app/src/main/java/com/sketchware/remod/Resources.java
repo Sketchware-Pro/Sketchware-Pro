@@ -129,6 +129,7 @@ public class Resources {
         public static final int ic_property_convert = 0x7f07046c;
         public static final int add_file_48 = 0x7f070473;
         public static final int icon8_code_am = 0x7f07049c;
+        public static final int download_80px = 0x7f0704a0;
         public static final int block_boolean = 0x7f0704a1;
         public static final int block_num = 0x7f0704a2;
         public static final int block_ori = 0x7f0704a3;
@@ -223,6 +224,7 @@ public class Resources {
         public static final int img_color_guide = 0x7f080195;
         public static final int img_copy_apk_url = 0x7f080197;
         public static final int img_copy_data_url = 0x7f080198;
+        public static final int img_delete = 0x7f08019c;
         public static final int img_file_picker = 0x7f0801a9;
         public static final int img_icon = 0x7f0801af;
         public static final int img_left_icon = 0x7f0801b3;
@@ -368,8 +370,12 @@ public class Resources {
         public static final int list_file = 0x7f080667;
         public static final int fab_plus = 0x7f080668;
         public static final int text_info = 0x7f080669;
+        public static final int managepermissionLinearLayout1 = 0x7f08066a;
+        public static final int main_content = 0x7f08066c;
         public static final int text_title = 0x7f08066e;
         public static final int text_content = 0x7f08066f;
+        public static final int checkbox_content = 0x7f080672;
+        public static final int dialoginputlayoutLinearLayout1 = 0x7f080675;
         public static final int dialoginputlayoutLinearLayout2 = 0x7f080676;
         public static final int edittext_change_name = 0x7f080677;
         public static final int text_cancel = 0x7f080678;
@@ -504,6 +510,7 @@ public class Resources {
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
         public static final int manage_file = 0x7f0b01c9;
+        public static final int manage_permission = 0x7f0b01ca;
         public static final int view_code = 0x7f0b01cb;
         public static final int dialog_input_layout = 0x7f0b01ce;
         public static final int about = 0x7f0b01cf;
@@ -524,6 +531,7 @@ public class Resources {
         public static final int manage_proguard = 0x7f0b01ea;
         public static final int manage_stringfog = 0x7f0b01ee;
         public static final int manage_java_item_hs = 0x7f0b01ef;
+        public static final int view_item_local_lib = 0x7f0b01f0;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
         public static final int about_empty_viewpager = 0x7f0b01f6;
