@@ -367,11 +367,41 @@ public class qq {
      */
     public static String b(String name) {
         switch (name) {
+            case "appcompat-1.0.0":
+                return "androidx.appcompat";
+
+            case "appcompat-resources-1.1.0":
+                return "androidx.appcompat.resources";
+
+            case "browser-1.0.0":
+                return "androidx.browser";
+
             case "cardview-1.0.0":
                 return "androidx.cardview";
 
-            case "play-services-base-17.1.0":
-                return "com.google.android.gms.base";
+            case "constraintlayout-1.0.0":
+                return "androidx.constraintlayout";
+
+            case "coordinatorlayout-1.0.0":
+                return "androidx.coordinatorlayout";
+
+            case "core-1.0.0":
+                return "androidx.core";
+
+            case "drawerlayout-1.0.0":
+                return "androidx.drawerlayout";
+
+            case "fragment-1.0.0":
+                return "androidx.fragment";
+
+            case "lifecycle-runtime-2.0.0":
+                return "androidx.lifecycle.runtime";
+
+            case "lifecycle-viewmodel-2.0.0":
+                return "androidx.lifecycle.viewmodel";
+
+            case "material-1.0.0":
+                return "com.google.android.material";
 
             case "media-1.0.0":
                 return "androidx.media";
@@ -382,44 +412,29 @@ public class qq {
             case "play-services-ads-18.2.0":
                 return "com.google.android.gms.ads.impl";
 
-            case "coordinatorlayout-1.0.0":
-                return "androidx.coordinatorlayout";
+            case "play-services-ads-lite-18.2.0":
+                return "com.google.android.gms.ads";
 
-            case "play-services-maps-17.0.0":
-                return "com.google.android.gms.maps";
+            case "play-services-base-17.1.0":
+                return "com.google.android.gms.base";
 
             case "play-services-basement-17.0.0":
                 return "com.google.android.gms.common";
 
-            case "core-1.0.0":
-                return "androidx.core";
+            case "play-services-maps-17.0.0":
+                return "com.google.android.gms.maps";
 
-            case "play-services-ads-lite-18.2.0":
-                return "com.google.android.gms.ads";
-
-            case "appcompat-1.0.0":
-                return "androidx.appcompat";
-
-            case "browser-1.0.0":
-                return "androidx.browser";
-
-            case "material-1.0.0":
-                return "com.google.android.material";
-
-            case "appcompat-resources-1.1.0":
-                return "androidx.appcompat.resources";
-
-            case "transition-1.0.0":
-                return "androidx.transition";
-
-            case "constraintlayout-1.0.0":
-                return "androidx.constraintlayout";
+            case "savedstate-1.0.0":
+                return "androidx.savedstate";
 
             case "swiperefreshlayout-1.0.0":
                 return "androidx.swiperefreshlayout";
 
-            case "drawerlayout-1.0.0":
-                return "androidx.drawerlayout";
+            case "transition-1.0.0":
+                return "androidx.transition";
+
+            case "work-runtime-2.1.0":
+                return "androidx.work";
 
             default:
                 return ExtLibSelection.b(name);
@@ -440,6 +455,9 @@ public class qq {
             case "coordinatorlayout-1.0.0":
             case "core-1.0.0":
             case "drawerlayout-1.0.0":
+            case "fragment-1.0.0":
+            case "lifecycle-runtime-2.0.0":
+            case "lifecycle-viewmodel-2.0.0":
             case "material-1.0.0":
             case "media-1.0.0":
             case "play-services-ads-18.2.0":
@@ -448,7 +466,10 @@ public class qq {
             case "play-services-basement-17.0.0":
             case "play-services-maps-17.0.0":
             case "recyclerview-1.0.0":
+            case "savedstate-1.0.0":
+            case "swiperefreshlayout-1.0.0":
             case "transition-1.0.0":
+            case "work-runtime-2.1.0":
                 return true;
 
             default:
