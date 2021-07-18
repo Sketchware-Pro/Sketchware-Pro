@@ -1,9 +1,9 @@
 package mod.hey.studios.build;
 
-import android.annotation.SuppressLint;
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.view.View;
@@ -18,10 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.Resources;
 
 import mod.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class BuildSettingsDialog {
 
     private final Activity activity;
@@ -35,15 +36,16 @@ public class BuildSettingsDialog {
     public void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        View inflate = activity.getLayoutInflater().inflate(2131427806, null);
+        View inflate = activity.getLayoutInflater().inflate(Resources.layout.project_config_layout, null);
 
-        ((ImageView) inflate.findViewById(2131232630)).setImageResource(2131166152);
-        ((TextView) inflate.findViewById(2131232629)).setText("Build Settings");
+        ImageView icon = inflate.findViewById(Resources.id.project_config_icon);
+        TextView title = inflate.findViewById(Resources.id.project_config_title);
+        LinearLayout contentView = inflate.findViewById(Resources.id.project_config_pref_layout);
+        TextView cancel = inflate.findViewById(Resources.id.text_cancel);
+        TextView save = inflate.findViewById(Resources.id.text_save);
 
-        TextView cancel = inflate.findViewById(2131232376);
-        TextView save = inflate.findViewById(2131232377);
-
-        LinearLayout contentView = inflate.findViewById(2131232508);
+        icon.setImageResource(Resources.drawable.side_menu_setting_icon_over);
+        title.setText("Build Settings");
 
         View[] viewArr = {
                 addInputPref(BuildSettings.SETTING_ANDROID_JAR_PATH, "", "Custom android.jar", 1, contentView),
@@ -51,7 +53,6 @@ public class BuildSettingsDialog {
                 addSingleChoicePref(BuildSettings.SETTING_RESOURCE_PROCESSOR, new String[]{"AAPT", "AAPT2"}, "AAPT", "Resource processor", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_DEXER, new String[]{"Dx", "D8"}, "Dx", "Dexer", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, new String[]{"1.7", "1.8"}, "1.7", "Java version", contentView),
-                addSingleChoicePref(BuildSettings.SETTING_OUTPUT_FORMAT, new String[]{"APK", "AAB"}, "APK", "Output format", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, false, "Hide warnings in error log", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", 12, contentView)
         };
@@ -60,7 +61,7 @@ public class BuildSettingsDialog {
 
         AlertDialog buildSettingsDialog = builder.create();
         buildSettingsDialog.show();
-        cancel.setOnClickListener(v -> buildSettingsDialog.dismiss());
+        cancel.setOnClickListener(Helper.getDialogDismissListener(buildSettingsDialog));
         save.setOnClickListener(v -> {
             settings.setValues(viewArr);
             buildSettingsDialog.dismiss();
@@ -70,16 +71,18 @@ public class BuildSettingsDialog {
     private RadioGroup addSingleChoicePref(String key, String[] choices, String defaultValue, String title, LinearLayout addTo) {
         TextView textView = new TextView(activity);
 
-        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setText(title);
-        textView.setTextSize((float) 14);
+        textView.setTextSize(14f);
         textView.setTextColor(0xff008DCD);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setPadding(
                 0,
-                getDip(12),
+                (int) getDip(12),
                 0,
-                getDip(12)
+                (int) getDip(12)
         );
 
         addTo.addView(textView);
@@ -94,7 +97,10 @@ public class BuildSettingsDialog {
         for (String choice : choices) {
             RadioButton radioButton = new RadioButton(activity);
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    1.0f);
             layoutParams.setMargins(
                     0,
                     0,
@@ -132,8 +138,15 @@ public class BuildSettingsDialog {
     private CheckBox addTogglePref(String key, boolean defaultValue, String label, int leftMargin, LinearLayout addTo) {
         CheckBox checkBox = new CheckBox(activity);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, -2);
-        layoutParams.setMargins(0, getDip(leftMargin), 0, 0);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(
+                0,
+                (int) getDip(leftMargin),
+                0,
+                0
+        );
         checkBox.setLayoutParams(layoutParams);
 
         addTo.addView(checkBox);
@@ -141,13 +154,20 @@ public class BuildSettingsDialog {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setText(label);
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTextColor(-16777216);
-        checkBox.setPadding(getDip(4), getDip(8), getDip(8), getDip(8));
+        checkBox.setTextColor(0xff000000);
+        checkBox.setPadding(
+                (int) getDip(4),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
         checkBox.setTag(key);
 
         if (key.equals(BuildSettings.SETTING_NO_HTTP_LEGACY)) {
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) SketchwareUtil.toast("Note that this option may cause issues if RequestNetwork component is used");
+                if (isChecked) {
+                    SketchwareUtil.toast("Note that this option may cause issues if RequestNetwork component is used");
+                }
             });
         }
 
@@ -157,20 +177,34 @@ public class BuildSettingsDialog {
     private EditText addInputPref(String key, String defaultValue, String hint, int inputType, LinearLayout addTo) {
         TextInputLayout textInputLayout = new TextInputLayout(activity);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-1, -2);
-        layoutParams.setMargins(0, getDip(12), 0, 0);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(
+                0,
+                (int) getDip(12),
+                0,
+                0
+        );
 
         textInputLayout.setLayoutParams(layoutParams);
 
         addTo.addView(textInputLayout);
 
         EditText editText = new EditText(activity);
-        editText.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-        editText.setPadding(getDip(4), getDip(8), getDip(8), getDip(8));
-        editText.setTextSize((float) 16);
-        editText.setTextColor(-16777216);
+        editText.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        editText.setPadding(
+                (int) getDip(4),
+                (int) getDip(8),
+                (int) getDip(8),
+                (int) getDip(8)
+        );
+        editText.setTextSize(16f);
+        editText.setTextColor(0xff000000);
         editText.setHint(hint);
-        editText.setHintTextColor(Color.parseColor("#607D8B"));
+        editText.setHintTextColor(0xff607d8b);
         editText.setText(settings.getValue(key, defaultValue));
         editText.setTag(key);
         editText.setInputType(inputType);
@@ -178,9 +212,5 @@ public class BuildSettingsDialog {
         textInputLayout.addView(editText);
 
         return editText;
-    }
-
-    private int getDip(int i) {
-        return (int) SketchwareUtil.getDip(i);
     }
 }
