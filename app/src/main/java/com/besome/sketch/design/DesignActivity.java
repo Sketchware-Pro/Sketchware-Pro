@@ -396,6 +396,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
+                menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
@@ -410,7 +411,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         case 3:
                             new CompileErrorSaver(l).showDialog(DesignActivity.this);
                             break;
-
+                        case 4:
+                       if (FileUtil.isExistFile(q.H)) {
+			o();
+		} else {
+			SketchwareUtil.toast("Apk not found!");
+		}
+                     break;
                         default:
                             return false;
                     }
