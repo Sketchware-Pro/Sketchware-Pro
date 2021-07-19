@@ -51,7 +51,7 @@
             android:indeterminate="false" />
     </LinearLayout>
 
-    <LinearLayout
+    </com.google.android.material.textfield.TextInputLayout
         android:id="@id/linear4"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -65,7 +65,7 @@
             android:hint="Example: com.anjlab.android.iab.v3:library:1.0.44"
             android:singleLine="true"
             android:textSize="14sp" />
-    </LinearLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
