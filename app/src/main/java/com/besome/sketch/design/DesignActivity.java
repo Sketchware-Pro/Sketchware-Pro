@@ -141,10 +141,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public rs x = null;
     public br y = null;
     public oB z;
+    public FileUtil fileUtil;
+    public String APK_NOT_FOUND_MESSAGE = "Apk not found!";
 
 
     public DesignActivity() {
-    }
+
+   }
 
     public final void A() {
         HashMap<String, Object> var1 = lC.b(this.l);
@@ -413,7 +416,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 4:
-			    new ApkInstallTask(DesignActivity.this, q).installApk();
+			    installApkTask();
 			    break;
 
                         default:
@@ -427,7 +430,35 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
     }
+             public void installApkTask() {
 
+		if (isTheApkExist()) {
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			if (VERSION.SDK_INT >= 24) {
+				Uri apkUri = FileProvider.a(getApplicationContext(   , getApplicationContext().getPackageName() + ".provider"
+											, new File(q.H));
+				intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+				intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+				intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+				intent.setDataAndType(apkUri
+									  , "application/vnd.android.package-archive");
+			} else {
+				intent.setDataAndType(Uri.fromFile(new File(q.H)), "application/vnd.android.package-archive");
+			}
+
+			startActivity(intent);
+		} else {
+			SketchwareUtil.toast(APK_NOT_FOUND_MESSAGE);
+		}
+    }
+
+
+	public final boolean isTheApkExist() {
+		if (fileUtil.isExistFile(q.H)) {
+			return true;
+		}
+		return false;
+	}
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
