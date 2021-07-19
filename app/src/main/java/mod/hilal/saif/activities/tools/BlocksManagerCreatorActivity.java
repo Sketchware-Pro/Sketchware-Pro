@@ -40,6 +40,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
+import mod.w3wide.highlighter;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
@@ -284,6 +285,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         _inputsProp();
         _addParams();
         _receiveIntents();
+        _setHighlighter(code);
     }
 
     private View _k(final String str, String str2) {
@@ -468,6 +470,13 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         SketchwareUtil.toast("Saved");
         finish();
     }
+
+    private void _setHighlighter(Edittext text) {
+      
+      SimpleHighlighter codeview = new SimpleHighlighter(text);
+    
+       }
+
 
     private void _insertBlockAt(int position) {
         tempMap = new HashMap<>();
