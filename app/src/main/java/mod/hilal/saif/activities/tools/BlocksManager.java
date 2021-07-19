@@ -160,7 +160,8 @@ public class BlocksManager extends AppCompatActivity {
                             _createPallette(editText.getText().toString(), editText2.getText().toString());
                             insert_n = -1.0d;
                             create.dismiss();
-                        } catch (Exception ignored) {
+                        } catch (Exception e) {
+                             editText2.setError("Hex color is not formed well");
                         }
                     }
                 });
