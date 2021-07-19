@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -275,7 +276,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             titleExportAppBundleParams.leftMargin = (int) getDip(8);
             titleExportAppBundleParams.addRule(RelativeLayout.RIGHT_OF, Resources.id.icon_src);
             titleExportAppBundle.setLayoutParams(titleExportAppBundleParams);
-            titleExportAppBundle.setTextColor(getResources().getColor(Resources.color.scolor_black_01, getTheme()));
+            titleExportAppBundle.setTextColor(ContextCompat.getColor(this,
+                    Resources.color.scolor_black_01));
             titleExportAppBundle.setTextSize(16f);
             titleExportAppBundle.setTypeface(Typeface.DEFAULT_BOLD);
         }
@@ -384,7 +386,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     (int) getDip(8),
                     (int) getDip(0)
             );
-            tvAppBundlePath.setTextColor(getResources().getColor(Resources.color.scolor_black_01, getTheme()));
+            tvAppBundlePath.setTextColor(ContextCompat.getColor(this,
+                    Resources.color.scolor_black_01));
             tvAppBundlePath.setTextSize(13f);
         }
         var4.addView(tvAppBundlePath);
@@ -413,8 +416,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 btnSendAppBundle.setLayoutParams(btnSendAppBundleParams);
                 btnSendAppBundle.setTextColor(Color.WHITE);
                 btnSendAppBundle.setTextSize(12f);
-                btnSendAppBundle.setBackgroundColor(getColor(Resources.color.scolor_green_normal));
-                btnSendAppBundle.setHighlightColor(getColor(Resources.color.color_btn_green_highlight));
+                btnSendAppBundle.setBackgroundColor(ContextCompat.getColor(this,
+                        Resources.color.scolor_green_normal));
+                btnSendAppBundle.setHighlightColor(ContextCompat.getColor(this,
+                        Resources.color.color_btn_green_highlight));
             }
             btnSendAppBundleContainer.addView(btnSendAppBundle);
 
