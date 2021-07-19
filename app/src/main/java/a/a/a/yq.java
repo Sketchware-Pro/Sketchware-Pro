@@ -3,6 +3,8 @@ package a.a.a;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -301,26 +303,27 @@ public class yq {
         this(context, wq.d(sc_id), lC.b(sc_id));
     }
 
-    public yq(Context context, String str, HashMap<String, Object> hashMap) {
+    public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
         N = new jq();
-        a = hashMap;
-        b = yB.c(hashMap, "sc_id");
-        c = str;
-        e = yB.c(hashMap, "my_sc_pkg_name");
-        d = yB.c(hashMap, "my_ws_name");
-        f = yB.c(hashMap, "my_app_name");
-        l = yB.c(hashMap, "sc_ver_code");
-        m = yB.c(hashMap, "sc_ver_name");
-        g = yB.a(hashMap, "color_accent", context.getResources()
-                .getColor(Resources.color.color_accent, context.getTheme()));
-        h = yB.a(hashMap, "color_primary", context.getResources()
-                .getColor(Resources.color.color_primary, context.getTheme()));
-        i = yB.a(hashMap, "color_primary_dark", context.getResources()
-                .getColor(Resources.color.color_primary_dark, context.getTheme()));
-        j = yB.a(hashMap, "color_control_highlight", context.getResources()
-                .getColor(Resources.color.color_control_highlight, context.getTheme()));
-        k = yB.a(hashMap, "color_control_normal", context.getResources()
-                .getColor(Resources.color.color_control_normal, context.getTheme()));
+        a = metadata;
+        b = yB.c(metadata, "sc_id");
+        c = myscFolderPath;
+        e = yB.c(metadata, "my_sc_pkg_name");
+        d = yB.c(metadata, "my_ws_name");
+        f = yB.c(metadata, "my_app_name");
+        l = yB.c(metadata, "sc_ver_code");
+        m = yB.c(metadata, "sc_ver_name");
+
+        g = yB.a(metadata, "color_accent",
+                ContextCompat.getColor(context, Resources.color.color_accent));
+        h = yB.a(metadata, "color_primary",
+                ContextCompat.getColor(context, Resources.color.color_primary));
+        i = yB.a(metadata, "color_primary_dark",
+                ContextCompat.getColor(context, Resources.color.color_primary_dark));
+        j = yB.a(metadata, "color_control_highlight",
+                ContextCompat.getColor(context, Resources.color.color_control_highlight));
+        k = yB.a(metadata, "color_control_normal",
+                ContextCompat.getColor(context, Resources.color.color_control_normal));
         projectSettings = new ProjectSettings(b);
         b(context);
     }
