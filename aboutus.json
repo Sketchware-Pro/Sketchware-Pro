@@ -15,7 +15,7 @@
       "modder_img": "https://i.imgur.com/uAudAvd.jpg",
       "isTitled": false,
       "isMainModder": true,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Aldi Sayuti",
@@ -23,7 +23,7 @@
       "modder_img": "https://i.imgur.com/08zcyKH.png",
       "isTitled": false,
       "isMainModder": true,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Mike Anderson",
@@ -31,7 +31,7 @@
       "modder_img": "https://i.imgur.com/c5Vetpo.jpg",
       "isTitled": false,
       "isMainModder": true,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Jbk0",
@@ -39,13 +39,13 @@
       "modder_img": "https://i.imgur.com/aGMz8Iz.jpg",
       "isTitled": false,
       "isMainModder": true,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "IndoSW",
       "modder_description": "Direct Source Code Editor",
       "modder_img": "https://i.imgur.com/mthq123.jpg",
-      "isTitled": false,
+      "isTitled": true,
       "isMainModder": false,
       "title": "Special Thanks"
     },
@@ -55,15 +55,15 @@
       "modder_img": "https://i.imgur.com/G7F3evT.jpg",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Tyron",
       "modder_description": "Easier restoring of projects, unreleased feature",
       "modder_img": "https://i.imgur.com/gP8jauO.png",
-      "isTitled": true,
+      "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Hasrat",
@@ -71,7 +71,7 @@
       "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Ilyasse",
@@ -79,7 +79,7 @@
       "modder_img": "https://cdn.discordapp.com/avatars/575336194867462215/2d14a989147a118cf3b41c8fc602e1d1.png?size=256",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Hosni Fraj",
@@ -87,7 +87,7 @@
       "modder_img": "https://i.imgur.com/Q2Qxsjl.jpg",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Iyxan23",
@@ -95,7 +95,7 @@
       "modder_img": "https://i.imgur.com/gOopPZT.png",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "Aliveness",
@@ -103,7 +103,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/81700082",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     },
     {
       "modder_username": "khaled",
@@ -111,7 +111,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/74397286",
       "isTitled": false,
       "isMainModder": false,
-      "title": "null"
+      "title": null
     }
   ],
   "changelog": [
