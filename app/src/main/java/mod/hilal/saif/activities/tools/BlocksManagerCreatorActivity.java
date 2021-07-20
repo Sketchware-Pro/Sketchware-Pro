@@ -133,35 +133,11 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		Exit.setTitle("Exit");
 		Exit.setMessage("Are you sure, you want to leave without saving the changes.");
-		Exit.setPositiveButton("save", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface _dialog, int _which) {
-				// code here
-			}
-		});
-		Exit.setNegativeButton("Leave", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface _dialog, int _which) {
-				// code here
-				finish();
-			}
-		});
-		Exit.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface _dialog, int _which) {
-				// code here
-			}
-		});
-		Exit.create().show();
-	}	@Override
-	public void onBackPressed() {
-		Exit.setTitle("Exit");
-		Exit.setMessage("Are you sure, you want to leave without saving the changes.");
 		Exit.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface _dialog, int _which) {
-				// code here
-                             if (type.getText().toString().equals("")) {
+	        // code here
+                          if (type.getText().toString().equals("")) {
                     type.setText(" ");
                 }
                 if (mod.equals("add")) {
@@ -173,7 +149,8 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                 if (mod.equals("edit")) {
                     _editBlock(n);
                 }
-       			}
+
+			}
 		});
 		Exit.setNegativeButton("Leave", new DialogInterface.OnClickListener() {
 			@Override
@@ -189,7 +166,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
 			}
 		});
 		Exit.create().show();
-	}	}           
+	}      
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
