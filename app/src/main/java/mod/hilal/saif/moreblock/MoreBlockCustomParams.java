@@ -71,5 +71,29 @@ public class MoreBlockCustomParams {
                 }
             }
         });
+        
+        final TextInputLayout mb_input = (TextInputLayout) dt.cusTet.getParent().getParent();
+        mb_input.setHint("Moreblock type");
+        dt.cusTet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                final String s = sequence.toString();
+                
+                mb_input.setError("Invalid format");
+                if (s.matches("[a-zA-Z\[\]]+")) {
+                    mb_input.setErrorEnabled(false);
+                } else {
+                    mb_input.setErrorEnabled(true);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 }
