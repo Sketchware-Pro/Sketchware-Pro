@@ -40,7 +40,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
-import mod.w3wide.highlighter;
+import mod.w3wide.highlighter.SimpleHighlighter;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
