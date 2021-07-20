@@ -25,6 +25,7 @@
                         <RadioButton android:id="@id/radio_mb_type_liststring" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="List String" />
                         <RadioButton android:id="@id/radio_mb_type_listmap" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="List Map" />
                         <RadioButton android:id="@id/radio_mb_type_view" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="View" />
+                        <RadioButton android:id="@id/radio_mb_type_custom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Custom" />
                     </RadioGroup>
                 </HorizontalScrollView>
                 <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/color_primary" android:id="@id/tv_title_add_variable" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="8.0dip" />
@@ -56,6 +57,16 @@
                         <EditText android:textSize="13.0sp" android:id="@id/name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="name" android:lines="1" android:inputType="text" android:imeOptions="actionDone" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <Button android:theme="@style/AppTheme.Button.Blue" android:textSize="12.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/add" android:padding="8.0dip" android:layout_width="48.0dip" android:layout_height="48.0dip" android:text="ADD" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:id="@id/cus_outline" android:layout_width="fill_parent" android:layout_height="wrap_content">
+	            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/color_primary" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="8.0dip" android:text="Custom moreblock type" />
+	            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/bg_rectangle_white" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginBottom="8.0dip" android:layout_marginVertical="8.0dip">
+	                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="16.0dip">
+	                    <com.google.android.material.textfield.TextInputLayout android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:layout_weight="1.0" android:importantForAutofill="noExcludeDescendants">
+	                        <EditText android:textSize="13.0sp" android:id="@id/mb_parameter" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="parameter (without %m.)" android:lines="1" android:inputType="text" android:imeOptions="actionDone" />
+	                    </com.google.android.material.textfield.TextInputLayout>
+	                </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
