@@ -42,11 +42,19 @@
       "title": "null"
     },
     {
+      "modder_username": "IndoSW",
+      "modder_description": "Direct Source Code Editor",
+      "modder_img": "https://i.imgur.com/mthq123.jpg",
+      "isTitled": false,
+      "isMainModder": false,
+      "title": "Special Thanks"
+    },
+    {
       "modder_username": "Rayen Sbai",
-      "modder_description": "Main modder",
+      "modder_description": "Minor helping",
       "modder_img": "https://i.imgur.com/G7F3evT.jpg",
       "isTitled": false,
-      "isMainModder": true,
+      "isMainModder": false,
       "title": "null"
     },
     {
@@ -55,20 +63,20 @@
       "modder_img": "https://i.imgur.com/gP8jauO.png",
       "isTitled": true,
       "isMainModder": false,
-      "title": "Special Thanks"
-    },
-    {
-      "modder_username": "IndoSW",
-      "modder_description": "Direct Source Code Editor",
-      "modder_img": "https://i.imgur.com/mthq123.jpg",
-      "isTitled": false,
-      "isMainModder": false,
       "title": "null"
     },
     {
       "modder_username": "Hasrat",
       "modder_description": "Advanced Custom Variables & Lists",
       "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
+      "isTitled": false,
+      "isMainModder": false,
+      "title": "null"
+    },
+    {
+      "modder_username": "Ilyasse",
+      "modder_description": "New \"About Sketchware Pro\" activity",
+      "modder_img": "https://cdn.discordapp.com/avatars/575336194867462215/2d14a989147a118cf3b41c8fc602e1d1.png?size=256",
       "isTitled": false,
       "isMainModder": false,
       "title": "null"
@@ -87,6 +95,20 @@
       "modder_img": "https://i.imgur.com/gOopPZT.png",
       "isTitled": false,
       "isMainModder": false,
+      "title": "null"
+    },
+    {
+      "modder_username": "Aliveness",
+      "modder_description": "Improved auto-formatting in Code Editor",
+      "modder_img": "https://avatars.githubusercontent.com/u/81700082",
+      "isTitled": false,
+      "title": "null"
+    },
+    {
+      "modder_username": "khaled",
+      "modder_description": "Improved handling of Firebase storage URL",
+      "modder_img": "https://avatars.githubusercontent.com/u/74397286",
+      "isTitled": false,
       "title": "null"
     }
   ],
