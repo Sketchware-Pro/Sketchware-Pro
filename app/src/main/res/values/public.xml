@@ -7952,4 +7952,7 @@
     <public type="font" name="FolksNormal" id="0x7f120006" />
     <public type="font" name="FolksBold" id="0x7f120007" />
     <public type="array" name="java_keywords" id="0x7f130000" />
+    <public type="id" name="radio_mb_type_custom" id="0x7f130001" />
+    <public type="id" name="cus_outline" id="0x7f130002" />
+    <public type="id" name="mb_parameter" id="0x7f130003" />
 </resources>
