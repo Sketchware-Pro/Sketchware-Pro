@@ -74,6 +74,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     private EditText type;
     private EditText typename;
     private ScrollView vscroll1;
+    private AlertDialog.Builder Exit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         save = findViewById(2131232528);
         LinearLayout reset = findViewById(2131232581);
         block_type_dialog = new AlertDialog.Builder(this);
+        Exit = new AlertDialog.Builder(this);
         back_icon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
@@ -126,7 +128,68 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                     save.setEnabled(false);
                 }
             }
-
+           
+             	@Override
+	public void onBackPressed() {
+		Exit.setTitle("Exit");
+		Exit.setMessage("Are you sure, you want to leave without saving the changes.");
+		Exit.setPositiveButton("save", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface _dialog, int _which) {
+				// code here
+			}
+		});
+		Exit.setNegativeButton("Leave", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface _dialog, int _which) {
+				// code here
+				finish();
+			}
+		});
+		Exit.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface _dialog, int _which) {
+				// code here
+			}
+		});
+		Exit.create().show();
+	}	@Override
+	public void onBackPressed() {
+		Exit.setTitle("Exit");
+		Exit.setMessage("Are you sure, you want to leave without saving the changes.");
+		Exit.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface _dialog, int _which) {
+				// code here
+                             if (type.getText().toString().equals("")) {
+                    type.setText(" ");
+                }
+                if (mod.equals("add")) {
+                    _AddBlock();
+                }
+                if (mod.equals("insert")) {
+                    _insertBlockAt(n);
+                }
+                if (mod.equals("edit")) {
+                    _editBlock(n);
+                }
+       			}
+		});
+		Exit.setNegativeButton("Leave", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface _dialog, int _which) {
+				// code here
+				finish();
+			}
+		});
+		Exit.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface _dialog, int _which) {
+				// code here
+			}
+		});
+		Exit.create().show();
+	}	}           
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
