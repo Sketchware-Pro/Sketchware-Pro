@@ -464,6 +464,14 @@ public class Resources {
         public static final int recyclerview1 = 0x7f080788;
         public static final int recyclerview2 = 0x7f080789;
         public static final int tv_loading_desc = 0x7f08078a;
+        public static final int make_block_layout = 0x7f0b00b2;
+        public static final int radio_mb_type = 0x7f0806b0;
+        public static final int cus_outline = 0x7f130002;
+        public static final int mb_parameter = 0x7f130003;
+        public static final int radio_mb_type_void = 0x7f0806b1;
+        public static final int radio_mb_type_string = 0x7f0806b2;
+        public static final int radio_mb_type_number = 0x7f0806b3;
+        public static final int radio_mb_type_boolean = 0x7f0806b4;
     }
 
     public static final class layout {
