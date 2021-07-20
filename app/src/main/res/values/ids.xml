@@ -1620,6 +1620,7 @@
     <item type="id" name="radio_mb_type_liststring" />
     <item type="id" name="radio_mb_type_listmap" />
     <item type="id" name="radio_mb_type_view" />
+    <item type="id" name="radio_mb_type_custom" />
     <item type="id" name="menu_logic_showsource" />
     <item type="id" name="code_editor_lines" />
     <item type="id" name="code_editor_edittext" />
@@ -1766,4 +1767,6 @@
     <item type="id" name="show_edited_code" />
     <item type="id" name="spinner_edited" />
     <item type="id" name="restore_all" />
+    <item type="id" name="cus_outline" />
+    <item type="id" name="mb_parameter" />
 </resources>
