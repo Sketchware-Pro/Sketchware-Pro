@@ -554,6 +554,8 @@ public class Resources {
         public static final int common_error_an_error_occurred = 0x7f0e03cc;
         public static final int common_error_failed_to_save = 0x7f0e03d3;
         public static final int common_message_check_network = 0x7f0e03e4;
+        /* That typo exists in Sketchware from Google Play. */
+        public static final int common_message_complete_copy_to_clipborad = 0x7f0e03e6;
         public static final int common_message_complete_save = 0x7f0e03ea;
         public static final int common_message_confirm = 0x7f0e03ed;
         public static final int common_message_insufficient_storage_space = 0x7f0e03f3;
@@ -657,12 +659,20 @@ public class Resources {
         public static final int myprojects_export_project_button_export_src = 0x7f0e06a9;
         public static final int myprojects_export_project_button_generate_url = 0x7f0e06aa;
         public static final int myprojects_export_project_button_send_src_zip = 0x7f0e06ab;
+        public static final int myprojects_export_project_button_sign_apk = 0x7f0e06ac;
+        public static final int myprojects_export_project_message_complete_export = 0x7f0e06ad;
+        public static final int myprojects_export_project_message_exceed_limit = 0x7f0e06ae;
+        public static final int myprojects_export_project_message_failed_to_export = 0x7f0e06af;
         public static final int myprojects_export_project_title_download_url = 0x7f0e06b0;
         public static final int myprojects_export_project_title_export_data = 0x7f0e06b1;
         public static final int myprojects_export_project_title_export_src = 0x7f0e06b2;
         public static final int myprojects_export_project_title_local_path = 0x7f0e06b3;
+        public static final int myprojects_export_project_title_sign_apk = 0x7f0e06b4;
         public static final int myprojects_export_project_word_remain_days = 0x7f0e06b5;
         public static final int myprojects_export_project_word_valid_dt = 0x7f0e06b6;
+        public static final int myprojects_export_src_chooser_title_email = 0x7f0e06b7;
+        public static final int myprojects_export_src_title_email_body = 0x7f0e06b8;
+        public static final int myprojects_export_src_title_email_subject = 0x7f0e06b9;
         public static final int myprojects_list_menu_title_delete = 0x7f0e06bf;
         public static final int myprojects_list_menu_title_publish = 0x7f0e06c1;
         public static final int myprojects_list_menu_title_settings = 0x7f0e06c2;
