@@ -577,6 +577,7 @@ public class Resources {
         public static final int common_word_exit = 0x7f0e0424;
         public static final int common_word_goback = 0x7f0e0428;
         public static final int common_word_import = 0x7f0e042a;
+        public static final int common_word_next = 0x7f0e0430;
         public static final int common_word_no = 0x7f0e0431;
         public static final int common_word_ok = 0x7f0e0432;
         public static final int common_word_reset = 0x7f0e0443;
