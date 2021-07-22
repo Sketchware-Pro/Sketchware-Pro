@@ -84,7 +84,7 @@ import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
-    private final oB fileUtility = new oB();
+    private final oB file_utility = new oB();
     private TextView tv_apk_url_expire;
     private ImageView img_copy_apk_url;
     private Button btn_export_data;
@@ -113,7 +113,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private String sc_id;
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
-    private ClipboardManager clipboardManager;
+    private ClipboardManager clipboard_manager;
     private Button btn_sign_apk;
     private LottieAnimationView loading_sign_apk;
     private LinearLayout layout_apk_path;
@@ -139,7 +139,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(getApplicationContext(), wq.d(sc_id), sc_metadata);
-        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard_manager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         initializeOutputDirectories();
         initializeSignApkViews();
         initializeExportDataViews();
@@ -210,17 +210,21 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             arrayList.add(project_metadata.c);
             String str = yB.c(sc_metadata, "my_ws_name") + ".zip";
             project_metadata.J = wq.s() + File.separator + "export_src" + File.separator + str;
-            if (fileUtility.e(project_metadata.J)) {
-                fileUtility.c(project_metadata.J);
+            if (file_utility.e(project_metadata.J)) {
+                file_utility.c(project_metadata.J);
             }
             new KB().a(project_metadata.J, arrayList, project_metadata.K);
             project_metadata.e();
-            e(str);
+            runOnUiThread(() -> e(str));
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
-            layout_export_src.setVisibility(View.GONE);
-            loading_export_src.setVisibility(View.GONE);
-            btn_export_src.setVisibility(View.VISIBLE);
+            runOnUiThread(() -> {
+                Log.e("ProjectExporter", "While trying to export project's sources: "
+                        + e.getMessage(), e);
+                b(Log.getStackTraceString(e));
+                layout_export_src.setVisibility(View.GONE);
+                loading_export_src.setVisibility(View.GONE);
+                btn_export_src.setVisibility(View.VISIBLE);
+            });
         }
     }
 
@@ -524,8 +528,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                             dialog.dismiss();
                             btnExportAppBundle.setVisibility(View.GONE);
                             layoutExportAppBundle.setVisibility(View.GONE);
-                            // loadingExportAppBundle.setVisibility(View.VISIBLE);
-                            // loadingExportAppBundle.j();
 
                             BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                             task.enableAppBundleBuild();
@@ -574,7 +576,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             layout_export_data.setVisibility(View.GONE);
             loading_export_data.setVisibility(View.VISIBLE);
             loading_export_data.j();
-            new b(getBaseContext()).execute();
+            new UploadAsyncTask(getBaseContext()).execute();
         });
     }
 
@@ -760,8 +762,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         export_src_full_path = wq.s() + File.separator + "export_src";
 
         /* Check if they exist, if not, create them */
-        fileUtility.f(signed_apk_full_path);
-        fileUtility.f(export_src_full_path);
+        file_utility.f(signed_apk_full_path);
+        file_utility.f(export_src_full_path);
     }
 
     public final void q() {
@@ -806,7 +808,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         SketchwareUtil.toast(xB.b().a(getApplicationContext(),
                 Resources.string.myprojects_export_project_message_complete_export), Toast.LENGTH_LONG);
         this.img_copy_apk_url.setOnClickListener(v -> {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("Download APK URL", tv_apk_url.getText()));
+            clipboard_manager.setPrimaryClip(ClipData.newPlainText("Download APK URL", tv_apk_url.getText()));
             SketchwareUtil.toast(xB.b().a(getApplicationContext(),
                     Resources.string.common_message_complete_copy_to_clipborad));
         });
@@ -834,7 +836,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 Resources.string.myprojects_export_project_word_valid_dt)
                 + " : " + valid_dt);
         img_copy_data_url.setOnClickListener(v -> {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("Download Data URL", tv_data_url.getText()));
+            clipboard_manager.setPrimaryClip(ClipData.newPlainText("Download Data URL", tv_data_url.getText()));
             SketchwareUtil.toast(xB.b().a(getApplicationContext(),
                     Resources.string.common_message_complete_copy_to_clipborad));
         });
@@ -1120,6 +1122,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             a(strArr);
         }
 
+        @Override
+        protected void onPostExecute(String s) {
+            b(s);
+        }
+
         @Override // a.a.a.MA
         public void a() {
             project_metadata.b();
@@ -1156,21 +1163,18 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
     }
 
-    /**
-     * Class to generate an Export URL on Sketchware's servers?
-     */
-    class b extends MA {
+    private class UploadAsyncTask extends MA {
 
-        public String c = null;
+        private String result = null;
 
-        public b(Context context) {
+        public UploadAsyncTask(Context context) {
             super(context);
             ExportProjectActivity.this.a(this);
         }
 
         @Override // a.a.a.MA
         public void a() {
-            if (this.c.equals("fail")) {
+            if (result.equals("fail")) {
                 btn_export_data.setVisibility(View.VISIBLE);
                 if (loading_export_data.h()) {
                     loading_export_data.e();
@@ -1178,7 +1182,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 loading_export_data.setVisibility(View.GONE);
                 SketchwareUtil.toastError(xB.b().a(getApplicationContext(),
                         Resources.string.myprojects_export_project_message_failed_to_export));
-            } else if (c.equals("limit")) {
+            } else if (result.equals("limit")) {
                 btn_export_data.setVisibility(View.VISIBLE);
                 if (loading_export_data.h()) {
                     loading_export_data.e();
@@ -1187,7 +1191,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 SketchwareUtil.toastError(xB.b().a(getApplicationContext(),
                         Resources.string.myprojects_export_project_message_exceed_limit), Toast.LENGTH_LONG);
             } else {
-                ExportProjectActivity.this.d(c);
+                d(result);
             }
         }
 
@@ -1199,12 +1203,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             hashMap.put("has_purchase", j.h() ? "Y" : "N");
             hashMap.put("pkg_name", project_metadata.e);
             hashMap.put("app_name", project_metadata.f);
-            this.c = new rB().X(hashMap);
-            if (!(this.c.equals("fail") || this.c.equals("limit"))) {
+            result = new rB().X(hashMap);
+            if (!(result.equals("fail") || result.equals("limit"))) {
                 HashMap<String, Object> hashMap2 = new HashMap<>();
                 hashMap2.put("login_id", i.e());
                 hashMap2.put("session_id", i.f());
-                hashMap2.put("url_id", c);
+                hashMap2.put("url_id", result);
                 KB kb = new KB();
                 ArrayList<UploadFileBean> arrayList = new ArrayList<>();
                 arrayList.add(new UploadFileBean(MediaType.PLAIN_TEXT_UTF_8, "project", wq.c(sc_id) + File.separator + "project"));
@@ -1217,20 +1221,20 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     UploadFileBean uploadFileBean = arrayList.get(i);
                     byte[] bArr = null;
                     if (uploadFileBean.contentType.equals(MediaType.PLAIN_TEXT_UTF_8.toString())) {
-                        bArr = fileUtility.h(uploadFileBean.path);
+                        bArr = file_utility.h(uploadFileBean.path);
                     } else if (uploadFileBean.contentType.equals(MediaType.PNG.toString())) {
-                        bArr = fileUtility.h(uploadFileBean.path);
+                        bArr = file_utility.h(uploadFileBean.path);
                     } else if (uploadFileBean.contentType.equals(MediaType.ZIP.toString())) {
                         bArr = kb.a(uploadFileBean.path);
                     }
                     if (bArr == null) {
                         bArr = new byte[0];
                     }
-                    c = new RA((l, l1) -> {
+                    result = new RA((l, l1) -> {
                     })
                             .c(hashMap2, uploadFileBean, bArr);
-                    if (!c.equals("success")) {
-                        c = "fail";
+                    if (!result.equals("success")) {
+                        result = "fail";
                         return;
                     }
                 }
