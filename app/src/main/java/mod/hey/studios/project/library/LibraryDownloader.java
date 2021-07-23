@@ -236,7 +236,8 @@ public class LibraryDownloader {
 
                textinputlayout1.setError("Dependency can't be empty");
 
-            } else if (!edittext1.getText().toString().contains(":")) {
+            } else{ 
+		    if (!edittext1.getText().toString().contains(":")) {
 
                 textinputlayout1.setError("Invalid Dependency");
 
@@ -249,6 +250,8 @@ public class LibraryDownloader {
                     FileUtil.makeDir(libName);
 
                 }
+			}
+		    }
                 
                 img1.setOnClickListener(new View.OnClickListener() {
 
