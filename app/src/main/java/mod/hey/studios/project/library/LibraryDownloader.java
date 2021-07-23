@@ -180,27 +180,27 @@ public class LibraryDownloader {
 
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View view = inflater.inflate(0x7F0B01DF /* R.layout.library_downloader_dialog */, null);
+        View view = inflater.inflate(R.layout.library_downloader_dialog, null);
 
-        final LinearLayout linear1 = view.findViewById(0x7F080680); // R.id.linear1
+        final LinearLayout linear1 = view.findViewById(R.id.linear1); // body
 
-        final ImageView img1 = view.findViewById(0x7F0806FE); // R.id.img1
+        final ImageView img1 = view.findViewById(R.id.img1); // info
 
-        final ProgressBar progressbar1 = view.findViewById(0x7F0806FF); // R.id.progressbar1
+        final ProgressBar progressbar1 = view.findViewById(R.id.progressbar1); // progressbar
 
-        final ImageView img2 = view.findViewById(0x7F080681); // R.id.img2
+        final ImageView img2 = view.findViewById(R.id.img2); // pause and resume
 
-        final TextView textview2 = view.findViewById(0x7F080682); // R.id.textview2
+        final TextView textview2 = view.findViewById(R.id.textview2); // status info 
 
-        final Button btn1 = view.findViewById(0x7F080701); // R.id.btn1
+        final Button btn1 = view.findViewById(R.id.btn1); // start
 
-        final Button btn2 = view.findViewById(0x7F08068F); // R.id.btn2
+        final Button btn2 = view.findViewById(R.id.btn2); // cancel
 
-        final TextInputLayout textinputlayout1 = view.findViewById(0x7F080692); // R.id.textinputlayout1
+        final TextInputLayout textinputlayout1 = view.findViewById(R.id.textinputlayout1); // textininputlayout
 
-        final LinearLayout linear4 = view.findViewById(0x7F080694); // R.id.linear4
+        final LinearLayout linear4 = view.findViewById(R.id.linear4); // progressbar holder
 
-        final EditText edittext1 = view.findViewById(0x7F080702); // R.id.edittext1
+        final EditText edittext1 = view.findViewById(R.id.edittext1); // edittext
 
         
 
