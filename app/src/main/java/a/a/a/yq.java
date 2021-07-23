@@ -82,7 +82,7 @@ public class yq {
     public String I;
 
     /**
-     * Unused
+     * Path of ZIP file containing project's sources (only used/set at {@link com.besome.sketch.export.ExportProjectActivity}).
      */
     public String J;
 

@@ -85,9 +85,11 @@ import a.a.a.yq;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import id.indosw.mod.DirectEditorActivity;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
@@ -396,9 +398,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
-		if (FileUtil.isExistFile(q.H)) {
+                if (FileUtil.isExistFile(q.H)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
-		}
+                }
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
@@ -416,10 +418,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         case 4:
                             if (FileUtil.isExistFile(q.H)) {
-			        o();
-		            } else {
-			        SketchwareUtil.toast("APK doesn't exist anymore");
-		            }
+                                o();
+                            } else {
+                                SketchwareUtil.toast("APK doesn't exist anymore");
+                            }
                             break;
 
                         default:
