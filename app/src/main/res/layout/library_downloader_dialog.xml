@@ -1,0 +1,232 @@
+<LinearLayout
+
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+
+	xmlns:tools="http://schemas.android.com/tools"
+  	
+  android:id="@+id/linear1"
+
+  android:background="#FFFFFF"
+
+	android:layout_width="match_parent"
+
+	android:layout_height="match_parent"
+
+	android:orientation="vertical">
+
+	<LinearLayout
+
+		android:id="@+id/linear"
+
+		android:layout_width="match_parent"
+
+		android:layout_height="wrap_content"
+
+		android:paddingLeft="16dp"
+
+		android:paddingTop="8dp"
+
+		android:paddingRight="16dp"
+
+		android:paddingBottom="8dp"
+
+		android:gravity="center_vertical"
+
+		android:orientation="horizontal">
+
+		<TextView
+
+			android:id="@+id/textview1"
+
+			android:layout_width="wrap_content"
+
+			android:layout_height="wrap_content"
+
+			android:text="Input Library Dependency"
+
+			android:textSize="16sp"
+
+			android:textColor="#2196F3"
+
+			android:layout_weight="1"/>
+
+		<ImageView
+
+			android:id="@+id/img1"
+
+			android:layout_width="wrap_content"
+
+			android:layout_height="wrap_content"
+
+			android:src="@drawable/ic_info_outline_grey"
+
+			android:scaleType="center"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+
+		android:id="@+id/linear2"
+
+		android:layout_width="match_parent"
+
+		android:layout_height="wrap_content"
+
+		android:padding="8dp"
+
+		android:orientation="horizontal">
+
+		<com.google.android.material.textfield.TextInputLayout
+
+			android:id="@+id/textinputlayout1"
+
+			android:layout_width="match_parent"
+
+			android:layout_height="wrap_content"
+
+			android:paddingLeft="4dp"
+
+			android:paddingRight="4dp">
+
+			<EditText
+
+				android:id="@+id/edittext1"
+
+				android:layout_width="match_parent"
+
+				android:layout_height="45dp"
+
+				android:padding="8dp"
+
+				android:gravity="center_vertical"
+
+				android:textSize="16sp"
+
+				android:textColor="#000000"
+
+				android:hint="Insert Lib Dependency"
+
+				android:textColorHint="#607D8B"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+	</LinearLayout>
+
+	<LinearLayout
+
+		android:id="@+id/linear4"
+
+		android:layout_width="match_parent"
+
+		android:layout_height="wrap_content"
+
+		android:paddingLeft="16dp"
+
+		android:paddingRight="16dp"
+
+		android:gravity="center_vertical"
+
+		android:orientation="horizontal">
+
+		<ProgressBar
+
+			android:id="@+id/progressbar1"
+
+			android:layout_width="match_parent"
+
+			android:layout_height="20dp"
+
+			android:indeterminate="false"
+
+			style="?android:progressBarStyleHorizontal"
+
+			android:layout_weight="1"/>
+
+		<ImageView
+
+			android:id="@+id/img2"
+
+			android:layout_width="wrap_content"
+
+			android:layout_height="wrap_content"
+
+			android:padding="4dp"
+
+			android:src="@drawable/ic_pause_grey"
+
+			android:scaleType="center"/>
+
+	</LinearLayout>
+
+	<TextView
+
+		android:id="@+id/textview2"
+
+		android:layout_width="match_parent"
+
+		android:layout_height="wrap_content"
+
+		android:paddingLeft="16dp"
+
+		android:paddingTop="4dp"
+
+		android:paddingRight="16dp"
+
+		android:paddingBottom="4dp"
+
+		android:textSize="14sp"
+
+		android:textColor="#000000"/>
+
+	<LinearLayout
+
+		android:id="@+id/linear3"
+
+		android:layout_width="match_parent"
+
+		android:layout_height="wrap_content"
+
+		android:padding="8dp"
+
+		android:gravity="center_horizontal"
+
+		android:orientation="vertical">
+
+		<Button
+
+			android:id="@+id/btn1"
+
+			android:layout_width="match_parent"
+
+			android:layout_height="35dp"
+
+			android:background="#2196F3"
+
+			android:text="start"
+
+			android:textSize="16sp"
+
+			android:textColor="#FFFFFF"/>
+
+		<Button
+
+			android:id="@+id/btn2"
+
+			android:layout_width="match_parent"
+
+			android:layout_height="35dp"
+
+			android:layout_marginTop="10dp"
+
+			android:background="#E3F2FD"
+
+			android:text="cancel"
+
+			android:textSize="16sp"
+
+			android:textColor="#2196F3"/>
+
+	</LinearLayout>
+
+</LinearLayout>
