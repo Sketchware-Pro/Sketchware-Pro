@@ -14,11 +14,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -28,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -54,9 +57,7 @@ import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.QA;
 import a.a.a.RA;
-import a.a.a.SA;
 import a.a.a.aB;
-import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.hC;
 import a.a.a.iC;
@@ -73,6 +74,7 @@ import a.a.a.yB;
 import a.a.a.yq;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
@@ -82,7 +84,7 @@ import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
-    private final oB fileUtility = new oB();
+    private final oB file_utility = new oB();
     private TextView tv_apk_url_expire;
     private ImageView img_copy_apk_url;
     private Button btn_export_data;
@@ -108,19 +110,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      */
     private String export_src_full_path;
     private String export_src_filename;
-    /**
-     * The {@code sc_id} of the project to export
-     */
     private String sc_id;
     private HashMap<String, Object> sc_metadata = null;
-    /**
-     * The current project's metadata object
-     */
     private yq project_metadata = null;
-    /**
-     * ClipboardManager instance, that's used to copy URLs to the clipboard
-     */
-    private ClipboardManager clipboardManager;
+    private ClipboardManager clipboard_manager;
     private Button btn_sign_apk;
     private LottieAnimationView loading_sign_apk;
     private LinearLayout layout_apk_path;
@@ -146,7 +139,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(getApplicationContext(), wq.d(sc_id), sc_metadata);
-        clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboard_manager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         initializeOutputDirectories();
         initializeSignApkViews();
         initializeExportDataViews();
@@ -177,14 +170,19 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             loading_sign_apk.e();
         }
         loading_sign_apk.setVisibility(View.GONE);
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.sign_apk_title_export_apk_file), 0).show();
+        SketchwareUtil.toast(xB.b().a(getApplicationContext(),
+                Resources.string.sign_apk_title_export_apk_file));
         tv_apk_path.setText(signed_apk_postfix + File.separator + str);
         if (j.h()) {
-            valid_dt = "30 " + xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_word_remain_days);
+            valid_dt = "30 " + xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_project_word_remain_days);
         } else {
-            valid_dt = "7 " + xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_word_remain_days);
+            valid_dt = "7 " + xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_project_word_remain_days);
         }
-        tv_apk_url_expire.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_word_valid_dt) + " : " + valid_dt);
+        tv_apk_url_expire.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_word_valid_dt)
+                + " : " + valid_dt);
     }
 
     public final void l() {
@@ -212,17 +210,21 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             arrayList.add(project_metadata.c);
             String str = yB.c(sc_metadata, "my_ws_name") + ".zip";
             project_metadata.J = wq.s() + File.separator + "export_src" + File.separator + str;
-            if (fileUtility.e(project_metadata.J)) {
-                fileUtility.c(project_metadata.J);
+            if (file_utility.e(project_metadata.J)) {
+                file_utility.c(project_metadata.J);
             }
             new KB().a(project_metadata.J, arrayList, project_metadata.K);
             project_metadata.e();
-            e(str);
+            runOnUiThread(() -> e(str));
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
-            layout_export_src.setVisibility(View.GONE);
-            loading_export_src.setVisibility(View.GONE);
-            btn_export_src.setVisibility(View.VISIBLE);
+            runOnUiThread(() -> {
+                Log.e("ProjectExporter", "While trying to export project's sources: "
+                        + e.getMessage(), e);
+                b(Log.getStackTraceString(e));
+                layout_export_src.setVisibility(View.GONE);
+                loading_export_src.setVisibility(View.GONE);
+                btn_export_src.setVisibility(View.VISIBLE);
+            });
         }
     }
 
@@ -435,68 +437,116 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         titleExportAppBundle.setText("Export Android App Bundle");
         btnExportAppBundle.setText("Export AAB");
-        titleAppBundlePath.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_local_path));
+        titleAppBundlePath.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_local_path));
         btnSendAppBundle.setText("Send AAB");
         layoutExportAppBundle.setVisibility(View.GONE);
 
         btnExportAppBundle.setOnClickListener(v -> {
             aB dialog = new aB(ExportProjectActivity.this);
-            dialog.a(Resources.drawable.color_about_96);
-            dialog.b("Instructions");
-            dialog.a("Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
-                    "and enter the alias's password.");
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                dialog.a(Resources.drawable.break_warning_96_red);
+                dialog.b("Can't generate Bundle");
+                dialog.a("Generating an .aab file currently requires an Android 8 or higher device. We're sorry for any inconvenience.");
+                dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_close),
+                        Helper.getDialogDismissListener(dialog));
+            } else {
+                dialog.a(Resources.drawable.color_about_96);
+                dialog.b("Sign outputted AAB");
+                dialog.a("The generated .aab file must be signed.\n" +
+                        "Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
+                        "and enter the alias' password.");
 
-            LinearLayout layout_alias_and_password = new LinearLayout(ExportProjectActivity.this);
-            layout_alias_and_password.setOrientation(LinearLayout.VERTICAL);
-            layout_alias_and_password.setPadding(
-                    (int) getDip(4),
-                    0,
-                    (int) getDip(4),
-                    0
-            );
-
-            TextInputLayout til_alias = new TextInputLayout(ExportProjectActivity.this);
-
-            EditText et_alias = new EditText(ExportProjectActivity.this);
-            et_alias.setHint("Keystore alias");
-            til_alias.addView(et_alias, 0, new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            layout_alias_and_password.addView(til_alias);
-
-            TextInputLayout til_password = new TextInputLayout(ExportProjectActivity.this);
-
-            EditText et_password = new EditText(ExportProjectActivity.this);
-            et_password.setHint("Alias password");
-            et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            til_password.setPasswordVisibilityToggleEnabled(true);
-            til_password.addView(et_password, 0, new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            layout_alias_and_password.addView(til_password);
-
-            dialog.a(layout_alias_and_password);
-
-            dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v1 -> {
-                dialog.dismiss();
-                btnExportAppBundle.setVisibility(View.GONE);
-                layoutExportAppBundle.setVisibility(View.GONE);
-                // loadingExportAppBundle.setVisibility(View.VISIBLE);
-                // loadingExportAppBundle.j();
-
-                BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
-                task.enableAppBundleBuild();
-                task.configureResultJarSigning(
-                        wq.j(),
-                        et_password.getText().toString().toCharArray(),
-                        et_alias.getText().toString(),
-                        et_password.getText().toString().toCharArray(),
-                        "SHA1WITHRSA"
+                LinearLayout input_container = new LinearLayout(ExportProjectActivity.this);
+                input_container.setOrientation(LinearLayout.VERTICAL);
+                input_container.setPadding(
+                        (int) getDip(4),
+                        0,
+                        (int) getDip(4),
+                        0
                 );
-                task.execute();
-            });
+
+                TextInputLayout til_alias = new TextInputLayout(ExportProjectActivity.this);
+
+                EditText et_alias = new EditText(ExportProjectActivity.this);
+                et_alias.setHint("Keystore alias");
+                til_alias.addView(et_alias, 0, new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                input_container.addView(til_alias);
+
+                TextInputLayout til_password = new TextInputLayout(ExportProjectActivity.this);
+
+                EditText et_password = new EditText(ExportProjectActivity.this);
+                et_password.setHint("Alias password");
+                et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                til_password.setPasswordVisibilityToggleEnabled(true);
+                til_password.addView(et_password, 0, new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                input_container.addView(til_password);
+
+                TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
+                til_signing_algorithm.setHelperText("Example: SHA1WITHRSA");
+
+                EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
+                et_signing_algorithm.setHint("Signing algorithm");
+                til_signing_algorithm.addView(et_signing_algorithm, new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                input_container.addView(til_signing_algorithm);
+
+                dialog.a(input_container);
+
+                dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+                        Helper.getDialogDismissListener(dialog));
+
+                dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_next), v1 -> {
+                    // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
+                    if (new File(wq.j()).exists()) {
+                        boolean aliasEmpty = TextUtils.isEmpty(et_alias.getText().toString());
+                        boolean passwordEmpty = TextUtils.isEmpty(et_password.getText().toString());
+                        boolean algorithmEmpty = TextUtils.isEmpty(et_signing_algorithm.getText().toString());
+
+                        if (aliasEmpty) {
+                            til_alias.setError("Alias can't be empty");
+                        } else {
+                            til_alias.setError(null);
+                        }
+                        if (passwordEmpty) {
+                            til_password.setError("Password can't be empty");
+                        } else {
+                            til_password.setError(null);
+                        }
+                        if (algorithmEmpty) {
+                            til_signing_algorithm.setError("Algorithm can't be empty");
+                        } else {
+                            til_signing_algorithm.setError(null);
+                        }
+
+                        if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
+                            dialog.dismiss();
+                            btnExportAppBundle.setVisibility(View.GONE);
+                            layoutExportAppBundle.setVisibility(View.GONE);
+
+                            BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
+                            task.enableAppBundleBuild();
+                            task.configureResultJarSigning(
+                                    wq.j(),
+                                    et_password.getText().toString().toCharArray(),
+                                    et_alias.getText().toString(),
+                                    et_password.getText().toString().toCharArray(),
+                                    et_signing_algorithm.getText().toString()
+                            );
+                            task.execute();
+                        }
+                    } else {
+                        SketchwareUtil.toastError("Keystore not found");
+                    }
+                });
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                et_alias.requestFocus();
+            }
             dialog.show();
         });
     }
@@ -513,9 +563,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         tv_data_url = findViewById(Resources.id.tv_data_url);
         tv_data_url_expire = findViewById(Resources.id.tv_data_url_expire);
         img_copy_data_url = findViewById(Resources.id.img_copy_data_url);
-        title_export_data.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_export_data));
-        btn_export_data.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_button_generate_url));
-        title_data_url.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_download_url));
+        title_export_data.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_export_data));
+        btn_export_data.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_button_generate_url));
+        title_data_url.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_download_url));
         loading_export_data.setVisibility(View.GONE);
         layout_export_data.setVisibility(View.GONE);
         btn_export_data.setOnClickListener(v -> {
@@ -523,7 +576,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             layout_export_data.setVisibility(View.GONE);
             loading_export_data.setVisibility(View.VISIBLE);
             loading_export_data.j();
-            new b(getBaseContext()).execute();
+            new UploadAsyncTask(getBaseContext()).execute();
         });
     }
 
@@ -538,27 +591,28 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         TextView title_src_path = findViewById(Resources.id.title_src_path);
         tv_src_path = findViewById(Resources.id.tv_src_path);
         Button btn_send_src = findViewById(Resources.id.btn_send_src);
-        title_export_src.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_export_src));
-        btn_export_src.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_button_export_src));
-        title_src_path.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_title_local_path));
-        btn_send_src.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_button_send_src_zip));
+        title_export_src.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_export_src));
+        btn_export_src.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_button_export_src));
+        title_src_path.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_local_path));
+        btn_send_src.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_button_send_src_zip));
         loading_export_src.setVisibility(View.GONE);
         layout_export_src.setVisibility(View.GONE);
-        btn_export_src.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn_export_src.setVisibility(View.GONE);
-                layout_export_src.setVisibility(View.GONE);
-                loading_export_src.setVisibility(View.VISIBLE);
-                loading_export_src.j();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        l();
-                    }
-                }.start();
-            }
+        btn_export_src.setOnClickListener(v -> {
+            btn_export_src.setVisibility(View.GONE);
+            layout_export_src.setVisibility(View.GONE);
+            loading_export_src.setVisibility(View.VISIBLE);
+            loading_export_src.j();
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    l();
+                }
+            }.start();
         });
         btn_send_src.setOnClickListener(v -> q());
     }
@@ -579,24 +633,31 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         tv_apk_url = findViewById(Resources.id.tv_apk_url);
         tv_apk_url_expire = findViewById(Resources.id.tv_apk_url_expire);
         img_copy_apk_url = findViewById(Resources.id.img_copy_apk_url);
-        title_sign_apk.setText(xB.b().a(getApplicationContext(), 0x7f0e06b4));
-        btn_sign_apk.setText(xB.b().a(getApplicationContext(), 0x7f0e06ac));
-        title_apk_path.setText(xB.b().a(getApplicationContext(), 0x7f0e06b3));
-        btn_export_apk.setText(xB.b().a(getApplicationContext(), 0x7f0e06aa));
-        title_apk_url.setText(xB.b().a(getApplicationContext(), 0x7f0e06b0));
+        title_sign_apk.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_sign_apk));
+        btn_sign_apk.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_button_sign_apk));
+        title_apk_path.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_local_path));
+        btn_export_apk.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_button_generate_url));
+        title_apk_url.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_title_download_url));
         loading_sign_apk.setVisibility(View.GONE);
         layout_apk_path.setVisibility(View.GONE);
         layout_apk_url.setVisibility(View.GONE);
         btn_sign_apk.setOnClickListener(v -> {
             aB dialog = new aB(ExportProjectActivity.this);
             dialog.a(Resources.drawable.color_about_96);
-            dialog.b("Instructions");
-            dialog.a("Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
-                    "and enter the alias's password.");
+            dialog.b("Sign an APK");
+            dialog.a("To sign an APK, you need a keystore. Use your already created one, and copy it to " +
+                    "/Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.\n" +
+                    "Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, " +
+                    "use a 3rd-party tool (for now).");
 
-            LinearLayout layout_alias_and_password = new LinearLayout(ExportProjectActivity.this);
-            layout_alias_and_password.setOrientation(LinearLayout.VERTICAL);
-            layout_alias_and_password.setPadding(
+            LinearLayout input_container = new LinearLayout(ExportProjectActivity.this);
+            input_container.setOrientation(LinearLayout.VERTICAL);
+            input_container.setPadding(
                     (int) getDip(4),
                     0,
                     (int) getDip(4),
@@ -609,9 +670,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             et_alias.setHint("Keystore alias");
             til_alias.addView(et_alias, 0, new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            layout_alias_and_password.addView(til_alias);
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            input_container.addView(til_alias);
 
             TextInputLayout til_password = new TextInputLayout(ExportProjectActivity.this);
 
@@ -621,38 +681,77 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             til_password.setPasswordVisibilityToggleEnabled(true);
             til_password.addView(et_password, 0, new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
-            layout_alias_and_password.addView(til_password);
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            input_container.addView(til_password);
 
-            dialog.a(layout_alias_and_password);
+            TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
+            til_signing_algorithm.setHelperText("Example: SHA1WITHRSA");
+
+            EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
+            et_signing_algorithm.setHint("Signing algorithm");
+            til_signing_algorithm.addView(et_signing_algorithm, new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            input_container.addView(til_signing_algorithm);
+
+            dialog.a(input_container);
+
+            dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+                    Helper.getDialogDismissListener(dialog));
 
             dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v1 -> {
-                dialog.dismiss();
-                btn_sign_apk.setVisibility(View.GONE);
-                layout_apk_path.setVisibility(View.GONE);
-                layout_apk_url.setVisibility(View.GONE);
-                loading_sign_apk.setVisibility(View.VISIBLE);
-                loading_sign_apk.j();
+                // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
+                if (new File(wq.j()).exists()) {
+                    boolean aliasEmpty = TextUtils.isEmpty(et_alias.getText().toString());
+                    boolean passwordEmpty = TextUtils.isEmpty(et_password.getText().toString());
+                    boolean algorithmEmpty = TextUtils.isEmpty(et_signing_algorithm.getText().toString());
 
-                BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
-                task.configureResultJarSigning(
-                        wq.j(),
-                        et_password.getText().toString().toCharArray(),
-                        et_alias.getText().toString(),
-                        et_password.getText().toString().toCharArray(),
-                        "SHA1WITHRSA"
-                );
-                task.execute();
+                    if (aliasEmpty) {
+                        til_alias.setError("Alias can't be empty");
+                    } else {
+                        til_alias.setError(null);
+                    }
+                    if (passwordEmpty) {
+                        til_password.setError("Password can't be empty");
+                    } else {
+                        til_password.setError(null);
+                    }
+                    if (algorithmEmpty) {
+                        til_signing_algorithm.setError("Algorithm can't be empty");
+                    } else {
+                        til_signing_algorithm.setError(null);
+                    }
+
+                    if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
+                        dialog.dismiss();
+                        btn_sign_apk.setVisibility(View.GONE);
+                        layout_apk_path.setVisibility(View.GONE);
+                        layout_apk_url.setVisibility(View.GONE);
+                        loading_sign_apk.setVisibility(View.VISIBLE);
+                        loading_sign_apk.j();
+
+                        BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
+                        task.configureResultJarSigning(
+                                wq.j(),
+                                et_password.getText().toString().toCharArray(),
+                                et_alias.getText().toString(),
+                                et_password.getText().toString().toCharArray(),
+                                et_signing_algorithm.getText().toString()
+                        );
+                        task.execute();
+                    }
+                } else {
+                    SketchwareUtil.toastError("Keystore not found");
+                }
             });
             dialog.show();
+
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            et_alias.requestFocus();
         });
         btn_export_apk.setOnClickListener(v -> r());
     }
 
-    /**
-     * Initialize output directories
-     */
     private void initializeOutputDirectories() {
         signed_apk_postfix = File.separator + "sketchware" + File.separator + "signed_apk";
         export_src_postfix = File.separator + "sketchware" + File.separator + "export_src";
@@ -663,19 +762,22 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         export_src_full_path = wq.s() + File.separator + "export_src";
 
         /* Check if they exist, if not, create them */
-        fileUtility.f(signed_apk_full_path);
-        fileUtility.f(export_src_full_path);
+        file_utility.f(signed_apk_full_path);
+        file_utility.f(export_src_full_path);
     }
 
     public final void q() {
         if (export_src_filename.length() > 0) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
-            intent.putExtra(Intent.EXTRA_SUBJECT, xB.b().a(getApplicationContext(), 0x7f0e06b9, export_src_filename));
-            intent.putExtra(Intent.EXTRA_TEXT, xB.b().a(getApplicationContext(), 0x7f0e06b8, export_src_filename));
+            intent.putExtra(Intent.EXTRA_SUBJECT, xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_src_title_email_subject, export_src_filename));
+            intent.putExtra(Intent.EXTRA_TEXT, xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_src_title_email_body, export_src_filename));
             String filePath = export_src_full_path + File.separator + export_src_filename;
             if (Build.VERSION.SDK_INT >= 24) {
-                intent.putExtra(Intent.EXTRA_STREAM, FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(filePath)));
+                intent.putExtra(Intent.EXTRA_STREAM, FileProvider.a(getApplicationContext(),
+                        getApplicationContext().getPackageName() + ".provider", new File(filePath)));
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -683,7 +785,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + filePath));
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), 0x7f0e06b7)));
+            startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_src_chooser_title_email)));
         }
     }
 
@@ -702,10 +805,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
         loading_sign_apk.setVisibility(View.GONE);
         tv_apk_url.setText("http://sketchware.io/download.jsp?id=" + str);
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625645), 1).show();
+        SketchwareUtil.toast(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_message_complete_export), Toast.LENGTH_LONG);
         this.img_copy_apk_url.setOnClickListener(v -> {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("Download APK URL", tv_apk_url.getText()));
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624934), 0).show();
+            clipboard_manager.setPrimaryClip(ClipData.newPlainText("Download APK URL", tv_apk_url.getText()));
+            SketchwareUtil.toast(xB.b().a(getApplicationContext(),
+                    Resources.string.common_message_complete_copy_to_clipborad));
         });
     }
 
@@ -718,16 +823,22 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         layout_export_data.setVisibility(View.VISIBLE);
         btn_export_data.setVisibility(View.GONE);
         tv_data_url.setText("http://sketchware.io/import.jsp?id=" + id);
-        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 0x7f0e06ad), 1).show();
+        SketchwareUtil.toast(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_message_complete_export), Toast.LENGTH_LONG);
         if (j.h()) {
-            valid_dt = "30 " + xB.b().a(getApplicationContext(), 0x7f0e06b5);
+            valid_dt = "30 " + xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_project_word_remain_days);
         } else {
-            valid_dt = "7 " + xB.b().a(getApplicationContext(), 0x7f0e06b5);
+            valid_dt = "7 " + xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_project_word_remain_days);
         }
-        tv_data_url_expire.setText(xB.b().a(getApplicationContext(), Resources.string.myprojects_export_project_word_valid_dt) + " : " + valid_dt);
+        tv_data_url_expire.setText(xB.b().a(getApplicationContext(),
+                Resources.string.myprojects_export_project_word_valid_dt)
+                + " : " + valid_dt);
         img_copy_data_url.setOnClickListener(v -> {
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("Download Data URL", tv_data_url.getText()));
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 0x7f0e03e6), 0).show();
+            clipboard_manager.setPrimaryClip(ClipData.newPlainText("Download Data URL", tv_data_url.getText()));
+            SketchwareUtil.toast(xB.b().a(getApplicationContext(),
+                    Resources.string.common_message_complete_copy_to_clipborad));
         });
     }
 
@@ -790,13 +901,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         public BuildingAsyncTask(Context context) {
             super(context);
+            // Register as AsyncTask with dialog to Activity
             ExportProjectActivity.this.a((MA) this);
+            // Make a simple ProgressDialog show and set its OnCancelListener
             ExportProjectActivity.this.a((DialogInterface.OnCancelListener) this);
+            // Allow user to use back button
             ExportProjectActivity.this.g.a(false);
         }
 
         public void a(String... strArr) {
             super.onProgressUpdate(strArr);
+            // Update the ProgressDialog's text
             ExportProjectActivity.this.a(strArr[0]);
         }
 
@@ -807,7 +922,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 return;
             }
             try {
-                publishProgress(xB.b().a(getApplicationContext(), Resources.string.design_run_title_ready_to_build));
+                publishProgress(xB.b().a(getApplicationContext(),
+                        Resources.string.design_run_title_ready_to_build));
                 oB oBVar = new oB();
                 /* Check if /Internal storage/sketchware/signed_apk/ exists */
                 if (!oBVar.e(wq.o())) {
@@ -1006,6 +1122,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             a(strArr);
         }
 
+        @Override
+        protected void onPostExecute(String s) {
+            b(s);
+        }
+
         @Override // a.a.a.MA
         public void a() {
             project_metadata.b();
@@ -1042,92 +1163,81 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
     }
 
-    /**
-     * Class to generate an Export URL on Sketchware's servers?
-     */
-    class b extends MA {
+    private class UploadAsyncTask extends MA {
 
-        public String c = null;
+        private String result = null;
 
-        public b(Context context) {
+        public UploadAsyncTask(Context context) {
             super(context);
             ExportProjectActivity.this.a(this);
         }
 
         @Override // a.a.a.MA
         public void a() {
-            if (this.c.equals("fail")) {
+            if (result.equals("fail")) {
                 btn_export_data.setVisibility(View.VISIBLE);
                 if (loading_export_data.h()) {
                     loading_export_data.e();
                 }
                 loading_export_data.setVisibility(View.GONE);
-                bB.b(a, xB.b().a(getApplicationContext(), 2131625647), 0).show();
-            } else if (c.equals("limit")) {
+                SketchwareUtil.toastError(xB.b().a(getApplicationContext(),
+                        Resources.string.myprojects_export_project_message_failed_to_export));
+            } else if (result.equals("limit")) {
                 btn_export_data.setVisibility(View.VISIBLE);
                 if (loading_export_data.h()) {
                     loading_export_data.e();
                 }
                 loading_export_data.setVisibility(View.GONE);
-                bB.b(a, xB.b().a(getApplicationContext(), 2131625646), 1).show();
+                SketchwareUtil.toastError(xB.b().a(getApplicationContext(),
+                        Resources.string.myprojects_export_project_message_exceed_limit), Toast.LENGTH_LONG);
             } else {
-                ExportProjectActivity.this.d(c);
+                d(result);
             }
         }
 
         @Override // a.a.a.MA
         public void b() {
             HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("login_id", ExportProjectActivity.this.i.e());
-            hashMap.put("session_id", ExportProjectActivity.this.i.f());
-            hashMap.put("has_purchase", ExportProjectActivity.this.j.h() ? "Y" : "N");
-            hashMap.put("pkg_name", ExportProjectActivity.this.project_metadata.e);
-            hashMap.put("app_name", ExportProjectActivity.this.project_metadata.f);
-            this.c = new rB().X(hashMap);
-            if (!(this.c.equals("fail") || this.c.equals("limit"))) {
-                String str = this.c;
+            hashMap.put("login_id", i.e());
+            hashMap.put("session_id", i.f());
+            hashMap.put("has_purchase", j.h() ? "Y" : "N");
+            hashMap.put("pkg_name", project_metadata.e);
+            hashMap.put("app_name", project_metadata.f);
+            result = new rB().X(hashMap);
+            if (!(result.equals("fail") || result.equals("limit"))) {
                 HashMap<String, Object> hashMap2 = new HashMap<>();
-                hashMap2.put("login_id", ExportProjectActivity.this.i.e());
-                hashMap2.put("session_id", ExportProjectActivity.this.i.f());
-                hashMap2.put("url_id", str);
+                hashMap2.put("login_id", i.e());
+                hashMap2.put("session_id", i.f());
+                hashMap2.put("url_id", result);
                 KB kb = new KB();
                 ArrayList<UploadFileBean> arrayList = new ArrayList<>();
-                arrayList.add(new UploadFileBean(MediaType.PLAIN_TEXT_UTF_8, "project", wq.c(ExportProjectActivity.this.sc_id) + File.separator + "project"));
-                arrayList.add(new UploadFileBean(MediaType.PNG, "icon.png", wq.e() + File.separator + ExportProjectActivity.this.sc_id + File.separator + "icon.png"));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "data.zip", wq.b(ExportProjectActivity.this.sc_id)));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_image.zip", wq.g() + File.separator + ExportProjectActivity.this.sc_id));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_sound.zip", wq.t() + File.separator + ExportProjectActivity.this.sc_id));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_font.zip", wq.d() + File.separator + ExportProjectActivity.this.sc_id));
+                arrayList.add(new UploadFileBean(MediaType.PLAIN_TEXT_UTF_8, "project", wq.c(sc_id) + File.separator + "project"));
+                arrayList.add(new UploadFileBean(MediaType.PNG, "icon.png", wq.e() + File.separator + sc_id + File.separator + "icon.png"));
+                arrayList.add(new UploadFileBean(MediaType.ZIP, "data.zip", wq.b(sc_id)));
+                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_image.zip", wq.g() + File.separator + sc_id));
+                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_sound.zip", wq.t() + File.separator + sc_id));
+                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_font.zip", wq.d() + File.separator + sc_id));
                 for (int i = 0; i < arrayList.size(); i++) {
                     UploadFileBean uploadFileBean = arrayList.get(i);
                     byte[] bArr = null;
                     if (uploadFileBean.contentType.equals(MediaType.PLAIN_TEXT_UTF_8.toString())) {
-                        bArr = ExportProjectActivity.this.fileUtility.h(uploadFileBean.path);
+                        bArr = file_utility.h(uploadFileBean.path);
                     } else if (uploadFileBean.contentType.equals(MediaType.PNG.toString())) {
-                        bArr = ExportProjectActivity.this.fileUtility.h(uploadFileBean.path);
+                        bArr = file_utility.h(uploadFileBean.path);
                     } else if (uploadFileBean.contentType.equals(MediaType.ZIP.toString())) {
                         bArr = kb.a(uploadFileBean.path);
                     }
                     if (bArr == null) {
                         bArr = new byte[0];
                     }
-                    this.c = new RA(new SA.a() {
-                        @Override
-                        public void a(long l, long l1) {
-                            // Bytecode said original method had 5 registers, probably
-                            // lost calls, as this is an Upload-AsyncTask and probably wouldn't work
-                            // anyway without Sketchware's original signature?
-
-                            // Never mind, the original Sketchware APK from the Play Store (version 3.10.0)
-                            // has the same amount of registers too
-                        }
-                    }).c(hashMap2, uploadFileBean, bArr);
-                    if (!this.c.equals("success")) {
-                        this.c = "fail";
+                    result = new RA((l, l1) -> {
+                    })
+                            .c(hashMap2, uploadFileBean, bArr);
+                    if (!result.equals("success")) {
+                        result = "fail";
                         return;
                     }
                 }
-                this.c = str;
             }
         }
 
@@ -1138,7 +1248,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 loading_export_data.e();
             }
             loading_export_data.setVisibility(View.GONE);
-            bB.b(a, xB.b().a(getApplicationContext(), 2131625647), 0).show();
+            SketchwareUtil.toastError(xB.b().a(getApplicationContext(),
+                    Resources.string.myprojects_export_project_message_failed_to_export));
         }
 
         @Override
