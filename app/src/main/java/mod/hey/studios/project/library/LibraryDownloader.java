@@ -1,81 +1,44 @@
 package mod.hey.studios.project.library;
 
 import android.annotation.SuppressLint;
-
 import android.app.Activity;
-
 import android.app.AlertDialog;
-
 import android.app.ProgressDialog;
-
 import android.net.Uri;
-
 import android.os.AsyncTask;
-
 import android.view.LayoutInflater;
-
 import android.view.View;
-
 import android.widget.EditText;
-
 import android.widget.LinearLayout;
-
 import android.widget.ProgressBar;
-
 import android.widget.TextView;
-
 import android.widget.Button;
-
 import android.graphics.*;
-
 import android.graphics.drawable.*;
-
 import com.android.tools.r8.D8;
-
 import com.google.gson.Gson;
-
 import com.google.android.material.textfield.*;
-
 import java.io.BufferedOutputStream;
-
 import java.io.File;
-
 import java.io.FileInputStream;
-
 import java.io.FileOutputStream;
-
 import java.io.IOException;
-
 import java.util.ArrayList;
-
 import java.util.Arrays;
-
 import java.util.HashMap;
-
 import java.util.List;
-
 import java.util.regex.Matcher;
-
 import java.util.regex.Pattern;
-
 import java.util.zip.ZipEntry;
-
 import java.util.zip.ZipInputStream;
-
 import a.a.a.bB;
-
 import mod.agus.jcoderz.dx.command.dexer.Main;
-
 import mod.agus.jcoderz.lib.FileUtil;
-
 import mod.hey.studios.lib.JarCheck;
 
 import mod.hey.studios.lib.prdownloader.PRDownloader;
-
 import mod.hey.studios.lib.prdownloader.PRDownloader.OnDownloadListener;
-
 import mod.hey.studios.lib.prdownloader.PRDownloader.Status;
-
 import mod.hey.studios.util.Helper;
 
 //changed in 6.3.0
@@ -83,254 +46,147 @@ import mod.hey.studios.util.Helper;
 public class LibraryDownloader {
 
     private final String downloadPath;
-
     private final ArrayList<String> repoUrls = new ArrayList<>();
-
     private final ArrayList<String> repoNames = new ArrayList<>();
-
     Activity context;
-
     boolean use_d8;
-
     private OnCompleteListener listener;
-
     private AlertDialog dialog;
-    
     private AlertDialog.Builder InfoDialog;
-
     private boolean isAarAvailable = false, isAarDownloaded = false;
-
     private int downloadId;
-
     private String libName = "";
-
-    private String currentRepo = "";
-
+    private String currentRepo = ""
     private double counter = 0;
-
     private ArrayList<HashMap<String, Object>> repoMap = new ArrayList<>();
-
     private ProgressDialog progressDialog;
 
     public LibraryDownloader(Activity context, boolean use_d8) {
 
         this.context = context;
-
         this.use_d8 = use_d8;
-
         downloadPath = FileUtil.getExternalStorageDir() + "/.sketchware/libs/local_libs/";
 
     }
 
     private static void mkdirs(File file, String str) {
-
         File file2 = new File(file, str);
-
         if (!file2.exists()) {
-
             file2.mkdirs();
 
         }
-
     }
 
     private static String dirpart(String str) {
 
         int lastIndexOf = str.lastIndexOf(File.separatorChar);
-
         if (lastIndexOf == -1) {
-
             return null;
-
         }
-
         return str.substring(0, lastIndexOf);
-
     }
 
     private static void extractFile(ZipInputStream zipInputStream, File file, String str) throws IOException {
 
         byte[] bArr = new byte[4096];
-
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(new File(file, str)));
 
         while (true) {
-
             int read = zipInputStream.read(bArr);
-
             if (read == -1) {
-
                 bufferedOutputStream.close();
-
                 return;
-
             }
-
             bufferedOutputStream.write(bArr, 0, read);
-
         }
-
     }
-
     @SuppressLint("ResourceType")
-
     public void showDialog(OnCompleteListener listener) {
-
         this.listener = listener;
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
         LayoutInflater inflater = context.getLayoutInflater();
-
         View view = inflater.inflate(R.layout.library_downloader_dialog, null);
-
         final LinearLayout linear1 = view.findViewById(R.id.linear1); // body
-
         final ImageView img1 = view.findViewById(R.id.img1); // info
-
         final ProgressBar progressbar1 = view.findViewById(R.id.progressbar1); // progressbar
-
         final ImageView img2 = view.findViewById(R.id.img2); // pause and resume
-
         final TextView textview2 = view.findViewById(R.id.textview2); // status info 
-
         final Button btn1 = view.findViewById(R.id.btn1); // start
-
         final Button btn2 = view.findViewById(R.id.btn2); // cancel
-
         final TextInputLayout textinputlayout1 = view.findViewById(R.id.textinputlayout1); // textininputlayout
-
         final LinearLayout linear4 = view.findViewById(R.id.linear4); // progressbar holder
-
         final EditText edittext1 = view.findViewById(R.id.edittext1); // edittext
-
-        
+       
 
         /* Dialog Designs*/
-
         textinputlayout1.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
-
         textinputlayout1.setBoxCornerRadii((float)10, (float)10, (float)10, (float)10);
-
         textinputlayout1.setBoxStrokeColor(0xFF2196F3);
-
         textinputlayout1.setErrorEnabled(true);
-
         btn1.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b) { this.setCornerRadius(a); this.setColor(b); return this; } }.getIns((int)10, 0xFF2196F3));
-
         btn2.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b, int c, int d) { this.setCornerRadius(a); this.setStroke(b, c); this.setColor(d); return this; } }.getIns((int)10, (int)2, 0xFF2196F3, 0xFFE3F2FD));
 
-        linear4.setVisibility(View.GONE);
-
+        linear4.setVisibility(View.GONE); // progress bar linear
         textinputlayout1.setErrorEnabled(true);
 
         builder.setView(view);
-
         dialog = builder.create();
-
         dialog.show();
 
         btn1.setOnClickListener(v1 -> {
-
             if (edittext1.getText().toString().trim().isEmpty()) {
-
                textinputlayout1.setError("Dependency can't be empty");
-
             } else{ 
 		    if (!edittext1.getText().toString().contains(":")) {
-
                 textinputlayout1.setError("Invalid Dependency");
-
             } else {
-
                 libName = downloadPath + _getLibName(edittext1.getText().toString());
-
                 if (!FileUtil.isExistFile(libName)) {
-
                     FileUtil.makeDir(libName);
-
  }
                 isAarDownloaded = false;
-
                 isAarAvailable = false;
-
                 _getRepository();
-
                 counter = 0;
-
                 currentRepo = repoUrls.get((int) counter);
-
                 downloadId = _download(
-
                         currentRepo.concat(_getAarDownloadLink(edittext1.getText().toString())),
-
                         downloadPath,
-
                         _getLibName(edittext1.getText().toString()).concat(".zip"),
-
                         edittext1,
-
                         textview2,
-
                         linear4,
-
                         textinputlayout1,
-
                         btn1,
-
                         btn2,
-
                         img2,
-
                         progressbar1
-
                 );
-
             }
-
         });
 		
 
-	
+		public void onClick(View _view) {
+		InfoDialog.setTitle("Info");
+		InfoDialog.setIcon(R.drawable.ic_info_outline_grey);
+		InfoDialog.setMessage("You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately.");
+		InfoDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
 
-			public void onClick(View _view) {
-
-				InfoDialog.setTitle("Info");
-
-				InfoDialog.setIcon(R.drawable.ic_info_outline_grey);
-
-				InfoDialog.setMessage("You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately.");
-
-				InfoDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-
-					@Override
-
-					public void onClick(DialogInterface _dialog, int _which) {
-
-						
-
+		        @Override
+			public void onClick(DialogInterface _dialog, int _which) {
+                           // obviously do nothing
 					}
-
 				});
-
 				InfoDialog.create().show();
-
 			}
-
 		});
 
         img2.setOnClickListener(v1 -> {
-
             if (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
-
                 PRDownloader.pause(downloadId);
-
                 img2.setImageResource(R.drawable.ic_pause_grey);
-
             } else 
-
             if (PRDownloader.getStatus(downloadId) == Status.PAUSED) {
-
                 PRDownloader.resume(downloadId);
 
                 img2.setImageResource(R.drawable.ic_play_grey);
