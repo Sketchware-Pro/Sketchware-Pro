@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import android.widget.Toast;
 
-public class SketchApplication extends Application {
+public class InsightDeviler extends Application {
 
 		
 
@@ -88,59 +88,39 @@ public class SketchApplication extends Application {
 
 				
 
-				/*
-
-	       To enable logcat:
-
-				 1. create a Shared preference with component and file name as log.
-
-				 2. Add this code to enable Logger
-
-				 log.edit().putString("debug", "true").commit();
-
-				 3. To disable logger 
-
-				 log.edit().putString("debug", "false").commit();
-
-            Important:
-
-                  Don't forget to restart your app to enable or disable logcat.
-
-                  Log files are stored in /Android/data/{your application package}/log_time.txt
-
-                  Use this only for debugging purpose as it make take considerable amount of storage space
-
-				*/
-
-				
-
-				
-
 				log = getSharedPreferences("log", Activity.MODE_PRIVATE);
 
 				String name = "log_" + System.currentTimeMillis() + ".txt";
 
 				String file = FileUtil.getPackageDataDir(getApplicationContext()).concat(name);
 
-				if (!log.getString("debug", "").equals("")) {
+if (log.getString("debug", "").equals("")) {
 
-						if (log.getString("debug", "").equals("false")) {
+    
 
-								//logging has been disabled
+    //disabled
 
-						}
+	
 
-						
+}
 
-						else {
+else {
 
-								if (log.getString("debug", "").equals("true")) {
+	if (log.getString("debug", "").equals("false")) {
 
-										
+	    //disabled
 
-										
+		
 
-										try {
+	}
+
+	else {
+
+		if (log.getString("debug", "").equals("true")) {
+
+		    
+
+		    try {
 
 												java.lang.Process process = Runtime.getRuntime().exec("logcat -c");
 
@@ -158,29 +138,19 @@ public class SketchApplication extends Application {
 
 												.show();
 
-										} 
+										} 		
 
-										
+		}
 
-										
+		else {
 
-										
+			
 
-								}
+		}
 
-								else {
+	}
 
-										
-
-										//do nothing simply waste of line
-
-										
-
-								}
-
-						}
-
-				}
+}
 
 				
 
@@ -189,4 +159,40 @@ public class SketchApplication extends Application {
 		}
 
 }
+
+				
+
+				
+								
+				
+
+				
+
+				
+										
+
+										
+
+								
+
+								
+
+										
+
+			
+
+										
+
+								
+
+						
+
+
+				
+
+				
+
+		
+
+
 
