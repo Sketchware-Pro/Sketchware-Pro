@@ -42,6 +42,14 @@
       "title": null
     },
     {
+      "modder_username": "Hasrat",
+      "modder_description": "Main modder",
+      "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
+      "isTitled": false,
+      "isMainModder": true,
+      "title": null
+    },
+    {
       "modder_username": "IndoSW",
       "modder_description": "Direct Source Code Editor",
       "modder_img": "https://i.imgur.com/mthq123.jpg",
@@ -61,14 +69,6 @@
       "modder_username": "Tyron",
       "modder_description": "Easier restoring of projects, unreleased feature",
       "modder_img": "https://i.imgur.com/gP8jauO.png",
-      "isTitled": false,
-      "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Hasrat",
-      "modder_description": "Advanced Custom Variables & Lists",
-      "modder_img": "https://i.imgur.com/jrc4CFx.jpg",
       "isTitled": false,
       "isMainModder": false,
       "title": null
