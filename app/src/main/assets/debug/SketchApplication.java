@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import android.widget.Toast;
 
-public class InsightDeviler extends Application {
+public class SketchApplication extends Application {
 
 		
 
