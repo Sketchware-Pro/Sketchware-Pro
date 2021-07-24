@@ -2,7 +2,6 @@ package a.a.a;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.text.TextUtils;
@@ -26,8 +25,6 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
@@ -66,7 +63,6 @@ public class Dp {
     public final String m = "libs";
     public File aapt2Dir;
     public BuildSettings build_settings;
-    private boolean buildAppBundle = false;
     public DesignActivity.a buildingDialog;
     /**
      * Command(s) to execute after extracting AAPT/AAPT2 (fill in 2 with the file name before using)
@@ -102,8 +98,13 @@ public class Dp {
     public String o;
     public ProguardHandler proguard;
     public ProjectSettings settings;
-    ArrayList<String> dexesGenerated;
-    ArrayList<String> extraDexes;
+    private boolean buildAppBundle = false;
+    private ArrayList<String> dexesGenerated;
+    /**
+     * An ArrayList that contains DEX files generated from R.java classes and project files.
+     * Gets initialized right after calling {@link Dp#c()}
+     */
+    private ArrayList<String> extraDexes;
 
     public Dp(Context context, yq yqVar) {
         /*
@@ -170,7 +171,7 @@ public class Dp {
     }
 
     /**
-     * Dexes libraries.
+     * Stub simply calling {@link Dp#dexLibraries(String, ArrayList)}
      *
      * @param outputPath The output file, usually classes2.dex
      * @param dexes      The path of DEX files to merge
@@ -459,11 +460,11 @@ public class Dp {
     /**
      * Dexes libraries.
      *
-     * @param outputPath The output file, usually classes2.dex
-     * @param dexes      The path of DEX files to merge
-     * @throws Exception Thrown if dexing had problems
+     * @param outputPath The output path, needs to be a folder in case merging DEX files results in multiple
+     * @param dexes      The paths of DEX files to merge
+     * @throws Exception Thrown if merging had problems
      */
-    public final void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
+    private void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
         dexesGenerated = new ArrayList<>();
         int lastDexNumber = findLastDexNo();
         ArrayList<Dex> dexObjects = new ArrayList<>();
@@ -717,8 +718,10 @@ public class Dp {
 
         /* Add local libraries' extra DEX files */
         dexes.addAll(mll.getExtraDexes());
-        a(f.F, dexes);
-        Log.d(TAG, "Libraries' DEX files merge took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        LogUtil.log(TAG, "Will merge these " + dexes.size() + " DEX files to classes2.dex: ",
+                "Will merge these " + dexes.size() + " DEX files to classes2.dex: ", dexes);
+        dexLibraries(f.F, dexes);
+        Log.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
@@ -869,7 +872,7 @@ public class Dp {
         return false;
     }
 
-    public final void mergeDexes(String target, ArrayList<Dex> dexes) throws Exception {
+    private void mergeDexes(String target, ArrayList<Dex> dexes) throws IOException {
         new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(target));
         dexesGenerated.add(target);
     }
@@ -879,7 +882,7 @@ public class Dp {
      *
      * @param args List of arguments to add built-in libraries' ProGuard roles to.
      */
-    public void proguardAddLibConfigs(List<String> args) {
+    private void proguardAddLibConfigs(List<String> args) {
         for (Jp jp : n.a()) {
             String str = l.getAbsolutePath() + c + jp.a() + c + "proguard.txt";
             if (FileUtil.isExistFile(str)) {
@@ -894,7 +897,7 @@ public class Dp {
      *
      * @param args List of arguments to add R.java rules to.
      */
-    public void proguardAddRjavaRules(List<String> args) {
+    private void proguardAddRjavaRules(List<String> args) {
         StringBuilder sb = new StringBuilder("# R.java rules");
         for (Jp jp : n.a()) {
             if (jp.c() && !jp.b().isEmpty()) {
@@ -969,10 +972,10 @@ public class Dp {
         }
         LogUtil.log(TAG,
                 "About to run ProGuard with these arguments: ",
-                "About to log ProGuard's arguments on multiple lines because of length.",
+                "About to log ProGuard's arguments on multiple lines because of length",
                 args);
         ProGuard.main(args.toArray(new String[0]));
-        Log.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms.");
+        Log.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     public void runStringfog() {
