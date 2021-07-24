@@ -12,7 +12,7 @@ There are a few things that you should consider before contributing to Sketchwar
 
  - Make sure that you're capable to mod.
  - Showing off on other contributors is seriously **not** allowed. We're a community.
- - When you fix, add or modify something in Sketchware Pro, write an explanation about what you've done, at best as comment of the commit adding the file to the repository.
+ - Tell why exactly you've made a change to something, at best in the commit's extended description.
 
 ## How to contribute
 
