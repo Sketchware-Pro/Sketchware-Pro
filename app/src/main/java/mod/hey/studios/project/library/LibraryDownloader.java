@@ -186,11 +186,11 @@ public class LibraryDownloader {
         img2.setOnClickListener(v1 -> {
             if (PRDownloader.getStatus(downloadId) == Status.RUNNING) {
                 PRDownloader.pause(downloadId);
-                img2.setImageResource(R.drawable.ic_pause_grey);
+                 img2.setImageResource(R.drawable.ic_play_grey);
             } else 
             if (PRDownloader.getStatus(downloadId) == Status.PAUSED) {
                 PRDownloader.resume(downloadId);
-                img2.setImageResource(R.drawable.ic_play_grey);
+                img2.setImageResource(R.drawable.ic_pause_grey);
             }
         });
 
