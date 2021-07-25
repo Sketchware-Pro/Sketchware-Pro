@@ -487,6 +487,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
             dialog.dismiss();
+            mod.agus.jcoderz.lib.FileUtil.requestAllFileAccessScoped(getApplicationContext());
             s();
         });
         dialog.show();
