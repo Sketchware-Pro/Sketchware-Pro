@@ -172,7 +172,7 @@ public class LibraryDownloader {
 		InfoDialog.setTitle("Info");
 		InfoDialog.setIcon(R.drawable.ic_info_outline_grey);
 		InfoDialog.setMessage("You can find the dependency of a library in Github, typically in the Readme file. However, please note that this is not Gradle system, so it won't download inner dependencies of a library. If the library you download has inner dependencies, you will need to download them seperately.");
-		InfoDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+		InfoDialog.setPositiveButton("Done", new DialogInterface.OnClickListener() {
 
 		        @Override
 			public void onClick(DialogInterface _dialog, int _which) {
