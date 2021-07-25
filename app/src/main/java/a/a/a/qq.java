@@ -19,6 +19,14 @@ public class qq {
                 break;
 
             case "glide-4.11.0":
+                knownDependencies.add("exifinterface-1.0.0");
+                knownDependencies.add("fragment-1.0.0");
+                knownDependencies.add("vectordrawable-animated-1.0.0");
+                knownDependencies.add("annotations-4.11.0");
+                knownDependencies.add("disklrucache-4.11.0");
+                knownDependencies.add("gifdecoder-4.11.0");
+                break;
+
             case "auto-value-annotations-1.6.5":
                 // no-op, apparently none
                 break;
