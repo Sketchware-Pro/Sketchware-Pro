@@ -125,6 +125,8 @@ public class LibraryDownloader {
         textinputlayout1.setErrorEnabled(true);
         btn1.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b) { this.setCornerRadius(a); this.setColor(b); return this; } }.getIns((int)10, 0xFF2196F3));
         btn2.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b, int c, int d) { this.setCornerRadius(a); this.setStroke(b, c); this.setColor(d); return this; } }.getIns((int)10, (int)2, 0xFF2196F3, 0xFFE3F2FD));
+        img1.setColorFilter(0xFF9E9E9E, PorterDuff.Mode.MULTIPLY);
+        img2.setColorFilter(0xFF9E9E9E, PorterDuff.Mode.MULTIPLY);
 
         linear4.setVisibility(View.GONE); // progress bar linear
         textinputlayout1.setErrorEnabled(true);
