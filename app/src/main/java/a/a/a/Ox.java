@@ -490,7 +490,7 @@ public class Ox {
                 nx.a("android", "hint", a(viewBean.text.hint));
             }
             if (viewBean.text.hintColor != 0) {
-                if(!hasAttr("textColrHint", viewBean)) nx.a("android", "textColorHint", String.format("#%06X", Integer.valueOf(viewBean.text.hintColor & 0xffffff)));
+                if(!hasAttr("textColorHint", viewBean)) nx.a("android", "textColorHint", String.format("#%06X", Integer.valueOf(viewBean.text.hintColor & 0xffffff)));
             }
             if (viewBean.text.singleLine != 0) {
                 nx.a("android", "singleLine", "true");
