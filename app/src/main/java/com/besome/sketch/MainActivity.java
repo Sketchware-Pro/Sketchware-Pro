@@ -292,7 +292,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
         } catch (Exception ignored) {
         }
-        if (C > 0 && !j()) {
+        if (C > 0 && !j() || (!android.os.Environment.isExternalStorageManager())) {
             q();
         }
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
