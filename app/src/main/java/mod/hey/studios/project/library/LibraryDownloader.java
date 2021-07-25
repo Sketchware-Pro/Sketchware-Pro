@@ -56,7 +56,7 @@ public class LibraryDownloader {
     private boolean isAarAvailable = false, isAarDownloaded = false;
     private int downloadId;
     private String libName = "";
-    private String currentRepo = ""
+    private String currentRepo = "";
     private double counter = 0;
     private ArrayList<HashMap<String, Object>> repoMap = new ArrayList<>();
     private ProgressDialog progressDialog;
