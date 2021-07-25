@@ -339,13 +339,13 @@ public class LibraryDownloader {
             final String url,
             final String path,
             final String name,
-            final EditText edittext1 /* edittext */,
-            final TextView textview2 /* info */,
+            final EditText edittext1, /* edittext */,
+            final TextView textview2, /* info */,
             final LinearLayout linear4, /* progressbar linear */
             final TextInputLayout textinputlayout1, /* edittext linear */
-            final Button btn1 /* start */,
-            final ImageView img2 /* pause */,
-            final Button btn2 /* cancel */,
+            final Button btn1, /* start */,
+            final ImageView img2, /* pause */,
+            final Button btn2, /* cancel */,
             final ProgressBar progressbar1) {
         return PRDownloader
                 .download(url, path, name)
