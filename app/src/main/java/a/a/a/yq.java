@@ -329,6 +329,9 @@ public class yq {
         b(context);
     }
 
+    /**
+     * Deletes the directory {@link yq#w}/values-v21/.
+     */
     public void a() {
         File file = new File(w + File.separator + "values-v21");
         if (file.exists()) {
@@ -439,9 +442,12 @@ public class yq {
         }
     }
 
-    public void a(String str) {
+    /**
+     * Copies a file to the project's app icon path, {@link yq#w}/drawable-xhdpi/app_icon.png
+     */
+    public void a(String iconPath) {
         try {
-            L.a(str, w + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
+            L.a(iconPath, w + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
         } catch (Exception e2) {
             e2.printStackTrace();
         }
