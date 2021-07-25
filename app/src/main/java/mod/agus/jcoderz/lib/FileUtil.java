@@ -721,4 +721,17 @@ public class FileUtil {
         }
         input.close();
     }
+   public static void requestAllFileAccessScoped(android.content.Context context){
+   try{
+	if(!android.os.Environment.isExternalStorageManager()){
+	android.content.Intent intent = new android.content.Intent();
+	intent.setAction(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+	intent.setData(android.net.Uri.parse("package:" + context.getPackageName()));
+	intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+	context.startActivity(intent);				
+	}	
+     }catch(Exception e){
+	android.util.Log.d("Scoped Storage Request Error",e.toString());
+	         }
+	}
 }
