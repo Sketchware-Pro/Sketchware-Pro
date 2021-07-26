@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -110,6 +111,9 @@ public class MainDrawer extends LinearLayout {
         c = findViewById(Resources.id.social_fb);
         d = findViewById(Resources.id.social_medium);
         e = findViewById(Resources.id.social_slack);
+        c.setVisibility(View.GONE); //Hides Facebook icon from drawer bottom
+        e.setVisibility(View.GONE); //Hides Facebook icon from drawer bottom
+        d.setImageResource(R.drawable.ic_discord); //Changes Medium icon to Discord
         RecyclerView recyclerView = findViewById(Resources.id.menu_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -121,28 +125,29 @@ public class MainDrawer extends LinearLayout {
     }
 
     /**
-     * Handle onClick of Facebook icon
+     * Used to Handle onClick of Facebook icon
      */
     public final void b() {
-        String facebookUrl = a.getString(Resources.string.facebook_url);
+         return;
+      /* String facebookUrl = a.getString(Resources.string.facebook_url);
         try {
             a.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookUrl)));
         } catch (Exception unused) {
             a.startActivity(Intent.createChooser(
                     new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)),
                     xB.b().a(getContext(), Resources.string.common_word_choose)));
-        }
+        } */
     }
 
     public final void c() {
-        c.setOnClickListener(new View.OnClickListener() {
+        /* c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
                     b();
                 }
             }
-        });
+        }); */
         d.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,14 +156,14 @@ public class MainDrawer extends LinearLayout {
                 }
             }
         });
-        e.setOnClickListener(new OnClickListener() {
+       /* e.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
                     g();
                 }
             }
-        });
+        }); */
     }
 
     /**
@@ -228,9 +233,16 @@ public class MainDrawer extends LinearLayout {
         }
     }
 
+/* Used to Handle Medium blog but now handling discord server invite */
+ 
     public final void a() {
+          SharedPreferences aboutUsStore = getSharedPreferences("AboutMod", Context.MODE_PRIVATE);
+                String inviteLink = aboutUsStore.getString("discordInviteLinkBackup", "");
+                if ("".equals(inviteLink)) {
+                    inviteLink = "https://discord.gg/p7D5Nt687K";
+                }
         try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(a.getString(Resources.string.besome_blog_url)));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink));
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -238,7 +250,7 @@ public class MainDrawer extends LinearLayout {
             a.startActivity(intent);
         } catch (ActivityNotFoundException unused) {
             a.startActivity(Intent.createChooser(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(a.getString(Resources.string.besome_blog_url))),
+                    new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink)),
                     xB.b().a(getContext(), 2131624976)
             ));
         }
