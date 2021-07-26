@@ -249,7 +249,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         D = u.a("U1I2", true);
         r = new String[]{
                 xB.b().a(this, Resources.string.main_tab_title_myproject),
-                xB.b().a(this, Resources.string.main_tab_title_tutorials)};
+                //xB.b().a(this, Resources.string.main_tab_title_tutorials)};
         l = findViewById(Resources.id.toolbar);
         a(l);
         d().d(true);
@@ -292,7 +292,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
         } catch (Exception ignored) {
         }
-        if (C > 0 && !j()) {
+        if (C > 0 && !j() || (!android.os.Environment.isExternalStorageManager())) {
             q();
         }
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
@@ -487,6 +487,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
             dialog.dismiss();
+            mod.agus.jcoderz.lib.FileUtil.requestAllFileAccessScoped(getApplicationContext());
             s();
         });
         dialog.show();
@@ -562,25 +563,27 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         @Override // a.a.a.kk
         public int a() {
-            return 2;
+            return 1; //Was 2 with tutorials tab
         }
 
         @Override // a.a.a.gg, a.a.a.kk
         public Object a(ViewGroup viewGroup, int i) {
             Fragment fragment = (Fragment) super.a(viewGroup, i);
-            if (i == 0) {
+            y = (GC) fragment;
+
+           /* if (i == 0) {
                 y = (GC) fragment;
             } else if (i == 1) {
                 z = (zI) fragment;
-            }
+            } */
             return fragment;
         }
 
         @Override // a.a.a.gg
         public Fragment c(int i) {
-            if (i != 0) {
+          /* if (i != 0) {
                 return new zI();
-            }
+            } */
             return new GC();
         }
 
