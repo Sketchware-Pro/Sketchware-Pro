@@ -76,6 +76,7 @@ public class Resources {
         public static final int ic_class_48 = 0x7f070215;
         public static final int ic_delete_grey_48dp = 0x7f070220;
         public static final int ic_detail_setting_48dp = 0x7f070225;
+        public static final int ic_expire_48dp = 0x7f070234;
         public static final int ic_export_grey_48dp = 0x7f070235;
         public static final int ic_export_his_white_48dp = 0x7f070236;
         public static final int ic_folder_48dp = 0x7f07023a;
