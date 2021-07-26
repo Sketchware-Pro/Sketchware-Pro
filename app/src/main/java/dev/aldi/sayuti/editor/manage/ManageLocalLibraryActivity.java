@@ -222,13 +222,15 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 if (!isChecked) {
                     project_used_libs.remove(hashMap);
                 } else {
-                    for (HashMap<String, Object> usedLibrary : project_used_libs) {
-                        Object usedLibraryName = usedLibrary.get("name");
+                    int n = 0;
+                    while (n < project_used_libs.size()) {
+                        Object usedLibraryName = project_used_libs.get(n).get("name");
                         if (usedLibraryName instanceof String) {
                             if (checkBox.getText().toString().equals(usedLibraryName)) {
                                 project_used_libs.remove(hashMap);
                             }
                         }
+                        n++;
                     }
                     project_used_libs.add(hashMap);
                 }
