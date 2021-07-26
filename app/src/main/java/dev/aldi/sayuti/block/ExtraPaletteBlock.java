@@ -189,11 +189,13 @@ public class ExtraPaletteBlock extends Activity {
                     break;
             }
         }
-        BlocksHandler.primaryBlocksA(logicEditor,
-                extraBlocks.isVariableUsed(0),
-                extraBlocks.isVariableUsed(1),
-                extraBlocks.isVariableUsed(2),
-                extraBlocks.isVariableUsed(3));
+        BlocksHandler.primaryBlocksA(
+            logicEditor,
+            extraBlocks.isVariableUsed(0),
+            extraBlocks.isVariableUsed(1),
+            extraBlocks.isVariableUsed(2),
+            extraBlocks.isVariableUsed(3)
+        );
         blockCustomViews();
         blockDrawer();
         blockEvents();
@@ -331,13 +333,28 @@ public class ExtraPaletteBlock extends Activity {
 
     public final void list() {
         for (Pair<Integer, String> intStrPair : jC.a(sc_id).j(javaName)) {
-            logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first), "getVar").setTag(intStrPair.second);
+            switch (intStrPair.first) {
+                case 1:
+                case 2:
+                case 3:
+                    logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first), "getVar").setTag(intStrPair.second);
+
+                default:
+                    String[] split = intStrPair.second.split(" ");
+                    if (split.length > 1) {
+                        logicEditor.a(split[1], "l", "List", "getVar").setTag(intStrPair.second);
+                    } else {
+                        SketchwareUtil.toastError("Received invalid data, content: {" + intStrPair.first + ":\"" + intStrPair.second + "\"}");
+                    }
+            }
         }
-        BlocksHandler.primaryBlocksB(logicEditor,
-                extraBlocks.isListUsed(1),
-                extraBlocks.isListUsed(2),
-                extraBlocks.isListUsed(3),
-                eventName);
+        BlocksHandler.primaryBlocksB(
+            logicEditor,
+            extraBlocks.isListUsed(1),
+            extraBlocks.isListUsed(2),
+            extraBlocks.isListUsed(3),
+            eventName
+        );
     }
 
     public void setBlock(int i, int i2) {
