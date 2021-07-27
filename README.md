@@ -27,7 +27,7 @@ There are a few things that you should consider before contributing to Sketchwar
 
 ### Source code map
 
-| Class | Role |
+| Classes | Functionalities |
 | --- | --- |
 | `La/a/a/Dp;` | Helper for compiling an entire project |
 | `La/a/a/Ix;` | Responsible for generating AndroidManifest.xml |
