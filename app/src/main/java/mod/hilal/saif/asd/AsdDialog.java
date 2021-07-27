@@ -166,7 +166,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                                                 themeItems, -1, new OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         SrcCodeEditor.selectTheme(codeEditor, which);
-                                                        AsdDialog.pref.edit().putInt("dlg_theme", which).commit();
+                                                        AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
                                                         if (isDark()) {
                                                             lin.setBackgroundColor(Color.parseColor("#FF292929"));
                                                             save.setBackground(new DialogButtonGradientDrawable()
@@ -190,13 +190,13 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                             case "Word wrap":
                                 item.setChecked(!item.isChecked());
                                 codeEditor.setWordwrap(item.isChecked());
-                                pref.edit().putBoolean("dlg_ww", item.isChecked()).commit();
+                                pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
                                 break;
 
                             case "Auto complete":
                                 item.setChecked(!item.isChecked());
                                 codeEditor.setAutoCompletionEnabled(item.isChecked());
-                                pref.edit().putBoolean("dlg_ac", item.isChecked()).commit();
+                                pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
                                 break;
 
                             case "Paste":
@@ -233,7 +233,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        pref.edit().putInt("dlg_ts", (int) (codeEditor.getTextSizePx() / act.getResources().getDisplayMetrics().scaledDensity)).commit();
+        pref.edit().putInt("dlg_ts", (int) (codeEditor.getTextSizePx() / act.getResources().getDisplayMetrics().scaledDensity)).apply();
     }
 
     public void populateMenu(Menu menu) {

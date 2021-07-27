@@ -124,8 +124,7 @@ public class BuildSettingsDialog {
                 if (key.equals(BuildSettings.SETTING_JAVA_VERSION) && choice.equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
                     SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8 code");
                 } else if (key.equals(BuildSettings.SETTING_DEXER) && choice.equals(BuildSettings.SETTING_DEXER_D8) && Build.VERSION.SDK_INT < 26) {
-                    SketchwareUtil.toast("Looks like your Android version isn't compatible with D8 (requires Android 8+). " +
-                                    "If you proceed to use it, compilation will not be successful.",
+                    SketchwareUtil.toast("Your Android version isn't compatible with D8 (requires Android 8+).\nIf you proceed to use it, compilation will fail.",
                             Toast.LENGTH_LONG);
                 } else if (key.equals(BuildSettings.SETTING_OUTPUT_FORMAT) && choice.equals(BuildSettings.SETTING_OUTPUT_FORMAT_AAB)) {
                     SketchwareUtil.toast("Ensure you are using AAPT2 as resource processor");
