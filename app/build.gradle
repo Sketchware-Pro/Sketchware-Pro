@@ -28,4 +28,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
+
+implementation 'org.codehaus.mojo:keytool-maven-plugin:1.5'
+
 }
