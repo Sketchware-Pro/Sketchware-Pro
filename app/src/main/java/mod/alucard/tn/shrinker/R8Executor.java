@@ -32,19 +32,25 @@ public class R8Executor {
     }
 
     public ArrayList<String> getSourceFile(File file, ArrayList<String> arrayList) {
-        if (file != null) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File value : files) {
-                    file = value;
-                    if (file.isDirectory()) {
-                        getSourceFile(file, arrayList);
-                    } else if (file.getName().endsWith(".class")) {
-                        arrayList.add(file.getAbsolutePath());
-                    }
-                }
+        if (file == null) {
+            return arrayList;
+        }
+
+        File[] files = file.listFiles();
+
+        if (files == null) {
+            return arrayList;
+        }
+
+        for (File value : files) {
+            file = value;
+            if (file.isDirectory()) {
+                getSourceFile(file, arrayList);
+            } else if (file.getName().endsWith(".class")) {
+                arrayList.add(file.getAbsolutePath());
             }
         }
+
         return arrayList;
     }
 
@@ -52,23 +58,29 @@ public class R8Executor {
         String R8OutputPath = mDp.f.t;
         String androidJarPath = mDp.settings.getValue("android_sdk", "");
         ArrayList<String> args = new ArrayList<>();
+
         args.add("--debug");
         args.add("--dex");
         args.add("--lib");
+
         if (androidJarPath.isEmpty()) {
             androidJarPath = mDp.o;
         }
+
         args.add(androidJarPath);
         args.add("--output");
+
         if (R8OutputPath.isEmpty()) {
             R8OutputPath = mDp.f.c + File.separator + "bin";
         }
+
         args.add(R8OutputPath);
         args.add("--pg-conf");
         args.add(getProguardRulesPath());
         args.addAll(getSourceFile(new File(mDp.f.t + File.separator + "classes"), new ArrayList<>()));
+
         try {
-            R8.main((String[]) args.toArray(new String[0]));
+            R8.main(args.toArray(new String[0]));
         } catch (Exception e) {
             StringWriter stringWriter = new StringWriter();
             e.printStackTrace(new PrintWriter(stringWriter));

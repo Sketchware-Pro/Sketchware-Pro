@@ -2,7 +2,6 @@ package mod.hey.studios.code;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.widget.PopupMenu;
 import com.sketchware.remod.Resources;
 
 import a.a.a.bB;
+import io.github.rosemoe.editor.interfaces.EditorLanguage;
 import io.github.rosemoe.editor.langs.EmptyLanguage;
 import io.github.rosemoe.editor.langs.desc.CDescription;
 import io.github.rosemoe.editor.langs.desc.CppDescription;
@@ -41,23 +41,19 @@ public class SrcCodeEditorDialog {
         View ed = LayoutInflater.from(c)
                 .inflate(Resources.layout.code_editor_hs, null);
 
-        editor = (CodeEditor) ed.findViewById(Resources.id.editor);
-
+        editor = ed.findViewById(Resources.id.editor);
         editor.setTypefaceText(Typeface.MONOSPACE);
-
         editor.setOverScrollEnabled(true);
 
-        //Temporarily removed
+        // Temporarily removed
         //editor.setEdgeEnabled(false);
 
         editor.setEditorLanguage(new JavaLanguage());
-
         editor.setText("");
 
         SrcCodeEditor.loadCESettings(c, editor, "dlg");
 
         pref = SrcCodeEditor.pref;
-
         final ImageView ig_undo, ig_redo, ig_save, ig_more;
 
         ig_undo = ed.findViewById(Resources.id.menu_view_undo);
@@ -65,72 +61,36 @@ public class SrcCodeEditorDialog {
         ig_save = ed.findViewById(Resources.id.save);
         ig_more = ed.findViewById(Resources.id.more);
 
-
         Helper.applyRipple(c, ig_undo);
         Helper.applyRipple(c, ig_redo);
         Helper.applyRipple(c, ig_save);
         Helper.applyRipple(c, ig_more);
-        ig_undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                editor.undo();
-            }
-        });
-        ig_redo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                editor.redo();
-            }
-        });
-        ig_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                bB.a(c, "Saved i guess.", 0);
-            }
-        });
-        ig_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
 
+        ig_undo.setOnClickListener(v -> editor.undo());
+        ig_redo.setOnClickListener(v -> editor.redo());
+        ig_save.setOnClickListener(v -> bB.a(c, "Saved i guess.", 0));
+        ig_more.setOnClickListener(v -> {
+            PopupMenu pm = new PopupMenu(c, v);
+            //pm.inflate(R.menu.menu_main);
+            populateMenu(pm.getMenu());
 
-                PopupMenu pm = new PopupMenu(c, _view);
+            pm.setOnMenuItemClickListener(item -> {
+                _onMenuItemClick(item);
+                return false;
+            });
 
-                //pm.inflate(R.menu.menu_main);
-                populateMenu(pm.getMenu());
-
-                pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        _onMenuItemClick(item);
-
-                        return false;
-                    }
-
-                });
-
-
-                pm.show();
-            }
+            pm.show();
         });
 
         AlertDialog dlg = new AlertDialog.Builder(c)
                 .setView(ed)
                 .create();
-        dlg
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-                    @Override
-                    public void onDismiss(DialogInterface p1) {
+        dlg.setOnDismissListener(dialog -> {
+            float scaledDensity = c.getResources().getDisplayMetrics().scaledDensity;
+            pref.edit().putInt("dlg_ts", (int) (editor.getTextSizePx() / scaledDensity)).apply();
+        });
 
-                        float scaledDensity = c.getResources().getDisplayMetrics().scaledDensity;
-
-
-                        pref.edit().putInt("dlg_ts", (int) (editor.getTextSizePx() / scaledDensity)).commit();
-                    }
-
-                });
         dlg.show();
     }
 
@@ -154,40 +114,49 @@ public class SrcCodeEditorDialog {
 
                 boolean err = false;
                 String ss = b.toString();
+
                 try {
                     ss = SrcCodeEditor.j(ss);
                 } catch (Exception e) {
                     err = true;
                     bB.a(c, "Error: Your code contains incorrectly nested parentheses", 0).show();
                 }
-                if (!err) editor.setText(ss);
 
+                if (!err) editor.setText(ss);
                 break;
 
             case "Switch language":
                 new AlertDialog.Builder(c)
                         .setTitle("Switch language")
-                        .setSingleChoiceItems(new String[]{"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1,
+                        .setSingleChoiceItems(new String[] {"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1, (dialog, which) -> {
+                            EditorLanguage editorLanguage;
 
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        default:
+                                        case 0:
+                                            editorLanguage = new UniversalLanguage(new CDescription());
+                                            break;
 
-                                        if (which == 0) {
-                                            editor.setEditorLanguage(new UniversalLanguage(new CDescription()));
-                                        } else if (which == 1) {
-                                            editor.setEditorLanguage(new UniversalLanguage(new CppDescription()));
-                                        } else if (which == 2) {
-                                            editor.setEditorLanguage(new JavaLanguage());
-                                        } else if (which == 3) {
-                                            editor.setEditorLanguage(new UniversalLanguage(new JavaScriptDescription()));
-                                        } else if (which == 4) {
-                                            editor.setEditorLanguage(new EmptyLanguage());
-                                        }
+                                        case 1:
+                                            editorLanguage = new UniversalLanguage(new CppDescription());
+                                            break;
 
-                                        dialog.dismiss();
+                                        case 2:
+                                            editorLanguage = new JavaLanguage();
+                                            break;
+
+                                        case 3:
+                                            editorLanguage = new UniversalLanguage(new JavaScriptDescription());
+                                            break;
+
+                                        case 4:
+                                            editorLanguage = new EmptyLanguage();
+                                            break;
                                     }
-                                }
 
+                                    editor.setEditorLanguage(editorLanguage);
+                                    dialog.dismiss();
+                                }
                         )
                         .setNegativeButton(android.R.string.cancel, null)
                         .show();
@@ -199,24 +168,15 @@ public class SrcCodeEditorDialog {
                 break;
 
             case "Switch theme":
-                String[] themes = new String[]{"Default", "GitHub", "Eclipse",
-                        "Darcula", "VS2019", "NotepadXX"};
+                String[] themes = new String[] {"Default", "GitHub", "Eclipse", "Darcula", "VS2019", "NotepadXX"};
                 new AlertDialog.Builder(c)
                         .setTitle("Switch theme")
-                        .setSingleChoiceItems(themes, -1,
+                        .setSingleChoiceItems(themes, -1, (dialog, which) -> {
+                                    SrcCodeEditor.selectTheme(editor, which);
 
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        SrcCodeEditor.selectTheme(editor, which);
-
-                                        pref.edit().putInt("dlg_theme", which).commit();
-
-
-                                        dialog.dismiss();
-                                    }
+                                    pref.edit().putInt("dlg_theme", which).apply();
+                                    dialog.dismiss();
                                 }
-
                         )
                         .setNegativeButton(android.R.string.cancel, null)
                         .show();
@@ -226,14 +186,13 @@ public class SrcCodeEditorDialog {
                 item.setChecked(!item.isChecked());
                 editor.setWordwrap(item.isChecked());
 
-                pref.edit().putBoolean("dlg_ww", item.isChecked()).commit();
+                pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
                 break;
         }
     }
 
 
     public void populateMenu(Menu menu) {
-        //whatup
         menu.add(0, 3, 0, "Find & Replace");
         menu.add(0, 4, 0, "Word wrap").setCheckable(true).setChecked(pref.getBoolean("dlg_ww", false));
         menu.add(0, 5, 0, "Pretty print");

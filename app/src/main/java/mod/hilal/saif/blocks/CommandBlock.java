@@ -3,444 +3,561 @@ package mod.hilal.saif.blocks;
 import android.util.Pair;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.lib.FileUtil;
 
+/**
+ * Sample usage of CommandBlock:
+ * /*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed
+ * >void initialize(Bundle _savedInstanceState
+ * >2
+ * >12
+ * >0
+ * >replace
+ * setSupportActionBar(_toolbar);
+ * getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+ * BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/
 public class CommandBlock {
-    public static String applyCommands(String str, String str2) {
-        String str3;
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
-        new ArrayList();
+
+    public static String applyCommands(String fileName, String c) {
+        String str = c;
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        ArrayList<HashMap<String, Object>> data;
         try {
-            if (!FileUtil.isExistFile(concat) || FileUtil.readFile(concat).equals("") || FileUtil.readFile(concat).equals("[]")) {
-                return str2;
-            }
-            ArrayList arrayList = new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
-            int i = 0;
-            String str4 = str2;
-            while (i < arrayList.size()) {
-                if (getFirstLine((String) ((HashMap) arrayList.get(i)).get("input")).contains(str)) {
-                    str3 = N(str4, (HashMap) arrayList.get(i));
-                } else {
-                    str3 = str4;
-                }
-                i++;
-                str4 = str3;
-            }
-            return str4;
-        } catch (Exception e) {
-            return str2;
-        }
-    }
-
-    public static String N(String str, HashMap<String, Object> hashMap) {
-        double d;
-        ArrayList arrayList = new ArrayList(Arrays.asList(str.split("\n")));
-        String str2 = (String) hashMap.get("reference");
-        double doubleValue = ((Double) hashMap.get("distance")).doubleValue();
-        double doubleValue2 = ((Double) hashMap.get("after")).doubleValue();
-        double doubleValue3 = ((Double) hashMap.get("before")).doubleValue();
-        String str3 = (String) hashMap.get("command");
-        String exceptFirstLine = getExceptFirstLine((String) hashMap.get("input"));
-        if (str3.equals("find-replace")) {
-            return str.replace(str2, exceptFirstLine);
-        }
-        if (str3.equals("find-replace-first")) {
-            try {
-                return str.replaceFirst(str2, exceptFirstLine);
-            } catch (Exception e) {
-                return str;
-            }
-        } else if (str3.equals("find-replace-all")) {
-            try {
-                return str.replaceAll(str2, exceptFirstLine);
-            } catch (Exception e2) {
-                return str;
-            }
-        } else {
-            int index = getIndex(arrayList, str2);
-            if (index == -1) {
-                return str;
-            }
-            if (str3.equals("insert")) {
-                if ((((double) index) + doubleValue) - doubleValue3 < 0.0d) {
-                    arrayList.add(0, exceptFirstLine);
-                } else if ((((double) index) + doubleValue) - doubleValue3 > ((double) (arrayList.size() - 1))) {
-                    arrayList.add(exceptFirstLine);
-                } else {
-                    arrayList.add((int) ((((double) index) + doubleValue) - doubleValue3), exceptFirstLine);
-                }
-            }
-            if (str3.equals("add")) {
-                if (((double) index) + doubleValue + doubleValue2 + 1.0d < 0.0d) {
-                    arrayList.add(0, exceptFirstLine);
-                } else if (((double) index) + doubleValue + doubleValue2 + 1.0d > ((double) (arrayList.size() - 1))) {
-                    arrayList.add(exceptFirstLine);
-                } else {
-                    arrayList.add((int) (((double) index) + doubleValue + doubleValue2 + 1.0d), exceptFirstLine);
-                }
-            }
-            if (str3.equals("replace")) {
-                if (doubleValue3 == 0.0d && doubleValue2 == 0.0d) {
-                    int i = (int) (((double) index) + doubleValue);
-                    if (i < 0) {
-                        i = 0;
-                    }
-                    if (i > arrayList.size() - 1) {
-                        i = arrayList.size() - 1;
-                    }
-                    arrayList.set(i, exceptFirstLine);
-                } else {
-                    int i2 = (int) (((double) index) + doubleValue);
-                    if (i2 <= 0) {
-                        int i3 = ((int) doubleValue2) + 1;
-                        if (i3 > arrayList.size() - 1) {
-                            i3 = arrayList.size() - 1;
-                        }
-                        arrayList.subList(1, i3).clear();
-                        arrayList.set(0, exceptFirstLine);
-                    } else if (i2 >= arrayList.size() - 1) {
-                        int size = arrayList.size() - 1;
-                        int i4 = (int) (((double) size) - doubleValue3);
-                        if (i4 < 0) {
-                            i4 = 0;
-                        }
-                        arrayList.set(size, exceptFirstLine);
-                        arrayList.subList(i4, size).clear();
-                    } else {
-                        if (doubleValue3 < 0.0d) {
-                            doubleValue3 = 0.0d;
-                        }
-                        if (doubleValue2 < 0.0d) {
-                            d = 0.0d;
-                        } else {
-                            d = doubleValue2;
-                        }
-                        int i5 = i2 + 1;
-                        int i6 = ((int) d) + i2;
-                        if (i6 > arrayList.size() - 1) {
-                            i6 = arrayList.size() - 1;
-                        }
-                        arrayList.subList(i5, i6).clear();
-                        arrayList.set(i2, exceptFirstLine);
-                        int i7 = (int) (((double) i2) - doubleValue3);
-                        if (i7 < 0) {
-                            i7 = 0;
-                        }
-                        arrayList.subList(i7, i2).clear();
+            //writeLog("try");
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                //writeLog("the file is found and has content :)");
+                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+                //writeLog("get gson from file is done");
+                for (int i = 0; i < data.size(); i++) {
+                    //writeLog("element : " + i);
+                    if (getFirstLine((String) data.get(i).get("input")).contains(fileName)) {
+                        //writeLog("element : " + i + " > find a target !!");
+                        str = N(str, data.get(i));
+                        //writeLog("element : " + i + " > N is done :l");
                     }
                 }
-            }
-            String str4 = "";
-            for (int i8 = 0; i8 < arrayList.size(); i8++) {
-                if (str4 == "") {
-                    str4 = (String) arrayList.get(i8);
-                } else {
-                    str4 = str4.concat("\n").concat((String) arrayList.get(i8));
-                }
-            }
-            return str4;
-        }
-    }
-
-    public static String getExceptFirstLine(String str) {
-        ArrayList arrayList = new ArrayList(Arrays.asList(str.split("\n")));
-        if (arrayList.size() <= 0) {
-            return str;
-        }
-        arrayList.remove(0);
-        String str2 = "";
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (str2 == "") {
-                str2 = (String) arrayList.get(i);
+                //writeLog("process is succeeded");
+                return str;
             } else {
-                str2 = str2.concat("\n").concat((String) arrayList.get(i));
+                //writeLog("file isn't found :(");
+                return c;
+            }
+        } catch (Exception e) { /*writeLog("error :("); */
+            return c;
+        }
+    }
+
+    public static String N(String c, HashMap<String, Object> map) {
+        ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
+        String res = "";
+        String reference = (String) map.get("reference");
+        double distance = (double) map.get("distance");
+        double after = (double) map.get("after");
+        double before = (double) map.get("before");
+        String command = (String) map.get("command");
+        String input = getExceptFirstLine((String) map.get("input"));
+
+        if (command.equals("find-replace")) {
+            return c.replace(reference, input);
+        }
+        if (command.equals("find-replace-first")) {
+            try {
+                return c.replaceFirst(reference, input);
+            } catch (Exception e) {
+                return c;
             }
         }
-        return str2;
-    }
 
-    public static String getFirstLine(String str) {
-        ArrayList arrayList = new ArrayList(Arrays.asList(str.split("\n")));
-        if (arrayList.size() > 0) {
-            return (String) arrayList.get(0);
+        if (command.equals("find-replace-all")) {
+            try {
+                return c.replaceAll(reference, input);
+            } catch (Exception e) {
+                return c;
+            }
         }
-        return "";
+
+        int index = getIndex(a, reference);
+        if (index == -1) {
+            return c;
+        }
+
+        if (command.equals("insert")) {
+            if ((index + distance - before) < 0) {
+                a.add(0, input);
+            } else if ((index + distance - before) > (a.size() - 1)) {
+                a.add(input);
+            } else {
+                a.add((int) (index + distance - before), input);
+            }
+        }
+        if (command.equals("add")) {
+            if ((index + distance + after + 1) < 0) {
+                a.add(0, input);
+            } else if ((index + distance + after + 1) > (a.size() - 1)) {
+                a.add(input);
+            } else {
+                a.add((int) (index + distance + after + 1), input);
+            }
+        }
+
+        //old method
+		/*
+		if(command.equals("replace")){
+			int xxx = (int)(index + distance - before -1);
+			if ( xxx <0 ){ xxx = 0; }
+
+			int ff = (int)(index + distance - before);
+			if ( ff <0 ){ ff = 0; }
+			int tt = (int)(index + distance + after +1);
+			if ( tt > a.size() ){ tt = a.size(); }
+			a.subList(ff , tt).clear();
+
+			if (xxx > a.size()-2){
+				a.add(input);
+			} else {
+				a.add((int)(xxx+1) , input);
+			}
+		}
+		*/
+
+        if (command.equals("replace")) {
+            if (before == 0 && after == 0) {
+                int lineToChange = (int) (index + distance);
+                if (lineToChange < 0) {
+                    lineToChange = 0;
+                }
+                if (lineToChange > (a.size() - 1)) {
+                    lineToChange = a.size() - 1;
+                }
+                a.set(lineToChange, input);
+            } else {
+                int lineToChange = (int) (index + distance);
+                if (lineToChange <= 0) { // ignore backend
+                    lineToChange = 0;
+                    int from = 1;
+                    int to = (int) after + 1;
+                    if (to > (a.size() - 1)) {
+                        to = a.size() - 1;
+                    }
+                    a.subList(from, to).clear();
+                    a.set(0, input);
+                } else if (lineToChange >= (a.size() - 1)) { //ignore frontend
+                    lineToChange = a.size() - 1;
+                    int from = (int) (lineToChange - before);
+                    int to = lineToChange;
+                    if (from < 0) {
+                        from = 0;
+                    }
+                    a.set(lineToChange, input);
+                    a.subList(from, to).clear();
+                } else {  //handle everything
+                    if (before < 0) {
+                        before = 0;
+                    }
+                    if (after < 0) {
+                        after = 0;
+                    }
+                    int from = lineToChange + 1;
+                    int to = lineToChange + (int) after;
+                    if (to > (a.size() - 1)) {
+                        to = a.size() - 1;
+                    }
+                    a.subList(from, to).clear();
+                    a.set(lineToChange, input);
+                    from = (int) (lineToChange - before);
+                    to = lineToChange;
+                    if (from < 0) {
+                        from = 0;
+                    }
+                    a.subList(from, to).clear();
+                }
+            }
+        }
+
+        for (int i = 0; i < a.size(); i++) {
+            if (res.equals("")) {
+                res = a.get(i);
+            } else {
+                res = res.concat("\n").concat(a.get(i));
+            }
+        }
+
+        return res;
     }
 
-    public static String CBForXml(String str) {
+    public static String getExceptFirstLine(String c) {
+        ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
+        String res = "";
+        if (a.size() > 0) {
+            a.remove(0);
+        } else {
+            return c;
+        }
+        for (int i = 0; i < a.size(); i++) {
+            if (res.equals("")) {
+                res = a.get(i);
+            } else {
+                res = res.concat("\n").concat(a.get(i));
+            }
+        }
+        return res;
+    }
+
+    public static String getFirstLine(String c) {
+        ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
+        if (a.size() > 0) {
+            return a.get(0);
+        } else {
+            return "";
+        }
+    }
+
+    public static String CBForXml(String c) {
+        String OC = c;
+        String RC = OC;
+        String SID = "/*AXAVajPNTpbJjsz-NGVTp08YDzfI-04kA7ZsuCl4GHqTQQiuWL45sV6Vf4gwK";
+        String EID = "Ui5_PNTJb21WO6OuGwQ3psk3su1LIvyXo_OAol-kVQBC5jtN_DcPLaRCJ0yXp*/";
         try {
-            ArrayList arrayList = new ArrayList();
-            getCBs(arrayList, str, "/*AXAVajPNTpbJjsz-NGVTp08YDzfI-04kA7ZsuCl4GHqTQQiuWL45sV6Vf4gwK", "Ui5_PNTJb21WO6OuGwQ3psk3su1LIvyXo_OAol-kVQBC5jtN_DcPLaRCJ0yXp*/");
-            String rCCs = rCCs(str, "/*AXAVajPNTpbJjsz-NGVTp08YDzfI-04kA7ZsuCl4GHqTQQiuWL45sV6Vf4gwK", "Ui5_PNTJb21WO6OuGwQ3psk3su1LIvyXo_OAol-kVQBC5jtN_DcPLaRCJ0yXp*/");
-            WTF(arrayList);
-            return rCCs;
+            //commands list
+            ArrayList<HashMap<String, Object>> Cs = new ArrayList<>();
+            //get command blocks from java code and add them to the list
+            getCBs(Cs, RC, SID, EID);
+            //remove commands lines from java file
+            RC = rCCs(RC, SID, EID);
+            //write temporary file
+            WTF(Cs);
+            return RC;
         } catch (Exception e) {
             writeLog(e.toString());
-            return rCCs(str, "/*AXAVajPNTpbJjsz-NGVTp08YDzfI-04kA7ZsuCl4GHqTQQiuWL45sV6Vf4gwK", "Ui5_PNTJb21WO6OuGwQ3psk3su1LIvyXo_OAol-kVQBC5jtN_DcPLaRCJ0yXp*/");
+            return rCCs(c, SID, EID);
         }
     }
 
-    public static void WTF(ArrayList<HashMap<String, Object>> arrayList) {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
-        ArrayList arrayList2 = new ArrayList();
+    // Write Temporary File
+    public static void WTF(ArrayList<HashMap<String, Object>> list) {
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         try {
-            if (FileUtil.isExistFile(concat) && !FileUtil.readFile(concat).equals("") && !FileUtil.readFile(concat).equals("[]")) {
-                arrayList2 = new Gson().fromJson(FileUtil.readFile(concat), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
-        for (int i = 0; i < arrayList.size(); i++) {
-            arrayList2.add(arrayList.get(i));
-        }
-        FileUtil.writeFile(concat, new Gson().toJson(arrayList2));
+        data.addAll(list);
+        FileUtil.writeFile(path, new Gson().toJson(data));
     }
 
     public static void x() {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
-        if (FileUtil.isExistFile(concat)) {
-            FileUtil.deleteFile(concat);
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        if (FileUtil.isExistFile(path)) {
+            FileUtil.deleteFile(path);
         }
     }
 
-    public static String CB(String str) {
+    public static String CB(String c) {
+        String OC = c;
+        String RC = OC;
+        String SID = "/*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed";
+        String EID = "BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/";
         try {
-            ArrayList arrayList = new ArrayList();
-            getCBs(arrayList, str, "/*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed", "BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/");
-            return aCs(arrayList, CBForXml(rCCs(str, "/*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed", "BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/")));
+            //commands list
+            ArrayList<HashMap<String, Object>> Cs = new ArrayList<>();
+            //get command blocks from java code and add them to the list
+            getCBs(Cs, RC, SID, EID);
+            //remove commands lines from java file
+            RC = rCCs(RC, SID, EID);
+            //command blocks for xml
+            RC = CBForXml(RC);
+            //apply commands
+            RC = aCs(Cs, RC);
+            return RC;
         } catch (Exception e) {
             writeLog(e.toString());
-            return rCCs(str, "/*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed", "BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/");
+            return rCCs(c, SID, EID);
         }
     }
 
-    public static void writeLog(String str) {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/log.txt");
-        String str2 = "";
-        if (FileUtil.isExistFile(concat)) {
-            str2 = FileUtil.readFile(concat);
+    public static void writeLog(String s) {
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/log.txt");
+        String text = "";
+        if (FileUtil.isExistFile(path)) {
+            text = FileUtil.readFile(path);
         }
-        FileUtil.writeFile(concat, str2.concat("\n=>").concat(str));
+        FileUtil.writeFile(path, text.concat("\n=>").concat(s));
     }
 
-    public static void getCBs(ArrayList<HashMap<String, Object>> arrayList, String str, String str2, String str3) {
-        ArrayList arrayList2 = new ArrayList(Arrays.asList(str.split("\n")));
-        int i = -1;
-        boolean z = false;
-        for (int i2 = 0; i2 < arrayList2.size(); i2++) {
-            if (z) {
-                if (((String) arrayList2.get(i2)).contains(str3)) {
-                    aC(arrayList2, arrayList, new Pair(Integer.valueOf(i), Integer.valueOf(i2)));
-                    i = -1;
-                    z = false;
+    public static void getCBs(ArrayList<HashMap<String, Object>> arr, String c, String sid, String eid) {
+        ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
+        boolean b = false;
+        int n = -1;
+        for (int i = 0; i < a.size(); i++) {
+            if (b) {
+                if (a.get(i).contains(eid)) {
+                    Pair<Integer, Integer> p = new Pair<>(n, i);
+                    aC(a, arr, p);
+                    b = false;
+                    n = -1;
                 }
-            } else if (((String) arrayList2.get(i2)).contains(str2)) {
-                z = true;
-                i = i2;
-            }
-        }
-    }
-
-    public static String assemble(ArrayList<String> arrayList) {
-        String str = "";
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (str == "") {
-                str = arrayList.get(i);
             } else {
-                str = str.concat("\n").concat(arrayList.get(i));
+                if (a.get(i).contains(sid)) {
+                    n = i;
+                    b = true;
+                }
             }
         }
-        return str;
     }
 
-    public static String aCs(ArrayList<HashMap<String, Object>> arrayList, String str) {
-        ArrayList arrayList2;
-        int i = 0;
-        ArrayList arrayList3 = new ArrayList(Arrays.asList(str.split("\n")));
-        while (i < arrayList.size()) {
-            String str2 = (String) arrayList.get(i).get("reference");
-            int intValue = ((Integer) arrayList.get(i).get("distance")).intValue();
-            int intValue2 = ((Integer) arrayList.get(i).get("after")).intValue();
-            int intValue3 = ((Integer) arrayList.get(i).get("before")).intValue();
-            String str3 = (String) arrayList.get(i).get("command");
-            String str4 = (String) arrayList.get(i).get("input");
-            if (str3.equals("find-replace")) {
-                arrayList2 = new ArrayList(Arrays.asList(assemble(arrayList3).replace(str2, str4).split("\n")));
-            } else if (str3.equals("find-replace-first")) {
+    public static String assemble(ArrayList<String> a) {
+        String res = "";
+        for (int i = 0; i < a.size(); i++) {
+            if (res.equals("")) {
+                res = a.get(i);
+            } else {
+                res = res.concat("\n").concat(a.get(i));
+            }
+        }
+        return res;
+    }
+
+    public static String aCs(ArrayList<HashMap<String, Object>> arr, String c) {
+        ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
+        String res = "";
+        for (int i = 0; i < arr.size(); i++) {
+            String reference = (String) arr.get(i).get("reference");
+            int distance = (int) arr.get(i).get("distance");
+            int after = (int) arr.get(i).get("after");
+            int before = (int) arr.get(i).get("before");
+            String command = (String) arr.get(i).get("command");
+            String input = (String) arr.get(i).get("input");
+
+            if (command.equals("find-replace")) {
+                String temp = assemble(a);
+                temp = temp.replace(reference, input);
+                a = new ArrayList<>(Arrays.asList(temp.split("\n")));
+                continue;
+            }
+            if (command.equals("find-replace-first")) {
                 try {
-                    arrayList2 = new ArrayList(Arrays.asList(assemble(arrayList3).replaceFirst(str2, str4).split("\n")));
+                    String temp = assemble(a);
+                    temp = temp.replaceFirst(reference, input);
+                    a = new ArrayList<>(Arrays.asList(temp.split("\n")));
+                    continue;
                 } catch (Exception e) {
-                    arrayList2 = arrayList3;
+                    continue;
                 }
-            } else if (str3.equals("find-replace-all")) {
+            }
+
+            if (command.equals("find-replace-all")) {
                 try {
-                    arrayList2 = new ArrayList(Arrays.asList(assemble(arrayList3).replaceAll(str2, str4).split("\n")));
-                } catch (Exception e2) {
-                    arrayList2 = arrayList3;
+                    String temp = assemble(a);
+                    temp = temp.replaceAll(reference, input);
+                    a = new ArrayList<>(Arrays.asList(temp.split("\n")));
+                    continue;
+                } catch (Exception e) {
+                    continue;
                 }
-            } else {
-                int index = getIndex(arrayList3, str2);
-                if (index == -1) {
-                    arrayList2 = arrayList3;
-                } else if (str3.equals("insert")) {
-                    if ((index + intValue) - intValue3 < 0) {
-                        arrayList3.add(0, str4);
-                        arrayList2 = arrayList3;
-                    } else if ((index + intValue) - intValue3 > arrayList3.size() - 1) {
-                        arrayList3.add(str4);
-                        arrayList2 = arrayList3;
-                    } else {
-                        arrayList3.add((index + intValue) - intValue3, str4);
-                        arrayList2 = arrayList3;
-                    }
-                } else if (!str3.equals("add")) {
-                    if (str3.equals("replace")) {
-                        if (intValue3 == 0 && intValue2 == 0) {
-                            int i2 = index + intValue;
-                            if (i2 < 0) {
-                                i2 = 0;
-                            }
-                            if (i2 > arrayList3.size() - 1) {
-                                i2 = arrayList3.size() - 1;
-                            }
-                            arrayList3.set(i2, str4);
-                            arrayList2 = arrayList3;
-                        } else {
-                            int i3 = intValue + index;
-                            if (i3 <= 0) {
-                                int i4 = intValue2 + 1;
-                                if (i4 > arrayList3.size() - 1) {
-                                    i4 = arrayList3.size() - 1;
-                                }
-                                arrayList3.subList(1, i4).clear();
-                                arrayList3.set(0, str4);
-                                arrayList2 = arrayList3;
-                            } else if (i3 >= arrayList3.size() - 1) {
-                                int size = arrayList3.size() - 1;
-                                int i5 = size - intValue3;
-                                if (i5 < 0) {
-                                    i5 = 0;
-                                }
-                                arrayList3.set(size, str4);
-                                arrayList3.subList(i5, size).clear();
-                                arrayList2 = arrayList3;
-                            } else {
-                                int i6 = intValue3 < 0 ? 0 : intValue3;
-                                int i7 = intValue2 < 0 ? 0 : intValue2;
-                                int i8 = i3 + 1;
-                                int i9 = i7 + i3;
-                                if (i9 > arrayList3.size() - 1) {
-                                    i9 = arrayList3.size() - 1;
-                                }
-                                arrayList3.subList(i8, i9).clear();
-                                arrayList3.set(i3, str4);
-                                int i10 = i3 - i6;
-                                if (i10 < 0) {
-                                    i10 = 0;
-                                }
-                                arrayList3.subList(i10, i3).clear();
-                            }
-                        }
-                    }
-                    arrayList2 = arrayList3;
-                } else if (index + intValue + intValue2 + 1 < 0) {
-                    arrayList3.add(0, str4);
-                    arrayList2 = arrayList3;
-                } else if (index + intValue + intValue2 + 1 > arrayList3.size() - 1) {
-                    arrayList3.add(str4);
-                    arrayList2 = arrayList3;
+            }
+
+            int index = getIndex(a, reference);
+            if (index == -1) {
+                continue;
+            }
+
+
+            if (command.equals("insert")) {
+                if ((index + distance - before) < 0) {
+                    a.add(0, input);
+                } else if ((index + distance - before) > (a.size() - 1)) {
+                    a.add(input);
                 } else {
-                    arrayList3.add(index + intValue + intValue2 + 1, str4);
-                    arrayList2 = arrayList3;
+                    a.add(index + distance - before, input);
+                }
+                continue;
+            }
+            if (command.equals("add")) {
+                if ((index + distance + after + 1) < 0) {
+                    a.add(0, input);
+                } else if ((index + distance + after + 1) > (a.size() - 1)) {
+                    a.add(input);
+                } else {
+                    a.add(index + distance + after + 1, input);
+                }
+                continue;
+            }
+
+            ///old method
+		/*
+		if(command.equals("replace")){
+			boolean isZ = false;
+			int xxx = (int)(index + distance - before -1);
+			if ( xxx <=0 ){ isZ = true; xxx = 0; }
+
+			int ff = (int)(index + distance - before);
+			if ( ff <0 ){ ff = 0; }
+			int tt = (int)(index + distance + after +1);
+			if ( tt > a.size() ){ tt = a.size(); }
+			a.subList(ff , tt).clear();
+			//// fix bug
+			if (xxx > a.size()-2){
+				a.add(input);
+			} else if(isZ) {
+				a.add(0, input);
+			} else {
+				a.add((int)(xxx+1) , input);
+			} continue ;}*/
+
+            if (command.equals("replace")) {
+                if (before == 0 && after == 0) {
+                    int lineToChange = index + distance;
+                    if (lineToChange < 0) {
+                        lineToChange = 0;
+                    }
+                    if (lineToChange > (a.size() - 1)) {
+                        lineToChange = a.size() - 1;
+                    }
+                    a.set(lineToChange, input);
+                } else {
+                    int lineToChange = index + distance;
+                    if (lineToChange <= 0) { // ignore backend
+                        lineToChange = 0;
+                        int from = 1;
+                        int to = after + 1;
+                        if (to > (a.size() - 1)) {
+                            to = a.size() - 1;
+                        }
+                        a.subList(from, to).clear();
+                        a.set(0, input);
+                    } else if (lineToChange >= (a.size() - 1)) { //ignore frontend
+                        lineToChange = a.size() - 1;
+                        int from = lineToChange - before;
+                        int to = lineToChange;
+                        if (from < 0) {
+                            from = 0;
+                        }
+                        a.set(lineToChange, input);
+                        a.subList(from, to).clear();
+                    } else {  //handle everything
+                        if (before < 0) {
+                            before = 0;
+                        }
+                        if (after < 0) {
+                            after = 0;
+                        }
+                        int from = lineToChange + 1;
+                        int to = lineToChange + after;
+                        if (to > (a.size() - 1)) {
+                            to = a.size() - 1;
+                        }
+                        a.subList(from, to).clear();
+                        a.set(lineToChange, input);
+                        from = lineToChange - before;
+                        to = lineToChange;
+                        if (from < 0) {
+                            from = 0;
+                        }
+                        a.subList(from, to).clear();
+                    }
                 }
             }
-            i++;
-            arrayList3 = arrayList2;
         }
-        String str5 = "";
-        for (int i11 = 0; i11 < arrayList3.size(); i11++) {
-            if (str5 == "") {
-                str5 = (String) arrayList3.get(i11);
+
+        for (int i = 0; i < a.size(); i++) {
+            if (res.equals("")) {
+                res = a.get(i);
             } else {
-                str5 = str5.concat("\n").concat((String) arrayList3.get(i11));
+                res = res.concat("\n").concat(a.get(i));
             }
         }
-        return str5;
+
+        return res;
     }
 
-    public static int getIndex(ArrayList<String> arrayList, String str) {
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (arrayList.get(i).contains(str)) {
+    public static int getIndex(ArrayList<String> a, String r) {
+        for (int i = 0; i < a.size(); i++) {
+            if (a.get(i).contains(r)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public static String rCCs(String str, String str2, String str3) {
-        ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(str.split("\n")));
-        ArrayList<String> arrayList2 = new ArrayList<>();
-        boolean z = true;
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (z && !arrayList.get(i).contains(str2)) {
-                arrayList2.add(arrayList.get(i));
+    public static String rCCs(String c, String sid, String eid) {
+        ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
+        ArrayList<String> r = new ArrayList<>();
+        String res = "";
+        int w = 1;
+        for (int i = 0; i < a.size(); i++) {
+            if (w == 1) {
+                if (!a.get(i).contains(sid)) {
+                    r.add(a.get(i));
+                }
             }
-            if (arrayList.get(i).contains(str2)) {
-                z = false;
+
+            if (a.get(i).contains(sid)) {
+                w = 0;
             }
-            if (arrayList.get(i).contains(str3)) {
-                z = true;
+            if (a.get(i).contains(eid)) {
+                w = 1;
             }
         }
-        String str4 = "";
-        for (int i2 = 0; i2 < arrayList2.size(); i2++) {
-            if (str4.equals("")) {
-                str4 = arrayList2.get(i2);
+
+        for (int i = 0; i < r.size(); i++) {
+            if (res.equals("")) {
+                res = r.get(i);
             } else {
-                str4 = str4.concat("\n").concat(arrayList2.get(i2));
+                res = res.concat("\n").concat(r.get(i));
             }
         }
-        return str4;
+
+        return res;
     }
 
-    public static void aC(ArrayList<String> arrayList, ArrayList<HashMap<String, Object>> arrayList2, Pair<Integer, Integer> pair) {
-        String concat;
-        int i = 0;
-        String str = "";
-        String str2 = arrayList.get(pair.first + 1);
-        Object obj = ((ArrayList<String>) new Gson().fromJson(str2.substring(str2.indexOf(">") + 1), Helper.TYPE_STRING)).get(0);
-        String str3 = arrayList.get(pair.first + 2);
-        int intValue = Integer.parseInt(str3.substring(str3.indexOf(">") + 1));
-        String str4 = arrayList.get(pair.first + 3);
-        int intValue2 = Integer.parseInt(str4.substring(str4.indexOf(">") + 1));
-        String str5 = arrayList.get(pair.first + 4);
-        int intValue3 = Integer.parseInt(str5.substring(str5.indexOf(">") + 1));
-        String str6 = arrayList.get(pair.first + 5);
-        Object substring = str6.substring(str6.indexOf(">") + 1);
-        while (i < (pair.second - pair.first) - 6) {
+    public static void aC(ArrayList<String> arr, ArrayList<HashMap<String, Object>> arr2, Pair<Integer, Integer> p) {
+        String ref;
+        int dis;
+        int af;
+        int be;
+        String c;
+        String input = "";
+
+        String v = arr.get(p.first + 1);
+        String kk = v.substring(v.indexOf(">") + 1);
+        ArrayList<String> aa = new Gson().fromJson(kk, Helper.TYPE_STRING);
+        ref = aa.get(0);
+
+        v = arr.get(p.first + 2);
+        dis = Integer.parseInt(v.substring(v.indexOf(">") + 1));
+
+        v = arr.get(p.first + 3);
+        af = Integer.parseInt(v.substring(v.indexOf(">") + 1));
+
+        v = arr.get(p.first + 4);
+        be = Integer.parseInt(v.substring(v.indexOf(">") + 1));
+
+        v = arr.get(p.first + 5);
+        c = v.substring(v.indexOf(">") + 1);
+
+        for (int i = 0; i < (p.second - p.first - 6); i++) {
             if (i == 0) {
-                concat = arrayList.get(pair.first + i + 6);
+                input = arr.get(p.first + i + 6);
             } else {
-                concat = str.concat("\n").concat(arrayList.get(pair.first + i + 6));
+                input = input.concat("\n").concat(arr.get(p.first + i + 6));
             }
-            i++;
-            str = concat;
         }
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("reference", obj);
-        hashMap.put("distance", intValue);
-        hashMap.put("after", intValue2);
-        hashMap.put("before", intValue3);
-        hashMap.put("command", substring);
-        hashMap.put("input", str);
-        arrayList2.add(hashMap);
+
+        HashMap<String, Object> hm = new HashMap<>();
+        hm.put("reference", ref);
+        hm.put("distance", dis);
+        hm.put("after", af);
+        hm.put("before", be);
+        hm.put("command", c);
+        hm.put("input", input);
+        arr2.add(hm);
     }
 }

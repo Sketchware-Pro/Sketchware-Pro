@@ -89,10 +89,10 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         if (orientationItem == 0) {
             g.setVisibility(GONE);
             h.setVisibility(VISIBLE);
-            return;
+        } else {
+            g.setVisibility(VISIBLE);
+            h.setVisibility(GONE);
         }
-        g.setVisibility(VISIBLE);
-        h.setVisibility(GONE);
     }
 
     public final void a(Context context, boolean z) {
@@ -142,31 +142,28 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             }
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int value = chk_left.isChecked() ? 3 : 0;
-                if (chk_right.isChecked()) {
-                    value |= 5;
-                }
-                if (chk_hcenter.isChecked()) {
-                    value |= 1;
-                }
-                if (chk_top.isChecked()) {
-                    value |= 48;
-                }
-                if (chk_bottom.isChecked()) {
-                    value |= 80;
-                }
-                if (chk_vcenter.isChecked()) {
-                    value |= 16;
-                }
-                setValue(value);
-                if (i != null) {
-                    i.a(a, b);
-                }
-                dialog.dismiss();
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+            int value = chk_left.isChecked() ? 3 : 0;
+            if (chk_right.isChecked()) {
+                value |= 5;
             }
+            if (chk_hcenter.isChecked()) {
+                value |= 1;
+            }
+            if (chk_top.isChecked()) {
+                value |= 48;
+            }
+            if (chk_bottom.isChecked()) {
+                value |= 80;
+            }
+            if (chk_vcenter.isChecked()) {
+                value |= 16;
+            }
+            setValue(value);
+            if (i != null) {
+                i.a(a, b);
+            }
+            dialog.dismiss();
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));

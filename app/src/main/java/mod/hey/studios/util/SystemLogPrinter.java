@@ -7,11 +7,10 @@ import mod.agus.jcoderz.lib.FileUtil;
 
 public class SystemLogPrinter {
 
-    private static final String PATH =
-            FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
+    private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
 
     public static void start() {
-        //reset
+        // Reset
         FileUtil.writeFile(PATH, "");
 
         PrintStream ps = new PrintStream(new OutputStream() {
@@ -22,7 +21,7 @@ public class SystemLogPrinter {
                 if (cache == null) cache = "";
 
                 if (((char) b) == '\n') {
-                    //write each line printed to the specified path
+                    // Write each line printed to the specified path
                     FileUtil.writeFile(PATH,
                             FileUtil.readFile(PATH) + "\n" + cache);
 

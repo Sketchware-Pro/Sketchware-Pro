@@ -1,16 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/dialoginputlayoutLinearLayout1" android:paddingLeft="20.0dip" android:paddingTop="15.0dip" android:paddingBottom="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <ImageView android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_marginRight="10.0dip" android:src="@drawable/rename_96_blue" android:scaleType="fitCenter" />
-        <TextView android:textSize="18.0sp" android:textStyle="bold" android:textColor="#ff008dcd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rename file" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/dialoginputlayoutLinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rename_96_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rename file"
+            android:textColor="#ff008dcd"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:id="@id/dialoginputlayoutLinearLayout2" android:paddingLeft="20.0dip" android:paddingTop="10.0dip" android:paddingRight="20.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_below="@id/dialoginputlayoutLinearLayout1">
-        <TextView android:textSize="12.0sp" android:textColor="#ff008dcd" android:paddingLeft="4.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New file name" />
-        <EditText android:textSize="18.0sp" android:typeface="sans" android:id="@id/edittext_change_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:inputType="text" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@id/dialoginputlayoutLinearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp">
+
+        <EditText
+            android:id="@id/edittext_change_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints=""
+            android:hint="New file name"
+            android:inputType="text"
+            android:textColorHint="#008dcd"
+            android:textSize="18sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ff09a7ec"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@id/text_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text="@string/common_word_cancel"
+            android:textColor="#ffffffff"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/text_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="@string/common_word_save"
+            android:textColor="#ffffffff"
+            android:textStyle="bold" />
     </LinearLayout>
-    <LinearLayout android:gravity="right" android:orientation="horizontal" android:background="#ff09a7ec" android:paddingTop="10.0dip" android:paddingRight="18.0dip" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/dialoginputlayoutLinearLayout2">
-        <TextView android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/text_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15.0dip" android:text="Cancel" />
-        <TextView android:textStyle="bold" android:textColor="#ffffffff" android:id="@id/text_save" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="Save" />
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

@@ -37,9 +37,10 @@ import java.util.regex.Pattern;
 
 import a.a.a.Zx;
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.lib.FileUtil;
 import mod.hilal.saif.lib.PCP;
+import mod.w3wide.highlighter.SimpleHighlighter;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
@@ -284,6 +285,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         _inputsProp();
         _addParams();
         _receiveIntents();
+        new SimpleHighlighter(code);
     }
 
     private View _k(final String str, String str2) {

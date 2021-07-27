@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.blocks.BlocksHandler;
-import mod.hilal.saif.lib.FileUtil;
 
 public class ExtraBlockFile {
 
@@ -15,9 +15,8 @@ public class ExtraBlockFile {
         ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(getExtraBlockFile(), Helper.TYPE_MAP_LIST);
         ArrayList<HashMap<String, Object>> arrayList2 = new ArrayList<>();
         BlocksHandler.builtInBlocks(arrayList2);
-        if (arrayList2.size() > 0) {
-            arrayList.addAll(arrayList2);
-        }
+
+        arrayList.addAll(arrayList2);
         return arrayList;
     }
 

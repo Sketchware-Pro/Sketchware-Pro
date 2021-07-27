@@ -1,12 +1,16 @@
 package com.besome.sketch;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -30,18 +34,14 @@ import com.besome.sketch.bill.SubscribeActivity;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.besome.sketch.shared.project.SharedProjectDetailActivity;
 import com.google.ads.consent.ConsentForm;
-import com.google.ads.consent.ConsentFormListener;
-import com.google.ads.consent.ConsentInfoUpdateListener;
-import com.google.ads.consent.ConsentInformation;
-import com.google.ads.consent.ConsentStatus;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.Resources;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
 
 import a.a.a.DB;
 import a.a.a.GB;
@@ -54,6 +54,7 @@ import a.a.a.nd;
 import a.a.a.sB;
 import a.a.a.xB;
 import a.a.a.zI;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.tyron.backup.CallBackTask;
@@ -107,7 +108,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         startActivityForResult(intent, i);
     }
 
-    public final void k(int i) {
+    private void k(int i) {
         for (int counter = 0; counter < r.length; counter++) {
             TabLayout.f c = q.c(counter);
             View childAt = ((ViewGroup) q.getChildAt(0)).getChildAt(counter);
@@ -140,33 +141,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void m() {
     }
 
-    public final void m(int i) {
-        if (i > 0) {
-            Log.d("DEBUG", MainActivity.class.getSimpleName() + " sharedListFragment updateProject =" + i);
-        }
-    }
-
     public void n() {
         if (y != null) {
             y.a(false);
         }
-    }
-
-    public final void o() {
-        ConsentInformation.a(getApplicationContext())
-                .a(new String[]{"pub-7684160946124871"},
-                        new ConsentInfoUpdateListener() {
-                            @Override
-                            public void a(ConsentStatus consentStatus) {
-                                if (consentStatus.equals(ConsentStatus.UNKNOWN)) {
-                                    p();
-                                }
-                            }
-
-                            @Override
-                            public void a(String s) {
-                            }
-                        });
     }
 
     @Override // androidx.fragment.app.FragmentActivity
@@ -181,7 +159,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivityForResult(intent, 108);
                 } else {
-                    u();
+                    toMyPageSettingsActivity();
                 }
             }
             if (o != null) {
@@ -205,7 +183,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
                     y.g();
                 }
-                m(data.getIntExtra("shared_id", -1));
             }
         } else if (requestCode == 505 && o != null) {
             o.i();
@@ -236,28 +213,22 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         u = new DB(getApplicationContext(), "U1");
         v = new DB(getApplicationContext(), "P25");
         C = u.a("U1I0", -1);
-        long e = u.e("U1I1");
-        if (e <= 0) {
+        long u1I1Long = u.e("U1I1");
+        if (u1I1Long <= 0) {
             u.a("U1I1", System.currentTimeMillis());
         }
-        if (System.currentTimeMillis() - e > 86400000) {
+        if (System.currentTimeMillis() - u1I1Long > 1000 * 24 * 60 * 60) {
             u.a("U1I0", Integer.valueOf(C + 1));
         }
         D = u.a("U1I2", true);
-        r = new String[]{
-                xB.b().a(this, Resources.string.main_tab_title_myproject),
-                xB.b().a(this, Resources.string.main_tab_title_tutorials)};
+        r = new String[]{xB.b().a(this,
+                Resources.string.main_tab_title_myproject)};
         l = findViewById(Resources.id.toolbar);
         a(l);
         d().d(true);
         d().e(true);
         A = findViewById(Resources.id.img_title_logo);
-        A.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invalidateOptionsMenu();
-            }
-        });
+        A.setOnClickListener(v -> invalidateOptionsMenu());
         o = findViewById(Resources.id.left_drawer);
         m = findViewById(Resources.id.drawer_layout);
         n = new l(this, m, Resources.string.app_name, Resources.string.app_name);
@@ -265,7 +236,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         d().a("");
         p = findViewById(Resources.id.viewpager);
         p.setOffscreenPageLimit(2);
-        p.setAdapter(new a(getSupportFragmentManager(), this));
+        p.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         q = findViewById(Resources.id.tab_layout);
         q.setupWithViewPager(p);
         p.a(this);
@@ -295,12 +266,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         } catch (Exception ignored) {
         }
         if (C > 0 && !j()) {
-            q();
+            showNoticeNeedStorageAccess();
         }
+        allFilesAccessCheck();
+
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             Uri data = getIntent().getData();
             if (data != null) {
-                //TODO: Progress indicator while restoring project, possibly from background + notifications
+                // TODO: Progress indicator while restoring project, possibly from background + notifications
                 new SingleCopyAsyncTask(data, this, new CallBackTask() {
                     @Override
                     public void onCopyPreExecute() {
@@ -316,6 +289,41 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     }
                 }).execute(data);
             }
+        }
+
+        File skipBetaWarningDialog = new File(getFilesDir(), ".skip_beta_warning");
+        if (!skipBetaWarningDialog.exists()) {
+            aB dialog = new aB(this);
+            dialog.a(0x7f0701e5);
+            dialog.b("Beta version");
+            dialog.a("First of all, join our Discord server for more information about this build!\n" +
+                    "Secondly, this is a beta version of Sketchware Pro, which means it could be unstable " +
+                    "and even break projects! Please back up /Internal storage/.sketchware/ if possible.\n" +
+                    "\n" +
+                    "If you have found any bugs or have comments, tell us in the Discord server.\n" +
+                    "Thank you for testing Sketchware Pro v6.4.0 out before it gets officially released, " +
+                    "and enjoy new features such as AAPT2!");
+            dialog.a("Discord", v -> {
+                SharedPreferences aboutUsStore = getSharedPreferences("AboutMod", Context.MODE_PRIVATE);
+                String inviteLink = aboutUsStore.getString("discordInviteLinkBackup", "");
+                if ("".equals(inviteLink)) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/p7D5Nt687K")));
+                } else {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink)));
+                }
+            });
+            dialog.configureDefaultButton("Don't show anymore", v -> {
+                try {
+                    skipBetaWarningDialog.createNewFile();
+                } catch (IOException e) {
+                    Log.e("MainActivity", "IOException while trying to write \"Don't show Beta warning\" file: "
+                            + e.getMessage(), e);
+                }
+                dialog.dismiss();
+            });
+            dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+                    Helper.getDialogDismissListener(dialog));
+            dialog.show();
         }
     }
 
@@ -373,9 +381,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         int itemId = item.getItemId();
         if (itemId == Resources.id.menu_login || itemId == Resources.id.menu_mypage) {
             if (i.a()) {
-                u();
+                toMyPageSettingsActivity();
             } else {
-                t();
+                toLoginActivity();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -385,7 +393,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         n.b();
-        o();
     }
 
     @Override
@@ -395,7 +402,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         /* Check if the device is running low on storage space */
         long freeMegabytes = GB.c();
         if (freeMegabytes < 100 && freeMegabytes > 0) {
-            r();
+            showNoticeNotEnoughFreeStorageSpace();
         }
         if (j() && x != null && x.j()) {
             x.c();
@@ -407,66 +414,50 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         super.onStart();
     }
 
-    public final void p() {
-        URL url;
-        try {
-            url = new URL("http://sketchware.io/terms.html");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            url = null;
+    private void allFilesAccessCheck() {
+        if (Build.VERSION.SDK_INT > 29) {
+            File optOutFile = new File(getFilesDir(), ".skip_all_files_access_notice");
+            boolean granted = Environment.isExternalStorageManager();
+
+            if (!optOutFile.exists() && !granted) {
+                aB dialog = new aB(this);
+                dialog.a(Resources.drawable.ic_expire_48dp);
+                dialog.b("Android 11 storage access");
+                dialog.a("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
+                        "taking ages to build projects. Don't worry, we can't do more to storage than " +
+                        "with current granted permissions.");
+                dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
+                    FileUtil.requestAllFilesAccessPermission(this);
+                    dialog.dismiss();
+                });
+                dialog.a("Skip", Helper.getDialogDismissListener(dialog));
+                dialog.configureDefaultButton("Don't show anymore", v -> {
+                    try {
+                        optOutFile.createNewFile();
+                    } catch (IOException e) {
+                        Log.e("MainActivity", "Error while trying to create " +
+                                "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
+                    }
+                    dialog.dismiss();
+                });
+                dialog.show();
+            }
         }
-        G = new ConsentForm.Builder(this, url)
-                .a(new ConsentFormListener() {
-                    @Override
-                    public void a() {
-                        G.b();
-                    }
-
-                    @Override
-                    public void a(ConsentStatus consentStatus, Boolean aBoolean) {
-                        if (aBoolean) {
-                            Intent intent = new Intent(getApplicationContext(), SubscribeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.putExtra("is_ads_use", false);
-                            startActivityForResult(intent, 505);
-                        }
-                    }
-
-                    @Override
-                    public void a(String s) {
-                        // Original obf. anon. class bytecode tells it has 2 registers, but doesn't
-                        // use any registers, probably removed.
-                    }
-
-                    @Override
-                    public void b() {
-                        // Original obf. anon. class bytecode tells it has 1 register, but doesn't
-                        // use it, probably removed.
-                    }
-                })
-                .d()
-                .c()
-                .b()
-                .a();
-        G.a();
     }
 
-    public final void q() {
+    private void showNoticeNeedStorageAccess() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_title_storage));
         dialog.a(Resources.drawable.color_about_96);
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                s();
-            }
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
+            dialog.dismiss();
+            s();
         });
         dialog.show();
     }
 
-    public final void r() {
+    private void showNoticeNotEnoughFreeStorageSpace() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
         dialog.a(Resources.drawable.high_priority_96_red);
@@ -479,30 +470,25 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void s() {
         if (x == null || !x.j()) {
             x = Snackbar.a(w, xB.b().a(getApplicationContext(), Resources.string.common_message_permission_denied), -2);
-            x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    x.c();
-                    nd.a(MainActivity.this, new String[]{
-                                    "android.permission.WRITE_EXTERNAL_STORAGE",
-                                    "android.permission.READ_EXTERNAL_STORAGE"},
-                            9501);
-                }
+            x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
+                x.c();
+                nd.a(MainActivity.this, new String[]{
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE},
+                        9501);
             });
-            //REMOVED: Looks ugly.
-            //x.h().setAlpha(0.5f);
             x.f(Color.YELLOW);
             x.n();
         }
     }
 
-    public void t() {
+    private void toLoginActivity() {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, 100);
     }
 
-    public void u() {
+    private void toMyPageSettingsActivity() {
         Intent intent = new Intent(getApplicationContext(), MyPageSettingsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivityForResult(intent, 111);
@@ -533,36 +519,26 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    public class a extends gg {
+    private class PagerAdapter extends gg {
 
-        public Context f;
-
-        public a(Xf xf, Context context) {
+        public PagerAdapter(Xf xf) {
             super(xf);
-            f = context;
         }
 
         @Override // a.a.a.kk
         public int a() {
-            return 2;
+            return 1;
         }
 
         @Override // a.a.a.gg, a.a.a.kk
         public Object a(ViewGroup viewGroup, int i) {
             Fragment fragment = (Fragment) super.a(viewGroup, i);
-            if (i == 0) {
-                y = (GC) fragment;
-            } else if (i == 1) {
-                z = (zI) fragment;
-            }
+            y = (GC) fragment;
             return fragment;
         }
 
         @Override // a.a.a.gg
         public Fragment c(int i) {
-            if (i != 0) {
-                return new zI();
-            }
             return new GC();
         }
 

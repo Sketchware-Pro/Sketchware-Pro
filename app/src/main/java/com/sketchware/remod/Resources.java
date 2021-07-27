@@ -14,11 +14,14 @@ public class Resources {
 
     public static final class color {
         public static final int color_accent = 0x7f05002f;
+        public static final int color_btn_green_highlight = 0x7f050032;
         public static final int color_control_highlight = 0x7f05003c;
         public static final int color_control_normal = 0x7f05003d;
         public static final int color_primary = 0x7f05003e;
         public static final int color_primary_dark = 0x7f050040;
         public static final int grey = 0x7f050069;
+        public static final int scolor_black_01 = 0x7f0500aa;
+        public static final int scolor_green_normal = 0x7f0500b0;
     }
 
     public static final class dimen {
@@ -28,8 +31,10 @@ public class Resources {
     public static final class drawable {
         public static final int abc_96 = 0x7f070006;
         public static final int abc_96_color = 0x7f070007;
+        public static final int add_96_blue = 0x7f070072;
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
+        public static final int bg_round_light_grey = 0x7f0700b3;
         public static final int block_96_blue = 0x7f0700be;
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int cart_filled_48 = 0x7f0700da;
@@ -38,8 +43,10 @@ public class Resources {
         public static final int code_icon = 0x7f070108;
         public static final int collect_48 = 0x7f07010b;
         public static final int color_about_96 = 0x7f07010c;
+        public static final int color_ban_96 = 0x7f07010e;
         public static final int color_lock_96 = 0x7f07011b;
         public static final int color_more_96 = 0x7f07011c;
+        public static final int color_new_96 = 0x7f07011d;
         public static final int color_palette_48 = 0x7f070120;
         public static final int connected_96 = 0x7f070141;
         public static final int copy_48_grey = 0x7f070142;
@@ -51,6 +58,7 @@ public class Resources {
         public static final int delete_96 = 0x7f070154;
         public static final int enlarge_48 = 0x7f07016b;
         public static final int event_on_accuracy_changed_48dp = 0x7f07016e;
+        public static final int event_on_response_48dp = 0x7f070199;
         public static final int exit_96 = 0x7f0701a4;
         public static final int expand_48 = 0x7f0701a5;
         public static final int facebook_50 = 0x7f0701ac;
@@ -68,10 +76,13 @@ public class Resources {
         public static final int ic_class_48 = 0x7f070215;
         public static final int ic_delete_grey_48dp = 0x7f070220;
         public static final int ic_detail_setting_48dp = 0x7f070225;
+        public static final int ic_expire_48dp = 0x7f070234;
         public static final int ic_export_grey_48dp = 0x7f070235;
         public static final int ic_export_his_white_48dp = 0x7f070236;
+        public static final int ic_folder_48dp = 0x7f07023a;
         public static final int ic_font_48dp = 0x7f07023b;
         public static final int ic_menu_white_24dp = 0x7f07025c;
+        public static final int ic_more_vert_white_24dp = 0x7f07025f;
         public static final int ic_picture_48dp = 0x7f070273;
         public static final int ic_redo_white_48dp = 0x7f070283;
         public static final int ic_reset_color_32dp = 0x7f07028a;
@@ -85,9 +96,11 @@ public class Resources {
         public static final int keyboard_48 = 0x7f0702e9;
         public static final int java_96 = 0x7f0702e8;
         public static final int language_48 = 0x7f0702eb;
+        public static final int language_translate_96 = 0x7f0702f0;
         public static final int light_on_48 = 0x7f070300;
         public static final int lock_48 = 0x7f070304;
         public static final int monday_48 = 0x7f07030f;
+        public static final int more_block_96dp = 0x7f070310;
         public static final int multiple_choice_48 = 0x7f070315;
         public static final int multiple_devices_48 = 0x7f070316;
         public static final int natural_user_interface2_48 = 0x7f07031b;
@@ -111,11 +124,13 @@ public class Resources {
         public static final int swipe_right_48 = 0x7f0703e5;
         public static final int text_width_96 = 0x7f0703ef;
         public static final int widget_admob = 0x7f07041a;
+        public static final int widget_source = 0x7f07043e;
         public static final int width_96 = 0x7f070447;
         public static final int ic_property_inject = 0x7f07046b;
         public static final int ic_property_convert = 0x7f07046c;
         public static final int add_file_48 = 0x7f070473;
         public static final int icon8_code_am = 0x7f07049c;
+        public static final int download_80px = 0x7f0704a0;
         public static final int block_boolean = 0x7f0704a1;
         public static final int block_num = 0x7f0704a2;
         public static final int block_ori = 0x7f0704a3;
@@ -159,6 +174,7 @@ public class Resources {
         public static final int chk_vcenter = 0x7f0800af;
         public static final int color = 0x7f0800b8;
         public static final int common_dialog_cancel_button = 0x7f0800bd;
+        public static final int common_dialog_default_button = 0x7f0800c0;
         public static final int common_dialog_ok_button = 0x7f0800c2;
         public static final int components_list = 0x7f0800c7;
         public static final int confirm_layout = 0x7f0800ca;
@@ -199,13 +215,17 @@ public class Resources {
         public static final int file_selector = 0x7f080154;
         public static final int hcv_property = 0x7f080165;
         public static final int icon = 0x7f080172;
+        public static final int icon_apk = 0x7f080173;
+        public static final int icon_src = 0x7f080179;
         public static final int img_activity = 0x7f080180;
         public static final int img_add = 0x7f080181;
         public static final int img_back = 0x7f080188;
+        public static final int img_bi = 0x7f08018e;
         public static final int img_button = 0x7f080190;
         public static final int img_color_guide = 0x7f080195;
         public static final int img_copy_apk_url = 0x7f080197;
         public static final int img_copy_data_url = 0x7f080198;
+        public static final int img_delete = 0x7f08019c;
         public static final int img_file_picker = 0x7f0801a9;
         public static final int img_icon = 0x7f0801af;
         public static final int img_left_icon = 0x7f0801b3;
@@ -290,6 +310,7 @@ public class Resources {
         public static final int ti_project_name = 0x7f080454;
         public static final int ti_right = 0x7f080455;
         public static final int ti_top = 0x7f080457;
+        public static final int title = 0x7f08045d;
         public static final int title_apk_path = 0x7f08045f;
         public static final int title_apk_url = 0x7f080460;
         public static final int title_data_url = 0x7f080461;
@@ -324,6 +345,7 @@ public class Resources {
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
         public static final int tv_root_title = 0x7f080589;
+        public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
         public static final int tv_sub_title = 0x7f0805b6;
         public static final int tv_title = 0x7f0805c3;
@@ -345,8 +367,18 @@ public class Resources {
         public static final int view_leftline = 0x7f080643;
         public static final int viewpager = 0x7f080648;
         public static final int linearLayout = 0x7f08065e;
+        public static final int cancel = 0x7f08065f;
+        public static final int list_file = 0x7f080667;
+        public static final int fab_plus = 0x7f080668;
+        public static final int text_info = 0x7f080669;
+        public static final int managepermissionLinearLayout1 = 0x7f08066a;
+        public static final int main_content = 0x7f08066c;
         public static final int text_title = 0x7f08066e;
         public static final int text_content = 0x7f08066f;
+        public static final int checkbox_content = 0x7f080672;
+        public static final int dialoginputlayoutLinearLayout1 = 0x7f080675;
+        public static final int dialoginputlayoutLinearLayout2 = 0x7f080676;
+        public static final int edittext_change_name = 0x7f080677;
         public static final int text_cancel = 0x7f080678;
         public static final int text_save = 0x7f080679;
         // WTF
@@ -366,14 +398,43 @@ public class Resources {
         public static final int dialog_btn_save = 0x7f0806bd;
         public static final int dialog_input_res = 0x7f0806be;
         public static final int dialog_input_value = 0x7f0806bf;
+        public static final int code_editor_edittext = 0x7f0806c6;
         public static final int code_editor_zoomin = 0x7f0806c7;
         public static final int code_editor_zoomout = 0x7f0806c8;
         public static final int ig_toolbar_back = 0x7f0806c9;
         public static final int tx_toolbar_title = 0x7f0806ca;
         public static final int ig_toolbar_load_file = 0x7f0806cb;
+        public static final int dialog_radio_filetype = 0x7f0806cc;
+        public static final int dialog_radio_filetype_class = 0x7f0806cd;
+        public static final int dialog_radio_filetype_activity = 0x7f0806ce;
+        public static final int dialog_edittext_name = 0x7f0806cf;
+        public static final int dialog_text_cancel = 0x7f0806d0;
+        public static final int dialog_text_save = 0x7f0806d1;
         public static final int line_numbered_textview_lines = 0x7f0806d2;
         public static final int line_numbered_textview_main = 0x7f0806d3;
+        public static final int custom_view_pro_background = 0x7f0806d4;
+        public static final int custom_view_pro_img = 0x7f0806d5;
+        public static final int custom_view_pro_title = 0x7f0806d6;
+        public static final int custom_view_pro_subtitle = 0x7f0806d7;
+        public static final int events_creator_scrollview = 0x7f0806d8;
+        public static final int events_creator_eventname = 0x7f0806d9;
+        public static final int events_creator_varname = 0x7f0806da;
+        public static final int events_creator_listenername = 0x7f0806db;
+        public static final int events_creator_icon = 0x7f0806dc;
+        public static final int events_creator_chooseicon = 0x7f0806dd;
+        public static final int events_creator_desc = 0x7f0806de;
+        public static final int events_creator_params = 0x7f0806df;
+        public static final int events_creator_spec = 0x7f0806e0;
+        public static final int events_creator_code = 0x7f0806e1;
+        public static final int events_creator_checkbox = 0x7f0806e2;
+        public static final int events_creator_hide = 0x7f0806e3;
+        public static final int events_creator_listenernameA = 0x7f0806e4;
+        public static final int events_creator_listenercode = 0x7f0806e5;
+        public static final int events_creator_listenercustomimport = 0x7f0806e6;
+        public static final int events_creator_cancel = 0x7f0806e7;
+        public static final int events_creator_save = 0x7f0806e8;
         public static final int codeeditor_more_options = 0x7f0806f8;
+        public static final int code_editor_layoutScrollView = 0x7f0806f9;
         public static final int project_config_pref_layout = 0x7f0806fc;
         // WTF
         public static final int linear3 = 0x7f0806fe;
@@ -382,12 +443,20 @@ public class Resources {
         public static final int edittext1 = 0x7f080702;
         public static final int save = 0x7f080710;
         public static final int spec = 0x7f080729;
+        public static final int code = 0x7f080742;
+        public static final int customimport = 0x7f08074e;
         public static final int parameter = 0x7f080769;
+        public static final int separate = 0x7f08076c;
+        public static final int sw_pg_debug = 0x7f08076d;
+        public static final int ln_pg_rules = 0x7f08076e;
         public static final int sw_pg_enabled = 0x7f08076f;
+        public static final int radio_button_folder = 0x7f080770;
         public static final int more = 0x7f080773;
         public static final int btn_compiler_opt = 0x7f080774;
         public static final int project_config_title = 0x7f080775;
         public static final int project_config_icon = 0x7f080776;
+        // WOOO!
+        public static final int ln_pg_fm = 0x7f080777;
         public static final int fab_label = 0x7f080783;
         public static final int loading_view = 0x7f080784;
         public static final int trash = 0x7f080785;
@@ -409,6 +478,7 @@ public class Resources {
         public static final int export_project = 0x7f0b0058;
         public static final int fr_logic_list_item_button = 0x7f0b0067;
         public static final int fr_logic_list_item_buttons = 0x7f0b0068;
+        public static final int init = 0x7f0b0086;
         public static final int logic_popup_add_component_temp = 0x7f0b00a7;
         public static final int main = 0x7f0b00ad;
         public static final int main_drawer_header = 0x7f0b00af;
@@ -421,7 +491,6 @@ public class Resources {
         public static final int myproject_buttons = 0x7f0b00fd;
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
-        public static final int project_config_layout = 0x7f0b01de;
         public static final int property_color_item = 0x7f0b012c;
         public static final int property_grid_item = 0x7f0b012e;
         public static final int property_group_item = 0x7f0b012f;
@@ -441,16 +510,29 @@ public class Resources {
         public static final int view_events = 0x7f0b01bf;
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
+        public static final int manage_file = 0x7f0b01c9;
+        public static final int manage_permission = 0x7f0b01ca;
         public static final int view_code = 0x7f0b01cb;
+        public static final int dialog_input_layout = 0x7f0b01ce;
         public static final int about = 0x7f0b01cf;
         public static final int add_custom_attribute = 0x7f0b01d3;
         public static final int custom_view_attribute = 0x7f0b01d4;
         public static final int custom_dialog_attribute = 0x7f0b01d5;
+        public static final int code_editor_layout = 0x7f0b01d6;
         public static final int toolbar_improved = 0x7f0b01d7;
+        public static final int dialog_create_new_file_layout = 0x7f0b01d8;
         public static final int line_numbered_textview_layout = 0x7f0b01d9;
+        public static final int custom_view_pro = 0x7f0b01da;
+        public static final int events_creator = 0x7f0b01db;
+        public static final int code_editor_layout_nowrap = 0x7f0b01dd;
+        public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int block_customview = 0x7f0b01e5;
+        public static final int add_new_listener = 0x7f0b01e8;
+        public static final int manage_proguard = 0x7f0b01ea;
         public static final int manage_stringfog = 0x7f0b01ee;
+        public static final int manage_java_item_hs = 0x7f0b01ef;
+        public static final int view_item_local_lib = 0x7f0b01f0;
         public static final int code_editor_hs = 0x7f0b01f1;
         public static final int about_changelog = 0x7f0b01f5;
         public static final int about_empty_viewpager = 0x7f0b01f6;
@@ -461,14 +543,20 @@ public class Resources {
         public static final int design_menu = 0x7f0c0002;
         public static final int main_menu = 0x7f0c0009;
         public static final int moreblock_menu = 0x7f0c0013;
+        public static final int popup_menu_double = 0x7f0c001d;
     }
 
     public static final class string {
+        public static final int account_dialog_suspended_description = 0x7f0e002d;
+        public static final int account_error_failed_login = 0x7f0e0032;
+        public static final int account_dialog_suspended_title = 0x7f0e002e;
         public static final int app_name = 0x7f0e0042;
         public static final int besome_blog_url = 0x7f0e0044;
         public static final int common_error_an_error_occurred = 0x7f0e03cc;
         public static final int common_error_failed_to_save = 0x7f0e03d3;
         public static final int common_message_check_network = 0x7f0e03e4;
+        /* That typo exists in Sketchware from Google Play. */
+        public static final int common_message_complete_copy_to_clipborad = 0x7f0e03e6;
         public static final int common_message_complete_save = 0x7f0e03ea;
         public static final int common_message_confirm = 0x7f0e03ed;
         public static final int common_message_insufficient_storage_space = 0x7f0e03f3;
@@ -485,10 +573,12 @@ public class Resources {
         public static final int common_word_close = 0x7f0e0411;
         public static final int common_word_continue = 0x7f0e0414;
         public static final int common_word_create = 0x7f0e0417;
+        public static final int common_word_edit = 0x7f0e0420;
         public static final int common_word_delete = 0x7f0e041a;
         public static final int common_word_exit = 0x7f0e0424;
         public static final int common_word_goback = 0x7f0e0428;
         public static final int common_word_import = 0x7f0e042a;
+        public static final int common_word_next = 0x7f0e0430;
         public static final int common_word_no = 0x7f0e0431;
         public static final int common_word_ok = 0x7f0e0432;
         public static final int common_word_reset = 0x7f0e0443;
@@ -498,6 +588,8 @@ public class Resources {
         public static final int common_word_see_all = 0x7f0e0449;
         public static final int common_word_select = 0x7f0e044b;
         public static final int common_word_settings = 0x7f0e044c;
+        public static final int common_word_show = 0x7f0e044e;
+        public static final int common_word_update = 0x7f0e0453;
         public static final int common_word_warning = 0x7f0e0457;
         public static final int component_add_docs_button_title_go_to_docs = 0x7f0e0483;
         public static final int component_add_message_docs_updated_soon = 0x7f0e0484;
@@ -542,10 +634,13 @@ public class Resources {
         public static final int design_tab_title_event = 0x7f0e0566;
         public static final int design_tab_title_view = 0x7f0e0567;
         public static final int facebook_url = 0x7f0e05b5;
+        public static final int init_language_setting_dialog_message = 0x7f0e05cb;
         public static final int language_message_confirm_delete = 0x7f0e05fa;
         public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
         public static final int logic_editor_more_block_dialog_description_goback = 0x7f0e061c;
         public static final int logic_editor_more_block_dialog_message_confirm_goback = 0x7f0e061d;
+        public static final int logic_editor_title_enter_number_value = 0x7f0e0631;
+        public static final int logic_editor_title_enter_string_value = 0x7f0e0632;
         public static final int logic_list_menu_add_to_collection = 0x7f0e0668;
         public static final int main_drawer_context_menu_title_slack_invitation = 0x7f0e0679;
         public static final int main_drawer_context_menu_title_slack_open = 0x7f0e067a;
@@ -560,17 +655,26 @@ public class Resources {
         /* That typo exists in Sketchware from Google Play. */
         public static final int message_compatible_chrome_brower = 0x7f0e069d;
         public static final int message_device_not_support = 0x7f0e069e;
+        public static final int message_strings_xml_loaded = 0x7f0e06a2;
         public static final int myprojects_confirm_project_delete = 0x7f0e06a4;
         public static final int myprojects_export_project_actionbar_title = 0x7f0e06a8;
         public static final int myprojects_export_project_button_export_src = 0x7f0e06a9;
         public static final int myprojects_export_project_button_generate_url = 0x7f0e06aa;
         public static final int myprojects_export_project_button_send_src_zip = 0x7f0e06ab;
+        public static final int myprojects_export_project_button_sign_apk = 0x7f0e06ac;
+        public static final int myprojects_export_project_message_complete_export = 0x7f0e06ad;
+        public static final int myprojects_export_project_message_exceed_limit = 0x7f0e06ae;
+        public static final int myprojects_export_project_message_failed_to_export = 0x7f0e06af;
         public static final int myprojects_export_project_title_download_url = 0x7f0e06b0;
         public static final int myprojects_export_project_title_export_data = 0x7f0e06b1;
         public static final int myprojects_export_project_title_export_src = 0x7f0e06b2;
         public static final int myprojects_export_project_title_local_path = 0x7f0e06b3;
+        public static final int myprojects_export_project_title_sign_apk = 0x7f0e06b4;
         public static final int myprojects_export_project_word_remain_days = 0x7f0e06b5;
         public static final int myprojects_export_project_word_valid_dt = 0x7f0e06b6;
+        public static final int myprojects_export_src_chooser_title_email = 0x7f0e06b7;
+        public static final int myprojects_export_src_title_email_body = 0x7f0e06b8;
+        public static final int myprojects_export_src_title_email_subject = 0x7f0e06b9;
         public static final int myprojects_list_menu_title_delete = 0x7f0e06bf;
         public static final int myprojects_list_menu_title_publish = 0x7f0e06c1;
         public static final int myprojects_list_menu_title_settings = 0x7f0e06c2;
@@ -604,6 +708,8 @@ public class Resources {
         public static final int slack_url_primary = 0x7f0e0981;
         public static final int slack_url_secondary = 0x7f0e0982;
         public static final int title_compatible_chrome_browser = 0x7f0e09ac;
+        public static final int update_available_description = 0x7f0e09dd;
+        public static final int update_available_title = 0x7f0e09de;
         public static final int view_widget_favorites_save_guide_new = 0x7f0e09e9;
         public static final int view_widget_favorites_save_title = 0x7f0e09ea;
         public static final int text_title_menu_java = 0x7f0e09f2;
@@ -633,6 +739,7 @@ public class Resources {
     }
 
     public static final class style {
+        public static final int AppTheme_Button_Indigo = 0x7f0f000c;
         public static final int ThemeOverlay_ToolbarMenu = 0x7f0f019e;
     }
 }

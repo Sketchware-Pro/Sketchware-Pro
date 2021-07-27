@@ -5,13 +5,11 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -168,60 +166,51 @@ public class ConfigActivity extends Activity {
                 SETTING_ALWAYS_SHOW_BLOCKS,
                 false);
         addTextInputPreference("Backup directory",
-                "The default directory is /Internal storage/.sketchware/backups/.",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final LinearLayout container = new LinearLayout(ConfigActivity.this);
-                        container.setPadding(
-                                (int) getDip(20),
-                                (int) getDip(8),
-                                (int) getDip(20),
-                                0);
+                "The default directory is /Internal storage/.sketchware/backups/.", v -> {
+                    final LinearLayout container = new LinearLayout(ConfigActivity.this);
+                    container.setPadding(
+                            (int) getDip(20),
+                            (int) getDip(8),
+                            (int) getDip(20),
+                            0);
 
-                        final TextInputLayout tilBackupDirectory = new TextInputLayout(ConfigActivity.this);
-                        tilBackupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-                        tilBackupDirectory.setHint("Backup directory");
-                        tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
-                        // A prefix of "/Internal storage" would've been nice, but Sketchware has material-1.0.0-rc01,
-                        // and TextInputLayout prefixes are available since material-1.2.0-alpha01
-                        container.addView(tilBackupDirectory);
+                    final TextInputLayout tilBackupDirectory = new TextInputLayout(ConfigActivity.this);
+                    tilBackupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    tilBackupDirectory.setHint("Backup directory");
+                    tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
+                    container.addView(tilBackupDirectory);
 
-                        final EditText backupDirectory = new EditText(ConfigActivity.this);
-                        backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT));
-                        backupDirectory.setTextSize(14.0f);
-                        backupDirectory.setText(getBackupPath());
-                        tilBackupDirectory.addView(backupDirectory);
+                    final EditText backupDirectory = new EditText(ConfigActivity.this);
+                    backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT));
+                    backupDirectory.setTextSize(14.0f);
+                    backupDirectory.setText(getBackupPath());
+                    tilBackupDirectory.addView(backupDirectory);
 
-                        AlertDialog dialog = new AlertDialog.Builder(ConfigActivity.this)
-                                .setTitle("Backup directory")
-                                .setPositiveButton(Resources.string.common_word_save, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        setting_map.put(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
-                                        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                                        SketchwareUtil.toast("Saved");
-                                    }
-                                })
-                                .create();
-                        dialog.setView(container);
-                        dialog.show();
-                    }
+                    AlertDialog dialog = new AlertDialog.Builder(ConfigActivity.this)
+                            .setTitle("Backup directory")
+                            .setPositiveButton(Resources.string.common_word_save, (dialog1, which) -> {
+                                setting_map.put(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
+                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                                SketchwareUtil.toast("Saved");
+                            })
+                            .create();
+                    dialog.setView(container);
+                    dialog.show();
                 });
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
                 SETTING_LEGACY_CODE_EDITOR,
                 false);
         addSwitchPreference("Use new Version Control",
-                "Enables advanced Version Control system for projects.",
+                "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
                 false);
         addSwitchPreference("Enable ASD highlighter",
-                "Enables syntax highlighting in Add Source Directly blocks in Logic Editor.",
+                "Enables syntax highlighting in Add Source Directly blocks.",
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
     }
@@ -323,19 +312,11 @@ public class ConfigActivity extends Activity {
         switchView.setTextSize(12);
         switchContainer.addView(switchView);
 
-        preferenceRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchView.setChecked(!switchView.isChecked());
-            }
-        });
+        preferenceRoot.setOnClickListener(v -> switchView.setChecked(!switchView.isChecked()));
 
-        switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setting_map.put(keyName, isChecked);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-            }
+        switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setting_map.put(keyName, isChecked);
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
         });
 
         if (setting_map.containsKey(keyName)) {

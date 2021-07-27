@@ -5,6 +5,12 @@ import mod.agus.jcoderz.handle.component.ConstVarComponent;
 
 public class ExtLibSelected {
 
+    /**
+     * Empty, private constructor to avoid instantiation.
+     */
+    private ExtLibSelected() {
+    }
+
     public static void addUsedDependencies(ConstVarComponent component, Kp kp) {
         if (component.isDynamicLinkUsed) {
             kp.a("firebase-dynamic-links-19.0.0");

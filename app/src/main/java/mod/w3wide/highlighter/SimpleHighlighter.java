@@ -7,14 +7,19 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.widget.EditText;
 
-import java.util.ArrayList;
+import com.besome.sketch.editor.LogicEditorActivity;
+
 import java.util.List;
 import java.util.regex.Matcher;
 
+/**
+ * A Helper class used in {@link LogicEditorActivity}
+ * to (currently) highlight add source directly blocks.
+ */
 public class SimpleHighlighter {
 
     private final EditText mEditor;
-    private List<SyntaxScheme> syntaxList = new ArrayList();
+    private final List<SyntaxScheme> syntaxList;
 
     public SimpleHighlighter(EditText editor) {
         this.mEditor = editor;
@@ -33,7 +38,6 @@ public class SimpleHighlighter {
         createHighlightSpans(syntaxList, mEditor.getText());
 
         mEditor.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -43,11 +47,10 @@ public class SimpleHighlighter {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-                removeSpans(editable, ForegroundColorSpan.class);
-                createHighlightSpans(syntaxList, editable);
+            public void afterTextChanged(Editable s) {
+                removeSpans(s, ForegroundColorSpan.class);
+                createHighlightSpans(syntaxList, s);
             }
-
         });
     }
 
@@ -69,5 +72,4 @@ public class SimpleHighlighter {
             editable.removeSpan(span);
         }
     }
-
 }

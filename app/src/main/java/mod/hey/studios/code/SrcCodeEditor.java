@@ -6,7 +6,6 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -37,6 +36,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import a.a.a.bB;
+import io.github.rosemoe.editor.interfaces.EditorLanguage;
 import io.github.rosemoe.editor.langs.EmptyLanguage;
 import io.github.rosemoe.editor.langs.desc.CDescription;
 import io.github.rosemoe.editor.langs.desc.CppDescription;
@@ -61,7 +61,6 @@ public class SrcCodeEditor extends Activity {
     private String beforeContent;
 
     public static void loadCESettings(Context c, CodeEditor ed, String prefix) {
-
         pref = c.getSharedPreferences("hsce", Activity.MODE_PRIVATE);
 
         int text_size = pref.getInt(prefix + "_ts", 12);
@@ -69,33 +68,46 @@ public class SrcCodeEditor extends Activity {
         boolean word_wrap = pref.getBoolean(prefix + "_ww", false);
         boolean auto_c = pref.getBoolean(prefix + "_ac", true);
 
-
         selectTheme(ed, theme);
 
         ed.setTextSize(text_size);
-
         ed.setWordwrap(word_wrap);
-
         ed.setAutoCompletionEnabled(auto_c);
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
-        if (which == 0) {
-            ed.setColorScheme(new EditorColorScheme());
-        } else if (which == 1) {
-            ed.setColorScheme(new SchemeGitHub());
-        } else if (which == 2) {
-            ed.setColorScheme(new SchemeEclipse());
-        } else if (which == 3) {
-            ed.setColorScheme(new SchemeDarcula());
-        } else if (which == 4) {
-            ed.setColorScheme(new SchemeVS2019());
-        } else if (which == 5) {
-            ed.setColorScheme(new SchemeNotepadXX());
+        EditorColorScheme scheme = new EditorColorScheme();
+
+        switch (which) {
+            case 0:
+                scheme = new EditorColorScheme();
+                break;
+                
+            case 1:
+                scheme = new SchemeGitHub();
+                break;
+                
+            case 2:
+                scheme = new SchemeEclipse();
+                break;
+                
+            case 3:
+                scheme = new SchemeDarcula();
+                break;
+                
+            case 4:
+                scheme = new SchemeVS2019();
+                break;
+                
+            case 5:
+                scheme = new SchemeNotepadXX();
+                break;
         }
+
+        ed.setColorScheme(scheme);
     }
 
-    //xml formatter
+    // xml formatter
     public static String prettifyXml(String xml, int indent) {
         try {
             // Turn xml string into a document
@@ -106,9 +118,12 @@ public class SrcCodeEditor extends Activity {
             // Remove whitespaces outside tags
             document.normalize();
             XPath xPath = XPathFactory.newInstance().newXPath();
-            NodeList nodeList = (NodeList) xPath.evaluate("//text()[normalize-space()='']",
-                    document,
-                    XPathConstants.NODESET);
+            NodeList nodeList = (NodeList)
+                    xPath.evaluate(
+                            "//text()[normalize-space()='']",
+                            document,
+                            XPathConstants.NODESET
+                    );
 
             for (int i = 0; i < nodeList.getLength(); ++i) {
                 Node node = nodeList.item(i);
@@ -117,32 +132,28 @@ public class SrcCodeEditor extends Activity {
 
             // Setup pretty print options
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//            transformerFactory.setAttribute("indent-number", indent);
             Transformer transformer = transformerFactory.newTransformer();
+
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            //transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indent));
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
 
             // Return pretty print xml string
             StringWriter stringWriter = new StringWriter();
             transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
             return stringWriter.toString();
-        } catch (Exception e) {
 
+        } catch (Exception e) {
             return null;
-            //throw new RuntimeException(e);
         }
     }
 
-    //java formatter
+    // java formatter
     public static void a(StringBuilder var0, int var1) {
         for (int var2 = 0; var2 < var1; ++var2) {
             var0.append('\t');
         }
-
     }
 
     public static String j(String var0) {
@@ -191,6 +202,8 @@ public class SrcCodeEditor extends Activity {
                         }
 
                         var1.append(var11);
+                        //add indents for commented lines
+                        if(var11==10) a(var1,var8);
                     }
                 } else if (var7) {
                     var1.append(var11);
@@ -301,13 +314,16 @@ public class SrcCodeEditor extends Activity {
 
     public static String paste(Activity act) {
         ClipboardManager clipboard = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
+
         if (clipboard.hasPrimaryClip()) {
             ClipDescription desc = clipboard.getPrimaryClipDescription();
             ClipData data = clipboard.getPrimaryClip();
+
             if (data != null && desc != null && desc.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                 return String.valueOf(data.getItemAt(0).getText());
             }
         }
+
         return "";
     }
 
@@ -335,7 +351,6 @@ public class SrcCodeEditor extends Activity {
         getActionBar().setSubtitle("UTF-8");
 
         editor.setTypefaceText(Typeface.MONOSPACE);
-
         //6.3.0 fix1
         editor.setOverScrollEnabled(false);
 
@@ -345,12 +360,9 @@ public class SrcCodeEditor extends Activity {
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
 
         editor.setText(beforeContent);
-
         editor.setEditorLanguage(new JavaLanguage());
 
         loadCESettings(this, editor, "act");
-
-
     }
 
     public void save() {
@@ -367,14 +379,10 @@ public class SrcCodeEditor extends Activity {
             new AlertDialog.Builder(this)
                     .setTitle("Warning")
                     .setMessage("You have unsaved changes. Are you sure you want to exit?")
-                    .setPositiveButton(Resources.string.common_word_exit, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
+                    .setPositiveButton(Resources.string.common_word_exit, (dialog, which) -> finish())
                     .setNegativeButton(Resources.string.common_word_cancel, null)
-                    .create().show();
+                    .create()
+                    .show();
         }
     }
 
@@ -386,26 +394,20 @@ public class SrcCodeEditor extends Activity {
         menu.clear();
 
         menu.add(0, 9, 0, "Paste");
-
         menu.add(0, 0, 0, "Undo")
                 .setIcon(getDrawable(Resources.drawable.ic_undo_white_48dp))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
         menu.add(0, 1, 0, "Redo")
                 .setIcon(getDrawable(Resources.drawable.ic_redo_white_48dp))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
         menu.add(0, 2, 0, "Save")
                 .setIcon(getDrawable(Resources.drawable.save_white_48))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        //whatup
+        
         menu.add(0, 3, 0, "Find & Replace");
-
         menu.add(0, 4, 0, "Word wrap")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ww", false));
-
         menu.add(0, 5, 0, "Pretty print");
         menu.add(0, 6, 0, "Switch language");
         menu.add(0, 7, 0, "Switch theme");
@@ -449,19 +451,21 @@ public class SrcCodeEditor extends Activity {
 
                     boolean err = false;
                     String ss = b.toString();
+                    
                     try {
                         ss = j(ss);
                     } catch (Exception e) {
                         err = true;
                         bB.a(SrcCodeEditor.this, "Error: Your code contains incorrectly nested parentheses", 0).show();
                     }
+                    
                     if (!err) editor.setText(ss);
 
                 } else if (getIntent().hasExtra("xml")) {
-                    String frmt = prettifyXml(editor.getText().toString(), 4);
+                    String format = prettifyXml(editor.getText().toString(), 4);
 
-                    if (frmt != null) {
-                        editor.setText(frmt);
+                    if (format != null) {
+                        editor.setText(format);
                     } else {
                         bB.a(getApplicationContext(), "Couldn't format xml file (maybe check if it follows proper xml syntax?)", 1).show();
                     }
@@ -474,23 +478,35 @@ public class SrcCodeEditor extends Activity {
             case "Switch language":
                 new AlertDialog.Builder(SrcCodeEditor.this)
                         .setTitle("Switch language")
-                        .setSingleChoiceItems(new String[]{"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (which == 0) {
-                                            editor.setEditorLanguage(new UniversalLanguage(new CDescription()));
-                                        } else if (which == 1) {
-                                            editor.setEditorLanguage(new UniversalLanguage(new CppDescription()));
-                                        } else if (which == 2) {
-                                            editor.setEditorLanguage(new JavaLanguage());
-                                        } else if (which == 3) {
-                                            editor.setEditorLanguage(new UniversalLanguage(new JavaScriptDescription()));
-                                        } else if (which == 4) {
-                                            editor.setEditorLanguage(new EmptyLanguage());
-                                        }
+                        .setSingleChoiceItems(new String[] {"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1,
+                                (dialog, which) -> {
+                                    EditorLanguage editorLanguage = null;
 
-                                        dialog.dismiss();
+                                    switch (which) {
+                                        case 0:
+                                            editorLanguage = new UniversalLanguage(new CDescription());
+                                            break;
+
+                                        case 1:
+                                            editorLanguage = new UniversalLanguage(new CppDescription());
+                                            break;
+
+                                        case 2:
+                                            editorLanguage = new JavaLanguage();
+                                            break;
+
+                                        case 3:
+                                            editorLanguage = new UniversalLanguage(new JavaScriptDescription());
+                                            break;
+
+                                        case 4:
+                                            editorLanguage = new EmptyLanguage();
+                                            break;
                                     }
+
+                                    editor.setEditorLanguage(editorLanguage);
+
+                                    dialog.dismiss();
                                 }
                         )
                         .setNegativeButton(android.R.string.cancel, null)
@@ -500,23 +516,18 @@ public class SrcCodeEditor extends Activity {
             case "Find & Replace":
                 editor.getSearcher().stopSearch();
                 editor.beginSearchMode();
+
                 break;
 
             case "Switch theme":
-                String[] themes = new String[]{"Default", "GitHub", "Eclipse",
-                        "Darcula", "VS2019", "NotepadXX"};
+                String[] themes = new String[] {"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
                 new AlertDialog.Builder(SrcCodeEditor.this)
                         .setTitle("Switch theme")
                         .setSingleChoiceItems(themes, -1,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        selectTheme(editor, which);
-
-                                        pref.edit().putInt("act_theme", which).commit();
-
-                                        dialog.dismiss();
-                                    }
+                                (dialog, which) -> {
+                                    selectTheme(editor, which);
+                                    pref.edit().putInt("act_theme", which).apply();
+                                    dialog.dismiss();
                                 }
                         )
                         .setNegativeButton(android.R.string.cancel, null)
@@ -527,8 +538,7 @@ public class SrcCodeEditor extends Activity {
                 item.setChecked(!item.isChecked());
                 editor.setWordwrap(item.isChecked());
 
-                pref.edit().putBoolean("act_ww", item.isChecked()).commit();
-
+                pref.edit().putBoolean("act_ww", item.isChecked()).apply();
                 break;
 
             case "Auto complete":
@@ -536,8 +546,7 @@ public class SrcCodeEditor extends Activity {
 
                 //new
                 editor.setAutoCompletionEnabled(item.isChecked());
-
-                pref.edit().putBoolean("act_ac", item.isChecked()).commit();
+                pref.edit().putBoolean("act_ac", item.isChecked()).apply();
                 break;
 
             case "Paste":
@@ -564,8 +573,6 @@ public class SrcCodeEditor extends Activity {
         super.onStop();
 
         float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
-
-
-        pref.edit().putInt("act_ts", (int) (editor.getTextSizePx() / scaledDensity)).commit();
+        pref.edit().putInt("act_ts", (int) (editor.getTextSizePx() / scaledDensity)).apply();
     }
 }

@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -22,11 +23,20 @@ public class MenuBean {
     private static final String[] defaultColor = new String[]{"colorAccent", "colorControlHighlight", "colorControlNormal", "colorPrimary", "colorPrimaryDark"};
     private static final String[] intentKey = new String[]{"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
     private static final String[] pixelFormat = new String[]{"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
-    private static final String[] patternFlags = new String[]{"CANON_EQ","CASE_INSENSITIVE","COMMENTS","DOTALL","LITERAL","MULTILINE","UNICODE_CASE","UNIX_LINES"};
+    private static final String[] patternFlags = new String[]{"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
+    private static final String[] permission;
 
     private final LogicEditorActivity logic;
     public String javaName;
     public String sc_id;
+
+    static {
+        ArrayList<String> permissions = new ArrayList<>();
+        for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
+            permissions.add("Manifest.permission." + permissionField.getName());
+        }
+        permission = permissions.toArray(new String[0]);
+    }
 
     public MenuBean(LogicEditorActivity activity) {
         javaName = activity.M.getJavaName();
@@ -61,6 +71,20 @@ public class MenuBean {
         String menuName = ss.getMenuName();
         asdAll.b("Select " + menuName);
         switch (menuName) {
+        	case "SignButtonColor":
+                asdAll.b("Select a SignInButton Color");
+                selectableItems.add("COLOR_AUTO");
+                selectableItems.add("COLOR_DARK");
+                selectableItems.add("COLOR_LIGHT");
+                break;
+
+        	case "SignButtonSize":
+                asdAll.b("Select SignInButton Size");
+                selectableItems.add("SIZE_ICON_ONLY");
+                selectableItems.add("SIZE_STANDARD");
+                selectableItems.add("SIZE_WIDE");
+                break;
+
             case "ResString":
                 asdAll.b("Select a resource String");
                 selectableItems.add("app_name");
@@ -131,14 +155,12 @@ public class MenuBean {
 
             case "AdUnit":
                 asdAll.a(2131166209);
-                //asdAll.a("If no Ad Units were found, then add and save Project to get added Ad Units.");
                 asdAll.b("Select an AdUnit");
                 selectableItems.addAll(AdmobReader.getAdUnits(sc_id));
                 break;
 
             case "TestDevice":
                 asdAll.a(2131165866);
-                //asdAll.a("If no Test Device Found !.\nthen add and save Project to get saved Test Devices.");
                 asdAll.b("Select a test device");
                 selectableItems.addAll(AdmobReader.getTestDevices(sc_id));
                 break;
@@ -151,6 +173,11 @@ public class MenuBean {
             case "PatternFlag":
                 asdAll.b("Select a Pattern Flags");
                 selectableItems.addAll(new ArrayList<>(Arrays.asList(patternFlags)));
+                break;
+
+            case "Permission":
+                asdAll.b("Select a Permission");
+                selectableItems.addAll(new ArrayList<>(Arrays.asList(permission)));
                 break;
 
             case "AdSize":

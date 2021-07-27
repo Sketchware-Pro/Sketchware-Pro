@@ -1,8 +1,10 @@
 package mod.agus.jcoderz.lib;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,10 +20,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,6 +50,38 @@ public class FileUtil {
 
     public static boolean renameFile(String str, String str2) {
         return new File(str).renameTo(new File(str2));
+    }
+
+    /**
+     * @return A filename without its extension,
+     * e.g. "FileUtil" for "FileUtil.java", or "FileUtil" for "/sdcard/Documents/FileUtil.java"
+     */
+    public static String getFileNameNoExtension(String filePath) {
+        if (filePath.trim().isEmpty()) return "";
+
+        int lastPos = filePath.lastIndexOf('.');
+        int lastSep = filePath.lastIndexOf(File.separator);
+
+        if (lastSep == -1) {
+            return (lastPos == -1 ? filePath : filePath.substring(0, lastPos));
+        } else if (lastPos == -1 || lastSep > lastPos) {
+            return filePath.substring(lastSep + 1);
+        }
+        return filePath.substring(lastSep + 1, lastPos);
+    }
+
+    /**
+     * @return A file's filename extension,
+     * e.g. "java" for "/sdcard/Documents/FileUtil.java", but "" for "/sdcard/Documents/fileWithoutExtension"
+     */
+    public static String getFileExtension(String filePath) {
+        if (filePath.isEmpty()) return "";
+
+        int last = filePath.lastIndexOf('.');
+        int lastSep = filePath.lastIndexOf(File.separator);
+
+        if (last == -1 || lastSep >= last) return "";
+        return filePath.substring(last + 1);
     }
 
     private static void createNewFile(String path) {
@@ -72,7 +109,7 @@ public class FileUtil {
             fr = new FileReader(path);
 
             char[] buff = new char[1024];
-            int length = 0;
+            int length;
 
             while ((length = fr.read(buff)) > 0) {
                 sb.append(new String(buff, 0, length));
@@ -124,7 +161,7 @@ public class FileUtil {
             fos = new FileOutputStream(destPath, false);
 
             byte[] buff = new byte[1024];
-            int length = 0;
+            int length;
 
             while ((length = fis.read(buff)) > 0) {
                 fos.write(buff, 0, length);
@@ -407,11 +444,11 @@ public class FileUtil {
         int width = decodeFile.getWidth();
         int height = decodeFile.getHeight();
         if (width > height) {
-            int i3 = (int) ((((float) i) / ((float) width)) * ((float) height));
+            int i3 = i / width * height;
             i2 = i;
             i = i3;
         } else {
-            i2 = (int) (((float) width) * (((float) i) / ((float) height)));
+            i2 = width * i / height;
         }
         return Bitmap.createScaledBitmap(decodeFile, i2, i, true);
     }
@@ -455,39 +492,39 @@ public class FileUtil {
     }
 
     public static void resizeBitmapFileToCircle(String fromPath, String destPath) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(createBitmap);
-            Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(-12434878);
-            canvas.drawCircle((float) (decodeFile.getWidth() / 2), (float) (decodeFile.getHeight() / 2), (float) (decodeFile.getWidth() / 2), paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(decodeFile, rect, rect, paint);
-            saveBitmap(createBitmap, destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(createBitmap);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(-12434878);
+        canvas.drawCircle((float) (decodeFile.getWidth() / 2), (float) (decodeFile.getHeight() / 2), (float) (decodeFile.getWidth() / 2), paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(decodeFile, rect, rect, paint);
+        saveBitmap(createBitmap, destPath);
     }
 
     public static void resizeBitmapFileWithRoundedBorder(String fromPath, String destPath, int pixels) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(createBitmap);
-            Paint paint = new Paint();
-            Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
-            RectF rectF = new RectF(rect);
-            float f = (float) pixels;
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(-12434878);
-            canvas.drawRoundRect(rectF, f, f, paint);
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(decodeFile, rect, rect, paint);
-            saveBitmap(createBitmap, destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile.getWidth(), decodeFile.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(createBitmap);
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, decodeFile.getWidth(), decodeFile.getHeight());
+        RectF rectF = new RectF(rect);
+        float f = (float) pixels;
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(-12434878);
+        canvas.drawRoundRect(rectF, f, f, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(decodeFile, rect, rect, paint);
+        saveBitmap(createBitmap, destPath);
     }
 
     public static void cropBitmapFileFromCenter(String fromPath, String destPath, int w, int h) {
@@ -523,82 +560,82 @@ public class FileUtil {
     }
 
     public static void rotateBitmapFile(String fromPath, String destPath, float angle) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Matrix matrix = new Matrix();
-            matrix.postRotate(angle);
-            saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
     }
 
     public static void scaleBitmapFile(String fromPath, String destPath, float x, float y) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Matrix matrix = new Matrix();
-            matrix.postScale(x, y);
-            saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Matrix matrix = new Matrix();
+        matrix.postScale(x, y);
+        saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
     }
 
     public static void skewBitmapFile(String fromPath, String destPath, float x, float y) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Matrix matrix = new Matrix();
-            matrix.postSkew(x, y);
-            saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Matrix matrix = new Matrix();
+        matrix.postSkew(x, y);
+        saveBitmap(Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth(), decodeFile.getHeight(), matrix, true), destPath);
     }
 
     public static void setBitmapFileColorFilter(String fromPath, String destPath, int color) {
-        if (isExistFile(fromPath)) {
-            Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
-            Bitmap createBitmap = Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth() - 1, decodeFile.getHeight() - 1);
-            Paint paint = new Paint();
-            paint.setColorFilter(new LightingColorFilter(color, 1));
-            new Canvas(createBitmap).drawBitmap(createBitmap, 0.0f, 0.0f, paint);
-            saveBitmap(createBitmap, destPath);
-        }
+        if (!isExistFile(fromPath)) return;
+
+        Bitmap decodeFile = BitmapFactory.decodeFile(fromPath);
+        Bitmap createBitmap = Bitmap.createBitmap(decodeFile, 0, 0, decodeFile.getWidth() - 1, decodeFile.getHeight() - 1);
+        Paint paint = new Paint();
+        paint.setColorFilter(new LightingColorFilter(color, 1));
+        new Canvas(createBitmap).drawBitmap(createBitmap, 0.0f, 0.0f, paint);
+        saveBitmap(createBitmap, destPath);
     }
 
     public static void setBitmapFileBrightness(String fromPath, String destPath, float brightness) {
-        if (isExistFile(fromPath)) {
-            Bitmap src = BitmapFactory.decodeFile(fromPath);
-            ColorMatrix cm = new ColorMatrix(new float[]
-                    {
-                            1, 0, 0, 0, brightness,
-                            0, 1, 0, 0, brightness,
-                            0, 0, 1, 0, brightness,
-                            0, 0, 0, 1, 0
-                    });
+        if (!isExistFile(fromPath)) return;
 
-            Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            paint.setColorFilter(new ColorMatrixColorFilter(cm));
-            canvas.drawBitmap(src, 0, 0, paint);
-            saveBitmap(bitmap, destPath);
-        }
+        Bitmap src = BitmapFactory.decodeFile(fromPath);
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        1, 0, 0, 0, brightness,
+                        0, 1, 0, 0, brightness,
+                        0, 0, 1, 0, brightness,
+                        0, 0, 0, 1, 0
+                });
+
+        Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(src, 0, 0, paint);
+        saveBitmap(bitmap, destPath);
     }
 
     public static void setBitmapFileContrast(String fromPath, String destPath, float contrast) {
-        if (isExistFile(fromPath)) {
-            Bitmap src = BitmapFactory.decodeFile(fromPath);
-            ColorMatrix cm = new ColorMatrix(new float[]
-                    {
-                            contrast, 0, 0, 0, 0,
-                            0, contrast, 0, 0, 0,
-                            0, 0, contrast, 0, 0,
-                            0, 0, 0, 1, 0
-                    });
+        if (!isExistFile(fromPath)) return;
 
-            Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            paint.setColorFilter(new ColorMatrixColorFilter(cm));
-            canvas.drawBitmap(src, 0, 0, paint);
+        Bitmap src = BitmapFactory.decodeFile(fromPath);
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        contrast, 0, 0, 0, 0,
+                        0, contrast, 0, 0, 0,
+                        0, 0, contrast, 0, 0,
+                        0, 0, 0, 1, 0
+                });
 
-            saveBitmap(bitmap, destPath);
-        }
+        Bitmap bitmap = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(src, 0, 0, paint);
+
+        saveBitmap(bitmap, destPath);
     }
 
     public static int getJpegRotate(String filePath) {
@@ -688,5 +725,30 @@ public class FileUtil {
             entry = input.getNextEntry();
         }
         input.close();
+    }
+
+    /**
+     * Asks the user to grant the current app {@link android.Manifest.permission#MANAGE_EXTERNAL_STORAGE}.
+     * Will silently ignore cases where a screen to manage that permission doesn't exist, except on
+     * devices with an API level of 29 or lower.
+     *
+     * @throws AssertionError Thrown if the device's API level is 29 or lower
+     */
+    public static void requestAllFilesAccessPermission(Context context) {
+        if (Build.VERSION.SDK_INT > 29) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    context.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Log.e("FileUtil", "Activity to manage apps' all files access permission not found!");
+                }
+            }
+        } else {
+            throw new AssertionError("Not on an API level 30 or higher device!");
+        }
     }
 }

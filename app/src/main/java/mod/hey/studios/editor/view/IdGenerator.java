@@ -4,21 +4,35 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewEditor;
 
 public class IdGenerator {
+
     public static String getId(ViewEditor viewEditor, int i, ViewBean viewBean) {
         String lastPath = getLastPath(viewBean.convert);
-        if (lastPath.equals("CardView")) {
-            i = 36;
-        } else if (lastPath.equals("CollapsingToolbarLayout")) {
-            i = 37;
-        } else if (lastPath.equals("TextInputLayout")) {
-            i = 38;
-        } else if (lastPath.equals("SwipeRefreshLayout")) {
-            i = 39;
-        } else if (lastPath.equals("RadioGroup")) {
-            i = 40;
-        } else if (lastPath.equals("CircleImageView")) {
-            i = 43;
+        switch (lastPath) {
+            case "CardView":
+                i = 36;
+                break;
+
+            case "CollapsingToolbarLayout":
+                i = 37;
+                break;
+
+            case "TextInputLayout":
+                i = 38;
+                break;
+
+            case "SwipeRefreshLayout":
+                i = 39;
+                break;
+
+            case "RadioGroup":
+                i = 40;
+                break;
+
+            case "CircleImageView":
+                i = 43;
+                break;
         }
+
         return viewEditor.a(i);
     }
 
@@ -26,6 +40,7 @@ public class IdGenerator {
         if (!str.contains(".")) {
             return str;
         }
+
         String[] split = str.split("\\.");
         return split[split.length - 1];
     }
