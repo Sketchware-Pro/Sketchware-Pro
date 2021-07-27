@@ -43,7 +43,7 @@ Sketchware Pro: [apktool](https://ibotpeaches.github.io/Apktool/).
 | `La/a/a/Ox;` | Responsible for generating XML files of layouts |
 | `La/a/a/qq;` | Registry of built-in libraries' dependencies |
 | `La/a/a/tq;` | Responsible for the compiling dialog's quizzes |
-| `La/a/a/yq;` | Organizes Sketchware projects' |
+| `La/a/a/yq;` | Organizes Sketchware projects' file paths |
 
 You can also check the `mod` package that has the majority of contributors' changes.
 
