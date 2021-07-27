@@ -5,12 +5,10 @@ import java.lang.StringBuilder;
 public class Logger {
 
     static String logPath = "/storage/emulated/0/.sketchware/"+"logs.txt";
-    public static void logExcept(String info, Exception e) {
+    public static void log(String info) {
         try {
-            String except = info+e.toString();
-            e.printStackTrace();
-            FileUtil.writeFile(logPath, s);
-        } catch(Exception exception) {
+            FileUtil.writeFile(logPath, info);
+        } catch(Exception e) {
               e.printStackTrace();
         }
     }
