@@ -159,6 +159,7 @@ public class Dp {
         long savedTimeMillis = System.currentTimeMillis();
         b();
         Log.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        Logger.log();
     }
 
     public void a(iI iIVar, String str) {
