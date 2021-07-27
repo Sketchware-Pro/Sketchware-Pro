@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import mod.pranav.purwar.Logger;
 
 public class DebugActivity extends Activity {
 
@@ -16,6 +17,8 @@ public class DebugActivity extends Activity {
             String error = intent.getStringExtra("error");
 
             if (error != null) {
+                //logging to external file for easy debugging for non-root users
+                Logger.log(error);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("An error occurred")
                         .setMessage(error)
