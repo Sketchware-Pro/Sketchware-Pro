@@ -12,6 +12,7 @@ public class ExtLibSelected {
     }
 
     public static void addUsedDependencies(ConstVarComponent component, Kp kp) {
+        kp.a("support-fragment_V_28.0.0");
         if (component.isDynamicLinkUsed) {
             kp.a("firebase-dynamic-links-19.0.0");
         }
