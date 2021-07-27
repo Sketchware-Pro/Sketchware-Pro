@@ -172,11 +172,14 @@ public class Jx {
                 sb.append(a);
             }
         } else {
-            sb.append("import android.app.Fragment;");
+            //updated fragment lib
+            sb.append("import android.support.v4.app.Fragment;");
             sb.append(a);
-            sb.append("import android.app.FragmentManager;");
+            //updated fragment manager lib
+            sb.append("import android.support.v4.app.FragmentManager;");
             sb.append(a);
-            sb.append("import android.app.DialogFragment;");
+            //updated dialogfragment lib
+            sb.append("import android.support.v4.app.DialogFragment;");
             sb.append(a);
         }
         if (permMan.hasNewPermission() || this.f.a(this.c.getActivityName()).a()) {
