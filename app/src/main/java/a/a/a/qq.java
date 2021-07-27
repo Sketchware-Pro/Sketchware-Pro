@@ -13,7 +13,6 @@ public class qq {
      */
     public static String[] a(String name) {
         ArrayList<String> knownDependencies = new ArrayList<>();
-        knownDependencies.add("support-fragment_V_28.0.0");
         switch (name) {
             case "okhttp-3.9.1":
                 knownDependencies.add("Okio-1.17.4");
