@@ -1465,7 +1465,7 @@ public class ManageEvent {
                 break;
             case -1561524051:
                 if (str.equals("FragmentStatePagerAdapter")) {
-                    sb.append("public class MyFragmentAdapter extends FragmentStatePagerAdapter {");
+                    sb.append("public class MyFragmentAdapter extends FragmentStatePagerAdapter {\n//this method is deprecated, should migrate to viewpager2.");
                     sb.append("\r\n");
                     sb.append("Context context;");
                     sb.append("\r\n");
@@ -1575,7 +1575,7 @@ public class ManageEvent {
             case 282753362:
                 if (str.equals("OnPageChangeListener")) {
                     sb.append(str2);
-                    sb.append(".setOnPageChangeListener(new ViewPager.OnPageChangeListener() {\n%s\n});");
+                    sb.append(".addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\n%s\n});");
                     break;
                 }
                 break;
@@ -1638,7 +1638,7 @@ public class ManageEvent {
             case 1295135141:
                 if (str.equals("OnTabSelectedListener")) {
                     sb.append(str2);
-                    sb.append(".setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\r\n%s\r\n});");
+                    sb.append(".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\r\n%s\r\n});");
                     break;
                 }
                 break;

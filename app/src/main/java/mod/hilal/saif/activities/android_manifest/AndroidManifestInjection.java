@@ -1,7 +1,5 @@
 package mod.hilal.saif.activities.android_manifest;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -38,6 +35,8 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.android_manifest.AppComponentsDialog;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
+
+import static mod.SketchwareUtil.getDip;
 
 public class AndroidManifestInjection extends Activity {
 
@@ -394,12 +393,10 @@ public class AndroidManifestInjection extends Activity {
         gradientDrawable.setColor(Color.parseColor("#ffffff"));
         RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
         ((LinearLayout.LayoutParams) view.getLayoutParams()).setMargins((int) getDip(4), (int) getDip(2), (int) getDip(4), (int) getDip(2));
-        if (Build.VERSION.SDK_INT >= 21) {
-            view.setElevation((float) i3);
-            view.setBackground(rippleDrawable);
-            view.setClickable(true);
-            view.setFocusable(true);
-        }
+        view.setElevation((float) i3);
+        view.setBackground(rippleDrawable);
+        view.setClickable(true);
+        view.setFocusable(true);
     }
 
     private void refreshList() {
@@ -476,11 +473,10 @@ public class AndroidManifestInjection extends Activity {
         //android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
         //gd.setColor(Color.WHITE);
         //android.graphics.drawable.RippleDrawable rpl = new android.graphics.drawable.RippleDrawable(new android.content.res.ColorStateList(new int[][]{new int[]{}}, new int[]{Color.BLUE}),gd , null);
-        if (Build.VERSION.SDK_INT >= 21) {
-            //temp_card.setBackground(rpl);
-            //temp_card.setClickable(true);
-            //temp_card.setFocusable(true);
-        }
+        //temp_card.setBackground(rpl);
+        //temp_card.setClickable(true);
+        //temp_card.setFocusable(true);
+
 
         temp_card.setRadius(getDip(4));
         //temp_card.setCardElevation((float));
@@ -496,10 +492,8 @@ public class AndroidManifestInjection extends Activity {
         gd.setColor(Color.WHITE);
         RippleDrawable rpl = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor("#64B5F6")}), gd, null);
         temp_card.setBackground(rpl);
-        if (Build.VERSION.SDK_INT >= 21) {
-            temp_card.setClickable(true);
-            temp_card.setFocusable(true);
-        }
+        temp_card.setClickable(true);
+        temp_card.setFocusable(true);
         return temp_card;
     }
 
