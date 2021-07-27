@@ -1,6 +1,5 @@
 package mod.pranav.purwar;
 
-import java.io.File;
 import java.lang.StringBuilder;
 
 public class Logger {
