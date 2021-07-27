@@ -1,25 +1,30 @@
 package a.a.a;
 
-// $FF: synthetic class
+import a.a.a.Lx.a;
+
 public class Kx {
-    // $FF: synthetic field
-    public static final int[] a = new int[Lx.a.values().length];
+   public static final int[] a;
 
-    static {
-        try {
-            a[Lx.a.a.ordinal()] = 1;
-        } catch (NoSuchFieldError ignored) {
-        }
+   static {
+      int[] var0 = new int[a.values().length];
+      a = var0;
 
-        try {
-            a[Lx.a.b.ordinal()] = 2;
-        } catch (NoSuchFieldError ignored) {
-        }
+      try {
+         var0[a.a.ordinal()] = 1;
+      } catch (NoSuchFieldError var6) {
+         ;
+      }
 
-        try {
-            a[Lx.a.c.ordinal()] = 3;
-        } catch (NoSuchFieldError ignored) {
-        }
+      try {
+         a[a.b.ordinal()] = 2;
+      } catch (NoSuchFieldError var5) {
+         ;
+      }
 
-    }
+      try {
+         a[a.c.ordinal()] = 3;
+      } catch (NoSuchFieldError var4) {
+         ;
+      }
+   }
 }
