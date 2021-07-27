@@ -12,6 +12,7 @@ public class tq {
             a = new ArrayList<>();
         }
 
+        a.add(new QuizBean("You can download shared moreblocks inside Sketchware.", 1));
         a.add(new QuizBean("Gyroscope component is supported on every device.", 1));
         a.add(new QuizBean("The index of the first item in the list is 1.", 1));
         a.add(new QuizBean("Saved SharedPreference data remains even if you delete the application.", 1));
@@ -93,8 +94,8 @@ public class tq {
         a.add(new QuizBean("New component blocks are added when you add a component.", 0));
         a.add(new QuizBean("MoreBlock is a purple block you can create for repetitive tasks.", 0));
         a.add(new QuizBean("You can programmatically change the font style.", 0));
-        a.add(new QuizBean("There is a Slack community that can help you.", 0));
-        a.add(new QuizBean("You can add onClick event on Widgets other than the Button.", 0));
+        a.add(new QuizBean("There is a Discord community that can help you.", 0));
+        a.add(new QuizBean("You can also add onClick event on Widgets other than the Button.", 0));
         a.add(new QuizBean("You can also add events inside the \"Component\" tab.", 0));
         a.add(new QuizBean("You can change the language settings for Sketchware.", 0));
         a.add(new QuizBean("You can edit the image file after it has been added.", 0));
@@ -119,10 +120,11 @@ public class tq {
         a.add(new QuizBean("You can create a pop-up message using the Dialog component.", 0));
         a.add(new QuizBean("Timer component may not cancel if you assign more than one task to it.", 0));
         a.add(new QuizBean("You can use MoreBlocks to develop more quickly and efficiently.", 0));
-        a.add(new QuizBean("You can share finished projects to other people without Sketchware.", 0));
+        a.add(new QuizBean("You can share projects to other people without Sketchware.", 0));
         a.add(new QuizBean("Verbally abusing other people in the community could result in a ban.", 0));
         a.add(new QuizBean("You can use a MoreBlock within a MoreBlock.", 0));
         a.add(new QuizBean("It's possible to add custom hex color code.", 0));
+        a.add(new QuizBean("You can make professional apps using Sketchware Pro?", 0));
         a.add(new QuizBean("You can set an additional set of images on an ImageView using the \"background resource\" property.", 0));
         a.add(new QuizBean("The events in the \"Drawer\" category appear when you add a widget on the \"drawer.xml\" file.", 0));
         a.add(new QuizBean("Google's Firebase service is free to use for small applications.", 0));
