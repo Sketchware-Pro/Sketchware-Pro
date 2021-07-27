@@ -1,5 +1,5 @@
 <p align="center">
-<img src="assets/Sketchware-Pro.png" width="250px" />
+<img src="assets/Sketchware-Pro.png" />
 </p>
 
 # Sketchware Pro
@@ -25,6 +25,13 @@ There are a few things that you should consider before contributing to Sketchwar
 - Create a pull request in this repository
 - The repository members will review your pull request, and merge it when they are accepted.
 
+### Note
+This repository can't create a working APK, and you also can't use Android Studio's Run button to test out your changes.
+This is due to an issue with resource IDs being regenerated, and most classes still use the older ones made during
+vanilla Sketchware's compilation. In the future, this might be fixed, but it's sadly rather unrealistic.  
+We might make a tutorial on how to build working APKs, but for now we'll only link the tool we use to build
+Sketchware Pro: [apktool](https://ibotpeaches.github.io/Apktool/).
+
 ### Source code map
 
 | Class | Role |
@@ -36,7 +43,7 @@ There are a few things that you should consider before contributing to Sketchwar
 | `La/a/a/Ox;` | Responsible for generating XML files of layouts |
 | `La/a/a/qq;` | Registry of built-in libraries' dependencies |
 | `La/a/a/tq;` | Responsible for the compiling dialog's quizzes |
-| `La/a/a/yq;` | Organizes Sketchware projects' |
+| `La/a/a/yq;` | Organizes Sketchware projects' file paths |
 
 You can also check the `mod` package that has the majority of contributors' changes.
 
@@ -50,11 +57,10 @@ be thoroughly reviewed.
 
 ### Commit message
 
-When you've made changes to one or more files, you have to *commit* that file. You also need a *
-message* for that *commit*.
+When you've made changes to one or more files, you have to *commit* that file. You also need a
+*message* for that *commit*.
 
-You should
-read [these](https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/)
+You should read [these](https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/)
 guidelines, or that summarized:
 
 - Short and detailed
@@ -74,19 +80,21 @@ Examples:
 
 
 ## Thanks for contributing
-Thanks, they help to keep **Sketchware Pro** alive. It's better to have multiple people work on a project, for more ideas, less bugs
-(sadly sometimes more), and generally quicker development. Each (helpful) contribution that gets thankfully accepted,
-gets noted down in the "About Modders" activity. We'll contact you how to note your contributions to Sketchware Pro.
+They help keeping Sketchware Pro alive. Each (helpful) accepted contribution will get noted down
+in the "About Modders" activity. We'll use your GitHub name and profile picture initially, but they can be
+changed of course.
 
 ## Discord
-Wanna chat with us, talk about changes or just hang out? We have a Discord server just for that!
+Wanna chat with us, talk about changes or just hang out? We have a Discord server just for that.
 
 [![Join our Discord server!](https://invidget.switchblade.xyz/kq39yhT4rX)](http://discord.gg/kq39yhT4rX)
 
 ## Disclaimer
-This mod was not meant for any harmful purposes, such as harming Sketchware; Quite the opposite actually. It was made to keep Sketchware alive by the community for the community.
-Please use it at your own discretion and buy the Sketchware Premium subscription every month to support the original Sketchware team, even if you don't use it. 
+This mod was not meant for any harmful purposes, such as harming Sketchware; Quite the opposite actually.
+It was made to keep Sketchware alive by the community for the community. Please use it at your own discretion
+and be a Patreon backer of them, for example. Sadly, all other ways to support them aren't working anymore,
+so it's the only way available currently.
+[Here's their Patreon page.](https://www.patreon.com/sketchware)
 
 We love Sketchware very much, and we are grateful to Sketchware's developers for making such an amazing app, but unfortunately, we haven't received updates for a long time.
-That's why we decided to keep Sketchware alive by making this mod, plus we don't demand any money, it's completely free. :\)
-
+That's why we decided to keep Sketchware alive by making this mod, plus we don't demand any money, it's completely free :)

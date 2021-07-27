@@ -3,7 +3,6 @@ package mod.hilal.saif.xml;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -61,7 +60,7 @@ public class BaseLayout {
         if (!FileUtil.isExistFile(path + "-convert") || FileUtil.readFile(path + "-convert").equals("") || FileUtil.readFile(path + "-convert").equals("[]")) {
             return defaultValue(path, type, true);
         }
-        HashMap<String, Object> hashMap = (HashMap<String, Object>) new Gson().fromJson(FileUtil.readFile(path + "-convert"), Helper.TYPE_MAP_LIST);
+        HashMap<String, Object> hashMap = new Gson().fromJson(FileUtil.readFile(path + "-convert"), Helper.TYPE_MAP_LIST);
         if (hashMap.containsKey(type) && hashMap.get(type) != null) {
             switch (type) {
                 case "toolbar":
@@ -110,16 +109,14 @@ public class BaseLayout {
         ((TextView) ((ViewGroup) dialog_input_attr.getParent()).getChildAt(0)).setText("Convert");
         dialog_input_value.setText(pre);
         dialog_input_value.setHint("type");
-        ((TextView) inflate.findViewById(Resources.id.dialog_btn_save)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (dialog_input_value.getText().toString().trim().equals("")) {
-                    dialog.dismiss();
-                    return;
-                }
-                ((HashMap<String, Object>) new Gson().fromJson(FileUtil.readFile(path + "-convert"), Helper.TYPE_MAP_LIST))
-                        .put(type, dialog_input_value.getText().toString().trim());
+        inflate.findViewById(Resources.id.dialog_btn_save).setOnClickListener(view -> {
+            if (dialog_input_value.getText().toString().trim().equals("")) {
                 dialog.dismiss();
+                return;
             }
+            ((HashMap<String, Object>) new Gson().fromJson(FileUtil.readFile(path + "-convert"), Helper.TYPE_MAP_LIST))
+                    .put(type, dialog_input_value.getText().toString().trim());
+            dialog.dismiss();
         });
         ((TextView) inflate.findViewById(Resources.id.dialog_btn_cancel)).setOnClickListener(Helper.getDialogDismissListener(dialog));
         dialog.show();
@@ -129,21 +126,17 @@ public class BaseLayout {
         final ImageView ig_toolbar_load_file = ((LinearLayout) bc.getParent()).findViewById(Resources.id.ig_toolbar_load_file);
         ig_toolbar_load_file.setVisibility(View.VISIBLE);
         ig_toolbar_load_file.setImageResource(Resources.drawable.ic_menu_white_24dp);
-        ig_toolbar_load_file.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(context, ig_toolbar_load_file);
-                popupMenu.getMenu().add("Convert");
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().toString().equals("Convert")) {
-                            showDialog(context, getPreValue(fileName, type), type, fileName);
-                        }
+        ig_toolbar_load_file.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(context, ig_toolbar_load_file);
+            popupMenu.getMenu().add("Convert");
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().toString().equals("Convert")) {
+                    showDialog(context, getPreValue(fileName, type), type, fileName);
+                }
 
-                        return true;
-                    }
-                });
-                popupMenu.show();
-            }
+                return true;
+            });
+            popupMenu.show();
         });
     }
 }

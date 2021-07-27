@@ -229,7 +229,7 @@ public class ComponentsHandler {
                 return "You can monetize your App with Facebook Ads.";
 
             case 36:
-                return "AsyncTask is used to perform heavy tasks in the background while keeping the UI thread and application more responsive";
+                return "AsyncTask is used to perform heavy tasks in the background while keeping the UI thread and application more responsive. (Deprecated)";
 
             default:
                 return description2(id);

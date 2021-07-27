@@ -247,7 +247,7 @@ public class ActComponentsDialog extends Dialog {
             ArrayList<HashMap<String, Object>> arrayList = new Gson()
                     .fromJson(FileUtil.readFile(ACTIVITIES_COMPONENTS_FILE_PATH), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
-                if (((String) arrayList.get(i).get("name")).equals(activityName)) {
+                if (arrayList.get(i).get("name").equals(activityName)) {
                     codeEditor.setText((String) arrayList.get(i).get("value"));
                     return;
                 }

@@ -336,7 +336,7 @@ public class EventsHandler {
         if (name.equals("Import")) {
             return j("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF\n%s\n//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ", param);
         }
-        
+
         if (name.equals("onActivityResult") || name.equals("initializeLogic")) {
             return "";
         }
@@ -398,7 +398,7 @@ public class EventsHandler {
         if (name.equals("Import") || name.equals("initializeLogic")) {
             return "";
         }
-        if (name.equals("onActivityResult")){
+        if (name.equals("onActivityResult")) {
             return "%d.requestCode %d.resultCode %m.intent";
         }
         if (name.equals("onSwipeRefreshLayout")) {
@@ -457,11 +457,11 @@ public class EventsHandler {
         if (event.equals("Import")) {
             return "create new import";
         }
-        
+
         if (event.equals("onActivityResult")) {
             return "OnActivityResult %d.requestCode %d.resultCode %m.intent.data";
         }
-        
+
         if (event.equals("initializeLogic")) {
             return "initializeLogic";
         }
