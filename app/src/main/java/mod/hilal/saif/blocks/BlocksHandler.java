@@ -2037,7 +2037,7 @@ public class BlocksHandler {
         hashMap.put("code", "for (int %2$s = 0; %2$s < (int)(%1$s); %2$s++) {\r\n%3$s\r\n}");
         hashMap.put("color", "#e1a92a");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "repeat %d: %s.inputOnly++");
+        hashMap.put("spec", "repeat %d: %s.inputOnly ++");
         arrayList.add(0, hashMap);
 
         hashMap = new HashMap<>();
@@ -2409,7 +2409,7 @@ public class BlocksHandler {
         hashMap.put("code", "for (int %2$s = ((int) %1$s - 1); %2$s > -1; %2$s--) {\r\n%3$s\r\n}");
         hashMap.put("color", "#e1a92a");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "repeat %d: %s.inputOnly--");
+        hashMap.put("spec", "repeat %d: %s.inputOnly --");
         arrayList.add(0, hashMap);
     }
 
