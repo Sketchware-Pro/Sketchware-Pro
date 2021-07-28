@@ -2,16 +2,24 @@ package in.zitter.kotlinc;
 
 import in.zitter.kotlinc.Main;
 import java.util.*;
+import in.zitter.kotlinc.RecursiveFile;
+import java.io.*;
 
 public class Kotlinc
 {
+	RecursiveFile rf;
 	Main main;
 	String[] cmd;
 	ArrayList<String> flag;
 	private Boolean nowarn , verbose , progressive , includeruntime , javaparameters , noreflect , nostdlib;
 	String argsfile , cp;
 	Float jvmtarget;
-	public void main(){
+	public void main(String wdir){
+		File file = new File(wdir);
+		if(file.exists() && file.isDirectory()){
+			File[] ktfile = file.listFiles();
+		rf.KtClass(ktfile,0);
+		flag.addAll(rf.list);
 		flag.add(argsfile);
 		flag.add(cp);
 		if(nowarn= true){
@@ -38,5 +46,6 @@ public class Kotlinc
 		
 		main.args = flag.toArray(new String[flag.size()]);
 		main.kotlinc();
+		}
 	}
 }
