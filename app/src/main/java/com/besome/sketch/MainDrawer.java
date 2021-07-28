@@ -259,7 +259,7 @@ public class MainDrawer extends LinearLayout {
         eMenu_docs,
         eMenu_system_settings,
         eMenu_program_info,
-        eMenu_language_settings,
+        /*eMenu_language_settings,*/
         eMenu_export_urls,
         eMenu_create_keystore;
 
