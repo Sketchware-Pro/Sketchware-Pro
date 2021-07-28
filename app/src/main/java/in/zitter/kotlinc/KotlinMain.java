@@ -54,7 +54,7 @@ public class KotlincMain
 		kt.nostdlib = false;
 		kt.argsfile = null;
 		kt.cp = cp;
-		kt.jvmtarget = null;
+		kt.jvmtarget =null;
 		kt.main(wdir);
 	}
 }
