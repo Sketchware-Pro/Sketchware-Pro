@@ -17,6 +17,7 @@ public class DebugActivity extends Activity {
 
             if (error != null) {
                 Intent intent=new Intent(context,Debug4Activty.class);
+                i.putExtra("error", error);
                 startActivity(intent);
                 finish();
                 }
