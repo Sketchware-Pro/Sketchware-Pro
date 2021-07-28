@@ -6,11 +6,13 @@ public class Main
 {
 	String[] args;
 	K2JVMCompiler kotlinc;
-	private void Kotlinc(){
+	public void Main(){
+		
+	}
+	public void kotlinc(){
 		kotlinc.main(this.args);
 	}
 }
-
 
 
 
