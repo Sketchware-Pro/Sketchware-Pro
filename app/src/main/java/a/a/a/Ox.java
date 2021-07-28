@@ -6,6 +6,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
 
+import java.util.regex.*;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -152,7 +153,7 @@ public class Ox {
                     } else if (nx.c().equals("CollapsingToolbarLayout")) {
                         nx.a("app", "contentScrim", String.format("#%06X", objArr));
                     } else {
-                        nx.a("android", "background", String.format("#%06X", objArr));
+                        if(!hasAttr("background", viewBean)) nx.a("android", "background", String.format("#%06X", objArr));
                     }
                 } else if (nx.c().equals("BottomAppBar")) {
                     nx.a("android", "backgroundTint", "@android:color/transparent");
@@ -163,7 +164,7 @@ public class Ox {
                 }
             }
         } else {
-            nx.a("android", "background", String.format("@drawable/%s", viewBean.layout.backgroundResource.endsWith(".9") ? viewBean.layout.backgroundResource.replaceAll("\\.9", "") : viewBean.layout.backgroundResource));
+            if(!hasAttr("background", viewBean)) nx.a("android", "background", String.format("@drawable/%s", viewBean.layout.backgroundResource.endsWith(".9") ? viewBean.layout.backgroundResource.replaceAll("\\.9", "") : viewBean.layout.backgroundResource));
         }
     }
 
@@ -196,7 +197,7 @@ public class Ox {
                 sb.append(viewBean.id);
                 nx2.a("android", "id", sb.toString());
                 if (this.b.fileType == 1 && ((i = viewBean.type) == 4 || i == 3 || i == 6 || i == 11 || i == 13 || i == 14 || i == 15 || i == 8 || i == 22 || i == 23 || i == 19 || i == 24 || i == 32)) {
-                    nx2.a("android", "focusable", "false");
+                    if(!hasAttr("focusable", viewBean)) nx2.a("android", "focusable", "false");
                 }
             }
             if (!viewBean.convert.equals("include")) {
@@ -481,7 +482,7 @@ public class Ox {
             nx.a("android", "textStyle", "bold|italic");
         }
         if (viewBean.text.textColor != 0) {
-            nx.a("android", "textColor", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 0xffffff)));
+            if(!hasAttr("textColor", viewBean)) nx.a("android", "textColor", String.format("#%06X", Integer.valueOf(viewBean.text.textColor & 0xffffff)));
         }
         if (viewBean.type == 5 || viewBean.type == 23 || viewBean.type == 24) {
             String str2 = viewBean.text.hint;
@@ -489,7 +490,7 @@ public class Ox {
                 nx.a("android", "hint", a(viewBean.text.hint));
             }
             if (viewBean.text.hintColor != 0) {
-                nx.a("android", "textColorHint", String.format("#%06X", Integer.valueOf(viewBean.text.hintColor & 0xffffff)));
+                if(!hasAttr("textColorHint", viewBean)) nx.a("android", "textColorHint", String.format("#%06X", Integer.valueOf(viewBean.text.hintColor & 0xffffff)));
             }
             if (viewBean.text.singleLine != 0) {
                 nx.a("android", "singleLine", "true");
@@ -657,6 +658,16 @@ public class Ox {
         nx.a("app", "tabSelectedTextColor", "@android:color/white");
         nx.a("app", "tabTextColor", "@android:color/white");
         nx.a("app", "tabTextAppearance", "@android:style/TextAppearance.Widget.TabWidget");
+    }
+    
+    /**
+     * check whether the atrribute (attrName) is injected to the ViewBean or not.
+     */
+    public boolean hasAttr(String attrName, ViewBean bean){
+        final String inject = bean.inject;
+        if(inject.equals("") || inject == null) return false;
+        if(Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find()) return true;
+        return false;
     }
 
     public void o(Nx nx, ViewBean viewBean) {
