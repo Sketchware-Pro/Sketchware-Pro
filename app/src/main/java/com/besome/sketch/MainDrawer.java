@@ -395,10 +395,12 @@ public class MainDrawer extends LinearLayout {
                                 Intent intent = new Intent(activity, ProgramInfoActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 activity.startActivityForResult(intent, 105);
+/*
                             } else if (id == DrawerItem.eMenu_language_settings.ordinal()) {
                                 Intent intent = new Intent(activity, LanguageActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 activity.startActivity(intent);
+*/
                             } else if (id == DrawerItem.eMenu_export_urls.ordinal()) {
                                 Intent intent = new Intent(activity, Tools.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
