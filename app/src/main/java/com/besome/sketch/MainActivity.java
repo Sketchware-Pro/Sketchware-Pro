@@ -36,7 +36,7 @@ import com.besome.sketch.shared.project.SharedProjectDetailActivity;
 import com.google.ads.consent.ConsentForm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
+/*import com.google.android.material.tabs.TabLayout;*/
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.Resources;
 
@@ -75,7 +75,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public l n;
     public MainDrawer o;
     public ViewPager p;
-    public TabLayout q;
+    /*public TabLayout q;*/
     public String[] r;
     public int[] s = {Resources.drawable.android_os_96, Resources.drawable.ic_class_48, Resources.drawable.globe_96};
     public DB t;
@@ -109,7 +109,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     private void k(int i) {
-        for (int counter = 0; counter < r.length; counter++) {
+        /*for (int counter = 0; counter < r.length; counter++) {
             TabLayout.f c = q.c(counter);
             View childAt = ((ViewGroup) q.getChildAt(0)).getChildAt(counter);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childAt.getLayoutParams();
@@ -124,7 +124,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 layoutParams.weight = 1.0f;
             }
             childAt.setLayoutParams(layoutParams);
-        }
+        }*/
     }
 
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
@@ -237,13 +237,13 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         p = findViewById(Resources.id.viewpager);
         p.setOffscreenPageLimit(2);
         p.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        q = findViewById(Resources.id.tab_layout);
-        q.setupWithViewPager(p);
+        /*q = findViewById(Resources.id.tab_layout);
+        q.setupWithViewPager(p);*/
         p.a(this);
         E = findViewById(Resources.id.layout_qna_bottom);
         F = findViewById(Resources.id.fab);
         w = findViewById(Resources.id.layout_coordinator);
-        k(0);
+        /*k(0);*/
         l(0);
         B = FirebaseAnalytics.getInstance(this);
         try {
@@ -496,7 +496,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override // androidx.viewpager.widget.ViewPager.e
     public void b(int i) {
-        k(i);
+        /*k(i);*/
         if (i == 0) {
             if (j() && y != null && y.f() == 0) {
                 y.g();
