@@ -18,16 +18,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.blocks.CommandBlock;
-import mod.agus.jcoderz.lib.FileUtil;
 
 public class yq {
 
     /**
-     * Firebase Database storage location RegExp matcher to remove useless parts of storage URL.
-     * Users should enter the entire storage URL (e.g. <code>sk-pro-default-rtdb.firebaseio.com</code>), and this
-     * RegExp matches <code>-default-rtdb.firebaseio.com</code> in that case.
+     * Firebase Database storage location RegExp matcher to remove unwanted parts of storage URL
+     * to get the actual project ID.
+     * <p/>
+     * Users should enter the entire storage URL without <code>https://</code> at the beginning and
+     * <code>/</code> at the end, e.g. <code>sk-pro-default-rtdb.firebaseio.com</code>.
      */
     private static final String FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER = "(-default-rtdb)?\\.[a-z](.?)+";
     /**
@@ -512,74 +515,74 @@ public class yq {
         N.sc_id = b;
         N.e = O.h();
         N.f = !z2;
-        if (iCVar.d().useYn.equals("Y")) {
+        if (iCVar.d().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.h = true;
             N.a(2);
             N.a(8);
         }
-        if (iCVar.c().useYn.equals("Y")) {
+        if (iCVar.c().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
         }
-        if (iCVar.b().useYn.equals("Y")) {
+        if (iCVar.b().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.l = true;
             N.a(2);
             N.a(8);
             N.a(iCVar.b());
         }
-        if (iCVar.e().useYn.equals("Y")) {
+        if (iCVar.e().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.m = true;
             N.a(2);
             N.a(8);
             N.b(iCVar.e());
         }
         for (ProjectFileBean next : hCVar.b()) {
-            if (next.hasActivityOption(4)) {
+            if (next.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 N.a(next.getActivityName()).a = true;
             }
-            for (ComponentBean next2 : eCVar.e(next.getJavaName())) {
-                if (next2.type == 15 || next2.type == 35) {
+            for (ComponentBean component : eCVar.e(next.getJavaName())) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_CAMERA || component.type == 35) {
                     N.g = true;
                     N.u = true;
                     N.a(next.getActivityName(), 16);
                     N.a(next.getActivityName(), 32);
                     N.a(next.getActivityName(), 64);
                 }
-                N.x.handleComponent(next2.type);
-                if (next2.type == 16) {
+                N.x.handleComponent(component.type);
+                if (component.type == ComponentBean.COMPONENT_TYPE_FILE_PICKER) {
                     N.a(next.getActivityName(), 32);
                 }
-                if (next2.type == 6) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
                     N.o = true;
                     N.j = true;
                     N.a(next.getActivityName(), 2);
                     N.a(next.getActivityName(), 8);
                 }
-                if (next2.type == 14) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
                     N.k = true;
                     N.a(next.getActivityName(), 32);
                     N.a(next.getActivityName(), 64);
                 }
-                if (next2.type == 4) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_VIBRATOR) {
                     N.a(next.getActivityName(), 4);
                 }
-                if (next2.type == 12) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH) {
                     N.i = true;
                     N.a(next.getActivityName()).b = true;
                 }
-                if (next2.type == 17) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK) {
                     N.o = true;
                     N.p = true;
                     N.a(next.getActivityName(), 2);
                     N.a(next.getActivityName(), 8);
                 }
-                if (next2.type == 19) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT) {
                     N.a(next.getActivityName(), 128);
                 }
-                if (next2.type == 20) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT) {
                     N.a(next.getActivityName(), 256);
                     N.a(next.getActivityName(), 512);
                 }
-                if (next2.type == 21) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER) {
                     N.a(next.getActivityName(), 1024);
                 }
             }
@@ -799,6 +802,9 @@ public class yq {
         b(hCVar, eCVar, iCVar, false);
     }
 
+    /**
+     * Generates other miscellaneous XML files, such as <code>provider_paths.xml</code> and <code>secrets.xml</code>.
+     */
     public void b(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
         ArrayList<SrcCodeBean> srcCodeBeans = a(hCVar, eCVar, iCVar, z2);
         if (N.u) {
@@ -810,7 +816,7 @@ public class yq {
             pathsTag.a(externalPathTag);
             srcCodeBeans.add(new SrcCodeBean("provider_paths.xml", pathsTag.b()));
         }
-        
+
         for (SrcCodeBean bean : srcCodeBeans) {
             a(bean.srcFileName, bean.source);
         }
@@ -844,59 +850,98 @@ public class yq {
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
         a(iCVar, hCVar, eCVar, z2);
         CommandBlock.x();
-        
+
         final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
         final String layoutDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/resource/layout/";
-        
-        // Replace activities with the existed ones in (.sketchware/data/--projectId--/files/java) if any, This allows users to replace any activity with a custom one using java manager.
-        ArrayList<SrcCodeBean> arrayList = new ArrayList<>();
-        for (ProjectFileBean bean : hCVar.b()) {
-            arrayList.add(new SrcCodeBean(bean.getJavaName(), FileUtil.isExistFile(javaDir + bean.getJavaName())? FileUtil.readFile(javaDir + bean.getJavaName()) : new Jx(N, bean, eCVar).a()));
+
+        // Generate Activities unless a custom version of it exists already
+        // at /Internal storage/.sketchware/data/<sc_id>/files/java/
+        ArrayList<SrcCodeBean> srcCodeBeans = new ArrayList<>();
+        for (ProjectFileBean activity : hCVar.b()) {
+            srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
+                    FileUtil.isExistFile(javaDir + activity.getJavaName())
+                            ? FileUtil.readFile(javaDir + activity.getJavaName())
+                            : new Jx(N, activity, eCVar).a()));
         }
-        
-        // Replace layouts with the existed ones in (.sketchware/data/--projectId--/files/resource/layout) if any, This allows users to replace any layout with a custom one using resources manager.
-        for (ProjectFileBean bean : hCVar.b()) {
-            String xmlName = bean.getXmlName();
-            Ox ox = new Ox(N, bean);
+
+        // Generate layouts unless a custom version of it exists already
+        // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
+        for (ProjectFileBean layout : hCVar.b()) {
+            String xmlName = layout.getXmlName();
+            Ox ox = new Ox(N, layout);
             ox.a(eC.a(eCVar.d(xmlName)), eCVar.h(xmlName));
-            arrayList.add(new SrcCodeBean(xmlName, FileUtil.isExistFile(layoutDir + xmlName)? FileUtil.readFile(layoutDir + xmlName) : CommandBlock.applyCommands(xmlName, ox.b())));
+            srcCodeBeans.add(new SrcCodeBean(xmlName,
+                    FileUtil.isExistFile(layoutDir + xmlName)
+                            ? FileUtil.readFile(layoutDir + xmlName)
+                            : CommandBlock.applyCommands(xmlName, ox.b())));
         }
-        for (ProjectFileBean bean : hCVar.c()) {
-            String xmlName2 = bean.getXmlName();
-            Ox ox2 = new Ox(N, bean);
-            ox2.a(eC.a(eCVar.d(xmlName2)));
-            arrayList.add(new SrcCodeBean(xmlName2, FileUtil.isExistFile(layoutDir + xmlName2)? FileUtil.readFile(layoutDir + xmlName2) : CommandBlock.applyCommands(xmlName2, ox2.b())));
+        for (ProjectFileBean layout : hCVar.c()) {
+            String xmlName = layout.getXmlName();
+            Ox ox = new Ox(N, layout);
+            ox.a(eC.a(eCVar.d(xmlName)));
+            srcCodeBeans.add(new SrcCodeBean(xmlName,
+                    FileUtil.isExistFile(layoutDir + xmlName)
+                            ? FileUtil.readFile(layoutDir + xmlName)
+                            : CommandBlock.applyCommands(xmlName, ox.b())));
         }
-        
+
         Ix ix = new Ix(N, hCVar.b());
         ix.setYq(this);
-        
-        /**
-         * Make all java files generated by sketchware (such as FileUtil, SketchwareUtil,...etc) viewable in SrcCodeViewer activity
-         * And replace them with the existed ones in (.sketchware/data/--projectId--/files/java) if any, This allows users to replace auto-generated classes that cannot be modified with CommandBlocks.
-         */
-        arrayList.add(new SrcCodeBean("SketchwareUtil.java", FileUtil.isExistFile(javaDir + "SketchwareUtil.java")? FileUtil.readFile(javaDir + "SketchwareUtil.java") : Lx.j(Lx.i(e))));
-        arrayList.add(new SrcCodeBean("FileUtil.java", FileUtil.isExistFile(javaDir + "FileUtil.java")? FileUtil.readFile(javaDir + "FileUtil.java") : Lx.e(e)));
-        arrayList.add(new SrcCodeBean("RequestNetwork.java", FileUtil.isExistFile(javaDir + "RequestNetwork.java")? FileUtil.readFile(javaDir + "RequestNetwork.java") : Lx.j(Lx.h(e))));
-        arrayList.add(new SrcCodeBean("RequestNetworkController.java", FileUtil.isExistFile(javaDir + "RequestNetworkController.java")? FileUtil.readFile(javaDir + "RequestNetworkController.java") : Lx.j(Lx.g(e))));
-        arrayList.add(new SrcCodeBean("BluetoothConnect.java", FileUtil.isExistFile(javaDir + "BluetoothConnect.java")? FileUtil.readFile(javaDir + "BluetoothConnect.java") : Lx.j(Lx.b(e))));
-        arrayList.add(new SrcCodeBean("BluetoothController.java", FileUtil.isExistFile(javaDir + "BluetoothController.java")? FileUtil.readFile(javaDir + "BluetoothController.java") : Lx.j(Lx.c(e))));
+
+        // Make generated classes viewable
+        srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
+                FileUtil.isExistFile(javaDir + "SketchwareUtil.java")
+                        ? FileUtil.readFile(javaDir + "SketchwareUtil.java")
+                        : Lx.j(Lx.i(e))));
+
+        srcCodeBeans.add(new SrcCodeBean("FileUtil.java",
+                FileUtil.isExistFile(javaDir + "FileUtil.java")
+                        ? FileUtil.readFile(javaDir + "FileUtil.java")
+                        : Lx.j(Lx.e(e))));
+
+        srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
+                FileUtil.isExistFile(javaDir + "RequestNetwork.java")
+                        ? FileUtil.readFile(javaDir + "RequestNetwork.java")
+                        : Lx.j(Lx.h(e))));
+
+        srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
+                FileUtil.isExistFile(javaDir + "RequestNetworkController.java")
+                        ? FileUtil.readFile(javaDir + "RequestNetworkController.java")
+                        : Lx.j(Lx.g(e))));
+
+        srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
+                FileUtil.isExistFile(javaDir + "BluetoothConnect.java")
+                        ? FileUtil.readFile(javaDir + "BluetoothConnect.java")
+                        : Lx.j(Lx.b(e))));
+
+        srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
+                FileUtil.isExistFile(javaDir + "BluetoothController.java")
+                        ? FileUtil.readFile(javaDir + "BluetoothController.java")
+                        : Lx.j(Lx.c(e))));
         if (N.m) {
-            arrayList.add(new SrcCodeBean("GoogleMapController.java", FileUtil.isExistFile(javaDir + "GoogleMapController.java")? FileUtil.readFile(javaDir + "GoogleMapController.java") : Lx.j(Lx.f(e))));
+            srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
+                    FileUtil.isExistFile(javaDir + "GoogleMapController.java")
+                            ? FileUtil.readFile(javaDir + "GoogleMapController.java")
+                            : Lx.j(Lx.f(e))));
         }
-        
-        arrayList.add(new SrcCodeBean("AndroidManifest.xml", CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
+
+        srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml",
+                CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
         if (N.g) {
-            boolean useNewMaterialComponentsTheme = projectSettings.getValue("enable_bridgeless_themes", "false").equals("true");
+            boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+
             Mx colorsFileBuilder = new Mx();
             colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
             colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", i & 0xffffff));
             colorsFileBuilder.a("colorAccent", String.format("#%06X", g & 0xffffff));
             colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
             colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
-            arrayList.add(new SrcCodeBean("colors.xml", CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("colors.xml",
+                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+
             Mx stylesFileBuilder = new Mx();
-            stylesFileBuilder.c("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (!useNewMaterialComponentsTheme ? ".Bridge" : ""));
+            stylesFileBuilder.c("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
             stylesFileBuilder.a("AppTheme", "colorPrimary", "@color/colorPrimary");
             stylesFileBuilder.a("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
             stylesFileBuilder.a("AppTheme", "colorAccent", "@color/colorAccent");
@@ -907,7 +952,8 @@ public class yq {
             stylesFileBuilder.a("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
             stylesFileBuilder.c("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
             stylesFileBuilder.c("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
-            arrayList.add(new SrcCodeBean("styles.xml", CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("styles.xml",
+                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
         } else {
             Mx stylesFileBuilder = new Mx();
             stylesFileBuilder.c("AppTheme", "@android:style/Theme.Material.Light.DarkActionBar");
@@ -930,20 +976,25 @@ public class yq {
             stylesFileBuilder.a("NoActionBar", "android:colorControlNormal", "@color/colorControlNormal");
             stylesFileBuilder.c("NoStatusBar", "AppTheme");
             stylesFileBuilder.a("NoStatusBar", "android:windowFullscreen", "true");
-            arrayList.add(new SrcCodeBean("styles.xml", CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("styles.xml",
+                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+
             Mx colorsFileBuilder = new Mx();
             colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
             colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", i & 0xffffff));
             colorsFileBuilder.a("colorAccent", String.format("#%06X", g & 0xffffff));
             colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
             colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
-            arrayList.add(new SrcCodeBean("colors.xml", CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("colors.xml",
+                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
         }
+
         Mx stringsFileBuilder = new Mx();
         stringsFileBuilder.b("app_name", f);
-        arrayList.add(new SrcCodeBean("strings.xml", CommandBlock.applyCommands("strings.xml", stringsFileBuilder.a())));
+        srcCodeBeans.add(new SrcCodeBean("strings.xml",
+                CommandBlock.applyCommands("strings.xml", stringsFileBuilder.a())));
         CommandBlock.x();
-        return arrayList;
+        return srcCodeBeans;
     }
 
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
