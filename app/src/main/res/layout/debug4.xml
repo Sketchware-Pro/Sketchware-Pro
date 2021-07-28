@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+    -<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_height="match_parent" android:layout_width="match_parent" android:id="@+id/_coordinator" xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    -<com.google.android.material.appbar.AppBarLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/_app_bar" android:theme="@style/AppTheme.AppBarOverlay">
+
+    <androidx.appcompat.widget.Toolbar android:layout_height="?attr/actionBarSize" android:layout_width="match_parent" android:id="@+id/_toolbar" app:popupTheme="@style/AppTheme.PopupOverlay" android:background="?attr/colorPrimary"/>
+
+</com.google.android.material.appbar.AppBarLayout>
+
+
+    -<LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior" android:orientation="vertical">
+
+
+    -<LinearLayout android:layout_height="match_parent" android:layout_width="match_parent" android:id="@+id/linear1" android:orientation="vertical" android:gravity="center_horizontal" android:padding="8dp">
+
+    <ImageView android:layout_height="250dp" android:layout_width="match_parent" android:id="@+id/imageview1" android:scaleType="fitCenter" android:src="@drawable/warning"/>
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textview3" android:padding="8dp" android:textColor="#000000" android:textStyle="bold" android:textSize="14sp" android:text="Device : OPPO A83"/>
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/textview2" android:padding="8dp" android:textColor="#000000" android:textSize="14sp" android:text="⚠ Logcat :" android:layout_gravity="left"/>
+
+
+    -<ScrollView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/vscroll1" android:layout_weight="1">
+
+    <TextView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/textview1" android:gravity="center_horizontal" android:padding="8dp" android:textColor="#000000" android:textSize="16sp" android:text="TextView"/>
+
+</ScrollView>
+
+
+    -<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/linear2" android:orientation="horizontal" android:padding="8dp">
+
+    <com.google.android.material.button.MaterialButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/materialbutton1" android:gravity="center_horizontal|center_vertical" android:padding="8dp" android:textColor="#000000" android:textSize="12sp" android:text="Report" android:layout_weight="1" style="@style/Widget.MaterialComponents.Button" app:cornerRadius="8dp" app:backgroundTint="@color/colorPrimary" android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+
+    <com.google.android.material.button.MaterialButton android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/materialbutton2" android:gravity="center_horizontal|center_vertical" android:padding="8dp" android:textColor="#000000" android:textSize="12sp" android:text="Restart" android:layout_weight="1" style="@style/Widget.MaterialComponents.Button" app:cornerRadius="8dp" app:backgroundTint="@color/colorPrimary" android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+
+</LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
