@@ -96,6 +96,8 @@ public class ImportClass {
             imports.add("com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener");
         }
         if (componentName.equals("FirebaseCloudMessage")) {
+            imports.add("com.google.android.gms.tasks.OnCompleteListener");
+            imports.add("com.google.android.gms.tasks.Task");
             imports.add("com.google.firebase.iid.FirebaseInstanceId");
             imports.add("com.google.firebase.iid.InstanceIdResult");
             imports.add("com.google.firebase.messaging.FirebaseMessaging");
