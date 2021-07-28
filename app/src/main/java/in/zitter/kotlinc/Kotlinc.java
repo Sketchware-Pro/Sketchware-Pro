@@ -11,17 +11,23 @@ public class Kotlinc
 	Main main;
 	String[] cmd;
 	ArrayList<String> flag;
-	private Boolean nowarn , verbose , progressive , includeruntime , javaparameters , noreflect , nostdlib;
-	String argsfile , cp;
-	Float jvmtarget;
+	public Boolean nowarn , verbose , progressive , includeruntime , javaparameters , noreflect , nostdlib;
+	public String argsfile , cp;
+	public Float jvmtarget;
 	public void main(String wdir){
 		File file = new File(wdir);
 		if(file.exists() && file.isDirectory()){
 			File[] ktfile = file.listFiles();
 		rf.KtClass(ktfile,0);
 		flag.addAll(rf.list);
+		if(argsfile != null){
+		flag.add("@args");
 		flag.add(argsfile);
+		}
+		if(cp != null){
+		flag.add("-cp");
 		flag.add(cp);
+		}
 		if(nowarn= true){
 			flag.add("-nowarn");
 		}
