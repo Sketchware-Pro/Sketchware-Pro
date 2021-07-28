@@ -337,6 +337,9 @@
             android:name="com.besome.sketch.DebugActivity"
             android:configChanges="orientation|screenSize" />
         <activity
+            android:name="com.besome.sketch.Debug4Activity"
+            android:configChanges="orientation|screenSize" />
+        <activity
             android:name="com.besome.sketch.editor.manage.sound.AddSoundActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
