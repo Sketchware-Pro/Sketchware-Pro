@@ -22,7 +22,7 @@ public class DebugActivity extends Activity {
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("An error occurred")
                         .setMessage(error)
-                        .setPositiveButton("End Application", (dialog1, which) -> finish())
+                        .setPositiveButton("Quit", (dialog1, which) -> finish())
                         .create();
 
                 TextView messageView = dialog.findViewById(android.R.id.message);
