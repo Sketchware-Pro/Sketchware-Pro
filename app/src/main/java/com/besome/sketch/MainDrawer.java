@@ -180,11 +180,11 @@ public class MainDrawer extends LinearLayout {
         DrawerItem programInfoItem = DrawerItem.eMenu_program_info;
         programInfoItem.i = Resources.drawable.side_menu_info_icon_over_white;
         programInfoItem.h = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
-
+/*
         DrawerItem languageSettingsItem = DrawerItem.eMenu_language_settings;
         languageSettingsItem.i = Resources.drawable.language_48;
         languageSettingsItem.h = xB.b().a(getContext(), Resources.string.main_drawer_title_language_settings);
-
+*/
         DrawerItem exportUrlsItem = DrawerItem.eMenu_export_urls;
         exportUrlsItem.i = Resources.drawable.ic_export_his_white_48dp;
         exportUrlsItem.h = "Developer Tools";
