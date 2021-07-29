@@ -267,6 +267,40 @@ public class FileUtil {
 
         file.delete();
     }
+    
+    public static boolean isFileEqual(final String s, final String s2) {
+	if (!(getFileLength(s) == getFileLength(s2))) {
+		return false;
+	}
+	boolean b1 = true;
+	try {
+		BufferedReader reader1 = new BufferedReader(new FileReader(s));
+		BufferedReader reader2 = new BufferedReader(new FileReader(s2)); 		
+		String str1 = reader1.readLine();
+		String str2 = reader2.readLine();
+		int i1 = (int)(1);
+		while (!(str1 == null) || !(str2 == null)) {
+			if ((str1 == null) || (str2 == null)) {
+				b1 = false;
+				break;
+			}
+			else {
+				if (!str1.equalsIgnoreCase(str2)) {
+					b1 = false;
+					break;
+				}
+			}
+			str1 = reader1.readLine();
+			str2 = reader2.readLine();
+			i1++;
+		}
+		reader1.close();
+		reader2.close();
+	} catch (Exception e) {
+		throw new Exception("Cannot Read " + "\n" + s +"\n" + s2 + "\n Error" + e.toString());
+	}
+	return b1;
+    }
 
     public static boolean isExistFile(String path) {
         return new File(path).exists();
