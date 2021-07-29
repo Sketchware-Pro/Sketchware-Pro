@@ -106,25 +106,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         startActivityForResult(intent, i);
     }
 
-    private void k(int i) {
-        /*for (int counter = 0; counter < r.length; counter++) {
-            TabLayout.f c = q.c(counter);
-            View childAt = ((ViewGroup) q.getChildAt(0)).getChildAt(counter);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childAt.getLayoutParams();
-            layoutParams.width = -1;
-            if (counter == i) {
-                c.b(r[counter]);
-                c.a((Drawable) null);
-                layoutParams.weight = 2.0f;
-            } else {
-                c.b("");
-                c.b(s[counter]);
-                layoutParams.weight = 1.0f;
-            }
-            childAt.setLayoutParams(layoutParams);
-        */}
-    }
-
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
     public void l() {
     }
@@ -241,7 +222,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         E = findViewById(Resources.id.layout_qna_bottom);
         F = findViewById(Resources.id.fab);
         w = findViewById(Resources.id.layout_coordinator);
-        k(0);
         l(0);
         B = FirebaseAnalytics.getInstance(this);
         try {
@@ -494,7 +474,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override // androidx.viewpager.widget.ViewPager.e
     public void b(int i) {
-        k(i);
         if (i == 0) {
             if (j() && y != null && y.f() == 0) {
                 y.g();
