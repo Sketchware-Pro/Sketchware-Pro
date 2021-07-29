@@ -20,6 +20,7 @@ public class DebugActivity extends Activity {
                         .setTitle("An error occurred")
                         .setMessage(error)
                         .setPositiveButton("Quit", (dialog1, which) -> finish())
+                        .setCancelable(false)
                         .create();
 
                 TextView messageView = dialog.findViewById(android.R.id.message);
