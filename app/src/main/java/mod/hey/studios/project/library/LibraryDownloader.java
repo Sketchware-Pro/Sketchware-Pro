@@ -357,28 +357,51 @@ public class LibraryDownloader {
                 .build()
                 .setOnStartOrResumeListener(() -> {
                     textview3.setText("Library found. Downloading...");
-
+                    edittext1.setEnabled(false);
                     linear4.removeAllViews();
                     linear4.addView(linear3);
 
                     linear8.setEnabled(false);
+                    linear8.setVisibility(View.GONE);
+
                     linear9.setEnabled(true);
+                    linear9.setVisibility(View.VISIBLE);
+
                     linear10.setEnabled(false);
+                    linear10.setVisibility(View.GONE);
+
                     linear11.setEnabled(true);
+                    linear11.setVisibility(View.VISIBLE);
                 })
                 .setOnPauseListener(() -> {
                     textview3.setText("Downloading paused.");
 
                     linear8.setEnabled(false);
+                    linear8.setVisibility(View.GONE);
+
                     linear9.setEnabled(false);
+                    linear9.setVisibility(View.GONE);
+
                     linear10.setEnabled(true);
+                    linear10.setVisibility(View.VISIBLE);
+
                     linear11.setEnabled(true);
+                    linear11.setVisibility(View.VISIBLE);
                 })
                 .setOnCancelListener(() -> {
+                    edittext1.setEnabled(true);
+
                     linear8.setEnabled(true);
+                    linear8.setVisibility(View.VISIBLE);
+
                     linear9.setEnabled(false);
+                    linear9.setVisibility(View.GONE);
+
                     linear10.setEnabled(false);
+                    linear10.setVisibility(View.GONE);
+
                     linear11.setEnabled(false);
+                    linear11.setVisibility(View.GONE);
                 })
                 .setOnProgressListener(progress -> {
                     int progressPercent = (int) (progress.currentBytes * 100 / progress.totalBytes);
@@ -420,10 +443,18 @@ public class LibraryDownloader {
                             }
                         }
 
+                        edittext1.setEnabled(true);
                         linear8.setEnabled(true);
+                        linear8.setVisibility(View.VISIBLE);
+
                         linear9.setEnabled(false);
+                        linear9.setVisibility(View.GONE);
+
                         linear10.setEnabled(false);
+                        linear10.setVisibility(View.GONE);
+
                         linear11.setEnabled(true);
+                        linear11.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -454,22 +485,37 @@ public class LibraryDownloader {
 
                                 } else {
                                     FileUtil.deleteFile(libName);
-                                    textview3.setText("Library is not found in saved repositories");
-
+                                    textview3.setText("Library is not found in loaded repositories");
+                                    edittext1.setEnabled(true);
                                     linear8.setEnabled(true);
+                                    linear8.setVisibility(View.VISIBLE);
+
                                     linear9.setEnabled(false);
+                                    linear9.setVisibility(View.GONE);
+
                                     linear10.setEnabled(false);
+                                    linear10.setVisibility(View.GONE);
+
                                     linear11.setEnabled(true);
+                                    linear11.setVisibility(View.VISIBLE);
                                 }
                             }
                         } else {
                             if (e.isConnectionError()) {
                                 textview3.setText("Downloading failed. No network");
-
+                                edittext1.setEnabled(true);
                                 linear8.setEnabled(true);
+                                linear8.setVisibility(View.VISIBLE);
+
                                 linear9.setEnabled(false);
+                                linear9.setVisibility(View.GONE);
+
                                 linear10.setEnabled(false);
+                                linear10.setVisibility(View.GONE);
+
                                 linear11.setEnabled(true);
+                                linear11.setVisibility(View.VISIBLE);
+
                             }
                         }
                     }
