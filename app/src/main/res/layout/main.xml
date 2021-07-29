@@ -25,13 +25,6 @@
 
                 <include layout="@layout/toolbar" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@id/tab_layout"
-                style="@style/MainTabLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="40.0dip"
-                android:layout_gravity="bottom" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager.widget.ViewPager
