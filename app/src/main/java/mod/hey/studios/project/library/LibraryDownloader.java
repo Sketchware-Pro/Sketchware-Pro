@@ -481,13 +481,24 @@ public class LibraryDownloader {
         repoMap.clear();
         repoNames.clear();
         counter = 0;
-        repoMap = new Gson().fromJson("[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]",
-                Helper.TYPE_MAP_LIST);
+        
+        /* Extracted Default Library Repo Links So User Can Modify If Want */
+ 
+        if (FileUtil.readFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json").trim().equals("")) {
+	FileUtil.writeFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json", "[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]");
+         }
 
-        for (int _repeat14 = 0; _repeat14 < repoMap.size(); _repeat14++) {
+        try{
+	repoMap = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json" , Helper.TYPE_MAP_LIST);
+        }catch(Exception e){
+	repoMap = new Gson().fromJson("[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]", Helper.TYPE_MAP_LIST);	
+        } 
+     
+  for (int _repeat14 = 0; _repeat14 < repoMap.size(); _repeat14++) {
+          if (repoMap.containsKey("url") && repoMap.containsKey("name")) {
             repoUrls.add(repoMap.get((int) counter).get("url").toString());
             repoNames.add(repoMap.get((int) counter).get("name").toString());
-
+            }
             counter++;
         }
     }
