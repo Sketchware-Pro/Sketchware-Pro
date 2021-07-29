@@ -44,7 +44,7 @@ Sketchware Pro: [apktool](https://ibotpeaches.github.io/Apktool/).
 | `La/a/a/qq;` | Registry of built-in libraries' dependencies |
 | `La/a/a/tq;` | Responsible for the compiling dialog's quizzes |
 | `La/a/a/yq;` | Organizes Sketchware projects' file paths |
-| `La/a/a/mq;` | Responsible for registering built-in views and components and registering their import statements |
+| `La/a/a/mq;` | Responsible for registering built-in views and components with their import statements |
 
 You can also check the `mod` package that has the majority of contributors' changes.
 
