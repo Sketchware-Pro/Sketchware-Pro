@@ -36,6 +36,10 @@ public class FilePathUtil {
     public String getPathJava(String sc_id) {
         return new File(sketchware_data, sc_id.concat("/files/java")).getAbsolutePath();
     }
+    
+    public String getPathJavaM(String sc_id) {
+        return new File(sketchware_data, sc_id.concat("/files/javaM")).getAbsolutePath();
+    }
 
     public String getPathResource(String sc_id) {
         return new File(sketchware_data, sc_id.concat("/files/resource")).getAbsolutePath();
