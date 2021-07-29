@@ -858,10 +858,9 @@ public class yq {
         // at /Internal storage/.sketchware/data/<sc_id>/files/java/
         ArrayList<SrcCodeBean> srcCodeBeans = new ArrayList<>();
         for (ProjectFileBean activity : hCVar.b()) {
-            srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
-                    FileUtil.isExistFile(javaDir + activity.getJavaName())
-                            ? FileUtil.readFile(javaDir + activity.getJavaName())
-                            : new Jx(N, activity, eCVar).a()));
+            if (!FileUtil.isExistFile(javaDir + activity.getJavaName())) {
+                srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(), new Jx(N, activity, eCVar).a()));
+            }
         }
 
         // Generate layouts unless a custom version of it exists already
@@ -870,59 +869,51 @@ public class yq {
             String xmlName = layout.getXmlName();
             Ox ox = new Ox(N, layout);
             ox.a(eC.a(eCVar.d(xmlName)), eCVar.h(xmlName));
-            srcCodeBeans.add(new SrcCodeBean(xmlName,
-                    FileUtil.isExistFile(layoutDir + xmlName)
-                            ? FileUtil.readFile(layoutDir + xmlName)
-                            : CommandBlock.applyCommands(xmlName, ox.b())));
+            if (!FileUtil.isExistFile(layoutDir + xmlName)) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+            }
         }
         for (ProjectFileBean layout : hCVar.c()) {
             String xmlName = layout.getXmlName();
             Ox ox = new Ox(N, layout);
             ox.a(eC.a(eCVar.d(xmlName)));
-            srcCodeBeans.add(new SrcCodeBean(xmlName,
-                    FileUtil.isExistFile(layoutDir + xmlName)
-                            ? FileUtil.readFile(layoutDir + xmlName)
-                            : CommandBlock.applyCommands(xmlName, ox.b())));
+            if (!FileUtil.isExistFile(layoutDir + xmlName)) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+            }
         }
 
         Ix ix = new Ix(N, hCVar.b());
         ix.setYq(this);
 
         // Make generated classes viewable
-        srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
-                FileUtil.isExistFile(javaDir + "SketchwareUtil.java")
-                        ? FileUtil.readFile(javaDir + "SketchwareUtil.java")
-                        : Lx.j(Lx.i(e))));
+        if (!FileUtil.isExistFile(javaDir + "SketchwareUtil.java")) {
+            srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java", Lx.j(Lx.i(e))));
+        }
+        
+        if (!FileUtil.isExistFile(javaDir + "FileUtil.java")) {
+            srcCodeBeans.add(new SrcCodeBean("FileUtil.java", Lx.j(Lx.e(e))));
+        }
+        
+        if (!FileUtil.isExistFile(javaDir + "RequestNetwork.java")) {
+            srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java", Lx.j(Lx.h(e))));
+        }
+        
+        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java")) {
+            srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java", Lx.j(Lx.g(e))));
+        }
 
-        srcCodeBeans.add(new SrcCodeBean("FileUtil.java",
-                FileUtil.isExistFile(javaDir + "FileUtil.java")
-                        ? FileUtil.readFile(javaDir + "FileUtil.java")
-                        : Lx.j(Lx.e(e))));
+        if (!FileUtil.isExistFile(javaDir + "BluetoothConnect.java")) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java", Lx.j(Lx.b(e))));
+        }
 
-        srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
-                FileUtil.isExistFile(javaDir + "RequestNetwork.java")
-                        ? FileUtil.readFile(javaDir + "RequestNetwork.java")
-                        : Lx.j(Lx.h(e))));
+        if (!FileUtil.isExistFile(javaDir + "BluetoothController.java")) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothController.java", Lx.j(Lx.c(e))));
+        }
 
-        srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
-                FileUtil.isExistFile(javaDir + "RequestNetworkController.java")
-                        ? FileUtil.readFile(javaDir + "RequestNetworkController.java")
-                        : Lx.j(Lx.g(e))));
-
-        srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
-                FileUtil.isExistFile(javaDir + "BluetoothConnect.java")
-                        ? FileUtil.readFile(javaDir + "BluetoothConnect.java")
-                        : Lx.j(Lx.b(e))));
-
-        srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
-                FileUtil.isExistFile(javaDir + "BluetoothController.java")
-                        ? FileUtil.readFile(javaDir + "BluetoothController.java")
-                        : Lx.j(Lx.c(e))));
         if (N.m) {
-            srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
-                    FileUtil.isExistFile(javaDir + "GoogleMapController.java")
-                            ? FileUtil.readFile(javaDir + "GoogleMapController.java")
-                            : Lx.j(Lx.f(e))));
+            if (!FileUtil.isExistFile(javaDir + "GoogleMapController.java")) {
+                srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java", Lx.j(Lx.f(e))));
+            }
         }
 
         srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml",
