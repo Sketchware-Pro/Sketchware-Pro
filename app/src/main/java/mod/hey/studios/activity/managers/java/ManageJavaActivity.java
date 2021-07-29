@@ -90,14 +90,7 @@ public class ManageJavaActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (Objects.equals(
-                Uri.parse(current_path).getPath(),
-                Uri.parse(fpu.getPathJava(sc_id)).getPath())) {
-            super.onBackPressed();
-        } else {
-            current_path = current_path.substring(0, current_path.lastIndexOf("/"));
-            refresh();
-        }
+        super.onBackPressed();
     }
 
     private void setupUI() {
@@ -357,6 +350,7 @@ public class ManageJavaActivity extends Activity {
 
         currentTree.clear();
         FileUtil.listDir(current_path, currentTree);
+        currentTree.add(0, "..");
         pathJava = current_path;
         if (pathJava.equals(fpu.getPathJava(sc_id).concat("/".concat(getIntent().getStringExtra("pkgName").replace(".", "/"))))) {
             pathJava = FileUtil.getExternalStorageDir().concat("/.sketchware/mysc/".concat(sc_id.concat("/app/src/main/java/")));
@@ -416,6 +410,15 @@ public class ManageJavaActivity extends Activity {
 
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener((parent, view, position, id) -> {
+            if (position == 0) {
+                if (!(Objects.equals(
+                Uri.parse(current_path).getPath(),
+                Uri.parse(fpu.getPathJava(sc_id)).getPath()))) {
+                    current_path = current_path.substring(0, current_path.lastIndexOf("/"));
+		    refresh();
+                }
+                return;
+            }
             if (adapter.isFolder(position)) {
                 current_path = adapter.getItem(position);
                 refresh();
@@ -520,6 +523,8 @@ public class ManageJavaActivity extends Activity {
             Helper.applyRipple(ManageJavaActivity.this, more);
 
             more.setOnClickListener(v -> itemContextMenu(more, position, Gravity.RIGHT));
+            
+            more.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
 
             return convertView;
         }
