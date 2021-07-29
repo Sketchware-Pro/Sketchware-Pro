@@ -67,6 +67,7 @@ public class DebugActivity extends Activity {
         AlertDialog builder = new AlertDialog.Builder(this)
             .setTitle("An error occurred")
             .setMessage(madeErrorMessage)
+            .setCancelable(false)
             .setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
