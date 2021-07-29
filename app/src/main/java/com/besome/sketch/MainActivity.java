@@ -216,8 +216,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         p = findViewById(Resources.id.viewpager);
         p.setOffscreenPageLimit(2);
         p.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        /*q = findViewById(Resources.id.tab_layout);
-        q.setupWithViewPager(p);*/
         p.a(this);
         E = findViewById(Resources.id.layout_qna_bottom);
         F = findViewById(Resources.id.fab);
