@@ -240,7 +240,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             for (HashMap<String, Object> library : lookup_list) {
                 Object usedLibraryName = library.get("name");
                 if (usedLibraryName instanceof String) {
-                    checkBox.setChecked(checkBox.getText().toString().equals(usedLibraryName));
+                    if (checkBox.getText().toString().equals(usedLibraryName)) {
+	                checkBox.setChecked(true);
+                    }
                 }
             }
 
