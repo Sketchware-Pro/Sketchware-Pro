@@ -133,13 +133,14 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         main_list.clear();
         project_used_libs.clear();
         lookup_list.clear();
+        if(getIntent().getStringExtra("sc_id") != "system" ) {
         if (!FileUtil.isExistFile(configurationFilePath) || FileUtil.readFile(configurationFilePath).equals("")) {
             FileUtil.writeFile(configurationFilePath, "[]");
         } else {
             project_used_libs = new Gson().fromJson(FileUtil.readFile(configurationFilePath), Helper.TYPE_MAP_LIST);
         }
-
         lookup_list = new Gson().fromJson(FileUtil.readFile(configurationFilePath), Helper.TYPE_MAP_LIST);
+        }
 
         ArrayList<String> files = new ArrayList<>();
         FileUtil.listDir(local_libs_path, files);
@@ -234,8 +235,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     }
                     project_used_libs.add(hashMap);
                 }
+                if(getIntent().getStringExtra("sc_id") != "system") {
                 FileUtil.writeFile(configurationFilePath, new Gson().toJson(project_used_libs));
-            });
+                }
+             });
 
             for (HashMap<String, Object> library : lookup_list) {
                 Object usedLibraryName = library.get("name");
