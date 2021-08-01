@@ -5,6 +5,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.view.Gravity;
+import mod.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -16,6 +25,7 @@ import java.util.HashMap;
 import a.a.a.GC;
 import a.a.a.bB;
 import a.a.a.lC;
+import a.a.a.aB;
 
 public class BackupRestoreManager {
 
@@ -41,27 +51,47 @@ public class BackupRestoreManager {
         bckpDialogStates.put(0, false);
         bckpDialogStates.put(1, false);
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(act);
-        dialog.setTitle("Backup options");
-        dialog.setMultiChoiceItems(
-                new String[]{
-                        "Include used local libs",
-                        "Include used custom blocks"
-                },
-                null,
-                (dialog1, which, isChecked) -> bckpDialogStates.put(which, isChecked));
-
-        dialog.setPositiveButton(Resources.string.common_word_ok, (dialog1, which) -> {
-            //if(backup_dlg != null) {
-            //final SparseBooleanArray arr = backup_dlg.getListView().getCheckedItemPositions();
-            doBackup(sc_id, project_name);
-            //}
-        });
-
-        dialog.setNegativeButton(Resources.string.common_word_cancel, null);
-
-        AlertDialog backup_dlg = dialog.create();
-        backup_dlg.show();
+        aB dialog = new aB(this);
+        dialog.a(Resources.drawable.ic_backup);
+        dialog.b("Backup Options");
+        
+        LinearLayout linearLayout = new LinearLayout(act);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        int dip = (int) SketchwareUtil.getDip(8);
+        linearLayout.setPadding(dip, dip, dip, dip);
+        CheckBox checkBox = new CheckBox(act);
+        checkBox.setText("Include used local libs");
+        checkBox.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        checkBox.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        checkBox.setOnCheckedChangeListener(new new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton cb, boolean isChecked)  {
+				bckpDialogStates.put(0, isChecked);
+			}
+		});
+        linearLayout.addView(checkBox);
+        CheckBox checkBox2 = new CheckBox(act);
+        checkBox2.setText("Include used custom blocks");
+        checkBox2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        checkBox2.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        checkBox2.setOnCheckedChangeListener(new new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton cb, boolean isChecked)  {
+				bckpDialogStates.put(1, isChecked);
+			}
+		});
+        linearLayout.addView(checkBox2);
+        
+        dialog.a(linearLayout);
+        dialog.a("Backup", new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				doBackup(sc_id, project_name);
+			}
+		});
+        dialog.b("Cancel", Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     private void doBackup(final String sc_id, final String project_name /*, final SparseBooleanArray arr*/) {
