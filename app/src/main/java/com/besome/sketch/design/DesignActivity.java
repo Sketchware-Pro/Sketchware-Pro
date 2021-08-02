@@ -1188,11 +1188,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    boolean usingAapt2 = buildSettings
-                            .getValue(BuildSettings.SETTING_RESOURCE_PROCESSOR,
-                                    BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
-                            ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
-                    publishProgress(usingAapt2 ? "AAPT2 is running..." : "AAPT is running...");
+                    publishProgress("AAPT2 is running...");
                     mDp.a();
                     if (d) {
                         cancel(true);

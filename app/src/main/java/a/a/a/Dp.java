@@ -217,17 +217,12 @@ public class Dp {
      * @throws Exception Thrown in case AAPT/AAPT2 has an error while compiling resources.
      */
     public void b() throws Exception {
-        boolean useAapt2 = buildAppBundle || build_settings.getValue(
-                BuildSettings.SETTING_RESOURCE_PROCESSOR,
-                BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
-        ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
-
         ResourceCompiler compiler = new ResourceCompiler(
                 this,
                 aapt2Dir,
                 buildAppBundle,
                 buildingDialog,
-                useAapt2);
+                true);
         compiler.compile();
     }
 
