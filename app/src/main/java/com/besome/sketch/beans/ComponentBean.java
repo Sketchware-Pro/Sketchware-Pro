@@ -5,45 +5,47 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
+import com.sketchware.remod.Resources;
 
 import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class ComponentBean extends CollapsibleBean implements Parcelable {
-    public static final int COMPONENT_TYPE_BLUETOOTH_CONNECT = 20;
-    public static final int COMPONENT_TYPE_CALENDAR = 3;
-    public static final int COMPONENT_TYPE_CAMERA = 15;
-    public static final int COMPONENT_TYPE_DIALOG = 7;
-    public static final int COMPONENT_TYPE_FILE_PICKER = 16;
-    public static final int COMPONENT_TYPE_FIREBASE = 6;
-    public static final int COMPONENT_TYPE_FIREBASE_AUTH = 12;
-    public static final int COMPONENT_TYPE_FIREBASE_STORAGE = 14;
-    public static final int COMPONENT_TYPE_GYROSCOPE = 11;
-    public static final int COMPONENT_TYPE_INTENT = 1;
-    public static final int COMPONENT_TYPE_INTERSTITIAL_AD = 13;
-    public static final int COMPONENT_TYPE_LOCATION_MANAGER = 21;
-    public static final int COMPONENT_TYPE_MEDIAPLAYER = 8;
-    public static final int COMPONENT_TYPE_OBJECTANIMATOR = 10;
-    public static final int COMPONENT_TYPE_REQUEST_NETWORK = 17;
-    public static final int COMPONENT_TYPE_SHAREDPREF = 2;
-    public static final int COMPONENT_TYPE_SOUNDPOOL = 9;
-    public static final int COMPONENT_TYPE_SPEECH_TO_TEXT = 19;
-    public static final int COMPONENT_TYPE_TEXT_TO_SPEECH = 18;
-    public static final int COMPONENT_TYPE_TIMERTASK = 5;
-    public static final int COMPONENT_TYPE_VIBRATOR = 4;
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        /* class com.besome.sketch.beans.ComponentBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
-        public Object createFromParcel(Parcel parcel) {
-            return new ComponentBean(parcel);
+    public static final int COMPONENT_TYPE_INTENT = 1;
+    public static final int COMPONENT_TYPE_SHAREDPREF = 2;
+    public static final int COMPONENT_TYPE_CALENDAR = 3;
+    public static final int COMPONENT_TYPE_VIBRATOR = 4;
+    public static final int COMPONENT_TYPE_TIMERTASK = 5;
+    public static final int COMPONENT_TYPE_FIREBASE = 6;
+    public static final int COMPONENT_TYPE_DIALOG = 7;
+    public static final int COMPONENT_TYPE_MEDIAPLAYER = 8;
+    public static final int COMPONENT_TYPE_SOUNDPOOL = 9;
+    public static final int COMPONENT_TYPE_OBJECTANIMATOR = 10;
+    public static final int COMPONENT_TYPE_GYROSCOPE = 11;
+    public static final int COMPONENT_TYPE_FIREBASE_AUTH = 12;
+    public static final int COMPONENT_TYPE_INTERSTITIAL_AD = 13;
+    public static final int COMPONENT_TYPE_FIREBASE_STORAGE = 14;
+    public static final int COMPONENT_TYPE_CAMERA = 15;
+    public static final int COMPONENT_TYPE_FILE_PICKER = 16;
+    public static final int COMPONENT_TYPE_REQUEST_NETWORK = 17;
+    public static final int COMPONENT_TYPE_TEXT_TO_SPEECH = 18;
+    public static final int COMPONENT_TYPE_SPEECH_TO_TEXT = 19;
+    public static final int COMPONENT_TYPE_BLUETOOTH_CONNECT = 20;
+    public static final int COMPONENT_TYPE_LOCATION_MANAGER = 21;
+
+    public static final Parcelable.Creator<ComponentBean> CREATOR = new Parcelable.Creator<ComponentBean>() {
+        @Override
+        public ComponentBean createFromParcel(Parcel source) {
+            return new ComponentBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public Object[] newArray(int i) {
-            return new ComponentBean[i];
+        @Override
+        public ComponentBean[] newArray(int size) {
+            return new ComponentBean[size];
         }
     };
+
     public Gx classInfo;
     @Expose
     public String componentId;
@@ -56,704 +58,839 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     @Expose
     public int type;
 
-    public ComponentBean(int i) {
-        this(i, "");
+    /**
+     * Constructs a Component without <code>componentId</code>, <code>param1</code>,
+     * <code>param2</code>, <code>param3</code>
+     */
+    public ComponentBean(int type) {
+        this(type, "");
     }
 
-    public ComponentBean(int i, String str) {
-        this(i, str, "", "");
+    /**
+     * Constructs a Component without <code>param1</code>, <code>param2</code>, <code>param3</code>.
+     */
+    public ComponentBean(int type, String componentId) {
+        this(type, componentId, "", "");
     }
 
-    public ComponentBean(int i, String str, String str2) {
-        this(i, str, str2, "", "");
+    /**
+     * Constructs a Component without <code>param2</code> and <code>param3</code>.
+     */
+    public ComponentBean(int type, String componentId, String param1) {
+        this(type, componentId, param1, "", "");
     }
 
-    public ComponentBean(int i, String str, String str2, String str3) {
-        this(i, str, str2, str3, "");
+    /**
+     * Constructs a Component without <code>param3</code>.
+     */
+    public ComponentBean(int type, String componentId, String param1, String param2) {
+        this(type, componentId, param1, param2, "");
     }
 
-    public ComponentBean(int i, String str, String str2, String str3, String str4) {
-        this.param1 = "";
-        this.param2 = "";
-        this.param3 = "";
-        this.type = i;
-        this.componentId = str;
-        this.param1 = str2;
-        this.param2 = str3;
-        this.param3 = str4;
+    public ComponentBean(int type, String componentId, String param1, String param2, String param3) {
+        this.type = type;
+        this.componentId = componentId;
+        this.param1 = param1;
+        this.param2 = param2;
+        this.param3 = param3;
     }
 
-    public ComponentBean(Parcel parcel) {
-        this.param1 = "";
-        this.param2 = "";
-        this.param3 = "";
-        this.type = parcel.readInt();
-        this.componentId = parcel.readString();
-        this.param1 = parcel.readString();
-        this.param2 = parcel.readString();
-        this.param3 = parcel.readString();
+    public ComponentBean(Parcel other) {
+        this.type = other.readInt();
+        this.componentId = other.readString();
+        this.param1 = other.readString();
+        this.param2 = other.readString();
+        this.param3 = other.readString();
     }
 
-    public static String getComponentDocsUrlByTypeName(int i) {
-        switch (i) {
-            case 1:
+    public static String getComponentDocsUrlByTypeName(int type) {
+        switch (type) {
+            case COMPONENT_TYPE_INTENT:
                 return "https://docs.sketchware.io/docs/component-intent.html";
-            case 2:
+
+            case COMPONENT_TYPE_SHAREDPREF:
                 return "https://docs.sketchware.io/docs/component-shared-preference.html";
-            case 3:
+
+            case COMPONENT_TYPE_CALENDAR:
                 return "https://docs.sketchware.io/docs/component-calendar.html";
-            case 4:
+
+            case COMPONENT_TYPE_VIBRATOR:
                 return "https://docs.sketchware.io/docs/component-vibrator.html";
-            case 5:
+
+            case COMPONENT_TYPE_TIMERTASK:
                 return "https://docs.sketchware.io/docs/component-timer.html";
-            case 6:
+
+            case COMPONENT_TYPE_FIREBASE:
                 return "https://docs.sketchware.io/docs/component-firebase-database.html";
-            case 7:
+
+            case COMPONENT_TYPE_DIALOG:
                 return "https://docs.sketchware.io/docs/component-dialog.html";
-            case 8:
+
+            case COMPONENT_TYPE_MEDIAPLAYER:
                 return "https://docs.sketchware.io/docs/component-mediaplayer.html";
-            case 9:
+
+            case COMPONENT_TYPE_SOUNDPOOL:
                 return "https://docs.sketchware.io/docs/component-soundpool.html";
-            case 10:
+
+            case COMPONENT_TYPE_OBJECTANIMATOR:
                 return "https://docs.sketchware.io/docs/component-object-animator.html";
-            case 11:
+
+            case COMPONENT_TYPE_GYROSCOPE:
                 return "https://docs.sketchware.io/docs/component-gyroscope.html";
-            case 12:
+
+            case COMPONENT_TYPE_FIREBASE_AUTH:
                 return "https://docs.sketchware.io/docs/component-firebase-auth.html";
-            case 13:
+
+            case COMPONENT_TYPE_INTERSTITIAL_AD:
+            case COMPONENT_TYPE_REQUEST_NETWORK:
+            case COMPONENT_TYPE_TEXT_TO_SPEECH:
+            case COMPONENT_TYPE_SPEECH_TO_TEXT:
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT:
+            case COMPONENT_TYPE_LOCATION_MANAGER:
+                // sad :c
                 return "";
-            case 14:
+
+            case COMPONENT_TYPE_FIREBASE_STORAGE:
                 return "https://docs.sketchware.io/docs/component-firebase-storage.html";
-            case 15:
+
+            case COMPONENT_TYPE_CAMERA:
                 return "https://docs.sketchware.io/docs/component-camera.html";
-            case 16:
+
+            case COMPONENT_TYPE_FILE_PICKER:
                 return "https://docs.sketchware.io/docs/component-filepicker.html";
+
             default:
-                return ComponentsHandler.docs(i);
+                return ComponentsHandler.docs(type);
         }
     }
 
-    public static String getComponentName(Context context, int i) {
-        switch (i) {
-            case 1:
+    /**
+     * @param context Can be null, as it's not used
+     */
+    public static String getComponentName(Context context, int type) {
+        switch (type) {
+            case COMPONENT_TYPE_INTENT:
                 return "Intent";
-            case 2:
+
+            case COMPONENT_TYPE_SHAREDPREF:
                 return "SharedPreferences";
-            case 3:
+
+            case COMPONENT_TYPE_CALENDAR:
                 return "Calendar";
-            case 4:
+
+            case COMPONENT_TYPE_VIBRATOR:
                 return "Vibrator";
-            case 5:
+
+            case COMPONENT_TYPE_TIMERTASK:
                 return "Timer";
-            case 6:
+
+            case COMPONENT_TYPE_FIREBASE:
                 return "Firebase DB";
-            case 7:
+
+            case COMPONENT_TYPE_DIALOG:
                 return "Dialog";
-            case 8:
+
+            case COMPONENT_TYPE_MEDIAPLAYER:
                 return "MediaPlayer";
-            case 9:
+
+            case COMPONENT_TYPE_SOUNDPOOL:
                 return "SoundPool";
-            case 10:
+
+            case COMPONENT_TYPE_OBJECTANIMATOR:
                 return "ObjectAnimator";
-            case 11:
+
+            case COMPONENT_TYPE_GYROSCOPE:
                 return "Gyroscope";
-            case 12:
+
+            case COMPONENT_TYPE_FIREBASE_AUTH:
                 return "Firebase Auth";
-            case 13:
+
+            case COMPONENT_TYPE_INTERSTITIAL_AD:
                 return "Interstitial Ad";
-            case 14:
+
+            case COMPONENT_TYPE_FIREBASE_STORAGE:
                 return "Firebase Storage";
-            case 15:
+
+            case COMPONENT_TYPE_CAMERA:
                 return "Camera";
-            case 16:
+
+            case COMPONENT_TYPE_FILE_PICKER:
                 return "FilePicker";
-            case 17:
+
+            case COMPONENT_TYPE_REQUEST_NETWORK:
                 return "RequestNetwork";
-            case 18:
+
+            case COMPONENT_TYPE_TEXT_TO_SPEECH:
                 return "TextToSpeech";
-            case 19:
+
+            case COMPONENT_TYPE_SPEECH_TO_TEXT:
                 return "SpeechToText";
-            case 20:
+
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT:
                 return "BluetoothConnect";
-            case 21:
+
+            case COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
+
             case 22:
                 return "RewardedVideoAd";
+
             case 23:
                 return "ProgressDialog";
+
             case 24:
                 return "DatePickerDialog";
+
             case 25:
                 return "TimePickerDialog";
+
             case 26:
                 return "Notification";
+
             case 27:
                 return "FragmentAdapter";
+
             case 28:
                 return "PhoneAuth";
+
             case 29:
                 return "Dynamic Link";
+
             case 30:
                 return "Cloud Message";
+
             case 31:
                 return "Google Login";
+
             case 32:
                 return "OneSignal";
+
             case 33:
                 return "Facebook Ads Banner";
+
             case 34:
                 return "Facebook Ads Interstitial";
+
             default:
-                return ComponentsHandler.name(i);
+                return ComponentsHandler.name(type);
         }
     }
 
-    public static int getComponentTypeByTypeName(String str) {
-        switch (str.hashCode()) {
-            case -2099895620:
-                if (str.equals("Intent")) {
-                    return 1;
-                }
-                break;
-            case -1965257499:
-                if (str.equals("Gyroscope")) {
-                    return 11;
-                }
-                break;
-            case -1908172204:
-                if (str.equals("FirebaseStorage")) {
-                    return 14;
-                }
-                break;
-            case -1884914774:
-                if (str.equals("TextToSpeech")) {
-                    return 18;
-                }
-                break;
-            case -1810281568:
-                if (str.equals("FBAdsInterstitial")) {
-                    return 34;
-                }
-                break;
-            case -1231229991:
-                if (str.equals("FirebaseCloudMessage")) {
-                    return 30;
-                }
-                break;
-            case -1042830870:
-                if (str.equals("SpeechToText")) {
-                    return 19;
-                }
-                break;
-            case -1014653761:
-                if (str.equals("RequestNetwork")) {
-                    return 17;
-                }
-                break;
-            case -699448178:
-                if (str.equals("OneSignal")) {
-                    return 32;
-                }
-                break;
-            case -596330166:
-                if (str.equals("FilePicker")) {
-                    return 16;
-                }
-                break;
-            case -294086120:
-                if (str.equals("LocationManager")) {
-                    return 21;
-                }
-                break;
-            case -113680546:
-                if (str.equals("Calendar")) {
-                    return 3;
-                }
-                break;
-            case -105717264:
-                if (str.equals("RewardedVideoAd")) {
-                    return 22;
-                }
-                break;
-            case 2189724:
-                if (str.equals("File")) {
-                    return 2;
-                }
-                break;
-            case 80811813:
-                if (str.equals("Timer")) {
-                    return 5;
-                }
-                break;
-            case 191354283:
-                if (str.equals("SoundPool")) {
-                    return 9;
-                }
-                break;
-            case 225459311:
-                if (str.equals("FirebaseAuth")) {
-                    return 12;
-                }
-                break;
-            case 313126659:
-                if (str.equals("TimePickerDialog")) {
-                    return 25;
-                }
-                break;
-            case 320151695:
-                if (str.equals("InterstitialAd")) {
-                    return 13;
-                }
-                break;
-            case 610585248:
-                if (str.equals("FBAdsBanner")) {
-                    return 33;
-                }
-                break;
-            case 759553291:
-                if (str.equals("Notification")) {
-                    return 26;
-                }
-                break;
-            case 955867637:
-                if (str.equals("ProgressDialog")) {
-                    return 23;
-                }
-                break;
-            case 1040211977:
-                if (str.equals("FirebaseGoogleLogin")) {
-                    return 31;
-                }
-                break;
-            case 1133711410:
-                if (str.equals("FirebaseDynamicLink")) {
-                    return 29;
-                }
-                break;
-            case 1170382393:
-                if (str.equals("Vibrator")) {
-                    return 4;
-                }
-                break;
-            case 1236935621:
-                if (str.equals("MediaPlayer")) {
-                    return 8;
-                }
-                break;
-            case 1263589055:
-                if (str.equals("FragmentAdapter")) {
-                    return 27;
-                }
-                break;
-            case 1472283236:
-                if (str.equals("DatePickerDialog")) {
-                    return 24;
-                }
-                break;
-            case 1512362620:
-                if (str.equals("BluetoothConnect")) {
-                    return 20;
-                }
-                break;
-            case 1774120399:
-                if (str.equals("FirebasePhoneAuth")) {
-                    return 28;
-                }
-                break;
-            case 1779003621:
-                if (str.equals("FirebaseDB")) {
-                    return 6;
-                }
-                break;
-            case 1799376742:
-                if (str.equals("ObjectAnimator")) {
-                    return 10;
-                }
-                break;
-            case 2011082565:
-                if (str.equals("Camera")) {
-                    return 15;
-                }
-                break;
-            case 2046749032:
-                if (str.equals("Dialog")) {
-                    return 7;
-                }
-                break;
+    public static int getComponentTypeByTypeName(String typeName) {
+        switch (typeName) {
+            case "Intent":
+                return COMPONENT_TYPE_INTENT;
+
+            case "File":
+                return COMPONENT_TYPE_SHAREDPREF;
+
+            case "Calendar":
+                return COMPONENT_TYPE_CALENDAR;
+
+            case "Vibrator":
+                return COMPONENT_TYPE_VIBRATOR;
+
+            case "Timer":
+                return COMPONENT_TYPE_TIMERTASK;
+
+            case "FirebaseDB":
+                return COMPONENT_TYPE_FIREBASE;
+
+            case "Dialog":
+                return COMPONENT_TYPE_DIALOG;
+
+            case "MediaPlayer":
+                return COMPONENT_TYPE_MEDIAPLAYER;
+
+            case "SoundPool":
+                return COMPONENT_TYPE_SOUNDPOOL;
+
+            case "ObjectAnimator":
+                return COMPONENT_TYPE_OBJECTANIMATOR;
+
+            case "Gyroscope":
+                return COMPONENT_TYPE_GYROSCOPE;
+
+            case "FirebaseAuth":
+                return COMPONENT_TYPE_FIREBASE_AUTH;
+
+            case "InterstitialAd":
+                return COMPONENT_TYPE_INTERSTITIAL_AD;
+
+            case "FirebaseStorage":
+                return COMPONENT_TYPE_FIREBASE_STORAGE;
+
+            case "Camera":
+                return COMPONENT_TYPE_CAMERA;
+
+            case "FilePicker":
+                return COMPONENT_TYPE_FILE_PICKER;
+
+            case "RequestNetwork":
+                return COMPONENT_TYPE_REQUEST_NETWORK;
+
+            case "TextToSpeech":
+                return COMPONENT_TYPE_TEXT_TO_SPEECH;
+
+            case "SpeechToText":
+                return COMPONENT_TYPE_SPEECH_TO_TEXT;
+
+            case "BluetoothConnect":
+                return COMPONENT_TYPE_BLUETOOTH_CONNECT;
+
+            case "LocationManager":
+                return COMPONENT_TYPE_LOCATION_MANAGER;
+
+            case "RewardedVideoAd":
+                return 22;
+
+            case "ProgressDialog":
+                return 23;
+
+            case "DatePickerDialog":
+                return 24;
+
+            case "TimePickerDialog":
+                return 25;
+
+            case "Notification":
+                return 26;
+
+            case "FragmentAdapter":
+                return 27;
+
+            case "FirebasePhoneAuth":
+                return 28;
+
+            case "FirebaseDynamicLink":
+                return 29;
+
+            case "FirebaseCloudMessage":
+                return 30;
+
+            case "FirebaseGoogleLogin":
+                return 31;
+
+            case "OneSignal":
+                return 32;
+
+            case "FBAdsBanner":
+                return 33;
+
+            case "FBAdsInterstitial":
+                return 34;
+
+            default:
+                return ComponentsHandler.id(typeName);
         }
-        return ComponentsHandler.id(str);
     }
 
-    public static String getComponentTypeName(int i) {
-        switch (i) {
-            case 1:
+    public static String getComponentTypeName(int type) {
+        switch (type) {
+            case COMPONENT_TYPE_INTENT:
                 return "Intent";
-            case 2:
+
+            case COMPONENT_TYPE_SHAREDPREF:
                 return "File";
-            case 3:
+
+            case COMPONENT_TYPE_CALENDAR:
                 return "Calendar";
-            case 4:
+
+            case COMPONENT_TYPE_VIBRATOR:
                 return "Vibrator";
-            case 5:
+
+            case COMPONENT_TYPE_TIMERTASK:
                 return "Timer";
-            case 6:
+
+            case COMPONENT_TYPE_FIREBASE:
                 return "FirebaseDB";
-            case 7:
+
+            case COMPONENT_TYPE_DIALOG:
                 return "Dialog";
-            case 8:
+
+            case COMPONENT_TYPE_MEDIAPLAYER:
                 return "MediaPlayer";
-            case 9:
+
+            case COMPONENT_TYPE_SOUNDPOOL:
                 return "SoundPool";
-            case 10:
+
+            case COMPONENT_TYPE_OBJECTANIMATOR:
                 return "ObjectAnimator";
-            case 11:
+
+            case COMPONENT_TYPE_GYROSCOPE:
                 return "Gyroscope";
-            case 12:
+
+            case COMPONENT_TYPE_FIREBASE_AUTH:
                 return "FirebaseAuth";
-            case 13:
+
+            case COMPONENT_TYPE_INTERSTITIAL_AD:
                 return "InterstitialAd";
-            case 14:
+
+            case COMPONENT_TYPE_FIREBASE_STORAGE:
                 return "FirebaseStorage";
-            case 15:
+
+            case COMPONENT_TYPE_CAMERA:
                 return "Camera";
-            case 16:
+
+            case COMPONENT_TYPE_FILE_PICKER:
                 return "FilePicker";
-            case 17:
+
+            case COMPONENT_TYPE_REQUEST_NETWORK:
                 return "RequestNetwork";
-            case 18:
+
+            case COMPONENT_TYPE_TEXT_TO_SPEECH:
                 return "TextToSpeech";
-            case 19:
+
+            case COMPONENT_TYPE_SPEECH_TO_TEXT:
                 return "SpeechToText";
-            case 20:
+
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT:
                 return "BluetoothConnect";
-            case 21:
+
+            case COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
+
             case 22:
                 return "RewardedVideoAd";
+
             case 23:
                 return "ProgressDialog";
+
             case 24:
                 return "DatePickerDialog";
+
             case 25:
                 return "TimePickerDialog";
+
             case 26:
                 return "Notification";
+
             case 27:
                 return "FragmentAdapter";
+
             case 28:
                 return "FirebasePhoneAuth";
+
             case 29:
                 return "FirebaseDynamicLink";
+
             case 30:
                 return "FirebaseCloudMessage";
+
             case 31:
                 return "FirebaseGoogleLogin";
+
             case 32:
                 return "OneSignal";
+
             case 33:
                 return "FBAdsBanner";
+
             case 34:
                 return "FBAdsInterstitial";
+
             default:
-                return ComponentsHandler.typeName(i);
+                return ComponentsHandler.typeName(type);
         }
     }
 
-    public static Parcelable.Creator getCreator() {
+    public static Parcelable.Creator<ComponentBean> getCreator() {
         return CREATOR;
     }
 
-    public static int getDescStrResource(int i) {
-        switch (i) {
-            case 1:
-                return 2131625105;
-            case 2:
-                return 2131625099;
-            case 3:
-                return 2131625096;
-            case 4:
-                return 2131625115;
-            case 5:
-                return 2131625114;
-            case 6:
-                return 2131625211;
-            case 7:
-                return 2131625098;
-            case 8:
-                return 2131625108;
-            case 9:
-                return 2131625111;
-            case 10:
-                return 2131625109;
-            case 11:
-                return 2131625104;
-            case 12:
-                return 2131625102;
-            case 13:
-                return 2131625106;
-            case 14:
-                return 2131625103;
-            case 15:
-                return 2131625097;
-            case 16:
-                return 2131625100;
-            case 17:
-                return 2131625110;
-            case 18:
-                return 2131625113;
-            case 19:
-                return 2131625112;
-            case 20:
-                return 2131625095;
-            case 21:
-                return 2131625107;
+    public static int getDescStrResource(int type) {
+        switch (type) {
+            case COMPONENT_TYPE_INTENT:
+                return Resources.string.component_description_intent;
+
+            case COMPONENT_TYPE_SHAREDPREF:
+                return Resources.string.component_description_file;
+
+            case COMPONENT_TYPE_CALENDAR:
+                return Resources.string.component_description_calendar;
+
+            case COMPONENT_TYPE_VIBRATOR:
+                return Resources.string.component_description_vibrator;
+
+            case COMPONENT_TYPE_TIMERTASK:
+                return Resources.string.component_description_timer;
+
+            case COMPONENT_TYPE_FIREBASE:
+                return Resources.string.design_library_firebase_description_about_firebase;
+
+            case COMPONENT_TYPE_DIALOG:
+                return Resources.string.component_description_dialog;
+
+            case COMPONENT_TYPE_MEDIAPLAYER:
+                return Resources.string.component_description_mediaplayer;
+
+            case COMPONENT_TYPE_SOUNDPOOL:
+                return Resources.string.component_description_soundpool;
+
+            case COMPONENT_TYPE_OBJECTANIMATOR:
+                return Resources.string.component_description_objectanimator;
+
+            case COMPONENT_TYPE_GYROSCOPE:
+                return Resources.string.component_description_gyrosope;
+
+            case COMPONENT_TYPE_FIREBASE_AUTH:
+                return Resources.string.component_description_firebase_auth;
+
+            case COMPONENT_TYPE_INTERSTITIAL_AD:
+                return Resources.string.component_description_interstitial_ad;
+
+            case COMPONENT_TYPE_FIREBASE_STORAGE:
+                return Resources.string.component_description_firebase_storage;
+
+            case COMPONENT_TYPE_CAMERA:
+                return Resources.string.component_description_camera;
+
+            case COMPONENT_TYPE_FILE_PICKER:
+                return Resources.string.component_description_file_picker;
+
+            case COMPONENT_TYPE_REQUEST_NETWORK:
+                return Resources.string.component_description_request_network;
+
+            case COMPONENT_TYPE_TEXT_TO_SPEECH:
+                return Resources.string.component_description_text_to_speech;
+
+            case COMPONENT_TYPE_SPEECH_TO_TEXT:
+                return Resources.string.component_description_speech_to_text;
+
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT:
+                return Resources.string.component_description_bluetooth_connect;
+
+            case COMPONENT_TYPE_LOCATION_MANAGER:
+                return Resources.string.component_description_location_manager;
+
             case 22:
-                return 2131626494;
+                return Resources.string.component_description_video_ad;
+
             case 23:
-                return 2131626495;
+                return Resources.string.component_description_progress_dialog;
+
             case 24:
-                return 2131626496;
+                return Resources.string.component_description_date_picker_dialog;
+
             case 25:
-                return 2131626497;
+                return Resources.string.component_description_time_picker_dialog;
+
             case 26:
-                return 2131626498;
+                return Resources.string.component_description_notification;
+
             case 27:
-                return 2131626503;
+                return Resources.string.component_description_fragment_adapter;
+
             case 28:
-                return 2131626506;
+                return Resources.string.component_description_fb_phone_auth;
+
             case 29:
-                return 2131626507;
+                return Resources.string.component_description_fb_dynamic;
+
             case 30:
-                return 2131626508;
+                return Resources.string.component_description_fb_fcm;
+
             case 31:
-                return 2131626509;
+                return Resources.string.component_description_fb_google;
+
             case 32:
-                return 2131626510;
+                return Resources.string.component_description_fb_admin;
+
             case 33:
-                return 2131626511;
+                return Resources.string.component_description_fb_ads_banner;
+
             case 34:
-                return 2131626512;
+                return Resources.string.component_description_fb_ads_interstitial;
+
             default:
                 return 0;
         }
     }
 
-    public static int getIconResource(int i) {
-        switch (i) {
-            case 1:
-                return 2131166254;
-            case 2:
-                return 2131166268;
-            case 3:
-                return 2131166238;
-            case 4:
-                return 2131166277;
-            case 5:
-                return 2131166276;
-            case 6:
-            case 12:
-            case 14:
-                return 2131166245;
-            case 7:
-                return 2131166235;
-            case 8:
-                return 2131166259;
-            case 9:
-                return 2131166269;
-            case 10:
-                return 2131166262;
-            case 11:
-                return 2131166248;
-            case 13:
-                return 2131166234;
-            case 15:
-                return 2131166240;
-            case 16:
-                return 2131166244;
-            case 17:
-                return 2131166261;
-            case 18:
-                return 2131166274;
-            case 19:
-                return 2131166271;
-            case 20:
-                return 2131166236;
-            case 21:
-                return 2131166258;
+    public static int getIconResource(int type) {
+        switch (type) {
+            case COMPONENT_TYPE_INTENT:
+                return Resources.drawable.widget_intent;
+
+            case COMPONENT_TYPE_SHAREDPREF:
+                return Resources.drawable.widget_shared_preference;
+
+            case COMPONENT_TYPE_CALENDAR:
+                return Resources.drawable.widget_calendar;
+
+            case COMPONENT_TYPE_VIBRATOR:
+                return Resources.drawable.widget_vibrator;
+
+            case COMPONENT_TYPE_TIMERTASK:
+                return Resources.drawable.widget_timer;
+
+            case COMPONENT_TYPE_FIREBASE:
+            case COMPONENT_TYPE_FIREBASE_AUTH:
+            case COMPONENT_TYPE_FIREBASE_STORAGE:
+                return Resources.drawable.widget_firebase;
+
+            case COMPONENT_TYPE_DIALOG:
+                return Resources.drawable.widget_alertdialog;
+
+            case COMPONENT_TYPE_MEDIAPLAYER:
+                return Resources.drawable.widget_mediaplayer;
+
+            case COMPONENT_TYPE_SOUNDPOOL:
+                return Resources.drawable.widget_soundpool;
+
+            case COMPONENT_TYPE_OBJECTANIMATOR:
+                return Resources.drawable.widget_objectanimator;
+
+            case COMPONENT_TYPE_GYROSCOPE:
+                return Resources.drawable.widget_gyroscope;
+
+            case COMPONENT_TYPE_INTERSTITIAL_AD:
+                return Resources.drawable.widget_admob;
+
+            case COMPONENT_TYPE_CAMERA:
+                return Resources.drawable.widget_camera;
+
+            case COMPONENT_TYPE_FILE_PICKER:
+                return Resources.drawable.widget_file;
+
+            case COMPONENT_TYPE_REQUEST_NETWORK:
+                return Resources.drawable.widget_network_request;
+
+            case COMPONENT_TYPE_TEXT_TO_SPEECH:
+                return Resources.drawable.widget_text_to_speech;
+
+            case COMPONENT_TYPE_SPEECH_TO_TEXT:
+                return Resources.drawable.widget_speech_to_text;
+
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT:
+                return Resources.drawable.widget_bluetooth;
+
+            case COMPONENT_TYPE_LOCATION_MANAGER:
+                return Resources.drawable.widget_location;
+
             case 22:
-                return 2131166295;
+                return Resources.drawable.widget_media_controller;
+
             case 23:
-                return 2131166296;
+                return Resources.drawable.widget_progress_dialog;
+
             case 24:
-                return 2131166294;
+                return Resources.drawable.widget_date_picker_dialog;
+
             case 25:
-                return 2131166297;
+                return Resources.drawable.widget_time_picker_dialog;
+
             case 26:
-                return 2131166298;
+                return Resources.drawable.widget_notification;
+
             case 27:
-                return 2131166304;
+                return Resources.drawable.widget_fragment;
+
             case 28:
-                return 2131166324;
+                return Resources.drawable.widget_phone_auth;
+
             case 29:
-                return 2131166325;
+                return Resources.drawable.component_dynamic_link;
+
             case 30:
-                return 2131166326;
+                return Resources.drawable.component_fcm;
+
             case 31:
-                return 2131166327;
+                return Resources.drawable.component_firebase_google;
+
             case 32:
-                return 2131166328;
+                return Resources.drawable.component_firebase_admin;
+
             case 33:
-                return 2131166329;
+                return Resources.drawable.component_fbads_banner;
+
             case 34:
-                return 2131166330;
+                return Resources.drawable.component_fbads_interstitial;
+
             default:
-                return ComponentsHandler.icon(i);
+                return ComponentsHandler.icon(type);
         }
     }
 
     public void buildClassInfo() {
-        String str;
-        switch (this.type) {
-            case 1:
-                str = "Intent";
+        String typeName;
+        switch (type) {
+            case COMPONENT_TYPE_INTENT:
+                typeName = "Intent";
                 break;
-            case 2:
-                str = "SharedPreferences";
+
+            case COMPONENT_TYPE_SHAREDPREF:
+                typeName = "SharedPreferences";
                 break;
-            case 3:
-                str = "Calendar";
+
+            case COMPONENT_TYPE_CALENDAR:
+                typeName = "Calendar";
                 break;
-            case 4:
-                str = "Vibrator";
+
+            case COMPONENT_TYPE_VIBRATOR:
+                typeName = "Vibrator";
                 break;
-            case 5:
-                str = "Timer";
+
+            case COMPONENT_TYPE_TIMERTASK:
+                typeName = "Timer";
                 break;
-            case 6:
-                str = "FirebaseDB";
+
+            case COMPONENT_TYPE_FIREBASE:
+                typeName = "FirebaseDB";
                 break;
-            case 7:
-                str = "Dialog";
+
+            case COMPONENT_TYPE_DIALOG:
+                typeName = "Dialog";
                 break;
-            case 8:
-                str = "MediaPlayer";
+
+            case COMPONENT_TYPE_MEDIAPLAYER:
+                typeName = "MediaPlayer";
                 break;
-            case 9:
-                str = "SoundPool";
+
+            case COMPONENT_TYPE_SOUNDPOOL:
+                typeName = "SoundPool";
                 break;
-            case 10:
-                str = "ObjectAnimator";
+
+            case COMPONENT_TYPE_OBJECTANIMATOR:
+                typeName = "ObjectAnimator";
                 break;
-            case 11:
-                str = "Gyroscope";
+
+            case COMPONENT_TYPE_GYROSCOPE:
+                typeName = "Gyroscope";
                 break;
-            case 12:
-                str = "FirebaseAuth";
+
+            case COMPONENT_TYPE_FIREBASE_AUTH:
+                typeName = "FirebaseAuth";
                 break;
-            case 13:
-                str = "InterstitialAd";
+
+            case COMPONENT_TYPE_INTERSTITIAL_AD:
+                typeName = "InterstitialAd";
                 break;
-            case 14:
-                str = "FirebaseStorage";
+
+            case COMPONENT_TYPE_FIREBASE_STORAGE:
+                typeName = "FirebaseStorage";
                 break;
-            case 15:
-                str = "Camera";
+
+            case COMPONENT_TYPE_CAMERA:
+                typeName = "Camera";
                 break;
-            case 16:
-                str = "FilePicker";
+
+            case COMPONENT_TYPE_FILE_PICKER:
+                typeName = "FilePicker";
                 break;
-            case 17:
-                str = "RequestNetwork";
+
+            case COMPONENT_TYPE_REQUEST_NETWORK:
+                typeName = "RequestNetwork";
                 break;
-            case 18:
-                str = "TextToSpeech";
+
+            case COMPONENT_TYPE_TEXT_TO_SPEECH:
+                typeName = "TextToSpeech";
                 break;
-            case 19:
-                str = "SpeechToText";
+
+            case COMPONENT_TYPE_SPEECH_TO_TEXT:
+                typeName = "SpeechToText";
                 break;
-            case 20:
-                str = "BluetoothConnect";
+
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT:
+                typeName = "BluetoothConnect";
                 break;
-            case 21:
-                str = "LocationManager";
+
+            case COMPONENT_TYPE_LOCATION_MANAGER:
+                typeName = "LocationManager";
                 break;
+
             case 22:
-                str = "RewardedVideoAd";
+                typeName = "RewardedVideoAd";
                 break;
+
             case 23:
-                str = "ProgressDialog";
+                typeName = "ProgressDialog";
                 break;
+
             case 24:
-                str = "DatePickerDialog";
+                typeName = "DatePickerDialog";
                 break;
+
             case 25:
-                str = "TimePickerDialog";
+                typeName = "TimePickerDialog";
                 break;
+
             case 26:
-                str = "Notification";
+                typeName = "Notification";
                 break;
+
             case 27:
-                str = "FragmentAdapter";
+                typeName = "FragmentAdapter";
                 break;
+
             case 28:
-                str = "FirebasePhoneAuth";
+                typeName = "FirebasePhoneAuth";
                 break;
+
             case 29:
-                str = "FirebaseDynamicLink";
+                typeName = "FirebaseDynamicLink";
                 break;
+
             case 30:
-                str = "FirebaseCloudMessage";
+                typeName = "FirebaseCloudMessage";
                 break;
+
             case 31:
-                str = "FirebaseGoogleLogin";
+                typeName = "FirebaseGoogleLogin";
                 break;
+
             case 32:
-                str = "OneSignal";
+                typeName = "OneSignal";
                 break;
+
             case 33:
-                str = "FBAdsBanner";
+                typeName = "FBAdsBanner";
                 break;
+
             case 34:
-                str = "FBAdsInterstitial";
+                typeName = "FBAdsInterstitial";
                 break;
+
             default:
-                str = ComponentsHandler.c(this.type);
+                typeName = ComponentsHandler.c(type);
                 break;
         }
-        this.classInfo = new Gx(str);
+        classInfo = new Gx(typeName);
     }
 
     public void clearClassInfo() {
-        this.classInfo = null;
+        classInfo = null;
     }
 
-    public void copy(ComponentBean componentBean) {
-        this.type = componentBean.type;
-        this.componentId = componentBean.componentId;
-        this.param1 = componentBean.param1;
-        this.param2 = componentBean.param2;
-        this.param3 = componentBean.param3;
+    public void copy(ComponentBean other) {
+        type = other.type;
+        componentId = other.componentId;
+        param1 = other.param1;
+        param2 = other.param2;
+        param3 = other.param3;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
     public Gx getClassInfo() {
-        if (this.classInfo == null) {
+        if (classInfo == null) {
             buildClassInfo();
         }
-        return this.classInfo;
+        return classInfo;
     }
 
     public void print() {
     }
 
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.type);
-        parcel.writeString(this.componentId);
-        parcel.writeString(this.param1);
-        parcel.writeString(this.param2);
-        parcel.writeString(this.param3);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(type);
+        dest.writeString(componentId);
+        dest.writeString(param1);
+        dest.writeString(param2);
+        dest.writeString(param3);
     }
 }
