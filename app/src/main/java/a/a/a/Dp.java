@@ -389,6 +389,12 @@ public class Dp {
             classpath.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
 
+        /* Add jars from project's classpath */
+        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (f.b) + "/files/classpath/";
+        ArrayList<String> jars = FileUtil.listFiles(path, "jar");
+        classpath.append(":")
+                .append(TextUtils.join(":", jars));
+
         return classpath.toString();
     }
 
