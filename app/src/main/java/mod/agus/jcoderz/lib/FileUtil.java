@@ -289,6 +289,21 @@ public class FileUtil {
         }
     }
 
+    /**
+    * @return list of file that ends with {@code extension}.
+    */
+    public static ArrayList<String> listFiles(String dir, String extension) {
+        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        listDir(dir, files);
+        for (String str : files) {
+            if (str.endsWith(extension)) {
+                list.add(str);
+            }
+        }
+        return list;
+    }
+
     public static boolean isDirectory(String path) {
         if (!isExistFile(path)) {
             return false;
