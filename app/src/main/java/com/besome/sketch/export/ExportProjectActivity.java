@@ -985,12 +985,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
 
-                BuildSettings buildSettings = new BuildSettings(sc_id);
-                boolean usingAapt2 = buildingAppBundle || buildSettings
-                        .getValue(BuildSettings.SETTING_RESOURCE_PROCESSOR,
-                                BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
-                        ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
-                publishProgress(usingAapt2 ? "AAPT2 is running..." : "AAPT is running...");
+                publishProgress("AAPT2 is running...");
                 c.a();
                 if (d) {
                     cancel(true);
