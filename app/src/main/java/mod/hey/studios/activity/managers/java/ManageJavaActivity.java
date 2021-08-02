@@ -90,7 +90,16 @@ public class ManageJavaActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (Objects.equals(
+                Uri.parse(current_path).getPath(),
+                Uri.parse(fpu.getPathJava(sc_id)).getPath()
+        )) {
+            super.onBackPressed();
+            return;
+        }
+
+        current_path = current_path.substring(0, current_path.lastIndexOf("/"));
+        refresh();
     }
 
     private void setupUI() {
@@ -107,7 +116,12 @@ public class ManageJavaActivity extends Activity {
         noteNoFiles.setText("No files");
 
         Helper.applyRippleToToolbarView(back);
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        back.setOnClickListener(new View.OnClickListener() {
+	    @Override
+	    public void onClick(View v) {
+	        super.onBackPressed();
+	    }
+	});
         title.setText("Java Manager");
 
         loadFile.setVisibility(View.VISIBLE);
@@ -176,7 +190,7 @@ public class ManageJavaActivity extends Activity {
                             return;
                     }
                     if (newFileContent.startsWith("package ;")) {
-                            newFileContent = newFileContent.replaceFirst("package ;", "//no package");
+                        newFileContent = newFileContent.replaceFirst("package ;", "//no package");
                     }
 
                     FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
@@ -210,19 +224,29 @@ public class ManageJavaActivity extends Activity {
                 String filename = Uri.parse(path).getLastPathSegment();
                 String fileContent = FileUtil.readFile(path);
 
-                if (fileContent.contains("package ")) {
-                    int fileContentPackageDeclarationIndex = fileContent.indexOf("package ");
-                    String fileContentWithoutPackageDeclaration =
-                            fileContent.substring(fileContentPackageDeclarationIndex);
-
-                    String substring = fileContent.substring(fileContentPackageDeclarationIndex,
-                            fileContentWithoutPackageDeclaration.indexOf(";"));
-                    FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
-                            fileContent.replace(substring, "package " + getCurrentPkgName()));
-                    refresh();
-                } else {
-                    SketchwareUtil.toastError("File " + filename + " is not a valid Java file");
-                }
+                if (fileContent.startsWith("package ")) {
+		    String substring = fileContent.substring(0, fileContent.indexOf(";") + 1);
+		    if (getCurrentPkgName().equals("")) {
+			FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
+			    fileContent.replaceFirst(substring, "//no package"));
+		    } else {
+			FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
+			    fileContent.replaceFirst(substring, "package " + getCurrentPkgName() + ";"));
+		    }
+		    refresh();
+		} else {
+		    if (fileContent.startsWith("//no package")) {
+			if (getCurrentPkgName().equals("")) {
+			    FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(), fileContent);
+			} else {
+			    FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
+			        fileContent.replaceFirst("//no package", "package " + getCurrentPkgName() + ";"));
+			}
+		        refresh();
+		    } else {
+			SketchwareUtil.toastError("File " + filename + " is not a valid Java file");
+		    }
+		}
             }
         });
 
@@ -302,7 +326,7 @@ public class ManageJavaActivity extends Activity {
     	boolean isFolder = adapter.isFolder(position);
         boolean isMainDir = fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/").startsWith(adapter.getItem(position).concat("/"));
         if (isFolder && isMainDir) {
-            SketchwareUtil.toast("Can't delete Main Folder!");
+            SketchwareUtil.toastError("Can't delete Main Folder!");
             return;
         }
         final boolean isInManifest = frc.getJavaManifestList().contains(adapter.getFullName(position));
@@ -327,19 +351,14 @@ public class ManageJavaActivity extends Activity {
     }
 
     private void refresh() {
-        String pathJava = "";
-    	if (!FileUtil.isExistFile(fpu.getPathJava(sc_id).concat("/".concat(getIntent().getStringExtra("pkgName").replace(".", "/"))))) {
-            pathJava = fpu.getPathJava(sc_id);
-            String concat = pathJava.concat("/".concat(getIntent().getStringExtra("pkgName").replace(".", "/")));
-            FileUtil.makeDir(concat);
-            for (File file : new File(pathJava).listFiles()) {
-                String absolutePath = file.getAbsolutePath();
-                String name = file.getName();
-                String concat2 = concat.concat("/").concat(name);
-                if (!getIntent().getStringExtra("pkgName").startsWith(name.concat("."))) {
-                    FileUtil.renameFile(absolutePath, concat2);
-                }
-            }
+        String javaPath = fpu.getPathJava(sc_id);
+	String pkgPath = getIntent().getStringExtra("pkgName").replace(".", "/");
+	String javaPkgPath = javaPath.concat("/".concat(pkgPath));
+    	if (!FileUtil.isExistFile(javaPkgPath)) {
+	    String tPath = javaPath.substring(0, javaPath.lastIndexOf("/"));
+	    FileUtil.renameFile(javaPath, tPath.concat("/.temp"));
+            FileUtil.makeDir(javaPkgPath);
+            FileUtil.renameFile(tPath.concat("/.temp"), javaPkgPath);
             refresh();
         }
 
@@ -351,59 +370,6 @@ public class ManageJavaActivity extends Activity {
         currentTree.clear();
         FileUtil.listDir(current_path, currentTree);
         currentTree.add(0, "..");
-        pathJava = current_path;
-        if (pathJava.equals(fpu.getPathJava(sc_id).concat("/".concat(getIntent().getStringExtra("pkgName").replace(".", "/"))))) {
-            pathJava = FileUtil.getExternalStorageDir().concat("/.sketchware/mysc/".concat(sc_id.concat("/app/src/main/java/")));
-            if (FileUtil.isExistFile(pathJava)) {
-                String concat3 = fpu.getPathJavaM(sc_id).concat("/");
-                String concat4 = fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/");
-                name = pathJava.concat(getIntent().getStringExtra("pkgName").replace(".", "/").concat("/"));
-                pathJava = "";
-                for (int i = 0; i < 8; i++) {
-                    if (i == 0) {
-                        pathJava = "BluetoothConnect.java";
-                    }
-                    if (i == 1) {
-                        pathJava = "BluetoothController.java";
-                    }
-                    if (i == 2) {
-                        pathJava = "DebugActivity.java";
-                    }
-                    if (i == 3) {
-                        pathJava = "FileUtil.java";
-                    }
-                    if (i == 4) {
-                        pathJava = "RequestNetwork.java";
-                    }
-                    if (i == 5) {
-                        pathJava = "RequestNetworkController.java";
-                    }
-                    if (i == 6) {
-                        pathJava = "SketchApplication.java";
-                    }
-                    if (i == 7) {
-                        pathJava = "SketchwareUtil.java";
-                    }
-                    if (FileUtil.isExistFile(concat4.concat(pathJava))) {
-                        if (FileUtil.isFileEqual(concat4.concat(pathJava), name.concat(pathJava))) {
-                            FileUtil.renameFile(concat4.concat(pathJava), concat3.concat(pathJava));
-                            if (currentTree.indexOf(concat4.concat(pathJava)) != -1) {
-                                currentTree.remove(currentTree.indexOf(concat4.concat(pathJava)));
-                            }
-                            currentTree.add(concat3.concat(pathJava));
-                        }
-                    } else if (!FileUtil.isExistFile(concat3.concat(pathJava))) {
-                        FileUtil.writeFile(concat3.concat(pathJava), FileUtil.readFile(name.concat(pathJava)));
-                        currentTree.add(concat3.concat(pathJava));
-                    } else if (FileUtil.isFileEqual(concat3.concat(pathJava), name.concat(pathJava))) {
-                        currentTree.add(concat3.concat(pathJava));
-                    } else {
-                        FileUtil.renameFile(concat3.concat(pathJava), concat4.concat(pathJava));
-                        currentTree.add(concat4.concat(pathJava));
-                    }
-                }
-            }
-        }
         Helper.sortPaths(currentTree);
 
         adapter = new MyAdapter();
