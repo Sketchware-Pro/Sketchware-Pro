@@ -211,7 +211,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         o = findViewById(Resources.id.left_drawer);
         m = findViewById(Resources.id.drawer_layout);
         n = new l(this, m, Resources.string.app_name, Resources.string.app_name);
-        m.setDrawerListener(n);
+        m.a((DrawerLayout.c) n);
         d().a("");
         p = findViewById(Resources.id.viewpager);
         p.setOffscreenPageLimit(2);
@@ -261,7 +261,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                     @Override
                     public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
-                        new BackupRestoreManager(MainActivity.this).doRestore(path, true);
+                        new BackupRestoreManager(MainActivity.this, y).doRestore(path, true);
                     }
                 }).execute(data);
             }
