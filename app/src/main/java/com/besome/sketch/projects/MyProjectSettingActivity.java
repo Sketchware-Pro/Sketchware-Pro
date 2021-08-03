@@ -27,7 +27,6 @@ import androidx.core.content.FileProvider;
 
 import com.android.sdklib.internal.avd.AvdManager;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.flexbox.BuildConfig;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.Resources;
 
@@ -397,7 +396,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 verCode = "1";
             }
             if (verName == null || verName.isEmpty()) {
-                verName = BuildConfig.VERSION_NAME;
+                verName = "1.0";
             }
             Q = a(verCode, 1);
             f(verName);
