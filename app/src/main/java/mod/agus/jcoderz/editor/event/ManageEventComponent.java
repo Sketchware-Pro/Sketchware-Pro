@@ -6,45 +6,42 @@ public class ManageEventComponent {
 
     public static String tabBreak = "\r\n";
 
-    public static String a(String componentId, String str2, String componentName) {
+    public static String a(String componentId, String previousFields, String componentName) {
         switch (componentId) {
             case "Videos":
-                return str2 + tabBreak
+                return previousFields + tabBreak
                         + "private File file_" + componentName + ";";
 
             case "FirebaseCloudMessage":
-                return str2 + tabBreak
+                return previousFields + tabBreak
                         + "private OnCompleteListener " + componentName + "_onCompleteListener;";
 
             case "com.facebook.ads.InterstitialAd":
-                return str2 + tabBreak
+                return previousFields + tabBreak
                         + "private InterstitialAdListener " + componentName + "_InterstitialAdListener;";
 
-            case "FirebaseAuth":
-                return str2 + tabBreak
-                        + "private OnCompleteListener<Void> " + componentName + "_updateEmailListener;" + tabBreak
-                        + "private OnCompleteListener<Void> " + componentName + "_updatePasswordListener;" + tabBreak
-                        + "private OnCompleteListener<Void> " + componentName + "_emailVerificationSentListener;" + tabBreak
-                        + "private OnCompleteListener<Void> " + componentName + "_deleteUserListener;" + tabBreak
-                        + "private OnCompleteListener<Void> " + componentName + "_updateProfileListener;" + tabBreak
-                        + "private OnCompleteListener<AuthResult> " + componentName + "_phoneAuthListener;" + tabBreak
-                        + "private OnCompleteListener<AuthResult> " + componentName + "_googleSignInListener;";
-
             case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
-                return str2 + tabBreak
+                return previousFields + tabBreak
                         + "private PhoneAuthProvider.ForceResendingToken " + componentName + "_resendToken;";
 
             case "DynamicLink":
-                return str2 + tabBreak
+                return previousFields + tabBreak
                         + "private OnSuccessListener " + componentName + "_onSuccessLink;" + tabBreak
                         + "private OnFailureListener " + componentName + "_onFailureLink;";
 
             case "com.facebook.ads.AdView":
-                return str2 + tabBreak
+                return previousFields + tabBreak
                         + "private AdListener " + componentName + "_AdListener;";
 
+            case "RewardedVideoAd":
+                // Shouldn't it be "private RewardedVideoAdListener _"?
+                return previousFields + "\r\nprivate RewardedVideoAdListener  " + componentName + "_listener;";
+
+            case "TimePickerDialog":
+                return previousFields + "\r\nprivate TimePickerDialog.OnTimeSetListener " + componentName + "_listener;";
+
             default:
-                return ComponentsHandler.extraVar(componentId, str2, componentName);
+                return ComponentsHandler.extraVar(componentId, previousFields, componentName);
         }
     }
 

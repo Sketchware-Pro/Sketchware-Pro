@@ -654,7 +654,9 @@ public class Lx {
                 fieldDeclaration = "";
         }
 
-        if (!componentNameId.equals("include") && !componentNameId.equals("#")) {
+        if (componentNameId.equals("include") || componentNameId.equals("#")) {
+            fieldDeclaration = "";
+        } else {
             String initializer = a(componentNameId, componentName, var3);
             String builtInType = mq.e(componentNameId);
             if (initializer.length() <= 0) {
@@ -678,9 +680,17 @@ public class Lx {
                     break;
 
                 case "FirebaseAuth":
-                    fieldDeclaration += "\r\nprivate OnCompleteListener<AuthResult> _" + componentName + "_create_user_listener;\r\n";
-                    fieldDeclaration += "private OnCompleteListener<AuthResult> _" + componentName + "_sign_in_listener;\r\n";
-                    fieldDeclaration += "private OnCompleteListener<Void> _" + componentName + "_reset_password_listener;";
+                    fieldDeclaration += "\r\nprivate OnCompleteListener<AuthResult> _" + componentName + "_create_user_listener;\r\n" +
+                            "private OnCompleteListener<AuthResult> _" + componentName + "_sign_in_listener;\r\n" +
+                            "private OnCompleteListener<Void> _" + componentName + "_reset_password_listener;\r\n" +
+                            // Fields/Events added by Agus
+                            "private OnCompleteListener<Void> " + componentName + "_updateEmailListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_updatePasswordListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_emailVerificationSentListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_deleteUserListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_updateProfileListener;\r\n" +
+                            "private OnCompleteListener<AuthResult> " + componentName + "_phoneAuthListener;\r\n" +
+                            "private OnCompleteListener<AuthResult> " + componentName + "_googleSignInListener;\r\n";
                     break;
 
                 case "InterstitialAd":
@@ -688,12 +698,16 @@ public class Lx {
                     break;
 
                 case "FirebaseStorage":
-                    fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + componentName + "_upload_success_listener;\r\n";
-                    fieldDeclaration += "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + componentName + "_download_success_listener;\r\n";
-                    fieldDeclaration += "private OnSuccessListener _" + componentName + "_delete_success_listener;\r\n";
-                    fieldDeclaration += "private OnProgressListener _" + componentName + "_upload_progress_listener;\r\n";
-                    fieldDeclaration += "private OnProgressListener _" + componentName + "_download_progress_listener;\r\n";
-                    fieldDeclaration += "private OnFailureListener _" + componentName + "_failure_listener;";
+                    fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + componentName + "_upload_success_listener;\r\n" +
+                            "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + componentName + "_download_success_listener;\r\n" +
+                            "private OnSuccessListener _" + componentName + "_delete_success_listener;\r\n" +
+                            "private OnProgressListener _" + componentName + "_upload_progress_listener;\r\n" +
+                            "private OnProgressListener _" + componentName + "_download_progress_listener;\r\n" +
+                            "private OnFailureListener _" + componentName + "_failure_listener;\r\n";
+                    break;
+
+                case "Camera":
+                    fieldDeclaration += "\r\nprivate File _file_" + componentName + ";";
                     break;
 
                 case "RequestNetwork":
@@ -708,33 +722,21 @@ public class Lx {
                     fieldDeclaration += "\r\nprivate LocationListener _" + componentName + "_location_listener;";
                     break;
 
-                case "Camera":
-                    fieldDeclaration += "\r\nprivate File _file_" + componentName + ";";
-                    break;
-
                 case "MapView":
                     fieldDeclaration += "\r\nprivate GoogleMapController _" + componentName + "_controller;";
-                    break;
-
-                case "RewardedVideoAd":
-                    // Shouldn't it be "private RewardedVideoAdListener _"?
-                    fieldDeclaration += "\r\nprivate RewardedVideoAdListener  " + componentName + "_listener;";
-                    break;
-
-                case "TimePickerDialog":
-                    fieldDeclaration += "\r\nprivate TimePickerDialog.OnTimeSetListener " + componentName + "_listener;";
                     break;
 
                 default:
                     fieldDeclaration = ManageEventComponent.a(componentNameId, fieldDeclaration, componentName);
             }
-        } else {
-            fieldDeclaration = "";
         }
 
         return fieldDeclaration;
     }
 
+    /**
+     * @return Code of a More Block
+     */
     public static String a(String var0, String var1, String var2) {
         var0 = "public " +
                 ReturnMoreblockManager.getMbTypeCode(var0) +
@@ -833,7 +835,7 @@ public class Lx {
     }
 
     /**
-     * @return Code of an adapter for a List View
+     * @return Code of an adapter for a ListView
      */
     public static String a(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
         String className = a(widgetName);
@@ -2461,25 +2463,18 @@ public class Lx {
                 "    }\r\n" +
                 "\r\n" +
                 "    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {\r\n" +
-                "        Cursor cursor = null;\r\n" +
-                "\r\n" +
                 "        final String column = MediaStore.Images.Media.DATA;\r\n" +
                 "        final String[] projection = {\r\n" +
                 "                column\r\n" +
                 "        };\r\n" +
                 "\r\n" +
                 "        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null)) {\r\n" +
-                "            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);\r\n" +
                 "            if (cursor != null && cursor.moveToFirst()) {\r\n" +
                 "                final int column_index = cursor.getColumnIndexOrThrow(column);\r\n" +
                 "                return cursor.getString(column_index);\r\n" +
                 "            }\r\n" +
                 "        } catch (Exception e) {\r\n" +
                 "\r\n" +
-                "        } finally {\r\n" +
-                "            if (cursor != null) {\r\n" +
-                "                cursor.close();\r\n" +
-                "            }\r\n" +
                 "        }\r\n" +
                 "        return null;\r\n" +
                 "    }\r\n" +
