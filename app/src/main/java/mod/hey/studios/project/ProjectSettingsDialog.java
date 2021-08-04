@@ -3,20 +3,20 @@ package mod.hey.studios.project;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ScrollView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.Resources;
 
+import a.a.a.aB;
+import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class ProjectSettingsDialog {
@@ -30,87 +30,78 @@ public class ProjectSettingsDialog {
     }
 
     public void show() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        aB dialog = new aB(activity);
+        dialog.a(Resources.drawable.services_48);
+        dialog.b("Project Configuration");
 
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View view = inflater.inflate(Resources.layout.project_config_layout, null);
+        ScrollView preferenceScroller = new ScrollView(dialog.getContext());
+        {
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            preferenceScroller.setLayoutParams(layoutParams);
+        }
 
+        LinearLayout preferenceContainer = new LinearLayout(dialog.getContext());
+        {
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            preferenceContainer.setLayoutParams(layoutParams);
+            preferenceContainer.setOrientation(LinearLayout.VERTICAL);
+        }
 
-        final TextView text_cancel = view.findViewById(Resources.id.text_cancel);
-        final TextView text_save = view.findViewById(Resources.id.text_save);
-
-        final LinearLayout prefs = view.findViewById(Resources.id.project_config_pref_layout);
-
-        int numberType = InputType.TYPE_CLASS_NUMBER;
-
-        EditText et_minsdk = addInputPref(
+        EditText minimumSdkVersion = addInputPref(
                 ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
                 "21",
                 "Minimum SDK version",
-                numberType, prefs);
+                InputType.TYPE_CLASS_NUMBER,
+                preferenceContainer);
 
-        EditText et_targetsdk = addInputPref(
+        EditText targetSdkVersion = addInputPref(
                 ProjectSettings.SETTING_TARGET_SDK_VERSION,
                 "28",
                 "Target SDK version",
-                numberType,
-                prefs);
+                InputType.TYPE_CLASS_NUMBER,
+                preferenceContainer);
 
-        EditText et_app_class = addInputPref(
+        EditText applicationClassName = addInputPref(
                 ProjectSettings.SETTING_APPLICATION_CLASS,
                 ".SketchApplication",
                 "Application class name",
                 InputType.TYPE_CLASS_TEXT,
-                prefs);
+                preferenceContainer);
 
-        CheckBox cb_oldmethods = addTogglePref(
+        CheckBox removeOldMethods = addTogglePref(
                 ProjectSettings.SETTING_DISABLE_OLD_METHODS,
                 false,
                 "Remove old deprecated methods in files, like showMessage, getDip, etc.",
-                prefs);
+                preferenceContainer);
 
-        CheckBox cb_largeheap = addTogglePref(
-                ProjectSettings.SETTING_DISABLE_LARGE_HEAP,
-                false,
-                "Disable large heap for App",
-                prefs);
-
-        CheckBox cb_appthemeparent = addTogglePref(
+        CheckBox useNewMaterialComponentsAppTheme = addTogglePref(
                 ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                 false,
                 "Use new MaterialComponents AppTheme (will replace e.g. Button with MaterialButton, be careful!)",
-                prefs);
+                preferenceContainer);
 
-        // hmm, seem interesting!
+        preferenceScroller.addView(preferenceContainer);
+        dialog.a(preferenceScroller);
 
-        //EditText et_java_comp
-
-        //CheckBox cb_ovrrd = addTogglePref("override_src_files", false, "Override existing Java/Res files with your files in case they co-exist. This option is especially useful if you want to edit a file that Sketchware generates automatically.", prefs);
-
-        //CheckBox cb_block_opt = addTogglePref("block_opt", false, "Apply extra block optimization methods in logic editor", prefs);
-
-        final View[] pref_views = {
-                et_minsdk,
-                et_targetsdk,
-                et_app_class,
-                cb_oldmethods,
-                cb_largeheap,
-                cb_appthemeparent
+        final View[] preferences = {
+                minimumSdkVersion,
+                targetSdkVersion,
+                applicationClassName,
+                removeOldMethods,
+                useNewMaterialComponentsAppTheme
         };
 
-        builder.setView(view);
-
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        text_cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-
-        text_save.setOnClickListener(v -> {
-            settings.setValues(pref_views);
-
+        dialog.a(xB.b().a(activity.getApplicationContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.b(xB.b().a(activity.getApplicationContext(), Resources.string.common_word_save), v -> {
+            settings.setValues(preferences);
             dialog.dismiss();
         });
-
+        dialog.show();
     }
 
     private CheckBox addTogglePref(String key, boolean defaultState, String hint, LinearLayout layout) {
@@ -138,9 +129,6 @@ public class ProjectSettingsDialog {
                 (int) getDip(8),
                 (int) getDip(8)
         );
-		
-		/*i.setTag(0, key);
-		i.setTag(1, v);*/
 
         i.setTag(key);
 
@@ -176,8 +164,6 @@ public class ProjectSettingsDialog {
         e.setHint(hint);
         e.setHintTextColor(0xff607d8b);
         e.setText(settings.getValue(key, defaultValue));
-		/*e.setTag(0, key);
-		e.setTag(1, e.getText().toString());*/
         e.setTag(key);
         e.setInputType(inputType);
         i.addView(e);
