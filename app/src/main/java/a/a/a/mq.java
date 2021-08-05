@@ -1,18 +1,16 @@
 package a.a.a;
 
-import a.a.a.FB;
-import a.a.a.Gx;
+import java.util.ArrayList;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import dev.aldi.sayuti.editor.manage.ImportClass;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import mod.agus.jcoderz.editor.event.CustomImportEvent;
 import mod.agus.jcoderz.lib.TypeVarComponent;
 
 public class mq {
+
+    /**
+     * @return A built class info ({@link Gx} object)
+     */
     public static Gx a(String type, String typeName) {
         switch (type) {
             case "b":
@@ -147,28 +145,25 @@ public class mq {
         }
     }
 
+    /**
+     * @return A parameter class info ({@link Gx}) list
+     */
     public static ArrayList<Gx> a(String spec) {
-        ArrayList<Gx> paramClass = new ArrayList();
+        ArrayList<Gx> paramClass = new ArrayList<>();
         ArrayList<String> specList = FB.c(spec);
-        if (specList.size() <= 0) {
-            return paramClass;
-        } else {
-            Iterator it = specList.iterator();
-            while (it.hasNext()) {
-                String params = (String) it.next();
-                if (params.charAt(0) == '%' && params.length() >= 2) {
-                    String type = String.valueOf(params.charAt(1));
-                    String typeName;
-                    if (params.length() > 3) {
-                        typeName = params.substring(3);
-                    } else {
-                        typeName = "";
-                    }
-                    paramClass.add(a(type, typeName));
+        for (String params : specList) {
+            if (params.charAt(0) == '%' && params.length() >= 2) {
+                String type = String.valueOf(params.charAt(1));
+                String typeName;
+                if (params.length() > 3) {
+                    typeName = params.substring(3);
+                } else {
+                    typeName = "";
                 }
+                paramClass.add(a(type, typeName));
             }
-            return paramClass;
         }
+        return paramClass;
     }
 
     public static String b(int type) {
@@ -413,7 +408,7 @@ public class mq {
     }
 
     public static ArrayList<String> c(String name) {
-        ArrayList<String> importList = new ArrayList();
+        ArrayList<String> importList = new ArrayList<>();
         ImportClass.a(name, importList);
 
         switch (name) {
@@ -422,9 +417,6 @@ public class mq {
                 return importList;
 
             case "ListInt":
-                importList.add("java.util.ArrayList");
-                return importList;
-
             case "ListString":
                 importList.add("java.util.ArrayList");
                 return importList;
@@ -658,12 +650,11 @@ public class mq {
 
             default:
                 return importList;
-
         }
     }
 
     public static ArrayList<String> d(String listener) {
-        ArrayList<String> importList = new ArrayList();
+        ArrayList<String> importList = new ArrayList<>();
 
         switch (listener) {
             case "onClickListener":
@@ -751,7 +742,7 @@ public class mq {
 
             case "ListString":
                 return "ArrayList<String>";
-                
+
             case "ListMap":
                 return "ArrayList<HashMap<String, Object>>";
 
