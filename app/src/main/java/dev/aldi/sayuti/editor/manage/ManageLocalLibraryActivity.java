@@ -35,6 +35,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.library.LibraryDownloader;
 import mod.hey.studios.util.Helper;
+import a.a.a.bB;
 
 public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener, LibraryDownloader.OnCompleteListener {
 
@@ -49,6 +50,16 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         ImageView back = findViewById(Resources.id.ig_toolbar_back);
         TextView title = findViewById(Resources.id.tx_toolbar_title);
         ImageView import_library_icon = findViewById(Resources.id.ig_toolbar_load_file);
+        LinearLayout _parent = (LinearLayout) import_library_icon.getParent();
+        ImageView resetIc = new ImageView(ManageLocalLibraryActivity.this);       
+        resetIc.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        resetIc.setImageResource(R.drawable.ic_restore_white_24dp); //TODO: Please check if this is the correct Resource.
+
+        _parent.addView(resetIc);
+        Toolbar.LayoutParams _layoutResetIc=new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
+        _layoutResetIc.gravity=Gravity.END;
+        _layoutResetIc.setMargins(0,0,(int) getDip(4) ,0);
+        resetIc.setLayoutParams(_layoutResetIc);
 
         Helper.applyRippleToToolbarView(back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
@@ -63,6 +74,21 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         import_library_icon.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(import_library_icon);
         import_library_icon.setOnClickListener(this);
+
+        resetIc.setOnClickListener(new View.OnClickListener() {
+	 @Override
+	 public void onClick(View _view) {
+	  if (getIntent().getStringExtra("sc_id") != "system") {
+	     try{
+  	         FileUtil.writeFile(configurationFilePath, "[]");	
+		 bB.a(ManageLocalLibraryActivity.this, "Successfully reset local library selections", 0).show();
+		}catch(Exception e){
+	       	 bB.a(ManageLocalLibraryActivity.this, "Failed to reset local library selections.\nError:" + e.toString(), 0).show();
+		}
+		loadFiles();
+            }
+        }
+      });
     }
 
     @Override
@@ -133,13 +159,14 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         main_list.clear();
         project_used_libs.clear();
         lookup_list.clear();
+        if(getIntent().getStringExtra("sc_id") != "system" ) {
         if (!FileUtil.isExistFile(configurationFilePath) || FileUtil.readFile(configurationFilePath).equals("")) {
             FileUtil.writeFile(configurationFilePath, "[]");
         } else {
             project_used_libs = new Gson().fromJson(FileUtil.readFile(configurationFilePath), Helper.TYPE_MAP_LIST);
         }
-
         lookup_list = new Gson().fromJson(FileUtil.readFile(configurationFilePath), Helper.TYPE_MAP_LIST);
+        }
 
         ArrayList<String> files = new ArrayList<>();
         FileUtil.listDir(local_libs_path, files);
@@ -234,8 +261,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     }
                     project_used_libs.add(hashMap);
                 }
+                if(getIntent().getStringExtra("sc_id") != "system") {
                 FileUtil.writeFile(configurationFilePath, new Gson().toJson(project_used_libs));
-            });
+                }
+             });
 
             for (HashMap<String, Object> library : lookup_list) {
                 Object usedLibraryName = library.get("name");
