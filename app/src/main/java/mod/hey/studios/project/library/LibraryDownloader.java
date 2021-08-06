@@ -213,7 +213,7 @@ public class LibraryDownloader {
                 cm.add(new File(libs, "android.jar").getAbsolutePath());
 
                 cm.add("--classpath");
-                cm.add(new File(libs, "jdk/rt.jar").getAbsolutePath());
+                cm.add(new File(libs, "core-lambda-stubs.jar").getAbsolutePath());
 
                 cm.add("--output");
                 cm.add(new File(_path).getParentFile().getAbsolutePath());
