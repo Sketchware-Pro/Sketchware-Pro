@@ -99,7 +99,7 @@
     },
     {
       "modder_username": "Aliveness",
-      "modder_description": "Improved auto-formatting in Code Editor",
+      "modder_description": "Improved pretty-print in Code Editor, replaceable generated files feature",
       "modder_img": "https://avatars.githubusercontent.com/u/81700082",
       "isTitled": false,
       "isMainModder": false,
@@ -107,8 +107,16 @@
     },
     {
       "modder_username": "khaled",
-      "modder_description": "Improved handling of Firebase storage URL",
+      "modder_description": "Important Firebase Database and Android 11+ performance fixes",
       "modder_img": "https://avatars.githubusercontent.com/u/74397286",
+      "isTitled": false,
+      "isMainModder": false,
+      "title": null
+    },
+    {
+      "modder_username": "Zirus",
+      "modder_description": "Backup dialog design improvement",
+      "modder_img": "https://avatars.githubusercontent.com/u/70142054",
       "isTitled": false,
       "isMainModder": false,
       "title": null
