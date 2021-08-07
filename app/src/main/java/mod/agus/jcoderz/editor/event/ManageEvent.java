@@ -7,379 +7,322 @@ import mod.hilal.saif.events.EventsHandler;
 
 public class ManageEvent {
 
-    public static void a(Gx gx, ArrayList<String> arrayList) {
+    /**
+     * Used in {@link a.a.a.oq#c(Gx)} to retrieve extra Events of Components.
+     */
+    public static void a(Gx gx, ArrayList<String> events) {
         if (gx.a("RatingBar")) {
-            arrayList.add("onRatingChanged");
+            events.add("onRatingChanged");
         }
         if (gx.a("TimePicker")) {
-            arrayList.add("onTimeChanged");
+            events.add("onTimeChanged");
         }
         if (gx.a("DatePicker")) {
-            arrayList.add("onDateChanged");
+            events.add("onDateChanged");
         }
         if (gx.a("VideoView")) {
-            arrayList.add("onPrepared");
-            arrayList.add("onError");
-            arrayList.add("onCompletion");
+            events.add("onPrepared");
+            events.add("onError");
+            events.add("onCompletion");
         }
         if (gx.a("SearchView")) {
-            arrayList.add("onQueryTextSubmit");
-            arrayList.add("onQueryTextChanged");
+            events.add("onQueryTextSubmit");
+            events.add("onQueryTextChanged");
         }
         if (gx.a("ListView")) {
-            arrayList.add("onScrollChanged");
-            arrayList.add("onScrolled");
+            events.add("onScrollChanged");
+            events.add("onScrolled");
         }
         if (gx.a("RecyclerView")) {
-            arrayList.add("onBindCustomView");
-            arrayList.add("onRecyclerScrollChanged");
-            arrayList.add("onRecyclerScrolled");
+            events.add("onBindCustomView");
+            events.add("onRecyclerScrollChanged");
+            events.add("onRecyclerScrolled");
         }
         if (gx.a("GridView")) {
-            arrayList.add("onItemClicked");
-            arrayList.add("onItemLongClicked");
-            arrayList.add("onBindCustomView");
+            events.add("onItemClicked");
+            events.add("onItemLongClicked");
+            events.add("onBindCustomView");
         }
         if (gx.a("Spinner")) {
-            arrayList.add("onBindCustomView");
+            events.add("onBindCustomView");
         }
         if (gx.a("ViewPager")) {
-            arrayList.add("onBindCustomView");
-            arrayList.add("onPageScrolled");
-            arrayList.add("onPageSelected");
-            arrayList.add("onPageChanged");
+            events.add("onBindCustomView");
+            events.add("onPageScrolled");
+            events.add("onPageSelected");
+            events.add("onPageChanged");
         }
         if (gx.a("TabLayout")) {
-            arrayList.add("onTabSelected");
-            arrayList.add("onTabUnselected");
-            arrayList.add("onTabReselected");
+            events.add("onTabSelected");
+            events.add("onTabUnselected");
+            events.add("onTabReselected");
         }
         if (gx.a("BottomNavigationView")) {
-            arrayList.add("onNavigationItemSelected");
+            events.add("onNavigationItemSelected");
         }
         if (gx.a("PatternLockView")) {
-            arrayList.add("onPatternLockStarted");
-            arrayList.add("onPatternLockProgress");
-            arrayList.add("onPatternLockComplete");
-            arrayList.add("onPatternLockCleared");
+            events.add("onPatternLockStarted");
+            events.add("onPatternLockProgress");
+            events.add("onPatternLockComplete");
+            events.add("onPatternLockCleared");
         }
         if (gx.a("WaveSideBar")) {
-            arrayList.add("onLetterSelected");
+            events.add("onLetterSelected");
         }
-        EventsHandler.addEvents(gx, arrayList);
+        EventsHandler.addEvents(gx, events);
     }
 
-    public static void b(Gx gx, ArrayList<String> arrayList) {
+    /**
+     * Used in {@link a.a.a.oq#b(Gx)} to get extra listeners for Components and Widgets.
+     */
+    public static void b(Gx gx, ArrayList<String> listeners) {
         if (gx.a("RatingBar")) {
-            arrayList.add("OnRatingBarChangeListener");
+            listeners.add("OnRatingBarChangeListener");
         }
         if (gx.a("TimePicker")) {
-            arrayList.add("OnTimeChangeListener");
+            listeners.add("OnTimeChangeListener");
         }
         if (gx.a("DatePicker")) {
-            arrayList.add("OnDateChangeListener");
+            listeners.add("OnDateChangeListener");
         }
         if (gx.a("VideoView")) {
-            arrayList.add("OnPreparedListener");
-            arrayList.add("OnErrorListener");
-            arrayList.add("OnCompletionListener");
+            listeners.add("OnPreparedListener");
+            listeners.add("OnErrorListener");
+            listeners.add("OnCompletionListener");
         }
         if (gx.a("SearchView")) {
-            arrayList.add("OnQueryTextListener");
+            listeners.add("OnQueryTextListener");
         }
         if (gx.a("TimePickerDialog")) {
-            arrayList.add("OnTimeSetListener");
+            listeners.add("OnTimeSetListener");
         }
         if (gx.a("DatePickerDialog")) {
-            arrayList.add("OnDateSetListener");
+            listeners.add("OnDateSetListener");
         }
         if (gx.a("FragmentAdapter")) {
-            arrayList.add("FragmentStatePagerAdapter");
+            listeners.add("FragmentStatePagerAdapter");
         }
         if (gx.a("RewardedVideoAd")) {
-            arrayList.add("OnVideoAdListener");
+            listeners.add("OnVideoAdListener");
         }
         if (gx.a("ListView")) {
-            arrayList.add("OnScrollListener");
+            listeners.add("OnScrollListener");
         }
         if (gx.a("RecyclerView")) {
-            arrayList.add("OnRecyclerScrollListener");
+            listeners.add("OnRecyclerScrollListener");
         }
         if (gx.a("GridView")) {
-            arrayList.add("OnGridItemClickListener");
-            arrayList.add("OnGridItemLongClickListener");
+            listeners.add("OnGridItemClickListener");
+            listeners.add("OnGridItemLongClickListener");
         }
         if (gx.a("ViewPager")) {
-            arrayList.add("OnPageChangeListener");
-            arrayList.add("OnAdapterChangeListener");
+            listeners.add("OnPageChangeListener");
+            listeners.add("OnAdapterChangeListener");
         }
         if (gx.a("TabLayout")) {
-            arrayList.add("OnTabSelectedListener");
+            listeners.add("OnTabSelectedListener");
         }
         if (gx.a("BottomNavigationView")) {
-            arrayList.add("OnNavigationItemSelected");
+            listeners.add("OnNavigationItemSelected");
         }
         if (gx.a("PatternLockView")) {
-            arrayList.add("PatternLockViewListener");
+            listeners.add("PatternLockViewListener");
         }
         if (gx.a("WaveSideBar")) {
-            arrayList.add("OnLetterSelectedListener");
+            listeners.add("OnLetterSelectedListener");
         }
         if (gx.a("FirebaseAuth")) {
-            arrayList.add("authUpdateEmailComplete");
-            arrayList.add("authUpdatePasswordComplete");
-            arrayList.add("authEmailVerificationSent");
-            arrayList.add("authDeleteUserComplete");
-            arrayList.add("authsignInWithPhoneAuth");
-            arrayList.add("authUpdateProfileComplete");
-            arrayList.add("googleSignInListener");
+            listeners.add("authUpdateEmailComplete");
+            listeners.add("authUpdatePasswordComplete");
+            listeners.add("authEmailVerificationSent");
+            listeners.add("authDeleteUserComplete");
+            listeners.add("authsignInWithPhoneAuth");
+            listeners.add("authUpdateProfileComplete");
+            listeners.add("googleSignInListener");
         }
         if (gx.a("FirebasePhoneAuth")) {
-            arrayList.add("OnVerificationStateChangedListener");
+            listeners.add("OnVerificationStateChangedListener");
         }
         if (gx.a("FirebaseDynamicLink")) {
-            arrayList.add("OnSuccessListener");
-            arrayList.add("OnFailureListener");
+            listeners.add("OnSuccessListener");
+            listeners.add("OnFailureListener");
         }
         if (gx.a("FirebaseCloudMessage")) {
-            arrayList.add("OnCompleteListenerFCM");
+            listeners.add("OnCompleteListenerFCM");
         }
         if (gx.a("FBAdsBanner")) {
-            arrayList.add("FBAdsBanner_AdListener");
+            listeners.add("FBAdsBanner_AdListener");
         }
         if (gx.a("FBAdsInterstitial")) {
-            arrayList.add("FBAdsInterstitial_InterstitialAdListener");
+            listeners.add("FBAdsInterstitial_InterstitialAdListener");
         }
-        EventsHandler.addListeners(gx, arrayList);
+        EventsHandler.addListeners(gx, listeners);
     }
 
-    public static void c(String str, ArrayList<String> arrayList) {
-        switch (str.hashCode()) {
-            case -2013506289:
-                if (str.equals("OnCompletionListener")) {
-                    arrayList.add("onCompletion");
-                    return;
-                }
+    /**
+     * Used in {@link a.a.a.oq#b(String)} to get extra listeners' Events.
+     */
+    public static void c(String eventName, ArrayList<String> list) {
+        switch (eventName) {
+            case "OnCompletionListener":
+                list.add("onCompletion");
                 return;
-            case -1961315671:
-                if (str.equals("OnDateSetListener")) {
-                    arrayList.add("onDateSet");
-                    return;
-                }
+
+            case "OnDateSetListener":
+                list.add("onDateSet");
                 return;
-            case -1711602262:
-                if (str.equals("OnQueryTextListener")) {
-                    arrayList.add("onQueryTextSubmit");
-                    arrayList.add("onQueryTextChanged");
-                    return;
-                }
+
+            case "OnQueryTextListener":
+                list.add("onQueryTextSubmit");
+                list.add("onQueryTextChanged");
                 return;
-            case -1683818607:
-                if (str.equals("OnVerificationStateChangedListener")) {
-                    arrayList.add("onVerificationCompleted");
-                    arrayList.add("onVerificationFailed");
-                    arrayList.add("onCodeSent");
-                    return;
-                }
+
+            case "OnVerificationStateChangedListener":
+                list.add("onVerificationCompleted");
+                list.add("onVerificationFailed");
+                list.add("onCodeSent");
                 return;
-            case -1676288384:
-                if (str.equals("OnScrollListener")) {
-                    arrayList.add("onScrollChanged");
-                    arrayList.add("onScrolled");
-                    return;
-                }
+
+            case "OnScrollListener":
+                list.add("onScrollChanged");
+                list.add("onScrolled");
                 return;
-            case -1641400634:
-                if (str.equals("authsignInWithPhoneAuth")) {
-                    arrayList.add("signInWithPhoneAuthComplete");
-                    return;
-                }
+
+            case "authsignInWithPhoneAuth":
+                list.add("signInWithPhoneAuthComplete");
                 return;
-            case -1561524051:
-                if (str.equals("FragmentStatePagerAdapter")) {
-                    arrayList.add("onTabAdded");
-                    arrayList.add("onFragmentAdded");
-                    return;
-                }
+
+            case "FragmentStatePagerAdapter":
+                list.add("onTabAdded");
+                list.add("onFragmentAdded");
                 return;
-            case -1381186349:
-                if (str.equals("OnVideoAdListener")) {
-                    arrayList.add("onRewarded");
-                    arrayList.add("onRewardedVideoAdLoaded");
-                    arrayList.add("onRewardedVideoAdFailedToLoad");
-                    arrayList.add("onRewardedVideoAdOpened");
-                    arrayList.add("onRewardedVideoAdClosed");
-                    return;
-                }
+
+            case "OnVideoAdListener":
+                list.add("onRewarded");
+                list.add("onRewardedVideoAdLoaded");
+                list.add("onRewardedVideoAdFailedToLoad");
+                list.add("onRewardedVideoAdOpened");
+                list.add("onRewardedVideoAdClosed");
                 return;
-            case -1305971158:
-                if (str.equals("OnTimeSetListener")) {
-                    arrayList.add("onTimeSet");
-                    return;
-                }
+
+            case "OnTimeSetListener":
+                list.add("onTimeSet");
                 return;
-            case -1289633697:
-                if (str.equals("OnFailureListener")) {
-                    arrayList.add("onFailureLink");
-                    return;
-                }
+
+            case "OnFailureListener":
+                list.add("onFailureLink");
                 return;
-            case -922637403:
-                if (str.equals("authUpdatePasswordComplete")) {
-                    arrayList.add("onUpdatePasswordComplete");
-                    return;
-                }
+
+            case "authUpdatePasswordComplete":
+                list.add("onUpdatePasswordComplete");
                 return;
-            case -838515240:
-                if (str.equals("OnSuccessListener")) {
-                    arrayList.add("onSuccessLink");
-                    return;
-                }
+
+            case "OnSuccessListener":
+                list.add("onSuccessLink");
                 return;
-            case -758438236:
-                if (str.equals("OnGridItemClickListener")) {
-                    arrayList.add("onItemClicked");
-                    return;
-                }
+
+            case "OnGridItemClickListener":
+                list.add("onItemClicked");
                 return;
-            case -264740449:
-                if (str.equals("OnRecyclerScrollListener")) {
-                    arrayList.add("onRecyclerScrollChanged");
-                    arrayList.add("onRecyclerScrolled");
-                    return;
-                }
+
+            case "OnRecyclerScrollListener":
+                list.add("onRecyclerScrollChanged");
+                list.add("onRecyclerScrolled");
                 return;
-            case -237230832:
-                if (str.equals("OnTimeChangeListener")) {
-                    arrayList.add("onTimeChanged");
-                    return;
-                }
+
+            case "OnTimeChangeListener":
+                list.add("onTimeChanged");
                 return;
-            case 242988855:
-                if (str.equals("authDeleteUserComplete")) {
-                    arrayList.add("onDeleteUserComplete");
-                    return;
-                }
+
+            case "authDeleteUserComplete":
+                list.add("onDeleteUserComplete");
                 return;
-            case 261563697:
-                if (str.equals("authUpdateProfileComplete")) {
-                    arrayList.add("onUpdateProfileComplete");
-                    return;
-                }
+
+            case "authUpdateProfileComplete":
+                list.add("onUpdateProfileComplete");
                 return;
-            case 282753362:
-                if (str.equals("OnPageChangeListener")) {
-                    arrayList.add("onPageScrolled");
-                    arrayList.add("onPageSelected");
-                    arrayList.add("onPageChanged");
-                    return;
-                }
+
+            case "OnPageChangeListener":
+                list.add("onPageScrolled");
+                list.add("onPageSelected");
+                list.add("onPageChanged");
                 return;
-            case 313462557:
-                if (str.equals("OnErrorListener")) {
-                    arrayList.add("onError");
-                    return;
-                }
+
+            case "OnErrorListener":
+                list.add("onError");
                 return;
-            case 370440007:
-                if (str.equals("authEmailVerificationSent")) {
-                    arrayList.add("onEmailVerificationSent");
-                    return;
-                }
+
+            case "authEmailVerificationSent":
+                list.add("onEmailVerificationSent");
                 return;
-            case 413352932:
-                if (str.equals("authUpdateEmailComplete")) {
-                    arrayList.add("onUpdateEmailComplete");
-                    return;
-                }
+
+            case "authUpdateEmailComplete":
+                list.add("onUpdateEmailComplete");
                 return;
-            case 554934320:
-                if (str.equals("OnPreparedListener")) {
-                    arrayList.add("onPrepared");
-                    return;
-                }
+
+            case "OnPreparedListener":
+                list.add("onPrepared");
                 return;
-            case 568167393:
-                if (str.equals("OnNavigationItemSelected")) {
-                    arrayList.add("onNavigationItemSelected");
-                    return;
-                }
+
+            case "OnNavigationItemSelected":
+                list.add("onNavigationItemSelected");
                 return;
-            case 936528276:
-                if (str.equals("OnLetterSelectedListener")) {
-                    arrayList.add("onLetterSelected");
-                    return;
-                }
+
+            case "OnLetterSelectedListener":
+                list.add("onLetterSelected");
                 return;
-            case 1078577634:
-                if (str.equals("FBAdsInterstitial_InterstitialAdListener")) {
-                    arrayList.add("FBAdsInterstitial_onError");
-                    arrayList.add("FBAdsInterstitial_onAdLoaded");
-                    arrayList.add("FBAdsInterstitial_onAdClicked");
-                    arrayList.add("FBAdsInterstitial_onLoggingImpression");
-                    arrayList.add("FBAdsInterstitial_onInterstitialDisplayed");
-                    arrayList.add("FBAdsInterstitial_onInterstitialDismissed");
-                    return;
-                }
+
+            case "FBAdsInterstitial_InterstitialAdListener":
+                list.add("FBAdsInterstitial_onError");
+                list.add("FBAdsInterstitial_onAdLoaded");
+                list.add("FBAdsInterstitial_onAdClicked");
+                list.add("FBAdsInterstitial_onLoggingImpression");
+                list.add("FBAdsInterstitial_onInterstitialDisplayed");
+                list.add("FBAdsInterstitial_onInterstitialDismissed");
                 return;
-            case 1207833179:
-                if (str.equals("OnRatingBarChangeListener")) {
-                    arrayList.add("onRatingChanged");
-                    return;
-                }
+
+            case "OnRatingBarChangeListener":
+                list.add("onRatingChanged");
                 return;
-            case 1295135141:
-                if (str.equals("OnTabSelectedListener")) {
-                    arrayList.add("onTabSelected");
-                    arrayList.add("onTabUnselected");
-                    arrayList.add("onTabReselected");
-                    return;
-                }
+
+            case "OnTabSelectedListener":
+                list.add("onTabSelected");
+                list.add("onTabUnselected");
+                list.add("onTabReselected");
                 return;
-            case 1315710001:
-                if (str.equals("OnDateChangeListener")) {
-                    arrayList.add("onDateChanged");
-                    return;
-                }
+
+            case "OnDateChangeListener":
+                list.add("onDateChanged");
                 return;
-            case 1448799876:
-                if (str.equals("OnCompleteListenerFCM")) {
-                    arrayList.add("onCompleteRegister");
-                    return;
-                }
+
+            case "OnCompleteListenerFCM":
+                list.add("onCompleteRegister");
                 return;
-            case 1750173396:
-                if (str.equals("PatternLockViewListener")) {
-                    arrayList.add("onPatternLockStarted");
-                    arrayList.add("onPatternLockProgress");
-                    arrayList.add("onPatternLockComplete");
-                    arrayList.add("onPatternLockCleared");
-                    return;
-                }
+
+            case "PatternLockViewListener":
+                list.add("onPatternLockStarted");
+                list.add("onPatternLockProgress");
+                list.add("onPatternLockComplete");
+                list.add("onPatternLockCleared");
                 return;
-            case 1995891990:
-                if (str.equals("FBAdsBanner_AdListener")) {
-                    arrayList.add("FBAdsBanner_onError");
-                    arrayList.add("FBAdsBanner_onAdLoaded");
-                    arrayList.add("FBAdsBanner_onAdClicked");
-                    arrayList.add("FBAdsBanner_onLoggingImpression");
-                    return;
-                }
+
+            case "FBAdsBanner_AdListener":
+                list.add("FBAdsBanner_onError");
+                list.add("FBAdsBanner_onAdLoaded");
+                list.add("FBAdsBanner_onAdClicked");
+                list.add("FBAdsBanner_onLoggingImpression");
                 return;
-            case 2058196360:
-                if (str.equals("OnGridItemLongClickListener")) {
-                    arrayList.add("onItemLongClicked");
-                    return;
-                }
+
+            case "OnGridItemLongClickListener":
+                list.add("onItemLongClicked");
                 return;
-            case 2139489583:
-                if (str.equals("googleSignInListener")) {
-                    arrayList.add("onGoogleSignIn");
-                    return;
-                }
+
+            case "googleSignInListener":
+                list.add("onGoogleSignIn");
                 return;
+
             default:
-                EventsHandler.addEventsToListener(str, arrayList);
+                EventsHandler.addEventsToListener(eventName, list);
         }
     }
 
@@ -711,1267 +654,992 @@ public class ManageEvent {
         return EventsHandler.getIcon(str);
     }
 
-    /* JADX INFO: Can't fix incorrect switch cases order, some code will duplicate */
-    public static String e(String str) {
-        switch (str.hashCode()) {
-            case -2135028390:
-                if (str.equals("onUpdateProfileComplete")) {
-                    return "onUpdateProfileComplete";
-                }
-                return "";
-            case -2070060406:
-                if (!str.equals("FBAdsBanner_onLoggingImpression")) {
-                    return "";
-                }
+    /**
+     * @return Descriptions for Events added by Agus
+     */
+    public static String e(String eventName) {
+        switch (eventName) {
+            case "onUpdateProfileComplete":
+                return "onUpdateProfileComplete";
+
+            case "FBAdsBanner_onLoggingImpression":
+            case "FBAdsInterstitial_onLoggingImpression":
                 return "onLoggingImpression";
-            case -2026152080:
-                if (str.equals("onEmailVerificationSent")) {
-                    return "onEmailVerificationSent";
-                }
-                return "";
-            case -1927178453:
-                if (str.equals("onScrolled")) {
-                    return "onScroll";
-                }
-                return str;
-            case -1881852985:
-                if (str.equals("onDateChanged")) {
-                    return "onDateChanged";
-                }
-                return str;
-            case -1764593907:
-                if (str.equals("onRewarded")) {
-                    return "onRewarded";
-                }
-                return str;
-            case -1744369339:
-                if (str.equals("onFailureLink")) {
-                    return "onFailure";
-                }
-                return "";
-            case -1615009874:
-                if (str.equals("onDeleteUserComplete")) {
-                    return "onDeleteUserComplete";
-                }
-                return "";
-            case -1576048703:
-                if (str.equals("onNavigationItemSelected")) {
-                    return "onNavigationItemSelected";
-                }
-                return str;
-            case -1521795729:
-                if (str.equals("onRewardedVideoAdFailedToLoad")) {
-                    return "onVideoAdFailedToLoad";
-                }
-                return str;
-            case -1515385099:
-                if (str.equals("onDateSet")) {
-                    return "onDateSet";
-                }
-                return str;
-            case -1495579877:
-                if (str.equals("onCompletion")) {
-                    return "onCompletion";
-                }
-                return str;
-            case -1491459488:
-                if (str.equals("onSaveInstanceState")) {
-                    return "On activity save instance state";
-                }
-                return str;
-            case -1491259806:
-                if (str.equals("onCreateOptionsMenu")) {
-                    return "On create options menu";
-                }
-                return str;
-            case -1478332706:
-                if (str.equals("onQueryTextChanged")) {
-                    return "onQueryTextChanged";
-                }
-                return str;
-            case -1350032819:
-                if (str.equals("onUpdateEmailComplete")) {
-                    return "onUpdateEmailComplete";
-                }
-                return "";
-            case -1349867671:
-                if (str.equals("onError")) {
-                    return "onError";
-                }
-                return str;
-            case -1340743215:
-                if (str.equals("onVerificationCompleted")) {
-                    return "onVerificationCompleted";
-                }
-                return "";
-            case -1321851767:
-                if (str.equals("onRecyclerScrollChanged")) {
-                    return "onScrollStateCanged";
-                }
-                return str;
-            case -1253184269:
-                if (str.equals("onCreateContextMenu")) {
-                    return "On create context menu";
-                }
-                return str;
-            case -1186339443:
-                if (str.equals("onRestoreInstanceState")) {
-                    return "On activity restore instance state";
-                }
-                return str;
-            case -923278914:
-                if (str.equals("onContextItemSelected")) {
-                    return "On context menu selected";
-                }
-                return str;
-            case -893469302:
-                if (str.equals("onRecyclerScrolled")) {
-                    return "onScroll";
-                }
-                return str;
-            case -812638467:
-                if (str.equals("onRewardedVideoAdClosed")) {
-                    return "onVideoAdClosed";
-                }
-                return str;
-            case -789433538:
-                if (str.equals("onSuccessLink")) {
-                    return "onSuccess";
-                }
-                return "";
-            case -760958320:
-                if (str.equals("onPatternLockCleared")) {
-                    return "onPatternLockCleared";
-                }
-                return str;
-            case -589155002:
-                if (!str.equals("FBAdsInterstitial_onAdClicked")) {
-                    return "";
-                }
-                return "onAdClicked";
-            case -552637034:
-                if (str.equals("onRewardedVideoAdLoaded")) {
-                    return "onVideoAdLoaded";
-                }
-                return str;
-            case -465697286:
-                if (str.equals("onRewardedVideoAdOpened")) {
-                    return "onVideoAdOpened";
-                }
-                return str;
-            case -359766219:
-                if (str.equals("onAccountPickerCancelled")) {
-                    return "onAccountCancelled";
-                }
-                return "";
-            case -233781414:
-                if (str.equals("onPageScrolled")) {
-                    return "onPageScrolled";
-                }
-                return str;
-            case -222902665:
-                if (str.equals("onVerificationFailed")) {
-                    return "onVerificationFailed";
-                }
-                return "";
-            case -172690726:
-                if (str.equals("onGoogleSignIn")) {
-                    return "onGoogleSignIn";
-                }
-                return "";
-            case -108704388:
-                if (str.equals("onAccountPicker")) {
-                    return "onAccountPicked";
-                }
-                return "";
-            case -30415631:
-                if (str.equals("onFragmentAdded")) {
-                    return "Return Fragment";
-                }
-                return str;
-            case 22340470:
-                if (str.equals("onTimeSet")) {
-                    return "onTimeSet";
-                }
-                return str;
-            case 51638726:
-                if (str.equals("onPageChanged")) {
-                    return "onPageScrollStateChanged";
-                }
-                return str;
-            case 140823751:
-                if (str.equals("signInWithPhoneAuthComplete")) {
-                    return "signInWithPhoneAuthComplete";
-                }
-                return "";
-            case 179352223:
-                if (str.equals("FBAdsInterstitial_onInterstitialDismissed")) {
-                    return "onInterstitialDismissed";
-                }
-                return "";
-            case 230462136:
-                if (str.equals("onRatingChanged")) {
-                    return "onRatingChanged";
-                }
-                return str;
-            case 267479767:
-                if (str.equals("FBAdsInterstitial_onInterstitialDisplayed")) {
-                    return "onInterstitialDisplayed";
-                }
-                return "";
-            case 388714441:
-                if (str.equals("onPatternLockProgress")) {
-                    return "onPatternLockProgress";
-                }
-                return str;
-            case 631391277:
-                if (str.equals("onOptionsItemSelected")) {
-                    return "On options menu selected";
-                }
-                return str;
-            case 638018442:
-                if (!str.equals("FBAdsInterstitial_onLoggingImpression")) {
-                    return "";
-                }
-                return "onLoggingImpression";
-            case 780046181:
-                if (str.equals("onPatternLockStarted")) {
-                    return "onPatternLockStarted";
-                }
-                return str;
-            case 790347477:
-                if (str.equals("onPatternLockComplete")) {
-                    return "onPatternLockComplete";
-                }
-                return str;
-            case 823540209:
-                if (str.equals("onTabSelected")) {
-                    return "onTabSelected";
-                }
-                return str;
-            case 903210916:
-                if (str.equals("onTabReselected")) {
-                    return "onTabReselected";
-                }
-                return str;
-            case 948149408:
-                if (str.equals("onLetterSelected")) {
-                    return "onLetterSelected";
-                }
-                return str;
-            case 1226449418:
-                if (str.equals("onTabUnselected")) {
-                    return "onTabUnselected";
-                }
-                return str;
-            case 1359955401:
-                if (str.equals("onPageSelected")) {
-                    return "onPageSelected";
-                }
-                return str;
-            case 1424438342:
-                if (!str.equals("FBAdsBanner_onAdClicked")) {
-                    return "";
-                }
-                return "onAdClicked";
-            case 1490401084:
-                if (str.equals("onPrepared")) {
-                    return "onPrepared";
-                }
-                return str;
-            case 1530791598:
-                if (str.equals("onQueryTextSubmit")) {
-                    return "onQueryTextSubmit";
-                }
-                return str;
-            case 1585314250:
-                if (!str.equals("FBAdsInterstitial_onError")) {
-                    return "";
-                }
+
+            case "onEmailVerificationSent":
+                return "onEmailVerificationSent";
+
+            case "onScrolled":
+                return "onScroll";
+
+            case "onDateChanged":
+                return "onDateChanged";
+
+            case "onRewarded":
+                return "onRewarded";
+
+            case "onFailureLink":
+                return "onFailure";
+
+            case "onDeleteUserComplete":
+                return "onDeleteUserComplete";
+
+            case "onNavigationItemSelected":
+                return "onNavigationItemSelected";
+
+            case "onRewardedVideoAdFailedToLoad":
+                return "onVideoAdFailedToLoad";
+
+            case "onDateSet":
+                return "onDateSet";
+
+            case "onCompletion":
+                return "onCompletion";
+
+            case "onSaveInstanceState":
+                return "On activity save instance state";
+
+            case "onCreateOptionsMenu":
+                return "On create options menu";
+
+            case "onQueryTextChanged":
+                return "onQueryTextChanged";
+
+            case "onUpdateEmailComplete":
+                return "onUpdateEmailComplete";
+
+            case "onError":
                 return "onError";
-            case 1626663686:
-                if (!str.equals("FBAdsInterstitial_onAdLoaded")) {
-                    return "";
-                }
-                return "onAdLoaded";
-            case 1691618310:
-                if (!str.equals("FBAdsBanner_onAdLoaded")) {
-                    return "";
-                }
-                return "onAdLoaded";
-            case 1725593802:
-                if (!str.equals("FBAdsBanner_onError")) {
-                    return "";
-                }
+
+            case "onVerificationCompleted":
+                return "onVerificationCompleted";
+
+            case "onRecyclerScrollChanged":
+                // Nice typo, Agus
+                return "onScrollStateCanged";
+
+            case "onCreateContextMenu":
+                return "On create context menu";
+
+            case "onRestoreInstanceState":
+                return "On activity restore instance state";
+
+            case "onContextItemSelected":
+                return "On context menu selected";
+
+            case "onRecyclerScrolled":
+                return "onScroll";
+
+            case "onRewardedVideoAdClosed":
+                return "onVideoAdClosed";
+
+            case "onSuccessLink":
+                return "onSuccess";
+
+            case "onPatternLockCleared":
+                return "onPatternLockCleared";
+
+            case "FBAdsInterstitial_onAdClicked":
+                return "onAdClicked";
+
+            case "onRewardedVideoAdLoaded":
+                return "onVideoAdLoaded";
+
+            case "onRewardedVideoAdOpened":
+                return "onVideoAdOpened";
+
+            case "onAccountPickerCancelled":
+                return "onAccountCancelled";
+
+            case "onPageScrolled":
+                return "onPageScrolled";
+
+            case "onVerificationFailed":
+                return "onVerificationFailed";
+
+            case "onGoogleSignIn":
+                return "onGoogleSignIn";
+
+            case "onAccountPicker":
+                return "onAccountPicked";
+
+            case "onFragmentAdded":
+                return "Return Fragment";
+
+            case "onTimeSet":
+                return "onTimeSet";
+
+            case "onPageChanged":
+                return "onPageScrollStateChanged";
+
+            case "signInWithPhoneAuthComplete":
+                return "signInWithPhoneAuthComplete";
+
+            case "FBAdsInterstitial_onInterstitialDismissed":
+                return "onInterstitialDismissed";
+
+            case "onRatingChanged":
+                return "onRatingChanged";
+
+            case "FBAdsInterstitial_onInterstitialDisplayed":
+                return "onInterstitialDisplayed";
+
+            case "onPatternLockProgress":
+                return "onPatternLockProgress";
+
+            case "onOptionsItemSelected":
+                return "On options menu selected";
+
+            case "onPatternLockStarted":
+                return "onPatternLockStarted";
+
+            case "onPatternLockComplete":
+                return "onPatternLockComplete";
+
+            case "onTabSelected":
+                return "onTabSelected";
+
+            case "onTabReselected":
+                return "onTabReselected";
+
+            case "onLetterSelected":
+                return "onLetterSelected";
+
+            case "onTabUnselected":
+                return "onTabUnselected";
+
+            case "onPageSelected":
+                return "onPageSelected";
+
+            case "FBAdsBanner_onAdClicked":
+                return "onAdClicked";
+
+            case "onPrepared":
+                return "onPrepared";
+
+            case "onQueryTextSubmit":
+                return "onQueryTextSubmit";
+
+            case "FBAdsInterstitial_onError":
                 return "onError";
-            case 1834797418:
-                if (str.equals("onTabAdded")) {
-                    return "Return Title";
-                }
-                return str;
-            case 1887055611:
-                if (str.equals("onCompleteRegister")) {
-                    return "onComplete";
-                }
-                return "";
-            case 1901942308:
-                if (str.equals("onCodeSent")) {
-                    return "onCodeSent";
-                }
-                return "";
-            case 1921834952:
-                if (str.equals("onTimeChanged")) {
-                    return "onTimeChanged";
-                }
-                return str;
-            case 2054104968:
-                if (str.equals("onScrollChanged")) {
-                    return "onScrollStateCanged";
-                }
-                return str;
-            case 2092419228:
-                if (str.equals("onUpdatePasswordComplete")) {
-                    return "onUpdatePasswordComplete";
-                }
-                break;
-        }
-        return EventsHandler.getDesc(str);
-    }
 
-    public static String f(String str, String str2) {
-        String str3 = "";
-        switch (str.hashCode()) {
-            case -2135028390:
-                if (str.equals("onUpdateProfileComplete")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<Void> _param1) {\r\nfinal boolean _success = _param1.isSuccessful();\r\nfinal String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -2070060406:
-                if (str.equals("FBAdsBanner_onLoggingImpression")) {
-                    str3 = "@Override\r\npublic void onLoggingImpression(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -2026152080:
-                if (str.equals("onEmailVerificationSent")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<Void> _param1) {\r\nfinal boolean _success = _param1.isSuccessful();\r\nfinal String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -1927178453:
-                if (str.equals("onScrolled")) {
-                    str3 = "@Override\npublic void onScroll(AbsListView abs, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {\n%s\n}";
-                    break;
-                }
-                break;
-            case -1881852985:
-                if (str.equals("onDateChanged")) {
-                    str3 = "@Override\npublic void onDateChanged(DatePicker _datePicker, int _year, int _month, int _day) {\n%s\n}";
-                    break;
-                }
-                break;
-            case -1764593907:
-                if (str.equals("onRewarded")) {
-                    str3 = "@Override\npublic void onRewarded(RewardItem rewardItem){\nfinal int _rewardItem = rewardItem.getAmount();\n%s\n}";
-                    break;
-                }
-                break;
-            case -1744369339:
-                if (str.equals("onFailureLink")) {
-                    str3 = "@Override\r\npublic void onFailure(Exception _e) {\r\nfinal String _errorMessage = _e.getMessage();\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -1615009874:
-                if (str.equals("onDeleteUserComplete")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<Void> _param1) {\r\nfinal boolean _success = _param1.isSuccessful();\r\nfinal String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -1576048703:
-                if (str.equals("onNavigationItemSelected")) {
-                    str3 = "@Override\npublic boolean onNavigationItemSelected(MenuItem item) {\nfinal int _itemId = item.getItemId();\n%s\r\nreturn true;\n}";
-                    break;
-                }
-                break;
-            case -1521795729:
-                if (str.equals("onRewardedVideoAdFailedToLoad")) {
-                    str3 = "@Override\npublic void onRewardedVideoAdFailedToLoad(int errorCode) {\nfinal int _errorCode = errorCode;\n%s\n}";
-                    break;
-                }
-                break;
-            case -1515385099:
-                if (str.equals("onDateSet")) {
-                    str3 = "@Override\npublic void onDateSet(DatePicker _datePicker, int _year, int _month, int _day){\n%s\n}";
-                    break;
-                }
-                break;
-            case -1495579877:
-                if (str.equals("onCompletion")) {
-                    str3 = "@Override\npublic void onCompletion(MediaPlayer _mediaPlayer){\n%s\n}";
-                    break;
-                }
-                break;
-            case -1491459488:
-                if (str.equals("onSaveInstanceState")) {
-                    str3 = "@Override\nprotected void onSaveInstanceState(Bundle outState){\n%s\nsuper.onSaveInstanceState(outState);\n}";
-                    break;
-                }
-                break;
-            case -1491259806:
-                if (str.equals("onCreateOptionsMenu")) {
-                    str3 = "@Override\npublic boolean onCreateOptionsMenu(Menu menu){\n%s\nreturn super.onCreateOptionsMenu(menu);\n}";
-                    break;
-                }
-                break;
-            case -1478332706:
-                if (str.equals("onQueryTextChanged")) {
-                    str3 = "@Override\npublic boolean onQueryTextChange(String _charSeq){\n%s\nreturn true;\n}";
-                    break;
-                }
-                break;
-            case -1350032819:
-                if (str.equals("onUpdateEmailComplete")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<Void> _param1) {\r\nfinal boolean _success = _param1.isSuccessful();\r\nfinal String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -1349867671:
-                if (str.equals("onError")) {
-                    str3 = "@Override\npublic boolean onError(MediaPlayer _mediaPlayer, int _what, int _extra){\n%s\nreturn true;\n}";
-                    break;
-                }
-                break;
-            case -1340743215:
-                if (str.equals("onVerificationCompleted")) {
-                    str3 = "@Override\r\npublic void onVerificationCompleted(PhoneAuthCredential _credential) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -1321851767:
-                if (str.equals("onRecyclerScrollChanged")) {
-                    str3 = "@Override\npublic void onScrollStateChanged(RecyclerView recyclerView, int _scrollState) {\nsuper.onScrollStateChanged(recyclerView, _scrollState);\n%s\n}";
-                    break;
-                }
-                break;
-            case -1253184269:
-                if (str.equals("onCreateContextMenu")) {
-                    str3 = "@Override\npublic void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo){\n%s\nsuper.onCreateContextMenu(menu, view, menuInfo);\n}";
-                    break;
-                }
-                break;
-            case -1186339443:
-                if (str.equals("onRestoreInstanceState")) {
-                    str3 = "@Override\nprotected void onRestoreInstanceState(Bundle savedInstanceState){\n%s\nsuper.onRestoreInstanceState(savedInstanceState);\n}";
-                    break;
-                }
-                break;
-            case -923278914:
-                if (str.equals("onContextItemSelected")) {
-                    str3 = "@Override\npublic boolean onContextItemSelected(MenuItem item){\n%s\nreturn super.onContextItemSelected(item);\n}";
-                    break;
-                }
-                break;
-            case -893469302:
-                if (str.equals("onRecyclerScrolled")) {
-                    str3 = "@Override\npublic void onScrolled(RecyclerView recyclerView, int _offsetX, int _offsetY) {\nsuper.onScrolled(recyclerView, _offsetX, _offsetY);\n%s\n}";
-                    break;
-                }
-                break;
-            case -812638467:
-                if (str.equals("onRewardedVideoAdClosed")) {
-                    str3 = "@Override\npublic void onRewardedVideoAdClosed() {\n%s\n}";
-                    break;
-                }
-                break;
-            case -789433538:
-                if (str.equals("onSuccessLink")) {
-                    str3 = "@Override\r\npublic void onSuccess(PendingDynamicLinkData _pendingDynamicLinkData){\r\nfinal String _link = _pendingDynamicLinkData != null ? _pendingDynamicLinkData.getLink().toString() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -760958320:
-                if (str.equals("onPatternLockCleared")) {
-                    str3 = "@Override\npublic void onCleared() {\n%s\n}";
-                    break;
-                }
-                break;
-            case -589155002:
-                if (str.equals("FBAdsInterstitial_onAdClicked")) {
-                    str3 = "@Override\r\npublic void onAdClicked(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -552637034:
-                if (str.equals("onRewardedVideoAdLoaded")) {
-                    str3 = "@Override\npublic void onRewardedVideoAdLoaded() {\n%s\n}";
-                    break;
-                }
-                break;
-            case -465697286:
-                if (str.equals("onRewardedVideoAdOpened")) {
-                    str3 = "@Override\npublic void onRewardedVideoAdOpened() {\n%s\n}";
-                    break;
-                }
-                break;
-            case -233781414:
-                if (str.equals("onPageScrolled")) {
-                    str3 = "@Override\npublic void onPageScrolled(int _position, float _positionOffset, int _positionOffsetPixels) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -222902665:
-                if (str.equals("onVerificationFailed")) {
-                    str3 = "@Override\r\npublic void onVerificationFailed(FirebaseException e) {\r\nfinal String _exception = e.getMessage();\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -172690726:
-                if (str.equals("onGoogleSignIn")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<AuthResult> task){\r\nfinal boolean _success = task.isSuccessful();\r\nfinal String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case -30415631:
-                if (str.equals("onFragmentAdded")) {
-                    str3 = "@Override\npublic Fragment getItem(int _position) {\r\n%s\r\nreturn null;\n}";
-                    break;
-                }
-                break;
-            case 22340470:
-                if (str.equals("onTimeSet")) {
-                    str3 = "@Override\npublic void onTimeSet(TimePicker _timePicker, int _hour, int _minute){\n%s\n}";
-                    break;
-                }
-                break;
-            case 51638726:
-                if (str.equals("onPageChanged")) {
-                    str3 = "@Override\npublic void onPageScrollStateChanged(int _scrollState) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 140823751:
-                if (str.equals("signInWithPhoneAuthComplete")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<AuthResult> task){\r\nfinal boolean _success = task.isSuccessful();\r\nfinal String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 179352223:
-                if (str.equals("FBAdsInterstitial_onInterstitialDismissed")) {
-                    str3 = "@Override\r\npublic void onInterstitialDismissed(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 230462136:
-                if (str.equals("onRatingChanged")) {
-                    str3 = "@Override\npublic void onRatingChanged(RatingBar _ratingBar, float _value, boolean _fromUser){\n%s\n}";
-                    break;
-                }
-                break;
-            case 267479767:
-                if (str.equals("FBAdsInterstitial_onInterstitialDisplayed")) {
-                    str3 = "@Override\r\npublic void onInterstitialDisplayed(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 388714441:
-                if (str.equals("onPatternLockProgress")) {
-                    str3 = "@Override\npublic void onProgress(List<PatternLockView.Dot> _pattern) {\n%s\n}";
-                    break;
-                }
-                break;
-            case 631391277:
-                if (str.equals("onOptionsItemSelected")) {
-                    str3 = "@Override\n\tpublic boolean onOptionsItemSelected(MenuItem item){\nfinal int _id = item.getItemId();\nfinal String _title = (String) item.getTitle();\n%s\nreturn super.onOptionsItemSelected(item);\n}\n";
-                    break;
-                }
-                break;
-            case 638018442:
-                if (str.equals("FBAdsInterstitial_onLoggingImpression")) {
-                    str3 = "@Override\r\npublic void onLoggingImpression(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 780046181:
-                if (str.equals("onPatternLockStarted")) {
-                    str3 = "@Override\npublic void onStarted() {\n%s\n}";
-                    break;
-                }
-                break;
-            case 790347477:
-                if (str.equals("onPatternLockComplete")) {
-                    str3 = "@Override\npublic void onComplete(List<PatternLockView.Dot> _pattern) {\n%s\n}";
-                    break;
-                }
-                break;
-            case 823540209:
-                if (str.equals("onTabSelected")) {
-                    str3 = "@Override\npublic void onTabSelected(TabLayout.Tab tab) {\r\nfinal int _position = tab.getPosition();\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 903210916:
-                if (str.equals("onTabReselected")) {
-                    str3 = "@Override\npublic void onTabReselected(TabLayout.Tab tab) {\r\nfinal int _position = tab.getPosition();\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 948149408:
-                if (str.equals("onLetterSelected")) {
-                    str3 = "@Override\npublic void onLetterSelected(String _index) {\n%s\n}";
-                    break;
-                }
-                break;
-            case 1226449418:
-                if (str.equals("onTabUnselected")) {
-                    str3 = "@Override\npublic void onTabUnselected(TabLayout.Tab tab) {\r\nfinal int _position = tab.getPosition();\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1359955401:
-                if (str.equals("onPageSelected")) {
-                    str3 = "@Override\npublic void onPageSelected(int _position) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1424438342:
-                if (str.equals("FBAdsBanner_onAdClicked")) {
-                    str3 = "@Override\r\npublic void onAdClicked(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1490401084:
-                if (str.equals("onPrepared")) {
-                    str3 = "@Override\npublic void onPrepared(MediaPlayer _mediaPlayer){\n%s\n}";
-                    break;
-                }
-                break;
-            case 1530791598:
-                if (str.equals("onQueryTextSubmit")) {
-                    str3 = "@Override\npublic boolean onQueryTextSubmit(String _charSeq){\n%s\nreturn true;\n}";
-                    break;
-                }
-                break;
-            case 1585314250:
-                if (str.equals("FBAdsInterstitial_onError")) {
-                    str3 = "@Override\r\npublic void onError(Ad ad, AdError adError) {\r\nfinal String _errorMsg = adError.getErrorMessage() != null ? adError.getErrorMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1626663686:
-                if (str.equals("FBAdsInterstitial_onAdLoaded")) {
-                    str3 = "@Override\r\npublic void onAdLoaded(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1691618310:
-                if (str.equals("FBAdsBanner_onAdLoaded")) {
-                    str3 = "@Override\r\npublic void onAdLoaded(Ad ad) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1725593802:
-                if (str.equals("FBAdsBanner_onError")) {
-                    str3 = "@Override\r\npublic void onError(Ad ad, AdError adError) {\r\nfinal String _errorMsg = adError.getErrorMessage() != null ? adError.getErrorMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1834797418:
-                if (str.equals("onTabAdded")) {
-                    str3 = "@Override\npublic CharSequence getPageTitle(int _position) {\r\n%s\r\nreturn null;\n}";
-                    break;
-                }
-                break;
-            case 1887055611:
-                if (str.equals("onCompleteRegister")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<InstanceIdResult> task) {\r\nfinal boolean _success = task.isSuccessful();\r\nfinal String _token = task.getResult().getToken();\r\nfinal String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1901942308:
-                if (str.equals("onCodeSent")) {
-                    str3 = "@Override\r\npublic void onCodeSent(String _verificationId, PhoneAuthProvider.ForceResendingToken _token) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 1921834952:
-                if (str.equals("onTimeChanged")) {
-                    str3 = "@Override\npublic void onTimeChanged(TimePicker _timePicker, int _hour, int _minute) {\n%s\n}";
-                    break;
-                }
-                break;
-            case 2054104968:
-                if (str.equals("onScrollChanged")) {
-                    str3 = "@Override\npublic void onScrollStateChanged(AbsListView abs, int _scrollState) {\r\n%s\r\n}";
-                    break;
-                }
-                break;
-            case 2092419228:
-                if (str.equals("onUpdatePasswordComplete")) {
-                    str3 = "@Override\r\npublic void onComplete(Task<Void> _param1) {\r\nfinal boolean _success = _param1.isSuccessful();\r\nfinal String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : \"\";\r\n%s\r\n}";
-                    break;
-                }
-                break;
+            case "FBAdsInterstitial_onAdLoaded":
+                return "onAdLoaded";
+
+            case "FBAdsBanner_onAdLoaded":
+                return "onAdLoaded";
+
+            case "FBAdsBanner_onError":
+                return "onError";
+
+            case "onTabAdded":
+                return "Return Title";
+
+            case "onCompleteRegister":
+                return "onComplete";
+
+            case "onCodeSent":
+                return "onCodeSent";
+
+            case "onTimeChanged":
+                return "onTimeChanged";
+
+            case "onScrollChanged":
+                // Nice typo, Agus
+                return "onScrollStateCanged";
+
+            case "onUpdatePasswordComplete":
+                return "onUpdatePasswordComplete";
+
             default:
-                return EventsHandler.getEventCode(str, str2);
+                return EventsHandler.getDesc(eventName);
         }
-        return j(str3, str2);
     }
 
-    public static String g(String str, String str2, String str3) {
-        StringBuilder sb = new StringBuilder();
-        switch (str.hashCode()) {
-            case -2013506289:
-                if (str.equals("OnCompletionListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnCompletionListener(new MediaPlayer.OnCompletionListener(){\n%s\n});");
-                    break;
-                }
-                break;
-            case -1961315671:
-                if (str.equals("OnDateSetListener")) {
-                    sb.append("public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {\n@Override\npublic Dialog onCreateDialog(Bundle savedInstanceState) {\nfinal Calendar c = Calendar.getInstance();\nint year = c.get(Calendar.YEAR);\nint month = c.get(Calendar.MONTH);\nint day = c.get(Calendar.DAY_OF_MONTH);\nreturn new DatePickerDialog(getActivity(), this, year, month, day);\n}\n%s\r\n}");
-                    break;
-                }
-                break;
-            case -1711602262:
-                if (str.equals("OnQueryTextListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnQueryTextListener(new SearchView.OnQueryTextListener(){\n%s\n});");
-                    break;
-                }
-                break;
-            case -1683818607:
-                if (str.equals("OnVerificationStateChangedListener")) {
-                    sb.append(str2);
-                    sb.append(" = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case -1676288384:
-                if (str.equals("OnScrollListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnScrollListener(new AbsListView.OnScrollListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case -1641400634:
-                if (str.equals("authsignInWithPhoneAuth")) {
-                    sb.append(str2);
-                    sb.append("_phoneAuthListener = new OnCompleteListener<AuthResult>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case -1561524051:
-                if (str.equals("FragmentStatePagerAdapter")) {
-                    sb.append("public class MyFragmentAdapter extends FragmentStatePagerAdapter {\n//this method is deprecated, should migrate to viewpager2.");
-                    sb.append("\r\n");
-                    sb.append("Context context;");
-                    sb.append("\r\n");
-                    sb.append("int tabCount;");
-                    sb.append("\r\n");
-                    sb.append("\r\n");
-                    sb.append("public MyFragmentAdapter(Context context, FragmentManager fm, int tabCount) {");
-                    sb.append("\r\n");
-                    sb.append("super(fm);");
-                    sb.append("\r\n");
-                    sb.append("this.context = context;");
-                    sb.append("\r\n");
-                    sb.append("this.tabCount = tabCount;");
-                    sb.append("\r\n");
-                    sb.append("}");
-                    sb.append("\r\n");
-                    sb.append("\r\n");
-                    sb.append("@Override\npublic int getCount(){\nreturn tabCount;\n}");
-                    sb.append("\r\n");
-                    sb.append("\r\n");
-                    sb.append("%s");
-                    sb.append("\r\n");
-                    sb.append("\r\n");
-                    sb.append("}");
-                    break;
-                }
-                break;
-            case -1381186349:
-                if (str.equals("OnVideoAdListener")) {
-                    sb.append(str2);
-                    sb.append("_listener = new RewardedVideoAdListener(){\n%s\n");
-                    sb.append("@Override\npublic void onRewardedVideoAdLeftApplication() {\r\n}");
-                    sb.append("\r\n");
-                    sb.append("\r\n");
-                    sb.append("@Override\npublic void onRewardedVideoStarted() {\r\n}");
-                    sb.append("\r\n");
-                    sb.append("\r\n");
-                    sb.append("@Override\n\tpublic void onRewardedVideoCompleted() {\r\n}");
-                    sb.append("\r\n");
-                    sb.append("};");
-                    break;
-                }
-                break;
-            case -1305971158:
-                if (str.equals("OnTimeSetListener")) {
-                    sb.append(str2);
-                    sb.append("_listener = new TimePickerDialog.OnTimeSetListener(){\n%s\n};");
-                    break;
-                }
-                break;
-            case -1289633697:
-                if (str.equals("OnFailureListener")) {
-                    sb.append(str2);
-                    sb.append("_onFailureLink = new OnFailureListener() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case -922637403:
-                if (str.equals("authUpdatePasswordComplete")) {
-                    sb.append(str2);
-                    sb.append("_updatePasswordListener = new OnCompleteListener<Void>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case -838515240:
-                if (str.equals("OnSuccessListener")) {
-                    sb.append(str2);
-                    sb.append("_onSuccessLink = new OnSuccessListener<PendingDynamicLinkData>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case -758438236:
-                if (str.equals("OnGridItemClickListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnItemClickListener(new AdapterView.OnItemClickListener() {\r\n%s\r\n});");
-                    break;
-                }
-                break;
-            case -264740449:
-                if (str.equals("OnRecyclerScrollListener")) {
-                    sb.append(str2);
-                    sb.append(".addOnScrollListener(new RecyclerView.OnScrollListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case -237230832:
-                if (str.equals("OnTimeChangeListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case 242988855:
-                if (str.equals("authDeleteUserComplete")) {
-                    sb.append(str2);
-                    sb.append("_deleteUserListener = new OnCompleteListener<Void>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 261563697:
-                if (str.equals("authUpdateProfileComplete")) {
-                    sb.append(str2);
-                    sb.append("_updateProfileListener = new OnCompleteListener<Void>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 282753362:
-                if (str.equals("OnPageChangeListener")) {
-                    sb.append(str2);
-                    sb.append(".addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case 313462557:
-                if (str.equals("OnErrorListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnErrorListener(new MediaPlayer.OnErrorListener(){\n%s\n});");
-                    break;
-                }
-                break;
-            case 370440007:
-                if (str.equals("authEmailVerificationSent")) {
-                    sb.append(str2);
-                    sb.append("_emailVerificationSentListener = new OnCompleteListener<Void>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 413352932:
-                if (str.equals("authUpdateEmailComplete")) {
-                    sb.append(str2);
-                    sb.append("_updateEmailListener = new OnCompleteListener<Void>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 554934320:
-                if (str.equals("OnPreparedListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnPreparedListener(new MediaPlayer.OnPreparedListener(){\n%s\n});");
-                    break;
-                }
-                break;
-            case 568167393:
-                if (str.equals("OnNavigationItemSelected")) {
-                    sb.append(str2);
-                    sb.append(".setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case 936528276:
-                if (str.equals("OnLetterSelectedListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnLetterSelectedListener(new WaveSideBar.OnLetterSelectedListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case 1078577634:
-                if (str.equals("FBAdsInterstitial_InterstitialAdListener")) {
-                    sb.append(str2);
-                    sb.append("_InterstitialAdListener = new InterstitialAdListener(){\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 1207833179:
-                if (str.equals("OnRatingBarChangeListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){\n%s\n});");
-                    break;
-                }
-                break;
-            case 1295135141:
-                if (str.equals("OnTabSelectedListener")) {
-                    sb.append(str2);
-                    sb.append(".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\r\n%s\r\n});");
-                    break;
-                }
-                break;
-            case 1315710001:
-                if (str.equals("OnDateChangeListener")) {
-                    sb.append("Calendar _calendar = Calendar.getInstance();\n");
-                    sb.append(str2);
-                    sb.append(".init(_calendar.get(Calendar.YEAR),\n_calendar.get(Calendar.MONTH), _calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case 1448799876:
-                if (str.equals("OnCompleteListenerFCM")) {
-                    sb.append(str2);
-                    sb.append("_onCompleteListener = new OnCompleteListener<InstanceIdResult>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 1750173396:
-                if (str.equals("PatternLockViewListener")) {
-                    sb.append(str2);
-                    sb.append(".addPatternLockListener(new PatternLockViewListener() {\n%s\n});");
-                    break;
-                }
-                break;
-            case 1995891990:
-                if (str.equals("FBAdsBanner_AdListener")) {
-                    sb.append(str2);
-                    sb.append("_AdListener = new AdListener(){\r\n%s\r\n};");
-                    break;
-                }
-                break;
-            case 2058196360:
-                if (str.equals("OnGridItemLongClickListener")) {
-                    sb.append(str2);
-                    sb.append(".setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {\r\n%s\r\n});");
-                    break;
-                }
-                break;
-            case 2139489583:
-                if (str.equals("googleSignInListener")) {
-                    sb.append(str2);
-                    sb.append("_googleSignInListener = new OnCompleteListener<AuthResult>() {\r\n%s\r\n};");
-                    break;
-                }
-                break;
+    public static String f(String eventName, String eventLogic) {
+        switch (eventName) {
+            case "onUpdateProfileComplete":
+            case "onEmailVerificationSent":
+            case "onDeleteUserComplete":
+            case "onUpdateEmailComplete":
+            case "onUpdatePasswordComplete":
+                return "@Override\r\n" +
+                        "public void onComplete(Task<Void> _param1) {\r\n" +
+                        "final boolean _success = _param1.isSuccessful();\r\n" +
+                        "final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsBanner_onLoggingImpression":
+            case "FBAdsInterstitial_onLoggingImpression":
+                return "@Override\r\n" +
+                        "public void onLoggingImpression(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onScrolled":
+                return "@Override\r\n" +
+                        "public void onScroll(AbsListView abs, int _firstVisibleItem, int _visibleItemCount, int _totalItemCount) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onDateChanged":
+                return "@Override\r\n" +
+                        "public void onDateChanged(DatePicker _datePicker, int _year, int _month, int _day) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onRewarded":
+                return "@Override\r\n" +
+                        "public void onRewarded(RewardItem rewardItem) {\r\n" +
+                        "final int _rewardItem = rewardItem.getAmount();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onFailureLink":
+                return "@Override\r\n" +
+                        "public void onFailure(Exception _e) {\r\n" +
+                        "final String _errorMessage = _e.getMessage();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onNavigationItemSelected":
+                return "@Override\r\n" +
+                        "public boolean onNavigationItemSelected(MenuItem item) {\r\n" +
+                        "final int _itemId = item.getItemId();\r\n" +
+                        eventLogic + "\r\n" +
+                        "return true;\r\n" +
+                        "}";
+
+            case "onRewardedVideoAdFailedToLoad":
+                return "@Override\r\n" +
+                        "public void onRewardedVideoAdFailedToLoad(int errorCode) {\r\n" +
+                        "final int _errorCode = errorCode;\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onDateSet":
+                return "@Override\r\n" +
+                        "public void onDateSet(DatePicker _datePicker, int _year, int _month, int _day) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onCompletion":
+                return "@Override\r\n" +
+                        "public void onCompletion(MediaPlayer _mediaPlayer) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onSaveInstanceState":
+                return "@Override\r\n" +
+                        "protected void onSaveInstanceState(Bundle outState) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "super.onSaveInstanceState(outState);\r\n" +
+                        "}";
+
+            case "onCreateOptionsMenu":
+                return "@Override\r\n" +
+                        "public boolean onCreateOptionsMenu(Menu menu) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return super.onCreateOptionsMenu(menu);\r\n" +
+                        "}";
+
+            case "onQueryTextChanged":
+                return "@Override\r\n" +
+                        "public boolean onQueryTextChange(String _charSeq) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return true;\r\n" +
+                        "}";
+
+            case "onError":
+                return "@Override\r\n" +
+                        "public boolean onError(MediaPlayer _mediaPlayer, int _what, int _extra) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return true;\r\n" +
+                        "}";
+
+            case "onVerificationCompleted":
+                return "@Override\r\n" +
+                        "public void onVerificationCompleted(PhoneAuthCredential _credential) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onRecyclerScrollChanged":
+                return "@Override\r\n" +
+                        "public void onScrollStateChanged(RecyclerView recyclerView, int _scrollState) {\r\n" +
+                        "super.onScrollStateChanged(recyclerView, _scrollState);\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onCreateContextMenu":
+                return "@Override\r\n" +
+                        "public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "super.onCreateContextMenu(menu, view, menuInfo);\r\n" +
+                        "}";
+
+            case "onRestoreInstanceState":
+                return "@Override\r\n" +
+                        "protected void onRestoreInstanceState(Bundle savedInstanceState) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "super.onRestoreInstanceState(savedInstanceState);\r\n" +
+                        "}";
+
+            case "onContextItemSelected":
+                return "@Override\r\n" +
+                        "public boolean onContextItemSelected(MenuItem item) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return super.onContextItemSelected(item);\r\n" +
+                        "}";
+
+            case "onRecyclerScrolled":
+                return "@Override\r\n" +
+                        "public void onScrolled(RecyclerView recyclerView, int _offsetX, int _offsetY) {\r\n" +
+                        "super.onScrolled(recyclerView, _offsetX, _offsetY);\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onRewardedVideoAdClosed":
+                return "@Override\r\n" +
+                        "public void onRewardedVideoAdClosed() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onSuccessLink":
+                return "@Override\r\n" +
+                        "public void onSuccess(PendingDynamicLinkData _pendingDynamicLinkData) {\r\n" +
+                        "final String _link = _pendingDynamicLinkData != null ? _pendingDynamicLinkData.getLink().toString() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPatternLockCleared":
+                return "@Override\r\n" +
+                        "public void onCleared() {\r\n" +
+                        eventLogic + "\n" +
+                        "}";
+
+            case "FBAdsInterstitial_onAdClicked":
+                return "@Override\r\n" +
+                        "public void onAdClicked(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onRewardedVideoAdLoaded":
+                return "@Override\r\n" +
+                        "public void onRewardedVideoAdLoaded() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onRewardedVideoAdOpened":
+                return "@Override\r\n" +
+                        "public void onRewardedVideoAdOpened() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPageScrolled":
+                return "@Override\r\n" +
+                        "public void onPageScrolled(int _position, float _positionOffset, int _positionOffsetPixels) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onVerificationFailed":
+                return "@Override\r\n" +
+                        "public void onVerificationFailed(FirebaseException e) {\r\n" +
+                        "final String _exception = e.getMessage();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onGoogleSignIn":
+                return "@Override\r\n" +
+                        "public void onComplete(Task<AuthResult> task) {\r\n" +
+                        "final boolean _success = task.isSuccessful();\r\n" +
+                        "final String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onFragmentAdded":
+                return "@Override\r\n" +
+                        "public Fragment getItem(int _position) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return null;\r\n" +
+                        "}";
+
+            case "onTimeSet":
+                return "@Override\r\n" +
+                        "public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPageChanged":
+                return "@Override\r\n" +
+                        "public void onPageScrollStateChanged(int _scrollState) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "signInWithPhoneAuthComplete":
+                return "@Override\r\n" +
+                        "public void onComplete(Task<AuthResult> task) {\r\n" +
+                        "final boolean _success = task.isSuccessful();\r\n" +
+                        "final String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsInterstitial_onInterstitialDismissed":
+                return "@Override\r\n" +
+                        "public void onInterstitialDismissed(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onRatingChanged":
+                return "@Override\r\n" +
+                        "public void onRatingChanged(RatingBar _ratingBar, float _value, boolean _fromUser) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsInterstitial_onInterstitialDisplayed":
+                return "@Override\r\n" +
+                        "public void onInterstitialDisplayed(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPatternLockProgress":
+                return "@Override\r\n" +
+                        "public void onProgress(List<PatternLockView.Dot> _pattern) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onOptionsItemSelected":
+                return "@Override\r\n" +
+                        "public boolean onOptionsItemSelected(MenuItem item) {\r\n" +
+                        "final int _id = item.getItemId();\r\n" +
+                        "final String _title = (String) item.getTitle();\r\n" +
+                        eventLogic + "\r\n" +
+                        "return super.onOptionsItemSelected(item);\r\n" +
+                        "}";
+
+            case "onPatternLockStarted":
+                return "@Override\r\n" +
+                        "public void onStarted() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPatternLockComplete":
+                return "@Override\r\n" +
+                        "public void onComplete(List<PatternLockView.Dot> _pattern) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onTabSelected":
+                return "@Override\r\n" +
+                        "public void onTabSelected(TabLayout.Tab tab) {\r\n" +
+                        "final int _position = tab.getPosition();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onTabReselected":
+                return "@Override\r\n" +
+                        "public void onTabReselected(TabLayout.Tab tab) {\r\n" +
+                        "final int _position = tab.getPosition();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onLetterSelected":
+                return "@Override\r\n" +
+                        "public void onLetterSelected(String _index) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onTabUnselected":
+                return "@Override\r\n" +
+                        "public void onTabUnselected(TabLayout.Tab tab) {\r\n" +
+                        "final int _position = tab.getPosition();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPageSelected":
+                return "@Override\r\n" +
+                        "public void onPageSelected(int _position) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsBanner_onAdClicked":
+                return "@Override\r\n" +
+                        "public void onAdClicked(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onPrepared":
+                return "@Override\r\n" +
+                        "public void onPrepared(MediaPlayer _mediaPlayer) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onQueryTextSubmit":
+                return "@Override\r\n" +
+                        "public boolean onQueryTextSubmit(String _charSeq) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return true;\r\n" +
+                        "}";
+
+            case "FBAdsInterstitial_onError":
+                return "@Override\r\n" +
+                        "public void onError(Ad ad, AdError adError) {\r\n" +
+                        "final String _errorMsg = adError.getErrorMessage() != null ? adError.getErrorMessage() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsInterstitial_onAdLoaded":
+                return "@Override\r\n" +
+                        "public void onAdLoaded(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsBanner_onAdLoaded":
+                return "@Override\r\n" +
+                        "public void onAdLoaded(Ad ad) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "FBAdsBanner_onError":
+                return "@Override\r\n" +
+                        "public void onError(Ad ad, AdError adError) {\r\n" +
+                        "final String _errorMsg = adError.getErrorMessage() != null ? adError.getErrorMessage() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onTabAdded":
+                return "@Override\r\n" +
+                        "public CharSequence getPageTitle(int _position) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "return null;\r\n" +
+                        "}";
+
+            case "onCompleteRegister":
+                return "@Override\r\n" +
+                        "public void onComplete(Task<InstanceIdResult> task) {\r\n" +
+                        "final boolean _success = task.isSuccessful();\r\n" +
+                        "final String _token = task.getResult().getToken();\r\n" +
+                        "final String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onCodeSent":
+                return "@Override\r\n" +
+                        "public void onCodeSent(String _verificationId, PhoneAuthProvider.ForceResendingToken _token) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onTimeChanged":
+                return "@Override\r\n" +
+                        "public void onTimeChanged(TimePicker _timePicker, int _hour, int _minute) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onScrollChanged":
+                return "@Override\r\n" +
+                        "public void onScrollStateChanged(AbsListView abs, int _scrollState) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
             default:
-                return EventsHandler.getListenerCode(str, str2, str3);
+                return EventsHandler.getEventCode(eventName, eventLogic);
         }
-        return j(sb.toString(), str3);
     }
 
-    public static String h(String str) {
-        switch (str.hashCode()) {
-            case -2135028390:
-                if (str.equals("onUpdateProfileComplete")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
-            case -2026152080:
-                if (str.equals("onEmailVerificationSent")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
-            case -1927178453:
-                if (str.equals("onScrolled")) {
-                    return "%d.firstVisibleItem %d.visibleItemCount %d.totalItemCount";
-                }
-                break;
-            case -1881852985:
-                if (str.equals("onDateChanged")) {
-                    return "%d.year %d.month %d.day";
-                }
-                break;
-            case -1764593907:
-                if (str.equals("onRewarded")) {
-                    return "%d.rewardItem";
-                }
-                break;
-            case -1744369339:
-                if (str.equals("onFailureLink")) {
-                    return "%s.errorMessage";
-                }
-                break;
-            case -1615009874:
-                if (str.equals("onDeleteUserComplete")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
-            case -1576048703:
-                if (str.equals("onNavigationItemSelected")) {
-                    return "%d.itemId";
-                }
-                break;
-            case -1521795729:
-                if (str.equals("onRewardedVideoAdFailedToLoad")) {
-                    return "%d.errorCode";
-                }
-                break;
-            case -1515385099:
-                if (str.equals("onDateSet")) {
-                    return "%m.datepicker.datePicker %d.year %d.month %d.day";
-                }
-                break;
-            case -1478332706:
-                if (str.equals("onQueryTextChanged")) {
-                    return "%s.charSeq";
-                }
-                break;
-            case -1350032819:
-                if (str.equals("onUpdateEmailComplete")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
-            case -1349867671:
-                if (str.equals("onError")) {
-                    return "%d.what %d.extra";
-                }
-                break;
-            case -1340743215:
-                if (str.equals("onVerificationCompleted")) {
-                    return "%m.PhoneAuthCredential.credential";
-                }
-                break;
-            case -1321851767:
-                if (str.equals("onRecyclerScrollChanged")) {
-                    return "%d.scrollState";
-                }
-                break;
-            case -893469302:
-                if (str.equals("onRecyclerScrolled")) {
-                    return "%d.offsetX %d.offsetY";
-                }
-                break;
-            case -789433538:
-                if (str.equals("onSuccessLink")) {
-                    return "%s.link";
-                }
-                break;
-            case -233781414:
-                if (str.equals("onPageScrolled")) {
-                    return "%d.position %d.positionOffset %d.positionOffsetPixels";
-                }
-                break;
-            case -222902665:
-                if (str.equals("onVerificationFailed")) {
-                    return "%s.exception";
-                }
-                break;
-            case -172690726:
-                if (str.equals("onGoogleSignIn")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
-            case -108704388:
-                if (str.equals("onAccountPicker")) {
-                    return "%m.GoogleSignInAccount.task";
-                }
-                break;
-            case -30415631:
-                if (str.equals("onFragmentAdded")) {
-                    return "%d.position";
-                }
-                break;
-            case 22340470:
-                if (str.equals("onTimeSet")) {
-                    return "%d.hour %d.minute";
-                }
-                break;
-            case 51638726:
-                if (str.equals("onPageChanged")) {
-                    return "%d.scrollState";
-                }
-                break;
-            case 140823751:
-                if (str.equals("signInWithPhoneAuthComplete")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
-            case 230462136:
-                if (str.equals("onRatingChanged")) {
-                    return "%d.value";
-                }
-                break;
-            case 388714441:
-                if (str.equals("onPatternLockProgress")) {
-                    return "%m.listStr.pattern";
-                }
-                break;
-            case 631391277:
-                if (str.equals("onOptionsItemSelected")) {
-                    return "%d.id %s.title";
-                }
-                break;
-            case 790347477:
-                if (str.equals("onPatternLockComplete")) {
-                    return "%m.listStr.pattern";
-                }
-                break;
-            case 823540209:
-                if (str.equals("onTabSelected")) {
-                    return "%d.position";
-                }
-                break;
-            case 903210916:
-                if (str.equals("onTabReselected")) {
-                    return "%d.position";
-                }
-                break;
-            case 948149408:
-                if (str.equals("onLetterSelected")) {
-                    return "%s.index";
-                }
-                break;
-            case 1226449418:
-                if (str.equals("onTabUnselected")) {
-                    return "%d.position";
-                }
-                break;
-            case 1359955401:
-                if (str.equals("onPageSelected")) {
-                    return "%m.listMap.data %d.position";
-                }
-                break;
-            case 1530791598:
-                if (str.equals("onQueryTextSubmit")) {
-                    return "%s.charSeq";
-                }
-                break;
-            case 1585314250:
-                if (str.equals("FBAdsInterstitial_onError")) {
-                    return "%s.errorMsg";
-                }
-                break;
-            case 1725593802:
-                if (str.equals("FBAdsBanner_onError")) {
-                    return "%s.errorMsg";
-                }
-                break;
-            case 1834797418:
-                if (str.equals("onTabAdded")) {
-                    return "%d.position";
-                }
-                break;
-            case 1887055611:
-                if (str.equals("onCompleteRegister")) {
-                    return "%b.success %s.token %s.errorMessage";
-                }
-                break;
-            case 1901942308:
-                if (str.equals("onCodeSent")) {
-                    return "%s.verificationId %m.FirebasePhoneAuth.token";
-                }
-                break;
-            case 1921834952:
-                if (str.equals("onTimeChanged")) {
-                    return "%d.hour %d.minute";
-                }
-                break;
-            case 2054104968:
-                if (str.equals("onScrollChanged")) {
-                    return "%d.scrollState";
-                }
-                break;
-            case 2092419228:
-                if (str.equals("onUpdatePasswordComplete")) {
-                    return "%b.success %s.errorMessage";
-                }
-                break;
+    /**
+     * @return Code of extra listeners, used in {@link a.a.a.Lx#d(String, String, String)}
+     */
+    public static String g(String listenerName, String previousCode, String listenerLogic) {
+        switch (listenerName) {
+            case "OnCompletionListener":
+                return previousCode + ".setOnCompletionListener(new MediaPlayer.OnCompletionListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnDateSetListener":
+                return "public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {\r\n" +
+                        "@Override\r\n" +
+                        "public Dialog onCreateDialog(Bundle savedInstanceState) {\r\n" +
+                        "final Calendar c = Calendar.getInstance();\r\n" +
+                        "int year = c.get(Calendar.YEAR);\r\n" +
+                        "int month = c.get(Calendar.MONTH);\r\n" +
+                        "int day = c.get(Calendar.DAY_OF_MONTH);\r\n" +
+                        "return new DatePickerDialog(getActivity(), this, year, month, day);\r\n" +
+                        "}\r\n" +
+                        listenerLogic + "\r\n" +
+                        "}";
+
+            case "OnQueryTextListener":
+                return previousCode + ".setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n" +
+                        previousCode + "\r\n" +
+                        "});";
+
+            case "OnVerificationStateChangedListener":
+                return previousCode + " = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnScrollListener":
+                return previousCode + ".setOnScrollListener(new AbsListView.OnScrollListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "authsignInWithPhoneAuth":
+                return previousCode + "_phoneAuthListener = new OnCompleteListener<AuthResult>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "FragmentStatePagerAdapter":
+                return "public class MyFragmentAdapter extends FragmentStatePagerAdapter {\r\n" +
+                        "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
+                        "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +
+                        "Context context;\r\n" +
+                        "int tabCount;\r\n" +
+                        "\r\n" +
+                        "public MyFragmentAdapter(Context context, FragmentManager manager, int tabCount) {\r\n" +
+                        "super(manager);\r\n" +
+                        "this.context = context;\r\n" +
+                        "this.tabCount = tabCount;\r\n" +
+                        "}\r\n" +
+                        "\r\n" +
+                        "@Override\r\n" +
+                        "public int getCount() {\r\n" +
+                        "return tabCount;\r\n" +
+                        "}\r\n" +
+                        "\r\n" +
+                        listenerLogic + "\r\n" +
+                        "}";
+
+            case "OnVideoAdListener":
+                return previousCode + "_listener = new RewardedVideoAdListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "\r\n" +
+                        "@Override\r\n" +
+                        "public void onRewardedVideoAdLeftApplication() {\r\n" +
+                        "}\r\n" +
+                        "\r\n" +
+                        "@Override\r\n" +
+                        "public void onRewardedVideoStarted() {\r\n" +
+                        "}\r\n" +
+                        "\r\n" +
+                        "@Override\r\n" +
+                        "public void onRewardedVideoCompleted() {\r\n" +
+                        "}\r\n" +
+                        "};";
+
+            case "OnTimeSetListener":
+                return previousCode + "_listener = new TimePickerDialog.OnTimeSetListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnFailureListener":
+                return previousCode + "_onFailureLink = new OnFailureListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "authUpdatePasswordComplete":
+                return previousCode + "_updatePasswordListener = new OnCompleteListener<Void>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnSuccessListener":
+                return previousCode + "_onSuccessLink = new OnSuccessListener<PendingDynamicLinkData>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnGridItemClickListener":
+                return previousCode + ".setOnItemClickListener(new AdapterView.OnItemClickListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnRecyclerScrollListener":
+                return previousCode + ".addOnScrollListener(new RecyclerView.OnScrollListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnTimeChangeListener":
+                return previousCode + ".setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "authDeleteUserComplete":
+                return previousCode + "_deleteUserListener = new OnCompleteListener<Void>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "authUpdateProfileComplete":
+                return previousCode + "_updateProfileListener = new OnCompleteListener<Void>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnPageChangeListener":
+                return previousCode + ".addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnErrorListener":
+                return previousCode + ".setOnErrorListener(new MediaPlayer.OnErrorListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "authEmailVerificationSent":
+                return previousCode + "_emailVerificationSentListener = new OnCompleteListener<Void>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "authUpdateEmailComplete":
+                return previousCode + "_updateEmailListener = new OnCompleteListener<Void>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnPreparedListener":
+                return previousCode + ".setOnPreparedListener(new MediaPlayer.OnPreparedListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnNavigationItemSelected":
+                return previousCode + ".setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+            case "OnLetterSelectedListener":
+                return previousCode + ".setOnLetterSelectedListener(new WaveSideBar.OnLetterSelectedListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "FBAdsInterstitial_InterstitialAdListener":
+                return previousCode + "_InterstitialAdListener = new InterstitialAdListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnRatingBarChangeListener":
+                return previousCode + ".setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnTabSelectedListener":
+                return previousCode + ".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnDateChangeListener":
+                return "Calendar _calendar = Calendar.getInstance();\r\n" +
+                        previousCode + ".init(_calendar.get(Calendar.YEAR), _calendar.get(Calendar.MONTH), " +
+                        "_calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "OnCompleteListenerFCM":
+                return previousCode + "_onCompleteListener = new OnCompleteListener<InstanceIdResult>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "PatternLockViewListener":
+                return previousCode + ".addPatternLockListener(new PatternLockViewListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "FBAdsBanner_AdListener":
+                return previousCode + "_AdListener = new AdListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "OnGridItemLongClickListener":
+                return previousCode + ".setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "googleSignInListener":
+                return previousCode + "_googleSignInListener = new OnCompleteListener<AuthResult>() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
             default:
-                return EventsHandler.getBlocks(str);
+                return EventsHandler.getListenerCode(listenerName, previousCode, listenerLogic);
         }
-        return "";
     }
 
-    public static void h(Gx gx, ArrayList<String> arrayList) {
+    public static String h(String eventName) {
+        switch (eventName) {
+            case "onUpdateProfileComplete":
+            case "onEmailVerificationSent":
+            case "onDeleteUserComplete":
+            case "onUpdateEmailComplete":
+            case "onGoogleSignIn":
+            case "signInWithPhoneAuthComplete":
+            case "onUpdatePasswordComplete":
+                return "%b.success %s.errorMessage";
+
+            case "onScrolled":
+                return "%d.firstVisibleItem %d.visibleItemCount %d.totalItemCount";
+
+            case "onDateChanged":
+                return "%d.year %d.month %d.day";
+
+            case "onRewarded":
+                return "%d.rewardItem";
+
+            case "onFailureLink":
+                return "%s.errorMessage";
+
+            case "onNavigationItemSelected":
+                return "%d.itemId";
+
+            case "onRewardedVideoAdFailedToLoad":
+                return "%d.errorCode";
+
+            case "onDateSet":
+                return "%m.datepicker.datePicker %d.year %d.month %d.day";
+
+            case "onQueryTextChanged":
+                return "%s.charSeq";
+
+            case "onError":
+                return "%d.what %d.extra";
+
+            case "onVerificationCompleted":
+                return "%m.PhoneAuthCredential.credential";
+
+            case "onRecyclerScrollChanged":
+                return "%d.scrollState";
+
+            case "onRecyclerScrolled":
+                return "%d.offsetX %d.offsetY";
+
+            case "onSuccessLink":
+                return "%s.link";
+
+            case "onPageScrolled":
+                return "%d.position %d.positionOffset %d.positionOffsetPixels";
+
+            case "onVerificationFailed":
+                return "%s.exception";
+
+            case "onAccountPicker":
+                return "%m.GoogleSignInAccount.task";
+
+            case "onFragmentAdded":
+                return "%d.position";
+
+            case "onTimeSet":
+                return "%d.hour %d.minute";
+
+            case "onPageChanged":
+                return "%d.scrollState";
+
+            case "onRatingChanged":
+                return "%d.value";
+
+            case "onPatternLockProgress":
+                return "%m.listStr.pattern";
+
+            case "onOptionsItemSelected":
+                return "%d.id %s.title";
+
+            case "onPatternLockComplete":
+                return "%m.listStr.pattern";
+
+            case "onTabSelected":
+                return "%d.position";
+
+            case "onTabReselected":
+                return "%d.position";
+
+            case "onLetterSelected":
+                return "%s.index";
+
+            case "onTabUnselected":
+                return "%d.position";
+
+            case "onPageSelected":
+                return "%m.listMap.data %d.position";
+
+            case "onQueryTextSubmit":
+                return "%s.charSeq";
+
+            case "FBAdsInterstitial_onError":
+                return "%s.errorMsg";
+
+            case "FBAdsBanner_onError":
+                return "%s.errorMsg";
+
+            case "onTabAdded":
+                return "%d.position";
+
+            case "onCompleteRegister":
+                return "%b.success %s.token %s.errorMessage";
+
+            case "onCodeSent":
+                return "%s.verificationId %m.FirebasePhoneAuth.token";
+
+            case "onTimeChanged":
+                return "%d.hour %d.minute";
+
+            case "onScrollChanged":
+                return "%d.scrollState";
+
+            default:
+                return EventsHandler.getBlocks(eventName);
+        }
+    }
+
+    public static void h(Gx gx, ArrayList<String> list) {
         if (gx.a("FragmentAdapter")) {
-            arrayList.add("onTabAdded");
-            arrayList.add("onFragmentAdded");
+            list.add("onTabAdded");
+            list.add("onFragmentAdded");
         }
         if (gx.a("TimePickerDialog")) {
-            arrayList.add("onTimeSet");
+            list.add("onTimeSet");
         }
         if (gx.a("DatePickerDialog")) {
-            arrayList.add("onDateSet");
+            list.add("onDateSet");
         }
         if (gx.a("RewardedVideoAd")) {
-            arrayList.add("onRewarded");
-            arrayList.add("onRewardedVideoAdLoaded");
-            arrayList.add("onRewardedVideoAdFailedToLoad");
-            arrayList.add("onRewardedVideoAdOpened");
-            arrayList.add("onRewardedVideoAdClosed");
+            list.add("onRewarded");
+            list.add("onRewardedVideoAdLoaded");
+            list.add("onRewardedVideoAdFailedToLoad");
+            list.add("onRewardedVideoAdOpened");
+            list.add("onRewardedVideoAdClosed");
         }
         if (gx.a("FirebaseAuth")) {
-            arrayList.add("onUpdateEmailComplete");
-            arrayList.add("onUpdatePasswordComplete");
-            arrayList.add("onEmailVerificationSent");
-            arrayList.add("onDeleteUserComplete");
-            arrayList.add("signInWithPhoneAuthComplete");
-            arrayList.add("onUpdateProfileComplete");
-            arrayList.add("onGoogleSignIn");
+            list.add("onUpdateEmailComplete");
+            list.add("onUpdatePasswordComplete");
+            list.add("onEmailVerificationSent");
+            list.add("onDeleteUserComplete");
+            list.add("signInWithPhoneAuthComplete");
+            list.add("onUpdateProfileComplete");
+            list.add("onGoogleSignIn");
         }
         if (gx.a("FirebasePhoneAuth")) {
-            arrayList.add("onVerificationCompleted");
-            arrayList.add("onVerificationFailed");
-            arrayList.add("onCodeSent");
+            list.add("onVerificationCompleted");
+            list.add("onVerificationFailed");
+            list.add("onCodeSent");
         }
         if (gx.a("FirebaseDynamicLink")) {
-            arrayList.add("onSuccessLink");
-            arrayList.add("onFailureLink");
+            list.add("onSuccessLink");
+            list.add("onFailureLink");
         }
         if (gx.a("FirebaseCloudMessage")) {
-            arrayList.add("onCompleteRegister");
+            list.add("onCompleteRegister");
         }
         if (gx.a("FBAdsBanner")) {
-            arrayList.add("FBAdsBanner_onError");
-            arrayList.add("FBAdsBanner_onAdLoaded");
-            arrayList.add("FBAdsBanner_onAdClicked");
-            arrayList.add("FBAdsBanner_onLoggingImpression");
+            list.add("FBAdsBanner_onError");
+            list.add("FBAdsBanner_onAdLoaded");
+            list.add("FBAdsBanner_onAdClicked");
+            list.add("FBAdsBanner_onLoggingImpression");
         }
         if (gx.a("FBAdsInterstitial")) {
-            arrayList.add("FBAdsInterstitial_onError");
-            arrayList.add("FBAdsInterstitial_onAdLoaded");
-            arrayList.add("FBAdsInterstitial_onAdClicked");
-            arrayList.add("FBAdsInterstitial_onLoggingImpression");
-            arrayList.add("FBAdsInterstitial_onInterstitialDisplayed");
-            arrayList.add("FBAdsInterstitial_onInterstitialDismissed");
+            list.add("FBAdsInterstitial_onError");
+            list.add("FBAdsInterstitial_onAdLoaded");
+            list.add("FBAdsInterstitial_onAdClicked");
+            list.add("FBAdsInterstitial_onLoggingImpression");
+            list.add("FBAdsInterstitial_onInterstitialDisplayed");
+            list.add("FBAdsInterstitial_onInterstitialDismissed");
         }
         if (gx.a("FirebaseGoogleLogin")) {
-            arrayList.add("onAccountPicker");
-            arrayList.add("onAccountPickerCancelled");
+            list.add("onAccountPicker");
+            list.add("onAccountPickerCancelled");
         }
-        EventsHandler.addEvents(gx, arrayList);
+        EventsHandler.addEvents(gx, list);
     }
 
     public static String i(String str, String str2) {
@@ -2656,12 +2324,5 @@ public class ManageEvent {
                 return EventsHandler.getSpec(str, str2);
         }
         return sb.toString();
-    }
-
-    public static String j(String str, String str2) {
-        if (str.isEmpty()) {
-            return "";
-        }
-        return String.format(str, str2);
     }
 }
