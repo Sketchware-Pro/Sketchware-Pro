@@ -1,7 +1,6 @@
 package mod.jbk.build.compiler.resource;
 
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.besome.sketch.design.DesignActivity;
 
@@ -220,7 +219,7 @@ public class ResourceCompiler {
             args.add("-F");
             args.add(buildHelper.f.C);
 
-            Log.d(TAG, "Compiling resources with AAPT and these arguments: " + args);
+            LogUtil.d(TAG, "Compiling resources with AAPT and these arguments: " + args);
             if (buildHelper.j.a(args.toArray(new String[0])) != 0) {
                 throw new zy(buildHelper.j.a.toString());
             }
@@ -261,20 +260,20 @@ public class ResourceCompiler {
                 progressListener.onProgressUpdate("Compiling resources with AAPT2...");
             }
             compileBuiltInLibraryResources();
-            Log.d(TAG + ":c", "Compiling built-in library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            LogUtil.d(TAG + ":c", "Compiling built-in library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             savedTimeMillis = System.currentTimeMillis();
             compileLocalLibraryResources(outputPath);
-            Log.d(TAG + ":c", "Compiling local library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            LogUtil.d(TAG + ":c", "Compiling local library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             savedTimeMillis = System.currentTimeMillis();
             compileProjectResources(outputPath);
-            Log.d(TAG + ":c", "Compiling project generated resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            LogUtil.d(TAG + ":c", "Compiling project generated resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             savedTimeMillis = System.currentTimeMillis();
             compileImportedResources(outputPath);
-            Log.d(TAG + ":c", "Compiling project imported resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            LogUtil.d(TAG + ":c", "Compiling project imported resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
 
             savedTimeMillis = System.currentTimeMillis();
             link();
-            Log.d(TAG + ":c", "Linking resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            LogUtil.d(TAG + ":c", "Linking resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         }
 
         /**
@@ -398,13 +397,11 @@ public class ResourceCompiler {
             args.add("-o");
             args.add(buildHelper.f.C);
 
-            LogUtil.log(TAG + ":l", "Now executing: ",
-                    "Now executing (command line spread over multiple lines): ",
-                    args);
+            LogUtil.d(TAG + ":l", args.toString());
             BinaryExecutor executor = new BinaryExecutor();
             executor.setCommands(args);
             if (!executor.execute().isEmpty()) {
-                Log.e(TAG + ":l", executor.getLog());
+                LogUtil.e(TAG + ":l", executor.getLog());
                 throw new zy(executor.getLog());
             }
         }
@@ -417,11 +414,11 @@ public class ResourceCompiler {
             commands.add(buildHelper.f.w);
             commands.add("-o");
             commands.add(outputPath + File.separator + "project.zip");
-            Log.d(TAG + ":cPR", "Now executing: " + commands);
+            LogUtil.d(TAG + ":cPR", "Now executing: " + commands);
             BinaryExecutor executor = new BinaryExecutor();
             executor.setCommands(commands);
             if (!executor.execute().isEmpty()) {
-                Log.e(TAG, executor.getLog());
+                LogUtil.e(TAG, executor.getLog());
                 throw new zy(executor.getLog());
             }
         }
@@ -435,7 +432,7 @@ public class ResourceCompiler {
 
         private void compileLocalLibraryResources(String outputPath) throws zy {
             int localLibrariesCount = buildHelper.mll.getResLocalLibrary().size();
-            Log.d(TAG + ":cLLR", "About to compile " + localLibrariesCount
+            LogUtil.d(TAG + ":cLLR", "About to compile " + localLibrariesCount
                     + " local " + (localLibrariesCount == 1 ? "library" : "libraries"));
             for (String localLibraryResDirectory : buildHelper.mll.getResLocalLibrary()) {
                 File localLibraryDirectory = new File(localLibraryResDirectory).getParentFile();
@@ -448,11 +445,11 @@ public class ResourceCompiler {
                     commands.add("-o");
                     commands.add(outputPath + File.separator + localLibraryDirectory.getName() + ".zip");
 
-                    Log.d(TAG + ":cLLR", "Now executing: " + commands);
+                    LogUtil.d(TAG + ":cLLR", "Now executing: " + commands);
                     BinaryExecutor executor = new BinaryExecutor();
                     executor.setCommands(commands);
                     if (!executor.execute().isEmpty()) {
-                        Log.e(TAG, executor.getLog());
+                        LogUtil.e(TAG, executor.getLog());
                         throw new zy(executor.getLog());
                     }
                 }
@@ -476,15 +473,15 @@ public class ResourceCompiler {
                         commands.add("-o");
                         commands.add(cachedCompiledResources.getAbsolutePath());
 
-                        Log.d(TAG + ":cBILR", "Now executing: " + commands);
+                        LogUtil.d(TAG + ":cBILR", "Now executing: " + commands);
                         BinaryExecutor executor = new BinaryExecutor();
                         executor.setCommands(commands);
                         if (!executor.execute().isEmpty()) {
-                            Log.e(TAG + ":cBILR", executor.getLog());
+                            LogUtil.e(TAG + ":cBILR", executor.getLog());
                             throw new zy(executor.getLog());
                         }
                     } else {
-                        Log.d(TAG + ":cBILR", "Skipped resource recompilation for built-in library " + builtInLibrary.a());
+                        LogUtil.d(TAG + ":cBILR", "Skipped resource recompilation for built-in library " + builtInLibrary.a());
                     }
                 }
             }
@@ -496,10 +493,10 @@ public class ResourceCompiler {
                     return buildHelper.e.getPackageManager().getPackageInfo(buildHelper.e.getPackageName(), 0)
                             .lastUpdateTime > cachedCompiledResources.lastModified();
                 } catch (PackageManager.NameNotFoundException e) {
-                    Log.e(TAG + ":iBILRN", "Couldn't get package info about ourselves: " + e.getMessage(), e);
+                    LogUtil.e(TAG + ":iBILRN", "Couldn't get package info about ourselves: " + e.getMessage(), e);
                 }
             } else {
-                Log.d(TAG + ":iBILRN", "File " + cachedCompiledResources.getAbsolutePath()
+                LogUtil.d(TAG + ":iBILRN", "File " + cachedCompiledResources.getAbsolutePath()
                         + " doesn't exist, forcing compilation");
             }
             return true;
@@ -515,11 +512,11 @@ public class ResourceCompiler {
                 commands.add(buildHelper.fpu.getPathResource(buildHelper.f.b));
                 commands.add("-o");
                 commands.add(outputPath + File.separator + "project-imported.zip");
-                Log.d(TAG + ":cIR", "Now executing: " + commands);
+                LogUtil.d(TAG + ":cIR", "Now executing: " + commands);
                 BinaryExecutor executor = new BinaryExecutor();
                 executor.setCommands(commands);
                 if (!executor.execute().isEmpty()) {
-                    Log.e(TAG, executor.getLog());
+                    LogUtil.e(TAG, executor.getLog());
                     throw new zy(executor.getLog());
                 }
             }

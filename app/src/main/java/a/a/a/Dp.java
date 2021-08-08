@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.tools.r8.D8;
@@ -158,7 +157,7 @@ public class Dp {
     public void a() throws Exception {
         long savedTimeMillis = System.currentTimeMillis();
         b();
-        Log.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     public void a(iI iIVar, String str) {
@@ -166,7 +165,7 @@ public class Dp {
         try {
             signer.signZip(f.G, f.I);
         } catch (IOException | GeneralSecurityException e) {
-            Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
+            LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
     }
 
@@ -240,7 +239,7 @@ public class Dp {
                     f.I
             );
         } catch (Exception e) {
-            Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
+            LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
     }
 
@@ -280,16 +279,16 @@ public class Dp {
             try {
                 /* Not "supported"/tested out yet */
                 if (false) {
-                    Log.d(TAG, "Running R8");
+                    LogUtil.d(TAG, "Running R8");
                     R8Executor r8Executor = new R8Executor(this, buildingDialog);
                     r8Executor.preparingEnvironment();
                     r8Executor.compile();
                 }
-                Log.d(TAG, "Running D8 with these arguments: " + args);
+                LogUtil.d(TAG, "Running D8 with these arguments: " + args);
                 D8.main(args.toArray(new String[0]));
-                Log.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+                LogUtil.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
-                Log.e(TAG, "D8 error: " + e.getMessage(), e);
+                LogUtil.e(TAG, "D8 error: " + e.getMessage(), e);
                 throw e;
             }
         } else {
@@ -307,11 +306,11 @@ public class Dp {
                 args.add(f.u);
             }
             try {
-                Log.d(TAG, "Running Dx with these arguments: " + args);
+                LogUtil.d(TAG, "Running Dx with these arguments: " + args);
                 Main.main(args.toArray(new String[0]));
-                Log.d(TAG, "Dx took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+                LogUtil.d(TAG, "Dx took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
-                Log.e(TAG, "Dx error: " + e.getMessage(), e);
+                LogUtil.e(TAG, "Dx error: " + e.getMessage(), e);
                 throw e;
             }
         }
@@ -578,7 +577,7 @@ public class Dp {
 
             /* Start compiling */
             org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
-            LogUtil.log(TAG, "Running Eclipse compiler with these arguments: ", "About to log Eclipse compiler's arguments in multiple lines because of length.", args);
+            LogUtil.d(TAG, "Running Eclipse compiler with these arguments: " + args);
             main.compile(args.toArray(new String[0]));
 
             if (main.globalErrorsCount <= 0) {
@@ -587,16 +586,16 @@ public class Dp {
                     errOutputStream.close();
                     outWriter.close();
                     errWriter.close();
-                    LogUtil.log(TAG, "System.out of Eclipse compiler: ", "About to log System.out of Eclipse compiler on multiple lines because of length.", outOutputStream.getOut());
-                    LogUtil.log(TAG, "System.err of Eclipse compiler: ", "About to log System.err of Eclipse compiler on multiple lines because of length.", k.toString());
+                    LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
+                    LogUtil.d(TAG, "System.err of Eclipse compiler: " + k.toString());
                 } catch (IOException ignored) {
                 }
-                Log.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms.");
+                LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } else {
                 throw new zy(k.toString());
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            LogUtil.e(TAG, e.getMessage(), e);
             throw e;
         }
     }
@@ -719,10 +718,9 @@ public class Dp {
 
         /* Add local libraries' extra DEX files */
         dexes.addAll(mll.getExtraDexes());
-        LogUtil.log(TAG, "Will merge these " + dexes.size() + " DEX files to classes2.dex: ",
-                "Will merge these " + dexes.size() + " DEX files to classes2.dex: ", dexes);
+        LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes2.dex: " + dexes);
         dexLibraries(f.F, dexes);
-        Log.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
@@ -753,7 +751,7 @@ public class Dp {
                 j.a(d);
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            LogUtil.e(TAG, e.getMessage(), e);
             throw new By("Couldn't extract AAPT binaries! Message: " + e.getMessage());
         }
     }
@@ -868,7 +866,7 @@ public class Dp {
             zipSigner.signZip(f.G, f.H);
             return true;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
-            Log.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
+            LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
         return false;
     }
@@ -971,12 +969,9 @@ public class Dp {
             args.add("-printmapping");
             args.add(f.printmapping);
         }
-        LogUtil.log(TAG,
-                "About to run ProGuard with these arguments: ",
-                "About to log ProGuard's arguments on multiple lines because of length",
-                args);
+        LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
         ProGuard.main(args.toArray(new String[0]));
-        Log.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     public void runStringfog() {
@@ -993,7 +988,7 @@ public class Dp {
             stringFogClassInjector.doFog2ClassInDir(new File(f.u));
             KB.a(e, "stringfog/stringfog.zip", f.u);
         } catch (Exception e) {
-            Log.e("Stringfog", e.toString());
+            LogUtil.e("Stringfog", e.toString());
         }
     }
 }
