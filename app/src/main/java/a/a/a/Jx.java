@@ -83,14 +83,17 @@ public class Jx {
         }
     }
 
-    public void removeExtraImports() {
-        ArrayList<String> arrayList = new ArrayList<>();
+    /**
+     * Removes duplicate imports in {@link Jx#g}.
+     */
+    private void removeExtraImports() {
+        ArrayList<String> newImports = new ArrayList<>();
         for (String value : g) {
-            if (!arrayList.contains(value)) {
-                arrayList.add(value);
+            if (!newImports.contains(value) && !value.trim().isEmpty()) {
+                newImports.add(value);
             }
         }
-        g = arrayList;
+        g = newImports;
     }
 
     public String getLauncherActivity(String str) {
@@ -789,13 +792,22 @@ public class Jx {
         return Lx.b(replaceAll, viewBean.id, false);
     }
 
+    /**
+     * Handles the Activity's More Blocks and adds them to {@link Jx#p}.
+     */
     public final void d() {
         String javaName = this.c.getJavaName();
-        for (Pair<String, String> next : d.i(javaName)) {
-            String str = next.first + "_" + "moreBlock";
-            // Why is the result unused?
-            // this.c.hasActivityOption(4);
-            this.p.add(Lx.a(next.first, next.second, new Fx(this.c.getActivityName(), this.f, str, this.d.a(javaName, str)).a()));
+        ArrayList<Pair<String, String>> pairs = d.i(javaName);
+        for (int index = 0, pairsSize = pairs.size(); index < pairsSize; index++) {
+            Pair<String, String> next = pairs.get(index);
+            String name = next.first + "_moreBlock";
+            String code = Lx.a(next.first, next.second, new Fx(c.getActivityName(), f, name, d.a(javaName, name)).a());
+            if (index < (pairsSize - 1)) {
+                p.add(code);
+            } else {
+                // Removes unnecessary newline at end of More Block code
+                p.add(code.substring(0, code.length() - 2));
+            }
         }
     }
 
