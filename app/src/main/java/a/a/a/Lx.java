@@ -160,7 +160,7 @@ public class Lx {
             type = bean.getClassInfo().a();
         }
 
-        return "final" + type + " " + bean.id + " = _view.findViewById(R.id." + bean.id + ");";
+        return "final " + type + " " + bean.id + " = _view.findViewById(R.id." + bean.id + ");";
     }
 
     /**
