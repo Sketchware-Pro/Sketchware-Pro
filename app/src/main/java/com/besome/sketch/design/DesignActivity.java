@@ -1302,7 +1302,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     Log.e("DesignActivity$a", "OutOfMemoryError: " + error.getMessage(), error);
                     DesignActivity.this.d(error.getMessage());
                 } catch (Throwable e) {
-                    Log.e("DesignActivity$a", Log.getStackTraceString(e), e);
+                    LogUtil.e("DesignActivity$a", e.getMessage(), e);
                     DesignActivity.this.d(e.getMessage());
                 }
             }
