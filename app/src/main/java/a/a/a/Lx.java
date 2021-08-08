@@ -1410,77 +1410,41 @@ public class Lx {
         return var0;
     }
 
-    public static String b(String var0, String var1, boolean var2) {
-        StringBuilder var3 = new StringBuilder();
-        if (!var0.equals("include") && !var0.equals("#")) {
-            var3.append(var1);
-            var3.append(" = ");
-            if (var2) {
-                var3.append("_view.findViewById(R.id.");
-            } else {
-                var3.append("findViewById(R.id.");
-            }
+    /**
+     * @return Initializer of a View to be added to _initialize(Bundle)
+     */
+    public static String b(String type, String name, boolean isInFragment) {
+        String initializer = "";
 
-            var3.append(var1);
-            var3.append(");");
+        if (!type.equals("include") && !type.equals("#")) {
+            initializer = name + " = " +
+                    (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
+                    name + ");";
         }
 
-        String var4 = var3.toString();
-        String var6 = var4;
-        StringBuilder var7;
-        if (var0.equals("WebView")) {
-            var3 = new StringBuilder();
-            var3.append(var4);
-            var3.append("\r\n");
-            var6 = var3.toString();
-            var7 = new StringBuilder();
-            var7.append(var6);
-            var7.append(var1);
-            var7.append(".getSettings().setJavaScriptEnabled(true);");
-            var7.append("\r\n");
-            var7.append(var1);
-            var7.append(".getSettings().setSupportZoom(true);");
-            var6 = var7.toString();
-        }
+        switch (type) {
+            case "WebView":
+                return initializer + "\r\n" +
+                        name + ".getSettings().setJavaScriptEnabled(true);\r\n" +
+                        name + ".getSettings().setSupportZoom(true);";
 
-        var4 = var6;
-        if (var0.equals("MapView")) {
-            var7 = new StringBuilder();
-            var7.append(var6);
-            var7.append("\r\n");
-            var6 = var7.toString();
-            var7 = new StringBuilder();
-            var7.append(var6);
-            var7.append(var1);
-            var7.append(".onCreate(_savedInstanceState);");
-            var7.append("\r\n");
-            var4 = var7.toString();
-        }
+            case "MapView":
+                return initializer + "\r\n" +
+                        name + ".onCreate(_savedInstanceState);\r\n";
 
-        var6 = var4;
-        if (var0.equals("VideoView")) {
-            StringBuilder var5 = new StringBuilder();
-            var5.append(var4);
-            var5.append("\r\n");
-            var6 = var5.toString();
-            var5 = new StringBuilder();
-            var5.append(var6);
-            var5.append("MediaController ");
-            var5.append(var1);
-            var5.append("_controller = new MediaController(this);");
-            var5.append("\r\n");
-            var5.append(var1);
-            var5.append(".setMediaController(");
-            var5.append(var1);
-            var5.append("_controller);");
-            var6 = var5.toString();
-        }
+            case "VideoView":
+                String mediaControllerName = name + "_controller";
+                return initializer + "\r\n" +
+                        "MediaController " + mediaControllerName + " = new MediaController(this);\r\n" +
+                        name + ".setMediaController(" + mediaControllerName + ");";
 
-        return var6;
+            default:
+                return initializer;
+        }
     }
 
     /**
-     * @return Initializer for a component that'd appear in <code>_initialize(Bundle)</code>
+     * @return Initializer for a Component that'd appear in <code>_initialize(Bundle)</code>
      */
     public static String b(String componentNameId, String componentName, String... parameters) {
         switch (componentNameId) {
