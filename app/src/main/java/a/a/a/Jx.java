@@ -40,6 +40,10 @@ public class Jx {
      * e.g. {"com.google.firebase.FirebaseApp"}
      */
     public ArrayList<String> g = new ArrayList<>();
+    /**
+     * Fields with static initializer that added Components need,
+     * e.g. {"private Timer _timer = new Timer();"}
+     */
     public ArrayList<String> h = new ArrayList<>();
     /**
      * Fields of the currently generating class,
@@ -47,7 +51,13 @@ public class Jx {
      */
     public ArrayList<String> i = new ArrayList<>();
     public ArrayList<String> j = new ArrayList<>();
+    /**
+     * Views declared in this generated class
+     */
     public ArrayList<String> k = new ArrayList<>();
+    /**
+     * Field declarations from components. Can include static initializer, but doesn't have to.
+     */
     public ArrayList<String> l = new ArrayList<>();
     /**
      * Statements to be added to initialize(Bundle),
@@ -55,32 +65,39 @@ public class Jx {
      */
     public ArrayList<String> m = new ArrayList<>();
     public ManageLocalLibrary mll;
+    /**
+     * Component initializer lines which get added to <code>_initialize(Bundle)</code>
+     */
     public ArrayList<String> n = new ArrayList<>();
+    /**
+     * Content of <code>_initializeLogic()</code>
+     */
     public String o = "";
+    /**
+     * Code of More Blocks that have been created
+     */
     public ArrayList<String> p = new ArrayList<>();
     public ArrayList<String> q = new ArrayList<>();
+    /**
+     * (Currently) filled with request code constants for FilePicker components
+     */
     public ArrayList<String> r = new ArrayList<>();
     public Lx.a s;
-    private boolean is = false;
 
     public Jx(jq jqVar, ProjectFileBean projectFileBean, eC eCVar) {
-        this.b = jqVar.a;
-        this.f = jqVar;
-        this.c = projectFileBean;
-        this.d = eCVar;
-        this.mll = new ManageLocalLibrary(this.d.a);
-        this.settings = new ProjectSettings(this.d.a);
-        permMan = new PermissionManager(d.a, c.getJavaName());
-        sourceHandler = new SourceHandler(d.a, c.getJavaName());
+        b = jqVar.a;
+        c = projectFileBean;
+        d = eCVar;
+        f = jqVar;
+        mll = new ManageLocalLibrary(eCVar.a);
+        settings = new ProjectSettings(eCVar.a);
+        permMan = new PermissionManager(eCVar.a, projectFileBean.getJavaName());
+        sourceHandler = new SourceHandler(eCVar.a, projectFileBean.getJavaName());
     }
 
     private void extraVariables() {
-        for (String variable : sourceHandler.customVariables()) {
-            i.add(variable);
-        }
-        for (String binds : sourceHandler.viewBinds()) {
-            m.add(binds);
-        }
+        i.addAll(sourceHandler.customVariables());
+        m.addAll(sourceHandler.viewBinds());
     }
 
     /**
@@ -465,7 +482,7 @@ public class Jx {
             sb.append(a);
             sb.append(base);
         }
-        is = base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {");
+        boolean is = base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {");
         for (String value : p) {
             sb.append(a);
             sb.append(value);
@@ -635,20 +652,29 @@ public class Jx {
                 .append(a);
     }
 
-    public final void a(ArrayList<String> arrayList) {
-        if (arrayList != null && arrayList.size() > 0) {
-            for (String value : arrayList) {
+    /**
+     * Adds imports to {@link Jx#g}.
+     */
+    public final void a(ArrayList<String> imports) {
+        if (imports != null) {
+            for (String value : imports) {
                 addImport(value);
             }
         }
     }
 
-    public final String b(int i2, String str) {
-        String c2 = mq.c(i2);
-        a(mq.c(c2));
-        return Lx.a(c2, str, Lx.a.a);
+    /**
+     * @return Definition line for a Variable
+     */
+    public final String b(int variableType, String name) {
+        String variableNameId = mq.c(variableType);
+        a(mq.c(variableNameId));
+        return Lx.a(variableNameId, name, Lx.a.a);
     }
 
+    /**
+     * @see Lx#b(String, String, String...)
+     */
     public final String b(ComponentBean componentBean) {
         return Lx.b(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
     }
@@ -816,115 +842,47 @@ public class Jx {
         a(e.e());
     }
 
+    /**
+     * Adds imports for blocks used in the currently generated Activity.
+     */
     public final void f() {
         for (Map.Entry<String, ArrayList<BlockBean>> entry : d.b(c.getJavaName()).entrySet()) {
             for (BlockBean blockBean : entry.getValue()) {
-                String opCode = blockBean.opCode;
-                char type = 65535;
-                switch (opCode.hashCode()) {
-                    case -1975568730:
-                        if (opCode.equals("copyToClipboard")) {
-                            type = 7;
-                            break;
-                        }
-                        break;
-                    case -1435533117:
-                        if (opCode.equals("listStrToStr")) {
-                            type = 11;
-                            break;
-                        }
-                        break;
-                    case -1149848189:
-                        if (opCode.equals("toStringFormat")) {
-                            type = 1;
-                            break;
-                        }
-                        break;
-                    case -733318734:
-                        if (opCode.equals("strToListMap")) {
-                            type = 3;
-                            break;
-                        }
-                        break;
-                    case -733312377:
-                        if (opCode.equals("strToListStr")) {
-                            type = '\n';
-                            break;
-                        }
-                        break;
-                    case -208762465:
-                        if (opCode.equals("toStringWithDecimal")) {
-                            type = 0;
-                            break;
-                        }
-                        break;
-                    case -101305250:
-                    case 308049309:
-                    case 41072934:
-                        type = '\n';
-                        break;
-                    case 168740282:
-                        if (opCode.equals("mapToStr")) {
-                            type = 4;
-                            break;
-                        }
-                        break;
-                    case 470160234:
-                        if (opCode.equals("fileutilGetLastSegmentPath")) {
-                            type = '\b';
-                            break;
-                        }
-                        break;
-                    case 1129709718:
-                        if (opCode.equals("setImageUrl")) {
-                            type = '\t';
-                            break;
-                        }
-                        break;
-                    case 1252547704:
-                        if (opCode.equals("listMapToStr")) {
-                            type = 5;
-                            break;
-                        }
-                        break;
-                    case 1313527577:
-                        if (opCode.equals("setTypeface")) {
-                            type = 6;
-                            break;
-                        }
-                        break;
-                    case 1775620400:
-                        opCode.equals("strToMap");
-                        type = '\n';
-                        break;
-                }
-                switch (type) {
-                    case 0:
-                    case 1:
+                switch (blockBean.opCode) {
+                    case "toStringWithDecimal":
+                    case "toStringFormat":
                         addImport("java.text.DecimalFormat");
                         break;
-                    //case 2:
-                    case 3:
-                    case '\n':
+
+                    case "strToListMap":
+                    case "strToListStr":
+                    case "strToMap":
+                    case "GsonStringToListString":
+                    case "GsonStringToListNumber":
                         addImport("com.google.gson.Gson");
                         addImport("com.google.gson.reflect.TypeToken");
                         break;
-                    case 4:
-                    case 5:
-                    case 11:
+
+                    case "mapToStr":
+                    case "listMapToStr":
+                    case "GsonListTojsonString":
                         addImport("com.google.gson.Gson");
                         break;
-                    case 6:
+
+                    case "setTypeface":
                         addImport("android.graphics.Typeface");
                         break;
-                    case 7:
+
+                    case "copyToClipboard":
                         addImport("android.content.ClipData");
                         addImport("android.content.ClipboardManager");
                         break;
-                    case '\b':
+
+                    case "fileutilGetLastSegmentPath":
                         addImport("android.net.Uri");
                         break;
-                    case '\t':
+
+                    case "setImageUrl":
                         addImport("com.bumptech.glide.Glide");
                         break;
                 }
@@ -1001,28 +959,31 @@ public class Jx {
             boolean hasFirebaseDB = false;
             boolean hasFirebaseStorage = false;
             for (ComponentBean bean : componentBeans) {
-                if (bean.type == 5) {
+                if (bean.type == ComponentBean.COMPONENT_TYPE_TIMERTASK) {
                     hasTimer = true;
                 }
-                if (bean.type == 6) {
+                if (bean.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
                     hasFirebaseDB = true;
                 }
-                if (bean.type == 14) {
+                if (bean.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
                     hasFirebaseStorage = true;
                 }
             }
             if (hasTimer) {
-                this.h.add(Lx.d("Timer"));
+                h.add(Lx.d("Timer"));
             }
             if (hasFirebaseDB) {
-                this.h.add(Lx.d("FirebaseDB"));
+                h.add(Lx.d("FirebaseDB"));
             }
             if (hasFirebaseStorage) {
-                this.h.add(Lx.d("FirebaseStorage"));
+                h.add(Lx.d("FirebaseStorage"));
             }
         }
     }
 
+    /**
+     * Adds Local libraries' imports
+     */
     public final void j() {
         for (String value : this.mll.getImportLocalLibrary()) {
             addImport(value);
