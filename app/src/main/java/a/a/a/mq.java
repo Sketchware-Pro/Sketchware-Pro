@@ -1,5 +1,7 @@
 package a.a.a;
 
+import com.besome.sketch.beans.ComponentBean;
+
 import java.util.ArrayList;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
@@ -59,67 +61,67 @@ public class mq {
 
     public static String a(int componentId) {
         switch (componentId) {
-            case 1:
+            case ComponentBean.COMPONENT_TYPE_INTENT:
                 return "Intent";
 
-            case 2:
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
                 return "SharedPreferences";
 
-            case 3:
+            case ComponentBean.COMPONENT_TYPE_CALENDAR:
                 return "Calendar";
 
-            case 4:
+            case ComponentBean.COMPONENT_TYPE_VIBRATOR:
                 return "Vibrator";
 
-            case 5:
+            case ComponentBean.COMPONENT_TYPE_TIMERTASK:
                 return "Timer";
 
-            case 6:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE:
                 return "FirebaseDB";
 
-            case 7:
+            case ComponentBean.COMPONENT_TYPE_DIALOG:
                 return "Dialog";
 
-            case 8:
+            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER:
                 return "MediaPlayer";
 
-            case 9:
+            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL:
                 return "SoundPool";
 
-            case 10:
+            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR:
                 return "ObjectAnimator";
 
-            case 11:
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
                 return "Gyroscope";
 
-            case 12:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
                 return "FirebaseAuth";
 
-            case 13:
+            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
                 return "InterstitialAd";
 
-            case 14:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
                 return "FirebaseStorage";
 
-            case 15:
+            case ComponentBean.COMPONENT_TYPE_CAMERA:
                 return "Camera";
 
-            case 16:
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
                 return "FilePicker";
 
-            case 17:
+            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
                 return "RequestNetwork";
 
-            case 18:
+            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH:
                 return "TextToSpeech";
 
-            case 19:
+            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
                 return "SpeechToText";
 
-            case 20:
+            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
                 return "BluetoothConnect";
 
-            case 21:
+            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
 
             case 22:
@@ -407,9 +409,11 @@ public class mq {
         }
     }
 
+    /**
+     * @return Imports needed for a type
+     */
     public static ArrayList<String> c(String name) {
         ArrayList<String> importList = new ArrayList<>();
-        ImportClass.a(name, importList);
 
         switch (name) {
             case "Map":
@@ -649,6 +653,7 @@ public class mq {
                 return importList;
 
             default:
+                ImportClass.a(name, importList);
                 return importList;
         }
     }
