@@ -4,19 +4,19 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SrcCodeBean implements Parcelable {
-    public static final Parcelable.Creator<SrcCodeBean> CREATOR = new Parcelable.Creator<SrcCodeBean>() {
-        /* class com.besome.sketch.beans.SrcCodeBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
-        public SrcCodeBean createFromParcel(Parcel parcel) {
-            return new SrcCodeBean(parcel);
+    public static final Parcelable.Creator<SrcCodeBean> CREATOR = new Parcelable.Creator<SrcCodeBean>() {
+        @Override
+        public SrcCodeBean createFromParcel(Parcel source) {
+            return new SrcCodeBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public SrcCodeBean[] newArray(int i) {
-            return new SrcCodeBean[i];
+        @Override
+        public SrcCodeBean[] newArray(int size) {
+            return new SrcCodeBean[size];
         }
     };
+
     public String pkgName;
     public String source;
     public String srcFileName;
@@ -24,28 +24,30 @@ public class SrcCodeBean implements Parcelable {
     public SrcCodeBean() {
     }
 
-    public SrcCodeBean(String str, String str2) {
-        this.srcFileName = str;
-        this.source = str2;
+    public SrcCodeBean(String sourceFilename, String content) {
+        srcFileName = sourceFilename;
+        source = content;
     }
 
-    public SrcCodeBean(Parcel parcel) {
-        this.pkgName = parcel.readString();
-        this.srcFileName = parcel.readString();
-        this.source = parcel.readString();
+    public SrcCodeBean(Parcel other) {
+        pkgName = other.readString();
+        srcFileName = other.readString();
+        source = other.readString();
     }
 
     public static Parcelable.Creator<SrcCodeBean> getCreator() {
         return CREATOR;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.pkgName);
-        parcel.writeString(this.srcFileName);
-        parcel.writeString(this.source);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(pkgName);
+        dest.writeString(srcFileName);
+        dest.writeString(source);
     }
 }

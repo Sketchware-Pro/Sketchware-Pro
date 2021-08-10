@@ -1,18 +1,18 @@
 package a.a.a;
 
-import a.a.a.FB;
-import a.a.a.Gx;
+import com.besome.sketch.beans.ComponentBean;
+
+import java.util.ArrayList;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import dev.aldi.sayuti.editor.manage.ImportClass;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import mod.agus.jcoderz.editor.event.CustomImportEvent;
 import mod.agus.jcoderz.lib.TypeVarComponent;
 
 public class mq {
+
+    /**
+     * @return A built class info ({@link Gx} object)
+     */
     public static Gx a(String type, String typeName) {
         switch (type) {
             case "b":
@@ -61,67 +61,67 @@ public class mq {
 
     public static String a(int componentId) {
         switch (componentId) {
-            case 1:
+            case ComponentBean.COMPONENT_TYPE_INTENT:
                 return "Intent";
 
-            case 2:
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
                 return "SharedPreferences";
 
-            case 3:
+            case ComponentBean.COMPONENT_TYPE_CALENDAR:
                 return "Calendar";
 
-            case 4:
+            case ComponentBean.COMPONENT_TYPE_VIBRATOR:
                 return "Vibrator";
 
-            case 5:
+            case ComponentBean.COMPONENT_TYPE_TIMERTASK:
                 return "Timer";
 
-            case 6:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE:
                 return "FirebaseDB";
 
-            case 7:
+            case ComponentBean.COMPONENT_TYPE_DIALOG:
                 return "Dialog";
 
-            case 8:
+            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER:
                 return "MediaPlayer";
 
-            case 9:
+            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL:
                 return "SoundPool";
 
-            case 10:
+            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR:
                 return "ObjectAnimator";
 
-            case 11:
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
                 return "Gyroscope";
 
-            case 12:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
                 return "FirebaseAuth";
 
-            case 13:
+            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
                 return "InterstitialAd";
 
-            case 14:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
                 return "FirebaseStorage";
 
-            case 15:
+            case ComponentBean.COMPONENT_TYPE_CAMERA:
                 return "Camera";
 
-            case 16:
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
                 return "FilePicker";
 
-            case 17:
+            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
                 return "RequestNetwork";
 
-            case 18:
+            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH:
                 return "TextToSpeech";
 
-            case 19:
+            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
                 return "SpeechToText";
 
-            case 20:
+            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
                 return "BluetoothConnect";
 
-            case 21:
+            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
 
             case 22:
@@ -147,28 +147,25 @@ public class mq {
         }
     }
 
+    /**
+     * @return A parameter class info ({@link Gx}) list
+     */
     public static ArrayList<Gx> a(String spec) {
-        ArrayList<Gx> paramClass = new ArrayList();
+        ArrayList<Gx> paramClass = new ArrayList<>();
         ArrayList<String> specList = FB.c(spec);
-        if (specList.size() <= 0) {
-            return paramClass;
-        } else {
-            Iterator it = specList.iterator();
-            while (it.hasNext()) {
-                String params = (String) it.next();
-                if (params.charAt(0) == '%' && params.length() >= 2) {
-                    String type = String.valueOf(params.charAt(1));
-                    String typeName;
-                    if (params.length() > 3) {
-                        typeName = params.substring(3);
-                    } else {
-                        typeName = "";
-                    }
-                    paramClass.add(a(type, typeName));
+        for (String params : specList) {
+            if (params.charAt(0) == '%' && params.length() >= 2) {
+                String type = String.valueOf(params.charAt(1));
+                String typeName;
+                if (params.length() > 3) {
+                    typeName = params.substring(3);
+                } else {
+                    typeName = "";
                 }
+                paramClass.add(a(type, typeName));
             }
-            return paramClass;
         }
+        return paramClass;
     }
 
     public static String b(int type) {
@@ -412,9 +409,11 @@ public class mq {
         }
     }
 
+    /**
+     * @return Imports needed for a type
+     */
     public static ArrayList<String> c(String name) {
-        ArrayList<String> importList = new ArrayList();
-        ImportClass.a(name, importList);
+        ArrayList<String> importList = new ArrayList<>();
 
         switch (name) {
             case "Map":
@@ -422,9 +421,6 @@ public class mq {
                 return importList;
 
             case "ListInt":
-                importList.add("java.util.ArrayList");
-                return importList;
-
             case "ListString":
                 importList.add("java.util.ArrayList");
                 return importList;
@@ -657,13 +653,13 @@ public class mq {
                 return importList;
 
             default:
+                ImportClass.a(name, importList);
                 return importList;
-
         }
     }
 
     public static ArrayList<String> d(String listener) {
-        ArrayList<String> importList = new ArrayList();
+        ArrayList<String> importList = new ArrayList<>();
 
         switch (listener) {
             case "onClickListener":
@@ -751,7 +747,7 @@ public class mq {
 
             case "ListString":
                 return "ArrayList<String>";
-                
+
             case "ListMap":
                 return "ArrayList<HashMap<String, Object>>";
 

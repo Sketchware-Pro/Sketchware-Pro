@@ -12,17 +12,11 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_JAVA_VERSION = "java_ver";
     public static final String SETTING_NO_HTTP_LEGACY = "no_http_legacy";
     public static final String SETTING_NO_WARNINGS = "no_warn";
-    public static final String SETTING_OUTPUT_FORMAT = "output_format";
-    public static final String SETTING_RESOURCE_PROCESSOR = "resource_processor";
 
     public static final String SETTING_DEXER_D8 = "D8";
     public static final String SETTING_DEXER_DX = "Dx";
     public static final String SETTING_JAVA_VERSION_1_7 = "1.7";
     public static final String SETTING_JAVA_VERSION_1_8 = "1.8";
-    public static final String SETTING_RESOURCE_PROCESSOR_AAPT = "AAPT";
-    public static final String SETTING_RESOURCE_PROCESSOR_AAPT2 = "AAPT2";
-    public static final String SETTING_OUTPUT_FORMAT_AAB = "AAB";
-    public static final String SETTING_OUTPUT_FORMAT_APK = "APK";
 
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";

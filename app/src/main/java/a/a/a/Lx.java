@@ -160,7 +160,7 @@ public class Lx {
             type = bean.getClassInfo().a();
         }
 
-        return "final" + type + " " + bean.id + " = _view.findViewById(R.id." + bean.id + ");";
+        return "final " + type + " " + bean.id + " = _view.findViewById(R.id." + bean.id + ");";
     }
 
     /**
@@ -654,7 +654,9 @@ public class Lx {
                 fieldDeclaration = "";
         }
 
-        if (!componentNameId.equals("include") && !componentNameId.equals("#")) {
+        if (componentNameId.equals("include") || componentNameId.equals("#")) {
+            fieldDeclaration = "";
+        } else {
             String initializer = a(componentNameId, componentName, var3);
             String builtInType = mq.e(componentNameId);
             if (initializer.length() <= 0) {
@@ -678,9 +680,17 @@ public class Lx {
                     break;
 
                 case "FirebaseAuth":
-                    fieldDeclaration += "\r\nprivate OnCompleteListener<AuthResult> _" + componentName + "_create_user_listener;\r\n";
-                    fieldDeclaration += "private OnCompleteListener<AuthResult> _" + componentName + "_sign_in_listener;\r\n";
-                    fieldDeclaration += "private OnCompleteListener<Void> _" + componentName + "_reset_password_listener;";
+                    fieldDeclaration += "\r\nprivate OnCompleteListener<AuthResult> _" + componentName + "_create_user_listener;\r\n" +
+                            "private OnCompleteListener<AuthResult> _" + componentName + "_sign_in_listener;\r\n" +
+                            "private OnCompleteListener<Void> _" + componentName + "_reset_password_listener;\r\n" +
+                            // Fields/Events added by Agus
+                            "private OnCompleteListener<Void> " + componentName + "_updateEmailListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_updatePasswordListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_emailVerificationSentListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_deleteUserListener;\r\n" +
+                            "private OnCompleteListener<Void> " + componentName + "_updateProfileListener;\r\n" +
+                            "private OnCompleteListener<AuthResult> " + componentName + "_phoneAuthListener;\r\n" +
+                            "private OnCompleteListener<AuthResult> " + componentName + "_googleSignInListener;\r\n";
                     break;
 
                 case "InterstitialAd":
@@ -688,12 +698,16 @@ public class Lx {
                     break;
 
                 case "FirebaseStorage":
-                    fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + componentName + "_upload_success_listener;\r\n";
-                    fieldDeclaration += "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + componentName + "_download_success_listener;\r\n";
-                    fieldDeclaration += "private OnSuccessListener _" + componentName + "_delete_success_listener;\r\n";
-                    fieldDeclaration += "private OnProgressListener _" + componentName + "_upload_progress_listener;\r\n";
-                    fieldDeclaration += "private OnProgressListener _" + componentName + "_download_progress_listener;\r\n";
-                    fieldDeclaration += "private OnFailureListener _" + componentName + "_failure_listener;";
+                    fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + componentName + "_upload_success_listener;\r\n" +
+                            "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + componentName + "_download_success_listener;\r\n" +
+                            "private OnSuccessListener _" + componentName + "_delete_success_listener;\r\n" +
+                            "private OnProgressListener _" + componentName + "_upload_progress_listener;\r\n" +
+                            "private OnProgressListener _" + componentName + "_download_progress_listener;\r\n" +
+                            "private OnFailureListener _" + componentName + "_failure_listener;\r\n";
+                    break;
+
+                case "Camera":
+                    fieldDeclaration += "\r\nprivate File _file_" + componentName + ";";
                     break;
 
                 case "RequestNetwork":
@@ -708,33 +722,21 @@ public class Lx {
                     fieldDeclaration += "\r\nprivate LocationListener _" + componentName + "_location_listener;";
                     break;
 
-                case "Camera":
-                    fieldDeclaration += "\r\nprivate File _file_" + componentName + ";";
-                    break;
-
                 case "MapView":
                     fieldDeclaration += "\r\nprivate GoogleMapController _" + componentName + "_controller;";
-                    break;
-
-                case "RewardedVideoAd":
-                    // Shouldn't it be "private RewardedVideoAdListener _"?
-                    fieldDeclaration += "\r\nprivate RewardedVideoAdListener  " + componentName + "_listener;";
-                    break;
-
-                case "TimePickerDialog":
-                    fieldDeclaration += "\r\nprivate TimePickerDialog.OnTimeSetListener " + componentName + "_listener;";
                     break;
 
                 default:
                     fieldDeclaration = ManageEventComponent.a(componentNameId, fieldDeclaration, componentName);
             }
-        } else {
-            fieldDeclaration = "";
         }
 
         return fieldDeclaration;
     }
 
+    /**
+     * @return Code of a More Block
+     */
     public static String a(String var0, String var1, String var2) {
         var0 = "public " +
                 ReturnMoreblockManager.getMbTypeCode(var0) +
@@ -833,7 +835,7 @@ public class Lx {
     }
 
     /**
-     * @return Code of an adapter for a List View
+     * @return Code of an adapter for a ListView
      */
     public static String a(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
         String className = a(widgetName);
@@ -1408,77 +1410,41 @@ public class Lx {
         return var0;
     }
 
-    public static String b(String var0, String var1, boolean var2) {
-        StringBuilder var3 = new StringBuilder();
-        if (!var0.equals("include") && !var0.equals("#")) {
-            var3.append(var1);
-            var3.append(" = ");
-            if (var2) {
-                var3.append("_view.findViewById(R.id.");
-            } else {
-                var3.append("findViewById(R.id.");
-            }
+    /**
+     * @return Initializer of a View to be added to _initialize(Bundle)
+     */
+    public static String b(String type, String name, boolean isInFragment) {
+        String initializer = "";
 
-            var3.append(var1);
-            var3.append(");");
+        if (!type.equals("include") && !type.equals("#")) {
+            initializer = name + " = " +
+                    (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
+                    name + ");";
         }
 
-        String var4 = var3.toString();
-        String var6 = var4;
-        StringBuilder var7;
-        if (var0.equals("WebView")) {
-            var3 = new StringBuilder();
-            var3.append(var4);
-            var3.append("\r\n");
-            var6 = var3.toString();
-            var7 = new StringBuilder();
-            var7.append(var6);
-            var7.append(var1);
-            var7.append(".getSettings().setJavaScriptEnabled(true);");
-            var7.append("\r\n");
-            var7.append(var1);
-            var7.append(".getSettings().setSupportZoom(true);");
-            var6 = var7.toString();
-        }
+        switch (type) {
+            case "WebView":
+                return initializer + "\r\n" +
+                        name + ".getSettings().setJavaScriptEnabled(true);\r\n" +
+                        name + ".getSettings().setSupportZoom(true);";
 
-        var4 = var6;
-        if (var0.equals("MapView")) {
-            var7 = new StringBuilder();
-            var7.append(var6);
-            var7.append("\r\n");
-            var6 = var7.toString();
-            var7 = new StringBuilder();
-            var7.append(var6);
-            var7.append(var1);
-            var7.append(".onCreate(_savedInstanceState);");
-            var7.append("\r\n");
-            var4 = var7.toString();
-        }
+            case "MapView":
+                return initializer + "\r\n" +
+                        name + ".onCreate(_savedInstanceState);\r\n";
 
-        var6 = var4;
-        if (var0.equals("VideoView")) {
-            StringBuilder var5 = new StringBuilder();
-            var5.append(var4);
-            var5.append("\r\n");
-            var6 = var5.toString();
-            var5 = new StringBuilder();
-            var5.append(var6);
-            var5.append("MediaController ");
-            var5.append(var1);
-            var5.append("_controller = new MediaController(this);");
-            var5.append("\r\n");
-            var5.append(var1);
-            var5.append(".setMediaController(");
-            var5.append(var1);
-            var5.append("_controller);");
-            var6 = var5.toString();
-        }
+            case "VideoView":
+                String mediaControllerName = name + "_controller";
+                return initializer + "\r\n" +
+                        "MediaController " + mediaControllerName + " = new MediaController(this);\r\n" +
+                        name + ".setMediaController(" + mediaControllerName + ");";
 
-        return var6;
+            default:
+                return initializer;
+        }
     }
 
     /**
-     * @return Initializer for a component that'd appear in <code>_initialize(Bundle)</code>
+     * @return Initializer for a Component that'd appear in <code>_initialize(Bundle)</code>
      */
     public static String b(String componentNameId, String componentName, String... parameters) {
         switch (componentNameId) {
@@ -2461,25 +2427,18 @@ public class Lx {
                 "    }\r\n" +
                 "\r\n" +
                 "    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {\r\n" +
-                "        Cursor cursor = null;\r\n" +
-                "\r\n" +
                 "        final String column = MediaStore.Images.Media.DATA;\r\n" +
                 "        final String[] projection = {\r\n" +
                 "                column\r\n" +
                 "        };\r\n" +
                 "\r\n" +
                 "        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null)) {\r\n" +
-                "            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);\r\n" +
                 "            if (cursor != null && cursor.moveToFirst()) {\r\n" +
                 "                final int column_index = cursor.getColumnIndexOrThrow(column);\r\n" +
                 "                return cursor.getString(column_index);\r\n" +
                 "            }\r\n" +
                 "        } catch (Exception e) {\r\n" +
                 "\r\n" +
-                "        } finally {\r\n" +
-                "            if (cursor != null) {\r\n" +
-                "                cursor.close();\r\n" +
-                "            }\r\n" +
                 "        }\r\n" +
                 "        return null;\r\n" +
                 "    }\r\n" +

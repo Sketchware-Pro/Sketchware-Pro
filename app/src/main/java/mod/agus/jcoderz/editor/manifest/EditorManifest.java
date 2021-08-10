@@ -11,31 +11,31 @@ import a.a.a.Nx;
  */
 public class EditorManifest {
 
-    public static void writeAttrIntentFilter(Nx nx, HashMap<String, ArrayList> hashMap) {
-        Nx nx2 = new Nx("intent-filter");
-        Nx nx3 = new Nx("action");
-        nx3.a("android", "name", "android.intent.action.VIEW");
-        Nx nx4 = new Nx("category");
-        nx4.a("android", "name", "android.intent.category.DEFAULT");
-        Nx nx5 = new Nx("category");
-        nx5.a("android", "name", "android.intent.category.BROWSABLE");
-        Nx nx6 = new Nx("data");
-        if (hashMap.size() > 0) {
-            nx6.a("android", "host", hashMap.get("FirebaseDynamicLink setDataHost").get(0).toString());
+    public static void writeAttrIntentFilter(Nx activityTag, HashMap<String, ArrayList<String>> arguments) {
+        Nx intentFilterTag = new Nx("intent-filter");
+        Nx intentFilterActionTag = new Nx("action");
+        intentFilterActionTag.a("android", "name", "android.intent.action.VIEW");
+        Nx intentFilterCategoryDefaultTag = new Nx("category");
+        intentFilterCategoryDefaultTag.a("android", "name", "android.intent.category.DEFAULT");
+        Nx intentFilterCategoryBrowsableTag = new Nx("category");
+        intentFilterCategoryBrowsableTag.a("android", "name", "android.intent.category.BROWSABLE");
+        Nx intentFilterDataTag = new Nx("data");
+        if (arguments.size() > 0) {
+            intentFilterDataTag.a("android", "host", arguments.get("FirebaseDynamicLink setDataHost").get(0));
         }
-        if (hashMap.size() > 1) {
-            nx6.a("android", "scheme", hashMap.get("FirebaseDynamicLink setDataHost").get(1).toString());
+        if (arguments.size() > 1) {
+            intentFilterDataTag.a("android", "scheme", arguments.get("FirebaseDynamicLink setDataHost").get(1));
         }
-        nx2.a(nx3);
-        nx2.a(nx4);
-        nx2.a(nx5);
-        if (hashMap.size() != 0) {
-            nx2.a(nx6);
+        intentFilterTag.a(intentFilterActionTag);
+        intentFilterTag.a(intentFilterCategoryDefaultTag);
+        intentFilterTag.a(intentFilterCategoryBrowsableTag);
+        if (arguments.size() != 0) {
+            intentFilterTag.a(intentFilterDataTag);
         }
-        nx.a(nx2);
+        activityTag.a(intentFilterTag);
     }
 
-    public static void writeDefFCM(Nx nx) {
+    public static void writeDefFCM(Nx applicationTag) {
         Nx firebaseMessagingServiceTag = new Nx("service");
         firebaseMessagingServiceTag.a("android", "name", "com.google.firebase.messaging.FirebaseMessagingService");
         firebaseMessagingServiceTag.a("android", "exported", "false");
@@ -54,8 +54,8 @@ public class EditorManifest {
         receiveActionTag.a("android", "name", "com.google.android.c2dm.intent.RECEIVE");
         firebaseInstanceIdReceiverIntentFilterTag.a(receiveActionTag);
         firebaseInstanceIdReceiverTag.a(firebaseInstanceIdReceiverIntentFilterTag);
-        nx.a(firebaseMessagingServiceTag);
-        nx.a(firebaseInstanceIdReceiverTag);
+        applicationTag.a(firebaseMessagingServiceTag);
+        applicationTag.a(firebaseInstanceIdReceiverTag);
     }
 
     public static void writeMetadataComponentFirebase(Nx applicationTag, String componentName) {
