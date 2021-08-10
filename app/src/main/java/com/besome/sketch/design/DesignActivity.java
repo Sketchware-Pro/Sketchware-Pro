@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +53,6 @@ import com.sketchware.remod.Resources;
 import java.io.File;
 import java.util.HashMap;
 
-import a.a.a.Ay;
 import a.a.a.DB;
 import a.a.a.Dp;
 import a.a.a.Ep;
@@ -105,6 +103,7 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
+import mod.jbk.util.LogUtil;
 import mod.nethical.mod.CleanAsyncTask;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
@@ -729,7 +728,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     /**
      * Show a dialog asking about saving the project before quitting.
-     * TODO: Include "Cancel" option as neutral choice.
      */
     public final void q() {
         aB dialog = new aB(this);
@@ -1188,11 +1186,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    boolean usingAapt2 = buildSettings
-                            .getValue(BuildSettings.SETTING_RESOURCE_PROCESSOR,
-                                    BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT
-                            ).equals(BuildSettings.SETTING_RESOURCE_PROCESSOR_AAPT2);
-                    publishProgress(usingAapt2 ? "AAPT2 is running..." : "AAPT is running...");
+                    publishProgress("AAPT2 is running...");
                     mDp.a();
                     if (d) {
                         cancel(true);
@@ -1296,17 +1290,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Launch Intent to install APK */
                         o();
                     }
-                } catch (Ay e) {
-                    // Never thrown? Haven't found a reference to it in any classes except {@link DesignActivity} and {@link PublishActivity} (and of course {@link Ay})
-                    Log.e("DesignActivity$a", e.getMessage(), e);
-                    // This seems kinda odd
-                    c(e.getMessage());
-                } catch (OutOfMemoryError error) {
-                    System.gc();
-                    Log.e("DesignActivity$a", "OutOfMemoryError: " + error.getMessage(), error);
-                    DesignActivity.this.d(error.getMessage());
                 } catch (Throwable e) {
-                    Log.e("DesignActivity$a", Log.getStackTraceString(e), e);
+                    LogUtil.e("DesignActivity$a", e.getMessage(), e);
                     DesignActivity.this.d(e.getMessage());
                 }
             }

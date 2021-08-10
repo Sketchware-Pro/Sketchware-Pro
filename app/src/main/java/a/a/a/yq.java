@@ -15,7 +15,9 @@ import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mod.agus.jcoderz.lib.FileUtil;
@@ -342,9 +344,15 @@ public class yq {
         }
     }
 
+    /**
+     * Does nothing.
+     */
     public void b() {
     }
 
+    /**
+     * Initializes fields with provided {@link Context}.
+     */
     public final void b(Context context) {
         L = new oB(true);
         M = new Gson();
@@ -387,9 +395,17 @@ public class yq {
         I = wq.o() + File.separator + d + "_release.apk";
     }
 
+    /**
+     * Does nothing.
+     */
     public void c() {
     }
 
+    /**
+     * Creates {@link yq#t}, {@link yq#u}, {@link yq#v}, {@link yq#y}, {@link yq#w}, {@link yq#x},
+     * {@link yq#z}, {@link yq#A}, {@link yq#B}, then generates DebugActivity.java and
+     * SketchApplication.java.
+     */
     public void c(Context context) {
         L.f(t);
         L.f(u);
@@ -412,12 +428,20 @@ public class yq {
         }
     }
 
+    /**
+     * Prepares to compile and creates /Internal storage/.sketchware/mysc/&lt;sc_id&gt;/ directories,
+     * {@link yq#t}, {@link yq#u} and {@link yq#v}.
+     */
     public void e() {
         L.f(t);
         L.f(u);
         L.f(v);
     }
 
+    /**
+     * Deletes temporary compile cache directories, {@link yq#t} and {@link yq#v}. The used method
+     * logs all files and folders which get deleted.
+     */
     public void f() {
         L.b(t);
         L.b(v);
@@ -430,6 +454,9 @@ public class yq {
         return new File(I).exists();
     }
 
+    /**
+     * Generates top-level build.gradle, build.gradle for module ':app' and settings.gradle files.
+     */
     public void h() {
         L.b(c + File.separator + "app" + File.separator + "build.gradle",
                 Lx.a(28, 21, 28, N));
@@ -456,6 +483,9 @@ public class yq {
         }
     }
 
+    /**
+     * Generates DebugActivity.java and SketchApplication.java.
+     */
     public void a(Context context) {
         int minSdkVersion;
         try {
@@ -504,9 +534,7 @@ public class yq {
         }
     }
 
-    /* JADX INFO: Can't fix incorrect switch cases order, some code will duplicate */
     public void a(iC iCVar, hC hCVar, eC eCVar, boolean z2) {
-        char c2;
         N = new jq();
         N.a = e;
         N.b = f;
@@ -591,206 +619,65 @@ public class yq {
                     N.x.setParams(bean.parameters, e, bean.opCode);
                     String opCode = bean.opCode;
                     switch (opCode) {
-                        case "webViewLoadUrl":
-                            c2 = '!';
-                            break;
-
-                        case "fileutillistdir":
-                            c2 = 3;
-                            break;
-
-                        case "setBitmapFileBrightness":
-                            c2 = 26;
-                            break;
-
-                        case "fileutilisdir":
-                            c2 = 4;
-                            break;
-
-                        case "fileutilwrite":
-                            c2 = '\f';
-                            break;
-
-                        case "fileutilmakedir":
-                            c2 = 16;
-                            break;
-
-                        case "resizeBitmapFileRetainRatio":
-                            c2 = 17;
-                            break;
-
-                        case "getJpegRotate":
-                            c2 = '\t';
-                            break;
-
-                        case "resizeBitmapFileWithRoundedBorder":
-                            c2 = 20;
-                            break;
-
-                        case "strToListMap":
-                            c2 = 30;
-                            break;
-
-                        case "fileutilcopy":
-                            c2 = '\r';
-                            break;
-
-                        case "fileutilmove":
-                            c2 = 14;
-                            break;
-
-                        case "fileutilread":
-                            c2 = 1;
-                            break;
-
-                        case "fileutilisexist":
-                            c2 = 2;
-                            break;
-
-                        case "resizeBitmapFileToCircle":
-                            c2 = 19;
-                            break;
-
-                        case "setBitmapFileContrast":
-                            c2 = 27;
-                            break;
-
-                        case "cropBitmapFileFromCenter":
-                            c2 = 21;
-                            break;
-
-                        case "mapToStr":
-                            c2 = 29;
-                            break;
-
-                        case "fileutilGetLastSegmentPath":
-                            c2 = 11;
-                            break;
-
-                        case "resizeBitmapFileToSquare":
-                            c2 = 18;
-                            break;
-
-                        case "scaleBitmapFile":
-                            c2 = 23;
-                            break;
-
                         case "intentSetAction":
-                            c2 = 0;
-                            break;
-
-                        case "setBitmapFileColorFilter":
-                            c2 = 25;
-                            break;
-
-                        case "fileutildelete":
-                            c2 = 15;
-                            break;
-
-                        case "setImageUrl":
-                            c2 = ' ';
-                            break;
-
-                        case "fileutilEndsWith":
-                            c2 = '\b';
-                            break;
-
-                        case "fileutilisfile":
-                            c2 = 5;
-                            break;
-
-                        case "listMapToStr":
-                            c2 = 31;
-                            break;
-
-                        case "fileutillength":
-                            c2 = 6;
-                            break;
-
-                        case "fileutilStartsWith":
-                            c2 = 7;
-                            break;
-
-                        case "strToMap":
-                            c2 = 28;
-                            break;
-
-                        case "rotateBitmapFile":
-                            c2 = 22;
-                            break;
-
-                        case "skewBitmapFile":
-                            c2 = 24;
-                            break;
-
-                        case "setImageFilePath":
-                            c2 = '\n';
-                            break;
-
-                        default:
-                            c2 = 65535;
-                            break;
-                    }
-
-                    switch (c2) {
-                        case 0:
+                            // If an Intent setAction (ACTION_CALL) block is used
                             if (bean.parameters.get(1).equals(uq.c[1])) {
                                 N.a(next.getActivityName(), 1);
                             }
                             break;
 
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case '\b':
-                        case '\t':
-                        case '\n':
-                        case 11:
+                        case "fileutilread":
+                        case "fileutilisexist":
+                        case "fileutillistdir":
+                        case "fileutilisdir":
+                        case "fileutilisfile":
+                        case "fileutillength":
+                        case "fileutilStartsWith":
+                        case "fileutilEndsWith":
+                        case "getJpegRotate":
+                        case "setImageFilePath":
+                        case "fileutilGetLastSegmentPath":
                             N.a(next.getActivityName(), 32);
                             break;
 
-                        case '\f':
-                        case '\r':
-                        case 14:
-                        case 15:
-                        case 16:
-                        case 17:
-                        case 18:
-                        case 19:
-                        case 20:
-                        case 21:
-                        case 22:
-                        case 23:
-                        case 24:
-                        case 25:
-                        case 26:
-                        case 27:
+                        case "fileutilwrite":
+                        case "fileutilcopy":
+                        case "fileutilmove":
+                        case "fileutildelete":
+                        case "fileutilmakedir":
+                        case "resizeBitmapFileRetainRatio":
+                        case "resizeBitmapFileToSquare":
+                        case "resizeBitmapFileToCircle":
+                        case "resizeBitmapFileWithRoundedBorder":
+                        case "cropBitmapFileFromCenter":
+                        case "rotateBitmapFile":
+                        case "scaleBitmapFile":
+                        case "skewBitmapFile":
+                        case "setBitmapFileColorFilter":
+                        case "setBitmapFileBrightness":
+                        case "setBitmapFileContrast":
                             N.a(next.getActivityName(), 32);
                             N.a(next.getActivityName(), 64);
                             break;
 
-                        case 28:
-                        case 29:
-                        case 30:
-                        case 31:
+                        case "strToMap":
+                        case "mapToStr":
+                        case "strToListMap":
+                        case "listMapToStr":
                             N.o = true;
                             break;
 
-                        case ' ':
-                            jq jqVar10 = N;
-                            jqVar10.n = true;
-                            jqVar10.a(2);
-                            N.a(8);
+                        case "setImageUrl":
+                            N.n = true;
+                            N.a(2);
                             break;
 
-                        case '!':
+                        case "webViewLoadUrl":
                             N.a(2);
                             N.a(8);
                             break;
+
+                        default:
                     }
                 }
             }
@@ -798,6 +685,11 @@ public class yq {
         }
     }
 
+    /**
+     * Simply calls {@link yq#b(hC, eC, iC, boolean)} with the same arguments and <code>false</code>.
+     *
+     * @see yq#b(hC, eC, iC, boolean)
+     */
     public void b(hC hCVar, eC eCVar, iC iCVar) {
         b(hCVar, eCVar, iCVar, false);
     }
@@ -821,18 +713,18 @@ public class yq {
             a(bean.srcFileName, bean.source);
         }
         if (N.h || N.l || N.m) {
-            ProjectLibraryBean bean = iCVar.d();
+            ProjectLibraryBean firebaseLibrary = iCVar.d();
             Mx mx = new Mx();
             mx.a("google_play_services_version", 12451000);
             if (N.h) {
-                mx.a("firebase_database_url", "https://" + bean.data, false);
-                mx.a("project_id", bean.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
-                mx.a("google_app_id", bean.reserved1, false);
-                if (bean.reserved2 != null && bean.reserved2.length() > 0) {
-                    mx.a("google_api_key", bean.reserved2, false);
+                mx.a("firebase_database_url", "https://" + firebaseLibrary.data, false);
+                mx.a("project_id", firebaseLibrary.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
+                mx.a("google_app_id", firebaseLibrary.reserved1, false);
+                if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
+                    mx.a("google_api_key", firebaseLibrary.reserved2, false);
                 }
-                if (bean.reserved3 != null && bean.reserved3.length() > 0) {
-                    mx.a("google_storage_bucket", bean.reserved3, false);
+                if (firebaseLibrary.reserved3 != null && firebaseLibrary.reserved3.length() > 0) {
+                    mx.a("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }
             if (N.m) {
@@ -853,13 +745,26 @@ public class yq {
 
         final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
         final String layoutDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/resource/layout/";
+        List<File> javaFiles;
+        {
+            File[] files = new File(javaDir).listFiles();
+            if (files == null) files = new File[0];
+            javaFiles = Arrays.asList(files);
+        }
+        List<File> layoutFiles;
+        {
+            File[] files = new File(layoutDir).listFiles();
+            if (files == null) files = new File[0];
+            layoutFiles = Arrays.asList(files);
+        }
 
         // Generate Activities unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/java/
         ArrayList<SrcCodeBean> srcCodeBeans = new ArrayList<>();
         for (ProjectFileBean activity : hCVar.b()) {
-            if (!FileUtil.isExistFile(javaDir + activity.getJavaName())) {
-                srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(), new Jx(N, activity, eCVar).a()));
+            if (!javaFiles.contains(new File(javaDir + activity.getJavaName()))) {
+                srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
+                        new Jx(N, activity, eCVar).a()));
             }
         }
 
@@ -869,16 +774,18 @@ public class yq {
             String xmlName = layout.getXmlName();
             Ox ox = new Ox(N, layout);
             ox.a(eC.a(eCVar.d(xmlName)), eCVar.h(xmlName));
-            if (!FileUtil.isExistFile(layoutDir + xmlName)) {
-                srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName,
+                        CommandBlock.applyCommands(xmlName, ox.b())));
             }
         }
         for (ProjectFileBean layout : hCVar.c()) {
             String xmlName = layout.getXmlName();
             Ox ox = new Ox(N, layout);
             ox.a(eC.a(eCVar.d(xmlName)));
-            if (!FileUtil.isExistFile(layoutDir + xmlName)) {
-                srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName,
+                        CommandBlock.applyCommands(xmlName, ox.b())));
             }
         }
 
@@ -886,33 +793,45 @@ public class yq {
         ix.setYq(this);
 
         // Make generated classes viewable
-        if (!FileUtil.isExistFile(javaDir + "SketchwareUtil.java")) {
-            srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java", Lx.j(Lx.i(e))));
+        if (!javaFiles.contains(new File(javaDir + "SketchwareUtil.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
+                    Lx.i(e)));
         }
-        
-        if (!FileUtil.isExistFile(javaDir + "FileUtil.java")) {
-            srcCodeBeans.add(new SrcCodeBean("FileUtil.java", Lx.j(Lx.e(e))));
+
+        if (!javaFiles.contains(new File(javaDir + "FileUtil.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("FileUtil.java",
+                    Lx.e(e)));
         }
-        
-        if (!FileUtil.isExistFile(javaDir + "RequestNetwork.java")) {
-            srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java", Lx.j(Lx.h(e))));
+
+        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
+                    Lx.j(Lx.h(e))));
         }
-        
+
         if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java")) {
-            srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java", Lx.j(Lx.g(e))));
+            srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
+                    Lx.j(Lx.g(e))));
         }
 
-        if (!FileUtil.isExistFile(javaDir + "BluetoothConnect.java")) {
-            srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java", Lx.j(Lx.b(e))));
+        if (!javaFiles.contains(new File(javaDir + "RequestNetworkController.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
+                    Lx.j(Lx.b(e))));
         }
 
-        if (!FileUtil.isExistFile(javaDir + "BluetoothController.java")) {
-            srcCodeBeans.add(new SrcCodeBean("BluetoothController.java", Lx.j(Lx.c(e))));
+        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
+                    Lx.j(Lx.c(e))));
+        }
+
+        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
+                    Lx.j(Lx.c(e))));
         }
 
         if (N.m) {
-            if (!FileUtil.isExistFile(javaDir + "GoogleMapController.java")) {
-                srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java", Lx.j(Lx.f(e))));
+            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java"))) {
+                srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
+                        Lx.j(Lx.f(e))));
             }
         }
 
@@ -988,6 +907,9 @@ public class yq {
         return srcCodeBeans;
     }
 
+    /**
+     * @see yq#a(hC, eC, iC, boolean)
+     */
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
         return a(hCVar, eCVar, iCVar, false);
     }

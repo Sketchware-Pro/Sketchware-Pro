@@ -22,8 +22,12 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexItem;
+import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.Resources;
 
@@ -41,6 +45,7 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
 import mod.agus.jcoderz.component.ManageComponent;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class ComponentAddActivity extends BaseDialogActivity {
@@ -198,10 +203,10 @@ public class ComponentAddActivity extends BaseDialogActivity {
         z.setText(xB.b().a(getApplicationContext(), Resources.string.component_title_add_component));
         t = findViewById(Resources.id.components_list);
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
-        flexboxLayoutManager.setFlexDirection(0);
-        flexboxLayoutManager.setFlexWrap(1);
-        flexboxLayoutManager.setJustifyContent(2);
-        flexboxLayoutManager.setAlignItems(2);
+        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
+        flexboxLayoutManager.setJustifyContent(JustifyContent.CENTER);
+        flexboxLayoutManager.setAlignItems(AlignItems.CENTER);
         t.setLayoutManager(flexboxLayoutManager);
         u = new a();
         t.setHasFixedSize(true);
@@ -240,47 +245,28 @@ public class ComponentAddActivity extends BaseDialogActivity {
         P.setHint(xB.b().a(this, Resources.string.design_library_firebase_hint_enter_data_location));
         Q.setHint(xB.b().a(this, Resources.string.component_file_picker_hint_mime_type));
         w = new HashMap<>();
-        D.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    onBackPressed();
-                }
+        D.setOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
             }
         });
-        aa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a() && n()) {
-                    o();
-                }
+        aa.setOnClickListener(v -> {
+            if (!mB.a() && n()) {
+                o();
             }
         });
-        ba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    r();
-                }
+        ba.setOnClickListener(v -> {
+            if (!mB.a()) {
+                r();
             }
         });
-        E.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                u();
-            }
-        });
+        E.setOnClickListener(v -> u());
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         q();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -337,27 +323,27 @@ public class ComponentAddActivity extends BaseDialogActivity {
 
     public final void q() {
         v = new ArrayList<>();
-        v.add(new ComponentBean(1));
-        v.add(new ComponentBean(2));
-        v.add(new ComponentBean(3));
-        v.add(new ComponentBean(4));
-        v.add(new ComponentBean(5));
-        v.add(new ComponentBean(7));
-        v.add(new ComponentBean(8));
-        v.add(new ComponentBean(9));
-        v.add(new ComponentBean(10));
-        v.add(new ComponentBean(15));
-        v.add(new ComponentBean(16));
-        v.add(new ComponentBean(11));
-        v.add(new ComponentBean(6));
-        v.add(new ComponentBean(12));
-        v.add(new ComponentBean(14));
-        v.add(new ComponentBean(13));
-        v.add(new ComponentBean(18));
-        v.add(new ComponentBean(19));
-        v.add(new ComponentBean(17));
-        v.add(new ComponentBean(20));
-        v.add(new ComponentBean(21));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTENT));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SHAREDPREF));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CALENDAR));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_VIBRATOR));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TIMERTASK));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_DIALOG));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_MEDIAPLAYER));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SOUNDPOOL));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CAMERA));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FILE_PICKER));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_GYROSCOPE));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT));
+        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER));
         v.add(new ComponentBean(22));
         v.add(new ComponentBean(23));
         v.add(new ComponentBean(24));
@@ -446,23 +432,16 @@ public class ComponentAddActivity extends BaseDialogActivity {
         dialog.a(Resources.drawable.chrome_96);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.title_compatible_chrome_browser));
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.message_compatible_chrome_brower));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://details?id=com.android.chrome"));
-                    startActivity(intent);
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
+            if (!mB.a()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=com.android.chrome"));
+                startActivity(intent);
                 dialog.dismiss();
             }
         });
+        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -556,21 +535,18 @@ public class ComponentAddActivity extends BaseDialogActivity {
                 super(view);
                 t = view.findViewById(Resources.id.icon);
                 u = view.findViewById(Resources.id.name);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!y) {
-                            y = true;
-                            ComponentAddActivity.a.this.c = j();
-                            x = true;
-                            int[] viewLocationInWindow = new int[2];
-                            view.getLocationInWindow(viewLocationInWindow);
-                            int[] dLocationInWindow = new int[2];
-                            ComponentAddActivity.a.this.d.getLocationInWindow(dLocationInWindow);
-                            int i = viewLocationInWindow[0] - dLocationInWindow[0];
-                            w.put(ComponentAddActivity.a.this.c, new Pair<>(i, (int) (((float) (viewLocationInWindow[1] - dLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
-                            ComponentAddActivity.a.this.c();
-                        }
+                view.setOnClickListener(v -> {
+                    if (!y) {
+                        y = true;
+                        ComponentAddActivity.a.this.c = j();
+                        x = true;
+                        int[] viewLocationInWindow = new int[2];
+                        view.getLocationInWindow(viewLocationInWindow);
+                        int[] dLocationInWindow = new int[2];
+                        ComponentAddActivity.a.this.d.getLocationInWindow(dLocationInWindow);
+                        int i = viewLocationInWindow[0] - dLocationInWindow[0];
+                        w.put(ComponentAddActivity.a.this.c, new Pair<>(i, (int) (((float) (viewLocationInWindow[1] - dLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
+                        ComponentAddActivity.a.this.c();
                     }
                 });
             }
