@@ -34,6 +34,10 @@ public class Resources {
         public static final int add_96_blue = 0x7f070072;
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
+        public static final int bg_event_type_activity = 0x7f070095;
+        public static final int bg_event_type_component = 0x7f070096;
+        public static final int bg_event_type_drawer_view = 0x7f070097;
+        public static final int bg_event_type_view = 0x7f070099;
         public static final int bg_round_light_grey = 0x7f0700b3;
         public static final int block_96_blue = 0x7f0700be;
         public static final int break_warning_96_red = 0x7f0700cf;
@@ -135,6 +139,7 @@ public class Resources {
         public static final int widget_intent = 0x7f07042e;
         public static final int widget_location = 0x7f070432;
         public static final int widget_mediaplayer = 0x7f070433;
+        public static final int widget_module = 0x7f070434;
         public static final int widget_network_request = 0x7f070435;
         public static final int widget_objectanimator = 0x7f070436;
         public static final int widget_shared_preference = 0x7f07043c;
