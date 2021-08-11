@@ -541,9 +541,11 @@ public class Dp {
 
         try {
             ArrayList<String> args = new ArrayList<>();
-            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION, BuildSettings.SETTING_JAVA_VERSION_1_7));
+            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
+                    BuildSettings.SETTING_JAVA_VERSION_1_7));
             args.add("-nowarn");
-            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS, "false").equals("true")) {
+            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
                 args.add("-deprecation");
             }
             args.add("-d");
@@ -553,8 +555,12 @@ public class Dp {
             args.add("-proc:none");
             args.add("-sourcepath");
             args.add(f.y);
-            args.add(f.o);
-            args.add(f.q);
+            if (FileUtil.isExistFile(f.o)) {
+                args.add(f.o);
+            }
+            if (FileUtil.isExistFile(f.q)) {
+                args.add(f.q);
+            }
             if (FileUtil.isExistFile(fpu.getPathJava(f.b))) {
                 args.add(fpu.getPathJava(f.b));
             }
@@ -565,15 +571,23 @@ public class Dp {
                 args.add(fpu.getPathService(f.b));
             }
 
+            ArrayList<String> rJavaFiles = new ArrayList<>();
+
             /* Adding built-in libraries' R.java files */
             for (Jp library : n.a()) {
                 if (library.c()) {
-                    args.add(f.v + File.separator + library.b().replace(".", File.separator) + File.separator + "R.java");
+                    rJavaFiles.add(f.v + File.separator + library.b().replace(".", File.separator) + File.separator + "R.java");
                 }
             }
 
             /* Adding local libraries' R.java files */
-            args.addAll(mll.getGenLocalLibrary());
+            rJavaFiles.addAll(mll.getGenLocalLibrary());
+
+            for (String rJavaFile : rJavaFiles) {
+                if (!args.contains(rJavaFile)) {
+                    args.add(rJavaFile);
+                }
+            }
 
             /* Start compiling */
             org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
