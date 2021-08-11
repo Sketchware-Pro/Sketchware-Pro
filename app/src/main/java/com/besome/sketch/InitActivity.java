@@ -251,6 +251,8 @@ public class InitActivity extends BaseAppCompatActivity {
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.init_language_setting_dialog_message));
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> toLanguageActivity());
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel), v -> {
+            // Let's say we've shown the Video Guide already
+            sharedPreferenceP1.a("P1I17", (Object) false);
             continueToMainActivity();
             dialog.dismiss();
         });
@@ -322,6 +324,7 @@ public class InitActivity extends BaseAppCompatActivity {
         } else if (!j()) {
             showLanguageSettingsDialog();
         } else if (new oB().e(wq.l())) {
+            /* /Internal storage/sketchware/localization/strings.xml exists, let's skip language setup */
             continueToMainActivity();
         } else {
             showLanguageSettingsDialog();
