@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import mod.SketchwareUtil;
@@ -135,8 +136,9 @@ public class Helper {
             }
         }
 
-        directories.sort(String.CASE_INSENSITIVE_ORDER);
-        files.sort(String.CASE_INSENSITIVE_ORDER);
+        // ignore the warnings, we need this for compatibility with pre-API level 24
+        Collections.sort(directories, String.CASE_INSENSITIVE_ORDER);
+        Collections.sort(files, String.CASE_INSENSITIVE_ORDER);
         paths.clear();
         paths.addAll(directories);
         paths.addAll(files);
