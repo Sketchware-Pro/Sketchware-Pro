@@ -73,7 +73,7 @@ public class Helper {
 
     public static void applyRipple(Context context, View view) {
         TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(16843868, typedValue, true);
+        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, typedValue, true);
 
         view.setBackgroundResource(typedValue.resourceId);
         view.setClickable(true);
