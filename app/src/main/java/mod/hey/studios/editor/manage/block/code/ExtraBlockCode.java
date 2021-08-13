@@ -16,92 +16,96 @@ import mod.hey.studios.editor.manage.block.v2.BlockLoader;
  * 6.3.0
  */
 public class ExtraBlockCode {
-
-    public Fx fx;
-
-    public ExtraBlockCode(Fx var1) {
-        this.fx = var1;
-    }
-
-    public int getBlockType(BlockBean var1, int var2) {
-        int var3;
-        if (var1.getParamClassInfo().get(var2).b("boolean")) {
-            var3 = 0;
-        } else if (var1.getParamClassInfo().get(var2).b("double")) {
-            var3 = 1;
-        } else if (var1.getParamClassInfo().get(var2).b("String")) {
-            var3 = 2;
-        } else {
-            var3 = 3;
-        }
-
-        return var3;
-    }
-
-    //changed 6.3.0
-    public String getCodeExtraBlock(BlockBean var1, String var2) {
-        ArrayList<String> var4 = new ArrayList<>();
-
-        for (int var3 = 0; var3 < var1.parameters.size(); ++var3) {
-            switch (this.getBlockType(var1, var3)) {
-                case 0:
-                    if (!var1.parameters.get(var3).isEmpty()) {
-                        var4.add(this.fx.a(var1.parameters.get(var3), this.getBlockType(var1, var3), var1.opCode));
-                    } else {
-                        var4.add("true");
-                    }
-                    break;
-                case 1:
-                    if (!var1.parameters.get(var3).isEmpty()) {
-                        var4.add(this.fx.a(var1.parameters.get(var3), this.getBlockType(var1, var3), var1.opCode));
-                    } else {
-                        var4.add("0");
-                    }
-                    break;
-                case 2:
-                    if (!var1.parameters.get(var3).isEmpty()) {
-                        var4.add(this.fx.a(var1.parameters.get(var3), this.getBlockType(var1, var3), var1.opCode));
-                    } else {
-                        var4.add("\"\"");
-                    }
-                    break;
-                default:
-                    if (!var1.parameters.get(var3).isEmpty()) {
-                        var4.add(this.fx.a(var1.parameters.get(var3), this.getBlockType(var1, var3), var1.opCode));
-                    } else {
-                        var4.add("");
-                    }
-            }
-        }
-
-        if (var1.subStack1 >= 0) {
-            var4.add(this.fx.a(String.valueOf(var1.subStack1), var2));
-        } else {
-            var4.add(" ");
-        }
-
-        if (var1.subStack2 >= 0) {
-            var4.add(this.fx.a(String.valueOf(var1.subStack2), var2));
-        } else {
-            var4.add(" ");
-        }
-
-        ExtraBlockInfo var5 = BlockLoader.getBlockInfo(var1.opCode);
-
-        //6.3.0
-        if (var5.isMissing) {
-            var5 = BlockLoader.getBlockFromProject(fx.e.sc_id, var1.opCode);
-        }
-
-        String var6;
-        if (var4.size() > 0) {
-            var6 = String.format(var5.getCode(), var4.toArray(new Object[0]));
-        } else if (!var5.getCode().isEmpty()) {
-            var6 = var5.getCode();
-        } else {
-            var6 = "";
-        }
-
-        return var6;
-    }
+	public Fx fx;
+	
+	public ExtraBlockCode(Fx mfx) {
+		fx = mfx;
+	}
+	
+	public int getBlockType(BlockBean blockBean, int i) {
+		int blockType;
+		if (blockBean.getParamClassInfo().get(i).b("boolean")) {
+			blockType = 0;
+		} else if (blockBean.getParamClassInfo().get(i).b("double")) {
+			blockType = 1;
+		} else if (blockBean.getParamClassInfo().get(i).b("String")) {
+			blockType = 2;
+		} else {
+			blockType = 3;
+		}
+		
+		return blockType;
+	}
+	
+	//changed 6.3.0
+	public String getCodeExtraBlock(BlockBean blockBean, String str) {
+		try {
+			ArrayList<String> arrayList = new ArrayList<>();
+			
+			for (int i = 0; i < blockBean.parameters.size(); i++) {
+				int blockType = getBlockType(blockBean, i);
+				
+				switch (blockType) {
+					case 0:
+					if (((String) blockBean.parameters.get(i)).isEmpty()) {
+						arrayList.add("true");
+					} else {
+						arrayList.add(fx.a((String) blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
+					}
+					break;
+					case 1:
+					if (((String) blockBean.parameters.get(i)).isEmpty()) {
+						arrayList.add("0");
+					} else {
+						arrayList.add(fx.a((String) blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
+					}
+					break;
+					case 2:
+					if (((String) blockBean.parameters.get(i)).isEmpty()) {
+						arrayList.add("\"\"");
+					} else {
+						arrayList.add(fx.a((String) blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
+					}
+					break;
+					default:
+					if (((String) blockBean.parameters.get(i)).isEmpty()) {
+						arrayList.add("");
+					} else {
+						arrayList.add(fx.a((String) blockBean.parameters.get(i), getBlockType(blockBean, i), blockBean.opCode));
+					}
+				}
+			}
+			
+			if (blockBean.subStack1 >= 0) {
+				arrayList.add(fx.a(String.valueOf(blockBean.subStack1), str));
+			} else {
+				arrayList.add(" ");
+			}
+			if (blockBean.subStack2 >= 0) {
+				arrayList.add(fx.a(String.valueOf(blockBean.subStack2), str));
+			} else {
+				arrayList.add(" ");
+			}
+			
+			ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(blockBean.opCode);
+			
+			//6.3.0
+			if (blockInfo.isMissing) {
+				blockInfo = BlockLoader.getBlockFromProject(fx.e.sc_id, blockBean.opCode);
+			}
+			
+			String code = blockInfo.getCode();
+			for (int i = 0; i < arrayList.size(); i++) {
+				String parameter = (String) arrayList.get(i);
+				code = code.replace("%".concat(String.valueOf(i + 1).concat("$s")), parameter);
+				code = code.replaceFirst("%s", parameter);
+			}
+			return code;
+		} catch (Exception error) {
+			StringBuilder sb = new StringBuilder("/* Error: ");
+			sb.append(error.toString());
+			sb.append("*/");
+			return sb.toString();
+		}
+	}
 }
