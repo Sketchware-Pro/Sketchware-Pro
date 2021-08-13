@@ -102,6 +102,7 @@ import mod.hey.studios.project.stringfog.ManageStringfogActivity;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
+import mod.hilal.saif.activities.tools.BlocksManager;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.util.LogUtil;
 import mod.nethical.mod.CleanAsyncTask;
@@ -878,6 +879,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         Intent intent = new Intent(getApplicationContext(), ManageAssetsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", l);
+        startActivity(intent);
+    }
+
+    /**
+     * Opens {@link BlocksManager}.
+     */
+    public void toBlocksManager() {
+        Intent intent = new Intent(getApplicationContext(), BlocksManager.class);
         startActivity(intent);
     }
 
