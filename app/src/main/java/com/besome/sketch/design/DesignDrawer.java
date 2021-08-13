@@ -57,6 +57,19 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         return a;
     }
 
+    public final DrawerItem a(int tag, boolean useSeparator, int iconResId, String title, String description) {
+        DrawerItem a = new DrawerItem(p, tag);
+        a.setContent(iconResId, title, description);
+        a.setTag(tag);
+        a.setOnClickListener(this);
+        a.setSeparatorVisibility(useSeparator);
+        a.setSubSeparatorVisibility(!useSeparator);
+        if (tag == 19) {
+            a.setSubSeparatorVisibility(false);
+        }
+        return a;
+    }
+
     public final void a(Context context) {
         p = context;
         wB.a(context, this, Resources.layout.design_drawer);
@@ -138,6 +151,14 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.drawable.file_48_blue,
                 Resources.string.text_title_menu_assets,
                 Resources.string.text_subtitle_menu_assets
+        ));
+        /* Add Block Manager */
+        q.addView(a(
+                22,
+                false,
+                Resources.drawable.block_96_blue,
+                "Block Manager",
+                "Manage your own blocks to use in Logic Editor"
         ));
         /* Add Permission Manager */
         q.addView(a(
@@ -296,6 +317,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
                     case 21:
                         designActivity.toCustomBlocks();
+                        return;
+
+                    case 22:
+                        designActivity.toBlocksManager();
                         return;
 
                     case 2:
