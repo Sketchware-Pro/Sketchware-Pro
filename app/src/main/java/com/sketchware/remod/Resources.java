@@ -95,6 +95,7 @@ public class Resources {
         public static final int ic_screen_rotation_grey600_24dp = 0x7f070297;
         public static final int ic_sound_wave_48dp = 0x7f0702a5;
         public static final int ic_undo_white_48dp = 0x7f0702b6;
+        public static final int icon_checkbox_white_96 = 0x7f0702c6;
         public static final int icon_file_white_96 = 0x7f0702cb;
         public static final int insert_white_space_48 = 0x7f0702e4;
         public static final int keyboard_48 = 0x7f0702e9;
@@ -396,6 +397,7 @@ public class Resources {
         public static final int tv_warning = 0x7f08061d;
         public static final int tv_warning_message = 0x7f08061f;
         public static final int tv_wrapcontent = 0x7f080623;
+        public static final int up = 0x7f08062a;
         public static final int ver_code = 0x7f080632;
         public static final int ver_name = 0x7f080633;
         public static final int version_code = 0x7f080634;
@@ -482,8 +484,17 @@ public class Resources {
         public static final int progressbar1 = 0x7f0806ff;
         public static final int linear8 = 0x7f080701;
         public static final int edittext1 = 0x7f080702;
+        public static final int background = 0x7f080703;
         public static final int save = 0x7f080710;
+        public static final int listview = 0x7f080721;
+        public static final int backicon = 0x7f080722;
+        public static final int pagetitle = 0x7f080723;
+        public static final int import_export = 0x7f080724;
+        public static final int swap = 0x7f080725;
         public static final int spec = 0x7f080729;
+        public static final int down = 0x7f08072b;
+        public static final int up_layout = 0x7f08072c;
+        public static final int down_layout = 0x7f08072d;
         public static final int back_ico = 0x7f080730;
         public static final int name_lay = 0x7f080733;
         public static final int select_type = 0x7f080735;
@@ -579,6 +590,7 @@ public class Resources {
         public static final int code_editor_layout_nowrap = 0x7f0b01dd;
         public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
+        public static final int blocks_managers_details = 0x7f0b01e4;
         public static final int block_customview = 0x7f0b01e5;
         public static final int blocks_manager_creator = 0x7f0b01e6;
         public static final int add_new_listener = 0x7f0b01e8;
