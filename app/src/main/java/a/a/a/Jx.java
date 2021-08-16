@@ -491,7 +491,7 @@ public class Jx {
             }
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
-                .equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE)) {
+                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             deprecatedMethods(sb);
         }
         sb.append("}").append(a);
