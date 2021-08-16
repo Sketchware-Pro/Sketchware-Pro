@@ -171,7 +171,9 @@ public class Resources {
         public static final int block_boolean = 0x7f0704a1;
         public static final int block_num = 0x7f0704a2;
         public static final int block_ori = 0x7f0704a3;
+        public static final int block_stop = 0x7f0704a4;
         public static final int block_string = 0x7f0704a5;
+        public static final int if_else = 0x7f0704a6;
         public static final int notes_alt2 = 0x7f0704a8;
         public static final int cpp = 0x7f0704ae;
         public static final int ic_backup = 0x7f0704af;
@@ -310,6 +312,7 @@ public class Resources {
         public static final int menu_view_redo = 0x7f080335;
         public static final int moreblock_create = 0x7f08033a;
         public static final int name = 0x7f080349;
+        public static final int page_title = 0x7f08035e;
         public static final int pane = 0x7f080368;
         public static final int project_buttons = 0x7f08037c;
         public static final int property_contents = 0x7f080387;
@@ -419,6 +422,7 @@ public class Resources {
         public static final int text_cancel = 0x7f080678;
         public static final int text_save = 0x7f080679;
         // WTF
+        public static final int vscroll1 = 0x7f08067f;
         public static final int linear1 = 0x7f080680;
         public static final int linear4 = 0x7f080681;
         public static final int textview3 = 0x7f080682;
@@ -480,7 +484,18 @@ public class Resources {
         public static final int edittext1 = 0x7f080702;
         public static final int save = 0x7f080710;
         public static final int spec = 0x7f080729;
+        public static final int back_ico = 0x7f080730;
+        public static final int name_lay = 0x7f080733;
+        public static final int select_type = 0x7f080735;
+        public static final int type = 0x7f080736;
+        public static final int type_name = 0x7f080738;
+        public static final int hscroll1 = 0x7f08073a;
+        public static final int spec_2lay = 0x7f08073b;
+        public static final int colour_selector = 0x7f08073d;
+        public static final int parameter_holder = 0x7f080740;
+        public static final int spec2 = 0x7f080741;
         public static final int code = 0x7f080742;
+        public static final int reset = 0x7f080745;
         public static final int customimport = 0x7f08074e;
         public static final int parameter = 0x7f080769;
         public static final int separate = 0x7f08076c;
@@ -565,6 +580,7 @@ public class Resources {
         public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
         public static final int block_customview = 0x7f0b01e5;
+        public static final int blocks_manager_creator = 0x7f0b01e6;
         public static final int add_new_listener = 0x7f0b01e8;
         public static final int manage_proguard = 0x7f0b01ea;
         public static final int manage_stringfog = 0x7f0b01ee;
