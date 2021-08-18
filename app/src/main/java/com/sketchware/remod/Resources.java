@@ -385,6 +385,7 @@ public class Resources {
         public static final int tv_matchparent = 0x7f08052b;
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
+        public static final int tv_release_note = 0x7f080577;
         public static final int tv_root_title = 0x7f080589;
         public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
