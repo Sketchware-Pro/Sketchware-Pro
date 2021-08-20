@@ -226,6 +226,7 @@ public class Resources {
         public static final int container = 0x7f0800d3;
         public static final int contents = 0x7f0800d6;
         public static final int custom_view = 0x7f0800dd;
+        public static final int cv_shared_blocks = 0x7f0800e7;
         public static final int desc = 0x7f0800f3;
         public static final int design_actionbar_titleopen_drawer = 0x7f0800f5;
         public static final int design_option_menu_title_save_project = 0x7f0800fb;
@@ -285,6 +286,7 @@ public class Resources {
         public static final int layout_description = 0x7f08026a;
         public static final int layout_export_data = 0x7f080271;
         public static final int layout_export_src = 0x7f080272;
+        public static final int layout_favorite = 0x7f080273;
         public static final int layout_img_icon = 0x7f080279;
         public static final int layout_input_file_picker = 0x7f08027d;
         public static final int layout_inputs = 0x7f08027e;
@@ -329,6 +331,7 @@ public class Resources {
         public static final int root = 0x7f0803bd;
         public static final int save_button = 0x7f0803c1;
         public static final int scroll_view = 0x7f0803cc;
+        public static final int scv = 0x7f0803cf;
         public static final int sdialog_root = 0x7f0803d0;
         public static final int separator = 0x7f0803e0;
         public static final int social_fb = 0x7f0803ff;
@@ -365,6 +368,7 @@ public class Resources {
         public static final int tv_apk_path = 0x7f080485;
         public static final int tv_apk_url = 0x7f080486;
         public static final int tv_apk_url_expire = 0x7f080487;
+        public static final int tv_block_collection = 0x7f080494;
         public static final int tv_block_name = 0x7f080495;
         public static final int tv_change_icon = 0x7f08049b;
         public static final int tv_code = 0x7f0804a8;
@@ -387,6 +391,7 @@ public class Resources {
         public static final int tv_name = 0x7f080537;
         public static final int tv_release_note = 0x7f080577;
         public static final int tv_root_title = 0x7f080589;
+        public static final int tv_shared_blocks = 0x7f08059e;
         public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
         public static final int tv_sub_title = 0x7f0805b6;
@@ -509,6 +514,7 @@ public class Resources {
         public static final int code = 0x7f080742;
         public static final int reset = 0x7f080745;
         public static final int customimport = 0x7f08074e;
+        public static final int new_button = 0x7f080768;
         public static final int parameter = 0x7f080769;
         public static final int separate = 0x7f08076c;
         public static final int sw_pg_debug = 0x7f08076d;
@@ -543,6 +549,7 @@ public class Resources {
         public static final int fr_logic_list_item_button = 0x7f0b0067;
         public static final int fr_logic_list_item_buttons = 0x7f0b0068;
         public static final int init = 0x7f0b0086;
+        public static final int logic_editor_drawer = 0x7f0b00a4;
         public static final int logic_popup_add_component_temp = 0x7f0b00a7;
         public static final int main = 0x7f0b00ad;
         public static final int main_drawer_header = 0x7f0b00af;
@@ -727,6 +734,7 @@ public class Resources {
         public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
         public static final int logic_editor_more_block_dialog_description_goback = 0x7f0e061c;
         public static final int logic_editor_more_block_dialog_message_confirm_goback = 0x7f0e061d;
+        public static final int logic_editor_title_block_collection = 0x7f0e062f;
         public static final int logic_editor_title_enter_number_value = 0x7f0e0631;
         public static final int logic_editor_title_enter_string_value = 0x7f0e0632;
         public static final int logic_list_menu_add_to_collection = 0x7f0e0668;
@@ -792,6 +800,7 @@ public class Resources {
         public static final int property_group_event = 0x7f0e0761;
         public static final int property_group_recent = 0x7f0e0762;
         public static final int property_description_edittext_ime_options = 0x7f0e075b;
+        public static final int shared_blocks_list_title_shared_blocks = 0x7f0e08fe;
         public static final int sign_apk_title_export_apk_file = 0x7f0e097c;
         public static final int slack_url_primary = 0x7f0e0981;
         public static final int slack_url_secondary = 0x7f0e0982;
