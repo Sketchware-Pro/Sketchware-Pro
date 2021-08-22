@@ -7526,15 +7526,15 @@
     <public type="style" name="Base.V21.Theme.AppCompat.Light" id="0x7f0f0080" />
     <public type="style" name="Base.V21.Theme.AppCompat.Light.Dialog" id="0x7f0f0081" />
     <public type="style" name="Base.V21.ThemeOverlay.AppCompat.Dialog" id="0x7f0f0082" />
-    <public name="Base.V22.Theme.AppCompat" id="0x7f0f0083" type="style" />
-    <public name="Base.V22.Theme.AppCompat.Light" id="0x7f0f0084" type="style" />
-    <public name="Base.V23.Theme.AppCompat" id="0x7f0f0085" type="style" />
-    <public name="Base.V23.Theme.AppCompat.Light" id="0x7f0f0086" type="style" />
-    <public name="Base.V26.Theme.AppCompat" id="0x7f0f0087" type="style" />
-    <public name="Base.V26.Theme.AppCompat.Light" id="0x7f0f0088" type="style" />
-    <public name="Base.V26.Widget.AppCompat.Toolbar" id="0x7f0f0089" type="style" />
-    <public name="Base.V28.Theme.AppCompat" id="0x7f0f008a" type="style" />
-    <public name="Base.V28.Theme.AppCompat.Light" id="0x7f0f008b" type="style" />
+    <public type="style" name="Base.V22.Theme.AppCompat" id="0x7f0f0083" />
+    <public type="style" name="Base.V22.Theme.AppCompat.Light" id="0x7f0f0084" />
+    <public type="style" name="Base.V23.Theme.AppCompat" id="0x7f0f0085" />
+    <public type="style" name="Base.V23.Theme.AppCompat.Light" id="0x7f0f0086" />
+    <public type="style" name="Base.V26.Theme.AppCompat" id="0x7f0f0087" />
+    <public type="style" name="Base.V26.Theme.AppCompat.Light" id="0x7f0f0088" />
+    <public type="style" name="Base.V26.Widget.AppCompat.Toolbar" id="0x7f0f0089" />
+    <public type="style" name="Base.V28.Theme.AppCompat" id="0x7f0f008a" />
+    <public type="style" name="Base.V28.Theme.AppCompat.Light" id="0x7f0f008b" />
     <public type="style" name="Base.V7.Theme.AppCompat" id="0x7f0f008c" />
     <public type="style" name="Base.V7.Theme.AppCompat.Dialog" id="0x7f0f008d" />
     <public type="style" name="Base.V7.Theme.AppCompat.Light" id="0x7f0f008e" />
@@ -7565,7 +7565,7 @@
     <public type="style" name="Base.Widget.AppCompat.CompoundButton.CheckBox" id="0x7f0f00a7" />
     <public type="style" name="Base.Widget.AppCompat.CompoundButton.RadioButton" id="0x7f0f00a8" />
     <public type="style" name="Base.Widget.AppCompat.CompoundButton.Switch" id="0x7f0f00a9" />
-    <public name="Base.Widget.AppCompat.DrawerArrowToggle" id="0x7f0f00aa" type="style" />
+    <public type="style" name="Base.Widget.AppCompat.DrawerArrowToggle" id="0x7f0f00aa" />
     <public type="style" name="Base.Widget.AppCompat.DrawerArrowToggle.Common" id="0x7f0f00ab" />
     <public type="style" name="Base.Widget.AppCompat.DropDownItem.Spinner" id="0x7f0f00ac" />
     <public type="style" name="Base.Widget.AppCompat.EditText" id="0x7f0f00ad" />
@@ -7630,8 +7630,8 @@
     <public type="style" name="Platform.ThemeOverlay.AppCompat.Light" id="0x7f0f00e8" />
     <public type="style" name="Platform.V21.AppCompat" id="0x7f0f00e9" />
     <public type="style" name="Platform.V21.AppCompat.Light" id="0x7f0f00ea" />
-    <public name="Platform.V25.AppCompat" id="0x7f0f00eb" type="style" />
-    <public name="Platform.V25.AppCompat.Light" id="0x7f0f00ec" type="style" />
+    <public type="style" name="Platform.V25.AppCompat" id="0x7f0f00eb" />
+    <public type="style" name="Platform.V25.AppCompat.Light" id="0x7f0f00ec" />
     <public type="style" name="Platform.Widget.AppCompat.Spinner" id="0x7f0f00ed" />
     <public type="style" name="RtlOverlay.DialogWindowTitle.AppCompat" id="0x7f0f00ee" />
     <public type="style" name="RtlOverlay.Widget.AppCompat.ActionBar.TitleItem" id="0x7f0f00ef" />
