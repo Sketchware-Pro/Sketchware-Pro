@@ -1,5 +1,6 @@
 package mod.hey.studios.moreblock;
 
+import a.a.a.dt;
 import android.util.Pair;
 import android.widget.RadioGroup;
 
@@ -92,9 +93,15 @@ public class ReturnMoreblockManager {
         }
     }
 
-    public static String getMbTypeFromRadioButton(RadioGroup radioGroup) {
+    public static String getMbTypeFromRadioButton(RadioGroup radioGroup, dt dtVar) {
         String type;
-        switch (radioGroup.getCheckedRadioButtonId()) {
+        int id = radioGroup.getCheckedRadioButtonId();
+        if (id == 1) {
+            dtVar.cusTb = true;
+            return "v|" + dtVar.cusTet.getText().toString();
+        }
+        dtVar.cusTb = false;
+        switch (id) {
             case 2131232434:
                 type = "s";
                 break;
