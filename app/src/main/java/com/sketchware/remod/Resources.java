@@ -89,6 +89,7 @@ public class Resources {
         public static final int ic_more_vert_white_24dp = 0x7f07025f;
         public static final int ic_picture_48dp = 0x7f070273;
         public static final int ic_redo_white_48dp = 0x7f070283;
+        public static final int ic_remove_grey600_24dp = 0x7f070287;
         public static final int ic_reset_color_32dp = 0x7f07028a;
         public static final int ic_screen_landscape_grey600_24dp = 0x7f070295;
         public static final int ic_screen_portrait_grey600_24dp = 0x7f070296;
@@ -535,6 +536,25 @@ public class Resources {
         public static final int recyclerview1 = 0x7f080788;
         public static final int recyclerview2 = 0x7f080789;
         public static final int tv_loading_desc = 0x7f08078a;
+        public static final int make_block_layout = 0x7f0b00b2;
+        public static final int radio_mb_type = 0x7f0806b0;
+        public static final int radio_mb_type_void = 0x7f0806b1;
+        public static final int radio_mb_type_string = 0x7f0806b2;
+        public static final int radio_mb_type_number = 0x7f0806b3;
+        public static final int radio_mb_type_boolean = 0x7f0806b4;
+        public static final int var_type_spinner = 0x7f080631;
+        public static final int remove_area = 0x7f0803b0;
+        public static final int ti_name = 0x7f080451;
+        public static final int ti_label = 0x7f08044f;
+        public static final int ti_variable_name = 0x7f080459;
+        public static final int tv_title_blockname = 0x7f0805cc;
+        public static final int tv_title_add_variable = 0x7f0805c4;
+        public static final int remove_area = 0x7f0803b0;
+        public static final int ed_label = 0x7f08011e;
+        public static final int ed_name = 0x7f08011f;
+        public static final int ed_variable_name = 0x7f080123;
+        public static final int add_label = 0x7f080025;
+        public static final int add_variable = 0x7f080026;
     }
 
     public static final class layout {
@@ -731,9 +751,16 @@ public class Resources {
         public static final int facebook_url = 0x7f0e05b5;
         public static final int init_language_setting_dialog_message = 0x7f0e05cb;
         public static final int language_message_confirm_delete = 0x7f0e05fa;
+        public static final int logic_editor_message_name_requied = 0x7f0e0616;
         public static final int logic_editor_more_block_actionbar_title_create_more_block = 0x7f0e061a;
+        public static final int logic_editor_more_block_button_add = 0x7f0e061b;
         public static final int logic_editor_more_block_dialog_description_goback = 0x7f0e061c;
         public static final int logic_editor_more_block_dialog_message_confirm_goback = 0x7f0e061d;
+        public static final int logic_editor_more_block_hint_enter_block_label = 0x7f0e061e;
+        public static final int logic_editor_more_block_hint_enter_new_block_name = 0x7f0e061f;
+        public static final int logic_editor_more_block_hint_enter_variable_name = 0x7f0e0620;
+        public static final int logic_editor_more_block_title_add_variable = 0x7f0e0622;
+        public static final int logic_editor_more_block_title_name_of_block = 0x7f0e0624;
         public static final int logic_editor_title_block_collection = 0x7f0e062f;
         public static final int logic_editor_title_enter_number_value = 0x7f0e0631;
         public static final int logic_editor_title_enter_string_value = 0x7f0e0632;
