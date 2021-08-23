@@ -711,7 +711,8 @@ public class yq {
             externalPathTag.a("", "name", "external_files");
             externalPathTag.a("", "path", ".");
             pathsTag.a(externalPathTag);
-            srcCodeBeans.add(new SrcCodeBean("provider_paths.xml", pathsTag.b()));
+            srcCodeBeans.add(new SrcCodeBean("provider_paths.xml",
+                    CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.b())));
         }
 
         for (SrcCodeBean bean : srcCodeBeans) {
@@ -736,7 +737,9 @@ public class yq {
                 // if p3 is false, then "translatable="false" will be added
                 mx.a("google_maps_key", iCVar.e().data, false);
             }
-            L.b(w + File.separator + "values" + File.separator + "secrets.xml", mx.a());
+            String filePath = "values/secrets.xml";
+            L.b(w + File.separator + filePath,
+                    CommandBlock.applyCommands(filePath, mx.a()));
         }
         h();
     }
