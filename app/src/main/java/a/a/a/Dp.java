@@ -2,9 +2,9 @@ package a.a.a;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.android.tools.r8.D8;
@@ -22,12 +22,14 @@ import java.io.PrintWriter;
 import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.KeyStoreFileManager;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.builder.DexMerge;
 import mod.agus.jcoderz.command.ProcessingFiles;
 import mod.agus.jcoderz.dex.Dex;
@@ -49,7 +51,7 @@ import proguard.ProGuard;
 
 public class Dp {
 
-    public final static String TAG = "AppBuilder";
+    public static final String TAG = "AppBuilder";
     /**
      * Default minSdkVersion (?)
      */
@@ -288,54 +290,46 @@ public class Dp {
                 D8.main(args.toArray(new String[0]));
                 LogUtil.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
-                LogUtil.e(TAG, "D8 error: " + e.getMessage(), e);
+                LogUtil.e(TAG, "D8 failed to process .class files", e);
                 throw e;
             }
         } else {
             Main.dexOutputArrays = new ArrayList<>();
             Main.dexOutputFutures = new ArrayList<>();
             long savedTimeMillis = System.currentTimeMillis();
-            ArrayList<String> args = new ArrayList<>();
-            args.add("--debug");
-            args.add("--verbose");
-            args.add("--multi-dex");
-            args.add("--output=" + f.t);
-            if (proguard.isProguardEnabled()) {
-                args.add(f.classes_proguard);
-            } else {
-                args.add(f.u);
-            }
+            List<String> args = Arrays.asList(
+                    "--debug",
+                    "--verbose",
+                    "--multi-dex",
+                    "--output=" + f.t,
+                    proguard.isProguardEnabled() ? f.classes_proguard : f.u
+            );
             try {
                 LogUtil.d(TAG, "Running Dx with these arguments: " + args);
                 Main.main(args.toArray(new String[0]));
                 LogUtil.d(TAG, "Dx took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
-                LogUtil.e(TAG, "Dx error: " + e.getMessage(), e);
+                LogUtil.e(TAG, "Dx failed to process .class files", e);
                 throw e;
             }
         }
         findExtraDexes();
     }
 
+    /**
+     * @return Classpath for regular building of the project
+     */
     public final String d() {
         StringBuilder classpath = new StringBuilder();
 
         /* Add android.jar */
-        classpath.append(f.v)
-                .append(":")
-                .append(o);
+        classpath.append(o);
 
         /* Add HTTP legacy files if wanted */
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY,
                 BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            classpath.append(":")
-                    .append(l.getAbsolutePath())
-                    .append(File.separator)
-                    .append("libs")
-                    .append(File.separator)
-                    .append("http-legacy-android-28")
-                    .append(File.separator)
-                    .append("classes.jar");
+            classpath.append(":").append(l.getAbsolutePath()).append(File.separator).append(m).append(File.separator)
+                    .append("http-legacy-android-28").append(File.separator).append("classes.jar");
         }
 
         /* Include MultiDex library if needed */
@@ -344,13 +338,14 @@ public class Dp {
             minSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
                     "21"));
         } catch (NumberFormatException e) {
+            SketchwareUtil.toastError("Invalid minSdkVersion set in Project Settings, using 21");
             minSdkVersion = 21;
         }
         if (minSdkVersion < 21) {
             classpath.append(":")
                     .append(l.getAbsolutePath())
                     .append(File.separator)
-                    .append("libs")
+                    .append(m)
                     .append(File.separator)
                     .append("multidex-2.0.1")
                     .append(File.separator)
@@ -361,22 +356,13 @@ public class Dp {
         if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
                 BuildSettings.SETTING_JAVA_VERSION_1_7)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
-            classpath.append(":")
-                    .append(l.getAbsolutePath())
-                    .append(File.separator)
-                    .append("core-lambda-stubs.jar");
+            classpath.append(":").append(l.getAbsolutePath()).append(File.separator).append("core-lambda-stubs.jar");
         }
 
         /* Add used built-in libraries to the classpath */
         for (Jp library : n.a()) {
-            classpath.append(":")
-                    .append(l.getAbsolutePath())
-                    .append(File.separator)
-                    .append("libs")
-                    .append(File.separator)
-                    .append(library.a())
-                    .append(File.separator)
-                    .append("classes.jar");
+            classpath.append(":").append(l.getAbsolutePath()).append(File.separator).append(m).append(File.separator)
+                    .append(library.a()).append(File.separator).append("classes.jar");
         }
 
         /* Add local libraries to the classpath */
@@ -388,7 +374,7 @@ public class Dp {
             classpath.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
 
-        /* Add jars from project's classpath */
+        /* Add JARs from project's classpath */
         String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (f.b) + "/files/classpath/";
         ArrayList<String> jars = FileUtil.listFiles(path, "jar");
         classpath.append(":")
@@ -398,19 +384,17 @@ public class Dp {
     }
 
     /**
-     * @return Similar to {@link Dp#d}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
+     * @return Similar to {@link Dp#d()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
      */
     public final String classpath() {
-        StringBuilder baseClasses = new StringBuilder(f.v)
-                .append(":")
-                .append(o);
+        StringBuilder baseClasses = new StringBuilder(o);
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             baseClasses
                     .append(":")
                     .append(l.getAbsolutePath())
                     .append(File.separator)
-                    .append("libs")
+                    .append(m)
                     .append(File.separator)
                     .append("http-legacy-android-28")
                     .append(File.separator)
@@ -423,7 +407,7 @@ public class Dp {
                     .append(":")
                     .append(l.getAbsolutePath())
                     .append(File.separator)
-                    .append("libs")
+                    .append(m)
                     .append(File.separator)
                     .append(builtInLibrary.a())
                     .append(File.separator)
@@ -489,9 +473,9 @@ public class Dp {
     }
 
     /**
-     * Get extra packages used in this project, needed for AAPT/AAPT2.
+     * Get package names of in-use libraries which have resources.
      */
-    public final String e() {
+    public String e() {
         StringBuilder extraPackages = new StringBuilder();
         for (Jp library : n.a()) {
             if (library.c()) {
@@ -502,7 +486,7 @@ public class Dp {
     }
 
     /**
-     * Run Eclipse Compiler to compile Java classes from Java source code
+     * Run Eclipse Compiler to compile Java files.
      *
      * @throws Throwable Thrown when Eclipse has problems compiling
      */
@@ -531,90 +515,62 @@ public class Dp {
             }
         }
 
-        EclipseOutOutputStream outOutputStream = new EclipseOutOutputStream();
-        /* System.out for Eclipse compiler */
-        PrintWriter outWriter = new PrintWriter(outOutputStream);
-
-        EclipseErrOutputStream errOutputStream = new EclipseErrOutputStream();
-        /* System.err for Eclipse compiler */
-        PrintWriter errWriter = new PrintWriter(errOutputStream);
-
-        try {
-            ArrayList<String> args = new ArrayList<>();
-            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
-                    BuildSettings.SETTING_JAVA_VERSION_1_7));
-            args.add("-nowarn");
-            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
-                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-                args.add("-deprecation");
-            }
-            args.add("-d");
-            args.add(f.u);
-            args.add("-cp");
-            args.add(d());
-            args.add("-proc:none");
-            args.add("-sourcepath");
-            args.add(f.y);
-            if (FileUtil.isExistFile(f.o)) {
-                args.add(f.o);
-            }
-            if (FileUtil.isExistFile(f.q)) {
-                args.add(f.q);
-            }
-            if (FileUtil.isExistFile(fpu.getPathJava(f.b))) {
-                args.add(fpu.getPathJava(f.b));
-            }
-            if (FileUtil.isExistFile(fpu.getPathBroadcast(f.b))) {
-                args.add(fpu.getPathBroadcast(f.b));
-            }
-            if (FileUtil.isExistFile(fpu.getPathService(f.b))) {
-                args.add(fpu.getPathService(f.b));
-            }
-
-            ArrayList<String> rJavaFiles = new ArrayList<>();
-
-            /* Adding built-in libraries' R.java files */
-            for (Jp library : n.a()) {
-                if (library.c()) {
-                    rJavaFiles.add(f.v + File.separator + library.b().replace(".", File.separator) + File.separator + "R.java");
+        try (EclipseOutOutputStream outOutputStream = new EclipseOutOutputStream();
+             PrintWriter outWriter = new PrintWriter(outOutputStream);
+             EclipseErrOutputStream errOutputStream = new EclipseErrOutputStream();
+             PrintWriter errWriter = new PrintWriter(errOutputStream)) {
+            try {
+                ArrayList<String> args = new ArrayList<>();
+                args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
+                        BuildSettings.SETTING_JAVA_VERSION_1_7));
+                args.add("-nowarn");
+                if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
+                        BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+                    args.add("-deprecation");
                 }
-            }
-
-            /* Adding local libraries' R.java files */
-            rJavaFiles.addAll(mll.getGenLocalLibrary());
-
-            for (String rJavaFile : rJavaFiles) {
-                if (!args.contains(rJavaFile)) {
-                    args.add(rJavaFile);
+                args.add("-d");
+                args.add(f.u);
+                args.add("-cp");
+                args.add(d());
+                args.add("-proc:none");
+                args.add(f.y);
+                args.add(f.v);
+                String pathJava = fpu.getPathJava(f.b);
+                if (FileUtil.isExistFile(pathJava)) {
+                    args.add(pathJava);
                 }
-            }
+                String pathBroadcast = fpu.getPathBroadcast(f.b);
+                if (FileUtil.isExistFile(pathBroadcast)) {
+                    args.add(pathBroadcast);
+                }
+                String pathService = fpu.getPathService(f.b);
+                if (FileUtil.isExistFile(pathService)) {
+                    args.add(pathService);
+                }
 
-            /* Start compiling */
-            org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
-            LogUtil.d(TAG, "Running Eclipse compiler with these arguments: " + args);
-            main.compile(args.toArray(new String[0]));
+                /* Avoid "package ;" line in that file causing issues while compiling */
+                new File(f.v, "R.java").delete();
 
-            if (main.globalErrorsCount <= 0) {
-                try {
-                    outOutputStream.close();
-                    errOutputStream.close();
-                    outWriter.close();
-                    errWriter.close();
+                /* Start compiling */
+                org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
+                LogUtil.d(TAG, "Running Eclipse compiler with these arguments: " + args);
+                main.compile(args.toArray(new String[0]));
+
+                if (main.globalErrorsCount <= 0) {
                     LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
-                    LogUtil.d(TAG, "System.err of Eclipse compiler: " + k.toString());
-                } catch (IOException ignored) {
+                    LogUtil.d(TAG, "System.err of Eclipse compiler: " + k);
+                    LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+                } else {
+                    throw new zy(k.toString());
                 }
-                LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-            } else {
-                throw new zy(k.toString());
+            } catch (Exception e) {
+                LogUtil.e(TAG, "Failed to compile Java files", e);
+                throw e;
             }
-        } catch (Exception e) {
-            LogUtil.e(TAG, e.getMessage(), e);
-            throw e;
         }
     }
 
-    public final void findExtraDexes() {
+    private void findExtraDexes() {
         extraDexes = new ArrayList<>();
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(f.t, arrayList);
@@ -625,24 +581,31 @@ public class Dp {
         }
     }
 
-    public final int findLastDexNo() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        FileUtil.listDir(f.t, arrayList);
-        ArrayList<String> arrayList2 = new ArrayList<>();
-        for (String str : arrayList) {
-            if (str.contains("classes") && str.contains(".dex")) {
-                arrayList2.add(Uri.parse(str).getLastPathSegment());
+    /**
+     * @return The highest number after <code>classes</code> in filenames inside {@link yq#t} of the project plus 1.
+     * <p/>
+     * Example: <code>classes.dex</code> and <code>classes2.dex</code> are in {@link yq#t},
+     * so <code>3</code> would be returned
+     */
+    private int findLastDexNo() {
+        ArrayList<String> files = new ArrayList<>();
+        FileUtil.listDir(f.t, files);
+
+        ArrayList<String> dexPaths = new ArrayList<>();
+        for (String file : files) {
+            if (file.contains("classes") && file.contains(".dex")) {
+                dexPaths.add(Uri.parse(file).getLastPathSegment());
             }
         }
-        if (arrayList2.size() == 1 && arrayList2.get(0).equals("classes.dex")) {
+        if (dexPaths.size() == 1 && dexPaths.get(0).equals("classes.dex")) {
             return 2;
         }
-        int i2 = 1;
-        for (String str2 : arrayList2) {
+        int lastDexNo = 1;
+        for (String str2 : dexPaths) {
             String replace = str2.replace("classes", "").replace(".dex", "");
-            i2 = Math.max(i2, replace.isEmpty() ? 1 : java.lang.Integer.parseInt(replace));
+            lastDexNo = Math.max(lastDexNo, replace.isEmpty() ? 1 : Integer.parseInt(replace));
         }
-        return i2 + 1;
+        return lastDexNo + 1;
     }
 
     /**
@@ -653,20 +616,25 @@ public class Dp {
         for (HashMap<String, Object> localLibraries : mll.list) {
             apkBuilder.addResourcesFromJar(new File(localLibraries.get("jarPath").toString()));
         }
-        File file = new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/data/".concat(f.b.concat("/files/native_libs")));
-        if (FileUtil.isExistFile(file.getAbsolutePath())) {
-            apkBuilder.addNativeLibraries(file);
+
+        /* Add project's native libraries */
+        File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(f.b));
+        if (nativeLibrariesDirectory.exists()) {
+            apkBuilder.addNativeLibraries(nativeLibrariesDirectory);
         }
-        for (String nativeLibrary : mll.getNativeLibs()) {
-            apkBuilder.addNativeLibraries(new File(nativeLibrary));
+
+        /* Add Local libraries' native libraries */
+        for (String nativeLibraryDirectory : mll.getNativeLibs()) {
+            apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
         }
+
         for (String extraDex : extraDexes) {
             apkBuilder.addFile(new File(extraDex), Uri.parse(extraDex).getLastPathSegment());
         }
         for (String generatedDex : dexesGenerated) {
             apkBuilder.addFile(new File(generatedDex), Uri.parse(generatedDex).getLastPathSegment());
         }
+
         apkBuilder.setDebugMode(false);
         apkBuilder.sealApk();
     }
@@ -709,36 +677,65 @@ public class Dp {
         }
 
         if (minSdkVersion < 21) {
-            dexes.add(l.getAbsolutePath() + c + "dexs" + c + "multidex-2.0.1" + ".dex");
+            dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + "multidex-2.0.1.dex");
         }
 
         /* Add HTTP legacy files if wanted */
-        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, "false").equals("true")) {
-            dexes.add(l.getAbsolutePath() + c + "dexs" + c + "http-legacy-android-28" + ".dex");
+        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, ProjectSettings.SETTING_GENERIC_VALUE_FALSE)
+                .equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE)) {
+            dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + "http-legacy-android-28.dex");
         }
 
         /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : n.a()) {
-            dexes.add(l.getAbsolutePath() + c + "dexs" + c + builtInLibrary.a() + ".dex");
+            dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + builtInLibrary.a() + ".dex");
         }
 
         /* Add local libraries' main DEX files */
-        for (HashMap<String, Object> localLibrary : mll.list) {
-            String localLibraryName = localLibrary.get("name").toString();
-            if (localLibrary.containsKey("dexPath") && !proguard.libIsProguardFMEnabled(localLibraryName)) {
-                dexes.add(localLibrary.get("dexPath").toString());
+        ArrayList<HashMap<String, Object>> list = mll.list;
+        for (int i1 = 0, listSize = list.size(); i1 < listSize; i1++) {
+            HashMap<String, Object> localLibrary = list.get(i1);
+            Object localLibraryName = localLibrary.get("name");
+
+            if (localLibraryName instanceof String) {
+                Object localLibraryDexPath = localLibrary.get("dexPath");
+
+                if (localLibraryDexPath instanceof String) {
+                    if (!proguard.libIsProguardFMEnabled((String) localLibraryName)) {
+                        dexes.add((String) localLibraryDexPath);
+                        /* Add library's extra DEX files */
+                        File localLibraryDirectory = new File((String) localLibraryDexPath).getParentFile();
+
+                        if (localLibraryDirectory != null) {
+                            File[] localLibraryFiles = localLibraryDirectory.listFiles();
+
+                            if (localLibraryFiles != null) {
+                                for (File localLibraryFile : localLibraryFiles) {
+                                    String filename = localLibraryFile.getName();
+
+                                    if (!filename.equals("classes.dex")
+                                            && filename.startsWith("classes") && filename.endsWith(".dex")) {
+                                        dexes.add(localLibraryFile.getAbsolutePath());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    SketchwareUtil.toastError("Invalid DEX file path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                }
+            } else {
+                SketchwareUtil.toastError("Invalid name of enabled Local library #" + i, Toast.LENGTH_LONG);
             }
         }
 
-        /* Add local libraries' extra DEX files */
-        dexes.addAll(mll.getExtraDexes());
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes2.dex: " + dexes);
         dexLibraries(f.F, dexes);
         LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
-     * Extracts AAPT binaries (if they need to be extracted).
+     * Extracts AAPT/AAPT2 binaries (if they need to be extracted).
      *
      * @throws Exception If anything goes wrong while extracting
      */
