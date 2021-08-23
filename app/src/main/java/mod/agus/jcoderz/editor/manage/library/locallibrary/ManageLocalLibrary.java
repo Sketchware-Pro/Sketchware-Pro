@@ -1,28 +1,35 @@
 package mod.agus.jcoderz.editor.manage.library.locallibrary;
 
 import android.os.Environment;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 public class ManageLocalLibrary {
-    
-    public FilePathUtil fpu = new FilePathUtil();
+
+    private final String projectId;
     public ArrayList<HashMap<String, Object>> list;
-    public String numProj;
 
     public ManageLocalLibrary(String sc_id) {
-        numProj = sc_id;
-        if (FileUtil.isExistFile(fpu.getPathLocalLibrary(numProj))) {
-            list = new Gson().fromJson(FileUtil.readFile(fpu.getPathLocalLibrary(numProj)), Helper.TYPE_MAP_LIST);
+        projectId = sc_id;
+        FilePathUtil filePathUtil = new FilePathUtil();
+        if (FileUtil.isExistFile(filePathUtil.getPathLocalLibrary(projectId))) {
+            try {
+                list = new Gson().fromJson(FileUtil.readFile(filePathUtil.getPathLocalLibrary(projectId)), Helper.TYPE_MAP_LIST);
+            } catch (JsonParseException e) {
+                SketchwareUtil.toastError("Invalid Local library configuration found! Temporarily using none");
+                list = new ArrayList<>();
+            }
         } else {
             list = new ArrayList<>();
         }
@@ -31,9 +38,17 @@ public class ManageLocalLibrary {
     public ArrayList<String> getAssets() {
         ArrayList<String> assets = new ArrayList<>();
 
-        for (HashMap<String, Object> localLibrary : list) {
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
+
             if (localLibrary.containsKey("assetsPath")) {
-                assets.add(localLibrary.get("assetsPath").toString());
+                Object assetsPath = localLibrary.get("assetsPath");
+
+                if (assetsPath instanceof String) {
+                    assets.add((String) assetsPath);
+                } else {
+                    SketchwareUtil.toastError("Invalid assets path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                }
             }
         }
 
@@ -43,8 +58,15 @@ public class ManageLocalLibrary {
     public ArrayList<String> getDexLocalLibrary() {
         ArrayList<String> dexes = new ArrayList<>();
 
-        for (HashMap<String, Object> map : list) {
-            dexes.add(map.get("dexPath").toString());
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
+            Object dexPath = localLibrary.get("dexPath");
+
+            if (dexPath instanceof String) {
+                dexes.add((String) dexPath);
+            } else {
+                SketchwareUtil.toastError("Invalid DEX path of enabled Local library #" + i, Toast.LENGTH_LONG);
+            }
         }
 
         return dexes;
@@ -52,40 +74,38 @@ public class ManageLocalLibrary {
 
     public ArrayList<String> getExtraDexes() {
         ArrayList<String> extraDexes = new ArrayList<>();
-        Iterator<HashMap<String, Object>> iterator = list.iterator();
 
-        while (true) {
-            HashMap<String, Object> next;
-            do {
-                if (!iterator.hasNext()) {
-                    return extraDexes;
-                }
+        for (String localLibraryDexPath : getDexLocalLibrary()) {
+            File dexPath = new File(localLibraryDexPath);
+            if (dexPath.getParentFile() != null) {
+                File[] dexPathFiles = dexPath.getParentFile().listFiles();
 
-                next = iterator.next();
-            } while (!next.containsKey("dexPath"));
-
-            File[] dexPathFiles = (new File(next.get("dexPath").toString())).getParentFile().listFiles();
-
-            if (dexPathFiles != null) {
-                for (File dexPathFile : dexPathFiles) {
-                    if (!dexPathFile.getName().equals("classes.dex")
-                            && dexPathFile.getName().startsWith("classes")
-                            && dexPathFile.getName().endsWith(".dex")) {
-                        extraDexes.add(dexPathFile.getAbsolutePath());
+                if (dexPathFiles != null) {
+                    for (File dexPathFile : dexPathFiles) {
+                        String dexPathFilename = dexPathFile.getName();
+                        if (!dexPathFilename.equals("classes.dex")
+                                && dexPathFilename.startsWith("classes")
+                                && dexPathFilename.endsWith(".dex")) {
+                            extraDexes.add(dexPathFile.getAbsolutePath());
+                        }
                     }
                 }
             }
         }
+
+        return extraDexes;
     }
 
     public ArrayList<String> getGenLocalLibrary() {
         ArrayList<String> genPaths = new ArrayList<>();
 
-        for (HashMap<String, Object> localLibrary : list) {
-            if (localLibrary.containsKey("packageName") && !localLibrary.get("packageName").toString().isEmpty()) {
-                genPaths.add(new File(Environment.getExternalStorageDirectory(), ".sketchware/mysc/" + numProj + "/gen").getAbsolutePath()
-                        + File.separator + localLibrary.get("packageName").toString().replace(".", File.separator)
-                        + File.separator + "R.java");
+        for (String packageName : getPackageNames()) {
+            if (!packageName.isEmpty()) {
+                File projectGenFolder = new File(Environment.getExternalStorageDirectory(),
+                        ".sketchware/mysc/".concat(projectId).concat("/gen"));
+                String rJavaPath = packageName.replace(".", File.separator)
+                        .concat(File.separator).concat("R.java");
+                genPaths.add(new File(projectGenFolder, rJavaPath).getAbsolutePath());
             }
         }
 
@@ -95,11 +115,9 @@ public class ManageLocalLibrary {
     public ArrayList<String> getImportLocalLibrary() {
         ArrayList<String> imports = new ArrayList<>();
 
-        for (HashMap<String, Object> localLibrary : list) {
-            if (localLibrary.containsKey("packageName") && !localLibrary.get("packageName").toString().isEmpty()) {
-                String importToAdd = localLibrary.get("packageName").toString() +
-                        ".*";
-                imports.add(importToAdd);
+        for (String packageName : getPackageNames()) {
+            if (!packageName.isEmpty()) {
+                imports.add(packageName.concat(".*"));
             }
         }
 
@@ -107,63 +125,82 @@ public class ManageLocalLibrary {
     }
 
     public String getJarLocalLibrary() {
-        StringBuilder jarPath = new StringBuilder();
+        StringBuilder classpath = new StringBuilder();
 
-        for (HashMap<String, Object> localLibrary : list) {
-            jarPath.append(":");
-            jarPath.append(localLibrary.get("jarPath").toString());
-        }
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
+            Object jarPath = localLibrary.get("jarPath");
 
-        return jarPath.toString();
-    }
-
-    public String getManifestMerge() {
-        StringBuilder manifestPath = new StringBuilder();
-
-        for (HashMap<String, Object> localLibrary : list) {
-            if (localLibrary.containsKey("manifestPath")) {
-                manifestPath.append(FileUtil.readFile(localLibrary.get("manifestPath").toString()));
-                manifestPath.append("\n");
+            if (jarPath instanceof String) {
+                classpath.append(":");
+                classpath.append((String) jarPath);
+            } else {
+                SketchwareUtil.toastError("Invalid JAR path of enabled Local library #" + i, Toast.LENGTH_LONG);
             }
         }
 
-        return manifestPath.toString();
+        return classpath.toString();
     }
 
     public ArrayList<String> getNativeLibs() {
-        ArrayList<String> nativeLibs = new ArrayList<>();
+        ArrayList<String> nativeLibraryDirectories = new ArrayList<>();
 
-        for (HashMap<String, Object> localLibrary : list) {
-            if (localLibrary.containsKey("dexPath")) {
-                File jniFile = new File((new File(localLibrary.get("dexPath").toString())).getParentFile(), "jni");
-                if (jniFile.exists()) {
-                    nativeLibs.add(jniFile.getAbsolutePath());
+        for (String localLibraryDexPath : getDexLocalLibrary()) {
+            File localLibraryDexFile = new File(localLibraryDexPath);
+            File jniFolder = new File(localLibraryDexFile.getParentFile(), "jni");
+            if (jniFolder.isDirectory()) {
+                nativeLibraryDirectories.add(jniFolder.getAbsolutePath());
+            }
+        }
+
+        return nativeLibraryDirectories;
+    }
+
+    public ArrayList<String> getPackageNames() {
+        ArrayList<String> packageNames = new ArrayList<>();
+
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
+            if (localLibrary.containsKey("packageName")) {
+                Object packageName = localLibrary.get("packageName");
+
+                if (packageName instanceof String) {
+                    packageNames.add((String) packageName);
+                } else {
+                    SketchwareUtil.toastError("Invalid package name of enabled Local library #" + i, Toast.LENGTH_LONG);
                 }
             }
         }
 
-        return nativeLibs;
+        return packageNames;
     }
 
     public String getPackageNameLocalLibrary() {
-        StringBuilder packageName = new StringBuilder();
+        StringBuilder packageNames = new StringBuilder();
 
-        for (HashMap<String, Object> localLibrary : list) {
-            if (localLibrary.containsKey("packageName") && !localLibrary.get("packageName").toString().isEmpty()) {
-                packageName.append(localLibrary.get("packageName").toString());
-                packageName.append(":");
+        for (String packageName : getPackageNames()) {
+            if (!packageName.isEmpty()) {
+                packageNames.append(packageName);
+                packageNames.append(":");
             }
         }
 
-        return packageName.toString();
+        return packageNames.toString();
     }
 
     public ArrayList<String> getPgRules() {
         ArrayList<String> proguardRules = new ArrayList<>();
 
-        for (HashMap<String, Object> localLibrary : list) {
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
             if (localLibrary.containsKey("pgRulesPath")) {
-                proguardRules.add(localLibrary.get("pgRulesPath").toString());
+                Object proguardRulesPath = localLibrary.get("pgRulesPath");
+
+                if (proguardRulesPath instanceof String) {
+                    proguardRules.add((String) proguardRulesPath);
+                } else {
+                    SketchwareUtil.toastError("Invalid ProGuard path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                }
             }
         }
 
@@ -173,9 +210,16 @@ public class ManageLocalLibrary {
     public ArrayList<String> getResLocalLibrary() {
         ArrayList<String> localLibraryRes = new ArrayList<>();
 
-        for (HashMap<String, Object> localLibrary : list) {
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
             if (localLibrary.containsKey("resPath")) {
-                localLibraryRes.add(localLibrary.get("resPath").toString());
+                Object resPath = localLibrary.get("resPath");
+
+                if (resPath instanceof String) {
+                    localLibraryRes.add((String) resPath);
+                } else {
+                    SketchwareUtil.toastError("Invalid res/ folder path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                }
             }
         }
 
