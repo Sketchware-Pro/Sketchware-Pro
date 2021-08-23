@@ -1,35 +1,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/changelogback"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="6dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:focusable="false"
-        android:paddingLeft="4dp"
-        android:paddingTop="8dp"
-        android:paddingRight="4dp"
-        android:paddingBottom="8dp"
-        android:textColor="#008DCD"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/color_primary"
         android:textSize="16sp"
         android:textStyle="bold"
-        tools:text="Title" />
+        tools:text="Sketchware Pro v6.4.0" />
+
+    <TextView
+        android:id="@+id/tv_release_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        tools:text="Released on: ----- (= never ¯\\_(ツ)_/¯)" />
 
     <TextView
         android:id="@+id/tv_sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:focusable="false"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:textColor="#000000"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/primary_text_default_material_light"
         android:textSize="14sp"
-        tools:text="Subtitle" />
+        tools:text="A version that's newer than v6.3.0. That's it." />
 </LinearLayout>

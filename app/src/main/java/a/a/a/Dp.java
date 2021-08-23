@@ -60,13 +60,13 @@ public class Dp {
     public final String b = "28";
     public final String c = File.separator;
     public final String m = "libs";
+    /**
+     * Command(s) to execute after extracting AAPT/AAPT2 (put the filename to index 2 before using)
+     */
+    private final String[] makeExecutableCommand = {"chmod", "700", ""};
     public File aapt2Dir;
     public BuildSettings build_settings;
     public DesignActivity.a buildingDialog;
-    /**
-     * Command(s) to execute after extracting AAPT/AAPT2 (fill in 2 with the file name before using)
-     */
-    public String[] d = {"chmod", "744", ""};
     public Context e;
     public yq f;
     public FilePathUtil fpu;
@@ -541,9 +541,11 @@ public class Dp {
 
         try {
             ArrayList<String> args = new ArrayList<>();
-            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION, BuildSettings.SETTING_JAVA_VERSION_1_7));
+            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
+                    BuildSettings.SETTING_JAVA_VERSION_1_7));
             args.add("-nowarn");
-            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS, "false").equals("true")) {
+            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
                 args.add("-deprecation");
             }
             args.add("-d");
@@ -553,8 +555,12 @@ public class Dp {
             args.add("-proc:none");
             args.add("-sourcepath");
             args.add(f.y);
-            args.add(f.o);
-            args.add(f.q);
+            if (FileUtil.isExistFile(f.o)) {
+                args.add(f.o);
+            }
+            if (FileUtil.isExistFile(f.q)) {
+                args.add(f.q);
+            }
             if (FileUtil.isExistFile(fpu.getPathJava(f.b))) {
                 args.add(fpu.getPathJava(f.b));
             }
@@ -565,15 +571,23 @@ public class Dp {
                 args.add(fpu.getPathService(f.b));
             }
 
+            ArrayList<String> rJavaFiles = new ArrayList<>();
+
             /* Adding built-in libraries' R.java files */
             for (Jp library : n.a()) {
                 if (library.c()) {
-                    args.add(f.v + File.separator + library.b().replace(".", File.separator) + File.separator + "R.java");
+                    rJavaFiles.add(f.v + File.separator + library.b().replace(".", File.separator) + File.separator + "R.java");
                 }
             }
 
             /* Adding local libraries' R.java files */
-            args.addAll(mll.getGenLocalLibrary());
+            rJavaFiles.addAll(mll.getGenLocalLibrary());
+
+            for (String rJavaFile : rJavaFiles) {
+                if (!args.contains(rJavaFile)) {
+                    args.add(rJavaFile);
+                }
+            }
 
             /* Start compiling */
             org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
@@ -729,29 +743,29 @@ public class Dp {
      * @throws Exception If anything goes wrong while extracting
      */
     public void i() throws Exception {
-        String aaptPathInAssets;
-        String aapt2PathInAssets;
-        if (GB.a().toLowerCase().matches("x86")) {
-            aaptPathInAssets = "aapt/aapt-x86";
-            aapt2PathInAssets = "aapt/aapt2-x86";
+        String aaptPathInAssets = "aapt/";
+        String aapt2PathInAssets = "aapt/";
+        if (GB.a().toLowerCase().contains("x86")) {
+            aaptPathInAssets += "aapt-x86";
+            aapt2PathInAssets += "aapt2-x86";
         } else {
-            aaptPathInAssets = "aapt/aapt-arm";
-            aapt2PathInAssets = "aapt/aapt2-arm";
+            aaptPathInAssets += "aapt-arm";
+            aapt2PathInAssets += "aapt2-arm";
         }
         try {
-            /* Check if we need to update aapt */
+            /* Check if we need to update AAPT's binary */
             if (a(aaptPathInAssets, i.getAbsolutePath())) {
-                d[2] = i.getAbsolutePath();
-                j.a(d);
+                makeExecutableCommand[2] = i.getAbsolutePath();
+                j.a(makeExecutableCommand);
             }
 
-            /* Check if we need to update aapt2 */
+            /* Check if we need to update AAPT2's binary */
             if (a(aapt2PathInAssets, aapt2Dir.getAbsolutePath())) {
-                d[2] = aapt2Dir.getAbsolutePath();
-                j.a(d);
+                makeExecutableCommand[2] = aapt2Dir.getAbsolutePath();
+                j.a(makeExecutableCommand);
             }
         } catch (Exception e) {
-            LogUtil.e(TAG, e.getMessage(), e);
+            LogUtil.e(TAG, "Failed to extract AAPT/AAPT2 binaries", e);
             throw new By("Couldn't extract AAPT binaries! Message: " + e.getMessage());
         }
     }
@@ -781,7 +795,9 @@ public class Dp {
         String testkeyDirectoryPath = new File(l, "testkey").getAbsolutePath();
         /* If necessary, update android.jar.zip */
         if (a(m + File.separator + androidJarArchiveName, androidJarPath)) {
-            buildingDialog.c("Extracting built-in android.jar...");
+            if (buildingDialog != null) {
+                buildingDialog.c("Extracting built-in android.jar...");
+            }
             /* Delete android.jar */
             g.c(l.getAbsolutePath() + c + "android.jar");
             /* Extract android.jar.zip to android.jar */
@@ -789,7 +805,9 @@ public class Dp {
         }
         /* If necessary, update dexs.zip */
         if (a(m + File.separator + dexsArchiveName, dexsArchivePath)) {
-            buildingDialog.c("Extracting built-in libraries' DEX files...");
+            if (buildingDialog != null) {
+                buildingDialog.c("Extracting built-in libraries' DEX files...");
+            }
             /* Delete the directory */
             g.b(dexsDirectoryPath);
             /* Create the directories */
@@ -799,7 +817,9 @@ public class Dp {
         }
         /* If necessary, update libs.zip */
         if (a(m + File.separator + libsArchiveName, libsArchivePath)) {
-            buildingDialog.c("Extracting built-in libraries' resources...");
+            if (buildingDialog != null) {
+                buildingDialog.c("Extracting built-in libraries' resources...");
+            }
             /* Delete the directory */
             g.b(libsDirectoryPath);
             /* Create the directories */
@@ -811,7 +831,9 @@ public class Dp {
         a(m + File.separator + coreLambdaStubsJarName, coreLambdaStubsJarPath);
         /* If necessary, update testkey.zip */
         if (a(m + File.separator + testkeyArchiveName, testkeyArchivePath)) {
-            buildingDialog.c("Extracting built-in signing keys...");
+            if (buildingDialog != null) {
+                buildingDialog.c("Extracting built-in signing keys...");
+            }
             /* Delete the directory */
             g.b(testkeyDirectoryPath);
             /* Create the directories */

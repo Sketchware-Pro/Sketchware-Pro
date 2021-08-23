@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import com.besome.sketch.shared.project.SharedProjectDetailActivity;
 import com.google.ads.consent.ConsentForm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.Resources;
 
@@ -75,7 +73,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public l n;
     public MainDrawer o;
     public ViewPager p;
-    public TabLayout q;
     public String[] r;
     public int[] s = {Resources.drawable.android_os_96, Resources.drawable.ic_class_48, Resources.drawable.globe_96};
     public DB t;
@@ -106,25 +103,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
         startActivityForResult(intent, i);
-    }
-
-    private void k(int i) {
-        for (int counter = 0; counter < r.length; counter++) {
-            TabLayout.f c = q.c(counter);
-            View childAt = ((ViewGroup) q.getChildAt(0)).getChildAt(counter);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childAt.getLayoutParams();
-            layoutParams.width = -1;
-            if (counter == i) {
-                c.b(r[counter]);
-                c.a((Drawable) null);
-                layoutParams.weight = 2.0f;
-            } else {
-                c.b("");
-                c.b(s[counter]);
-                layoutParams.weight = 1.0f;
-            }
-            childAt.setLayoutParams(layoutParams);
-        }
     }
 
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
@@ -237,13 +215,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         p = findViewById(Resources.id.viewpager);
         p.setOffscreenPageLimit(2);
         p.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        q = findViewById(Resources.id.tab_layout);
-        q.setupWithViewPager(p);
         p.a(this);
         E = findViewById(Resources.id.layout_qna_bottom);
         F = findViewById(Resources.id.fab);
         w = findViewById(Resources.id.layout_coordinator);
-        k(0);
         l(0);
         B = FirebaseAnalytics.getInstance(this);
         try {
@@ -496,7 +471,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override // androidx.viewpager.widget.ViewPager.e
     public void b(int i) {
-        k(i);
         if (i == 0) {
             if (j() && y != null && y.f() == 0) {
                 y.g();
