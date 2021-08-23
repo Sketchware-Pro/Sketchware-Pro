@@ -1123,7 +1123,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             runOnUiThread(() -> {
                 q.b();
                 c();
-                bB.b(getApplicationContext(), "APK build failed", Toast.LENGTH_SHORT).show();
+                SketchwareUtil.toastError("APK build failed");
                 u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
                 u.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1133,7 +1133,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void aWithMessage(String message) {
             runOnUiThread(() -> {
                 a();
-                bB.b(getApplicationContext(), "APK build failed: " + message, Toast.LENGTH_LONG).show();
+                SketchwareUtil.toastError("APK build failed: " + message, Toast.LENGTH_LONG);
             });
         }
 
@@ -1291,7 +1291,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         o();
                     }
                 } catch (Throwable e) {
-                    LogUtil.e("DesignActivity$a", e.getMessage(), e);
+                    LogUtil.e("DesignActivity$a", "Failed to build project", e);
                     DesignActivity.this.d(e.getMessage());
                 }
             }
