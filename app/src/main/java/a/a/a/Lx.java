@@ -622,7 +622,7 @@ public class Lx {
      * private File _file_&lt;component name&gt;;
      * </pre>
      */
-    public static String a(String componentNameId, String componentName, a accessModifier, String... var3) {
+    public static String a(String componentNameId, String componentName, a accessModifier, String... parameters) {
         String fieldDeclaration;
         switch (accessModifier) {
             case a:
@@ -644,7 +644,7 @@ public class Lx {
         if (componentNameId.equals("include") || componentNameId.equals("#")) {
             fieldDeclaration = "";
         } else {
-            String initializer = a(componentNameId, componentName, var3);
+            String initializer = a(componentNameId, componentName, parameters);
             String builtInType = mq.e(componentNameId);
             if (initializer.length() <= 0) {
                 if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
@@ -1166,7 +1166,7 @@ public class Lx {
     }
 
     /**
-     * @return Content of a generated <code>BluetoothController.java</code> file, without indentation
+     * @return Content of a generated <code>BluetoothConnect.java</code> file, without indentation
      */
     public static String b(String packageName) {
         return "package " + packageName + ";\r\n" +
