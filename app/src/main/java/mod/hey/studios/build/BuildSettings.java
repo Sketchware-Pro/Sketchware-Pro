@@ -18,9 +18,6 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_JAVA_VERSION_1_7 = "1.7";
     public static final String SETTING_JAVA_VERSION_1_8 = "1.8";
 
-    public static final String SETTING_GENERIC_VALUE_TRUE = "true";
-    public static final String SETTING_GENERIC_VALUE_FALSE = "false";
-
     public BuildSettings(String sc_id) {
         super(sc_id);
     }
