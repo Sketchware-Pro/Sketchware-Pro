@@ -685,7 +685,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             input_container.addView(til_password);
 
             TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
-            til_signing_algorithm.setHelperText("Example: SHA1WITHRSA");
+            til_signing_algorithm.setHelperText("Example: SHA256withRSA");
 
             EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
             et_signing_algorithm.setHint("Signing algorithm");
