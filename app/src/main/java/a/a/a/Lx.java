@@ -29,89 +29,76 @@ public class Lx {
      * @return Content of a <code>build.gradle</code> file for the module ':app', with indentation
      */
     public static String a(int compileSdkVersion, int minSdkVersion, int targetSdkVersion, jq metadata) {
-        StringBuilder fileContent = new StringBuilder(
-                "plugins {\r\nid 'com.android.application'\r\n}\r\n\r\nandroid {\r\n");
-        fileContent.append("compileSdkVersion ")
-                .append(compileSdkVersion)
-                .append("\r\n")
-                .append("\r\n");
+        String content = "plugins {\r\n" +
+                "id 'com.android.application'\r\n" +
+                "}\r\n" +
+                "\r\n" +
+                "android {\r\n" +
+                "compileSdkVersion " + compileSdkVersion + "\r\n" +
+                "\r\n";
         if (new BuildSettings(metadata.sc_id)
                 .getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_FALSE)) {
-            fileContent.append("useLibrary 'org.apache.http.legacy'\r\n");
+            content += "useLibrary 'org.apache.http.legacy'\r\n" +
+                    "\r\n";
         }
-        fileContent.append("\r\n")
-                .append("defaultConfig {")
-                .append("\r\n")
-                .append("applicationId \"")
-                .append(metadata.a)
-                .append("\"")
-                .append("\r\n")
-                .append("minSdkVersion ")
-                .append(minSdkVersion)
-                .append("\r\n")
-                .append("targetSdkVersion ")
-                .append(targetSdkVersion)
-                .append("\r\n")
-                .append("versionCode ")
-                .append(metadata.c)
-                .append("\r\n")
-                .append("versionName \"")
-                .append(metadata.d)
-                .append("\"")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("buildTypes {")
-                .append("\r\n")
-                .append("release {")
-                .append("\r\n")
-                .append("minifyEnabled false")
-                .append("\r\n")
-                .append("proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("\r\n")
-                .append("dependencies {")
-                .append("\r\n")
-                .append("implementation fileTree(dir: 'libs', include: ['*.jar'])")
-                .append("\r\n");
+        content += "defaultConfig {\r\n" +
+                "applicationId \"" + metadata.a + "\"\r\n" +
+                "minSdkVersion " + minSdkVersion + "\r\n" +
+                "targetSdkVersion " + targetSdkVersion + "\r\n" +
+                "versionCode " + metadata.c + "\r\n" +
+                "versionName \"" + metadata.d + "\"\r\n" +
+                "}\r\n" +
+                "\r\n" +
+                "buildTypes {\r\n" +
+                "release {\r\n" +
+                "minifyEnabled false\r\n" +
+                "proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n" +
+                "}\r\n" +
+                "}\r\n" +
+                "}\r\n" +
+                "\r\n" +
+                "dependencies {\r\n" +
+                "implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n";
 
         if (metadata.g) {
-            fileContent.append("implementation 'androidx.appcompat:appcompat:1.2.0'\r\n")
-                    .append("implementation 'com.google.android.material:material:1.3.0'\r\n");
+            content += "implementation 'androidx.appcompat:appcompat:1.2.0'\r\n" +
+                    "implementation 'com.google.android.material:material:1.4.0'\r\n";
         }
 
         if (metadata.i) {
-            fileContent.append("implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n");
+            content += "implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n";
         }
 
         if (metadata.j) {
-            fileContent.append("implementation 'com.google.firebase:firebase-database:19.0.0'\r\n");
+            content += "implementation 'com.google.firebase:firebase-database:19.0.0'\r\n";
         }
 
         if (metadata.k) {
-            fileContent.append("implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n");
+            content += "implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n";
         }
 
         if (metadata.l) {
-            fileContent.append("implementation 'com.google.android.gms:play-services-ads:18.2.0'\r\n");
+            content += "implementation 'com.google.android.gms:play-services-ads:20.1.0'\r\n";
         }
 
         if (metadata.m) {
-            fileContent.append("implementation 'com.google.android.gms:play-services-maps:17.0.0'\r\n");
+            content += "implementation 'com.google.android.gms:play-services-maps:17.0.1'\r\n";
         }
 
-        fileContent.append("implementation 'com.github.bumptech.glide:glide:4.11.0'\r\n")
-                .append("implementation 'com.google.code.gson:gson:2.8.6'\r\n")
-                .append("implementation 'com.squareup.okhttp3:okhttp:3.11.0'\r\n")
-                .append("}\r\n");
-        return j(fileContent.toString());
+        if (metadata.n) {
+            content += "implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n";
+        }
+
+        if (metadata.o) {
+            content += "implementation 'com.google.code.gson:gson:2.8.7'\r\n";
+        }
+
+        if (metadata.p) {
+            content += "implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n";
+        }
+
+        return j(content + "}\r\n");
     }
 
     /**
