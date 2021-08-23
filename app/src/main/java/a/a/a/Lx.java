@@ -1,6 +1,6 @@
 package a.a.a;
 
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ViewBean;
@@ -828,14 +828,16 @@ public class Lx {
         String className = a(widgetName);
 
         String initializers = "";
-        StringBuilder logicBuilder = new StringBuilder(initializers);
+        StringBuilder initializersBuilder = new StringBuilder(initializers);
         for (ViewBean bean : views) {
-            logicBuilder.append(a(bean)).append("\r\n");
+            initializersBuilder.append(a(bean)).append("\r\n");
         }
-        initializers = logicBuilder.toString();
+        initializers = initializersBuilder.toString();
 
-        return "public class " + className + " extends BaseAdapter {\r\n" +
+        String baseCode = "public class " + className + " extends BaseAdapter {\r\n" +
+                "\r\n" +
                 "ArrayList<HashMap<String, Object>> _data;\r\n" +
+                "\r\n" +
                 "public " + className + "(ArrayList<HashMap<String, Object>> _arr) {\r\n" +
                 "_data = _arr;\r\n" +
                 "}\r\n" +
@@ -861,16 +863,22 @@ public class Lx {
                 "View _view = _v;\r\n" +
                 "if (_view == null) {\r\n" +
                 "_view = _inflater.inflate(R.layout." + itemResourceName + ", null);\r\n" +
-                "}\r\n" +
-                "\r\n" +
-                initializers +
-                "\r\n" +
-                onBindCustomViewLogic +
-                "\r\n" +
-                "\r\n" +
+                "}\r\n";
+
+        if (!TextUtils.isEmpty(initializers)) {
+            baseCode += "\r\n" +
+                    initializers;
+        }
+
+        if (!TextUtils.isEmpty(onBindCustomViewLogic.trim())) {
+            baseCode += "\r\n" +
+                    onBindCustomViewLogic + "\r\n";
+        }
+
+        return baseCode + "\r\n" +
                 "return _view;\r\n" +
                 "}\r\n" +
-                "}";
+                "}\r\n";
     }
 
     /**
@@ -3504,9 +3512,11 @@ public class Lx {
             viewsInitializer = new StringBuilder();
         }
 
-        return "public class " + adapterName + " extends PagerAdapter {\r\n" +
+        String baseCode = "public class " + adapterName + " extends PagerAdapter {\r\n" +
+                "\r\n" +
                 "Context _context;\r\n" +
                 "ArrayList<HashMap<String, Object>> _data;\r\n" +
+                "\r\n" +
                 "public " + adapterName + "(Context _ctx, ArrayList<HashMap<String, Object>> _arr) {\r\n" +
                 "_context = _ctx;\r\n" +
                 "_data = _arr;\r\n" +
@@ -3544,15 +3554,24 @@ public class Lx {
                 "\r\n" +
                 "@Override\r\n" +
                 "public Object instantiateItem(ViewGroup _container,  final int _position) {\r\n" +
-                "View _view = LayoutInflater.from(_context).inflate(R.layout." + pagerItemLayoutName + ", _container, false);\r\n" +
-                "\r\n" +
-                viewsInitializer + "\r\n" +
-                onBindCustomViewLogic + "\r\n" +
+                "View _view = LayoutInflater.from(_context).inflate(R.layout." + pagerItemLayoutName + ", _container, false);\r\n";
+
+        if (!TextUtils.isEmpty(viewsInitializer)) {
+            baseCode += "\r\n" +
+                    viewsInitializer;
+        }
+
+        if (!TextUtils.isEmpty(onBindCustomViewLogic)) {
+            baseCode += "\r\n" +
+                    onBindCustomViewLogic + "\r\n";
+        }
+
+        return baseCode +
                 "\r\n" +
                 "_container.addView(_view);\r\n" +
                 "return _view;\r\n" +
                 "}\r\n" +
-                "}";
+                "}\r\n";
     }
 
     public static String recyclerViewAdapter(String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
@@ -3572,8 +3591,10 @@ public class Lx {
             viewsInitializer = new StringBuilder();
         }
 
-        return "public class " + adapterName + " extends RecyclerView.Adapter<" + adapterName + ".ViewHolder> {\r\n" +
+        String baseCode = "public class " + adapterName + " extends RecyclerView.Adapter<" + adapterName + ".ViewHolder> {\r\n" +
+                "\r\n" +
                 "ArrayList<HashMap<String, Object>> _data;\r\n" +
+                "\r\n" +
                 "public " + adapterName + "(ArrayList<HashMap<String, Object>> _arr) {\r\n" +
                 "_data = _arr;\r\n" +
                 "}\r\n" +
@@ -3589,10 +3610,19 @@ public class Lx {
                 "\r\n" +
                 "@Override\r\n" +
                 "public void onBindViewHolder(ViewHolder _holder, final int _position) {\r\n" +
-                "View _view = _holder.itemView;\r\n" +
-                "\r\n" +
-                viewsInitializer + "\r\n" +
-                onBindCustomViewLogic + "\r\n" +
+                "View _view = _holder.itemView;\r\n";
+
+        if (!TextUtils.isEmpty(viewsInitializer)) {
+            baseCode += "\r\n" +
+                    viewsInitializer;
+        }
+
+        if (!TextUtils.isEmpty(onBindCustomViewLogic)) {
+            baseCode += "\r\n" +
+                    onBindCustomViewLogic + "\r\n";
+        }
+
+        return baseCode +
                 "}\r\n" +
                 "\r\n" +
                 "@Override\r\n" +
@@ -3605,8 +3635,7 @@ public class Lx {
                 "super(v);\r\n" +
                 "}\r\n" +
                 "}\r\n" +
-                "\r\n" +
-                "}";
+                "}\r\n";
     }
 
     /**
