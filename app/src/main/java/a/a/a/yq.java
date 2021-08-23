@@ -808,28 +808,28 @@ public class yq {
                     Lx.e(e)));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java")) && N.p) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
                     Lx.j(Lx.h(e))));
         }
 
-        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java")) {
+        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java") && N.p) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
                     Lx.j(Lx.g(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
                     Lx.j(Lx.b(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
                     Lx.j(Lx.c(e))));
         }
 
         if (N.m) {
-            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java"))) {
+            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java")) && N.m) {
                 srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
                         Lx.j(Lx.f(e))));
             }
