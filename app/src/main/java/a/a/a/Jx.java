@@ -499,7 +499,7 @@ public class Jx {
 
         if (isFragment) {
             code = code.replaceAll("getApplicationContext\\(\\)", "getContext().getApplicationContext()")
-                    .replaceAll("getBaseContext\\(\\)", "getContext().getBaseContext()")
+                    .replaceAll("getBaseContext\\(\\)", "getActivity().getBaseContext()")
                     .replaceAll("\\(ClipboardManager\\) getSystemService", "(ClipboardManager) getContext().getSystemService")
                     .replaceAll("\\(Vibrator\\) getSystemService", "(Vibrator) getContext().getSystemService")
                     .replaceAll("\\(SensorManager\\) getSystemService", "(SensorManager) getContext().getSystemService")
