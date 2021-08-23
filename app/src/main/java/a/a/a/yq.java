@@ -487,37 +487,42 @@ public class yq {
      * Generates DebugActivity.java and SketchApplication.java.
      */
     public void a(Context context) {
-        int minSdkVersion;
-        try {
-            minSdkVersion = Integer.parseInt(projectSettings.getValue(
-                    ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
-        } catch (NumberFormatException e) {
-            minSdkVersion = 21;
-        }
-        boolean applyMultiDex = minSdkVersion < 21;
-
-        L.b(y + File.separator
-                        + n + File.separator
-                        + "DebugActivity.java",
-                L.b(
-                        context,
-                        "debug" + File.separator
-                                + "DebugActivity.java"
-                ).replaceAll("<\\?package_name\\?>", e));
-
-        String sketchApplicationFileContent = L.b(
-                context,
-                "debug" + File.separator + "SketchApplication.java"
-        ).replaceAll("<\\?package_name\\?>", e);
-        if (applyMultiDex) {
-            sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
-                    "Application \\{", "androidx.multidex.MultiDexApplication \\{");
+        String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
+        if (!new File(javaDir, "DebugActivity.java").exists()) {
+            L.b(y + File.separator
+                            + n + File.separator
+                            + "DebugActivity.java",
+                    L.b(
+                            context,
+                            "debug" + File.separator
+                                    + "DebugActivity.java"
+                    ).replaceAll("<\\?package_name\\?>", e));
         }
 
-        L.b(y + File.separator
-                        + n + File.separator
-                        + "SketchApplication.java",
-                sketchApplicationFileContent);
+        if (!new File(javaDir, "SketchApplication.java").exists()) {
+            int minSdkVersion;
+            try {
+                minSdkVersion = Integer.parseInt(projectSettings.getValue(
+                        ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
+            } catch (NumberFormatException e) {
+                minSdkVersion = 21;
+            }
+            boolean applyMultiDex = minSdkVersion < 21;
+
+            String sketchApplicationFileContent = L.b(
+                    context,
+                    "debug" + File.separator + "SketchApplication.java"
+            ).replaceAll("<\\?package_name\\?>", e);
+            if (applyMultiDex) {
+                sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
+                        "Application \\{", "androidx.multidex.MultiDexApplication \\{");
+            }
+
+            L.b(y + File.separator
+                            + n + File.separator
+                            + "SketchApplication.java",
+                    sketchApplicationFileContent);
+        }
     }
 
     public void a(String str, String str2) {
@@ -813,14 +818,9 @@ public class yq {
                     Lx.j(Lx.g(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "RequestNetworkController.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java"))) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
                     Lx.j(Lx.b(e))));
-        }
-
-        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java"))) {
-            srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
-                    Lx.j(Lx.c(e))));
         }
 
         if (!javaFiles.contains(new File(javaDir + "BluetoothController.java"))) {

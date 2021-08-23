@@ -104,10 +104,7 @@ public class FileUtil {
         createNewFile(path);
 
         StringBuilder sb = new StringBuilder();
-        FileReader fr = null;
-        try {
-            fr = new FileReader(path);
-
+        try (FileReader fr = new FileReader(path)) {
             char[] buff = new char[1024];
             int length;
 
@@ -116,14 +113,6 @@ public class FileUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fr != null) {
-                try {
-                    fr.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         return sb.toString();
@@ -131,21 +120,12 @@ public class FileUtil {
 
     public static void writeFile(String path, String str) {
         createNewFile(path);
-        FileWriter fileWriter = null;
 
-        try {
-            fileWriter = new FileWriter(path, false);
+        try (FileWriter fileWriter = new FileWriter(path, false)) {
             fileWriter.write(str);
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (fileWriter != null)
-                    fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -153,36 +133,16 @@ public class FileUtil {
         if (!isExistFile(sourcePath)) return;
         createNewFile(destPath);
 
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-
-        try {
-            fis = new FileInputStream(sourcePath);
-            fos = new FileOutputStream(destPath, false);
-
-            byte[] buff = new byte[1024];
+        try (FileInputStream fis = new FileInputStream(sourcePath);
+             FileOutputStream fos = new FileOutputStream(destPath, false)) {
+            byte[] buffer = new byte[1024];
             int length;
 
-            while ((length = fis.read(buff)) > 0) {
-                fos.write(buff, 0, length);
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -214,8 +174,10 @@ public class FileUtil {
             }
         } else if (copyInto.exists() || copyInto.mkdirs()) {
             String[] list = source.list();
-            for (String s : list) {
-                copyDirectory(new File(source, s), new File(copyInto, s));
+            if (list != null) {
+                for (String s : list) {
+                    copyDirectory(new File(source, s), new File(copyInto, s));
+                }
             }
         } else {
             throw new IOException("Cannot create dir " + copyInto.getAbsolutePath());
@@ -290,8 +252,8 @@ public class FileUtil {
     }
 
     /**
-    * @return list of file that ends with {@code extension}.
-    */
+     * @return List of files that have the filename extension {@code extension}.
+     */
     public static ArrayList<String> listFiles(String dir, String extension) {
         ArrayList<String> list = new ArrayList<>();
         ArrayList<String> files = new ArrayList<>();
@@ -435,21 +397,12 @@ public class FileUtil {
     }
 
     private static void saveBitmap(Bitmap bitmap, String destPath) {
-        FileOutputStream out = null;
         FileUtil.createNewFile(destPath);
-        try {
-            out = new FileOutputStream(destPath);
+
+        try (FileOutputStream out = new FileOutputStream(destPath)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

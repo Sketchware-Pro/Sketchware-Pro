@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +33,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.google.gson.LongSerializationPolicy;
 import com.sketchware.remod.Resources;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Locale;
 
 import a.a.a.kk;
 import mod.RequestNetwork;
@@ -136,44 +139,30 @@ public class AboutModActivity extends AppCompatActivity {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
-                    JSONObject json = new JSONObject(response);
+                    String discordInviteLink = null;
+                    GsonBuilder builder = new GsonBuilder();
+                    builder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
+                    AboutUsData data = builder.create().fromJson(response, AboutUsData.class);
 
-                    discordInviteLink = json.getString("discordInviteLink");
-                    sharedPref.edit().putString("discordInviteLinkBackup", discordInviteLink).apply();
-
-                    JSONArray modders = json.getJSONArray("moddersteam");
-                    for (int i = 0; i < modders.length(); i++) {
-                        moddersMap = new HashMap<>();
-                        moddersMap.put("isTitled", modders.getJSONObject(i)
-                                .getString("isTitled"));
-                        moddersMap.put("isMainModder", modders.getJSONObject(i)
-                                .getString("isMainModder"));
-                        moddersMap.put("title", modders.getJSONObject(i)
-                                .getString("title"));
-                        moddersMap.put("modder_username", modders.getJSONObject(i)
-                                .getString("modder_username"));
-                        moddersMap.put("modder_description", modders.getJSONObject(i)
-                                .getString("modder_description"));
-                        moddersMap.put("modder_img", modders.getJSONObject(i)
-                                .getString("modder_img"));
-                        moddersList.add(moddersMap);
+                    if (data.discordInviteLink != null) {
+                        discordInviteLink = data.discordInviteLink;
                     }
-                    sharedPref.edit().putString("moddersBackup", new Gson().toJson(moddersList)).apply();
+
+                    moddersList = data.moddersteam;
                     moddersRecycler.setAdapter(new ModdersRecyclerAdapter(moddersList));
 
-                    JSONArray changelog = json.getJSONArray("changelog");
-                    for (int i = 0; i < changelog.length(); i++) {
-                        changelogMap = new HashMap<>();
-                        changelogMap.put("isTitled", changelog.getJSONObject(i)
-                                .getString("isTitled"));
-                        changelogMap.put("title", changelog.getJSONObject(i)
-                                .getString("title"));
-                        changelogMap.put("description", changelog.getJSONObject(i)
-                                .getString("description"));
-                        changelogList.add(changelogMap);
-                    }
-                    sharedPref.edit().putString("changelogBackup", new Gson().toJson(changelogList)).apply();
+                    changelogList = data.changelog;
                     changelogRecycler.setAdapter(new ChangelogRecyclerAdapter(changelogList));
+
+                    SharedPreferences.Editor savedData = sharedPref.edit();
+
+                    if (discordInviteLink != null) {
+                        savedData.putString("discordInviteLinkBackup", discordInviteLink);
+                    }
+                    savedData.putString("moddersBackup", new Gson().toJson(moddersList));
+                    savedData.putString("changelogBackup", new Gson().toJson(changelogList));
+
+                    savedData.apply();
 
                     shadAnim(loading, "translationY", 50, 400);
                     new Handler().postDelayed(() -> {
@@ -182,7 +171,7 @@ public class AboutModActivity extends AppCompatActivity {
                         shadAnim(loading, "translationY", -1000, 300);
                         shadAnim(loading, "alpha", 0, 300);
                     }, 200);
-                } catch (JSONException e) {
+                } catch (JsonParseException e) {
                     loadingTitle.setText("Something went wrong");
                     loadingDescription.setText("We're sorry for any inconvenience. Please contact us on our " +
                             "Discord server if this error keeps showing up:\n" + e.getMessage() +
@@ -221,7 +210,9 @@ public class AboutModActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initViewPager();
-        requestData.startRequestNetwork(RequestNetworkController.GET, "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "", requestDataListener);
+        requestData.startRequestNetwork(RequestNetworkController.GET,
+                "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
+                requestDataListener);
         rippleRound(fab, "#7289DA", "#FFFFFF", 90);
         if ("changelog".equals(getIntent().getStringExtra("select"))) {
             viewPager.setCurrentItem(1);
@@ -291,7 +282,7 @@ public class AboutModActivity extends AppCompatActivity {
     private void advancedCorners(final View view, final String color) {
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(color));
-        gd.setCornerRadii(new float[]{ 0, 0, 30, 30, 30, 30, 0, 0});
+        gd.setCornerRadii(new float[]{0, 0, 30, 30, 30, 30, 0, 0});
         view.setBackground(gd);
     }
 
@@ -310,6 +301,12 @@ public class AboutModActivity extends AppCompatActivity {
         GG.setCornerRadius((float) round);
         RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
         view.setBackground(RE);
+    }
+
+    private static class AboutUsData {
+        String discordInviteLink;
+        ArrayList<HashMap<String, Object>> moddersteam;
+        ArrayList<HashMap<String, Object>> changelog;
     }
 
     // PagerAdapter got obfuscated to kk
@@ -510,15 +507,19 @@ public class AboutModActivity extends AppCompatActivity {
 
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.onBindViewHolder(ViewGolder, final int)
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(VH, int)
+        @SuppressLint("SetTextI18n")
         @Override
         public void b(ViewHolder holder, final int position) {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
             final TextView title = itemView.findViewById(Resources.id.tv_title);
+            final TextView releasedOn = itemView.findViewById(Resources.id.tv_release_note);
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
 
-            Object isTitled = changelog.get(position).get("isTitled");
+            HashMap<String, Object> release = changelog.get(position);
+
+            Object isTitled = release.get("isTitled");
             boolean isTitle = false;
             if (isTitled instanceof String) {
                 isTitle = Boolean.parseBoolean((String) isTitled);
@@ -527,18 +528,40 @@ public class AboutModActivity extends AppCompatActivity {
             }
 
             if (isTitle) {
-                Object titleText = changelog.get(position).get("title");
+                title.setVisibility(View.VISIBLE);
+                Object titleText = release.get("title");
+
                 if (titleText instanceof String) {
                     title.setText((String) titleText);
-                    title.setVisibility(View.VISIBLE);
                 } else {
-                    title.setVisibility(View.GONE);
+                    title.setText("We've messed something up, sorry for the inconvenience!\n" +
+                            "(Details: Invalid data type of \"title\")");
                 }
             } else {
                 title.setVisibility(View.GONE);
             }
 
-            subtitle.setText(Objects.requireNonNull(changelog.get(position).get("description")).toString());
+            Object releaseDate = release.get("releaseDate");
+
+            if (releaseDate instanceof Double) {
+                releasedOn.setVisibility(View.VISIBLE);
+                long timestamp = ((Double) releaseDate).longValue();
+
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                releasedOn.setText("Released on: " + formatter.format(new Date(timestamp)));
+            } else {
+                releasedOn.setVisibility(View.GONE);
+            }
+
+            Object description = release.get("description");
+
+            if (description instanceof String) {
+                subtitle.setText((String) description);
+                Linkify.addLinks(subtitle, Linkify.WEB_URLS);
+            } else {
+                subtitle.setText("We've messed something up, sorry for the inconvenience!\n" +
+                        "(Details: Invalid data type of \"description\")");
+            }
         }
 
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated

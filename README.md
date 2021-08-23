@@ -5,7 +5,7 @@
 # Sketchware Pro
 ![GitHub contributors](https://img.shields.io/github/contributors/Sketchware-Pro/Sketchware-Pro) ![GitHub last commit](https://img.shields.io/github/last-commit/Sketchware-Pro/Sketchware-Pro) ![Discord server stats](https://img.shields.io/discord/790686719753846785)
 
-Here you'll find the source code of many classes in Sketchware Pro, and more importantly, __the__
+Here you'll find the source code of many classes in Sketchware Pro, and more importantly, **the**
 place to contribute to Sketchware Pro.
 
 There are a few things that you should consider before contributing to Sketchware Pro:
@@ -54,6 +54,15 @@ Fork this repository and contribute back using
 
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated, but will
 be thoroughly reviewed.
+
+### What changes we'll (most likely) not accept
+
+Most changes might be UI-related, and we think it's more or less a waste of time. If something design-related gets changed,
+ideally the whole app must follow the new style too, and that's hard to accomplish, especially for mods. That's why:
+
+ - Major changes to the UI (components which exist in vanilla Sketchware)
+
+are unlikely to be accepted.
 
 ### Commit message
 
