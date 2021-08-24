@@ -850,33 +850,33 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
     
     public void showCurrentActivitySrcCode(){
-        ProgressDialog progress = new ProgressDialog(DesignActivity.this, 4);
+        ProgressDialog progress = new ProgressDialog(DesignActivity.this);
         progress.setMessage("Generating source...");
         progress.show();
+        
+        new Thread(() ->{
+            final String src = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+            if(src.equals("")) return;
 
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                final String src = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
-                if(src.equals("")) return;
+            CodeEditor editor = new CodeEditor(DesignActivity.this);
+            editor.setTypefaceText(Typeface.MONOSPACE);
+            editor.setOverScrollEnabled(false);
+            editor.setEditable(false);
+            editor.setAutoCompletionEnabled(false);
+            editor.setEditorLanguage(new JavaLanguage());
+            editor.setColorScheme(new SchemeDarcula());
+            editor.setTextSize(16);
+            editor.setText(src);
 
-                CodeEditor editor = new CodeEditor(DesignActivity.this);
-                editor.setTypefaceText(Typeface.MONOSPACE);
-                editor.setOverScrollEnabled(false);
-                editor.setAutoCompletionEnabled(false);
-                editor.setEditorLanguage(new JavaLanguage());
-                editor.setColorScheme(new SchemeDarcula());
-                editor.setTextSize(16);
-                editor.setText(src);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(DesignActivity.this, 4);
+            dialog.setTitle(v.g);
+            dialog.setPositiveButton("Dismiss", null);
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DesignActivity.this);
-                DesignActivity.this.runOnUiThread(() ->{
-                    dialog.setView(editor).create().show();
-                    progress.dismiss();
-                });
-            }
-        };
-        new Thread(run).start();
+            DesignActivity.this.runOnUiThread(() ->{
+                dialog.setView(editor).create().show();
+                progress.dismiss();
+            });
+        }).start();
     }
 
     /**
