@@ -2,6 +2,7 @@ package com.besome.sketch.design;
 
 import android.content.Context;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
