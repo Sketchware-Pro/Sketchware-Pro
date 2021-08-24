@@ -724,101 +724,66 @@ public class Lx {
     /**
      * @return Code of a More Block
      */
-    public static String a(String var0, String var1, String var2) {
-        var0 = "public " +
-                ReturnMoreblockManager.getMbTypeCode(var0) +
-                " _" +
-                ReturnMoreblockManager.getMbName(var0) +
-                "(";
+    public static String a(String var0, String var1, String moreBlockLogic) {
+        String code = "public " + ReturnMoreblockManager.getMbTypeCode(var0) + " _" +
+                ReturnMoreblockManager.getMbName(var0) + "(";
         ArrayList<String> var10 = FB.c(var1);
-        boolean var4 = true;
+        boolean isFirstParameter = true;
 
-        StringBuilder var8;
-        StringBuilder var9;
-        for (int var5 = 0; var5 < var10.size(); ++var5) {
-            String var6 = var10.get(var5);
-            if (var6.charAt(0) == '%') {
-                if (var6.charAt(1) == 'b') {
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
+        processingParameters:
+        for (String parameterSpec : var10) {
+            char parameterType = parameterSpec.charAt(1);
+            switch (parameterType) {
+                case 'b':
+                    String str = code;
+                    if (!isFirstParameter) {
+                        str += ", ";
                     }
 
-                    var8 = new StringBuilder();
-                    var8.append(var1);
-                    var8.append("final boolean _");
-                    var8.append(var6.substring(3));
-                    var0 = var8.toString();
-                } else if (var6.charAt(1) == 'd') {
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
+                    code = str + "final boolean _" + parameterSpec.substring(3);
+                    break;
+
+                case 'd':
+                    str = code;
+                    if (!isFirstParameter) {
+                        str += ", ";
                     }
 
-                    var8 = new StringBuilder();
-                    var8.append(var1);
-                    var8.append("final double _");
-                    var8.append(var6.substring(3));
-                    var0 = var8.toString();
-                } else if (var6.charAt(1) == 's') {
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
+                    code = str + "final double _" + parameterSpec.substring(3);
+                    break;
+
+                case 's':
+                    str = code;
+                    if (!isFirstParameter) {
+                        str += ", ";
                     }
 
-                    var8 = new StringBuilder();
-                    var8.append(var1);
-                    var8.append("final String _");
-                    var8.append(var6.substring(3));
-                    var0 = var8.toString();
-                } else {
-                    if (var6.charAt(1) != 'm') {
-                        continue;
+                    code = str + "final String _" + parameterSpec.substring(3);
+                    break;
+
+                default:
+                    if (parameterType == 'm') {
+                        str = code;
+                        if (!isFirstParameter) {
+                            str += ", ";
+                        }
+
+                        int lastIndexOfPeriod = parameterSpec.lastIndexOf(".");
+                        code = str +
+                                "final " + mq.e(mq.b(parameterSpec.substring(3, lastIndexOfPeriod))) + " _" +
+                                parameterSpec.substring(lastIndexOfPeriod + 1);
+                        break;
+                    } else {
+                        continue processingParameters;
                     }
-
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
-                    }
-
-                    var0 = var6.substring(3, var6.lastIndexOf("."));
-                    String var7 = var6.substring(var6.lastIndexOf(".") + 1);
-                    var0 = var1 +
-                            "final " +
-                            mq.e(mq.b(var0)) +
-                            " _" +
-                            var7;
-                }
-
-                var4 = false;
             }
+
+            isFirstParameter = false;
         }
 
-        var9 = new StringBuilder();
-        var9.append(var0);
-        var9.append(") {\r\n");
-        var1 = var9.toString();
-        var8 = new StringBuilder();
-        var8.append(var1);
-        var8.append(var2);
-        var8.append("\r\n");
-        var1 = var8.toString();
-        var8 = new StringBuilder();
-        var8.append(var1);
-        var8.append("}\r\n");
-        return var8.toString();
+        return code + ") {\r\n" +
+                moreBlockLogic + "\r\n" +
+                "}\r\n";
     }
 
     /**
@@ -887,7 +852,6 @@ public class Lx {
      * Example initializer for a boolean variable: <code>false</code>
      */
     public static String a(String name, String componentName, String... parameters) {
-        Log.d("Lx", "Debug: a(String, String, String), var1 = \"" + componentName + "\"");
         switch (name) {
             case "boolean":
                 return "false";
