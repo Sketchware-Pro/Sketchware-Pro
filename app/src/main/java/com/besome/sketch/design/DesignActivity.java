@@ -402,6 +402,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
+                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 if (FileUtil.isExistFile(q.H)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
                 }
@@ -426,6 +427,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             } else {
                                 SketchwareUtil.toast("APK doesn't exist anymore");
                             }
+                            break;
+                            
+                        case 5:
+                            showCurrentActivitySrcCode();
                             break;
 
                         default:
@@ -845,20 +850,33 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
     
     public void showCurrentActivitySrcCode(){
-        final String src = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
-        if(src.equals("")) return;
-        
-        CodeEditor editor = new CodeEditor(DesignActivity.this);
-        editor.setTypefaceText(Typeface.MONOSPACE);
-        editor.setOverScrollEnabled(false);
-        editor.setAutoCompletionEnabled(false);
-        editor.setEditorLanguage(new JavaLanguage());
-        editor.setColorScheme(new SchemeDarcula());
-        editor.setTextSize(16);
-        editor.setText(src);
-        
-        AlertDialog.Builder dialog = new AlertDialog.Builder(DesignActivity.this);
-        dialog.setView(editor).create().show();
+        ProgressDialog progress = new ProgressDialog(DesignActivity.this, 4);
+        progress.setMessage("Generating source...");
+        progress.show();
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                final String src = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+                if(src.equals("")) return;
+
+                CodeEditor editor = new CodeEditor(DesignActivity.this);
+                editor.setTypefaceText(Typeface.MONOSPACE);
+                editor.setOverScrollEnabled(false);
+                editor.setAutoCompletionEnabled(false);
+                editor.setEditorLanguage(new JavaLanguage());
+                editor.setColorScheme(new SchemeDarcula());
+                editor.setTextSize(16);
+                editor.setText(src);
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DesignActivity.this);
+                DesignActivity.this.runOnUiThread(() ->{
+                    dialog.setView(editor).create().show();
+                    progress.dismiss();
+                });
+            }
+        };
+        new Thread(run).start();
     }
 
     /**
