@@ -909,6 +909,17 @@ public class yq {
         CommandBlock.x();
         return srcCodeBeans;
     }
+    
+    /**
+     * Get source code of a single Activity
+     */
+    public String getActivitySrc(String javaName, hC hCVar, eC eCVar, iC iCVar){
+        a(iCVar, hCVar, eCVar, false);
+        for (ProjectFileBean activity : hCVar.b()) {
+            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, eCVar).a();
+        }
+        return "";
+    }
 
     /**
      * @see yq#a(hC, eC, iC, boolean)
