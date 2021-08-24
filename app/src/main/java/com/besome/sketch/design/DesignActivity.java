@@ -1,11 +1,13 @@
 package com.besome.sketch.design;
 
 import android.content.Context;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
@@ -107,6 +109,9 @@ import mod.jbk.util.LogUtil;
 import mod.nethical.mod.CleanAsyncTask;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
+import io.github.rosemoe.editor.langs.java.JavaLanguage;
+import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.editor.widget.schemes.SchemeDarcula;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -837,6 +842,23 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         });
         dialog.setCancelable(false);
         dialog.show();
+    }
+    
+    public void showCurrentActivitySrcCode(){
+        final String src = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+        if(src.equals("")) return;
+        
+        CodeEditor editor = new CodeEditor(DesignActivity.this);
+        editor.setTypefaceText(Typeface.MONOSPACE);
+        editor.setOverScrollEnabled(false);
+        editor.setAutoCompletionEnabled(false);
+        editor.setEditorLanguage(new JavaLanguage());
+        editor.setColorScheme(new SchemeDarcula());
+        editor.setTextSize(16);
+        editor.setText(src);
+        
+        AlertDialog.Builder dialog = new AlertDialog.Builder(DesignActivity.this);
+        dialog.setView(editor).create().show();
     }
 
     /**
