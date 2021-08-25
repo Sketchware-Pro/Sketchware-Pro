@@ -55,6 +55,7 @@ public class CompileErrorSaver {
         TextView errorLogTxt = new TextView(context);
         errorLogTxt.setText(CompileLogHelper.colorErrsAndWarnings(getLog()));
         errorLogTxt.setTextIsSelectable(true);
+        errorLogTxt.setTypeface(Typeface.MONOSPACE);
         scrollView.addView(errorLogTxt);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
