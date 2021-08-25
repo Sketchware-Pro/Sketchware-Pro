@@ -1,13 +1,17 @@
 package mod.hilal.saif.components;
 
+import android.content.Context;
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 //responsible code :
@@ -20,173 +24,231 @@ import mod.hey.studios.util.Helper;
 
 public class ComponentsHandler {
 
+    /**
+     * Called at {@link ComponentBean#getComponentTypeByTypeName(String)}.
+     */
     //√ give typeName and return id
     public static int id(final String name) {
         if (name.equals("AsyncTask")) {
             return 36;
         }
 
-        final String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object typeName = component.get("typeName");
 
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                final int len = data.size();
-                for (int i = 0; i < len; i++) {
-                    final String c = (String) data.get(i).get("typeName");
-                    if (name.equals(c)) {
-                        return Integer.parseInt((String) data.get(i).get("id"));
+            if (typeName instanceof String) {
+                if (name.equals(typeName)) {
+                    Object id = component.get("id");
+
+                    if (id instanceof String) {
+                        try {
+                            return Integer.parseInt((String) id);
+                        } catch (NumberFormatException e) {
+                            SketchwareUtil.toastError("Invalid ID entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            break;
+                        }
+                    } else {
+                        SketchwareUtil.toastError("Invalid ID entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid type name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return -1;
-        } catch (Exception e) {
-            return -1;
         }
 
+        return -1;
     }
 
+    /**
+     * Called at {@link ComponentBean#getComponentTypeName(int)}.
+     */
     // √ give id and return typeName
     public static String typeName(int id) {
         if (id == 36) {
             return "AsyncTask";
         }
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return (String) data.get(i).get("typeName");
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentId = component.get("id");
+
+            if (componentId instanceof String) {
+                try {
+                    int idInt = Integer.parseInt((String) componentId);
+
+                    if (idInt == id) {
+                        Object componentTypeName = component.get("typeName");
+
+                        if (componentTypeName instanceof String) {
+                            return (String) componentTypeName;
+                        } else {
+                            SketchwareUtil.toastError("Invalid type name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            break;
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
+
+        return "";
     }
 
+    /**
+     * Called at {@link ComponentBean#getComponentName(Context, int)}.
+     */
     //√ give id and return name
     public static String name(int id) {
         if (id == 36) {
             return "AsyncTask";
         }
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return (String) data.get(i).get("name");
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentId = component.get("id");
+
+            if (componentId instanceof String) {
+                try {
+                    int idInt = Integer.parseInt((String) componentId);
+
+                    if (idInt == id) {
+                        Object componentName = component.get("name");
+
+                        if (componentName instanceof String) {
+                            return (String) componentName;
+                        } else {
+                            SketchwareUtil.toastError("Invalid name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            break;
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return "component";
-        } catch (Exception e) {
-            return "component";
         }
+        return "component";
     }
 
+    /**
+     * Called at {@link ComponentBean#getIconResource(int)}.
+     */
     //√ give id and return icon
     public static int icon(int id) {
         if (id == 36) {
             return 2131165726;
         }
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return Integer.parseInt((String) data.get(i).get("icon"));
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object idObject = component.get("id");
+
+            if (idObject instanceof String) {
+                try {
+                    int componentId = Integer.parseInt((String) idObject);
+
+                    if (componentId == id) {
+                        Object iconObject = component.get("icon");
+
+                        if (iconObject instanceof String) {
+                            try {
+                                return Integer.parseInt((String) iconObject);
+                            } catch (NumberFormatException e) {
+                                SketchwareUtil.toastError("Invalid icon entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                break;
+                            }
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return 2131165469;
-        } catch (Exception e) {
-            return 2131165469;
         }
+
+        return 2131165469;
     }
 
+    /**
+     * @return Descriptions of Components, both built-in ones and Custom Components'
+     */
     // give id and return description
     //goto ComponentAddActivity
     //remove lines: 2303 to 2307
     //call this method using v0 as id and move result to v0
     public static String description(int id) {
         switch (id) {
-            case 1:
+            case ComponentBean.COMPONENT_TYPE_INTENT:
                 return "Intent is used to start a new Activity";
 
-            case 2:
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
                 return "File is used to save data locally";
 
-            case 3:
+            case ComponentBean.COMPONENT_TYPE_CALENDAR:
                 return "Calendar is used to calculate date and time";
 
-            case 4:
+            case ComponentBean.COMPONENT_TYPE_VIBRATOR:
                 return "Vibrator is used to vibrate the device";
 
-            case 5:
+            case ComponentBean.COMPONENT_TYPE_TIMERTASK:
                 return "Timer is used to delay a certain actions";
 
-            case 6:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE:
                 return "Firebase Realtime Database is Google's cloud-based NoSQL database, where you can save and sync data realtime";
 
-            case 7:
+            case ComponentBean.COMPONENT_TYPE_DIALOG:
                 return "Dialog is used to create a pop-up";
 
-            case 8:
+            case ComponentBean.COMPONENT_TYPE_MEDIAPLAYER:
                 return "MediaPlayer is used to play big sound files";
 
-            case 9:
+            case ComponentBean.COMPONENT_TYPE_SOUNDPOOL:
                 return "SoundPool is used to play short sound effects";
 
-            case 10:
+            case ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR:
                 return "ObjectAnimator is used to animate certain properties of a View";
 
-            case 11:
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
                 return "The gyroscope measures the rate of rotation in rad/s around a device's x, y and z axis";
 
-            case 12:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
                 return "Firebase Auth allows online user authentication";
 
-            case 13:
+            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
                 return "Interstitial Ad lets you show fullscreen advertisements";
 
-            case 14:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
                 return "Firebase Storage is built for app developers who need to store and serve user-generated content";
 
-            case 15:
+            case ComponentBean.COMPONENT_TYPE_CAMERA:
                 return "Camera is used to take a picture";
 
-            case 16:
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
                 return "FilePicker is used to select raw and media files, such as images, sounds and text";
 
-            case 17:
+            case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
                 return "RequestNetwork is used to make Web API calls";
 
-            case 18:
+            case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH:
                 return "TextToSpeech is used to convert text to speech";
 
-            case 19:
+            case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
                 return "SpeechToText is used to convert speech to text";
 
-            case 20:
+            case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
                 return "BluetoothConnect is used to connect to another device via Bluetooth";
 
-            case 21:
+            case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager is used to get data from the current location";
 
             case 22:
@@ -236,90 +298,140 @@ public class ComponentsHandler {
         }
     }
 
+    /**
+     * @return Component description of a Custom Component
+     */
     public static String description2(int id) {
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return (String) data.get(i).get("description");
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentId = component.get("id");
+
+            if (componentId instanceof String) {
+                try {
+                    int idInt = Integer.parseInt((String) componentId);
+
+                    if (idInt == id) {
+                        Object componentDescription = component.get("description");
+
+                        if (componentDescription instanceof String) {
+                            return (String) component.get("description");
+                        } else {
+                            SketchwareUtil.toastError("Invalid description entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            break;
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return "new component";
-        } catch (Exception e) {
-            return "new component";
         }
+
+        return "new component";
     }
 
+    /**
+     * Called at {@link ComponentBean#getComponentDocsUrlByTypeName(int)}.
+     */
     // √give id and return docs url
     public static String docs(int id) {
-        if (id == 36) {
-            return "";
-        }
+        if (id != 36) {
+            ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+            for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+                HashMap<String, Object> component = customComponents.get(i);
+                Object componentId = component.get("id");
+                if (componentId instanceof String) {
+                    try {
+                        int componentIdInteger = Integer.parseInt((String) componentId);
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return (String) data.get(i).get("url");
+                        if (componentIdInteger == id) {
+                            Object componentUrl = component.get("url");
+
+                            if (componentUrl instanceof String) {
+                                return (String) componentUrl;
+                            } else {
+                                SketchwareUtil.toastError("Invalid URL entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                                break;
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                     }
+                } else {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
             }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
+
+        return "";
     }
 
+    /**
+     * Called at {@link ComponentBean#buildClassInfo()}.
+     */
     //√ give id and return buildclass
     public static String c(int id) {
         if (id == 36) {
             return "AsyncTask";
         }
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return (String) data.get(i).get("buildClass");
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentId = component.get("id");
+
+            if (componentId instanceof String) {
+                try {
+                    int componentIdInteger = Integer.parseInt((String) componentId);
+
+                    if (componentIdInteger == id) {
+                        Object componentBuildClass = component.get("buildClass");
+
+                        if (componentBuildClass instanceof String) {
+                            return (String) componentBuildClass;
+                        } else {
+                            SketchwareUtil.toastError("Invalid build class entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            break;
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
+
+        return "";
     }
 
     // mod •••••••••••••••••••••••••••••••
 
+    /**
+     * Adds Custom Components to available Components section.
+     * Used at {@link mod.agus.jcoderz.component.ManageComponent#a(ArrayList)}.
+     */
     // √ add components to sk
     //structure : list.add(new ComponentBean(27));
     public static void add(ArrayList<ComponentBean> list) {
         list.add(new ComponentBean(36));
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    list.add(new ComponentBean(c));
+
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentId = component.get("id");
+
+            if (componentId instanceof String) {
+                try {
+                    list.add(new ComponentBean(Integer.parseInt((String) componentId)));
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-        } catch (Exception ignored) {
         }
     }
 
@@ -329,119 +441,183 @@ public class ComponentsHandler {
             return "#";
         }
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    int c = Integer.parseInt((String) data.get(i).get("id"));
-                    if (id == c) {
-                        return (String) data.get(i).get("varName");
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentId = component.get("id");
+
+            if (componentId instanceof String) {
+                try {
+                    int componentIdInteger = Integer.parseInt((String) componentId);
+
+                    if (componentIdInteger == id) {
+                        Object componentVarName = component.get("varName");
+
+                        if (componentVarName instanceof String) {
+                            return (String) componentVarName;
+                        } else {
+                            SketchwareUtil.toastError("Invalid variable name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                            break;
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid ID entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
+
+        return "";
     }
 
+    /**
+     * @param name The desired Custom Component's <code>typeName</code>
+     * @return A Custom Component's <code>class</code>
+     */
     //√√ give typeName and return class
     public static String c(String name) {
         if (name.equals("AsyncTask")) {
             return "Component.AsyncTask";
         }
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    String c = (String) data.get(i).get("typeName");
-                    if (name.equals(c)) {
-                        return (String) data.get(i).get("class");
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentTypeName = component.get("typeName");
+
+            if (componentTypeName instanceof String) {
+                if (name.equals(componentTypeName)) {
+                    Object componentClass = component.get("class");
+
+                    if (componentClass instanceof String) {
+                        return (String) componentClass;
+                    } else {
+                        SketchwareUtil.toastError("Invalid class entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        break;
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid type name entry for Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return "Component";
-        } catch (Exception e) {
-            return "Component";
         }
+
+        return "Component";
     }
 
+    /**
+     * Used at {@link mod.agus.jcoderz.editor.event.ManageEventComponent#a(String, String, String)}
+     * to get Custom Components' fields.
+     */
     //√√
     public static String extraVar(String name, String code, String varName) {
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentName = component.get("name");
 
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    String c = (String) data.get(i).get("name");
-                    if (name.equals(c)) {
-                        if (!data.get(i).get("additionalVar").equals("")) {
-                            return code + "\r\n" + ((String) data.get(i).get("additionalVar")).replace("###", varName);
-                        } else {
+            if (componentName instanceof String) {
+                if (name.equals(componentName)) {
+                    Object componentAdditionalVar = component.get("additionalVar");
+
+                    if (componentAdditionalVar instanceof String) {
+                        if (TextUtils.isEmpty(((String) componentAdditionalVar))) {
                             return code;
+                        } else {
+                            return code + "\r\n" +
+                                    ((String) componentAdditionalVar).replace("###", varName);
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid additional variable entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid name entry at Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-            return code;
-        } catch (Exception e) {
-            return code;
         }
+
+        return code;
     }
 
     //√√
     public static String defineExtraVar(String name, String varName) {
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    String c = (String) data.get(i).get("name");
-                    if (name.equals(c)) {
-                        if (!data.get(i).get("defineAdditionalVar").equals("")) {
-                            return ((String) data.get(i).get("defineAdditionalVar")).replace("###", varName);
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentName = component.get("name");
+
+            if (componentName instanceof String) {
+                if (name.equals(componentName)) {
+                    Object componentDefineAdditionalVar = component.get("defineAdditionalVar");
+
+                    if (componentDefineAdditionalVar instanceof String) {
+                        if (TextUtils.isEmpty((String) componentDefineAdditionalVar)) {
+                            break;
                         } else {
-                            return "";
+                            return ((String) componentDefineAdditionalVar).replace("###", varName);
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid additional variable entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid name entry in Custom Component #" + (i + 1));
             }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
+
+        return "";
     }
 
     public static void getImports(String name, ArrayList<String> arrayList) {
-        String path = getPath();
-        ArrayList<HashMap<String, Object>> data;
+        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
+            HashMap<String, Object> component = customComponents.get(i);
+            Object componentVarName = component.get("varName");
 
-        try {
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                for (int i = 0; i < data.size(); i++) {
-                    String c = (String) data.get(i).get("varName");
-                    if (name.equals(c)) {
-                        if (!data.get(i).get("imports").equals("")) {
-                            ArrayList<String> temp = new ArrayList<>(Arrays.asList(((String) data.get(i).get("imports")).split("\n")));
-                            arrayList.addAll(temp);
-                        }
+            if (componentVarName instanceof String) {
+                if (name.equals(componentVarName)) {
+                    Object componentImports = component.get("imports");
+
+                    if (componentImports instanceof String) {
+                        String componentImportsString = (String) componentImports;
+                        String[] componentImportsArray = componentImportsString.split("\n");
+                        arrayList.addAll(Arrays.asList(componentImportsArray));
+                    } else {
+                        SketchwareUtil.toastError("Invalid imports entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
+                        break;
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid variable name entry in Custom Component #" + (i + 1), Toast.LENGTH_LONG);
             }
-        } catch (Exception ignored) {
         }
     }
 
     public static String getPath() {
         return FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/component.json");
+    }
+
+    /**
+     * @return List of Custom Components. Will never return null, but will warn the user about
+     * an invalid Custom Components JSON file.
+     */
+    private static ArrayList<HashMap<String, Object>> readCustomComponents() {
+        ArrayList<HashMap<String, Object>> data;
+        if (FileUtil.isExistFile(getPath())) {
+            try {
+                data = new Gson().fromJson(FileUtil.readFile(getPath()), Helper.TYPE_MAP_LIST);
+            } catch (Exception e) {
+                data = new ArrayList<>();
+                SketchwareUtil.toastError("Couldn't read Custom Components file: " + e.getMessage());
+            }
+            if (data == null) {
+                SketchwareUtil.toastError("Found invalid Custom Components file");
+                data = new ArrayList<>();
+            }
+        } else {
+            data = new ArrayList<>();
+        }
+
+        return data;
     }
 }
