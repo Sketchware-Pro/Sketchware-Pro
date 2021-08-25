@@ -550,22 +550,22 @@ public class yq {
         N.f = !z2;
         if (iCVar.d().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.h = true;
-            N.a(2);
-            N.a(8);
+            N.a(jq.PERMISSION_INTERNET);
+            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
         }
         if (iCVar.c().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
         }
         if (iCVar.b().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.l = true;
-            N.a(2);
-            N.a(8);
+            N.a(jq.PERMISSION_INTERNET);
+            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.a(iCVar.b());
         }
         if (iCVar.e().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.m = true;
-            N.a(2);
-            N.a(8);
+            N.a(jq.PERMISSION_INTERNET);
+            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.b(iCVar.e());
         }
         for (ProjectFileBean next : hCVar.b()) {
@@ -576,27 +576,27 @@ public class yq {
                 if (component.type == ComponentBean.COMPONENT_TYPE_CAMERA || component.type == 35) {
                     N.g = true;
                     N.u = true;
-                    N.a(next.getActivityName(), 16);
-                    N.a(next.getActivityName(), 32);
-                    N.a(next.getActivityName(), 64);
+                    N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
+                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                 }
                 N.x.handleComponent(component.type);
                 if (component.type == ComponentBean.COMPONENT_TYPE_FILE_PICKER) {
-                    N.a(next.getActivityName(), 32);
+                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
                     N.o = true;
                     N.j = true;
-                    N.a(next.getActivityName(), 2);
-                    N.a(next.getActivityName(), 8);
+                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
                     N.k = true;
-                    N.a(next.getActivityName(), 32);
-                    N.a(next.getActivityName(), 64);
+                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_VIBRATOR) {
-                    N.a(next.getActivityName(), 4);
+                    N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH) {
                     N.i = true;
@@ -605,18 +605,18 @@ public class yq {
                 if (component.type == ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK) {
                     N.o = true;
                     N.p = true;
-                    N.a(next.getActivityName(), 2);
-                    N.a(next.getActivityName(), 8);
+                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT) {
-                    N.a(next.getActivityName(), 128);
+                    N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT) {
-                    N.a(next.getActivityName(), 256);
-                    N.a(next.getActivityName(), 512);
+                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
+                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
                 }
                 if (component.type == ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER) {
-                    N.a(next.getActivityName(), 1024);
+                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
                 }
             }
             for (Map.Entry<String, ArrayList<BlockBean>> entry : eCVar.b(next.getJavaName()).entrySet()) {
@@ -627,7 +627,7 @@ public class yq {
                         case "intentSetAction":
                             // If an Intent setAction (ACTION_CALL) block is used
                             if (bean.parameters.get(1).equals(uq.c[1])) {
-                                N.a(next.getActivityName(), 1);
+                                N.a(next.getActivityName(), jq.PERMISSION_CALL_PHONE);
                             }
                             break;
 
@@ -642,7 +642,7 @@ public class yq {
                         case "getJpegRotate":
                         case "setImageFilePath":
                         case "fileutilGetLastSegmentPath":
-                            N.a(next.getActivityName(), 32);
+                            N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                             break;
 
                         case "fileutilwrite":
@@ -661,8 +661,8 @@ public class yq {
                         case "setBitmapFileColorFilter":
                         case "setBitmapFileBrightness":
                         case "setBitmapFileContrast":
-                            N.a(next.getActivityName(), 32);
-                            N.a(next.getActivityName(), 64);
+                            N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                            N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                             break;
 
                         case "strToMap":
@@ -674,12 +674,12 @@ public class yq {
 
                         case "setImageUrl":
                             N.n = true;
-                            N.a(2);
+                            N.a(jq.PERMISSION_INTERNET);
                             break;
 
                         case "webViewLoadUrl":
-                            N.a(2);
-                            N.a(8);
+                            N.a(jq.PERMISSION_INTERNET);
+                            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
                             break;
 
                         default:
@@ -711,7 +711,8 @@ public class yq {
             externalPathTag.a("", "name", "external_files");
             externalPathTag.a("", "path", ".");
             pathsTag.a(externalPathTag);
-            srcCodeBeans.add(new SrcCodeBean("provider_paths.xml", pathsTag.b()));
+            srcCodeBeans.add(new SrcCodeBean("provider_paths.xml",
+                    CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.b())));
         }
 
         for (SrcCodeBean bean : srcCodeBeans) {
@@ -736,7 +737,9 @@ public class yq {
                 // if p3 is false, then "translatable="false" will be added
                 mx.a("google_maps_key", iCVar.e().data, false);
             }
-            L.b(w + File.separator + "values" + File.separator + "secrets.xml", mx.a());
+            String filePath = "values/secrets.xml";
+            L.b(w + File.separator + filePath,
+                    CommandBlock.applyCommands(filePath, mx.a()));
         }
         h();
     }
@@ -808,28 +811,28 @@ public class yq {
                     Lx.e(e)));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java")) && N.p) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
                     Lx.j(Lx.h(e))));
         }
 
-        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java")) {
+        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java") && N.p) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
                     Lx.j(Lx.g(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
                     Lx.j(Lx.b(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java"))) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
                     Lx.j(Lx.c(e))));
         }
 
         if (N.m) {
-            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java"))) {
+            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java")) && N.m) {
                 srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
                         Lx.j(Lx.f(e))));
             }

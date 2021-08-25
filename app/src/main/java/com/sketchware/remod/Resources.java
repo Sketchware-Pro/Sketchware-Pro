@@ -438,6 +438,10 @@ public class Resources {
         public static final int linear9 = 0x7f08068f;
         public static final int linear10 = 0x7f080692;
         public static final int linear11 = 0x7f080694;
+        public static final int radio_mb_type_string = 0x7f0806b2;
+        public static final int radio_mb_type_number = 0x7f0806b3;
+        public static final int radio_mb_type_boolean = 0x7f0806b4;
+        public static final int manage_attr_listview = 0x7f0806b5;
         public static final int add_attr_listview = 0x7f0806b6;
         public static final int add_attr_fab = 0x7f0806b7;
         public static final int cus_attr_layout = 0x7f0806b8;
@@ -448,6 +452,10 @@ public class Resources {
         public static final int dialog_btn_save = 0x7f0806bd;
         public static final int dialog_input_res = 0x7f0806be;
         public static final int dialog_input_value = 0x7f0806bf;
+        public static final int radio_mb_type_map = 0x7f0806b0;
+        public static final int radio_mb_type_liststring = 0x7f0806c1;
+        public static final int radio_mb_type_listmap = 0x7f0806c2;
+        public static final int radio_mb_type_view = 0x7f0806c3;
         public static final int code_editor_edittext = 0x7f0806c6;
         public static final int code_editor_zoomin = 0x7f0806c7;
         public static final int code_editor_zoomout = 0x7f0806c8;
