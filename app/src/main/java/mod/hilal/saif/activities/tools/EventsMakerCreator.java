@@ -169,7 +169,7 @@ public class EventsMakerCreator extends Activity {
         if (FileUtil.isExistFile(concat)) {
             ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
-                if (arrayList.get(i).get("name").equals(str)) {
+                if (str.equals(arrayList.get(i).get("name"))) {
                     return i;
                 }
             }
