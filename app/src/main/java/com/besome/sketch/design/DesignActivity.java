@@ -1,8 +1,10 @@
 package com.besome.sketch.design;
 
-import android.content.Context;
+import static mod.SketchwareUtil.getDip;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -86,6 +88,9 @@ import a.a.a.yq;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import id.indosw.mod.DirectEditorActivity;
+import io.github.rosemoe.editor.langs.java.JavaLanguage;
+import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.editor.widget.EditorColorScheme;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
@@ -110,9 +115,6 @@ import mod.jbk.util.LogUtil;
 import mod.nethical.mod.CleanAsyncTask;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
-import io.github.rosemoe.editor.widget.schemes.SchemeDarcula;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -399,7 +401,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(Resources.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
 
-                // TODO: Add nice title item (that's smaller, can't be selected, etc.)
+                // TODO: Add nice title item(s) which are smaller, can't be selected, etc.
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
@@ -429,7 +431,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                 SketchwareUtil.toast("APK doesn't exist anymore");
                             }
                             break;
-                            
+
                         case 5:
                             showCurrentActivitySrcCode();
                             break;
@@ -849,33 +851,39 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.setCancelable(false);
         dialog.show();
     }
-    
-    public void showCurrentActivitySrcCode(){
+
+    private void showCurrentActivitySrcCode() {
         ProgressDialog progress = new ProgressDialog(DesignActivity.this);
         progress.setMessage("Generating source...");
         progress.show();
-        
-        new Thread(() ->{
-            final String src = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
-            if(src.equals("")) return;
 
-            CodeEditor editor = new CodeEditor(DesignActivity.this);
-            editor.setTypefaceText(Typeface.MONOSPACE);
-            editor.setOverScrollEnabled(false);
-            editor.setEditable(false);
-            editor.setAutoCompletionEnabled(false);
-            editor.setEditorLanguage(new JavaLanguage());
-            editor.setColorScheme(new SchemeDarcula());
-            editor.setTextSize(16);
-            editor.setText(src);
+        new Thread(() -> {
+            final String source = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
 
-            AlertDialog.Builder dialog = new AlertDialog.Builder(DesignActivity.this, 4);
-            dialog.setTitle(v.g);
-            dialog.setPositiveButton("Dismiss", null);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
+                    .setTitle(v.g)
+                    .setPositiveButton("Dismiss", null);
 
-            DesignActivity.this.runOnUiThread(() ->{
-                dialog.setView(editor).create().show();
+            runOnUiThread(() -> {
                 progress.dismiss();
+
+                CodeEditor editor = new CodeEditor(DesignActivity.this);
+                editor.setTypefaceText(Typeface.MONOSPACE);
+                editor.setOverScrollEnabled(false);
+                editor.setEditable(false);
+                editor.setAutoCompletionEnabled(false);
+                editor.setEditorLanguage(new JavaLanguage());
+                editor.setColorScheme(new EditorColorScheme());
+                editor.setTextSize(16);
+                editor.setText(!source.equals("") ? source : "Failed to generate source.");
+
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.setView(editor,
+                        (int) getDip(24),
+                        (int) getDip(8),
+                        (int) getDip(24),
+                        (int) getDip(8));
+                dialog.show();
             });
         }).start();
     }
