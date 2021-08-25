@@ -1,10 +1,12 @@
 package mod.hey.studios.moreblock;
 
-import a.a.a.dt;
 import android.util.Pair;
 import android.widget.RadioGroup;
 
+import a.a.a.dt;
+
 import com.besome.sketch.editor.LogicEditorActivity;
+import com.sketchware.remod.Resources;
 
 import java.util.Iterator;
 
@@ -16,24 +18,20 @@ public class ReturnMoreblockManager {
 
     public static String getMbEnd(String str) {
         if (str.equals(" ")) {
-            str = ";";
+            return ";";
         } else {
-            str = "";
+            return "";
         }
-        return str;
     }
 
     public static String getMbName(String str) {
-        String str2 = str;
+        String name = str;
 
-        if (str.contains("[")) {
-            str2 = str;
-            if (str.contains("]")) {
-                str2 = str.replaceAll("\\[.*]", "");
-            }
+        if (str.contains("[") && str.contains("]")) {
+            name = str.replaceAll("\\[.*]", "");
         }
 
-        return str2;
+        return name;
     }
 
     public static String getMbType(String str) {
@@ -101,46 +99,48 @@ public class ReturnMoreblockManager {
             return "v|" + dtVar.cusTet.getText().toString();
         }
         dtVar.cusTb = false;
+        
         switch (id) {
-            case 2131232434:
+            case Resources.id.radio_mb_type_string:
                 type = "s";
                 break;
 
-            case 2131232435:
+            case Resources.id.radio_mb_type_number:
                 type = "d";
                 break;
 
-            case 2131232436:
+            case Resources.id.radio_mb_type_boolean:
                 type = "b";
                 break;
 
-            case 2131232448:
+            case Resources.id.radio_mb_type_map:
                 type = "a|Map";
                 break;
 
-            case 2131232449:
+            case Resources.id.radio_mb_type_liststring:
                 type = "l|List String";
                 break;
 
-            case 2131232450:
+            case Resources.id.radio_mb_type_listmap:
                 type = "l|List Map";
                 break;
 
-            case 2131232451:
+            case Resources.id.radio_mb_type_view:
                 type = "v|View";
                 break;
 
-            case 2131232437:
-            case 2131232438:
-            case 2131232439:
-            case 2131232440:
-            case 2131232441:
-            case 2131232442:
-            case 2131232443:
-            case 2131232444:
-            case 2131232445:
-            case 2131232446:
-            case 2131232447:
+            // What?
+            case Resources.id.manage_attr_listview:
+            case Resources.id.add_attr_listview:
+            case Resources.id.add_attr_fab:
+            case Resources.id.cus_attr_layout:
+            case Resources.id.cus_attr_text:
+            case Resources.id.cus_attr_btn:
+            case Resources.id.dialog_input_attr:
+            case Resources.id.dialog_btn_cancel:
+            case Resources.id.dialog_btn_save:
+            case Resources.id.dialog_input_res:
+            case Resources.id.dialog_input_value:
             default:
                 type = " ";
                 break;
