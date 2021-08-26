@@ -6,8 +6,15 @@ import android.os.StrictMode;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.android.dex.Dex;
+import com.android.dex.FieldId;
+import com.android.dex.MethodId;
+import com.android.dex.ProtoId;
+import com.android.dx.command.dexer.DxContext;
+import com.android.dx.command.dexer.Main;
+import com.android.dx.merge.CollisionPolicy;
+import com.android.dx.merge.DexMerger;
 import com.android.sdklib.build.ApkBuilder;
-import com.android.tools.r8.D8;
 import com.besome.sketch.design.DesignActivity;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
@@ -19,32 +26,28 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.KeyStoreFileManager;
 import mod.SketchwareUtil;
-import mod.agus.jcoderz.builder.DexMerge;
-import mod.agus.jcoderz.command.ProcessingFiles;
-import mod.agus.jcoderz.dex.Dex;
-import mod.agus.jcoderz.dx.command.dexer.Main;
-import mod.agus.jcoderz.dx.merge.CollisionPolicy;
-import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.alucard.tn.shrinker.R8Executor;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
+import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
 import proguard.ProGuard;
@@ -90,7 +93,6 @@ public class Dp {
      * Extracted built-in libraries directory
      */
     public File l;
-    public DexMerge merge;
     public ManageLocalLibrary mll;
     public Kp n;
     /**
@@ -100,12 +102,6 @@ public class Dp {
     public ProguardHandler proguard;
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
-    private ArrayList<String> dexesGenerated;
-    /**
-     * An ArrayList that contains DEX files generated from R.java classes and project files.
-     * Gets initialized right after calling {@link Dp#c()}
-     */
-    private ArrayList<String> extraDexes;
 
     public Dp(Context context, yq yqVar) {
         /*
@@ -262,58 +258,42 @@ public class Dp {
      * @throws Exception Thrown if the compiler has any problems compiling
      */
     public void c() throws Exception {
+        FileUtil.makeDir(f.t + File.separator + "dex");
         if (isD8Enabled()) {
             long savedTimeMillis = System.currentTimeMillis();
-            ArrayList<String> args = new ArrayList<>();
-            args.add("--release");
-            args.add("--intermediate");
-            args.add("--min-api");
-            args.add(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
-            args.add("--lib");
-            args.add(o);
-            args.add("--output");
-            args.add(f.t);
-            if (proguard.isProguardEnabled()) {
-                args.add(f.classes_proguard);
-            } else {
-                args.addAll(ProcessingFiles.getListResource(f.u));
-            }
             try {
-                /* Not "supported"/tested out yet */
-                if (false) {
-                    LogUtil.d(TAG, "Running R8");
-                    R8Executor r8Executor = new R8Executor(this, buildingDialog);
-                    r8Executor.preparingEnvironment();
-                    r8Executor.compile();
-                }
-                LogUtil.d(TAG, "Running D8 with these arguments: " + args);
-                D8.main(args.toArray(new String[0]));
+                DexCompiler.compileDexFiles(this);
                 LogUtil.d(TAG, "D8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
                 LogUtil.e(TAG, "D8 failed to process .class files", e);
                 throw e;
             }
         } else {
-            Main.dexOutputArrays = new ArrayList<>();
-            Main.dexOutputFutures = new ArrayList<>();
             long savedTimeMillis = System.currentTimeMillis();
             List<String> args = Arrays.asList(
                     "--debug",
                     "--verbose",
                     "--multi-dex",
-                    "--output=" + f.t,
+                    "--output=" + f.t + File.separator + "dex",
                     proguard.isProguardEnabled() ? f.classes_proguard : f.u
             );
+
             try {
                 LogUtil.d(TAG, "Running Dx with these arguments: " + args);
-                Main.main(args.toArray(new String[0]));
+
+                Main.clearInternTables();
+                Main.Arguments arguments = new Main.Arguments();
+                Method parseMethod = Main.Arguments.class.getDeclaredMethod("parse", String[].class);
+                parseMethod.setAccessible(true);
+                parseMethod.invoke(arguments, (Object) args.toArray(new String[0]));
+
+                Main.run(arguments);
                 LogUtil.d(TAG, "Dx took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
             } catch (Exception e) {
                 LogUtil.e(TAG, "Dx failed to process .class files", e);
                 throw e;
             }
         }
-        findExtraDexes();
     }
 
     /**
@@ -449,26 +429,119 @@ public class Dp {
      * @throws Exception Thrown if merging had problems
      */
     private void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
-        dexesGenerated = new ArrayList<>();
-        int lastDexNumber = findLastDexNo();
+        int lastDexNumber = 1;
+        String nextMergedDexFilename;
         ArrayList<Dex> dexObjects = new ArrayList<>();
-        int methodsMergedFile = 0;
-        for (String dexPath : dexes) {
+        Iterator<String> toMergeIterator = dexes.iterator();
+
+        List<FieldId> mergedDexFields;
+        List<MethodId> mergedDexMethods;
+        List<ProtoId> mergedDexProtos;
+        List<Integer> mergedDexTypes;
+
+        {
+            // Closable gets closed automatically
+            Dex firstDex = new Dex(new FileInputStream(toMergeIterator.next()));
+            mergedDexFields = firstDex.fieldIds();
+            mergedDexMethods = firstDex.methodIds();
+            mergedDexProtos = firstDex.protoIds();
+            mergedDexTypes = firstDex.typeIds();
+        }
+
+        while (toMergeIterator.hasNext()) {
+            String dexPath = toMergeIterator.next();
+            nextMergedDexFilename = lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex";
+
+            // Closable gets closed automatically
             Dex dex = new Dex(new FileInputStream(dexPath));
-            int currentDexMethods = dex.methodIds().size();
-            if (currentDexMethods + methodsMergedFile >= 65536) {
-                mergeDexes(outputPath.replace("classes2.dex", "classes" + lastDexNumber + ".dex"), dexObjects);
+
+            boolean canMerge = true;
+            List<FieldId> mergedFieldsTest = new ArrayList<>(mergedDexFields);
+            List<MethodId> mergedMethodsTest = new ArrayList<>(mergedDexMethods);
+            List<ProtoId> mergedProtosTest = new ArrayList<>(mergedDexProtos);
+            List<Integer> mergedTypesTest = new ArrayList<>(mergedDexTypes);
+
+            bruh:
+            {
+                for (FieldId fieldId : dex.fieldIds()) {
+                    if (!mergedFieldsTest.contains(fieldId)) {
+                        if (mergedFieldsTest.size() + 1 > 0xffff) {
+                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
+                                    " because it has too many new field IDs. "
+                                    + nextMergedDexFilename + " will have " + mergedDexFields.size() + " field IDs");
+                            canMerge = false;
+                            break bruh;
+                        } else {
+                            mergedFieldsTest.add(fieldId);
+                        }
+                    }
+                }
+
+                for (MethodId methodId : dex.methodIds()) {
+                    if (!mergedMethodsTest.contains(methodId)) {
+                        if (mergedMethodsTest.size() + 1 > 0xffff) {
+                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
+                                    " because it has too many new method IDs. "
+                                    + nextMergedDexFilename + " will have " + mergedDexMethods.size() + " method IDs");
+                            canMerge = false;
+                            break bruh;
+                        } else {
+                            mergedMethodsTest.add(methodId);
+                        }
+                    }
+                }
+
+                for (ProtoId protoId : dex.protoIds()) {
+                    if (!mergedProtosTest.contains(protoId)) {
+                        if (mergedProtosTest.size() + 1 > 0xffff) {
+                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
+                                    " because it has too many new method IDs. "
+                                    + nextMergedDexFilename + " will have " + mergedDexProtos.size() + " proto IDs");
+                            canMerge = false;
+                            break bruh;
+                        } else {
+                            mergedProtosTest.add(protoId);
+                        }
+                    }
+                }
+
+                for (Integer typeId : dex.typeIds()) {
+                    if (!mergedTypesTest.contains(typeId)) {
+                        if (mergedTypesTest.size() + 1 > 0xffff) {
+                            LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
+                                    " because it has too many new type IDs. "
+                                    + nextMergedDexFilename + " will have " + mergedDexTypes.size() + " type IDs");
+                            canMerge = false;
+                            break bruh;
+                        } else {
+                            mergedTypesTest.add(typeId);
+                        }
+                    }
+                }
+            }
+
+            if (canMerge) {
+                LogUtil.d(TAG, "Merging DEX #" + dexes.indexOf(dexPath) + " as well to " + nextMergedDexFilename);
+                dexObjects.add(dex);
+                mergedDexFields = mergedFieldsTest;
+                mergedDexMethods = mergedMethodsTest;
+                mergedDexProtos = mergedProtosTest;
+                mergedDexTypes = mergedTypesTest;
+            } else {
+                mergeDexes(outputPath.replace("classes.dex", nextMergedDexFilename), dexObjects);
                 dexObjects.clear();
                 dexObjects.add(dex);
-                methodsMergedFile = currentDexMethods;
+
+                mergedDexFields = dex.fieldIds();
+                mergedDexMethods = dex.methodIds();
+                mergedDexProtos = dex.protoIds();
+                mergedDexTypes = dex.typeIds();
                 lastDexNumber++;
-            } else {
-                dexObjects.add(dex);
-                methodsMergedFile += currentDexMethods;
             }
         }
         if (dexObjects.size() > 0) {
-            mergeDexes(outputPath.replace("classes2.dex", "classes" + lastDexNumber + ".dex"), dexObjects);
+            String filename = lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex";
+            mergeDexes(outputPath.replace("classes.dex", filename), dexObjects);
         }
     }
 
@@ -570,17 +643,6 @@ public class Dp {
         }
     }
 
-    private void findExtraDexes() {
-        extraDexes = new ArrayList<>();
-        ArrayList<String> arrayList = new ArrayList<>();
-        FileUtil.listDir(f.t, arrayList);
-        for (String str : arrayList) {
-            if (str.contains("classes") && str.contains(".dex") && !Uri.parse(str).getLastPathSegment().equals("classes.dex")) {
-                extraDexes.add(str);
-            }
-        }
-    }
-
     /**
      * @return The highest number after <code>classes</code> in filenames inside {@link yq#t} of the project plus 1.
      * <p/>
@@ -613,8 +675,15 @@ public class Dp {
      */
     public void g() {
         ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(f.E), null, null, System.out);
-        for (HashMap<String, Object> localLibraries : mll.list) {
-            apkBuilder.addResourcesFromJar(new File(localLibraries.get("jarPath").toString()));
+
+        for (Jp library : n.a()) {
+            apkBuilder.addResourcesFromJar(new File(l, m + File.separator + library.a() + File.separator + "classes.jar"));
+        }
+
+        for (String jarPath : mll.getJarLocalLibrary().split(":")) {
+            if (!jarPath.trim().isEmpty()) {
+                apkBuilder.addResourcesFromJar(new File(jarPath));
+            }
         }
 
         /* Add project's native libraries */
@@ -628,11 +697,11 @@ public class Dp {
             apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
         }
 
-        for (String extraDex : extraDexes) {
-            apkBuilder.addFile(new File(extraDex), Uri.parse(extraDex).getLastPathSegment());
-        }
-        for (String generatedDex : dexesGenerated) {
-            apkBuilder.addFile(new File(generatedDex), Uri.parse(generatedDex).getLastPathSegment());
+        List<String> dexFiles = FileUtil.listFiles(f.t + File.separator + "dex", "dex");
+        for (String dexFile : dexFiles) {
+            if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
+                apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+            }
         }
 
         apkBuilder.setDebugMode(false);
@@ -656,8 +725,8 @@ public class Dp {
     }
 
     /**
-     * Merges all DEX files, of used built-in libraries, used local libraries,
-     * and if running on Android Marshmallow and lower, also the AndroidX MultiDex library.
+     * Merges all DEX files, of used built-in libraries, used Local libraries,and if the project's
+     * minimum SDK version was set to 20 or lower, also the AndroidX MultiDex library.
      * If adding the HTTP legacy has not been disabled in Build Settings, it gets merged too.
      *
      * @throws Exception Thrown if merging failed
@@ -722,15 +791,17 @@ public class Dp {
                         }
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid DEX file path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                    SketchwareUtil.toastError("Invalid DEX file path of enabled Local library #" + i1, Toast.LENGTH_LONG);
                 }
             } else {
-                SketchwareUtil.toastError("Invalid name of enabled Local library #" + i, Toast.LENGTH_LONG);
+                SketchwareUtil.toastError("Invalid name of enabled Local library #" + i1, Toast.LENGTH_LONG);
             }
         }
 
-        LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes2.dex: " + dexes);
-        dexLibraries(f.F, dexes);
+        dexes.addAll(FileUtil.listFiles(f.t + File.separator + "dex", "dex"));
+
+        LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
+        dexLibraries(f.E, dexes);
         LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
@@ -891,8 +962,8 @@ public class Dp {
     }
 
     private void mergeDexes(String target, ArrayList<Dex> dexes) throws IOException {
-        new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(target));
-        dexesGenerated.add(target);
+        DexMerger merger = new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST, new DxContext());
+        merger.merge().writeTo(new File(target));
     }
 
     /**
