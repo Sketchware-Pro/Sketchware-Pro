@@ -24,6 +24,14 @@ import mod.hey.studios.util.Helper;
 
 public class ComponentsHandler {
 
+    private static ArrayList<HashMap<String, Object>> cachedCustomComponents = readCustomComponents();
+
+    /**
+     * This is a utility class, don't instantiate it
+     */
+    private ComponentsHandler() {
+    }
+
     /**
      * Called at {@link ComponentBean#getComponentTypeByTypeName(String)}.
      */
@@ -33,7 +41,7 @@ public class ComponentsHandler {
             return 36;
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object typeName = component.get("typeName");
@@ -70,7 +78,7 @@ public class ComponentsHandler {
             return "AsyncTask";
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentId = component.get("id");
@@ -109,7 +117,7 @@ public class ComponentsHandler {
             return "AsyncTask";
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentId = component.get("id");
@@ -147,7 +155,7 @@ public class ComponentsHandler {
             return 2131165726;
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object idObject = component.get("id");
@@ -302,7 +310,7 @@ public class ComponentsHandler {
      * @return Component description of a Custom Component
      */
     public static String description2(int id) {
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentId = component.get("id");
@@ -338,7 +346,7 @@ public class ComponentsHandler {
     // √give id and return docs url
     public static String docs(int id) {
         if (id != 36) {
-            ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+            ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
             for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
                 HashMap<String, Object> component = customComponents.get(i);
                 Object componentId = component.get("id");
@@ -377,7 +385,7 @@ public class ComponentsHandler {
             return "AsyncTask";
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentId = component.get("id");
@@ -418,7 +426,7 @@ public class ComponentsHandler {
     public static void add(ArrayList<ComponentBean> list) {
         list.add(new ComponentBean(36));
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentId = component.get("id");
@@ -441,7 +449,7 @@ public class ComponentsHandler {
             return "#";
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentId = component.get("id");
@@ -481,7 +489,7 @@ public class ComponentsHandler {
             return "Component.AsyncTask";
         }
 
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentTypeName = component.get("typeName");
@@ -511,7 +519,7 @@ public class ComponentsHandler {
      */
     //√√
     public static String extraVar(String name, String code, String varName) {
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentName = component.get("name");
@@ -541,7 +549,7 @@ public class ComponentsHandler {
 
     //√√
     public static String defineExtraVar(String name, String varName) {
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentName = component.get("name");
@@ -569,7 +577,7 @@ public class ComponentsHandler {
     }
 
     public static void getImports(String name, ArrayList<String> arrayList) {
-        ArrayList<HashMap<String, Object>> customComponents = readCustomComponents();
+        ArrayList<HashMap<String, Object>> customComponents = cachedCustomComponents;
         for (int i = 0, customComponentsSize = customComponents.size(); i < customComponentsSize; i++) {
             HashMap<String, Object> component = customComponents.get(i);
             Object componentVarName = component.get("varName");
@@ -619,5 +627,9 @@ public class ComponentsHandler {
         }
 
         return data;
+    }
+
+    public static void refreshCachedCustomComponents() {
+        cachedCustomComponents = readCustomComponents();
     }
 }
