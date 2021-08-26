@@ -495,7 +495,7 @@ public class Dp {
                     if (!mergedProtosTest.contains(protoId)) {
                         if (mergedProtosTest.size() + 1 > 0xffff) {
                             LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
-                                    " because it has too many new method IDs. "
+                                    " because it has too many new proto IDs. "
                                     + nextMergedDexFilename + " will have " + mergedDexProtos.size() + " proto IDs");
                             canMerge = false;
                             break bruh;
