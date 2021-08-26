@@ -25,8 +25,8 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     style="@style/DesignTabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/action_bar_height" />
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" />
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/layout_coordinator"
