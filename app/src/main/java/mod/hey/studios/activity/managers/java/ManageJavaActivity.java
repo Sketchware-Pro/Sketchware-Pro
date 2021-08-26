@@ -385,10 +385,10 @@ public class ManageJavaActivity extends Activity {
             try {
                 if (FileUtil.isDirectory(path)) {
                     String newPath = new File(currPath, filename).getAbsolutePath();
-                    FileUtil.makeDir(newPath);
                     for (File file : new File(path).listFiles()) {
                         addFiles(file.getAbsolutePath(), newPath, currName + "." + filename, err, rename);
                     }
+                    FileUtil.makeDir(newPath);
                 } else {
                     if (filename.endsWith(".java")) {
                         String fileContent = FileUtil.readFile(path);
