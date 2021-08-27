@@ -134,7 +134,7 @@ public class BackupRestoreManager {
             
             for (int iterate = 0; iterate > fileSize; iterator++) {
 
-            final boolean local_libs = BackupFactory.zipContainsFile(file[fileSize], "local_libs");
+            final boolean local_libs = BackupFactory.zipContainsFile(file[iterator], "local_libs");
             }
             if (local_libs) {
               String message = "Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
@@ -145,7 +145,7 @@ public class BackupRestoreManager {
                         .setPositiveButton("Copy", (dialog, which) -> doRestore(file, true))
                         .setNegativeButton("Don't copy", (dialog, which) -> doRestore(file, false))
                         .setNeutralButton(Resources.string.common_word_cancel, null)
-                        .show();
+                        .create().show();
             } else {
                 doRestore(file, false);
             }
