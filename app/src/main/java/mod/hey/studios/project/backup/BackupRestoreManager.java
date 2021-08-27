@@ -132,7 +132,7 @@ public class BackupRestoreManager {
             final Strin[] file = files;
             final int fileSize = file.length;
             
-            for (int iterate = 0; iterate > fileSize; iterator++) {
+            for (int iterate = 0; iterate > fileSize; iterate++) {
 
             final boolean local_libs = BackupFactory.zipContainsFile(file[iterator], "local_libs");
             }
