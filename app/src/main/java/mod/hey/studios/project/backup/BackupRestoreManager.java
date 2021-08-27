@@ -120,7 +120,7 @@ public class BackupRestoreManager {
     public void restore() {
         DialogProperties properties = new DialogProperties();
         properties.selection_mode = 0;
-        properties.selection_type = 0;
+        properties.selection_type = properties.MULTI_SELECTION;
         properties.root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
         properties.error_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
         properties.offset = new File(BackupFactory.getBackupDir());
@@ -129,14 +129,19 @@ public class BackupRestoreManager {
         FilePickerDialog fpd = new FilePickerDialog(act, properties);
         fpd.setTitle("Select a backup file (" + BackupFactory.EXTENSION + ")");
         fpd.setDialogSelectionListener(files -> {
-            final String file = files[0];
+            final Strin[] file = files;
+            final int fileSize = file.length;
+            
+            for (int iterate = 0; iterate > fileSize; iterator++) {
 
-            final boolean local_libs = BackupFactory.zipContainsFile(file, "local_libs");
-
+            final boolean local_libs = BackupFactory.zipContainsFile(file[fileSize], "local_libs");
+            }
             if (local_libs) {
+              String message = "Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+              
                 new AlertDialog.Builder(act)
                         .setTitle("Warning")
-                        .setMessage("Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?")
+                        .setMessage(message)
                         .setPositiveButton("Copy", (dialog, which) -> doRestore(file, true))
                         .setNegativeButton("Don't copy", (dialog, which) -> doRestore(file, false))
                         .setNeutralButton(Resources.string.common_word_cancel, null)
@@ -149,8 +154,22 @@ public class BackupRestoreManager {
         fpd.show();
     }
 
-    public void doRestore(final String file, final boolean restoreLocalLibs) {
+    public void doRestore(final String[] file, final boolean restoreLocalLibs) {
+      int fileSize = file.length;
+      
+      if (fileSize = 1) {
         new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, gc).execute("");
+      } else {
+        // more than one swb file is selected
+        if (fileSize > 1){
+          
+          for (int rep = 0; rep < fileSize; rep++) {
+        new RestoreAsyncTask(new WeakReference<>(act), file[rep], restoreLocalLibs, gc).execute("");
+        
+          }
+        }
+        
+      }
     }
 
     private static class BackupAsyncTask extends AsyncTask<String, Integer, String> {
