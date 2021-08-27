@@ -419,7 +419,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             new Thread() {
                                 @Override
                                 public void run() {
-                                    new File(q.c).delete();
+                                    FileUtil.deleteFile(q.c);
                                     runOnUiThread(() ->
                                             SketchwareUtil.toast("Done cleaning temporary files!"));
                                 }
@@ -1205,6 +1205,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 BuildSettings buildSettings = new BuildSettings(q.b);
 
                 try {
+                    publishProgress("Deleting temporary files...");
+                    FileUtil.deleteFile(q.c);
+
                     q.c();
                     q.c(a);
                     q.a();
@@ -1226,9 +1229,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.e();
 
                     Dp mDp = new Dp(this, a, q);
-
-                    publishProgress("Deleting temporary files...");
-                    new File(q.c).delete();
 
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
