@@ -112,7 +112,6 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.util.LogUtil;
-import mod.nethical.mod.CleanAsyncTask;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
 
@@ -417,7 +416,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 2:
-                            new CleanAsyncTask(q).execute();
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    new File(q.c).delete();
+                                    runOnUiThread(() ->
+                                            SketchwareUtil.toast("Done cleaning temporary files!"));
+                                }
+                            }.start();
                             break;
 
                         case 3:
@@ -1220,9 +1226,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.e();
 
                     Dp mDp = new Dp(this, a, q);
-                    
-                    publishProgress("Cleaning temporary files...");
-                    new CleanAsyncTask(q).execute();
+
+                    publishProgress("Deleting temporary files...");
+                    new File(q.c).delete();
 
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
