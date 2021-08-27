@@ -1220,6 +1220,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.e();
 
                     Dp mDp = new Dp(this, a, q);
+                    
+                    publishProgress("Cleaning temporary files...");
+                    new CleanAsyncTask(q).execute();
 
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
