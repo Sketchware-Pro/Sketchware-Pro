@@ -49,8 +49,9 @@ import com.besome.sketch.tools.ExportApkActivity;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdRequest.Builder;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
+////Romved Ad Closed Fix Net Work
+/////import com.google.android.gms.ads.AdSize;/////
+////////import com.google.android.gms.ads.AdView;/////
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.Resources;
@@ -228,8 +229,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         });
         //REMOVED: Looks bad.
         //snackbar.h().setAlpha(0.8F);
-        /* Set the text color to yellow */
-        snackbar.f(Color.YELLOW);
+        /* Set the text color to Red */
+        snackbar.f(Color.RED);
         snackbar.n();
     }
 
@@ -711,7 +712,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public final void p() {
+  /*  public final void p() {
         p.removeAllViews();
         G = new AdView(this);
         G.setAdListener(new AdListener() {
@@ -723,21 +724,23 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     w.b(false);
                 }
                 super.onAdFailedToLoad(i);
-            }
+    \*        }
 
-            @Override // com.google.android.gms.ads.AdListener
-            public void onAdLoaded() {
-                F = true;
-                super.onAdLoaded();
-            }
-        });
-        G.setLayoutParams(new LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-        p.addView(G);
-        G.setAdSize(AdSize.BANNER);
-        G.setAdUnitId("ca-app-pub-7978947291427601/3558354213");
-    }
+         //////   @Override // com.google.android.gms.ads.AdListener
+       ////////     public void onAdLoaded() {
+         //////       F = false;
+             /////   super.onAdLoaded();
+      /////      }
+   ////////     });
+///////// Romved Ad Colsed Net Work///////
+      ////////  G.setLayoutParams(new LayoutParams(
+          //////      LayoutParams.MATCH_PARENT,
+         //////////       LayoutParams.WRAP_CONTENT));
+
+       /////// p.addView(G);
+       ////// G.setAdSize(AdSize.BANNER);
+       ///// G.setAdUnitId("ca-app-pub-7978947291427601/3558354213");
+   ///////// }
 
     /**
      * Show a dialog asking about saving the project before quitting.
