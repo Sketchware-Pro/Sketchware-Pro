@@ -200,22 +200,22 @@ public class Ix {
         boolean addRequestLegacyExternalStorage = false;
         a.a("", "package", c.a);
         if (!c.a()) {
-            if (c.b(1)) {
+            if (c.b(jq.PERMISSION_CALL_PHONE)) {
                 a(a, Manifest.permission.CALL_PHONE);
             }
-            if (c.b(2)) {
+            if (c.b(jq.PERMISSION_INTERNET)) {
                 a(a, Manifest.permission.INTERNET);
             }
-            if (c.b(4)) {
+            if (c.b(jq.PERMISSION_VIBRATE)) {
                 a(a, Manifest.permission.VIBRATE);
             }
-            if (c.b(8)) {
+            if (c.b(jq.PERMISSION_ACCESS_NETWORK_STATE)) {
                 a(a, Manifest.permission.ACCESS_NETWORK_STATE);
             }
-            if (c.b(16)) {
+            if (c.b(jq.PERMISSION_CAMERA)) {
                 a(a, Manifest.permission.CAMERA);
             }
-            if (c.b(32)) {
+            if (c.b(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
                 try {
                     if (Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 28) {
                         addRequestLegacyExternalStorage = true;
@@ -224,19 +224,19 @@ public class Ix {
                 }
                 a(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
-            if (c.b(64)) {
+            if (c.b(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
                 a(a, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
-            if (c.b(128)) {
+            if (c.b(jq.PERMISSION_RECORD_AUDIO)) {
                 a(a, Manifest.permission.RECORD_AUDIO);
             }
-            if (c.b(256)) {
+            if (c.b(jq.PERMISSION_BLUETOOTH)) {
                 a(a, Manifest.permission.BLUETOOTH);
             }
-            if (c.b(512)) {
+            if (c.b(jq.PERMISSION_BLUETOOTH_ADMIN)) {
                 a(a, Manifest.permission.BLUETOOTH_ADMIN);
             }
-            if (c.b(1024)) {
+            if (c.b(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
                 a(a, Manifest.permission.ACCESS_FINE_LOCATION);
             }
         }
@@ -259,7 +259,8 @@ public class Ix {
             applicationTag.a("android", "usesCleartextTraffic", "true");
         }
         if (c.f) {
-            applicationTag.a("android", "name", settings.getValue("app_class", ".SketchApplication"));
+            applicationTag.a("android", "name",
+                    settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
         }
         AndroidManifestInjector.getAppAttrs(applicationTag, c.sc_id);
         for (ProjectFileBean projectFileBean : b) {
@@ -337,7 +338,7 @@ public class Ix {
         if (c.u) {
             a(applicationTag);
         }
-        if (this.c.m) {
+        if (c.m) {
             c(applicationTag);
         }
         ConstVarManifest.handleBgTaskComponent(applicationTag, c.x);

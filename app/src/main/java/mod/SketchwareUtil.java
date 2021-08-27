@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Random;
 
 import a.a.a.bB;
+import mod.jbk.util.LogUtil;
 
 public class SketchwareUtil {
 
@@ -259,7 +260,12 @@ public class SketchwareUtil {
      * @param length  The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
      */
     public static void toast(String message, int length) {
-        bB.a(getContext(), message, length).show();
+        try {
+            bB.a(getContext(), message, length).show();
+        } catch (NullPointerException e) {
+            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " +
+                    "Toast's message was: \"" + message + "\"", e);
+        }
     }
 
     /**
@@ -278,7 +284,12 @@ public class SketchwareUtil {
      * @param length  The toast's length, either {@link Toast#LENGTH_SHORT} or {@link Toast#LENGTH_LONG}
      */
     public static void toastError(String message, int length) {
-        bB.b(getContext(), message, length).show();
+        try {
+            bB.b(getContext(), message, length).show();
+        } catch (NullPointerException e) {
+            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " +
+                    "Toast's message was: \"" + message + "\"", e);
+        }
     }
 
     /**

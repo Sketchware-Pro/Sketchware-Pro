@@ -76,7 +76,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="#ffffffff"
+            android:textColor="@color/primary_text_default_material_dark"
             android:textSize="14sp" />
 
         <android.widget.Space
@@ -93,7 +93,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="#ffffffff"
+            android:textColor="@color/primary_text_default_material_dark"
             android:textSize="14sp" />
 
         <TextView
@@ -103,7 +103,7 @@
             android:gravity="center"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="#ffffffff"
+            android:textColor="@color/primary_text_default_material_dark"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

@@ -1,15 +1,19 @@
 package com.besome.sketch.design;
 
+import static mod.SketchwareUtil.getDip;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +58,6 @@ import com.sketchware.remod.Resources;
 import java.io.File;
 import java.util.HashMap;
 
-import a.a.a.Ay;
 import a.a.a.DB;
 import a.a.a.Dp;
 import a.a.a.Ep;
@@ -85,6 +88,9 @@ import a.a.a.yq;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import id.indosw.mod.DirectEditorActivity;
+import io.github.rosemoe.editor.langs.java.JavaLanguage;
+import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.editor.widget.EditorColorScheme;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
@@ -105,6 +111,7 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
+import mod.jbk.util.LogUtil;
 import mod.nethical.mod.CleanAsyncTask;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
@@ -394,10 +401,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(Resources.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
 
-                // TODO: Add nice title item (that's smaller, can't be selected, etc.)
+                // TODO: Add nice title item(s) which are smaller, can't be selected, etc.
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
+                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 if (FileUtil.isExistFile(q.H)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
                 }
@@ -422,6 +430,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             } else {
                                 SketchwareUtil.toast("APK doesn't exist anymore");
                             }
+                            break;
+
+                        case 5:
+                            showCurrentActivitySrcCode();
                             break;
 
                         default:
@@ -729,7 +741,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     /**
      * Show a dialog asking about saving the project before quitting.
-     * TODO: Include "Cancel" option as neutral choice.
      */
     public final void q() {
         aB dialog = new aB(this);
@@ -839,6 +850,42 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         });
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    private void showCurrentActivitySrcCode() {
+        ProgressDialog progress = new ProgressDialog(DesignActivity.this);
+        progress.setMessage("Generating source...");
+        progress.show();
+
+        new Thread(() -> {
+            final String source = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
+                    .setTitle(v.g)
+                    .setPositiveButton("Dismiss", null);
+
+            runOnUiThread(() -> {
+                progress.dismiss();
+
+                CodeEditor editor = new CodeEditor(DesignActivity.this);
+                editor.setTypefaceText(Typeface.MONOSPACE);
+                editor.setOverScrollEnabled(false);
+                editor.setEditable(false);
+                editor.setAutoCompletionEnabled(false);
+                editor.setEditorLanguage(new JavaLanguage());
+                editor.setColorScheme(new EditorColorScheme());
+                editor.setTextSize(16);
+                editor.setText(!source.equals("") ? source : "Failed to generate source.");
+
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.setView(editor,
+                        (int) getDip(24),
+                        (int) getDip(8),
+                        (int) getDip(24),
+                        (int) getDip(8));
+                dialog.show();
+            });
+        }).start();
     }
 
     /**
@@ -1125,7 +1172,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             runOnUiThread(() -> {
                 q.b();
                 c();
-                bB.b(getApplicationContext(), "APK build failed", Toast.LENGTH_SHORT).show();
+                SketchwareUtil.toastError("APK build failed");
                 u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
                 u.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1135,7 +1182,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void aWithMessage(String message) {
             runOnUiThread(() -> {
                 a();
-                bB.b(getApplicationContext(), "APK build failed: " + message, Toast.LENGTH_LONG).show();
+                SketchwareUtil.toastError("APK build failed: " + message, Toast.LENGTH_LONG);
             });
         }
 
@@ -1173,6 +1220,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.e();
 
                     Dp mDp = new Dp(this, a, q);
+                    
+                    publishProgress("Cleaning temporary files...");
+                    new CleanAsyncTask(q).execute();
 
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
@@ -1292,17 +1342,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Launch Intent to install APK */
                         o();
                     }
-                } catch (Ay e) {
-                    // Never thrown? Haven't found a reference to it in any classes except {@link DesignActivity} and {@link PublishActivity} (and of course {@link Ay})
-                    Log.e("DesignActivity$a", e.getMessage(), e);
-                    // This seems kinda odd
-                    c(e.getMessage());
-                } catch (OutOfMemoryError error) {
-                    System.gc();
-                    Log.e("DesignActivity$a", "OutOfMemoryError: " + error.getMessage(), error);
-                    DesignActivity.this.d(error.getMessage());
                 } catch (Throwable e) {
-                    Log.e("DesignActivity$a", Log.getStackTraceString(e), e);
+                    LogUtil.e("DesignActivity$a", "Failed to build project", e);
                     DesignActivity.this.d(e.getMessage());
                 }
             }

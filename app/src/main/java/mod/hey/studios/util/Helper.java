@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import mod.SketchwareUtil;
@@ -72,7 +73,7 @@ public class Helper {
 
     public static void applyRipple(Context context, View view) {
         TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(16843868, typedValue, true);
+        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, typedValue, true);
 
         view.setBackgroundResource(typedValue.resourceId);
         view.setClickable(true);
@@ -135,8 +136,9 @@ public class Helper {
             }
         }
 
-        directories.sort(String.CASE_INSENSITIVE_ORDER);
-        files.sort(String.CASE_INSENSITIVE_ORDER);
+        // ignore the warnings, we need this for compatibility with pre-API level 24
+        Collections.sort(directories, String.CASE_INSENSITIVE_ORDER);
+        Collections.sort(files, String.CASE_INSENSITIVE_ORDER);
         paths.clear();
         paths.addAll(directories);
         paths.addAll(files);

@@ -8,10 +8,12 @@ import com.android.annotations.Nullable;
 import com.android.apksigner.ApkSignerTool;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ApkSigner {
 
@@ -30,98 +32,108 @@ public class ApkSigner {
      * @param callback   Callback for System.out during signing. May be null
      */
     public void signWithTestKey(@NonNull String inputPath, @NonNull String outputPath, @Nullable LogCallback callback) {
-        Object savedAccessFlags = null;
-        Object savedOut = null;
+        try (LogWriter logger = new LogWriter(callback)) {
+            long savedTimeMillis = System.currentTimeMillis();
+            PrintStream oldOut = System.out;
 
-        LogWriter logger = new LogWriter(callback);
-        long savedTimeMillis = System.currentTimeMillis();
+            List<String> args = Arrays.asList(
+                    "sign",
+                    "--in",
+                    inputPath,
+                    "--out",
+                    outputPath,
+                    "--key",
+                    new File(context.getFilesDir(), TESTKEY_DIR_IN_FILES + "testkey.pk8").getAbsolutePath(),
+                    "--cert",
+                    new File(context.getFilesDir(), TESTKEY_DIR_IN_FILES + "testkey.x509.pem").getAbsolutePath()
+            );
 
-        ArrayList<String> args = new ArrayList<String>() {{
-            add("sign");
-            add("--in");
-            add(inputPath);
-            add("--out");
-            add(outputPath);
-            add("--key");
-            add(new File(context.getFilesDir(), TESTKEY_DIR_IN_FILES + "testkey.pk8").getAbsolutePath());
-            add("--cert");
-            add(new File(context.getFilesDir(), TESTKEY_DIR_IN_FILES + "testkey.x509.pem").getAbsolutePath());
-        }};
+            logger.write("Signing an APK file with these arguments: " + args);
 
-        logger.write("Signing an APK file with these arguments: " + args.toString());
+            /* If the signing has a callback, we need to change System.out to our logger */
+            if (callback != null) {
+                try (PrintStream stream = new PrintStream(logger)) {
+                    System.setOut(stream);
+                }
+            }
 
-        /* If the signing has a callback, we need to change System.out to our logger */
-        if (callback != null) {
             try {
-                Field outField = System.class.getField("out");
-                Field accessFlagsField = Field.class.getField("accessFlags");
-
-                accessFlagsField.setAccessible(true);
-                savedAccessFlags = accessFlagsField.get(null);
-                accessFlagsField.set(outField, outField.getModifiers() & -17);
-                outField.setAccessible(true);
-                savedOut = outField.get(null);
-                outField.set(null, new PrintStream(logger));
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                logger.write("Failed to get/set field out in System: " + e.getMessage());
+                ApkSignerTool.main(args.toArray(new String[0]));
+            } catch (Exception e) {
+                callback.errorCount.incrementAndGet();
+                logger.write("An error occurred while trying to sign the APK file " + inputPath +
+                        " and outputting it to " + outputPath + ": " + e.getMessage() + "\n" +
+                        "Stack trace: " + Log.getStackTraceString(e));
             }
+
+            logger.write("Signing an APK file took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+
+            if (callback != null) {
+                System.setOut(oldOut);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        try {
-            ApkSignerTool.main(args.toArray(new String[0]));
-        } catch (Exception e) {
-            logger.write("An error occurred while trying to sign the APK file " + inputPath
-                    + " and outputting it to " + outputPath
-                    + ": " + e.getMessage() + "\nStack trace: " + Log.getStackTraceString(e));
-        }
+    public void signWithKeyStore(@NonNull String inputFilePath, @NonNull String outputFilePath,
+                                 @NonNull String keyStorePath, @NonNull String keyStorePassword,
+                                 @NonNull String keyStoreKeyAlias, @NonNull String keyPassword, @Nullable LogCallback callback) {
+        try (LogWriter logger = new LogWriter(callback)) {
+            long savedTimeMillis = System.currentTimeMillis();
+            PrintStream oldOut = System.out;
 
-        logger.write("Signing an APK file took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            List<String> args = Arrays.asList(
+                    "sign",
+                    "--in",
+                    inputFilePath,
+                    "--out",
+                    outputFilePath,
+                    "--ks",
+                    keyStorePath,
+                    "--ks-pass",
+                    "pass:" + keyStorePassword,
+                    "--ks-key-alias",
+                    keyStoreKeyAlias,
+                    "--key-pass",
+                    "pass:" + keyPassword,
+                    "--ks-type", "jks"
+            );
 
-        /* Try to revert System.out */
-        if (callback == null) {
-            return;
-        }
+            logger.write("Signing an APK with a JKS keystore and these arguments: ");
 
-        try {
-            Field outField = System.class.getField("out");
-            Field accessFlagsField = Field.class.getField("accessFlags");
-
-            if (savedOut == null) {
-                logger.write("savedOut is null, skipping reverting field out in System");
-                return;
+            if (callback != null) {
+                try (PrintStream stream = new PrintStream(logger)) {
+                    System.setOut(stream);
+                }
             }
 
-            if (savedAccessFlags == null) {
-                logger.write("savedAccessFlags is null, skipping reverting field out in System");
-                return;
+            try {
+                ApkSignerTool.main(args.toArray(new String[0]));
+            } catch (Exception e) {
+                callback.errorCount.incrementAndGet();
+                logger.write("Failed to sign APK with JKS keystore: " + Log.getStackTraceString(e));
             }
 
-            if (!outField.isAccessible()) {
-                logger.write("outField isn't accessible anymore, skipping reverting field out in System");
-                return;
+            logger.write("Signing an APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+
+            if (callback != null) {
+                System.setOut(oldOut);
             }
-
-            if (!accessFlagsField.isAccessible()) {
-                logger.write("accessFlagsField isn't accessible anymore, skipping reverting field out in System");
-                return;
-            }
-
-            outField.set(null, savedOut);
-            accessFlagsField.set(null, savedAccessFlags);
-
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            logger.write("Failed to revert field out in System: " + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public interface LogCallback {
+        AtomicInteger errorCount = new AtomicInteger(0);
         void onNewLineLogged(String line);
     }
 
     private static class LogWriter extends OutputStream {
 
         private final LogCallback mCallback;
-        private String mCache;
+        private String mCache = "";
 
         private LogWriter(LogCallback callback) {
             mCallback = callback;
@@ -135,6 +147,7 @@ public class ApkSigner {
 
             if (((char) b) == '\n') {
                 mCallback.onNewLineLogged(mCache);
+                mCache = "";
             }
         }
 
