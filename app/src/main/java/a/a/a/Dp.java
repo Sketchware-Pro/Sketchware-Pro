@@ -442,6 +442,7 @@ public class Dp {
         {
             // Closable gets closed automatically
             Dex firstDex = new Dex(new FileInputStream(toMergeIterator.next()));
+            dexObjects.add(firstDex);
             mergedDexFields = firstDex.fieldIds();
             mergedDexMethods = firstDex.methodIds();
             mergedDexProtos = firstDex.protoIds();
