@@ -644,33 +644,6 @@ public class Dp {
     }
 
     /**
-     * @return The highest number after <code>classes</code> in filenames inside {@link yq#t} of the project plus 1.
-     * <p/>
-     * Example: <code>classes.dex</code> and <code>classes2.dex</code> are in {@link yq#t},
-     * so <code>3</code> would be returned
-     */
-    private int findLastDexNo() {
-        ArrayList<String> files = new ArrayList<>();
-        FileUtil.listDir(f.t, files);
-
-        ArrayList<String> dexPaths = new ArrayList<>();
-        for (String file : files) {
-            if (file.contains("classes") && file.contains(".dex")) {
-                dexPaths.add(Uri.parse(file).getLastPathSegment());
-            }
-        }
-        if (dexPaths.size() == 1 && dexPaths.get(0).equals("classes.dex")) {
-            return 2;
-        }
-        int lastDexNo = 1;
-        for (String str2 : dexPaths) {
-            String replace = str2.replace("classes", "").replace(".dex", "");
-            lastDexNo = Math.max(lastDexNo, replace.isEmpty() ? 1 : Integer.parseInt(replace));
-        }
-        return lastDexNo + 1;
-    }
-
-    /**
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
     public void g() {
@@ -697,7 +670,7 @@ public class Dp {
             apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
         }
 
-        List<String> dexFiles = FileUtil.listFiles(f.t + File.separator + "dex", "dex");
+        List<String> dexFiles = FileUtil.listFiles(f.t, "dex");
         for (String dexFile : dexFiles) {
             if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
                 apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
