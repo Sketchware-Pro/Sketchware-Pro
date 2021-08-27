@@ -732,53 +732,56 @@ public class Lx {
 
         processingParameters:
         for (String parameterSpec : var10) {
-            char parameterType = parameterSpec.charAt(1);
-            switch (parameterType) {
-                case 'b':
-                    String str = code;
-                    if (!isFirstParameter) {
-                        str += ", ";
-                    }
+            // Avoid label spec parts
+            if (parameterSpec.charAt(0) == '%') {
+                char parameterType = parameterSpec.charAt(1);
+                switch (parameterType) {
+                    case 'b':
+                        String str = code;
+                        if (!isFirstParameter) {
+                            str += ", ";
+                        }
 
-                    code = str + "final boolean _" + parameterSpec.substring(3);
-                    break;
+                        code = str + "final boolean _" + parameterSpec.substring(3);
+                        break;
 
-                case 'd':
-                    str = code;
-                    if (!isFirstParameter) {
-                        str += ", ";
-                    }
-
-                    code = str + "final double _" + parameterSpec.substring(3);
-                    break;
-
-                case 's':
-                    str = code;
-                    if (!isFirstParameter) {
-                        str += ", ";
-                    }
-
-                    code = str + "final String _" + parameterSpec.substring(3);
-                    break;
-
-                default:
-                    if (parameterType == 'm') {
+                    case 'd':
                         str = code;
                         if (!isFirstParameter) {
                             str += ", ";
                         }
 
-                        int lastIndexOfPeriod = parameterSpec.lastIndexOf(".");
-                        code = str +
-                                "final " + mq.e(mq.b(parameterSpec.substring(3, lastIndexOfPeriod))) + " _" +
-                                parameterSpec.substring(lastIndexOfPeriod + 1);
+                        code = str + "final double _" + parameterSpec.substring(3);
                         break;
-                    } else {
-                        continue processingParameters;
-                    }
-            }
 
-            isFirstParameter = false;
+                    case 's':
+                        str = code;
+                        if (!isFirstParameter) {
+                            str += ", ";
+                        }
+
+                        code = str + "final String _" + parameterSpec.substring(3);
+                        break;
+
+                    default:
+                        if (parameterType == 'm') {
+                            str = code;
+                            if (!isFirstParameter) {
+                                str += ", ";
+                            }
+
+                            int lastIndexOfPeriod = parameterSpec.lastIndexOf(".");
+                            code = str +
+                                    "final " + mq.e(mq.b(parameterSpec.substring(3, lastIndexOfPeriod))) + " _" +
+                                    parameterSpec.substring(lastIndexOfPeriod + 1);
+                            break;
+                        } else {
+                            continue processingParameters;
+                        }
+                }
+
+                isFirstParameter = false;
+            }
         }
 
         return code + ") {\r\n" +
