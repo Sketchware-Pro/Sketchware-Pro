@@ -866,7 +866,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         new Thread(() -> {
             final String source = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this , android.R.style.Theme_DeviceDefault_Light_NoActionBar)
                     .setTitle(v.g)
                     .setPositiveButton("Dismiss", null);
 
