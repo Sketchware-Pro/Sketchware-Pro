@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.sketchware.remod.Resources;
 
@@ -35,7 +38,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import a.a.a.bB;
 import io.github.rosemoe.editor.interfaces.EditorLanguage;
 import io.github.rosemoe.editor.langs.EmptyLanguage;
 import io.github.rosemoe.editor.langs.desc.CDescription;
@@ -50,11 +52,13 @@ import io.github.rosemoe.editor.widget.schemes.SchemeEclipse;
 import io.github.rosemoe.editor.widget.schemes.SchemeGitHub;
 import io.github.rosemoe.editor.widget.schemes.SchemeNotepadXX;
 import io.github.rosemoe.editor.widget.schemes.SchemeVS2019;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
 ///6.3.0
 
-public class SrcCodeEditor extends Activity {
+public class SrcCodeEditor extends AppCompatActivity {
+
     public static SharedPreferences pref;
     private LinearLayout toolbar;
     private CodeEditor editor;
@@ -76,29 +80,30 @@ public class SrcCodeEditor extends Activity {
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
-        EditorColorScheme scheme = new EditorColorScheme();
+        EditorColorScheme scheme;
 
         switch (which) {
+            default:
             case 0:
                 scheme = new EditorColorScheme();
                 break;
-                
+
             case 1:
                 scheme = new SchemeGitHub();
                 break;
-                
+
             case 2:
                 scheme = new SchemeEclipse();
                 break;
-                
+
             case 3:
                 scheme = new SchemeDarcula();
                 break;
-                
+
             case 4:
                 scheme = new SchemeVS2019();
                 break;
-                
+
             case 5:
                 scheme = new SchemeNotepadXX();
                 break;
@@ -107,8 +112,7 @@ public class SrcCodeEditor extends Activity {
         ed.setColorScheme(scheme);
     }
 
-    // xml formatter
-    public static String prettifyXml(String xml, int indent) {
+    public static String prettifyXml(String xml, int indentAmount) {
         try {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
@@ -136,7 +140,7 @@ public class SrcCodeEditor extends Activity {
 
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indent));
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indentAmount));
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
             // Return pretty print xml string
@@ -149,18 +153,18 @@ public class SrcCodeEditor extends Activity {
         }
     }
 
-    // java formatter
-    public static void a(StringBuilder var0, int var1) {
-        for (int var2 = 0; var2 < var1; ++var2) {
-            var0.append('\t');
+    /**
+     * Adds a specified amount of tabs.
+     */
+    public static void a(StringBuilder code, int tabAmount) {
+        for (int i = 0; i < tabAmount; ++i) {
+            code.append('\t');
         }
     }
 
-    public static String j(String var0) {
-        StringBuilder var1 = new StringBuilder(4096);
-        char[] var2 = var0.toCharArray();
-        int var3 = var2.length;
-        int var4 = 0;
+    public static String j(String codeString) {
+        StringBuilder formattedCode = new StringBuilder(4096);
+        char[] code = codeString.toCharArray();
         boolean var5 = false;
         boolean var6 = false;
         boolean var7 = false;
@@ -168,7 +172,8 @@ public class SrcCodeEditor extends Activity {
         boolean var9 = false;
 
         int var19;
-        for (boolean var10 = false; var4 < var3; var4 = var19) {
+        int index = 0;
+        for (boolean var10 = false; index < code.length; index = var19) {
             int var13;
             boolean var14;
             boolean var15;
@@ -177,110 +182,113 @@ public class SrcCodeEditor extends Activity {
             int var18;
             label82:
             {
-                char var11 = var2[var4];
+                char codeBit = code[index];
                 if (var5) {
-                    if (var11 == 10) {
-                        var1.append(var11);
-                        a(var1, var8);
+                    if (codeBit == '\n') {
+                        formattedCode.append(codeBit);
+                        a(formattedCode, var8);
                         var5 = false;
                     } else {
-                        var1.append(var11);
+                        formattedCode.append(codeBit);
                     }
                 } else if (var6) {
                     label79:
                     {
-                        if (var11 == 42) {
-                            int var40 = var4 + 1;
-                            char var41 = var2[var40];
-                            if (var41 == 47) {
-                                var1.append(var11);
-                                var1.append(var41);
-                                var4 = var40;
+                        if (codeBit == '*') {
+                            int var40 = index + 1;
+                            char var41 = code[var40];
+                            if (var41 == '/') {
+                                formattedCode.append(codeBit);
+                                formattedCode.append(var41);
+                                index = var40;
                                 var6 = false;
                                 break label79;
                             }
                         }
 
-                        var1.append(var11);
-                        //add indents for commented lines
-                        if(var11==10) a(var1,var8);
+                        formattedCode.append(codeBit);
+
+                        // Add indents for commented lines
+                        if (codeBit == '\n') {
+                            a(formattedCode, var8);
+                        }
                     }
                 } else if (var7) {
-                    var1.append(var11);
+                    formattedCode.append(codeBit);
                     var7 = false;
-                } else if (var11 == 92) {
-                    var1.append(var11);
+                } else if (codeBit == '\\') {
+                    formattedCode.append(codeBit);
                     var7 = true;
                 } else if (var9) {
-                    if (var11 == 39) {
-                        var1.append(var11);
+                    if (codeBit == '\'') {
+                        formattedCode.append(codeBit);
                         var9 = false;
                     } else {
-                        var1.append(var11);
+                        formattedCode.append(codeBit);
                     }
                 } else if (var10) {
-                    if (var11 == 34) {
-                        var1.append(var11);
+                    if (codeBit == '\"') {
+                        formattedCode.append(codeBit);
                         var10 = false;
                     } else {
-                        var1.append(var11);
+                        formattedCode.append(codeBit);
                     }
                 } else {
                     label88:
                     {
-                        if (var11 == 47) {
-                            int var27 = var4 + 1;
-                            char var28 = var2[var27];
-                            if (var28 == 47) {
-                                var1.append(var11);
-                                var1.append(var28);
+                        if (codeBit == '/') {
+                            int var27 = index + 1;
+                            char var28 = code[var27];
+                            if (var28 == '/') {
+                                formattedCode.append(codeBit);
+                                formattedCode.append(var28);
                                 var5 = true;
-                                var4 = var27;
+                                index = var27;
                                 break label88;
                             }
 
-                            if (var28 == 42) {
-                                var1.append(var11);
-                                var1.append(var28);
+                            if (var28 == '*') {
+                                formattedCode.append(codeBit);
+                                formattedCode.append(var28);
                                 var6 = true;
-                                var4 = var27;
+                                index = var27;
                                 break label88;
                             }
                         }
 
-                        if (var11 != 10) {
+                        if (codeBit != '\n') {
                             boolean var20;
-                            if (var11 == 39) {
+                            if (codeBit == '\'') {
                                 var20 = true;
                             } else {
                                 var20 = var9;
                             }
 
                             boolean var21;
-                            if (var11 == 34) {
+                            if (codeBit == '\"') {
                                 var21 = true;
                             } else {
                                 var21 = var10;
                             }
 
                             int var22;
-                            if (var11 == 123) {
+                            if (codeBit == '{') {
                                 var22 = var8 + 1;
                             } else {
                                 var22 = var8;
                             }
 
-                            if (var11 == 125) {
-                                --var22;
-                                if (var1.charAt(-1 + var1.length()) == 9) {
-                                    var1.deleteCharAt(-1 + var1.length());
+                            if (codeBit == '}') {
+                                var22--;
+                                if (formattedCode.charAt(-1 + formattedCode.length()) == '\t') {
+                                    formattedCode.deleteCharAt(-1 + formattedCode.length());
                                 }
                             }
 
-                            var1.append(var11);
+                            formattedCode.append(codeBit);
                             var18 = var22;
                             var10 = var21;
-                            var13 = var4;
+                            var13 = index;
                             var14 = var5;
                             var15 = var6;
                             var16 = var7;
@@ -288,12 +296,12 @@ public class SrcCodeEditor extends Activity {
                             break label82;
                         }
 
-                        var1.append(var11);
-                        a(var1, var8);
+                        formattedCode.append(codeBit);
+                        a(formattedCode, var8);
                     }
                 }
 
-                var13 = var4;
+                var13 = index;
                 var14 = var5;
                 var15 = var6;
                 var16 = var7;
@@ -309,7 +317,7 @@ public class SrcCodeEditor extends Activity {
             var5 = var14;
         }
 
-        return var1.toString();
+        return formattedCode.toString();
     }
 
     public static String paste(Activity act) {
@@ -328,7 +336,7 @@ public class SrcCodeEditor extends Activity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.code_editor_hs);
 
@@ -344,11 +352,9 @@ public class SrcCodeEditor extends Activity {
     }
 
     private void initializeLogic() {
-
         toolbar.setVisibility(View.GONE);
 
         setTitle(getIntent().getStringExtra("title"));
-        getActionBar().setSubtitle("UTF-8");
 
         editor.setTypefaceText(Typeface.MONOSPACE);
         //6.3.0 fix1
@@ -368,7 +374,7 @@ public class SrcCodeEditor extends Activity {
     public void save() {
         beforeContent = editor.getText().toString();
         FileUtil.writeFile(getIntent().getStringExtra("content"), beforeContent);
-        bB.a(getApplicationContext(), "Saved", 0).show();
+        SketchwareUtil.toast("Saved");
     }
 
     @Override
@@ -386,42 +392,41 @@ public class SrcCodeEditor extends Activity {
         }
     }
 
-    public void populateMenu(Menu menu) {
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         SharedPreferences local_pref = getSharedPreferences("hsce", Activity.MODE_PRIVATE);
 
-        //6.3.0 fix1
         menu.clear();
 
-        menu.add(0, 9, 0, "Paste");
-        menu.add(0, 0, 0, "Undo")
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo")
                 .setIcon(getDrawable(Resources.drawable.ic_undo_white_48dp))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(0, 1, 0, "Redo")
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo")
                 .setIcon(getDrawable(Resources.drawable.ic_redo_white_48dp))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add(0, 2, 0, "Save")
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save")
                 .setIcon(getDrawable(Resources.drawable.save_white_48))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        
-        menu.add(0, 3, 0, "Find & Replace");
-        menu.add(0, 4, 0, "Word wrap")
+
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Paste");
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Word wrap")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ww", false));
-        menu.add(0, 5, 0, "Pretty print");
-        menu.add(0, 6, 0, "Switch language");
-        menu.add(0, 7, 0, "Switch theme");
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Pretty print");
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Switch language");
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Switch theme");
 
-        //6.3.0 fix1
-        menu.add(0, 8, 0, "Auto complete")
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ac", true));
+
+        return true;
     }
 
-    public void onMenuItemClick(MenuItem item) {
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         String title = item.getTitle().toString();
-
         switch (title) {
             case "Undo":
                 editor.undo();
@@ -436,8 +441,6 @@ public class SrcCodeEditor extends Activity {
                 break;
 
             case "Pretty print":
-                //editor.formatCodeAsync();
-
                 if (getIntent().hasExtra("java")) {
                     StringBuilder b = new StringBuilder();
 
@@ -451,14 +454,14 @@ public class SrcCodeEditor extends Activity {
 
                     boolean err = false;
                     String ss = b.toString();
-                    
+
                     try {
                         ss = j(ss);
                     } catch (Exception e) {
                         err = true;
-                        bB.a(SrcCodeEditor.this, "Error: Your code contains incorrectly nested parentheses", 0).show();
+                        SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
                     }
-                    
+
                     if (!err) editor.setText(ss);
 
                 } else if (getIntent().hasExtra("xml")) {
@@ -467,22 +470,22 @@ public class SrcCodeEditor extends Activity {
                     if (format != null) {
                         editor.setText(format);
                     } else {
-                        bB.a(getApplicationContext(), "Couldn't format xml file (maybe check if it follows proper xml syntax?)", 1).show();
+                        SketchwareUtil.toastError("Failed to format XML file", Toast.LENGTH_LONG);
                     }
                 } else {
-                    bB.a(getApplicationContext(), "Only Java and XML files can be formatted.", 0).show();
+                    SketchwareUtil.toast("Only Java and XML files can be formatted");
                 }
-
                 break;
 
             case "Switch language":
                 new AlertDialog.Builder(SrcCodeEditor.this)
                         .setTitle("Switch language")
-                        .setSingleChoiceItems(new String[] {"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1,
+                        .setSingleChoiceItems(new String[]{"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1,
                                 (dialog, which) -> {
-                                    EditorLanguage editorLanguage = null;
+                                    EditorLanguage editorLanguage;
 
                                     switch (which) {
+                                        default:
                                         case 0:
                                             editorLanguage = new UniversalLanguage(new CDescription());
                                             break;
@@ -509,18 +512,17 @@ public class SrcCodeEditor extends Activity {
                                     dialog.dismiss();
                                 }
                         )
-                        .setNegativeButton(android.R.string.cancel, null)
+                        .setNegativeButton(Resources.string.common_word_cancel, null)
                         .show();
                 break;
 
             case "Find & Replace":
                 editor.getSearcher().stopSearch();
                 editor.beginSearchMode();
-
                 break;
 
             case "Switch theme":
-                String[] themes = new String[] {"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
+                String[] themes = new String[]{"Default", "GitHub", "Eclipse", "Dracula", "VS2019", "NotepadXX"};
                 new AlertDialog.Builder(SrcCodeEditor.this)
                         .setTitle("Switch theme")
                         .setSingleChoiceItems(themes, -1,
@@ -530,7 +532,7 @@ public class SrcCodeEditor extends Activity {
                                     dialog.dismiss();
                                 }
                         )
-                        .setNegativeButton(android.R.string.cancel, null)
+                        .setNegativeButton(Resources.string.common_word_cancel, null)
                         .show();
                 break;
 
@@ -544,7 +546,6 @@ public class SrcCodeEditor extends Activity {
             case "Auto complete":
                 item.setChecked(!item.isChecked());
 
-                //new
                 editor.setAutoCompletionEnabled(item.isChecked());
                 pref.edit().putBoolean("act_ac", item.isChecked()).apply();
                 break;
@@ -552,24 +553,16 @@ public class SrcCodeEditor extends Activity {
             case "Paste":
                 editor.setText(paste(this));
                 break;
+
+            default:
+                return false;
         }
 
+        return true;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        populateMenu(menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        onMenuItemClick(item);
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
 
         float scaledDensity = getResources().getDisplayMetrics().scaledDensity;

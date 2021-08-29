@@ -83,7 +83,7 @@ public class EventsMakerDetails extends Activity {
             ArrayList<HashMap<String, Object>> events = new Gson()
                     .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < events.size(); i++) {
-                if (events.get(i).get("listener").equals(lisName)) {
+                if (lisName.equals(events.get(i).get("listener"))) {
                     listMap.add(events.get(i));
                 }
             }
@@ -98,7 +98,7 @@ public class EventsMakerDetails extends Activity {
             ArrayList<HashMap<String, Object>> events = new Gson()
                     .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (int i = events.size() - 1; i > -1; i--) {
-                if (events.get(i).get("listener").equals(lisName)) {
+                if (lisName.equals(events.get(i).get("listener"))) {
                     events.remove(i);
                 }
             }
@@ -160,7 +160,7 @@ public class EventsMakerDetails extends Activity {
             }
             ((LinearLayout) icon.getParent()).setGravity(17);
             title.setText((String) _data.get(position).get("name"));
-            if (_data.get(position).get("var").equals("")) {
+            if ("".equals(_data.get(position).get("var"))) {
                 subtitle.setText("Activity event");
             } else {
                 subtitle.setText((String) _data.get(position).get("var"));

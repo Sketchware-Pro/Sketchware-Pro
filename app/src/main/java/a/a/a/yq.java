@@ -911,6 +911,19 @@ public class yq {
     }
 
     /**
+     * Get source code of a single Activity
+     *
+     * @return The Activity specified by <code>javaName</code>'s source or an empty String if not found
+     */
+    public String getActivitySrc(String javaName, hC hCVar, eC eCVar, iC iCVar) {
+        a(iCVar, hCVar, eCVar, false);
+        for (ProjectFileBean activity : hCVar.b()) {
+            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, eCVar).a();
+        }
+        return "";
+    }
+
+    /**
      * @see yq#a(hC, eC, iC, boolean)
      */
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
