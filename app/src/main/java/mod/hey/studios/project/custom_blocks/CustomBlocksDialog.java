@@ -72,8 +72,8 @@ public class CustomBlocksDialog {
             }
         }
 
-        new AlertDialog.Builder(c)
-                .setTitle("Used Custom Blocks")
+        new AlertDialog.Builder(c, android.R.style.Theme_DeviceDefault_Light_NoActionBar)
+                .setTitle("Custom Blocks In Project")
                 .setPositiveButton(Resources.string.common_word_close, null)
                 .setView(background)
                 .show();
