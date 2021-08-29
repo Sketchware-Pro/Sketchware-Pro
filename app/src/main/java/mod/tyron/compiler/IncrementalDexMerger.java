@@ -11,6 +11,7 @@ import java.util.List;
 
 import a.a.a.yq;
 import mod.agus.jcoderz.dex.Dex;
+import mod.agus.jcoderz.dx.command.dexer.DxContext;
 import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
@@ -123,7 +124,7 @@ public class IncrementalDexMerger extends Compiler {
     }
 
     private void mergeDexes(String target, ArrayList<Dex> dexes) throws Exception {
-        new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST).merge().writeTo(new File(target));
+        new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST, new DxContext()).merge().writeTo(new File(target));
         generatedDexes.add(target);
     }
 
