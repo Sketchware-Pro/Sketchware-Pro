@@ -23,7 +23,7 @@ public class SourceCodeDialog {
         codeEditor.setEditable(false);
         codeEditor.setColorScheme(new EditorColorScheme());
 
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(context , android.R.style.Theme_DeviceDefault_Light_NoActionBar)
                 .setTitle("Source code")
                 .setIcon(Resources.drawable.code_icon)
                 .setView(codeEditor)
