@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.dx.rop.code.RegisterSpec;
 import com.google.android.flexbox.FlexItem;
 import com.google.android.gms.common.GoogleApiAvailabilityLight;
 
@@ -161,7 +160,7 @@ public class ViewDummy extends RelativeLayout {
                             }
                             this.b.setAlpha(0.5f);
                             rs.getLocationOnScreen(this.d);
-                        } else if (str.equals(RegisterSpec.PREFIX)) {
+                        } else if (str.equals("v")) {
                             c2 = 7;
                             switch (c2) {
                             }
