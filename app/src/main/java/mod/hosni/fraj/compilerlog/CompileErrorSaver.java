@@ -59,7 +59,7 @@ public class CompileErrorSaver {
         errorLogTxt.setTypeface(Typeface.MONOSPACE);
         scrollView.addView(errorLogTxt);
 
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Light_NoActionBar)
                 .setTitle("Last compile log")
                 .setPositiveButton(Resources.string.common_word_ok, null)
                 .setNegativeButton("Clear", (dialogInterface, which) -> {
