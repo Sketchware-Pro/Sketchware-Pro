@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -53,11 +54,14 @@ public class CompileErrorSaver {
      */
     public void showDialog(Context context) {
         ScrollView scrollView = new ScrollView(context);
+        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
         TextView errorLogTxt = new TextView(context);
         errorLogTxt.setText(CompileLogHelper.colorErrsAndWarnings(getLog()));
+        errorLogTxt.setTextSize(12);
         errorLogTxt.setTextIsSelectable(true);
         errorLogTxt.setTypeface(Typeface.MONOSPACE);
-        scrollView.addView(errorLogTxt);
+        horizontalScrollView.addView(errorLogTxt);
+        scrollView.addView(horizontalScrollView);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Last compile log")
