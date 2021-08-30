@@ -121,6 +121,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public boolean B = false;
     public View C;
     public int D = -1;
+    /**
+     * Currently showing tab number
+     */
     public int E;
     public boolean F = false;
     public AdView G;
@@ -150,25 +153,24 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public br y = null;
     public oB z;
 
-
-    public DesignActivity() {
-    }
-
-    public final void A() {
-        HashMap<String, Object> var1 = lC.b(this.l);
-        if (var1 != null) {
-            var1.put("sketchware_ver", GB.d(getApplicationContext()));
-            lC.b(this.l, var1);
+    /**
+     * Saves the app's version information to the currently opened Sketchware project file.
+     */
+    private void A() {
+        HashMap<String, Object> projectMetadata = lC.b(l);
+        if (projectMetadata != null) {
+            projectMetadata.put("sketchware_ver", GB.d(getApplicationContext()));
+            lC.b(l, projectMetadata);
         }
     }
 
     public void a(boolean var1) {
-        jC.a(this.l, var1);
-        jC.b(this.l, var1);
-        kC var2 = jC.d(this.l, var1);
-        jC.c(this.l, var1);
-        cC.c(this.l);
-        bC.d(this.l);
+        jC.a(l, var1);
+        jC.b(l, var1);
+        kC var2 = jC.d(l, var1);
+        jC.c(l, var1);
+        cC.c(l);
+        bC.d(l);
         if (!var1) {
             var2.f();
             var2.g();
@@ -176,8 +178,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public void b(String var1) {
-        d().a(var1);
+    /**
+     * Sets the activity's title in the Toolbar.
+     */
+    private void b(String newTitle) {
+        d().a(newTitle);
     }
 
     public void b(boolean var1) {
@@ -186,7 +191,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             m.k();
         }
-
     }
 
     /**
@@ -201,8 +205,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 snackbar.c();
             }
         });
-        //REMOVED: Looks bad.
-        //snackbar.h().setAlpha(0.8F);
         /* Set the text color to yellow */
         snackbar.f(Color.YELLOW);
         snackbar.n();
@@ -225,8 +227,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 startActivity(intent);
             }
         });
-        //REMOVED: Looks bad.
-        //snackbar.h().setAlpha(0.8F);
         /* Set the text color to yellow */
         snackbar.f(Color.YELLOW);
         snackbar.n();
@@ -272,7 +272,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Opens the debug APK to install.
      */
-    public final void o() {
+    private void o() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (VERSION.SDK_INT >= 24) {
             Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.H));
@@ -692,8 +692,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         }
 
-        long c = GB.c();
-        if (c < 100L && c > 0L) {
+        long freeMegabytes = GB.c();
+        if (freeMegabytes < 100L && freeMegabytes > 0L) {
             r();
         }
     }
