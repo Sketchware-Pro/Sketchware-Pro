@@ -926,6 +926,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
 
             try {
+                publishProgress("Deleting temporary files...");
+                FileUtil.deleteFile(project_metadata.c);
+
                 publishProgress(xB.b().a(getApplicationContext(),
                         Resources.string.design_run_title_ready_to_build));
                 oB oBVar = new oB();
@@ -972,9 +975,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
                 c = new Dp(a, project_metadata, buildingAppBundle);
-
-                publishProgress("Deleting temporary files...");
-                new File(project_metadata.c).delete();
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");
