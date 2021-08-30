@@ -651,6 +651,15 @@ public class Resources {
         public static final int account_dialog_suspended_title = 0x7f0e002e;
         public static final int app_name = 0x7f0e0042;
         public static final int besome_blog_url = 0x7f0e0044;
+        public static final int block_category_component_func = 0x7f0e00a2;
+        public static final int block_category_control = 0x7f0e00a3;
+        public static final int block_category_file = 0x7f0e00a4;
+        public static final int block_category_list = 0x7f0e00a5;
+        public static final int block_category_math = 0x7f0e00a6;
+        public static final int block_category_moreblock = 0x7f0e00a7;
+        public static final int block_category_operator = 0x7f0e00a8;
+        public static final int block_category_var = 0x7f0e00a9;
+        public static final int block_category_view_func = 0x7f0e00aa;
         public static final int common_error_an_error_occurred = 0x7f0e03cc;
         public static final int common_error_failed_to_save = 0x7f0e03d3;
         public static final int common_message_check_network = 0x7f0e03e4;
