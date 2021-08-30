@@ -22,6 +22,7 @@ public class Resources {
         public static final int grey = 0x7f050069;
         public static final int scolor_black_01 = 0x7f0500aa;
         public static final int scolor_green_normal = 0x7f0500b0;
+        public static final int scolor_red_02 = 0x7f0500b6;
     }
 
     public static final class dimen {
@@ -39,6 +40,8 @@ public class Resources {
         public static final int bg_event_type_drawer_view = 0x7f070097;
         public static final int bg_event_type_view = 0x7f070099;
         public static final int bg_round_light_grey = 0x7f0700b3;
+        public static final int bg_toast_normal = 0x7f0700bc;
+        public static final int bg_toast_warning = 0x7f0700bd;
         public static final int block_96_blue = 0x7f0700be;
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int cart_filled_48 = 0x7f0700da;
@@ -230,6 +233,7 @@ public class Resources {
         public static final int confirm_yes_text = 0x7f0800d1;
         public static final int container = 0x7f0800d3;
         public static final int contents = 0x7f0800d6;
+        public static final int custom_toast_container = 0x7f0800dc;
         public static final int custom_view = 0x7f0800dd;
         public static final int cv_shared_blocks = 0x7f0800e7;
         public static final int desc = 0x7f0800f3;
@@ -404,6 +408,7 @@ public class Resources {
         public static final int tv_shared_blocks = 0x7f08059e;
         public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
+        public static final int tv_stoast = 0x7f0805b4;
         public static final int tv_sub_title = 0x7f0805b6;
         public static final int tv_title = 0x7f0805c3;
         public static final int tv_title_configuration = 0x7f0805d4;
@@ -560,6 +565,7 @@ public class Resources {
         public static final int color_picker = 0x7f0b002d;
         public static final int compile_log = 0x7f0b003c;
         public static final int component_add_item = 0x7f0b003d;
+        public static final int custom_toast = 0x7f0b0040;
         public static final int design = 0x7f0b0041;
         public static final int design_drawer = 0x7f0b0044;
         public static final int design_drawer_item = 0x7f0b0045;
