@@ -202,6 +202,7 @@ public class Resources {
         public static final int advanced_setting_layout = 0x7f08002a;
         public static final int app_icon = 0x7f08003a;
         public static final int app_icon_layout = 0x7f08003b;
+        public static final int bg = 0x7f080048;
         public static final int block_area = 0x7f080049;
         public static final int btn_editproperties = 0x7f080065;
         public static final int btn_execute = 0x7f080068;
@@ -382,6 +383,7 @@ public class Resources {
         public static final int tv_apk_url_expire = 0x7f080487;
         public static final int tv_block_collection = 0x7f080494;
         public static final int tv_block_name = 0x7f080495;
+        public static final int tv_category = 0x7f080496;
         public static final int tv_change_icon = 0x7f08049b;
         public static final int tv_code = 0x7f0804a8;
         public static final int tv_collection = 0x7f0804a9;
@@ -588,6 +590,7 @@ public class Resources {
         public static final int myproject_buttons = 0x7f0b00fd;
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;
+        public static final int palette_selector_item = 0x7f0b0119;
         public static final int property_color_item = 0x7f0b012c;
         public static final int property_grid_item = 0x7f0b012e;
         public static final int property_group_item = 0x7f0b012f;
