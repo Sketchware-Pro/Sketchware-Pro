@@ -1,8 +1,25 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.direct;
 
 import java.io.IOException;
 
 import mod.agus.jcoderz.dx.cf.attrib.AttAnnotationDefault;
+import mod.agus.jcoderz.dx.cf.attrib.AttBootstrapMethods;
 import mod.agus.jcoderz.dx.cf.attrib.AttCode;
 import mod.agus.jcoderz.dx.cf.attrib.AttConstantValue;
 import mod.agus.jcoderz.dx.cf.attrib.AttDeprecated;
@@ -17,9 +34,12 @@ import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleParameterAnnotations;
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations;
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleParameterAnnotations;
 import mod.agus.jcoderz.dx.cf.attrib.AttSignature;
+import mod.agus.jcoderz.dx.cf.attrib.AttSourceDebugExtension;
 import mod.agus.jcoderz.dx.cf.attrib.AttSourceFile;
 import mod.agus.jcoderz.dx.cf.attrib.AttSynthetic;
 import mod.agus.jcoderz.dx.cf.attrib.InnerClassList;
+import mod.agus.jcoderz.dx.cf.code.BootstrapMethodArgumentsList;
+import mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList;
 import mod.agus.jcoderz.dx.cf.code.ByteCatchList;
 import mod.agus.jcoderz.dx.cf.code.BytecodeArray;
 import mod.agus.jcoderz.dx.cf.code.LineNumberList;
@@ -29,451 +49,814 @@ import mod.agus.jcoderz.dx.cf.iface.ParseException;
 import mod.agus.jcoderz.dx.cf.iface.ParseObserver;
 import mod.agus.jcoderz.dx.cf.iface.StdAttributeList;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationVisibility;
+import mod.agus.jcoderz.dx.rop.annotation.Annotations;
+import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
+import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.ConstantPool;
+import mod.agus.jcoderz.dx.rop.cst.CstMethodHandle;
 import mod.agus.jcoderz.dx.rop.cst.CstNat;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.rop.cst.TypedConstant;
+import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public class StdAttributeFactory extends AttributeFactory {
-    public static final StdAttributeFactory THE_ONE = new StdAttributeFactory();
+/**
+ * Standard subclass of {@link mod.agus.jcoderz.dx.cf.direct.AttributeFactory}, which knows how to parse
+ * all the standard attribute types.
+ */
+public class StdAttributeFactory
+    extends AttributeFactory {
+    /** {@code non-null;} shared instance of this class */
+    public static final StdAttributeFactory THE_ONE =
+        new StdAttributeFactory();
 
-    private static Attribute throwSeverelyTruncated() {
-        throw new ParseException("severely truncated attribute");
+    /**
+     * Constructs an instance.
+     */
+    public StdAttributeFactory() {
+        // This space intentionally left blank.
     }
 
-    private static Attribute throwTruncated() {
-        throw new ParseException("truncated attribute");
-    }
-
-    private static Attribute throwBadLength(int i) {
-        throw new ParseException("bad attribute length; expected length " + Hex.u4(i));
-    }
-
-    /* access modifiers changed from: protected */
-    @Override // mod.agus.jcoderz.dx.cf.direct.AttributeFactory
-    public Attribute parse0(DirectClassFile directClassFile, int i, String str, int i2, int i3, ParseObserver parseObserver) {
-        switch (i) {
-            case 0:
-                if (str == AttDeprecated.ATTRIBUTE_NAME) {
-                    return deprecated(directClassFile, i2, i3, parseObserver);
+    /** {@inheritDoc} */
+    @Override
+    protected mod.agus.jcoderz.dx.cf.iface.Attribute parse0(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int context, String name,
+                                                            int offset, int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        switch (context) {
+            case CTX_CLASS: {
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttBootstrapMethods.ATTRIBUTE_NAME) {
+                    return bootstrapMethods(cf, offset, length, observer);
                 }
-                if (str == AttEnclosingMethod.ATTRIBUTE_NAME) {
-                    return enclosingMethod(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttDeprecated.ATTRIBUTE_NAME) {
+                    return deprecated(cf, offset, length, observer);
                 }
-                if (str == AttInnerClasses.ATTRIBUTE_NAME) {
-                    return innerClasses(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttEnclosingMethod.ATTRIBUTE_NAME) {
+                    return enclosingMethod(cf, offset, length, observer);
                 }
-                if (str == AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeInvisibleAnnotations(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttInnerClasses.ATTRIBUTE_NAME) {
+                    return innerClasses(cf, offset, length, observer);
                 }
-                if (str == AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeVisibleAnnotations(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME) {
+                    return runtimeInvisibleAnnotations(cf, offset, length,
+                            observer);
                 }
-                if (str == AttSynthetic.ATTRIBUTE_NAME) {
-                    return synthetic(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME) {
+                    return runtimeVisibleAnnotations(cf, offset, length,
+                            observer);
                 }
-                if (str == AttSignature.ATTRIBUTE_NAME) {
-                    return signature(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSynthetic.ATTRIBUTE_NAME) {
+                    return synthetic(cf, offset, length, observer);
                 }
-                if (str == AttSourceFile.ATTRIBUTE_NAME) {
-                    return sourceFile(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSignature.ATTRIBUTE_NAME) {
+                    return signature(cf, offset, length, observer);
                 }
-                break;
-            case 1:
-                if (str == AttConstantValue.ATTRIBUTE_NAME) {
-                    return constantValue(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSourceDebugExtension.ATTRIBUTE_NAME) {
+                    return sourceDebugExtension(cf, offset, length, observer);
                 }
-                if (str == AttDeprecated.ATTRIBUTE_NAME) {
-                    return deprecated(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeInvisibleAnnotations(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeVisibleAnnotations(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttSignature.ATTRIBUTE_NAME) {
-                    return signature(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttSynthetic.ATTRIBUTE_NAME) {
-                    return synthetic(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSourceFile.ATTRIBUTE_NAME) {
+                    return sourceFile(cf, offset, length, observer);
                 }
                 break;
-            case 2:
-                if (str == AttAnnotationDefault.ATTRIBUTE_NAME) {
-                    return annotationDefault(directClassFile, i2, i3, parseObserver);
+            }
+            case CTX_FIELD: {
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttConstantValue.ATTRIBUTE_NAME) {
+                    return constantValue(cf, offset, length, observer);
                 }
-                if (str == AttCode.ATTRIBUTE_NAME) {
-                    return code(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttDeprecated.ATTRIBUTE_NAME) {
+                    return deprecated(cf, offset, length, observer);
                 }
-                if (str == AttDeprecated.ATTRIBUTE_NAME) {
-                    return deprecated(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME) {
+                    return runtimeInvisibleAnnotations(cf, offset, length,
+                            observer);
                 }
-                if (str == AttExceptions.ATTRIBUTE_NAME) {
-                    return exceptions(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME) {
+                    return runtimeVisibleAnnotations(cf, offset, length,
+                            observer);
                 }
-                if (str == AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeInvisibleAnnotations(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSignature.ATTRIBUTE_NAME) {
+                    return signature(cf, offset, length, observer);
                 }
-                if (str == AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeVisibleAnnotations(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttRuntimeInvisibleParameterAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeInvisibleParameterAnnotations(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttRuntimeVisibleParameterAnnotations.ATTRIBUTE_NAME) {
-                    return runtimeVisibleParameterAnnotations(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttSignature.ATTRIBUTE_NAME) {
-                    return signature(directClassFile, i2, i3, parseObserver);
-                }
-                if (str == AttSynthetic.ATTRIBUTE_NAME) {
-                    return synthetic(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSynthetic.ATTRIBUTE_NAME) {
+                    return synthetic(cf, offset, length, observer);
                 }
                 break;
-            case 3:
-                if (str == AttLineNumberTable.ATTRIBUTE_NAME) {
-                    return lineNumberTable(directClassFile, i2, i3, parseObserver);
+            }
+            case CTX_METHOD: {
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttAnnotationDefault.ATTRIBUTE_NAME) {
+                    return annotationDefault(cf, offset, length, observer);
                 }
-                if (str == AttLocalVariableTable.ATTRIBUTE_NAME) {
-                    return localVariableTable(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttCode.ATTRIBUTE_NAME) {
+                    return code(cf, offset, length, observer);
                 }
-                if (str == AttLocalVariableTypeTable.ATTRIBUTE_NAME) {
-                    return localVariableTypeTable(directClassFile, i2, i3, parseObserver);
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttDeprecated.ATTRIBUTE_NAME) {
+                    return deprecated(cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttExceptions.ATTRIBUTE_NAME) {
+                    return exceptions(cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME) {
+                    return runtimeInvisibleAnnotations(cf, offset, length,
+                            observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME) {
+                    return runtimeVisibleAnnotations(cf, offset, length,
+                            observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleParameterAnnotations.
+                        ATTRIBUTE_NAME) {
+                    return runtimeInvisibleParameterAnnotations(
+                            cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleParameterAnnotations.
+                        ATTRIBUTE_NAME) {
+                    return runtimeVisibleParameterAnnotations(
+                            cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSignature.ATTRIBUTE_NAME) {
+                    return signature(cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttSynthetic.ATTRIBUTE_NAME) {
+                    return synthetic(cf, offset, length, observer);
                 }
                 break;
+            }
+            case CTX_CODE: {
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttLineNumberTable.ATTRIBUTE_NAME) {
+                    return lineNumberTable(cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttLocalVariableTable.ATTRIBUTE_NAME) {
+                    return localVariableTable(cf, offset, length, observer);
+                }
+                if (name == mod.agus.jcoderz.dx.cf.attrib.AttLocalVariableTypeTable.ATTRIBUTE_NAME) {
+                    return localVariableTypeTable(cf, offset, length,
+                            observer);
+                }
+                break;
+            }
         }
-        return super.parse0(directClassFile, i, str, i2, i3, parseObserver);
+
+        return super.parse0(cf, context, name, offset, length, observer);
     }
 
-    private Attribute annotationDefault(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses an {@code AnnotationDefault} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute annotationDefault(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf,
+                                                                     int offset, int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             throwSeverelyTruncated();
         }
-        return new AttAnnotationDefault(new AnnotationParser(directClassFile, i, i2, parseObserver).parseValueAttribute(), i2);
+
+        mod.agus.jcoderz.dx.cf.direct.AnnotationParser ap =
+            new mod.agus.jcoderz.dx.cf.direct.AnnotationParser(cf, offset, length, observer);
+        mod.agus.jcoderz.dx.rop.cst.Constant cst = ap.parseValueAttribute();
+
+        return new AttAnnotationDefault(cst, length);
     }
 
-    private Attribute code(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        ByteCatchList byteCatchList;
-        String human;
-        if (i2 < 12) {
+    /**
+     * Parses a {@code BootstrapMethods} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute bootstrapMethods(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                                    mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             return throwSeverelyTruncated();
         }
-        ByteArray bytes = directClassFile.getBytes();
-        ConstantPool constantPool = directClassFile.getConstantPool();
-        int unsignedShort = bytes.getUnsignedShort(i);
-        int unsignedShort2 = bytes.getUnsignedShort(i + 2);
-        int i3 = bytes.getInt(i + 4);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "max_stack: " + Hex.u2(unsignedShort));
-            parseObserver.parsed(bytes, i + 2, 2, "max_locals: " + Hex.u2(unsignedShort2));
-            parseObserver.parsed(bytes, i + 4, 4, "code_length: " + Hex.u4(i3));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        int numMethods = bytes.getUnsignedShort(offset);
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "num_boostrap_methods: " + mod.agus.jcoderz.dx.util.Hex.u2(numMethods));
         }
-        int i4 = i + 8;
-        int i5 = i2 - 8;
-        if (i5 < i3 + 4) {
-            return throwTruncated();
-        }
-        int i6 = i4 + i3;
-        int i7 = i5 - i3;
-        BytecodeArray bytecodeArray = new BytecodeArray(bytes.slice(i4, i3 + i4), constantPool);
-        if (parseObserver != null) {
-            bytecodeArray.forEach(new CodeObserver(bytecodeArray.getBytes(), parseObserver));
-        }
-        int unsignedShort3 = bytes.getUnsignedShort(i6);
-        if (unsignedShort3 == 0) {
-            byteCatchList = ByteCatchList.EMPTY;
-        } else {
-            byteCatchList = new ByteCatchList(unsignedShort3);
-        }
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i6, 2, "exception_table_length: " + Hex.u2(unsignedShort3));
-        }
-        int i8 = i6 + 2;
-        int i9 = i7 - 2;
-        if (i9 < (unsignedShort3 * 8) + 2) {
-            return throwTruncated();
-        }
-        int i10 = 0;
-        int i11 = i9;
-        int i12 = i8;
-        while (i10 < unsignedShort3) {
-            if (parseObserver != null) {
-                parseObserver.changeIndent(1);
-            }
-            int unsignedShort4 = bytes.getUnsignedShort(i12);
-            int unsignedShort5 = bytes.getUnsignedShort(i12 + 2);
-            int unsignedShort6 = bytes.getUnsignedShort(i12 + 4);
-            CstType cstType = (CstType) constantPool.get0Ok(bytes.getUnsignedShort(i12 + 6));
-            byteCatchList.set(i10, unsignedShort4, unsignedShort5, unsignedShort6, cstType);
-            if (parseObserver != null) {
-                StringBuilder append = new StringBuilder(Hex.u2(unsignedShort4)).append("..").append(Hex.u2(unsignedShort5)).append(" -> ").append(Hex.u2(unsignedShort6)).append(" ");
-                if (cstType == null) {
-                    human = "<any>";
-                } else {
-                    human = cstType.toHuman();
-                }
-                parseObserver.parsed(bytes, i12, 8, append.append(human).toString());
-            }
-            int i13 = i12 + 8;
-            int i14 = i11 - 8;
-            if (parseObserver != null) {
-                parseObserver.changeIndent(-1);
-            }
-            i10++;
-            i11 = i14;
-            i12 = i13;
-        }
-        byteCatchList.setImmutable();
-        AttributeListParser attributeListParser = new AttributeListParser(directClassFile, 3, i12, this);
-        attributeListParser.setObserver(parseObserver);
-        StdAttributeList list = attributeListParser.getList();
-        list.setImmutable();
-        int endOffset = attributeListParser.getEndOffset() - i12;
-        if (endOffset != i11) {
-            return throwBadLength((i12 - i) + endOffset);
-        }
-        return new AttCode(unsignedShort, unsignedShort2, bytecodeArray, byteCatchList, list);
+
+        offset += 2;
+        length -= 2;
+
+        mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList methods = parseBootstrapMethods(bytes, cf.getConstantPool(),
+                                                             cf.getThisClass(), numMethods,
+                                                             offset, length, observer);
+        return new AttBootstrapMethods(methods);
     }
 
-    private Attribute constantValue(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 != 2) {
+    /**
+     * Parses a {@code Code} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute code(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                        mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 12) {
+            return throwSeverelyTruncated();
+        }
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        mod.agus.jcoderz.dx.rop.cst.ConstantPool pool = cf.getConstantPool();
+        int maxStack = bytes.getUnsignedShort(offset); // u2 max_stack
+        int maxLocals = bytes.getUnsignedShort(offset + 2); // u2 max_locals
+        int codeLength = bytes.getInt(offset + 4); // u4 code_length
+        int origOffset = offset;
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "max_stack: " + mod.agus.jcoderz.dx.util.Hex.u2(maxStack));
+            observer.parsed(bytes, offset + 2, 2,
+                            "max_locals: " + mod.agus.jcoderz.dx.util.Hex.u2(maxLocals));
+            observer.parsed(bytes, offset + 4, 4,
+                            "code_length: " + mod.agus.jcoderz.dx.util.Hex.u4(codeLength));
+        }
+
+        offset += 8;
+        length -= 8;
+
+        if (length < (codeLength + 4)) {
+            return throwTruncated();
+        }
+
+        int codeOffset = offset;
+        offset += codeLength;
+        length -= codeLength;
+        mod.agus.jcoderz.dx.cf.code.BytecodeArray code =
+            new BytecodeArray(bytes.slice(codeOffset, codeOffset + codeLength),
+                              pool);
+        if (observer != null) {
+            code.forEach(new CodeObserver(code.getBytes(), observer));
+        }
+
+        // u2 exception_table_length
+        int exceptionTableLength = bytes.getUnsignedShort(offset);
+        mod.agus.jcoderz.dx.cf.code.ByteCatchList catches = (exceptionTableLength == 0) ?
+            mod.agus.jcoderz.dx.cf.code.ByteCatchList.EMPTY :
+            new ByteCatchList(exceptionTableLength);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "exception_table_length: " +
+                            mod.agus.jcoderz.dx.util.Hex.u2(exceptionTableLength));
+        }
+
+        offset += 2;
+        length -= 2;
+
+        if (length < (exceptionTableLength * 8 + 2)) {
+            return throwTruncated();
+        }
+
+        for (int i = 0; i < exceptionTableLength; i++) {
+            if (observer != null) {
+                observer.changeIndent(1);
+            }
+
+            int startPc = bytes.getUnsignedShort(offset);
+            int endPc = bytes.getUnsignedShort(offset + 2);
+            int handlerPc = bytes.getUnsignedShort(offset + 4);
+            int catchTypeIdx = bytes.getUnsignedShort(offset + 6);
+            mod.agus.jcoderz.dx.rop.cst.CstType catchType = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get0Ok(catchTypeIdx);
+            catches.set(i, startPc, endPc, handlerPc, catchType);
+            if (observer != null) {
+                observer.parsed(bytes, offset, 8,
+                                mod.agus.jcoderz.dx.util.Hex.u2(startPc) + ".." + mod.agus.jcoderz.dx.util.Hex.u2(endPc) +
+                                " -> " + mod.agus.jcoderz.dx.util.Hex.u2(handlerPc) + " " +
+                                ((catchType == null) ? "<any>" :
+                                 catchType.toHuman()));
+            }
+            offset += 8;
+            length -= 8;
+
+            if (observer != null) {
+                observer.changeIndent(-1);
+            }
+        }
+
+        catches.setImmutable();
+
+        mod.agus.jcoderz.dx.cf.direct.AttributeListParser parser =
+            new mod.agus.jcoderz.dx.cf.direct.AttributeListParser(cf, CTX_CODE, offset, this);
+        parser.setObserver(observer);
+
+        StdAttributeList attributes = parser.getList();
+        attributes.setImmutable();
+
+        int attributeByteCount = parser.getEndOffset() - offset;
+        if (attributeByteCount != length) {
+            return throwBadLength(attributeByteCount + (offset - origOffset));
+        }
+
+        return new AttCode(maxStack, maxLocals, code, catches, attributes);
+    }
+
+    /**
+     * Parses a {@code ConstantValue} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute constantValue(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                                 mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length != 2) {
             return throwBadLength(2);
         }
-        ByteArray bytes = directClassFile.getBytes();
-        TypedConstant typedConstant = (TypedConstant) directClassFile.getConstantPool().get(bytes.getUnsignedShort(i));
-        AttConstantValue attConstantValue = new AttConstantValue(typedConstant);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "value: " + typedConstant);
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        mod.agus.jcoderz.dx.rop.cst.ConstantPool pool = cf.getConstantPool();
+        int idx = bytes.getUnsignedShort(offset);
+        mod.agus.jcoderz.dx.rop.cst.TypedConstant cst = (TypedConstant) pool.get(idx);
+        mod.agus.jcoderz.dx.cf.iface.Attribute result = new AttConstantValue(cst);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2, "value: " + cst);
         }
-        return attConstantValue;
+
+        return result;
     }
 
-    private Attribute deprecated(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 != 0) {
+    /**
+     * Parses a {@code Deprecated} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute deprecated(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                              mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length != 0) {
             return throwBadLength(0);
         }
+
         return new AttDeprecated();
     }
 
-    private Attribute enclosingMethod(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 != 4) {
+    /**
+     * Parses an {@code EnclosingMethod} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute enclosingMethod(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset,
+                                                                   int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length != 4) {
             throwBadLength(4);
         }
-        ByteArray bytes = directClassFile.getBytes();
-        ConstantPool constantPool = directClassFile.getConstantPool();
-        CstType cstType = (CstType) constantPool.get(bytes.getUnsignedShort(i));
-        CstNat cstNat = (CstNat) constantPool.get0Ok(bytes.getUnsignedShort(i + 2));
-        AttEnclosingMethod attEnclosingMethod = new AttEnclosingMethod(cstType, cstNat);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "class: " + cstType);
-            parseObserver.parsed(bytes, i + 2, 2, "method: " + DirectClassFile.stringOrNone(cstNat));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        mod.agus.jcoderz.dx.rop.cst.ConstantPool pool = cf.getConstantPool();
+
+        int idx = bytes.getUnsignedShort(offset);
+        mod.agus.jcoderz.dx.rop.cst.CstType type = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get(idx);
+
+        idx = bytes.getUnsignedShort(offset + 2);
+        mod.agus.jcoderz.dx.rop.cst.CstNat method = (CstNat) pool.get0Ok(idx);
+
+        mod.agus.jcoderz.dx.cf.iface.Attribute result = new AttEnclosingMethod(type, method);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2, "class: " + type);
+            observer.parsed(bytes, offset + 2, 2, "method: " +
+                            mod.agus.jcoderz.dx.cf.direct.DirectClassFile.stringOrNone(method));
         }
-        return attEnclosingMethod;
+
+        return result;
     }
 
-    private Attribute exceptions(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses an {@code Exceptions} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute exceptions(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                              mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             return throwSeverelyTruncated();
         }
-        ByteArray bytes = directClassFile.getBytes();
-        int unsignedShort = bytes.getUnsignedShort(i);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "number_of_exceptions: " + Hex.u2(unsignedShort));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        int count = bytes.getUnsignedShort(offset); // number_of_exceptions
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "number_of_exceptions: " + mod.agus.jcoderz.dx.util.Hex.u2(count));
         }
-        int i3 = i + 2;
-        if (i2 - 2 != unsignedShort * 2) {
-            throwBadLength((unsignedShort * 2) + 2);
+
+        offset += 2;
+        length -= 2;
+
+        if (length != (count * 2)) {
+            throwBadLength((count * 2) + 2);
         }
-        return new AttExceptions(directClassFile.makeTypeList(i3, unsignedShort));
+
+        TypeList list = cf.makeTypeList(offset, count);
+        return new AttExceptions(list);
     }
 
-    private Attribute innerClasses(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses an {@code InnerClasses} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute innerClasses(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                                mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             return throwSeverelyTruncated();
         }
-        ByteArray bytes = directClassFile.getBytes();
-        ConstantPool constantPool = directClassFile.getConstantPool();
-        int unsignedShort = bytes.getUnsignedShort(i);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "number_of_classes: " + Hex.u2(unsignedShort));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        mod.agus.jcoderz.dx.rop.cst.ConstantPool pool = cf.getConstantPool();
+        int count = bytes.getUnsignedShort(offset); // number_of_classes
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "number_of_classes: " + mod.agus.jcoderz.dx.util.Hex.u2(count));
         }
-        int i3 = i + 2;
-        if (i2 - 2 != unsignedShort * 8) {
-            throwBadLength((unsignedShort * 8) + 2);
+
+        offset += 2;
+        length -= 2;
+
+        if (length != (count * 8)) {
+            throwBadLength((count * 8) + 2);
         }
-        InnerClassList innerClassList = new InnerClassList(unsignedShort);
-        int i4 = 0;
-        int i5 = i3;
-        while (i4 < unsignedShort) {
-            int unsignedShort2 = bytes.getUnsignedShort(i5);
-            int unsignedShort3 = bytes.getUnsignedShort(i5 + 2);
-            int unsignedShort4 = bytes.getUnsignedShort(i5 + 4);
-            int unsignedShort5 = bytes.getUnsignedShort(i5 + 6);
-            CstType cstType = (CstType) constantPool.get(unsignedShort2);
-            CstType cstType2 = (CstType) constantPool.get0Ok(unsignedShort3);
-            CstString cstString = (CstString) constantPool.get0Ok(unsignedShort4);
-            innerClassList.set(i4, cstType, cstType2, cstString, unsignedShort5);
-            if (parseObserver != null) {
-                parseObserver.parsed(bytes, i5, 2, "inner_class: " + DirectClassFile.stringOrNone(cstType));
-                parseObserver.parsed(bytes, i5 + 2, 2, "  outer_class: " + DirectClassFile.stringOrNone(cstType2));
-                parseObserver.parsed(bytes, i5 + 4, 2, "  name: " + DirectClassFile.stringOrNone(cstString));
-                parseObserver.parsed(bytes, i5 + 6, 2, "  access_flags: " + AccessFlags.innerClassString(unsignedShort5));
+
+        mod.agus.jcoderz.dx.cf.attrib.InnerClassList list = new InnerClassList(count);
+
+        for (int i = 0; i < count; i++) {
+            int innerClassIdx = bytes.getUnsignedShort(offset);
+            int outerClassIdx = bytes.getUnsignedShort(offset + 2);
+            int nameIdx = bytes.getUnsignedShort(offset + 4);
+            int accessFlags = bytes.getUnsignedShort(offset + 6);
+            mod.agus.jcoderz.dx.rop.cst.CstType innerClass = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get(innerClassIdx);
+            mod.agus.jcoderz.dx.rop.cst.CstType outerClass = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get0Ok(outerClassIdx);
+            mod.agus.jcoderz.dx.rop.cst.CstString name = (mod.agus.jcoderz.dx.rop.cst.CstString) pool.get0Ok(nameIdx);
+            list.set(i, innerClass, outerClass, name, accessFlags);
+            if (observer != null) {
+                observer.parsed(bytes, offset, 2,
+                                "inner_class: " +
+                                mod.agus.jcoderz.dx.cf.direct.DirectClassFile.stringOrNone(innerClass));
+                observer.parsed(bytes, offset + 2, 2,
+                                "  outer_class: " +
+                                mod.agus.jcoderz.dx.cf.direct.DirectClassFile.stringOrNone(outerClass));
+                observer.parsed(bytes, offset + 4, 2,
+                                "  name: " +
+                                mod.agus.jcoderz.dx.cf.direct.DirectClassFile.stringOrNone(name));
+                observer.parsed(bytes, offset + 6, 2,
+                                "  access_flags: " +
+                                AccessFlags.innerClassString(accessFlags));
             }
-            i4++;
-            i5 += 8;
+            offset += 8;
         }
-        innerClassList.setImmutable();
-        return new AttInnerClasses(innerClassList);
+
+        list.setImmutable();
+        return new AttInnerClasses(list);
     }
 
-    private Attribute lineNumberTable(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code LineNumberTable} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute lineNumberTable(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset,
+                                                                   int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             return throwSeverelyTruncated();
         }
-        ByteArray bytes = directClassFile.getBytes();
-        int unsignedShort = bytes.getUnsignedShort(i);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "line_number_table_length: " + Hex.u2(unsignedShort));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        int count = bytes.getUnsignedShort(offset); // line_number_table_length
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "line_number_table_length: " + mod.agus.jcoderz.dx.util.Hex.u2(count));
         }
-        int i3 = i + 2;
-        if (i2 - 2 != unsignedShort * 4) {
-            throwBadLength((unsignedShort * 4) + 2);
+
+        offset += 2;
+        length -= 2;
+
+        if (length != (count * 4)) {
+            throwBadLength((count * 4) + 2);
         }
-        LineNumberList lineNumberList = new LineNumberList(unsignedShort);
-        for (int i4 = 0; i4 < unsignedShort; i4++) {
-            int unsignedShort2 = bytes.getUnsignedShort(i3);
-            int unsignedShort3 = bytes.getUnsignedShort(i3 + 2);
-            lineNumberList.set(i4, unsignedShort2, unsignedShort3);
-            if (parseObserver != null) {
-                parseObserver.parsed(bytes, i3, 4, Hex.u2(unsignedShort2) + " " + unsignedShort3);
+
+        mod.agus.jcoderz.dx.cf.code.LineNumberList list = new LineNumberList(count);
+
+        for (int i = 0; i < count; i++) {
+            int startPc = bytes.getUnsignedShort(offset);
+            int lineNumber = bytes.getUnsignedShort(offset + 2);
+            list.set(i, startPc, lineNumber);
+            if (observer != null) {
+                observer.parsed(bytes, offset, 4,
+                                mod.agus.jcoderz.dx.util.Hex.u2(startPc) + " " + lineNumber);
             }
-            i3 += 4;
+            offset += 4;
         }
-        lineNumberList.setImmutable();
-        return new AttLineNumberTable(lineNumberList);
+
+        list.setImmutable();
+        return new AttLineNumberTable(list);
     }
 
-    private Attribute localVariableTable(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code LocalVariableTable} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute localVariableTable(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset,
+                                                                      int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             return throwSeverelyTruncated();
         }
-        ByteArray bytes = directClassFile.getBytes();
-        int unsignedShort = bytes.getUnsignedShort(i);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "local_variable_table_length: " + Hex.u2(unsignedShort));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        int count = bytes.getUnsignedShort(offset);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                    "local_variable_table_length: " + mod.agus.jcoderz.dx.util.Hex.u2(count));
         }
-        return new AttLocalVariableTable(parseLocalVariables(bytes.slice(i + 2, i + i2), directClassFile.getConstantPool(), parseObserver, unsignedShort, false));
+
+        mod.agus.jcoderz.dx.cf.code.LocalVariableList list = parseLocalVariables(
+                bytes.slice(offset + 2, offset + length), cf.getConstantPool(),
+                observer, count, false);
+        return new AttLocalVariableTable(list);
     }
 
-    private Attribute localVariableTypeTable(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code LocalVariableTypeTable} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute localVariableTypeTable(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset,
+                                                                          int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             return throwSeverelyTruncated();
         }
-        ByteArray bytes = directClassFile.getBytes();
-        int unsignedShort = bytes.getUnsignedShort(i);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "local_variable_type_table_length: " + Hex.u2(unsignedShort));
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        int count = bytes.getUnsignedShort(offset);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                    "local_variable_type_table_length: " + mod.agus.jcoderz.dx.util.Hex.u2(count));
         }
-        return new AttLocalVariableTypeTable(parseLocalVariables(bytes.slice(i + 2, i + i2), directClassFile.getConstantPool(), parseObserver, unsignedShort, true));
+
+        mod.agus.jcoderz.dx.cf.code.LocalVariableList list = parseLocalVariables(
+                bytes.slice(offset + 2, offset + length), cf.getConstantPool(),
+                observer, count, true);
+        return new AttLocalVariableTypeTable(list);
     }
 
-    private LocalVariableList parseLocalVariables(ByteArray byteArray, ConstantPool constantPool, ParseObserver parseObserver, int i, boolean z) {
-        if (byteArray.size() != i * 10) {
-            throwBadLength((i * 10) + 2);
+    /**
+     * Parse the table part of either a {@code LocalVariableTable}
+     * or a {@code LocalVariableTypeTable}.
+     *
+     * @param bytes {@code non-null;} bytes to parse, which should <i>only</i>
+     * contain the table data (no header)
+     * @param pool {@code non-null;} constant pool to use
+     * @param count {@code >= 0;} the number of entries
+     * @param typeTable {@code true} iff this is for a type table
+     * @return {@code non-null;} the constructed list
+     */
+    private mod.agus.jcoderz.dx.cf.code.LocalVariableList parseLocalVariables(mod.agus.jcoderz.dx.util.ByteArray bytes,
+                                                                              mod.agus.jcoderz.dx.rop.cst.ConstantPool pool, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer, int count,
+                                                                              boolean typeTable) {
+        if (bytes.size() != (count * 10)) {
+            // "+ 2" is for the count.
+            throwBadLength((count * 10) + 2);
         }
-        ByteArray.MyDataInputStream makeDataInputStream = byteArray.makeDataInputStream();
-        LocalVariableList localVariableList = new LocalVariableList(i);
-        for (int i2 = 0; i2 < i; i2++) {
-            try {
-                int readUnsignedShort = makeDataInputStream.readUnsignedShort();
-                int readUnsignedShort2 = makeDataInputStream.readUnsignedShort();
-                int readUnsignedShort3 = makeDataInputStream.readUnsignedShort();
-                int readUnsignedShort4 = makeDataInputStream.readUnsignedShort();
-                int readUnsignedShort5 = makeDataInputStream.readUnsignedShort();
-                CstString cstString = (CstString) constantPool.get(readUnsignedShort3);
-                CstString cstString2 = (CstString) constantPool.get(readUnsignedShort4);
-                CstString cstString3 = null;
-                CstString cstString4 = null;
-                if (z) {
-                    cstString4 = cstString2;
+
+        mod.agus.jcoderz.dx.util.ByteArray.MyDataInputStream in = bytes.makeDataInputStream();
+        mod.agus.jcoderz.dx.cf.code.LocalVariableList list = new LocalVariableList(count);
+
+        try {
+            for (int i = 0; i < count; i++) {
+                int startPc = in.readUnsignedShort();
+                int length = in.readUnsignedShort();
+                int nameIdx = in.readUnsignedShort();
+                int typeIdx = in.readUnsignedShort();
+                int index = in.readUnsignedShort();
+                mod.agus.jcoderz.dx.rop.cst.CstString name = (mod.agus.jcoderz.dx.rop.cst.CstString) pool.get(nameIdx);
+                mod.agus.jcoderz.dx.rop.cst.CstString type = (mod.agus.jcoderz.dx.rop.cst.CstString) pool.get(typeIdx);
+                mod.agus.jcoderz.dx.rop.cst.CstString descriptor = null;
+                mod.agus.jcoderz.dx.rop.cst.CstString signature = null;
+
+                if (typeTable) {
+                    signature = type;
                 } else {
-                    cstString3 = cstString2;
+                    descriptor = type;
                 }
-                localVariableList.set(i2, readUnsignedShort, readUnsignedShort2, cstString, cstString3, cstString4, readUnsignedShort5);
-                if (parseObserver != null) {
-                    parseObserver.parsed(byteArray, i2 * 10, 10, Hex.u2(readUnsignedShort) + ".." + Hex.u2(readUnsignedShort + readUnsignedShort2) + " " + Hex.u2(readUnsignedShort5) + " " + cstString.toHuman() + " " + cstString2.toHuman());
+
+                list.set(i, startPc, length, name,
+                        descriptor, signature, index);
+
+                if (observer != null) {
+                    observer.parsed(bytes, i * 10, 10, mod.agus.jcoderz.dx.util.Hex.u2(startPc) +
+                            ".." + mod.agus.jcoderz.dx.util.Hex.u2(startPc + length) + " " +
+                            mod.agus.jcoderz.dx.util.Hex.u2(index) + " " + name.toHuman() + " " +
+                            type.toHuman());
                 }
-            } catch (IOException e) {
-                throw new RuntimeException("shouldn't happen", e);
             }
+        } catch (IOException ex) {
+            throw new RuntimeException("shouldn't happen", ex);
         }
-        localVariableList.setImmutable();
-        return localVariableList;
+
+        list.setImmutable();
+        return list;
     }
 
-    private Attribute runtimeInvisibleAnnotations(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code RuntimeInvisibleAnnotations} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute runtimeInvisibleAnnotations(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf,
+                                                                               int offset, int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             throwSeverelyTruncated();
         }
-        return new AttRuntimeInvisibleAnnotations(new AnnotationParser(directClassFile, i, i2, parseObserver).parseAnnotationAttribute(AnnotationVisibility.BUILD), i2);
+
+        mod.agus.jcoderz.dx.cf.direct.AnnotationParser ap =
+            new mod.agus.jcoderz.dx.cf.direct.AnnotationParser(cf, offset, length, observer);
+        mod.agus.jcoderz.dx.rop.annotation.Annotations annotations =
+            ap.parseAnnotationAttribute(mod.agus.jcoderz.dx.rop.annotation.AnnotationVisibility.BUILD);
+
+        return new AttRuntimeInvisibleAnnotations(annotations, length);
     }
 
-    private Attribute runtimeVisibleAnnotations(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code RuntimeVisibleAnnotations} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute runtimeVisibleAnnotations(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf,
+                                                                             int offset, int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             throwSeverelyTruncated();
         }
-        return new AttRuntimeVisibleAnnotations(new AnnotationParser(directClassFile, i, i2, parseObserver).parseAnnotationAttribute(AnnotationVisibility.RUNTIME), i2);
+
+        mod.agus.jcoderz.dx.cf.direct.AnnotationParser ap =
+            new mod.agus.jcoderz.dx.cf.direct.AnnotationParser(cf, offset, length, observer);
+        Annotations annotations =
+            ap.parseAnnotationAttribute(mod.agus.jcoderz.dx.rop.annotation.AnnotationVisibility.RUNTIME);
+
+        return new AttRuntimeVisibleAnnotations(annotations, length);
     }
 
-    private Attribute runtimeInvisibleParameterAnnotations(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code RuntimeInvisibleParameterAnnotations} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute runtimeInvisibleParameterAnnotations(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf,
+                                                                                        int offset, int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             throwSeverelyTruncated();
         }
-        return new AttRuntimeInvisibleParameterAnnotations(new AnnotationParser(directClassFile, i, i2, parseObserver).parseParameterAttribute(AnnotationVisibility.BUILD), i2);
+
+        mod.agus.jcoderz.dx.cf.direct.AnnotationParser ap =
+            new mod.agus.jcoderz.dx.cf.direct.AnnotationParser(cf, offset, length, observer);
+        mod.agus.jcoderz.dx.rop.annotation.AnnotationsList list =
+            ap.parseParameterAttribute(mod.agus.jcoderz.dx.rop.annotation.AnnotationVisibility.BUILD);
+
+        return new AttRuntimeInvisibleParameterAnnotations(list, length);
     }
 
-    private Attribute runtimeVisibleParameterAnnotations(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 < 2) {
+    /**
+     * Parses a {@code RuntimeVisibleParameterAnnotations} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute runtimeVisibleParameterAnnotations(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf,
+                                                                                      int offset, int length, mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length < 2) {
             throwSeverelyTruncated();
         }
-        return new AttRuntimeVisibleParameterAnnotations(new AnnotationParser(directClassFile, i, i2, parseObserver).parseParameterAttribute(AnnotationVisibility.RUNTIME), i2);
+
+        mod.agus.jcoderz.dx.cf.direct.AnnotationParser ap =
+            new AnnotationParser(cf, offset, length, observer);
+        AnnotationsList list =
+            ap.parseParameterAttribute(AnnotationVisibility.RUNTIME);
+
+        return new AttRuntimeVisibleParameterAnnotations(list, length);
     }
 
-    private Attribute signature(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 != 2) {
+    /**
+     * Parses a {@code Signature} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute signature(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                             mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length != 2) {
             throwBadLength(2);
         }
-        ByteArray bytes = directClassFile.getBytes();
-        CstString cstString = (CstString) directClassFile.getConstantPool().get(bytes.getUnsignedShort(i));
-        AttSignature attSignature = new AttSignature(cstString);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "signature: " + cstString);
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        mod.agus.jcoderz.dx.rop.cst.ConstantPool pool = cf.getConstantPool();
+        int idx = bytes.getUnsignedShort(offset);
+        mod.agus.jcoderz.dx.rop.cst.CstString cst = (mod.agus.jcoderz.dx.rop.cst.CstString) pool.get(idx);
+        mod.agus.jcoderz.dx.cf.iface.Attribute result = new AttSignature(cst);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2, "signature: " + cst);
         }
-        return attSignature;
+
+        return result;
     }
 
-    private Attribute sourceFile(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 != 2) {
+    /**
+     * Parses a {@code SourceDebugExtesion} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute sourceDebugExtension(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                                        mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes().slice(offset, offset + length);
+        mod.agus.jcoderz.dx.rop.cst.CstString smapString = new mod.agus.jcoderz.dx.rop.cst.CstString(bytes);
+        mod.agus.jcoderz.dx.cf.iface.Attribute result = new AttSourceDebugExtension(smapString);
+
+        if (observer != null) {
+            String decoded = smapString.getString();
+            observer.parsed(bytes, offset, length, "sourceDebugExtension: " + decoded);
+        }
+
+        return result;
+    }
+
+    /**
+     * Parses a {@code SourceFile} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute sourceFile(mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, int offset, int length,
+                                                              mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length != 2) {
             throwBadLength(2);
         }
-        ByteArray bytes = directClassFile.getBytes();
-        CstString cstString = (CstString) directClassFile.getConstantPool().get(bytes.getUnsignedShort(i));
-        AttSourceFile attSourceFile = new AttSourceFile(cstString);
-        if (parseObserver != null) {
-            parseObserver.parsed(bytes, i, 2, "source: " + cstString);
+
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        mod.agus.jcoderz.dx.rop.cst.ConstantPool pool = cf.getConstantPool();
+        int idx = bytes.getUnsignedShort(offset);
+        mod.agus.jcoderz.dx.rop.cst.CstString cst = (CstString) pool.get(idx);
+        mod.agus.jcoderz.dx.cf.iface.Attribute result = new AttSourceFile(cst);
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2, "source: " + cst);
         }
-        return attSourceFile;
+
+        return result;
     }
 
-    private Attribute synthetic(DirectClassFile directClassFile, int i, int i2, ParseObserver parseObserver) {
-        if (i2 != 0) {
+    /**
+     * Parses a {@code Synthetic} attribute.
+     */
+    private mod.agus.jcoderz.dx.cf.iface.Attribute synthetic(DirectClassFile cf, int offset, int length,
+                                                             mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        if (length != 0) {
             return throwBadLength(0);
         }
+
         return new AttSynthetic();
+    }
+
+    /**
+     * Throws the right exception when a known attribute has a way too short
+     * length.
+     *
+     * @return never
+     * @throws mod.agus.jcoderz.dx.cf.iface.ParseException always thrown
+     */
+    private static mod.agus.jcoderz.dx.cf.iface.Attribute throwSeverelyTruncated() {
+        throw new mod.agus.jcoderz.dx.cf.iface.ParseException("severely truncated attribute");
+    }
+
+    /**
+     * Throws the right exception when a known attribute has a too short
+     * length.
+     *
+     * @return never
+     * @throws mod.agus.jcoderz.dx.cf.iface.ParseException always thrown
+     */
+    private static mod.agus.jcoderz.dx.cf.iface.Attribute throwTruncated() {
+        throw new mod.agus.jcoderz.dx.cf.iface.ParseException("truncated attribute");
+    }
+
+    /**
+     * Throws the right exception when an attribute has an unexpected length
+     * (given its contents).
+     *
+     * @param expected expected length
+     * @return never
+     * @throws mod.agus.jcoderz.dx.cf.iface.ParseException always thrown
+     */
+    private static Attribute throwBadLength(int expected) {
+        throw new mod.agus.jcoderz.dx.cf.iface.ParseException("bad attribute length; expected length " +
+                                 mod.agus.jcoderz.dx.util.Hex.u4(expected));
+    }
+
+    private mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList parseBootstrapMethods(ByteArray bytes, ConstantPool constantPool,
+                                                                                   CstType declaringClass, int numMethods, int offset, int length, ParseObserver observer)
+        throws ParseException {
+        mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList methods = new BootstrapMethodsList(numMethods);
+        for (int methodIndex = 0; methodIndex < numMethods; ++methodIndex) {
+            if (length < 4) {
+                throwTruncated();
+            }
+
+            int methodRef = bytes.getUnsignedShort(offset);
+            int numArguments = bytes.getUnsignedShort(offset + 2);
+
+            if (observer != null) {
+                observer.parsed(bytes, offset, 2, "bootstrap_method_ref: " + mod.agus.jcoderz.dx.util.Hex.u2(methodRef));
+                observer.parsed(bytes, offset + 2, 2,
+                                "num_bootstrap_arguments: " + mod.agus.jcoderz.dx.util.Hex.u2(numArguments));
+            }
+
+            offset += 4;
+            length -= 4;
+            if (length < numArguments * 2) {
+                throwTruncated();
+            }
+
+            mod.agus.jcoderz.dx.cf.code.BootstrapMethodArgumentsList arguments = new BootstrapMethodArgumentsList(numArguments);
+            for (int argIndex = 0; argIndex < numArguments; ++argIndex, offset += 2, length -= 2) {
+                int argumentRef = bytes.getUnsignedShort(offset);
+                if (observer != null) {
+                    observer.parsed(bytes, offset, 2,
+                                    "bootstrap_arguments[" + argIndex + "]" + Hex.u2(argumentRef));
+                }
+                arguments.set(argIndex, constantPool.get(argumentRef));
+            }
+            arguments.setImmutable();
+            Constant cstMethodRef = constantPool.get(methodRef);
+            methods.set(methodIndex, declaringClass, (CstMethodHandle) cstMethodRef, arguments);
+        }
+        methods.setImmutable();
+
+        if (length != 0) {
+            throwBadLength(length);
+        }
+
+        return methods;
     }
 }

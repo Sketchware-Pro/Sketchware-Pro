@@ -1,109 +1,154 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.util;
 
 import java.util.NoSuchElementException;
 
-public class BitIntSet implements IntSet {
+/**
+ * A set of integers, represented by a bit set
+ */
+public class BitIntSet implements mod.agus.jcoderz.dx.util.IntSet {
+
+    /** also accessed in ListIntSet */
     int[] bits;
 
-    public BitIntSet(int i) {
-        this.bits = Bits.makeBitSet(i);
+    /**
+     * Constructs an instance.
+     *
+     * @param max the maximum value of ints in this set.
+     */
+    public BitIntSet(int max) {
+        bits = mod.agus.jcoderz.dx.util.Bits.makeBitSet(max);
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public void add(int i) {
-        ensureCapacity(i);
-        Bits.set(this.bits, i, true);
+    /** {@inheritDoc} */
+    @Override
+    public void add(int value) {
+        ensureCapacity(value);
+        mod.agus.jcoderz.dx.util.Bits.set(bits, value, true);
     }
 
-    private void ensureCapacity(int i) {
-        if (i >= Bits.getMax(this.bits)) {
-            int[] makeBitSet = Bits.makeBitSet(Math.max(i + 1, Bits.getMax(this.bits) * 2));
-            System.arraycopy(this.bits, 0, makeBitSet, 0, this.bits.length);
-            this.bits = makeBitSet;
+    /**
+     * Ensures that the bit set has the capacity to represent the given value.
+     *
+     * @param value {@code >= 0;} value to represent
+     */
+    private void ensureCapacity(int value) {
+        if (value >= mod.agus.jcoderz.dx.util.Bits.getMax(bits)) {
+            int[] newBits = mod.agus.jcoderz.dx.util.Bits.makeBitSet(
+                    Math.max(value + 1, 2 * mod.agus.jcoderz.dx.util.Bits.getMax(bits)));
+            System.arraycopy(bits, 0, newBits, 0, bits.length);
+            bits = newBits;
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public void remove(int i) {
-        if (i < Bits.getMax(this.bits)) {
-            Bits.set(this.bits, i, false);
+    /** {@inheritDoc} */
+    @Override
+    public void remove(int value) {
+        if (value < mod.agus.jcoderz.dx.util.Bits.getMax(bits)) {
+            mod.agus.jcoderz.dx.util.Bits.set(bits, value, false);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public boolean has(int i) {
-        return i < Bits.getMax(this.bits) && Bits.get(this.bits, i);
+    /** {@inheritDoc} */
+    @Override
+    public boolean has(int value) {
+        return (value < mod.agus.jcoderz.dx.util.Bits.getMax(bits)) && mod.agus.jcoderz.dx.util.Bits.get(bits, value);
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public void merge(IntSet intSet) {
-        if (intSet instanceof BitIntSet) {
-            BitIntSet bitIntSet = (BitIntSet) intSet;
-            ensureCapacity(Bits.getMax(bitIntSet.bits) + 1);
-            Bits.or(this.bits, bitIntSet.bits);
-        } else if (intSet instanceof ListIntSet) {
-            ListIntSet listIntSet = (ListIntSet) intSet;
-            int size = listIntSet.ints.size();
-            if (size > 0) {
-                ensureCapacity(listIntSet.ints.get(size - 1));
+    /** {@inheritDoc} */
+    @Override
+    public void merge(IntSet other) {
+        if (other instanceof BitIntSet) {
+            BitIntSet o = (BitIntSet) other;
+            ensureCapacity(mod.agus.jcoderz.dx.util.Bits.getMax(o.bits) + 1);
+            mod.agus.jcoderz.dx.util.Bits.or(bits, o.bits);
+        } else if (other instanceof mod.agus.jcoderz.dx.util.ListIntSet) {
+            mod.agus.jcoderz.dx.util.ListIntSet o = (ListIntSet) other;
+            int sz = o.ints.size();
+
+            if (sz > 0) {
+                ensureCapacity(o.ints.get(sz - 1));
             }
-            for (int i = 0; i < listIntSet.ints.size(); i++) {
-                Bits.set(this.bits, listIntSet.ints.get(i), true);
+            for (int i = 0; i < o.ints.size(); i++) {
+                mod.agus.jcoderz.dx.util.Bits.set(bits, o.ints.get(i), true);
             }
         } else {
-            IntIterator it = intSet.iterator();
-            while (it.hasNext()) {
-                add(it.next());
+            IntIterator iter = other.iterator();
+            while (iter.hasNext()) {
+                add(iter.next());
             }
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
+    /** {@inheritDoc} */
+    @Override
     public int elements() {
-        return Bits.bitCount(this.bits);
+        return mod.agus.jcoderz.dx.util.Bits.bitCount(bits);
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
+    /** {@inheritDoc} */
+    @Override
     public IntIterator iterator() {
         return new IntIterator() {
-            /* class mod.agus.jcoderz.dx.util.BitIntSet.AnonymousClass1 */
-            private int idx;
+            private int idx = mod.agus.jcoderz.dx.util.Bits.findFirst(bits, 0);
 
-            {
-                this.idx = Bits.findFirst(BitIntSet.this.bits, 0);
-            }
-
-            @Override // mod.agus.jcoderz.dx.util.IntIterator
+            /** {@inheritDoc} */
+            @Override
             public boolean hasNext() {
-                return this.idx >= 0;
+                return idx >= 0;
             }
 
-            @Override // mod.agus.jcoderz.dx.util.IntIterator
+            /** {@inheritDoc} */
+            @Override
             public int next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                int i = this.idx;
-                this.idx = Bits.findFirst(BitIntSet.this.bits, this.idx + 1);
-                return i;
+
+                int ret = idx;
+
+                idx = mod.agus.jcoderz.dx.util.Bits.findFirst(bits, idx+1);
+
+                return ret;
             }
         };
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
         sb.append('{');
-        boolean z = true;
-        int findFirst = Bits.findFirst(this.bits, 0);
-        while (findFirst >= 0) {
-            if (!z) {
+
+        boolean first = true;
+        for (int i = mod.agus.jcoderz.dx.util.Bits.findFirst(bits, 0)
+             ; i >= 0
+                ; i = Bits.findFirst(bits, i + 1)) {
+            if (!first) {
                 sb.append(", ");
             }
-            sb.append(findFirst);
-            findFirst = Bits.findFirst(this.bits, findFirst + 1);
-            z = false;
+            first = false;
+            sb.append(i);
         }
+
         sb.append('}');
+
         return sb.toString();
     }
 }

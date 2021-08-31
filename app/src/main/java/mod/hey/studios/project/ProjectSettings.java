@@ -56,6 +56,9 @@ public class ProjectSettings {
      */
     public static final String SETTING_DISABLE_LARGE_HEAP = "disable_large_heap";
 
+    public static final String SETTING_GENERIC_VALUE_TRUE = "true";
+    public static final String SETTING_GENERIC_VALUE_FALSE = "false";
+
     private final String path;
     public String sc_id;
     private HashMap<String, String> hashmap;

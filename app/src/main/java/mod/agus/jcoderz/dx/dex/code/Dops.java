@@ -1,6 +1,20 @@
-package mod.agus.jcoderz.dx.dex.code;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import org.spongycastle.crypto.engines.IDEAEngine;
+package mod.agus.jcoderz.dx.dex.code;
 
 import mod.agus.jcoderz.dx.dex.DexOptions;
 import mod.agus.jcoderz.dx.dex.code.form.Form10t;
@@ -26,234 +40,936 @@ import mod.agus.jcoderz.dx.dex.code.form.Form31t;
 import mod.agus.jcoderz.dx.dex.code.form.Form32x;
 import mod.agus.jcoderz.dx.dex.code.form.Form35c;
 import mod.agus.jcoderz.dx.dex.code.form.Form3rc;
+import mod.agus.jcoderz.dx.dex.code.form.Form45cc;
+import mod.agus.jcoderz.dx.dex.code.form.Form4rcc;
 import mod.agus.jcoderz.dx.dex.code.form.Form51l;
 import mod.agus.jcoderz.dx.dex.code.form.SpecialFormat;
 import mod.agus.jcoderz.dx.io.Opcodes;
 
+/**
+ * Standard instances of {@link mod.agus.jcoderz.dx.dex.code.Dop} and utility methods for getting
+ * them.
+ */
 public final class Dops {
-    public static final Dop ADD_DOUBLE = new Dop(171, 171, -1, Form23x.THE_ONE, true);
-    public static final Dop ADD_DOUBLE_2ADDR = new Dop(Opcodes.ADD_DOUBLE_2ADDR, 171, 171, Form12x.THE_ONE, true);
-    public static final Dop ADD_FLOAT = new Dop(166, 166, -1, Form23x.THE_ONE, true);
-    public static final Dop ADD_FLOAT_2ADDR = new Dop(198, 166, 166, Form12x.THE_ONE, true);
-    public static final Dop ADD_INT = new Dop(144, 144, -1, Form23x.THE_ONE, true);
-    public static final Dop ADD_INT_2ADDR = new Dop(176, 144, 144, Form12x.THE_ONE, true);
-    public static final Dop ADD_INT_LIT16 = new Dop(Opcodes.ADD_INT_LIT16, 144, -1, Form22s.THE_ONE, true);
-    public static final Dop ADD_INT_LIT8 = new Dop(Opcodes.ADD_INT_LIT8, 144, Opcodes.ADD_INT_LIT16, Form22b.THE_ONE, true);
-    public static final Dop ADD_LONG = new Dop(155, 155, -1, Form23x.THE_ONE, true);
-    public static final Dop ADD_LONG_2ADDR = new Dop(187, 155, 155, Form12x.THE_ONE, true);
-    public static final Dop AGET = new Dop(68, 68, -1, Form23x.THE_ONE, true);
-    public static final Dop AGET_BOOLEAN = new Dop(71, 71, -1, Form23x.THE_ONE, true);
-    public static final Dop AGET_BYTE = new Dop(72, 72, -1, Form23x.THE_ONE, true);
-    public static final Dop AGET_CHAR = new Dop(73, 73, -1, Form23x.THE_ONE, true);
-    public static final Dop AGET_OBJECT = new Dop(70, 70, -1, Form23x.THE_ONE, true);
-    public static final Dop AGET_SHORT = new Dop(74, 74, -1, Form23x.THE_ONE, true);
-    public static final Dop AGET_WIDE = new Dop(69, 69, -1, Form23x.THE_ONE, true);
-    public static final Dop AND_INT = new Dop(149, 149, -1, Form23x.THE_ONE, true);
-    public static final Dop AND_INT_2ADDR = new Dop(181, 149, 149, Form12x.THE_ONE, true);
-    public static final Dop AND_INT_LIT16 = new Dop(Opcodes.AND_INT_LIT16, 149, -1, Form22s.THE_ONE, true);
-    public static final Dop AND_INT_LIT8 = new Dop(Opcodes.AND_INT_LIT8, 149, Opcodes.AND_INT_LIT16, Form22b.THE_ONE, true);
-    public static final Dop AND_LONG = new Dop(160, 160, -1, Form23x.THE_ONE, true);
-    public static final Dop AND_LONG_2ADDR = new Dop(192, 160, 160, Form12x.THE_ONE, true);
-    public static final Dop APUT = new Dop(75, 75, -1, Form23x.THE_ONE, false);
-    public static final Dop APUT_BOOLEAN = new Dop(78, 78, -1, Form23x.THE_ONE, false);
-    public static final Dop APUT_BYTE = new Dop(79, 79, -1, Form23x.THE_ONE, false);
-    public static final Dop APUT_CHAR = new Dop(80, 80, -1, Form23x.THE_ONE, false);
-    public static final Dop APUT_OBJECT = new Dop(77, 77, -1, Form23x.THE_ONE, false);
-    public static final Dop APUT_SHORT = new Dop(81, 81, -1, Form23x.THE_ONE, false);
-    public static final Dop APUT_WIDE = new Dop(76, 76, -1, Form23x.THE_ONE, false);
-    public static final Dop ARRAY_LENGTH = new Dop(33, 33, -1, Form12x.THE_ONE, true);
-    public static final Dop CHECK_CAST = new Dop(31, 31, -1, Form21c.THE_ONE, true);
-    public static final Dop CMPG_DOUBLE = new Dop(48, 48, -1, Form23x.THE_ONE, true);
-    public static final Dop CMPG_FLOAT = new Dop(46, 46, -1, Form23x.THE_ONE, true);
-    public static final Dop CMPL_DOUBLE = new Dop(47, 47, -1, Form23x.THE_ONE, true);
-    public static final Dop CMPL_FLOAT = new Dop(45, 45, -1, Form23x.THE_ONE, true);
-    public static final Dop CMP_LONG = new Dop(49, 49, -1, Form23x.THE_ONE, true);
-    public static final Dop CONST = new Dop(20, 20, -1, Form31i.THE_ONE, true);
-    public static final Dop CONST_16 = new Dop(19, 20, 21, Form21s.THE_ONE, true);
-    public static final Dop CONST_4 = new Dop(18, 20, 19, Form11n.THE_ONE, true);
-    public static final Dop CONST_CLASS = new Dop(28, 28, -1, Form21c.THE_ONE, true);
-    public static final Dop CONST_HIGH16 = new Dop(21, 20, 20, Form21h.THE_ONE, true);
-    public static final Dop CONST_STRING = new Dop(26, 26, 27, Form21c.THE_ONE, true);
-    public static final Dop CONST_STRING_JUMBO = new Dop(27, 26, -1, Form31c.THE_ONE, true);
-    public static final Dop CONST_WIDE = new Dop(24, 24, -1, Form51l.THE_ONE, true);
-    public static final Dop CONST_WIDE_16 = new Dop(22, 24, 25, Form21s.THE_ONE, true);
-    public static final Dop CONST_WIDE_32 = new Dop(23, 24, 24, Form31i.THE_ONE, true);
-    public static final Dop CONST_WIDE_HIGH16 = new Dop(25, 24, 23, Form21h.THE_ONE, true);
-    public static final Dop DIV_DOUBLE = new Dop(174, 174, -1, Form23x.THE_ONE, true);
-    public static final Dop DIV_DOUBLE_2ADDR = new Dop(Opcodes.DIV_DOUBLE_2ADDR, 174, 174, Form12x.THE_ONE, true);
-    public static final Dop DIV_FLOAT = new Dop(169, 169, -1, Form23x.THE_ONE, true);
-    public static final Dop DIV_FLOAT_2ADDR = new Dop(201, 169, 169, Form12x.THE_ONE, true);
-    public static final Dop DIV_INT = new Dop(147, 147, -1, Form23x.THE_ONE, true);
-    public static final Dop DIV_INT_2ADDR = new Dop(179, 147, 147, Form12x.THE_ONE, true);
-    public static final Dop DIV_INT_LIT16 = new Dop(211, 147, -1, Form22s.THE_ONE, true);
-    public static final Dop DIV_INT_LIT8 = new Dop(Opcodes.DIV_INT_LIT8, 147, 211, Form22b.THE_ONE, true);
-    public static final Dop DIV_LONG = new Dop(158, 158, -1, Form23x.THE_ONE, true);
-    public static final Dop DIV_LONG_2ADDR = new Dop(190, 158, 158, Form12x.THE_ONE, true);
-    public static final Dop DOUBLE_TO_FLOAT = new Dop(140, 140, -1, Form12x.THE_ONE, true);
-    public static final Dop DOUBLE_TO_INT = new Dop(138, 138, -1, Form12x.THE_ONE, true);
-    public static final Dop DOUBLE_TO_LONG = new Dop(139, 139, -1, Form12x.THE_ONE, true);
-    public static final Dop FILLED_NEW_ARRAY = new Dop(36, 36, 37, Form35c.THE_ONE, false);
-    public static final Dop FILLED_NEW_ARRAY_RANGE = new Dop(37, 36, -1, Form3rc.THE_ONE, false);
-    public static final Dop FILL_ARRAY_DATA = new Dop(38, 38, -1, Form31t.THE_ONE, false);
-    public static final Dop FLOAT_TO_DOUBLE = new Dop(137, 137, -1, Form12x.THE_ONE, true);
-    public static final Dop FLOAT_TO_INT = new Dop(135, 135, -1, Form12x.THE_ONE, true);
-    public static final Dop FLOAT_TO_LONG = new Dop(136, 136, -1, Form12x.THE_ONE, true);
-    public static final Dop GOTO = new Dop(40, 40, 41, Form10t.THE_ONE, false);
-    public static final Dop GOTO_16 = new Dop(41, 40, 42, Form20t.THE_ONE, false);
-    public static final Dop GOTO_32 = new Dop(42, 40, -1, Form30t.THE_ONE, false);
-    public static final Dop IF_EQ = new Dop(50, 50, -1, Form22t.THE_ONE, false);
-    public static final Dop IF_EQZ = new Dop(56, 56, -1, Form21t.THE_ONE, false);
-    public static final Dop IF_GE = new Dop(53, 53, -1, Form22t.THE_ONE, false);
-    public static final Dop IF_GEZ = new Dop(59, 59, -1, Form21t.THE_ONE, false);
-    public static final Dop IF_GT = new Dop(54, 54, -1, Form22t.THE_ONE, false);
-    public static final Dop IF_GTZ = new Dop(60, 60, -1, Form21t.THE_ONE, false);
-    public static final Dop IF_LE = new Dop(55, 55, -1, Form22t.THE_ONE, false);
-    public static final Dop IF_LEZ = new Dop(61, 61, -1, Form21t.THE_ONE, false);
-    public static final Dop IF_LT = new Dop(52, 52, -1, Form22t.THE_ONE, false);
-    public static final Dop IF_LTZ = new Dop(58, 58, -1, Form21t.THE_ONE, false);
-    public static final Dop IF_NE = new Dop(51, 51, -1, Form22t.THE_ONE, false);
-    public static final Dop IF_NEZ = new Dop(57, 57, -1, Form21t.THE_ONE, false);
-    public static final Dop IGET = new Dop(82, 82, -1, Form22c.THE_ONE, true);
-    public static final Dop IGET_BOOLEAN = new Dop(85, 85, -1, Form22c.THE_ONE, true);
-    public static final Dop IGET_BYTE = new Dop(86, 86, -1, Form22c.THE_ONE, true);
-    public static final Dop IGET_CHAR = new Dop(87, 87, -1, Form22c.THE_ONE, true);
-    public static final Dop IGET_OBJECT = new Dop(84, 84, -1, Form22c.THE_ONE, true);
-    public static final Dop IGET_SHORT = new Dop(88, 88, -1, Form22c.THE_ONE, true);
-    public static final Dop IGET_WIDE = new Dop(83, 83, -1, Form22c.THE_ONE, true);
-    public static final Dop INSTANCE_OF = new Dop(32, 32, -1, Form22c.THE_ONE, true);
-    public static final Dop INT_TO_BYTE = new Dop(141, 141, -1, Form12x.THE_ONE, true);
-    public static final Dop INT_TO_CHAR = new Dop(142, 142, -1, Form12x.THE_ONE, true);
-    public static final Dop INT_TO_DOUBLE = new Dop(131, 131, -1, Form12x.THE_ONE, true);
-    public static final Dop INT_TO_FLOAT = new Dop(130, 130, -1, Form12x.THE_ONE, true);
-    public static final Dop INT_TO_LONG = new Dop(129, 129, -1, Form12x.THE_ONE, true);
-    public static final Dop INT_TO_SHORT = new Dop(143, 143, -1, Form12x.THE_ONE, true);
-    public static final Dop INVOKE_DIRECT = new Dop(112, 112, 118, Form35c.THE_ONE, false);
-    public static final Dop INVOKE_DIRECT_RANGE = new Dop(118, 112, -1, Form3rc.THE_ONE, false);
-    public static final Dop INVOKE_INTERFACE = new Dop(114, 114, 120, Form35c.THE_ONE, false);
-    public static final Dop INVOKE_INTERFACE_RANGE = new Dop(120, 114, -1, Form3rc.THE_ONE, false);
-    public static final Dop INVOKE_STATIC = new Dop(113, 113, 119, Form35c.THE_ONE, false);
-    public static final Dop INVOKE_STATIC_RANGE = new Dop(119, 113, -1, Form3rc.THE_ONE, false);
-    public static final Dop INVOKE_SUPER = new Dop(111, 111, 117, Form35c.THE_ONE, false);
-    public static final Dop INVOKE_SUPER_RANGE = new Dop(117, 111, -1, Form3rc.THE_ONE, false);
-    public static final Dop INVOKE_VIRTUAL = new Dop(110, 110, 116, Form35c.THE_ONE, false);
-    public static final Dop INVOKE_VIRTUAL_RANGE = new Dop(116, 110, -1, Form3rc.THE_ONE, false);
-    public static final Dop IPUT = new Dop(89, 89, -1, Form22c.THE_ONE, false);
-    public static final Dop IPUT_BOOLEAN = new Dop(92, 92, -1, Form22c.THE_ONE, false);
-    public static final Dop IPUT_BYTE = new Dop(93, 93, -1, Form22c.THE_ONE, false);
-    public static final Dop IPUT_CHAR = new Dop(94, 94, -1, Form22c.THE_ONE, false);
-    public static final Dop IPUT_OBJECT = new Dop(91, 91, -1, Form22c.THE_ONE, false);
-    public static final Dop IPUT_SHORT = new Dop(95, 95, -1, Form22c.THE_ONE, false);
-    public static final Dop IPUT_WIDE = new Dop(90, 90, -1, Form22c.THE_ONE, false);
-    public static final Dop LONG_TO_DOUBLE = new Dop(134, 134, -1, Form12x.THE_ONE, true);
-    public static final Dop LONG_TO_FLOAT = new Dop(133, 133, -1, Form12x.THE_ONE, true);
-    public static final Dop LONG_TO_INT = new Dop(132, 132, -1, Form12x.THE_ONE, true);
-    public static final Dop MONITOR_ENTER = new Dop(29, 29, -1, Form11x.THE_ONE, false);
-    public static final Dop MONITOR_EXIT = new Dop(30, 30, -1, Form11x.THE_ONE, false);
-    public static final Dop MOVE = new Dop(1, 1, 2, Form12x.THE_ONE, true);
-    public static final Dop MOVE_16 = new Dop(3, 1, -1, Form32x.THE_ONE, true);
-    public static final Dop MOVE_EXCEPTION = new Dop(13, 13, -1, Form11x.THE_ONE, true);
-    public static final Dop MOVE_FROM16 = new Dop(2, 1, 3, Form22x.THE_ONE, true);
-    public static final Dop MOVE_OBJECT = new Dop(7, 7, 8, Form12x.THE_ONE, true);
-    public static final Dop MOVE_OBJECT_16 = new Dop(9, 7, -1, Form32x.THE_ONE, true);
-    public static final Dop MOVE_OBJECT_FROM16 = new Dop(8, 7, 9, Form22x.THE_ONE, true);
-    public static final Dop MOVE_RESULT = new Dop(10, 10, -1, Form11x.THE_ONE, true);
-    public static final Dop MOVE_RESULT_OBJECT = new Dop(12, 12, -1, Form11x.THE_ONE, true);
-    public static final Dop MOVE_RESULT_WIDE = new Dop(11, 11, -1, Form11x.THE_ONE, true);
-    public static final Dop MOVE_WIDE = new Dop(4, 4, 5, Form12x.THE_ONE, true);
-    public static final Dop MOVE_WIDE_16 = new Dop(6, 4, -1, Form32x.THE_ONE, true);
-    public static final Dop MOVE_WIDE_FROM16 = new Dop(5, 4, 6, Form22x.THE_ONE, true);
-    public static final Dop MUL_DOUBLE = new Dop(173, 173, -1, Form23x.THE_ONE, true);
-    public static final Dop MUL_DOUBLE_2ADDR = new Dop(Opcodes.MUL_DOUBLE_2ADDR, 173, 173, Form12x.THE_ONE, true);
-    public static final Dop MUL_FLOAT = new Dop(168, 168, -1, Form23x.THE_ONE, true);
-    public static final Dop MUL_FLOAT_2ADDR = new Dop(200, 168, 168, Form12x.THE_ONE, true);
-    public static final Dop MUL_INT = new Dop(146, 146, -1, Form23x.THE_ONE, true);
-    public static final Dop MUL_INT_2ADDR = new Dop(178, 146, 146, Form12x.THE_ONE, true);
-    public static final Dop MUL_INT_LIT16 = new Dop(Opcodes.MUL_INT_LIT16, 146, -1, Form22s.THE_ONE, true);
-    public static final Dop MUL_INT_LIT8 = new Dop(Opcodes.MUL_INT_LIT8, 146, Opcodes.MUL_INT_LIT16, Form22b.THE_ONE, true);
-    public static final Dop MUL_LONG = new Dop(157, 157, -1, Form23x.THE_ONE, true);
-    public static final Dop MUL_LONG_2ADDR = new Dop(189, 157, 157, Form12x.THE_ONE, true);
-    public static final Dop NEG_DOUBLE = new Dop(128, 128, -1, Form12x.THE_ONE, true);
-    public static final Dop NEG_FLOAT = new Dop(127, 127, -1, Form12x.THE_ONE, true);
-    public static final Dop NEG_INT = new Dop(123, 123, -1, Form12x.THE_ONE, true);
-    public static final Dop NEG_LONG = new Dop(125, 125, -1, Form12x.THE_ONE, true);
-    public static final Dop NEW_ARRAY = new Dop(35, 35, -1, Form22c.THE_ONE, true);
-    public static final Dop NEW_INSTANCE = new Dop(34, 34, -1, Form21c.THE_ONE, true);
-    public static final Dop NOP = new Dop(0, 0, -1, Form10x.THE_ONE, false);
-    public static final Dop NOT_INT = new Dop(124, 124, -1, Form12x.THE_ONE, true);
-    public static final Dop NOT_LONG = new Dop(126, 126, -1, Form12x.THE_ONE, true);
-    public static final Dop OR_INT = new Dop(150, 150, -1, Form23x.THE_ONE, true);
-    public static final Dop OR_INT_2ADDR = new Dop(182, 150, 150, Form12x.THE_ONE, true);
-    public static final Dop OR_INT_LIT16 = new Dop(Opcodes.OR_INT_LIT16, 150, -1, Form22s.THE_ONE, true);
-    public static final Dop OR_INT_LIT8 = new Dop(Opcodes.OR_INT_LIT8, 150, Opcodes.OR_INT_LIT16, Form22b.THE_ONE, true);
-    public static final Dop OR_LONG = new Dop(161, 161, -1, Form23x.THE_ONE, true);
-    public static final Dop OR_LONG_2ADDR = new Dop(193, 161, 161, Form12x.THE_ONE, true);
-    public static final Dop PACKED_SWITCH = new Dop(43, 43, -1, Form31t.THE_ONE, false);
-    public static final Dop REM_DOUBLE = new Dop(175, 175, -1, Form23x.THE_ONE, true);
-    public static final Dop REM_DOUBLE_2ADDR = new Dop(Opcodes.REM_DOUBLE_2ADDR, 175, 175, Form12x.THE_ONE, true);
-    public static final Dop REM_FLOAT = new Dop(170, 170, -1, Form23x.THE_ONE, true);
-    public static final Dop REM_FLOAT_2ADDR = new Dop(Opcodes.REM_FLOAT_2ADDR, 170, 170, Form12x.THE_ONE, true);
-    public static final Dop REM_INT = new Dop(148, 148, -1, Form23x.THE_ONE, true);
-    public static final Dop REM_INT_2ADDR = new Dop(180, 148, 148, Form12x.THE_ONE, true);
-    public static final Dop REM_INT_LIT16 = new Dop(Opcodes.REM_INT_LIT16, 148, -1, Form22s.THE_ONE, true);
-    public static final Dop REM_INT_LIT8 = new Dop(Opcodes.REM_INT_LIT8, 148, Opcodes.REM_INT_LIT16, Form22b.THE_ONE, true);
-    public static final Dop REM_LONG = new Dop(159, 159, -1, Form23x.THE_ONE, true);
-    public static final Dop REM_LONG_2ADDR = new Dop(191, 159, 159, Form12x.THE_ONE, true);
-    public static final Dop RETURN = new Dop(15, 15, -1, Form11x.THE_ONE, false);
-    public static final Dop RETURN_OBJECT = new Dop(17, 17, -1, Form11x.THE_ONE, false);
-    public static final Dop RETURN_VOID = new Dop(14, 14, -1, Form10x.THE_ONE, false);
-    public static final Dop RETURN_WIDE = new Dop(16, 16, -1, Form11x.THE_ONE, false);
-    public static final Dop RSUB_INT = new Dop(Opcodes.RSUB_INT, Opcodes.RSUB_INT, -1, Form22s.THE_ONE, true);
-    public static final Dop RSUB_INT_LIT8 = new Dop(Opcodes.RSUB_INT_LIT8, Opcodes.RSUB_INT, Opcodes.RSUB_INT, Form22b.THE_ONE, true);
-    public static final Dop SGET = new Dop(96, 96, -1, Form21c.THE_ONE, true);
-    public static final Dop SGET_BOOLEAN = new Dop(99, 99, -1, Form21c.THE_ONE, true);
-    public static final Dop SGET_BYTE = new Dop(100, 100, -1, Form21c.THE_ONE, true);
-    public static final Dop SGET_CHAR = new Dop(101, 101, -1, Form21c.THE_ONE, true);
-    public static final Dop SGET_OBJECT = new Dop(98, 98, -1, Form21c.THE_ONE, true);
-    public static final Dop SGET_SHORT = new Dop(102, 102, -1, Form21c.THE_ONE, true);
-    public static final Dop SGET_WIDE = new Dop(97, 97, -1, Form21c.THE_ONE, true);
-    public static final Dop SHL_INT = new Dop(152, 152, -1, Form23x.THE_ONE, true);
-    public static final Dop SHL_INT_2ADDR = new Dop(184, 152, 152, Form12x.THE_ONE, true);
-    public static final Dop SHL_INT_LIT8 = new Dop(Opcodes.SHL_INT_LIT8, 152, -1, Form22b.THE_ONE, true);
-    public static final Dop SHL_LONG = new Dop(163, 163, -1, Form23x.THE_ONE, true);
-    public static final Dop SHL_LONG_2ADDR = new Dop(195, 163, 163, Form12x.THE_ONE, true);
-    public static final Dop SHR_INT = new Dop(153, 153, -1, Form23x.THE_ONE, true);
-    public static final Dop SHR_INT_2ADDR = new Dop(185, 153, 153, Form12x.THE_ONE, true);
-    public static final Dop SHR_INT_LIT8 = new Dop(Opcodes.SHR_INT_LIT8, 153, -1, Form22b.THE_ONE, true);
-    public static final Dop SHR_LONG = new Dop(164, 164, -1, Form23x.THE_ONE, true);
-    public static final Dop SHR_LONG_2ADDR = new Dop(196, 164, 164, Form12x.THE_ONE, true);
-    public static final Dop SPARSE_SWITCH = new Dop(44, 44, -1, Form31t.THE_ONE, false);
-    public static final Dop SPECIAL_FORMAT = new Dop(-1, -1, -1, SpecialFormat.THE_ONE, false);
-    public static final Dop SPUT = new Dop(103, 103, -1, Form21c.THE_ONE, false);
-    public static final Dop SPUT_BOOLEAN = new Dop(106, 106, -1, Form21c.THE_ONE, false);
-    public static final Dop SPUT_BYTE = new Dop(107, 107, -1, Form21c.THE_ONE, false);
-    public static final Dop SPUT_CHAR = new Dop(108, 108, -1, Form21c.THE_ONE, false);
-    public static final Dop SPUT_OBJECT = new Dop(105, 105, -1, Form21c.THE_ONE, false);
-    public static final Dop SPUT_SHORT = new Dop(109, 109, -1, Form21c.THE_ONE, false);
-    public static final Dop SPUT_WIDE = new Dop(104, 104, -1, Form21c.THE_ONE, false);
-    public static final Dop SUB_DOUBLE = new Dop(172, 172, -1, Form23x.THE_ONE, true);
-    public static final Dop SUB_DOUBLE_2ADDR = new Dop(204, 172, 172, Form12x.THE_ONE, true);
-    public static final Dop SUB_FLOAT = new Dop(167, 167, -1, Form23x.THE_ONE, true);
-    public static final Dop SUB_FLOAT_2ADDR = new Dop(199, 167, 167, Form12x.THE_ONE, true);
-    public static final Dop SUB_INT = new Dop(145, 145, -1, Form23x.THE_ONE, true);
-    public static final Dop SUB_INT_2ADDR = new Dop(177, 145, 145, Form12x.THE_ONE, true);
-    public static final Dop SUB_LONG = new Dop(156, 156, -1, Form23x.THE_ONE, true);
-    public static final Dop SUB_LONG_2ADDR = new Dop(188, 156, 156, Form12x.THE_ONE, true);
-    public static final Dop THROW = new Dop(39, 39, -1, Form11x.THE_ONE, false);
-    public static final Dop USHR_INT = new Dop(154, 154, -1, Form23x.THE_ONE, true);
-    public static final Dop USHR_INT_2ADDR = new Dop(186, 154, 154, Form12x.THE_ONE, true);
-    public static final Dop USHR_INT_LIT8 = new Dop(Opcodes.USHR_INT_LIT8, 154, -1, Form22b.THE_ONE, true);
-    public static final Dop USHR_LONG = new Dop(165, 165, -1, Form23x.THE_ONE, true);
-    public static final Dop USHR_LONG_2ADDR = new Dop(197, 165, 165, Form12x.THE_ONE, true);
-    public static final Dop XOR_INT = new Dop(151, 151, -1, Form23x.THE_ONE, true);
-    public static final Dop XOR_INT_2ADDR = new Dop(183, 151, 151, Form12x.THE_ONE, true);
-    public static final Dop XOR_INT_LIT16 = new Dop(Opcodes.XOR_INT_LIT16, 151, -1, Form22s.THE_ONE, true);
-    public static final Dop XOR_INT_LIT8 = new Dop(Opcodes.XOR_INT_LIT8, 151, Opcodes.XOR_INT_LIT16, Form22b.THE_ONE, true);
-    public static final Dop XOR_LONG = new Dop(162, 162, -1, Form23x.THE_ONE, true);
-    public static final Dop XOR_LONG_2ADDR = new Dop(194, 162, 162, Form12x.THE_ONE, true);
-    private static final Dop[] DOPS = new Dop[IDEAEngine.BASE];
+    /** {@code non-null;} array containing all the standard instances */
+    private static final mod.agus.jcoderz.dx.dex.code.Dop[] DOPS;
 
+    /**
+     * pseudo-opcode used for nonstandard formatted "instructions"
+     * (which are mostly not actually instructions, though they do
+     * appear in instruction lists). TODO: Retire the usage of this
+     * constant.
+     */
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPECIAL_FORMAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPECIAL_FORMAT, mod.agus.jcoderz.dx.io.Opcodes.SPECIAL_FORMAT,
+                mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, SpecialFormat.THE_ONE, false);
+
+    // BEGIN(dops); GENERATED AUTOMATICALLY BY opcode-gen
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NOP =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NOP, mod.agus.jcoderz.dx.io.Opcodes.NOP,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form10x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE, mod.agus.jcoderz.dx.io.Opcodes.MOVE,
+            mod.agus.jcoderz.dx.io.Opcodes.MOVE_FROM16, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_FROM16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_FROM16, mod.agus.jcoderz.dx.io.Opcodes.MOVE,
+            mod.agus.jcoderz.dx.io.Opcodes.MOVE_16, mod.agus.jcoderz.dx.dex.code.form.Form22x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_16, mod.agus.jcoderz.dx.io.Opcodes.MOVE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form32x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE, mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE_FROM16, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_WIDE_FROM16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE_FROM16, mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE_16, mod.agus.jcoderz.dx.dex.code.form.Form22x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_WIDE_16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE_16, mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form32x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT_FROM16, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_OBJECT_FROM16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT_FROM16, mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT_16, Form22x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_OBJECT_16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT_16, mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form32x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_RESULT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT, mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_RESULT_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT_WIDE, mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_RESULT_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MOVE_EXCEPTION =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MOVE_EXCEPTION, mod.agus.jcoderz.dx.io.Opcodes.MOVE_EXCEPTION,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop RETURN_VOID =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.RETURN_VOID, mod.agus.jcoderz.dx.io.Opcodes.RETURN_VOID,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form10x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop RETURN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.RETURN, mod.agus.jcoderz.dx.io.Opcodes.RETURN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop RETURN_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.RETURN_WIDE, mod.agus.jcoderz.dx.io.Opcodes.RETURN_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop RETURN_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.RETURN_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.RETURN_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_4 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_4, mod.agus.jcoderz.dx.io.Opcodes.CONST,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST_16, Form11n.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_16, mod.agus.jcoderz.dx.io.Opcodes.CONST,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST_HIGH16, mod.agus.jcoderz.dx.dex.code.form.Form21s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST, mod.agus.jcoderz.dx.io.Opcodes.CONST,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form31i.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_HIGH16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_HIGH16, mod.agus.jcoderz.dx.io.Opcodes.CONST,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST, mod.agus.jcoderz.dx.dex.code.form.Form21h.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_WIDE_16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_16, mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_HIGH16, Form21s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_WIDE_32 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_32, mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE, Form31i.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE, mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form51l.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_WIDE_HIGH16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_HIGH16, mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_32, Form21h.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_STRING =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING, mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING,
+            mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING_JUMBO, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_STRING_JUMBO =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING_JUMBO, mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form31c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_CLASS =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_CLASS, mod.agus.jcoderz.dx.io.Opcodes.CONST_CLASS,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MONITOR_ENTER =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MONITOR_ENTER, mod.agus.jcoderz.dx.io.Opcodes.MONITOR_ENTER,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MONITOR_EXIT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MONITOR_EXIT, mod.agus.jcoderz.dx.io.Opcodes.MONITOR_EXIT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form11x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CHECK_CAST =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CHECK_CAST, mod.agus.jcoderz.dx.io.Opcodes.CHECK_CAST,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INSTANCE_OF =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INSTANCE_OF, mod.agus.jcoderz.dx.io.Opcodes.INSTANCE_OF,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ARRAY_LENGTH =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ARRAY_LENGTH, mod.agus.jcoderz.dx.io.Opcodes.ARRAY_LENGTH,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NEW_INSTANCE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NEW_INSTANCE, mod.agus.jcoderz.dx.io.Opcodes.NEW_INSTANCE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NEW_ARRAY =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NEW_ARRAY, mod.agus.jcoderz.dx.io.Opcodes.NEW_ARRAY,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop FILLED_NEW_ARRAY =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY, mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY,
+            mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY_RANGE, mod.agus.jcoderz.dx.dex.code.form.Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop FILLED_NEW_ARRAY_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY_RANGE, mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop FILL_ARRAY_DATA =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.FILL_ARRAY_DATA, mod.agus.jcoderz.dx.io.Opcodes.FILL_ARRAY_DATA,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form31t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop THROW =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.THROW, mod.agus.jcoderz.dx.io.Opcodes.THROW,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form11x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop GOTO =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.GOTO, mod.agus.jcoderz.dx.io.Opcodes.GOTO,
+            mod.agus.jcoderz.dx.io.Opcodes.GOTO_16, Form10t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop GOTO_16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.GOTO_16, mod.agus.jcoderz.dx.io.Opcodes.GOTO,
+            mod.agus.jcoderz.dx.io.Opcodes.GOTO_32, Form20t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop GOTO_32 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.GOTO_32, mod.agus.jcoderz.dx.io.Opcodes.GOTO,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form30t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop PACKED_SWITCH =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.PACKED_SWITCH, mod.agus.jcoderz.dx.io.Opcodes.PACKED_SWITCH,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form31t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPARSE_SWITCH =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPARSE_SWITCH, mod.agus.jcoderz.dx.io.Opcodes.SPARSE_SWITCH,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form31t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CMPL_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CMPL_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.CMPL_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CMPG_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CMPG_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.CMPG_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CMPL_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CMPL_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.CMPL_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CMPG_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CMPG_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.CMPG_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CMP_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CMP_LONG, mod.agus.jcoderz.dx.io.Opcodes.CMP_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_EQ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_EQ, mod.agus.jcoderz.dx.io.Opcodes.IF_EQ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_NE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_NE, mod.agus.jcoderz.dx.io.Opcodes.IF_NE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_LT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_LT, mod.agus.jcoderz.dx.io.Opcodes.IF_LT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_GE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_GE, mod.agus.jcoderz.dx.io.Opcodes.IF_GE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_GT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_GT, mod.agus.jcoderz.dx.io.Opcodes.IF_GT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_LE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_LE, mod.agus.jcoderz.dx.io.Opcodes.IF_LE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form22t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_EQZ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_EQZ, mod.agus.jcoderz.dx.io.Opcodes.IF_EQZ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_NEZ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_NEZ, mod.agus.jcoderz.dx.io.Opcodes.IF_NEZ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_LTZ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_LTZ, mod.agus.jcoderz.dx.io.Opcodes.IF_LTZ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_GEZ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_GEZ, mod.agus.jcoderz.dx.io.Opcodes.IF_GEZ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_GTZ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_GTZ, mod.agus.jcoderz.dx.io.Opcodes.IF_GTZ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IF_LEZ =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IF_LEZ, mod.agus.jcoderz.dx.io.Opcodes.IF_LEZ,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form21t.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET, mod.agus.jcoderz.dx.io.Opcodes.AGET,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET_WIDE, mod.agus.jcoderz.dx.io.Opcodes.AGET_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.AGET_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET_BOOLEAN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET_BOOLEAN, mod.agus.jcoderz.dx.io.Opcodes.AGET_BOOLEAN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET_BYTE, mod.agus.jcoderz.dx.io.Opcodes.AGET_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET_CHAR, mod.agus.jcoderz.dx.io.Opcodes.AGET_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AGET_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AGET_SHORT, mod.agus.jcoderz.dx.io.Opcodes.AGET_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT, mod.agus.jcoderz.dx.io.Opcodes.APUT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT_WIDE, mod.agus.jcoderz.dx.io.Opcodes.APUT_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.APUT_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT_BOOLEAN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT_BOOLEAN, mod.agus.jcoderz.dx.io.Opcodes.APUT_BOOLEAN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT_BYTE, mod.agus.jcoderz.dx.io.Opcodes.APUT_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT_CHAR, mod.agus.jcoderz.dx.io.Opcodes.APUT_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop APUT_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.APUT_SHORT, mod.agus.jcoderz.dx.io.Opcodes.APUT_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET, mod.agus.jcoderz.dx.io.Opcodes.IGET,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET_WIDE, mod.agus.jcoderz.dx.io.Opcodes.IGET_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.IGET_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET_BOOLEAN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET_BOOLEAN, mod.agus.jcoderz.dx.io.Opcodes.IGET_BOOLEAN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET_BYTE, mod.agus.jcoderz.dx.io.Opcodes.IGET_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET_CHAR, mod.agus.jcoderz.dx.io.Opcodes.IGET_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IGET_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IGET_SHORT, mod.agus.jcoderz.dx.io.Opcodes.IGET_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT, mod.agus.jcoderz.dx.io.Opcodes.IPUT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT_WIDE, mod.agus.jcoderz.dx.io.Opcodes.IPUT_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.IPUT_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT_BOOLEAN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT_BOOLEAN, mod.agus.jcoderz.dx.io.Opcodes.IPUT_BOOLEAN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT_BYTE, mod.agus.jcoderz.dx.io.Opcodes.IPUT_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT_CHAR, mod.agus.jcoderz.dx.io.Opcodes.IPUT_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop IPUT_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.IPUT_SHORT, mod.agus.jcoderz.dx.io.Opcodes.IPUT_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form22c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET, mod.agus.jcoderz.dx.io.Opcodes.SGET,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET_WIDE, mod.agus.jcoderz.dx.io.Opcodes.SGET_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.SGET_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET_BOOLEAN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET_BOOLEAN, mod.agus.jcoderz.dx.io.Opcodes.SGET_BOOLEAN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET_BYTE, mod.agus.jcoderz.dx.io.Opcodes.SGET_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET_CHAR, mod.agus.jcoderz.dx.io.Opcodes.SGET_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SGET_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SGET_SHORT, mod.agus.jcoderz.dx.io.Opcodes.SGET_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT, mod.agus.jcoderz.dx.io.Opcodes.SPUT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT_WIDE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT_WIDE, mod.agus.jcoderz.dx.io.Opcodes.SPUT_WIDE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT_OBJECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT_OBJECT, mod.agus.jcoderz.dx.io.Opcodes.SPUT_OBJECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT_BOOLEAN =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT_BOOLEAN, mod.agus.jcoderz.dx.io.Opcodes.SPUT_BOOLEAN,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT_BYTE, mod.agus.jcoderz.dx.io.Opcodes.SPUT_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT_CHAR, mod.agus.jcoderz.dx.io.Opcodes.SPUT_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SPUT_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SPUT_SHORT, mod.agus.jcoderz.dx.io.Opcodes.SPUT_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_VIRTUAL =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL_RANGE, mod.agus.jcoderz.dx.dex.code.form.Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_SUPER =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER_RANGE, mod.agus.jcoderz.dx.dex.code.form.Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_DIRECT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT_RANGE, mod.agus.jcoderz.dx.dex.code.form.Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_STATIC =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC_RANGE, mod.agus.jcoderz.dx.dex.code.form.Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_INTERFACE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE_RANGE, mod.agus.jcoderz.dx.dex.code.form.Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_VIRTUAL_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_SUPER_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_DIRECT_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_STATIC_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_INTERFACE_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NEG_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NEG_INT, mod.agus.jcoderz.dx.io.Opcodes.NEG_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NOT_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NOT_INT, mod.agus.jcoderz.dx.io.Opcodes.NOT_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NEG_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NEG_LONG, mod.agus.jcoderz.dx.io.Opcodes.NEG_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NOT_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NOT_LONG, mod.agus.jcoderz.dx.io.Opcodes.NOT_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NEG_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NEG_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.NEG_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop NEG_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.NEG_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.NEG_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INT_TO_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_LONG, mod.agus.jcoderz.dx.io.Opcodes.INT_TO_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INT_TO_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.INT_TO_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INT_TO_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.INT_TO_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop LONG_TO_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_INT, mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop LONG_TO_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop LONG_TO_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop FLOAT_TO_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_INT, mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop FLOAT_TO_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_LONG, mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop FLOAT_TO_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DOUBLE_TO_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_INT, mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DOUBLE_TO_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_LONG, mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DOUBLE_TO_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INT_TO_BYTE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_BYTE, mod.agus.jcoderz.dx.io.Opcodes.INT_TO_BYTE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INT_TO_CHAR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_CHAR, mod.agus.jcoderz.dx.io.Opcodes.INT_TO_CHAR,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INT_TO_SHORT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_SHORT, mod.agus.jcoderz.dx.io.Opcodes.INT_TO_SHORT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT, mod.agus.jcoderz.dx.io.Opcodes.ADD_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_INT, mod.agus.jcoderz.dx.io.Opcodes.SUB_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT, mod.agus.jcoderz.dx.io.Opcodes.MUL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT, mod.agus.jcoderz.dx.io.Opcodes.DIV_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_INT, mod.agus.jcoderz.dx.io.Opcodes.REM_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AND_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AND_INT, mod.agus.jcoderz.dx.io.Opcodes.AND_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop OR_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.OR_INT, mod.agus.jcoderz.dx.io.Opcodes.OR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop XOR_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT, mod.agus.jcoderz.dx.io.Opcodes.XOR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHL_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHL_INT, mod.agus.jcoderz.dx.io.Opcodes.SHL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHR_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHR_INT, mod.agus.jcoderz.dx.io.Opcodes.SHR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop USHR_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.USHR_INT, mod.agus.jcoderz.dx.io.Opcodes.USHR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG, mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG, mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG, mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG, mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_LONG, mod.agus.jcoderz.dx.io.Opcodes.REM_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AND_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AND_LONG, mod.agus.jcoderz.dx.io.Opcodes.AND_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop OR_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.OR_LONG, mod.agus.jcoderz.dx.io.Opcodes.OR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop XOR_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG, mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHL_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG, mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHR_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG, mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop USHR_LONG =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG, mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_FLOAT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT, mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_DOUBLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE, mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form23x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.ADD_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.ADD_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SUB_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.SUB_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.MUL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.MUL_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.DIV_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.DIV_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.REM_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.REM_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AND_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AND_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.AND_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.AND_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop OR_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.OR_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.OR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.OR_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop XOR_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.XOR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.XOR_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHL_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHL_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SHL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.SHL_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHR_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHR_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SHR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.SHR_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop USHR_INT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.USHR_INT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.USHR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.USHR_INT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.REM_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.REM_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AND_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AND_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.AND_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.AND_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop OR_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.OR_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.OR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.OR_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop XOR_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHL_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHR_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop USHR_LONG_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG,
+            mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_FLOAT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_FLOAT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_FLOAT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_FLOAT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_FLOAT_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT,
+            mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_DOUBLE_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SUB_DOUBLE_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_DOUBLE_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_DOUBLE_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE, mod.agus.jcoderz.dx.dex.code.form.Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_DOUBLE_2ADDR =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE_2ADDR, mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE,
+            mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE, Form12x.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.ADD_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop RSUB_INT =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT, mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.MUL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.DIV_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.REM_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AND_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AND_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.AND_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop OR_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.OR_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.OR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop XOR_INT_LIT16 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_LIT16, mod.agus.jcoderz.dx.io.Opcodes.XOR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form22s.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop ADD_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.ADD_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop RSUB_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop MUL_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.MUL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop DIV_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.DIV_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop REM_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.REM_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.REM_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.REM_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop AND_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.AND_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.AND_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.AND_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop OR_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.OR_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.OR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.OR_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop XOR_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.XOR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_LIT16, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHL_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHL_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.SHL_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop SHR_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.SHR_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.SHR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop USHR_INT_LIT8 =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.USHR_INT_LIT8, mod.agus.jcoderz.dx.io.Opcodes.USHR_INT,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form22b.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_POLYMORPHIC =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC_RANGE, Form45cc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_POLYMORPHIC_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form4rcc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_CUSTOM =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM,
+            mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM_RANGE, Form35c.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop INVOKE_CUSTOM_RANGE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM_RANGE, mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form3rc.THE_ONE, false);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_METHOD_HANDLE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_METHOD_HANDLE, mod.agus.jcoderz.dx.io.Opcodes.CONST_METHOD_HANDLE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, mod.agus.jcoderz.dx.dex.code.form.Form21c.THE_ONE, true);
+
+    public static final mod.agus.jcoderz.dx.dex.code.Dop CONST_METHOD_TYPE =
+        new mod.agus.jcoderz.dx.dex.code.Dop(mod.agus.jcoderz.dx.io.Opcodes.CONST_METHOD_TYPE, mod.agus.jcoderz.dx.io.Opcodes.CONST_METHOD_TYPE,
+            mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT, Form21c.THE_ONE, true);
+
+    // END(dops)
+
+    // Static initialization.
     static {
+        DOPS = new mod.agus.jcoderz.dx.dex.code.Dop[mod.agus.jcoderz.dx.io.Opcodes.MAX_VALUE - mod.agus.jcoderz.dx.io.Opcodes.MIN_VALUE + 1];
+
         set(SPECIAL_FORMAT);
+
+        // BEGIN(dops-init); GENERATED AUTOMATICALLY BY opcode-gen
         set(NOP);
         set(MOVE);
         set(MOVE_FROM16);
@@ -472,31 +1188,74 @@ public final class Dops {
         set(SHL_INT_LIT8);
         set(SHR_INT_LIT8);
         set(USHR_INT_LIT8);
+        set(INVOKE_POLYMORPHIC);
+        set(INVOKE_POLYMORPHIC_RANGE);
+        set(INVOKE_CUSTOM);
+        set(INVOKE_CUSTOM_RANGE);
+        set(CONST_METHOD_HANDLE);
+        set(CONST_METHOD_TYPE);
+        // END(dops-init)
     }
 
+    /**
+     * This class is uninstantiable.
+     */
     private Dops() {
+        // This space intentionally left blank.
     }
 
-    public static Dop get(int i) {
+    /**
+     * Gets the {@link mod.agus.jcoderz.dx.dex.code.Dop} for the given opcode value.
+     *
+     * @param opcode {@code Opcodes.MIN_VALUE..Opcodes.MAX_VALUE;} the
+     * opcode value
+     * @return {@code non-null;} the associated opcode instance
+     */
+    public static mod.agus.jcoderz.dx.dex.code.Dop get(int opcode) {
+        int idx = opcode - mod.agus.jcoderz.dx.io.Opcodes.MIN_VALUE;
+
         try {
-            Dop dop = DOPS[i + 1];
-            if (dop != null) {
-                return dop;
+            mod.agus.jcoderz.dx.dex.code.Dop result = DOPS[idx];
+            if (result != null) {
+                return result;
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Fall through.
         }
+
         throw new IllegalArgumentException("bogus opcode");
     }
 
-    public static Dop getNextOrNull(Dop dop, DexOptions dexOptions) {
-        int nextOpcode = dop.getNextOpcode();
-        if (nextOpcode == -1) {
-            return null;
-        }
-        return get(nextOpcode);
+    /**
+     * Gets the next {@link mod.agus.jcoderz.dx.dex.code.Dop} in the instruction fitting chain after the
+     * given instance, if any.
+     *
+     * @param opcode {@code non-null;} the opcode
+     * @param options {@code non-null;} options, used to determine
+     * which opcodes are potentially off-limits
+     * @return {@code null-ok;} the next opcode in the same family, in the
+     * chain of opcodes to try, or {@code null} if the given opcode is
+     * the last in its chain
+     */
+    public static mod.agus.jcoderz.dx.dex.code.Dop getNextOrNull(mod.agus.jcoderz.dx.dex.code.Dop opcode, DexOptions options) {
+      int nextOpcode = opcode.getNextOpcode();
+
+      if (nextOpcode == mod.agus.jcoderz.dx.io.Opcodes.NO_NEXT) {
+        return null;
+      }
+
+      opcode = get(nextOpcode);
+
+      return opcode;
     }
 
-    private static void set(Dop dop) {
-        DOPS[dop.getOpcode() + 1] = dop;
+    /**
+     * Puts the given opcode into the table of all ops.
+     *
+     * @param opcode {@code non-null;} the opcode
+     */
+    private static void set(Dop opcode) {
+        int idx = opcode.getOpcode() - Opcodes.MIN_VALUE;
+        DOPS[idx] = opcode;
     }
 }

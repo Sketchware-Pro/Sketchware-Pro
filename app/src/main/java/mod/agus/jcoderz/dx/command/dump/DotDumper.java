@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.command.dump;
 
 import mod.agus.jcoderz.dx.cf.code.ConcreteMethod;
@@ -7,99 +23,153 @@ import mod.agus.jcoderz.dx.cf.direct.StdAttributeFactory;
 import mod.agus.jcoderz.dx.cf.iface.Member;
 import mod.agus.jcoderz.dx.cf.iface.Method;
 import mod.agus.jcoderz.dx.cf.iface.ParseObserver;
+
+import mod.agus.jcoderz.dx.dex.DexOptions;
+import mod.agus.jcoderz.dx.ssa.Optimizer;
+import mod.agus.jcoderz.dx.util.ByteArray;
+import mod.agus.jcoderz.dx.util.Hex;
+import mod.agus.jcoderz.dx.util.IntList;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.DexTranslationAdvice;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
-import mod.agus.jcoderz.dx.ssa.Optimizer;
-import mod.agus.jcoderz.dx.util.ByteArray;
-import mod.agus.jcoderz.dx.util.Hex;
-import mod.agus.jcoderz.dx.util.IntList;
+import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 
+/**
+ * Dumps the pred/succ graph of methods into a format compatible
+ * with the popular graph utility "dot".
+ */
 public class DotDumper implements ParseObserver {
-    private final Args args;
-    private final byte[] bytes;
-    private final String filePath;
-    private final boolean optimize;
-    private final boolean strictParse;
     private DirectClassFile classFile;
 
-    DotDumper(byte[] bArr, String str, Args args2) {
-        this.bytes = bArr;
-        this.filePath = str;
-        this.strictParse = args2.strictParse;
-        this.optimize = args2.optimize;
-        this.args = args2;
+    private final byte[] bytes;
+    private final String filePath;
+    private final boolean strictParse;
+    private final boolean optimize;
+    private final mod.agus.jcoderz.dx.command.dump.Args args;
+    private final DexOptions dexOptions;
+
+    static void dump(byte[] bytes, String filePath, mod.agus.jcoderz.dx.command.dump.Args args) {
+        new DotDumper(bytes, filePath, args).run();
     }
 
-    static void dump(byte[] bArr, String str, Args args2) {
-        new DotDumper(bArr, str, args2).run();
+    DotDumper(byte[] bytes, String filePath, mod.agus.jcoderz.dx.command.dump.Args args) {
+        this.bytes = bytes;
+        this.filePath = filePath;
+        this.strictParse = args.strictParse;
+        this.optimize = args.optimize;
+        this.args = args;
+        this.dexOptions = new DexOptions();
     }
 
     private void run() {
-        ByteArray byteArray = new ByteArray(this.bytes);
-        this.classFile = new DirectClassFile(byteArray, this.filePath, this.strictParse);
-        this.classFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
-        this.classFile.getMagic();
-        DirectClassFile directClassFile = new DirectClassFile(byteArray, this.filePath, this.strictParse);
-        directClassFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
-        directClassFile.setObserver(this);
-        directClassFile.getMagic();
+        ByteArray ba = new ByteArray(bytes);
+
+        /*
+         * First, parse the file completely, so we can safely refer to
+         * attributes, etc.
+         */
+        classFile = new DirectClassFile(ba, filePath, strictParse);
+        classFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
+        classFile.getMagic(); // Force parsing to happen.
+
+        // Next, reparse it and observe the process.
+        DirectClassFile liveCf =
+            new DirectClassFile(ba, filePath, strictParse);
+        liveCf.setAttributeFactory(StdAttributeFactory.THE_ONE);
+        liveCf.setObserver(this);
+        liveCf.getMagic(); // Force parsing to happen.
     }
 
-    /* access modifiers changed from: protected */
-    public boolean shouldDumpMethod(String str) {
-        return this.args.method == null || this.args.method.equals(str);
+    /**
+     * @param name method name
+     * @return true if this method should be dumped
+     */
+    protected boolean shouldDumpMethod(String name) {
+        return args.method == null || args.method.equals(name);
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void changeIndent(int i) {
+    @Override
+    public void changeIndent(int indentDelta) {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void parsed(ByteArray byteArray, int i, int i2, String str) {
+    @Override
+    public void parsed(ByteArray bytes, int offset, int len, String human) {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void startParsingMember(ByteArray byteArray, int i, String str, String str2) {
+    /** {@inheritDoc} */
+    @Override
+    public void startParsingMember(ByteArray bytes, int offset, String name,
+                                   String descriptor) {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void endParsingMember(ByteArray byteArray, int i, String str, String str2, Member member) {
-        if ((member instanceof Method) && shouldDumpMethod(str)) {
-            ConcreteMethod concreteMethod = new ConcreteMethod((Method) member, this.classFile, true, true);
-            DexTranslationAdvice dexTranslationAdvice = DexTranslationAdvice.THE_ONE;
-            RopMethod convert = Ropper.convert(concreteMethod, dexTranslationAdvice, this.classFile.getMethods());
-            if (this.optimize) {
-                boolean isStatic = AccessFlags.isStatic(concreteMethod.getAccessFlags());
-                convert = Optimizer.optimize(convert, BaseDumper.computeParamWidth(concreteMethod, isStatic), isStatic, true, dexTranslationAdvice);
-            }
-            System.out.println("digraph " + str + "{");
-            System.out.println("\tfirst -> n" + Hex.u2(convert.getFirstLabel()) + ";");
-            BasicBlockList blocks = convert.getBlocks();
-            int size = blocks.size();
-            for (int i2 = 0; i2 < size; i2++) {
-                BasicBlock basicBlock = blocks.get(i2);
-                int label = basicBlock.getLabel();
-                IntList successors = basicBlock.getSuccessors();
-                if (successors.size() == 0) {
-                    System.out.println("\tn" + Hex.u2(label) + " -> returns;");
-                } else if (successors.size() == 1) {
-                    System.out.println("\tn" + Hex.u2(label) + " -> n" + Hex.u2(successors.get(0)) + ";");
-                } else {
-                    System.out.print("\tn" + Hex.u2(label) + " -> {");
-                    for (int i3 = 0; i3 < successors.size(); i3++) {
-                        int i4 = successors.get(i3);
-                        if (i4 != basicBlock.getPrimarySuccessor()) {
-                            System.out.print(" n" + Hex.u2(i4) + " ");
-                        }
-                    }
-                    System.out.println("};");
-                    System.out.println("\tn" + Hex.u2(label) + " -> n" + Hex.u2(basicBlock.getPrimarySuccessor()) + " [label=\"primary\"];");
-                }
-            }
-            System.out.println("}");
+    @Override
+    public void endParsingMember(ByteArray bytes, int offset, String name,
+                                 String descriptor, Member member) {
+        if (!(member instanceof Method)) {
+            return;
         }
+
+        if (!shouldDumpMethod(name)) {
+            return;
+        }
+
+        ConcreteMethod meth = new ConcreteMethod((Method) member, classFile,
+                                                 true, true);
+
+        TranslationAdvice advice = DexTranslationAdvice.THE_ONE;
+        RopMethod rmeth =
+            Ropper.convert(meth, advice, classFile.getMethods(), dexOptions);
+
+        if (optimize) {
+            boolean isStatic = AccessFlags.isStatic(meth.getAccessFlags());
+            rmeth = Optimizer.optimize(rmeth,
+                    BaseDumper.computeParamWidth(meth, isStatic), isStatic,
+                    true, advice);
+        }
+
+        System.out.println("digraph "  + name + "{");
+
+        System.out.println("\tfirst -> n"
+                + Hex.u2(rmeth.getFirstLabel()) + ";");
+
+        BasicBlockList blocks = rmeth.getBlocks();
+
+        int sz = blocks.size();
+        for (int i = 0; i < sz; i++) {
+            BasicBlock bb = blocks.get(i);
+            int label = bb.getLabel();
+            IntList successors = bb.getSuccessors();
+
+            if (successors.size() == 0) {
+                System.out.println("\tn" + Hex.u2(label) + " -> returns;");
+            } else if (successors.size() == 1) {
+                System.out.println("\tn" + Hex.u2(label) + " -> n"
+                        + Hex.u2(successors.get(0)) + ";");
+            } else {
+                System.out.print("\tn" + Hex.u2(label) + " -> {");
+                for (int j = 0; j < successors.size(); j++ ) {
+                    int successor = successors.get(j);
+
+                    if (successor != bb.getPrimarySuccessor()) {
+                        System.out.print(" n" + Hex.u2(successor) + " ");
+                    }
+
+                }
+                System.out.println("};");
+
+                System.out.println("\tn" + Hex.u2(label) + " -> n"
+                        + Hex.u2(bb.getPrimarySuccessor())
+                        + " [label=\"primary\"];");
+
+
+            }
+        }
+
+        System.out.println("}");
     }
 }

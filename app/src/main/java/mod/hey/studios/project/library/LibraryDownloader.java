@@ -242,8 +242,7 @@ This is to prevent accidental double click in which the Library downloader trigg
                 D8.main(cm.toArray(new String[0]));
             } else {
                 // 6.3.0 fix2
-                Main.dexOutputArrays = new ArrayList<>();
-                Main.dexOutputFutures = new ArrayList<>();
+                Main.clearInternTables();
 
                 // dx
                 Main.main(new String[]{

@@ -1,22 +1,54 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
-public final class ConservativeTranslationAdvice implements TranslationAdvice {
-    public static final ConservativeTranslationAdvice THE_ONE = new ConservativeTranslationAdvice();
+/**
+ * Implementation of {@link TranslationAdvice} which conservatively answers
+ * {@code false} to all methods.
+ */
+public final class ConservativeTranslationAdvice
+        implements TranslationAdvice {
+    /** {@code non-null;} standard instance of this class */
+    public static final ConservativeTranslationAdvice THE_ONE =
+        new ConservativeTranslationAdvice();
 
+    /**
+     * This class is not publicly instantiable. Use {@link #THE_ONE}.
+     */
     private ConservativeTranslationAdvice() {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.TranslationAdvice
-    public boolean hasConstantOperation(Rop rop, RegisterSpec registerSpec, RegisterSpec registerSpec2) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean hasConstantOperation(mod.agus.jcoderz.dx.rop.code.Rop opcode,
+                                        RegisterSpec sourceA, RegisterSpec sourceB) {
         return false;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.TranslationAdvice
-    public boolean requiresSourcesInOrder(Rop rop, RegisterSpecList registerSpecList) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean requiresSourcesInOrder(Rop opcode,
+                                          RegisterSpecList sources) {
         return false;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.TranslationAdvice
+    /** {@inheritDoc} */
+    @Override
     public int getMaxOptimalRegisterCount() {
         return Integer.MAX_VALUE;
     }

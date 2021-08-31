@@ -1,7 +1,27 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dex;
 
-import org.bouncycastle.pqc.jcajce.spec.McElieceCCA2KeyGenParameterSpec;
-
+import mod.agus.jcoderz.dex.Code.CatchHandler;
+import mod.agus.jcoderz.dex.Code.Try;
+import mod.agus.jcoderz.dex.MethodHandle.MethodHandleType;
+import mod.agus.jcoderz.dex.util.ByteInput;
+import mod.agus.jcoderz.dex.util.ByteOutput;
+import mod.agus.jcoderz.dex.util.FileUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,682 +40,637 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
-import java.util.Spliterator;
-import java.util.stream.Stream;
 import java.util.zip.Adler32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import mod.agus.jcoderz.dex.util.ByteInput;
-import mod.agus.jcoderz.dex.util.ByteOutput;
-import mod.agus.jcoderz.dex.util.FileUtils;
-
+/**
+ * The bytes of a dex file in memory for reading and writing. All int offsets
+ * are unsigned.
+ */
 public final class Dex {
-    static final short[] EMPTY_SHORT_ARRAY = new short[0];
     private static final int CHECKSUM_OFFSET = 8;
     private static final int CHECKSUM_SIZE = 4;
-    private static final int SIGNATURE_OFFSET = 12;
+    private static final int SIGNATURE_OFFSET = CHECKSUM_OFFSET + CHECKSUM_SIZE;
     private static final int SIGNATURE_SIZE = 20;
-    private final FieldIdTable fieldIds;
-    private final MethodIdTable methodIds;
-    private final ProtoIdTable protoIds;
-    private final StringTable strings;
-    private final TableOfContents tableOfContents;
-    private final TypeIndexToDescriptorIndexTable typeIds;
-    private final TypeIndexToDescriptorTable typeNames;
-    private ByteBuffer data;
-    private int nextSectionStart;
+    // Provided as a convenience to avoid a memory allocation to benefit Dalvik.
+    // Note: libcore.util.EmptyArray cannot be accessed when this code isn't run on Dalvik.
+    static final short[] EMPTY_SHORT_ARRAY = new short[0];
 
-    public Dex(byte[] bArr) throws IOException {
-        this(ByteBuffer.wrap(bArr));
+    private ByteBuffer data;
+    private final mod.agus.jcoderz.dex.TableOfContents tableOfContents = new mod.agus.jcoderz.dex.TableOfContents();
+    private int nextSectionStart = 0;
+    private final StringTable strings = new StringTable();
+    private final TypeIndexToDescriptorIndexTable typeIds = new TypeIndexToDescriptorIndexTable();
+    private final TypeIndexToDescriptorTable typeNames = new TypeIndexToDescriptorTable();
+    private final ProtoIdTable protoIds = new ProtoIdTable();
+    private final FieldIdTable fieldIds = new FieldIdTable();
+    private final MethodIdTable methodIds = new MethodIdTable();
+
+    /**
+     * Creates a new dex that reads from {@code data}. It is an error to modify
+     * {@code data} after using it to create a dex buffer.
+     */
+    public Dex(byte[] data) throws IOException {
+        this(ByteBuffer.wrap(data));
     }
 
-    private Dex(ByteBuffer byteBuffer) throws IOException {
-        this.tableOfContents = new TableOfContents();
-        this.nextSectionStart = 0;
-        this.strings = new StringTable(this, null);
-        this.typeIds = new TypeIndexToDescriptorIndexTable(this, null);
-        this.typeNames = new TypeIndexToDescriptorTable(this, null);
-        this.protoIds = new ProtoIdTable(this, null);
-        this.fieldIds = new FieldIdTable(this, null);
-        this.methodIds = new MethodIdTable(this, null);
-        this.data = byteBuffer;
+    private Dex(ByteBuffer data) throws IOException {
+        this.data = data;
         this.data.order(ByteOrder.LITTLE_ENDIAN);
         this.tableOfContents.readFrom(this);
     }
 
-    public Dex(int i) throws IOException {
-        this.tableOfContents = new TableOfContents();
-        this.nextSectionStart = 0;
-        this.strings = new StringTable(this, null);
-        this.typeIds = new TypeIndexToDescriptorIndexTable(this, null);
-        this.typeNames = new TypeIndexToDescriptorTable(this, null);
-        this.protoIds = new ProtoIdTable(this, null);
-        this.fieldIds = new FieldIdTable(this, null);
-        this.methodIds = new MethodIdTable(this, null);
-        this.data = ByteBuffer.wrap(new byte[i]);
+    /**
+     * Creates a new empty dex of the specified size.
+     */
+    public Dex(int byteCount) throws IOException {
+        this.data = ByteBuffer.wrap(new byte[byteCount]);
         this.data.order(ByteOrder.LITTLE_ENDIAN);
     }
 
-    public Dex(InputStream inputStream) throws IOException {
-        this.tableOfContents = new TableOfContents();
-        this.nextSectionStart = 0;
-        this.strings = new StringTable(this, null);
-        this.typeIds = new TypeIndexToDescriptorIndexTable(this, null);
-        this.typeNames = new TypeIndexToDescriptorTable(this, null);
-        this.protoIds = new ProtoIdTable(this, null);
-        this.fieldIds = new FieldIdTable(this, null);
-        this.methodIds = new MethodIdTable(this, null);
-        loadFrom(inputStream);
+    /**
+     * Creates a new dex buffer of the dex in {@code in}, and closes {@code in}.
+     */
+    public Dex(InputStream in) throws IOException {
+        try {
+            loadFrom(in);
+        } finally {
+            in.close();
+        }
     }
 
+    /**
+     * Creates a new dex buffer from the dex file {@code file}.
+     */
     public Dex(File file) throws IOException {
-        this.tableOfContents = new TableOfContents();
-        this.nextSectionStart = 0;
-        this.strings = new StringTable(this, null);
-        this.typeIds = new TypeIndexToDescriptorIndexTable(this, null);
-        this.typeNames = new TypeIndexToDescriptorTable(this, null);
-        this.protoIds = new ProtoIdTable(this, null);
-        this.fieldIds = new FieldIdTable(this, null);
-        this.methodIds = new MethodIdTable(this, null);
         if (FileUtils.hasArchiveSuffix(file.getName())) {
             ZipFile zipFile = new ZipFile(file);
-            ZipEntry entry = zipFile.getEntry(DexFormat.DEX_IN_JAR_NAME);
+            ZipEntry entry = zipFile.getEntry(mod.agus.jcoderz.dex.DexFormat.DEX_IN_JAR_NAME);
             if (entry != null) {
-                loadFrom(zipFile.getInputStream(entry));
+                try (InputStream inputStream = zipFile.getInputStream(entry)) {
+                    loadFrom(inputStream);
+                }
                 zipFile.close();
-                return;
+            } else {
+                throw new DexException("Expected " + DexFormat.DEX_IN_JAR_NAME + " in " + file);
             }
-            throw new DexException("Expected classes.dex in " + file);
         } else if (file.getName().endsWith(".dex")) {
-            loadFrom(new FileInputStream(file));
+            try (InputStream inputStream = new FileInputStream(file)) {
+                loadFrom(inputStream);
+            }
         } else {
             throw new DexException("unknown output extension: " + file);
         }
     }
 
-    public static Dex create(ByteBuffer byteBuffer) throws IOException {
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        if (byteBuffer.get(0) == 100 && byteBuffer.get(1) == 101 && byteBuffer.get(2) == 121 && byteBuffer.get(3) == 10) {
-            byteBuffer.position(8);
-            int i = byteBuffer.getInt();
-            int i2 = byteBuffer.getInt();
-            byteBuffer.position(i);
-            byteBuffer.limit(i + i2);
-            byteBuffer = byteBuffer.slice();
+    /**
+     * It is the caller's responsibility to close {@code in}.
+     */
+    private void loadFrom(InputStream in) throws IOException {
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        byte[] buffer = new byte[8192];
+
+        int count;
+        while ((count = in.read(buffer)) != -1) {
+            bytesOut.write(buffer, 0, count);
         }
-        return new Dex(byteBuffer);
+
+        this.data = ByteBuffer.wrap(bytesOut.toByteArray());
+        this.data.order(ByteOrder.LITTLE_ENDIAN);
+        this.tableOfContents.readFrom(this);
     }
 
-    /* access modifiers changed from: private */
-    public static void checkBounds(int i, int i2) {
-        if (i < 0 || i >= i2) {
-            throw new IndexOutOfBoundsException("index:" + i + ", length=" + i2);
-        }
-    }
-
-    private void loadFrom(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] bArr = new byte[8192];
-        while (true) {
-            int read = inputStream.read(bArr);
-            if (read == -1) {
-                inputStream.close();
-                this.data = ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
-                this.data.order(ByteOrder.LITTLE_ENDIAN);
-                this.tableOfContents.readFrom(this);
-                return;
-            }
-            byteArrayOutputStream.write(bArr, 0, read);
+    private static void checkBounds(int index, int length) {
+        if (index < 0 || index >= length) {
+            throw new IndexOutOfBoundsException("index:" + index + ", length=" + length);
         }
     }
 
-    public void writeTo(OutputStream outputStream) throws IOException {
-        byte[] bArr = new byte[8192];
-        ByteBuffer duplicate = this.data.duplicate();
-        duplicate.clear();
-        while (duplicate.hasRemaining()) {
-            int min = Math.min(bArr.length, duplicate.remaining());
-            duplicate.get(bArr, 0, min);
-            outputStream.write(bArr, 0, min);
+    public void writeTo(OutputStream out) throws IOException {
+        byte[] buffer = new byte[8192];
+        ByteBuffer data = this.data.duplicate(); // positioned ByteBuffers aren't thread safe
+        data.clear();
+        while (data.hasRemaining()) {
+            int count = Math.min(buffer.length, data.remaining());
+            data.get(buffer, 0, count);
+            out.write(buffer, 0, count);
         }
     }
 
-    public void writeTo(File file) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(file);
-        writeTo(fileOutputStream);
-        fileOutputStream.close();
+    public void writeTo(File dexOut) throws IOException {
+        try (OutputStream out = new FileOutputStream(dexOut)) {
+            writeTo(out);
+        }
     }
 
     public TableOfContents getTableOfContents() {
-        return this.tableOfContents;
+        return tableOfContents;
     }
 
-    public Section open(int i) {
-        if (i < 0 || i >= this.data.capacity()) {
-            throw new IllegalArgumentException("position=" + i + " length=" + this.data.capacity());
+    public Section open(int position) {
+        if (position < 0 || position >= data.capacity()) {
+            throw new IllegalArgumentException("position=" + position
+                    + " length=" + data.capacity());
         }
-        ByteBuffer duplicate = this.data.duplicate();
-        duplicate.order(ByteOrder.LITTLE_ENDIAN);
-        duplicate.position(i);
-        duplicate.limit(this.data.capacity());
-        return new Section(this, "section", duplicate, null);
+        ByteBuffer sectionData = data.duplicate();
+        sectionData.order(ByteOrder.LITTLE_ENDIAN); // necessary?
+        sectionData.position(position);
+        sectionData.limit(data.capacity());
+        return new Section("section", sectionData);
     }
 
-    public Section appendSection(int i, String str) {
-        if ((i & 3) != 0) {
+    public Section appendSection(int maxByteCount, String name) {
+        if ((maxByteCount & 3) != 0) {
             throw new IllegalStateException("Not four byte aligned!");
         }
-        int i2 = this.nextSectionStart + i;
-        ByteBuffer duplicate = this.data.duplicate();
-        duplicate.order(ByteOrder.LITTLE_ENDIAN);
-        duplicate.position(this.nextSectionStart);
-        duplicate.limit(i2);
-        Section section = new Section(this, str, duplicate, null);
-        this.nextSectionStart = i2;
-        return section;
+        int limit = nextSectionStart + maxByteCount;
+        ByteBuffer sectionData = data.duplicate();
+        sectionData.order(ByteOrder.LITTLE_ENDIAN); // necessary?
+        sectionData.position(nextSectionStart);
+        sectionData.limit(limit);
+        Section result = new Section(name, sectionData);
+        nextSectionStart = limit;
+        return result;
     }
 
     public int getLength() {
-        return this.data.capacity();
+        return data.capacity();
     }
 
     public int getNextSectionStart() {
-        return this.nextSectionStart;
+        return nextSectionStart;
     }
 
+    /**
+     * Returns a copy of the the bytes of this dex.
+     */
     public byte[] getBytes() {
-        ByteBuffer duplicate = this.data.duplicate();
-        byte[] bArr = new byte[duplicate.capacity()];
-        duplicate.position(0);
-        duplicate.get(bArr);
-        return bArr;
+        ByteBuffer data = this.data.duplicate(); // positioned ByteBuffers aren't thread safe
+        byte[] result = new byte[data.capacity()];
+        data.position(0);
+        data.get(result);
+        return result;
     }
 
     public List<String> strings() {
-        return this.strings;
+        return strings;
     }
 
     public List<Integer> typeIds() {
-        return this.typeIds;
+        return typeIds;
     }
 
     public List<String> typeNames() {
-        return this.typeNames;
+        return typeNames;
     }
 
-    public List<ProtoId> protoIds() {
-        return this.protoIds;
+    public List<mod.agus.jcoderz.dex.ProtoId> protoIds() {
+        return protoIds;
     }
 
-    public List<FieldId> fieldIds() {
-        return this.fieldIds;
+    public List<mod.agus.jcoderz.dex.FieldId> fieldIds() {
+        return fieldIds;
     }
 
-    public List<MethodId> methodIds() {
-        return this.methodIds;
+    public List<mod.agus.jcoderz.dex.MethodId> methodIds() {
+        return methodIds;
     }
 
-    public Iterable<ClassDef> classDefs() {
-        return new ClassDefIterable(this, null);
+    public Iterable<mod.agus.jcoderz.dex.ClassDef> classDefs() {
+        return new ClassDefIterable();
     }
 
-    public TypeList readTypeList(int i) {
-        if (i == 0) {
-            return TypeList.EMPTY;
+    public mod.agus.jcoderz.dex.TypeList readTypeList(int offset) {
+        if (offset == 0) {
+            return mod.agus.jcoderz.dex.TypeList.EMPTY;
         }
-        return open(i).readTypeList();
+        return open(offset).readTypeList();
     }
 
-    public ClassData readClassData(ClassDef classDef) {
-        int classDataOffset = classDef.getClassDataOffset();
-        if (classDataOffset != 0) {
-            return open(classDataOffset).readClassData();
+    public mod.agus.jcoderz.dex.ClassData readClassData(mod.agus.jcoderz.dex.ClassDef classDef) {
+        int offset = classDef.getClassDataOffset();
+        if (offset == 0) {
+            throw new IllegalArgumentException("offset == 0");
         }
-        throw new IllegalArgumentException("offset == 0");
+        return open(offset).readClassData();
     }
 
-    public Code readCode(ClassData.Method method) {
-        int codeOffset = method.getCodeOffset();
-        if (codeOffset != 0) {
-            return open(codeOffset).readCode();
+    public mod.agus.jcoderz.dex.Code readCode(mod.agus.jcoderz.dex.ClassData.Method method) {
+        int offset = method.getCodeOffset();
+        if (offset == 0) {
+            throw new IllegalArgumentException("offset == 0");
         }
-        throw new IllegalArgumentException("offset == 0");
+        return open(offset).readCode();
     }
 
+    /**
+     * Returns the signature of all but the first 32 bytes of this dex. The
+     * first 32 bytes of dex files are not specified to be included in the
+     * signature.
+     */
     public byte[] computeSignature() throws IOException {
+        MessageDigest digest;
         try {
-            MessageDigest instance = MessageDigest.getInstance(McElieceCCA2KeyGenParameterSpec.SHA1);
-            byte[] bArr = new byte[8192];
-            ByteBuffer duplicate = this.data.duplicate();
-            duplicate.limit(duplicate.capacity());
-            duplicate.position(32);
-            while (duplicate.hasRemaining()) {
-                int min = Math.min(bArr.length, duplicate.remaining());
-                duplicate.get(bArr, 0, min);
-                instance.update(bArr, 0, min);
-            }
-            return instance.digest();
+            digest = MessageDigest.getInstance("SHA-1");
         } catch (NoSuchAlgorithmException e) {
             throw new AssertionError();
         }
+        byte[] buffer = new byte[8192];
+        ByteBuffer data = this.data.duplicate(); // positioned ByteBuffers aren't thread safe
+        data.limit(data.capacity());
+        data.position(SIGNATURE_OFFSET + SIGNATURE_SIZE);
+        while (data.hasRemaining()) {
+            int count = Math.min(buffer.length, data.remaining());
+            data.get(buffer, 0, count);
+            digest.update(buffer, 0, count);
+        }
+        return digest.digest();
     }
 
+    /**
+     * Returns the checksum of all but the first 12 bytes of {@code dex}.
+     */
     public int computeChecksum() throws IOException {
         Adler32 adler32 = new Adler32();
-        byte[] bArr = new byte[8192];
-        ByteBuffer duplicate = this.data.duplicate();
-        duplicate.limit(duplicate.capacity());
-        duplicate.position(12);
-        while (duplicate.hasRemaining()) {
-            int min = Math.min(bArr.length, duplicate.remaining());
-            duplicate.get(bArr, 0, min);
-            adler32.update(bArr, 0, min);
+        byte[] buffer = new byte[8192];
+        ByteBuffer data = this.data.duplicate(); // positioned ByteBuffers aren't thread safe
+        data.limit(data.capacity());
+        data.position(CHECKSUM_OFFSET + CHECKSUM_SIZE);
+        while (data.hasRemaining()) {
+            int count = Math.min(buffer.length, data.remaining());
+            data.get(buffer, 0, count);
+            adler32.update(buffer, 0, count);
         }
         return (int) adler32.getValue();
     }
 
+    /**
+     * Generates the signature and checksum of the dex file {@code out} and
+     * writes them to the file.
+     */
     public void writeHashes() throws IOException {
-        open(12).write(computeSignature());
-        open(8).writeInt(computeChecksum());
+        open(SIGNATURE_OFFSET).write(computeSignature());
+        open(CHECKSUM_OFFSET).writeInt(computeChecksum());
     }
 
-    public int nameIndexFromFieldIndex(int i) {
-        checkBounds(i, this.tableOfContents.fieldIds.size);
-        return this.data.getInt(this.tableOfContents.fieldIds.off + (i * 8) + 2 + 2);
+    /**
+     * Look up a descriptor index from a type index. Cheaper than:
+     * {@code open(tableOfContents.typeIds.off + (index * SizeOf.TYPE_ID_ITEM)).readInt();}
+     */
+    public int descriptorIndexFromTypeIndex(int typeIndex) {
+       checkBounds(typeIndex, tableOfContents.typeIds.size);
+       int position = tableOfContents.typeIds.off + (mod.agus.jcoderz.dex.SizeOf.TYPE_ID_ITEM * typeIndex);
+       return data.getInt(position);
     }
 
-    public int findStringIndex(String str) {
-        return Collections.binarySearch(this.strings, str);
-    }
-
-    public int findTypeIndex(String str) {
-        return Collections.binarySearch(this.typeNames, str);
-    }
-
-    public int findFieldIndex(FieldId fieldId) {
-        return Collections.binarySearch(this.fieldIds, fieldId);
-    }
-
-    public int findMethodIndex(MethodId methodId) {
-        return Collections.binarySearch(this.methodIds, methodId);
-    }
-
-    public int findClassDefIndexFromTypeIndex(int i) {
-        checkBounds(i, this.tableOfContents.typeIds.size);
-        if (!this.tableOfContents.classDefs.exists()) {
-            return -1;
-        }
-        for (int i2 = 0; i2 < this.tableOfContents.classDefs.size; i2++) {
-            if (typeIndexFromClassDefIndex(i2) == i) {
-                return i2;
-            }
-        }
-        return -1;
-    }
-
-    public int typeIndexFromFieldIndex(int i) {
-        checkBounds(i, this.tableOfContents.fieldIds.size);
-        return this.data.getShort(this.tableOfContents.fieldIds.off + (i * 8) + 2) & 65535;
-    }
-
-    public int declaringClassIndexFromMethodIndex(int i) {
-        checkBounds(i, this.tableOfContents.methodIds.size);
-        return this.data.getShort(this.tableOfContents.methodIds.off + (i * 8)) & 65535;
-    }
-
-    public int nameIndexFromMethodIndex(int i) {
-        checkBounds(i, this.tableOfContents.methodIds.size);
-        return this.data.getInt(this.tableOfContents.methodIds.off + (i * 8) + 2 + 2);
-    }
-
-    public short[] parameterTypeIndicesFromMethodIndex(int i) {
-        checkBounds(i, this.tableOfContents.methodIds.size);
-        int i2 = this.data.getShort(this.tableOfContents.methodIds.off + (i * 8) + 2) & 65535;
-        checkBounds(i2, this.tableOfContents.protoIds.size);
-        ByteBuffer byteBuffer = this.data;
-        int i3 = byteBuffer.getInt((i2 * 12) + this.tableOfContents.protoIds.off + 4 + 4);
-        if (i3 == 0) {
-            return EMPTY_SHORT_ARRAY;
-        }
-        int i4 = this.data.getInt(i3);
-        if (i4 <= 0) {
-            throw new AssertionError("Unexpected parameter type list size: " + i4);
-        }
-        int i5 = i3 + 4;
-        short[] sArr = new short[i4];
-        for (int i6 = 0; i6 < i4; i6++) {
-            sArr[i6] = this.data.getShort(i5);
-            i5 += 2;
-        }
-        return sArr;
-    }
-
-    public int returnTypeIndexFromMethodIndex(int i) {
-        checkBounds(i, this.tableOfContents.methodIds.size);
-        int i2 = this.data.getShort(this.tableOfContents.methodIds.off + (i * 8) + 2) & 65535;
-        checkBounds(i2, this.tableOfContents.protoIds.size);
-        int i3 = i2 * 12;
-        return this.data.getInt(i3 + this.tableOfContents.protoIds.off + 4);
-    }
-
-    public int descriptorIndexFromTypeIndex(int i) {
-        checkBounds(i, this.tableOfContents.typeIds.size);
-        return this.data.getInt(this.tableOfContents.typeIds.off + (i * 4));
-    }
-
-    public int typeIndexFromClassDefIndex(int i) {
-        checkBounds(i, this.tableOfContents.classDefs.size);
-        return this.data.getInt(this.tableOfContents.classDefs.off + (i * 32));
-    }
-
-    public int annotationDirectoryOffsetFromClassDefIndex(int i) {
-        checkBounds(i, this.tableOfContents.classDefs.size);
-        return this.data.getInt(this.tableOfContents.classDefs.off + (i * 32) + 4 + 4 + 4 + 4 + 4);
-    }
-
-    public short[] interfaceTypeIndicesFromClassDefIndex(int i) {
-        checkBounds(i, this.tableOfContents.classDefs.size);
-        int i2 = this.data.getInt(this.tableOfContents.classDefs.off + (i * 32) + 4 + 4 + 4);
-        if (i2 == 0) {
-            return EMPTY_SHORT_ARRAY;
-        }
-        int i3 = this.data.getInt(i2);
-        if (i3 <= 0) {
-            throw new AssertionError("Unexpected interfaces list size: " + i3);
-        }
-        int i4 = i2 + 4;
-        short[] sArr = new short[i3];
-        for (int i5 = 0; i5 < i3; i5++) {
-            sArr[i5] = this.data.getShort(i4);
-            i4 += 2;
-        }
-        return sArr;
-    }
 
     public final class Section implements ByteInput, ByteOutput {
+        private final String name;
         private final ByteBuffer data;
         private final int initialPosition;
-        private final String name;
 
-        private Section(String str, ByteBuffer byteBuffer) {
-            this.name = str;
-            this.data = byteBuffer;
-            this.initialPosition = byteBuffer.position();
-        }
-
-        Section(Dex dex, String str, ByteBuffer byteBuffer, Section section) {
-            this(str, byteBuffer);
+        private Section(String name, ByteBuffer data) {
+            this.name = name;
+            this.data = data;
+            this.initialPosition = data.position();
         }
 
         public int getPosition() {
-            return this.data.position();
+            return data.position();
         }
 
         public int readInt() {
-            return this.data.getInt();
+            return data.getInt();
         }
 
         public short readShort() {
-            return this.data.getShort();
+            return data.getShort();
         }
 
         public int readUnsignedShort() {
-            return readShort() & 65535;
+            return readShort() & 0xffff;
         }
 
-        @Override // mod.agus.jcoderz.dex.util.ByteInput
+        @Override
         public byte readByte() {
-            return this.data.get();
+            return data.get();
         }
 
-        public byte[] readByteArray(int i) {
-            byte[] bArr = new byte[i];
-            this.data.get(bArr);
-            return bArr;
+        public byte[] readByteArray(int length) {
+            byte[] result = new byte[length];
+            data.get(result);
+            return result;
         }
 
-        public short[] readShortArray(int i) {
-            if (i == 0) {
-                return Dex.EMPTY_SHORT_ARRAY;
+        public short[] readShortArray(int length) {
+            if (length == 0) {
+                return EMPTY_SHORT_ARRAY;
             }
-            short[] sArr = new short[i];
-            for (int i2 = 0; i2 < i; i2++) {
-                sArr[i2] = readShort();
+            short[] result = new short[length];
+            for (int i = 0; i < length; i++) {
+                result[i] = readShort();
             }
-            return sArr;
+            return result;
         }
 
         public int readUleb128() {
-            return Leb128.readUnsignedLeb128(this);
+            return mod.agus.jcoderz.dex.Leb128.readUnsignedLeb128(this);
         }
 
         public int readUleb128p1() {
-            return Leb128.readUnsignedLeb128(this) - 1;
+            return mod.agus.jcoderz.dex.Leb128.readUnsignedLeb128(this) - 1;
         }
 
         public int readSleb128() {
-            return Leb128.readSignedLeb128(this);
+            return mod.agus.jcoderz.dex.Leb128.readSignedLeb128(this);
         }
 
         public void writeUleb128p1(int i) {
             writeUleb128(i + 1);
         }
 
-        public TypeList readTypeList() {
-            short[] readShortArray = readShortArray(readInt());
+        public mod.agus.jcoderz.dex.TypeList readTypeList() {
+            int size = readInt();
+            short[] types = readShortArray(size);
             alignToFourBytes();
-            return new TypeList(Dex.this, readShortArray);
+            return new mod.agus.jcoderz.dex.TypeList(Dex.this, types);
         }
 
         public String readString() {
-            int readInt = readInt();
-            int position = this.data.position();
-            int limit = this.data.limit();
-            this.data.position(readInt);
-            this.data.limit(this.data.capacity());
+            int offset = readInt();
+            int savedPosition = data.position();
+            int savedLimit = data.limit();
+            data.position(offset);
+            data.limit(data.capacity());
             try {
-                int readUleb128 = readUleb128();
-                String decode = Mutf8.decode(this, new char[readUleb128]);
-                if (decode.length() != readUleb128) {
-                    throw new DexException("Declared length " + readUleb128 + " doesn't match decoded length of " + decode.length());
+                int expectedLength = readUleb128();
+                String result = mod.agus.jcoderz.dex.Mutf8.decode(this, new char[expectedLength]);
+                if (result.length() != expectedLength) {
+                    throw new DexException("Declared length " + expectedLength
+                            + " doesn't match decoded length of " + result.length());
                 }
-                this.data.position(position);
-                this.data.limit(limit);
-                return decode;
+                return result;
             } catch (UTFDataFormatException e) {
                 throw new DexException(e);
-            } catch (Throwable th) {
-                this.data.position(position);
-                this.data.limit(limit);
-                throw th;
+            } finally {
+                data.position(savedPosition);
+                data.limit(savedLimit);
             }
         }
 
-        public FieldId readFieldId() {
-            return new FieldId(Dex.this, readUnsignedShort(), readUnsignedShort(), readInt());
+        public mod.agus.jcoderz.dex.FieldId readFieldId() {
+            int declaringClassIndex = readUnsignedShort();
+            int typeIndex = readUnsignedShort();
+            int nameIndex = readInt();
+            return new mod.agus.jcoderz.dex.FieldId(Dex.this, declaringClassIndex, typeIndex, nameIndex);
         }
 
-        public MethodId readMethodId() {
-            return new MethodId(Dex.this, readUnsignedShort(), readUnsignedShort(), readInt());
+        public mod.agus.jcoderz.dex.MethodId readMethodId() {
+            int declaringClassIndex = readUnsignedShort();
+            int protoIndex = readUnsignedShort();
+            int nameIndex = readInt();
+            return new mod.agus.jcoderz.dex.MethodId(Dex.this, declaringClassIndex, protoIndex, nameIndex);
         }
 
-        public ProtoId readProtoId() {
-            return new ProtoId(Dex.this, readInt(), readInt(), readInt());
+        public mod.agus.jcoderz.dex.ProtoId readProtoId() {
+            int shortyIndex = readInt();
+            int returnTypeIndex = readInt();
+            int parametersOffset = readInt();
+            return new mod.agus.jcoderz.dex.ProtoId(Dex.this, shortyIndex, returnTypeIndex, parametersOffset);
         }
 
-        public ClassDef readClassDef() {
-            return new ClassDef(Dex.this, getPosition(), readInt(), readInt(), readInt(), readInt(), readInt(), readInt(), readInt(), readInt());
+        public mod.agus.jcoderz.dex.CallSiteId readCallSiteId() {
+            int offset = readInt();
+            return new CallSiteId(Dex.this, offset);
         }
 
+        public mod.agus.jcoderz.dex.MethodHandle readMethodHandle() {
+            MethodHandleType methodHandleType = MethodHandleType.fromValue(readUnsignedShort());
+            int unused1 = readUnsignedShort();
+            int fieldOrMethodId = readUnsignedShort();
+            int unused2 = readUnsignedShort();
+            return new MethodHandle(Dex.this, methodHandleType, unused1, fieldOrMethodId, unused2);
+        }
 
-        private Code readCode() {
-            Code.Try[] tryArr;
-            Code.CatchHandler[] catchHandlerArr;
-            int readUnsignedShort = readUnsignedShort();
-            int readUnsignedShort2 = readUnsignedShort();
-            int readUnsignedShort3 = readUnsignedShort();
-            int readUnsignedShort4 = readUnsignedShort();
-            int readInt = readInt();
-            short[] readShortArray = readShortArray(readInt());
-            if (readUnsignedShort4 > 0) {
-                if (readShortArray.length % 2 == 1) {
-                    readShort();
+        public mod.agus.jcoderz.dex.ClassDef readClassDef() {
+            int offset = getPosition();
+            int type = readInt();
+            int accessFlags = readInt();
+            int supertype = readInt();
+            int interfacesOffset = readInt();
+            int sourceFileIndex = readInt();
+            int annotationsOffset = readInt();
+            int classDataOffset = readInt();
+            int staticValuesOffset = readInt();
+            return new mod.agus.jcoderz.dex.ClassDef(Dex.this, offset, type, accessFlags, supertype,
+                    interfacesOffset, sourceFileIndex, annotationsOffset, classDataOffset,
+                    staticValuesOffset);
+        }
+
+        private mod.agus.jcoderz.dex.Code readCode() {
+            int registersSize = readUnsignedShort();
+            int insSize = readUnsignedShort();
+            int outsSize = readUnsignedShort();
+            int triesSize = readUnsignedShort();
+            int debugInfoOffset = readInt();
+            int instructionsSize = readInt();
+            short[] instructions = readShortArray(instructionsSize);
+            Try[] tries;
+            CatchHandler[] catchHandlers;
+            if (triesSize > 0) {
+                if (instructions.length % 2 == 1) {
+                    readShort(); // padding
                 }
-                Section open = Dex.this.open(this.data.position());
-                skip(readUnsignedShort4 * 8);
-                catchHandlerArr = readCatchHandlers();
-                tryArr = open.readTries(readUnsignedShort4, catchHandlerArr);
+
+                /*
+                 * We can't read the tries until we've read the catch handlers.
+                 * Unfortunately they're in the opposite order in the dex file
+                 * so we need to read them out-of-order.
+                 */
+                Section triesSection = open(data.position());
+                skip(triesSize * mod.agus.jcoderz.dex.SizeOf.TRY_ITEM);
+                catchHandlers = readCatchHandlers();
+                tries = triesSection.readTries(triesSize, catchHandlers);
             } else {
-                tryArr = new Code.Try[0];
-                catchHandlerArr = new Code.CatchHandler[0];
+                tries = new Try[0];
+                catchHandlers = new CatchHandler[0];
             }
-            return new Code(readUnsignedShort, readUnsignedShort2, readUnsignedShort3, readInt, readShortArray, tryArr, catchHandlerArr);
+            return new Code(registersSize, insSize, outsSize, debugInfoOffset, instructions,
+                            tries, catchHandlers);
         }
 
-        private Code.CatchHandler[] readCatchHandlers() {
-            int position = this.data.position();
-            int readUleb128 = readUleb128();
-            Code.CatchHandler[] catchHandlerArr = new Code.CatchHandler[readUleb128];
-            for (int i = 0; i < readUleb128; i++) {
-                catchHandlerArr[i] = readCatchHandler(this.data.position() - position);
+        private CatchHandler[] readCatchHandlers() {
+            int baseOffset = data.position();
+            int catchHandlersSize = readUleb128();
+            CatchHandler[] result = new CatchHandler[catchHandlersSize];
+            for (int i = 0; i < catchHandlersSize; i++) {
+                int offset = data.position() - baseOffset;
+                result[i] = readCatchHandler(offset);
             }
-            return catchHandlerArr;
+            return result;
         }
 
-        private Code.Try[] readTries(int i, Code.CatchHandler[] catchHandlerArr) {
-            Code.Try[] tryArr = new Code.Try[i];
-            for (int i2 = 0; i2 < i; i2++) {
-                tryArr[i2] = new Code.Try(readInt(), readUnsignedShort(), findCatchHandlerIndex(catchHandlerArr, readUnsignedShort()));
+        private Try[] readTries(int triesSize, CatchHandler[] catchHandlers) {
+            Try[] result = new Try[triesSize];
+            for (int i = 0; i < triesSize; i++) {
+                int startAddress = readInt();
+                int instructionCount = readUnsignedShort();
+                int handlerOffset = readUnsignedShort();
+                int catchHandlerIndex = findCatchHandlerIndex(catchHandlers, handlerOffset);
+                result[i] = new Try(startAddress, instructionCount, catchHandlerIndex);
             }
-            return tryArr;
+            return result;
         }
 
-        private int findCatchHandlerIndex(Code.CatchHandler[] catchHandlerArr, int i) {
-            for (int i2 = 0; i2 < catchHandlerArr.length; i2++) {
-                if (catchHandlerArr[i2].getOffset() == i) {
-                    return i2;
+        private int findCatchHandlerIndex(CatchHandler[] catchHandlers, int offset) {
+            for (int i = 0; i < catchHandlers.length; i++) {
+                CatchHandler catchHandler = catchHandlers[i];
+                if (catchHandler.getOffset() == offset) {
+                    return i;
                 }
             }
             throw new IllegalArgumentException();
         }
 
-        private Code.CatchHandler readCatchHandler(int i) {
-            int readSleb128 = readSleb128();
-            int abs = Math.abs(readSleb128);
-            int[] iArr = new int[abs];
-            int[] iArr2 = new int[abs];
-            for (int i2 = 0; i2 < abs; i2++) {
-                iArr[i2] = readUleb128();
-                iArr2[i2] = readUleb128();
+        private CatchHandler readCatchHandler(int offset) {
+            int size = readSleb128();
+            int handlersCount = Math.abs(size);
+            int[] typeIndexes = new int[handlersCount];
+            int[] addresses = new int[handlersCount];
+            for (int i = 0; i < handlersCount; i++) {
+                typeIndexes[i] = readUleb128();
+                addresses[i] = readUleb128();
             }
-            return new Code.CatchHandler(iArr, iArr2, readSleb128 <= 0 ? readUleb128() : -1, i);
+            int catchAllAddress = size <= 0 ? readUleb128() : -1;
+            return new CatchHandler(typeIndexes, addresses, catchAllAddress, offset);
         }
 
-
-        private ClassData readClassData() {
-            return new ClassData(readFields(readUleb128()), readFields(readUleb128()), readMethods(readUleb128()), readMethods(readUleb128()));
+        private mod.agus.jcoderz.dex.ClassData readClassData() {
+            int staticFieldsSize = readUleb128();
+            int instanceFieldsSize = readUleb128();
+            int directMethodsSize = readUleb128();
+            int virtualMethodsSize = readUleb128();
+            mod.agus.jcoderz.dex.ClassData.Field[] staticFields = readFields(staticFieldsSize);
+            mod.agus.jcoderz.dex.ClassData.Field[] instanceFields = readFields(instanceFieldsSize);
+            mod.agus.jcoderz.dex.ClassData.Method[] directMethods = readMethods(directMethodsSize);
+            mod.agus.jcoderz.dex.ClassData.Method[] virtualMethods = readMethods(virtualMethodsSize);
+            return new mod.agus.jcoderz.dex.ClassData(staticFields, instanceFields, directMethods, virtualMethods);
         }
 
-        private ClassData.Field[] readFields(int i) {
-            ClassData.Field[] fieldArr = new ClassData.Field[i];
-            int i2 = 0;
-            for (int i3 = 0; i3 < i; i3++) {
-                i2 += readUleb128();
-                fieldArr[i3] = new ClassData.Field(i2, readUleb128());
+        private mod.agus.jcoderz.dex.ClassData.Field[] readFields(int count) {
+            mod.agus.jcoderz.dex.ClassData.Field[] result = new mod.agus.jcoderz.dex.ClassData.Field[count];
+            int fieldIndex = 0;
+            for (int i = 0; i < count; i++) {
+                fieldIndex += readUleb128(); // field index diff
+                int accessFlags = readUleb128();
+                result[i] = new mod.agus.jcoderz.dex.ClassData.Field(fieldIndex, accessFlags);
             }
-            return fieldArr;
+            return result;
         }
 
-        private ClassData.Method[] readMethods(int i) {
-            ClassData.Method[] methodArr = new ClassData.Method[i];
-            int i2 = 0;
-            for (int i3 = 0; i3 < i; i3++) {
-                i2 += readUleb128();
-                methodArr[i3] = new ClassData.Method(i2, readUleb128(), readUleb128());
+        private mod.agus.jcoderz.dex.ClassData.Method[] readMethods(int count) {
+            mod.agus.jcoderz.dex.ClassData.Method[] result = new mod.agus.jcoderz.dex.ClassData.Method[count];
+            int methodIndex = 0;
+            for (int i = 0; i < count; i++) {
+                methodIndex += readUleb128(); // method index diff
+                int accessFlags = readUleb128();
+                int codeOff = readUleb128();
+                result[i] = new ClassData.Method(methodIndex, accessFlags, codeOff);
             }
-            return methodArr;
+            return result;
         }
 
-        private byte[] getBytesFrom(int i) {
-            byte[] bArr = new byte[(this.data.position() - i)];
-            this.data.position(i);
-            this.data.get(bArr);
-            return bArr;
+        /**
+         * Returns a byte array containing the bytes from {@code start} to this
+         * section's current position.
+         */
+        private byte[] getBytesFrom(int start) {
+            int end = data.position();
+            byte[] result = new byte[end - start];
+            data.position(start);
+            data.get(result);
+            return result;
         }
 
-        public Annotation readAnnotation() {
-            byte readByte = readByte();
-            int position = this.data.position();
-            new EncodedValueReader(this, 29).skipValue();
-            return new Annotation(Dex.this, readByte, new EncodedValue(getBytesFrom(position)));
+        public mod.agus.jcoderz.dex.Annotation readAnnotation() {
+            byte visibility = readByte();
+            int start = data.position();
+            new mod.agus.jcoderz.dex.EncodedValueReader(this, mod.agus.jcoderz.dex.EncodedValueReader.ENCODED_ANNOTATION).skipValue();
+            return new Annotation(Dex.this, visibility, new mod.agus.jcoderz.dex.EncodedValue(getBytesFrom(start)));
         }
 
-        public EncodedValue readEncodedArray() {
-            int position = this.data.position();
-            new EncodedValueReader(this, 28).skipValue();
-            return new EncodedValue(getBytesFrom(position));
+        public mod.agus.jcoderz.dex.EncodedValue readEncodedArray() {
+            int start = data.position();
+            new mod.agus.jcoderz.dex.EncodedValueReader(this, EncodedValueReader.ENCODED_ARRAY).skipValue();
+            return new EncodedValue(getBytesFrom(start));
         }
 
-        public void skip(int i) {
-            if (i < 0) {
+        public void skip(int count) {
+            if (count < 0) {
                 throw new IllegalArgumentException();
             }
-            this.data.position(this.data.position() + i);
+            data.position(data.position() + count);
         }
 
+        /**
+         * Skips bytes until the position is aligned to a multiple of 4.
+         */
         public void alignToFourBytes() {
-            this.data.position((this.data.position() + 3) & -4);
+            data.position((data.position() + 3) & ~3);
         }
 
+        /**
+         * Writes 0x00 until the position is aligned to a multiple of 4.
+         */
         public void alignToFourBytesWithZeroFill() {
-            while ((this.data.position() & 3) != 0) {
-                this.data.put((byte) 0);
+            while ((data.position() & 3) != 0) {
+                data.put((byte) 0);
             }
         }
 
         public void assertFourByteAligned() {
-            if ((this.data.position() & 3) != 0) {
+            if ((data.position() & 3) != 0) {
                 throw new IllegalStateException("Not four byte aligned!");
             }
         }
 
-        public void write(byte[] bArr) {
-            this.data.put(bArr);
+        public void write(byte[] bytes) {
+            this.data.put(bytes);
         }
 
-        @Override // mod.agus.jcoderz.dex.util.ByteOutput
-        public void writeByte(int i) {
-            this.data.put((byte) i);
+        @Override
+        public void writeByte(int b) {
+            data.put((byte) b);
         }
 
-        public void writeShort(short s) {
-            this.data.putShort(s);
+        public void writeShort(short i) {
+            data.putShort(i);
         }
 
         public void writeUnsignedShort(int i) {
             short s = (short) i;
-            if (i != (65535 & s)) {
+            if (i != (s & 0xffff)) {
                 throw new IllegalArgumentException("Expected an unsigned short: " + i);
             }
             writeShort(s);
         }
 
-        public void write(short[] sArr) {
-            for (short s : sArr) {
+        public void write(short[] shorts) {
+            for (short s : shorts) {
                 writeShort(s);
             }
         }
 
         public void writeInt(int i) {
-            this.data.putInt(i);
+            data.putInt(i);
         }
 
         public void writeUleb128(int i) {
             try {
-                Leb128.writeUnsignedLeb128(this, i);
+                mod.agus.jcoderz.dex.Leb128.writeUnsignedLeb128(this, i);
             } catch (ArrayIndexOutOfBoundsException e) {
-                throw new DexException("Section limit " + this.data.limit() + " exceeded by " + this.name);
+                throw new DexException("Section limit " + data.limit() + " exceeded by " + name);
             }
         }
 
@@ -703,14 +678,15 @@ public final class Dex {
             try {
                 Leb128.writeSignedLeb128(this, i);
             } catch (ArrayIndexOutOfBoundsException e) {
-                throw new DexException("Section limit " + this.data.limit() + " exceeded by " + this.name);
+                throw new DexException("Section limit " + data.limit() + " exceeded by " + name);
             }
         }
 
-        public void writeStringData(String str) {
+        public void writeStringData(String value) {
             try {
-                writeUleb128(str.length());
-                write(Mutf8.encode(str));
+                int length = value.length();
+                writeUleb128(length);
+                write(Mutf8.encode(value));
                 writeByte(0);
             } catch (UTFDataFormatException e) {
                 throw new AssertionError();
@@ -720,273 +696,124 @@ public final class Dex {
         public void writeTypeList(TypeList typeList) {
             short[] types = typeList.getTypes();
             writeInt(types.length);
-            for (short s : types) {
-                writeShort(s);
+            for (short type : types) {
+                writeShort(type);
             }
             alignToFourBytesWithZeroFill();
         }
 
-        public int remaining() {
-            return this.data.remaining();
-        }
-
+        /**
+         * Returns the number of bytes used by this section.
+         */
         public int used() {
-            return this.data.position() - this.initialPosition;
+            return data.position() - initialPosition;
         }
     }
 
-    public final class StringTable extends AbstractList<String> implements RandomAccess {
-        private StringTable() {
+    private final class StringTable extends AbstractList<String> implements RandomAccess {
+        @Override
+        public String get(int index) {
+            checkBounds(index, tableOfContents.stringIds.size);
+            return open(tableOfContents.stringIds.off + (index * mod.agus.jcoderz.dex.SizeOf.STRING_ID_ITEM))
+                    .readString();
         }
-
-        StringTable(Dex dex, StringTable stringTable) {
-            this();
-        }
-
-        @Override // java.util.List, java.util.Collection, java.lang.Iterable
-        public Spliterator<String> spliterator() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<String> stream() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<String> parallelStream() {
-            return null;
-        }
-
-        @Override // java.util.List, java.util.AbstractList
-        public String get(int i) {
-            Dex.checkBounds(i, Dex.this.tableOfContents.stringIds.size);
-            return Dex.this.open(Dex.this.tableOfContents.stringIds.off + (i * 4)).readString();
-        }
-
+        @Override
         public int size() {
-            return Dex.this.tableOfContents.stringIds.size;
+            return tableOfContents.stringIds.size;
         }
     }
 
-    private final class TypeIndexToDescriptorIndexTable extends AbstractList<Integer> implements RandomAccess {
-        private TypeIndexToDescriptorIndexTable() {
+    private final class TypeIndexToDescriptorIndexTable extends AbstractList<Integer>
+            implements RandomAccess {
+        @Override
+        public Integer get(int index) {
+            return descriptorIndexFromTypeIndex(index);
         }
-
-        /* synthetic */ TypeIndexToDescriptorIndexTable(Dex dex, TypeIndexToDescriptorIndexTable typeIndexToDescriptorIndexTable) {
-            this();
-        }
-
-        @Override // java.util.List, java.util.Collection, java.lang.Iterable
-        public Spliterator<Integer> spliterator() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<Integer> stream() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<Integer> parallelStream() {
-            return null;
-        }
-
-        @Override // java.util.List, java.util.AbstractList
-        public Integer get(int i) {
-            return Integer.valueOf(Dex.this.descriptorIndexFromTypeIndex(i));
-        }
-
+        @Override
         public int size() {
-            return Dex.this.tableOfContents.typeIds.size;
+            return tableOfContents.typeIds.size;
         }
     }
 
-    private final class TypeIndexToDescriptorTable extends AbstractList<String> implements RandomAccess {
-        private TypeIndexToDescriptorTable() {
+    private final class TypeIndexToDescriptorTable extends AbstractList<String>
+            implements RandomAccess {
+        @Override
+        public String get(int index) {
+            return strings.get(descriptorIndexFromTypeIndex(index));
         }
-
-        TypeIndexToDescriptorTable(Dex dex, TypeIndexToDescriptorTable typeIndexToDescriptorTable) {
-            this();
-        }
-
-        @Override // java.util.List, java.util.Collection, java.lang.Iterable
-        public Spliterator<String> spliterator() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<String> stream() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<String> parallelStream() {
-            return null;
-        }
-
-        @Override // java.util.List, java.util.AbstractList
-        public String get(int i) {
-            return Dex.this.strings.get(Dex.this.descriptorIndexFromTypeIndex(i));
-        }
-
+        @Override
         public int size() {
-            return Dex.this.tableOfContents.typeIds.size;
+            return tableOfContents.typeIds.size;
         }
     }
 
-    private final class ProtoIdTable extends AbstractList<ProtoId> implements RandomAccess {
-        private ProtoIdTable() {
+    private final class ProtoIdTable extends AbstractList<mod.agus.jcoderz.dex.ProtoId> implements RandomAccess {
+        @Override
+        public ProtoId get(int index) {
+            checkBounds(index, tableOfContents.protoIds.size);
+            return open(tableOfContents.protoIds.off + (mod.agus.jcoderz.dex.SizeOf.PROTO_ID_ITEM * index))
+                    .readProtoId();
         }
-
-        ProtoIdTable(Dex dex, ProtoIdTable protoIdTable) {
-            this();
-        }
-
-        @Override // java.util.List, java.util.Collection, java.lang.Iterable
-        public Spliterator<ProtoId> spliterator() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<ProtoId> stream() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<ProtoId> parallelStream() {
-            return null;
-        }
-
-        @Override // java.util.List, java.util.AbstractList
-        public ProtoId get(int i) {
-            Dex.checkBounds(i, Dex.this.tableOfContents.protoIds.size);
-            return Dex.this.open(Dex.this.tableOfContents.protoIds.off + (i * 12)).readProtoId();
-        }
-
+        @Override
         public int size() {
-            return Dex.this.tableOfContents.protoIds.size;
+            return tableOfContents.protoIds.size;
         }
     }
 
-    private final class FieldIdTable extends AbstractList<FieldId> implements RandomAccess {
-        private FieldIdTable() {
+    private final class FieldIdTable extends AbstractList<mod.agus.jcoderz.dex.FieldId> implements RandomAccess {
+        @Override
+        public FieldId get(int index) {
+            checkBounds(index, tableOfContents.fieldIds.size);
+            return open(tableOfContents.fieldIds.off + (mod.agus.jcoderz.dex.SizeOf.MEMBER_ID_ITEM * index))
+                    .readFieldId();
         }
-
-        FieldIdTable(Dex dex, FieldIdTable fieldIdTable) {
-            this();
-        }
-
-        @Override // java.util.List, java.util.Collection, java.lang.Iterable
-        public Spliterator<FieldId> spliterator() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<FieldId> stream() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<FieldId> parallelStream() {
-            return null;
-        }
-
-        @Override // java.util.List, java.util.AbstractList
-        public FieldId get(int i) {
-            Dex.checkBounds(i, Dex.this.tableOfContents.fieldIds.size);
-            return Dex.this.open(Dex.this.tableOfContents.fieldIds.off + (i * 8)).readFieldId();
-        }
-
+        @Override
         public int size() {
-            return Dex.this.tableOfContents.fieldIds.size;
+            return tableOfContents.fieldIds.size;
         }
     }
 
-    private final class MethodIdTable extends AbstractList<MethodId> implements RandomAccess {
-        private MethodIdTable() {
+    private final class MethodIdTable extends AbstractList<mod.agus.jcoderz.dex.MethodId> implements RandomAccess {
+        @Override
+        public MethodId get(int index) {
+            checkBounds(index, tableOfContents.methodIds.size);
+            return open(tableOfContents.methodIds.off + (SizeOf.MEMBER_ID_ITEM * index))
+                    .readMethodId();
         }
-
-        MethodIdTable(Dex dex, MethodIdTable methodIdTable) {
-            this();
-        }
-
-        @Override // java.util.List, java.util.Collection, java.lang.Iterable
-        public Spliterator<MethodId> spliterator() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<MethodId> stream() {
-            return null;
-        }
-
-        @Override // java.util.Collection
-        public Stream<MethodId> parallelStream() {
-            return null;
-        }
-
-        @Override // java.util.List, java.util.AbstractList
-        public MethodId get(int i) {
-            Dex.checkBounds(i, Dex.this.tableOfContents.methodIds.size);
-            return Dex.this.open(Dex.this.tableOfContents.methodIds.off + (i * 8)).readMethodId();
-        }
-
+        @Override
         public int size() {
-            return Dex.this.tableOfContents.methodIds.size;
+            return tableOfContents.methodIds.size;
         }
     }
 
-    private final class ClassDefIterator implements Iterator<ClassDef> {
-        private final Section in;
-        private int count;
+    private final class ClassDefIterator implements Iterator<mod.agus.jcoderz.dex.ClassDef> {
+        private final Dex.Section in = open(tableOfContents.classDefs.off);
+        private int count = 0;
 
-        private ClassDefIterator() {
-            this.in = Dex.this.open(Dex.this.tableOfContents.classDefs.off);
-            this.count = 0;
-        }
-
-        ClassDefIterator(Dex dex, ClassDefIterator classDefIterator) {
-            this();
-        }
-
+        @Override
         public boolean hasNext() {
-            return this.count < Dex.this.tableOfContents.classDefs.size;
+            return count < tableOfContents.classDefs.size;
         }
-
-        @Override // java.util.Iterator
-        public ClassDef next() {
+        @Override
+        public mod.agus.jcoderz.dex.ClassDef next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            this.count++;
-            return this.in.readClassDef();
+            count++;
+            return in.readClassDef();
         }
-
-        public void remove() {
+        @Override
+            public void remove() {
             throw new UnsupportedOperationException();
         }
     }
 
-    private final class ClassDefIterable implements Iterable {
-        private ClassDefIterable() {
-        }
-
-        ClassDefIterable(Dex dex, ClassDefIterable classDefIterable) {
-            this();
-        }
-
-        @Override // java.lang.Iterable
-        public Spliterator<ClassDef> spliterator() {
-            return null;
-        }
-
-        @Override // java.lang.Iterable
-        public Iterator<? extends Object> iterator() {
-            if (!Dex.this.tableOfContents.classDefs.exists()) {
-                return Collections.emptyIterator();
-            }
-            return new ClassDefIterator(Dex.this, null);
+    private final class ClassDefIterable implements Iterable<mod.agus.jcoderz.dex.ClassDef> {
+        @Override
+        public Iterator<mod.agus.jcoderz.dex.ClassDef> iterator() {
+            return !tableOfContents.classDefs.exists()
+               ? Collections.<ClassDef>emptySet().iterator()
+               : new ClassDefIterator();
         }
     }
 }

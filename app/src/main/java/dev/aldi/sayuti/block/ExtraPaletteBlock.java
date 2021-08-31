@@ -167,26 +167,38 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     private void variables() {
-        for (Pair<Integer, String> isp : jC.a(sc_id).k(javaName)) {
-            switch (isp.first) {
-                case 0:
-                case 1:
-                case 2:
-                    logicEditor.a(isp.second, getType(isp.first), "getVar").setTag(isp.second);
-                    break;
+        ArrayList<String> varBools = jC.a(sc_id).e(javaName, 0);
+        for (int i = 0; i < varBools.size(); i++) {
+        	if (i == 0) logicEditor.a("Boolean", 0xff555555);
+        	logicEditor.a(varBools.get(i), "b", "getVar").setTag(varBools.get(i));
+        }
 
-                case 3:
-                    logicEditor.a(isp.second, getType(isp.first), kq.b(isp.first), "getVar").setTag(isp.second);
-                    break;
+        ArrayList<String> varNums = jC.a(sc_id).e(javaName, 1);
+        for (int i = 0; i < varNums.size(); i++) {
+        	if (i == 0) logicEditor.a("Number", 0xff555555);
+        	logicEditor.a(varNums.get(i), "d", "getVar").setTag(varNums.get(i));
+        }
 
-                case 5:
-                    String[] split = isp.second.split(" ");
-                    if (split.length > 1) {
-                        logicEditor.a(split[1], getType(isp.first), split[0], "getVar").setTag(isp.second);
-                    } else {
-                        SketchwareUtil.toastError("Received invalid data, content: {" + isp.first + ":\"" + isp.second + "\"}");
-                    }
-                    break;
+        ArrayList<String> varStrs = jC.a(sc_id).e(javaName, 2);
+        for (int i = 0; i < varStrs.size(); i++) {
+        	if (i == 0) logicEditor.a("String", 0xff555555);
+        	logicEditor.a(varStrs.get(i), "s", "getVar").setTag(varStrs.get(i));
+        }
+
+        ArrayList<String> varMaps = jC.a(sc_id).e(javaName, 3);
+        for (int i = 0; i < varMaps.size(); i++) {
+        	if (i == 0) logicEditor.a("Map", 0xff555555);
+        	logicEditor.a(varMaps.get(i), "a", "getVar").setTag(varMaps.get(i));
+        }
+
+        ArrayList<String> varCustoms = jC.a(sc_id).e(javaName, 5);
+        for (int i = 0; i < varCustoms.size(); i++) {
+	    	if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
+	        String[] split = varCustoms.get(i).split(" ");
+            if (split.length > 1) {
+                logicEditor.a(split[1], "v", split[0], "getVar").setTag(varCustoms.get(i));
+            } else {
+                SketchwareUtil.toastError("Received invalid data, content: {" + i + ":\"" + varCustoms.get(i) + "\"}");
             }
         }
         BlocksHandler.primaryBlocksA(
@@ -201,25 +213,6 @@ public class ExtraPaletteBlock extends Activity {
         blockEvents();
         extraBlocks.eventBlocks();
         blockComponents();
-    }
-
-    private String getType(int id) {
-        switch (id) {
-            case 0:
-                return "b";
-
-            case 1:
-                return "d";
-
-            case 2:
-                return "s";
-
-            case 3:
-                return "a";
-
-            default:
-                return "v";
-        }
     }
 
     public final void blockComponents() {

@@ -1,41 +1,78 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.io.instructions;
 
 import mod.agus.jcoderz.dx.io.IndexType;
 
+/**
+ * A decoded Dalvik instruction which has three register arguments.
+ */
 public final class ThreeRegisterDecodedInstruction extends DecodedInstruction {
+    /** register argument "A" */
     private final int a;
+
+    /** register argument "B" */
     private final int b;
+
+    /** register argument "C" */
     private final int c;
 
-    public ThreeRegisterDecodedInstruction(InstructionCodec instructionCodec, int i, int i2, IndexType indexType, int i3, long j, int i4, int i5, int i6) {
-        super(instructionCodec, i, i2, indexType, i3, j);
-        this.a = i4;
-        this.b = i5;
-        this.c = i6;
+    /**
+     * Constructs an instance.
+     */
+    public ThreeRegisterDecodedInstruction(InstructionCodec format, int opcode,
+                                           int index, IndexType indexType, int target, long literal,
+                                           int a, int b, int c) {
+        super(format, opcode, index, indexType, target, literal);
+
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
+    /** {@inheritDoc} */
+    @Override
     public int getRegisterCount() {
         return 3;
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
+    /** {@inheritDoc} */
+    @Override
     public int getA() {
-        return this.a;
+        return a;
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
+    /** {@inheritDoc} */
+    @Override
     public int getB() {
-        return this.b;
+        return b;
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
+    /** {@inheritDoc} */
+    @Override
     public int getC() {
-        return this.c;
+        return c;
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
-    public DecodedInstruction withIndex(int i) {
-        return new ThreeRegisterDecodedInstruction(getFormat(), getOpcode(), i, getIndexType(), getTarget(), getLiteral(), this.a, this.b, this.c);
+    /** {@inheritDoc} */
+    @Override
+    public DecodedInstruction withIndex(int newIndex) {
+        return new ThreeRegisterDecodedInstruction(
+                getFormat(), getOpcode(), newIndex, getIndexType(),
+                getTarget(), getLiteral(), a, b, c);
     }
 }

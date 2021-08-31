@@ -13,6 +13,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -76,7 +77,6 @@ import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
@@ -161,7 +161,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public final void f(String str) {
+    /**
+     * Sets exported signed APK file path texts' content.
+     */
+    private void f(String filePath) {
         String valid_dt;
         layout_apk_path.setVisibility(View.VISIBLE);
         btn_sign_apk.setVisibility(View.GONE);
@@ -172,7 +175,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         loading_sign_apk.setVisibility(View.GONE);
         SketchwareUtil.toast(xB.b().a(getApplicationContext(),
                 Resources.string.sign_apk_title_export_apk_file));
-        tv_apk_path.setText(signed_apk_postfix + File.separator + str);
+        tv_apk_path.setText(signed_apk_postfix + File.separator + filePath);
         if (j.h()) {
             valid_dt = "30 " + xB.b().a(getApplicationContext(),
                     Resources.string.myprojects_export_project_word_remain_days);
@@ -185,9 +188,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 + " : " + valid_dt);
     }
 
-    public final void l() {
+    private void exportSrc() {
         try {
-            ArrayList<String> arrayList = new ArrayList<>();
             hC hCVar = new hC(sc_id);
             kC kCVar = new kC(sc_id);
             eC eCVar = new eC(sc_id);
@@ -207,6 +209,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             kCVar.c(project_metadata.w + File.separator + "raw");
             kCVar.a(project_metadata.A + File.separator + "fonts");
             project_metadata.f();
+            ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(project_metadata.c);
             String str = yB.c(sc_metadata, "my_ws_name") + ".zip";
             project_metadata.J = wq.s() + File.separator + "export_src" + File.separator + str;
@@ -487,7 +490,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 input_container.addView(til_password);
 
                 TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
-                til_signing_algorithm.setHelperText("Example: SHA1WITHRSA");
+                til_signing_algorithm.setHelperText("Example: SHA256WITHRSA");
 
                 EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
                 et_signing_algorithm.setHint("Signing algorithm");
@@ -610,7 +613,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 @Override
                 public void run() {
                     super.run();
-                    l();
+                    exportSrc();
                 }
             }.start();
         });
@@ -685,7 +688,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             input_container.addView(til_password);
 
             TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
-            til_signing_algorithm.setHelperText("Example: SHA1WITHRSA");
+            til_signing_algorithm.setHelperText("Example: SHA256withRSA");
 
             EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
             et_signing_algorithm.setHint("Signing algorithm");
@@ -842,8 +845,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         });
     }
 
-    public final void e(String str) {
-        export_src_filename = str;
+    /**
+     * Set content of exported source views
+     */
+    public final void e(String exportedSrcFilename) {
+        export_src_filename = exportedSrcFilename;
         loading_export_src.e();
         loading_export_src.setVisibility(View.GONE);
         layout_export_src.setVisibility(View.VISIBLE);
@@ -909,19 +915,20 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             ExportProjectActivity.this.g.a(false);
         }
 
-        public void a(String... strArr) {
-            super.onProgressUpdate(strArr);
-            // Update the ProgressDialog's text
-            ExportProjectActivity.this.a(strArr[0]);
-        }
-
+        /**
+         * a.a.a.MA's doInBackground()
+         */
         @Override // a.a.a.MA
         public void b() {
             if (d) {
                 cancel(true);
                 return;
             }
+
             try {
+                publishProgress("Deleting temporary files...");
+                FileUtil.deleteFile(project_metadata.c);
+
                 publishProgress(xB.b().a(getApplicationContext(),
                         Resources.string.design_run_title_ready_to_build));
                 oB oBVar = new oB();
@@ -1072,13 +1079,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     publishProgress("Signing APK...");
                     c.b(new String(signingKeystorePassword), signingAliasName);
                 }
-            } catch (OutOfMemoryError error) {
-                System.gc();
-                Log.e("AppExporter", error.getMessage(), error);
-                runOnUiThread(new ErrorRunOnUiThreadRunnable(error.getMessage()));
             } catch (Throwable throwable) {
                 Log.e("AppExporter", throwable.getMessage(), throwable);
-                runOnUiThread(new ErrorRunOnUiThreadRunnable(throwable.getMessage()));
+                runOnUiThread(() ->
+                        ExportProjectActivity.this.b(Log.getStackTraceString(throwable)));
             }
         }
 
@@ -1113,8 +1117,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
 
         @Override // android.os.AsyncTask
-        public /* bridge */ /* synthetic */ void onProgressUpdate(String... strArr) {
-            a(strArr);
+        public void onProgressUpdate(String... strArr) {
+            super.onProgressUpdate(strArr);
+            // Update the ProgressDialog's text
+            ExportProjectActivity.this.a(strArr[0]);
         }
 
         @Override
@@ -1122,15 +1128,36 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             b(s);
         }
 
+        /**
+         * a.a.a.MA's onPostExecute()
+         */
         @Override // a.a.a.MA
         public void a() {
             project_metadata.b();
+            // Dismiss the ProgressDialog
             i();
             if (project_metadata.g()) {
                 f(project_metadata.d + "_release.apk");
             }
+
+            String aabFilename = project_metadata.d + ".aab";
+            if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(),
+                    "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
+                aB dialog = new aB(ExportProjectActivity.this);
+                dialog.a(Resources.drawable.open_box_48);
+                dialog.b("Finished exporting AAB");
+                dialog.a("You can find the generated, signed AAB file at:\n" +
+                        "/Internal storage/sketchware/signed_aab/" + aabFilename);
+                dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+                        Helper.getDialogDismissListener(dialog));
+                dialog.show();
+            }
         }
 
+        /**
+         * Called by a.a.a.MA if doInBackground() (a.a.a.MA#b()) returned a non-empty String,
+         * ergo, an error occurred.
+         */
         @Override // a.a.a.MA
         public void a(String str) {
             project_metadata.b();
@@ -1250,20 +1277,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             return a(voids);
-        }
-    }
-
-    private class ErrorRunOnUiThreadRunnable implements Runnable {
-
-        private final String message;
-
-        ErrorRunOnUiThreadRunnable(String message) {
-            this.message = message;
-        }
-
-        @Override
-        public void run() {
-            b(message);
         }
     }
 }

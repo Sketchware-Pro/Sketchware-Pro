@@ -1,12 +1,20 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.command.annotool;
-
-import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
-import org.eclipse.jdt.internal.compiler.util.Util;
-
-import java.io.File;
-import java.lang.annotation.ElementType;
-import java.util.HashSet;
-import java.util.Iterator;
 
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeInvisibleAnnotations;
 import mod.agus.jcoderz.dx.cf.attrib.AttRuntimeVisibleAnnotations;
@@ -16,169 +24,263 @@ import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
 import mod.agus.jcoderz.dx.cf.direct.StdAttributeFactory;
 import mod.agus.jcoderz.dx.cf.iface.Attribute;
 import mod.agus.jcoderz.dx.cf.iface.AttributeList;
-import mod.agus.jcoderz.dx.rop.annotation.Annotation;
 import mod.agus.jcoderz.dx.util.ByteArray;
-import mod.agus.jcoderz.multidex.ClassPathElement;
+import java.io.File;
+import java.lang.annotation.ElementType;
+import java.util.HashSet;
 
-public class AnnotationLister {
+import mod.agus.jcoderz.dx.rop.annotation.Annotation;
+
+/**
+ * Greps annotations on a set of class files and prints matching elements
+ * to stdout. What counts as a match and what should be printed is controlled
+ * by the {@code Main.Arguments} instance.
+ */
+class AnnotationLister {
+    /**
+     * The string name of the pseudo-class that
+     * contains package-wide annotations
+     */
     private static final String PACKAGE_INFO = "package-info";
-    private static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType = null;
-    private final Main.Arguments args;
-    HashSet<String> matchInnerClassesOf = new HashSet<>();
-    HashSet<String> matchPackages = new HashSet<>();
 
-    AnnotationLister(Main.Arguments arguments) {
-        this.args = arguments;
+    /** current match configuration */
+    private final mod.agus.jcoderz.dx.command.annotool.Main.Arguments args;
+
+    /** Set of classes whose inner classes should be considered matched */
+    HashSet<String> matchInnerClassesOf = new HashSet<String>();
+
+    /** set of packages whose classes should be considered matched */
+    HashSet<String> matchPackages = new HashSet<String>();
+
+    AnnotationLister (mod.agus.jcoderz.dx.command.annotool.Main.Arguments args) {
+        this.args = args;
     }
 
-    static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType() {
-        int[] iArr = $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType;
-        if (iArr == null) {
-            iArr = new int[Main.PrintType.values().length];
-            try {
-                iArr[Main.PrintType.CLASS.ordinal()] = 1;
-            } catch (NoSuchFieldError e) {
-            }
-            try {
-                iArr[Main.PrintType.INNERCLASS.ordinal()] = 2;
-            } catch (NoSuchFieldError e2) {
-            }
-            try {
-                iArr[Main.PrintType.METHOD.ordinal()] = 3;
-            } catch (NoSuchFieldError e3) {
-            }
-            try {
-                iArr[Main.PrintType.PACKAGE.ordinal()] = 4;
-            } catch (NoSuchFieldError e4) {
-            }
-            $SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType = iArr;
-        }
-        return iArr;
-    }
+    /** Processes based on configuration specified in constructor. */
+    void process() {
+        for (String path : args.files) {
+            ClassPathOpener opener;
 
-    public void process() {
-        for (String str : this.args.files) {
-            new ClassPathOpener(str, true, new ClassPathOpener.Consumer() {
-                /* class mod.agus.jcoderz.dx.command.annotool.AnnotationLister.AnonymousClass1 */
+            opener = new ClassPathOpener(path, true,
+                    new ClassPathOpener.Consumer() {
+                @Override
+                public boolean processFileBytes(String name, long lastModified, byte[] bytes) {
+                    if (!name.endsWith(".class")) {
+                        return true;
+                    }
 
-                @Override // mod.agus.jcoderz.dx.cf.direct.ClassPathOpener.Consumer
-                public boolean processFileBytes(String str, long j, byte[] bArr) {
-                    if (str.endsWith(SuffixConstants.SUFFIX_STRING_class)) {
-                        DirectClassFile directClassFile = new DirectClassFile(new ByteArray(bArr), str, true);
-                        directClassFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
-                        AttributeList attributes = directClassFile.getAttributes();
-                        String className = directClassFile.getThisClass().getClassType().getClassName();
-                        if (className.endsWith(AnnotationLister.PACKAGE_INFO)) {
-                            for (Attribute findFirst = attributes.findFirst(AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME); findFirst != null; findFirst = attributes.findNext(findFirst)) {
-                                AnnotationLister.this.visitPackageAnnotation(directClassFile, (BaseAnnotations) findFirst);
-                            }
-                            for (Attribute findFirst2 = attributes.findFirst(AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME); findFirst2 != null; findFirst2 = attributes.findNext(findFirst2)) {
-                                AnnotationLister.this.visitPackageAnnotation(directClassFile, (BaseAnnotations) findFirst2);
-                            }
-                        } else if (AnnotationLister.this.isMatchingInnerClass(className) || AnnotationLister.this.isMatchingPackage(className)) {
-                            AnnotationLister.this.printMatch(directClassFile);
-                        } else {
-                            for (Attribute findFirst3 = attributes.findFirst(AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME); findFirst3 != null; findFirst3 = attributes.findNext(findFirst3)) {
-                                AnnotationLister.this.visitClassAnnotation(directClassFile, (BaseAnnotations) findFirst3);
-                            }
-                            for (Attribute findFirst4 = attributes.findFirst(AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME); findFirst4 != null; findFirst4 = attributes.findNext(findFirst4)) {
-                                AnnotationLister.this.visitClassAnnotation(directClassFile, (BaseAnnotations) findFirst4);
-                            }
+                    ByteArray ba = new ByteArray(bytes);
+                    DirectClassFile cf
+                        = new DirectClassFile(ba, name, true);
+
+                    cf.setAttributeFactory(StdAttributeFactory.THE_ONE);
+                    AttributeList attributes = cf.getAttributes();
+                    Attribute att;
+
+                    String cfClassName
+                            = cf.getThisClass().getClassType().getClassName();
+
+                    if (cfClassName.endsWith(PACKAGE_INFO)) {
+                        att = attributes.findFirst(
+                                AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME);
+
+                        for (;att != null; att = attributes.findNext(att)) {
+                            BaseAnnotations ann = (BaseAnnotations)att;
+                            visitPackageAnnotation(cf, ann);
+                        }
+
+                        att = attributes.findFirst(
+                                AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME);
+
+                        for (;att != null; att = attributes.findNext(att)) {
+                            BaseAnnotations ann = (BaseAnnotations)att;
+                            visitPackageAnnotation(cf, ann);
+                        }
+                    } else if (isMatchingInnerClass(cfClassName)
+                            || isMatchingPackage(cfClassName)) {
+                        printMatch(cf);
+                    } else {
+                        att = attributes.findFirst(
+                                AttRuntimeInvisibleAnnotations.ATTRIBUTE_NAME);
+
+                        for (;att != null; att = attributes.findNext(att)) {
+                            BaseAnnotations ann = (BaseAnnotations)att;
+                            visitClassAnnotation(cf, ann);
+                        }
+
+                        att = attributes.findFirst(
+                                AttRuntimeVisibleAnnotations.ATTRIBUTE_NAME);
+
+                        for (;att != null; att = attributes.findNext(att)) {
+                            BaseAnnotations ann = (BaseAnnotations)att;
+                            visitClassAnnotation(cf, ann);
                         }
                     }
+
                     return true;
                 }
 
-                @Override // mod.agus.jcoderz.dx.cf.direct.ClassPathOpener.Consumer
-                public void onException(Exception exc) {
-                    throw new RuntimeException(exc);
+                @Override
+                public void onException(Exception ex) {
+                    throw new RuntimeException(ex);
                 }
 
-                @Override // mod.agus.jcoderz.dx.cf.direct.ClassPathOpener.Consumer
+                @Override
                 public void onProcessArchiveStart(File file) {
+
                 }
-            }).process();
+
+            });
+
+            opener.process();
         }
     }
 
-    private void visitClassAnnotation(DirectClassFile directClassFile, BaseAnnotations baseAnnotations) {
-        if (this.args.eTypes.contains(ElementType.TYPE)) {
-            for (Annotation annotation : baseAnnotations.getAnnotations().getAnnotations()) {
-                if (this.args.aclass.equals(annotation.getType().getClassType().getClassName())) {
-                    printMatch(directClassFile);
-                }
-            }
-        }
-    }
+    /**
+     * Inspects a class annotation.
+     *
+     * @param cf {@code non-null;} class file
+     * @param ann {@code non-null;} annotation
+     */
+    private void visitClassAnnotation(DirectClassFile cf,
+            BaseAnnotations ann) {
 
-    private void visitPackageAnnotation(DirectClassFile directClassFile, BaseAnnotations baseAnnotations) {
-        String substring;
-        if (this.args.eTypes.contains(ElementType.PACKAGE)) {
-            String className = directClassFile.getThisClass().getClassType().getClassName();
-            int lastIndexOf = className.lastIndexOf(47);
-            if (lastIndexOf == -1) {
-                substring = "";
-            } else {
-                substring = className.substring(0, lastIndexOf);
-            }
-            for (Annotation annotation : baseAnnotations.getAnnotations().getAnnotations()) {
-                if (this.args.aclass.equals(annotation.getType().getClassType().getClassName())) {
-                    printMatchPackage(substring);
-                }
-            }
+        if (!args.eTypes.contains(ElementType.TYPE)) {
+            return;
         }
-    }
 
-    private void printMatchPackage(String str) {
-        Iterator it = this.args.printTypes.iterator();
-        while (it.hasNext()) {
-            switch ($SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType()[((Main.PrintType) it.next()).ordinal()]) {
-                case 1:
-                case 2:
-                case 3:
-                    this.matchPackages.add(str);
-                    break;
-                case 4:
-                    System.out.println(str.replace(ClassPathElement.SEPARATOR_CHAR, Util.C_DOT));
-                    break;
+        for (mod.agus.jcoderz.dx.rop.annotation.Annotation anAnn : ann.getAnnotations().getAnnotations()) {
+            String annClassName
+                    = anAnn.getType().getClassType().getClassName();
+            if (args.aclass.equals(annClassName)) {
+                printMatch(cf);
             }
         }
     }
 
-    private void printMatch(DirectClassFile directClassFile) {
-        Iterator it = this.args.printTypes.iterator();
-        while (it.hasNext()) {
-            switch ($SWITCH_TABLE$mod$agus$jcoderz$dx$command$annotool$Main$PrintType()[((Main.PrintType) it.next()).ordinal()]) {
-                case 1:
-                    System.out.println(directClassFile.getThisClass().getClassType().getClassName().replace(ClassPathElement.SEPARATOR_CHAR, Util.C_DOT));
-                    break;
-                case 2:
-                    this.matchInnerClassesOf.add(directClassFile.getThisClass().getClassType().getClassName());
-                    break;
-            }
+    /**
+     * Inspects a package annotation
+     *
+     * @param cf {@code non-null;} class file of "package-info" pseudo-class
+     * @param ann {@code non-null;} annotation
+     */
+    private void visitPackageAnnotation(
+            DirectClassFile cf, BaseAnnotations ann) {
+
+        if (!args.eTypes.contains(ElementType.PACKAGE)) {
+            return;
         }
-    }
 
+        String packageName = cf.getThisClass().getClassType().getClassName();
 
-    private boolean isMatchingInnerClass(String str) {
-        do {
-            int lastIndexOf = str.lastIndexOf(36);
-            if (lastIndexOf <= 0) {
-                return false;
-            }
-            str = str.substring(0, lastIndexOf);
-        } while (!this.matchInnerClassesOf.contains(str));
-        return true;
-    }
+        int slashIndex = packageName.lastIndexOf('/');
 
-    private boolean isMatchingPackage(String str) {
-        String substring;
-        int lastIndexOf = str.lastIndexOf(47);
-        if (lastIndexOf == -1) {
-            substring = "";
+        if (slashIndex == -1) {
+            packageName = "";
         } else {
-            substring = str.substring(0, lastIndexOf);
+            packageName
+                    = packageName.substring(0, slashIndex);
         }
-        return this.matchPackages.contains(substring);
+
+
+        for (Annotation anAnn : ann.getAnnotations().getAnnotations()) {
+            String annClassName
+                    = anAnn.getType().getClassType().getClassName();
+            if (args.aclass.equals(annClassName)) {
+                printMatchPackage(packageName);
+            }
+        }
+    }
+
+
+    /**
+     * Prints, or schedules for printing, elements related to a
+     * matching package.
+     *
+     * @param packageName {@code non-null;} name of package
+     */
+    private void printMatchPackage(String packageName) {
+        for (mod.agus.jcoderz.dx.command.annotool.Main.PrintType pt : args.printTypes) {
+            switch (pt) {
+                case CLASS:
+                case INNERCLASS:
+                case METHOD:
+                    matchPackages.add(packageName);
+                    break;
+                case PACKAGE:
+                    System.out.println(packageName.replace('/','.'));
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Prints, or schedules for printing, elements related to a matching
+     * class.
+     *
+     * @param cf {@code non-null;} matching class
+     */
+    private void printMatch(DirectClassFile cf) {
+        for (Main.PrintType pt : args.printTypes) {
+            switch (pt) {
+                case CLASS:
+                    String classname;
+                    classname =
+                        cf.getThisClass().getClassType().getClassName();
+                    classname = classname.replace('/','.');
+                    System.out.println(classname);
+                    break;
+                case INNERCLASS:
+                    matchInnerClassesOf.add(
+                            cf.getThisClass().getClassType().getClassName());
+                    break;
+                case METHOD:
+                    //TODO
+                    break;
+                case PACKAGE:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Checks to see if a specified class name should be considered a match
+     * due to previous matches.
+     *
+     * @param s {@code non-null;} class name
+     * @return true if this class should be considered a match
+     */
+    private boolean isMatchingInnerClass(String s) {
+        int i;
+
+        while (0 < (i = s.lastIndexOf('$'))) {
+            s = s.substring(0, i);
+            if (matchInnerClassesOf.contains(s)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks to see if a specified package should be considered a match due
+     * to previous matches.
+     *
+     * @param s {@code non-null;} package name
+     * @return true if this package should be considered a match
+     */
+    private boolean isMatchingPackage(String s) {
+        int slashIndex = s.lastIndexOf('/');
+
+        String packageName;
+        if (slashIndex == -1) {
+            packageName = "";
+        } else {
+            packageName
+                    = s.substring(0, slashIndex);
+        }
+
+        return matchPackages.contains(packageName);
     }
 }

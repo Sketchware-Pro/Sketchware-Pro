@@ -1,108 +1,147 @@
-package mod.agus.jcoderz.dx.command.annotool;
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import org.eclipse.jdt.internal.compiler.util.Util;
+package mod.agus.jcoderz.dx.command.annotool;
 
 import java.lang.annotation.ElementType;
 import java.util.EnumSet;
 import java.util.Locale;
 
-import mod.agus.jcoderz.multidex.ClassPathElement;
-
 public class Main {
 
-    private Main() {
-    }
+    private static class InvalidArgumentException extends Exception {
+        InvalidArgumentException() {
+            super();
+        }
 
-    public static void main(String[] strArr) {
-        Arguments arguments = new Arguments();
-        try {
-            arguments.parse(strArr);
-            new AnnotationLister(arguments).process();
-        } catch (InvalidArgumentException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException("usage");
+        InvalidArgumentException(String s) {
+            super(s);
         }
     }
 
-    public enum PrintType {
+    enum PrintType {
         CLASS,
         INNERCLASS,
         METHOD,
         PACKAGE
     }
 
-    public static class InvalidArgumentException extends Exception {
-        InvalidArgumentException() {
-        }
 
-        InvalidArgumentException(String str) {
-            super(str);
-        }
-    }
-
-    public static class Arguments {
+    static class Arguments {
+        /**
+         * from --annotation, dot-separated classname
+         * of annotation to look for
+         */
         String aclass;
+
+        /** from --eTypes */
         EnumSet<ElementType> eTypes = EnumSet.noneOf(ElementType.class);
-        String[] files;
+
+        /** from --print */
         EnumSet<PrintType> printTypes = EnumSet.noneOf(PrintType.class);
+
+        /** remaining positional arguments */
+        String[] files;
 
         Arguments() {
         }
 
-        public void parse(String[] strArr) throws InvalidArgumentException {
-            int i = 0;
-            while (true) {
-                if (i >= strArr.length) {
-                    break;
-                }
-                String str = strArr[i];
-                if (str.startsWith("--annotation=")) {
-                    String substring = str.substring(str.indexOf(61) + 1);
-                    if (this.aclass != null) {
-                        throw new InvalidArgumentException("--annotation can only be specified once.");
+        void parse (String[] argArray) throws InvalidArgumentException {
+            for (int i = 0; i < argArray.length; i++) {
+                String arg = argArray[i];
+
+                if (arg.startsWith("--annotation=")) {
+                    String argParam = arg.substring(arg.indexOf('=') + 1);
+                    if (aclass != null) {
+                        throw new InvalidArgumentException(
+                                "--annotation can only be specified once.");
                     }
-                    this.aclass = substring.replace(Util.C_DOT, ClassPathElement.SEPARATOR_CHAR);
-                } else if (!str.startsWith("--element=")) {
-                    if (!str.startsWith("--print=")) {
-                        this.files = new String[(strArr.length - i)];
-                        System.arraycopy(strArr, i, this.files, 0, this.files.length);
-                        break;
-                    }
+                    aclass = argParam.replace('.','/');
+                } else if (arg.startsWith("--element=")) {
+                    String argParam = arg.substring(arg.indexOf('=') + 1);
+
                     try {
-                        String[] split = str.substring(str.indexOf(61) + 1).split(",");
-                        for (String str2 : split) {
-                            this.printTypes.add(PrintType.valueOf(str2.toUpperCase(Locale.ROOT)));
+                        for (String p : argParam.split(",")) {
+                            eTypes.add(ElementType.valueOf(p.toUpperCase(Locale.ROOT)));
                         }
-                    } catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException ex) {
+                        throw new InvalidArgumentException(
+                                "invalid --element");
+                    }
+                } else if (arg.startsWith("--print=")) {
+                    String argParam = arg.substring(arg.indexOf('=') + 1);
+
+                    try {
+                        for (String p : argParam.split(",")) {
+                            printTypes.add(PrintType.valueOf(p.toUpperCase(Locale.ROOT)));
+                        }
+                    } catch (IllegalArgumentException ex) {
                         throw new InvalidArgumentException("invalid --print");
                     }
                 } else {
-                    try {
-                        String[] split2 = str.substring(str.indexOf(61) + 1).split(",");
-                        for (String str3 : split2) {
-                            this.eTypes.add(ElementType.valueOf(str3.toUpperCase(Locale.ROOT)));
-                        }
-                    } catch (IllegalArgumentException e2) {
-                        throw new InvalidArgumentException("invalid --element");
-                    }
+                    files = new String[argArray.length - i];
+                    System.arraycopy(argArray, i, files, 0, files.length);
+                    break;
                 }
-                i++;
             }
-            if (this.aclass == null) {
-                throw new InvalidArgumentException("--annotation must be specified");
+
+            if (aclass == null) {
+                throw new InvalidArgumentException(
+                        "--annotation must be specified");
             }
-            if (this.printTypes.isEmpty()) {
-                this.printTypes.add(PrintType.CLASS);
+
+            if (printTypes.isEmpty()) {
+                printTypes.add(PrintType.CLASS);
             }
-            if (this.eTypes.isEmpty()) {
-                this.eTypes.add(ElementType.TYPE);
+
+            if (eTypes.isEmpty()) {
+                eTypes.add(ElementType.TYPE);
             }
-            EnumSet<ElementType> clone = this.eTypes.clone();
-            clone.remove(ElementType.TYPE);
-            clone.remove(ElementType.PACKAGE);
-            if (!clone.isEmpty()) {
-                throw new InvalidArgumentException("only --element parameters 'type' and 'package' supported");
+
+            EnumSet<ElementType> set = eTypes.clone();
+
+            set.remove(ElementType.TYPE);
+            set.remove(ElementType.PACKAGE);
+            if (!set.isEmpty()) {
+                throw new InvalidArgumentException(
+                        "only --element parameters 'type' and 'package' "
+                                + "supported");
             }
         }
+    }
+
+    /**
+     * This class is uninstantiable.
+     */
+    private Main() {
+        // This space intentionally left blank.
+    }
+
+    public static void main(String[] argArray) {
+
+        final Arguments args = new Arguments();
+
+        try {
+            args.parse(argArray);
+        } catch (InvalidArgumentException ex) {
+            System.err.println(ex.getMessage());
+
+            throw new RuntimeException("usage");
+        }
+
+        new AnnotationLister(args).process();
     }
 }

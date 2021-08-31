@@ -1,6 +1,6 @@
 package a.a.a;
 
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ViewBean;
@@ -29,89 +29,76 @@ public class Lx {
      * @return Content of a <code>build.gradle</code> file for the module ':app', with indentation
      */
     public static String a(int compileSdkVersion, int minSdkVersion, int targetSdkVersion, jq metadata) {
-        StringBuilder fileContent = new StringBuilder(
-                "plugins {\r\nid 'com.android.application'\r\n}\r\n\r\nandroid {\r\n");
-        fileContent.append("compileSdkVersion ")
-                .append(compileSdkVersion)
-                .append("\r\n")
-                .append("\r\n");
+        String content = "plugins {\r\n" +
+                "id 'com.android.application'\r\n" +
+                "}\r\n" +
+                "\r\n" +
+                "android {\r\n" +
+                "compileSdkVersion " + compileSdkVersion + "\r\n" +
+                "\r\n";
         if (new BuildSettings(metadata.sc_id)
                 .getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_FALSE)) {
-            fileContent.append("useLibrary 'org.apache.http.legacy'\r\n");
+            content += "useLibrary 'org.apache.http.legacy'\r\n" +
+                    "\r\n";
         }
-        fileContent.append("\r\n")
-                .append("defaultConfig {")
-                .append("\r\n")
-                .append("applicationId \"")
-                .append(metadata.a)
-                .append("\"")
-                .append("\r\n")
-                .append("minSdkVersion ")
-                .append(minSdkVersion)
-                .append("\r\n")
-                .append("targetSdkVersion ")
-                .append(targetSdkVersion)
-                .append("\r\n")
-                .append("versionCode ")
-                .append(metadata.c)
-                .append("\r\n")
-                .append("versionName \"")
-                .append(metadata.d)
-                .append("\"")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("buildTypes {")
-                .append("\r\n")
-                .append("release {")
-                .append("\r\n")
-                .append("minifyEnabled false")
-                .append("\r\n")
-                .append("proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("}")
-                .append("\r\n")
-                .append("\r\n")
-                .append("dependencies {")
-                .append("\r\n")
-                .append("implementation fileTree(dir: 'libs', include: ['*.jar'])")
-                .append("\r\n");
+        content += "defaultConfig {\r\n" +
+                "applicationId \"" + metadata.a + "\"\r\n" +
+                "minSdkVersion " + minSdkVersion + "\r\n" +
+                "targetSdkVersion " + targetSdkVersion + "\r\n" +
+                "versionCode " + metadata.c + "\r\n" +
+                "versionName \"" + metadata.d + "\"\r\n" +
+                "}\r\n" +
+                "\r\n" +
+                "buildTypes {\r\n" +
+                "release {\r\n" +
+                "minifyEnabled false\r\n" +
+                "proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n" +
+                "}\r\n" +
+                "}\r\n" +
+                "}\r\n" +
+                "\r\n" +
+                "dependencies {\r\n" +
+                "implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n";
 
         if (metadata.g) {
-            fileContent.append("implementation 'androidx.appcompat:appcompat:1.2.0'\r\n")
-                    .append("implementation 'com.google.android.material:material:1.3.0'\r\n");
+            content += "implementation 'androidx.appcompat:appcompat:1.2.0'\r\n" +
+                    "implementation 'com.google.android.material:material:1.4.0'\r\n";
         }
 
         if (metadata.i) {
-            fileContent.append("implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n");
+            content += "implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n";
         }
 
         if (metadata.j) {
-            fileContent.append("implementation 'com.google.firebase:firebase-database:19.0.0'\r\n");
+            content += "implementation 'com.google.firebase:firebase-database:19.0.0'\r\n";
         }
 
         if (metadata.k) {
-            fileContent.append("implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n");
+            content += "implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n";
         }
 
         if (metadata.l) {
-            fileContent.append("implementation 'com.google.android.gms:play-services-ads:18.2.0'\r\n");
+            content += "implementation 'com.google.android.gms:play-services-ads:20.1.0'\r\n";
         }
 
         if (metadata.m) {
-            fileContent.append("implementation 'com.google.android.gms:play-services-maps:17.0.0'\r\n");
+            content += "implementation 'com.google.android.gms:play-services-maps:17.0.1'\r\n";
         }
 
-        fileContent.append("implementation 'com.github.bumptech.glide:glide:4.11.0'\r\n")
-                .append("implementation 'com.google.code.gson:gson:2.8.6'\r\n")
-                .append("implementation 'com.squareup.okhttp3:okhttp:3.11.0'\r\n")
-                .append("}\r\n");
-        return j(fileContent.toString());
+        if (metadata.n) {
+            content += "implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n";
+        }
+
+        if (metadata.o) {
+            content += "implementation 'com.google.code.gson:gson:2.8.7'\r\n";
+        }
+
+        if (metadata.p) {
+            content += "implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n";
+        }
+
+        return j(content + "}\r\n");
     }
 
     /**
@@ -635,7 +622,7 @@ public class Lx {
      * private File _file_&lt;component name&gt;;
      * </pre>
      */
-    public static String a(String componentNameId, String componentName, a accessModifier, String... var3) {
+    public static String a(String componentNameId, String componentName, a accessModifier, String... parameters) {
         String fieldDeclaration;
         switch (accessModifier) {
             case a:
@@ -657,7 +644,7 @@ public class Lx {
         if (componentNameId.equals("include") || componentNameId.equals("#")) {
             fieldDeclaration = "";
         } else {
-            String initializer = a(componentNameId, componentName, var3);
+            String initializer = a(componentNameId, componentName, parameters);
             String builtInType = mq.e(componentNameId);
             if (initializer.length() <= 0) {
                 if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
@@ -737,101 +724,69 @@ public class Lx {
     /**
      * @return Code of a More Block
      */
-    public static String a(String var0, String var1, String var2) {
-        var0 = "public " +
-                ReturnMoreblockManager.getMbTypeCode(var0) +
-                " _" +
-                ReturnMoreblockManager.getMbName(var0) +
-                "(";
+    public static String a(String var0, String var1, String moreBlockLogic) {
+        String code = "public " + ReturnMoreblockManager.getMbTypeCode(var0) + " _" +
+                ReturnMoreblockManager.getMbName(var0) + "(";
         ArrayList<String> var10 = FB.c(var1);
-        boolean var4 = true;
+        boolean isFirstParameter = true;
 
-        StringBuilder var8;
-        StringBuilder var9;
-        for (int var5 = 0; var5 < var10.size(); ++var5) {
-            String var6 = var10.get(var5);
-            if (var6.charAt(0) == '%') {
-                if (var6.charAt(1) == 'b') {
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
-                    }
+        processingParameters:
+        for (String parameterSpec : var10) {
+            // Avoid label spec parts
+            if (parameterSpec.charAt(0) == '%') {
+                char parameterType = parameterSpec.charAt(1);
+                switch (parameterType) {
+                    case 'b':
+                        String str = code;
+                        if (!isFirstParameter) {
+                            str += ", ";
+                        }
 
-                    var8 = new StringBuilder();
-                    var8.append(var1);
-                    var8.append("final boolean _");
-                    var8.append(var6.substring(3));
-                    var0 = var8.toString();
-                } else if (var6.charAt(1) == 'd') {
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
-                    }
+                        code = str + "final boolean _" + parameterSpec.substring(3);
+                        break;
 
-                    var8 = new StringBuilder();
-                    var8.append(var1);
-                    var8.append("final double _");
-                    var8.append(var6.substring(3));
-                    var0 = var8.toString();
-                } else if (var6.charAt(1) == 's') {
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
-                    }
+                    case 'd':
+                        str = code;
+                        if (!isFirstParameter) {
+                            str += ", ";
+                        }
 
-                    var8 = new StringBuilder();
-                    var8.append(var1);
-                    var8.append("final String _");
-                    var8.append(var6.substring(3));
-                    var0 = var8.toString();
-                } else {
-                    if (var6.charAt(1) != 'm') {
-                        continue;
-                    }
+                        code = str + "final double _" + parameterSpec.substring(3);
+                        break;
 
-                    var1 = var0;
-                    if (!var4) {
-                        var9 = new StringBuilder();
-                        var9.append(var0);
-                        var9.append(", ");
-                        var1 = var9.toString();
-                    }
+                    case 's':
+                        str = code;
+                        if (!isFirstParameter) {
+                            str += ", ";
+                        }
 
-                    var0 = var6.substring(3, var6.lastIndexOf("."));
-                    String var7 = var6.substring(var6.lastIndexOf(".") + 1);
-                    var0 = var1 +
-                            "final " +
-                            mq.e(mq.b(var0)) +
-                            " _" +
-                            var7;
+                        code = str + "final String _" + parameterSpec.substring(3);
+                        break;
+
+                    default:
+                        if (parameterType == 'm') {
+                            str = code;
+                            if (!isFirstParameter) {
+                                str += ", ";
+                            }
+
+                            int lastIndexOfPeriod = parameterSpec.lastIndexOf(".");
+                            code = str +
+                                    "final " + mq.e(mq.b(parameterSpec.substring(3, lastIndexOfPeriod))) + " _" +
+                                    parameterSpec.substring(lastIndexOfPeriod + 1);
+                            break;
+                        } else {
+                            continue processingParameters;
+                        }
                 }
 
-                var4 = false;
+                isFirstParameter = false;
             }
         }
 
-        var9 = new StringBuilder();
-        var9.append(var0);
-        var9.append(") {\r\n");
-        var1 = var9.toString();
-        var8 = new StringBuilder();
-        var8.append(var1);
-        var8.append(var2);
-        var8.append("\r\n");
-        var1 = var8.toString();
-        var8 = new StringBuilder();
-        var8.append(var1);
-        var8.append("}\r\n");
-        return var8.toString();
+        return code + ") {\r\n" +
+                moreBlockLogic + "\r\n" +
+                "}\r\n";
     }
 
     /**
@@ -841,14 +796,16 @@ public class Lx {
         String className = a(widgetName);
 
         String initializers = "";
-        StringBuilder logicBuilder = new StringBuilder(initializers);
+        StringBuilder initializersBuilder = new StringBuilder(initializers);
         for (ViewBean bean : views) {
-            logicBuilder.append(a(bean)).append("\r\n");
+            initializersBuilder.append(a(bean)).append("\r\n");
         }
-        initializers = logicBuilder.toString();
+        initializers = initializersBuilder.toString();
 
-        return "public class " + className + " extends BaseAdapter {\r\n" +
+        String baseCode = "public class " + className + " extends BaseAdapter {\r\n" +
+                "\r\n" +
                 "ArrayList<HashMap<String, Object>> _data;\r\n" +
+                "\r\n" +
                 "public " + className + "(ArrayList<HashMap<String, Object>> _arr) {\r\n" +
                 "_data = _arr;\r\n" +
                 "}\r\n" +
@@ -874,16 +831,22 @@ public class Lx {
                 "View _view = _v;\r\n" +
                 "if (_view == null) {\r\n" +
                 "_view = _inflater.inflate(R.layout." + itemResourceName + ", null);\r\n" +
-                "}\r\n" +
-                "\r\n" +
-                initializers +
-                "\r\n" +
-                onBindCustomViewLogic +
-                "\r\n" +
-                "\r\n" +
+                "}\r\n";
+
+        if (!TextUtils.isEmpty(initializers)) {
+            baseCode += "\r\n" +
+                    initializers;
+        }
+
+        if (!TextUtils.isEmpty(onBindCustomViewLogic.trim())) {
+            baseCode += "\r\n" +
+                    onBindCustomViewLogic + "\r\n";
+        }
+
+        return baseCode + "\r\n" +
                 "return _view;\r\n" +
                 "}\r\n" +
-                "}";
+                "}\r\n";
     }
 
     /**
@@ -892,7 +855,6 @@ public class Lx {
      * Example initializer for a boolean variable: <code>false</code>
      */
     public static String a(String name, String componentName, String... parameters) {
-        Log.d("Lx", "Debug: a(String, String, String), var1 = \"" + componentName + "\"");
         switch (name) {
             case "boolean":
                 return "false";
@@ -1179,7 +1141,7 @@ public class Lx {
     }
 
     /**
-     * @return Content of a generated <code>BluetoothController.java</code> file, without indentation
+     * @return Content of a generated <code>BluetoothConnect.java</code> file, without indentation
      */
     public static String b(String packageName) {
         return "package " + packageName + ";\r\n" +
@@ -3517,9 +3479,11 @@ public class Lx {
             viewsInitializer = new StringBuilder();
         }
 
-        return "public class " + adapterName + " extends PagerAdapter {\r\n" +
+        String baseCode = "public class " + adapterName + " extends PagerAdapter {\r\n" +
+                "\r\n" +
                 "Context _context;\r\n" +
                 "ArrayList<HashMap<String, Object>> _data;\r\n" +
+                "\r\n" +
                 "public " + adapterName + "(Context _ctx, ArrayList<HashMap<String, Object>> _arr) {\r\n" +
                 "_context = _ctx;\r\n" +
                 "_data = _arr;\r\n" +
@@ -3557,15 +3521,24 @@ public class Lx {
                 "\r\n" +
                 "@Override\r\n" +
                 "public Object instantiateItem(ViewGroup _container,  final int _position) {\r\n" +
-                "View _view = LayoutInflater.from(_context).inflate(R.layout." + pagerItemLayoutName + ", _container, false);\r\n" +
-                "\r\n" +
-                viewsInitializer + "\r\n" +
-                onBindCustomViewLogic + "\r\n" +
+                "View _view = LayoutInflater.from(_context).inflate(R.layout." + pagerItemLayoutName + ", _container, false);\r\n";
+
+        if (!TextUtils.isEmpty(viewsInitializer)) {
+            baseCode += "\r\n" +
+                    viewsInitializer;
+        }
+
+        if (!TextUtils.isEmpty(onBindCustomViewLogic)) {
+            baseCode += "\r\n" +
+                    onBindCustomViewLogic + "\r\n";
+        }
+
+        return baseCode +
                 "\r\n" +
                 "_container.addView(_view);\r\n" +
                 "return _view;\r\n" +
                 "}\r\n" +
-                "}";
+                "}\r\n";
     }
 
     public static String recyclerViewAdapter(String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
@@ -3585,8 +3558,10 @@ public class Lx {
             viewsInitializer = new StringBuilder();
         }
 
-        return "public class " + adapterName + " extends RecyclerView.Adapter<" + adapterName + ".ViewHolder> {\r\n" +
+        String baseCode = "public class " + adapterName + " extends RecyclerView.Adapter<" + adapterName + ".ViewHolder> {\r\n" +
+                "\r\n" +
                 "ArrayList<HashMap<String, Object>> _data;\r\n" +
+                "\r\n" +
                 "public " + adapterName + "(ArrayList<HashMap<String, Object>> _arr) {\r\n" +
                 "_data = _arr;\r\n" +
                 "}\r\n" +
@@ -3602,10 +3577,19 @@ public class Lx {
                 "\r\n" +
                 "@Override\r\n" +
                 "public void onBindViewHolder(ViewHolder _holder, final int _position) {\r\n" +
-                "View _view = _holder.itemView;\r\n" +
-                "\r\n" +
-                viewsInitializer + "\r\n" +
-                onBindCustomViewLogic + "\r\n" +
+                "View _view = _holder.itemView;\r\n";
+
+        if (!TextUtils.isEmpty(viewsInitializer)) {
+            baseCode += "\r\n" +
+                    viewsInitializer;
+        }
+
+        if (!TextUtils.isEmpty(onBindCustomViewLogic)) {
+            baseCode += "\r\n" +
+                    onBindCustomViewLogic + "\r\n";
+        }
+
+        return baseCode +
                 "}\r\n" +
                 "\r\n" +
                 "@Override\r\n" +
@@ -3618,8 +3602,7 @@ public class Lx {
                 "super(v);\r\n" +
                 "}\r\n" +
                 "}\r\n" +
-                "\r\n" +
-                "}";
+                "}\r\n";
     }
 
     /**

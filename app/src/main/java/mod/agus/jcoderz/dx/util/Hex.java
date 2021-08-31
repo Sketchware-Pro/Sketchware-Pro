@@ -1,177 +1,303 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.util;
 
-import org.eclipse.jdt.internal.compiler.util.Util;
-
+/**
+ * Utilities for formatting numbers as hexadecimal.
+ */
 public final class Hex {
+    /**
+     * This class is uninstantiable.
+     */
     private Hex() {
+        // This space intentionally left blank.
     }
 
-    public static String u8(long j) {
-        char[] cArr = new char[16];
+    /**
+     * Formats a {@code long} as an 8-byte unsigned hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String u8(long v) {
+        char[] result = new char[16];
         for (int i = 0; i < 16; i++) {
-            cArr[15 - i] = Character.forDigit(((int) j) & 15, 16);
-            j >>= 4;
+            result[15 - i] = Character.forDigit((int) v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String u4(int i) {
-        char[] cArr = new char[8];
-        for (int i2 = 0; i2 < 8; i2++) {
-            cArr[7 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
+    /**
+     * Formats an {@code int} as a 4-byte unsigned hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String u4(int v) {
+        char[] result = new char[8];
+        for (int i = 0; i < 8; i++) {
+            result[7 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String u3(int i) {
-        char[] cArr = new char[6];
-        for (int i2 = 0; i2 < 6; i2++) {
-            cArr[5 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
+    /**
+     * Formats an {@code int} as a 3-byte unsigned hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String u3(int v) {
+        char[] result = new char[6];
+        for (int i = 0; i < 6; i++) {
+            result[5 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String u2(int i) {
-        char[] cArr = new char[4];
-        for (int i2 = 0; i2 < 4; i2++) {
-            cArr[3 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
+    /**
+     * Formats an {@code int} as a 2-byte unsigned hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String u2(int v) {
+        char[] result = new char[4];
+        for (int i = 0; i < 4; i++) {
+            result[3 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String u2or4(int i) {
-        if (i == ((char) i)) {
-            return u2(i);
-        }
-        return u4(i);
-    }
-
-    public static String u1(int i) {
-        char[] cArr = new char[2];
-        for (int i2 = 0; i2 < 2; i2++) {
-            cArr[1 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
-        }
-        return new String(cArr);
-    }
-
-    public static String uNibble(int i) {
-        return new String(new char[]{Character.forDigit(i & 15, 16)});
-    }
-
-    public static String s8(long j) {
-        char[] cArr = new char[17];
-        if (j < 0) {
-            cArr[0] = Util.C_SUPER;
-            j = -j;
+    /**
+     * Formats an {@code int} as either a 2-byte unsigned hex value
+     * (if the value is small enough) or a 4-byte unsigned hex value (if
+     * not).
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String u2or4(int v) {
+        if (v == (char) v) {
+            return u2(v);
         } else {
-            cArr[0] = Util.C_EXTENDS;
+            return u4(v);
         }
+    }
+
+    /**
+     * Formats an {@code int} as a 1-byte unsigned hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String u1(int v) {
+        char[] result = new char[2];
+        for (int i = 0; i < 2; i++) {
+            result[1 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
+        }
+
+        return new String(result);
+    }
+
+    /**
+     * Formats an {@code int} as a 4-bit unsigned hex nibble.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String uNibble(int v) {
+        char[] result = new char[1];
+
+        result[0] = Character.forDigit(v & 0x0f, 16);
+        return new String(result);
+    }
+
+    /**
+     * Formats a {@code long} as an 8-byte signed hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String s8(long v) {
+        char[] result = new char[17];
+
+        if (v < 0) {
+            result[0] = '-';
+            v = -v;
+        } else {
+            result[0] = '+';
+        }
+
         for (int i = 0; i < 16; i++) {
-            cArr[16 - i] = Character.forDigit(((int) j) & 15, 16);
-            j >>= 4;
+            result[16 - i] = Character.forDigit((int) v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String s4(int i) {
-        char[] cArr = new char[9];
-        if (i < 0) {
-            cArr[0] = Util.C_SUPER;
-            i = -i;
+    /**
+     * Formats an {@code int} as a 4-byte signed hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String s4(int v) {
+        char[] result = new char[9];
+
+        if (v < 0) {
+            result[0] = '-';
+            v = -v;
         } else {
-            cArr[0] = Util.C_EXTENDS;
+            result[0] = '+';
         }
-        for (int i2 = 0; i2 < 8; i2++) {
-            cArr[8 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
+
+        for (int i = 0; i < 8; i++) {
+            result[8 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String s2(int i) {
-        char[] cArr = new char[5];
-        if (i < 0) {
-            cArr[0] = Util.C_SUPER;
-            i = -i;
+    /**
+     * Formats an {@code int} as a 2-byte signed hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String s2(int v) {
+        char[] result = new char[5];
+
+        if (v < 0) {
+            result[0] = '-';
+            v = -v;
         } else {
-            cArr[0] = Util.C_EXTENDS;
+            result[0] = '+';
         }
-        for (int i2 = 0; i2 < 4; i2++) {
-            cArr[4 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
+
+        for (int i = 0; i < 4; i++) {
+            result[4 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String s1(int i) {
-        char[] cArr = new char[3];
-        if (i < 0) {
-            cArr[0] = Util.C_SUPER;
-            i = -i;
+    /**
+     * Formats an {@code int} as a 1-byte signed hex value.
+     *
+     * @param v value to format
+     * @return {@code non-null;} formatted form
+     */
+    public static String s1(int v) {
+        char[] result = new char[3];
+
+        if (v < 0) {
+            result[0] = '-';
+            v = -v;
         } else {
-            cArr[0] = Util.C_EXTENDS;
+            result[0] = '+';
         }
-        for (int i2 = 0; i2 < 2; i2++) {
-            cArr[2 - i2] = Character.forDigit(i & 15, 16);
-            i >>= 4;
+
+        for (int i = 0; i < 2; i++) {
+            result[2 - i] = Character.forDigit(v & 0x0f, 16);
+            v >>= 4;
         }
-        return new String(cArr);
+
+        return new String(result);
     }
 
-    public static String dump(byte[] bArr, int i, int i2, int i3, int i4, int i5) {
-        String u3;
-        int i6 = i + i2;
-        if ((i | i2 | i6) < 0 || i6 > bArr.length) {
-            throw new IndexOutOfBoundsException("arr.length " + bArr.length + "; " + i + "..!" + i6);
-        } else if (i3 < 0) {
+    /**
+     * Formats a hex dump of a portion of a {@code byte[]}. The result
+     * is always newline-terminated, unless the passed-in length was zero,
+     * in which case the result is always the empty string ({@code ""}).
+     *
+     * @param arr {@code non-null;} array to format
+     * @param offset {@code >= 0;} offset to the part to dump
+     * @param length {@code >= 0;} number of bytes to dump
+     * @param outOffset {@code >= 0;} first output offset to print
+     * @param bpl {@code >= 0;} number of bytes of output per line
+     * @param addressLength {@code {2,4,6,8};} number of characters for each address
+     * header
+     * @return {@code non-null;} a string of the dump
+     */
+    public static String dump(byte[] arr, int offset, int length,
+                              int outOffset, int bpl, int addressLength) {
+        int end = offset + length;
+
+        // twos-complement math trick: ((x < 0) || (y < 0)) <=> ((x|y) < 0)
+        if (((offset | length | end) < 0) || (end > arr.length)) {
+            throw new IndexOutOfBoundsException("arr.length " +
+                                                arr.length + "; " +
+                                                offset + "..!" + end);
+        }
+
+        if (outOffset < 0) {
             throw new IllegalArgumentException("outOffset < 0");
-        } else if (i2 == 0) {
-            return "";
-        } else {
-            StringBuffer stringBuffer = new StringBuffer((i2 * 4) + 6);
-            int i7 = 0;
-            while (i2 > 0) {
-                if (i7 == 0) {
-                    switch (i5) {
-                        case 2:
-                            u3 = u1(i3);
-                            break;
-                        case 3:
-                        case 5:
-                        default:
-                            u3 = u4(i3);
-                            break;
-                        case 4:
-                            u3 = u2(i3);
-                            break;
-                        case 6:
-                            u3 = u3(i3);
-                            break;
-                    }
-                    stringBuffer.append(u3);
-                    stringBuffer.append(": ");
-                } else if ((i7 & 1) == 0) {
-                    stringBuffer.append(' ');
-                }
-                stringBuffer.append(u1(bArr[i]));
-                i3++;
-                i++;
-                int i8 = i7 + 1;
-                if (i8 == i4) {
-                    stringBuffer.append('\n');
-                    i8 = 0;
-                }
-                i2--;
-                i7 = i8;
-            }
-            if (i7 != 0) {
-                stringBuffer.append('\n');
-            }
-            return stringBuffer.toString();
         }
+
+        if (length == 0) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder(length * 4 + 6);
+        boolean bol = true;
+        int col = 0;
+
+        while (length > 0) {
+            if (col == 0) {
+                String astr;
+                switch (addressLength) {
+                    case 2:  astr = Hex.u1(outOffset); break;
+                    case 4:  astr = Hex.u2(outOffset); break;
+                    case 6:  astr = Hex.u3(outOffset); break;
+                    default: astr = Hex.u4(outOffset); break;
+                }
+                sb.append(astr);
+                sb.append(": ");
+            } else if ((col & 1) == 0) {
+                sb.append(' ');
+            }
+            sb.append(Hex.u1(arr[offset]));
+            outOffset++;
+            offset++;
+            col++;
+            if (col == bpl) {
+                sb.append('\n');
+                col = 0;
+            }
+            length--;
+        }
+
+        if (col != 0) {
+            sb.append('\n');
+        }
+
+        return sb.toString();
     }
 }

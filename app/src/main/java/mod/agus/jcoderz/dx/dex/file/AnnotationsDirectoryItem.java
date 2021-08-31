@@ -1,9 +1,20 @@
-package mod.agus.jcoderz.dx.dex.file;
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dx.rop.annotation.Annotations;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
@@ -11,225 +22,367 @@ import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 
-public final class AnnotationsDirectoryItem extends OffsettedItem {
+/**
+ * Per-class directory of annotations.
+ */
+public final class AnnotationsDirectoryItem extends mod.agus.jcoderz.dx.dex.file.OffsettedItem {
+    /** the required alignment for instances of this class */
     private static final int ALIGNMENT = 4;
-    private static final int ELEMENT_SIZE = 8;
+
+    /** write size of this class's header, in bytes */
     private static final int HEADER_SIZE = 16;
-    private AnnotationSetItem classAnnotations = null;
-    private ArrayList<FieldAnnotationStruct> fieldAnnotations = null;
-    private ArrayList<MethodAnnotationStruct> methodAnnotations = null;
-    private ArrayList<ParameterAnnotationStruct> parameterAnnotations = null;
 
+    /** write size of a list element, in bytes */
+    private static final int ELEMENT_SIZE = 8;
+
+    /** {@code null-ok;} the class-level annotations, if any */
+    private mod.agus.jcoderz.dx.dex.file.AnnotationSetItem classAnnotations;
+
+    /** {@code null-ok;} the annotated fields, if any */
+    private ArrayList<mod.agus.jcoderz.dx.dex.file.FieldAnnotationStruct> fieldAnnotations;
+
+    /** {@code null-ok;} the annotated methods, if any */
+    private ArrayList<mod.agus.jcoderz.dx.dex.file.MethodAnnotationStruct> methodAnnotations;
+
+    /** {@code null-ok;} the annotated parameters, if any */
+    private ArrayList<mod.agus.jcoderz.dx.dex.file.ParameterAnnotationStruct> parameterAnnotations;
+
+    /**
+     * Constructs an empty instance.
+     */
     public AnnotationsDirectoryItem() {
-        super(4, -1);
+        super(ALIGNMENT, -1);
+
+        classAnnotations = null;
+        fieldAnnotations = null;
+        methodAnnotations = null;
+        parameterAnnotations = null;
     }
 
-    private static int listSize(ArrayList<?> arrayList) {
-        if (arrayList == null) {
-            return 0;
-        }
-        return arrayList.size();
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_ANNOTATIONS_DIRECTORY_ITEM;
     }
 
+    /**
+     * Returns whether this item is empty (has no contents).
+     *
+     * @return {@code true} if this item is empty, or {@code false}
+     * if not
+     */
     public boolean isEmpty() {
-        return this.classAnnotations == null && this.fieldAnnotations == null && this.methodAnnotations == null && this.parameterAnnotations == null;
-    }
-
-    public boolean isInternable() {
-        return this.classAnnotations != null && this.fieldAnnotations == null && this.methodAnnotations == null && this.parameterAnnotations == null;
-    }
-
-    public int hashCode() {
-        if (this.classAnnotations == null) {
-            return 0;
-        }
-        return this.classAnnotations.hashCode();
+        return (classAnnotations == null) &&
+            (fieldAnnotations == null) &&
+            (methodAnnotations == null) &&
+            (parameterAnnotations == null);
     }
 
     /**
-     * @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-     * public int compareTo0(OffsettedItem offsettedItem) {
-     * if (isInternable()) {
-     * return ((OffsettedItem) ((AnnotationsDirectoryItem )offsettedItem).classAnnotations).compareTo(null);
-     * }
-     * throw new UnsupportedOperationException("uninternable instance");
-     * }
-     **/
+     * Returns whether this item is a candidate for interning. The only
+     * interning candidates are ones that <i>only</i> have a non-null
+     * set of class annotations, with no other lists.
+     *
+     * @return {@code true} if this is an interning candidate, or
+     * {@code false} if not
+     */
+    public boolean isInternable() {
+        return (classAnnotations != null) &&
+            (fieldAnnotations == null) &&
+            (methodAnnotations == null) &&
+            (parameterAnnotations == null);
+    }
 
-    public void setClassAnnotations(Annotations annotations, DexFile dexFile) {
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        if (classAnnotations == null) {
+            return 0;
+        }
+
+        return classAnnotations.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p><b>Note:</b>: This throws an exception if this item is not
+     * internable.</p>
+     *
+     * @see #isInternable
+     */
+    @Override
+    public int compareTo0(mod.agus.jcoderz.dx.dex.file.OffsettedItem other) {
+        if (! isInternable()) {
+            throw new UnsupportedOperationException("uninternable instance");
+        }
+
+        AnnotationsDirectoryItem otherDirectory =
+            (AnnotationsDirectoryItem) other;
+        return classAnnotations.compareTo(otherDirectory.classAnnotations);
+    }
+
+    /**
+     * Sets the direct annotations on this instance. These are annotations
+     * made on the class, per se, as opposed to on one of its members.
+     * It is only valid to call this method at most once per instance.
+     *
+     * @param annotations {@code non-null;} annotations to set for this class
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void setClassAnnotations(Annotations annotations, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
         if (annotations == null) {
             throw new NullPointerException("annotations == null");
-        } else if (this.classAnnotations != null) {
-            throw new UnsupportedOperationException("class annotations already set");
-        } else {
-            this.classAnnotations = new AnnotationSetItem(annotations, dexFile);
         }
+
+        if (classAnnotations != null) {
+            throw new UnsupportedOperationException(
+                    "class annotations already set");
+        }
+
+        classAnnotations = new mod.agus.jcoderz.dx.dex.file.AnnotationSetItem(annotations, dexFile);
     }
 
-    public void addFieldAnnotations(CstFieldRef cstFieldRef, Annotations annotations, DexFile dexFile) {
-        if (this.fieldAnnotations == null) {
-            this.fieldAnnotations = new ArrayList<>();
+    /**
+     * Adds a field annotations item to this instance.
+     *
+     * @param field {@code non-null;} field in question
+     * @param annotations {@code non-null;} associated annotations to add
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void addFieldAnnotations(CstFieldRef field,
+            Annotations annotations, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        if (fieldAnnotations == null) {
+            fieldAnnotations = new ArrayList<mod.agus.jcoderz.dx.dex.file.FieldAnnotationStruct>();
         }
-        this.fieldAnnotations.add(new FieldAnnotationStruct(cstFieldRef, new AnnotationSetItem(annotations, dexFile)));
+
+        fieldAnnotations.add(new mod.agus.jcoderz.dx.dex.file.FieldAnnotationStruct(field,
+                        new mod.agus.jcoderz.dx.dex.file.AnnotationSetItem(annotations, dexFile)));
     }
 
-    public void addMethodAnnotations(CstMethodRef cstMethodRef, Annotations annotations, DexFile dexFile) {
-        if (this.methodAnnotations == null) {
-            this.methodAnnotations = new ArrayList<>();
+    /**
+     * Adds a method annotations item to this instance.
+     *
+     * @param method {@code non-null;} method in question
+     * @param annotations {@code non-null;} associated annotations to add
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void addMethodAnnotations(CstMethodRef method,
+            Annotations annotations, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        if (methodAnnotations == null) {
+            methodAnnotations = new ArrayList<mod.agus.jcoderz.dx.dex.file.MethodAnnotationStruct>();
         }
-        this.methodAnnotations.add(new MethodAnnotationStruct(cstMethodRef, new AnnotationSetItem(annotations, dexFile)));
+
+        methodAnnotations.add(new mod.agus.jcoderz.dx.dex.file.MethodAnnotationStruct(method,
+                        new AnnotationSetItem(annotations, dexFile)));
     }
 
-    public void addParameterAnnotations(CstMethodRef cstMethodRef, AnnotationsList annotationsList, DexFile dexFile) {
-        if (this.parameterAnnotations == null) {
-            this.parameterAnnotations = new ArrayList<>();
+    /**
+     * Adds a parameter annotations item to this instance.
+     *
+     * @param method {@code non-null;} method in question
+     * @param list {@code non-null;} associated list of annotation sets to add
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void addParameterAnnotations(CstMethodRef method,
+            AnnotationsList list, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        if (parameterAnnotations == null) {
+            parameterAnnotations = new ArrayList<mod.agus.jcoderz.dx.dex.file.ParameterAnnotationStruct>();
         }
-        this.parameterAnnotations.add(new ParameterAnnotationStruct(cstMethodRef, annotationsList, dexFile));
+
+        parameterAnnotations.add(new mod.agus.jcoderz.dx.dex.file.ParameterAnnotationStruct(method, list, dexFile));
     }
 
-    public Annotations getMethodAnnotations(CstMethodRef cstMethodRef) {
-        if (this.methodAnnotations == null) {
+    /**
+     * Gets the method annotations for a given method, if any. This is
+     * meant for use by debugging / dumping code.
+     *
+     * @param method {@code non-null;} the method
+     * @return {@code null-ok;} the method annotations, if any
+     */
+    public Annotations getMethodAnnotations(CstMethodRef method) {
+        if (methodAnnotations == null) {
             return null;
         }
-        Iterator<MethodAnnotationStruct> it = this.methodAnnotations.iterator();
-        while (it.hasNext()) {
-            MethodAnnotationStruct next = it.next();
-            if (next.getMethod().equals(cstMethodRef)) {
-                return next.getAnnotations();
+
+        for (mod.agus.jcoderz.dx.dex.file.MethodAnnotationStruct item : methodAnnotations) {
+            if (item.getMethod().equals(method)) {
+                return item.getAnnotations();
             }
         }
+
         return null;
     }
 
-    public AnnotationsList getParameterAnnotations(CstMethodRef cstMethodRef) {
-        if (this.parameterAnnotations == null) {
+    /**
+     * Gets the parameter annotations for a given method, if any. This is
+     * meant for use by debugging / dumping code.
+     *
+     * @param method {@code non-null;} the method
+     * @return {@code null-ok;} the parameter annotations, if any
+     */
+    public AnnotationsList getParameterAnnotations(CstMethodRef method) {
+        if (parameterAnnotations == null) {
             return null;
         }
-        Iterator<ParameterAnnotationStruct> it = this.parameterAnnotations.iterator();
-        while (it.hasNext()) {
-            ParameterAnnotationStruct next = it.next();
-            if (next.getMethod().equals(cstMethodRef)) {
-                return next.getAnnotationsList();
+
+        for (mod.agus.jcoderz.dx.dex.file.ParameterAnnotationStruct item : parameterAnnotations) {
+            if (item.getMethod().equals(method)) {
+                return item.getAnnotationsList();
             }
         }
+
         return null;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        MixedItemSection wordData = dexFile.getWordData();
-        if (this.classAnnotations != null) {
-            this.classAnnotations = (AnnotationSetItem) wordData.intern(this.classAnnotations);
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        MixedItemSection wordData = file.getWordData();
+
+        if (classAnnotations != null) {
+            classAnnotations = wordData.intern(classAnnotations);
         }
-        if (this.fieldAnnotations != null) {
-            Iterator<FieldAnnotationStruct> it = this.fieldAnnotations.iterator();
-            while (it.hasNext()) {
-                it.next().addContents(dexFile);
+
+        if (fieldAnnotations != null) {
+            for (mod.agus.jcoderz.dx.dex.file.FieldAnnotationStruct item : fieldAnnotations) {
+                item.addContents(file);
             }
         }
-        if (this.methodAnnotations != null) {
-            Iterator<MethodAnnotationStruct> it2 = this.methodAnnotations.iterator();
-            while (it2.hasNext()) {
-                it2.next().addContents(dexFile);
+
+        if (methodAnnotations != null) {
+            for (mod.agus.jcoderz.dx.dex.file.MethodAnnotationStruct item : methodAnnotations) {
+                item.addContents(file);
             }
         }
-        if (this.parameterAnnotations != null) {
-            Iterator<ParameterAnnotationStruct> it3 = this.parameterAnnotations.iterator();
-            while (it3.hasNext()) {
-                it3.next().addContents(dexFile);
+
+        if (parameterAnnotations != null) {
+            for (mod.agus.jcoderz.dx.dex.file.ParameterAnnotationStruct item : parameterAnnotations) {
+                item.addContents(file);
             }
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         throw new RuntimeException("unsupported");
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void place0(Section section, int i) {
-        setWriteSize(((listSize(this.fieldAnnotations) + listSize(this.methodAnnotations) + listSize(this.parameterAnnotations)) * 8) + 16);
+    /** {@inheritDoc} */
+    @Override
+    protected void place0(Section addedTo, int offset) {
+        // We just need to set the write size here.
+
+        int elementCount = listSize(fieldAnnotations)
+            + listSize(methodAnnotations) + listSize(parameterAnnotations);
+        setWriteSize(HEADER_SIZE + (elementCount * ELEMENT_SIZE));
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        boolean annotates = annotatedOutput.annotates();
-        int absoluteOffsetOr0 = OffsettedItem.getAbsoluteOffsetOr0(this.classAnnotations);
-        int listSize = listSize(this.fieldAnnotations);
-        int listSize2 = listSize(this.methodAnnotations);
-        int listSize3 = listSize(this.parameterAnnotations);
+    /** {@inheritDoc} */
+    @Override
+    protected void writeTo0(DexFile file, AnnotatedOutput out) {
+        boolean annotates = out.annotates();
+        int classOff = OffsettedItem.getAbsoluteOffsetOr0(classAnnotations);
+        int fieldsSize = listSize(fieldAnnotations);
+        int methodsSize = listSize(methodAnnotations);
+        int parametersSize = listSize(parameterAnnotations);
+
         if (annotates) {
-            annotatedOutput.annotate(0, offsetString() + " annotations directory");
-            annotatedOutput.annotate(4, "  class_annotations_off: " + Hex.u4(absoluteOffsetOr0));
-            annotatedOutput.annotate(4, "  fields_size:           " + Hex.u4(listSize));
-            annotatedOutput.annotate(4, "  methods_size:          " + Hex.u4(listSize2));
-            annotatedOutput.annotate(4, "  parameters_size:       " + Hex.u4(listSize3));
+            out.annotate(0, offsetString() + " annotations directory");
+            out.annotate(4, "  class_annotations_off: " + Hex.u4(classOff));
+            out.annotate(4, "  fields_size:           " +
+                    Hex.u4(fieldsSize));
+            out.annotate(4, "  methods_size:          " +
+                    Hex.u4(methodsSize));
+            out.annotate(4, "  parameters_size:       " +
+                    Hex.u4(parametersSize));
         }
-        annotatedOutput.writeInt(absoluteOffsetOr0);
-        annotatedOutput.writeInt(listSize);
-        annotatedOutput.writeInt(listSize2);
-        annotatedOutput.writeInt(listSize3);
-        if (listSize != 0) {
-            Collections.sort(this.fieldAnnotations);
+
+        out.writeInt(classOff);
+        out.writeInt(fieldsSize);
+        out.writeInt(methodsSize);
+        out.writeInt(parametersSize);
+
+        if (fieldsSize != 0) {
+            Collections.sort(fieldAnnotations);
             if (annotates) {
-                annotatedOutput.annotate(0, "  fields:");
+                out.annotate(0, "  fields:");
             }
-            Iterator<FieldAnnotationStruct> it = this.fieldAnnotations.iterator();
-            while (it.hasNext()) {
-                it.next().writeTo(dexFile, annotatedOutput);
-            }
-        }
-        if (listSize2 != 0) {
-            Collections.sort(this.methodAnnotations);
-            if (annotates) {
-                annotatedOutput.annotate(0, "  methods:");
-            }
-            Iterator<MethodAnnotationStruct> it2 = this.methodAnnotations.iterator();
-            while (it2.hasNext()) {
-                it2.next().writeTo(dexFile, annotatedOutput);
+            for (mod.agus.jcoderz.dx.dex.file.FieldAnnotationStruct item : fieldAnnotations) {
+                item.writeTo(file, out);
             }
         }
-        if (listSize3 != 0) {
-            Collections.sort(this.parameterAnnotations);
+
+        if (methodsSize != 0) {
+            Collections.sort(methodAnnotations);
             if (annotates) {
-                annotatedOutput.annotate(0, "  parameters:");
+                out.annotate(0, "  methods:");
             }
-            Iterator<ParameterAnnotationStruct> it3 = this.parameterAnnotations.iterator();
-            while (it3.hasNext()) {
-                it3.next().writeTo(dexFile, annotatedOutput);
+            for (mod.agus.jcoderz.dx.dex.file.MethodAnnotationStruct item : methodAnnotations) {
+                item.writeTo(file, out);
+            }
+        }
+
+        if (parametersSize != 0) {
+            Collections.sort(parameterAnnotations);
+            if (annotates) {
+                out.annotate(0, "  parameters:");
+            }
+            for (mod.agus.jcoderz.dx.dex.file.ParameterAnnotationStruct item : parameterAnnotations) {
+                item.writeTo(file, out);
             }
         }
     }
 
-    void debugPrint(PrintWriter printWriter) {
-        if (this.classAnnotations != null) {
-            printWriter.println("  class annotations: " + this.classAnnotations);
+    /**
+     * Gets the list size of the given list, or {@code 0} if given
+     * {@code null}.
+     *
+     * @param list {@code null-ok;} the list in question
+     * @return {@code >= 0;} its size
+     */
+    private static int listSize(ArrayList<?> list) {
+        if (list == null) {
+            return 0;
         }
-        if (this.fieldAnnotations != null) {
-            printWriter.println("  field annotations:");
-            Iterator<FieldAnnotationStruct> it = this.fieldAnnotations.iterator();
-            while (it.hasNext()) {
-                printWriter.println("    " + it.next().toHuman());
+
+        return list.size();
+    }
+
+    /**
+     * Prints out the contents of this instance, in a debugging-friendly
+     * way. This is meant to be called from {@link ClassDefItem#debugPrint}.
+     *
+     * @param out {@code non-null;} where to output to
+     */
+    /*package*/ void debugPrint(PrintWriter out) {
+        if (classAnnotations != null) {
+            out.println("  class annotations: " + classAnnotations);
+        }
+
+        if (fieldAnnotations != null) {
+            out.println("  field annotations:");
+            for (FieldAnnotationStruct item : fieldAnnotations) {
+                out.println("    " + item.toHuman());
             }
         }
-        if (this.methodAnnotations != null) {
-            printWriter.println("  method annotations:");
-            Iterator<MethodAnnotationStruct> it2 = this.methodAnnotations.iterator();
-            while (it2.hasNext()) {
-                printWriter.println("    " + it2.next().toHuman());
+
+        if (methodAnnotations != null) {
+            out.println("  method annotations:");
+            for (MethodAnnotationStruct item : methodAnnotations) {
+                out.println("    " + item.toHuman());
             }
         }
-        if (this.parameterAnnotations != null) {
-            printWriter.println("  parameter annotations:");
-            Iterator<ParameterAnnotationStruct> it3 = this.parameterAnnotations.iterator();
-            while (it3.hasNext()) {
-                printWriter.println("    " + it3.next().toHuman());
+
+        if (parameterAnnotations != null) {
+            out.println("  parameter annotations:");
+            for (ParameterAnnotationStruct item : parameterAnnotations) {
+                out.println("    " + item.toHuman());
             }
         }
     }

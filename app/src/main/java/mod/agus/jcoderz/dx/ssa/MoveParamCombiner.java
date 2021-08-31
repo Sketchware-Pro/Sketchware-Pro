@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa;
 
 import java.util.HashSet;
@@ -5,85 +21,140 @@ import java.util.List;
 
 import mod.agus.jcoderz.dx.rop.code.CstInsn;
 import mod.agus.jcoderz.dx.rop.code.LocalItem;
+import mod.agus.jcoderz.dx.rop.code.RegOps;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 
+/**
+ * Combine identical move-param insns, which may result from Ropper's
+ * handling of synchronized methods.
+ */
 public class MoveParamCombiner {
-    private final SsaMethod ssaMeth;
 
-    private MoveParamCombiner(SsaMethod ssaMethod) {
-        this.ssaMeth = ssaMethod;
-    }
+    /** method to process */
+    private final mod.agus.jcoderz.dx.ssa.SsaMethod ssaMeth;
 
-    public static void process(SsaMethod ssaMethod) {
+    /**
+     * Processes a method with this optimization step.
+     *
+     * @param ssaMethod method to process
+     */
+    public static void process(mod.agus.jcoderz.dx.ssa.SsaMethod ssaMethod) {
         new MoveParamCombiner(ssaMethod).run();
     }
 
+    private MoveParamCombiner(SsaMethod ssaMeth) {
+        this.ssaMeth = ssaMeth;
+    }
+
+    /**
+     * Runs this optimization step.
+     */
     private void run() {
-        final RegisterSpec[] registerSpecArr = new RegisterSpec[this.ssaMeth.getParamWidth()];
-        final HashSet hashSet = new HashSet();
-        this.ssaMeth.forEachInsn(new SsaInsn.Visitor() {
+        // This will contain the definition specs for each parameter
+        final mod.agus.jcoderz.dx.rop.code.RegisterSpec[] paramSpecs
+                = new mod.agus.jcoderz.dx.rop.code.RegisterSpec[ssaMeth.getParamWidth()];
 
-            private Object RegisterMapper;
+        // Insns to delete when all done
+        final HashSet<mod.agus.jcoderz.dx.ssa.SsaInsn> deletedInsns = new HashSet();
 
-            @Override // mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor
-            public void visitMoveInsn(NormalSsaInsn normalSsaInsn) {
+        ssaMeth.forEachInsn(new mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor() {
+            @Override
+            public void visitMoveInsn (NormalSsaInsn insn) {
             }
-
-            @Override // mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor
-            public void visitPhiInsn(PhiInsn phiInsn) {
+            @Override
+            public void visitPhiInsn (PhiInsn phi) {
             }
+            @Override
+            public void visitNonMoveInsn (NormalSsaInsn insn) {
+                if (insn.getOpcode().getOpcode() != RegOps.MOVE_PARAM) {
+                    return;
+                }
 
-            @Override // mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor
-            public void visitNonMoveInsn(NormalSsaInsn normalSsaInsn) {
-                if (normalSsaInsn.getOpcode().getOpcode() == 3) {
-                    int paramIndex = MoveParamCombiner.this.getParamIndex(normalSsaInsn);
-                    if (registerSpecArr[paramIndex] == null) {
-                        registerSpecArr[paramIndex] = normalSsaInsn.getResult();
+                int param = getParamIndex(insn);
+
+                if (paramSpecs[param] == null) {
+                    paramSpecs[param] = insn.getResult();
+                } else {
+                    final mod.agus.jcoderz.dx.rop.code.RegisterSpec specA = paramSpecs[param];
+                    final mod.agus.jcoderz.dx.rop.code.RegisterSpec specB = insn.getResult();
+                    mod.agus.jcoderz.dx.rop.code.LocalItem localA = specA.getLocalItem();
+                    mod.agus.jcoderz.dx.rop.code.LocalItem localB = specB.getLocalItem();
+                    LocalItem newLocal;
+
+                    /*
+                     * Is there local information to preserve?
+                     */
+
+                    if (localA == null) {
+                        newLocal = localB;
+                    } else if (localB == null) {
+                        newLocal = localA;
+                    } else if (localA.equals(localB)) {
+                        newLocal = localA;
+                    } else {
+                        /*
+                         * Oddly, these two identical move-params have distinct
+                         * debug info. We'll just keep them distinct.
+                         */
                         return;
                     }
-                    final RegisterSpec registerSpec = registerSpecArr[paramIndex];
-                    final RegisterSpec result = normalSsaInsn.getResult();
-                    LocalItem localItem = registerSpec.getLocalItem();
-                    LocalItem localItem2 = result.getLocalItem();
-                    if (localItem != null) {
-                        if (localItem2 == null) {
-                            localItem2 = localItem;
-                        } else if (localItem.equals(localItem2)) {
-                            localItem2 = localItem;
-                        } else {
-                            return;
-                        }
-                    }
-                    MoveParamCombiner.this.ssaMeth.getDefinitionForRegister(registerSpec.getReg()).setResultLocal(localItem2);
-                    RegisterMapper registerMapper = new RegisterMapper() {
-                        /* class mod.agus.jcoderz.dx.ssa.MoveParamCombiner.AnonymousClass1.AnonymousClass1 */
 
-                        @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
+                    ssaMeth.getDefinitionForRegister(specA.getReg())
+                            .setResultLocal(newLocal);
+
+                    /*
+                     * Map all uses of specB to specA
+                     */
+
+                    mod.agus.jcoderz.dx.ssa.RegisterMapper mapper = new RegisterMapper() {
+                        /** {@inheritDoc} */
+                        @Override
                         public int getNewRegisterCount() {
-                            return MoveParamCombiner.this.ssaMeth.getRegCount();
+                            return ssaMeth.getRegCount();
                         }
 
-                        @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
-                        public RegisterSpec map(RegisterSpec registerSpec) {
-                            if (registerSpec.getReg() == result.getReg()) {
-                                return registerSpec;
+                        /** {@inheritDoc} */
+                        @Override
+                        public mod.agus.jcoderz.dx.rop.code.RegisterSpec map(RegisterSpec registerSpec) {
+                            if (registerSpec.getReg() == specB.getReg()) {
+                                return specA;
                             }
+
                             return registerSpec;
                         }
                     };
-                    List<SsaInsn> useListForRegister = MoveParamCombiner.this.ssaMeth.getUseListForRegister(result.getReg());
-                    for (int size = useListForRegister.size() - 1; size >= 0; size--) {
-                        useListForRegister.get(size).mapSourceRegisters((mod.agus.jcoderz.dx.ssa.RegisterMapper) RegisterMapper);
+
+                    List<mod.agus.jcoderz.dx.ssa.SsaInsn> uses
+                            = ssaMeth.getUseListForRegister(specB.getReg());
+
+                    // Use list is modified by mapSourceRegisters
+                    for (int i = uses.size() - 1; i >= 0; i--) {
+                        SsaInsn use = uses.get(i);
+                        use.mapSourceRegisters(mapper);
                     }
-                    hashSet.add(normalSsaInsn);
+
+                    deletedInsns.add(insn);
                 }
+
             }
         });
-        this.ssaMeth.deleteInsns(hashSet);
+
+        ssaMeth.deleteInsns(deletedInsns);
     }
 
-    private int getParamIndex(NormalSsaInsn normalSsaInsn) {
-        return ((CstInteger) ((CstInsn) normalSsaInsn.getOriginalRopInsn()).getConstant()).getValue();
+    /**
+     * Returns the parameter index associated with a move-param insn. Does
+     * not verify that the insn is a move-param insn.
+     *
+     * @param insn {@code non-null;} a move-param insn
+     * @return {@code >=0;} parameter index
+     */
+    private int getParamIndex(NormalSsaInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.CstInsn cstInsn = (CstInsn)(insn.getOriginalRopInsn());
+
+        int param = ((CstInteger)cstInsn.getConstant()).getValue();
+        return param;
     }
+
 }

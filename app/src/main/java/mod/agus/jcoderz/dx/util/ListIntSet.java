@@ -1,104 +1,141 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.util;
 
 import java.util.NoSuchElementException;
 
+/**
+ * A set of integers, represented by a list
+ */
 public class ListIntSet implements IntSet {
-    final IntList ints = new IntList();
 
+    /** also accessed in BitIntSet */
+    final IntList ints;
+
+    /**
+     * Constructs an instance
+     */
     public ListIntSet() {
-        this.ints.sort();
+        ints = new IntList();
+        ints.sort();
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public void add(int i) {
-        int binarysearch = this.ints.binarysearch(i);
-        if (binarysearch < 0) {
-            this.ints.insert(-(binarysearch + 1), i);
+    /** {@inheritDoc} */
+    @Override
+    public void add(int value) {
+        int index = ints.binarysearch(value);
+
+        if (index < 0) {
+            ints.insert(-(index + 1), value);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public void remove(int i) {
-        int indexOf = this.ints.indexOf(i);
-        if (indexOf >= 0) {
-            this.ints.removeIndex(indexOf);
+    /** {@inheritDoc} */
+    @Override
+    public void remove(int value) {
+        int index = ints.indexOf(value);
+
+        if (index >= 0) {
+            ints.removeIndex(index);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public boolean has(int i) {
-        return this.ints.indexOf(i) >= 0;
+    /** {@inheritDoc} */
+    @Override
+    public boolean has(int value) {
+        return ints.indexOf(value) >= 0;
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
-    public void merge(IntSet intSet) {
-        int i = 0;
-        if (intSet instanceof ListIntSet) {
-            ListIntSet listIntSet = (ListIntSet) intSet;
-            int size = this.ints.size();
-            int size2 = listIntSet.ints.size();
-            int i2 = 0;
-            while (i < size2 && i2 < size) {
-                while (i < size2 && listIntSet.ints.get(i) < this.ints.get(i2)) {
-                    add(listIntSet.ints.get(i));
-                    i++;
+    /** {@inheritDoc} */
+    @Override
+    public void merge(IntSet other) {
+        if (other instanceof ListIntSet) {
+            ListIntSet o = (ListIntSet) other;
+            int szThis = ints.size();
+            int szOther = o.ints.size();
+
+            int i = 0;
+            int j = 0;
+
+            while (j < szOther && i < szThis) {
+                while (j < szOther && o.ints.get(j) < ints.get(i)) {
+                    add(o.ints.get(j++));
                 }
-                if (i == size2) {
+                if (j == szOther) {
                     break;
                 }
-                while (i2 < size && listIntSet.ints.get(i) >= this.ints.get(i2)) {
-                    i2++;
+                while (i < szThis && o.ints.get(j) >= ints.get(i)) {
+                    i++;
                 }
             }
-            while (i < size2) {
-                add(listIntSet.ints.get(i));
-                i++;
+
+            while (j < szOther) {
+                add(o.ints.get(j++));
             }
-            this.ints.sort();
-        } else if (intSet instanceof BitIntSet) {
-            BitIntSet bitIntSet = (BitIntSet) intSet;
-            while (i >= 0) {
-                this.ints.add(i);
-                i = Bits.findFirst(bitIntSet.bits, i + 1);
+
+            ints.sort();
+        } else if (other instanceof BitIntSet) {
+            BitIntSet o = (BitIntSet) other;
+
+            for (int i = 0; i >= 0; i = Bits.findFirst(o.bits, i + 1)) {
+                ints.add(i);
             }
-            this.ints.sort();
+            ints.sort();
         } else {
-            IntIterator it = intSet.iterator();
-            while (it.hasNext()) {
-                add(it.next());
+            IntIterator iter = other.iterator();
+            while (iter.hasNext()) {
+                add(iter.next());
             }
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
+    /** {@inheritDoc} */
+    @Override
     public int elements() {
-        return this.ints.size();
+        return ints.size();
     }
 
-    @Override // mod.agus.jcoderz.dx.util.IntSet
+    /** {@inheritDoc} */
+    @Override
     public IntIterator iterator() {
         return new IntIterator() {
             private int idx = 0;
 
-            @Override // mod.agus.jcoderz.dx.util.IntIterator
+            /** {@inheritDoc} */
+            @Override
             public boolean hasNext() {
-                return this.idx < ListIntSet.this.ints.size();
+                return idx < ints.size();
             }
 
-            @Override // mod.agus.jcoderz.dx.util.IntIterator
+            /** {@inheritDoc} */
+            @Override
             public int next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                IntList intList = ListIntSet.this.ints;
-                int i = this.idx;
-                this.idx = i + 1;
-                return intList.get(i);
+
+                return ints.get(idx++);
             }
         };
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        return this.ints.toString();
+        return ints.toString();
     }
 }

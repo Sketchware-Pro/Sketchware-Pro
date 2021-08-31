@@ -1,95 +1,162 @@
-package mod.agus.jcoderz.dx.dex.code.form;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.BitSet;
+package mod.agus.jcoderz.dx.dex.code.form;
 
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
 import mod.agus.jcoderz.dx.dex.code.SimpleInsn;
+import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
-import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
+/**
+ * Instruction format {@code 12x}. See the instruction format spec
+ * for details.
+ */
 public final class Form12x extends InsnFormat {
+    /** {@code non-null;} unique instance of this class */
     public static final InsnFormat THE_ONE = new Form12x();
 
+    /**
+     * Constructs an instance. This class is not publicly
+     * instantiable. Use {@link #THE_ONE}.
+     */
     private Form12x() {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnArgString(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        int size = registers.size();
-        return registers.get(size - 2).regString() + ", " + registers.get(size - 1).regString();
+    /** {@inheritDoc} */
+    @Override
+    public String insnArgString(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        int sz = regs.size();
+
+        /*
+         * The (sz - 2) and (sz - 1) below makes this code work for
+         * both the two- and three-register ops. (See "case 3" in
+         * isCompatible(), below.)
+         */
+
+        return regs.get(sz - 2).regString() + ", " +
+            regs.get(sz - 1).regString();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnCommentString(DalvInsn dalvInsn, boolean z) {
+    /** {@inheritDoc} */
+    @Override
+    public String insnCommentString(DalvInsn insn, boolean noteIndices) {
+        // This format has no comment.
         return "";
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
         return 1;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public boolean isCompatible(DalvInsn dalvInsn) {
-        RegisterSpec registerSpec;
-        RegisterSpec registerSpec2;
-        if (!(dalvInsn instanceof SimpleInsn)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean isCompatible(DalvInsn insn) {
+        if (!(insn instanceof SimpleInsn)) {
             return false;
         }
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        switch (registers.size()) {
-            case 2:
-                registerSpec = registers.get(0);
-                registerSpec2 = registers.get(1);
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec rs1;
+        RegisterSpec rs2;
+
+        switch (regs.size()) {
+            case 2: {
+                rs1 = regs.get(0);
+                rs2 = regs.get(1);
                 break;
-            case 3:
-                registerSpec = registers.get(1);
-                registerSpec2 = registers.get(2);
-                if (registerSpec.getReg() != registers.get(0).getReg()) {
+            }
+            case 3: {
+                /*
+                 * This format is allowed for ops that are effectively
+                 * 3-arg but where the first two args are identical.
+                 */
+                rs1 = regs.get(1);
+                rs2 = regs.get(2);
+                if (rs1.getReg() != regs.get(0).getReg()) {
                     return false;
                 }
                 break;
-            default:
+            }
+            default: {
                 return false;
+            }
         }
-        return unsignedFitsInNibble(registerSpec.getReg()) && unsignedFitsInNibble(registerSpec2.getReg());
+
+        return unsignedFitsInNibble(rs1.getReg()) &&
+            unsignedFitsInNibble(rs2.getReg());
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        BitSet bitSet = new BitSet(2);
-        int reg = registers.get(0).getReg();
-        int reg2 = registers.get(1).getReg();
-        switch (registers.size()) {
-            case 2:
-                bitSet.set(0, unsignedFitsInNibble(reg));
-                bitSet.set(1, unsignedFitsInNibble(reg2));
-                break;
-            case 3:
-                if (reg != reg2) {
-                    bitSet.set(0, false);
-                    bitSet.set(1, false);
-                } else {
-                    boolean unsignedFitsInNibble = unsignedFitsInNibble(reg2);
-                    bitSet.set(0, unsignedFitsInNibble);
-                    bitSet.set(1, unsignedFitsInNibble);
-                }
-                bitSet.set(2, unsignedFitsInNibble(registers.get(2).getReg()));
-                break;
-            default:
-                throw new AssertionError();
+    /** {@inheritDoc} */
+    @Override
+    public BitSet compatibleRegs(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        BitSet bits = new BitSet(2);
+        int r0 = regs.get(0).getReg();
+        int r1 = regs.get(1).getReg();
+
+        switch (regs.size()) {
+          case 2: {
+            bits.set(0, unsignedFitsInNibble(r0));
+            bits.set(1, unsignedFitsInNibble(r1));
+            break;
+          }
+          case 3: {
+            if (r0 != r1) {
+                bits.set(0, false);
+                bits.set(1, false);
+            } else {
+                boolean dstRegComp = unsignedFitsInNibble(r1);
+                bits.set(0, dstRegComp);
+                bits.set(1, dstRegComp);
+            }
+
+            bits.set(2, unsignedFitsInNibble(regs.get(2).getReg()));
+            break;
+          }
+          default: {
+            throw new AssertionError();
+          }
         }
-        return bitSet;
+
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        int size = registers.size();
-        write(annotatedOutput, opcodeUnit(dalvInsn, makeByte(registers.get(size - 2).getReg(), registers.get(size - 1).getReg())));
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out, DalvInsn insn) {
+        RegisterSpecList regs = insn.getRegisters();
+        int sz = regs.size();
+
+        /*
+         * The (sz - 2) and (sz - 1) below makes this code work for
+         * both the two- and three-register ops. (See "case 3" in
+         * isCompatible(), above.)
+         */
+
+        write(out, opcodeUnit(insn,
+                              makeByte(regs.get(sz - 2).getReg(),
+                                       regs.get(sz - 1).getReg())));
     }
 }

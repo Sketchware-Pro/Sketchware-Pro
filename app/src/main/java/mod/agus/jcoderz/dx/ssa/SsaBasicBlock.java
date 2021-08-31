@@ -1,5 +1,24 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa;
 
+import mod.agus.jcoderz.dx.util.Hex;
+import mod.agus.jcoderz.dx.util.IntList;
+import mod.agus.jcoderz.dx.util.IntSet;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
@@ -13,429 +32,981 @@ import mod.agus.jcoderz.dx.rop.code.InsnList;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
+import mod.agus.jcoderz.dx.rop.code.Rop;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.Rops;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
-import mod.agus.jcoderz.dx.util.Hex;
-import mod.agus.jcoderz.dx.util.IntList;
-import mod.agus.jcoderz.dx.util.IntSet;
 
+/**
+ * An SSA representation of a basic block.
+ */
 public final class SsaBasicBlock {
-    public static final Comparator<SsaBasicBlock> LABEL_COMPARATOR = new LabelComparator();
-    private final ArrayList<SsaBasicBlock> domChildren;
-    private final int index;
+    /**
+     * {@code non-null;} comparator for instances of this class that
+     * just compares block labels
+     */
+    public static final Comparator<SsaBasicBlock> LABEL_COMPARATOR =
+        new LabelComparator();
+
+    /** {@code non-null;} insn list associated with this instance */
     private final ArrayList<SsaInsn> insns;
-    private IntSet liveIn;
-    private IntSet liveOut;
-    private int movesFromPhisAtBeginning = 0;
-    private int movesFromPhisAtEnd = 0;
-    private final SsaMethod parent;
+
+    /** {@code non-null;} predecessor set (by block list index) */
     private BitSet predecessors;
-    private int primarySuccessor = -1;
-    private int reachable = -1;
-    private final int ropLabel;
-    private IntList successorList;
+
+    /** {@code non-null;} successor set (by block list index) */
     private BitSet successors;
 
-    public SsaBasicBlock(int i, int i2, SsaMethod ssaMethod) {
-        this.parent = ssaMethod;
-        this.index = i;
-        this.insns = new ArrayList<>();
-        this.ropLabel = i2;
-        this.predecessors = new BitSet(ssaMethod.getBlocks().size());
-        this.successors = new BitSet(ssaMethod.getBlocks().size());
+    /**
+     * {@code non-null;} ordered successor list
+     * (same block may be listed more than once)
+     */
+    private IntList successorList;
+
+    /**
+     * block list index of primary successor, or {@code -1} for no primary
+     * successor
+     */
+    private int primarySuccessor = -1;
+
+    /** label of block in rop form */
+    private final int ropLabel;
+
+    /** {@code non-null;} method we belong to */
+    private final SsaMethod parent;
+
+    /** our index into parent.getBlock() */
+    private final int index;
+
+    /** list of dom children */
+    private final ArrayList<SsaBasicBlock> domChildren;
+
+    /**
+     * the number of moves added to the end of the block during the
+     * phi-removal process. Retained for subsequent move scheduling.
+     */
+    private int movesFromPhisAtEnd = 0;
+
+    /**
+     * the number of moves added to the beginning of the block during the
+     * phi-removal process. Retained for subsequent move scheduling.
+     */
+    private int movesFromPhisAtBeginning = 0;
+
+    /**
+     * {@code null-ok;} indexed by reg: the regs that are live-in at
+     * this block
+     */
+    private IntSet liveIn;
+
+    /**
+     * {@code null-ok;} indexed by reg: the regs that are live-out at
+     * this block
+     */
+    private IntSet liveOut;
+
+    /**
+     * Creates a new empty basic block.
+     *
+     * @param basicBlockIndex index this block will have
+     * @param ropLabel original rop-form label
+     * @param parent method of this block
+     */
+    public SsaBasicBlock(final int basicBlockIndex, final int ropLabel,
+            final SsaMethod parent) {
+        this.parent = parent;
+        this.index = basicBlockIndex;
+        this.insns = new ArrayList<SsaInsn>();
+        this.ropLabel = ropLabel;
+
+        this.predecessors = new BitSet(parent.getBlocks().size());
+        this.successors = new BitSet(parent.getBlocks().size());
         this.successorList = new IntList();
-        this.domChildren = new ArrayList<>();
+
+        domChildren = new ArrayList<SsaBasicBlock>();
     }
 
-    public static SsaBasicBlock newFromRop(RopMethod ropMethod, int i, SsaMethod ssaMethod) {
-        BasicBlockList blocks = ropMethod.getBlocks();
-        BasicBlock basicBlock = blocks.get(i);
-        SsaBasicBlock ssaBasicBlock = new SsaBasicBlock(i, basicBlock.getLabel(), ssaMethod);
-        InsnList insns2 = basicBlock.getInsns();
-        ssaBasicBlock.insns.ensureCapacity(insns2.size());
-        int size = insns2.size();
-        for (int i2 = 0; i2 < size; i2++) {
-            ssaBasicBlock.insns.add(new NormalSsaInsn(insns2.get(i2), ssaBasicBlock));
+    /**
+     * Creates a new SSA basic block from a ROP form basic block.
+     *
+     * @param rmeth original method
+     * @param basicBlockIndex index this block will have
+     * @param parent method of this block predecessor set will be
+     * updated
+     * @return new instance
+     */
+    public static SsaBasicBlock newFromRop(RopMethod rmeth,
+                                           int basicBlockIndex, final SsaMethod parent) {
+        BasicBlockList ropBlocks = rmeth.getBlocks();
+        BasicBlock bb = ropBlocks.get(basicBlockIndex);
+        SsaBasicBlock result =
+            new SsaBasicBlock(basicBlockIndex, bb.getLabel(), parent);
+        InsnList ropInsns = bb.getInsns();
+
+        result.insns.ensureCapacity(ropInsns.size());
+
+        for (int i = 0, sz = ropInsns.size() ; i < sz ; i++) {
+            result.insns.add(new NormalSsaInsn (ropInsns.get(i), result));
         }
-        ssaBasicBlock.predecessors = SsaMethod.bitSetFromLabelList(blocks, ropMethod.labelToPredecessors(basicBlock.getLabel()));
-        ssaBasicBlock.successors = SsaMethod.bitSetFromLabelList(blocks, basicBlock.getSuccessors());
-        ssaBasicBlock.successorList = SsaMethod.indexListFromLabelList(blocks, basicBlock.getSuccessors());
-        if (ssaBasicBlock.successorList.size() != 0) {
-            int primarySuccessor2 = basicBlock.getPrimarySuccessor();
-            ssaBasicBlock.primarySuccessor = primarySuccessor2 < 0 ? -1 : blocks.indexOfLabel(primarySuccessor2);
+
+        result.predecessors = SsaMethod.bitSetFromLabelList(
+                ropBlocks,
+                rmeth.labelToPredecessors(bb.getLabel()));
+
+        result.successors
+                = SsaMethod.bitSetFromLabelList(ropBlocks, bb.getSuccessors());
+
+        result.successorList
+                = SsaMethod.indexListFromLabelList(ropBlocks,
+                    bb.getSuccessors());
+
+        if (result.successorList.size() != 0) {
+            int primarySuccessor = bb.getPrimarySuccessor();
+
+            result.primarySuccessor = (primarySuccessor < 0)
+                    ? -1 : ropBlocks.indexOfLabel(primarySuccessor);
         }
-        return ssaBasicBlock;
+
+        return result;
     }
 
-    private static void setRegsUsed(BitSet bitSet, RegisterSpec registerSpec) {
-        bitSet.set(registerSpec.getReg());
-        if (registerSpec.getCategory() > 1) {
-            bitSet.set(registerSpec.getReg() + 1);
-        }
+    /**
+     * Adds a basic block as a dom child for this block. Used when constructing
+     * the dom tree.
+     *
+     * @param child {@code non-null;} new dom child
+     */
+    public void addDomChild(SsaBasicBlock child) {
+        domChildren.add(child);
     }
 
-    private static boolean checkRegUsed(BitSet bitSet, RegisterSpec registerSpec) {
-        int reg = registerSpec.getReg();
-        return bitSet.get(reg) || (registerSpec.getCategory() == 2 && bitSet.get(reg + 1));
-    }
-
-    public void addDomChild(SsaBasicBlock ssaBasicBlock) {
-        this.domChildren.add(ssaBasicBlock);
-    }
-
+    /**
+     * Gets the dom children for this node. Don't modify this list.
+     *
+     * @return {@code non-null;} list of dom children
+     */
     public ArrayList<SsaBasicBlock> getDomChildren() {
-        return this.domChildren;
+        return domChildren;
     }
 
-    public void addPhiInsnForReg(int i) {
-        this.insns.add(0, new PhiInsn(i, this));
+    /**
+     * Adds a phi insn to the beginning of this block. The result type of
+     * the phi will be set to void, to indicate that it's currently unknown.
+     *
+     * @param reg {@code >=0;} result reg
+     */
+    public void addPhiInsnForReg(int reg) {
+        insns.add(0, new PhiInsn(reg, this));
     }
 
-    public void addPhiInsnForReg(RegisterSpec registerSpec) {
-        this.insns.add(0, new PhiInsn(registerSpec, this));
+    /**
+     * Adds a phi insn to the beginning of this block. This is to be used
+     * when the result type or local-association can be determined at phi
+     * insert time.
+     *
+     * @param resultSpec {@code non-null;} reg
+     */
+    public void addPhiInsnForReg(mod.agus.jcoderz.dx.rop.code.RegisterSpec resultSpec) {
+        insns.add(0, new PhiInsn(resultSpec, this));
     }
 
-    public void addInsnToHead(Insn insn) {
-        SsaInsn makeFromRop = SsaInsn.makeFromRop(insn, this);
-        this.insns.add(getCountPhiInsns(), makeFromRop);
-        this.parent.onInsnAdded(makeFromRop);
+    /**
+     * Adds an insn to the head of this basic block, just after any phi
+     * insns.
+     *
+     * @param insn {@code non-null;} rop-form insn to add
+     */
+    public void addInsnToHead(mod.agus.jcoderz.dx.rop.code.Insn insn) {
+        SsaInsn newInsn = SsaInsn.makeFromRop(insn, this);
+        insns.add(getCountPhiInsns(), newInsn);
+        parent.onInsnAdded(newInsn);
     }
 
+    /**
+     * Replaces the last insn in this block. The provided insn must have
+     * some branchingness.
+     *
+     * @param insn {@code non-null;} rop-form insn to add, which must branch.
+     */
     public void replaceLastInsn(Insn insn) {
-        if (insn.getOpcode().getBranchingness() == 1) {
+        if (insn.getOpcode().getBranchingness() == Rop.BRANCH_NONE) {
             throw new IllegalArgumentException("last insn must branch");
         }
-        SsaInsn makeFromRop = SsaInsn.makeFromRop(insn, this);
-        this.insns.set(this.insns.size() - 1, makeFromRop);
-        this.parent.onInsnRemoved(this.insns.get(this.insns.size() - 1));
-        this.parent.onInsnAdded(makeFromRop);
+
+        SsaInsn oldInsn = insns.get(insns.size() - 1);
+        SsaInsn newInsn = SsaInsn.makeFromRop(insn, this);
+
+        insns.set(insns.size() - 1, newInsn);
+
+        parent.onInsnRemoved(oldInsn);
+        parent.onInsnAdded(newInsn);
     }
 
-    public void forEachPhiInsn(PhiInsn.Visitor visitor) {
-        int size = this.insns.size();
-        for (int i = 0; i < size; i++) {
-            SsaInsn ssaInsn = this.insns.get(i);
-            if (ssaInsn instanceof PhiInsn) {
-                visitor.visitPhiInsn((PhiInsn) ssaInsn);
+    /**
+     * Visits each phi insn.
+     *
+     * @param v {@code non-null;} the callback
+     */
+    public void forEachPhiInsn(PhiInsn.Visitor v) {
+        int sz = insns.size();
+
+        for (int i = 0; i < sz; i++) {
+            SsaInsn insn = insns.get(i);
+            if (insn instanceof PhiInsn) {
+                v.visitPhiInsn((PhiInsn) insn);
             } else {
-                return;
+                /*
+                 * Presently we assume PhiInsn's are in a continuous
+                 * block at the top of the list
+                 */
+                break;
             }
         }
     }
 
+    /**
+     * Deletes all phi insns. Do this after adding appropriate move insns.
+     */
     public void removeAllPhiInsns() {
-        this.insns.subList(0, getCountPhiInsns()).clear();
+        /*
+         * Presently we assume PhiInsn's are in a continuous
+         * block at the top of the list.
+         */
+
+        insns.subList(0, getCountPhiInsns()).clear();
     }
 
+    /**
+     * Gets the number of phi insns at the top of this basic block.
+     *
+     * @return count of phi insns
+     */
     private int getCountPhiInsns() {
-        int size = this.insns.size();
-        int i = 0;
-        while (i < size && (this.insns.get(i) instanceof PhiInsn)) {
-            i++;
+        int countPhiInsns;
+
+        int sz = insns.size();
+        for (countPhiInsns = 0; countPhiInsns < sz; countPhiInsns++) {
+            SsaInsn insn = insns.get(countPhiInsns);
+            if (!(insn instanceof PhiInsn)) {
+                break;
+            }
         }
-        return i;
+
+        return countPhiInsns;
     }
 
+    /**
+     * @return {@code non-null;} the (mutable) instruction list for this block,
+     * with phi insns at the beginning
+     */
     public ArrayList<SsaInsn> getInsns() {
-        return this.insns;
+        return insns;
     }
 
+    /**
+     * @return {@code non-null;} the (mutable) list of phi insns for this block
+     */
     public List<SsaInsn> getPhiInsns() {
-        return this.insns.subList(0, getCountPhiInsns());
+        return insns.subList(0, getCountPhiInsns());
     }
 
+    /**
+     * @return the block index of this block
+     */
     public int getIndex() {
-        return this.index;
+        return index;
     }
 
+    /**
+     * @return the label of this block in rop form
+     */
     public int getRopLabel() {
-        return this.ropLabel;
+        return ropLabel;
     }
 
+    /**
+     * @return the label of this block in rop form as a hex string
+     */
     public String getRopLabelString() {
-        return Hex.u2(this.ropLabel);
+        return Hex.u2(ropLabel);
     }
 
+    /**
+     * @return {@code non-null;} predecessors set, indexed by block index
+     */
     public BitSet getPredecessors() {
-        return this.predecessors;
+        return predecessors;
     }
 
+    /**
+     * @return {@code non-null;} successors set, indexed by block index
+     */
     public BitSet getSuccessors() {
-        return this.successors;
+        return successors;
     }
 
+    /**
+     * @return {@code non-null;} ordered successor list, containing block
+     * indicies
+     */
     public IntList getSuccessorList() {
-        return this.successorList;
+        return successorList;
     }
 
+    /**
+     * @return {@code >= -1;} block index of primary successor or
+     * {@code -1} if no primary successor
+     */
     public int getPrimarySuccessorIndex() {
-        return this.primarySuccessor;
+        return primarySuccessor;
     }
 
+    /**
+     * @return rop label of primary successor
+     */
     public int getPrimarySuccessorRopLabel() {
-        return this.parent.blockIndexToRopLabel(this.primarySuccessor);
+        return parent.blockIndexToRopLabel(primarySuccessor);
     }
 
+    /**
+     * @return {@code null-ok;} the primary successor block or {@code null}
+     * if there is none
+     */
     public SsaBasicBlock getPrimarySuccessor() {
-        if (this.primarySuccessor < 0) {
+        if (primarySuccessor < 0) {
             return null;
+        } else {
+            return parent.getBlocks().get(primarySuccessor);
         }
-        return this.parent.getBlocks().get(this.primarySuccessor);
     }
 
+    /**
+     * @return successor list of rop labels
+     */
     public IntList getRopLabelSuccessorList() {
-        IntList intList = new IntList(this.successorList.size());
-        int size = this.successorList.size();
-        for (int i = 0; i < size; i++) {
-            intList.add(this.parent.blockIndexToRopLabel(this.successorList.get(i)));
+        IntList result = new IntList(successorList.size());
+
+        int sz = successorList.size();
+
+        for (int i = 0; i < sz; i++) {
+            result.add(parent.blockIndexToRopLabel(successorList.get(i)));
         }
-        return intList;
+        return result;
     }
 
+    /**
+     * @return {@code non-null;} method that contains this block
+     */
     public SsaMethod getParent() {
-        return this.parent;
+        return parent;
     }
 
+    /**
+     * Inserts a new empty GOTO block as a predecessor to this block.
+     * All previous predecessors will be predecessors to the new block.
+     *
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
     public SsaBasicBlock insertNewPredecessor() {
-        SsaBasicBlock makeNewGotoBlock = this.parent.makeNewGotoBlock();
-        makeNewGotoBlock.predecessors = this.predecessors;
-        makeNewGotoBlock.successors.set(this.index);
-        makeNewGotoBlock.successorList.add(this.index);
-        makeNewGotoBlock.primarySuccessor = this.index;
-        this.predecessors = new BitSet(this.parent.getBlocks().size());
-        this.predecessors.set(makeNewGotoBlock.index);
-        for (int nextSetBit = makeNewGotoBlock.predecessors.nextSetBit(0); nextSetBit >= 0; nextSetBit = makeNewGotoBlock.predecessors.nextSetBit(nextSetBit + 1)) {
-            this.parent.getBlocks().get(nextSetBit).replaceSuccessor(this.index, makeNewGotoBlock.index);
+        SsaBasicBlock newPred = parent.makeNewGotoBlock();
+
+        // Update the new block.
+        newPred.predecessors = predecessors;
+        newPred.successors.set(index) ;
+        newPred.successorList.add(index);
+        newPred.primarySuccessor = index;
+
+
+        // Update us.
+        predecessors = new BitSet(parent.getBlocks().size());
+        predecessors.set(newPred.index);
+
+        // Update our (soon-to-be) old predecessors.
+        for (int i = newPred.predecessors.nextSetBit(0); i >= 0;
+                i = newPred.predecessors.nextSetBit(i + 1)) {
+
+            SsaBasicBlock predBlock = parent.getBlocks().get(i);
+
+            predBlock.replaceSuccessor(index, newPred.index);
         }
-        return makeNewGotoBlock;
+
+        return newPred;
     }
 
-    public SsaBasicBlock insertNewSuccessor(SsaBasicBlock ssaBasicBlock) {
-        SsaBasicBlock makeNewGotoBlock = this.parent.makeNewGotoBlock();
-        if (!this.successors.get(ssaBasicBlock.index)) {
-            throw new RuntimeException("Block " + ssaBasicBlock.getRopLabelString() + " not successor of " + getRopLabelString());
+    /**
+     * Constructs and inserts a new empty GOTO block {@code Z} between
+     * this block ({@code A}) and a current successor block
+     * ({@code B}). The new block will replace B as A's successor and
+     * A as B's predecessor. A and B will no longer be directly connected.
+     * If B is listed as a successor multiple times, all references
+     * are replaced.
+     *
+     * @param other current successor (B)
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
+    public SsaBasicBlock insertNewSuccessor(SsaBasicBlock other) {
+        SsaBasicBlock newSucc = parent.makeNewGotoBlock();
+
+        if (!successors.get(other.index)) {
+            throw new RuntimeException("Block " + other.getRopLabelString()
+                    + " not successor of " + getRopLabelString());
         }
-        makeNewGotoBlock.predecessors.set(this.index);
-        makeNewGotoBlock.successors.set(ssaBasicBlock.index);
-        makeNewGotoBlock.successorList.add(ssaBasicBlock.index);
-        makeNewGotoBlock.primarySuccessor = ssaBasicBlock.index;
-        for (int size = this.successorList.size() - 1; size >= 0; size--) {
-            if (this.successorList.get(size) == ssaBasicBlock.index) {
-                this.successorList.set(size, makeNewGotoBlock.index);
+
+        // Update the new block.
+        newSucc.predecessors.set(this.index);
+        newSucc.successors.set(other.index) ;
+        newSucc.successorList.add(other.index);
+        newSucc.primarySuccessor = other.index;
+
+        // Update us.
+        for (int i = successorList.size() - 1 ;  i >= 0; i--) {
+            if (successorList.get(i) == other.index) {
+                successorList.set(i, newSucc.index);
             }
         }
-        if (this.primarySuccessor == ssaBasicBlock.index) {
-            this.primarySuccessor = makeNewGotoBlock.index;
+
+        if (primarySuccessor == other.index) {
+            primarySuccessor = newSucc.index;
         }
-        this.successors.clear(ssaBasicBlock.index);
-        this.successors.set(makeNewGotoBlock.index);
-        ssaBasicBlock.predecessors.set(makeNewGotoBlock.index);
-        ssaBasicBlock.predecessors.set(this.index, this.successors.get(ssaBasicBlock.index));
-        return makeNewGotoBlock;
+        successors.clear(other.index);
+        successors.set(newSucc.index);
+
+        // Update "other".
+        other.predecessors.set(newSucc.index);
+        other.predecessors.set(index, successors.get(other.index));
+
+        return newSucc;
     }
 
-    public void replaceSuccessor(int i, int i2) {
-        if (i != i2) {
-            this.successors.set(i2);
-            if (this.primarySuccessor == i) {
-                this.primarySuccessor = i2;
-            }
-            for (int size = this.successorList.size() - 1; size >= 0; size--) {
-                if (this.successorList.get(size) == i) {
-                    this.successorList.set(size, i2);
-                }
-            }
-            this.successors.clear(i);
-            this.parent.getBlocks().get(i2).predecessors.set(this.index);
-            this.parent.getBlocks().get(i).predecessors.clear(this.index);
+    /**
+     * Replaces an old successor with a new successor. This will throw
+     * RuntimeException if {@code oldIndex} was not a successor.
+     *
+     * @param oldIndex index of old successor block
+     * @param newIndex index of new successor block
+     */
+    public void replaceSuccessor(int oldIndex, int newIndex) {
+        if (oldIndex == newIndex) {
+            return;
         }
+
+        // Update us.
+        successors.set(newIndex);
+
+        if (primarySuccessor == oldIndex) {
+            primarySuccessor = newIndex;
+        }
+
+        for (int i = successorList.size() - 1 ;  i >= 0; i--) {
+            if (successorList.get(i) == oldIndex) {
+                successorList.set(i, newIndex);
+            }
+        }
+
+        successors.clear(oldIndex);
+
+        // Update new successor.
+        parent.getBlocks().get(newIndex).predecessors.set(index);
+
+        // Update old successor.
+        parent.getBlocks().get(oldIndex).predecessors.clear(index);
     }
 
-    public void removeSuccessor(int i) {
-        int i2 = 0;
-        for (int size = this.successorList.size() - 1; size >= 0; size--) {
-            if (this.successorList.get(size) == i) {
-                i2 = size;
+    /**
+     * Removes a successor from this block's successor list.
+     *
+     * @param oldIndex index of successor block to remove
+     */
+    public void removeSuccessor(int oldIndex) {
+        int removeIndex = 0;
+
+        for (int i = successorList.size() - 1; i >= 0; i--) {
+            if (successorList.get(i) == oldIndex) {
+                removeIndex = i;
             } else {
-                this.primarySuccessor = this.successorList.get(size);
+                primarySuccessor = successorList.get(i);
             }
         }
-        this.successorList.removeIndex(i2);
-        this.successors.clear(i);
-        this.parent.getBlocks().get(i).predecessors.clear(this.index);
+
+        successorList.removeIndex(removeIndex);
+        successors.clear(oldIndex);
+        parent.getBlocks().get(oldIndex).predecessors.clear(index);
     }
 
-    public void exitBlockFixup(SsaBasicBlock ssaBasicBlock) {
-        if (this != ssaBasicBlock && this.successorList.size() == 0) {
-            this.successors.set(ssaBasicBlock.index);
-            this.successorList.add(ssaBasicBlock.index);
-            this.primarySuccessor = ssaBasicBlock.index;
-            ssaBasicBlock.predecessors.set(this.index);
+    /**
+     * Attaches block to an exit block if necessary. If this block
+     * is not an exit predecessor or is the exit block, this block does
+     * nothing. For use by {@link SsaMethod#makeExitBlock}
+     *
+     * @param exitBlock {@code non-null;} exit block
+     */
+    public void exitBlockFixup(SsaBasicBlock exitBlock) {
+        if (this == exitBlock) {
+            return;
+        }
+
+        if (successorList.size() == 0) {
+            /*
+             * This is an exit predecessor.
+             * Set the successor to the exit block
+             */
+            successors.set(exitBlock.index);
+            successorList.add(exitBlock.index);
+            primarySuccessor = exitBlock.index;
+            exitBlock.predecessors.set(this.index);
         }
     }
 
-    public void addMoveToEnd(RegisterSpec registerSpec, RegisterSpec registerSpec2) {
-        if (registerSpec.getReg() != registerSpec2.getReg()) {
-            NormalSsaInsn normalSsaInsn = (NormalSsaInsn) this.insns.get(this.insns.size() - 1);
-            if (normalSsaInsn.getResult() != null || normalSsaInsn.getSources().size() > 0) {
-                int nextSetBit = this.successors.nextSetBit(0);
-                while (nextSetBit >= 0) {
-                    this.parent.getBlocks().get(nextSetBit).addMoveToBeginning(registerSpec, registerSpec2);
-                    nextSetBit = this.successors.nextSetBit(nextSetBit + 1);
+    /**
+     * Adds a move instruction to the end of this basic block, just
+     * before the last instruction. If the result of the final instruction
+     * is the source in question, then the move is placed at the beginning of
+     * the primary successor block. This is for unversioned registers.
+     *
+     * @param result move destination
+     * @param source move source
+     */
+    public void addMoveToEnd(mod.agus.jcoderz.dx.rop.code.RegisterSpec result, mod.agus.jcoderz.dx.rop.code.RegisterSpec source) {
+        /*
+         * Check that there are no other successors otherwise we may
+         * insert a move that affects those (b/69128828).
+         */
+        if (successors.cardinality() > 1) {
+            throw new IllegalStateException("Inserting a move to a block with multiple successors");
+        }
+
+        if (result.getReg() == source.getReg()) {
+            // Sometimes we end up with no-op moves. Ignore them here.
+            return;
+        }
+
+        /*
+         * The last Insn has to be a normal SSA insn: a phi can't branch
+         * or return or cause an exception, etc.
+         */
+        NormalSsaInsn lastInsn;
+        lastInsn = (NormalSsaInsn)insns.get(insns.size()-1);
+
+        if (lastInsn.getResult() != null || lastInsn.getSources().size() > 0) {
+            /*
+             * The final insn in this block has a source or result
+             * register, and the moves we may need to place and
+             * schedule may interfere. We need to insert this
+             * instruction at the beginning of the primary successor
+             * block instead. We know this is safe, because when we
+             * edge-split earlier, we ensured that each successor has
+             * only us as a predecessor.
+             */
+
+            for (int i = successors.nextSetBit(0)
+                    ; i >= 0
+                    ; i = successors.nextSetBit(i + 1)) {
+
+                SsaBasicBlock succ;
+
+                succ = parent.getBlocks().get(i);
+                succ.addMoveToBeginning(result, source);
+            }
+        } else {
+            /*
+             * We can safely add a move to the end of the block just
+             * before the last instruction, because the final insn does
+             * not assign to anything.
+             */
+            mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources = mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(source);
+            NormalSsaInsn toAdd = new NormalSsaInsn(
+                    new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMove(result.getType()),
+                            mod.agus.jcoderz.dx.rop.code.SourcePosition.NO_INFO, result, sources), this);
+
+            insns.add(insns.size() - 1, toAdd);
+
+            movesFromPhisAtEnd++;
+        }
+    }
+
+    /**
+     * Adds a move instruction after the phi insn block.
+     *
+     * @param result move destination
+     * @param source move source
+     */
+    public void addMoveToBeginning (mod.agus.jcoderz.dx.rop.code.RegisterSpec result, mod.agus.jcoderz.dx.rop.code.RegisterSpec source) {
+        if (result.getReg() == source.getReg()) {
+            // Sometimes we end up with no-op moves. Ignore them here.
+            return;
+        }
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources = mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(source);
+        NormalSsaInsn toAdd = new NormalSsaInsn(
+                new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMove(result.getType()),
+                        mod.agus.jcoderz.dx.rop.code.SourcePosition.NO_INFO, result, sources), this);
+
+        insns.add(getCountPhiInsns(), toAdd);
+        movesFromPhisAtBeginning++;
+    }
+
+    /**
+     * Sets the register as used in a bitset, taking into account its
+     * category/width.
+     *
+     * @param regsUsed set, indexed by register number
+     * @param rs register to mark as used
+     */
+    private static void setRegsUsed (BitSet regsUsed, mod.agus.jcoderz.dx.rop.code.RegisterSpec rs) {
+        regsUsed.set(rs.getReg());
+        if (rs.getCategory() > 1) {
+            regsUsed.set(rs.getReg() + 1);
+        }
+    }
+
+    /**
+     * Checks to see if the register is used in a bitset, taking
+     * into account its category/width.
+     *
+     * @param regsUsed set, indexed by register number
+     * @param rs register to mark as used
+     * @return true if register is fully or partially (for the case of wide
+     * registers) used.
+     */
+    private static boolean checkRegUsed (BitSet regsUsed, mod.agus.jcoderz.dx.rop.code.RegisterSpec rs) {
+        int reg = rs.getReg();
+        int category = rs.getCategory();
+
+        return regsUsed.get(reg)
+                || (category == 2 ? regsUsed.get(reg + 1) : false);
+    }
+
+    /**
+     * Ensures that all move operations in this block occur such that
+     * reads of any register happen before writes to that register.
+     * NOTE: caller is expected to returnSpareRegisters()!
+     *
+     * TODO: See Briggs, et al "Practical Improvements to the Construction and
+     * Destruction of Static Single Assignment Form" section 5. a) This can
+     * be done in three passes.
+     *
+     * @param toSchedule List of instructions. Must consist only of moves.
+     */
+    private void scheduleUseBeforeAssigned(List<SsaInsn> toSchedule) {
+        BitSet regsUsedAsSources = new BitSet(parent.getRegCount());
+
+        // TODO: Get rid of this.
+        BitSet regsUsedAsResults = new BitSet(parent.getRegCount());
+
+        int sz = toSchedule.size();
+
+        int insertPlace = 0;
+
+        while (insertPlace < sz) {
+            int oldInsertPlace = insertPlace;
+
+            // Record all registers used as sources in this block.
+            for (int i = insertPlace; i < sz; i++) {
+                setRegsUsed(regsUsedAsSources,
+                        toSchedule.get(i).getSources().get(0));
+
+                setRegsUsed(regsUsedAsResults,
+                        toSchedule.get(i).getResult());
+            }
+
+            /*
+             * If there are no circular dependencies, then there exists
+             * n instructions where n > 1 whose result is not used as a source.
+             */
+            for (int i = insertPlace; i <sz; i++) {
+                SsaInsn insn = toSchedule.get(i);
+
+                /*
+                 * Move these n registers to the front, since they overwrite
+                 * nothing.
+                 */
+                if (!checkRegUsed(regsUsedAsSources, insn.getResult())) {
+                    Collections.swap(toSchedule, i, insertPlace++);
                 }
-                return;
             }
-            this.insns.add(this.insns.size() - 1, new NormalSsaInsn(new PlainInsn(Rops.opMove(registerSpec.getType()), SourcePosition.NO_INFO, registerSpec, RegisterSpecList.make(registerSpec2)), this));
-            this.movesFromPhisAtEnd++;
-        }
-    }
 
-    public void addMoveToBeginning(RegisterSpec registerSpec, RegisterSpec registerSpec2) {
-        if (registerSpec.getReg() != registerSpec2.getReg()) {
-            this.insns.add(getCountPhiInsns(), new NormalSsaInsn(new PlainInsn(Rops.opMove(registerSpec.getType()), SourcePosition.NO_INFO, registerSpec, RegisterSpecList.make(registerSpec2)), this));
-            this.movesFromPhisAtBeginning++;
-        }
-    }
+            /*
+             * If we've made no progress in this iteration, there's a
+             * circular dependency. Split it using the temp reg.
+             */
+            if (oldInsertPlace == insertPlace) {
 
-    private void scheduleUseBeforeAssigned(List<SsaInsn> list) {
-        int i;
-        SsaInsn ssaInsn;
-        int i2;
-        BitSet bitSet = new BitSet(this.parent.getRegCount());
-        BitSet bitSet2 = new BitSet(this.parent.getRegCount());
-        int size = list.size();
-        int i3 = 0;
-        while (i3 < size) {
-            for (int i4 = i3; i4 < size; i4++) {
-                setRegsUsed(bitSet, list.get(i4).getSources().get(0));
-                setRegsUsed(bitSet2, list.get(i4).getResult());
-            }
-            int i5 = i3;
-            int i6 = i3;
-            while (i5 < size) {
-                if (!checkRegUsed(bitSet, list.get(i5).getResult())) {
-                    i2 = i6 + 1;
-                    Collections.swap(list, i5, i6);
-                } else {
-                    i2 = i6;
-                }
-                i5++;
-                i6 = i2;
-            }
-            if (i3 == i6) {
-                int i7 = i6;
-                while (true) {
-                    if (i7 >= size) {
-                        ssaInsn = null;
+                SsaInsn insnToSplit = null;
+
+                // Find an insn whose result is used as a source.
+                for (int i = insertPlace; i < sz; i++) {
+                    SsaInsn insn = toSchedule.get(i);
+                    if (checkRegUsed(regsUsedAsSources, insn.getResult())
+                            && checkRegUsed(regsUsedAsResults,
+                                insn.getSources().get(0))) {
+
+                        insnToSplit = insn;
+                        /*
+                         * We're going to split this insn; move it to the
+                         * front.
+                         */
+                        Collections.swap(toSchedule, insertPlace, i);
                         break;
                     }
-                    ssaInsn = list.get(i7);
-                    if (checkRegUsed(bitSet, ssaInsn.getResult()) && checkRegUsed(bitSet2, ssaInsn.getSources().get(0))) {
-                        Collections.swap(list, i6, i7);
-                        break;
-                    }
-                    i7++;
                 }
-                RegisterSpec result = ssaInsn.getResult();
-                RegisterSpec withReg = result.withReg(this.parent.borrowSpareRegister(result.getCategory()));
-                int i8 = i6 + 1;
-                list.add(i6, new NormalSsaInsn(new PlainInsn(Rops.opMove(result.getType()), SourcePosition.NO_INFO, withReg, ssaInsn.getSources()), this));
-                list.set(i8, new NormalSsaInsn(new PlainInsn(Rops.opMove(result.getType()), SourcePosition.NO_INFO, result, RegisterSpecList.make(withReg)), this));
-                i = list.size();
-                i6 = i8;
-            } else {
-                i = size;
+
+                // At least one insn will be set above.
+
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec result = insnToSplit.getResult();
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec tempSpec = result.withReg(
+                        parent.borrowSpareRegister(result.getCategory()));
+
+                NormalSsaInsn toAdd = new NormalSsaInsn(
+                        new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMove(result.getType()),
+                                mod.agus.jcoderz.dx.rop.code.SourcePosition.NO_INFO,
+                                tempSpec,
+                                insnToSplit.getSources()), this);
+
+                toSchedule.add(insertPlace++, toAdd);
+
+                mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources = mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(tempSpec);
+
+                NormalSsaInsn toReplace = new NormalSsaInsn(
+                        new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMove(result.getType()),
+                                mod.agus.jcoderz.dx.rop.code.SourcePosition.NO_INFO,
+                                result,
+                                newSources), this);
+
+                toSchedule.set(insertPlace, toReplace);
+
+                // The size changed.
+                sz = toSchedule.size();
             }
-            bitSet.clear();
-            bitSet2.clear();
-            i3 = i6;
-            size = i;
+
+            regsUsedAsSources.clear();
+            regsUsedAsResults.clear();
         }
     }
 
-    public void addLiveOut(int i) {
-        if (this.liveOut == null) {
-            this.liveOut = SetFactory.makeLivenessSet(this.parent.getRegCount());
+    /**
+     * Adds {@code regV} to the live-out list for this block. This is called
+     * by the liveness analyzer.
+     *
+     * @param regV register that is live-out for this block.
+     */
+    public void addLiveOut (int regV) {
+        if (liveOut == null) {
+            liveOut = SetFactory.makeLivenessSet(parent.getRegCount());
         }
-        this.liveOut.add(i);
+
+        liveOut.add(regV);
     }
 
-    public void addLiveIn(int i) {
-        if (this.liveIn == null) {
-            this.liveIn = SetFactory.makeLivenessSet(this.parent.getRegCount());
+    /**
+     * Adds {@code regV} to the live-in list for this block. This is
+     * called by the liveness analyzer.
+     *
+     * @param regV register that is live-in for this block.
+     */
+    public void addLiveIn (int regV) {
+        if (liveIn == null) {
+            liveIn = SetFactory.makeLivenessSet(parent.getRegCount());
         }
-        this.liveIn.add(i);
+
+        liveIn.add(regV);
     }
 
+    /**
+     * Returns the set of live-in registers. Valid after register
+     * interference graph has been generated, otherwise empty.
+     *
+     * @return {@code non-null;} live-in register set.
+     */
     public IntSet getLiveInRegs() {
-        if (this.liveIn == null) {
-            this.liveIn = SetFactory.makeLivenessSet(this.parent.getRegCount());
+        if (liveIn == null) {
+            liveIn = SetFactory.makeLivenessSet(parent.getRegCount());
         }
-        return this.liveIn;
+        return liveIn;
     }
 
+    /**
+     * Returns the set of live-out registers. Valid after register
+     * interference graph has been generated, otherwise empty.
+     *
+     * @return {@code non-null;} live-out register set
+     */
     public IntSet getLiveOutRegs() {
-        if (this.liveOut == null) {
-            this.liveOut = SetFactory.makeLivenessSet(this.parent.getRegCount());
+        if (liveOut == null) {
+            liveOut = SetFactory.makeLivenessSet(parent.getRegCount());
         }
-        return this.liveOut;
+        return liveOut;
     }
 
+    /**
+     * @return true if this is the one-and-only exit block for this method
+     */
     public boolean isExitBlock() {
-        return this.index == this.parent.getExitBlockIndex();
+        return index == parent.getExitBlockIndex();
     }
 
-    public boolean isReachable() {
-        if (this.reachable == -1) {
-            this.parent.computeReachability();
-        }
-        return this.reachable == 1;
-    }
-
-    public void setReachable(int i) {
-        this.reachable = i;
-    }
-
+    /**
+     * Sorts move instructions added via {@code addMoveToEnd} during
+     * phi removal so that results don't overwrite sources that are used.
+     * For use after all phis have been removed and all calls to
+     * addMoveToEnd() have been made.<p>
+     *
+     * This is necessary because copy-propogation may have left us in a state
+     * where the same basic block has the same register as a phi operand
+     * and a result. In this case, the register in the phi operand always
+     * refers value before any other phis have executed.
+     */
     public void scheduleMovesFromPhis() {
-        if (this.movesFromPhisAtBeginning > 1) {
-            scheduleUseBeforeAssigned(this.insns.subList(0, this.movesFromPhisAtBeginning));
-            if (this.insns.get(this.movesFromPhisAtBeginning).isMoveException()) {
-                throw new RuntimeException("Unexpected: moves from phis before move-exception");
+        if (movesFromPhisAtBeginning > 1) {
+            List<SsaInsn> toSchedule;
+
+            toSchedule = insns.subList(0, movesFromPhisAtBeginning);
+
+            scheduleUseBeforeAssigned(toSchedule);
+
+            SsaInsn firstNonPhiMoveInsn = insns.get(movesFromPhisAtBeginning);
+
+            /*
+             * TODO: It's actually possible that this case never happens,
+             * because a move-exception block, having only one predecessor
+             * in SSA form, perhaps is never on a dominance frontier.
+             */
+            if (firstNonPhiMoveInsn.isMoveException()) {
+                if (true) {
+                    /*
+                     * We've yet to observe this case, and if it can
+                     * occur the code written to handle it probably
+                     * does not work.
+                     */
+                    throw new RuntimeException(
+                            "Unexpected: moves from "
+                                    +"phis before move-exception");
+                } else {
+                    /*
+                     * A move-exception insn must be placed first in this block
+                     * We need to move it there, and deal with possible
+                     * interference.
+                     */
+                    boolean moveExceptionInterferes = false;
+
+                    int moveExceptionResult
+                            = firstNonPhiMoveInsn.getResult().getReg();
+
+                    /*
+                     * Does the move-exception result reg interfere with the
+                     * phi moves?
+                     */
+                    for (SsaInsn insn : toSchedule) {
+                        if (insn.isResultReg(moveExceptionResult)
+                                || insn.isRegASource(moveExceptionResult)) {
+                            moveExceptionInterferes = true;
+                            break;
+                        }
+                    }
+
+                    if (!moveExceptionInterferes) {
+                        // This is the easy case.
+                        insns.remove(movesFromPhisAtBeginning);
+                        insns.add(0, firstNonPhiMoveInsn);
+                    } else {
+                        /*
+                         * We need to move the result to a spare reg
+                         * and move it back.
+                         */
+                        mod.agus.jcoderz.dx.rop.code.RegisterSpec originalResultSpec
+                            = firstNonPhiMoveInsn.getResult();
+                        int spareRegister = parent.borrowSpareRegister(
+                                originalResultSpec.getCategory());
+
+                        // We now move it to a spare register.
+                        firstNonPhiMoveInsn.changeResultReg(spareRegister);
+                        RegisterSpec tempSpec =
+                            firstNonPhiMoveInsn.getResult();
+
+                        insns.add(0, firstNonPhiMoveInsn);
+
+                        // And here we move it back.
+
+                        NormalSsaInsn toAdd = new NormalSsaInsn(
+                                new PlainInsn(
+                                        Rops.opMove(tempSpec.getType()),
+                                        SourcePosition.NO_INFO,
+                                        originalResultSpec,
+                                        RegisterSpecList.make(tempSpec)),
+                                this);
+
+
+                        /*
+                         * Place it immediately after the phi-moves,
+                         * overwriting the move-exception that was there.
+                         */
+                        insns.set(movesFromPhisAtBeginning + 1, toAdd);
+                    }
+                }
             }
         }
-        if (this.movesFromPhisAtEnd > 1) {
-            scheduleUseBeforeAssigned(this.insns.subList((this.insns.size() - this.movesFromPhisAtEnd) - 1, this.insns.size() - 1));
+
+        if (movesFromPhisAtEnd > 1) {
+            scheduleUseBeforeAssigned(
+                    insns.subList(insns.size() - movesFromPhisAtEnd - 1,
+                                insns.size() - 1));
         }
-        this.parent.returnSpareRegisters();
+
+        // Return registers borrowed here and in scheduleUseBeforeAssigned().
+        parent.returnSpareRegisters();
+
     }
 
+    /**
+     * Visits all insns in this block.
+     *
+     * @param visitor {@code non-null;} callback interface
+     */
     public void forEachInsn(SsaInsn.Visitor visitor) {
-        int size = this.insns.size();
-        for (int i = 0; i < size; i++) {
-            this.insns.get(i).accept(visitor);
+        // This gets called a LOT, and not using an iterator
+        // saves a lot of allocations and reduces memory usage
+        int len = insns.size();
+        for (int i = 0; i < len; i++) {
+            insns.get(i).accept(visitor);
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        return "{" + this.index + ":" + Hex.u2(this.ropLabel) + '}';
+        return "{" + index + ":" + Hex.u2(ropLabel) + '}';
     }
 
+    /**
+     * Visitor interface for basic blocks.
+     */
     public interface Visitor {
-        void visitBlock(SsaBasicBlock ssaBasicBlock, SsaBasicBlock ssaBasicBlock2);
+        /**
+         * Indicates a block has been visited by an iterator method.
+         *
+         * @param v {@code non-null;} block visited
+         * @param parent {@code null-ok;} parent node if applicable
+         */
+        void visitBlock (SsaBasicBlock v, SsaBasicBlock parent);
     }
 
-    public static final class LabelComparator implements Comparator<SsaBasicBlock> {
-        public int compare(SsaBasicBlock ssaBasicBlock, SsaBasicBlock ssaBasicBlock2) {
-            int i = ssaBasicBlock.ropLabel;
-            int i2 = ssaBasicBlock2.ropLabel;
-            if (i < i2) {
+    /**
+     * Label comparator.
+     */
+    public static final class LabelComparator
+            implements Comparator<SsaBasicBlock> {
+        /** {@inheritDoc} */
+        @Override
+        public int compare(SsaBasicBlock b1, SsaBasicBlock b2) {
+            int label1 = b1.ropLabel;
+            int label2 = b2.ropLabel;
+
+            if (label1 < label2) {
                 return -1;
-            }
-            if (i > i2) {
+            } else if (label1 > label2) {
                 return 1;
+            } else {
+                return 0;
             }
-            return 0;
         }
     }
 }

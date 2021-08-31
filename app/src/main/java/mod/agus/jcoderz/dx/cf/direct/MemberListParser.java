@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.direct;
 
 import mod.agus.jcoderz.dx.cf.iface.AttributeList;
@@ -12,105 +28,213 @@ import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public abstract class MemberListParser {
-    private final AttributeFactory attributeFactory;
+/**
+ * Parser for lists of class file members (that is, fields and methods).
+ */
+abstract /*package*/ class MemberListParser {
+    /** {@code non-null;} the class file to parse from */
     private final DirectClassFile cf;
-    private final CstType definer;
-    private final int offset;
-    private int endOffset;
-    private ParseObserver observer;
 
-    public MemberListParser(DirectClassFile directClassFile, CstType cstType, int i, AttributeFactory attributeFactory2) {
-        if (directClassFile == null) {
+    /** {@code non-null;} class being defined */
+    private final mod.agus.jcoderz.dx.rop.cst.CstType definer;
+
+    /** offset in the byte array of the classfile to the start of the list */
+    private final int offset;
+
+    /** {@code non-null;} attribute factory to use */
+    private final AttributeFactory attributeFactory;
+
+    /** {@code >= -1;} the end offset of this list in the byte array of the
+     * classfile, or {@code -1} if not yet parsed */
+    private int endOffset;
+
+    /** {@code null-ok;} parse observer, if any */
+    private mod.agus.jcoderz.dx.cf.iface.ParseObserver observer;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param cf {@code non-null;} the class file to parse from
+     * @param definer {@code non-null;} class being defined
+     * @param offset offset in {@code bytes} to the start of the list
+     * @param attributeFactory {@code non-null;} attribute factory to use
+     */
+    public MemberListParser(DirectClassFile cf, mod.agus.jcoderz.dx.rop.cst.CstType definer,
+            int offset, AttributeFactory attributeFactory) {
+        if (cf == null) {
             throw new NullPointerException("cf == null");
-        } else if (i < 0) {
-            throw new IllegalArgumentException("offset < 0");
-        } else if (attributeFactory2 == null) {
-            throw new NullPointerException("attributeFactory == null");
-        } else {
-            this.cf = directClassFile;
-            this.definer = cstType;
-            this.offset = i;
-            this.attributeFactory = attributeFactory2;
-            this.endOffset = -1;
         }
+
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset < 0");
+        }
+
+        if (attributeFactory == null) {
+            throw new NullPointerException("attributeFactory == null");
+        }
+
+        this.cf = cf;
+        this.definer = definer;
+        this.offset = offset;
+        this.attributeFactory = attributeFactory;
+        this.endOffset = -1;
     }
 
-    public abstract int getAttributeContext();
-
-    public abstract String humanAccessFlags(int i);
-
-    public abstract String humanName();
-
-    public abstract Member set(int i, int i2, CstNat cstNat, AttributeList attributeList);
-
+    /**
+     * Gets the end offset of this constant pool in the {@code byte[]}
+     * which it came from.
+     *
+     * @return {@code >= 0;} the end offset
+     */
     public int getEndOffset() {
         parseIfNecessary();
-        return this.endOffset;
+        return endOffset;
     }
 
-    public final void setObserver(ParseObserver parseObserver) {
-        this.observer = parseObserver;
+    /**
+     * Sets the parse observer for this instance.
+     *
+     * @param observer {@code null-ok;} the observer
+     */
+    public final void setObserver(ParseObserver observer) {
+        this.observer = observer;
     }
 
-    public final void parseIfNecessary() {
-        if (this.endOffset < 0) {
+    /**
+     * Runs {@link #parse} if it has not yet been run successfully.
+     */
+    protected final void parseIfNecessary() {
+        if (endOffset < 0) {
             parse();
         }
     }
 
-    public final int getCount() {
-        return this.cf.getBytes().getUnsignedShort(this.offset);
+    /**
+     * Gets the count of elements in the list.
+     *
+     * @return the count
+     */
+    protected final int getCount() {
+        mod.agus.jcoderz.dx.util.ByteArray bytes = cf.getBytes();
+        return bytes.getUnsignedShort(offset);
     }
 
-    public final CstType getDefiner() {
-        return this.definer;
+    /**
+     * Gets the class file being defined.
+     *
+     * @return {@code non-null;} the class
+     */
+    protected final CstType getDefiner() {
+        return definer;
     }
 
+    /**
+     * Gets the human-oriented name for what this instance is parsing.
+     * Subclasses must override this method.
+     *
+     * @return {@code non-null;} the human oriented name
+     */
+    protected abstract String humanName();
+
+    /**
+     * Gets the human-oriented string for the given access flags.
+     * Subclasses must override this method.
+     *
+     * @param accessFlags the flags
+     * @return {@code non-null;} the string form
+     */
+    protected abstract String humanAccessFlags(int accessFlags);
+
+    /**
+     * Gets the {@code CTX_*} constant to use when parsing attributes.
+     * Subclasses must override this method.
+     *
+     * @return {@code non-null;} the human oriented name
+     */
+    protected abstract int getAttributeContext();
+
+    /**
+     * Sets an element in the list. Subclasses must override this method.
+     *
+     * @param n which element
+     * @param accessFlags the {@code access_flags}
+     * @param nat the interpreted name and type (based on the two
+     * {@code *_index} fields)
+     * @param attributes list of parsed attributes
+     * @return {@code non-null;} the constructed member
+     */
+    protected abstract mod.agus.jcoderz.dx.cf.iface.Member set(int n, int accessFlags, mod.agus.jcoderz.dx.rop.cst.CstNat nat,
+                                                               AttributeList attributes);
+
+    /**
+     * Does the actual parsing.
+     */
     private void parse() {
         int attributeContext = getAttributeContext();
         int count = getCount();
-        int i = this.offset + 2;
-        ByteArray bytes = this.cf.getBytes();
-        ConstantPool constantPool = this.cf.getConstantPool();
-        if (this.observer != null) {
-            this.observer.parsed(bytes, this.offset, 2, humanName() + "s_count: " + Hex.u2(count));
+        int at = offset + 2; // Skip the count.
+
+        ByteArray bytes = cf.getBytes();
+        ConstantPool pool = cf.getConstantPool();
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            humanName() + "s_count: " + Hex.u2(count));
         }
-        for (int i2 = 0; i2 < count; i2++) {
+
+        for (int i = 0; i < count; i++) {
             try {
-                int unsignedShort = bytes.getUnsignedShort(i);
-                int unsignedShort2 = bytes.getUnsignedShort(i + 2);
-                int unsignedShort3 = bytes.getUnsignedShort(i + 4);
-                CstString cstString = (CstString) constantPool.get(unsignedShort2);
-                CstString cstString2 = (CstString) constantPool.get(unsignedShort3);
-                if (this.observer != null) {
-                    this.observer.startParsingMember(bytes, i, cstString.getString(), cstString2.getString());
-                    this.observer.parsed(bytes, i, 0, "\n" + humanName() + "s[" + i2 + "]:\n");
-                    this.observer.changeIndent(1);
-                    this.observer.parsed(bytes, i, 2, "access_flags: " + humanAccessFlags(unsignedShort));
-                    this.observer.parsed(bytes, i + 2, 2, "name: " + cstString.toHuman());
-                    this.observer.parsed(bytes, i + 4, 2, "descriptor: " + cstString2.toHuman());
+                int accessFlags = bytes.getUnsignedShort(at);
+                int nameIdx = bytes.getUnsignedShort(at + 2);
+                int descIdx = bytes.getUnsignedShort(at + 4);
+                mod.agus.jcoderz.dx.rop.cst.CstString name = (mod.agus.jcoderz.dx.rop.cst.CstString) pool.get(nameIdx);
+                mod.agus.jcoderz.dx.rop.cst.CstString desc = (CstString) pool.get(descIdx);
+
+                if (observer != null) {
+                    observer.startParsingMember(bytes, at, name.getString(),
+                                                desc.getString());
+                    observer.parsed(bytes, at, 0, "\n" + humanName() +
+                                    "s[" + i + "]:\n");
+                    observer.changeIndent(1);
+                    observer.parsed(bytes, at, 2,
+                                    "access_flags: " +
+                                    humanAccessFlags(accessFlags));
+                    observer.parsed(bytes, at + 2, 2,
+                                    "name: " + name.toHuman());
+                    observer.parsed(bytes, at + 4, 2,
+                                    "descriptor: " + desc.toHuman());
                 }
-                AttributeListParser attributeListParser = new AttributeListParser(this.cf, attributeContext, i + 6, this.attributeFactory);
-                attributeListParser.setObserver(this.observer);
-                i = attributeListParser.getEndOffset();
-                StdAttributeList list = attributeListParser.getList();
-                list.setImmutable();
-                Member member = set(i2, unsignedShort, new CstNat(cstString, cstString2), list);
-                if (this.observer != null) {
-                    this.observer.changeIndent(-1);
-                    this.observer.parsed(bytes, i, 0, "end " + humanName() + "s[" + i2 + "]\n");
-                    this.observer.endParsingMember(bytes, i, cstString.getString(), cstString2.getString(), member);
+
+                at += 6;
+                AttributeListParser parser =
+                    new AttributeListParser(cf, attributeContext, at,
+                                            attributeFactory);
+                parser.setObserver(observer);
+                at = parser.getEndOffset();
+                StdAttributeList attributes = parser.getList();
+                attributes.setImmutable();
+                mod.agus.jcoderz.dx.rop.cst.CstNat nat = new CstNat(name, desc);
+                Member member = set(i, accessFlags, nat, attributes);
+
+                if (observer != null) {
+                    observer.changeIndent(-1);
+                    observer.parsed(bytes, at, 0, "end " + humanName() +
+                                    "s[" + i + "]\n");
+                    observer.endParsingMember(bytes, at, name.getString(),
+                                              desc.getString(), member);
                 }
-            } catch (ParseException e) {
-                e.addContext("...while parsing " + humanName() + "s[" + i2 + "]");
-                throw e;
-            } catch (RuntimeException e2) {
-                ParseException parseException = new ParseException(e2);
-                parseException.addContext("...while parsing " + humanName() + "s[" + i2 + "]");
-                throw parseException;
+            } catch (mod.agus.jcoderz.dx.cf.iface.ParseException ex) {
+                ex.addContext("...while parsing " + humanName() + "s[" + i +
+                              "]");
+                throw ex;
+            } catch (RuntimeException ex) {
+                mod.agus.jcoderz.dx.cf.iface.ParseException pe = new ParseException(ex);
+                pe.addContext("...while parsing " + humanName() + "s[" + i +
+                              "]");
+                throw pe;
             }
         }
-        this.endOffset = i;
+
+        endOffset = at;
     }
 }

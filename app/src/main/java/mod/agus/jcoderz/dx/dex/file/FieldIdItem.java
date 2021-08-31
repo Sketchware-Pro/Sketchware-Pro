@@ -1,34 +1,69 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
 
+/**
+ * Representation of a field reference inside a Dalvik file.
+ */
 public final class FieldIdItem extends MemberIdItem {
-    public FieldIdItem(CstFieldRef cstFieldRef) {
-        super(cstFieldRef);
+    /**
+     * Constructs an instance.
+     *
+     * @param field {@code non-null;} the constant for the field
+     */
+    public FieldIdItem(mod.agus.jcoderz.dx.rop.cst.CstFieldRef field) {
+        super(field);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_FIELD_ID_ITEM;
     }
 
+    /** {@inheritDoc} */
     @Override
-    // mod.agus.jcoderz.dx.dex.file.MemberIdItem, mod.agus.jcoderz.dx.dex.file.IdItem, mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        super.addContents(dexFile);
-        dexFile.getTypeIds().intern(getFieldRef().getType());
+    public void addContents(DexFile file) {
+        super.addContents(file);
+
+        mod.agus.jcoderz.dx.dex.file.TypeIdsSection typeIds = file.getTypeIds();
+        typeIds.intern(getFieldRef().getType());
     }
 
-    public CstFieldRef getFieldRef() {
+    /**
+     * Gets the field constant.
+     *
+     * @return {@code non-null;} the constant
+     */
+    public mod.agus.jcoderz.dx.rop.cst.CstFieldRef getFieldRef() {
         return (CstFieldRef) getRef();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.MemberIdItem
-    protected int getTypoidIdx(DexFile dexFile) {
-        return dexFile.getTypeIds().indexOf(getFieldRef().getType());
+    /** {@inheritDoc} */
+    @Override
+    protected int getTypoidIdx(DexFile file) {
+        TypeIdsSection typeIds = file.getTypeIds();
+        return typeIds.indexOf(getFieldRef().getType());
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.MemberIdItem
+    /** {@inheritDoc} */
+    @Override
     protected String getTypoidName() {
         return "type_idx";
     }

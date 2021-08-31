@@ -1,6 +1,20 @@
-package mod.agus.jcoderz.dx.io.instructions;
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.EOFException;
+package mod.agus.jcoderz.dx.io.instructions;
 
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dx.io.IndexType;
@@ -8,130 +22,230 @@ import mod.agus.jcoderz.dx.io.OpcodeInfo;
 import mod.agus.jcoderz.dx.io.Opcodes;
 import mod.agus.jcoderz.dx.util.Hex;
 
+import java.io.EOFException;
+
+/**
+ * A decoded Dalvik instruction. This consists of a format codec, a
+ * numeric opcode, an optional index type, and any additional
+ * arguments of the instruction. The additional arguments (if any) are
+ * represented as uninterpreted data.
+ *
+ * <p><b>Note:</b> The names of the arguments are <i>not</i> meant to
+ * match the names given in the Dalvik instruction format
+ * specification, specification which just names fields (somewhat)
+ * arbitrarily alphabetically from A. In this class, non-register
+ * fields are given descriptive names and register fields are
+ * consistently named alphabetically.</p>
+ */
 public abstract class DecodedInstruction {
-    private final InstructionCodec format;
-    private final int index;
-    private final IndexType indexType;
-    private final long literal;
+    /** non-null; instruction format / codec */
+    private final mod.agus.jcoderz.dx.io.instructions.InstructionCodec format;
+
+    /** opcode number */
     private final int opcode;
+
+    /** constant index argument */
+    private final int index;
+
+    /** null-ok; index type */
+    private final mod.agus.jcoderz.dx.io.IndexType indexType;
+
+    /**
+     * target address argument. This is an absolute address, not just
+     * a signed offset. <b>Note:</b> The address is unsigned, even
+     * though it is stored in an {@code int}.
+     */
     private final int target;
 
-    public DecodedInstruction(InstructionCodec instructionCodec, int i, int i2, IndexType indexType2, int i3, long j) {
-        if (instructionCodec == null) {
-            throw new NullPointerException("format == null");
-        } else if (!Opcodes.isValidShape(i)) {
-            throw new IllegalArgumentException("invalid opcode");
-        } else {
-            this.format = instructionCodec;
-            this.opcode = i;
-            this.index = i2;
-            this.indexType = indexType2;
-            this.target = i3;
-            this.literal = j;
-        }
+    /**
+     * literal value argument; also used for special verification error
+     * constants (format 20bc) as well as should-be-zero values
+     * (formats 10x, 20t, 30t, and 32x)
+     */
+    private final long literal;
+
+    /**
+     * Decodes an instruction from the given input source.
+     */
+    public static DecodedInstruction decode(CodeInput in) throws EOFException {
+        int opcodeUnit = in.read();
+        int opcode = mod.agus.jcoderz.dx.io.Opcodes.extractOpcodeFromUnit(opcodeUnit);
+        mod.agus.jcoderz.dx.io.instructions.InstructionCodec format = OpcodeInfo.getFormat(opcode);
+
+        return format.decode(opcodeUnit, in);
     }
 
-    public static DecodedInstruction decode(CodeInput codeInput) throws EOFException {
-        int read = codeInput.read();
-        return OpcodeInfo.getFormat(Opcodes.extractOpcodeFromUnit(read)).decode(read, codeInput);
-    }
+    /**
+     * Decodes an array of instructions. The result has non-null
+     * elements at each offset that represents the start of an
+     * instruction.
+     */
+    public static DecodedInstruction[] decodeAll(short[] encodedInstructions) {
+        int size = encodedInstructions.length;
+        DecodedInstruction[] decoded = new DecodedInstruction[size];
+        mod.agus.jcoderz.dx.io.instructions.ShortArrayCodeInput in = new ShortArrayCodeInput(encodedInstructions);
 
-    public static DecodedInstruction[] decodeAll(short[] sArr) {
-        DecodedInstruction[] decodedInstructionArr = new DecodedInstruction[sArr.length];
-        ShortArrayCodeInput shortArrayCodeInput = new ShortArrayCodeInput(sArr);
-        while (shortArrayCodeInput.hasMore()) {
-            try {
-                decodedInstructionArr[shortArrayCodeInput.cursor()] = decode(shortArrayCodeInput);
-            } catch (EOFException e) {
-                throw new DexException(e);
+        try {
+            while (in.hasMore()) {
+                decoded[in.cursor()] = DecodedInstruction.decode(in);
             }
+        } catch (EOFException ex) {
+            throw new DexException(ex);
         }
-        return decodedInstructionArr;
+
+        return decoded;
     }
 
-    public abstract int getRegisterCount();
+    /**
+     * Constructs an instance.
+     */
+    public DecodedInstruction(mod.agus.jcoderz.dx.io.instructions.InstructionCodec format, int opcode,
+                              int index, mod.agus.jcoderz.dx.io.IndexType indexType, int target, long literal) {
+        if (format == null) {
+            throw new NullPointerException("format == null");
+        }
 
-    public abstract DecodedInstruction withIndex(int i);
+        if (!Opcodes.isValidShape(opcode)) {
+            throw new IllegalArgumentException("invalid opcode");
+        }
+
+        this.format = format;
+        this.opcode = opcode;
+        this.index = index;
+        this.indexType = indexType;
+        this.target = target;
+        this.literal = literal;
+    }
 
     public final InstructionCodec getFormat() {
-        return this.format;
+        return format;
     }
 
     public final int getOpcode() {
-        return this.opcode;
+        return opcode;
     }
 
+    /**
+     * Gets the opcode, as a code unit.
+     */
     public final short getOpcodeUnit() {
-        return (short) this.opcode;
+        return (short) opcode;
     }
 
     public final int getIndex() {
-        return this.index;
+        return index;
     }
 
+    /**
+     * Gets the index, as a code unit.
+     */
     public final short getIndexUnit() {
-        return (short) this.index;
+        return (short) index;
     }
 
     public final IndexType getIndexType() {
-        return this.indexType;
+        return indexType;
     }
 
+    /**
+     * Gets the raw target.
+     */
     public final int getTarget() {
-        return this.target;
+        return target;
     }
 
-    public final int getTarget(int i) {
-        return this.target - i;
+    /**
+     * Gets the target as a relative offset from the given address.
+     */
+    public final int getTarget(int baseAddress) {
+        return target - baseAddress;
     }
 
-    public final short getTargetUnit(int i) {
-        int target2 = getTarget(i);
-        if (target2 == ((short) target2)) {
-            return (short) target2;
+    /**
+     * Gets the target as a relative offset from the given base
+     * address, as a code unit. This will throw if the value is out of
+     * the range of a signed code unit.
+     */
+    public final short getTargetUnit(int baseAddress) {
+        int relativeTarget = getTarget(baseAddress);
+
+        if (relativeTarget != (short) relativeTarget) {
+            throw new DexException("Target out of range: "
+                    + mod.agus.jcoderz.dx.util.Hex.s4(relativeTarget));
         }
-        throw new DexException("Target out of range: " + Hex.s4(target2));
+
+        return (short) relativeTarget;
     }
 
-    public final int getTargetByte(int i) {
-        int target2 = getTarget(i);
-        if (target2 == ((byte) target2)) {
-            return target2 & 255;
+    /**
+     * Gets the target as a relative offset from the given base
+     * address, masked to be a byte in size. This will throw if the
+     * value is out of the range of a signed byte.
+     */
+    public final int getTargetByte(int baseAddress) {
+        int relativeTarget = getTarget(baseAddress);
+
+        if (relativeTarget != (byte) relativeTarget) {
+            throw new DexException("Target out of range: "
+                    + mod.agus.jcoderz.dx.util.Hex.s4(relativeTarget));
         }
-        throw new DexException("Target out of range: " + Hex.s4(target2));
+
+        return relativeTarget & 0xff;
     }
 
     public final long getLiteral() {
-        return this.literal;
+        return literal;
     }
 
+    /**
+     * Gets the literal value, masked to be an int in size. This will
+     * throw if the value is out of the range of a signed int.
+     */
     public final int getLiteralInt() {
-        if (this.literal == ((long) ((int) this.literal))) {
-            return (int) this.literal;
+        if (literal != (int) literal) {
+            throw new DexException("Literal out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(literal));
         }
-        throw new DexException("Literal out of range: " + Hex.u8(this.literal));
+
+        return (int) literal;
     }
 
+    /**
+     * Gets the literal value, as a code unit. This will throw if the
+     * value is out of the range of a signed code unit.
+     */
     public final short getLiteralUnit() {
-        if (this.literal == ((long) ((short) ((int) this.literal)))) {
-            return (short) ((int) this.literal);
+        if (literal != (short) literal) {
+            throw new DexException("Literal out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(literal));
         }
-        throw new DexException("Literal out of range: " + Hex.u8(this.literal));
+
+        return (short) literal;
     }
 
+    /**
+     * Gets the literal value, masked to be a byte in size. This will
+     * throw if the value is out of the range of a signed byte.
+     */
     public final int getLiteralByte() {
-        if (this.literal == ((long) ((byte) ((int) this.literal)))) {
-            return ((int) this.literal) & 255;
+        if (literal != (byte) literal) {
+            throw new DexException("Literal out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(literal));
         }
-        throw new DexException("Literal out of range: " + Hex.u8(this.literal));
+
+        return (int) literal & 0xff;
     }
 
+    /**
+     * Gets the literal value, masked to be a nibble in size. This
+     * will throw if the value is out of the range of a signed nibble.
+     */
     public final int getLiteralNibble() {
-        if (this.literal >= -8 && this.literal <= 7) {
-            return ((int) this.literal) & 15;
+        if ((literal < -8) || (literal > 7)) {
+            throw new DexException("Literal out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(literal));
         }
-        throw new DexException("Literal out of range: " + Hex.u8(this.literal));
+
+        return (int) literal & 0xf;
     }
+
+    public abstract int getRegisterCount();
 
     public int getA() {
         return 0;
@@ -153,119 +267,223 @@ public abstract class DecodedInstruction {
         return 0;
     }
 
+    /**
+     * Gets the register count, as a code unit. This will throw if the
+     * value is out of the range of an unsigned code unit.
+     */
     public final short getRegisterCountUnit() {
         int registerCount = getRegisterCount();
-        if ((-65536 & registerCount) == 0) {
-            return (short) registerCount;
+
+        if ((registerCount & ~0xffff) != 0) {
+            throw new DexException("Register count out of range: "
+                    + mod.agus.jcoderz.dx.util.Hex.u8(registerCount));
         }
-        throw new DexException("Register count out of range: " + Hex.u8((long) registerCount));
+
+        return (short) registerCount;
     }
 
+    /**
+     * Gets the A register number, as a code unit. This will throw if the
+     * value is out of the range of an unsigned code unit.
+     */
     public final short getAUnit() {
         int a = getA();
-        if ((-65536 & a) == 0) {
-            return (short) a;
+
+        if ((a & ~0xffff) != 0) {
+            throw new DexException("Register A out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(a));
         }
-        throw new DexException("Register A out of range: " + Hex.u8((long) a));
+
+        return (short) a;
     }
 
+    /**
+     * Gets the A register number, as a byte. This will throw if the
+     * value is out of the range of an unsigned byte.
+     */
     public final short getAByte() {
         int a = getA();
-        if ((a & -256) == 0) {
-            return (short) a;
+
+        if ((a & ~0xff) != 0) {
+            throw new DexException("Register A out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(a));
         }
-        throw new DexException("Register A out of range: " + Hex.u8((long) a));
+
+        return (short) a;
     }
 
+    /**
+     * Gets the A register number, as a nibble. This will throw if the
+     * value is out of the range of an unsigned nibble.
+     */
     public final short getANibble() {
         int a = getA();
-        if ((a & -16) == 0) {
-            return (short) a;
+
+        if ((a & ~0xf) != 0) {
+            throw new DexException("Register A out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(a));
         }
-        throw new DexException("Register A out of range: " + Hex.u8((long) a));
+
+        return (short) a;
     }
 
+    /**
+     * Gets the B register number, as a code unit. This will throw if the
+     * value is out of the range of an unsigned code unit.
+     */
     public final short getBUnit() {
         int b = getB();
-        if ((-65536 & b) == 0) {
-            return (short) b;
+
+        if ((b & ~0xffff) != 0) {
+            throw new DexException("Register B out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(b));
         }
-        throw new DexException("Register B out of range: " + Hex.u8((long) b));
+
+        return (short) b;
     }
 
+    /**
+     * Gets the B register number, as a byte. This will throw if the
+     * value is out of the range of an unsigned byte.
+     */
     public final short getBByte() {
         int b = getB();
-        if ((b & -256) == 0) {
-            return (short) b;
+
+        if ((b & ~0xff) != 0) {
+            throw new DexException("Register B out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(b));
         }
-        throw new DexException("Register B out of range: " + Hex.u8((long) b));
+
+        return (short) b;
     }
 
+    /**
+     * Gets the B register number, as a nibble. This will throw if the
+     * value is out of the range of an unsigned nibble.
+     */
     public final short getBNibble() {
         int b = getB();
-        if ((b & -16) == 0) {
-            return (short) b;
+
+        if ((b & ~0xf) != 0) {
+            throw new DexException("Register B out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(b));
         }
-        throw new DexException("Register B out of range: " + Hex.u8((long) b));
+
+        return (short) b;
     }
 
+    /**
+     * Gets the C register number, as a code unit. This will throw if the
+     * value is out of the range of an unsigned code unit.
+     */
     public final short getCUnit() {
         int c = getC();
-        if ((-65536 & c) == 0) {
-            return (short) c;
+
+        if ((c & ~0xffff) != 0) {
+            throw new DexException("Register C out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(c));
         }
-        throw new DexException("Register C out of range: " + Hex.u8((long) c));
+
+        return (short) c;
     }
 
+    /**
+     * Gets the C register number, as a byte. This will throw if the
+     * value is out of the range of an unsigned byte.
+     */
     public final short getCByte() {
         int c = getC();
-        if ((c & -256) == 0) {
-            return (short) c;
+
+        if ((c & ~0xff) != 0) {
+            throw new DexException("Register C out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(c));
         }
-        throw new DexException("Register C out of range: " + Hex.u8((long) c));
+
+        return (short) c;
     }
 
+    /**
+     * Gets the C register number, as a nibble. This will throw if the
+     * value is out of the range of an unsigned nibble.
+     */
     public final short getCNibble() {
         int c = getC();
-        if ((c & -16) == 0) {
-            return (short) c;
+
+        if ((c & ~0xf) != 0) {
+            throw new DexException("Register C out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(c));
         }
-        throw new DexException("Register C out of range: " + Hex.u8((long) c));
+
+        return (short) c;
     }
 
+    /**
+     * Gets the D register number, as a code unit. This will throw if the
+     * value is out of the range of an unsigned code unit.
+     */
     public final short getDUnit() {
         int d = getD();
-        if ((-65536 & d) == 0) {
-            return (short) d;
+
+        if ((d & ~0xffff) != 0) {
+            throw new DexException("Register D out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(d));
         }
-        throw new DexException("Register D out of range: " + Hex.u8((long) d));
+
+        return (short) d;
     }
 
+    /**
+     * Gets the D register number, as a byte. This will throw if the
+     * value is out of the range of an unsigned byte.
+     */
     public final short getDByte() {
         int d = getD();
-        if ((d & -256) == 0) {
-            return (short) d;
+
+        if ((d & ~0xff) != 0) {
+            throw new DexException("Register D out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(d));
         }
-        throw new DexException("Register D out of range: " + Hex.u8((long) d));
+
+        return (short) d;
     }
 
+    /**
+     * Gets the D register number, as a nibble. This will throw if the
+     * value is out of the range of an unsigned nibble.
+     */
     public final short getDNibble() {
         int d = getD();
-        if ((d & -16) == 0) {
-            return (short) d;
+
+        if ((d & ~0xf) != 0) {
+            throw new DexException("Register D out of range: " + mod.agus.jcoderz.dx.util.Hex.u8(d));
         }
-        throw new DexException("Register D out of range: " + Hex.u8((long) d));
+
+        return (short) d;
     }
 
+    /**
+     * Gets the E register number, as a nibble. This will throw if the
+     * value is out of the range of an unsigned nibble.
+     */
     public final short getENibble() {
         int e = getE();
-        if ((e & -16) == 0) {
-            return (short) e;
+
+        if ((e & ~0xf) != 0) {
+            throw new DexException("Register E out of range: " + Hex.u8(e));
         }
-        throw new DexException("Register E out of range: " + Hex.u8((long) e));
+
+        return (short) e;
     }
 
-    public final void encode(CodeOutput codeOutput) {
-        this.format.encode(this, codeOutput);
+    /**
+     * Encodes this instance to the given output.
+     */
+    public final void encode(CodeOutput out) {
+        format.encode(this, out);
+    }
+
+    /**
+     * Returns an instance just like this one, except with the index replaced
+     * with the given one.
+     */
+    public abstract DecodedInstruction withIndex(int newIndex);
+
+    /** Update the instruction with a new 45cc or 4rcc proto index. */
+    public DecodedInstruction withProtoIndex(int newIndex, int newProtoIndex) {
+        throw new IllegalStateException(getClass().toString());
+    }
+
+    /** Returns a 45cc or 4rcc proto index. */
+    public short getProtoIndex() {
+        throw new IllegalStateException(getClass().toString());
     }
 }

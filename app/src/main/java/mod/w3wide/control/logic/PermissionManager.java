@@ -5,7 +5,9 @@ import com.besome.sketch.beans.BlockBean;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import a.a.a.Jx;
 import a.a.a.jC;
+import a.a.a.jq;
 
 public class PermissionManager {
 
@@ -32,9 +34,9 @@ public class PermissionManager {
 
     private String formatPermission(boolean isAppCompat, String permission) {
         if (isAppCompat) {
-            return String.format("ContextCompat.checkSelfPermission(this, %s) == PackageManager.PERMISSION_DENIED", permission);
+            return "ContextCompat.checkSelfPermission(this, " + permission + ") == PackageManager.PERMISSION_DENIED";
         } else {
-            return String.format("checkSelfPermission(%s) == PackageManager.PERMISSION_DENIED", permission);
+            return "checkSelfPermission(" + permission + ") == PackageManager.PERMISSION_DENIED";
         }
     }
 
@@ -68,27 +70,27 @@ public class PermissionManager {
         addReqPermission(isAppCompat, checkPerm, addPerm);
 
         if (isAppCompat) {
-            if ((var1 & 1) == 1) {
+            if ((var1 & jq.PERMISSION_CALL_PHONE) == jq.PERMISSION_CALL_PHONE) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.CALL_PHONE");
             }
-            if ((var1 & 16) == 16) {
+            if ((var1 & jq.PERMISSION_CAMERA) == jq.PERMISSION_CAMERA) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.CAMERA");
             }
-            if ((var1 & 32) == 32) {
+            if ((var1 & jq.PERMISSION_READ_EXTERNAL_STORAGE) == jq.PERMISSION_READ_EXTERNAL_STORAGE) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.READ_EXTERNAL_STORAGE");
             }
-            if ((var1 & 64) == 64) {
+            if ((var1 & jq.PERMISSION_WRITE_EXTERNAL_STORAGE) == jq.PERMISSION_WRITE_EXTERNAL_STORAGE) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.WRITE_EXTERNAL_STORAGE");
             }
-            if ((var1 & 128) == 128) {
+            if ((var1 & jq.PERMISSION_RECORD_AUDIO) == jq.PERMISSION_RECORD_AUDIO) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.RECORD_AUDIO");
             }
-            if ((var1 & 1024) == 1024) {
+            if ((var1 & jq.PERMISSION_ACCESS_FINE_LOCATION) == jq.PERMISSION_ACCESS_FINE_LOCATION) {
                 checkPerm.add("ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.ACCESS_FINE_LOCATION");
             }
@@ -113,27 +115,27 @@ public class PermissionManager {
             }
 
         } else {
-            if ((var1 & 1) == 1) {
+            if ((var1 & jq.PERMISSION_CALL_PHONE) == jq.PERMISSION_CALL_PHONE) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.CALL_PHONE");
             }
-            if ((var1 & 16) == 16) {
+            if ((var1 & jq.PERMISSION_CAMERA) == jq.PERMISSION_CAMERA) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.CAMERA");
             }
-            if ((var1 & 32) == 32) {
+            if ((var1 & jq.PERMISSION_READ_EXTERNAL_STORAGE) == jq.PERMISSION_READ_EXTERNAL_STORAGE) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.READ_EXTERNAL_STORAGE");
             }
-            if ((var1 & 64) == 64) {
+            if ((var1 & jq.PERMISSION_WRITE_EXTERNAL_STORAGE) == jq.PERMISSION_WRITE_EXTERNAL_STORAGE) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.WRITE_EXTERNAL_STORAGE");
             }
-            if ((var1 & 128) == 128) {
+            if ((var1 & jq.PERMISSION_RECORD_AUDIO) == jq.PERMISSION_RECORD_AUDIO) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.RECORD_AUDIO");
             }
-            if ((var1 & 1024) == 1024) {
+            if ((var1 & jq.PERMISSION_ACCESS_FINE_LOCATION) == jq.PERMISSION_ACCESS_FINE_LOCATION) {
                 checkPerm.add("checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED");
                 addPerm.add("Manifest.permission.ACCESS_FINE_LOCATION");
             }
@@ -163,7 +165,7 @@ public class PermissionManager {
         if (permissionCode.toString().trim().isEmpty()) {
             return "initializeLogic();\r\n";
         } else {
-            return permissionCode.toString();
+            return Jx.a + permissionCode;
         }
     }
 }

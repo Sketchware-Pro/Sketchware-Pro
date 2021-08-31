@@ -1,177 +1,410 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.type;
 
 import mod.agus.jcoderz.dx.util.FixedSizeList;
 
-public final class StdTypeList extends FixedSizeList implements TypeList {
-    public static final StdTypeList BOOLEANARR_INT = make(Type.BOOLEAN_ARRAY, Type.INT);
-    public static final StdTypeList BYTEARR_INT = make(Type.BYTE_ARRAY, Type.INT);
-    public static final StdTypeList CHARARR_INT = make(Type.CHAR_ARRAY, Type.INT);
-    public static final StdTypeList DOUBLE = make(Type.DOUBLE);
-    public static final StdTypeList DOUBLEARR_INT = make(Type.DOUBLE_ARRAY, Type.INT);
-    public static final StdTypeList DOUBLE_DOUBLE = make(Type.DOUBLE, Type.DOUBLE);
-    public static final StdTypeList DOUBLE_DOUBLEARR_INT = make(Type.DOUBLE, Type.DOUBLE_ARRAY, Type.INT);
-    public static final StdTypeList DOUBLE_OBJECT = make(Type.DOUBLE, Type.OBJECT);
+/**
+ * Standard implementation of {@link TypeList}.
+ */
+public final class StdTypeList
+        extends FixedSizeList implements TypeList {
+    /** {@code non-null;} no-element instance */
     public static final StdTypeList EMPTY = new StdTypeList(0);
-    public static final StdTypeList FLOAT = make(Type.FLOAT);
-    public static final StdTypeList FLOATARR_INT = make(Type.FLOAT_ARRAY, Type.INT);
-    public static final StdTypeList FLOAT_FLOAT = make(Type.FLOAT, Type.FLOAT);
-    public static final StdTypeList FLOAT_FLOATARR_INT = make(Type.FLOAT, Type.FLOAT_ARRAY, Type.INT);
-    public static final StdTypeList FLOAT_OBJECT = make(Type.FLOAT, Type.OBJECT);
-    public static final StdTypeList INT = make(Type.INT);
-    public static final StdTypeList INTARR_INT = make(Type.INT_ARRAY, Type.INT);
-    public static final StdTypeList INT_BOOLEANARR_INT = make(Type.INT, Type.BOOLEAN_ARRAY, Type.INT);
-    public static final StdTypeList INT_BYTEARR_INT = make(Type.INT, Type.BYTE_ARRAY, Type.INT);
-    public static final StdTypeList INT_CHARARR_INT = make(Type.INT, Type.CHAR_ARRAY, Type.INT);
-    public static final StdTypeList INT_INT = make(Type.INT, Type.INT);
-    public static final StdTypeList INT_INTARR_INT = make(Type.INT, Type.INT_ARRAY, Type.INT);
-    public static final StdTypeList INT_OBJECT = make(Type.INT, Type.OBJECT);
-    public static final StdTypeList INT_SHORTARR_INT = make(Type.INT, Type.SHORT_ARRAY, Type.INT);
-    public static final StdTypeList LONG = make(Type.LONG);
-    public static final StdTypeList LONGARR_INT = make(Type.LONG_ARRAY, Type.INT);
-    public static final StdTypeList LONG_INT = make(Type.LONG, Type.INT);
-    public static final StdTypeList LONG_LONG = make(Type.LONG, Type.LONG);
-    public static final StdTypeList LONG_LONGARR_INT = make(Type.LONG, Type.LONG_ARRAY, Type.INT);
-    public static final StdTypeList LONG_OBJECT = make(Type.LONG, Type.OBJECT);
-    public static final StdTypeList OBJECT = make(Type.OBJECT);
-    public static final StdTypeList OBJECTARR_INT = make(Type.OBJECT_ARRAY, Type.INT);
-    public static final StdTypeList OBJECT_OBJECT = make(Type.OBJECT, Type.OBJECT);
-    public static final StdTypeList OBJECT_OBJECTARR_INT = make(Type.OBJECT, Type.OBJECT_ARRAY, Type.INT);
-    public static final StdTypeList RETURN_ADDRESS = make(Type.RETURN_ADDRESS);
-    public static final StdTypeList SHORTARR_INT = make(Type.SHORT_ARRAY, Type.INT);
-    public static final StdTypeList THROWABLE = make(Type.THROWABLE);
 
-    public StdTypeList(int i) {
-        super(i);
-    }
+    /** {@code non-null;} the list {@code [int]} */
+    public static final StdTypeList INT = StdTypeList.make(Type.INT);
 
+    /** {@code non-null;} the list {@code [long]} */
+    public static final StdTypeList LONG = StdTypeList.make(Type.LONG);
+
+    /** {@code non-null;} the list {@code [float]} */
+    public static final StdTypeList FLOAT = StdTypeList.make(Type.FLOAT);
+
+    /** {@code non-null;} the list {@code [double]} */
+    public static final StdTypeList DOUBLE = StdTypeList.make(Type.DOUBLE);
+
+    /** {@code non-null;} the list {@code [Object]} */
+    public static final StdTypeList OBJECT = StdTypeList.make(Type.OBJECT);
+
+    /** {@code non-null;} the list {@code [ReturnAddress]} */
+    public static final StdTypeList RETURN_ADDRESS
+            = StdTypeList.make(Type.RETURN_ADDRESS);
+
+    /** {@code non-null;} the list {@code [Throwable]} */
+    public static final StdTypeList THROWABLE =
+        StdTypeList.make(Type.THROWABLE);
+
+    /** {@code non-null;} the list {@code [int, int]} */
+    public static final StdTypeList INT_INT =
+        StdTypeList.make(Type.INT, Type.INT);
+
+    /** {@code non-null;} the list {@code [long, long]} */
+    public static final StdTypeList LONG_LONG =
+        StdTypeList.make(Type.LONG, Type.LONG);
+
+    /** {@code non-null;} the list {@code [float, float]} */
+    public static final StdTypeList FLOAT_FLOAT =
+        StdTypeList.make(Type.FLOAT, Type.FLOAT);
+
+    /** {@code non-null;} the list {@code [double, double]} */
+    public static final StdTypeList DOUBLE_DOUBLE =
+        StdTypeList.make(Type.DOUBLE, Type.DOUBLE);
+
+    /** {@code non-null;} the list {@code [Object, Object]} */
+    public static final StdTypeList OBJECT_OBJECT =
+        StdTypeList.make(Type.OBJECT, Type.OBJECT);
+
+    /** {@code non-null;} the list {@code [int, Object]} */
+    public static final StdTypeList INT_OBJECT =
+        StdTypeList.make(Type.INT, Type.OBJECT);
+
+    /** {@code non-null;} the list {@code [long, Object]} */
+    public static final StdTypeList LONG_OBJECT =
+        StdTypeList.make(Type.LONG, Type.OBJECT);
+
+    /** {@code non-null;} the list {@code [float, Object]} */
+    public static final StdTypeList FLOAT_OBJECT =
+        StdTypeList.make(Type.FLOAT, Type.OBJECT);
+
+    /** {@code non-null;} the list {@code [double, Object]} */
+    public static final StdTypeList DOUBLE_OBJECT =
+        StdTypeList.make(Type.DOUBLE, Type.OBJECT);
+
+    /** {@code non-null;} the list {@code [long, int]} */
+    public static final StdTypeList LONG_INT =
+        StdTypeList.make(Type.LONG, Type.INT);
+
+    /** {@code non-null;} the list {@code [int[], int]} */
+    public static final StdTypeList INTARR_INT =
+        StdTypeList.make(Type.INT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [long[], int]} */
+    public static final StdTypeList LONGARR_INT =
+        StdTypeList.make(Type.LONG_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [float[], int]} */
+    public static final StdTypeList FLOATARR_INT =
+        StdTypeList.make(Type.FLOAT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [double[], int]} */
+    public static final StdTypeList DOUBLEARR_INT =
+        StdTypeList.make(Type.DOUBLE_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [Object[], int]} */
+    public static final StdTypeList OBJECTARR_INT =
+        StdTypeList.make(Type.OBJECT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [boolean[], int]} */
+    public static final StdTypeList BOOLEANARR_INT =
+        StdTypeList.make(Type.BOOLEAN_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [byte[], int]} */
+    public static final StdTypeList BYTEARR_INT =
+        StdTypeList.make(Type.BYTE_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [char[], int]} */
+    public static final StdTypeList CHARARR_INT =
+        StdTypeList.make(Type.CHAR_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [short[], int]} */
+    public static final StdTypeList SHORTARR_INT =
+        StdTypeList.make(Type.SHORT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [int, int[], int]} */
+    public static final StdTypeList INT_INTARR_INT =
+        StdTypeList.make(Type.INT, Type.INT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [long, long[], int]} */
+    public static final StdTypeList LONG_LONGARR_INT =
+        StdTypeList.make(Type.LONG, Type.LONG_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [float, float[], int]} */
+    public static final StdTypeList FLOAT_FLOATARR_INT =
+        StdTypeList.make(Type.FLOAT, Type.FLOAT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [double, double[], int]} */
+    public static final StdTypeList DOUBLE_DOUBLEARR_INT =
+        StdTypeList.make(Type.DOUBLE, Type.DOUBLE_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [Object, Object[], int]} */
+    public static final StdTypeList OBJECT_OBJECTARR_INT =
+        StdTypeList.make(Type.OBJECT, Type.OBJECT_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [int, boolean[], int]} */
+    public static final StdTypeList INT_BOOLEANARR_INT =
+        StdTypeList.make(Type.INT, Type.BOOLEAN_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [int, byte[], int]} */
+    public static final StdTypeList INT_BYTEARR_INT =
+        StdTypeList.make(Type.INT, Type.BYTE_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [int, char[], int]} */
+    public static final StdTypeList INT_CHARARR_INT =
+        StdTypeList.make(Type.INT, Type.CHAR_ARRAY, Type.INT);
+
+    /** {@code non-null;} the list {@code [int, short[], int]} */
+    public static final StdTypeList INT_SHORTARR_INT =
+        StdTypeList.make(Type.INT, Type.SHORT_ARRAY, Type.INT);
+
+    /**
+     * Makes a single-element instance.
+     *
+     * @param type {@code non-null;} the element
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
     public static StdTypeList make(Type type) {
-        StdTypeList stdTypeList = new StdTypeList(1);
-        stdTypeList.set(0, type);
-        return stdTypeList;
+        StdTypeList result = new StdTypeList(1);
+        result.set(0, type);
+        return result;
     }
 
-    public static StdTypeList make(Type type, Type type2) {
-        StdTypeList stdTypeList = new StdTypeList(2);
-        stdTypeList.set(0, type);
-        stdTypeList.set(1, type2);
-        return stdTypeList;
+    /**
+     * Makes a two-element instance.
+     *
+     * @param type0 {@code non-null;} the first element
+     * @param type1 {@code non-null;} the second element
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
+    public static StdTypeList make(Type type0, Type type1) {
+        StdTypeList result = new StdTypeList(2);
+        result.set(0, type0);
+        result.set(1, type1);
+        return result;
     }
 
-    public static StdTypeList make(Type type, Type type2, Type type3) {
-        StdTypeList stdTypeList = new StdTypeList(3);
-        stdTypeList.set(0, type);
-        stdTypeList.set(1, type2);
-        stdTypeList.set(2, type3);
-        return stdTypeList;
+    /**
+     * Makes a three-element instance.
+     *
+     * @param type0 {@code non-null;} the first element
+     * @param type1 {@code non-null;} the second element
+     * @param type2 {@code non-null;} the third element
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
+    public static StdTypeList make(Type type0, Type type1, Type type2) {
+        StdTypeList result = new StdTypeList(3);
+        result.set(0, type0);
+        result.set(1, type1);
+        result.set(2, type2);
+        return result;
     }
 
-    public static StdTypeList make(Type type, Type type2, Type type3, Type type4) {
-        StdTypeList stdTypeList = new StdTypeList(4);
-        stdTypeList.set(0, type);
-        stdTypeList.set(1, type2);
-        stdTypeList.set(2, type3);
-        stdTypeList.set(3, type4);
-        return stdTypeList;
+    /**
+     * Makes a four-element instance.
+     *
+     * @param type0 {@code non-null;} the first element
+     * @param type1 {@code non-null;} the second element
+     * @param type2 {@code non-null;} the third element
+     * @param type3 {@code non-null;} the fourth element
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
+    public static StdTypeList make(Type type0, Type type1, Type type2,
+                                   Type type3) {
+        StdTypeList result = new StdTypeList(4);
+        result.set(0, type0);
+        result.set(1, type1);
+        result.set(2, type2);
+        result.set(3, type3);
+        return result;
     }
 
-    public static String toHuman(TypeList typeList) {
-        int size = typeList.size();
+    /**
+     * Returns the given list as a comma-separated list of human forms. This
+     * is a static method so as to work on arbitrary {@link TypeList}
+     * instances.
+     *
+     * @param list {@code non-null;} the list to convert
+     * @return {@code non-null;} the human form
+     */
+    public static String toHuman(TypeList list) {
+        int size = list.size();
+
         if (size == 0) {
             return "<empty>";
         }
-        StringBuffer stringBuffer = new StringBuffer(100);
+
+        StringBuilder sb = new StringBuilder(100);
+
         for (int i = 0; i < size; i++) {
             if (i != 0) {
-                stringBuffer.append(", ");
+                sb.append(", ");
             }
-            stringBuffer.append(typeList.getType(i).toHuman());
+            sb.append(list.getType(i).toHuman());
         }
-        return stringBuffer.toString();
+
+        return sb.toString();
     }
 
-    public static int hashContents(TypeList typeList) {
-        int size = typeList.size();
-        int i = 0;
-        for (int i2 = 0; i2 < size; i2++) {
-            i = (i * 31) + typeList.getType(i2).hashCode();
+    /**
+     * Returns a hashcode of the contents of the given list. This
+     * is a static method so as to work on arbitrary {@link TypeList}
+     * instances.
+     *
+     * @param list {@code non-null;} the list to inspect
+     * @return {@code non-null;} the hash code
+     */
+    public static int hashContents(TypeList list) {
+        int size = list.size();
+        int hash = 0;
+
+        for (int i = 0; i < size; i++) {
+            hash = (hash * 31) + list.getType(i).hashCode();
         }
-        return i;
+
+        return hash;
     }
 
-    public static boolean equalContents(TypeList typeList, TypeList typeList2) {
-        int size = typeList.size();
-        if (typeList2.size() != size) {
+    /**
+     * Compares the contents of the given two instances for equality. This
+     * is a static method so as to work on arbitrary {@link TypeList}
+     * instances.
+     *
+     * @param list1 {@code non-null;} one list to compare
+     * @param list2 {@code non-null;} another list to compare
+     * @return whether the two lists contain corresponding equal elements
+     */
+    public static boolean equalContents(TypeList list1, TypeList list2) {
+        int size = list1.size();
+
+        if (list2.size() != size) {
             return false;
         }
+
         for (int i = 0; i < size; i++) {
-            if (!typeList.getType(i).equals(typeList2.getType(i))) {
+            if (! list1.getType(i).equals(list2.getType(i))) {
                 return false;
             }
         }
+
         return true;
     }
 
-    public static int compareContents(TypeList typeList, TypeList typeList2) {
-        int size = typeList.size();
-        int size2 = typeList2.size();
-        int min = Math.min(size, size2);
-        for (int i = 0; i < min; i++) {
-            int compareTo = typeList.getType(i).compareTo(typeList2.getType(i));
-            if (compareTo != 0) {
-                return compareTo;
+    /**
+     * Compares the contents of the given two instances for ordering. This
+     * is a static method so as to work on arbitrary {@link TypeList}
+     * instances.
+     *
+     * @param list1 {@code non-null;} one list to compare
+     * @param list2 {@code non-null;} another list to compare
+     * @return the order of the two lists
+     */
+    public static int compareContents(TypeList list1, TypeList list2) {
+        int size1 = list1.size();
+        int size2 = list2.size();
+        int size = Math.min(size1, size2);
+
+        for (int i = 0; i < size; i++) {
+            int comparison = list1.getType(i).compareTo(list2.getType(i));
+            if (comparison != 0) {
+                return comparison;
             }
         }
-        if (size == size2) {
+
+        if (size1 == size2) {
             return 0;
-        }
-        if (size < size2) {
+        } else if (size1 < size2) {
             return -1;
+        } else {
+            return 1;
         }
-        return 1;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.type.TypeList
-    public Type getType(int i) {
-        return get(i);
+    /**
+     * Constructs an instance. All indices initially contain {@code null}.
+     *
+     * @param size the size of the list
+     */
+    public StdTypeList(int size) {
+        super(size);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.type.TypeList
+    /** {@inheritDoc} */
+    @Override
+    public Type getType(int n) {
+        return get(n);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public int getWordCount() {
-        int size = size();
-        int i = 0;
-        for (int i2 = 0; i2 < size; i2++) {
-            i += get(i2).getCategory();
+        int sz = size();
+        int result = 0;
+
+        for (int i = 0; i < sz; i++) {
+            result += get(i).getCategory();
         }
-        return i;
+
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.type.TypeList
+    /** {@inheritDoc} */
+    @Override
     public TypeList withAddedType(Type type) {
-        int size = size();
-        StdTypeList stdTypeList = new StdTypeList(size + 1);
-        for (int i = 0; i < size; i++) {
-            stdTypeList.set0(i, get0(i));
+        int sz = size();
+        StdTypeList result = new StdTypeList(sz + 1);
+
+        for (int i = 0; i < sz; i++) {
+            result.set0(i, get0(i));
         }
-        stdTypeList.set(size, type);
-        stdTypeList.setImmutable();
-        return stdTypeList;
+
+        result.set(sz, type);
+        result.setImmutable();
+        return result;
     }
 
-    public Type get(int i) {
-        return (Type) get0(i);
+    /**
+     * Gets the indicated element. It is an error to call this with the
+     * index for an element which was never set; if you do that, this
+     * will throw {@code NullPointerException}.
+     *
+     * @param n {@code >= 0, < size();} which element
+     * @return {@code non-null;} the indicated element
+     */
+    public Type get(int n) {
+        return (Type) get0(n);
     }
 
-    public void set(int i, Type type) {
-        set0(i, type);
+    /**
+     * Sets the type at the given index.
+     *
+     * @param n {@code >= 0, < size();} which element
+     * @param type {@code non-null;} the type to store
+     */
+    public void set(int n, Type type) {
+        set0(n, type);
     }
 
+    /**
+     * Returns a new instance, which is the same as this instance,
+     * except that it has an additional type prepended to the
+     * original.
+     *
+     * @param type {@code non-null;} the new first element
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
     public StdTypeList withFirst(Type type) {
-        int size = size();
-        StdTypeList stdTypeList = new StdTypeList(size + 1);
-        stdTypeList.set0(0, type);
-        for (int i = 0; i < size; i++) {
-            stdTypeList.set0(i + 1, getOrNull0(i));
+        int sz = size();
+        StdTypeList result = new StdTypeList(sz + 1);
+
+        result.set0(0, type);
+        for (int i = 0; i < sz; i++) {
+            result.set0(i + 1, getOrNull0(i));
         }
-        return stdTypeList;
+
+        return result;
     }
 }

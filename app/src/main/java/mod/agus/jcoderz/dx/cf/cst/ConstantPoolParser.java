@@ -1,18 +1,53 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.cst;
 
-import java.util.BitSet;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Class;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Double;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Fieldref;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Float;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Integer;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_InterfaceMethodref;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_InvokeDynamic;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Long;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_MethodHandle;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_MethodType;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Methodref;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_NameAndType;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_String;
+import static mod.agus.jcoderz.dx.cf.cst.ConstantTags.CONSTANT_Utf8;
 
 import mod.agus.jcoderz.dx.cf.iface.ParseException;
 import mod.agus.jcoderz.dx.cf.iface.ParseObserver;
+
+import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstDouble;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
 import mod.agus.jcoderz.dx.rop.cst.CstFloat;
 import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.cst.CstInterfaceMethodRef;
+import mod.agus.jcoderz.dx.rop.cst.CstInvokeDynamic;
 import mod.agus.jcoderz.dx.rop.cst.CstLong;
+import mod.agus.jcoderz.dx.rop.cst.CstMethodHandle;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstNat;
+import mod.agus.jcoderz.dx.rop.cst.CstProtoRef;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.rop.cst.StdConstantPool;
@@ -20,208 +55,399 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Parser for a constant pool embedded in a class file.
+ */
 public final class ConstantPoolParser {
-    private final ByteArray bytes;
+    /** {@code non-null;} the bytes of the constant pool */
+    private final mod.agus.jcoderz.dx.util.ByteArray bytes;
+
+    /** {@code non-null;} actual parsed constant pool contents */
+    private final mod.agus.jcoderz.dx.rop.cst.StdConstantPool pool;
+
+    /** {@code non-null;} byte offsets to each cst */
     private final int[] offsets;
-    private final StdConstantPool pool;
-    private int endOffset = -1;
+
+    /**
+     * -1 || &gt;= 10; the end offset of this constant pool in the
+     * {@code byte[]} which it came from or {@code -1} if not
+     * yet parsed
+     */
+    private int endOffset;
+
+    /** {@code null-ok;} parse observer, if any */
     private ParseObserver observer;
 
-    public ConstantPoolParser(ByteArray byteArray) {
-        int unsignedShort = byteArray.getUnsignedShort(8);
-        this.bytes = byteArray;
-        this.pool = new StdConstantPool(unsignedShort);
-        this.offsets = new int[unsignedShort];
+    /**
+     * Constructs an instance.
+     *
+     * @param bytes {@code non-null;} the bytes of the file
+     */
+    public ConstantPoolParser(mod.agus.jcoderz.dx.util.ByteArray bytes) {
+        int size = bytes.getUnsignedShort(8); // constant_pool_count
+
+        this.bytes = bytes;
+        this.pool = new mod.agus.jcoderz.dx.rop.cst.StdConstantPool(size);
+        this.offsets = new int[size];
+        this.endOffset = -1;
     }
 
-    public void setObserver(ParseObserver parseObserver) {
-        this.observer = parseObserver;
+    /**
+     * Sets the parse observer for this instance.
+     *
+     * @param observer {@code null-ok;} the observer
+     */
+    public void setObserver(ParseObserver observer) {
+        this.observer = observer;
     }
 
+    /**
+     * Gets the end offset of this constant pool in the {@code byte[]}
+     * which it came from.
+     *
+     * @return {@code >= 10;} the end offset
+     */
     public int getEndOffset() {
         parseIfNecessary();
-        return this.endOffset;
+        return endOffset;
     }
 
+    /**
+     * Gets the actual constant pool.
+     *
+     * @return {@code non-null;} the constant pool
+     */
     public StdConstantPool getPool() {
         parseIfNecessary();
-        return this.pool;
+        return pool;
     }
 
+    /**
+     * Runs {@link #parse} if it has not yet been run successfully.
+     */
     private void parseIfNecessary() {
-        if (this.endOffset < 0) {
+        if (endOffset < 0) {
             parse();
         }
     }
 
+    /**
+     * Does the actual parsing.
+     */
     private void parse() {
-        int i;
         determineOffsets();
-        if (this.observer != null) {
-            this.observer.parsed(this.bytes, 8, 2, "constant_pool_count: " + Hex.u2(this.offsets.length));
-            this.observer.parsed(this.bytes, 10, 0, "\nconstant_pool:");
-            this.observer.changeIndent(1);
+
+        if (observer != null) {
+            observer.parsed(bytes, 8, 2,
+                            "constant_pool_count: " + mod.agus.jcoderz.dx.util.Hex.u2(offsets.length));
+            observer.parsed(bytes, 10, 0, "\nconstant_pool:");
+            observer.changeIndent(1);
         }
-        BitSet bitSet = new BitSet(this.offsets.length);
-        for (int i2 = 1; i2 < this.offsets.length; i2++) {
-            if (this.offsets[i2] != 0 && this.pool.getOrNull(i2) == null) {
-                parse0(i2, bitSet);
+
+        /*
+         * Track the constant value's original string type. True if constants[i] was
+         * a CONSTANT_Utf8, false for any other type including CONSTANT_string.
+         */
+        BitSet wasUtf8 = new BitSet(offsets.length);
+
+        for (int i = 1; i < offsets.length; i++) {
+            int offset = offsets[i];
+            if ((offset != 0) && (pool.getOrNull(i) == null)) {
+                parse0(i, wasUtf8);
             }
         }
-        if (this.observer != null) {
-            for (int i3 = 1; i3 < this.offsets.length; i3++) {
-                Constant orNull = this.pool.getOrNull(i3);
-                if (orNull != null) {
-                    int i4 = this.offsets[i3];
-                    int i5 = this.endOffset;
-                    int i6 = i3 + 1;
-                    while (true) {
-                        if (i6 >= this.offsets.length) {
-                            i = i5;
-                            break;
-                        }
-                        int i7 = this.offsets[i6];
-                        if (i7 != 0) {
-                            i = i7;
-                            break;
-                        }
-                        i6++;
-                    }
-                    this.observer.parsed(this.bytes, i4, i - i4, bitSet.get(i3) ? Hex.u2(i3) + ": utf8{\"" + orNull.toHuman() + "\"}" : Hex.u2(i3) + ": " + orNull.toString());
+
+        if (observer != null) {
+            for (int i = 1; i < offsets.length; i++) {
+                mod.agus.jcoderz.dx.rop.cst.Constant cst = pool.getOrNull(i);
+                if (cst == null) {
+                    continue;
                 }
+                int offset = offsets[i];
+                int nextOffset = endOffset;
+                for (int j = i + 1; j < offsets.length; j++) {
+                    int off = offsets[j];
+                    if (off != 0) {
+                        nextOffset = off;
+                        break;
+                    }
+                }
+                String human = wasUtf8.get(i)
+                        ? mod.agus.jcoderz.dx.util.Hex.u2(i) + ": utf8{\"" + cst.toHuman() + "\"}"
+                        : mod.agus.jcoderz.dx.util.Hex.u2(i) + ": " + cst.toString();
+                observer.parsed(bytes, offset, nextOffset - offset, human);
             }
-            this.observer.changeIndent(-1);
-            this.observer.parsed(this.bytes, this.endOffset, 0, "end constant_pool");
+
+            observer.changeIndent(-1);
+            observer.parsed(bytes, endOffset, 0, "end constant_pool");
         }
     }
 
+    /**
+     * Populates {@link #offsets} and also completely parse utf8 constants.
+     */
     private void determineOffsets() {
-        int i;
-        int i2 = 10;
-        int i3 = 1;
-        while (i3 < this.offsets.length) {
-            this.offsets[i3] = i2;
-            int unsignedByte = this.bytes.getUnsignedByte(i2);
-            switch (unsignedByte) {
-                case 1:
-                    i2 += this.bytes.getUnsignedShort(i2 + 1) + 3;
-                    i = 1;
-                    break;
-                case 2:
-                case 13:
-                case 14:
-                case 17:
-                default:
-                    try {
-                        throw new ParseException("unknown tag byte: " + Hex.u1(unsignedByte));
-                    } catch (ParseException e) {
-                        e.addContext("...while preparsing cst " + Hex.u2(i3) + " at offset " + Hex.u4(i2));
-                        throw e;
-                    }
-                case 3:
-                case 4:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                    i2 += 5;
-                    i = 1;
-                    break;
-                case 5:
-                case 6:
-                    i = 2;
-                    i2 += 9;
-                    break;
-                case 7:
-                case 8:
-                    i2 += 3;
-                    i = 1;
-                    break;
-                case 15:
-                    throw new ParseException("MethodHandle not supported");
-                case 16:
-                    throw new ParseException("MethodType not supported");
-                case 18:
-                    throw new ParseException("InvokeDynamic not supported");
-            }
-            i3 += i;
-        }
-        this.endOffset = i2;
-    }
+        int at = 10; // offset from the start of the file to the first cst
+        int lastCategory;
 
-    private Constant parse0(int i, BitSet bitSet) {
-        Constant orNull = this.pool.getOrNull(i);
-        if (orNull == null) {
-            int i2 = this.offsets[i];
+        for (int i = 1; i < offsets.length; i += lastCategory) {
+            offsets[i] = at;
+            int tag = bytes.getUnsignedByte(at);
             try {
-                int unsignedByte = this.bytes.getUnsignedByte(i2);
-                switch (unsignedByte) {
-                    case 1:
-                        orNull = parseUtf8(i2);
-                        bitSet.set(i);
+                switch (tag) {
+                    case CONSTANT_Integer:
+                    case CONSTANT_Float:
+                    case CONSTANT_Fieldref:
+                    case CONSTANT_Methodref:
+                    case CONSTANT_InterfaceMethodref:
+                    case CONSTANT_NameAndType: {
+                        lastCategory = 1;
+                        at += 5;
                         break;
-                    case 2:
-                    case 13:
-                    case 14:
-                    case 17:
-                    default:
-                        throw new ParseException("unknown tag byte: " + Hex.u1(unsignedByte));
-                    case 3:
-                        orNull = CstInteger.make(this.bytes.getInt(i2 + 1));
+                    }
+                    case CONSTANT_Long:
+                    case CONSTANT_Double: {
+                        lastCategory = 2;
+                        at += 9;
                         break;
-                    case 4:
-                        orNull = CstFloat.make(this.bytes.getInt(i2 + 1));
+                    }
+                    case CONSTANT_Class:
+                    case CONSTANT_String: {
+                        lastCategory = 1;
+                        at += 3;
                         break;
-                    case 5:
-                        orNull = CstLong.make(this.bytes.getLong(i2 + 1));
+                    }
+                    case CONSTANT_Utf8: {
+                        lastCategory = 1;
+                        at += bytes.getUnsignedShort(at + 1) + 3;
                         break;
-                    case 6:
-                        orNull = CstDouble.make(this.bytes.getLong(i2 + 1));
+                    }
+                    case CONSTANT_MethodHandle: {
+                        lastCategory = 1;
+                        at += 4;
                         break;
-                    case 7:
-                        orNull = new CstType(Type.internClassName(((CstString) parse0(this.bytes.getUnsignedShort(i2 + 1), bitSet)).getString()));
+                    }
+                    case CONSTANT_MethodType: {
+                        lastCategory = 1;
+                        at += 3;
                         break;
-                    case 8:
-                        orNull = parse0(this.bytes.getUnsignedShort(i2 + 1), bitSet);
+                    }
+                    case CONSTANT_InvokeDynamic: {
+                        lastCategory = 1;
+                        at += 5;
                         break;
-                    case 9:
-                        orNull = new CstFieldRef((CstType) parse0(this.bytes.getUnsignedShort(i2 + 1), bitSet), (CstNat) parse0(this.bytes.getUnsignedShort(i2 + 3), bitSet));
-                        break;
-                    case 10:
-                        orNull = new CstMethodRef((CstType) parse0(this.bytes.getUnsignedShort(i2 + 1), bitSet), (CstNat) parse0(this.bytes.getUnsignedShort(i2 + 3), bitSet));
-                        break;
-                    case 11:
-                        orNull = new CstInterfaceMethodRef((CstType) parse0(this.bytes.getUnsignedShort(i2 + 1), bitSet), (CstNat) parse0(this.bytes.getUnsignedShort(i2 + 3), bitSet));
-                        break;
-                    case 12:
-                        orNull = new CstNat((CstString) parse0(this.bytes.getUnsignedShort(i2 + 1), bitSet), (CstString) parse0(this.bytes.getUnsignedShort(i2 + 3), bitSet));
-                        break;
-                    case 15:
-                        throw new ParseException("MethodHandle not supported");
-                    case 16:
-                        throw new ParseException("MethodType not supported");
-                    case 18:
-                        throw new ParseException("InvokeDynamic not supported");
+                    }
+                    default: {
+                        throw new ParseException("unknown tag byte: " + mod.agus.jcoderz.dx.util.Hex.u1(tag));
+                    }
                 }
-                this.pool.set(i, orNull);
-            } catch (ParseException e) {
-                e.addContext("...while parsing cst " + Hex.u2(i) + " at offset " + Hex.u4(i2));
-                throw e;
-            } catch (RuntimeException e2) {
-                ParseException parseException = new ParseException(e2);
-                parseException.addContext("...while parsing cst " + Hex.u2(i) + " at offset " + Hex.u4(i2));
-                throw parseException;
+            } catch (ParseException ex) {
+                ex.addContext("...while preparsing cst " + mod.agus.jcoderz.dx.util.Hex.u2(i) + " at offset " + mod.agus.jcoderz.dx.util.Hex.u4(at));
+                throw ex;
             }
         }
-        return orNull;
+
+        endOffset = at;
     }
 
-    private CstString parseUtf8(int i) {
-        int i2 = i + 3;
-        try {
-            return new CstString(this.bytes.slice(i2, this.bytes.getUnsignedShort(i + 1) + i2));
-        } catch (IllegalArgumentException e) {
-            throw new ParseException(e);
+    /**
+     * Parses the constant for the given index if it hasn't already been
+     * parsed, also storing it in the constant pool. This will also
+     * have the side effect of parsing any entries the indicated one
+     * depends on.
+     *
+     * @param idx which constant
+     * @return {@code non-null;} the parsed constant
+     */
+    private mod.agus.jcoderz.dx.rop.cst.Constant parse0(int idx, BitSet wasUtf8) {
+        mod.agus.jcoderz.dx.rop.cst.Constant cst = pool.getOrNull(idx);
+        if (cst != null) {
+            return cst;
         }
+
+        int at = offsets[idx];
+
+        try {
+            int tag = bytes.getUnsignedByte(at);
+            switch (tag) {
+                case CONSTANT_Utf8: {
+                    cst = parseUtf8(at);
+                    wasUtf8.set(idx);
+                    break;
+                }
+                case CONSTANT_Integer: {
+                    int value = bytes.getInt(at + 1);
+                    cst = CstInteger.make(value);
+                    break;
+                }
+                case CONSTANT_Float: {
+                    int bits = bytes.getInt(at + 1);
+                    cst = CstFloat.make(bits);
+                    break;
+                }
+                case CONSTANT_Long: {
+                    long value = bytes.getLong(at + 1);
+                    cst = CstLong.make(value);
+                    break;
+                }
+                case CONSTANT_Double: {
+                    long bits = bytes.getLong(at + 1);
+                    cst = CstDouble.make(bits);
+                    break;
+                }
+                case CONSTANT_Class: {
+                    int nameIndex = bytes.getUnsignedShort(at + 1);
+                    mod.agus.jcoderz.dx.rop.cst.CstString name = (mod.agus.jcoderz.dx.rop.cst.CstString) parse0(nameIndex, wasUtf8);
+                    cst = new mod.agus.jcoderz.dx.rop.cst.CstType(Type.internClassName(name.getString()));
+                    break;
+                }
+                case CONSTANT_String: {
+                    int stringIndex = bytes.getUnsignedShort(at + 1);
+                    cst = parse0(stringIndex, wasUtf8);
+                    break;
+                }
+                case CONSTANT_Fieldref: {
+                    int classIndex = bytes.getUnsignedShort(at + 1);
+                    mod.agus.jcoderz.dx.rop.cst.CstType type = (mod.agus.jcoderz.dx.rop.cst.CstType) parse0(classIndex, wasUtf8);
+                    int natIndex = bytes.getUnsignedShort(at + 3);
+                    mod.agus.jcoderz.dx.rop.cst.CstNat nat = (mod.agus.jcoderz.dx.rop.cst.CstNat) parse0(natIndex, wasUtf8);
+                    cst = new mod.agus.jcoderz.dx.rop.cst.CstFieldRef(type, nat);
+                    break;
+                }
+                case CONSTANT_Methodref: {
+                    int classIndex = bytes.getUnsignedShort(at + 1);
+                    mod.agus.jcoderz.dx.rop.cst.CstType type = (mod.agus.jcoderz.dx.rop.cst.CstType) parse0(classIndex, wasUtf8);
+                    int natIndex = bytes.getUnsignedShort(at + 3);
+                    mod.agus.jcoderz.dx.rop.cst.CstNat nat = (mod.agus.jcoderz.dx.rop.cst.CstNat) parse0(natIndex, wasUtf8);
+                    cst = new mod.agus.jcoderz.dx.rop.cst.CstMethodRef(type, nat);
+                    break;
+                }
+                case CONSTANT_InterfaceMethodref: {
+                    int classIndex = bytes.getUnsignedShort(at + 1);
+                    mod.agus.jcoderz.dx.rop.cst.CstType type = (CstType) parse0(classIndex, wasUtf8);
+                    int natIndex = bytes.getUnsignedShort(at + 3);
+                    mod.agus.jcoderz.dx.rop.cst.CstNat nat = (mod.agus.jcoderz.dx.rop.cst.CstNat) parse0(natIndex, wasUtf8);
+                    cst = new mod.agus.jcoderz.dx.rop.cst.CstInterfaceMethodRef(type, nat);
+                    break;
+                }
+                case CONSTANT_NameAndType: {
+                    int nameIndex = bytes.getUnsignedShort(at + 1);
+                    mod.agus.jcoderz.dx.rop.cst.CstString name = (mod.agus.jcoderz.dx.rop.cst.CstString) parse0(nameIndex, wasUtf8);
+                    int descriptorIndex = bytes.getUnsignedShort(at + 3);
+                    mod.agus.jcoderz.dx.rop.cst.CstString descriptor = (mod.agus.jcoderz.dx.rop.cst.CstString) parse0(descriptorIndex, wasUtf8);
+                    cst = new mod.agus.jcoderz.dx.rop.cst.CstNat(name, descriptor);
+                    break;
+                }
+                case CONSTANT_MethodHandle: {
+                    final int kind = bytes.getUnsignedByte(at + 1);
+                    final int constantIndex = bytes.getUnsignedShort(at + 2);
+                    final Constant ref;
+                    switch (kind) {
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_getField:
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_getStatic:
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_putField:
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_putStatic:
+                            ref = (CstFieldRef) parse0(constantIndex, wasUtf8);
+                            break;
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeVirtual:
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_newInvokeSpecial:
+                            ref = (mod.agus.jcoderz.dx.rop.cst.CstMethodRef) parse0(constantIndex, wasUtf8);
+                            break;
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeStatic:
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeSpecial:
+                            ref = parse0(constantIndex, wasUtf8);
+                            if (!(ref instanceof CstMethodRef
+                                || ref instanceof mod.agus.jcoderz.dx.rop.cst.CstInterfaceMethodRef)) {
+                              throw new ParseException(
+                                  "Unsupported ref constant type for MethodHandle "
+                                  + ref.getClass());
+                            }
+                            break;
+                        case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeInterface:
+                            ref = (CstInterfaceMethodRef) parse0(constantIndex, wasUtf8);
+                            break;
+                        default:
+                            throw new ParseException("Unsupported MethodHandle kind: " + kind);
+                    }
+
+                    final int methodHandleType = getMethodHandleTypeForKind(kind);
+                    cst = mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.make(methodHandleType, ref);
+                    break;
+                }
+                case CONSTANT_MethodType: {
+                    int descriptorIndex = bytes.getUnsignedShort(at + 1);
+                    mod.agus.jcoderz.dx.rop.cst.CstString descriptor = (mod.agus.jcoderz.dx.rop.cst.CstString) parse0(descriptorIndex, wasUtf8);
+                    cst = CstProtoRef.make(descriptor);
+                    break;
+                }
+                case CONSTANT_InvokeDynamic: {
+                    int bootstrapMethodIndex = bytes.getUnsignedShort(at + 1);
+                    int natIndex = bytes.getUnsignedShort(at + 3);
+                    mod.agus.jcoderz.dx.rop.cst.CstNat nat = (CstNat) parse0(natIndex, wasUtf8);
+                    cst = CstInvokeDynamic.make(bootstrapMethodIndex, nat);
+                    break;
+                }
+                default: {
+                    throw new ParseException("unknown tag byte: " + mod.agus.jcoderz.dx.util.Hex.u1(tag));
+                }
+            }
+        } catch (ParseException ex) {
+            ex.addContext("...while parsing cst " + mod.agus.jcoderz.dx.util.Hex.u2(idx) +
+                          " at offset " + mod.agus.jcoderz.dx.util.Hex.u4(at));
+            throw ex;
+        } catch (RuntimeException ex) {
+            ParseException pe = new ParseException(ex);
+            pe.addContext("...while parsing cst " + mod.agus.jcoderz.dx.util.Hex.u2(idx) +
+                          " at offset " + Hex.u4(at));
+            throw pe;
+        }
+
+        pool.set(idx, cst);
+        return cst;
+    }
+
+    /**
+     * Parses a utf8 constant.
+     *
+     * @param at offset to the start of the constant (where the tag byte is)
+     * @return {@code non-null;} the parsed value
+     */
+    private mod.agus.jcoderz.dx.rop.cst.CstString parseUtf8(int at) {
+        int length = bytes.getUnsignedShort(at + 1);
+
+        at += 3; // Skip to the data.
+
+        ByteArray ubytes = bytes.slice(at, at + length);
+
+        try {
+            return new CstString(ubytes);
+        } catch (IllegalArgumentException ex) {
+            // Translate the exception
+            throw new ParseException(ex);
+        }
+    }
+
+    private static int getMethodHandleTypeForKind(int kind) {
+        switch (kind) {
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_getField:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INSTANCE_GET;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_getStatic:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_STATIC_GET;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_putField:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INSTANCE_PUT;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_putStatic:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_STATIC_PUT;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeVirtual:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_INSTANCE;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeStatic:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_STATIC;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeSpecial:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_DIRECT;
+            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_newInvokeSpecial:
+                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR;
+            case MethodHandleKind.REF_invokeInterface:
+                return CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_INTERFACE;
+        }
+        throw new IllegalArgumentException("invalid kind: " + kind);
     }
 }

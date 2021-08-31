@@ -1,63 +1,106 @@
-package mod.agus.jcoderz.dx.dex.code.form;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.BitSet;
+package mod.agus.jcoderz.dx.dex.code.form;
 
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
 import mod.agus.jcoderz.dx.dex.code.TargetInsn;
-import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import java.util.BitSet;
 
+import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
+
+/**
+ * Instruction format {@code 21t}. See the instruction format spec
+ * for details.
+ */
 public final class Form21t extends InsnFormat {
+    /** {@code non-null;} unique instance of this class */
     public static final InsnFormat THE_ONE = new Form21t();
 
+    /**
+     * Constructs an instance. This class is not publicly
+     * instantiable. Use {@link #THE_ONE}.
+     */
     private Form21t() {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnArgString(DalvInsn dalvInsn) {
-        return dalvInsn.getRegisters().get(0).regString() + ", " + branchString(dalvInsn);
+    /** {@inheritDoc} */
+    @Override
+    public String insnArgString(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        return regs.get(0).regString() + ", " + branchString(insn);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnCommentString(DalvInsn dalvInsn, boolean z) {
-        return branchComment(dalvInsn);
+    /** {@inheritDoc} */
+    @Override
+    public String insnCommentString(DalvInsn insn, boolean noteIndices) {
+        return branchComment(insn);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
         return 2;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public boolean isCompatible(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        if (!(dalvInsn instanceof TargetInsn) || registers.size() != 1 || !unsignedFitsInByte(registers.get(0).getReg())) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean isCompatible(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+
+        if (!((insn instanceof TargetInsn) &&
+              (regs.size() == 1) &&
+              unsignedFitsInByte(regs.get(0).getReg()))) {
             return false;
         }
-        TargetInsn targetInsn = (TargetInsn) dalvInsn;
-        if (targetInsn.hasTargetOffset()) {
-            return branchFits(targetInsn);
-        }
-        return true;
+
+        TargetInsn ti = (TargetInsn) insn;
+        return ti.hasTargetOffset() ? branchFits(ti) : true;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        BitSet bitSet = new BitSet(1);
-        bitSet.set(0, unsignedFitsInByte(registers.get(0).getReg()));
-        return bitSet;
+    /** {@inheritDoc} */
+    @Override
+    public BitSet compatibleRegs(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        BitSet bits = new BitSet(1);
+
+        bits.set(0, unsignedFitsInByte(regs.get(0).getReg()));
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public boolean branchFits(TargetInsn targetInsn) {
-        int targetOffset = targetInsn.getTargetOffset();
-        return targetOffset != 0 && signedFitsInShort(targetOffset);
+    /** {@inheritDoc} */
+    @Override
+    public boolean branchFits(TargetInsn insn) {
+        int offset = insn.getTargetOffset();
+
+        // Note: A zero offset would fit, but it is prohibited by the spec.
+        return (offset != 0) && signedFitsInShort(offset);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn) {
-        write(annotatedOutput, opcodeUnit(dalvInsn, dalvInsn.getRegisters().get(0).getReg()), (short) ((TargetInsn) dalvInsn).getTargetOffset());
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out, DalvInsn insn) {
+        RegisterSpecList regs = insn.getRegisters();
+        int offset = ((TargetInsn) insn).getTargetOffset();
+
+        write(out,
+              opcodeUnit(insn, regs.get(0).getReg()),
+              (short) offset);
     }
 }

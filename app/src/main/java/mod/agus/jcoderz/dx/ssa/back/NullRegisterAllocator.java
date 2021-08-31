@@ -1,26 +1,55 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa.back;
 
 import mod.agus.jcoderz.dx.ssa.BasicRegisterMapper;
 import mod.agus.jcoderz.dx.ssa.RegisterMapper;
 import mod.agus.jcoderz.dx.ssa.SsaMethod;
 
+/**
+ * A register allocator that maps SSA register n to Rop register 2*n,
+ * essentially preserving the original mapping and remaining agnostic
+ * about normal or wide categories. Used for debugging.
+ */
 public class NullRegisterAllocator extends RegisterAllocator {
-    public NullRegisterAllocator(SsaMethod ssaMethod, InterferenceGraph interferenceGraph) {
-        super(ssaMethod, interferenceGraph);
+    /** {@inheritDoc} */
+    public NullRegisterAllocator(SsaMethod ssaMeth,
+            InterferenceGraph interference) {
+        super(ssaMeth, interference);
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.back.RegisterAllocator
+    /** {@inheritDoc} */
+    @Override
     public boolean wantsParamsMovedHigh() {
+        // We're not smart enough for this.
         return false;
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.back.RegisterAllocator
+    /** {@inheritDoc} */
+    @Override
     public RegisterMapper allocateRegisters() {
-        int regCount = this.ssaMeth.getRegCount();
-        BasicRegisterMapper basicRegisterMapper = new BasicRegisterMapper(regCount);
-        for (int i = 0; i < regCount; i++) {
-            basicRegisterMapper.addMapping(i, i * 2, 2);
+        int oldRegCount = ssaMeth.getRegCount();
+
+        BasicRegisterMapper mapper = new BasicRegisterMapper(oldRegCount);
+
+        for (int i = 0; i < oldRegCount; i++) {
+            mapper.addMapping(i, i*2, 2);
         }
-        return basicRegisterMapper;
+
+        return mapper;
     }
 }

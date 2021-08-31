@@ -1,70 +1,132 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.type.Type;
+import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 
-public final class DexTranslationAdvice implements TranslationAdvice {
-    public static final DexTranslationAdvice NO_SOURCES_IN_ORDER = new DexTranslationAdvice(true);
-    public static final DexTranslationAdvice THE_ONE = new DexTranslationAdvice();
+/**
+ * Implementation of {@link TranslationAdvice} which represents what
+ * the dex format will be able to represent.
+ */
+public final class DexTranslationAdvice
+        implements TranslationAdvice {
+    /** {@code non-null;} standard instance of this class */
+    public static final DexTranslationAdvice THE_ONE =
+        new DexTranslationAdvice();
+
+    /** debug advice for disabling invoke-range optimization */
+    public static final DexTranslationAdvice NO_SOURCES_IN_ORDER =
+        new DexTranslationAdvice(true);
+
+    /**
+     * The minimum source width, in register units, for an invoke
+     * instruction that requires its sources to be in order and contiguous.
+     */
     private static final int MIN_INVOKE_IN_ORDER = 6;
+
+    /** when true: always returns false for requiresSourcesInOrder */
     private final boolean disableSourcesInOrder;
 
+    /**
+     * This class is not publicly instantiable. Use {@link #THE_ONE}.
+     */
     private DexTranslationAdvice() {
-        this.disableSourcesInOrder = false;
+        disableSourcesInOrder = false;
     }
 
-    private DexTranslationAdvice(boolean z) {
-        this.disableSourcesInOrder = z;
+    private DexTranslationAdvice(boolean disableInvokeRange) {
+        this.disableSourcesInOrder = disableInvokeRange;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.TranslationAdvice
-    public boolean hasConstantOperation(Rop rop, RegisterSpec registerSpec, RegisterSpec registerSpec2) {
-        if (registerSpec.getType() != Type.INT) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean hasConstantOperation(mod.agus.jcoderz.dx.rop.code.Rop opcode,
+                                        RegisterSpec sourceA, RegisterSpec sourceB) {
+        if (sourceA.getType() != Type.INT) {
             return false;
         }
-        if (registerSpec2.getTypeBearer() instanceof CstInteger) {
-            CstInteger cstInteger = (CstInteger) registerSpec2.getTypeBearer();
-            switch (rop.getOpcode()) {
-                case 14:
-                case 16:
-                case 17:
-                case 18:
-                case 20:
-                case 21:
-                case 22:
-                    return cstInteger.fitsIn16Bits();
-                case 15:
-                    return CstInteger.make(-cstInteger.getValue()).fitsIn16Bits();
-                case 19:
-                default:
-                    return false;
-                case 23:
-                case 24:
-                case 25:
-                    return cstInteger.fitsIn8Bits();
+
+        // Return false if second source isn't a constant
+        if (! (sourceB.getTypeBearer() instanceof mod.agus.jcoderz.dx.rop.cst.CstInteger)) {
+            // Except for rsub-int (reverse sub) where first source is constant
+            if (sourceA.getTypeBearer() instanceof mod.agus.jcoderz.dx.rop.cst.CstInteger &&
+                    opcode.getOpcode() == RegOps.SUB) {
+                mod.agus.jcoderz.dx.rop.cst.CstInteger cst = (mod.agus.jcoderz.dx.rop.cst.CstInteger) sourceA.getTypeBearer();
+                return cst.fitsIn16Bits();
+            } else {
+                return false;
             }
-        } else if (!(registerSpec.getTypeBearer() instanceof CstInteger) || rop.getOpcode() != 15) {
-            return false;
-        } else {
-            return ((CstInteger) registerSpec.getTypeBearer()).fitsIn16Bits();
+        }
+
+        mod.agus.jcoderz.dx.rop.cst.CstInteger cst = (mod.agus.jcoderz.dx.rop.cst.CstInteger) sourceB.getTypeBearer();
+
+        switch (opcode.getOpcode()) {
+            // These have 8 and 16 bit cst representations
+            case RegOps.REM:
+            case RegOps.ADD:
+            case RegOps.MUL:
+            case RegOps.DIV:
+            case RegOps.AND:
+            case RegOps.OR:
+            case RegOps.XOR:
+                return cst.fitsIn16Bits();
+            // These only have 8 bit cst reps
+            case RegOps.SHL:
+            case RegOps.SHR:
+            case RegOps.USHR:
+                return cst.fitsIn8Bits();
+            // No sub-const insn, so check if equivalent add-const fits
+            case RegOps.SUB:
+                mod.agus.jcoderz.dx.rop.cst.CstInteger cst2 = CstInteger.make(-cst.getValue());
+                return cst2.fitsIn16Bits();
+            default:
+                return false;
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.TranslationAdvice
-    public boolean requiresSourcesInOrder(Rop rop, RegisterSpecList registerSpecList) {
-        return !this.disableSourcesInOrder && rop.isCallLike() && totalRopWidth(registerSpecList) >= 6;
+    /** {@inheritDoc} */
+    @Override
+    public boolean requiresSourcesInOrder(Rop opcode,
+                                          mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources) {
+
+        return !disableSourcesInOrder && opcode.isCallLike()
+                && totalRopWidth(sources) >= MIN_INVOKE_IN_ORDER;
     }
 
-    private int totalRopWidth(RegisterSpecList registerSpecList) {
-        int size = registerSpecList.size();
-        int i = 0;
-        for (int i2 = 0; i2 < size; i2++) {
-            i += registerSpecList.get(i2).getCategory();
+    /**
+     * Calculates the total rop width of the list of SSA registers
+     *
+     * @param sources {@code non-null;} list of SSA registers
+     * @return {@code >= 0;} rop-form width in register units
+     */
+    private int totalRopWidth(RegisterSpecList sources) {
+        int sz = sources.size();
+        int total = 0;
+
+        for (int i = 0; i < sz; i++) {
+            total += sources.get(i).getCategory();
         }
-        return i;
+
+        return total;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.TranslationAdvice
+    /** {@inheritDoc} */
+    @Override
     public int getMaxOptimalRegisterCount() {
         return 16;
     }

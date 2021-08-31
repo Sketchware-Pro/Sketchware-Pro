@@ -1,265 +1,210 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.code;
 
+import mod.agus.jcoderz.dx.rop.cst.CstCallSiteRef;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.rop.type.Prototype;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * {@link Machine} which keeps track of known values but does not do
+ * smart/realistic reference type calculations.
+ */
 public class ValueAwareMachine extends BaseMachine {
+    /**
+     * Constructs an instance.
+     *
+     * @param prototype {@code non-null;} the prototype for the associated
+     * method
+     */
     public ValueAwareMachine(Prototype prototype) {
         super(prototype);
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.Machine
-    public void run(Frame frame, int i, int i2) {
-        switch (i2) {
-            case 0:
-            case 79:
-            case 87:
-            case 88:
-            case 153:
-            case 154:
-            case 155:
-            case 156:
-            case 157:
-            case 158:
-            case 159:
-            case 160:
-            case 161:
-            case 162:
-            case 163:
-            case 164:
-            case 165:
-            case 166:
-            case 167:
-            case 169:
-            case 171:
-            case 172:
-            case 177:
-            case 179:
-            case 181:
-            case 191:
-            case 194:
-            case 195:
-            case 198:
-            case 199:
+    /** {@inheritDoc} */
+    @Override
+    public void run(Frame frame, int offset, int opcode) {
+        switch (opcode) {
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.NOP:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IASTORE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.POP:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.POP2:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFEQ:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFNE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFLT:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFGE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFGT:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFLE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ICMPEQ:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ICMPNE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ICMPLT:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ICMPGE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ICMPGT:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ICMPLE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ACMPEQ:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IF_ACMPNE:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.GOTO:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.RET:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.LOOKUPSWITCH:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IRETURN:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.RETURN:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.PUTSTATIC:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.PUTFIELD:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ATHROW:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.MONITORENTER:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.MONITOREXIT:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFNULL:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IFNONNULL: {
+                // Nothing to do for these ops in this class.
                 clearResult();
                 break;
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-            case 19:
-            case 22:
-            case 23:
-            case 24:
-            case 25:
-            case 26:
-            case 27:
-            case 28:
-            case 29:
-            case 30:
-            case 31:
-            case 32:
-            case 33:
-            case 34:
-            case 35:
-            case 36:
-            case 37:
-            case 38:
-            case 39:
-            case 40:
-            case 41:
-            case 42:
-            case 43:
-            case 44:
-            case 45:
-            case 47:
-            case 48:
-            case 49:
-            case 50:
-            case 51:
-            case 52:
-            case 53:
-            case 55:
-            case 56:
-            case 57:
-            case 58:
-            case 59:
-            case 60:
-            case 61:
-            case 62:
-            case 63:
-            case 64:
-            case 65:
-            case 66:
-            case 67:
-            case 68:
-            case 69:
-            case 70:
-            case 71:
-            case 72:
-            case 73:
-            case 74:
-            case 75:
-            case 76:
-            case 77:
-            case 78:
-            case 80:
-            case 81:
-            case 82:
-            case 83:
-            case 84:
-            case 85:
-            case 86:
-            case 97:
-            case 98:
-            case 99:
-            case 101:
-            case 102:
-            case 103:
-            case 105:
-            case 106:
-            case 107:
-            case 109:
-            case 110:
-            case 111:
-            case 113:
-            case 114:
-            case 115:
-            case 117:
-            case 118:
-            case 119:
-            case 121:
-            case 123:
-            case 125:
-            case 127:
-            case 129:
-            case 131:
-            case 170:
-            case 173:
-            case 174:
-            case 175:
-            case 176:
-            case 186:
-            case 196:
-            default:
-                throw new RuntimeException("shouldn't happen: " + Hex.u1(i2));
-            case 18:
-            case 20:
-                setResult((TypeBearer) getAuxCst());
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.LDC:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.LDC2_W: {
+                setResult((mod.agus.jcoderz.dx.rop.type.TypeBearer) getAuxCst());
                 break;
-            case 21:
-            case 54:
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ILOAD:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ISTORE: {
                 setResult(arg(0));
                 break;
-            case 46:
-            case 96:
-            case 100:
-            case 104:
-            case 108:
-            case 112:
-            case 116:
-            case 120:
-            case 122:
-            case 124:
-            case 126:
-            case 128:
-            case 130:
-            case 132:
-            case 133:
-            case 134:
-            case 135:
-            case 136:
-            case 137:
-            case 138:
-            case 139:
-            case 140:
-            case 141:
-            case 142:
-            case 143:
-            case 144:
-            case 145:
-            case 146:
-            case 147:
-            case 148:
-            case 149:
-            case 150:
-            case 151:
-            case 152:
-            case 190:
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IALOAD:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IADD:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ISUB:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IMUL:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IDIV:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IREM:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.INEG:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ISHL:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ISHR:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IUSHR:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IAND:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IOR:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IXOR:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.IINC:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.I2L:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.I2F:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.I2D:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.L2I:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.L2F:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.L2D:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.F2I:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.F2L:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.F2D:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.D2I:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.D2L:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.D2F:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.I2B:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.I2C:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.I2S:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.LCMP:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.FCMPL:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.FCMPG:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DCMPL:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DCMPG:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ARRAYLENGTH: {
                 setResult(getAuxType());
                 break;
-            case 89:
-            case 90:
-            case 91:
-            case 92:
-            case 93:
-            case 94:
-            case 95:
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DUP:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DUP_X1:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DUP_X2:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DUP2:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DUP2_X1:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.DUP2_X2:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.SWAP: {
                 clearResult();
-                for (int auxInt = getAuxInt(); auxInt != 0; auxInt >>= 4) {
-                    addResult(arg((auxInt & 15) - 1));
+                for (int pattern = getAuxInt(); pattern != 0; pattern >>= 4) {
+                    int which = (pattern & 0x0f) - 1;
+                    addResult(arg(which));
                 }
                 break;
-            case 168:
+            }
+
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.JSR: {
                 setResult(new ReturnAddress(getAuxTarget()));
                 break;
-            case 178:
-            case 180:
-            case 182:
-            case 184:
-            case 185:
-                Type type = ((TypeBearer) getAuxCst()).getType();
-                if (type == Type.VOID) {
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.GETSTATIC:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.GETFIELD:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.INVOKEVIRTUAL:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.INVOKESTATIC:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.INVOKEINTERFACE: {
+                mod.agus.jcoderz.dx.rop.type.Type type = ((mod.agus.jcoderz.dx.rop.type.TypeBearer) getAuxCst()).getType();
+                if (type == mod.agus.jcoderz.dx.rop.type.Type.VOID) {
                     clearResult();
-                    break;
                 } else {
                     setResult(type);
-                    break;
                 }
-            case 183:
-                Type type2 = arg(0).getType();
-                if (type2.isUninitialized()) {
-                    frame.makeInitialized(type2);
+                break;
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.INVOKESPECIAL: {
+                mod.agus.jcoderz.dx.rop.type.Type thisType = arg(0).getType();
+                if (thisType.isUninitialized()) {
+                    frame.makeInitialized(thisType);
                 }
-                Type type3 = ((TypeBearer) getAuxCst()).getType();
-                if (type3 == Type.VOID) {
+                mod.agus.jcoderz.dx.rop.type.Type type = ((TypeBearer) getAuxCst()).getType();
+                if (type == mod.agus.jcoderz.dx.rop.type.Type.VOID) {
                     clearResult();
-                    break;
                 } else {
-                    setResult(type3);
-                    break;
+                    setResult(type);
                 }
-            case 187:
-                setResult(((CstType) getAuxCst()).getClassType().asUninitialized(i));
                 break;
-            case 188:
-            case 192:
-            case 197:
-                setResult(((CstType) getAuxCst()).getClassType());
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.INVOKEDYNAMIC: {
+                mod.agus.jcoderz.dx.rop.type.Type type = ((CstCallSiteRef) getAuxCst()).getReturnType();
+                if (type == mod.agus.jcoderz.dx.rop.type.Type.VOID) {
+                    clearResult();
+                } else {
+                    setResult(type);
+                }
                 break;
-            case 189:
-                setResult(((CstType) getAuxCst()).getClassType().getArrayType());
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.NEW: {
+                mod.agus.jcoderz.dx.rop.type.Type type = ((mod.agus.jcoderz.dx.rop.cst.CstType) getAuxCst()).getClassType();
+                setResult(type.asUninitialized(offset));
                 break;
-            case 193:
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.NEWARRAY:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.CHECKCAST:
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.MULTIANEWARRAY: {
+                mod.agus.jcoderz.dx.rop.type.Type type = ((mod.agus.jcoderz.dx.rop.cst.CstType) getAuxCst()).getClassType();
+                setResult(type);
+                break;
+            }
+            case mod.agus.jcoderz.dx.cf.code.ByteOps.ANEWARRAY: {
+                mod.agus.jcoderz.dx.rop.type.Type type = ((CstType) getAuxCst()).getClassType();
+                setResult(type.getArrayType());
+                break;
+            }
+            case ByteOps.INSTANCEOF: {
                 setResult(Type.INT);
                 break;
+            }
+            default: {
+                throw new RuntimeException("shouldn't happen: " +
+                                           Hex.u1(opcode));
+            }
         }
+
         storeResults(frame);
     }
 }

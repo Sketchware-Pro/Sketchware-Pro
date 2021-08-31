@@ -1,22 +1,43 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dex;
 
+import static mod.agus.jcoderz.dex.EncodedValueReader.ENCODED_ANNOTATION;
+
+/**
+ * An annotation.
+ */
 public final class Annotation implements Comparable<Annotation> {
     private final Dex dex;
-    private final EncodedValue encodedAnnotation;
     private final byte visibility;
+    private final EncodedValue encodedAnnotation;
 
-    public Annotation(Dex dex2, byte b, EncodedValue encodedValue) {
-        this.dex = dex2;
-        this.visibility = b;
-        this.encodedAnnotation = encodedValue;
+    public Annotation(Dex dex, byte visibility, EncodedValue encodedAnnotation) {
+        this.dex = dex;
+        this.visibility = visibility;
+        this.encodedAnnotation = encodedAnnotation;
     }
 
     public byte getVisibility() {
-        return this.visibility;
+        return visibility;
     }
 
-    public EncodedValueReader getReader() {
-        return new EncodedValueReader(this.encodedAnnotation, 29);
+    public mod.agus.jcoderz.dex.EncodedValueReader getReader() {
+        return new mod.agus.jcoderz.dex.EncodedValueReader(encodedAnnotation, ENCODED_ANNOTATION);
     }
 
     public int getTypeIndex() {
@@ -25,19 +46,20 @@ public final class Annotation implements Comparable<Annotation> {
         return reader.getAnnotationType();
     }
 
-    public void writeTo(Dex.Section section) {
-        section.writeByte(this.visibility);
-        this.encodedAnnotation.writeTo(section);
+    public void writeTo(Dex.Section out) {
+        out.writeByte(visibility);
+        encodedAnnotation.writeTo(out);
     }
 
-    public int compareTo(Annotation annotation) {
-        return this.encodedAnnotation.compareTo(annotation.encodedAnnotation);
+    @Override
+    public int compareTo(Annotation other) {
+        return encodedAnnotation.compareTo(other.encodedAnnotation);
     }
 
+    @Override
     public String toString() {
-        if (this.dex == null) {
-            return (int) this.visibility + " " + getTypeIndex();
-        }
-        return (int) this.visibility + " " + this.dex.typeNames().get(getTypeIndex());
+        return dex == null
+                ? visibility + " " + getTypeIndex()
+                : visibility + " " + dex.typeNames().get(getTypeIndex());
     }
 }

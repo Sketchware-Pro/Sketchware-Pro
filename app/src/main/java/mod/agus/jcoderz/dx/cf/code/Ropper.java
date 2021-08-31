@@ -1,13 +1,31 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.code;
+
+import mod.agus.jcoderz.dx.cf.iface.MethodList;
 
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import mod.agus.jcoderz.dx.cf.iface.MethodList;
+import mod.agus.jcoderz.dx.dex.DexOptions;
+import mod.agus.jcoderz.dx.rop.code.AccessFlags;
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
 import mod.agus.jcoderz.dx.rop.code.Insn;
@@ -25,6 +43,7 @@ import mod.agus.jcoderz.dx.rop.code.ThrowingInsn;
 import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
+import mod.agus.jcoderz.dx.rop.type.Prototype;
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
@@ -32,879 +51,1753 @@ import mod.agus.jcoderz.dx.util.Bits;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.IntList;
 
+/**
+ * Utility that converts a basic block list into a list of register-oriented
+ * blocks.
+ */
 public final class Ropper {
+    /** label offset for the parameter assignment block */
     private static final int PARAM_ASSIGNMENT = -1;
+
+    /** label offset for the return block */
     private static final int RETURN = -2;
-    private static final int SPECIAL_LABEL_COUNT = 7;
-    private static final int SYNCH_CATCH_1 = -6;
-    private static final int SYNCH_CATCH_2 = -7;
+
+    /** label offset for the synchronized method final return block */
     private static final int SYNCH_RETURN = -3;
+
+    /** label offset for the first synchronized method setup block */
     private static final int SYNCH_SETUP_1 = -4;
+
+    /** label offset for the second synchronized method setup block */
     private static final int SYNCH_SETUP_2 = -5;
-    private final ByteBlockList blocks;
-    private final CatchInfo[] catchInfos;
-    private final ExceptionSetupLabelAllocator exceptionSetupLabelAllocator;
-    private final RopperMachine machine;
-    private final int maxLabel;
-    private final int maxLocals;
+
+    /**
+     * label offset for the first synchronized method exception
+     * handler block
+     */
+    private static final int SYNCH_CATCH_1 = -6;
+
+    /**
+     * label offset for the second synchronized method exception
+     * handler block
+     */
+    private static final int SYNCH_CATCH_2 = -7;
+
+    /** number of special label offsets */
+    private static final int SPECIAL_LABEL_COUNT = 7;
+
+    /** {@code non-null;} method being converted */
     private final ConcreteMethod method;
-    private final ArrayList<BasicBlock> result;
-    private final ArrayList<IntList> resultSubroutines;
-    private final Simulator sim;
+
+    /** {@code non-null;} original block list */
+    private final ByteBlockList blocks;
+
+    /** max locals of the method */
+    private final int maxLocals;
+
+    /** max label (exclusive) of any original bytecode block */
+    private final int maxLabel;
+
+    /** {@code non-null;} simulation machine to use */
+    private final RopperMachine machine;
+
+    /** {@code non-null;} simulator to use */
+    private final mod.agus.jcoderz.dx.cf.code.Simulator sim;
+
+    /**
+     * {@code non-null;} sparse array mapping block labels to initial frame
+     * contents, if known
+     */
     private final Frame[] startFrames;
-    private final Subroutine[] subroutines;
-    private boolean hasSubroutines;
+
+    /** {@code non-null;} output block list in-progress */
+    private final ArrayList<mod.agus.jcoderz.dx.rop.code.BasicBlock> result;
+
+    /**
+     * {@code non-null;} list of subroutine-nest labels
+     * (See {@link Frame#getSubroutines} associated with each result block.
+     * Parallel to {@link Ropper#result}.
+     */
+    private final ArrayList<mod.agus.jcoderz.dx.util.IntList> resultSubroutines;
+
+    /**
+     * {@code non-null;} for each block (by label) that is used as an exception
+     * handler in the input, the exception handling info in Rop.
+     */
+    private final CatchInfo[] catchInfos;
+
+    /**
+     * whether an exception-handler block for a synchronized method was
+     * ever required
+     */
     private boolean synchNeedsExceptionHandler;
 
-    private Ropper(ConcreteMethod concreteMethod, TranslationAdvice translationAdvice, MethodList methodList) {
-        if (concreteMethod == null) {
-            throw new NullPointerException("method == null");
-        } else if (translationAdvice == null) {
-            throw new NullPointerException("advice == null");
-        } else {
-            this.method = concreteMethod;
-            this.blocks = BasicBlocker.identifyBlocks(concreteMethod);
-            this.maxLabel = this.blocks.getMaxLabel();
-            this.maxLocals = concreteMethod.getMaxLocals();
-            this.machine = new RopperMachine(this, concreteMethod, translationAdvice, methodList);
-            this.sim = new Simulator(this.machine, concreteMethod);
-            this.startFrames = new Frame[this.maxLabel];
-            this.subroutines = new Subroutine[this.maxLabel];
-            this.result = new ArrayList<>((this.blocks.size() * 2) + 10);
-            this.resultSubroutines = new ArrayList<>((this.blocks.size() * 2) + 10);
-            this.catchInfos = new CatchInfo[this.maxLabel];
-            this.synchNeedsExceptionHandler = false;
-            this.startFrames[0] = new Frame(this.maxLocals, concreteMethod.getMaxStack());
-            this.exceptionSetupLabelAllocator = new ExceptionSetupLabelAllocator();
+    /**
+     * {@code non-null;} list of subroutines indexed by label of start
+     * address */
+    private final Subroutine[] subroutines;
+
+    /** true if {@code subroutines} is non-empty */
+    private boolean hasSubroutines;
+
+    /** Allocates labels of exception handler setup blocks. */
+    private final ExceptionSetupLabelAllocator exceptionSetupLabelAllocator;
+
+    /**
+     * Keeps mapping of an input exception handler target code and how it is generated/targeted in
+     * Rop.
+     */
+    private class CatchInfo {
+        /**
+         * {@code non-null;} map of ExceptionHandlerSetup by the type they handle */
+        private final Map<mod.agus.jcoderz.dx.rop.type.Type, ExceptionHandlerSetup> setups =
+                new HashMap<mod.agus.jcoderz.dx.rop.type.Type, ExceptionHandlerSetup>();
+
+        /**
+         * Get the {@link ExceptionHandlerSetup} corresponding to the given type. The
+         * ExceptionHandlerSetup is created if this the first request for the given type.
+         *
+         * @param caughtType {@code non-null;}  the type catch by the requested setup
+         * @return {@code non-null;} the handler setup block info for the given type
+         */
+        ExceptionHandlerSetup getSetup(mod.agus.jcoderz.dx.rop.type.Type caughtType) {
+            ExceptionHandlerSetup handler = setups.get(caughtType);
+            if (handler == null) {
+                int handlerSetupLabel = exceptionSetupLabelAllocator.getNextLabel();
+                handler = new ExceptionHandlerSetup(caughtType, handlerSetupLabel);
+                setups.put(caughtType, handler);
+            }
+            return handler;
+        }
+
+        /**
+         * Get all {@link ExceptionHandlerSetup} of this handler.
+         *
+         * @return {@code non-null;}
+         */
+       Collection<ExceptionHandlerSetup> getSetups() {
+            return setups.values();
         }
     }
 
-    public static RopMethod convert(ConcreteMethod concreteMethod, TranslationAdvice translationAdvice, MethodList methodList) {
+    /**
+     * Keeps track of an exception handler setup.
+     */
+    private static class ExceptionHandlerSetup {
+        /**
+         * {@code non-null;} The caught type. */
+        private mod.agus.jcoderz.dx.rop.type.Type caughtType;
+        /**
+         * {@code >= 0;} The label of the exception setup block. */
+        private int label;
+
+        /**
+         * Constructs instance.
+         *
+         * @param caughtType {@code non-null;} the caught type
+         * @param label {@code >= 0;} the label
+         */
+        ExceptionHandlerSetup(mod.agus.jcoderz.dx.rop.type.Type caughtType, int label) {
+            this.caughtType = caughtType;
+            this.label = label;
+        }
+
+        /**
+         * @return {@code non-null;} the caught type
+         */
+        mod.agus.jcoderz.dx.rop.type.Type getCaughtType() {
+            return caughtType;
+        }
+
+        /**
+         * @return {@code >= 0;} the label
+         */
+        public int getLabel() {
+            return label;
+        }
+    }
+
+    /**
+     * Keeps track of subroutines that exist in java form and are inlined in
+     * Rop form.
+     */
+    private class Subroutine {
+        /** list of all blocks that jsr to this subroutine */
+        private BitSet callerBlocks;
+        /** List of all blocks that return from this subroutine */
+        private BitSet retBlocks;
+        /** first block in this subroutine */
+        private int startBlock;
+
+        /**
+         * Constructs instance.
+         *
+         * @param startBlock First block of the subroutine.
+         */
+        Subroutine(int startBlock) {
+            this.startBlock = startBlock;
+            retBlocks = new BitSet(maxLabel);
+            callerBlocks = new BitSet(maxLabel);
+            hasSubroutines = true;
+        }
+
+        /**
+         * Constructs instance.
+         *
+         * @param startBlock First block of the subroutine.
+         * @param retBlock one of the ret blocks (final blocks) of this
+         * subroutine.
+         */
+        Subroutine(int startBlock, int retBlock) {
+            this(startBlock);
+            addRetBlock(retBlock);
+        }
+
+        /**
+         * @return {@code >= 0;} the label of the subroutine's start block.
+         */
+        int getStartBlock() {
+            return startBlock;
+        }
+
+        /**
+         * Adds a label to the list of ret blocks (final blocks) for this
+         * subroutine.
+         *
+         * @param retBlock ret block label
+         */
+        void addRetBlock(int retBlock) {
+            retBlocks.set(retBlock);
+        }
+
+        /**
+         * Adds a label to the list of caller blocks for this subroutine.
+         *
+         * @param label a block that invokes this subroutine.
+         */
+        void addCallerBlock(int label) {
+            callerBlocks.set(label);
+        }
+
+        /**
+         * Generates a list of subroutine successors. Note: successor blocks
+         * could be listed more than once. This is ok, because this successor
+         * list (and the block it's associated with) will be copied and inlined
+         * before we leave the ropper. Redundent successors will result in
+         * redundent (no-op) merges.
+         *
+         * @return all currently known successors
+         * (return destinations) for that subroutine
+         */
+        mod.agus.jcoderz.dx.util.IntList getSuccessors() {
+            mod.agus.jcoderz.dx.util.IntList successors = new mod.agus.jcoderz.dx.util.IntList(callerBlocks.size());
+
+            /*
+             * For each subroutine caller, get it's target. If the
+             * target is us, add the ret target (subroutine successor)
+             * to our list
+             */
+
+            for (int label = callerBlocks.nextSetBit(0); label >= 0;
+                 label = callerBlocks.nextSetBit(label+1)) {
+                mod.agus.jcoderz.dx.rop.code.BasicBlock subCaller = labelToBlock(label);
+                successors.add(subCaller.getSuccessors().get(0));
+            }
+
+            successors.setImmutable();
+
+            return successors;
+        }
+
+        /**
+         * Merges the specified frame into this subroutine's successors,
+         * setting {@code workSet} as appropriate. To be called with
+         * the frame of a subroutine ret block.
+         *
+         * @param frame {@code non-null;} frame from ret block to merge
+         * @param workSet {@code non-null;} workset to update
+         */
+        void mergeToSuccessors(Frame frame, int[] workSet) {
+            for (int label = callerBlocks.nextSetBit(0); label >= 0;
+                 label = callerBlocks.nextSetBit(label+1)) {
+                mod.agus.jcoderz.dx.rop.code.BasicBlock subCaller = labelToBlock(label);
+                int succLabel = subCaller.getSuccessors().get(0);
+
+                Frame subFrame = frame.subFrameForLabel(startBlock, label);
+
+                if (subFrame != null) {
+                    mergeAndWorkAsNecessary(succLabel, -1, null,
+                            subFrame, workSet);
+                } else {
+                    mod.agus.jcoderz.dx.util.Bits.set(workSet, label);
+                }
+            }
+        }
+    }
+
+    /**
+     * Converts a {@link ConcreteMethod} to a {@link mod.agus.jcoderz.dx.rop.code.RopMethod}.
+     *
+     * @param method {@code non-null;} method to convert
+     * @param advice {@code non-null;} translation advice to use
+     * @param methods {@code non-null;} list of methods defined by the class
+     *     that defines {@code method}.
+     * @return {@code non-null;} the converted instance
+     */
+    public static mod.agus.jcoderz.dx.rop.code.RopMethod convert(ConcreteMethod method,
+                                                                 mod.agus.jcoderz.dx.rop.code.TranslationAdvice advice, MethodList methods, mod.agus.jcoderz.dx.dex.DexOptions dexOptions) {
         try {
-            Ropper ropper = new Ropper(concreteMethod, translationAdvice, methodList);
-            ropper.doit();
-            return ropper.getRopMethod();
-        } catch (SimException e) {
-            e.addContext("...while working on method " + concreteMethod.getNat().toHuman());
-            throw e;
+            Ropper r = new Ropper(method, advice, methods, dexOptions);
+            r.doit();
+            return r.getRopMethod();
+        } catch (SimException ex) {
+            ex.addContext("...while working on method " +
+                          method.getNat().toHuman());
+            throw ex;
         }
     }
 
-    public int getFirstTempStackReg() {
-        int normalRegCount = getNormalRegCount();
-        return isSynchronized() ? normalRegCount + 1 : normalRegCount;
+    /**
+     * Constructs an instance. This class is not publicly instantiable; use
+     * {@link #convert}.
+     *
+     * @param method {@code non-null;} method to convert
+     * @param advice {@code non-null;} translation advice to use
+     * @param methods {@code non-null;} list of methods defined by the class
+     *     that defines {@code method}.
+     * @param dexOptions {@code non-null;} options for dex output
+     */
+    private Ropper(ConcreteMethod method, TranslationAdvice advice, MethodList methods,
+                   DexOptions dexOptions) {
+        if (method == null) {
+            throw new NullPointerException("method == null");
+        }
+
+        if (advice == null) {
+            throw new NullPointerException("advice == null");
+        }
+
+        this.method = method;
+        this.blocks = BasicBlocker.identifyBlocks(method);
+        this.maxLabel = blocks.getMaxLabel();
+        this.maxLocals = method.getMaxLocals();
+        this.machine = new RopperMachine(this, method, advice, methods);
+        this.sim = new Simulator(machine, method, dexOptions);
+        this.startFrames = new Frame[maxLabel];
+        this.subroutines = new Subroutine[maxLabel];
+
+        /*
+         * The "* 2 + 10" below is to conservatively believe that every
+         * block is an exception handler target and should also
+         * take care of enough other possible extra overhead such that
+         * the underlying array is unlikely to need resizing.
+         */
+        this.result = new ArrayList<mod.agus.jcoderz.dx.rop.code.BasicBlock>(blocks.size() * 2 + 10);
+        this.resultSubroutines =
+            new ArrayList<mod.agus.jcoderz.dx.util.IntList>(blocks.size() * 2 + 10);
+
+        this.catchInfos = new CatchInfo[maxLabel];
+        this.synchNeedsExceptionHandler = false;
+
+        /*
+         * Set up the first stack frame with the right limits, but leave it
+         * empty here (to be filled in outside of the constructor).
+         */
+        startFrames[0] = new Frame(maxLocals, method.getMaxStack());
+        exceptionSetupLabelAllocator = new ExceptionSetupLabelAllocator();
     }
 
-    private int getSpecialLabel(int i) {
-        return this.maxLabel + this.method.getCatches().size() + (i ^ -1);
+    /**
+     * Gets the first (lowest) register number to use as the temporary
+     * area when unwinding stack manipulation ops.
+     *
+     * @return {@code >= 0;} the first register to use
+     */
+    /*package*/ int getFirstTempStackReg() {
+        /*
+         * We use the register that is just past the deepest possible
+         * stack element, plus one if the method is synchronized to
+         * avoid overlapping with the synch register. We don't need to
+         * do anything else special at this level, since later passes
+         * will merely notice the highest register used by explicit
+         * inspection.
+         */
+        int regCount = getNormalRegCount();
+        return isSynchronized() ? regCount + 1 : regCount;
     }
 
+    /**
+     * Gets the label for the given special-purpose block. The given label
+     * should be one of the static constants defined by this class.
+     *
+     * @param label {@code < 0;} the special label constant
+     * @return {@code >= 0;} the actual label value to use
+     */
+    private int getSpecialLabel(int label) {
+        /*
+         * The label is bitwise-complemented so that mistakes where
+         * LABEL is used instead of getSpecialLabel(LABEL) cause a
+         * failure at block construction time, since negative labels
+         * are illegal. 0..maxLabel (exclusive) are the original blocks and
+         * maxLabel..(maxLabel + method.getCatches().size()) are reserved for exception handler
+         * setup blocks (see getAvailableLabel(), exceptionSetupLabelAllocator).
+         */
+        return maxLabel + method.getCatches().size() + ~label;
+    }
+
+    /**
+     * Gets the minimum label for unreserved use.
+     *
+     * @return {@code >= 0;} the minimum label
+     */
     private int getMinimumUnreservedLabel() {
-        return this.maxLabel + this.method.getCatches().size() + 7;
+        /*
+         * The labels below (maxLabel + method.getCatches().size() + SPECIAL_LABEL_COUNT) are
+         * reserved for particular uses.
+         */
+
+        return maxLabel + method.getCatches().size() + SPECIAL_LABEL_COUNT;
     }
 
+    /**
+     * Gets an unreserved and available label.
+     * Labels are distributed this way:
+     * <ul>
+     * <li>[0, maxLabel[ are the labels of the blocks directly
+     * corresponding to the input bytecode.</li>
+     * <li>[maxLabel, maxLabel + method.getCatches().size()[ are reserved for exception setup
+     * blocks.</li>
+     * <li>[maxLabel + method.getCatches().size(),
+     * maxLabel + method.getCatches().size() + SPECIAL_LABEL_COUNT[ are reserved for special blocks,
+     * ie param assignement, return and synch blocks.</li>
+     * <li>[maxLabel method.getCatches().size() + SPECIAL_LABEL_COUNT, getAvailableLabel()[ assigned
+     *  labels. Note that some
+     * of the assigned labels may not be used any more if they were assigned to a block that was
+     * deleted since.</li>
+     * </ul>
+     *
+     * @return {@code >= 0;} an available label with the guaranty that all greater labels are
+     * also available.
+     */
     private int getAvailableLabel() {
-        int minimumUnreservedLabel = getMinimumUnreservedLabel();
-        Iterator<BasicBlock> it = this.result.iterator();
-        int i = minimumUnreservedLabel;
-        while (it.hasNext()) {
-            int label = it.next().getLabel();
-            if (label >= i) {
-                i = label + 1;
+        int candidate = getMinimumUnreservedLabel();
+
+        for (mod.agus.jcoderz.dx.rop.code.BasicBlock bb : result) {
+            int label = bb.getLabel();
+            if (label >= candidate) {
+                candidate = label + 1;
             }
         }
-        return i;
+
+        return candidate;
     }
 
+    /**
+     * Gets whether the method being translated is synchronized.
+     *
+     * @return whether the method being translated is synchronized
+     */
     private boolean isSynchronized() {
-        return (this.method.getAccessFlags() & 32) != 0;
+        int accessFlags = method.getAccessFlags();
+        return (accessFlags & mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_SYNCHRONIZED) != 0;
     }
 
+    /**
+     * Gets whether the method being translated is static.
+     *
+     * @return whether the method being translated is static
+     */
     private boolean isStatic() {
-        return (this.method.getAccessFlags() & 8) != 0;
+        int accessFlags = method.getAccessFlags();
+        return (accessFlags & AccessFlags.ACC_STATIC) != 0;
     }
 
+    /**
+     * Gets the total number of registers used for "normal" purposes (i.e.,
+     * for the straightforward translation from the original Java).
+     *
+     * @return {@code >= 0;} the total number of registers used
+     */
     private int getNormalRegCount() {
-        return this.maxLocals + this.method.getMaxStack();
+        return maxLocals + method.getMaxStack();
     }
 
-    private RegisterSpec getSynchReg() {
-        int i = 1;
-        int normalRegCount = getNormalRegCount();
-        if (normalRegCount >= 1) {
-            i = normalRegCount;
-        }
-        return RegisterSpec.make(i, Type.OBJECT);
+    /**
+     * Gets the register spec to use to hold the object to synchronize on,
+     * for a synchronized method.
+     *
+     * @return {@code non-null;} the register spec
+     */
+    private mod.agus.jcoderz.dx.rop.code.RegisterSpec getSynchReg() {
+        /*
+         * We use the register that is just past the deepest possible
+         * stack element, with a minimum of v1 since v0 is what's
+         * always used to hold the caught exception when unwinding. We
+         * don't need to do anything else special at this level, since
+         * later passes will merely notice the highest register used
+         * by explicit inspection.
+         */
+        int reg = getNormalRegCount();
+        return mod.agus.jcoderz.dx.rop.code.RegisterSpec.make((reg < 1) ? 1 : reg, mod.agus.jcoderz.dx.rop.type.Type.OBJECT);
     }
 
-    private int labelToResultIndex(int i) {
-        int size = this.result.size();
-        for (int i2 = 0; i2 < size; i2++) {
-            if (this.result.get(i2).getLabel() == i) {
-                return i2;
+    /**
+     * Searches {@link #result} for a block with the given label. Returns its
+     * index if found, or returns {@code -1} if there is no such block.
+     *
+     * @param label the label to look for
+     * @return {@code >= -1;} the index for the block with the given label or
+     * {@code -1} if there is no such block
+     */
+    private int labelToResultIndex(int label) {
+        int sz = result.size();
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.code.BasicBlock one = result.get(i);
+            if (one.getLabel() == label) {
+                return i;
             }
         }
+
         return -1;
     }
 
-    private BasicBlock labelToBlock(int i) {
-        int labelToResultIndex = labelToResultIndex(i);
-        if (labelToResultIndex >= 0) {
-            return this.result.get(labelToResultIndex);
+    /**
+     * Searches {@link #result} for a block with the given label. Returns it if
+     * found, or throws an exception if there is no such block.
+     *
+     * @param label the label to look for
+     * @return {@code non-null;} the block with the given label
+     */
+    private mod.agus.jcoderz.dx.rop.code.BasicBlock labelToBlock(int label) {
+        int idx = labelToResultIndex(label);
+
+        if (idx < 0) {
+            throw new IllegalArgumentException("no such label " +
+                    mod.agus.jcoderz.dx.util.Hex.u2(label));
         }
-        throw new IllegalArgumentException("no such label " + Hex.u2(i));
+
+        return result.get(idx);
     }
 
-    private void addBlock(BasicBlock basicBlock, IntList intList) {
-        if (basicBlock == null) {
+    /**
+     * Adds a block to the output result.
+     *
+     * @param block {@code non-null;} the block to add
+     * @param subroutines {@code non-null;} subroutine label list
+     * as described in {@link Frame#getSubroutines}
+     */
+    private void addBlock(mod.agus.jcoderz.dx.rop.code.BasicBlock block, mod.agus.jcoderz.dx.util.IntList subroutines) {
+        if (block == null) {
             throw new NullPointerException("block == null");
         }
-        this.result.add(basicBlock);
-        intList.throwIfMutable();
-        this.resultSubroutines.add(intList);
+
+        result.add(block);
+        subroutines.throwIfMutable();
+        resultSubroutines.add(subroutines);
     }
 
-    private boolean addOrReplaceBlock(BasicBlock basicBlock, IntList intList) {
-        boolean z;
-        if (basicBlock == null) {
+    /**
+     * Adds or replace a block in the output result. If this is a
+     * replacement, then any extra blocks that got added with the
+     * original get removed as a result of calling this method.
+     *
+     * @param block {@code non-null;} the block to add or replace
+     * @param subroutines {@code non-null;} subroutine label list
+     * as described in {@link Frame#getSubroutines}
+     * @return {@code true} if the block was replaced or
+     * {@code false} if it was added for the first time
+     */
+    private boolean addOrReplaceBlock(mod.agus.jcoderz.dx.rop.code.BasicBlock block, mod.agus.jcoderz.dx.util.IntList subroutines) {
+        if (block == null) {
             throw new NullPointerException("block == null");
         }
-        int labelToResultIndex = labelToResultIndex(basicBlock.getLabel());
-        if (labelToResultIndex < 0) {
-            z = false;
+
+        int idx = labelToResultIndex(block.getLabel());
+        boolean ret;
+
+        if (idx < 0) {
+            ret = false;
         } else {
-            removeBlockAndSpecialSuccessors(labelToResultIndex);
-            z = true;
+            /*
+             * We are replacing a pre-existing block, so find any
+             * blocks that got added as part of the original and
+             * remove those too. Such blocks are (possibly indirect)
+             * successors of this block which are out of the range of
+             * normally-translated blocks.
+             */
+            removeBlockAndSpecialSuccessors(idx);
+            ret = true;
         }
-        this.result.add(basicBlock);
-        intList.throwIfMutable();
-        this.resultSubroutines.add(intList);
-        return z;
+
+        result.add(block);
+        subroutines.throwIfMutable();
+        resultSubroutines.add(subroutines);
+        return ret;
     }
 
-    private boolean addOrReplaceBlockNoDelete(BasicBlock basicBlock, IntList intList) {
-        boolean z;
-        if (basicBlock == null) {
+    /**
+     * Adds or replaces a block in the output result. Do not delete
+     * any successors.
+     *
+     * @param block {@code non-null;} the block to add or replace
+     * @param subroutines {@code non-null;} subroutine label list
+     * as described in {@link Frame#getSubroutines}
+     * @return {@code true} if the block was replaced or
+     * {@code false} if it was added for the first time
+     */
+    private boolean addOrReplaceBlockNoDelete(mod.agus.jcoderz.dx.rop.code.BasicBlock block,
+                                              mod.agus.jcoderz.dx.util.IntList subroutines) {
+        if (block == null) {
             throw new NullPointerException("block == null");
         }
-        int labelToResultIndex = labelToResultIndex(basicBlock.getLabel());
-        if (labelToResultIndex < 0) {
-            z = false;
+
+        int idx = labelToResultIndex(block.getLabel());
+        boolean ret;
+
+        if (idx < 0) {
+            ret = false;
         } else {
-            this.result.remove(labelToResultIndex);
-            this.resultSubroutines.remove(labelToResultIndex);
-            z = true;
+            result.remove(idx);
+            resultSubroutines.remove(idx);
+            ret = true;
         }
-        this.result.add(basicBlock);
-        intList.throwIfMutable();
-        this.resultSubroutines.add(intList);
-        return z;
+
+        result.add(block);
+        subroutines.throwIfMutable();
+        resultSubroutines.add(subroutines);
+        return ret;
     }
 
-    private void removeBlockAndSpecialSuccessors(int i) {
-        int minimumUnreservedLabel = getMinimumUnreservedLabel();
-        IntList successors = this.result.get(i).getSuccessors();
-        int size = successors.size();
-        this.result.remove(i);
-        this.resultSubroutines.remove(i);
-        for (int i2 = 0; i2 < size; i2++) {
-            int i3 = successors.get(i2);
-            if (i3 >= minimumUnreservedLabel) {
-                int labelToResultIndex = labelToResultIndex(i3);
-                if (labelToResultIndex < 0) {
-                    throw new RuntimeException("Invalid label " + Hex.u2(i3));
+    /**
+     * Helper for {@link #addOrReplaceBlock} which recursively removes
+     * the given block and all blocks that are (direct and indirect)
+     * successors of it whose labels indicate that they are not in the
+     * normally-translated range.
+     *
+     * @param idx {@code non-null;} block to remove (etc.)
+     */
+    private void removeBlockAndSpecialSuccessors(int idx) {
+        int minLabel = getMinimumUnreservedLabel();
+        mod.agus.jcoderz.dx.rop.code.BasicBlock block = result.get(idx);
+        mod.agus.jcoderz.dx.util.IntList successors = block.getSuccessors();
+        int sz = successors.size();
+
+        result.remove(idx);
+        resultSubroutines.remove(idx);
+
+        for (int i = 0; i < sz; i++) {
+            int label = successors.get(i);
+            if (label >= minLabel) {
+                idx = labelToResultIndex(label);
+                if (idx < 0) {
+                    throw new RuntimeException("Invalid label "
+                            + mod.agus.jcoderz.dx.util.Hex.u2(label));
                 }
-                removeBlockAndSpecialSuccessors(labelToResultIndex);
+                removeBlockAndSpecialSuccessors(idx);
             }
         }
     }
 
-    private RopMethod getRopMethod() {
-        int size = this.result.size();
-        BasicBlockList basicBlockList = new BasicBlockList(size);
-        for (int i = 0; i < size; i++) {
-            basicBlockList.set(i, this.result.get(i));
+    /**
+     * Extracts the resulting {@link mod.agus.jcoderz.dx.rop.code.RopMethod} from the instance.
+     *
+     * @return {@code non-null;} the method object
+     */
+    private mod.agus.jcoderz.dx.rop.code.RopMethod getRopMethod() {
+
+        // Construct the final list of blocks.
+
+        int sz = result.size();
+        mod.agus.jcoderz.dx.rop.code.BasicBlockList bbl = new BasicBlockList(sz);
+        for (int i = 0; i < sz; i++) {
+            bbl.set(i, result.get(i));
         }
-        basicBlockList.setImmutable();
-        return new RopMethod(basicBlockList, getSpecialLabel(-1));
+        bbl.setImmutable();
+
+        // Construct the method object to wrap it all up.
+
+        /*
+         * Note: The parameter assignment block is always the first
+         * that should be executed, hence the second argument to the
+         * constructor.
+         */
+        return new RopMethod(bbl, getSpecialLabel(PARAM_ASSIGNMENT));
     }
 
+    /**
+     * Does the conversion.
+     */
     private void doit() {
-        int[] makeBitSet = Bits.makeBitSet(this.maxLabel);
-        Bits.set(makeBitSet, 0);
+        int[] workSet = mod.agus.jcoderz.dx.util.Bits.makeBitSet(maxLabel);
+
+        mod.agus.jcoderz.dx.util.Bits.set(workSet, 0);
         addSetupBlocks();
         setFirstFrame();
-        while (true) {
-            int findFirst = Bits.findFirst(makeBitSet, 0);
-            if (findFirst < 0) {
+
+        for (;;) {
+            int offset = mod.agus.jcoderz.dx.util.Bits.findFirst(workSet, 0);
+            if (offset < 0) {
                 break;
             }
-            Bits.clear(makeBitSet, findFirst);
+            mod.agus.jcoderz.dx.util.Bits.clear(workSet, offset);
+            ByteBlock block = blocks.labelToBlock(offset);
+            Frame frame = startFrames[offset];
             try {
-                processBlock(this.blocks.labelToBlock(findFirst), this.startFrames[findFirst], makeBitSet);
-            } catch (SimException e) {
-                e.addContext("...while working on block " + Hex.u2(findFirst));
-                throw e;
+                processBlock(block, frame, workSet);
+            } catch (SimException ex) {
+                ex.addContext("...while working on block " + mod.agus.jcoderz.dx.util.Hex.u2(offset));
+                throw ex;
             }
         }
+
         addReturnBlock();
         addSynchExceptionHandlerBlock();
         addExceptionSetupBlocks();
-        if (this.hasSubroutines) {
+
+        if (hasSubroutines) {
+            // Subroutines are very rare, so skip this step if it's n/a
             inlineSubroutines();
         }
     }
 
+    /**
+     * Sets up the first frame to contain all the incoming parameters in
+     * locals.
+     */
     private void setFirstFrame() {
-        this.startFrames[0].initializeWithParameters(this.method.getEffectiveDescriptor().getParameterTypes());
-        this.startFrames[0].setImmutable();
+        mod.agus.jcoderz.dx.rop.type.Prototype desc = method.getEffectiveDescriptor();
+        startFrames[0].initializeWithParameters(desc.getParameterTypes());
+        startFrames[0].setImmutable();
     }
 
-    private void processBlock(ByteBlock byteBlock, Frame frame, int[] iArr) {
-        int i;
-        IntList intList;
-        int i2;
-        IntList intList2;
-        int i3;
-        IntList intList3;
-        Insn insn;
-        SourcePosition position;
-        IntList intList4;
-        ByteCatchList catches = byteBlock.getCatches();
-        this.machine.startBlock(catches.toRopCatchList());
-        Frame copy = frame.copy();
-        this.sim.simulate(byteBlock, copy);
-        copy.setImmutable();
-        int extraBlockCount = this.machine.getExtraBlockCount();
-        ArrayList<Insn> insns = this.machine.getInsns();
-        int size = insns.size();
-        int size2 = catches.size();
-        IntList successors = byteBlock.getSuccessors();
-        Subroutine subroutine = null;
-        if (this.machine.hasJsr()) {
-            i = 1;
-            int i4 = successors.get(1);
-            if (this.subroutines[i4] == null) {
-                this.subroutines[i4] = new Subroutine(i4);
+    /**
+     * Processes the given block.
+     *
+     * @param block {@code non-null;} block to process
+     * @param frame {@code non-null;} start frame for the block
+     * @param workSet {@code non-null;} bits representing work to do,
+     * which this method may add to
+     */
+    private void processBlock(ByteBlock block, Frame frame, int[] workSet) {
+        // Prepare the list of caught exceptions for this block.
+        mod.agus.jcoderz.dx.cf.code.ByteCatchList catches = block.getCatches();
+        machine.startBlock(catches.toRopCatchList());
+
+        /*
+         * Using a copy of the given frame, simulate each instruction,
+         * calling into machine for each.
+         */
+        frame = frame.copy();
+        sim.simulate(block, frame);
+        frame.setImmutable();
+
+        int extraBlockCount = machine.getExtraBlockCount();
+        ArrayList<mod.agus.jcoderz.dx.rop.code.Insn> insns = machine.getInsns();
+        int insnSz = insns.size();
+
+        /*
+         * Merge the frame into each possible non-exceptional
+         * successor.
+         */
+
+        int catchSz = catches.size();
+        mod.agus.jcoderz.dx.util.IntList successors = block.getSuccessors();
+
+        int startSuccessorIndex;
+
+        Subroutine calledSubroutine = null;
+        if (machine.hasJsr()) {
+            /*
+             * If this frame ends in a JSR, only merge our frame with
+             * the subroutine start, not the subroutine's return target.
+             */
+            startSuccessorIndex = 1;
+
+            int subroutineLabel = successors.get(1);
+
+            if (subroutines[subroutineLabel] == null) {
+                subroutines[subroutineLabel] =
+                    new Subroutine (subroutineLabel);
             }
-            this.subroutines[i4].addCallerBlock(byteBlock.getLabel());
-            subroutine = this.subroutines[i4];
-            intList = successors;
-        } else if (this.machine.hasRet()) {
-            int subroutineAddress = this.machine.getReturnAddress().getSubroutineAddress();
-            if (this.subroutines[subroutineAddress] == null) {
-                this.subroutines[subroutineAddress] = new Subroutine(this, subroutineAddress, byteBlock.getLabel());
+
+            subroutines[subroutineLabel].addCallerBlock(block.getLabel());
+
+            calledSubroutine = subroutines[subroutineLabel];
+        } else if (machine.hasRet()) {
+            /*
+             * This block ends in a ret, which means it's the final block
+             * in some subroutine. Ultimately, this block will be copied
+             * and inlined for each call and then disposed of.
+             */
+
+            ReturnAddress ra = machine.getReturnAddress();
+            int subroutineLabel = ra.getSubroutineAddress();
+
+            if (subroutines[subroutineLabel] == null) {
+                subroutines[subroutineLabel]
+                        = new Subroutine (subroutineLabel, block.getLabel());
             } else {
-                this.subroutines[subroutineAddress].addRetBlock(byteBlock.getLabel());
+                subroutines[subroutineLabel].addRetBlock(block.getLabel());
             }
-            IntList successors2 = this.subroutines[subroutineAddress].getSuccessors();
-            this.subroutines[subroutineAddress].mergeToSuccessors(copy, iArr);
-            i = successors2.size();
-            intList = successors2;
-        } else if (this.machine.wereCatchesUsed()) {
-            i = size2;
-            intList = successors;
+
+            successors = subroutines[subroutineLabel].getSuccessors();
+            subroutines[subroutineLabel]
+                    .mergeToSuccessors(frame, workSet);
+            // Skip processing below since we just did it.
+            startSuccessorIndex = successors.size();
+        } else if (machine.wereCatchesUsed()) {
+            /*
+             * If there are catches, then the first successors
+             * (which will either be all of them or all but the last one)
+             * are catch targets.
+             */
+            startSuccessorIndex = catchSz;
         } else {
-            i = 0;
-            intList = successors;
+            startSuccessorIndex = 0;
         }
-        int size3 = intList.size();
-        for (int i5 = i; i5 < size3; i5++) {
-            int i6 = intList.get(i5);
+
+        int succSz = successors.size();
+        for (int i = startSuccessorIndex; i < succSz;
+             i++) {
+            int succ = successors.get(i);
             try {
-                mergeAndWorkAsNecessary(i6, byteBlock.getLabel(), subroutine, copy, iArr);
-            } catch (SimException e) {
-                e.addContext("...while merging to block " + Hex.u2(i6));
-                throw e;
+                mergeAndWorkAsNecessary(succ, block.getLabel(),
+                        calledSubroutine, frame, workSet);
+            } catch (SimException ex) {
+                ex.addContext("...while merging to block " + mod.agus.jcoderz.dx.util.Hex.u2(succ));
+                throw ex;
             }
         }
-        if (size3 != 0 || !this.machine.returns()) {
-            i2 = size3;
-            intList2 = intList;
-        } else {
-            i2 = 1;
-            intList2 = IntList.makeImmutable(getSpecialLabel(-2));
+
+        if ((succSz == 0) && machine.returns()) {
+            /*
+             * The block originally contained a return, but it has
+             * been made to instead end with a goto, and we need to
+             * tell it at this point that its sole successor is the
+             * return block. This has to happen after the merge loop
+             * above, since, at this point, the return block doesn't
+             * actually exist; it gets synthesized at the end of
+             * processing the original blocks.
+             */
+            successors = mod.agus.jcoderz.dx.util.IntList.makeImmutable(getSpecialLabel(RETURN));
+            succSz = 1;
         }
-        if (i2 == 0) {
-            i3 = -1;
+
+        int primarySucc;
+
+        if (succSz == 0) {
+            primarySucc = -1;
         } else {
-            int primarySuccessorIndex = this.machine.getPrimarySuccessorIndex();
-            if (primarySuccessorIndex >= 0) {
-                i3 = intList2.get(primarySuccessorIndex);
-            } else {
-                i3 = primarySuccessorIndex;
+            primarySucc = machine.getPrimarySuccessorIndex();
+            if (primarySucc >= 0) {
+                primarySucc = successors.get(primarySucc);
             }
         }
-        boolean z = isSynchronized() && this.machine.canThrow();
-        if (z || size2 != 0) {
-            IntList intList5 = new IntList(i2);
-            boolean z2 = false;
-            int i7 = 0;
-            while (i7 < size2) {
-                ByteCatchList.Item item = catches.get(i7);
-                CstType exceptionClass = item.getExceptionClass();
-                int handlerPc = item.getHandlerPc();
-                boolean z3 = z2 | (exceptionClass == CstType.OBJECT);
+
+        /*
+         * This variable is true only when the method is synchronized and
+         * the block being processed can possibly throw an exception.
+         */
+        boolean synch = isSynchronized() && machine.canThrow();
+
+        if (synch || (catchSz != 0)) {
+            /*
+             * Deal with exception handlers: Merge an exception-catch
+             * frame into each possible exception handler, and
+             * construct a new set of successors to point at the
+             * exception handler setup blocks (which get synthesized
+             * at the very end of processing).
+             */
+            boolean catchesAny = false;
+            mod.agus.jcoderz.dx.util.IntList newSucc = new mod.agus.jcoderz.dx.util.IntList(succSz);
+            for (int i = 0; i < catchSz; i++) {
+                ByteCatchList.Item one = catches.get(i);
+                mod.agus.jcoderz.dx.rop.cst.CstType exceptionClass = one.getExceptionClass();
+                int targ = one.getHandlerPc();
+
+                catchesAny |= (exceptionClass == CstType.OBJECT);
+
+                Frame f = frame.makeExceptionHandlerStartFrame(exceptionClass);
+
                 try {
-                    mergeAndWorkAsNecessary(handlerPc, byteBlock.getLabel(), null, copy.makeExceptionHandlerStartFrame(exceptionClass), iArr);
-                    CatchInfo catchInfo = this.catchInfos[handlerPc];
-                    if (catchInfo == null) {
-                        catchInfo = new CatchInfo(this, null);
-                        this.catchInfos[handlerPc] = catchInfo;
+                    mergeAndWorkAsNecessary(targ, block.getLabel(),
+                            null, f, workSet);
+                } catch (SimException ex) {
+                    ex.addContext("...while merging exception to block " +
+                                  mod.agus.jcoderz.dx.util.Hex.u2(targ));
+                    throw ex;
+                }
+
+                /*
+                 * Set up the exception handler type.
+                 */
+                CatchInfo handlers = catchInfos[targ];
+                if (handlers == null) {
+                    handlers = new CatchInfo();
+                    catchInfos[targ] = handlers;
+                }
+                ExceptionHandlerSetup handler = handlers.getSetup(exceptionClass.getClassType());
+
+                /*
+                 * The synthesized exception setup block will have the label given by handler.
+                 */
+                newSucc.add(handler.getLabel());
+            }
+
+            if (synch && !catchesAny) {
+                /*
+                 * The method is synchronized and this block doesn't
+                 * already have a catch-all handler, so add one to the
+                 * end, both in the successors and in the throwing
+                 * instruction(s) at the end of the block (which is where
+                 * the caught classes live).
+                 */
+                newSucc.add(getSpecialLabel(SYNCH_CATCH_1));
+                synchNeedsExceptionHandler = true;
+
+                for (int i = insnSz - extraBlockCount - 1; i < insnSz; i++) {
+                    mod.agus.jcoderz.dx.rop.code.Insn insn = insns.get(i);
+                    if (insn.canThrow()) {
+                        insn = insn.withAddedCatch(mod.agus.jcoderz.dx.rop.type.Type.OBJECT);
+                        insns.set(i, insn);
                     }
-                    intList5.add(catchInfo.getSetup(exceptionClass.getClassType()).getLabel());
-                    i7++;
-                    z2 = z3;
-                } catch (SimException e2) {
-                    e2.addContext("...while merging exception to block " + Hex.u2(handlerPc));
-                    throw e2;
                 }
             }
-            if (z && !z2) {
-                intList5.add(getSpecialLabel(SYNCH_CATCH_1));
-                this.synchNeedsExceptionHandler = true;
-                for (int i8 = (size - extraBlockCount) - 1; i8 < size; i8++) {
-                    Insn insn2 = insns.get(i8);
-                    if (insn2.canThrow()) {
-                        insns.set(i8, insn2.withAddedCatch(Type.OBJECT));
-                    }
-                }
+
+            if (primarySucc >= 0) {
+                newSucc.add(primarySucc);
             }
-            if (i3 >= 0) {
-                intList5.add(i3);
+
+            newSucc.setImmutable();
+            successors = newSucc;
+        }
+
+        // Construct the final resulting block(s), and store it (them).
+
+        int primarySuccListIndex = successors.indexOf(primarySucc);
+
+        /*
+         * If there are any extra blocks, work backwards through the
+         * list of instructions, adding single-instruction blocks, and
+         * resetting the successors variables as appropriate.
+         */
+        for (/*extraBlockCount*/; extraBlockCount > 0; extraBlockCount--) {
+            /*
+             * Some of the blocks that the RopperMachine wants added
+             * are for move-result insns, and these need goto insns as well.
+             */
+            mod.agus.jcoderz.dx.rop.code.Insn extraInsn = insns.get(--insnSz);
+            boolean needsGoto
+                    = extraInsn.getOpcode().getBranchingness()
+                        == mod.agus.jcoderz.dx.rop.code.Rop.BRANCH_NONE;
+            mod.agus.jcoderz.dx.rop.code.InsnList il = new mod.agus.jcoderz.dx.rop.code.InsnList(needsGoto ? 2 : 1);
+            mod.agus.jcoderz.dx.util.IntList extraBlockSuccessors = successors;
+
+            il.set(0, extraInsn);
+
+            if (needsGoto) {
+                il.set(1, new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.GOTO,
+                        extraInsn.getPosition(), null,
+                        mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY));
+                /*
+                 * Obviously, this block won't be throwing an exception
+                 * so it should only have one successor.
+                 */
+                extraBlockSuccessors = mod.agus.jcoderz.dx.util.IntList.makeImmutable(primarySucc);
             }
-            intList5.setImmutable();
-            intList3 = intList5;
-        } else {
-            intList3 = intList2;
+            il.setImmutable();
+
+            int label = getAvailableLabel();
+            mod.agus.jcoderz.dx.rop.code.BasicBlock bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(label, il, extraBlockSuccessors,
+                    primarySucc);
+            // All of these extra blocks will be in the same subroutine
+            addBlock(bb, frame.getSubroutines());
+
+            successors = successors.mutableCopy();
+            successors.set(primarySuccListIndex, label);
+            successors.setImmutable();
+            primarySucc = label;
         }
-        int indexOf = intList3.indexOf(i3);
-        int i9 = i3;
-        IntList intList6 = intList3;
-        int i10 = extraBlockCount;
-        int i11 = size;
-        while (i10 > 0) {
-            int i12 = i11 - 1;
-            Insn insn3 = insns.get(i12);
-            boolean z4 = insn3.getOpcode().getBranchingness() == 1;
-            InsnList insnList = new InsnList(z4 ? 2 : 1);
-            insnList.set(0, insn3);
-            if (z4) {
-                insnList.set(1, new PlainInsn(Rops.GOTO, insn3.getPosition(), (RegisterSpec) null, RegisterSpecList.EMPTY));
-                intList4 = IntList.makeImmutable(i9);
-            } else {
-                intList4 = intList6;
-            }
-            insnList.setImmutable();
-            int availableLabel = getAvailableLabel();
-            addBlock(new BasicBlock(availableLabel, insnList, intList4, i9), copy.getSubroutines());
-            intList6 = intList6.mutableCopy();
-            intList6.set(indexOf, availableLabel);
-            intList6.setImmutable();
-            i9 = availableLabel;
-            i10--;
-            i11 = i12;
+
+        mod.agus.jcoderz.dx.rop.code.Insn lastInsn = (insnSz == 0) ? null : insns.get(insnSz - 1);
+
+        /*
+         * Add a goto to the end of the block if it doesn't already
+         * end with a branch, to maintain the invariant that all
+         * blocks end with a branch of some sort or other. Note that
+         * it is possible for there to be blocks for which no
+         * instructions were ever output (e.g., only consist of pop*
+         * in the original Java bytecode).
+         */
+        if ((lastInsn == null) ||
+            (lastInsn.getOpcode().getBranchingness() == mod.agus.jcoderz.dx.rop.code.Rop.BRANCH_NONE)) {
+            mod.agus.jcoderz.dx.rop.code.SourcePosition pos = (lastInsn == null) ? mod.agus.jcoderz.dx.rop.code.SourcePosition.NO_INFO :
+                lastInsn.getPosition();
+            insns.add(new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.GOTO, pos, null,
+                                    mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY));
+            insnSz++;
         }
-        if (i11 == 0) {
-            insn = null;
-        } else {
-            insn = insns.get(i11 - 1);
+
+        /*
+         * Construct a block for the remaining instructions (which in
+         * the usual case is all of them).
+         */
+
+        mod.agus.jcoderz.dx.rop.code.InsnList il = new mod.agus.jcoderz.dx.rop.code.InsnList(insnSz);
+        for (int i = 0; i < insnSz; i++) {
+            il.set(i, insns.get(i));
         }
-        if (insn == null || insn.getOpcode().getBranchingness() == 1) {
-            if (insn == null) {
-                position = SourcePosition.NO_INFO;
-            } else {
-                position = insn.getPosition();
-            }
-            insns.add(new PlainInsn(Rops.GOTO, position, (RegisterSpec) null, RegisterSpecList.EMPTY));
-            i11++;
-        }
-        InsnList insnList2 = new InsnList(i11);
-        for (int i13 = 0; i13 < i11; i13++) {
-            insnList2.set(i13, insns.get(i13));
-        }
-        insnList2.setImmutable();
-        addOrReplaceBlock(new BasicBlock(byteBlock.getLabel(), insnList2, intList6, i9), copy.getSubroutines());
+        il.setImmutable();
+
+        mod.agus.jcoderz.dx.rop.code.BasicBlock bb =
+            new mod.agus.jcoderz.dx.rop.code.BasicBlock(block.getLabel(), il, successors, primarySucc);
+        addOrReplaceBlock(bb, frame.getSubroutines());
     }
 
-    private void mergeAndWorkAsNecessary(int i, int i2, Subroutine subroutine, Frame frame, int[] iArr) {
-        Frame mergeWith;
-        Frame frame2 = this.startFrames[i];
-        if (frame2 != null) {
-            if (subroutine != null) {
-                mergeWith = frame2.mergeWithSubroutineCaller(frame, subroutine.getStartBlock(), i2);
+    /**
+     * Helper for {@link #processBlock}, which merges frames and
+     * adds to the work set, as necessary.
+     *
+     * @param label {@code >= 0;} label to work on
+     * @param pred  predecessor label; must be {@code >= 0} when
+     * {@code label} is a subroutine start block and calledSubroutine
+     * is non-null. Otherwise, may be -1.
+     * @param calledSubroutine {@code null-ok;} a Subroutine instance if
+     * {@code label} is the first block in a subroutine.
+     * @param frame {@code non-null;} new frame for the labelled block
+     * @param workSet {@code non-null;} bits representing work to do,
+     * which this method may add to
+     */
+    private void mergeAndWorkAsNecessary(int label, int pred,
+            Subroutine calledSubroutine, Frame frame, int[] workSet) {
+        Frame existing = startFrames[label];
+        Frame merged;
+
+        if (existing != null) {
+            /*
+             * Some other block also continues at this label. Merge
+             * the frames, and re-set the bit in the work set if there
+             * was a change.
+             */
+            if (calledSubroutine != null) {
+                merged = existing.mergeWithSubroutineCaller(frame,
+                        calledSubroutine.getStartBlock(), pred);
             } else {
-                mergeWith = frame2.mergeWith(frame);
+                merged = existing.mergeWith(frame);
             }
-            if (mergeWith != frame2) {
-                this.startFrames[i] = mergeWith;
-                Bits.set(iArr, i);
-                return;
+            if (merged != existing) {
+                startFrames[label] = merged;
+                mod.agus.jcoderz.dx.util.Bits.set(workSet, label);
             }
+        } else {
+            // This is the first time this label has been encountered.
+            if (calledSubroutine != null) {
+                startFrames[label]
+                        = frame.makeNewSubroutineStartFrame(label, pred);
+            } else {
+                startFrames[label] = frame;
+            }
+            Bits.set(workSet, label);
+        }
+    }
+
+    /**
+     * Constructs and adds the blocks that perform setup for the rest of
+     * the method. This includes a first block which merely contains
+     * assignments from parameters to the same-numbered registers and
+     * a possible second block which deals with synchronization.
+     */
+    private void addSetupBlocks() {
+        LocalVariableList localVariables = method.getLocalVariables();
+        mod.agus.jcoderz.dx.rop.code.SourcePosition pos = method.makeSourcePosistion(0);
+        Prototype desc = method.getEffectiveDescriptor();
+        mod.agus.jcoderz.dx.rop.type.StdTypeList params = desc.getParameterTypes();
+        int sz = params.size();
+        mod.agus.jcoderz.dx.rop.code.InsnList insns = new mod.agus.jcoderz.dx.rop.code.InsnList(sz + 1);
+        int at = 0;
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.type.Type one = params.get(i);
+            LocalVariableList.Item local =
+                localVariables.pcAndIndexToLocal(0, at);
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec result = (local == null) ?
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec.make(at, one) :
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec.makeLocalOptional(at, one, local.getLocalItem());
+
+            mod.agus.jcoderz.dx.rop.code.Insn insn = new mod.agus.jcoderz.dx.rop.code.PlainCstInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMoveParam(one), pos, result,
+                                         mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY,
+                                         mod.agus.jcoderz.dx.rop.cst.CstInteger.make(at));
+            insns.set(i, insn);
+            at += one.getCategory();
+        }
+
+        insns.set(sz, new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.GOTO, pos, null,
+                                    mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY));
+        insns.setImmutable();
+
+        boolean synch = isSynchronized();
+        int label = synch ? getSpecialLabel(SYNCH_SETUP_1) : 0;
+        mod.agus.jcoderz.dx.rop.code.BasicBlock bb =
+            new mod.agus.jcoderz.dx.rop.code.BasicBlock(getSpecialLabel(PARAM_ASSIGNMENT), insns,
+                           mod.agus.jcoderz.dx.util.IntList.makeImmutable(label), label);
+        addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
+
+        if (synch) {
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec synchReg = getSynchReg();
+            mod.agus.jcoderz.dx.rop.code.Insn insn;
+            if (isStatic()) {
+                insn = new ThrowingCstInsn(mod.agus.jcoderz.dx.rop.code.Rops.CONST_OBJECT, pos,
+                                           mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY,
+                                           mod.agus.jcoderz.dx.rop.type.StdTypeList.EMPTY,
+                                           method.getDefiningClass());
+                insns = new mod.agus.jcoderz.dx.rop.code.InsnList(1);
+                insns.set(0, insn);
+            } else {
+                insns = new mod.agus.jcoderz.dx.rop.code.InsnList(2);
+                insn = new PlainCstInsn(mod.agus.jcoderz.dx.rop.code.Rops.MOVE_PARAM_OBJECT, pos,
+                                        synchReg, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY,
+                                        CstInteger.VALUE_0);
+                insns.set(0, insn);
+                insns.set(1, new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.GOTO, pos, null,
+                                           mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY));
+            }
+
+            int label2 = getSpecialLabel(SYNCH_SETUP_2);
+            insns.setImmutable();
+            bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(label, insns,
+                                mod.agus.jcoderz.dx.util.IntList.makeImmutable(label2), label2);
+            addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
+
+            insns = new mod.agus.jcoderz.dx.rop.code.InsnList(isStatic() ? 2 : 1);
+
+            if (isStatic()) {
+                insns.set(0, new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMoveResultPseudo(synchReg),
+                        pos, synchReg, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY));
+            }
+
+            insn = new mod.agus.jcoderz.dx.rop.code.ThrowingInsn(mod.agus.jcoderz.dx.rop.code.Rops.MONITOR_ENTER, pos,
+                                    mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(synchReg),
+                                    mod.agus.jcoderz.dx.rop.type.StdTypeList.EMPTY);
+            insns.set(isStatic() ? 1 :0, insn);
+            insns.setImmutable();
+            bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(label2, insns, mod.agus.jcoderz.dx.util.IntList.makeImmutable(0), 0);
+            addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
+        }
+    }
+
+    /**
+     * Constructs and adds the return block, if necessary. The return
+     * block merely contains an appropriate {@code return}
+     * instruction.
+     */
+    private void addReturnBlock() {
+        Rop returnOp = machine.getReturnOp();
+
+        if (returnOp == null) {
+            /*
+             * The method being converted never returns normally, so there's
+             * no need for a return block.
+             */
             return;
         }
-        if (subroutine != null) {
-            this.startFrames[i] = frame.makeNewSubroutineStartFrame(i, i2);
+
+        mod.agus.jcoderz.dx.rop.code.SourcePosition returnPos = machine.getReturnPosition();
+        int label = getSpecialLabel(RETURN);
+
+        if (isSynchronized()) {
+            mod.agus.jcoderz.dx.rop.code.InsnList insns = new mod.agus.jcoderz.dx.rop.code.InsnList(1);
+            mod.agus.jcoderz.dx.rop.code.Insn insn = new mod.agus.jcoderz.dx.rop.code.ThrowingInsn(mod.agus.jcoderz.dx.rop.code.Rops.MONITOR_EXIT, returnPos,
+                                         mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(getSynchReg()),
+                                         mod.agus.jcoderz.dx.rop.type.StdTypeList.EMPTY);
+            insns.set(0, insn);
+            insns.setImmutable();
+
+            int nextLabel = getSpecialLabel(SYNCH_RETURN);
+            mod.agus.jcoderz.dx.rop.code.BasicBlock bb =
+                new mod.agus.jcoderz.dx.rop.code.BasicBlock(label, insns,
+                               mod.agus.jcoderz.dx.util.IntList.makeImmutable(nextLabel), nextLabel);
+            addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
+
+            label = nextLabel;
+        }
+
+        mod.agus.jcoderz.dx.rop.code.InsnList insns = new mod.agus.jcoderz.dx.rop.code.InsnList(1);
+        TypeList sourceTypes = returnOp.getSources();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources;
+
+        if (sourceTypes.size() == 0) {
+            sources = mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY;
         } else {
-            this.startFrames[i] = frame;
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec source = mod.agus.jcoderz.dx.rop.code.RegisterSpec.make(0, sourceTypes.getType(0));
+            sources = mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(source);
         }
-        Bits.set(iArr, i);
+
+        mod.agus.jcoderz.dx.rop.code.Insn insn = new mod.agus.jcoderz.dx.rop.code.PlainInsn(returnOp, returnPos, null, sources);
+        insns.set(0, insn);
+        insns.setImmutable();
+
+        mod.agus.jcoderz.dx.rop.code.BasicBlock bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(label, insns, mod.agus.jcoderz.dx.util.IntList.EMPTY, -1);
+        addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
     }
 
-    private void addSetupBlocks() {
-        int i;
-        InsnList insnList;
-        RegisterSpec makeLocalOptional;
-        LocalVariableList localVariables = this.method.getLocalVariables();
-        SourcePosition makeSourcePosistion = this.method.makeSourcePosistion(0);
-        StdTypeList parameterTypes = this.method.getEffectiveDescriptor().getParameterTypes();
-        int size = parameterTypes.size();
-        InsnList insnList2 = new InsnList(size + 1);
-        int i2 = 0;
-        int i3 = 0;
-        while (i2 < size) {
-            Type type = parameterTypes.get(i2);
-            LocalVariableList.Item pcAndIndexToLocal = localVariables.pcAndIndexToLocal(0, i3);
-            if (pcAndIndexToLocal == null) {
-                makeLocalOptional = RegisterSpec.make(i3, type);
-            } else {
-                makeLocalOptional = RegisterSpec.makeLocalOptional(i3, type, pcAndIndexToLocal.getLocalItem());
-            }
-            insnList2.set(i2, new PlainCstInsn(Rops.opMoveParam(type), makeSourcePosistion, makeLocalOptional, RegisterSpecList.EMPTY, CstInteger.make(i3)));
-            i2++;
-            i3 += type.getCategory();
-        }
-        insnList2.set(size, new PlainInsn(Rops.GOTO, makeSourcePosistion, (RegisterSpec) null, RegisterSpecList.EMPTY));
-        insnList2.setImmutable();
-        boolean isSynchronized = isSynchronized();
-        if (isSynchronized) {
-            i = getSpecialLabel(-4);
-        } else {
-            i = 0;
-        }
-        addBlock(new BasicBlock(getSpecialLabel(-1), insnList2, IntList.makeImmutable(i), i), IntList.EMPTY);
-        if (isSynchronized) {
-            RegisterSpec synchReg = getSynchReg();
-            if (isStatic()) {
-                ThrowingCstInsn throwingCstInsn = new ThrowingCstInsn(Rops.CONST_OBJECT, makeSourcePosistion, RegisterSpecList.EMPTY, StdTypeList.EMPTY, this.method.getDefiningClass());
-                InsnList insnList3 = new InsnList(1);
-                insnList3.set(0, throwingCstInsn);
-                insnList = insnList3;
-            } else {
-                InsnList insnList4 = new InsnList(2);
-                insnList4.set(0, new PlainCstInsn(Rops.MOVE_PARAM_OBJECT, makeSourcePosistion, synchReg, RegisterSpecList.EMPTY, CstInteger.VALUE_0));
-                insnList4.set(1, new PlainInsn(Rops.GOTO, makeSourcePosistion, (RegisterSpec) null, RegisterSpecList.EMPTY));
-                insnList = insnList4;
-            }
-            int specialLabel = getSpecialLabel(SYNCH_SETUP_2);
-            insnList.setImmutable();
-            addBlock(new BasicBlock(i, insnList, IntList.makeImmutable(specialLabel), specialLabel), IntList.EMPTY);
-            InsnList insnList5 = new InsnList(isStatic() ? 2 : 1);
-            if (isStatic()) {
-                insnList5.set(0, new PlainInsn(Rops.opMoveResultPseudo(synchReg), makeSourcePosistion, synchReg, RegisterSpecList.EMPTY));
-            }
-            insnList5.set(isStatic() ? 1 : 0, new ThrowingInsn(Rops.MONITOR_ENTER, makeSourcePosistion, RegisterSpecList.make(synchReg), StdTypeList.EMPTY));
-            insnList5.setImmutable();
-            addBlock(new BasicBlock(specialLabel, insnList5, IntList.makeImmutable(0), 0), IntList.EMPTY);
-        }
-    }
-
-    private void addReturnBlock() {
-        int i;
-        RegisterSpecList make;
-        Rop returnOp = this.machine.getReturnOp();
-        if (returnOp != null) {
-            SourcePosition returnPosition = this.machine.getReturnPosition();
-            int specialLabel = getSpecialLabel(-2);
-            if (isSynchronized()) {
-                InsnList insnList = new InsnList(1);
-                insnList.set(0, new ThrowingInsn(Rops.MONITOR_EXIT, returnPosition, RegisterSpecList.make(getSynchReg()), StdTypeList.EMPTY));
-                insnList.setImmutable();
-                i = getSpecialLabel(-3);
-                addBlock(new BasicBlock(specialLabel, insnList, IntList.makeImmutable(i), i), IntList.EMPTY);
-            } else {
-                i = specialLabel;
-            }
-            InsnList insnList2 = new InsnList(1);
-            TypeList sources = returnOp.getSources();
-            if (sources.size() == 0) {
-                make = RegisterSpecList.EMPTY;
-            } else {
-                make = RegisterSpecList.make(RegisterSpec.make(0, sources.getType(0)));
-            }
-            insnList2.set(0, new PlainInsn(returnOp, returnPosition, (RegisterSpec) null, make));
-            insnList2.setImmutable();
-            addBlock(new BasicBlock(i, insnList2, IntList.EMPTY, -1), IntList.EMPTY);
-        }
-    }
-
+    /**
+     * Constructs and adds, if necessary, the catch-all exception handler
+     * block to deal with unwinding the lock taken on entry to a synchronized
+     * method.
+     */
     private void addSynchExceptionHandlerBlock() {
-        if (this.synchNeedsExceptionHandler) {
-            SourcePosition makeSourcePosistion = this.method.makeSourcePosistion(0);
-            RegisterSpec make = RegisterSpec.make(0, Type.THROWABLE);
-            InsnList insnList = new InsnList(2);
-            insnList.set(0, new PlainInsn(Rops.opMoveException(Type.THROWABLE), makeSourcePosistion, make, RegisterSpecList.EMPTY));
-            insnList.set(1, new ThrowingInsn(Rops.MONITOR_EXIT, makeSourcePosistion, RegisterSpecList.make(getSynchReg()), StdTypeList.EMPTY));
-            insnList.setImmutable();
-            int specialLabel = getSpecialLabel(SYNCH_CATCH_2);
-            addBlock(new BasicBlock(getSpecialLabel(SYNCH_CATCH_1), insnList, IntList.makeImmutable(specialLabel), specialLabel), IntList.EMPTY);
-            InsnList insnList2 = new InsnList(1);
-            insnList2.set(0, new ThrowingInsn(Rops.THROW, makeSourcePosistion, RegisterSpecList.make(make), StdTypeList.EMPTY));
-            insnList2.setImmutable();
-            addBlock(new BasicBlock(specialLabel, insnList2, IntList.EMPTY, -1), IntList.EMPTY);
+        if (!synchNeedsExceptionHandler) {
+            /*
+             * The method being converted either isn't synchronized or
+             * can't possibly throw exceptions in its main body, so
+             * there's no need for a synchronized method exception
+             * handler.
+             */
+            return;
         }
+
+        mod.agus.jcoderz.dx.rop.code.SourcePosition pos = method.makeSourcePosistion(0);
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec exReg = mod.agus.jcoderz.dx.rop.code.RegisterSpec.make(0, mod.agus.jcoderz.dx.rop.type.Type.THROWABLE);
+        mod.agus.jcoderz.dx.rop.code.BasicBlock bb;
+        mod.agus.jcoderz.dx.rop.code.Insn insn;
+
+        mod.agus.jcoderz.dx.rop.code.InsnList insns = new mod.agus.jcoderz.dx.rop.code.InsnList(2);
+        insn = new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMoveException(Type.THROWABLE), pos,
+                             exReg, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY);
+        insns.set(0, insn);
+        insn = new mod.agus.jcoderz.dx.rop.code.ThrowingInsn(mod.agus.jcoderz.dx.rop.code.Rops.MONITOR_EXIT, pos,
+                                mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(getSynchReg()),
+                                mod.agus.jcoderz.dx.rop.type.StdTypeList.EMPTY);
+        insns.set(1, insn);
+        insns.setImmutable();
+
+        int label2 = getSpecialLabel(SYNCH_CATCH_2);
+        bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(getSpecialLabel(SYNCH_CATCH_1), insns,
+                            mod.agus.jcoderz.dx.util.IntList.makeImmutable(label2), label2);
+        addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
+
+        insns = new mod.agus.jcoderz.dx.rop.code.InsnList(1);
+        insn = new ThrowingInsn(mod.agus.jcoderz.dx.rop.code.Rops.THROW, pos,
+                                mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(exReg),
+                                StdTypeList.EMPTY);
+        insns.set(0, insn);
+        insns.setImmutable();
+
+        bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(label2, insns, mod.agus.jcoderz.dx.util.IntList.EMPTY, -1);
+        addBlock(bb, mod.agus.jcoderz.dx.util.IntList.EMPTY);
     }
 
+    /**
+     * Creates the exception handler setup blocks. "maxLocals"
+     * below is because that's the register number corresponding
+     * to the sole element on a one-deep stack (which is the
+     * situation at the start of an exception handler block).
+     */
     private void addExceptionSetupBlocks() {
-        int length = this.catchInfos.length;
-        for (int i = 0; i < length; i++) {
-            CatchInfo catchInfo = this.catchInfos[i];
-            if (catchInfo != null) {
-                for (ExceptionHandlerSetup exceptionHandlerSetup : catchInfo.getSetups()) {
-                    SourcePosition position = labelToBlock(i).getFirstInsn().getPosition();
-                    InsnList insnList = new InsnList(2);
-                    insnList.set(0, new PlainInsn(Rops.opMoveException(exceptionHandlerSetup.getCaughtType()), position, RegisterSpec.make(this.maxLocals, exceptionHandlerSetup.getCaughtType()), RegisterSpecList.EMPTY));
-                    insnList.set(1, new PlainInsn(Rops.GOTO, position, (RegisterSpec) null, RegisterSpecList.EMPTY));
-                    insnList.setImmutable();
-                    addBlock(new BasicBlock(exceptionHandlerSetup.getLabel(), insnList, IntList.makeImmutable(i), i), this.startFrames[i].getSubroutines());
+
+        int len = catchInfos.length;
+        for (int i = 0; i < len; i++) {
+            CatchInfo catches = catchInfos[i];
+            if (catches != null) {
+                for (ExceptionHandlerSetup one : catches.getSetups()) {
+                    mod.agus.jcoderz.dx.rop.code.Insn proto = labelToBlock(i).getFirstInsn();
+                    SourcePosition pos = proto.getPosition();
+                    mod.agus.jcoderz.dx.rop.code.InsnList il = new mod.agus.jcoderz.dx.rop.code.InsnList(2);
+
+                    mod.agus.jcoderz.dx.rop.code.Insn insn = new mod.agus.jcoderz.dx.rop.code.PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.opMoveException(one.getCaughtType()),
+                            pos,
+                            RegisterSpec.make(maxLocals, one.getCaughtType()),
+                            mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY);
+                    il.set(0, insn);
+
+                    insn = new PlainInsn(mod.agus.jcoderz.dx.rop.code.Rops.GOTO, pos, null,
+                            RegisterSpecList.EMPTY);
+                    il.set(1, insn);
+                    il.setImmutable();
+
+                    mod.agus.jcoderz.dx.rop.code.BasicBlock bb = new mod.agus.jcoderz.dx.rop.code.BasicBlock(one.getLabel(),
+                            il,
+                            mod.agus.jcoderz.dx.util.IntList.makeImmutable(i),
+                            i);
+                    addBlock(bb, startFrames[i].getSubroutines());
                 }
             }
         }
     }
 
-    private boolean isSubroutineCaller(BasicBlock basicBlock) {
-        int i;
-        IntList successors = basicBlock.getSuccessors();
-        return successors.size() >= 2 && (i = successors.get(1)) < this.subroutines.length && this.subroutines[i] != null;
+    /**
+     * Checks to see if the basic block is a subroutine caller block.
+     *
+     * @param bb {@code non-null;} the basic block in question
+     * @return true if this block calls a subroutine
+     */
+    private boolean isSubroutineCaller(mod.agus.jcoderz.dx.rop.code.BasicBlock bb) {
+        mod.agus.jcoderz.dx.util.IntList successors = bb.getSuccessors();
+        if (successors.size() < 2) return false;
+
+        int subLabel = successors.get(1);
+
+        return (subLabel < subroutines.length)
+                && (subroutines[subLabel] != null);
     }
 
+    /**
+     * Inlines any subroutine calls.
+     */
     private void inlineSubroutines() {
-        final IntList intList = new IntList(4);
-        forEachNonSubBlockDepthFirst(0, new BasicBlock.Visitor() {
+        final mod.agus.jcoderz.dx.util.IntList reachableSubroutineCallerLabels = new mod.agus.jcoderz.dx.util.IntList(4);
 
-            @Override // mod.agus.jcoderz.dx.rop.code.BasicBlock.Visitor
-            public void visitBlock(BasicBlock basicBlock) {
-                if (Ropper.this.isSubroutineCaller(basicBlock)) {
-                    intList.add(basicBlock.getLabel());
+        /*
+         * Compile a list of all subroutine calls reachable
+         * through the normal (non-subroutine) flow.  We do this first, since
+         * we'll be affecting the call flow as we go.
+         *
+         * Start at label 0 --  the param assignment block has nothing for us
+         */
+        forEachNonSubBlockDepthFirst(0, new mod.agus.jcoderz.dx.rop.code.BasicBlock.Visitor() {
+            @Override
+            public void visitBlock(mod.agus.jcoderz.dx.rop.code.BasicBlock b) {
+                if (isSubroutineCaller(b)) {
+                    reachableSubroutineCallerLabels.add(b.getLabel());
                 }
             }
         });
-        int availableLabel = getAvailableLabel();
-        ArrayList arrayList = new ArrayList(availableLabel);
-        for (int i = 0; i < availableLabel; i++) {
-            arrayList.add(null);
+
+        /*
+         * Convert the resultSubroutines list, indexed by block index,
+         * to a label-to-subroutines mapping used by the inliner.
+         */
+        int largestAllocedLabel = getAvailableLabel();
+        ArrayList<mod.agus.jcoderz.dx.util.IntList> labelToSubroutines
+                = new ArrayList<mod.agus.jcoderz.dx.util.IntList>(largestAllocedLabel);
+        for (int i = 0; i < largestAllocedLabel; i++) {
+            labelToSubroutines.add(null);
         }
-        for (int i2 = 0; i2 < this.result.size(); i2++) {
-            BasicBlock basicBlock = this.result.get(i2);
-            if (basicBlock != null) {
-                arrayList.set(basicBlock.getLabel(), this.resultSubroutines.get(i2));
+
+        for (int i = 0; i < result.size(); i++) {
+            mod.agus.jcoderz.dx.rop.code.BasicBlock b = result.get(i);
+            if (b == null) {
+                continue;
             }
+            mod.agus.jcoderz.dx.util.IntList subroutineList = resultSubroutines.get(i);
+            labelToSubroutines.set(b.getLabel(), subroutineList);
         }
-        int size = intList.size();
-        for (int i3 = 0; i3 < size; i3++) {
-            new SubroutineInliner(new LabelAllocator(getAvailableLabel()), arrayList).inlineSubroutineCalledFrom(labelToBlock(intList.get(i3)));
+
+        /*
+         * Inline all reachable subroutines.
+         * Inner subroutines will be inlined as they are encountered.
+         */
+        int sz = reachableSubroutineCallerLabels.size();
+        for (int i = 0 ; i < sz ; i++) {
+            int label = reachableSubroutineCallerLabels.get(i);
+            new SubroutineInliner(
+                    new LabelAllocator(getAvailableLabel()),
+                    labelToSubroutines)
+                    .inlineSubroutineCalledFrom(labelToBlock(label));
         }
+
+        // Now find the blocks that aren't reachable and remove them
         deleteUnreachableBlocks();
     }
 
+    /**
+     * Deletes all blocks that cannot be reached. This is run to delete
+     * original subroutine blocks after subroutine inlining.
+     */
     private void deleteUnreachableBlocks() {
-        final IntList intList = new IntList(this.result.size());
-        this.resultSubroutines.clear();
-        forEachNonSubBlockDepthFirst(getSpecialLabel(-1), new BasicBlock.Visitor() {
+        final mod.agus.jcoderz.dx.util.IntList reachableLabels = new mod.agus.jcoderz.dx.util.IntList(result.size());
 
-            @Override // mod.agus.jcoderz.dx.rop.code.BasicBlock.Visitor
-            public void visitBlock(BasicBlock basicBlock) {
-                intList.add(basicBlock.getLabel());
+        // subroutine inlining is done now and we won't update this list here
+        resultSubroutines.clear();
+
+        forEachNonSubBlockDepthFirst(getSpecialLabel(PARAM_ASSIGNMENT),
+                new mod.agus.jcoderz.dx.rop.code.BasicBlock.Visitor() {
+
+            @Override
+            public void visitBlock(mod.agus.jcoderz.dx.rop.code.BasicBlock b) {
+                reachableLabels.add(b.getLabel());
             }
         });
-        intList.sort();
-        for (int size = this.result.size() - 1; size >= 0; size--) {
-            if (intList.indexOf(this.result.get(size).getLabel()) < 0) {
-                this.result.remove(size);
+
+        reachableLabels.sort();
+
+        for (int i = result.size() - 1 ; i >= 0 ; i--) {
+            if (reachableLabels.indexOf(result.get(i).getLabel()) < 0) {
+                result.remove(i);
+                // unnecessary here really, since subroutine inlining is done
+                //resultSubroutines.remove(i);
             }
         }
     }
 
-    private Subroutine subroutineFromRetBlock(int i) {
-        for (int length = this.subroutines.length - 1; length >= 0; length--) {
-            if (this.subroutines[length] != null) {
-                Subroutine subroutine = this.subroutines[length];
-                if (subroutine.retBlocks.get(i)) {
+    /**
+     * Allocates labels, without requiring previously allocated labels
+     * to have been added to the blocks list.
+     */
+    private static class LabelAllocator {
+        int nextAvailableLabel;
+
+        /**
+         * @param startLabel available label to start allocating from
+         */
+        LabelAllocator(int startLabel) {
+            nextAvailableLabel = startLabel;
+        }
+
+        /**
+         * @return next available label
+         */
+        int getNextLabel() {
+            return nextAvailableLabel++;
+        }
+    }
+
+    /**
+     * Allocates labels for exception setup blocks.
+     */
+    private class ExceptionSetupLabelAllocator extends LabelAllocator {
+        int maxSetupLabel;
+
+        ExceptionSetupLabelAllocator() {
+            super(maxLabel);
+            maxSetupLabel = maxLabel + method.getCatches().size();
+        }
+
+        @Override
+        int getNextLabel() {
+            if (nextAvailableLabel >= maxSetupLabel) {
+                throw new IndexOutOfBoundsException();
+            }
+            return nextAvailableLabel ++;
+        }
+    }
+
+    /**
+     * Inlines a subroutine. Start by calling
+     * {@link #inlineSubroutineCalledFrom}.
+     */
+    private class SubroutineInliner {
+        /**
+         * maps original label to the label that will be used by the
+         * inlined version
+         */
+        private final HashMap<Integer, Integer> origLabelToCopiedLabel;
+
+        /** set of original labels that need to be copied */
+        private final BitSet workList;
+
+        /** the label of the original start block for this subroutine */
+        private int subroutineStart;
+
+        /** the label of the ultimate return block */
+        private int subroutineSuccessor;
+
+        /** used for generating new labels for copied blocks */
+        private final LabelAllocator labelAllocator;
+
+        /**
+         * A mapping, indexed by label, to subroutine nesting list.
+         * The subroutine nest list is as returned by
+         * {@link Frame#getSubroutines}.
+         */
+        private final ArrayList<mod.agus.jcoderz.dx.util.IntList> labelToSubroutines;
+
+        SubroutineInliner(final LabelAllocator labelAllocator,
+                ArrayList<mod.agus.jcoderz.dx.util.IntList> labelToSubroutines) {
+            origLabelToCopiedLabel = new HashMap<Integer, Integer>();
+
+            workList = new BitSet(maxLabel);
+
+            this.labelAllocator = labelAllocator;
+            this.labelToSubroutines = labelToSubroutines;
+        }
+
+        /**
+         * Inlines a subroutine.
+         *
+         * @param b block where {@code jsr} occurred in the original bytecode
+         */
+        void inlineSubroutineCalledFrom(final mod.agus.jcoderz.dx.rop.code.BasicBlock b) {
+            /*
+             * The 0th successor of a subroutine caller block is where
+             * the subroutine should return to. The 1st successor is
+             * the start block of the subroutine.
+             */
+            subroutineSuccessor = b.getSuccessors().get(0);
+            subroutineStart = b.getSuccessors().get(1);
+
+            /*
+             * This allocates an initial label and adds the first
+             * block to the worklist.
+             */
+            int newSubStartLabel = mapOrAllocateLabel(subroutineStart);
+
+            for (int label = workList.nextSetBit(0); label >= 0;
+                 label = workList.nextSetBit(0)) {
+                workList.clear(label);
+                int newLabel = origLabelToCopiedLabel.get(label);
+
+                copyBlock(label, newLabel);
+
+                if (isSubroutineCaller(labelToBlock(label))) {
+                    new SubroutineInliner(labelAllocator, labelToSubroutines)
+                        .inlineSubroutineCalledFrom(labelToBlock(newLabel));
+                }
+            }
+
+            /*
+             * Replace the original caller block, since we now have a
+             * new successor
+             */
+
+            addOrReplaceBlockNoDelete(
+                new mod.agus.jcoderz.dx.rop.code.BasicBlock(b.getLabel(), b.getInsns(),
+                    mod.agus.jcoderz.dx.util.IntList.makeImmutable (newSubStartLabel),
+                            newSubStartLabel),
+                labelToSubroutines.get(b.getLabel()));
+        }
+
+        /**
+         * Copies a basic block, mapping its successors along the way.
+         *
+         * @param origLabel original block label
+         * @param newLabel label that the new block should have
+         */
+        private void copyBlock(int origLabel, int newLabel) {
+
+            mod.agus.jcoderz.dx.rop.code.BasicBlock origBlock = labelToBlock(origLabel);
+
+            final mod.agus.jcoderz.dx.util.IntList origSuccessors = origBlock.getSuccessors();
+            mod.agus.jcoderz.dx.util.IntList successors;
+            int primarySuccessor = -1;
+            Subroutine subroutine;
+
+            if (isSubroutineCaller(origBlock)) {
+                /*
+                 * A subroutine call inside a subroutine call.
+                 * Set up so we can recurse. The caller block should have
+                 * it's first successor be a copied block that will be
+                 * the subroutine's return point. It's second successor will
+                 * be copied when we recurse, and remains as the original
+                 * label of the start of the inner subroutine.
+                 */
+
+                successors = mod.agus.jcoderz.dx.util.IntList.makeImmutable(
+                        mapOrAllocateLabel(origSuccessors.get(0)),
+                        origSuccessors.get(1));
+                // primary successor will be set when this block is replaced
+            } else if (null
+                    != (subroutine = subroutineFromRetBlock(origLabel))) {
+                /*
+                 * this is a ret block -- its successor
+                 * should be subroutineSuccessor
+                 */
+
+                // Check we have the expected subroutine.
+                if (subroutine.startBlock != subroutineStart) {
+                    throw new RuntimeException (
+                            "ret instruction returns to label "
+                            + mod.agus.jcoderz.dx.util.Hex.u2 (subroutine.startBlock)
+                            + " expected: " + Hex.u2(subroutineStart));
+                }
+
+                successors = mod.agus.jcoderz.dx.util.IntList.makeImmutable(subroutineSuccessor);
+                primarySuccessor = subroutineSuccessor;
+            } else {
+                // Map all the successor labels
+
+                int origPrimary = origBlock.getPrimarySuccessor();
+                int sz = origSuccessors.size();
+
+                successors = new mod.agus.jcoderz.dx.util.IntList(sz);
+
+                for (int i = 0 ; i < sz ; i++) {
+                    int origSuccLabel = origSuccessors.get(i);
+                    int newSuccLabel =  mapOrAllocateLabel(origSuccLabel);
+
+                    successors.add(newSuccLabel);
+
+                    if (origPrimary == origSuccLabel) {
+                        primarySuccessor = newSuccLabel;
+                    }
+                }
+
+                successors.setImmutable();
+            }
+
+            addBlock (
+                new mod.agus.jcoderz.dx.rop.code.BasicBlock(newLabel,
+                    filterMoveReturnAddressInsns(origBlock.getInsns()),
+                    successors, primarySuccessor),
+                    labelToSubroutines.get(newLabel));
+        }
+
+        /**
+         * Checks to see if a specified label is involved in a specified
+         * subroutine.
+         *
+         * @param label {@code >= 0;} a basic block label
+         * @param subroutineStart {@code >= 0;} a subroutine as identified
+         * by the label of its start block
+         * @return true if the block is dominated by the subroutine call
+         */
+        private boolean involvedInSubroutine(int label, int subroutineStart) {
+            mod.agus.jcoderz.dx.util.IntList subroutinesList = labelToSubroutines.get(label);
+            return (subroutinesList != null && subroutinesList.size() > 0
+                    && subroutinesList.top() == subroutineStart);
+        }
+
+        /**
+         * Maps the label of a pre-copied block to the label of the inlined
+         * block, allocating a new label and adding it to the worklist
+         * if necessary.  If the origLabel is a "special" label, it
+         * is returned exactly and not scheduled for duplication: copying
+         * never proceeds past a special label, which likely is the function
+         * return block or an immediate predecessor.
+         *
+         * @param origLabel label of original, pre-copied block
+         * @return label for new, inlined block
+         */
+        private int mapOrAllocateLabel(int origLabel) {
+            int resultLabel;
+            Integer mappedLabel = origLabelToCopiedLabel.get(origLabel);
+
+            if (mappedLabel != null) {
+                resultLabel = mappedLabel;
+            } else if (!involvedInSubroutine(origLabel,subroutineStart)) {
+                /*
+                 * A subroutine has ended by some means other than a "ret"
+                 * (which really means a throw caught later).
+                 */
+                resultLabel = origLabel;
+            } else {
+                resultLabel = labelAllocator.getNextLabel();
+                workList.set(origLabel);
+                origLabelToCopiedLabel.put(origLabel, resultLabel);
+
+                // The new label has the same frame as the original label
+                while (labelToSubroutines.size() <= resultLabel) {
+                    labelToSubroutines.add(null);
+                }
+                labelToSubroutines.set(resultLabel,
+                        labelToSubroutines.get(origLabel));
+            }
+
+            return resultLabel;
+        }
+    }
+
+    /**
+     * Finds a {@code Subroutine} that is returned from by a {@code ret} in
+     * a given block.
+     *
+     * @param label A block that originally contained a {@code ret} instruction
+     * @return {@code null-ok;} found subroutine or {@code null} if none
+     * was found
+     */
+    private Subroutine subroutineFromRetBlock(int label) {
+        for (int i = subroutines.length - 1 ; i >= 0 ; i--) {
+            if (subroutines[i] != null) {
+                Subroutine subroutine = subroutines[i];
+
+                if (subroutine.retBlocks.get(label)) {
                     return subroutine;
                 }
             }
         }
+
         return null;
     }
 
-    private InsnList filterMoveReturnAddressInsns(InsnList insnList) {
-        int i;
-        int i2 = 0;
-        int size = insnList.size();
-        int i3 = 0;
-        for (int i4 = 0; i4 < size; i4++) {
-            if (insnList.get(i4).getOpcode() != Rops.MOVE_RETURN_ADDRESS) {
-                i3++;
+
+    /**
+     * Removes all {@code move-return-address} instructions, returning a new
+     * {@code InsnList} if necessary. The {@code move-return-address}
+     * insns are dead code after subroutines have been inlined.
+     *
+     * @param insns {@code InsnList} that may contain
+     * {@code move-return-address} insns
+     * @return {@code InsnList} with {@code move-return-address} removed
+     */
+    private mod.agus.jcoderz.dx.rop.code.InsnList filterMoveReturnAddressInsns(mod.agus.jcoderz.dx.rop.code.InsnList insns) {
+        int sz;
+        int newSz = 0;
+
+        // First see if we need to filter, and if so what the new size will be
+        sz = insns.size();
+        for (int i = 0; i < sz; i++) {
+            if (insns.get(i).getOpcode() != mod.agus.jcoderz.dx.rop.code.Rops.MOVE_RETURN_ADDRESS) {
+                newSz++;
             }
         }
-        if (i3 == size) {
-            return insnList;
+
+        if (newSz == sz) {
+            return insns;
         }
-        InsnList insnList2 = new InsnList(i3);
-        int i5 = 0;
-        while (i5 < size) {
-            Insn insn = insnList.get(i5);
+
+        // Make a new list without the MOVE_RETURN_ADDRESS insns
+        mod.agus.jcoderz.dx.rop.code.InsnList newInsns = new InsnList(newSz);
+
+        int newIndex = 0;
+        for (int i = 0; i < sz; i++) {
+            Insn insn = insns.get(i);
             if (insn.getOpcode() != Rops.MOVE_RETURN_ADDRESS) {
-                i = i2 + 1;
-                insnList2.set(i2, insn);
-            } else {
-                i = i2;
+                newInsns.set(newIndex++, insn);
             }
-            i5++;
-            i2 = i;
         }
-        insnList2.setImmutable();
-        return insnList2;
+
+        newInsns.setImmutable();
+        return newInsns;
     }
 
-    private void forEachNonSubBlockDepthFirst(int i, BasicBlock.Visitor visitor) {
-        forEachNonSubBlockDepthFirst0(labelToBlock(i), visitor, new BitSet(this.maxLabel));
+    /**
+     * Visits each non-subroutine block once in depth-first successor order.
+     *
+     * @param firstLabel label of start block
+     * @param v callback interface
+     */
+    private void forEachNonSubBlockDepthFirst(int firstLabel,
+            mod.agus.jcoderz.dx.rop.code.BasicBlock.Visitor v) {
+        forEachNonSubBlockDepthFirst0(labelToBlock(firstLabel),
+                v, new BitSet(maxLabel));
     }
 
-    private void forEachNonSubBlockDepthFirst0(BasicBlock basicBlock, BasicBlock.Visitor visitor, BitSet bitSet) {
-        int labelToResultIndex;
-        visitor.visitBlock(basicBlock);
-        bitSet.set(basicBlock.getLabel());
-        IntList successors = basicBlock.getSuccessors();
-        int size = successors.size();
-        for (int i = 0; i < size; i++) {
-            int i2 = successors.get(i);
-            if (!bitSet.get(i2) && ((!isSubroutineCaller(basicBlock) || i <= 0) && (labelToResultIndex = labelToResultIndex(i2)) >= 0)) {
-                forEachNonSubBlockDepthFirst0(this.result.get(labelToResultIndex), visitor, bitSet);
+    /**
+     * Visits each block once in depth-first successor order, ignoring
+     * {@code jsr} targets. Worker for {@link #forEachNonSubBlockDepthFirst}.
+     *
+     * @param next next block to visit
+     * @param v callback interface
+     * @param visited set of blocks already visited
+     */
+    private void forEachNonSubBlockDepthFirst0(
+            mod.agus.jcoderz.dx.rop.code.BasicBlock next, BasicBlock.Visitor v, BitSet visited) {
+        v.visitBlock(next);
+        visited.set(next.getLabel());
+
+        IntList successors = next.getSuccessors();
+        int sz = successors.size();
+
+        for (int i = 0; i < sz; i++) {
+            int succ = successors.get(i);
+
+            if (visited.get(succ)) {
+                continue;
             }
-        }
-    }
 
-    public static class ExceptionHandlerSetup {
-        private final Type caughtType;
-        private final int label;
-
-        ExceptionHandlerSetup(Type type, int i) {
-            this.caughtType = type;
-            this.label = i;
-        }
-
-        public Type getCaughtType() {
-            return this.caughtType;
-        }
-
-        public int getLabel() {
-            return this.label;
-        }
-    }
-
-    public static class LabelAllocator {
-        int nextAvailableLabel;
-
-        LabelAllocator(int i) {
-            this.nextAvailableLabel = i;
-        }
-
-        public int getNextLabel() {
-            int i = this.nextAvailableLabel;
-            this.nextAvailableLabel = i + 1;
-            return i;
-        }
-    }
-
-    public class CatchInfo {
-        private final Map<Type, ExceptionHandlerSetup> setups;
-
-        private CatchInfo() {
-            this.setups = new HashMap();
-        }
-
-        CatchInfo(Ropper ropper, CatchInfo catchInfo) {
-            this();
-        }
-
-        public ExceptionHandlerSetup getSetup(Type type) {
-            ExceptionHandlerSetup exceptionHandlerSetup = this.setups.get(type);
-            if (exceptionHandlerSetup != null) {
-                return exceptionHandlerSetup;
+            if (isSubroutineCaller(next) && i > 0) {
+                // ignore jsr targets
+                continue;
             }
-            ExceptionHandlerSetup exceptionHandlerSetup2 = new ExceptionHandlerSetup(type, Ropper.this.exceptionSetupLabelAllocator.getNextLabel());
-            this.setups.put(type, exceptionHandlerSetup2);
-            return exceptionHandlerSetup2;
-        }
 
-        public Collection<ExceptionHandlerSetup> getSetups() {
-            return this.setups.values();
-        }
-    }
-
-    public class Subroutine {
-        private final BitSet callerBlocks;
-        private final BitSet retBlocks;
-        private final int startBlock;
-
-        Subroutine(int i) {
-            this.startBlock = i;
-            this.retBlocks = new BitSet(Ropper.this.maxLabel);
-            this.callerBlocks = new BitSet(Ropper.this.maxLabel);
-            Ropper.this.hasSubroutines = true;
-        }
-
-        Subroutine(Ropper ropper, int i, int i2) {
-            this(i);
-            addRetBlock(i2);
-        }
-
-        public int getStartBlock() {
-            return this.startBlock;
-        }
-
-        public void addRetBlock(int i) {
-            this.retBlocks.set(i);
-        }
-
-        public void addCallerBlock(int i) {
-            this.callerBlocks.set(i);
-        }
-
-        public IntList getSuccessors() {
-            IntList intList = new IntList(this.callerBlocks.size());
-            int nextSetBit = this.callerBlocks.nextSetBit(0);
-            while (nextSetBit >= 0) {
-                intList.add(Ropper.this.labelToBlock(nextSetBit).getSuccessors().get(0));
-                nextSetBit = this.callerBlocks.nextSetBit(nextSetBit + 1);
+            /*
+             * Ignore missing labels: they're successors of
+             * subroutines that never invoke a ret.
+             */
+            int idx = labelToResultIndex(succ);
+            if (idx >= 0) {
+                forEachNonSubBlockDepthFirst0(result.get(idx), v, visited);
             }
-            intList.setImmutable();
-            return intList;
-        }
-
-        public void mergeToSuccessors(Frame frame, int[] iArr) {
-            int nextSetBit = this.callerBlocks.nextSetBit(0);
-            while (nextSetBit >= 0) {
-                int i = Ropper.this.labelToBlock(nextSetBit).getSuccessors().get(0);
-                Frame subFrameForLabel = frame.subFrameForLabel(this.startBlock, nextSetBit);
-                if (subFrameForLabel != null) {
-                    Ropper.this.mergeAndWorkAsNecessary(i, -1, null, subFrameForLabel, iArr);
-                } else {
-                    Bits.set(iArr, nextSetBit);
-                }
-                nextSetBit = this.callerBlocks.nextSetBit(nextSetBit + 1);
-            }
-        }
-    }
-
-    public class ExceptionSetupLabelAllocator extends LabelAllocator {
-        int maxSetupLabel;
-
-        ExceptionSetupLabelAllocator() {
-            super(Ropper.this.maxLabel);
-            this.maxSetupLabel = Ropper.this.maxLabel + Ropper.this.method.getCatches().size();
-        }
-
-        @Override // mod.agus.jcoderz.dx.cf.code.Ropper.LabelAllocator
-        public int getNextLabel() {
-            if (this.nextAvailableLabel >= this.maxSetupLabel) {
-                throw new IndexOutOfBoundsException();
-            }
-            int i = this.nextAvailableLabel;
-            this.nextAvailableLabel = i + 1;
-            return i;
-        }
-    }
-
-    public class SubroutineInliner {
-        private final LabelAllocator labelAllocator;
-        private final ArrayList<IntList> labelToSubroutines;
-        private final HashMap<Integer, Integer> origLabelToCopiedLabel = new HashMap<>();
-        private final BitSet workList;
-        private int subroutineStart;
-        private int subroutineSuccessor;
-
-        SubroutineInliner(LabelAllocator labelAllocator2, ArrayList<IntList> arrayList) {
-            this.workList = new BitSet(Ropper.this.maxLabel);
-            this.labelAllocator = labelAllocator2;
-            this.labelToSubroutines = arrayList;
-        }
-
-        public void inlineSubroutineCalledFrom(BasicBlock basicBlock) {
-            this.subroutineSuccessor = basicBlock.getSuccessors().get(0);
-            this.subroutineStart = basicBlock.getSuccessors().get(1);
-            int mapOrAllocateLabel = mapOrAllocateLabel(this.subroutineStart);
-            int nextSetBit = this.workList.nextSetBit(0);
-            while (nextSetBit >= 0) {
-                this.workList.clear(nextSetBit);
-                int intValue = this.origLabelToCopiedLabel.get(Integer.valueOf(nextSetBit)).intValue();
-                copyBlock(nextSetBit, intValue);
-                if (Ropper.this.isSubroutineCaller(Ropper.this.labelToBlock(nextSetBit))) {
-                    new SubroutineInliner(this.labelAllocator, this.labelToSubroutines).inlineSubroutineCalledFrom(Ropper.this.labelToBlock(intValue));
-                }
-                nextSetBit = this.workList.nextSetBit(0);
-            }
-            Ropper.this.addOrReplaceBlockNoDelete(new BasicBlock(basicBlock.getLabel(), basicBlock.getInsns(), IntList.makeImmutable(mapOrAllocateLabel), mapOrAllocateLabel), this.labelToSubroutines.get(basicBlock.getLabel()));
-        }
-
-        private void copyBlock(int i, int i2) {
-            IntList intList;
-            BasicBlock labelToBlock = Ropper.this.labelToBlock(i);
-            IntList successors = labelToBlock.getSuccessors();
-            int i3 = -1;
-            if (Ropper.this.isSubroutineCaller(labelToBlock)) {
-                intList = IntList.makeImmutable(mapOrAllocateLabel(successors.get(0)), successors.get(1));
-            } else {
-                Subroutine subroutineFromRetBlock = Ropper.this.subroutineFromRetBlock(i);
-                if (subroutineFromRetBlock == null) {
-                    int primarySuccessor = labelToBlock.getPrimarySuccessor();
-                    int size = successors.size();
-                    IntList intList2 = new IntList(size);
-                    int i4 = 0;
-                    while (i4 < size) {
-                        int i5 = successors.get(i4);
-                        int mapOrAllocateLabel = mapOrAllocateLabel(i5);
-                        intList2.add(mapOrAllocateLabel);
-                        if (primarySuccessor != i5) {
-                            mapOrAllocateLabel = i3;
-                        }
-                        i4++;
-                        i3 = mapOrAllocateLabel;
-                    }
-                    intList2.setImmutable();
-                    intList = intList2;
-                } else if (subroutineFromRetBlock.startBlock != this.subroutineStart) {
-                    throw new RuntimeException("ret instruction returns to label " + Hex.u2(subroutineFromRetBlock.startBlock) + " expected: " + Hex.u2(this.subroutineStart));
-                } else {
-                    intList = IntList.makeImmutable(this.subroutineSuccessor);
-                    i3 = this.subroutineSuccessor;
-                }
-            }
-            Ropper.this.addBlock(new BasicBlock(i2, Ropper.this.filterMoveReturnAddressInsns(labelToBlock.getInsns()), intList, i3), this.labelToSubroutines.get(i2));
-        }
-
-        private boolean involvedInSubroutine(int i, int i2) {
-            IntList intList = this.labelToSubroutines.get(i);
-            return intList != null && intList.size() > 0 && intList.top() == i2;
-        }
-
-        private int mapOrAllocateLabel(int i) {
-            Integer num = this.origLabelToCopiedLabel.get(Integer.valueOf(i));
-            if (num != null) {
-                return num.intValue();
-            }
-            if (!involvedInSubroutine(i, this.subroutineStart)) {
-                return i;
-            }
-            int nextLabel = this.labelAllocator.getNextLabel();
-            this.workList.set(i);
-            this.origLabelToCopiedLabel.put(Integer.valueOf(i), Integer.valueOf(nextLabel));
-            while (this.labelToSubroutines.size() <= nextLabel) {
-                this.labelToSubroutines.add(null);
-            }
-            this.labelToSubroutines.set(nextLabel, this.labelToSubroutines.get(i));
-            return nextLabel;
         }
     }
 }

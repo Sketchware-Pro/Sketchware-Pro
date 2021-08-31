@@ -1,66 +1,116 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.iface;
 
 import mod.agus.jcoderz.dx.rop.cst.CstNat;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 
+/**
+ * Standard implementation of {@link Member}, which directly stores
+ * all the associated data.
+ */
 public abstract class StdMember implements Member {
+    /** {@code non-null;} the defining class */
+    private final mod.agus.jcoderz.dx.rop.cst.CstType definingClass;
+
+    /** access flags */
     private final int accessFlags;
-    private final AttributeList attributes;
-    private final CstType definingClass;
-    private final CstNat nat;
 
-    public StdMember(CstType cstType, int i, CstNat cstNat, AttributeList attributeList) {
-        if (cstType == null) {
+    /** {@code non-null;} member name and type */
+    private final mod.agus.jcoderz.dx.rop.cst.CstNat nat;
+
+    /** {@code non-null;} list of associated attributes */
+    private final mod.agus.jcoderz.dx.cf.iface.AttributeList attributes;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param definingClass {@code non-null;} the defining class
+     * @param accessFlags access flags
+     * @param nat {@code non-null;} member name and type (descriptor)
+     * @param attributes {@code non-null;} list of associated attributes
+     */
+    public StdMember(mod.agus.jcoderz.dx.rop.cst.CstType definingClass, int accessFlags, mod.agus.jcoderz.dx.rop.cst.CstNat nat,
+                     mod.agus.jcoderz.dx.cf.iface.AttributeList attributes) {
+        if (definingClass == null) {
             throw new NullPointerException("definingClass == null");
-        } else if (cstNat == null) {
-            throw new NullPointerException("nat == null");
-        } else if (attributeList == null) {
-            throw new NullPointerException("attributes == null");
-        } else {
-            this.definingClass = cstType;
-            this.accessFlags = i;
-            this.nat = cstNat;
-            this.attributes = attributeList;
         }
+
+        if (nat == null) {
+            throw new NullPointerException("nat == null");
+        }
+
+        if (attributes == null) {
+            throw new NullPointerException("attributes == null");
+        }
+
+        this.definingClass = definingClass;
+        this.accessFlags = accessFlags;
+        this.nat = nat;
+        this.attributes = attributes;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append(getClass().getName());
-        stringBuffer.append('{');
-        stringBuffer.append(this.nat.toHuman());
-        stringBuffer.append('}');
-        return stringBuffer.toString();
+        StringBuilder sb = new StringBuilder(100);
+
+        sb.append(getClass().getName());
+        sb.append('{');
+        sb.append(nat.toHuman());
+        sb.append('}');
+
+        return sb.toString();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public final CstType getDefiningClass() {
-        return this.definingClass;
+        return definingClass;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public final int getAccessFlags() {
-        return this.accessFlags;
+        return accessFlags;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public final CstNat getNat() {
-        return this.nat;
+        return nat;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
-    public final CstString getName() {
-        return this.nat.getName();
+    /** {@inheritDoc} */
+    @Override
+    public final mod.agus.jcoderz.dx.rop.cst.CstString getName() {
+        return nat.getName();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public final CstString getDescriptor() {
-        return this.nat.getDescriptor();
+        return nat.getDescriptor();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member, mod.agus.jcoderz.dx.cf.iface.HasAttribute
+    /** {@inheritDoc} */
+    @Override
     public final AttributeList getAttributes() {
-        return this.attributes;
+        return attributes;
     }
 }

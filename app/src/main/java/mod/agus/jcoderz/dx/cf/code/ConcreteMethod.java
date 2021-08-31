@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.code;
 
 import mod.agus.jcoderz.dx.cf.attrib.AttCode;
@@ -7,129 +23,238 @@ import mod.agus.jcoderz.dx.cf.attrib.AttLocalVariableTypeTable;
 import mod.agus.jcoderz.dx.cf.iface.AttributeList;
 import mod.agus.jcoderz.dx.cf.iface.ClassFile;
 import mod.agus.jcoderz.dx.cf.iface.Method;
+import mod.agus.jcoderz.dx.rop.code.AccessFlags;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.rop.cst.CstNat;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.rop.type.Prototype;
 
+/**
+ * Container for all the giblets that make up a concrete Java bytecode method.
+ * It implements {@link Method}, so it provides all the original access
+ * (by delegation), but it also constructs and keeps useful versions of
+ * stuff extracted from the method's {@code Code} attribute.
+ */
 public final class ConcreteMethod implements Method {
-    private final boolean accSuper;
-    private final AttCode attCode;
-    private final LineNumberList lineNumbers;
-    private final LocalVariableList localVariables;
+    /** {@code non-null;} method being wrapped */
     private final Method method;
-    private final CstString sourceFile;
 
-    public ConcreteMethod(Method method2, ClassFile classFile, boolean z, boolean z2) {
-        this(method2, classFile.getAccessFlags(), classFile.getSourceFile(), z, z2);
+    /** {@code non-null;} the {@code ClassFile} the method belongs to. */
+    private final ClassFile classFile;
+
+    /** {@code non-null;} the code attribute */
+    private final AttCode attCode;
+
+    /** {@code non-null;} line number list */
+    private final LineNumberList lineNumbers;
+
+    /** {@code non-null;} local variable list */
+    private final LocalVariableList localVariables;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param method {@code non-null;} the method to be based on
+     * @param classFile {@code non-null;} the class file that contains this method
+     * @param keepLines whether to keep the line number information
+     * (if any)
+     * @param keepLocals whether to keep the local variable
+     * information (if any)
+     */
+    public ConcreteMethod(Method method, ClassFile classFile,
+            boolean keepLines, boolean keepLocals) {
+        this.method = method;
+        this.classFile = classFile;
+
+        AttributeList attribs = method.getAttributes();
+        this.attCode = (AttCode) attribs.findFirst(AttCode.ATTRIBUTE_NAME);
+
+        AttributeList codeAttribs = attCode.getAttributes();
+
+        /*
+         * Combine all LineNumberTable attributes into one, with the
+         * combined result saved into the instance. The following code
+         * isn't particularly efficient for doing merges, but as far
+         * as I know, this situation rarely occurs "in the
+         * wild," so there's not much point in optimizing for it.
+         */
+        LineNumberList lnl = LineNumberList.EMPTY;
+        if (keepLines) {
+            for (AttLineNumberTable lnt = (AttLineNumberTable)
+                     codeAttribs.findFirst(AttLineNumberTable.ATTRIBUTE_NAME);
+                 lnt != null;
+                 lnt = (AttLineNumberTable) codeAttribs.findNext(lnt)) {
+                lnl = LineNumberList.concat(lnl, lnt.getLineNumbers());
+            }
+        }
+        this.lineNumbers = lnl;
+
+        LocalVariableList lvl = LocalVariableList.EMPTY;
+        if (keepLocals) {
+            /*
+             * Do likewise (and with the same caveat) for
+             * LocalVariableTable and LocalVariableTypeTable attributes.
+             * This combines both of these kinds of attribute into a
+             * single LocalVariableList.
+             */
+            for (AttLocalVariableTable lvt = (AttLocalVariableTable)
+                     codeAttribs.findFirst(
+                             AttLocalVariableTable.ATTRIBUTE_NAME);
+                 lvt != null;
+                 lvt = (AttLocalVariableTable) codeAttribs.findNext(lvt)) {
+
+                lvl = LocalVariableList.concat(lvl, lvt.getLocalVariables());
+            }
+
+            LocalVariableList typeList = LocalVariableList.EMPTY;
+            for (AttLocalVariableTypeTable lvtt = (AttLocalVariableTypeTable)
+                     codeAttribs.findFirst(
+                             AttLocalVariableTypeTable.ATTRIBUTE_NAME);
+                 lvtt != null;
+                 lvtt = (AttLocalVariableTypeTable) codeAttribs.findNext(lvtt)) {
+                typeList = LocalVariableList.concat(typeList, lvtt.getLocalVariables());
+            }
+
+            if (typeList.size() != 0) {
+
+                lvl = LocalVariableList.mergeDescriptorsAndSignatures(lvl, typeList);
+            }
+        }
+        this.localVariables = lvl;
     }
 
-    public ConcreteMethod(Method method2, int i, CstString cstString, boolean z, boolean z2) {
-        LocalVariableList localVariables1;
-        LineNumberList lineNumberList;
-        LocalVariableList localVariableList;
-        this.method = method2;
-        this.accSuper = (i & 32) != 0;
-        this.sourceFile = cstString;
-        this.attCode = (AttCode) method2.getAttributes().findFirst(AttCode.ATTRIBUTE_NAME);
-        AttributeList attributes = this.attCode.getAttributes();
-        LineNumberList lineNumberList2 = LineNumberList.EMPTY;
-        if (z) {
-            lineNumberList = lineNumberList2;
-            AttLineNumberTable attLineNumberTable = (AttLineNumberTable) attributes.findFirst(AttLineNumberTable.ATTRIBUTE_NAME);
-            while (attLineNumberTable != null) {
-                LineNumberList concat = LineNumberList.concat(lineNumberList, attLineNumberTable.getLineNumbers());
-                attLineNumberTable = (AttLineNumberTable) attributes.findNext(attLineNumberTable);
-                lineNumberList = concat;
-            }
-        } else {
-            lineNumberList = lineNumberList2;
-        }
-        this.lineNumbers = lineNumberList;
-        LocalVariableList localVariableList2 = LocalVariableList.EMPTY;
-        if (z2) {
-            for (AttLocalVariableTable attLocalVariableTable = (AttLocalVariableTable) attributes.findFirst(AttLocalVariableTable.ATTRIBUTE_NAME); attLocalVariableTable != null; attLocalVariableTable = (AttLocalVariableTable) attributes.findNext(attLocalVariableTable)) {
-                localVariableList2 = LocalVariableList.concat(localVariableList2, attLocalVariableTable.getLocalVariables());
-            }
-            LocalVariableList localVariableList3 = LocalVariableList.EMPTY;
-            for (AttLocalVariableTypeTable attLocalVariableTypeTable = (AttLocalVariableTypeTable) attributes.findFirst(AttLocalVariableTypeTable.ATTRIBUTE_NAME); attLocalVariableTypeTable != null; attLocalVariableTypeTable = (AttLocalVariableTypeTable) attributes.findNext(attLocalVariableTypeTable)) {
-                localVariableList3 = LocalVariableList.concat(localVariableList3, attLocalVariableTypeTable.getLocalVariables());
-            }
-            if (localVariableList3.size() != 0) {
-                localVariableList = LocalVariableList.mergeDescriptorsAndSignatures(localVariableList2, localVariableList3);
-                localVariables1 = localVariableList;
-            }
-        }
-        localVariableList = localVariableList2;
-        localVariables1 = localVariableList;
-        localVariables = localVariables1;
+
+    /**
+     * Gets the source file associated with the method if known.
+     * @return {null-ok;} the source file defining the method if known, null otherwise.
+     */
+    public mod.agus.jcoderz.dx.rop.cst.CstString getSourceFile() {
+        return classFile.getSourceFile();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /**
+     * Tests whether the method is being defined on an interface.
+     * @return true if the method is being defined on an interface.
+     */
+    public final boolean isDefaultOrStaticInterfaceMethod() {
+        return (classFile.getAccessFlags() & mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_INTERFACE) != 0
+            && !getNat().isClassInit();
+    }
+
+    /**
+     * Tests whether the method is being defined is declared as static.
+     * @return true if the method is being defined is declared as static.
+     */
+    public final boolean isStaticMethod() {
+        return (getAccessFlags() & AccessFlags.ACC_STATIC) != 0;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public CstNat getNat() {
-        return this.method.getNat();
+        return method.getNat();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
-    public CstString getName() {
-        return this.method.getName();
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.cst.CstString getName() {
+        return method.getName();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public CstString getDescriptor() {
-        return this.method.getDescriptor();
+        return method.getDescriptor();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public int getAccessFlags() {
-        return this.method.getAccessFlags();
+        return method.getAccessFlags();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member, mod.agus.jcoderz.dx.cf.iface.HasAttribute
+    /** {@inheritDoc} */
+    @Override
     public AttributeList getAttributes() {
-        return this.method.getAttributes();
+        return method.getAttributes();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Member
+    /** {@inheritDoc} */
+    @Override
     public CstType getDefiningClass() {
-        return this.method.getDefiningClass();
+        return method.getDefiningClass();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Method
+    /** {@inheritDoc} */
+    @Override
     public Prototype getEffectiveDescriptor() {
-        return this.method.getEffectiveDescriptor();
+        return method.getEffectiveDescriptor();
     }
 
-    public boolean getAccSuper() {
-        return this.accSuper;
-    }
-
+    /**
+     * Gets the maximum stack size.
+     *
+     * @return {@code >= 0;} the maximum stack size
+     */
     public int getMaxStack() {
-        return this.attCode.getMaxStack();
+        return attCode.getMaxStack();
     }
 
+    /**
+     * Gets the number of locals.
+     *
+     * @return {@code >= 0;} the number of locals
+     */
     public int getMaxLocals() {
-        return this.attCode.getMaxLocals();
+        return attCode.getMaxLocals();
     }
 
+    /**
+     * Gets the bytecode array.
+     *
+     * @return {@code non-null;} the bytecode array
+     */
     public BytecodeArray getCode() {
-        return this.attCode.getCode();
+        return attCode.getCode();
     }
 
+    /**
+     * Gets the exception table.
+     *
+     * @return {@code non-null;} the exception table
+     */
     public ByteCatchList getCatches() {
-        return this.attCode.getCatches();
+        return attCode.getCatches();
     }
 
+    /**
+     * Gets the line number list.
+     *
+     * @return {@code non-null;} the line number list
+     */
     public LineNumberList getLineNumbers() {
-        return this.lineNumbers;
+        return lineNumbers;
     }
 
+    /**
+     * Gets the local variable list.
+     *
+     * @return {@code non-null;} the local variable list
+     */
     public LocalVariableList getLocalVariables() {
-        return this.localVariables;
+        return localVariables;
     }
 
-    public SourcePosition makeSourcePosistion(int i) {
-        return new SourcePosition(this.sourceFile, i, this.lineNumbers.pcToLine(i));
+    /**
+     * Returns a {@link mod.agus.jcoderz.dx.rop.code.SourcePosition} instance corresponding to the
+     * given bytecode offset.
+     *
+     * @param offset {@code >= 0;} the bytecode offset
+     * @return {@code non-null;} an appropriate instance
+     */
+    public mod.agus.jcoderz.dx.rop.code.SourcePosition makeSourcePosistion(int offset) {
+        return new SourcePosition(getSourceFile(), offset,
+                                  lineNumbers.pcToLine(offset));
     }
 }

@@ -22,6 +22,7 @@ public class Resources {
         public static final int grey = 0x7f050069;
         public static final int scolor_black_01 = 0x7f0500aa;
         public static final int scolor_green_normal = 0x7f0500b0;
+        public static final int scolor_red_02 = 0x7f0500b6;
     }
 
     public static final class dimen {
@@ -39,6 +40,8 @@ public class Resources {
         public static final int bg_event_type_drawer_view = 0x7f070097;
         public static final int bg_event_type_view = 0x7f070099;
         public static final int bg_round_light_grey = 0x7f0700b3;
+        public static final int bg_toast_normal = 0x7f0700bc;
+        public static final int bg_toast_warning = 0x7f0700bd;
         public static final int block_96_blue = 0x7f0700be;
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int cart_filled_48 = 0x7f0700da;
@@ -52,6 +55,7 @@ public class Resources {
         public static final int color_more_96 = 0x7f07011c;
         public static final int color_new_96 = 0x7f07011d;
         public static final int color_palette_48 = 0x7f070120;
+        public static final int color_save_as_new_96 = 0x7f070121;
         public static final int connected_96 = 0x7f070141;
         public static final int copy_48_grey = 0x7f070142;
         public static final int custom_dialog_inset_black = 0x7f070148;
@@ -76,6 +80,7 @@ public class Resources {
         public static final int help_96_blue = 0x7f0701e4;
         public static final int high_priority_96_red = 0x7f0701e5;
         public static final int horizontal_line_48 = 0x7f0701e8;
+        public static final int ic_apk_color_96dp = 0x7f0701f8;
         public static final int ic_bookmark_red_48dp = 0x7f070204;
         public static final int ic_class_48 = 0x7f070215;
         public static final int ic_delete_grey_48dp = 0x7f070220;
@@ -85,10 +90,12 @@ public class Resources {
         public static final int ic_export_his_white_48dp = 0x7f070236;
         public static final int ic_folder_48dp = 0x7f07023a;
         public static final int ic_font_48dp = 0x7f07023b;
+        public static final int ic_key_48dp = 0x7f070250;
         public static final int ic_menu_white_24dp = 0x7f07025c;
         public static final int ic_more_vert_white_24dp = 0x7f07025f;
         public static final int ic_picture_48dp = 0x7f070273;
         public static final int ic_redo_white_48dp = 0x7f070283;
+        public static final int ic_renew_48dp = 0x7f070289;
         public static final int ic_reset_color_32dp = 0x7f07028a;
         public static final int ic_screen_landscape_grey600_24dp = 0x7f070295;
         public static final int ic_screen_portrait_grey600_24dp = 0x7f070296;
@@ -206,6 +213,7 @@ public class Resources {
         public static final int btn_send_src = 0x7f080083;
         public static final int btn_sign_apk = 0x7f080088;
         public static final int chk_bottom = 0x7f0800a6;
+        public static final int chk_collection = 0x7f0800a7;
         public static final int chk_hcenter = 0x7f0800a8;
         public static final int chk_left = 0x7f0800a9;
         public static final int chk_pty_all = 0x7f0800aa;
@@ -225,6 +233,7 @@ public class Resources {
         public static final int confirm_yes_text = 0x7f0800d1;
         public static final int container = 0x7f0800d3;
         public static final int contents = 0x7f0800d6;
+        public static final int custom_toast_container = 0x7f0800dc;
         public static final int custom_view = 0x7f0800dd;
         public static final int cv_shared_blocks = 0x7f0800e7;
         public static final int desc = 0x7f0800f3;
@@ -254,6 +263,7 @@ public class Resources {
         public static final int et_top = 0x7f080144;
         public static final int fab = 0x7f08014e;
         public static final int file_selector = 0x7f080154;
+        public static final int font_preview = 0x7f08015d;
         public static final int hcv_property = 0x7f080165;
         public static final int icon = 0x7f080172;
         public static final int icon_apk = 0x7f080173;
@@ -296,6 +306,7 @@ public class Resources {
         public static final int layout_property_group = 0x7f08029c;
         public static final int layout_property_see_all = 0x7f08029d;
         public static final int layout_qna_bottom = 0x7f08029f;
+        public static final int layout_quiz = 0x7f0802a1;
         public static final int layout_theme_color = 0x7f0802b5;
         public static final int layout_theme_colors = 0x7f0802b6;
         public static final int lib_desc = 0x7f0802c3;
@@ -333,6 +344,7 @@ public class Resources {
         public static final int scroll_view = 0x7f0803cc;
         public static final int scv = 0x7f0803cf;
         public static final int sdialog_root = 0x7f0803d0;
+        public static final int select_file = 0x7f0803de;
         public static final int separator = 0x7f0803e0;
         public static final int social_fb = 0x7f0803ff;
         public static final int social_medium = 0x7f080400;
@@ -372,6 +384,7 @@ public class Resources {
         public static final int tv_block_name = 0x7f080495;
         public static final int tv_change_icon = 0x7f08049b;
         public static final int tv_code = 0x7f0804a8;
+        public static final int tv_collection = 0x7f0804a9;
         public static final int tv_compile_log = 0x7f0804b2;
         public static final int tv_component_title = 0x7f0804b5;
         public static final int tv_data_url = 0x7f0804c0;
@@ -389,11 +402,13 @@ public class Resources {
         public static final int tv_matchparent = 0x7f08052b;
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
+        public static final int tv_progress = 0x7f080557;
         public static final int tv_release_note = 0x7f080577;
         public static final int tv_root_title = 0x7f080589;
         public static final int tv_shared_blocks = 0x7f08059e;
         public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
+        public static final int tv_stoast = 0x7f0805b4;
         public static final int tv_sub_title = 0x7f0805b6;
         public static final int tv_title = 0x7f0805c3;
         public static final int tv_title_configuration = 0x7f0805d4;
@@ -437,6 +452,10 @@ public class Resources {
         public static final int linear9 = 0x7f08068f;
         public static final int linear10 = 0x7f080692;
         public static final int linear11 = 0x7f080694;
+        public static final int radio_mb_type_string = 0x7f0806b2;
+        public static final int radio_mb_type_number = 0x7f0806b3;
+        public static final int radio_mb_type_boolean = 0x7f0806b4;
+        public static final int manage_attr_listview = 0x7f0806b5;
         public static final int add_attr_listview = 0x7f0806b6;
         public static final int add_attr_fab = 0x7f0806b7;
         public static final int cus_attr_layout = 0x7f0806b8;
@@ -447,6 +466,10 @@ public class Resources {
         public static final int dialog_btn_save = 0x7f0806bd;
         public static final int dialog_input_res = 0x7f0806be;
         public static final int dialog_input_value = 0x7f0806bf;
+        public static final int radio_mb_type_map = 0x7f0806b0;
+        public static final int radio_mb_type_liststring = 0x7f0806c1;
+        public static final int radio_mb_type_listmap = 0x7f0806c2;
+        public static final int radio_mb_type_view = 0x7f0806c3;
         public static final int code_editor_edittext = 0x7f0806c6;
         public static final int code_editor_zoomin = 0x7f0806c7;
         public static final int code_editor_zoomout = 0x7f0806c8;
@@ -538,9 +561,11 @@ public class Resources {
     }
 
     public static final class layout {
+        public static final int build_progress_msg_box = 0x7f0b002c;
         public static final int color_picker = 0x7f0b002d;
         public static final int compile_log = 0x7f0b003c;
         public static final int component_add_item = 0x7f0b003d;
+        public static final int custom_toast = 0x7f0b0040;
         public static final int design = 0x7f0b0041;
         public static final int design_drawer = 0x7f0b0044;
         public static final int design_drawer_item = 0x7f0b0045;
@@ -557,6 +582,7 @@ public class Resources {
         public static final int make_block = 0x7f0b00b1;
         public static final int manage_collection_popup_import_more_block_list_item = 0x7f0b00b7;
         public static final int manage_collection_show_widget = 0x7f0b00b9;
+        public static final int manage_font_add = 0x7f0b00c1;
         public static final int manage_library_base_item = 0x7f0b00d1;
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
         public static final int myproject_buttons = 0x7f0b00fd;

@@ -1,142 +1,213 @@
-package mod.agus.jcoderz.dx.dex.code.form;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.BitSet;
+package mod.agus.jcoderz.dx.dex.code.form;
 
 import mod.agus.jcoderz.dx.dex.code.CstInsn;
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
+import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
+import mod.agus.jcoderz.dx.rop.cst.CstCallSiteRef;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.rop.type.Type;
-import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
+/**
+ * Instruction format {@code 35c}. See the instruction format spec
+ * for details.
+ */
 public final class Form35c extends InsnFormat {
+    /** {@code non-null;} unique instance of this class */
     public static final InsnFormat THE_ONE = new Form35c();
+
+    /** Maximal number of operands */
     private static final int MAX_NUM_OPS = 5;
 
+    /**
+     * Constructs an instance. This class is not publicly
+     * instantiable. Use {@link #THE_ONE}.
+     */
     private Form35c() {
+        // This space intentionally left blank.
     }
 
-    private static int wordCount(RegisterSpecList registerSpecList) {
-        int i = 0;
-        int size = registerSpecList.size();
-        if (size > 5) {
-            return -1;
-        }
-        int i2 = 0;
-        while (i2 < size) {
-            RegisterSpec registerSpec = registerSpecList.get(i2);
-            int category = registerSpec.getCategory() + i;
-            if (!unsignedFitsInNibble((registerSpec.getReg() + registerSpec.getCategory()) - 1)) {
-                return -1;
-            }
-            i2++;
-            i = category;
-        }
-        if (i > 5) {
-            i = -1;
-        }
-        return i;
+    /** {@inheritDoc} */
+    @Override
+    public String insnArgString(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = explicitize(insn.getRegisters());
+        return regListString(regs) + ", " + insn.cstString();
     }
 
-    private static RegisterSpecList explicitize(RegisterSpecList registerSpecList) {
-        int i = 0;
-        int wordCount = wordCount(registerSpecList);
-        int size = registerSpecList.size();
-        if (wordCount == size) {
-            return registerSpecList;
+    /** {@inheritDoc} */
+    @Override
+    public String insnCommentString(DalvInsn insn, boolean noteIndices) {
+        if (noteIndices) {
+            return insn.cstComment();
+        } else {
+            return "";
         }
-        RegisterSpecList registerSpecList2 = new RegisterSpecList(wordCount);
-        for (int i2 = 0; i2 < size; i2++) {
-            RegisterSpec registerSpec = registerSpecList.get(i2);
-            registerSpecList2.set(i, registerSpec);
-            if (registerSpec.getCategory() == 2) {
-                registerSpecList2.set(i + 1, RegisterSpec.make(registerSpec.getReg() + 1, Type.VOID));
-                i += 2;
-            } else {
-                i++;
-            }
-        }
-        registerSpecList2.setImmutable();
-        return registerSpecList2;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnArgString(DalvInsn dalvInsn) {
-        return regListString(explicitize(dalvInsn.getRegisters())) + ", " + cstString(dalvInsn);
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnCommentString(DalvInsn dalvInsn, boolean z) {
-        if (z) {
-            return cstComment(dalvInsn);
-        }
-        return "";
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
         return 3;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public boolean isCompatible(DalvInsn dalvInsn) {
-        if (!(dalvInsn instanceof CstInsn)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean isCompatible(DalvInsn insn) {
+        if (!(insn instanceof CstInsn)) {
             return false;
         }
-        CstInsn cstInsn = (CstInsn) dalvInsn;
-        if (!unsignedFitsInShort(cstInsn.getIndex())) {
+
+        CstInsn ci = (CstInsn) insn;
+        int cpi = ci.getIndex();
+
+        if (! unsignedFitsInShort(cpi)) {
             return false;
         }
-        Constant constant = cstInsn.getConstant();
-        return ((constant instanceof CstMethodRef) || (constant instanceof CstType)) && wordCount(cstInsn.getRegisters()) >= 0;
+
+        Constant cst = ci.getConstant();
+        if (!((cst instanceof CstMethodRef) ||
+              (cst instanceof CstType) ||
+              (cst instanceof CstCallSiteRef))) {
+            return false;
+        }
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = ci.getRegisters();
+        return (wordCount(regs) >= 0);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        int size = registers.size();
-        BitSet bitSet = new BitSet(size);
-        for (int i = 0; i < size; i++) {
-            RegisterSpec registerSpec = registers.get(i);
-            bitSet.set(i, unsignedFitsInNibble((registerSpec.getCategory() + registerSpec.getReg()) - 1));
+    /** {@inheritDoc} */
+    @Override
+    public BitSet compatibleRegs(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        int sz = regs.size();
+        BitSet bits = new BitSet(sz);
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec reg = regs.get(i);
+            /*
+             * The check below adds (category - 1) to the register, to
+             * account for the fact that the second half of a
+             * category-2 register has to be represented explicitly in
+             * the result.
+             */
+            bits.set(i, unsignedFitsInNibble(reg.getReg() +
+                                             reg.getCategory() - 1));
         }
-        return bitSet;
+
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn) {
-        int i;
-        int i2;
-        int i3;
-        int i4;
-        int index = ((CstInsn) dalvInsn).getIndex();
-        RegisterSpecList explicitize = explicitize(dalvInsn.getRegisters());
-        int size = explicitize.size();
-        int reg = size > 0 ? explicitize.get(0).getReg() : 0;
-        if (size > 1) {
-            i = explicitize.get(1).getReg();
-        } else {
-            i = 0;
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out, DalvInsn insn) {
+        int cpi = ((CstInsn) insn).getIndex();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = explicitize(insn.getRegisters());
+        int sz = regs.size();
+        int r0 = (sz > 0) ? regs.get(0).getReg() : 0;
+        int r1 = (sz > 1) ? regs.get(1).getReg() : 0;
+        int r2 = (sz > 2) ? regs.get(2).getReg() : 0;
+        int r3 = (sz > 3) ? regs.get(3).getReg() : 0;
+        int r4 = (sz > 4) ? regs.get(4).getReg() : 0;
+
+        write(out,
+              opcodeUnit(insn,
+                         makeByte(r4, sz)), // encode the fifth operand here
+              (short) cpi,
+              codeUnit(r0, r1, r2, r3));
+    }
+
+    /**
+     * Gets the number of words required for the given register list, where
+     * category-2 values count as two words. Return {@code -1} if the
+     * list requires more than five words or contains registers that need
+     * more than a nibble to identify them.
+     *
+     * @param regs {@code non-null;} the register list in question
+     * @return {@code >= -1;} the number of words required, or {@code -1}
+     * if the list couldn't possibly fit in this format
+     */
+    private static int wordCount(mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs) {
+        int sz = regs.size();
+
+        if (sz > MAX_NUM_OPS) {
+            // It can't possibly fit.
+            return -1;
         }
-        if (size > 2) {
-            i2 = explicitize.get(2).getReg();
-        } else {
-            i2 = 0;
+
+        int result = 0;
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec one = regs.get(i);
+            result += one.getCategory();
+            /*
+             * The check below adds (category - 1) to the register, to
+             * account for the fact that the second half of a
+             * category-2 register has to be represented explicitly in
+             * the result.
+             */
+            if (!unsignedFitsInNibble(one.getReg() + one.getCategory() - 1)) {
+                return -1;
+            }
         }
-        if (size > 3) {
-            i3 = explicitize.get(3).getReg();
-        } else {
-            i3 = 0;
+
+        return (result <= MAX_NUM_OPS) ? result : -1;
+    }
+
+    /**
+     * Returns a register list which is equivalent to the given one,
+     * except that it splits category-2 registers into two explicit
+     * entries. This returns the original list if no modification is
+     * required
+     *
+     * @param orig {@code non-null;} the original list
+     * @return {@code non-null;} the list with the described transformation
+     */
+    private static mod.agus.jcoderz.dx.rop.code.RegisterSpecList explicitize(mod.agus.jcoderz.dx.rop.code.RegisterSpecList orig) {
+        int wordCount = wordCount(orig);
+        int sz = orig.size();
+
+        if (wordCount == sz) {
+            return orig;
         }
-        if (size > 4) {
-            i4 = explicitize.get(4).getReg();
-        } else {
-            i4 = 0;
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList result = new RegisterSpecList(wordCount);
+        int wordAt = 0;
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec one = orig.get(i);
+            result.set(wordAt, one);
+            if (one.getCategory() == 2) {
+                result.set(wordAt + 1,
+                           RegisterSpec.make(one.getReg() + 1, Type.VOID));
+                wordAt += 2;
+            } else {
+                wordAt++;
+            }
         }
-        write(annotatedOutput, opcodeUnit(dalvInsn, makeByte(i4, size)), (short) index, codeUnit(reg, i, i2, i3));
+
+        result.setImmutable();
+        return result;
     }
 }
