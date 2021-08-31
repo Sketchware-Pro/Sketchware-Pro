@@ -1,5 +1,7 @@
 package mod.w3wide.dialog;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,166 +17,172 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import com.sketchware.remod.Resources;
 
 @SuppressLint("ResourceType")
-public class SketchDialog extends Dialog {
-    private final Context mContext;
-    //initialize view by id
-    public LinearLayout sdialog_root;
-    public ImageView dialog_img;
-    public TextView dialog_title;
-    public TextView dialog_msg;
-    public FrameLayout custom_view;
-    public LinearLayout layout_button;
-    public TextView dialog_btn_no;
-    public TextView dialog_btn_yes;
-    public TextView dialog_btn_neutral;
-    //Custom View
-    public View mCustomView;
-    //Dialog Icon
-    public int mIcon = -1;
-    //Defaults Strings
-    public String mTitle = "";
-    public String mMessage = "";
-    public String mPostiveStr = "Ok";
-    public String mNegativeStr = "Cancel";
-    public String mNeutralStr = "";
-    //View.OnClickListener
-    private View.OnClickListener mPositiveClick;// = ((View.OnClickListener) null);
-    private View.OnClickListener mNegativeClick;// = ((View.OnClickListener) null);
-    private View.OnClickListener mNeutralClick;// = ((View.OnClickListener) null);
+public class SketchDialog extends Dialog implements View.OnClickListener {
+  private final Context mContext;
+  //initialize view by id
+  public LinearLayout sdialog_root;
+  public LinearLayout mDialogHeader;
+  public ImageView dialog_img;
+  public ImageView dialog_img_right;
+  public TextView dialog_title;
+  public TextView dialog_msg;
+  public FrameLayout custom_view;
+  public LinearLayout layout_button;
+  public TextView dialog_btn_no;
+  public TextView dialog_btn_yes;
+  public TextView dialog_btn_neutral;
+  //Custom View
+  public View mCustomView;
+  //Dialog Icon
+  public int mIcon = -1;
+  public int mRightIcon = -1;
+  //Defaults Strings
+  public String mTitle = "";
+  public String mMessage = "";
+  public String mPostiveStr = "Ok";
+  public String mNegativeStr = "Cancel";
+  public String mNeutralStr = "";
+  //View.OnClickListener
+  private View.OnClickListener mPositiveClick;
+  private View.OnClickListener mNegativeClick;
+  private View.OnClickListener mNeutralClick;
+  private View.OnClickListener mRightIconClick;
 
-    public SketchDialog(Context mContext) {
-        super(mContext);
-        this.mContext = mContext;
-    }
+  public SketchDialog(Context context) {
+      super(context);
+      mContext = context;
+  }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(0x7f0b0052);
-        initialize(savedInstanceState);
-        initializeLogic();
-    }
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      requestWindowFeature(Window.FEATURE_NO_TITLE);
+      setContentView(Resources.layout.dialog);
+      initialize(savedInstanceState);
+      initializeLogic();
+  }
 
-    private void initialize(Bundle _savedInstanceState) {
-        sdialog_root = findViewById(0x7f0803d0);
-        dialog_img = findViewById(0x7f0800fe);
-        dialog_title = findViewById(0x7f080100);
-        dialog_msg = findViewById(0x7f0800ff);
-        custom_view = findViewById(0x7f0800dd);
-        layout_button = findViewById(0x7f080258);
-        dialog_btn_no = findViewById(0x7f0800fc);
-        dialog_btn_yes = findViewById(0x7f0800fd);
-        dialog_btn_neutral = NeutralText(mNeutralStr);
-    }
+  private void initialize(Bundle savedInstanceState) {
+      sdialog_root = findViewById(Resources.id.sdialog_root);
+      dialog_img = findViewById(Resources.id.dialog_img);
+      dialog_title = findViewById(Resources.id.dialog_title);
+      dialog_msg = findViewById(Resources.id.dialog_msg);
+      custom_view = findViewById(Resources.id.custom_view);
+      layout_button = findViewById(Resources.id.layout_button);
+      dialog_btn_no = findViewById(Resources.id.dialog_btn_no);
+      dialog_btn_yes = findViewById(Resources.id.dialog_btn_yes);
+      dialog_btn_neutral = findViewById(Resources.id.common_dialog_default_button);
 
-    private void initializeLogic() {
-        //OnClickListeners
-        dialog_btn_no.setOnClickListener(mNegativeClick);
-        dialog_btn_yes.setOnClickListener(mPositiveClick);
-        //Initialization
-        if (mIcon != -1) {
-            dialog_img.setVisibility(View.VISIBLE);
-            dialog_img.setImageResource(mIcon);
-        } else {
-            dialog_img.setVisibility(View.GONE);
-        }
-        dialog_title.setText(mTitle);
-        dialog_title.setVisibility(mTitle.length() > 0 ? View.VISIBLE : View.GONE);
+      dialog_img_right = new ImageView(mContext);
+      dialog_img_right.setLayoutParams(dialog_img.getLayoutParams());
+      dialog_img_right.setScaleType(dialog_img.getScaleType());
 
-        dialog_btn_no.setText(mNegativeStr);
+      mDialogHeader = (LinearLayout) dialog_img.getParent();
+      mDialogHeader.addView(dialog_img_right, 2);
+  }
 
-        //applyRippleEffect(dialog_btn_no, "#ffffff");
-        dialog_btn_yes.setText(mPostiveStr);
-        //applyRippleEffect(dialog_btn_yes, "#ffffff");
+  private void initializeLogic() {
+      //OnClickListeners
+      dialog_btn_no.setOnClickListener(mNegativeClick);
+      dialog_btn_yes.setOnClickListener(mPositiveClick);
+      dialog_btn_neutral.setOnClickListener(mNeutralClick);
+      dialog_img_right.setOnClickListener(mRightIconClick);
+      //Initialization
+      if (mIcon != -1) {
+          dialog_img.setImageResource(mIcon);
+      } else {
+          dialog_img.setVisibility(View.GONE);
+      }
+      if (mRightIcon != -1) {
+          dialog_img_right.setImageResource(mRightIcon);
+      } else {
+          dialog_img_right.setVisibility(View.GONE);
+      }
+      dialog_title.setText(mTitle);
+      dialog_title.setVisibility(mTitle.length() > 0 ? View.VISIBLE : View.GONE);
 
-        if (mNeutralStr.length() != 0) {
-            layout_button.addView(dialog_btn_neutral, 0);
-            layout_button.addView(NeutralSpace(), 1);
-        }
-        if (mMessage.length() == 0) {
-            dialog_msg.setVisibility(View.GONE);
-        } else {
-            dialog_msg.setVisibility(View.VISIBLE);
-            dialog_msg.setText(mMessage);
-        }
-        if (mCustomView != null) {
-            custom_view.setVisibility(View.VISIBLE);
-            custom_view.addView(mCustomView);
-        } else {
-            custom_view.setVisibility(View.GONE);
-        }
-    }
+      dialog_msg.setText(mMessage);
+      dialog_msg.setVisibility(mMessage.length() == 0 ? View.GONE : View.VISIBLE);
 
-    private TextView NeutralText(String mStr) {
-        TextView mNeutral = new TextView(mContext);
-        mNeutral.setText(mStr);
-        mNeutral.setTextColor(-1);
-        mNeutral.setTextSize((float) 14);
-        mNeutral.setPadding(8, 0, 8, 0);
-        mNeutral.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        mNeutral.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-        mNeutral.setOnClickListener(mNeutralClick);
-        applyRippleEffect(mNeutral, "#ffffff");
-        return mNeutral;
-    }
+      dialog_btn_no.setText(mNegativeStr);
+      dialog_btn_yes.setText(mPostiveStr);
 
-    private Space NeutralSpace() {
-        Space mSpace = new Space(mContext);
-        LinearLayout.LayoutParams mParam = new LinearLayout.LayoutParams(0, 0, 1.0F);
-        mSpace.setLayoutParams(mParam);
-        return mSpace;
-    }
+      //applyRippleEffect(dialog_btn_no, 0xffffffff);
+      //applyRippleEffect(dialog_btn_yes, 0xffffffff);
 
-    public void setIcon(int mIcon) {
-        this.mIcon = mIcon;
-    }
+      if (mCustomView != null) {
+          custom_view.addView(mCustomView);
+      } else {
+          custom_view.setVisibility(View.GONE);
+      }
+  }
 
-    public void setView(View mView) {
-        mCustomView = mView;
-    }
+  @Override
+  public void onClick(View v) {
+      switch (v.getId()) {
+          case Resources.id.common_dialog_default_button:
+          case Resources.id.dialog_btn_no:
+          case Resources.id.dialog_btn_yes:
+              dismiss();
+              return;
+      }
+  }
 
-    public void setTitle(String mStr) {
-        mTitle = mStr;
-    }
+  public void setIcon(int resDrawable) {
+      mIcon = resDrawable;
+  }
 
-    public void setMessage(String mStr) {
-        mMessage = mStr;
-    }
+  public void setRightIcon(int resDrawable, View.OnClickListener listener) {
+      mRightIcon = resDrawable;
+      mRightIconClick = listener == null ? this : listener;
+  }
 
-    public void setPositiveButton(String mStr, View.OnClickListener mClickListener) {
-        if (mStr.length() > 0) {
-            mPostiveStr = mStr;
-        }
-        mPositiveClick = mClickListener;
-    }
+  public void setView(View view) {
+      mCustomView = view;
+  }
 
-    public void setNeutralButton(String mStr, View.OnClickListener mClickListener) {
-        if (!mStr.isEmpty()) {
-            mNeutralStr = mStr;
-        }
-        mNeutralClick = mClickListener;
-    }
+  public void setTitle(String str) {
+      mTitle = str;
+  }
 
-    public void setNegativeButton(String mStr, View.OnClickListener mClickListener) {
-        if (mStr.length() > 0) {
-            mNegativeStr = mStr;
-        }
-        mNegativeClick = mClickListener;
-    }
+  public void setMessage(String str) {
+      mMessage = str;
+  }
 
-    private void applyRippleEffect(final View _view, final String _c) {
-        ColorStateList clr = new ColorStateList(new int[][]{
-                new int[]{}
-        }, new int[]{
-                Color.parseColor(_c)
-        });
-        RippleDrawable ripdr = new RippleDrawable(clr, null, null);
-        if (!_view.isClickable()) {
-            _view.setClickable(true);
-        }
-        _view.setBackground(ripdr);
-    }
+  public void setPositiveButton(String str, View.OnClickListener listener) {
+      if (str.length() > 0) {
+          mPostiveStr = str;
+      }
+      mPositiveClick = listener == null ? this : listener;
+  }
+
+  public void setNeutralButton(String str, View.OnClickListener listener) {
+      if (!isEmpty(str)) {
+          mNeutralStr = str;
+      }
+      mNeutralClick = listener == null ? this : listener;
+  }
+
+  public void setNegativeButton(String str, View.OnClickListener listener) {
+      if (str.length() > 0) {
+          mNegativeStr = str;
+      }
+      mNegativeClick = listener == null ? this : listener;
+  }
+
+  private void applyRippleEffect(final View view, final int color) {
+      ColorStateList colorStateList = new ColorStateList(new int[][]{
+              new int[]{}
+      }, new int[]{
+              color
+      });
+      RippleDrawable rippleDrawable = new RippleDrawable(colorStateList, null, null);
+      if (!view.isClickable()) {
+          view.setClickable(true);
+      }
+      view.setBackground(rippleDrawable);
+  }
 }

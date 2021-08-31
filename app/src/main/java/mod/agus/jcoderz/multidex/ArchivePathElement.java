@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2013 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.multidex;
 
 import java.io.FileNotFoundException;
@@ -6,73 +22,73 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Spliterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ArchivePathElement implements ClassPathElement {
-    private final ZipFile archive;
+/**
+ * A zip element.
+ */
+class ArchivePathElement implements ClassPathElement {
 
-    public ArchivePathElement(ZipFile zipFile) {
-        this.archive = zipFile;
+    static class DirectoryEntryException extends IOException {
     }
 
-    @Override // mod.agus.jcoderz.multidex.ClassPathElement
-    public InputStream open(String str) throws IOException {
-        ZipEntry entry = this.archive.getEntry(str);
+    private final ZipFile archive;
+
+    public ArchivePathElement(ZipFile archive) {
+        this.archive = archive;
+    }
+
+    @Override
+    public InputStream open(String path) throws IOException {
+        ZipEntry entry = archive.getEntry(path);
         if (entry == null) {
-            throw new FileNotFoundException("File \"" + str + "\" not found");
-        } else if (!entry.isDirectory()) {
-            return this.archive.getInputStream(entry);
-        } else {
+            throw new FileNotFoundException("File \"" + path + "\" not found");
+        } else if (entry.isDirectory()) {
             throw new DirectoryEntryException();
+        } else {
+            return archive.getInputStream(entry);
         }
     }
 
-    @Override // mod.agus.jcoderz.multidex.ClassPathElement
+    @Override
     public void close() throws IOException {
-        this.archive.close();
+        archive.close();
     }
 
-    @Override // mod.agus.jcoderz.multidex.ClassPathElement
+    @Override
     public Iterable<String> list() {
         return new Iterable<String>() {
 
-            @Override // java.lang.Iterable
-            public Spliterator<String> spliterator() {
-                return null;
-            }
-
-            @Override // java.lang.Iterable
+            @Override
             public Iterator<String> iterator() {
                 return new Iterator<String>() {
-                    final Enumeration<? extends ZipEntry> delegate;
+                    Enumeration<? extends ZipEntry> delegate = archive.entries();
                     ZipEntry next = null;
 
-                    {
-                        this.delegate = ArchivePathElement.this.archive.entries();
-                    }
-
+                    @Override
                     public boolean hasNext() {
-                        while (this.next == null && this.delegate.hasMoreElements()) {
-                            this.next = (ZipEntry) this.delegate.nextElement();
-                            if (this.next.isDirectory()) {
-                                this.next = null;
+                        while (next == null && delegate.hasMoreElements()) {
+                            next = delegate.nextElement();
+                            if (next.isDirectory()) {
+                                next = null;
                             }
                         }
-                        return this.next != null;
+                        return next != null;
                     }
 
-                    @Override // java.util.Iterator
+                    @Override
                     public String next() {
                         if (hasNext()) {
-                            String name = this.next.getName();
-                            this.next = null;
+                            String name = next.getName();
+                            next = null;
                             return name;
+                        } else {
+                            throw new NoSuchElementException();
                         }
-                        throw new NoSuchElementException();
                     }
 
+                    @Override
                     public void remove() {
                         throw new UnsupportedOperationException();
                     }
@@ -81,8 +97,4 @@ public class ArchivePathElement implements ClassPathElement {
         };
     }
 
-    static class DirectoryEntryException extends IOException {
-        DirectoryEntryException() {
-        }
-    }
 }

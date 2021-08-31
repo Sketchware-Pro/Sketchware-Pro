@@ -1,81 +1,178 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa.back;
 
+import mod.agus.jcoderz.dx.util.IntList;
 import java.util.BitSet;
 
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
+import mod.agus.jcoderz.dx.rop.code.RegOps;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
-import mod.agus.jcoderz.dx.util.IntList;
 
+/**
+ * Searches for basic blocks that all have the same successor and insns
+ * but different predecessors. These blocks are then combined into a single
+ * block and the now-unused blocks are deleted. These identical blocks
+ * frequently are created when catch blocks are edge-split.
+ */
 public class IdenticalBlockCombiner {
-    private final BasicBlockList newBlocks = this.blocks.getMutableCopy();
-    private RopMethod ropMethod;
-    private final BasicBlockList blocks = this.ropMethod.getBlocks();
+    private final mod.agus.jcoderz.dx.rop.code.RopMethod ropMethod;
+    private final mod.agus.jcoderz.dx.rop.code.BasicBlockList blocks;
+    private final BasicBlockList newBlocks;
 
-    public IdenticalBlockCombiner(RopMethod ropMethod2) {
-        this.ropMethod = ropMethod2;
+    /**
+     * Constructs instance. Call {@code process()} to run.
+     *
+     * @param rm {@code non-null;} instance to process
+     */
+    public IdenticalBlockCombiner(mod.agus.jcoderz.dx.rop.code.RopMethod rm) {
+        ropMethod = rm;
+        blocks = ropMethod.getBlocks();
+        newBlocks = blocks.getMutableCopy();
     }
 
-    private static boolean compareInsns(BasicBlock basicBlock, BasicBlock basicBlock2) {
-        return basicBlock.getInsns().contentEquals(basicBlock2.getInsns());
-    }
+    /**
+     * Runs algorithm. TODO: This is n^2, and could be made linear-ish with
+     * a hash. In particular, hash the contents of each block and only
+     * compare blocks with the same hash.
+     *
+     * @return {@code non-null;} new method that has been processed
+     */
+    public mod.agus.jcoderz.dx.rop.code.RopMethod process() {
+        int szBlocks = blocks.size();
+        // indexed by label
+        BitSet toDelete = new BitSet(blocks.getMaxLabel());
 
-    public RopMethod process() {
-        int size = this.blocks.size();
-        BitSet bitSet = new BitSet(this.blocks.getMaxLabel());
-        for (int i = 0; i < size; i++) {
-            BasicBlock basicBlock = this.blocks.get(i);
-            if (!bitSet.get(basicBlock.getLabel())) {
-                IntList labelToPredecessors = this.ropMethod.labelToPredecessors(basicBlock.getLabel());
-                int size2 = labelToPredecessors.size();
-                for (int i2 = 0; i2 < size2; i2++) {
-                    int i3 = labelToPredecessors.get(i2);
-                    BasicBlock labelToBlock = this.blocks.labelToBlock(i3);
-                    if (!bitSet.get(i3) && labelToBlock.getSuccessors().size() <= 1 && labelToBlock.getFirstInsn().getOpcode().getOpcode() != 55) {
-                        IntList intList = new IntList();
-                        for (int i4 = i2 + 1; i4 < size2; i4++) {
-                            int i5 = labelToPredecessors.get(i4);
-                            BasicBlock labelToBlock2 = this.blocks.labelToBlock(i5);
-                            if (labelToBlock2.getSuccessors().size() == 1 && compareInsns(labelToBlock, labelToBlock2)) {
-                                intList.add(i5);
-                                bitSet.set(i5);
-                            }
-                        }
-                        combineBlocks(i3, intList);
+        // For each non-deleted block...
+        for (int bindex = 0; bindex < szBlocks; bindex++) {
+            mod.agus.jcoderz.dx.rop.code.BasicBlock b = blocks.get(bindex);
+
+            if (toDelete.get(b.getLabel())) {
+                // doomed block
+                continue;
+            }
+
+            IntList preds = ropMethod.labelToPredecessors(b.getLabel());
+
+            // ...look at all of it's predecessors that have only one succ...
+            int szPreds = preds.size();
+            for (int i = 0; i < szPreds; i++) {
+                int iLabel = preds.get(i);
+
+                mod.agus.jcoderz.dx.rop.code.BasicBlock iBlock = blocks.labelToBlock(iLabel);
+
+                if (toDelete.get(iLabel)
+                        || iBlock.getSuccessors().size() > 1
+                        || iBlock.getFirstInsn().getOpcode().getOpcode() ==
+                            RegOps.MOVE_RESULT) {
+                    continue;
+                }
+
+                IntList toCombine = new IntList();
+
+                // ...and see if they can be combined with any other preds...
+                for (int j = i + 1; j < szPreds; j++) {
+                    int jLabel = preds.get(j);
+                    mod.agus.jcoderz.dx.rop.code.BasicBlock jBlock = blocks.labelToBlock(jLabel);
+
+                    if (jBlock.getSuccessors().size() == 1
+                            && compareInsns(iBlock, jBlock)) {
+
+                        toCombine.add(jLabel);
+                        toDelete.set(jLabel);
                     }
                 }
+
+                combineBlocks(iLabel, toCombine);
             }
         }
-        for (int i6 = size - 1; i6 >= 0; i6--) {
-            if (bitSet.get(this.newBlocks.get(i6).getLabel())) {
-                this.newBlocks.set(i6, (BasicBlock) null);
+
+        for (int i = szBlocks - 1; i >= 0; i--) {
+            if (toDelete.get(newBlocks.get(i).getLabel())) {
+                newBlocks.set(i, null);
             }
         }
-        this.newBlocks.shrinkToFit();
-        this.newBlocks.setImmutable();
-        return new RopMethod(this.newBlocks, this.ropMethod.getFirstLabel());
+
+        newBlocks.shrinkToFit();
+        newBlocks.setImmutable();
+
+        return new RopMethod(newBlocks, ropMethod.getFirstLabel());
     }
 
-    private void combineBlocks(int i, IntList intList) {
-        int size = intList.size();
-        for (int i2 = 0; i2 < size; i2++) {
-            int i3 = intList.get(i2);
-            IntList labelToPredecessors = this.ropMethod.labelToPredecessors(this.blocks.labelToBlock(i3).getLabel());
-            int size2 = labelToPredecessors.size();
-            for (int i4 = 0; i4 < size2; i4++) {
-                replaceSucc(this.newBlocks.labelToBlock(labelToPredecessors.get(i4)), i3, i);
+    /**
+     * Helper method to compare the contents of two blocks.
+     *
+     * @param a {@code non-null;} a block to compare
+     * @param b {@code non-null;} another block to compare
+     * @return {@code true} iff the two blocks' instructions are the same
+     */
+    private static boolean compareInsns(mod.agus.jcoderz.dx.rop.code.BasicBlock a, mod.agus.jcoderz.dx.rop.code.BasicBlock b) {
+        return a.getInsns().contentEquals(b.getInsns());
+    }
+
+    /**
+     * Combines blocks proven identical into one alpha block, re-writing
+     * all of the successor links that point to the beta blocks to point
+     * to the alpha block instead.
+     *
+     * @param alphaLabel block that will replace all the beta block
+     * @param betaLabels label list of blocks to combine
+     */
+    private void combineBlocks(int alphaLabel, IntList betaLabels) {
+        int szBetas = betaLabels.size();
+
+        for (int i = 0; i < szBetas; i++) {
+            int betaLabel = betaLabels.get(i);
+            mod.agus.jcoderz.dx.rop.code.BasicBlock bb = blocks.labelToBlock(betaLabel);
+            IntList preds = ropMethod.labelToPredecessors(bb.getLabel());
+            int szPreds = preds.size();
+
+            for (int j = 0; j < szPreds; j++) {
+                mod.agus.jcoderz.dx.rop.code.BasicBlock predBlock = newBlocks.labelToBlock(preds.get(j));
+                replaceSucc(predBlock, betaLabel, alphaLabel);
             }
         }
     }
 
-    private void replaceSucc(BasicBlock basicBlock, int i, int i2) {
-        IntList mutableCopy = basicBlock.getSuccessors().mutableCopy();
-        mutableCopy.set(mutableCopy.indexOf(i), i2);
-        int primarySuccessor = basicBlock.getPrimarySuccessor();
-        if (primarySuccessor != i) {
-            i2 = primarySuccessor;
+    /**
+     * Replaces one of a block's successors with a different label. Constructs
+     * an updated BasicBlock instance and places it in {@code newBlocks}.
+     *
+     * @param block block to replace
+     * @param oldLabel label of successor to replace
+     * @param newLabel label of new successor
+     */
+    private void replaceSucc(mod.agus.jcoderz.dx.rop.code.BasicBlock block, int oldLabel, int newLabel) {
+        IntList newSuccessors = block.getSuccessors().mutableCopy();
+        int newPrimarySuccessor;
+
+        newSuccessors.set(newSuccessors.indexOf(oldLabel), newLabel);
+        newPrimarySuccessor = block.getPrimarySuccessor();
+
+        if (newPrimarySuccessor == oldLabel) {
+            newPrimarySuccessor = newLabel;
         }
-        mutableCopy.setImmutable();
-        this.newBlocks.set(this.newBlocks.indexOfLabel(basicBlock.getLabel()), new BasicBlock(basicBlock.getLabel(), basicBlock.getInsns(), mutableCopy, i2));
+
+        newSuccessors.setImmutable();
+
+        mod.agus.jcoderz.dx.rop.code.BasicBlock newBB = new BasicBlock(block.getLabel(),
+                block.getInsns(), newSuccessors, newPrimarySuccessor);
+
+        newBlocks.set(newBlocks.indexOfLabel(block.getLabel()), newBB);
     }
 }

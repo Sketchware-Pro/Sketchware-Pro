@@ -3,7 +3,6 @@ package mod.hilal.saif.moreblock;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -53,22 +52,19 @@ public class MoreBlockCustomParams {
             }
         });
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!err && !name.equals("") && !parameter.equals("")) {
-                    dt.l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
-                    dt.a(dt.b, dt.c, dt.p, dt.g.getText().toString(), dt.l);
-                    parameter.setText("");
-                    name.setText("");
-                    ArrayList<Object> arrayList = new ArrayList<>(Arrays.asList(m));
-                    for (Pair<String, String> next : dt.l) {
-                        if (!(next.first).equals("t")) {
-                            arrayList.add(next.second);
-                        }
+        add.setOnClickListener(v -> {
+            if (!err && !name.equals("") && !parameter.equals("")) {
+                dt.l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
+                dt.a(dt.b, dt.c, dt.p, dt.g.getText().toString(), dt.l);
+                parameter.setText("");
+                name.setText("");
+                ArrayList<Object> arrayList = new ArrayList<>(Arrays.asList(m));
+                for (Pair<String, String> next : dt.l) {
+                    if (!(next.first).equals("t")) {
+                        arrayList.add(next.second);
                     }
-                    dt.m.a((String[]) arrayList.toArray(new String[0]));
                 }
+                dt.m.a((String[]) arrayList.toArray(new String[0]));
             }
         });
     }

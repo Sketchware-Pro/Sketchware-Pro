@@ -1,40 +1,57 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dex;
 
 import mod.agus.jcoderz.dex.util.Unsigned;
 
 public final class TypeList implements Comparable<TypeList> {
+
     public static final TypeList EMPTY = new TypeList(null, Dex.EMPTY_SHORT_ARRAY);
+
     private final Dex dex;
     private final short[] types;
 
-    public TypeList(Dex dex2, short[] sArr) {
-        this.dex = dex2;
-        this.types = sArr;
+    public TypeList(Dex dex, short[] types) {
+        this.dex = dex;
+        this.types = types;
     }
 
     public short[] getTypes() {
-        return this.types;
+        return types;
     }
 
-    public int compareTo(TypeList typeList) {
-        int i = 0;
-        while (i < this.types.length && i < typeList.types.length) {
-            if (this.types[i] != typeList.types[i]) {
-                return Unsigned.compare(this.types[i], typeList.types[i]);
+    @Override
+    public int compareTo(TypeList other) {
+        for (int i = 0; i < types.length && i < other.types.length; i++) {
+            if (types[i] != other.types[i]) {
+                return Unsigned.compare(types[i], other.types[i]);
             }
-            i++;
         }
-        return Unsigned.compare(this.types.length, typeList.types.length);
+        return Unsigned.compare(types.length, other.types.length);
     }
 
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        int length = this.types.length;
-        for (int i = 0; i < length; i++) {
-            sb.append(this.dex != null ? this.dex.typeNames().get(this.types[i]) : Short.valueOf(this.types[i]));
+        StringBuilder result = new StringBuilder();
+        result.append("(");
+        for (int i = 0, typesLength = types.length; i < typesLength; i++) {
+            result.append(dex != null ? dex.typeNames().get(types[i]) : types[i]);
         }
-        sb.append(")");
-        return sb.toString();
+        result.append(")");
+        return result.toString();
     }
 }

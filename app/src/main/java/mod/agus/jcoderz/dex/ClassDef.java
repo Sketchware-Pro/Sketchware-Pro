@@ -1,80 +1,103 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dex;
 
+/**
+ * A type definition.
+ */
 public final class ClassDef {
     public static final int NO_INDEX = -1;
-    private final int accessFlags;
-    private final int annotationsOffset;
     private final Dex buffer;
-    private final int classDataOffset;
-    private final int interfacesOffset;
     private final int offset;
-    private final int sourceFileIndex;
-    private final int staticValuesOffset;
-    private final int supertypeIndex;
     private final int typeIndex;
+    private final int accessFlags;
+    private final int supertypeIndex;
+    private final int interfacesOffset;
+    private final int sourceFileIndex;
+    private final int annotationsOffset;
+    private final int classDataOffset;
+    private final int staticValuesOffset;
 
-    public ClassDef(Dex dex, int i, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i9) {
-        this.buffer = dex;
-        this.offset = i;
-        this.typeIndex = i2;
-        this.accessFlags = i3;
-        this.supertypeIndex = i4;
-        this.interfacesOffset = i5;
-        this.sourceFileIndex = i6;
-        this.annotationsOffset = i7;
-        this.classDataOffset = i8;
-        this.staticValuesOffset = i9;
+    public ClassDef(Dex buffer, int offset, int typeIndex, int accessFlags,
+            int supertypeIndex, int interfacesOffset, int sourceFileIndex,
+            int annotationsOffset, int classDataOffset, int staticValuesOffset) {
+        this.buffer = buffer;
+        this.offset = offset;
+        this.typeIndex = typeIndex;
+        this.accessFlags = accessFlags;
+        this.supertypeIndex = supertypeIndex;
+        this.interfacesOffset = interfacesOffset;
+        this.sourceFileIndex = sourceFileIndex;
+        this.annotationsOffset = annotationsOffset;
+        this.classDataOffset = classDataOffset;
+        this.staticValuesOffset = staticValuesOffset;
     }
 
     public int getOffset() {
-        return this.offset;
+        return offset;
     }
 
     public int getTypeIndex() {
-        return this.typeIndex;
+        return typeIndex;
     }
 
     public int getSupertypeIndex() {
-        return this.supertypeIndex;
+        return supertypeIndex;
     }
 
     public int getInterfacesOffset() {
-        return this.interfacesOffset;
+        return interfacesOffset;
     }
 
     public short[] getInterfaces() {
-        return this.buffer.readTypeList(this.interfacesOffset).getTypes();
+        return buffer.readTypeList(interfacesOffset).getTypes();
     }
 
     public int getAccessFlags() {
-        return this.accessFlags;
+        return accessFlags;
     }
 
     public int getSourceFileIndex() {
-        return this.sourceFileIndex;
+        return sourceFileIndex;
     }
 
     public int getAnnotationsOffset() {
-        return this.annotationsOffset;
+        return annotationsOffset;
     }
 
     public int getClassDataOffset() {
-        return this.classDataOffset;
+        return classDataOffset;
     }
 
     public int getStaticValuesOffset() {
-        return this.staticValuesOffset;
+        return staticValuesOffset;
     }
 
+    @Override
     public String toString() {
-        if (this.buffer == null) {
-            return this.typeIndex + " " + this.supertypeIndex;
+        if (buffer == null) {
+            return typeIndex + " " + supertypeIndex;
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.buffer.typeNames().get(this.typeIndex));
-        if (this.supertypeIndex != -1) {
-            sb.append(" extends ").append(this.buffer.typeNames().get(this.supertypeIndex));
+
+        StringBuilder result = new StringBuilder();
+        result.append(buffer.typeNames().get(typeIndex));
+        if (supertypeIndex != NO_INDEX) {
+            result.append(" extends ").append(buffer.typeNames().get(supertypeIndex));
         }
-        return sb.toString();
+        return result.toString();
     }
 }

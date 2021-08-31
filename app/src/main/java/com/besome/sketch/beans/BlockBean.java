@@ -11,19 +11,19 @@ import a.a.a.Gx;
 import a.a.a.mq;
 
 public class BlockBean extends SelectableBean implements Parcelable {
-    public static final Parcelable.Creator<BlockBean> CREATOR = new Parcelable.Creator<BlockBean>() {
-        /* class com.besome.sketch.beans.BlockBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
-        public BlockBean createFromParcel(Parcel parcel) {
-            return new BlockBean(parcel);
+    public static final Parcelable.Creator<BlockBean> CREATOR = new Parcelable.Creator<BlockBean>() {
+        @Override
+        public BlockBean createFromParcel(Parcel source) {
+            return new BlockBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public BlockBean[] newArray(int i) {
-            return new BlockBean[i];
+        @Override
+        public BlockBean[] newArray(int size) {
+            return new BlockBean[size];
         }
     };
+
     public Gx classInfo;
     @Expose
     public int color;
@@ -48,40 +48,43 @@ public class BlockBean extends SelectableBean implements Parcelable {
     public String typeName;
 
     public BlockBean() {
-        this.parameters = new ArrayList<>();
-        this.subStack1 = -1;
-        this.subStack2 = -1;
-        this.nextBlock = -1;
+        parameters = new ArrayList<>();
+        subStack1 = -1;
+        subStack2 = -1;
+        nextBlock = -1;
     }
 
-    public BlockBean(String str, String str2, String str3, String str4) {
-        this(str, str2, str3, "", str4);
+    /**
+     * Constructor without <code>typeName</code>.
+     */
+    public BlockBean(String id, String spec, String type, String opCode) {
+        this(id, spec, type, "", opCode);
     }
 
-    public BlockBean(String str, String str2, String str3, String str4, String str5) {
-        this.id = str;
-        this.spec = str2;
-        this.type = str3;
-        this.typeName = str4;
-        this.opCode = str5;
-        this.parameters = new ArrayList<>();
-        this.subStack1 = -1;
-        this.subStack2 = -1;
-        this.nextBlock = -1;
+    public BlockBean(String id, String spec, String type, String typeName, String opCode) {
+        this.id = id;
+        this.spec = spec;
+        this.type = type;
+        this.typeName = typeName;
+        this.opCode = opCode;
+        parameters = new ArrayList<>();
+        subStack1 = -1;
+        subStack2 = -1;
+        nextBlock = -1;
         buildClassInfo();
     }
 
     public BlockBean(Parcel parcel) {
-        this.id = parcel.readString();
-        this.spec = parcel.readString();
-        this.type = parcel.readString();
-        this.typeName = parcel.readString();
-        this.opCode = parcel.readString();
-        this.color = parcel.readInt();
-        this.parameters = (ArrayList) parcel.readSerializable();
-        this.subStack1 = parcel.readInt();
-        this.subStack2 = parcel.readInt();
-        this.nextBlock = parcel.readInt();
+        id = parcel.readString();
+        spec = parcel.readString();
+        type = parcel.readString();
+        typeName = parcel.readString();
+        opCode = parcel.readString();
+        color = parcel.readInt();
+        parameters = (ArrayList<String>) parcel.readSerializable();
+        subStack1 = parcel.readInt();
+        subStack2 = parcel.readInt();
+        nextBlock = parcel.readInt();
         buildClassInfo();
     }
 
@@ -90,65 +93,68 @@ public class BlockBean extends SelectableBean implements Parcelable {
     }
 
     private void buildClassInfo() {
-        this.classInfo = mq.a(this.type, this.typeName);
-        this.paramClassInfo = mq.a(this.spec);
+        classInfo = mq.a(type, typeName);
+        paramClassInfo = mq.a(spec);
     }
 
-    public void copy(BlockBean blockBean) {
-        this.id = blockBean.id;
-        this.spec = blockBean.spec;
-        this.type = blockBean.type;
-        this.typeName = blockBean.typeName;
-        this.opCode = blockBean.opCode;
-        this.color = blockBean.color;
-        this.parameters = new ArrayList<>(blockBean.parameters);
-        this.subStack1 = blockBean.subStack1;
-        this.subStack2 = blockBean.subStack2;
-        this.nextBlock = blockBean.nextBlock;
+    public void copy(BlockBean other) {
+        id = other.id;
+        spec = other.spec;
+        type = other.type;
+        typeName = other.typeName;
+        opCode = other.opCode;
+        color = other.color;
+        parameters = new ArrayList<>(other.parameters);
+        subStack1 = other.subStack1;
+        subStack2 = other.subStack2;
+        nextBlock = other.nextBlock;
         buildClassInfo();
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
     public Gx getClassInfo() {
-        if (this.classInfo == null) {
+        if (classInfo == null) {
             buildClassInfo();
         }
-        return this.classInfo;
+        return classInfo;
     }
 
     public ArrayList<Gx> getParamClassInfo() {
-        if (this.paramClassInfo == null) {
+        if (paramClassInfo == null) {
             buildClassInfo();
         }
-        return this.paramClassInfo;
+        return paramClassInfo;
     }
 
-    public boolean isEqual(BlockBean blockBean) {
-        if (blockBean == null) {
+    public boolean isEqual(BlockBean other) {
+        if (other == null) {
             return false;
         }
-        String str = this.id;
-        if (!(str == null || str.equals(blockBean.id))) {
+        String id = this.id;
+        if (!(id == null || id.equals(other.id))) {
             return false;
         }
-        String str2 = this.spec;
-        if (!((str2 == null || str2.equals(blockBean.spec)) && this.type.equals(blockBean.type))) {
+        String spec = this.spec;
+        if (!((spec == null || spec.equals(other.spec)) && type.equals(other.type))) {
             return false;
         }
-        String str3 = this.typeName;
-        if (!((str3 == null || str3.equals(blockBean.typeName)) && this.opCode.equals(blockBean.opCode) && this.color == blockBean.color && this.subStack1 == blockBean.subStack1 && this.subStack2 == blockBean.subStack2 && this.nextBlock == blockBean.nextBlock)) {
+        String typeName = this.typeName;
+        if (!((typeName == null || typeName.equals(other.typeName)) && opCode.equals(other.opCode)
+                && color == other.color && subStack1 == other.subStack1
+                && subStack2 == other.subStack2 && nextBlock == other.nextBlock)) {
             return false;
         }
-        ArrayList<String> arrayList = this.parameters;
-        if (!(arrayList == null || arrayList.size() == blockBean.parameters.size())) {
+        ArrayList<String> parameters = this.parameters;
+        if (!(parameters == null || parameters.size() == other.parameters.size())) {
             return false;
         }
-        for (int i = 0; i < this.parameters.size(); i++) {
-            String str4 = this.parameters.get(i);
-            String str5 = blockBean.parameters.get(i);
+        for (int i = 0; i < parameters.size(); i++) {
+            String str4 = parameters.get(i);
+            String str5 = other.parameters.get(i);
             if (!(str4 == null || str4.equals(str5))) {
                 return false;
             }
@@ -159,20 +165,21 @@ public class BlockBean extends SelectableBean implements Parcelable {
     public void print() {
     }
 
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.id);
-        parcel.writeString(this.spec);
-        parcel.writeString(this.type);
-        parcel.writeString(this.typeName);
-        parcel.writeString(this.opCode);
-        parcel.writeInt(this.color);
-        parcel.writeSerializable(this.parameters);
-        parcel.writeInt(this.subStack1);
-        parcel.writeInt(this.subStack2);
-        parcel.writeInt(this.nextBlock);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(spec);
+        dest.writeString(type);
+        dest.writeString(typeName);
+        dest.writeString(opCode);
+        dest.writeInt(color);
+        dest.writeSerializable(parameters);
+        dest.writeInt(subStack1);
+        dest.writeInt(subStack2);
+        dest.writeInt(nextBlock);
     }
 
-    @Override // java.lang.Object
+    @Override
     public BlockBean clone() {
         BlockBean blockBean = new BlockBean();
         blockBean.copy(this);

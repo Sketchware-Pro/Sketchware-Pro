@@ -1,242 +1,453 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.util;
 
 import java.util.Arrays;
 
+/**
+ * Simple list of {@code int}s.
+ */
 public final class IntList extends MutabilityControl {
+    /** {@code non-null;} immutable, no-element instance */
     public static final IntList EMPTY = new IntList(0);
+
+    /** {@code non-null;} array of elements */
+    private int[] values;
+
+    /** {@code >= 0;} current size of the list */
+    private int size;
+
+    /** whether the values are currently sorted */
+    private boolean sorted;
 
     static {
         EMPTY.setImmutable();
     }
 
-    private int size;
-    private boolean sorted;
-    private int[] values;
+    /**
+     * Constructs a new immutable instance with the given element.
+     *
+     * @param value the sole value in the list
+     */
+    public static IntList makeImmutable(int value) {
+        IntList result = new IntList(1);
 
+        result.add(value);
+        result.setImmutable();
+
+        return result;
+    }
+
+    /**
+     * Constructs a new immutable instance with the given elements.
+     *
+     * @param value0 the first value in the list
+     * @param value1 the second value in the list
+     */
+    public static IntList makeImmutable(int value0, int value1) {
+        IntList result = new IntList(2);
+
+        result.add(value0);
+        result.add(value1);
+        result.setImmutable();
+
+        return result;
+    }
+
+    /**
+     * Constructs an empty instance with a default initial capacity.
+     */
     public IntList() {
         this(4);
     }
 
-    public IntList(int i) {
+    /**
+     * Constructs an empty instance.
+     *
+     * @param initialCapacity {@code >= 0;} initial capacity of the list
+     */
+    public IntList(int initialCapacity) {
         super(true);
+
         try {
-            this.values = new int[i];
-            this.size = 0;
-            this.sorted = true;
-        } catch (NegativeArraySizeException e) {
+            values = new int[initialCapacity];
+        } catch (NegativeArraySizeException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("size < 0");
         }
+
+        size = 0;
+        sorted = true;
     }
 
-    public static IntList makeImmutable(int i) {
-        IntList intList = new IntList(1);
-        intList.add(i);
-        intList.setImmutable();
-        return intList;
-    }
-
-    public static IntList makeImmutable(int i, int i2) {
-        IntList intList = new IntList(2);
-        intList.add(i);
-        intList.add(i2);
-        intList.setImmutable();
-        return intList;
-    }
-
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        int i = 0;
-        for (int i2 = 0; i2 < this.size; i2++) {
-            i = (i * 31) + this.values[i2];
+        int result = 0;
+
+        for (int i = 0; i < size; i++) {
+            result = (result * 31) + values[i];
         }
-        return i;
+
+        return result;
     }
 
-    public boolean equals(Object obj) {
-        if (obj == this) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
             return true;
         }
-        if (!(obj instanceof IntList)) {
+
+        if (! (other instanceof IntList)) {
             return false;
         }
-        IntList intList = (IntList) obj;
-        if (!(this.sorted == intList.sorted && this.size == intList.size)) {
+
+        IntList otherList = (IntList) other;
+
+        if (sorted != otherList.sorted) {
             return false;
         }
-        for (int i = 0; i < this.size; i++) {
-            if (this.values[i] != intList.values[i]) {
+
+        if (size != otherList.size) {
+            return false;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (values[i] != otherList.values[i]) {
                 return false;
             }
         }
+
         return true;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        StringBuffer stringBuffer = new StringBuffer((this.size * 5) + 10);
-        stringBuffer.append('{');
-        for (int i = 0; i < this.size; i++) {
+        StringBuilder sb = new StringBuilder(size * 5 + 10);
+
+        sb.append('{');
+
+        for (int i = 0; i < size; i++) {
             if (i != 0) {
-                stringBuffer.append(", ");
+                sb.append(", ");
             }
-            stringBuffer.append(this.values[i]);
+            sb.append(values[i]);
         }
-        stringBuffer.append('}');
-        return stringBuffer.toString();
+
+        sb.append('}');
+
+        return sb.toString();
     }
 
+    /**
+     * Gets the number of elements in this list.
+     */
     public int size() {
-        return this.size;
+        return size;
     }
 
-    public int get(int i) {
-        if (i >= this.size) {
+    /**
+     * Gets the indicated value.
+     *
+     * @param n {@code >= 0, < size();} which element
+     * @return the indicated element's value
+     */
+    public int get(int n) {
+        if (n >= size) {
             throw new IndexOutOfBoundsException("n >= size()");
         }
+
         try {
-            return this.values[i];
-        } catch (ArrayIndexOutOfBoundsException e) {
+            return values[n];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate exception.
             throw new IndexOutOfBoundsException("n < 0");
         }
     }
 
-    public void set(int i, int i2) {
+    /**
+     * Sets the value at the given index.
+     *
+     * @param n {@code >= 0, < size();} which element
+     * @param value value to store
+     */
+    public void set(int n, int value) {
         throwIfImmutable();
-        if (i >= this.size) {
+
+        if (n >= size) {
             throw new IndexOutOfBoundsException("n >= size()");
         }
+
         try {
-            this.values[i] = i2;
-            this.sorted = false;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            if (i < 0) {
+            values[n] = value;
+            sorted = false;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate the exception.
+            if (n < 0) {
                 throw new IllegalArgumentException("n < 0");
             }
         }
     }
 
-    public void add(int i) {
-        boolean z = true;
+    /**
+     * Adds an element to the end of the list. This will increase the
+     * list's capacity if necessary.
+     *
+     * @param value the value to add
+     */
+    public void add(int value) {
         throwIfImmutable();
+
         growIfNeeded();
-        int[] iArr = this.values;
-        int i2 = this.size;
-        this.size = i2 + 1;
-        iArr[i2] = i;
-        if (this.sorted && this.size > 1) {
-            if (i < this.values[this.size - 2]) {
-                z = false;
-            }
-            this.sorted = z;
+
+        values[size++] = value;
+
+        if (sorted && (size > 1)) {
+            sorted = (value >= values[size - 2]);
         }
     }
 
-    public void insert(int i, int i2) {
-        if (i > this.size) {
+    /**
+     * Inserts element into specified index, moving elements at and above
+     * that index up one. May not be used to insert at an index beyond the
+     * current size (that is, insertion as a last element is legal but
+     * no further).
+     *
+     * @param n {@code >= 0, <=size();} index of where to insert
+     * @param value value to insert
+     */
+    public void insert(int n, int value) {
+        if (n > size) {
             throw new IndexOutOfBoundsException("n > size()");
         }
+
         growIfNeeded();
-        System.arraycopy(this.values, i, this.values, i + 1, this.size - i);
-        this.values[i] = i2;
-        this.size++;
-        this.sorted = this.sorted && (i == 0 || i2 > this.values[i + -1]) && (i == this.size + -1 || i2 < this.values[i + 1]);
+
+        System.arraycopy (values, n, values, n+1, size - n);
+        values[n] = value;
+        size++;
+
+        sorted = sorted
+                && (n == 0 || value > values[n-1])
+                && (n == (size - 1) || value < values[n+1]);
     }
 
-    public void removeIndex(int i) {
-        if (i >= this.size) {
+    /**
+     * Removes an element at a given index, shifting elements at greater
+     * indicies down one.
+     *
+     * @param n  {@code >=0, < size();} index of element to remove
+     */
+    public void removeIndex(int n) {
+        if (n >= size) {
             throw new IndexOutOfBoundsException("n >= size()");
         }
-        System.arraycopy(this.values, i + 1, this.values, i, (this.size - i) - 1);
-        this.size--;
+
+        System.arraycopy (values, n + 1, values, n, size - n - 1);
+        size--;
+
+        // sort status is unchanged
     }
 
+    /**
+     * Increases size of array if needed
+     */
     private void growIfNeeded() {
-        if (this.size == this.values.length) {
-            int[] iArr = new int[(((this.size * 3) / 2) + 10)];
-            System.arraycopy(this.values, 0, iArr, 0, this.size);
-            this.values = iArr;
+        if (size == values.length) {
+            // Resize.
+            int[] newv = new int[size * 3 / 2 + 10];
+            System.arraycopy(values, 0, newv, 0, size);
+            values = newv;
         }
     }
 
+    /**
+     * Returns the last element in the array without modifying the array
+     *
+     * @return last value in the array
+     * @throws IndexOutOfBoundsException if stack is empty
+     */
     public int top() {
-        return get(this.size - 1);
+        return get(size - 1);
     }
 
+    /**
+     * Pops an element off the end of the list and decreasing the size by one.
+     *
+     * @return value from what was the last element
+     * @throws IndexOutOfBoundsException if stack is empty
+     */
     public int pop() {
         throwIfImmutable();
-        this.size--;
-        return get(this.size - 1);
+
+        int result;
+
+        result = get(size-1);
+        size--;
+
+        return result;
     }
 
-    public void pop(int i) {
+    /**
+     * Pops N elements off the end of the list and decreasing the size by N.
+     *
+     * @param n {@code >= 0;} number of elements to remove from end
+     * @throws IndexOutOfBoundsException if stack is smaller than N
+     */
+    public void pop(int n) {
         throwIfImmutable();
-        this.size -= i;
+
+        size -= n;
     }
 
-    public void shrink(int i) {
-        if (i < 0) {
+    /**
+     * Shrinks the size of the list.
+     *
+     * @param newSize {@code >= 0;} the new size
+     */
+    public void shrink(int newSize) {
+        if (newSize < 0) {
             throw new IllegalArgumentException("newSize < 0");
-        } else if (i > this.size) {
+        }
+
+        if (newSize > size) {
             throw new IllegalArgumentException("newSize > size");
-        } else {
-            throwIfImmutable();
-            this.size = i;
         }
+
+        throwIfImmutable();
+
+        size = newSize;
     }
 
+    /**
+     * Makes and returns a mutable copy of the list.
+     *
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
     public IntList mutableCopy() {
-        int i = this.size;
-        IntList intList = new IntList(i);
-        for (int i2 = 0; i2 < i; i2++) {
-            intList.add(this.values[i2]);
+        int sz = size;
+        IntList result = new IntList(sz);
+
+        for (int i = 0; i < sz; i++) {
+            result.add(values[i]);
         }
-        return intList;
+
+        return result;
     }
 
+    /**
+     * Sorts the elements in the list in-place.
+     */
     public void sort() {
         throwIfImmutable();
-        if (!this.sorted) {
-            Arrays.sort(this.values, 0, this.size);
-            this.sorted = true;
+
+        if (!sorted) {
+            Arrays.sort(values, 0, size);
+            sorted = true;
         }
     }
 
-    public int indexOf(int i) {
-        int binarysearch = binarysearch(i);
-        if (binarysearch >= 0) {
-            return binarysearch;
-        }
-        return -1;
+    /**
+     * Returns the index of the given value, or -1 if the value does not
+     * appear in the list.  This will do a binary search if the list is
+     * sorted or a linear search if not.
+     *
+     * @param value value to find
+     * @return index of value or -1
+     */
+    public int indexOf(int value) {
+        int ret = binarysearch(value);
+
+        return ret >= 0 ? ret : -1;
+
     }
 
-    public int binarysearch(int i) {
-        int i2 = this.size;
-        if (!this.sorted) {
-            for (int i3 = 0; i3 < i2; i3++) {
-                if (this.values[i3] == i) {
-                    return i3;
+    /**
+     * Performs a binary search on a sorted list, returning the index of
+     * the given value if it is present or
+     * {@code (-(insertion point) - 1)} if the value is not present.
+     * If the list is not sorted, then reverts to linear search and returns
+     * {@code -size()} if the element is not found.
+     *
+     * @param value value to find
+     * @return index of value or {@code (-(insertion point) - 1)} if the
+     * value is not present
+     */
+    public int binarysearch(int value) {
+        int sz = size;
+
+        if (!sorted) {
+            // Linear search.
+            for (int i = 0; i < sz; i++) {
+                if (values[i] == value) {
+                    return i;
                 }
             }
-            return -i2;
+
+            return -sz;
         }
-        int i4 = i2;
-        int i5 = -1;
-        while (i4 > i5 + 1) {
-            int i6 = ((i4 - i5) >> 1) + i5;
-            if (i <= this.values[i6]) {
-                i4 = i6;
+
+        /*
+         * Binary search. This variant does only one value comparison
+         * per iteration but does one more iteration on average than
+         * the variant that includes a value equality check per
+         * iteration.
+         */
+
+        int min = -1;
+        int max = sz;
+
+        while (max > (min + 1)) {
+            /*
+             * The guessIdx calculation is equivalent to ((min + max)
+             * / 2) but won't go wonky when min and max are close to
+             * Integer.MAX_VALUE.
+             */
+            int guessIdx = min + ((max - min) >> 1);
+            int guess = values[guessIdx];
+
+            if (value <= guess) {
+                max = guessIdx;
             } else {
-                i5 = i6;
+                min = guessIdx;
             }
         }
-        if (i4 == i2) {
-            return (-i2) - 1;
+
+        if ((max != sz)) {
+            return (value == values[max]) ? max : (-max - 1);
+        } else {
+            return -sz - 1;
         }
-        if (i != this.values[i4]) {
-            return (-i4) - 1;
-        }
-        return i4;
     }
 
-    public boolean contains(int i) {
-        return indexOf(i) >= 0;
+
+    /**
+     * Returns whether or not the given value appears in the list.
+     * This will do a binary search if the list is sorted or a linear
+     * search if not.
+     *
+     * @see #sort
+     *
+     * @param value value to look for
+     * @return whether the list contains the given value
+     */
+    public boolean contains(int value) {
+        return indexOf(value) >= 0;
     }
 }

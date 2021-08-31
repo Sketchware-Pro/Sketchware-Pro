@@ -3,7 +3,6 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.flexbox.FlexItem;
 import com.google.gson.annotations.Expose;
 
 import a.a.a.Gx;
@@ -11,49 +10,54 @@ import a.a.a.nA;
 import mod.agus.jcoderz.beans.ViewBeans;
 
 public class ViewBean extends nA implements Parcelable {
-    public static final int CHOICE_MODE_MULTI = 2;
-    public static final int CHOICE_MODE_NONE = 0;
-    public static final int CHOICE_MODE_SINGLE = 1;
-    public static final Parcelable.Creator<ViewBean> CREATOR = new Parcelable.Creator<ViewBean>() {
-        /* class com.besome.sketch.beans.ViewBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
-        public ViewBean createFromParcel(Parcel parcel) {
-            return new ViewBean(parcel);
+    public static final Parcelable.Creator<ViewBean> CREATOR = new Parcelable.Creator<ViewBean>() {
+        @Override
+        public ViewBean createFromParcel(Parcel source) {
+            return new ViewBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public ViewBean[] newArray(int i) {
-            return new ViewBean[i];
+        @Override
+        public ViewBean[] newArray(int size) {
+            return new ViewBean[size];
         }
     };
-    public static final int DEFAULT_MAX = 100;
+
+    public static final int CHOICE_MODE_NONE = 0;
+    public static final int CHOICE_MODE_SINGLE = 1;
+    public static final int CHOICE_MODE_MULTI = 2;
+
+
     public static final int DEFAULT_PROGRESS = 0;
+    public static final int DEFAULT_MAX = 100;
+
     public static final String PROGRESSBAR_STYLE_CIRCLE = "?android:progressBarStyle";
     public static final String PROGRESSBAR_STYLE_HORIZONTAL = "?android:progressBarStyleHorizontal";
+
     public static final int SPINNER_MODE_DIALOG = 0;
     public static final int SPINNER_MODE_DROPDOWN = 1;
-    public static final int VIEW_TYPE_COUNT = 99;
-    public static final int VIEW_TYPE_LAYOUT_HSCROLLVIEW = 2;
+
     public static final int VIEW_TYPE_LAYOUT_LINEAR = 0;
     public static final int VIEW_TYPE_LAYOUT_RELATIVE = 1;
-    public static final int VIEW_TYPE_LAYOUT_VSCROLLVIEW = 12;
-    public static final int VIEW_TYPE_WIDGET_ADVIEW = 17;
+    public static final int VIEW_TYPE_LAYOUT_HSCROLLVIEW = 2;
     public static final int VIEW_TYPE_WIDGET_BUTTON = 3;
-    public static final int VIEW_TYPE_WIDGET_CALENDARVIEW = 15;
-    public static final int VIEW_TYPE_WIDGET_CHECKBOX = 11;
-    public static final int VIEW_TYPE_WIDGET_EDITTEXT = 5;
-    public static final int VIEW_TYPE_WIDGET_FAB = 16;
-    public static final int VIEW_TYPE_WIDGET_IMAGEVIEW = 6;
-    public static final int VIEW_TYPE_WIDGET_LISTVIEW = 9;
-    public static final int VIEW_TYPE_WIDGET_MAPVIEW = 18;
-    public static final int VIEW_TYPE_WIDGET_PROGRESSBAR = 8;
-    public static final int VIEW_TYPE_WIDGET_RADIOBUTTON = 19;
-    public static final int VIEW_TYPE_WIDGET_SEEKBAR = 14;
-    public static final int VIEW_TYPE_WIDGET_SPINNER = 10;
-    public static final int VIEW_TYPE_WIDGET_SWITCH = 13;
     public static final int VIEW_TYPE_WIDGET_TEXTVIEW = 4;
+    public static final int VIEW_TYPE_WIDGET_EDITTEXT = 5;
+    public static final int VIEW_TYPE_WIDGET_IMAGEVIEW = 6;
     public static final int VIEW_TYPE_WIDGET_WEBVIEW = 7;
+    public static final int VIEW_TYPE_WIDGET_PROGRESSBAR = 8;
+    public static final int VIEW_TYPE_WIDGET_LISTVIEW = 9;
+    public static final int VIEW_TYPE_WIDGET_SPINNER = 10;
+    public static final int VIEW_TYPE_WIDGET_CHECKBOX = 11;
+    public static final int VIEW_TYPE_LAYOUT_VSCROLLVIEW = 12;
+    public static final int VIEW_TYPE_WIDGET_SWITCH = 13;
+    public static final int VIEW_TYPE_WIDGET_SEEKBAR = 14;
+    public static final int VIEW_TYPE_WIDGET_CALENDARVIEW = 15;
+    public static final int VIEW_TYPE_WIDGET_FAB = 16;
+    public static final int VIEW_TYPE_WIDGET_ADVIEW = 17;
+    public static final int VIEW_TYPE_WIDGET_MAPVIEW = 18;
+    public static final int VIEW_TYPE_COUNT = 19;
+
     @Expose
     public String adSize;
     @Expose
@@ -125,546 +129,501 @@ public class ViewBean extends nA implements Parcelable {
     public int type;
 
     public ViewBean() {
-        this.parent = null;
-        this.parentType = -1;
-        this.enabled = 1;
-        this.clickable = 1;
-        this.spinnerMode = 1;
-        this.dividerHeight = 1;
-        this.choiceMode = 0;
-        this.customView = "";
-        this.checked = 0;
-        this.alpha = 1.0f;
-        this.translationX = FlexItem.FLEX_GROW_DEFAULT;
-        this.translationY = FlexItem.FLEX_GROW_DEFAULT;
-        this.scaleX = 1.0f;
-        this.scaleY = 1.0f;
-        this.max = 100;
-        this.progress = 0;
-        this.firstDayOfWeek = 1;
-        this.adSize = "";
-        this.adUnitId = "";
-        this.layout = new LayoutBean();
-        this.text = new TextBean();
-        this.image = new ImageBean();
-        this.indeterminate = "false";
-        this.inject = "";
-        this.convert = "";
-        this.progressStyle = PROGRESSBAR_STYLE_CIRCLE;
+        parent = null;
+        parentType = -1;
+        enabled = 1;
+        clickable = 1;
+        spinnerMode = 1;
+        dividerHeight = 1;
+        choiceMode = 0;
+        customView = "";
+        checked = 0;
+        alpha = 1.0f;
+        translationX = 0;
+        translationY = 0;
+        scaleX = 1.0f;
+        scaleY = 1.0f;
+        max = 100;
+        progress = 0;
+        firstDayOfWeek = 1;
+        adSize = "";
+        adUnitId = "";
+        layout = new LayoutBean();
+        text = new TextBean();
+        image = new ImageBean();
+        indeterminate = "false";
+        inject = "";
+        convert = "";
+        progressStyle = PROGRESSBAR_STYLE_CIRCLE;
     }
 
     public ViewBean(Parcel parcel) {
-        this.id = parcel.readString();
-        this.name = parcel.readString();
-        this.type = parcel.readInt();
-        this.parent = parcel.readString();
-        this.parentType = parcel.readInt();
-        this.index = parcel.readInt();
-        this.enabled = parcel.readInt();
-        this.clickable = parcel.readInt();
-        this.spinnerMode = parcel.readInt();
-        this.dividerHeight = parcel.readInt();
-        this.choiceMode = parcel.readInt();
-        this.customView = parcel.readString();
-        this.checked = parcel.readInt();
-        this.alpha = parcel.readFloat();
-        this.translationX = parcel.readFloat();
-        this.translationY = parcel.readFloat();
-        this.scaleX = parcel.readFloat();
-        this.scaleY = parcel.readFloat();
-        this.max = parcel.readInt();
-        this.progress = parcel.readInt();
-        this.firstDayOfWeek = parcel.readInt();
-        this.adSize = parcel.readString();
-        this.adUnitId = parcel.readString();
-        this.preParent = parcel.readString();
-        this.preParentType = parcel.readInt();
-        this.preIndex = parcel.readInt();
-        this.preId = parcel.readString();
-        this.layout = (LayoutBean) parcel.readParcelable(LayoutBean.class.getClassLoader());
-        this.text = (TextBean) parcel.readParcelable(TextBean.class.getClassLoader());
-        this.image = (ImageBean) parcel.readParcelable(ImageBean.class.getClassLoader());
-        this.indeterminate = parcel.readString();
-        this.inject = parcel.readString();
-        this.convert = parcel.readString();
-        this.progressStyle = parcel.readString();
+        id = parcel.readString();
+        name = parcel.readString();
+        type = parcel.readInt();
+        parent = parcel.readString();
+        parentType = parcel.readInt();
+        index = parcel.readInt();
+        enabled = parcel.readInt();
+        clickable = parcel.readInt();
+        spinnerMode = parcel.readInt();
+        dividerHeight = parcel.readInt();
+        choiceMode = parcel.readInt();
+        customView = parcel.readString();
+        checked = parcel.readInt();
+        alpha = parcel.readFloat();
+        translationX = parcel.readFloat();
+        translationY = parcel.readFloat();
+        scaleX = parcel.readFloat();
+        scaleY = parcel.readFloat();
+        max = parcel.readInt();
+        progress = parcel.readInt();
+        firstDayOfWeek = parcel.readInt();
+        adSize = parcel.readString();
+        adUnitId = parcel.readString();
+        preParent = parcel.readString();
+        preParentType = parcel.readInt();
+        preIndex = parcel.readInt();
+        preId = parcel.readString();
+        layout = parcel.readParcelable(LayoutBean.class.getClassLoader());
+        text = parcel.readParcelable(TextBean.class.getClassLoader());
+        image = parcel.readParcelable(ImageBean.class.getClassLoader());
+        indeterminate = parcel.readString();
+        inject = parcel.readString();
+        convert = parcel.readString();
+        progressStyle = parcel.readString();
     }
 
-    public ViewBean(String str, int i) {
+    public ViewBean(String id, int type) {
         this();
-        this.id = str;
-        this.name = str;
-        this.type = i;
-        this.parent = null;
+        this.id = id;
+        name = id;
+        this.type = type;
+        parent = null;
     }
 
-    public static Parcelable.Creator getCreator() {
+    public static Parcelable.Creator<ViewBean> getCreator() {
         return CREATOR;
     }
 
-    /* JADX INFO: Can't fix incorrect switch cases order, some code will duplicate */
-    public static int getViewTypeByTypeName(String str) {
-        char c;
-        int viewTypeByTypeName = ViewBeans.getViewTypeByTypeName(str);
-        switch (str.hashCode()) {
-            case -1805606060:
-                if (str.equals("Switch")) {
-                    c = '\t';
-                    break;
-                }
-                c = 65535;
-                break;
-            case -1793532415:
-                if (str.equals("MapView")) {
-                    c = 16;
-                    break;
-                }
-                c = 65535;
-                break;
-            case -1495589242:
-                if (str.equals("ProgressBar")) {
-                    c = 6;
-                    break;
-                }
-                c = 65535;
-                break;
-            case -1406842887:
-                if (str.equals("WebView")) {
-                    c = '\n';
-                    break;
-                }
-                c = 65535;
-                break;
-            case -938935918:
-                if (str.equals("TextView")) {
-                    c = 1;
-                    break;
-                }
-                c = 65535;
-                break;
-            case -658531749:
-                if (str.equals("SeekBar")) {
-                    c = 7;
-                    break;
-                }
-                c = 65535;
-                break;
-            case -339785223:
-                if (str.equals("Spinner")) {
-                    c = '\b';
-                    break;
-                }
-                c = 65535;
-                break;
-            case -188272861:
-                if (str.equals("CalendarView")) {
-                    c = 14;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1125864064:
-                if (str.equals("ImageView")) {
-                    c = 4;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1127291599:
-                if (str.equals("LinearLayout")) {
-                    c = 11;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1410352259:
-                if (str.equals("ListView")) {
-                    c = 5;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1528334714:
-                if (str.equals("HScrollView")) {
-                    c = '\r';
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1601505219:
-                if (str.equals("CheckBox")) {
-                    c = 2;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1666676343:
-                if (str.equals("EditText")) {
-                    c = 3;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 1955913096:
-                if (str.equals("AdView")) {
-                    c = 15;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 2001146706:
-                if (str.equals("Button")) {
-                    c = 0;
-                    break;
-                }
-                c = 65535;
-                break;
-            case 2059813682:
-                if (str.equals("ScrollView")) {
-                    c = '\f';
-                    break;
-                }
-                c = 65535;
-                break;
+    public static int getViewTypeByTypeName(String typeName) {
+        switch (typeName) {
+            case "Switch":
+                return VIEW_TYPE_WIDGET_SWITCH;
+
+            case "MapView":
+                return VIEW_TYPE_WIDGET_MAPVIEW;
+
+            case "ProgressBar":
+                return VIEW_TYPE_WIDGET_PROGRESSBAR;
+
+            case "WebView":
+                return VIEW_TYPE_WIDGET_WEBVIEW;
+
+            case "TextView":
+                return VIEW_TYPE_WIDGET_TEXTVIEW;
+
+            case "SeekBar":
+                return VIEW_TYPE_WIDGET_SEEKBAR;
+
+            case "Spinner":
+                return VIEW_TYPE_WIDGET_SPINNER;
+
+            case "CalendarView":
+                return VIEW_TYPE_WIDGET_CALENDARVIEW;
+
+            case "ImageView":
+                return VIEW_TYPE_WIDGET_IMAGEVIEW;
+
+            case "LinearLayout":
+                return VIEW_TYPE_LAYOUT_LINEAR;
+
+            case "ListView":
+                return VIEW_TYPE_WIDGET_LISTVIEW;
+
+            case "HScrollView":
+                return VIEW_TYPE_LAYOUT_HSCROLLVIEW;
+
+            case "CheckBox":
+                return VIEW_TYPE_WIDGET_CHECKBOX;
+
+            case "EditText":
+                return VIEW_TYPE_WIDGET_EDITTEXT;
+
+            case "AdView":
+                return VIEW_TYPE_WIDGET_ADVIEW;
+
+            case "Button":
+                return VIEW_TYPE_WIDGET_BUTTON;
+
+            case "ScrollView":
+                return VIEW_TYPE_LAYOUT_VSCROLLVIEW;
+
             default:
-                c = 65535;
-                break;
-        }
-        switch (c) {
-            case 0:
-                return 3;
-            case 1:
-                return 4;
-            case 2:
-                return 11;
-            case 3:
-                return 5;
-            case 4:
-                return 6;
-            case 5:
-                return 9;
-            case 6:
-                return 8;
-            case 7:
-                return 14;
-            case '\b':
-                return 10;
-            case '\t':
-                return 13;
-            case '\n':
-                return 7;
-            case 11:
-                return 0;
-            case '\f':
-                return 12;
-            case '\r':
-                return 2;
-            case 14:
-                return 15;
-            case 15:
-                return 17;
-            case 16:
-                return 18;
-            case 17:
-                return 19;
-            default:
-                return viewTypeByTypeName;
+                return ViewBeans.getViewTypeByTypeName(typeName);
         }
     }
 
-    public static String getViewTypeName(int i) {
-        switch (i) {
-            case 0:
+    public static String getViewTypeName(int type) {
+        switch (type) {
+            case VIEW_TYPE_LAYOUT_LINEAR:
                 return "LinearLayout";
-            case 1:
-            case 16:
-            default:
-                return ViewBeans.getViewTypeName(i);
-            case 2:
+
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
                 return "HScrollView";
-            case 3:
+
+            case VIEW_TYPE_WIDGET_BUTTON:
                 return "Button";
-            case 4:
+
+            case VIEW_TYPE_WIDGET_TEXTVIEW:
                 return "TextView";
-            case 5:
+
+            case VIEW_TYPE_WIDGET_EDITTEXT:
                 return "EditText";
-            case 6:
+
+            case VIEW_TYPE_WIDGET_IMAGEVIEW:
                 return "ImageView";
-            case 7:
+
+            case VIEW_TYPE_WIDGET_WEBVIEW:
                 return "WebView";
-            case 8:
+
+            case VIEW_TYPE_WIDGET_PROGRESSBAR:
                 return "ProgressBar";
-            case 9:
+
+            case VIEW_TYPE_WIDGET_LISTVIEW:
                 return "ListView";
-            case 10:
+
+            case VIEW_TYPE_WIDGET_SPINNER:
                 return "Spinner";
-            case 11:
+
+            case VIEW_TYPE_WIDGET_CHECKBOX:
                 return "CheckBox";
-            case 12:
+
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
                 return "ScrollView";
-            case 13:
+
+            case VIEW_TYPE_WIDGET_SWITCH:
                 return "Switch";
-            case 14:
+
+            case VIEW_TYPE_WIDGET_SEEKBAR:
                 return "SeekBar";
-            case 15:
+
+            case VIEW_TYPE_WIDGET_CALENDARVIEW:
                 return "CalendarView";
-            case 17:
+
+            case VIEW_TYPE_WIDGET_ADVIEW:
                 return "AdView";
-            case 18:
+
+            case VIEW_TYPE_WIDGET_MAPVIEW:
                 return "MapView";
-        }
-    }
 
-    public static int getViewTypeResId(int i) {
-        switch (i) {
-            case 0:
-                return 2131166255;
-            case 1:
-                return 2131166265;
-            case 2:
-                return 2131166249;
-            case 3:
-                return 2131166237;
-            case 4:
-                return 2131166275;
-            case 5:
-                return 2131166242;
-            case 6:
-                return 2131166253;
-            case 7:
-                return 2131166278;
-            case 8:
-                return 2131166263;
-            case 9:
-                return 2131166257;
-            case 10:
-                return 2131166272;
-            case 11:
-                return 2131166241;
-            case 12:
-                return 2131166266;
-            case 13:
-                return 2131166273;
-            case 14:
-                return 2131166267;
-            case 15:
-                return 2131166239;
-            case 16:
-                return 2131166243;
-            case 17:
-                return 2131166234;
-            case 18:
-                return 2131166247;
             default:
-                return ViewBeans.getViewTypeResId(i);
+                return ViewBeans.getViewTypeName(type);
         }
     }
 
-    public Gx buildClassInfo(int i) {
-        String str;
-        if (i != 0) {
-            switch (i) {
-                case 2:
-                    str = "HorizontalScrollView";
-                    break;
-                case 3:
-                    str = "Button";
-                    break;
-                case 4:
-                    str = "TextView";
-                    break;
-                case 5:
-                    str = "EditText";
-                    break;
-                case 6:
-                    str = "ImageView";
-                    break;
-                case 7:
-                    str = "WebView";
-                    break;
-                case 8:
-                    str = "ProgressBar";
-                    break;
-                case 9:
-                    str = "ListView";
-                    break;
-                case 10:
-                    str = "Spinner";
-                    break;
-                case 11:
-                    str = "CheckBox";
-                    break;
-                case 12:
-                    str = "ScrollView";
-                    break;
-                case 13:
-                    str = "Switch";
-                    break;
-                case 14:
-                    str = "SeekBar";
-                    break;
-                case 15:
-                    str = "CalendarView";
-                    break;
-                case 16:
-                    str = "FloatingActionButton";
-                    break;
-                case 17:
-                    str = "AdView";
-                    break;
-                case 18:
-                    str = "MapView";
-                    break;
-                default:
-                    str = ViewBeans.buildClassInfo(i);
-                    break;
-            }
-        } else {
-            str = "LinearLayout";
+    public static int getViewTypeResId(int type) {
+        switch (type) {
+            case VIEW_TYPE_LAYOUT_LINEAR:
+                return 0x7f07042f;
+
+            case VIEW_TYPE_LAYOUT_RELATIVE:
+                return 0x7f070439;
+
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
+                return 0x7f070429;
+
+            case VIEW_TYPE_WIDGET_BUTTON:
+                return 0x7f07041d;
+
+            case VIEW_TYPE_WIDGET_TEXTVIEW:
+                return 0x7f070443;
+
+            case VIEW_TYPE_WIDGET_EDITTEXT:
+                return 0x7f070422;
+
+            case VIEW_TYPE_WIDGET_IMAGEVIEW:
+                return 0x7f07042d;
+
+            case VIEW_TYPE_WIDGET_WEBVIEW:
+                return 0x7f070446;
+
+            case VIEW_TYPE_WIDGET_PROGRESSBAR:
+                return 0x7f070437;
+
+            case VIEW_TYPE_WIDGET_LISTVIEW:
+                return 0x7f070431;
+
+            case VIEW_TYPE_WIDGET_SPINNER:
+                return 0x7f070440;
+
+            case VIEW_TYPE_WIDGET_CHECKBOX:
+                return 0x7f070421;
+
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
+                return 0x7f07043a;
+
+            case VIEW_TYPE_WIDGET_SWITCH:
+                return 0x7f070441;
+
+            case VIEW_TYPE_WIDGET_SEEKBAR:
+                return 0x7f07043b;
+
+            case VIEW_TYPE_WIDGET_CALENDARVIEW:
+                return 0x7f07041f;
+
+            case VIEW_TYPE_WIDGET_FAB:
+                return 0x7f070423;
+
+            case VIEW_TYPE_WIDGET_ADVIEW:
+                return 0x7f07041a;
+
+            case VIEW_TYPE_WIDGET_MAPVIEW:
+                return 0x7f070427;
+
+            default:
+                return ViewBeans.getViewTypeResId(type);
         }
-        return new Gx(str);
+    }
+
+    public Gx buildClassInfo(int type) {
+        String name;
+        switch (type) {
+            case VIEW_TYPE_LAYOUT_LINEAR:
+                name = "LinearLayout";
+                break;
+
+            // RIP RelativeLayout
+         /* case VIEW_TYPE_LAYOUT_RELATIVE:
+                name = "RelativeLayout";
+                break;
+         */
+
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW:
+                name = "HorizontalScrollView";
+                break;
+
+            case VIEW_TYPE_WIDGET_BUTTON:
+                name = "Button";
+                break;
+
+            case VIEW_TYPE_WIDGET_TEXTVIEW:
+                name = "TextView";
+                break;
+
+            case VIEW_TYPE_WIDGET_EDITTEXT:
+                name = "EditText";
+                break;
+
+            case VIEW_TYPE_WIDGET_IMAGEVIEW:
+                name = "ImageView";
+                break;
+
+            case VIEW_TYPE_WIDGET_WEBVIEW:
+                name = "WebView";
+                break;
+
+            case VIEW_TYPE_WIDGET_PROGRESSBAR:
+                name = "ProgressBar";
+                break;
+
+            case VIEW_TYPE_WIDGET_LISTVIEW:
+                name = "ListView";
+                break;
+
+            case VIEW_TYPE_WIDGET_SPINNER:
+                name = "Spinner";
+                break;
+
+            case VIEW_TYPE_WIDGET_CHECKBOX:
+                name = "CheckBox";
+                break;
+
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW:
+                name = "ScrollView";
+                break;
+
+            case VIEW_TYPE_WIDGET_SWITCH:
+                name = "Switch";
+                break;
+
+            case VIEW_TYPE_WIDGET_SEEKBAR:
+                name = "SeekBar";
+                break;
+
+            case VIEW_TYPE_WIDGET_CALENDARVIEW:
+                name = "CalendarView";
+                break;
+
+            case VIEW_TYPE_WIDGET_FAB:
+                name = "FloatingActionButton";
+                break;
+
+            case VIEW_TYPE_WIDGET_ADVIEW:
+                name = "AdView";
+                break;
+
+            case VIEW_TYPE_WIDGET_MAPVIEW:
+                name = "MapView";
+                break;
+
+            default:
+                name = ViewBeans.buildClassInfo(type);
+        }
+        return new Gx(name);
     }
 
     public void clearClassInfo() {
-        this.classInfo = null;
+        classInfo = null;
     }
 
-    @Override // java.lang.Object
+    @Override
     public ViewBean clone() {
         ViewBean viewBean = new ViewBean();
         viewBean.copy(this);
         return viewBean;
     }
 
-    public void copy(ViewBean viewBean) {
-        viewBean.print();
-        this.id = viewBean.id;
-        this.name = viewBean.name;
-        this.type = viewBean.type;
-        this.parent = viewBean.parent;
-        this.parentType = viewBean.parentType;
-        this.index = viewBean.index;
-        this.enabled = viewBean.enabled;
-        this.clickable = viewBean.clickable;
-        this.spinnerMode = viewBean.spinnerMode;
-        this.dividerHeight = viewBean.dividerHeight;
-        this.choiceMode = viewBean.choiceMode;
-        this.customView = viewBean.customView;
-        this.checked = viewBean.checked;
-        this.alpha = viewBean.alpha;
-        this.translationX = viewBean.translationX;
-        this.translationY = viewBean.translationY;
-        this.scaleX = viewBean.scaleX;
-        this.scaleY = viewBean.scaleY;
-        this.max = viewBean.max;
-        this.progress = viewBean.progress;
-        this.firstDayOfWeek = viewBean.firstDayOfWeek;
-        this.adSize = viewBean.adSize;
-        this.adUnitId = viewBean.adUnitId;
-        this.preParent = viewBean.preParent;
-        this.preParentType = viewBean.preParentType;
-        this.preIndex = viewBean.preIndex;
-        this.preId = viewBean.preId;
-        this.layout.copy(viewBean.layout);
-        this.text.copy(viewBean.text);
-        this.image.copy(viewBean.image);
-        this.indeterminate = viewBean.indeterminate;
-        this.inject = viewBean.inject;
-        this.convert = viewBean.convert;
-        this.progressStyle = viewBean.progressStyle;
+    public void copy(ViewBean other) {
+        other.print();
+        id = other.id;
+        name = other.name;
+        type = other.type;
+        parent = other.parent;
+        parentType = other.parentType;
+        index = other.index;
+        enabled = other.enabled;
+        clickable = other.clickable;
+        spinnerMode = other.spinnerMode;
+        dividerHeight = other.dividerHeight;
+        choiceMode = other.choiceMode;
+        customView = other.customView;
+        checked = other.checked;
+        alpha = other.alpha;
+        translationX = other.translationX;
+        translationY = other.translationY;
+        scaleX = other.scaleX;
+        scaleY = other.scaleY;
+        max = other.max;
+        progress = other.progress;
+        firstDayOfWeek = other.firstDayOfWeek;
+        adSize = other.adSize;
+        adUnitId = other.adUnitId;
+        preParent = other.preParent;
+        preParentType = other.preParentType;
+        preIndex = other.preIndex;
+        preId = other.preId;
+        layout.copy(other.layout);
+        text.copy(other.text);
+        image.copy(other.image);
+        indeterminate = other.indeterminate;
+        inject = other.inject;
+        convert = other.convert;
+        progressStyle = other.progressStyle;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
     public Gx getClassInfo() {
-        if (this.classInfo == null) {
-            this.classInfo = buildClassInfo(this.type);
+        if (classInfo == null) {
+            classInfo = buildClassInfo(type);
         }
-        return this.classInfo;
+        return classInfo;
     }
 
     public Gx getParentClassInfo() {
-        int i = this.parentType;
-        if (i == -1) {
+        if (parentType == -1) {
             return null;
         }
-        if (this.parentClassInfo == null) {
-            this.parentClassInfo = buildClassInfo(i);
+        if (parentClassInfo == null) {
+            parentClassInfo = buildClassInfo(parentType);
         }
-        return this.parentClassInfo;
+        return parentClassInfo;
     }
 
     public boolean isEqual(ViewBean viewBean) {
-        if (this.type != viewBean.type || this.parentType != viewBean.parentType || this.index != viewBean.index || this.enabled != viewBean.enabled || this.clickable != viewBean.clickable || this.alpha != viewBean.alpha || this.translationX != viewBean.translationX || this.translationY != viewBean.translationY || this.scaleX != viewBean.scaleX || this.scaleY != viewBean.scaleY || this.spinnerMode != viewBean.spinnerMode || this.dividerHeight != viewBean.dividerHeight || this.choiceMode != viewBean.choiceMode || this.checked != viewBean.checked || this.max != viewBean.max || this.progress != viewBean.progress || this.firstDayOfWeek != viewBean.firstDayOfWeek || !this.adSize.equals(viewBean.adSize) || !this.adUnitId.equals(viewBean.adUnitId) || !this.text.isEqual(viewBean.text) || !this.layout.isEqual(viewBean.layout) || !this.image.isEqual(viewBean.image) || !this.indeterminate.equals(viewBean.indeterminate) || !this.inject.equals(viewBean.inject) || !this.convert.equals(viewBean.convert) || !this.progressStyle.equals(viewBean.progressStyle)) {
+        if (type != viewBean.type || parentType != viewBean.parentType || index != viewBean.index ||
+                enabled != viewBean.enabled || clickable != viewBean.clickable || alpha != viewBean.alpha ||
+                translationX != viewBean.translationX || translationY != viewBean.translationY ||
+                scaleX != viewBean.scaleX || scaleY != viewBean.scaleY || spinnerMode != viewBean.spinnerMode ||
+                dividerHeight != viewBean.dividerHeight || choiceMode != viewBean.choiceMode ||
+                checked != viewBean.checked || max != viewBean.max || progress != viewBean.progress ||
+                firstDayOfWeek != viewBean.firstDayOfWeek || !adSize.equals(viewBean.adSize) ||
+                !adUnitId.equals(viewBean.adUnitId) || !text.isEqual(viewBean.text) || !layout.isEqual(viewBean.layout) ||
+                !image.isEqual(viewBean.image) || !indeterminate.equals(viewBean.indeterminate) ||
+                !inject.equals(viewBean.inject) || !convert.equals(viewBean.convert) ||
+                !progressStyle.equals(viewBean.progressStyle)) {
             return false;
         }
-        String str = this.id;
-        if (str != null) {
-            String str2 = viewBean.id;
-            if (str2 == null || !str.equals(str2)) {
+
+        String id = this.id;
+        if (id != null) {
+            if (!id.equals(viewBean.id)) {
                 return false;
             }
         } else if (viewBean.id != null) {
             return false;
         }
-        String str3 = this.parent;
-        if (str3 != null) {
-            String str4 = viewBean.parent;
-            if (str4 == null || !str3.equals(str4)) {
+
+        String parent = this.parent;
+        if (parent != null) {
+            if (!parent.equals(viewBean.parent)) {
                 return false;
             }
         } else if (viewBean.parent != null) {
             return false;
         }
-        String str5 = this.customView;
-        if (str5 != null) {
-            String str6 = viewBean.customView;
-            return str6 != null && str5.equals(str6);
+
+        String customView = this.customView;
+        if (customView != null) {
+            return customView.equals(viewBean.customView);
         } else return viewBean.customView == null;
     }
 
     public void print() {
-        this.layout.print();
-        this.text.print();
-        this.image.print();
+        layout.print();
+        text.print();
+        image.print();
     }
 
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.id);
-        parcel.writeString(this.name);
-        parcel.writeInt(this.type);
-        parcel.writeString(this.parent);
-        parcel.writeInt(this.parentType);
-        parcel.writeInt(this.index);
-        parcel.writeInt(this.enabled);
-        parcel.writeInt(this.clickable);
-        parcel.writeInt(this.spinnerMode);
-        parcel.writeInt(this.dividerHeight);
-        parcel.writeInt(this.choiceMode);
-        parcel.writeString(this.customView);
-        parcel.writeInt(this.checked);
-        parcel.writeFloat(this.alpha);
-        parcel.writeFloat(this.translationX);
-        parcel.writeFloat(this.translationY);
-        parcel.writeFloat(this.scaleX);
-        parcel.writeFloat(this.scaleY);
-        parcel.writeInt(this.max);
-        parcel.writeInt(this.progress);
-        parcel.writeInt(this.firstDayOfWeek);
-        parcel.writeString(this.adSize);
-        parcel.writeString(this.adUnitId);
-        parcel.writeString(this.preParent);
-        parcel.writeInt(this.preParentType);
-        parcel.writeInt(this.preIndex);
-        parcel.writeString(this.preId);
-        parcel.writeParcelable(this.layout, i);
-        parcel.writeParcelable(this.text, i);
-        parcel.writeParcelable(this.image, i);
-        parcel.writeString(this.indeterminate);
-        parcel.writeString(this.inject);
-        parcel.writeString(this.convert);
-        parcel.writeString(this.progressStyle);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeInt(type);
+        dest.writeString(parent);
+        dest.writeInt(parentType);
+        dest.writeInt(index);
+        dest.writeInt(enabled);
+        dest.writeInt(clickable);
+        dest.writeInt(spinnerMode);
+        dest.writeInt(dividerHeight);
+        dest.writeInt(choiceMode);
+        dest.writeString(customView);
+        dest.writeInt(checked);
+        dest.writeFloat(alpha);
+        dest.writeFloat(translationX);
+        dest.writeFloat(translationY);
+        dest.writeFloat(scaleX);
+        dest.writeFloat(scaleY);
+        dest.writeInt(max);
+        dest.writeInt(progress);
+        dest.writeInt(firstDayOfWeek);
+        dest.writeString(adSize);
+        dest.writeString(adUnitId);
+        dest.writeString(preParent);
+        dest.writeInt(preParentType);
+        dest.writeInt(preIndex);
+        dest.writeString(preId);
+        dest.writeParcelable(layout, flags);
+        dest.writeParcelable(text, flags);
+        dest.writeParcelable(image, flags);
+        dest.writeString(indeterminate);
+        dest.writeString(inject);
+        dest.writeString(convert);
+        dest.writeString(progressStyle);
     }
 }

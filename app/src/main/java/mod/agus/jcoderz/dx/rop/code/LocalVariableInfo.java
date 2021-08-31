@@ -1,109 +1,252 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
+import mod.agus.jcoderz.dx.rop.type.TypeBearer;
+import mod.agus.jcoderz.dx.util.MutabilityControl;
 import java.util.HashMap;
 
-import mod.agus.jcoderz.dx.util.MutabilityControl;
-
-public final class LocalVariableInfo extends MutabilityControl {
-    private final RegisterSpecSet[] blockStarts;
-    private final RegisterSpecSet emptySet;
-    private final HashMap<Insn, RegisterSpec> insnAssignments;
+/**
+ * Container for local variable information for a particular {@link
+ * mod.agus.jcoderz.dx.rop.code.RopMethod}.
+ */
+public final class LocalVariableInfo
+        extends MutabilityControl {
+    /** {@code >= 0;} the register count for the method */
     private final int regCount;
 
-    public LocalVariableInfo(RopMethod ropMethod) {
-        if (ropMethod == null) {
+    /**
+     * {@code non-null;} {@link mod.agus.jcoderz.dx.rop.code.RegisterSpecSet} to use when indicating a block
+     * that has no locals; it is empty and immutable but has an appropriate
+     * max size for the method
+     */
+    private final mod.agus.jcoderz.dx.rop.code.RegisterSpecSet emptySet;
+
+    /**
+     * {@code non-null;} array consisting of register sets representing the
+     * sets of variables already assigned upon entry to each block,
+     * where array indices correspond to block labels
+     */
+    private final mod.agus.jcoderz.dx.rop.code.RegisterSpecSet[] blockStarts;
+
+    /** {@code non-null;} map from instructions to the variable each assigns */
+    private final HashMap<mod.agus.jcoderz.dx.rop.code.Insn, RegisterSpec> insnAssignments;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param method {@code non-null;} the method being represented by this instance
+     */
+    public LocalVariableInfo(RopMethod method) {
+        if (method == null) {
             throw new NullPointerException("method == null");
         }
-        BasicBlockList blocks = ropMethod.getBlocks();
+
+        BasicBlockList blocks = method.getBlocks();
         int maxLabel = blocks.getMaxLabel();
+
         this.regCount = blocks.getRegCount();
-        this.emptySet = new RegisterSpecSet(this.regCount);
-        this.blockStarts = new RegisterSpecSet[maxLabel];
-        this.insnAssignments = new HashMap<>(blocks.getInstructionCount());
-        this.emptySet.setImmutable();
+        this.emptySet = new mod.agus.jcoderz.dx.rop.code.RegisterSpecSet(regCount);
+        this.blockStarts = new mod.agus.jcoderz.dx.rop.code.RegisterSpecSet[maxLabel];
+        this.insnAssignments =
+            new HashMap<mod.agus.jcoderz.dx.rop.code.Insn, RegisterSpec>(blocks.getInstructionCount());
+
+        emptySet.setImmutable();
     }
 
-    public void setStarts(int i, RegisterSpecSet registerSpecSet) {
+    /**
+     * Sets the register set associated with the start of the block with
+     * the given label.
+     *
+     * @param label {@code >= 0;} the block label
+     * @param specs {@code non-null;} the register set to associate with the block
+     */
+    public void setStarts(int label, mod.agus.jcoderz.dx.rop.code.RegisterSpecSet specs) {
         throwIfImmutable();
-        if (registerSpecSet == null) {
+
+        if (specs == null) {
             throw new NullPointerException("specs == null");
         }
+
         try {
-            this.blockStarts[i] = registerSpecSet;
-        } catch (ArrayIndexOutOfBoundsException e) {
+            blockStarts[label] = specs;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("bogus label");
         }
     }
 
-    public boolean mergeStarts(int i, RegisterSpecSet registerSpecSet) {
-        RegisterSpecSet starts0 = getStarts0(i);
-        if (starts0 == null) {
-            setStarts(i, registerSpecSet);
+    /**
+     * Merges the given register set into the set for the block with the
+     * given label. If there was not already an associated set, then this
+     * is the same as calling {@link #setStarts}. Otherwise, this will
+     * merge the two sets and call {@link #setStarts} on the result of the
+     * merge.
+     *
+     * @param label {@code >= 0;} the block label
+     * @param specs {@code non-null;} the register set to merge into the start set
+     * for the block
+     * @return {@code true} if the merge resulted in an actual change
+     * to the associated set (including storing one for the first time) or
+     * {@code false} if there was no change
+     */
+    public boolean mergeStarts(int label, mod.agus.jcoderz.dx.rop.code.RegisterSpecSet specs) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecSet start = getStarts0(label);
+        boolean changed = false;
+
+        if (start == null) {
+            setStarts(label, specs);
             return true;
         }
-        RegisterSpecSet mutableCopy = starts0.mutableCopy();
-        if (starts0.size() != 0) {
-            mutableCopy.intersect(registerSpecSet, true);
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecSet newStart = start.mutableCopy();
+        if (start.size() != 0) {
+            newStart.intersect(specs, true);
         } else {
-            mutableCopy = registerSpecSet.mutableCopy();
+            newStart = specs.mutableCopy();
         }
-        if (starts0.equals(mutableCopy)) {
+
+        if (start.equals(newStart)) {
             return false;
         }
-        mutableCopy.setImmutable();
-        setStarts(i, mutableCopy);
+
+        newStart.setImmutable();
+        setStarts(label, newStart);
+
         return true;
     }
 
-    public RegisterSpecSet getStarts(int i) {
-        RegisterSpecSet starts0 = getStarts0(i);
-        return starts0 != null ? starts0 : this.emptySet;
+    /**
+     * Gets the register set associated with the start of the block
+     * with the given label. This returns an empty set with the appropriate
+     * max size if no set was associated with the block in question.
+     *
+     * @param label {@code >= 0;} the block label
+     * @return {@code non-null;} the associated register set
+     */
+    public mod.agus.jcoderz.dx.rop.code.RegisterSpecSet getStarts(int label) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecSet result = getStarts0(label);
+
+        return (result != null) ? result : emptySet;
     }
 
-    public RegisterSpecSet getStarts(BasicBlock basicBlock) {
-        return getStarts(basicBlock.getLabel());
+    /**
+     * Gets the register set associated with the start of the given
+     * block. This is just convenient shorthand for
+     * {@code getStarts(block.getLabel())}.
+     *
+     * @param block {@code non-null;} the block in question
+     * @return {@code non-null;} the associated register set
+     */
+    public mod.agus.jcoderz.dx.rop.code.RegisterSpecSet getStarts(BasicBlock block) {
+        return getStarts(block.getLabel());
     }
 
-    public RegisterSpecSet mutableCopyOfStarts(int i) {
-        RegisterSpecSet starts0 = getStarts0(i);
-        return starts0 != null ? starts0.mutableCopy() : new RegisterSpecSet(this.regCount);
+    /**
+     * Gets a mutable copy of the register set associated with the
+     * start of the block with the given label. This returns a
+     * newly-allocated empty {@link mod.agus.jcoderz.dx.rop.code.RegisterSpecSet} of appropriate
+     * max size if there is not yet any set associated with the block.
+     *
+     * @param label {@code >= 0;} the block label
+     * @return {@code non-null;} the associated register set
+     */
+    public mod.agus.jcoderz.dx.rop.code.RegisterSpecSet mutableCopyOfStarts(int label) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecSet result = getStarts0(label);
+
+        return (result != null) ?
+            result.mutableCopy() : new mod.agus.jcoderz.dx.rop.code.RegisterSpecSet(regCount);
     }
 
-    public void addAssignment(Insn insn, RegisterSpec registerSpec) {
+    /**
+     * Adds an assignment association for the given instruction and
+     * register spec. This throws an exception if the instruction
+     * doesn't actually perform a named variable assignment.
+     *
+     * <b>Note:</b> Although the instruction contains its own spec for
+     * the result, it still needs to be passed in explicitly to this
+     * method, since the spec that is stored here should always have a
+     * simple type and the one in the instruction can be an arbitrary
+     * {@link TypeBearer} (such as a constant value).
+     *
+     * @param insn {@code non-null;} the instruction in question
+     * @param spec {@code non-null;} the associated register spec
+     */
+    public void addAssignment(mod.agus.jcoderz.dx.rop.code.Insn insn, RegisterSpec spec) {
         throwIfImmutable();
+
         if (insn == null) {
             throw new NullPointerException("insn == null");
-        } else if (registerSpec == null) {
-            throw new NullPointerException("spec == null");
-        } else {
-            this.insnAssignments.put(insn, registerSpec);
         }
+
+        if (spec == null) {
+            throw new NullPointerException("spec == null");
+        }
+
+        insnAssignments.put(insn, spec);
     }
 
+    /**
+     * Gets the named register being assigned by the given instruction, if
+     * previously stored in this instance.
+     *
+     * @param insn {@code non-null;} instruction in question
+     * @return {@code null-ok;} the named register being assigned, if any
+     */
     public RegisterSpec getAssignment(Insn insn) {
-        return this.insnAssignments.get(insn);
+        return insnAssignments.get(insn);
     }
 
+    /**
+     * Gets the number of assignments recorded by this instance.
+     *
+     * @return {@code >= 0;} the number of assignments
+     */
     public int getAssignmentCount() {
-        return this.insnAssignments.size();
+        return insnAssignments.size();
     }
 
     public void debugDump() {
-        for (int i = 0; i < this.blockStarts.length; i++) {
-            if (this.blockStarts[i] != null) {
-                if (this.blockStarts[i] == this.emptySet) {
-                    System.out.printf("%04x: empty set\n", Integer.valueOf(i));
-                } else {
-                    System.out.printf("%04x: %s\n", Integer.valueOf(i), this.blockStarts[i]);
-                }
+        for (int label = 0 ; label < blockStarts.length; label++) {
+            if (blockStarts[label] == null) {
+                continue;
+            }
+
+            if (blockStarts[label] == emptySet) {
+                System.out.printf("%04x: empty set\n", label);
+            } else {
+                System.out.printf("%04x: %s\n", label, blockStarts[label]);
             }
         }
     }
 
-    private RegisterSpecSet getStarts0(int i) {
+    /**
+     * Helper method, to get the starts for a label, throwing the
+     * right exception for range problems.
+     *
+     * @param label {@code >= 0;} the block label
+     * @return {@code null-ok;} associated register set or {@code null} if there
+     * is none
+     */
+    private RegisterSpecSet getStarts0(int label) {
         try {
-            return this.blockStarts[i];
-        } catch (ArrayIndexOutOfBoundsException e) {
+            return blockStarts[label];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("bogus label");
         }
     }

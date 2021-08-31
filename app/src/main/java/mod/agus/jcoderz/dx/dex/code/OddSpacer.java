@@ -1,42 +1,76 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.code;
 
+import mod.agus.jcoderz.dx.io.Opcodes;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
+/**
+ * Pseudo-instruction which either turns into a {@code nop} or
+ * nothingness, in order to make the subsequent instruction have an
+ * even address. This is used to align (subsequent) instructions that
+ * require it.
+ */
 public final class OddSpacer extends VariableSizeInsn {
-    public OddSpacer(SourcePosition sourcePosition) {
-        super(sourcePosition, RegisterSpecList.EMPTY);
+    /**
+     * Constructs an instance. The output address of this instance is initially
+     * unknown ({@code -1}).
+     *
+     * @param position {@code non-null;} source position
+     */
+    public OddSpacer(SourcePosition position) {
+        super(position, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
-        return getAddress() & 1;
+        return (getAddress() & 1);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public void writeTo(AnnotatedOutput annotatedOutput) {
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out) {
         if (codeSize() != 0) {
-            annotatedOutput.writeShort(InsnFormat.codeUnit(0, 0));
+            out.writeShort(InsnFormat.codeUnit(Opcodes.NOP, 0));
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public DalvInsn withRegisters(RegisterSpecList registerSpecList) {
+    /** {@inheritDoc} */
+    @Override
+    public DalvInsn withRegisters(RegisterSpecList registers) {
         return new OddSpacer(getPosition());
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public String argString() {
+    /** {@inheritDoc} */
+    @Override
+    protected String argString() {
         return null;
     }
 
-    /* access modifiers changed from: protected */
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public String listingString0(boolean z) {
+    /** {@inheritDoc} */
+    @Override
+    protected String listingString0(boolean noteIndices) {
         if (codeSize() == 0) {
             return null;
         }
+
         return "nop // spacer";
     }
 }

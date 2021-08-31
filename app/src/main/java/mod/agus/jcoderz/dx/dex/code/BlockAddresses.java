@@ -1,57 +1,143 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.code;
 
 import mod.agus.jcoderz.dx.rop.code.BasicBlock;
 import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
+import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 
+/**
+ * Container for the set of {@link mod.agus.jcoderz.dx.dex.code.CodeAddress} instances associated with
+ * the blocks of a particular method. Each block has a corresponding
+ * start address, end address, and last instruction address.
+ */
 public final class BlockAddresses {
-    private final CodeAddress[] ends;
-    private final CodeAddress[] lasts;
-    private final CodeAddress[] starts;
+    /** {@code non-null;} array containing addresses for the start of each basic
+     * block (indexed by basic block label) */
+    private final mod.agus.jcoderz.dx.dex.code.CodeAddress[] starts;
 
-    public BlockAddresses(RopMethod ropMethod) {
-        int maxLabel = ropMethod.getBlocks().getMaxLabel();
-        this.starts = new CodeAddress[maxLabel];
-        this.lasts = new CodeAddress[maxLabel];
-        this.ends = new CodeAddress[maxLabel];
-        setupArrays(ropMethod);
+    /** {@code non-null;} array containing addresses for the final instruction
+     * of each basic block (indexed by basic block label) */
+    private final mod.agus.jcoderz.dx.dex.code.CodeAddress[] lasts;
+
+    /** {@code non-null;} array containing addresses for the end (just past the
+     * final instruction) of each basic block (indexed by basic block
+     * label) */
+    private final mod.agus.jcoderz.dx.dex.code.CodeAddress[] ends;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param method {@code non-null;} the method to have block addresses for
+     */
+    public BlockAddresses(mod.agus.jcoderz.dx.rop.code.RopMethod method) {
+        mod.agus.jcoderz.dx.rop.code.BasicBlockList blocks = method.getBlocks();
+        int maxLabel = blocks.getMaxLabel();
+
+        this.starts = new mod.agus.jcoderz.dx.dex.code.CodeAddress[maxLabel];
+        this.lasts = new mod.agus.jcoderz.dx.dex.code.CodeAddress[maxLabel];
+        this.ends = new mod.agus.jcoderz.dx.dex.code.CodeAddress[maxLabel];
+
+        setupArrays(method);
     }
 
-    public CodeAddress getStart(BasicBlock basicBlock) {
-        return this.starts[basicBlock.getLabel()];
+    /**
+     * Gets the instance for the start of the given block.
+     *
+     * @param block {@code non-null;} the block in question
+     * @return {@code non-null;} the appropriate instance
+     */
+    public mod.agus.jcoderz.dx.dex.code.CodeAddress getStart(mod.agus.jcoderz.dx.rop.code.BasicBlock block) {
+        return starts[block.getLabel()];
     }
 
-    public CodeAddress getStart(int i) {
-        return this.starts[i];
+    /**
+     * Gets the instance for the start of the block with the given label.
+     *
+     * @param label {@code non-null;} the label of the block in question
+     * @return {@code non-null;} the appropriate instance
+     */
+    public mod.agus.jcoderz.dx.dex.code.CodeAddress getStart(int label) {
+        return starts[label];
     }
 
-    public CodeAddress getLast(BasicBlock basicBlock) {
-        return this.lasts[basicBlock.getLabel()];
+    /**
+     * Gets the instance for the final instruction of the given block.
+     *
+     * @param block {@code non-null;} the block in question
+     * @return {@code non-null;} the appropriate instance
+     */
+    public mod.agus.jcoderz.dx.dex.code.CodeAddress getLast(mod.agus.jcoderz.dx.rop.code.BasicBlock block) {
+        return lasts[block.getLabel()];
     }
 
-    public CodeAddress getLast(int i) {
-        return this.lasts[i];
+    /**
+     * Gets the instance for the final instruction of the block with
+     * the given label.
+     *
+     * @param label {@code non-null;} the label of the block in question
+     * @return {@code non-null;} the appropriate instance
+     */
+    public mod.agus.jcoderz.dx.dex.code.CodeAddress getLast(int label) {
+        return lasts[label];
     }
 
-    public CodeAddress getEnd(BasicBlock basicBlock) {
-        return this.ends[basicBlock.getLabel()];
+    /**
+     * Gets the instance for the end (address after the final instruction)
+     * of the given block.
+     *
+     * @param block {@code non-null;} the block in question
+     * @return {@code non-null;} the appropriate instance
+     */
+    public mod.agus.jcoderz.dx.dex.code.CodeAddress getEnd(mod.agus.jcoderz.dx.rop.code.BasicBlock block) {
+        return ends[block.getLabel()];
     }
 
-    public CodeAddress getEnd(int i) {
-        return this.ends[i];
+    /**
+     * Gets the instance for the end (address after the final instruction)
+     * of the block with the given label.
+     *
+     * @param label {@code non-null;} the label of the block in question
+     * @return {@code non-null;} the appropriate instance
+     */
+    public mod.agus.jcoderz.dx.dex.code.CodeAddress getEnd(int label) {
+        return ends[label];
     }
 
-    private void setupArrays(RopMethod ropMethod) {
-        BasicBlockList blocks = ropMethod.getBlocks();
-        int size = blocks.size();
-        for (int i = 0; i < size; i++) {
-            BasicBlock basicBlock = blocks.get(i);
-            int label = basicBlock.getLabel();
-            this.starts[label] = new CodeAddress(basicBlock.getInsns().get(0).getPosition());
-            SourcePosition position = basicBlock.getLastInsn().getPosition();
-            this.lasts[label] = new CodeAddress(position);
-            this.ends[label] = new CodeAddress(position);
+    /**
+     * Sets up the address arrays.
+     */
+    private void setupArrays(RopMethod method) {
+        BasicBlockList blocks = method.getBlocks();
+        int sz = blocks.size();
+
+        for (int i = 0; i < sz; i++) {
+            BasicBlock one = blocks.get(i);
+            int label = one.getLabel();
+            Insn insn = one.getInsns().get(0);
+
+            starts[label] = new mod.agus.jcoderz.dx.dex.code.CodeAddress(insn.getPosition());
+
+            SourcePosition pos = one.getLastInsn().getPosition();
+
+            lasts[label] = new mod.agus.jcoderz.dx.dex.code.CodeAddress(pos);
+            ends[label] = new CodeAddress(pos);
         }
     }
 }

@@ -1,89 +1,157 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
-import mod.agus.jcoderz.dx.rop.cst.Constant;
-import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
+import mod.agus.jcoderz.dx.rop.cst.Constant;
+import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 
-public final class PlainInsn extends Insn {
-    public PlainInsn(Rop rop, SourcePosition sourcePosition, RegisterSpec registerSpec, RegisterSpecList registerSpecList) {
-        super(rop, sourcePosition, registerSpec, registerSpecList);
-        switch (rop.getBranchingness()) {
-            case 5:
-            case 6:
-                throw new IllegalArgumentException("bogus branchingness");
-            default:
-                if (registerSpec != null && rop.getBranchingness() != 1) {
-                    throw new IllegalArgumentException("can't mix branchingness with result");
-                }
-                return;
+/**
+ * Plain instruction, which has no embedded data and which cannot possibly
+ * throw an exception.
+ */
+public final class PlainInsn
+        extends Insn {
+    /**
+     * Constructs an instance.
+     *
+     * @param opcode {@code non-null;} the opcode
+     * @param position {@code non-null;} source position
+     * @param result {@code null-ok;} spec for the result, if any
+     * @param sources {@code non-null;} specs for all the sources
+     */
+    public PlainInsn(Rop opcode, SourcePosition position,
+                     RegisterSpec result, mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources) {
+        super(opcode, position, result, sources);
+
+        switch (opcode.getBranchingness()) {
+            case Rop.BRANCH_SWITCH:
+            case Rop.BRANCH_THROW: {
+                throw new IllegalArgumentException("opcode with invalid branchingness: " + opcode.getBranchingness());
+            }
+        }
+
+        if (result != null && opcode.getBranchingness() != Rop.BRANCH_NONE) {
+            // move-result-pseudo is required here
+            throw new IllegalArgumentException
+                    ("can't mix branchingness with result");
         }
     }
 
-    public PlainInsn(Rop rop, SourcePosition sourcePosition, RegisterSpec registerSpec, RegisterSpec registerSpec2) {
-        this(rop, sourcePosition, registerSpec, RegisterSpecList.make(registerSpec2));
+    /**
+     * Constructs a single-source instance.
+     *
+     * @param opcode {@code non-null;} the opcode
+     * @param position {@code non-null;} source position
+     * @param result {@code null-ok;} spec for the result, if any
+     * @param source {@code non-null;} spec for the source
+     */
+    public PlainInsn(Rop opcode, SourcePosition position, RegisterSpec result,
+                     RegisterSpec source) {
+        this(opcode, position, result, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(source));
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public TypeList getCatches() {
         return StdTypeList.EMPTY;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public void accept(Insn.Visitor visitor) {
+    /** {@inheritDoc} */
+    @Override
+    public void accept(Visitor visitor) {
         visitor.visitPlainInsn(this);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public Insn withAddedCatch(Type type) {
         throw new UnsupportedOperationException("unsupported");
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withRegisterOffset(int i) {
-        return new PlainInsn(getOpcode(), getPosition(), getResult().withOffset(i), getSources().withOffset(i));
+    /** {@inheritDoc} */
+    @Override
+    public Insn withRegisterOffset(int delta) {
+        return new PlainInsn(getOpcode(), getPosition(),
+                             getResult().withOffset(delta),
+                             getSources().withOffset(delta));
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public Insn withSourceLiteral() {
-        CstInteger cstInteger;
-        int i;
-        RegisterSpecList sources = getSources();
-        int size = sources.size();
-        if (size == 0) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources = getSources();
+        int szSources = sources.size();
+
+        if (szSources == 0) {
             return this;
         }
-        TypeBearer typeBearer = sources.get(size - 1).getTypeBearer();
-        if (!typeBearer.isConstant()) {
-            TypeBearer typeBearer2 = sources.get(0).getTypeBearer();
-            if (size != 2 || !typeBearer2.isConstant()) {
+
+        TypeBearer lastType = sources.get(szSources - 1).getTypeBearer();
+
+        if (!lastType.isConstant()) {
+            // Check for reverse subtraction, where first source is constant
+            TypeBearer firstType = sources.get(0).getTypeBearer();
+            if (szSources == 2 && firstType.isConstant()) {
+                mod.agus.jcoderz.dx.rop.cst.Constant cst = (mod.agus.jcoderz.dx.rop.cst.Constant) firstType;
+                mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources = sources.withoutFirst();
+                Rop newRop = Rops.ropFor(getOpcode().getOpcode(), getResult(),
+                                             newSources, cst);
+                return new mod.agus.jcoderz.dx.rop.code.PlainCstInsn(newRop, getPosition(), getResult(),
+                                            newSources, cst);
+            }
+            return this;
+        } else {
+
+            mod.agus.jcoderz.dx.rop.cst.Constant cst = (Constant) lastType;
+
+            mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources = sources.withoutLast();
+
+            Rop newRop;
+            try {
+                // Check for constant subtraction and flip it to be addition
+                int opcode = getOpcode().getOpcode();
+                if (opcode == RegOps.SUB && cst instanceof mod.agus.jcoderz.dx.rop.cst.CstInteger) {
+                    opcode = RegOps.ADD;
+                    cst = mod.agus.jcoderz.dx.rop.cst.CstInteger.make(-((CstInteger)cst).getValue());
+                }
+                newRop = Rops.ropFor(opcode, getResult(), newSources, cst);
+            } catch (IllegalArgumentException ex) {
+                // There's no rop for this case
                 return this;
             }
-            Constant constant = (Constant) typeBearer2;
-            RegisterSpecList withoutFirst = sources.withoutFirst();
-            return new PlainCstInsn(Rops.ropFor(getOpcode().getOpcode(), getResult(), withoutFirst, constant), getPosition(), getResult(), withoutFirst, constant);
-        }
-        Constant constant2 = (Constant) typeBearer;
-        RegisterSpecList withoutLast = sources.withoutLast();
-        try {
-            int opcode = getOpcode().getOpcode();
-            if (opcode != 15 || !(constant2 instanceof CstInteger)) {
-                cstInteger = (CstInteger) constant2;
-                i = opcode;
-            } else {
-                cstInteger = CstInteger.make(-((CstInteger) constant2).getValue());
-                i = 14;
-            }
-            return new PlainCstInsn(Rops.ropFor(i, getResult(), withoutLast, cstInteger), getPosition(), getResult(), withoutLast, cstInteger);
-        } catch (IllegalArgumentException e) {
-            return this;
+
+            return new PlainCstInsn(newRop, getPosition(),
+                    getResult(), newSources, cst);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withNewRegisters(RegisterSpec registerSpec, RegisterSpecList registerSpecList) {
-        return new PlainInsn(getOpcode(), getPosition(), registerSpec, registerSpecList);
+
+    /** {@inheritDoc} */
+    @Override
+    public Insn withNewRegisters(RegisterSpec result,
+            RegisterSpecList sources) {
+
+        return new PlainInsn(getOpcode(), getPosition(),
+                             result,
+                             sources);
+
     }
 }

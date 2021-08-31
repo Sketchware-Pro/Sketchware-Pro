@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sketchware.remod.sources">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,6 +10,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -23,9 +27,9 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:icon="@mipmap/sketch_app_icon"
         android:label="@string/app_name"
-        android:largeHeap="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -462,7 +466,7 @@
         <activity
             android:name="mod.hey.studios.code.SrcCodeEditor"
             android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.Material.Light.DarkActionBar" />
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity
             android:name="mod.hey.studios.project.proguard.ManageProguardActivity"
             android:configChanges="orientation|screenSize" />

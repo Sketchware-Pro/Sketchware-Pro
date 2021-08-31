@@ -1,8 +1,10 @@
 package mod.agus.jcoderz.lib;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,10 +20,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -99,10 +104,7 @@ public class FileUtil {
         createNewFile(path);
 
         StringBuilder sb = new StringBuilder();
-        FileReader fr = null;
-        try {
-            fr = new FileReader(path);
-
+        try (FileReader fr = new FileReader(path)) {
             char[] buff = new char[1024];
             int length;
 
@@ -111,14 +113,6 @@ public class FileUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fr != null) {
-                try {
-                    fr.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         return sb.toString();
@@ -126,21 +120,12 @@ public class FileUtil {
 
     public static void writeFile(String path, String str) {
         createNewFile(path);
-        FileWriter fileWriter = null;
 
-        try {
-            fileWriter = new FileWriter(path, false);
+        try (FileWriter fileWriter = new FileWriter(path, false)) {
             fileWriter.write(str);
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (fileWriter != null)
-                    fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -148,36 +133,16 @@ public class FileUtil {
         if (!isExistFile(sourcePath)) return;
         createNewFile(destPath);
 
-        FileInputStream fis = null;
-        FileOutputStream fos = null;
-
-        try {
-            fis = new FileInputStream(sourcePath);
-            fos = new FileOutputStream(destPath, false);
-
-            byte[] buff = new byte[1024];
+        try (FileInputStream fis = new FileInputStream(sourcePath);
+             FileOutputStream fos = new FileOutputStream(destPath, false)) {
+            byte[] buffer = new byte[1024];
             int length;
 
-            while ((length = fis.read(buff)) > 0) {
-                fos.write(buff, 0, length);
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -209,8 +174,10 @@ public class FileUtil {
             }
         } else if (copyInto.exists() || copyInto.mkdirs()) {
             String[] list = source.list();
-            for (String s : list) {
-                copyDirectory(new File(source, s), new File(copyInto, s));
+            if (list != null) {
+                for (String s : list) {
+                    copyDirectory(new File(source, s), new File(copyInto, s));
+                }
             }
         } else {
             throw new IOException("Cannot create dir " + copyInto.getAbsolutePath());
@@ -282,6 +249,21 @@ public class FileUtil {
                 list.add(file.getAbsolutePath());
             }
         }
+    }
+
+    /**
+     * @return List of files that have the filename extension {@code extension}.
+     */
+    public static ArrayList<String> listFiles(String dir, String extension) {
+        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        listDir(dir, files);
+        for (String str : files) {
+            if (str.endsWith(extension) && isFile(str)) {
+                list.add(str);
+            }
+        }
+        return list;
     }
 
     public static boolean isDirectory(String path) {
@@ -415,21 +397,12 @@ public class FileUtil {
     }
 
     private static void saveBitmap(Bitmap bitmap, String destPath) {
-        FileOutputStream out = null;
         FileUtil.createNewFile(destPath);
-        try {
-            out = new FileOutputStream(destPath);
+
+        try (FileOutputStream out = new FileOutputStream(destPath)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -720,5 +693,30 @@ public class FileUtil {
             entry = input.getNextEntry();
         }
         input.close();
+    }
+
+    /**
+     * Asks the user to grant the current app {@link android.Manifest.permission#MANAGE_EXTERNAL_STORAGE}.
+     * Will silently ignore cases where a screen to manage that permission doesn't exist, except on
+     * devices with an API level of 29 or lower.
+     *
+     * @throws AssertionError Thrown if the device's API level is 29 or lower
+     */
+    public static void requestAllFilesAccessPermission(Context context) {
+        if (Build.VERSION.SDK_INT > 29) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    context.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Log.e("FileUtil", "Activity to manage apps' all files access permission not found!");
+                }
+            }
+        } else {
+            throw new AssertionError("Not on an API level 30 or higher device!");
+        }
     }
 }

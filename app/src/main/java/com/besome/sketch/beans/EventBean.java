@@ -4,27 +4,30 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
+import com.sketchware.remod.Resources;
 
 public class EventBean extends CollapsibleBean implements Parcelable {
-    public static final Parcelable.Creator<EventBean> CREATOR = new Parcelable.Creator<EventBean>() {
-        /* class com.besome.sketch.beans.EventBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
-        public EventBean createFromParcel(Parcel parcel) {
-            return new EventBean(parcel);
+    public static final Parcelable.Creator<EventBean> CREATOR = new Parcelable.Creator<EventBean>() {
+        @Override
+        public EventBean createFromParcel(Parcel source) {
+            return new EventBean(source);
         }
 
-        @Override // android.os.Parcelable.Creator
-        public EventBean[] newArray(int i) {
-            return new EventBean[i];
+        @Override
+        public EventBean[] newArray(int size) {
+            return new EventBean[size];
         }
     };
-    public static final int EVENT_TYPE_ACTIVITY = 3;
+
+    public static final int EVENT_TYPE_VIEW = 1;
     public static final int EVENT_TYPE_COMPONENT = 2;
+    public static final int EVENT_TYPE_ACTIVITY = 3;
     public static final int EVENT_TYPE_DRAWER_VIEW = 4;
     public static final int EVENT_TYPE_ETC = 5;
-    public static final int EVENT_TYPE_VIEW = 1;
+
     public static final String SEPARATOR = "_";
+
     @Expose
     public String eventName;
     @Expose
@@ -34,76 +37,103 @@ public class EventBean extends CollapsibleBean implements Parcelable {
     @Expose
     public int targetType;
 
-    public EventBean(int i, int i2, String str, String str2) {
-        this.eventType = i;
-        this.targetType = i2;
-        this.targetId = str;
-        this.eventName = str2;
+    public EventBean(int eventType, int targetType, String targetId, String eventName) {
+        this.eventType = eventType;
+        this.targetType = targetType;
+        this.targetId = targetId;
+        this.eventName = eventName;
     }
 
-    public EventBean(Parcel parcel) {
-        this.eventType = parcel.readInt();
-        this.targetType = parcel.readInt();
-        this.targetId = parcel.readString();
-        this.eventName = parcel.readString();
+    public EventBean(Parcel other) {
+        eventType = other.readInt();
+        targetType = other.readInt();
+        targetId = other.readString();
+        eventName = other.readString();
     }
 
     public static Parcelable.Creator<EventBean> getCreator() {
         return CREATOR;
     }
 
-    public static int getEventIconResource(int i, int i2) {
-        if (i == 3) {
-            return 2131166270;
+    public static int getEventIconResource(int eventType, int targetType) {
+        switch (eventType) {
+            case EVENT_TYPE_ACTIVITY:
+                return Resources.drawable.widget_source;
+
+            case EVENT_TYPE_VIEW:
+            case EVENT_TYPE_DRAWER_VIEW:
+                return ViewBean.getViewTypeResId(targetType);
+
+            case EVENT_TYPE_COMPONENT:
+                return ComponentBean.getIconResource(targetType);
+
+            default:
+                return Resources.drawable.widget_module;
         }
-        if (i == 1 || i == 4) {
-            return ViewBean.getViewTypeResId(i2);
-        }
-        if (i == 2) {
-            return ComponentBean.getIconResource(i2);
-        }
-        return 2131166260;
     }
 
-    public static int getEventTypeBgRes(int i) {
-        if (i == 1) {
-            return 2131165337;
+    public static int getEventTypeBgRes(int eventType) {
+        switch (eventType) {
+            case EVENT_TYPE_VIEW:
+                return Resources.drawable.bg_event_type_view;
+
+            case EVENT_TYPE_COMPONENT:
+                return Resources.drawable.bg_event_type_component;
+
+            case EVENT_TYPE_ACTIVITY:
+                return Resources.drawable.bg_event_type_activity;
+
+            case EVENT_TYPE_DRAWER_VIEW:
+                return Resources.drawable.bg_event_type_drawer_view;
+
+            default:
+                return 0;
         }
-        if (i == 2) {
-            return 2131165334;
-        }
-        if (i != 3) {
-            return i != 4 ? 0 : 2131165335;
-        }
-        return 2131165333;
     }
 
-    public static String getEventTypeName(int i) {
-        return i != 1 ? i != 2 ? i != 3 ? i != 4 ? "" : "drawer view event" : "activity event" : "component event" : "view event";
+    public static String getEventTypeName(int eventType) {
+        switch (eventType) {
+            case EVENT_TYPE_VIEW:
+                return "view event";
+
+            case EVENT_TYPE_COMPONENT:
+                return "component event";
+
+            case EVENT_TYPE_ACTIVITY:
+                return "activity event";
+
+            case EVENT_TYPE_DRAWER_VIEW:
+                return "drawer view event";
+
+            default:
+                return "";
+        }
     }
 
-    public void copy(EventBean eventBean) {
-        this.eventType = eventBean.eventType;
-        this.targetType = eventBean.targetType;
-        this.targetId = eventBean.targetId;
-        this.eventName = eventBean.eventName;
+    public void copy(EventBean other) {
+        eventType = other.eventType;
+        targetType = other.targetType;
+        targetId = other.targetId;
+        eventName = other.eventName;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
     public String getEventKey() {
-        return this.targetId + SEPARATOR + this.eventName;
+        return targetId + SEPARATOR + eventName;
     }
 
     public void print() {
     }
 
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.eventType);
-        parcel.writeInt(this.targetType);
-        parcel.writeString(this.targetId);
-        parcel.writeString(this.eventName);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(eventType);
+        dest.writeInt(targetType);
+        dest.writeString(targetId);
+        dest.writeString(eventName);
     }
 }

@@ -1,72 +1,127 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
-import mod.agus.jcoderz.dx.rop.cst.Constant;
+import mod.agus.jcoderz.dex.SizeOf;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public final class StringIdItem extends IndexedItem implements Comparable {
+/**
+ * Representation of a string inside a Dalvik file.
+ */
+public final class StringIdItem
+        extends IndexedItem implements Comparable {
+    /** {@code non-null;} the string value */
     private final CstString value;
+
+    /** {@code null-ok;} associated string data object, if known */
     private StringDataItem data;
 
-    public StringIdItem(CstString cstString) {
-        if (cstString == null) {
+    /**
+     * Constructs an instance.
+     *
+     * @param value {@code non-null;} the string value
+     */
+    public StringIdItem(CstString value) {
+        if (value == null) {
             throw new NullPointerException("value == null");
         }
-        this.value = cstString;
+
+        this.value = value;
         this.data = null;
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof StringIdItem)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof StringIdItem)) {
             return false;
         }
-        return this.value.equals(((StringIdItem) obj).value);
+
+        StringIdItem otherString = (StringIdItem) other;
+        return value.equals(otherString.value);
     }
 
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        return this.value.hashCode();
+        return value.hashCode();
     }
 
-    @Override // java.lang.Comparable
-    public int compareTo(Object obj) {
-        return this.value.compareTo((Constant) ((StringIdItem) obj).value);
+    /** {@inheritDoc} */
+    @Override
+    public int compareTo(Object other) {
+        StringIdItem otherString = (StringIdItem) other;
+        return value.compareTo(otherString.value);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_STRING_ID_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public int writeSize() {
-        return 4;
+        return SizeOf.STRING_ID_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        if (this.data == null) {
-            MixedItemSection stringData = dexFile.getStringData();
-            this.data = new StringDataItem(this.value);
-            stringData.add(this.data);
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        if (data == null) {
+            // The string data hasn't yet been added, so add it.
+            MixedItemSection stringData = file.getStringData();
+            data = new StringDataItem(value);
+            stringData.add(data);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void writeTo(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        int absoluteOffset = this.data.getAbsoluteOffset();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, indexString() + ' ' + this.value.toQuoted(100));
-            annotatedOutput.annotate(4, "  string_data_off: " + Hex.u4(absoluteOffset));
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(DexFile file, AnnotatedOutput out) {
+        int dataOff = data.getAbsoluteOffset();
+
+        if (out.annotates()) {
+            out.annotate(0, indexString() + ' ' + value.toQuoted(100));
+            out.annotate(4, "  string_data_off: " + Hex.u4(dataOff));
         }
-        annotatedOutput.writeInt(absoluteOffset);
+
+        out.writeInt(dataOff);
     }
 
+    /**
+     * Gets the string value.
+     *
+     * @return {@code non-null;} the value
+     */
     public CstString getValue() {
-        return this.value;
+        return value;
     }
 
+    /**
+     * Gets the associated data object for this instance, if known.
+     *
+     * @return {@code null-ok;} the associated data object or {@code null}
+     * if not yet known
+     */
     public StringDataItem getData() {
-        return this.data;
+        return data;
     }
 }

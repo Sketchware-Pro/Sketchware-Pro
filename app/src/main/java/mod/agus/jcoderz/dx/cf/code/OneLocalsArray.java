@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.code;
 
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
@@ -6,158 +22,236 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Representation of an array of local variables, with Java semantics.
+ *
+ * <p><b>Note:</b> For the most part, the documentation for this class
+ * ignores the distinction between {@link mod.agus.jcoderz.dx.rop.type.Type} and {@link
+ * mod.agus.jcoderz.dx.rop.type.TypeBearer}.</p>
+ */
 public class OneLocalsArray extends LocalsArray {
-    private final TypeBearer[] locals;
+    /** {@code non-null;} actual array */
+    private final mod.agus.jcoderz.dx.rop.type.TypeBearer[] locals;
 
-    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-    public OneLocalsArray(int i) {
-        super(i != 0);
-        this.locals = new TypeBearer[i];
+    /**
+     * Constructs an instance. The locals array initially consists of
+     * all-uninitialized values (represented as {@code null}s).
+     *
+     * @param maxLocals {@code >= 0;} the maximum number of locals this instance
+     * can refer to
+     */
+    public OneLocalsArray(int maxLocals) {
+        super(maxLocals != 0);
+        locals = new mod.agus.jcoderz.dx.rop.type.TypeBearer[maxLocals];
     }
 
-    private static TypeBearer throwSimException(int i, String str) {
-        throw new SimException("local " + Hex.u2(i) + ": " + str);
-    }
-
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
+    /** {@inheritDoc} */
+    @Override
     public OneLocalsArray copy() {
-        OneLocalsArray oneLocalsArray = new OneLocalsArray(this.locals.length);
-        System.arraycopy(this.locals, 0, oneLocalsArray.locals, 0, this.locals.length);
-        return oneLocalsArray;
+        OneLocalsArray result = new OneLocalsArray(locals.length);
+
+        System.arraycopy(locals, 0, result.locals, 0, locals.length);
+
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public void annotate(ExceptionWithContext exceptionWithContext) {
-        for (int i = 0; i < this.locals.length; i++) {
-            TypeBearer typeBearer = this.locals[i];
-            exceptionWithContext.addContext("locals[" + Hex.u2(i) + "]: " + (typeBearer == null ? "<invalid>" : typeBearer.toString()));
+    /** {@inheritDoc} */
+    @Override
+    public void annotate(ExceptionWithContext ex) {
+        for (int i = 0; i < locals.length; i++) {
+            mod.agus.jcoderz.dx.rop.type.TypeBearer type = locals[i];
+            String s = (type == null) ? "<invalid>" : type.toString();
+            ex.addContext("locals[" + mod.agus.jcoderz.dx.util.Hex.u2(i) + "]: " + s);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.ToHuman
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.locals.length; i++) {
-            TypeBearer typeBearer = this.locals[i];
-            sb.append("locals[" + Hex.u2(i) + "]: " + (typeBearer == null ? "<invalid>" : typeBearer.toString()) + "\n");
+
+        for (int i = 0; i < locals.length; i++) {
+            mod.agus.jcoderz.dx.rop.type.TypeBearer type = locals[i];
+            String s = (type == null) ? "<invalid>" : type.toString();
+            sb.append("locals[" + mod.agus.jcoderz.dx.util.Hex.u2(i) + "]: " + s + "\n");
         }
+
         return sb.toString();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public void makeInitialized(Type type) {
-        int length = this.locals.length;
-        if (length != 0) {
-            throwIfImmutable();
-            Type initializedType = type.getInitializedType();
-            for (int i = 0; i < length; i++) {
-                if (this.locals[i] == type) {
-                    this.locals[i] = initializedType;
-                }
+    /** {@inheritDoc} */
+    @Override
+    public void makeInitialized(mod.agus.jcoderz.dx.rop.type.Type type) {
+        int len = locals.length;
+
+        if (len == 0) {
+            // We have to check for this before checking for immutability.
+            return;
+        }
+
+        throwIfImmutable();
+
+        mod.agus.jcoderz.dx.rop.type.Type initializedType = type.getInitializedType();
+
+        for (int i = 0; i < len; i++) {
+            if (locals[i] == type) {
+                locals[i] = initializedType;
             }
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
+    /** {@inheritDoc} */
+    @Override
     public int getMaxLocals() {
-        return this.locals.length;
+        return locals.length;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public void set(int i, TypeBearer typeBearer) {
-        TypeBearer typeBearer2;
+    /** {@inheritDoc} */
+    @Override
+    public void set(int idx, mod.agus.jcoderz.dx.rop.type.TypeBearer type) {
         throwIfImmutable();
+
         try {
-            TypeBearer frameType = typeBearer.getFrameType();
-            if (i < 0) {
-                throw new IndexOutOfBoundsException("idx < 0");
-            }
-            if (frameType.getType().isCategory2()) {
-                this.locals[i + 1] = null;
-            }
-            this.locals[i] = frameType;
-            if (i != 0 && (typeBearer2 = this.locals[i - 1]) != null && typeBearer2.getType().isCategory2()) {
-                this.locals[i - 1] = null;
-            }
-        } catch (NullPointerException e) {
+            type = type.getFrameType();
+        } catch (NullPointerException ex) {
+            // Elucidate the exception
             throw new NullPointerException("type == null");
         }
+
+        if (idx < 0) {
+            throw new IndexOutOfBoundsException("idx < 0");
+        }
+
+        // Make highest possible out-of-bounds check happen first.
+        if (type.getType().isCategory2()) {
+            locals[idx + 1] = null;
+        }
+
+        locals[idx] = type;
+
+        if (idx != 0) {
+            mod.agus.jcoderz.dx.rop.type.TypeBearer prev = locals[idx - 1];
+            if ((prev != null) && prev.getType().isCategory2()) {
+                locals[idx - 1] = null;
+            }
+        }
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public void set(RegisterSpec registerSpec) {
-        set(registerSpec.getReg(), registerSpec);
+    /** {@inheritDoc} */
+    @Override
+    public void set(RegisterSpec spec) {
+        set(spec.getReg(), spec);
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public void invalidate(int i) {
+    /** {@inheritDoc} */
+    @Override
+    public void invalidate(int idx) {
         throwIfImmutable();
-        this.locals[i] = null;
+        locals[idx] = null;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public TypeBearer getOrNull(int i) {
-        return this.locals[i];
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.type.TypeBearer getOrNull(int idx) {
+        return locals[idx];
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public TypeBearer get(int i) {
-        TypeBearer typeBearer = this.locals[i];
-        if (typeBearer == null) {
-            return throwSimException(i, "invalid");
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.type.TypeBearer get(int idx) {
+        mod.agus.jcoderz.dx.rop.type.TypeBearer result = locals[idx];
+
+        if (result == null) {
+            return throwSimException(idx, "invalid");
         }
-        return typeBearer;
+
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public TypeBearer getCategory1(int i) {
-        TypeBearer typeBearer = get(i);
-        Type type = typeBearer.getType();
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.type.TypeBearer getCategory1(int idx) {
+        mod.agus.jcoderz.dx.rop.type.TypeBearer result = get(idx);
+        Type type = result.getType();
+
         if (type.isUninitialized()) {
-            return throwSimException(i, "uninitialized instance");
+            return throwSimException(idx, "uninitialized instance");
         }
+
         if (type.isCategory2()) {
-            return throwSimException(i, "category-2");
+            return throwSimException(idx, "category-2");
         }
-        return typeBearer;
+
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public TypeBearer getCategory2(int i) {
-        TypeBearer typeBearer = get(i);
-        if (typeBearer.getType().isCategory1()) {
-            return throwSimException(i, "category-1");
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.type.TypeBearer getCategory2(int idx) {
+        mod.agus.jcoderz.dx.rop.type.TypeBearer result = get(idx);
+
+        if (result.getType().isCategory1()) {
+            return throwSimException(idx, "category-1");
         }
-        return typeBearer;
+
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public LocalsArray merge(LocalsArray localsArray) {
-        if (localsArray instanceof OneLocalsArray) {
-            return merge((OneLocalsArray) localsArray);
+    /** {@inheritDoc} */
+    @Override
+    public LocalsArray merge(LocalsArray other) {
+        if (other instanceof OneLocalsArray) {
+            return merge((OneLocalsArray)other);
+        } else { //LocalsArraySet
+            // LocalsArraySet knows how to merge me.
+            return other.merge(this);
         }
-        return localsArray.merge(this);
     }
 
-    public OneLocalsArray merge(OneLocalsArray oneLocalsArray) {
+    /**
+     * Merges this OneLocalsArray instance with another OneLocalsArray
+     * instance. A more-refined version of {@link #merge(LocalsArray) merge}
+     * which is called by that method when appropriate.
+     *
+     * @param other locals array with which to merge
+     * @return this instance if merge was a no-op, or a new instance if
+     * the merge resulted in a change.
+     */
+    public OneLocalsArray merge(OneLocalsArray other) {
         try {
-            return Merger.mergeLocals(this, oneLocalsArray);
-        } catch (SimException e) {
-            e.addContext("underlay locals:");
-            annotate(e);
-            e.addContext("overlay locals:");
-            oneLocalsArray.annotate(e);
-            throw e;
+            return Merger.mergeLocals(this, other);
+        } catch (SimException ex) {
+            ex.addContext("underlay locals:");
+            annotate(ex);
+            ex.addContext("overlay locals:");
+            other.annotate(ex);
+            throw ex;
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public LocalsArraySet mergeWithSubroutineCaller(LocalsArray localsArray, int i) {
-        return new LocalsArraySet(getMaxLocals()).mergeWithSubroutineCaller(localsArray, i);
+    /** {@inheritDoc} */
+    @Override
+    public LocalsArraySet mergeWithSubroutineCaller
+            (LocalsArray other, int predLabel) {
+
+        LocalsArraySet result = new LocalsArraySet(getMaxLocals());
+        return result.mergeWithSubroutineCaller(other, predLabel);
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.code.LocalsArray
-    public OneLocalsArray getPrimary() {
+    /**{@inheritDoc}*/
+    @Override
+    protected OneLocalsArray getPrimary() {
         return this;
+    }
+
+    /**
+     * Throws a properly-formatted exception.
+     *
+     * @param idx the salient local index
+     * @param msg {@code non-null;} useful message
+     * @return never (keeps compiler happy)
+     */
+    private static TypeBearer throwSimException(int idx, String msg) {
+        throw new SimException("local " + Hex.u2(idx) + ": " + msg);
     }
 }

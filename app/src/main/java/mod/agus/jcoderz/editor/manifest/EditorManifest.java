@@ -5,185 +5,182 @@ import java.util.HashMap;
 
 import a.a.a.Nx;
 
+/**
+ * A helper class to add various elements to AndroidManifest.xml if components have been added,
+ * for example the OneSignal component.
+ */
 public class EditorManifest {
-    public static void writeAttrIntentFilter(Nx nx, HashMap<String, ArrayList> hashMap) {
-        Nx nx2 = new Nx("intent-filter");
-        Nx nx3 = new Nx("action");
-        nx3.a("android", "name", "android.intent.action.VIEW");
-        Nx nx4 = new Nx("category");
-        nx4.a("android", "name", "android.intent.category.DEFAULT");
-        Nx nx5 = new Nx("category");
-        nx5.a("android", "name", "android.intent.category.BROWSABLE");
-        Nx nx6 = new Nx("data");
-        if (hashMap.size() > 0) {
-            nx6.a("android", "host", hashMap.get("FirebaseDynamicLink setDataHost").get(0).toString());
+
+    public static void writeAttrIntentFilter(Nx activityTag, HashMap<String, ArrayList<String>> arguments) {
+        Nx intentFilterTag = new Nx("intent-filter");
+        Nx intentFilterActionTag = new Nx("action");
+        intentFilterActionTag.a("android", "name", "android.intent.action.VIEW");
+        Nx intentFilterCategoryDefaultTag = new Nx("category");
+        intentFilterCategoryDefaultTag.a("android", "name", "android.intent.category.DEFAULT");
+        Nx intentFilterCategoryBrowsableTag = new Nx("category");
+        intentFilterCategoryBrowsableTag.a("android", "name", "android.intent.category.BROWSABLE");
+        Nx intentFilterDataTag = new Nx("data");
+        if (arguments.size() > 0) {
+            intentFilterDataTag.a("android", "host", arguments.get("FirebaseDynamicLink setDataHost").get(0));
         }
-        if (hashMap.size() > 1) {
-            nx6.a("android", "scheme", hashMap.get("FirebaseDynamicLink setDataHost").get(1).toString());
+        if (arguments.size() > 1) {
+            intentFilterDataTag.a("android", "scheme", arguments.get("FirebaseDynamicLink setDataHost").get(1));
         }
-        nx2.a(nx3);
-        nx2.a(nx4);
-        nx2.a(nx5);
+        intentFilterTag.a(intentFilterActionTag);
+        intentFilterTag.a(intentFilterCategoryDefaultTag);
+        intentFilterTag.a(intentFilterCategoryBrowsableTag);
+        if (arguments.size() != 0) {
+            intentFilterTag.a(intentFilterDataTag);
+        }
+        activityTag.a(intentFilterTag);
+    }
+
+    public static void writeDefFCM(Nx applicationTag) {
+        Nx firebaseMessagingServiceTag = new Nx("service");
+        firebaseMessagingServiceTag.a("android", "name", "com.google.firebase.messaging.FirebaseMessagingService");
+        firebaseMessagingServiceTag.a("android", "exported", "false");
+        Nx firebaseMessagingServiceIntentFilterTag = new Nx("intent-filter");
+        firebaseMessagingServiceIntentFilterTag.a("android", "priority", "-500");
+        Nx messagingEventActionTag = new Nx("action");
+        messagingEventActionTag.a("android", "name", "com.google.firebase.MESSAGING_EVENT");
+        firebaseMessagingServiceIntentFilterTag.a(messagingEventActionTag);
+        firebaseMessagingServiceTag.a(firebaseMessagingServiceIntentFilterTag);
+        Nx firebaseInstanceIdReceiverTag = new Nx("receiver");
+        firebaseInstanceIdReceiverTag.a("android", "name", "com.google.firebase.iid.FirebaseInstanceIdReceiver");
+        firebaseInstanceIdReceiverTag.a("android", "exported", "true");
+        firebaseInstanceIdReceiverTag.a("android", "permission", "com.google.android.c2dm.permission.SEND");
+        Nx firebaseInstanceIdReceiverIntentFilterTag = new Nx("intent-filter");
+        Nx receiveActionTag = new Nx("action");
+        receiveActionTag.a("android", "name", "com.google.android.c2dm.intent.RECEIVE");
+        firebaseInstanceIdReceiverIntentFilterTag.a(receiveActionTag);
+        firebaseInstanceIdReceiverTag.a(firebaseInstanceIdReceiverIntentFilterTag);
+        applicationTag.a(firebaseMessagingServiceTag);
+        applicationTag.a(firebaseInstanceIdReceiverTag);
+    }
+
+    public static void writeMetadataComponentFirebase(Nx applicationTag, String componentName) {
+        Nx metadataTag = new Nx("meta-data");
+
+        switch (componentName) {
+            case "Firebase Dynamic Link":
+                metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
+                break;
+
+            case "Firebase Cloud Message":
+                metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
+                break;
+        }
+        metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+        applicationTag.a(metadataTag);
+    }
+
+    public static void manifestOneSignal(Nx applicationTag, String packageName, HashMap<String, ArrayList<String>> hashMap) {
         if (hashMap.size() != 0) {
-            nx2.a(nx6);
+            Nx metadataTag = new Nx("meta-data");
+            metadataTag.a("android", "name", "onesignal_app_id");
+            metadataTag.a("android", "value", hashMap.get("OneSignal setAppId").get(0));
+            applicationTag.a(metadataTag);
         }
-        nx.a(nx2);
+        Nx metadataTag = new Nx("meta-data");
+        metadataTag.a("android", "name", "onesignal_google_project_number");
+        metadataTag.a("android", "value", "str:REMOTE");
+        applicationTag.a(metadataTag);
+        if (!packageName.isEmpty()) {
+            Nx receiverTag = new Nx("receiver");
+            receiverTag.a("android", "name", "com.onesignal.GcmBroadcastReceiver");
+            receiverTag.a("android", "permission", "com.google.android.c2dm.permission.SEND");
+            Nx intentFilterTag = new Nx("intent-filter");
+            intentFilterTag.a("android", "priority", "999");
+            Nx actionTag = new Nx("action");
+            actionTag.a("android", "name", "com.google.android.c2dm.intent.RECEIVE");
+            Nx categoryTag = new Nx("category");
+            categoryTag.a("android", "name", packageName);
+            intentFilterTag.a(categoryTag);
+            intentFilterTag.a(actionTag);
+            receiverTag.a(intentFilterTag);
+            applicationTag.a(receiverTag);
+        }
+        Nx notificationOpenedReceiverTag = new Nx("receiver");
+        notificationOpenedReceiverTag.a("android", "name", "com.onesignal.NotificationOpenedReceiver");
+        applicationTag.a(notificationOpenedReceiverTag);
+        Nx gcmIntentServiceTag = new Nx("service");
+        gcmIntentServiceTag.a("android", "name", "com.onesignal.GcmIntentService");
+        applicationTag.a(gcmIntentServiceTag);
+        Nx gcmIntentJobServiceTag = new Nx("service");
+        gcmIntentJobServiceTag.a("android", "name", "com.onesignal.GcmIntentJobService");
+        gcmIntentJobServiceTag.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
+        applicationTag.a(gcmIntentJobServiceTag);
+        Nx restoreJobServiceTag = new Nx("service");
+        restoreJobServiceTag.a("android", "name", "com.onesignal.RestoreJobService");
+        restoreJobServiceTag.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
+        applicationTag.a(restoreJobServiceTag);
+        Nx restoreKickoffJobServiceTag = new Nx("service");
+        restoreKickoffJobServiceTag.a("android", "name", "com.onesignal.RestoreKickoffJobService");
+        restoreKickoffJobServiceTag.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
+        applicationTag.a(restoreKickoffJobServiceTag);
+        Nx syncServiceTag = new Nx("service");
+        syncServiceTag.a("android", "name", "com.onesignal.SyncService");
+        syncServiceTag.a("android", "stopWithTask", "true");
+        applicationTag.a(syncServiceTag);
+        Nx syncJobServiceTag = new Nx("service");
+        syncJobServiceTag.a("android", "name", "com.onesignal.SyncJobService");
+        syncJobServiceTag.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
+        applicationTag.a(syncJobServiceTag);
+        Nx permissionsActivityTag = new Nx("activity");
+        permissionsActivityTag.a("android", "name", "com.onesignal.PermissionsActivity");
+        permissionsActivityTag.a("android", "theme", "@style/AppTheme.FullScreen");
+        applicationTag.a(permissionsActivityTag);
+        Nx notificationRestoreServiceTag = new Nx("service");
+        notificationRestoreServiceTag.a("android", "name", "com.onesignal.NotificationRestoreService");
+        applicationTag.a(notificationRestoreServiceTag);
+        Nx bootUpReceiverTag = new Nx("receiver");
+        bootUpReceiverTag.a("android", "name", "com.onesignal.BootUpReceiver");
+        Nx bootUpReceiverIntentFilterTag = new Nx("intent-filter");
+        Nx bootUpReceiverBootCompleteActionTag = new Nx("action");
+        bootUpReceiverBootCompleteActionTag.a("android", "name", "android.intent.action.BOOT_COMPLETED");
+        Nx bootUpReceiverQuickBootPowerOnActionTag = new Nx("action");
+        bootUpReceiverQuickBootPowerOnActionTag.a("android", "name", "android.intent.action.QUICKBOOT_POWERON");
+        bootUpReceiverIntentFilterTag.a(bootUpReceiverBootCompleteActionTag);
+        bootUpReceiverIntentFilterTag.a(bootUpReceiverQuickBootPowerOnActionTag);
+        bootUpReceiverTag.a(bootUpReceiverIntentFilterTag);
+        applicationTag.a(bootUpReceiverTag);
+        Nx upgradeReceiverTag = new Nx("receiver");
+        upgradeReceiverTag.a("android", "name", "com.onesignal.UpgradeReceiver");
+        Nx upgradeReceiverIntentFilterTag = new Nx("intent-filter");
+        Nx upgradeReceiverIntentFilterActionTag = new Nx("action");
+        upgradeReceiverIntentFilterActionTag.a("android", "name", "android.intent.action.MY_PACKAGE_REPLACED");
+        upgradeReceiverIntentFilterTag.a(upgradeReceiverIntentFilterActionTag);
+        upgradeReceiverTag.a(upgradeReceiverIntentFilterTag);
+        applicationTag.a(upgradeReceiverTag);
     }
 
-    public static void writeDefFCM(Nx nx) {
-        Nx nx2 = new Nx("service");
-        nx2.a("android", "name", "com.google.firebase.messaging.FirebaseMessagingService");
-        nx2.a("android", "exported", "false");
-        Nx nx3 = new Nx("intent-filter");
-        nx3.a("android", "priority", "-500");
-        Nx nx4 = new Nx("action");
-        nx4.a("android", "name", "com.google.firebase.MESSAGING_EVENT");
-        nx3.a(nx4);
-        nx2.a(nx3);
-        Nx nx5 = new Nx("receiver");
-        nx5.a("android", "name", "com.google.firebase.iid.FirebaseInstanceIdReceiver");
-        nx5.a("android", "exported", "true");
-        nx5.a("android", "permission", "com.google.android.c2dm.permission.SEND");
-        Nx nx6 = new Nx("intent-filter");
-        Nx nx7 = new Nx("action");
-        nx7.a("android", "name", "com.google.android.c2dm.intent.RECEIVE");
-        nx6.a(nx7);
-        nx5.a(nx6);
-        nx.a(nx2);
-        nx.a(nx5);
-    }
-
-    public static void writeMetadataComponentFirebase(Nx nx, String str) {
-        Nx nx2 = new Nx("meta-data");
-        switch (str.hashCode()) {
-            case 1665812692:
-                if (str.equals("Firebase Dynamic Link")) {
-                    nx2.a("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
-                    nx2.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
-                    nx.a(nx2);
-                    return;
-                }
-                return;
-            case 1956214435:
-                if (str.equals("Firebase Cloud Message")) {
-                    nx2.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
-                    nx2.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
-                    nx.a(nx2);
-                    return;
-                }
-                return;
-            default:
-                return;
-        }
-    }
-
-    public static void manifestOneSignal(Nx nx, String str, HashMap<String, ArrayList> hashMap) {
-        if (hashMap.size() != 0) {
-            Nx nx2 = new Nx("meta-data");
-            nx2.a("android", "name", "onesignal_app_id");
-            nx2.a("android", "value", hashMap.get("OneSignal setAppId").get(0).toString());
-            nx.a(nx2);
-        }
-        Nx nx3 = new Nx("meta-data");
-        nx3.a("android", "name", "onesignal_google_project_number");
-        nx3.a("android", "value", "str:REMOTE");
-        nx.a(nx3);
-        if (!str.isEmpty()) {
-            Nx nx4 = new Nx("receiver");
-            nx4.a("android", "name", "com.onesignal.GcmBroadcastReceiver");
-            nx4.a("android", "permission", "com.google.android.c2dm.permission.SEND");
-            Nx nx5 = new Nx("intent-filter");
-            nx5.a("android", "priority", "999");
-            Nx nx6 = new Nx("action");
-            nx6.a("android", "name", "com.google.android.c2dm.intent.RECEIVE");
-            Nx nx7 = new Nx("category");
-            nx7.a("android", "name", str);
-            nx6.a(nx7);
-            nx5.a(nx6);
-            nx4.a(nx5);
-            nx.a(nx4);
-        }
-        Nx nx8 = new Nx("receiver");
-        nx8.a("android", "name", "com.onesignal.NotificationOpenedReceiver");
-        nx.a(nx8);
-        Nx nx9 = new Nx("service");
-        nx9.a("android", "name", "com.onesignal.GcmIntentService");
-        nx.a(nx9);
-        Nx nx10 = new Nx("service");
-        nx10.a("android", "name", "com.onesignal.GcmIntentJobService");
-        nx10.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
-        nx.a(nx10);
-        Nx nx11 = new Nx("service");
-        nx11.a("android", "name", "com.onesignal.RestoreJobService");
-        nx11.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
-        nx.a(nx11);
-        Nx nx12 = new Nx("service");
-        nx12.a("android", "name", "com.onesignal.RestoreKickoffJobService");
-        nx12.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
-        nx.a(nx12);
-        Nx nx13 = new Nx("service");
-        nx13.a("android", "name", "com.onesignal.SyncService");
-        nx13.a("android", "stopWithTask", "true");
-        nx.a(nx13);
-        Nx nx14 = new Nx("service");
-        nx14.a("android", "name", "com.onesignal.SyncJobService");
-        nx14.a("android", "permission", "android.permission.BIND_JOB_SERVICE");
-        nx.a(nx14);
-        Nx nx15 = new Nx("activity");
-        nx15.a("android", "name", "com.onesignal.PermissionsActivity");
-        nx15.a("android", "theme", "@style/AppTheme.FullScreen");
-        nx.a(nx15);
-        Nx nx16 = new Nx("service");
-        nx16.a("android", "name", "com.onesignal.NotificationRestoreService");
-        nx.a(nx16);
-        Nx nx17 = new Nx("receiver");
-        nx17.a("android", "name", "com.onesignal.BootUpReceiver");
-        Nx nx18 = new Nx("intent-filter");
-        Nx nx19 = new Nx("action");
-        nx19.a("android", "name", "android.intent.action.BOOT_COMPLETED");
-        Nx nx20 = new Nx("action");
-        nx20.a("android", "name", "android.intent.action.QUICKBOOT_POWERON");
-        nx19.a(nx20);
-        nx18.a(nx19);
-        nx17.a(nx18);
-        nx.a(nx17);
-        Nx nx21 = new Nx("receiver");
-        nx21.a("android", "name", "com.onesignal.UpgradeReceiver");
-        Nx nx22 = new Nx("intent-filter");
-        Nx nx23 = new Nx("action");
-        nx23.a("android", "name", "android.intent.action.MY_PACKAGE_REPLACED");
-        nx22.a(nx23);
-        nx21.a(nx22);
-        nx.a(nx21);
-    }
-
-    public static void manifestFBAds(Nx nx, String str) {
-        Nx nx2 = new Nx("activity");
-        nx2.a("android", "name", "com.facebook.ads.AudienceNetworkActivity");
-        nx2.a("android", "configChanges", "keyboardHidden|orientation|screenSize");
-        nx2.a("android", "exported", "false");
-        nx2.a("android", "theme", "@android:style/Theme.Translucent.NoTitleBar");
-        nx.a(nx2);
-        if (!str.isEmpty()) {
+    public static void manifestFBAds(Nx applicationTag, String packageName) {
+        Nx activityTag = new Nx("activity");
+        activityTag.a("android", "name", "com.facebook.ads.AudienceNetworkActivity");
+        activityTag.a("android", "configChanges", "keyboardHidden|orientation|screenSize");
+        activityTag.a("android", "exported", "false");
+        activityTag.a("android", "theme", "@android:style/Theme.Translucent.NoTitleBar");
+        applicationTag.a(activityTag);
+        if (!packageName.isEmpty()) {
             Nx nx3 = new Nx("provider");
             nx3.a("android", "name", "com.facebook.ads.AudienceNetworkContentProvider");
-            nx3.a("android", "authorities", str + ".AudienceNetworkContentProvider");
+            nx3.a("android", "authorities", packageName + ".AudienceNetworkContentProvider");
             nx3.a("android", "exported", "false");
-            nx.a(nx3);
+            applicationTag.a(nx3);
         }
     }
 
-    public static void manifestFBGoogleLogin(Nx nx) {
-        Nx nx2 = new Nx("activity");
-        nx2.a("android", "name", "com.google.android.gms.auth.api.signin.internal.SignInHubActivity");
-        nx2.a("android", "excludeFromRecents", "true");
-        nx2.a("android", "exported", "false");
-        nx2.a("android", "theme", "@android:style/Theme.Translucent.NoTitleBar");
-        nx.a(nx2);
-        Nx nx3 = new Nx("service");
-        nx3.a("android", "name", "com.google.android.gms.auth.api.signin.RevocationBoundService");
-        nx3.a("android", "exported", "true");
-        nx3.a("android", "permission", "com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION");
-        nx.a(nx3);
+    public static void manifestFBGoogleLogin(Nx applicationTag) {
+        Nx activityTag = new Nx("activity");
+        activityTag.a("android", "name", "com.google.android.gms.auth.api.signin.internal.SignInHubActivity");
+        activityTag.a("android", "excludeFromRecents", "true");
+        activityTag.a("android", "exported", "false");
+        activityTag.a("android", "theme", "@android:style/Theme.Translucent.NoTitleBar");
+        applicationTag.a(activityTag);
+        Nx serviceTag = new Nx("service");
+        serviceTag.a("android", "name", "com.google.android.gms.auth.api.signin.RevocationBoundService");
+        serviceTag.a("android", "exported", "true");
+        serviceTag.a("android", "permission", "com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION");
+        applicationTag.a(serviceTag);
     }
 }

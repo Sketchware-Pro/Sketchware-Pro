@@ -213,7 +213,7 @@ public class LibraryDownloader {
                 cm.add(new File(libs, "android.jar").getAbsolutePath());
 
                 cm.add("--classpath");
-                cm.add(new File(libs, "jdk/rt.jar").getAbsolutePath());
+                cm.add(new File(libs, "core-lambda-stubs.jar").getAbsolutePath());
 
                 cm.add("--output");
                 cm.add(new File(_path).getParentFile().getAbsolutePath());
@@ -224,8 +224,7 @@ public class LibraryDownloader {
                 D8.main(cm.toArray(new String[0]));
             } else {
                 // 6.3.0 fix2
-                Main.dexOutputArrays = new ArrayList<>();
-                Main.dexOutputFutures = new ArrayList<>();
+                Main.clearInternTables();
 
                 // dx
                 Main.main(new String[]{

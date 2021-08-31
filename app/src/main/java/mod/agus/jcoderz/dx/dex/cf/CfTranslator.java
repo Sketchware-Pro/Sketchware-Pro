@@ -1,6 +1,23 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.cf;
 
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
+import mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList;
 import mod.agus.jcoderz.dx.cf.code.ConcreteMethod;
 import mod.agus.jcoderz.dx.cf.code.Ropper;
 import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
@@ -8,14 +25,9 @@ import mod.agus.jcoderz.dx.cf.iface.Field;
 import mod.agus.jcoderz.dx.cf.iface.FieldList;
 import mod.agus.jcoderz.dx.cf.iface.Method;
 import mod.agus.jcoderz.dx.cf.iface.MethodList;
+import mod.agus.jcoderz.dx.command.dexer.DxContext;
 import mod.agus.jcoderz.dx.dex.DexOptions;
-import mod.agus.jcoderz.dx.dex.code.DalvCode;
-import mod.agus.jcoderz.dx.dex.code.RopTranslator;
 import mod.agus.jcoderz.dx.dex.file.ClassDefItem;
-import mod.agus.jcoderz.dx.dex.file.DexFile;
-import mod.agus.jcoderz.dx.dex.file.EncodedField;
-import mod.agus.jcoderz.dx.dex.file.EncodedMethod;
-import mod.agus.jcoderz.dx.dex.file.FieldIdsSection;
 import mod.agus.jcoderz.dx.dex.file.MethodIdsSection;
 import mod.agus.jcoderz.dx.rop.annotation.Annotations;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
@@ -24,215 +36,408 @@ import mod.agus.jcoderz.dx.rop.code.DexTranslationAdvice;
 import mod.agus.jcoderz.dx.rop.code.LocalVariableExtractor;
 import mod.agus.jcoderz.dx.rop.code.LocalVariableInfo;
 import mod.agus.jcoderz.dx.rop.code.RopMethod;
+import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.ConstantPool;
 import mod.agus.jcoderz.dx.rop.cst.CstBaseMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstBoolean;
 import mod.agus.jcoderz.dx.rop.cst.CstByte;
+import mod.agus.jcoderz.dx.rop.cst.CstCallSite;
+import mod.agus.jcoderz.dx.rop.cst.CstCallSiteRef;
 import mod.agus.jcoderz.dx.rop.cst.CstChar;
 import mod.agus.jcoderz.dx.rop.cst.CstEnumRef;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
 import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.cst.CstInterfaceMethodRef;
+import mod.agus.jcoderz.dx.rop.cst.CstInvokeDynamic;
+import mod.agus.jcoderz.dx.rop.cst.CstMethodHandle;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstShort;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.rop.cst.TypedConstant;
 import mod.agus.jcoderz.dx.rop.type.Type;
+import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.ssa.Optimizer;
 
+import mod.agus.jcoderz.dx.dex.code.DalvCode;
+import mod.agus.jcoderz.dx.dex.code.PositionList;
+import mod.agus.jcoderz.dx.dex.code.RopTranslator;
+import mod.agus.jcoderz.dx.dex.file.CallSiteIdsSection;
+import mod.agus.jcoderz.dx.dex.file.DexFile;
+import mod.agus.jcoderz.dx.dex.file.EncodedField;
+import mod.agus.jcoderz.dx.dex.file.EncodedMethod;
+import mod.agus.jcoderz.dx.dex.file.FieldIdsSection;
+import mod.agus.jcoderz.dx.dex.file.MethodHandlesSection;
+
+/**
+ * Static method that turns {@code byte[]}s containing Java
+ * classfiles into {@link mod.agus.jcoderz.dx.dex.file.ClassDefItem} instances.
+ */
 public class CfTranslator {
+    /** set to {@code true} to enable development-time debugging code */
     private static final boolean DEBUG = false;
 
+    /**
+     * This class is uninstantiable.
+     */
     private CfTranslator() {
+        // This space intentionally left blank.
     }
 
-    public static ClassDefItem translate(DirectClassFile directClassFile, byte[] bArr, CfOptions cfOptions, DexOptions dexOptions, DexFile dexFile) {
+    /**
+     * Takes a {@code byte[]}, interprets it as a Java classfile, and
+     * translates it into a {@link mod.agus.jcoderz.dx.dex.file.ClassDefItem}.
+     *
+     * @param context {@code non-null;} the state global to this invocation.
+     * @param cf {@code non-null;} the class file
+     * @param bytes {@code non-null;} contents of the file
+     * @param cfOptions options for class translation
+     * @param dexOptions options for dex output
+     * @param dexFile {@code non-null;} dex output
+     * @return {@code non-null;} the translated class
+     */
+    public static mod.agus.jcoderz.dx.dex.file.ClassDefItem translate(mod.agus.jcoderz.dx.command.dexer.DxContext context, mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, byte[] bytes,
+                                                                      mod.agus.jcoderz.dx.dex.cf.CfOptions cfOptions, mod.agus.jcoderz.dx.dex.DexOptions dexOptions, DexFile dexFile) {
         try {
-            return translate0(directClassFile, bArr, cfOptions, dexOptions, dexFile);
-        } catch (RuntimeException e) {
-            throw ExceptionWithContext.withContext(e, "...while processing " + directClassFile.getFilePath());
+            return translate0(context, cf, bytes, cfOptions, dexOptions, dexFile);
+        } catch (RuntimeException ex) {
+            String msg = "...while processing " + cf.getFilePath();
+            throw ExceptionWithContext.withContext(ex, msg);
         }
     }
 
-    private static ClassDefItem translate0(DirectClassFile directClassFile, byte[] bArr, CfOptions cfOptions, DexOptions dexOptions, DexFile dexFile) {
-        CstString sourceFile;
-        OptimizerOptions.loadOptimizeLists(cfOptions.optimizeListFile, cfOptions.dontOptimizeListFile);
-        CstType thisClass = directClassFile.getThisClass();
-        int accessFlags = directClassFile.getAccessFlags() & -33;
-        if (cfOptions.positionInfo == 1) {
-            sourceFile = null;
-        } else {
-            sourceFile = directClassFile.getSourceFile();
-        }
-        ClassDefItem classDefItem = new ClassDefItem(thisClass, accessFlags, directClassFile.getSuperclass(), directClassFile.getInterfaces(), sourceFile);
-        Annotations classAnnotations = AttributeTranslator.getClassAnnotations(directClassFile, cfOptions);
+    /**
+     * Performs the main act of translation. This method is separated
+     * from {@link #translate} just to keep things a bit simpler in
+     * terms of exception handling.
+     *
+     *
+     * @param context {@code non-null;} the state global to this invocation.
+     * @param cf {@code non-null;} the class file
+     * @param bytes {@code non-null;} contents of the file
+     * @param cfOptions options for class translation
+     * @param dexOptions options for dex output
+     * @param dexFile {@code non-null;} dex output
+     * @return {@code non-null;} the translated class
+     */
+    private static mod.agus.jcoderz.dx.dex.file.ClassDefItem translate0(mod.agus.jcoderz.dx.command.dexer.DxContext context, mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, byte[] bytes,
+                                                                        mod.agus.jcoderz.dx.dex.cf.CfOptions cfOptions, mod.agus.jcoderz.dx.dex.DexOptions dexOptions, DexFile dexFile) {
+
+        context.optimizerOptions.loadOptimizeLists(cfOptions.optimizeListFile,
+                cfOptions.dontOptimizeListFile);
+
+        // Build up a class to output.
+
+        mod.agus.jcoderz.dx.rop.cst.CstType thisClass = cf.getThisClass();
+        int classAccessFlags = cf.getAccessFlags() & ~mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_SUPER;
+        CstString sourceFile = (cfOptions.positionInfo == PositionList.NONE) ? null :
+            cf.getSourceFile();
+        mod.agus.jcoderz.dx.dex.file.ClassDefItem out =
+            new mod.agus.jcoderz.dx.dex.file.ClassDefItem(thisClass, classAccessFlags,
+                    cf.getSuperclass(), cf.getInterfaces(), sourceFile);
+
+        mod.agus.jcoderz.dx.rop.annotation.Annotations classAnnotations =
+            mod.agus.jcoderz.dx.dex.cf.AttributeTranslator.getClassAnnotations(cf, cfOptions);
         if (classAnnotations.size() != 0) {
-            classDefItem.setClassAnnotations(classAnnotations, dexFile);
+            out.setClassAnnotations(classAnnotations, dexFile);
         }
-        FieldIdsSection fieldIds = dexFile.getFieldIds();
-        MethodIdsSection methodIds = dexFile.getMethodIds();
-        processFields(directClassFile, classDefItem, dexFile);
-        processMethods(directClassFile, cfOptions, dexOptions, classDefItem, dexFile);
-        ConstantPool constantPool = directClassFile.getConstantPool();
-        int size = constantPool.size();
-        for (int i = 0; i < size; i++) {
-            Constant orNull = constantPool.getOrNull(i);
-            if (orNull instanceof CstMethodRef) {
-                methodIds.intern((CstBaseMethodRef) orNull);
-            } else if (orNull instanceof CstInterfaceMethodRef) {
-                methodIds.intern(((CstInterfaceMethodRef) orNull).toMethodRef());
-            } else if (orNull instanceof CstFieldRef) {
-                fieldIds.intern((CstFieldRef) orNull);
-            } else if (orNull instanceof CstEnumRef) {
-                fieldIds.intern(((CstEnumRef) orNull).getFieldRef());
+
+        FieldIdsSection fieldIdsSection = dexFile.getFieldIds();
+        MethodIdsSection methodIdsSection = dexFile.getMethodIds();
+        MethodHandlesSection methodHandlesSection = dexFile.getMethodHandles();
+        CallSiteIdsSection callSiteIds = dexFile.getCallSiteIds();
+        processFields(cf, out, dexFile);
+        processMethods(context, cf, cfOptions, dexOptions, out, dexFile);
+
+        // intern constant pool method, field and type references
+        ConstantPool constantPool = cf.getConstantPool();
+        int constantPoolSize = constantPool.size();
+
+        for (int i = 0; i < constantPoolSize; i++) {
+            mod.agus.jcoderz.dx.rop.cst.Constant constant = constantPool.getOrNull(i);
+            if (constant instanceof mod.agus.jcoderz.dx.rop.cst.CstMethodRef) {
+                methodIdsSection.intern((CstBaseMethodRef) constant);
+            } else if (constant instanceof mod.agus.jcoderz.dx.rop.cst.CstInterfaceMethodRef) {
+                methodIdsSection.intern(((CstInterfaceMethodRef) constant).toMethodRef());
+            } else if (constant instanceof mod.agus.jcoderz.dx.rop.cst.CstFieldRef) {
+                fieldIdsSection.intern((mod.agus.jcoderz.dx.rop.cst.CstFieldRef) constant);
+            } else if (constant instanceof mod.agus.jcoderz.dx.rop.cst.CstEnumRef) {
+                fieldIdsSection.intern(((CstEnumRef) constant).getFieldRef());
+            } else if (constant instanceof mod.agus.jcoderz.dx.rop.cst.CstMethodHandle) {
+                methodHandlesSection.intern((CstMethodHandle) constant);
+            } else if (constant instanceof mod.agus.jcoderz.dx.rop.cst.CstInvokeDynamic) {
+                mod.agus.jcoderz.dx.rop.cst.CstInvokeDynamic cstInvokeDynamic = (CstInvokeDynamic) constant;
+                int index = cstInvokeDynamic.getBootstrapMethodIndex();
+                BootstrapMethodsList.Item bootstrapMethod = cf.getBootstrapMethods().get(index);
+                mod.agus.jcoderz.dx.rop.cst.CstCallSite callSite =
+                        CstCallSite.make(bootstrapMethod.getBootstrapMethodHandle(),
+                                         cstInvokeDynamic.getNat(),
+                                         bootstrapMethod.getBootstrapMethodArguments());
+                cstInvokeDynamic.setDeclaringClass(cf.getThisClass());
+                cstInvokeDynamic.setCallSite(callSite);
+                for (CstCallSiteRef ref : cstInvokeDynamic.getReferences()) {
+                    callSiteIds.intern(ref);
+                }
             }
         }
-        return classDefItem;
+
+        return out;
     }
 
-    private static void processFields(DirectClassFile directClassFile, ClassDefItem classDefItem, DexFile dexFile) {
-        CstType thisClass = directClassFile.getThisClass();
-        FieldList fields = directClassFile.getFields();
-        int size = fields.size();
-        for (int i = 0; i < size; i++) {
-            Field field = fields.get(i);
+    /**
+     * Processes the fields of the given class.
+     *
+     * @param cf {@code non-null;} class being translated
+     * @param out {@code non-null;} output class
+     * @param dexFile {@code non-null;} dex output
+     */
+    private static void processFields(
+            mod.agus.jcoderz.dx.cf.direct.DirectClassFile cf, mod.agus.jcoderz.dx.dex.file.ClassDefItem out, DexFile dexFile) {
+        mod.agus.jcoderz.dx.rop.cst.CstType thisClass = cf.getThisClass();
+        FieldList fields = cf.getFields();
+        int sz = fields.size();
+
+        for (int i = 0; i < sz; i++) {
+            Field one = fields.get(i);
             try {
-                CstFieldRef cstFieldRef = new CstFieldRef(thisClass, field.getNat());
-                int accessFlags = field.getAccessFlags();
-                if (AccessFlags.isStatic(accessFlags)) {
-                    TypedConstant constantValue = field.getConstantValue();
-                    EncodedField encodedField = new EncodedField(cstFieldRef, accessFlags);
-                    if (constantValue != null) {
-                        constantValue = coerceConstant(constantValue, cstFieldRef.getType());
+                mod.agus.jcoderz.dx.rop.cst.CstFieldRef field = new CstFieldRef(thisClass, one.getNat());
+                int accessFlags = one.getAccessFlags();
+
+                if (mod.agus.jcoderz.dx.rop.code.AccessFlags.isStatic(accessFlags)) {
+                    mod.agus.jcoderz.dx.rop.cst.TypedConstant constVal = one.getConstantValue();
+                    EncodedField fi = new EncodedField(field, accessFlags);
+                    if (constVal != null) {
+                        constVal = coerceConstant(constVal, field.getType());
                     }
-                    classDefItem.addStaticField(encodedField, constantValue);
+                    out.addStaticField(fi, constVal);
                 } else {
-                    classDefItem.addInstanceField(new EncodedField(cstFieldRef, accessFlags));
+                    EncodedField fi = new EncodedField(field, accessFlags);
+                    out.addInstanceField(fi);
                 }
-                Annotations annotations = AttributeTranslator.getAnnotations(field.getAttributes());
+
+                mod.agus.jcoderz.dx.rop.annotation.Annotations annotations =
+                    mod.agus.jcoderz.dx.dex.cf.AttributeTranslator.getAnnotations(one.getAttributes());
                 if (annotations.size() != 0) {
-                    classDefItem.addFieldAnnotations(cstFieldRef, annotations, dexFile);
+                    out.addFieldAnnotations(field, annotations, dexFile);
                 }
-                dexFile.getFieldIds().intern(cstFieldRef);
-            } catch (RuntimeException e) {
-                throw ExceptionWithContext.withContext(e, "...while processing " + field.getName().toHuman() + " " + field.getDescriptor().toHuman());
+                dexFile.getFieldIds().intern(field);
+            } catch (RuntimeException ex) {
+                String msg = "...while processing " + one.getName().toHuman() +
+                    " " + one.getDescriptor().toHuman();
+                throw ExceptionWithContext.withContext(ex, msg);
             }
         }
     }
 
-    private static TypedConstant coerceConstant(TypedConstant typedConstant, Type type) {
-        if (typedConstant.getType().equals(type)) {
-            return typedConstant;
+    /**
+     * Helper for {@link #processFields}, which translates constants into
+     * more specific types if necessary.
+     *
+     * @param constant {@code non-null;} the constant in question
+     * @param type {@code non-null;} the desired type
+     */
+    private static mod.agus.jcoderz.dx.rop.cst.TypedConstant coerceConstant(TypedConstant constant,
+                                                                            mod.agus.jcoderz.dx.rop.type.Type type) {
+        mod.agus.jcoderz.dx.rop.type.Type constantType = constant.getType();
+
+        if (constantType.equals(type)) {
+            return constant;
         }
+
         switch (type.getBasicType()) {
-            case 1:
-                return CstBoolean.make(((CstInteger) typedConstant).getValue());
-            case 2:
-                return CstByte.make(((CstInteger) typedConstant).getValue());
-            case 3:
-                return CstChar.make(((CstInteger) typedConstant).getValue());
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            default:
-                throw new UnsupportedOperationException("can't coerce " + typedConstant + " to " + type);
-            case 8:
-                return CstShort.make(((CstInteger) typedConstant).getValue());
+            case mod.agus.jcoderz.dx.rop.type.Type.BT_BOOLEAN: {
+                return CstBoolean.make(((mod.agus.jcoderz.dx.rop.cst.CstInteger) constant).getValue());
+            }
+            case mod.agus.jcoderz.dx.rop.type.Type.BT_BYTE: {
+                return CstByte.make(((mod.agus.jcoderz.dx.rop.cst.CstInteger) constant).getValue());
+            }
+            case mod.agus.jcoderz.dx.rop.type.Type.BT_CHAR: {
+                return CstChar.make(((mod.agus.jcoderz.dx.rop.cst.CstInteger) constant).getValue());
+            }
+            case Type.BT_SHORT: {
+                return CstShort.make(((CstInteger) constant).getValue());
+            }
+            default: {
+                throw new UnsupportedOperationException("can't coerce " +
+                        constant + " to " + type);
+            }
         }
     }
 
-    private static void processMethods(DirectClassFile directClassFile, CfOptions cfOptions, DexOptions dexOptions, ClassDefItem classDefItem, DexFile dexFile) {
-        DalvCode dalvCode;
-        int i;
-        RopMethod ropMethod;
-        CstType thisClass = directClassFile.getThisClass();
-        MethodList methods = directClassFile.getMethods();
-        int size = methods.size();
-        for (int i2 = 0; i2 < size; i2++) {
-            Method method = methods.get(i2);
+    /**
+     * Processes the methods of the given class.
+     *
+     * @param context {@code non-null;} the state global to this invocation.
+     * @param cf {@code non-null;} class being translated
+     * @param cfOptions {@code non-null;} options for class translation
+     * @param dexOptions {@code non-null;} options for dex output
+     * @param out {@code non-null;} output class
+     * @param dexFile {@code non-null;} dex output
+     */
+    private static void processMethods(mod.agus.jcoderz.dx.command.dexer.DxContext context, DirectClassFile cf, mod.agus.jcoderz.dx.dex.cf.CfOptions cfOptions,
+                                       mod.agus.jcoderz.dx.dex.DexOptions dexOptions, ClassDefItem out, DexFile dexFile) {
+        CstType thisClass = cf.getThisClass();
+        MethodList methods = cf.getMethods();
+        int sz = methods.size();
+
+        for (int i = 0; i < sz; i++) {
+            Method one = methods.get(i);
             try {
-                CstMethodRef cstMethodRef = new CstMethodRef(thisClass, method.getNat());
-                int accessFlags = method.getAccessFlags();
-                boolean isStatic = AccessFlags.isStatic(accessFlags);
-                boolean isPrivate = AccessFlags.isPrivate(accessFlags);
-                boolean isNative = AccessFlags.isNative(accessFlags);
-                boolean isAbstract = AccessFlags.isAbstract(accessFlags);
-                boolean z = cstMethodRef.isInstanceInit() || cstMethodRef.isClassInit();
+                mod.agus.jcoderz.dx.rop.cst.CstMethodRef meth = new CstMethodRef(thisClass, one.getNat());
+                int accessFlags = one.getAccessFlags();
+                boolean isStatic = mod.agus.jcoderz.dx.rop.code.AccessFlags.isStatic(accessFlags);
+                boolean isPrivate = mod.agus.jcoderz.dx.rop.code.AccessFlags.isPrivate(accessFlags);
+                boolean isNative = mod.agus.jcoderz.dx.rop.code.AccessFlags.isNative(accessFlags);
+                boolean isAbstract = mod.agus.jcoderz.dx.rop.code.AccessFlags.isAbstract(accessFlags);
+                boolean isConstructor = meth.isInstanceInit() ||
+                    meth.isClassInit();
+                DalvCode code;
+
                 if (isNative || isAbstract) {
-                    dalvCode = null;
+                    // There's no code for native or abstract methods.
+                    code = null;
                 } else {
-                    ConcreteMethod concreteMethod = new ConcreteMethod(method, directClassFile, cfOptions.positionInfo != 1, cfOptions.localInfo);
-                    DexTranslationAdvice dexTranslationAdvice = DexTranslationAdvice.THE_ONE;
-                    RopMethod convert = Ropper.convert(concreteMethod, dexTranslationAdvice, methods);
-                    int parameterWordCount = cstMethodRef.getParameterWordCount(isStatic);
-                    String str = thisClass.getClassType().getDescriptor() + "." + method.getName().getString();
-                    if (!cfOptions.optimize || !OptimizerOptions.shouldOptimize(str)) {
-                        ropMethod = convert;
-                        convert = null;
-                    } else {
-                        ropMethod = Optimizer.optimize(convert, parameterWordCount, isStatic, cfOptions.localInfo, dexTranslationAdvice);
+                    mod.agus.jcoderz.dx.cf.code.ConcreteMethod concrete =
+                        new ConcreteMethod(one, cf,
+                                (cfOptions.positionInfo != PositionList.NONE),
+                                cfOptions.localInfo);
+
+                    TranslationAdvice advice;
+
+                    advice = DexTranslationAdvice.THE_ONE;
+
+                    mod.agus.jcoderz.dx.rop.code.RopMethod rmeth = Ropper.convert(concrete, advice, methods, dexOptions);
+                    mod.agus.jcoderz.dx.rop.code.RopMethod nonOptRmeth = null;
+                    int paramSize;
+
+                    paramSize = meth.getParameterWordCount(isStatic);
+
+                    String canonicalName
+                            = thisClass.getClassType().getDescriptor()
+                                + "." + one.getName().getString();
+
+                    if (cfOptions.optimize &&
+                            context.optimizerOptions.shouldOptimize(canonicalName)) {
+                        if (DEBUG) {
+                            System.err.println("Optimizing " + canonicalName);
+                        }
+
+                        nonOptRmeth = rmeth;
+                        rmeth = Optimizer.optimize(rmeth,
+                                paramSize, isStatic, cfOptions.localInfo, advice);
+
+                        if (DEBUG) {
+                            context.optimizerOptions.compareOptimizerStep(nonOptRmeth,
+                                    paramSize, isStatic, cfOptions, advice, rmeth);
+                        }
+
                         if (cfOptions.statistics) {
-                            CodeStatistics.updateRopStatistics(convert, ropMethod);
+                            context.codeStatistics.updateRopStatistics(
+                                    nonOptRmeth, rmeth);
                         }
                     }
-                    LocalVariableInfo localVariableInfo = null;
+
+                    mod.agus.jcoderz.dx.rop.code.LocalVariableInfo locals = null;
+
                     if (cfOptions.localInfo) {
-                        localVariableInfo = LocalVariableExtractor.extract(ropMethod);
+                        locals = LocalVariableExtractor.extract(rmeth);
                     }
-                    DalvCode translate = RopTranslator.translate(ropMethod, cfOptions.positionInfo, localVariableInfo, parameterWordCount, dexOptions);
-                    if (cfOptions.statistics && convert != null) {
-                        updateDexStatistics(cfOptions, dexOptions, ropMethod, convert, localVariableInfo, parameterWordCount, concreteMethod.getCode().size());
+
+                    code = RopTranslator.translate(rmeth, cfOptions.positionInfo,
+                            locals, paramSize, dexOptions);
+
+                    if (cfOptions.statistics && nonOptRmeth != null) {
+                        updateDexStatistics(context, cfOptions, dexOptions, rmeth, nonOptRmeth, locals,
+                                paramSize, concrete.getCode().size());
                     }
-                    dalvCode = translate;
                 }
-                if (AccessFlags.isSynchronized(accessFlags)) {
-                    i = 131072 | accessFlags;
+
+                // Preserve the synchronized flag as its "declared" variant...
+                if (mod.agus.jcoderz.dx.rop.code.AccessFlags.isSynchronized(accessFlags)) {
+                    accessFlags |= mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_DECLARED_SYNCHRONIZED;
+
+                    /*
+                     * ...but only native methods are actually allowed to be
+                     * synchronized.
+                     */
                     if (!isNative) {
-                        i &= -33;
+                        accessFlags &= ~mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_SYNCHRONIZED;
                     }
+                }
+
+                if (isConstructor) {
+                    accessFlags |= AccessFlags.ACC_CONSTRUCTOR;
+                }
+
+                TypeList exceptions = mod.agus.jcoderz.dx.dex.cf.AttributeTranslator.getExceptions(one);
+                EncodedMethod mi =
+                    new EncodedMethod(meth, accessFlags, code, exceptions);
+
+                if (meth.isInstanceInit() || meth.isClassInit() ||
+                    isStatic || isPrivate) {
+                    out.addDirectMethod(mi);
                 } else {
-                    i = accessFlags;
+                    out.addVirtualMethod(mi);
                 }
-                if (z) {
-                    i |= 65536;
+
+                Annotations annotations =
+                    mod.agus.jcoderz.dx.dex.cf.AttributeTranslator.getMethodAnnotations(one);
+                if (annotations.size() != 0) {
+                    out.addMethodAnnotations(meth, annotations, dexFile);
                 }
-                EncodedMethod encodedMethod = new EncodedMethod(cstMethodRef, i, dalvCode, AttributeTranslator.getExceptions(method));
-                if (cstMethodRef.isInstanceInit() || cstMethodRef.isClassInit() || isStatic || isPrivate) {
-                    classDefItem.addDirectMethod(encodedMethod);
-                } else {
-                    classDefItem.addVirtualMethod(encodedMethod);
+
+                AnnotationsList list =
+                    mod.agus.jcoderz.dx.dex.cf.AttributeTranslator.getParameterAnnotations(one);
+                if (list.size() != 0) {
+                    out.addParameterAnnotations(meth, list, dexFile);
                 }
-                Annotations methodAnnotations = AttributeTranslator.getMethodAnnotations(method);
-                if (methodAnnotations.size() != 0) {
-                    classDefItem.addMethodAnnotations(cstMethodRef, methodAnnotations, dexFile);
-                }
-                AnnotationsList parameterAnnotations = AttributeTranslator.getParameterAnnotations(method);
-                if (parameterAnnotations.size() != 0) {
-                    classDefItem.addParameterAnnotations(cstMethodRef, parameterAnnotations, dexFile);
-                }
-                dexFile.getMethodIds().intern(cstMethodRef);
-            } catch (RuntimeException e) {
-                throw ExceptionWithContext.withContext(e, "...while processing " + method.getName().toHuman() + " " + method.getDescriptor().toHuman());
+                dexFile.getMethodIds().intern(meth);
+            } catch (RuntimeException ex) {
+                String msg = "...while processing " + one.getName().toHuman() +
+                    " " + one.getDescriptor().toHuman();
+                throw ExceptionWithContext.withContext(ex, msg);
             }
         }
     }
 
-    private static void updateDexStatistics(CfOptions cfOptions, DexOptions dexOptions, RopMethod ropMethod, RopMethod ropMethod2, LocalVariableInfo localVariableInfo, int i, int i2) {
-        DalvCode translate = RopTranslator.translate(ropMethod, cfOptions.positionInfo, localVariableInfo, i, dexOptions);
-        DalvCode translate2 = RopTranslator.translate(ropMethod2, cfOptions.positionInfo, localVariableInfo, i, dexOptions);
-        DalvCode.AssignIndicesCallback assignIndicesCallback = new DalvCode.AssignIndicesCallback() {
+    /**
+     * Helper that updates the dex statistics.
+     */
+    private static void updateDexStatistics(DxContext context, CfOptions cfOptions, DexOptions dexOptions,
+                                            mod.agus.jcoderz.dx.rop.code.RopMethod optRmeth, RopMethod nonOptRmeth,
+                                            LocalVariableInfo locals, int paramSize, int originalByteCount) {
+        /*
+         * Run rop->dex again on optimized vs. non-optimized method to
+         * collect statistics. We have to totally convert both ways,
+         * since converting the "real" method getting added to the
+         * file would corrupt it (by messing with its constant pool
+         * indices).
+         */
 
-            @Override // mod.agus.jcoderz.dx.dex.code.DalvCode.AssignIndicesCallback
-            public int getIndex(Constant constant) {
-                return 0;
-            }
-        };
-        translate.assignIndices(assignIndicesCallback);
-        translate2.assignIndices(assignIndicesCallback);
-        CodeStatistics.updateDexStatistics(translate2, translate);
-        CodeStatistics.updateOriginalByteCount(i2);
+        DalvCode optCode = RopTranslator.translate(optRmeth,
+                cfOptions.positionInfo, locals, paramSize, dexOptions);
+        DalvCode nonOptCode = RopTranslator.translate(nonOptRmeth,
+                cfOptions.positionInfo, locals, paramSize, dexOptions);
+
+        /*
+         * Fake out the indices, so code.getInsns() can work well enough
+         * for the current purpose.
+         */
+
+        DalvCode.AssignIndicesCallback callback =
+            new DalvCode.AssignIndicesCallback() {
+                @Override
+                public int getIndex(Constant cst) {
+                    // Everything is at index 0!
+                    return 0;
+                }
+            };
+
+        optCode.assignIndices(callback);
+        nonOptCode.assignIndices(callback);
+
+        context.codeStatistics.updateDexStatistics(nonOptCode, optCode);
+        context.codeStatistics.updateOriginalByteCount(originalByteCount);
     }
 }

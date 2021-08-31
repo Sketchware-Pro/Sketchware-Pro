@@ -1,60 +1,120 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
 
-public final class ThrowingInsn extends Insn {
+/**
+ * Instruction which possibly throws. The {@code successors} list in the
+ * basic block an instance of this class is inside corresponds in-order to
+ * the list of exceptions handled by this instruction, with the
+ * no-exception case appended as the final target.
+ */
+public final class ThrowingInsn
+        extends mod.agus.jcoderz.dx.rop.code.Insn {
+    /** {@code non-null;} list of exceptions caught */
     private final TypeList catches;
 
-    public ThrowingInsn(Rop rop, SourcePosition sourcePosition, RegisterSpecList registerSpecList, TypeList typeList) {
-        super(rop, sourcePosition, null, registerSpecList);
-        if (rop.getBranchingness() != 6) {
-            throw new IllegalArgumentException("bogus branchingness");
-        } else if (typeList == null) {
+    /**
+     * Gets the string form of a register spec list to be used as a catches
+     * list.
+     *
+     * @param catches {@code non-null;} the catches list
+     * @return {@code non-null;} the string form
+     */
+    public static String toCatchString(TypeList catches) {
+        StringBuilder sb = new StringBuilder(100);
+
+        sb.append("catch");
+
+        int sz = catches.size();
+        for (int i = 0; i < sz; i++) {
+            sb.append(" ");
+            sb.append(catches.getType(i).toHuman());
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Constructs an instance.
+     *
+     * @param opcode {@code non-null;} the opcode
+     * @param position {@code non-null;} source position
+     * @param sources {@code non-null;} specs for all the sources
+     * @param catches {@code non-null;} list of exceptions caught
+     */
+    public ThrowingInsn(mod.agus.jcoderz.dx.rop.code.Rop opcode, SourcePosition position,
+                        mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources,
+                        TypeList catches) {
+        super(opcode, position, null, sources);
+
+        if (opcode.getBranchingness() != Rop.BRANCH_THROW) {
+            throw new IllegalArgumentException("opcode with invalid branchingness: " + opcode.getBranchingness());
+        }
+
+        if (catches == null) {
             throw new NullPointerException("catches == null");
-        } else {
-            this.catches = typeList;
         }
+
+        this.catches = catches;
     }
 
-    public static String toCatchString(TypeList typeList) {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append("catch");
-        int size = typeList.size();
-        for (int i = 0; i < size; i++) {
-            stringBuffer.append(" ");
-            stringBuffer.append(typeList.getType(i).toHuman());
-        }
-        return stringBuffer.toString();
-    }
-
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public String getInlineString() {
-        return toCatchString(this.catches);
+        return toCatchString(catches);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public TypeList getCatches() {
-        return this.catches;
+        return catches;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public void accept(Insn.Visitor visitor) {
+    /** {@inheritDoc} */
+    @Override
+    public void accept(Visitor visitor) {
         visitor.visitThrowingInsn(this);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withAddedCatch(Type type) {
-        return new ThrowingInsn(getOpcode(), getPosition(), getSources(), this.catches.withAddedType(type));
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.Insn withAddedCatch(Type type) {
+        return new ThrowingInsn(getOpcode(), getPosition(),
+                                getSources(), catches.withAddedType(type));
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withRegisterOffset(int i) {
-        return new ThrowingInsn(getOpcode(), getPosition(), getSources().withOffset(i), this.catches);
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.Insn withRegisterOffset(int delta) {
+        return new ThrowingInsn(getOpcode(), getPosition(),
+                                getSources().withOffset(delta),
+                                catches);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withNewRegisters(RegisterSpec registerSpec, RegisterSpecList registerSpecList) {
-        return new ThrowingInsn(getOpcode(), getPosition(), registerSpecList, this.catches);
+    /** {@inheritDoc} */
+    @Override
+    public Insn withNewRegisters(RegisterSpec result,
+                                 RegisterSpecList sources) {
+
+        return new ThrowingInsn(getOpcode(), getPosition(),
+                                sources,
+                                catches);
     }
 }

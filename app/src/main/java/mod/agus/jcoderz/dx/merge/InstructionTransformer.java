@@ -1,144 +1,141 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.merge;
 
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dex.DexIndexOverflowException;
 import mod.agus.jcoderz.dx.io.CodeReader;
+import mod.agus.jcoderz.dx.io.Opcodes;
 import mod.agus.jcoderz.dx.io.instructions.DecodedInstruction;
 import mod.agus.jcoderz.dx.io.instructions.ShortArrayCodeOutput;
 
 final class InstructionTransformer {
-    private final CodeReader reader = new CodeReader();
-    private IndexMap indexMap;
-    private int mappedAt;
+    private final mod.agus.jcoderz.dx.io.CodeReader reader;
+
     private DecodedInstruction[] mappedInstructions;
+    private int mappedAt;
+    private mod.agus.jcoderz.dx.merge.IndexMap indexMap;
 
     public InstructionTransformer() {
-        this.reader.setAllVisitors(new GenericVisitor(this, null));
-        this.reader.setStringVisitor(new StringVisitor(this, null));
-        this.reader.setTypeVisitor(new TypeVisitor(this, null));
-        this.reader.setFieldVisitor(new FieldVisitor(this, null));
-        this.reader.setMethodVisitor(new MethodVisitor(this, null));
+        this.reader = new mod.agus.jcoderz.dx.io.CodeReader();
+        this.reader.setAllVisitors(new GenericVisitor());
+        this.reader.setStringVisitor(new StringVisitor());
+        this.reader.setTypeVisitor(new TypeVisitor());
+        this.reader.setFieldVisitor(new FieldVisitor());
+        this.reader.setMethodVisitor(new MethodVisitor());
+        this.reader.setMethodAndProtoVisitor(new MethodAndProtoVisitor());
+        this.reader.setCallSiteVisitor(new CallSiteVisitor());
     }
 
-    public static void jumboCheck(boolean z, int i) {
-        if (!z && i > 65535) {
-            throw new DexIndexOverflowException("Cannot merge new index " + i + " into a non-jumbo instruction!");
-        }
-    }
+    public short[] transform(IndexMap indexMap, short[] encodedInstructions) throws DexException {
+        DecodedInstruction[] decodedInstructions =
+            DecodedInstruction.decodeAll(encodedInstructions);
+        int size = decodedInstructions.length;
 
-    public short[] transform(IndexMap indexMap2, short[] sArr) throws DexException {
-        DecodedInstruction[] decodeAll = DecodedInstruction.decodeAll(sArr);
-        int length = decodeAll.length;
-        this.indexMap = indexMap2;
-        this.mappedInstructions = new DecodedInstruction[length];
-        this.mappedAt = 0;
-        this.reader.visitAll(decodeAll);
-        ShortArrayCodeOutput shortArrayCodeOutput = new ShortArrayCodeOutput(length);
-        DecodedInstruction[] decodedInstructionArr = this.mappedInstructions;
-        for (DecodedInstruction decodedInstruction : decodedInstructionArr) {
-            if (decodedInstruction != null) {
-                decodedInstruction.encode(shortArrayCodeOutput);
+        this.indexMap = indexMap;
+        mappedInstructions = new DecodedInstruction[size];
+        mappedAt = 0;
+        reader.visitAll(decodedInstructions);
+
+        ShortArrayCodeOutput out = new ShortArrayCodeOutput(size);
+        for (DecodedInstruction instruction : mappedInstructions) {
+            if (instruction != null) {
+                instruction.encode(out);
             }
         }
+
         this.indexMap = null;
-        return shortArrayCodeOutput.getArray();
+        return out.getArray();
     }
 
-    private class GenericVisitor implements CodeReader.Visitor {
-        private GenericVisitor() {
-        }
-
-        GenericVisitor(InstructionTransformer instructionTransformer, GenericVisitor genericVisitor) {
-            this();
-        }
-
-        @Override // mod.agus.jcoderz.dx.io.CodeReader.Visitor
-        public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
-            DecodedInstruction[] decodedInstructionArr2 = InstructionTransformer.this.mappedInstructions;
-            InstructionTransformer instructionTransformer = InstructionTransformer.this;
-            int i = instructionTransformer.mappedAt;
-            instructionTransformer.mappedAt = i + 1;
-            decodedInstructionArr2[i] = decodedInstruction;
+    private class GenericVisitor implements mod.agus.jcoderz.dx.io.CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            mappedInstructions[mappedAt++] = one;
         }
     }
 
-    private class StringVisitor implements CodeReader.Visitor {
-        private StringVisitor() {
-        }
-
-        StringVisitor(InstructionTransformer instructionTransformer, StringVisitor stringVisitor) {
-            this();
-        }
-
-        @Override // mod.agus.jcoderz.dx.io.CodeReader.Visitor
-        public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
-            int adjustString = InstructionTransformer.this.indexMap.adjustString(decodedInstruction.getIndex());
-            InstructionTransformer.jumboCheck(decodedInstruction.getOpcode() == 27, adjustString);
-            DecodedInstruction[] decodedInstructionArr2 = InstructionTransformer.this.mappedInstructions;
-            InstructionTransformer instructionTransformer = InstructionTransformer.this;
-            int i = instructionTransformer.mappedAt;
-            instructionTransformer.mappedAt = i + 1;
-            decodedInstructionArr2[i] = decodedInstruction.withIndex(adjustString);
+    private class StringVisitor implements mod.agus.jcoderz.dx.io.CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            int stringId = one.getIndex();
+            int mappedId = indexMap.adjustString(stringId);
+            boolean isJumbo = (one.getOpcode() == mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING_JUMBO);
+            jumboCheck(isJumbo, mappedId);
+            mappedInstructions[mappedAt++] = one.withIndex(mappedId);
         }
     }
 
-    private class FieldVisitor implements CodeReader.Visitor {
-        private FieldVisitor() {
-        }
-
-        FieldVisitor(InstructionTransformer instructionTransformer, FieldVisitor fieldVisitor) {
-            this();
-        }
-
-        @Override // mod.agus.jcoderz.dx.io.CodeReader.Visitor
-        public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
-            int adjustField = InstructionTransformer.this.indexMap.adjustField(decodedInstruction.getIndex());
-            InstructionTransformer.jumboCheck(decodedInstruction.getOpcode() == 27, adjustField);
-            DecodedInstruction[] decodedInstructionArr2 = InstructionTransformer.this.mappedInstructions;
-            InstructionTransformer instructionTransformer = InstructionTransformer.this;
-            int i = instructionTransformer.mappedAt;
-            instructionTransformer.mappedAt = i + 1;
-            decodedInstructionArr2[i] = decodedInstruction.withIndex(adjustField);
+    private class FieldVisitor implements mod.agus.jcoderz.dx.io.CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            int fieldId = one.getIndex();
+            int mappedId = indexMap.adjustField(fieldId);
+            boolean isJumbo = (one.getOpcode() == mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING_JUMBO);
+            jumboCheck(isJumbo, mappedId);
+            mappedInstructions[mappedAt++] = one.withIndex(mappedId);
         }
     }
 
-    private class TypeVisitor implements CodeReader.Visitor {
-        private TypeVisitor() {
-        }
-
-        TypeVisitor(InstructionTransformer instructionTransformer, TypeVisitor typeVisitor) {
-            this();
-        }
-
-        @Override // mod.agus.jcoderz.dx.io.CodeReader.Visitor
-        public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
-            int adjustType = InstructionTransformer.this.indexMap.adjustType(decodedInstruction.getIndex());
-            InstructionTransformer.jumboCheck(decodedInstruction.getOpcode() == 27, adjustType);
-            DecodedInstruction[] decodedInstructionArr2 = InstructionTransformer.this.mappedInstructions;
-            InstructionTransformer instructionTransformer = InstructionTransformer.this;
-            int i = instructionTransformer.mappedAt;
-            instructionTransformer.mappedAt = i + 1;
-            decodedInstructionArr2[i] = decodedInstruction.withIndex(adjustType);
+    private class TypeVisitor implements mod.agus.jcoderz.dx.io.CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            int typeId = one.getIndex();
+            int mappedId = indexMap.adjustType(typeId);
+            boolean isJumbo = (one.getOpcode() == mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING_JUMBO);
+            jumboCheck(isJumbo, mappedId);
+            mappedInstructions[mappedAt++] = one.withIndex(mappedId);
         }
     }
 
-    private class MethodVisitor implements CodeReader.Visitor {
-        private MethodVisitor() {
+    private class MethodVisitor implements mod.agus.jcoderz.dx.io.CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            int methodId = one.getIndex();
+            int mappedId = indexMap.adjustMethod(methodId);
+            boolean isJumbo = (one.getOpcode() == Opcodes.CONST_STRING_JUMBO);
+            jumboCheck(isJumbo, mappedId);
+            mappedInstructions[mappedAt++] = one.withIndex(mappedId);
         }
+    }
 
-        MethodVisitor(InstructionTransformer instructionTransformer, MethodVisitor methodVisitor) {
-            this();
+    private class MethodAndProtoVisitor implements mod.agus.jcoderz.dx.io.CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            int methodId = one.getIndex();
+            int protoId = one.getProtoIndex();
+            mappedInstructions[mappedAt++] =
+                one.withProtoIndex(indexMap.adjustMethod(methodId), indexMap.adjustProto(protoId));
         }
+    }
 
-        @Override // mod.agus.jcoderz.dx.io.CodeReader.Visitor
-        public void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
-            int adjustMethod = InstructionTransformer.this.indexMap.adjustMethod(decodedInstruction.getIndex());
-            InstructionTransformer.jumboCheck(decodedInstruction.getOpcode() == 27, adjustMethod);
-            DecodedInstruction[] decodedInstructionArr2 = InstructionTransformer.this.mappedInstructions;
-            InstructionTransformer instructionTransformer = InstructionTransformer.this;
-            int i = instructionTransformer.mappedAt;
-            instructionTransformer.mappedAt = i + 1;
-            decodedInstructionArr2[i] = decodedInstruction.withIndex(adjustMethod);
+    private class CallSiteVisitor implements CodeReader.Visitor {
+        @Override
+        public void visit(DecodedInstruction[] all, DecodedInstruction one) {
+            int callSiteId = one.getIndex();
+            int mappedCallSiteId = indexMap.adjustCallSite(callSiteId);
+            mappedInstructions[mappedAt++] = one.withIndex(mappedCallSiteId);
+        }
+    }
+
+    private static void jumboCheck(boolean isJumbo, int newIndex) {
+        if (!isJumbo && (newIndex > 0xffff)) {
+            throw new DexIndexOverflowException("Cannot merge new index " + newIndex +
+                                   " into a non-jumbo instruction!");
         }
     }
 }

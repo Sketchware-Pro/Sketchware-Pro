@@ -1,53 +1,94 @@
-package mod.agus.jcoderz.dx.dex.code.form;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.BitSet;
+package mod.agus.jcoderz.dx.dex.code.form;
 
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
 import mod.agus.jcoderz.dx.dex.code.SimpleInsn;
-import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import java.util.BitSet;
 
+import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
+
+/**
+ * Instruction format {@code 32x}. See the instruction format spec
+ * for details.
+ */
 public final class Form32x extends InsnFormat {
+    /** {@code non-null;} unique instance of this class */
     public static final InsnFormat THE_ONE = new Form32x();
 
+    /**
+     * Constructs an instance. This class is not publicly
+     * instantiable. Use {@link #THE_ONE}.
+     */
     private Form32x() {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnArgString(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        return registers.get(0).regString() + ", " + registers.get(1).regString();
+    /** {@inheritDoc} */
+    @Override
+    public String insnArgString(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        return regs.get(0).regString() + ", " + regs.get(1).regString();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnCommentString(DalvInsn dalvInsn, boolean z) {
+    /** {@inheritDoc} */
+    @Override
+    public String insnCommentString(DalvInsn insn, boolean noteIndices) {
+        // This format has no comment.
         return "";
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
         return 3;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public boolean isCompatible(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        return (dalvInsn instanceof SimpleInsn) && registers.size() == 2 && unsignedFitsInShort(registers.get(0).getReg()) && unsignedFitsInShort(registers.get(1).getReg());
+    /** {@inheritDoc} */
+    @Override
+    public boolean isCompatible(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        return (insn instanceof SimpleInsn) &&
+            (regs.size() == 2) &&
+            unsignedFitsInShort(regs.get(0).getReg()) &&
+            unsignedFitsInShort(regs.get(1).getReg());
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        BitSet bitSet = new BitSet(2);
-        bitSet.set(0, unsignedFitsInShort(registers.get(0).getReg()));
-        bitSet.set(1, unsignedFitsInShort(registers.get(1).getReg()));
-        return bitSet;
+    /** {@inheritDoc} */
+    @Override
+    public BitSet compatibleRegs(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        BitSet bits = new BitSet(2);
+
+        bits.set(0, unsignedFitsInShort(regs.get(0).getReg()));
+        bits.set(1, unsignedFitsInShort(regs.get(1).getReg()));
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        write(annotatedOutput, opcodeUnit(dalvInsn, 0), (short) registers.get(0).getReg(), (short) registers.get(1).getReg());
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out, DalvInsn insn) {
+        RegisterSpecList regs = insn.getRegisters();
+
+        write(out,
+              opcodeUnit(insn, 0),
+              (short) regs.get(0).getReg(),
+              (short) regs.get(1).getReg());
     }
 }

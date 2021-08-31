@@ -1,49 +1,87 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.cst;
 
-public abstract class CstLiteral32 extends CstLiteralBits {
+/**
+ * Constants which are literal 32-bit values of some sort.
+ */
+public abstract class CstLiteral32
+        extends CstLiteralBits {
+    /** the value as {@code int} bits */
     private final int bits;
 
-    CstLiteral32(int i) {
-        this.bits = i;
+    /**
+     * Constructs an instance.
+     *
+     * @param bits the value as {@code int} bits
+     */
+    /*package*/ CstLiteral32(int bits) {
+        this.bits = bits;
     }
 
-    public final boolean equals(Object obj) {
-        return obj != null && getClass() == obj.getClass() && this.bits == ((CstLiteral32) obj).bits;
+    /** {@inheritDoc} */
+    @Override
+    public final boolean equals(Object other) {
+        return (other != null) &&
+            (getClass() == other.getClass()) &&
+            bits == ((CstLiteral32) other).bits;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public final int hashCode() {
-        return this.bits;
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.Constant
-    public int compareTo0(Constant constant) {
-        int i = ((CstLiteral32) constant).bits;
-        if (this.bits < i) {
+    /** {@inheritDoc} */
+    @Override
+    protected int compareTo0(Constant other) {
+        int otherBits = ((CstLiteral32) other).bits;
+
+        if (bits < otherBits) {
             return -1;
-        }
-        if (this.bits > i) {
+        } else if (bits > otherBits) {
             return 1;
+        } else {
+            return 0;
         }
-        return 0;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.Constant
+    /** {@inheritDoc} */
+    @Override
     public final boolean isCategory2() {
         return false;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.CstLiteralBits
+    /** {@inheritDoc} */
+    @Override
     public final boolean fitsInInt() {
         return true;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.CstLiteralBits
+    /** {@inheritDoc} */
+    @Override
     public final int getIntBits() {
-        return this.bits;
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.CstLiteralBits
+    /** {@inheritDoc} */
+    @Override
     public final long getLongBits() {
-        return (long) this.bits;
+        return (long) bits;
     }
 }

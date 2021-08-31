@@ -1,11 +1,20 @@
-package mod.agus.jcoderz.dx.dex.file;
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstArray;
@@ -15,227 +24,402 @@ import mod.agus.jcoderz.dx.rop.cst.Zeroes;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.ByteArrayAnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Writers;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
+/**
+ * Representation of all the parts of a Dalvik class that are generally
+ * "inflated" into an in-memory representation at runtime. Instances of
+ * this class are represented in a compact streamable form in a
+ * {@code dex} file, as opposed to a random-access form.
+ */
 public final class ClassDataItem extends OffsettedItem {
-    private final ArrayList<EncodedMethod> directMethods;
-    private final ArrayList<EncodedField> instanceFields;
-    private final ArrayList<EncodedField> staticFields;
-    private final HashMap<EncodedField, Constant> staticValues;
+    /** {@code non-null;} what class this data is for, just for listing generation */
     private final CstType thisClass;
-    private final ArrayList<EncodedMethod> virtualMethods;
-    private byte[] encodedForm;
+
+    /** {@code non-null;} list of static fields */
+    private final ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedField> staticFields;
+
+    /** {@code non-null;} list of initial values for static fields */
+    private final HashMap<mod.agus.jcoderz.dx.dex.file.EncodedField, Constant> staticValues;
+
+    /** {@code non-null;} list of instance fields */
+    private final ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedField> instanceFields;
+
+    /** {@code non-null;} list of direct methods */
+    private final ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod> directMethods;
+
+    /** {@code non-null;} list of virtual methods */
+    private final ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod> virtualMethods;
+
+    /** {@code null-ok;} static initializer list; set in {@link #addContents} */
     private CstArray staticValuesConstant;
 
-    public ClassDataItem(CstType cstType) {
+    /**
+     * {@code null-ok;} encoded form, ready for writing to a file; set during
+     * {@link #place0}
+     */
+    private byte[] encodedForm;
+
+    /**
+     * Constructs an instance. Its sets of members are initially
+     * empty.
+     *
+     * @param thisClass {@code non-null;} what class this data is for, just
+     * for listing generation
+     */
+    public ClassDataItem(CstType thisClass) {
         super(1, -1);
-        if (cstType == null) {
+
+        if (thisClass == null) {
             throw new NullPointerException("thisClass == null");
         }
-        this.thisClass = cstType;
-        this.staticFields = new ArrayList<>(20);
-        this.staticValues = new HashMap<>(40);
-        this.instanceFields = new ArrayList<>(20);
-        this.directMethods = new ArrayList<>(20);
-        this.virtualMethods = new ArrayList<>(20);
+
+        this.thisClass = thisClass;
+        this.staticFields = new ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedField>(20);
+        this.staticValues = new HashMap<mod.agus.jcoderz.dx.dex.file.EncodedField, Constant>(40);
+        this.instanceFields = new ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedField>(20);
+        this.directMethods = new ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod>(20);
+        this.virtualMethods = new ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod>(20);
         this.staticValuesConstant = null;
     }
 
-    private static void encodeSize(DexFile dexFile, AnnotatedOutput annotatedOutput, String str, int i) {
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(String.format("  %-21s %08x", str + "_size:", Integer.valueOf(i)));
-        }
-        annotatedOutput.writeUleb128(i);
-    }
-
-    private static void encodeList(DexFile dexFile, AnnotatedOutput annotatedOutput, String str, ArrayList<? extends EncodedMember> arrayList) {
-        int size = arrayList.size();
-        if (size != 0) {
-            if (annotatedOutput.annotates()) {
-                annotatedOutput.annotate(0, "  " + str + ":");
-            }
-            int i = 0;
-            for (int i2 = 0; i2 < size; i2++) {
-                i = ((EncodedMember) arrayList.get(i2)).encode(dexFile, annotatedOutput, i, i2);
-            }
-        }
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_CLASS_DATA_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         return toString();
     }
 
+    /**
+     * Returns whether this instance is empty.
+     *
+     * @return {@code true} if this instance is empty or
+     * {@code false} if at least one element has been added to it
+     */
     public boolean isEmpty() {
-        return this.staticFields.isEmpty() && this.instanceFields.isEmpty() && this.directMethods.isEmpty() && this.virtualMethods.isEmpty();
+        return staticFields.isEmpty() && instanceFields.isEmpty()
+            && directMethods.isEmpty() && virtualMethods.isEmpty();
     }
 
-    public void addStaticField(EncodedField encodedField, Constant constant) {
-        if (encodedField == null) {
-            throw new NullPointerException("field == null");
-        } else if (this.staticValuesConstant != null) {
-            throw new UnsupportedOperationException("static fields already sorted");
-        } else {
-            this.staticFields.add(encodedField);
-            this.staticValues.put(encodedField, constant);
-        }
-    }
-
-    public void addInstanceField(EncodedField encodedField) {
-        if (encodedField == null) {
+    /**
+     * Adds a static field.
+     *
+     * @param field {@code non-null;} the field to add
+     * @param value {@code null-ok;} initial value for the field, if any
+     */
+    public void addStaticField(mod.agus.jcoderz.dx.dex.file.EncodedField field, Constant value) {
+        if (field == null) {
             throw new NullPointerException("field == null");
         }
-        this.instanceFields.add(encodedField);
+
+        if (staticValuesConstant != null) {
+            throw new UnsupportedOperationException(
+                    "static fields already sorted");
+        }
+
+        staticFields.add(field);
+        staticValues.put(field, value);
     }
 
-    public void addDirectMethod(EncodedMethod encodedMethod) {
-        if (encodedMethod == null) {
+    /**
+     * Adds an instance field.
+     *
+     * @param field {@code non-null;} the field to add
+     */
+    public void addInstanceField(mod.agus.jcoderz.dx.dex.file.EncodedField field) {
+        if (field == null) {
+            throw new NullPointerException("field == null");
+        }
+
+        instanceFields.add(field);
+    }
+
+    /**
+     * Adds a direct ({@code static} and/or {@code private}) method.
+     *
+     * @param method {@code non-null;} the method to add
+     */
+    public void addDirectMethod(mod.agus.jcoderz.dx.dex.file.EncodedMethod method) {
+        if (method == null) {
             throw new NullPointerException("method == null");
         }
-        this.directMethods.add(encodedMethod);
+
+        directMethods.add(method);
     }
 
-    public void addVirtualMethod(EncodedMethod encodedMethod) {
-        if (encodedMethod == null) {
+    /**
+     * Adds a virtual method.
+     *
+     * @param method {@code non-null;} the method to add
+     */
+    public void addVirtualMethod(mod.agus.jcoderz.dx.dex.file.EncodedMethod method) {
+        if (method == null) {
             throw new NullPointerException("method == null");
         }
-        this.virtualMethods.add(encodedMethod);
+
+        virtualMethods.add(method);
     }
 
-    public ArrayList<EncodedMethod> getMethods() {
-        ArrayList<EncodedMethod> arrayList = new ArrayList<>(this.directMethods.size() + this.virtualMethods.size());
-        arrayList.addAll(this.directMethods);
-        arrayList.addAll(this.virtualMethods);
-        return arrayList;
+    /**
+     * Gets all the methods in this class. The returned list is not linked
+     * in any way to the underlying lists contained in this instance, but
+     * the objects contained in the list are shared.
+     *
+     * @return {@code non-null;} list of all methods
+     */
+    public ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod> getMethods() {
+        int sz = directMethods.size() + virtualMethods.size();
+        ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod> result = new ArrayList<mod.agus.jcoderz.dx.dex.file.EncodedMethod>(sz);
+
+        result.addAll(directMethods);
+        result.addAll(virtualMethods);
+
+        return result;
     }
 
-    public void debugPrint(Writer writer, boolean z) {
-        PrintWriter printWriterFor = Writers.printWriterFor(writer);
-        int size = this.staticFields.size();
-        for (int i = 0; i < size; i++) {
-            printWriterFor.println("  sfields[" + i + "]: " + this.staticFields.get(i));
-        }
-        int size2 = this.instanceFields.size();
-        for (int i2 = 0; i2 < size2; i2++) {
-            printWriterFor.println("  ifields[" + i2 + "]: " + this.instanceFields.get(i2));
-        }
-        int size3 = this.directMethods.size();
-        for (int i3 = 0; i3 < size3; i3++) {
-            printWriterFor.println("  dmeths[" + i3 + "]:");
-            this.directMethods.get(i3).debugPrint(printWriterFor, z);
-        }
-        int size4 = this.virtualMethods.size();
-        for (int i4 = 0; i4 < size4; i4++) {
-            printWriterFor.println("  vmeths[" + i4 + "]:");
-            this.virtualMethods.get(i4).debugPrint(printWriterFor, z);
-        }
-    }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        if (!this.staticFields.isEmpty()) {
-            getStaticValuesConstant();
-            Iterator<EncodedField> it = this.staticFields.iterator();
-            while (it.hasNext()) {
-                it.next().addContents(dexFile);
-            }
+    /**
+     * Prints out the contents of this instance, in a debugging-friendly
+     * way.
+     *
+     * @param out {@code non-null;} where to output to
+     * @param verbose whether to be verbose with the output
+     */
+    public void debugPrint(Writer out, boolean verbose) {
+        PrintWriter pw = Writers.printWriterFor(out);
+
+        int sz = staticFields.size();
+        for (int i = 0; i < sz; i++) {
+            pw.println("  sfields[" + i + "]: " + staticFields.get(i));
         }
-        if (!this.instanceFields.isEmpty()) {
-            Collections.sort(this.instanceFields);
-            Iterator<EncodedField> it2 = this.instanceFields.iterator();
-            while (it2.hasNext()) {
-                it2.next().addContents(dexFile);
-            }
+
+        sz = instanceFields.size();
+        for (int i = 0; i < sz; i++) {
+            pw.println("  ifields[" + i + "]: " + instanceFields.get(i));
         }
-        if (!this.directMethods.isEmpty()) {
-            Collections.sort(this.directMethods);
-            Iterator<EncodedMethod> it3 = this.directMethods.iterator();
-            while (it3.hasNext()) {
-                it3.next().addContents(dexFile);
-            }
+
+        sz = directMethods.size();
+        for (int i = 0; i < sz; i++) {
+            pw.println("  dmeths[" + i + "]:");
+            directMethods.get(i).debugPrint(pw, verbose);
         }
-        if (!this.virtualMethods.isEmpty()) {
-            Collections.sort(this.virtualMethods);
-            Iterator<EncodedMethod> it4 = this.virtualMethods.iterator();
-            while (it4.hasNext()) {
-                it4.next().addContents(dexFile);
-            }
+
+        sz = virtualMethods.size();
+        for (int i = 0; i < sz; i++) {
+            pw.println("  vmeths[" + i + "]:");
+            virtualMethods.get(i).debugPrint(pw, verbose);
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        if (!staticFields.isEmpty()) {
+            getStaticValuesConstant(); // Force the fields to be sorted.
+            for (mod.agus.jcoderz.dx.dex.file.EncodedField field : staticFields) {
+                field.addContents(file);
+            }
+        }
+
+        if (!instanceFields.isEmpty()) {
+            Collections.sort(instanceFields);
+            for (mod.agus.jcoderz.dx.dex.file.EncodedField field : instanceFields) {
+                field.addContents(file);
+            }
+        }
+
+        if (!directMethods.isEmpty()) {
+            Collections.sort(directMethods);
+            for (mod.agus.jcoderz.dx.dex.file.EncodedMethod method : directMethods) {
+                method.addContents(file);
+            }
+        }
+
+        if (!virtualMethods.isEmpty()) {
+            Collections.sort(virtualMethods);
+            for (EncodedMethod method : virtualMethods) {
+                method.addContents(file);
+            }
+        }
+    }
+
+    /**
+     * Gets a {@link CstArray} corresponding to {@link #staticValues} if
+     * it contains any non-zero non-{@code null} values.
+     *
+     * @return {@code null-ok;} the corresponding constant or {@code null} if
+     * there are no values to encode
+     */
     public CstArray getStaticValuesConstant() {
-        if (this.staticValuesConstant == null && this.staticFields.size() != 0) {
-            this.staticValuesConstant = makeStaticValuesConstant();
+        if ((staticValuesConstant == null) && (staticFields.size() != 0)) {
+            staticValuesConstant = makeStaticValuesConstant();
         }
-        return this.staticValuesConstant;
+
+        return staticValuesConstant;
     }
 
+    /**
+     * Gets a {@link CstArray} corresponding to {@link #staticValues} if
+     * it contains any non-zero non-{@code null} values.
+     *
+     * @return {@code null-ok;} the corresponding constant or {@code null} if
+     * there are no values to encode
+     */
     private CstArray makeStaticValuesConstant() {
-        Collections.sort(this.staticFields);
-        int size = this.staticFields.size();
+        // First sort the statics into their final order.
+        Collections.sort(staticFields);
+
+        /*
+         * Get the size of staticValues minus any trailing zeros/nulls (both
+         * nulls per se as well as instances of CstKnownNull).
+         */
+
+        int size = staticFields.size();
         while (size > 0) {
-            Constant constant = this.staticValues.get(this.staticFields.get(size - 1));
-            if (constant instanceof CstLiteralBits) {
-                if (((CstLiteralBits) constant).getLongBits() != 0) {
+            mod.agus.jcoderz.dx.dex.file.EncodedField field = staticFields.get(size - 1);
+            Constant cst = staticValues.get(field);
+            if (cst instanceof CstLiteralBits) {
+                // Note: CstKnownNull extends CstLiteralBits.
+                if (((CstLiteralBits) cst).getLongBits() != 0) {
                     break;
                 }
-            } else if (constant != null) {
+            } else if (cst != null) {
                 break;
             }
             size--;
         }
+
         if (size == 0) {
             return null;
         }
+
+        // There is something worth encoding, so build up a result.
+
         CstArray.List list = new CstArray.List(size);
         for (int i = 0; i < size; i++) {
-            EncodedField encodedField = this.staticFields.get(i);
-            Constant constant2 = this.staticValues.get(encodedField);
-            if (constant2 == null) {
-                constant2 = Zeroes.zeroFor(encodedField.getRef().getType());
+            EncodedField field = staticFields.get(i);
+            Constant cst = staticValues.get(field);
+            if (cst == null) {
+                cst = Zeroes.zeroFor(field.getRef().getType());
             }
-            list.set(i, constant2);
+            list.set(i, cst);
         }
         list.setImmutable();
+
         return new CstArray(list);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void place0(Section section, int i) {
-        ByteArrayAnnotatedOutput byteArrayAnnotatedOutput = new ByteArrayAnnotatedOutput();
-        encodeOutput(section.getFile(), byteArrayAnnotatedOutput);
-        this.encodedForm = byteArrayAnnotatedOutput.toByteArray();
-        setWriteSize(this.encodedForm.length);
+    /** {@inheritDoc} */
+    @Override
+    protected void place0(Section addedTo, int offset) {
+        // Encode the data and note the size.
+
+        ByteArrayAnnotatedOutput out = new ByteArrayAnnotatedOutput();
+
+        encodeOutput(addedTo.getFile(), out);
+        encodedForm = out.toByteArray();
+        setWriteSize(encodedForm.length);
     }
 
-    private void encodeOutput(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        boolean annotates = annotatedOutput.annotates();
+    /**
+     * Writes out the encoded form of this instance.
+     *
+     * @param file {@code non-null;} file this instance is part of
+     * @param out {@code non-null;} where to write to
+     */
+    private void encodeOutput(mod.agus.jcoderz.dx.dex.file.DexFile file, AnnotatedOutput out) {
+        boolean annotates = out.annotates();
+
         if (annotates) {
-            annotatedOutput.annotate(0, offsetString() + " class data for " + this.thisClass.toHuman());
+            out.annotate(0, offsetString() + " class data for " +
+                    thisClass.toHuman());
         }
-        encodeSize(dexFile, annotatedOutput, "static_fields", this.staticFields.size());
-        encodeSize(dexFile, annotatedOutput, "instance_fields", this.instanceFields.size());
-        encodeSize(dexFile, annotatedOutput, "direct_methods", this.directMethods.size());
-        encodeSize(dexFile, annotatedOutput, "virtual_methods", this.virtualMethods.size());
-        encodeList(dexFile, annotatedOutput, "static_fields", this.staticFields);
-        encodeList(dexFile, annotatedOutput, "instance_fields", this.instanceFields);
-        encodeList(dexFile, annotatedOutput, "direct_methods", this.directMethods);
-        encodeList(dexFile, annotatedOutput, "virtual_methods", this.virtualMethods);
+
+        encodeSize(file, out, "static_fields", staticFields.size());
+        encodeSize(file, out, "instance_fields", instanceFields.size());
+        encodeSize(file, out, "direct_methods", directMethods.size());
+        encodeSize(file, out, "virtual_methods", virtualMethods.size());
+
+        encodeList(file, out, "static_fields", staticFields);
+        encodeList(file, out, "instance_fields", instanceFields);
+        encodeList(file, out, "direct_methods", directMethods);
+        encodeList(file, out, "virtual_methods", virtualMethods);
+
         if (annotates) {
-            annotatedOutput.endAnnotation();
+            out.endAnnotation();
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    public void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        if (annotatedOutput.annotates()) {
-            encodeOutput(dexFile, annotatedOutput);
+    /**
+     * Helper for {@link #encodeOutput}, which writes out the given
+     * size value, annotating it as well (if annotations are enabled).
+     *
+     * @param file {@code non-null;} file this instance is part of
+     * @param out {@code non-null;} where to write to
+     * @param label {@code non-null;} the label for the purposes of annotation
+     * @param size {@code >= 0;} the size to write
+     */
+    private static void encodeSize(mod.agus.jcoderz.dx.dex.file.DexFile file, AnnotatedOutput out,
+                                   String label, int size) {
+        if (out.annotates()) {
+            out.annotate(String.format("  %-21s %08x", label + "_size:",
+                            size));
+        }
+
+        out.writeUleb128(size);
+    }
+
+    /**
+     * Helper for {@link #encodeOutput}, which writes out the given
+     * list. It also annotates the items (if any and if annotations
+     * are enabled).
+     *
+     * @param file {@code non-null;} file this instance is part of
+     * @param out {@code non-null;} where to write to
+     * @param label {@code non-null;} the label for the purposes of annotation
+     * @param list {@code non-null;} the list in question
+     */
+    private static void encodeList(mod.agus.jcoderz.dx.dex.file.DexFile file, AnnotatedOutput out,
+                                   String label, ArrayList<? extends EncodedMember> list) {
+        int size = list.size();
+        int lastIndex = 0;
+
+        if (size == 0) {
+            return;
+        }
+
+        if (out.annotates()) {
+            out.annotate(0, "  " + label + ":");
+        }
+
+        for (int i = 0; i < size; i++) {
+            lastIndex = list.get(i).encode(file, out, lastIndex, i);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo0(DexFile file, AnnotatedOutput out) {
+        boolean annotates = out.annotates();
+
+        if (annotates) {
+            /*
+             * The output is to be annotated, so redo the work previously
+             * done by place0(), except this time annotations will actually
+             * get emitted.
+             */
+            encodeOutput(file, out);
         } else {
-            annotatedOutput.write(this.encodedForm);
+            out.write(encodedForm);
         }
     }
 }

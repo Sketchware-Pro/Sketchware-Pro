@@ -15,18 +15,24 @@ import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.blocks.CommandBlock;
 
 public class yq {
 
     /**
-     * Firebase Database storage location RegExp matcher to remove useless parts of storage URL.
-     * Users should enter the entire storage URL (e.g. <code>sk-pro-default-rtdb.firebaseio.com</code>), and this
-     * RegExp matches <code>-default-rtdb.firebaseio.com</code> in that case.
+     * Firebase Database storage location RegExp matcher to remove unwanted parts of storage URL
+     * to get the actual project ID.
+     * <p/>
+     * Users should enter the entire storage URL without <code>https://</code> at the beginning and
+     * <code>/</code> at the end, e.g. <code>sk-pro-default-rtdb.firebaseio.com</code>.
      */
     private static final String FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER = "(-default-rtdb)?\\.[a-z](.?)+";
     /**
@@ -328,6 +334,9 @@ public class yq {
         b(context);
     }
 
+    /**
+     * Deletes the directory {@link yq#w}/values-v21/.
+     */
     public void a() {
         File file = new File(w + File.separator + "values-v21");
         if (file.exists()) {
@@ -335,9 +344,15 @@ public class yq {
         }
     }
 
+    /**
+     * Does nothing.
+     */
     public void b() {
     }
 
+    /**
+     * Initializes fields with provided {@link Context}.
+     */
     public final void b(Context context) {
         L = new oB(true);
         M = new Gson();
@@ -380,9 +395,17 @@ public class yq {
         I = wq.o() + File.separator + d + "_release.apk";
     }
 
+    /**
+     * Does nothing.
+     */
     public void c() {
     }
 
+    /**
+     * Creates {@link yq#t}, {@link yq#u}, {@link yq#v}, {@link yq#y}, {@link yq#w}, {@link yq#x},
+     * {@link yq#z}, {@link yq#A}, {@link yq#B}, then generates DebugActivity.java and
+     * SketchApplication.java.
+     */
     public void c(Context context) {
         L.f(t);
         L.f(u);
@@ -405,12 +428,20 @@ public class yq {
         }
     }
 
+    /**
+     * Prepares to compile and creates /Internal storage/.sketchware/mysc/&lt;sc_id&gt;/ directories,
+     * {@link yq#t}, {@link yq#u} and {@link yq#v}.
+     */
     public void e() {
         L.f(t);
         L.f(u);
         L.f(v);
     }
 
+    /**
+     * Deletes temporary compile cache directories, {@link yq#t} and {@link yq#v}. The used method
+     * logs all files and folders which get deleted.
+     */
     public void f() {
         L.b(t);
         L.b(v);
@@ -423,6 +454,9 @@ public class yq {
         return new File(I).exists();
     }
 
+    /**
+     * Generates top-level build.gradle, build.gradle for module ':app' and settings.gradle files.
+     */
     public void h() {
         L.b(c + File.separator + "app" + File.separator + "build.gradle",
                 Lx.a(28, 21, 28, N));
@@ -438,46 +472,57 @@ public class yq {
         }
     }
 
-    public void a(String str) {
+    /**
+     * Copies a file to the project's app icon path, {@link yq#w}/drawable-xhdpi/app_icon.png
+     */
+    public void a(String iconPath) {
         try {
-            L.a(str, w + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
+            L.a(iconPath, w + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
         } catch (Exception e2) {
             e2.printStackTrace();
         }
     }
 
+    /**
+     * Generates DebugActivity.java and SketchApplication.java.
+     */
     public void a(Context context) {
-        int minSdkVersion;
-        try {
-            minSdkVersion = Integer.parseInt(projectSettings.getValue(
-                    ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
-        } catch (NumberFormatException e) {
-            minSdkVersion = 21;
-        }
-        boolean applyMultiDex = minSdkVersion < 21;
-
-        L.b(y + File.separator
-                        + n + File.separator
-                        + "DebugActivity.java",
-                L.b(
-                        context,
-                        "debug" + File.separator
-                                + "DebugActivity.java"
-                ).replaceAll("<\\?package_name\\?>", e));
-
-        String sketchApplicationFileContent = L.b(
-                context,
-                "debug" + File.separator + "SketchApplication.java"
-        ).replaceAll("<\\?package_name\\?>", e);
-        if (applyMultiDex) {
-            sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
-                    "Application \\{", "androidx.multidex.MultiDexApplication \\{");
+        String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
+        if (!new File(javaDir, "DebugActivity.java").exists()) {
+            L.b(y + File.separator
+                            + n + File.separator
+                            + "DebugActivity.java",
+                    L.b(
+                            context,
+                            "debug" + File.separator
+                                    + "DebugActivity.java"
+                    ).replaceAll("<\\?package_name\\?>", e));
         }
 
-        L.b(y + File.separator
-                        + n + File.separator
-                        + "SketchApplication.java",
-                sketchApplicationFileContent);
+        if (!new File(javaDir, "SketchApplication.java").exists()) {
+            int minSdkVersion;
+            try {
+                minSdkVersion = Integer.parseInt(projectSettings.getValue(
+                        ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
+            } catch (NumberFormatException e) {
+                minSdkVersion = 21;
+            }
+            boolean applyMultiDex = minSdkVersion < 21;
+
+            String sketchApplicationFileContent = L.b(
+                    context,
+                    "debug" + File.separator + "SketchApplication.java"
+            ).replaceAll("<\\?package_name\\?>", e);
+            if (applyMultiDex) {
+                sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
+                        "Application \\{", "androidx.multidex.MultiDexApplication \\{");
+            }
+
+            L.b(y + File.separator
+                            + n + File.separator
+                            + "SketchApplication.java",
+                    sketchApplicationFileContent);
+        }
     }
 
     public void a(String str, String str2) {
@@ -494,9 +539,7 @@ public class yq {
         }
     }
 
-    /* JADX INFO: Can't fix incorrect switch cases order, some code will duplicate */
     public void a(iC iCVar, hC hCVar, eC eCVar, boolean z2) {
-        char c2;
         N = new jq();
         N.a = e;
         N.b = f;
@@ -505,75 +548,75 @@ public class yq {
         N.sc_id = b;
         N.e = O.h();
         N.f = !z2;
-        if (iCVar.d().useYn.equals("Y")) {
+        if (iCVar.d().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.h = true;
-            N.a(2);
-            N.a(8);
+            N.a(jq.PERMISSION_INTERNET);
+            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
         }
-        if (iCVar.c().useYn.equals("Y")) {
+        if (iCVar.c().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
         }
-        if (iCVar.b().useYn.equals("Y")) {
+        if (iCVar.b().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.l = true;
-            N.a(2);
-            N.a(8);
+            N.a(jq.PERMISSION_INTERNET);
+            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.a(iCVar.b());
         }
-        if (iCVar.e().useYn.equals("Y")) {
+        if (iCVar.e().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.m = true;
-            N.a(2);
-            N.a(8);
+            N.a(jq.PERMISSION_INTERNET);
+            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.b(iCVar.e());
         }
         for (ProjectFileBean next : hCVar.b()) {
-            if (next.hasActivityOption(4)) {
+            if (next.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 N.a(next.getActivityName()).a = true;
             }
-            for (ComponentBean next2 : eCVar.e(next.getJavaName())) {
-                if (next2.type == 15 || next2.type == 35) {
+            for (ComponentBean component : eCVar.e(next.getJavaName())) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_CAMERA || component.type == 35) {
                     N.g = true;
                     N.u = true;
-                    N.a(next.getActivityName(), 16);
-                    N.a(next.getActivityName(), 32);
-                    N.a(next.getActivityName(), 64);
+                    N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
+                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                 }
-                N.x.handleComponent(next2.type);
-                if (next2.type == 16) {
-                    N.a(next.getActivityName(), 32);
+                N.x.handleComponent(component.type);
+                if (component.type == ComponentBean.COMPONENT_TYPE_FILE_PICKER) {
+                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                 }
-                if (next2.type == 6) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
                     N.o = true;
                     N.j = true;
-                    N.a(next.getActivityName(), 2);
-                    N.a(next.getActivityName(), 8);
+                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                 }
-                if (next2.type == 14) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
                     N.k = true;
-                    N.a(next.getActivityName(), 32);
-                    N.a(next.getActivityName(), 64);
+                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                 }
-                if (next2.type == 4) {
-                    N.a(next.getActivityName(), 4);
+                if (component.type == ComponentBean.COMPONENT_TYPE_VIBRATOR) {
+                    N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
                 }
-                if (next2.type == 12) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH) {
                     N.i = true;
                     N.a(next.getActivityName()).b = true;
                 }
-                if (next2.type == 17) {
+                if (component.type == ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK) {
                     N.o = true;
                     N.p = true;
-                    N.a(next.getActivityName(), 2);
-                    N.a(next.getActivityName(), 8);
+                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                 }
-                if (next2.type == 19) {
-                    N.a(next.getActivityName(), 128);
+                if (component.type == ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT) {
+                    N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
                 }
-                if (next2.type == 20) {
-                    N.a(next.getActivityName(), 256);
-                    N.a(next.getActivityName(), 512);
+                if (component.type == ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT) {
+                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
+                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
                 }
-                if (next2.type == 21) {
-                    N.a(next.getActivityName(), 1024);
+                if (component.type == ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER) {
+                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
                 }
             }
             for (Map.Entry<String, ArrayList<BlockBean>> entry : eCVar.b(next.getJavaName()).entrySet()) {
@@ -581,206 +624,65 @@ public class yq {
                     N.x.setParams(bean.parameters, e, bean.opCode);
                     String opCode = bean.opCode;
                     switch (opCode) {
-                        case "webViewLoadUrl":
-                            c2 = '!';
-                            break;
-
-                        case "fileutillistdir":
-                            c2 = 3;
-                            break;
-
-                        case "setBitmapFileBrightness":
-                            c2 = 26;
-                            break;
-
-                        case "fileutilisdir":
-                            c2 = 4;
-                            break;
-
-                        case "fileutilwrite":
-                            c2 = '\f';
-                            break;
-
-                        case "fileutilmakedir":
-                            c2 = 16;
-                            break;
-
-                        case "resizeBitmapFileRetainRatio":
-                            c2 = 17;
-                            break;
-
-                        case "getJpegRotate":
-                            c2 = '\t';
-                            break;
-
-                        case "resizeBitmapFileWithRoundedBorder":
-                            c2 = 20;
-                            break;
-
-                        case "strToListMap":
-                            c2 = 30;
-                            break;
-
-                        case "fileutilcopy":
-                            c2 = '\r';
-                            break;
-
-                        case "fileutilmove":
-                            c2 = 14;
-                            break;
-
-                        case "fileutilread":
-                            c2 = 1;
-                            break;
-
-                        case "fileutilisexist":
-                            c2 = 2;
-                            break;
-
-                        case "resizeBitmapFileToCircle":
-                            c2 = 19;
-                            break;
-
-                        case "setBitmapFileContrast":
-                            c2 = 27;
-                            break;
-
-                        case "cropBitmapFileFromCenter":
-                            c2 = 21;
-                            break;
-
-                        case "mapToStr":
-                            c2 = 29;
-                            break;
-
-                        case "fileutilGetLastSegmentPath":
-                            c2 = 11;
-                            break;
-
-                        case "resizeBitmapFileToSquare":
-                            c2 = 18;
-                            break;
-
-                        case "scaleBitmapFile":
-                            c2 = 23;
-                            break;
-
                         case "intentSetAction":
-                            c2 = 0;
-                            break;
-
-                        case "setBitmapFileColorFilter":
-                            c2 = 25;
-                            break;
-
-                        case "fileutildelete":
-                            c2 = 15;
-                            break;
-
-                        case "setImageUrl":
-                            c2 = ' ';
-                            break;
-
-                        case "fileutilEndsWith":
-                            c2 = '\b';
-                            break;
-
-                        case "fileutilisfile":
-                            c2 = 5;
-                            break;
-
-                        case "listMapToStr":
-                            c2 = 31;
-                            break;
-
-                        case "fileutillength":
-                            c2 = 6;
-                            break;
-
-                        case "fileutilStartsWith":
-                            c2 = 7;
-                            break;
-
-                        case "strToMap":
-                            c2 = 28;
-                            break;
-
-                        case "rotateBitmapFile":
-                            c2 = 22;
-                            break;
-
-                        case "skewBitmapFile":
-                            c2 = 24;
-                            break;
-
-                        case "setImageFilePath":
-                            c2 = '\n';
-                            break;
-
-                        default:
-                            c2 = 65535;
-                            break;
-                    }
-
-                    switch (c2) {
-                        case 0:
+                            // If an Intent setAction (ACTION_CALL) block is used
                             if (bean.parameters.get(1).equals(uq.c[1])) {
-                                N.a(next.getActivityName(), 1);
+                                N.a(next.getActivityName(), jq.PERMISSION_CALL_PHONE);
                             }
                             break;
 
-                        case 1:
-                        case 2:
-                        case 3:
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case '\b':
-                        case '\t':
-                        case '\n':
-                        case 11:
-                            N.a(next.getActivityName(), 32);
+                        case "fileutilread":
+                        case "fileutilisexist":
+                        case "fileutillistdir":
+                        case "fileutilisdir":
+                        case "fileutilisfile":
+                        case "fileutillength":
+                        case "fileutilStartsWith":
+                        case "fileutilEndsWith":
+                        case "getJpegRotate":
+                        case "setImageFilePath":
+                        case "fileutilGetLastSegmentPath":
+                            N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                             break;
 
-                        case '\f':
-                        case '\r':
-                        case 14:
-                        case 15:
-                        case 16:
-                        case 17:
-                        case 18:
-                        case 19:
-                        case 20:
-                        case 21:
-                        case 22:
-                        case 23:
-                        case 24:
-                        case 25:
-                        case 26:
-                        case 27:
-                            N.a(next.getActivityName(), 32);
-                            N.a(next.getActivityName(), 64);
+                        case "fileutilwrite":
+                        case "fileutilcopy":
+                        case "fileutilmove":
+                        case "fileutildelete":
+                        case "fileutilmakedir":
+                        case "resizeBitmapFileRetainRatio":
+                        case "resizeBitmapFileToSquare":
+                        case "resizeBitmapFileToCircle":
+                        case "resizeBitmapFileWithRoundedBorder":
+                        case "cropBitmapFileFromCenter":
+                        case "rotateBitmapFile":
+                        case "scaleBitmapFile":
+                        case "skewBitmapFile":
+                        case "setBitmapFileColorFilter":
+                        case "setBitmapFileBrightness":
+                        case "setBitmapFileContrast":
+                            N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                            N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                             break;
 
-                        case 28:
-                        case 29:
-                        case 30:
-                        case 31:
+                        case "strToMap":
+                        case "mapToStr":
+                        case "strToListMap":
+                        case "listMapToStr":
                             N.o = true;
                             break;
 
-                        case ' ':
-                            jq jqVar10 = N;
-                            jqVar10.n = true;
-                            jqVar10.a(2);
-                            N.a(8);
+                        case "setImageUrl":
+                            N.n = true;
+                            N.a(jq.PERMISSION_INTERNET);
                             break;
 
-                        case '!':
-                            N.a(2);
-                            N.a(8);
+                        case "webViewLoadUrl":
+                            N.a(jq.PERMISSION_INTERNET);
+                            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
                             break;
+
+                        default:
                     }
                 }
             }
@@ -788,10 +690,18 @@ public class yq {
         }
     }
 
+    /**
+     * Simply calls {@link yq#b(hC, eC, iC, boolean)} with the same arguments and <code>false</code>.
+     *
+     * @see yq#b(hC, eC, iC, boolean)
+     */
     public void b(hC hCVar, eC eCVar, iC iCVar) {
         b(hCVar, eCVar, iCVar, false);
     }
 
+    /**
+     * Generates other miscellaneous XML files, such as <code>provider_paths.xml</code> and <code>secrets.xml</code>.
+     */
     public void b(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
         ArrayList<SrcCodeBean> srcCodeBeans = a(hCVar, eCVar, iCVar, z2);
         if (N.u) {
@@ -801,80 +711,150 @@ public class yq {
             externalPathTag.a("", "name", "external_files");
             externalPathTag.a("", "path", ".");
             pathsTag.a(externalPathTag);
-            srcCodeBeans.add(new SrcCodeBean("provider_paths.xml", pathsTag.b()));
+            srcCodeBeans.add(new SrcCodeBean("provider_paths.xml",
+                    CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.b())));
         }
-        srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java", Lx.i(e)));
-        srcCodeBeans.add(new SrcCodeBean("FileUtil.java", Lx.e(e)));
-        srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java", Lx.h(e)));
-        srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java", Lx.g(e)));
-        srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java", Lx.b(e)));
-        srcCodeBeans.add(new SrcCodeBean("BluetoothController.java", Lx.c(e)));
-        if (N.m) {
-            srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java", Lx.f(e)));
-        }
+
         for (SrcCodeBean bean : srcCodeBeans) {
             a(bean.srcFileName, bean.source);
         }
         if (N.h || N.l || N.m) {
-            ProjectLibraryBean bean = iCVar.d();
+            ProjectLibraryBean firebaseLibrary = iCVar.d();
             Mx mx = new Mx();
             mx.a("google_play_services_version", 12451000);
             if (N.h) {
-                mx.a("firebase_database_url", "https://" + bean.data, false);
-                mx.a("project_id", bean.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
-                mx.a("google_app_id", bean.reserved1, false);
-                if (bean.reserved2 != null && bean.reserved2.length() > 0) {
-                    mx.a("google_api_key", bean.reserved2, false);
+                mx.a("firebase_database_url", "https://" + firebaseLibrary.data, false);
+                mx.a("project_id", firebaseLibrary.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
+                mx.a("google_app_id", firebaseLibrary.reserved1, false);
+                if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
+                    mx.a("google_api_key", firebaseLibrary.reserved2, false);
                 }
-                if (bean.reserved3 != null && bean.reserved3.length() > 0) {
-                    mx.a("google_storage_bucket", bean.reserved3, false);
+                if (firebaseLibrary.reserved3 != null && firebaseLibrary.reserved3.length() > 0) {
+                    mx.a("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }
             if (N.m) {
                 // if p3 is false, then "translatable="false" will be added
                 mx.a("google_maps_key", iCVar.e().data, false);
             }
-            L.b(w + File.separator + "values" + File.separator + "secrets.xml", mx.a());
+            String filePath = "values/secrets.xml";
+            L.b(w + File.separator + filePath,
+                    CommandBlock.applyCommands(filePath, mx.a()));
         }
         h();
     }
 
     /**
-     * Get source code files that are viewable in SrcCodeViewer (?)
+     * Get source code files that are viewable in SrcCodeViewer
      */
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
         a(iCVar, hCVar, eCVar, z2);
         CommandBlock.x();
-        ArrayList<SrcCodeBean> arrayList = new ArrayList<>();
-        for (ProjectFileBean bean : hCVar.b()) {
-            arrayList.add(new SrcCodeBean(bean.getJavaName(), new Jx(N, bean, eCVar).a()));
+
+        final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
+        final String layoutDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/resource/layout/";
+        List<File> javaFiles;
+        {
+            File[] files = new File(javaDir).listFiles();
+            if (files == null) files = new File[0];
+            javaFiles = Arrays.asList(files);
         }
-        for (ProjectFileBean bean : hCVar.b()) {
-            String xmlName = bean.getXmlName();
-            Ox ox = new Ox(N, bean);
+        List<File> layoutFiles;
+        {
+            File[] files = new File(layoutDir).listFiles();
+            if (files == null) files = new File[0];
+            layoutFiles = Arrays.asList(files);
+        }
+
+        // Generate Activities unless a custom version of it exists already
+        // at /Internal storage/.sketchware/data/<sc_id>/files/java/
+        ArrayList<SrcCodeBean> srcCodeBeans = new ArrayList<>();
+        for (ProjectFileBean activity : hCVar.b()) {
+            if (!javaFiles.contains(new File(javaDir + activity.getJavaName()))) {
+                srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
+                        new Jx(N, activity, eCVar).a()));
+            }
+        }
+
+        // Generate layouts unless a custom version of it exists already
+        // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
+        for (ProjectFileBean layout : hCVar.b()) {
+            String xmlName = layout.getXmlName();
+            Ox ox = new Ox(N, layout);
             ox.a(eC.a(eCVar.d(xmlName)), eCVar.h(xmlName));
-            arrayList.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName,
+                        CommandBlock.applyCommands(xmlName, ox.b())));
+            }
         }
-        for (ProjectFileBean bean : hCVar.c()) {
-            String xmlName2 = bean.getXmlName();
-            Ox ox2 = new Ox(N, bean);
-            ox2.a(eC.a(eCVar.d(xmlName2)));
-            arrayList.add(new SrcCodeBean(xmlName2, CommandBlock.applyCommands(xmlName2, ox2.b())));
+        for (ProjectFileBean layout : hCVar.c()) {
+            String xmlName = layout.getXmlName();
+            Ox ox = new Ox(N, layout);
+            ox.a(eC.a(eCVar.d(xmlName)));
+            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName,
+                        CommandBlock.applyCommands(xmlName, ox.b())));
+            }
         }
+
         Ix ix = new Ix(N, hCVar.b());
         ix.setYq(this);
-        arrayList.add(new SrcCodeBean("AndroidManifest.xml", CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
+
+        // Make generated classes viewable
+        if (!javaFiles.contains(new File(javaDir + "SketchwareUtil.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
+                    Lx.i(e)));
+        }
+
+        if (!javaFiles.contains(new File(javaDir + "FileUtil.java"))) {
+            srcCodeBeans.add(new SrcCodeBean("FileUtil.java",
+                    Lx.e(e)));
+        }
+
+        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java")) && N.p) {
+            srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
+                    Lx.j(Lx.h(e))));
+        }
+
+        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java") && N.p) {
+            srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
+                    Lx.j(Lx.g(e))));
+        }
+
+        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
+                    Lx.j(Lx.b(e))));
+        }
+
+        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
+            srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
+                    Lx.j(Lx.c(e))));
+        }
+
+        if (N.m) {
+            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java")) && N.m) {
+                srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
+                        Lx.j(Lx.f(e))));
+            }
+        }
+
+        srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml",
+                CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
         if (N.g) {
-            boolean useNewMaterialComponentsTheme = projectSettings.getValue("enable_bridgeless_themes", "false").equals("true");
+            boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+
             Mx colorsFileBuilder = new Mx();
             colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
             colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", i & 0xffffff));
             colorsFileBuilder.a("colorAccent", String.format("#%06X", g & 0xffffff));
             colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
             colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
-            arrayList.add(new SrcCodeBean("colors.xml", CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("colors.xml",
+                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+
             Mx stylesFileBuilder = new Mx();
-            stylesFileBuilder.c("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (!useNewMaterialComponentsTheme ? ".Bridge" : ""));
+            stylesFileBuilder.c("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
             stylesFileBuilder.a("AppTheme", "colorPrimary", "@color/colorPrimary");
             stylesFileBuilder.a("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
             stylesFileBuilder.a("AppTheme", "colorAccent", "@color/colorAccent");
@@ -885,7 +865,8 @@ public class yq {
             stylesFileBuilder.a("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
             stylesFileBuilder.c("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
             stylesFileBuilder.c("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
-            arrayList.add(new SrcCodeBean("styles.xml", CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("styles.xml",
+                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
         } else {
             Mx stylesFileBuilder = new Mx();
             stylesFileBuilder.c("AppTheme", "@android:style/Theme.Material.Light.DarkActionBar");
@@ -908,22 +889,43 @@ public class yq {
             stylesFileBuilder.a("NoActionBar", "android:colorControlNormal", "@color/colorControlNormal");
             stylesFileBuilder.c("NoStatusBar", "AppTheme");
             stylesFileBuilder.a("NoStatusBar", "android:windowFullscreen", "true");
-            arrayList.add(new SrcCodeBean("styles.xml", CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("styles.xml",
+                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+
             Mx colorsFileBuilder = new Mx();
             colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
             colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", i & 0xffffff));
             colorsFileBuilder.a("colorAccent", String.format("#%06X", g & 0xffffff));
             colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
             colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
-            arrayList.add(new SrcCodeBean("colors.xml", CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+            srcCodeBeans.add(new SrcCodeBean("colors.xml",
+                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
         }
+
         Mx stringsFileBuilder = new Mx();
         stringsFileBuilder.b("app_name", f);
-        arrayList.add(new SrcCodeBean("strings.xml", CommandBlock.applyCommands("strings.xml", stringsFileBuilder.a())));
+        srcCodeBeans.add(new SrcCodeBean("strings.xml",
+                CommandBlock.applyCommands("strings.xml", stringsFileBuilder.a())));
         CommandBlock.x();
-        return arrayList;
+        return srcCodeBeans;
     }
 
+    /**
+     * Get source code of a single Activity
+     *
+     * @return The Activity specified by <code>javaName</code>'s source or an empty String if not found
+     */
+    public String getActivitySrc(String javaName, hC hCVar, eC eCVar, iC iCVar) {
+        a(iCVar, hCVar, eCVar, false);
+        for (ProjectFileBean activity : hCVar.b()) {
+            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, eCVar).a();
+        }
+        return "";
+    }
+
+    /**
+     * @see yq#a(hC, eC, iC, boolean)
+     */
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
         return a(hCVar, eCVar, iCVar, false);
     }

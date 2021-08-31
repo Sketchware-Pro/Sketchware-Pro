@@ -1,98 +1,165 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
-import java.util.ArrayList;
-
+import mod.agus.jcoderz.dx.rop.annotation.Annotations;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
-import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.ToHuman;
+import java.util.ArrayList;
 
-public final class ParameterAnnotationStruct implements ToHuman, Comparable<ParameterAnnotationStruct> {
-    private final UniformListItem<AnnotationSetRefItem> annotationsItem;
-    private final AnnotationsList annotationsList;
+/**
+ * Association of a method and its parameter annotations.
+ */
+public final class ParameterAnnotationStruct
+        implements ToHuman, Comparable<ParameterAnnotationStruct> {
+    /** {@code non-null;} the method in question */
     private final CstMethodRef method;
 
-    public ParameterAnnotationStruct(CstMethodRef cstMethodRef, AnnotationsList annotationsList2, DexFile dexFile) {
-        if (cstMethodRef == null) {
+    /** {@code non-null;} the associated annotations list */
+    private final AnnotationsList annotationsList;
+
+    /** {@code non-null;} the associated annotations list, as an item */
+    private final mod.agus.jcoderz.dx.dex.file.UniformListItem<mod.agus.jcoderz.dx.dex.file.AnnotationSetRefItem> annotationsItem;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param method {@code non-null;} the method in question
+     * @param annotationsList {@code non-null;} the associated annotations list
+     * @param dexFile {@code non-null;} dex output
+     */
+    public ParameterAnnotationStruct(CstMethodRef method,
+            AnnotationsList annotationsList, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        if (method == null) {
             throw new NullPointerException("method == null");
-        } else if (annotationsList2 == null) {
-            throw new NullPointerException("annotationsList == null");
-        } else {
-            this.method = cstMethodRef;
-            this.annotationsList = annotationsList2;
-            int size = annotationsList2.size();
-            ArrayList arrayList = new ArrayList(size);
-            for (int i = 0; i < size; i++) {
-                arrayList.add(new AnnotationSetRefItem(new AnnotationSetItem(annotationsList2.get(i), dexFile)));
-            }
-            this.annotationsItem = new UniformListItem<>(ItemType.TYPE_ANNOTATION_SET_REF_LIST, arrayList);
         }
+
+        if (annotationsList == null) {
+            throw new NullPointerException("annotationsList == null");
+        }
+
+        this.method = method;
+        this.annotationsList = annotationsList;
+
+        /*
+         * Construct an item for the annotations list. TODO: This
+         * requires way too much copying; fix it.
+         */
+
+        int size = annotationsList.size();
+        ArrayList<mod.agus.jcoderz.dx.dex.file.AnnotationSetRefItem> arrayList = new
+            ArrayList<mod.agus.jcoderz.dx.dex.file.AnnotationSetRefItem>(size);
+
+        for (int i = 0; i < size; i++) {
+            Annotations annotations = annotationsList.get(i);
+            mod.agus.jcoderz.dx.dex.file.AnnotationSetItem item = new AnnotationSetItem(annotations, dexFile);
+            arrayList.add(new mod.agus.jcoderz.dx.dex.file.AnnotationSetRefItem(item));
+        }
+
+        this.annotationsItem = new UniformListItem<mod.agus.jcoderz.dx.dex.file.AnnotationSetRefItem>(
+                ItemType.TYPE_ANNOTATION_SET_REF_LIST, arrayList);
     }
 
-    /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Object] */
-    @Override // java.lang.Comparable
-    public /* bridge */ /* synthetic */ int compareTo(ParameterAnnotationStruct parameterAnnotationStruct) {
-        return compareTo(parameterAnnotationStruct);
-    }
-
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        return this.method.hashCode();
+        return method.hashCode();
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ParameterAnnotationStruct)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object other) {
+        if (! (other instanceof ParameterAnnotationStruct)) {
             return false;
         }
-        return this.method.equals(((ParameterAnnotationStruct) obj).method);
+
+        return method.equals(((ParameterAnnotationStruct) other).method);
     }
 
-    public int compareToTwo(ParameterAnnotationStruct parameterAnnotationStruct) {
-        return this.method.compareTo((Constant) parameterAnnotationStruct.method);
+    /** {@inheritDoc} */
+    @Override
+    public int compareTo(ParameterAnnotationStruct other) {
+        return method.compareTo(other.method);
     }
 
-    public void addContents(DexFile dexFile) {
-        MethodIdsSection methodIds = dexFile.getMethodIds();
-        MixedItemSection wordData = dexFile.getWordData();
-        methodIds.intern(this.method);
-        wordData.add(this.annotationsItem);
+    /** {@inheritDoc} */
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        MethodIdsSection methodIds = file.getMethodIds();
+        MixedItemSection wordData = file.getWordData();
+
+        methodIds.intern(method);
+        wordData.add(annotationsItem);
     }
 
-    public void writeTo(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        int indexOf = dexFile.getMethodIds().indexOf(this.method);
-        int absoluteOffset = this.annotationsItem.getAbsoluteOffset();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, "    " + this.method.toHuman());
-            annotatedOutput.annotate(4, "      method_idx:      " + Hex.u4(indexOf));
-            annotatedOutput.annotate(4, "      annotations_off: " + Hex.u4(absoluteOffset));
+    /** {@inheritDoc} */
+    public void writeTo(DexFile file, AnnotatedOutput out) {
+        int methodIdx = file.getMethodIds().indexOf(method);
+        int annotationsOff = annotationsItem.getAbsoluteOffset();
+
+        if (out.annotates()) {
+            out.annotate(0, "    " + method.toHuman());
+            out.annotate(4, "      method_idx:      " + Hex.u4(methodIdx));
+            out.annotate(4, "      annotations_off: " +
+                    Hex.u4(annotationsOff));
         }
-        annotatedOutput.writeInt(indexOf);
-        annotatedOutput.writeInt(absoluteOffset);
+
+        out.writeInt(methodIdx);
+        out.writeInt(annotationsOff);
     }
 
-    @Override // mod.agus.jcoderz.dx.util.ToHuman
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.method.toHuman());
+
+        sb.append(method.toHuman());
         sb.append(": ");
-        boolean z = true;
-        for (AnnotationSetRefItem annotationSetRefItem : this.annotationsItem.getItems()) {
-            if (z) {
-                z = false;
+
+        boolean first = true;
+        for (AnnotationSetRefItem item : annotationsItem.getItems()) {
+            if (first) {
+                first = false;
             } else {
                 sb.append(", ");
             }
-            sb.append(annotationSetRefItem.toHuman());
+            sb.append(item.toHuman());
         }
+
         return sb.toString();
     }
 
+    /**
+     * Gets the method this item is for.
+     *
+     * @return {@code non-null;} the method
+     */
     public CstMethodRef getMethod() {
-        return this.method;
+        return method;
     }
 
+    /**
+     * Gets the associated annotations list.
+     *
+     * @return {@code non-null;} the annotations list
+     */
     public AnnotationsList getAnnotationsList() {
-        return this.annotationsList;
+        return annotationsList;
     }
 }

@@ -1,25 +1,77 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.io.instructions;
 
+/**
+ * Output stream of code units, for writing out Dalvik bytecode.
+ */
 public interface CodeOutput extends CodeCursor {
-    void write(short s);
+    /**
+     * Writes a code unit.
+     */
+    public void write(short codeUnit);
 
-    void write(short s, short s2);
+    /**
+     * Writes two code units.
+     */
+    public void write(short u0, short u1);
 
-    void write(short s, short s2, short s3);
+    /**
+     * Writes three code units.
+     */
+    public void write(short u0, short u1, short u2);
 
-    void write(short s, short s2, short s3, short s4);
+    /**
+     * Writes four code units.
+     */
+    public void write(short u0, short u1, short u2, short u3);
 
-    void write(short s, short s2, short s3, short s4, short s5);
+    /**
+     * Writes five code units.
+     */
+    public void write(short u0, short u1, short u2, short u3, short u4);
 
-    void write(byte[] bArr);
+    /**
+     * Writes an {@code int}, little-endian.
+     */
+    public void writeInt(int value);
 
-    void write(int[] iArr);
+    /**
+     * Writes a {@code long}, little-endian.
+     */
+    public void writeLong(long value);
 
-    void write(long[] jArr);
+    /**
+     * Writes the contents of the given array.
+     */
+    public void write(byte[] data);
 
-    void write(short[] sArr);
+    /**
+     * Writes the contents of the given array.
+     */
+    public void write(short[] data);
 
-    void writeInt(int i);
+    /**
+     * Writes the contents of the given array.
+     */
+    public void write(int[] data);
 
-    void writeLong(long j);
+    /**
+     * Writes the contents of the given array.
+     */
+    public void write(long[] data);
 }

@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AboutPageTabLayout" parent="Base.Widget.Design.TabLayout">
-        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
-    </style>
-    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">14sp</item>
-        <item name="textAllCaps">true</item>
-    </style>
     <style name="AlertDialog.AppCompat" parent="@style/Base.AlertDialog.AppCompat" />
     <style name="AlertDialog.AppCompat.Light" parent="@style/Base.AlertDialog.AppCompat.Light" />
     <style name="Animation.AppCompat.Dialog" parent="@style/Base.Animation.AppCompat.Dialog" />
@@ -16,7 +9,7 @@
         <item name="android:windowEnterAnimation">@anim/design_bottom_sheet_slide_in</item>
         <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
     </style>
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar" />
+    <style name="AppBaseTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar" />
     <style name="AppTheme" parent="@style/AppBaseTheme">
         <item name="colorAccent">@color/color_accent</item>
         <item name="colorControlHighlight">@color/color_control_highlight</item>
@@ -1186,23 +1179,35 @@
         <item name="android:paddingStart">12.0dip</item>
         <item name="android:paddingEnd">12.0dip</item>
     </style>
+
     <style name="Base.Widget.MaterialComponents.TextInputLayout" parent="@style/Widget.Design.TextInputLayout">
         <item name="boxBackgroundColor">@null</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxCollapsedPaddingTop">0.0dip</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium
+        </item>
         <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
         <item name="boxCornerRadiusTopStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
         <item name="boxStrokeColor">?colorControlActivated</item>
     </style>
+
+    <style name="ButtonBar.IconOnly.Left" parent=""></style>
+
+    <style name="ButtonBar.IconOnly.Middle" parent=""></style>
+
+    <style name="ButtonBar.IconOnly.Right" parent=""></style>
+
     <style name="CardView" parent="@style/Base.CardView" />
+
     <style name="CardView.Dark" parent="@style/CardView">
         <item name="cardBackgroundColor">@color/cardview_dark_background</item>
     </style>
+
     <style name="CardView.Light" parent="@style/CardView">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
+
     <style name="CardViewStyle.White" parent="@style/CardView">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
@@ -1229,11 +1234,19 @@
         <item name="tabSelectedTextColor">@color/design_tab_selected_text_color</item>
         <item name="tabTextAppearance">@style/DesignTabTextAppearance</item>
     </style>
+
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">12.0sp</item>
         <item name="android:textColor">@color/design_tab_text_color</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
         <item name="android:background">@color/main_tab_background</item>
         <item name="tabGravity">fill</item>
@@ -1278,17 +1291,35 @@
         <item name="tabMode">fixed</item>
         <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
     </style>
+
     <style name="NumberPickerText" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@color/scolor_blue_01</item>
-        <item name="android:textSize">14.0sp</item>
+        <item name="android:textSize">14.0dip</item>
         <item name="android:textColorHighlight">#ffeeeeee</item>
     </style>
+
+    <style name="OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
     <style name="Platform.AppCompat" parent="@style/Platform.V21.AppCompat" />
+
     <style name="Platform.AppCompat.Light" parent="@style/Platform.V21.AppCompat.Light" />
+
     <style name="Platform.MaterialComponents" parent="@style/Theme.AppCompat" />
+
     <style name="Platform.MaterialComponents.Dialog" parent="@style/Theme.AppCompat.Dialog" />
+
     <style name="Platform.MaterialComponents.Light" parent="@style/Theme.AppCompat.Light" />
+
     <style name="Platform.MaterialComponents.Light.Dialog" parent="@style/Theme.AppCompat.Light.Dialog" />
+
     <style name="Platform.ThemeOverlay.AppCompat" parent="">
         <item name="android:colorControlNormal">?colorControlNormal</item>
         <item name="android:colorControlActivated">?colorControlActivated</item>
@@ -1308,6 +1339,7 @@
         <item name="android:buttonBarButtonStyle">?buttonBarButtonStyle</item>
         <item name="android:textColorLinkInverse">?android:colorAccent</item>
     </style>
+
     <style name="Platform.V21.AppCompat.Light" parent="@android:style/Theme.Material.Light.NoActionBar">
         <item name="android:textColorHintInverse">@color/abc_hint_foreground_material_dark</item>
         <item name="android:textColorHint">@color/abc_hint_foreground_material_light</item>
@@ -1316,14 +1348,23 @@
         <item name="android:buttonBarButtonStyle">?buttonBarButtonStyle</item>
         <item name="android:textColorLinkInverse">?android:colorAccent</item>
     </style>
+
     <style name="Platform.Widget.AppCompat.Spinner" parent="@android:style/Widget.Holo.Spinner" />
+
+    <style name="RoundOutlinedButton.IconOnly" parent="">
+        <item name="android:maxWidth">48dp</item>
+        <item name="android:maxHeight">48dp</item>
+    </style>
+
     <style name="RtlOverlay.DialogWindowTitle.AppCompat" parent="@style/Base.DialogWindowTitle.AppCompat">
         <item name="android:textAlignment">viewStart</item>
     </style>
+
     <style name="RtlOverlay.Widget.AppCompat.ActionBar.TitleItem" parent="@android:style/Widget">
         <item name="android:layout_gravity">start|center</item>
         <item name="android:paddingEnd">8.0dip</item>
     </style>
+
     <style name="RtlOverlay.Widget.AppCompat.DialogTitle.Icon" parent="@android:style/Widget">
         <item name="android:layout_marginEnd">8.0dip</item>
     </style>
@@ -1588,21 +1629,47 @@
         <item name="android:letterSpacing">0.007142857</item>
         <item name="fontFamily">sans-serif-medium</item>
     </style>
+
     <style name="TextAppearance.MaterialComponents.Tab" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textColor">@color/mtrl_tabs_icon_color_selector</item>
     </style>
+
     <style name="TextAppearance.Widget.AppCompat.ExpandedMenu.Item" parent="@style/Base.TextAppearance.Widget.AppCompat.ExpandedMenu.Item" />
+
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Subtitle" parent="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle" />
+
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Title" parent="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+    <style name="TextButton.IconOnly" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
     <style name="Theme.AppCompat" parent="@style/Base.Theme.AppCompat" />
+
     <style name="Theme.AppCompat.CompactMenu" parent="@style/Base.Theme.AppCompat.CompactMenu" />
+
     <style name="Theme.AppCompat.DayNight" parent="@style/Theme.AppCompat.Light" />
+
     <style name="Theme.AppCompat.DayNight.DarkActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar" />
+
     <style name="Theme.AppCompat.DayNight.Dialog" parent="@style/Theme.AppCompat.Light.Dialog" />
+
     <style name="Theme.AppCompat.DayNight.Dialog.Alert" parent="@style/Theme.AppCompat.Light.Dialog.Alert" />
+
     <style name="Theme.AppCompat.DayNight.Dialog.MinWidth" parent="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
+
     <style name="Theme.AppCompat.DayNight.DialogWhenLarge" parent="@style/Theme.AppCompat.Light.DialogWhenLarge" />
+
     <style name="Theme.AppCompat.DayNight.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar" />
+
     <style name="Theme.AppCompat.Dialog" parent="@style/Base.Theme.AppCompat.Dialog" />
     <style name="Theme.AppCompat.Dialog.Alert" parent="@style/Base.Theme.AppCompat.Dialog.Alert" />
     <style name="Theme.AppCompat.Dialog.MinWidth" parent="@style/Base.Theme.AppCompat.Dialog.MinWidth" />
@@ -1756,6 +1823,7 @@
         <item name="android:textColor">@color/tool_bar_text_color</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
     <style name="TranslucentTheme" parent="@style/AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
@@ -1764,14 +1832,29 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBar">false</item>
     </style>
+
+    <style name="VerticalDivider">
+        <item name="android:layout_width">0.8dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
     <style name="Widget.AppCompat.ActionBar" parent="@style/Base.Widget.AppCompat.ActionBar" />
+
     <style name="Widget.AppCompat.ActionBar.Solid" parent="@style/Base.Widget.AppCompat.ActionBar.Solid" />
+
     <style name="Widget.AppCompat.ActionBar.TabBar" parent="@style/Base.Widget.AppCompat.ActionBar.TabBar" />
+
     <style name="Widget.AppCompat.ActionBar.TabText" parent="@style/Base.Widget.AppCompat.ActionBar.TabText" />
+
     <style name="Widget.AppCompat.ActionBar.TabView" parent="@style/Base.Widget.AppCompat.ActionBar.TabView" />
+
     <style name="Widget.AppCompat.ActionButton" parent="@style/Base.Widget.AppCompat.ActionButton" />
+
     <style name="Widget.AppCompat.ActionButton.CloseMode" parent="@style/Base.Widget.AppCompat.ActionButton.CloseMode" />
+
     <style name="Widget.AppCompat.ActionButton.Overflow" parent="@style/Base.Widget.AppCompat.ActionButton.Overflow" />
+
     <style name="Widget.AppCompat.ActionMode" parent="@style/Base.Widget.AppCompat.ActionMode" />
     <style name="Widget.AppCompat.ActivityChooserView" parent="@style/Base.Widget.AppCompat.ActivityChooserView" />
     <style name="Widget.AppCompat.AutoCompleteTextView" parent="@style/Base.Widget.AppCompat.AutoCompleteTextView" />
@@ -2126,14 +2209,25 @@
     <style name="seekbarStyle" parent="@style/Widget.AppCompat.SeekBar.Discrete">
         <item name="tickMark">@drawable/seekbar_month_marker</item>
     </style>
+
     <style name="selectableMainItemBackground">
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:colorControlHighlight">@color/color_control_normal</item>
     </style>
+
     <style name="AppTheme.Et" parent="@style/AppTheme">
         <item name="colorControlHighlight">@android:color/transparent</item>
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="colorPrimary">#ff212121</item>
         <item name="colorPrimaryDark">#ff000000</item>
+    </style>
+
+    <style name="AboutPageTabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">true</item>
     </style>
 </resources>

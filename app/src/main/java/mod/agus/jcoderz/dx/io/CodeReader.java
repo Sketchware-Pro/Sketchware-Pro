@@ -1,130 +1,137 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.io;
 
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dx.io.instructions.DecodedInstruction;
 
+/**
+ * Walks through a block of code and calls visitor call backs.
+ */
 public final class CodeReader {
-    private static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType;
     private Visitor fallbackVisitor = null;
-    private Visitor fieldVisitor = null;
-    private Visitor methodVisitor = null;
     private Visitor stringVisitor = null;
     private Visitor typeVisitor = null;
+    private Visitor fieldVisitor = null;
+    private Visitor methodVisitor = null;
+    private Visitor methodAndProtoVisitor = null;
+    private Visitor callSiteVisitor = null;
 
-    static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType() {
-        int[] iArr = $SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType;
-        if (iArr == null) {
-            iArr = new int[IndexType.values().length];
-            try {
-                iArr[IndexType.FIELD_OFFSET.ordinal()] = 10;
-            } catch (NoSuchFieldError e) {
-            }
-            try {
-                iArr[IndexType.FIELD_REF.ordinal()] = 7;
-            } catch (NoSuchFieldError e2) {
-            }
-            try {
-                iArr[IndexType.INLINE_METHOD.ordinal()] = 8;
-            } catch (NoSuchFieldError e3) {
-            }
-            try {
-                iArr[IndexType.METHOD_REF.ordinal()] = 6;
-            } catch (NoSuchFieldError e4) {
-            }
-            try {
-                iArr[IndexType.NONE.ordinal()] = 2;
-            } catch (NoSuchFieldError e5) {
-            }
-            try {
-                iArr[IndexType.STRING_REF.ordinal()] = 5;
-            } catch (NoSuchFieldError e6) {
-            }
-            try {
-                iArr[IndexType.TYPE_REF.ordinal()] = 4;
-            } catch (NoSuchFieldError e7) {
-            }
-            try {
-                iArr[IndexType.UNKNOWN.ordinal()] = 1;
-            } catch (NoSuchFieldError e8) {
-            }
-            try {
-                iArr[IndexType.VARIES.ordinal()] = 3;
-            } catch (NoSuchFieldError e9) {
-            }
-            try {
-                iArr[IndexType.VTABLE_OFFSET.ordinal()] = 9;
-            } catch (NoSuchFieldError e10) {
-            }
-            $SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType = iArr;
-        }
-        return iArr;
-    }
-
+    /**
+     * Sets {@code visitor} as the visitor for all instructions.
+     */
     public void setAllVisitors(Visitor visitor) {
-        this.fallbackVisitor = visitor;
-        this.stringVisitor = visitor;
-        this.typeVisitor = visitor;
-        this.fieldVisitor = visitor;
-        this.methodVisitor = visitor;
+        fallbackVisitor = visitor;
+        stringVisitor = visitor;
+        typeVisitor = visitor;
+        fieldVisitor = visitor;
+        methodVisitor = visitor;
+        methodAndProtoVisitor = visitor;
+        callSiteVisitor = visitor;
     }
 
+    /**
+     * Sets {@code visitor} as the visitor for all instructions not
+     * otherwise handled.
+     */
     public void setFallbackVisitor(Visitor visitor) {
-        this.fallbackVisitor = visitor;
+        fallbackVisitor = visitor;
     }
 
+    /**
+     * Sets {@code visitor} as the visitor for all string instructions.
+     */
     public void setStringVisitor(Visitor visitor) {
-        this.stringVisitor = visitor;
+        stringVisitor = visitor;
     }
 
+    /**
+     * Sets {@code visitor} as the visitor for all type instructions.
+     */
     public void setTypeVisitor(Visitor visitor) {
-        this.typeVisitor = visitor;
+        typeVisitor = visitor;
     }
 
+    /**
+     * Sets {@code visitor} as the visitor for all field instructions.
+     */
     public void setFieldVisitor(Visitor visitor) {
-        this.fieldVisitor = visitor;
+        fieldVisitor = visitor;
     }
 
+    /**
+     * Sets {@code visitor} as the visitor for all method instructions.
+     */
     public void setMethodVisitor(Visitor visitor) {
-        this.methodVisitor = visitor;
+        methodVisitor = visitor;
     }
 
-    public void visitAll(DecodedInstruction[] decodedInstructionArr) throws DexException {
-        for (DecodedInstruction decodedInstruction : decodedInstructionArr) {
-            if (decodedInstruction != null) {
-                callVisit(decodedInstructionArr, decodedInstruction);
+    /** Sets {@code visitor} as the visitor for all method and proto instructions. */
+    public void setMethodAndProtoVisitor(Visitor visitor) {
+        methodAndProtoVisitor = visitor;
+    }
+
+    /** Sets {@code visitor} as the visitor for all call site instructions. */
+    public void setCallSiteVisitor(Visitor visitor) {
+        callSiteVisitor = visitor;
+    }
+
+    public void visitAll(DecodedInstruction[] decodedInstructions)
+            throws DexException {
+        int size = decodedInstructions.length;
+
+        for (int i = 0; i < size; i++) {
+            DecodedInstruction one = decodedInstructions[i];
+            if (one == null) {
+                continue;
             }
+
+            callVisit(decodedInstructions, one);
         }
     }
 
-    public void visitAll(short[] sArr) throws DexException {
-        visitAll(DecodedInstruction.decodeAll(sArr));
+    public void visitAll(short[] encodedInstructions) throws DexException {
+        DecodedInstruction[] decodedInstructions =
+            DecodedInstruction.decodeAll(encodedInstructions);
+        visitAll(decodedInstructions);
     }
 
-    private void callVisit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction) {
+    private void callVisit(DecodedInstruction[] all, DecodedInstruction one) {
         Visitor visitor = null;
-        switch ($SWITCH_TABLE$mod$agus$jcoderz$dx$io$IndexType()[OpcodeInfo.getIndexType(decodedInstruction.getOpcode()).ordinal()]) {
-            case 4:
-                visitor = this.typeVisitor;
-                break;
-            case 5:
-                visitor = this.stringVisitor;
-                break;
-            case 6:
-                visitor = this.methodVisitor;
-                break;
-            case 7:
-                visitor = this.fieldVisitor;
-                break;
+
+        switch (OpcodeInfo.getIndexType(one.getOpcode())) {
+            case STRING_REF:           visitor = stringVisitor;         break;
+            case TYPE_REF:             visitor = typeVisitor;           break;
+            case FIELD_REF:            visitor = fieldVisitor;          break;
+            case METHOD_REF:           visitor = methodVisitor;         break;
+            case METHOD_AND_PROTO_REF: visitor = methodAndProtoVisitor; break;
+            case CALL_SITE_REF:        visitor = callSiteVisitor;       break;
         }
+
         if (visitor == null) {
-            visitor = this.fallbackVisitor;
+            visitor = fallbackVisitor;
         }
+
         if (visitor != null) {
-            visitor.visit(decodedInstructionArr, decodedInstruction);
+            visitor.visit(all, one);
         }
     }
 
     public interface Visitor {
-        void visit(DecodedInstruction[] decodedInstructionArr, DecodedInstruction decodedInstruction);
+        void visit(DecodedInstruction[] all, DecodedInstruction one);
     }
 }

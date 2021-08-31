@@ -1,5 +1,7 @@
 package com.besome.sketch.editor;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
@@ -12,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.besome.sketch.shared.blocks.SharedBlocksListActivity;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 
@@ -22,81 +25,78 @@ import mod.hilal.saif.activities.tools.Tools;
 
 public class LogicEditorDrawer extends LinearLayout {
 
-    /* renamed from: a  reason: collision with root package name */
-    public LinearLayout a;
-    public CustomScrollView b;
-    public CardView c;
-    public CardView ccc;
+    private LinearLayout favorite;
+    private CustomScrollView scrollView;
 
     public LogicEditorDrawer(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
     public LogicEditorDrawer(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
-    public final void b() {
-        Intent intent = new Intent(getContext(), SharedBlocksListActivity.class);
-        intent.setFlags(536870912);
-        ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
-    }
-
-    public final void bbb() {
-        Intent intent = new Intent(getContext(), Tools.class);
-        intent.setFlags(536870912);
-        ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
-    }
-
-    public void setDragEnabled(boolean z) {
-        if (z) {
-            this.b.b();
+    public void setDragEnabled(boolean dragEnabled) {
+        if (dragEnabled) {
+            scrollView.b();
         } else {
-            this.b.a();
+            scrollView.a();
         }
     }
 
-    public final void a(Context context) {
-        wB.a(context, this, 2131427492);
-        ((TextView) findViewById(2131231892)).setText(xB.b().a(getContext(), 2131625519));
-        this.a = (LinearLayout) findViewById(2131231347);
-        this.b = (CustomScrollView) findViewById(2131231695);
-        this.c = (CardView) findViewById(2131230951);
-        this.c.setOnClickListener(v -> {
-            b();
+    private void initialize(Context context) {
+        wB.a(context, this, Resources.layout.logic_editor_drawer);
+        ((TextView) findViewById(Resources.id.tv_block_collection)).setText(xB.b().a(getContext(),
+                Resources.string.logic_editor_title_block_collection));
+        favorite = (LinearLayout) findViewById(Resources.id.layout_favorite);
+        scrollView = (CustomScrollView) findViewById(Resources.id.scv);
+
+        CardView sharedBlocks = (CardView) findViewById(Resources.id.cv_shared_blocks);
+        sharedBlocks.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SharedBlocksListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
         });
-        this.ccc = (CardView) findViewById(2131232616);
-        this.ccc.setOnClickListener(v -> {
-            bbb();
+
+        CardView tools = (CardView) findViewById(Resources.id.new_button);
+        tools.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), Tools.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
         });
-        ((TextView) findViewById(2131232158)).setText(xB.b().a(getContext(), 2131626238));
+
+        ((TextView) findViewById(Resources.id.tv_shared_blocks)).setText(xB.b().a(getContext(),
+                Resources.string.shared_blocks_list_title_shared_blocks));
     }
 
     public void a() {
-        this.a.removeAllViews();
+        favorite.removeAllViews();
     }
 
     public View a(String str, ArrayList<BlockBean> arrayList) {
         if (arrayList.size() <= 0) {
             return null;
         }
+
         BlockBean blockBean = arrayList.get(0);
         Us us = new Us(getContext(), blockBean.type, blockBean.typeName, blockBean.opCode, str, arrayList);
-        this.a.addView(us);
+        favorite.addView(us);
         View view = new View(getContext());
-        view.setLayoutParams(new LinearLayout.LayoutParams(1, (int) wB.a(getContext(), 8.0f)));
-        this.a.addView(view);
+        view.setLayoutParams(new LinearLayout.LayoutParams(
+                1,
+                (int) getDip(8)));
+        favorite.addView(view);
         return us;
     }
 
     public void a(String str) {
-        for (int i = 0; i < this.a.getChildCount(); i++) {
-            View childAt = this.a.getChildAt(i);
+        for (int i = 0; i < favorite.getChildCount(); i++) {
+            View childAt = favorite.getChildAt(i);
             if ((childAt instanceof Us) && ((Us) childAt).T.equals(str)) {
-                this.a.removeViewAt(i + 1);
-                this.a.removeViewAt(i);
+                favorite.removeViewAt(i + 1);
+                favorite.removeViewAt(i);
             }
         }
     }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.direct;
 
 import mod.agus.jcoderz.dx.cf.iface.Attribute;
@@ -7,84 +23,142 @@ import mod.agus.jcoderz.dx.cf.iface.StdAttributeList;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public final class AttributeListParser {
-    private final AttributeFactory attributeFactory;
+/**
+ * Parser for lists of attributes.
+ */
+final /*package*/ class AttributeListParser {
+    /** {@code non-null;} the class file to parse from */
     private final DirectClassFile cf;
+
+    /** attribute parsing context */
     private final int context;
-    private final StdAttributeList list;
+
+    /** offset in the byte array of the classfile to the start of the list */
     private final int offset;
+
+    /** {@code non-null;} attribute factory to use */
+    private final AttributeFactory attributeFactory;
+
+    /** {@code non-null;} list of parsed attributes */
+    private final mod.agus.jcoderz.dx.cf.iface.StdAttributeList list;
+
+    /** {@code >= -1;} the end offset of this list in the byte array of the
+     * classfile, or {@code -1} if not yet parsed */
     private int endOffset;
-    private ParseObserver observer;
 
-    public AttributeListParser(DirectClassFile directClassFile, int i, int i2, AttributeFactory attributeFactory2) {
-        if (directClassFile == null) {
+    /** {@code null-ok;} parse observer, if any */
+    private mod.agus.jcoderz.dx.cf.iface.ParseObserver observer;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param cf {@code non-null;} class file to parse from
+     * @param context attribute parsing context (see {@link AttributeFactory})
+     * @param offset offset in {@code bytes} to the start of the list
+     * @param attributeFactory {@code non-null;} attribute factory to use
+     */
+    public AttributeListParser(DirectClassFile cf, int context, int offset,
+                               AttributeFactory attributeFactory) {
+        if (cf == null) {
             throw new NullPointerException("cf == null");
-        } else if (attributeFactory2 == null) {
-            throw new NullPointerException("attributeFactory == null");
-        } else {
-            int unsignedShort = directClassFile.getBytes().getUnsignedShort(i2);
-            this.cf = directClassFile;
-            this.context = i;
-            this.offset = i2;
-            this.attributeFactory = attributeFactory2;
-            this.list = new StdAttributeList(unsignedShort);
-            this.endOffset = -1;
         }
+
+        if (attributeFactory == null) {
+            throw new NullPointerException("attributeFactory == null");
+        }
+
+        int size = cf.getBytes().getUnsignedShort(offset);
+
+        this.cf = cf;
+        this.context = context;
+        this.offset = offset;
+        this.attributeFactory = attributeFactory;
+        this.list = new mod.agus.jcoderz.dx.cf.iface.StdAttributeList(size);
+        this.endOffset = -1;
     }
 
-    public void setObserver(ParseObserver parseObserver) {
-        this.observer = parseObserver;
+    /**
+     * Sets the parse observer for this instance.
+     *
+     * @param observer {@code null-ok;} the observer
+     */
+    public void setObserver(ParseObserver observer) {
+        this.observer = observer;
     }
 
+    /**
+     * Gets the end offset of this constant pool in the {@code byte[]}
+     * which it came from.
+     *
+     * @return {@code >= 0;} the end offset
+     */
     public int getEndOffset() {
         parseIfNecessary();
-        return this.endOffset;
+        return endOffset;
     }
 
+    /**
+     * Gets the parsed list.
+     *
+     * @return {@code non-null;} the list
+     */
     public StdAttributeList getList() {
         parseIfNecessary();
-        return this.list;
+        return list;
     }
 
+    /**
+     * Runs {@link #parse} if it has not yet been run successfully.
+     */
     private void parseIfNecessary() {
-        if (this.endOffset < 0) {
+        if (endOffset < 0) {
             parse();
         }
     }
 
+    /**
+     * Does the actual parsing.
+     */
     private void parse() {
-        int size = this.list.size();
-        int i = this.offset + 2;
-        ByteArray bytes = this.cf.getBytes();
-        if (this.observer != null) {
-            this.observer.parsed(bytes, this.offset, 2, "attributes_count: " + Hex.u2(size));
+        int sz = list.size();
+        int at = offset + 2; // Skip the count.
+
+        ByteArray bytes = cf.getBytes();
+
+        if (observer != null) {
+            observer.parsed(bytes, offset, 2,
+                            "attributes_count: " + Hex.u2(sz));
         }
-        int i2 = i;
-        int i3 = 0;
-        while (i3 < size) {
+
+        for (int i = 0; i < sz; i++) {
             try {
-                if (this.observer != null) {
-                    this.observer.parsed(bytes, i2, 0, "\nattributes[" + i3 + "]:\n");
-                    this.observer.changeIndent(1);
+                if (observer != null) {
+                    observer.parsed(bytes, at, 0,
+                                    "\nattributes[" + i + "]:\n");
+                    observer.changeIndent(1);
                 }
-                Attribute parse = this.attributeFactory.parse(this.cf, this.context, i2, this.observer);
-                int byteLength = parse.byteLength() + i2;
-                this.list.set(i3, parse);
-                if (this.observer != null) {
-                    this.observer.changeIndent(-1);
-                    this.observer.parsed(bytes, byteLength, 0, "end attributes[" + i3 + "]\n");
+
+                Attribute attrib =
+                    attributeFactory.parse(cf, context, at, observer);
+
+                at += attrib.byteLength();
+                list.set(i, attrib);
+
+                if (observer != null) {
+                    observer.changeIndent(-1);
+                    observer.parsed(bytes, at, 0,
+                                    "end attributes[" + i + "]\n");
                 }
-                i3++;
-                i2 = byteLength;
-            } catch (ParseException e) {
-                e.addContext("...while parsing attributes[" + i3 + "]");
-                throw e;
-            } catch (RuntimeException e2) {
-                ParseException parseException = new ParseException(e2);
-                parseException.addContext("...while parsing attributes[" + i3 + "]");
-                throw parseException;
+            } catch (mod.agus.jcoderz.dx.cf.iface.ParseException ex) {
+                ex.addContext("...while parsing attributes[" + i + "]");
+                throw ex;
+            } catch (RuntimeException ex) {
+                mod.agus.jcoderz.dx.cf.iface.ParseException pe = new ParseException(ex);
+                pe.addContext("...while parsing attributes[" + i + "]");
+                throw pe;
             }
         }
-        this.endOffset = i2;
+
+        endOffset = at;
     }
 }

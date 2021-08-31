@@ -650,6 +650,7 @@
     <public type="color" name="abc_background_cache_hint_selector_material_light" id="0x7f050001" />
     <public type="color" name="abc_btn_colored_borderless_text_material" id="0x7f050002" />
     <public type="color" name="abc_btn_colored_text_material" id="0x7f050003" />
+    <public type="color" name="abc_color_highlight_material" id="0x7f050004" />
     <public type="color" name="abc_hint_foreground_material_dark" id="0x7f050005" />
     <public type="color" name="abc_hint_foreground_material_light" id="0x7f050006" />
     <public type="color" name="abc_input_method_navigation_guard" id="0x7f050007" />
@@ -871,7 +872,7 @@
     <public type="color" name="monokia_pro_purple" id="0x7f0500df" />
     <public type="color" name="monokia_pro_grey" id="0x7f0500e0" />
     <public type="color" name="colorBottomBarSW" id="0x7f0500e1" />
-    <public type="color" name="abc_color_highlight_material" id="0x7f050004" />
+    <public type="color" name="textActionNameColor" id="0x7f0500e2" />
     <public type="dimen" name="abc_action_bar_content_inset_material" id="0x7f060000" />
     <public type="dimen" name="abc_action_bar_content_inset_with_nav" id="0x7f060001" />
     <public type="dimen" name="abc_action_bar_default_height_material" id="0x7f060002" />
@@ -2344,6 +2345,12 @@
     <public type="drawable" name="girl_swimming_flat" id="0x7f0704b4" />
     <public type="drawable" name="ic_discord" id="0x7f0704b5" />
     <public type="drawable" name="ic_user" id="0x7f0704b6" />
+    <public type="drawable" name="ic_more_vert_black_20dp" id="0x7f0704b7" />
+    <public type="drawable" name="round_content_copy_20" id="0x7f0704b8" />
+    <public type="drawable" name="round_content_cut_20" id="0x7f0704b9" />
+    <public type="drawable" name="round_content_paste_20" id="0x7f0704ba" />
+    <public type="drawable" name="round_save_20" id="0x7f0704bb" />
+    <public type="drawable" name="round_select_all_20" id="0x7f0704bc" />
     <public type="id" name="ALT" id="0x7f080000" />
     <public type="id" name="CTRL" id="0x7f080001" />
     <public type="id" name="FUNCTION" id="0x7f080002" />
@@ -4230,6 +4237,11 @@
     <public type="id" name="recyclerview1" id="0x7f080788" />
     <public type="id" name="recyclerview2" id="0x7f080789" />
     <public type="id" name="tv_loading_desc" id="0x7f08078a" />
+    <public type="id" name="tcpw_material_button_copy" id="0x7f08078b" />
+    <public type="id" name="tcpw_material_button_cut" id="0x7f08078c" />
+    <public type="id" name="tcpw_material_button_paste" id="0x7f08078d" />
+    <public type="id" name="tcpw_material_button_select_all" id="0x7f08078e" />
+    <public type="id" name="text_compose_panel" id="0x7f08078f" />
     <public type="integer" name="abc_config_activityDefaultDur" id="0x7f090000" />
     <public type="integer" name="abc_config_activityShortDur" id="0x7f090001" />
     <public type="integer" name="app_bar_elevation_anim_duration" id="0x7f090002" />
@@ -4759,6 +4771,7 @@
     <public type="layout" name="about_changelog" id="0x7f0b01f5" />
     <public type="layout" name="about_empty_viewpager" id="0x7f0b01f6" />
     <public type="layout" name="about_moddersview" id="0x7f0b01f7" />
+    <public type="layout" name="text_compose_popup_window" id="0x7f0b01f8" />
     <public type="menu" name="contents_search_menu" id="0x7f0c0000" />
     <public type="menu" name="design_logic_menu" id="0x7f0c0001" />
     <public type="menu" name="design_menu" id="0x7f0c0002" />
@@ -7395,6 +7408,9 @@
     <public type="string" name="replacement" id="0x7f0e0a25" />
     <public type="string" name="selectAll" id="0x7f0e0a26" />
     <public type="string" name="text_to_search" id="0x7f0e0a27" />
+    <public type="string" name="cancel" id="0x7f0e0a28" />
+    <public type="string" name="more" id="0x7f0e0a29" />
+    <public type="string" name="saveToProject" id="0x7f0e0a2a" />
     <public type="style" name="AlertDialog.AppCompat" id="0x7f0f0000" />
     <public type="style" name="AlertDialog.AppCompat.Light" id="0x7f0f0001" />
     <public type="style" name="Animation.AppCompat.Dialog" id="0x7f0f0002" />
@@ -7526,6 +7542,15 @@
     <public type="style" name="Base.V21.Theme.AppCompat.Light" id="0x7f0f0080" />
     <public type="style" name="Base.V21.Theme.AppCompat.Light.Dialog" id="0x7f0f0081" />
     <public type="style" name="Base.V21.ThemeOverlay.AppCompat.Dialog" id="0x7f0f0082" />
+    <public type="style" name="Base.V22.Theme.AppCompat" id="0x7f0f0083" />
+    <public type="style" name="Base.V22.Theme.AppCompat.Light" id="0x7f0f0084" />
+    <public type="style" name="Base.V23.Theme.AppCompat" id="0x7f0f0085" />
+    <public type="style" name="Base.V23.Theme.AppCompat.Light" id="0x7f0f0086" />
+    <public type="style" name="Base.V26.Theme.AppCompat" id="0x7f0f0087" />
+    <public type="style" name="Base.V26.Theme.AppCompat.Light" id="0x7f0f0088" />
+    <public type="style" name="Base.V26.Widget.AppCompat.Toolbar" id="0x7f0f0089" />
+    <public type="style" name="Base.V28.Theme.AppCompat" id="0x7f0f008a" />
+    <public type="style" name="Base.V28.Theme.AppCompat.Light" id="0x7f0f008b" />
     <public type="style" name="Base.V7.Theme.AppCompat" id="0x7f0f008c" />
     <public type="style" name="Base.V7.Theme.AppCompat.Dialog" id="0x7f0f008d" />
     <public type="style" name="Base.V7.Theme.AppCompat.Light" id="0x7f0f008e" />
@@ -7556,6 +7581,7 @@
     <public type="style" name="Base.Widget.AppCompat.CompoundButton.CheckBox" id="0x7f0f00a7" />
     <public type="style" name="Base.Widget.AppCompat.CompoundButton.RadioButton" id="0x7f0f00a8" />
     <public type="style" name="Base.Widget.AppCompat.CompoundButton.Switch" id="0x7f0f00a9" />
+    <public type="style" name="Base.Widget.AppCompat.DrawerArrowToggle" id="0x7f0f00aa" />
     <public type="style" name="Base.Widget.AppCompat.DrawerArrowToggle.Common" id="0x7f0f00ab" />
     <public type="style" name="Base.Widget.AppCompat.DropDownItem.Spinner" id="0x7f0f00ac" />
     <public type="style" name="Base.Widget.AppCompat.EditText" id="0x7f0f00ad" />
@@ -7620,6 +7646,8 @@
     <public type="style" name="Platform.ThemeOverlay.AppCompat.Light" id="0x7f0f00e8" />
     <public type="style" name="Platform.V21.AppCompat" id="0x7f0f00e9" />
     <public type="style" name="Platform.V21.AppCompat.Light" id="0x7f0f00ea" />
+    <public type="style" name="Platform.V25.AppCompat" id="0x7f0f00eb" />
+    <public type="style" name="Platform.V25.AppCompat.Light" id="0x7f0f00ec" />
     <public type="style" name="Platform.Widget.AppCompat.Spinner" id="0x7f0f00ed" />
     <public type="style" name="RtlOverlay.DialogWindowTitle.AppCompat" id="0x7f0f00ee" />
     <public type="style" name="RtlOverlay.Widget.AppCompat.ActionBar.TitleItem" id="0x7f0f00ef" />
@@ -7927,18 +7955,14 @@
     <public type="style" name="seekbarStyle" id="0x7f0f021d" />
     <public type="style" name="selectableMainItemBackground" id="0x7f0f021e" />
     <public type="style" name="AppTheme.Et" id="0x7f0f021f" />
-    <public type="style" name="Base.V22.Theme.AppCompat" id="0x7f0f0083" />
-    <public type="style" name="Base.V22.Theme.AppCompat.Light" id="0x7f0f0084" />
-    <public type="style" name="Base.V23.Theme.AppCompat" id="0x7f0f0085" />
-    <public type="style" name="Base.V23.Theme.AppCompat.Light" id="0x7f0f0086" />
-    <public type="style" name="Platform.V25.AppCompat" id="0x7f0f00eb" />
-    <public type="style" name="Platform.V25.AppCompat.Light" id="0x7f0f00ec" />
-    <public type="style" name="Base.V26.Theme.AppCompat" id="0x7f0f0087" />
-    <public type="style" name="Base.V26.Theme.AppCompat.Light" id="0x7f0f0088" />
-    <public type="style" name="Base.V26.Widget.AppCompat.Toolbar" id="0x7f0f0089" />
-    <public type="style" name="Base.V28.Theme.AppCompat" id="0x7f0f008a" />
-    <public type="style" name="Base.V28.Theme.AppCompat.Light" id="0x7f0f008b" />
-    <public type="style" name="Base.Widget.AppCompat.DrawerArrowToggle" id="0x7f0f00aa" />
+    <public type="style" name="ButtonBar.IconOnly.Left" id="0x7f0f0220" />
+    <public type="style" name="ButtonBar.IconOnly.Middle" id="0x7f0f0221" />
+    <public type="style" name="ButtonBar.IconOnly.Right" id="0x7f0f0222" />
+    <public type="style" name="HorizontalDivider" id="0x7f0f0223" />
+    <public type="style" name="OutlinedButton.IconOnly" id="0x7f0f0224" />
+    <public type="style" name="RoundOutlinedButton.IconOnly" id="0x7f0f0225" />
+    <public type="style" name="TextButton.IconOnly" id="0x7f0f0226" />
+    <public type="style" name="VerticalDivider" id="0x7f0f0227" />
     <public type="xml" name="global_tracker" id="0x7f110000" />
     <public type="xml" name="provider_paths" id="0x7f110001" />
     <public type="xml" name="remote_config_defaults" id="0x7f110002" />

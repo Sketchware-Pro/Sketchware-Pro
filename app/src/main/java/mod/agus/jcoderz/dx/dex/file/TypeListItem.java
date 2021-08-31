@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
@@ -6,64 +22,101 @@ import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public final class TypeListItem extends OffsettedItem {
+/**
+ * Representation of a list of class references.
+ */
+public final class TypeListItem extends mod.agus.jcoderz.dx.dex.file.OffsettedItem {
+    /** alignment requirement */
     private static final int ALIGNMENT = 4;
+
+    /** element size in bytes */
     private static final int ELEMENT_SIZE = 2;
+
+    /** header size in bytes */
     private static final int HEADER_SIZE = 4;
+
+    /** {@code non-null;} the actual list */
     private final TypeList list;
 
-    public TypeListItem(TypeList typeList) {
-        super(4, (typeList.size() * 2) + 4);
-        this.list = typeList;
+    /**
+     * Constructs an instance.
+     *
+     * @param list {@code non-null;} the actual list
+     */
+    public TypeListItem(TypeList list) {
+        super(ALIGNMENT, (list.size() * ELEMENT_SIZE) + HEADER_SIZE);
+
+        this.list = list;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        return StdTypeList.hashContents(this.list);
+        return StdTypeList.hashContents(list);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_TYPE_LIST;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        TypeIdsSection typeIds = dexFile.getTypeIds();
-        int size = this.list.size();
-        for (int i = 0; i < size; i++) {
-            typeIds.intern(this.list.getType(i));
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        mod.agus.jcoderz.dx.dex.file.TypeIdsSection typeIds = file.getTypeIds();
+        int sz = list.size();
+
+        for (int i = 0; i < sz; i++) {
+            typeIds.intern(list.getType(i));
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         throw new RuntimeException("unsupported");
     }
 
+    /**
+     * Gets the underlying list.
+     *
+     * @return {@code non-null;} the list
+     */
     public TypeList getList() {
-        return this.list;
+        return list;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        TypeIdsSection typeIds = dexFile.getTypeIds();
-        int size = this.list.size();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, offsetString() + " type_list");
-            annotatedOutput.annotate(4, "  size: " + Hex.u4(size));
-            for (int i = 0; i < size; i++) {
-                Type type = this.list.getType(i);
-                annotatedOutput.annotate(2, "  " + Hex.u2(typeIds.indexOf(type)) + " // " + type.toHuman());
+    /** {@inheritDoc} */
+    @Override
+    protected void writeTo0(DexFile file, AnnotatedOutput out) {
+        TypeIdsSection typeIds = file.getTypeIds();
+        int sz = list.size();
+
+        if (out.annotates()) {
+            out.annotate(0, offsetString() + " type_list");
+            out.annotate(HEADER_SIZE, "  size: " + Hex.u4(sz));
+            for (int i = 0; i < sz; i++) {
+                Type one = list.getType(i);
+                int idx = typeIds.indexOf(one);
+                out.annotate(ELEMENT_SIZE,
+                             "  " + Hex.u2(idx) + " // " + one.toHuman());
             }
         }
-        annotatedOutput.writeInt(size);
-        for (int i2 = 0; i2 < size; i2++) {
-            annotatedOutput.writeShort(typeIds.indexOf(this.list.getType(i2)));
+
+        out.writeInt(sz);
+
+        for (int i = 0; i < sz; i++) {
+            out.writeShort(typeIds.indexOf(list.getType(i)));
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected int compareTo0(OffsettedItem offsettedItem) {
-        return StdTypeList.compareContents(this.list, ((TypeListItem) offsettedItem).list);
+    /** {@inheritDoc} */
+    @Override
+    protected int compareTo0(OffsettedItem other) {
+        TypeList thisList = this.list;
+        TypeList otherList = ((TypeListItem) other).list;
+
+        return StdTypeList.compareContents(thisList, otherList);
     }
 }

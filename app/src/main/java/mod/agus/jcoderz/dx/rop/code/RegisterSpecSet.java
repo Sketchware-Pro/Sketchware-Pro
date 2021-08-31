@@ -1,209 +1,396 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
 import mod.agus.jcoderz.dx.util.MutabilityControl;
 
-public final class RegisterSpecSet extends MutabilityControl {
+/**
+ * Set of {@link RegisterSpec} instances, where a given register number
+ * may appear only once in the set.
+ */
+public final class RegisterSpecSet
+        extends MutabilityControl {
+    /** {@code non-null;} no-element instance */
     public static final RegisterSpecSet EMPTY = new RegisterSpecSet(0);
+
+    /**
+     * {@code non-null;} array of register specs, where each element is
+     * {@code null} or is an instance whose {@code reg}
+     * matches the array index
+     */
     private final RegisterSpec[] specs;
+
+    /** {@code >= -1;} size of the set or {@code -1} if not yet calculated */
     private int size;
 
-    public RegisterSpecSet(int i) {
-        super(true);
-        boolean z;
-        z = i != 0;
-        this.specs = new RegisterSpec[i];
+    /**
+     * Constructs an instance. The instance is initially empty.
+     *
+     * @param maxSize {@code >= 0;} the maximum register number (exclusive) that
+     * may be represented in this instance
+     */
+    public RegisterSpecSet(int maxSize) {
+        super(maxSize != 0);
+
+        this.specs = new RegisterSpec[maxSize];
         this.size = 0;
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof RegisterSpecSet)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof RegisterSpecSet)) {
             return false;
         }
-        RegisterSpecSet registerSpecSet = (RegisterSpecSet) obj;
-        RegisterSpec[] registerSpecArr = registerSpecSet.specs;
-        int length = this.specs.length;
-        if (!(length == registerSpecArr.length && size() == registerSpecSet.size())) {
+
+        RegisterSpecSet otherSet = (RegisterSpecSet) other;
+        RegisterSpec[] otherSpecs = otherSet.specs;
+        int len = specs.length;
+
+        if ((len != otherSpecs.length) || (size() != otherSet.size())) {
             return false;
         }
-        for (int i = 0; i < length; i++) {
-            RegisterSpec registerSpec = this.specs[i];
-            RegisterSpec registerSpec2 = registerSpecArr[i];
-            if (registerSpec != registerSpec2 && (registerSpec == null || !registerSpec.equals(registerSpec2))) {
+
+        for (int i = 0; i < len; i++) {
+            RegisterSpec s1 = specs[i];
+            RegisterSpec s2 = otherSpecs[i];
+
+            if (s1 == s2) {
+                continue;
+            }
+
+            if ((s1 == null) || !s1.equals(s2)) {
                 return false;
             }
         }
+
         return true;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        int length = this.specs.length;
-        int i = 0;
-        for (int i2 = 0; i2 < length; i2++) {
-            RegisterSpec registerSpec = this.specs[i2];
-            i = (i * 31) + (registerSpec == null ? 0 : registerSpec.hashCode());
+        int len = specs.length;
+        int hash = 0;
+
+        for (int i = 0; i < len; i++) {
+            RegisterSpec spec = specs[i];
+            int oneHash = (spec == null) ? 0 : spec.hashCode();
+            hash = (hash * 31) + oneHash;
         }
-        return i;
+
+        return hash;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        boolean z = false;
-        int length = this.specs.length;
-        StringBuffer stringBuffer = new StringBuffer(length * 25);
-        stringBuffer.append('{');
-        for (int i = 0; i < length; i++) {
-            RegisterSpec registerSpec = this.specs[i];
-            if (registerSpec != null) {
-                if (z) {
-                    stringBuffer.append(", ");
+        int len = specs.length;
+        StringBuilder sb = new StringBuilder(len * 25);
+
+        sb.append('{');
+
+        boolean any = false;
+        for (int i = 0; i < len; i++) {
+            RegisterSpec spec = specs[i];
+            if (spec != null) {
+                if (any) {
+                    sb.append(", ");
                 } else {
-                    z = true;
+                    any = true;
                 }
-                stringBuffer.append(registerSpec);
+                sb.append(spec);
             }
         }
-        stringBuffer.append('}');
-        return stringBuffer.toString();
+
+        sb.append('}');
+        return sb.toString();
     }
 
+    /**
+     * Gets the maximum number of registers that may be in this instance, which
+     * is also the maximum-plus-one of register numbers that may be
+     * represented.
+     *
+     * @return {@code >= 0;} the maximum size
+     */
     public int getMaxSize() {
-        return this.specs.length;
+        return specs.length;
     }
 
+    /**
+     * Gets the current size of this instance.
+     *
+     * @return {@code >= 0;} the size
+     */
     public int size() {
-        int i = this.size;
-        if (i < 0) {
-            int length = this.specs.length;
-            i = 0;
-            for (int i2 = 0; i2 < length; i2++) {
-                if (this.specs[i2] != null) {
-                    i++;
+        int result = size;
+
+        if (result < 0) {
+            int len = specs.length;
+
+            result = 0;
+            for (int i = 0; i < len; i++) {
+                if (specs[i] != null) {
+                    result++;
                 }
             }
-            this.size = i;
+
+            size = result;
         }
-        return i;
+
+        return result;
     }
 
-    public RegisterSpec get(int i) {
+    /**
+     * Gets the element with the given register number, if any.
+     *
+     * @param reg {@code >= 0;} the desired register number
+     * @return {@code null-ok;} the element with the given register number or
+     * {@code null} if there is none
+     */
+    public RegisterSpec get(int reg) {
         try {
-            return this.specs[i];
-        } catch (ArrayIndexOutOfBoundsException e) {
+            return specs[reg];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("bogus reg");
         }
     }
 
-    public RegisterSpec get(RegisterSpec registerSpec) {
-        return get(registerSpec.getReg());
+    /**
+     * Gets the element with the same register number as the given
+     * spec, if any. This is just a convenient shorthand for
+     * {@code get(spec.getReg())}.
+     *
+     * @param spec {@code non-null;} spec with the desired register number
+     * @return {@code null-ok;} the element with the matching register number or
+     * {@code null} if there is none
+     */
+    public RegisterSpec get(RegisterSpec spec) {
+        return get(spec.getReg());
     }
 
-    public RegisterSpec findMatchingLocal(RegisterSpec registerSpec) {
-        int length = this.specs.length;
-        for (int i = 0; i < length; i++) {
-            RegisterSpec registerSpec2 = this.specs[i];
-            if (registerSpec2 != null && registerSpec.matchesVariable(registerSpec2)) {
-                return registerSpec2;
+    /**
+     * Returns the spec in this set that's currently associated with a
+     * given local (type, name, and signature), or {@code null} if there is
+     * none. This ignores the register number of the given spec but
+     * matches on everything else.
+     *
+     * @param spec {@code non-null;} local to look for
+     * @return {@code null-ok;} first register found that matches, if any
+     */
+    public RegisterSpec findMatchingLocal(RegisterSpec spec) {
+        int length = specs.length;
+
+        for (int reg = 0; reg < length; reg++) {
+            RegisterSpec s = specs[reg];
+
+            if (s == null) {
+                continue;
+            }
+
+            if (spec.matchesVariable(s)) {
+                return s;
             }
         }
+
         return null;
     }
 
-    public RegisterSpec localItemToSpec(LocalItem localItem) {
-        int length = this.specs.length;
-        for (int i = 0; i < length; i++) {
-            RegisterSpec registerSpec = this.specs[i];
-            if (registerSpec != null && localItem.equals(registerSpec.getLocalItem())) {
-                return registerSpec;
+    /**
+     * Returns the spec in this set that's currently associated with a given
+     * local (name and signature), or {@code null} if there is none.
+     *
+     * @param local {@code non-null;} local item to search for
+     * @return {@code null-ok;} first register found with matching name and signature
+     */
+    public RegisterSpec localItemToSpec(LocalItem local) {
+        int length = specs.length;
+
+        for (int reg = 0; reg < length; reg++) {
+            RegisterSpec spec = specs[reg];
+
+            if ((spec != null) && local.equals(spec.getLocalItem())) {
+                return spec;
             }
         }
+
         return null;
     }
 
-    public void remove(RegisterSpec registerSpec) {
+    /**
+     * Removes a spec from the set. Only the register number
+     * of the parameter is significant.
+     *
+     * @param toRemove {@code non-null;} register to remove.
+     */
+    public void remove(RegisterSpec toRemove) {
         try {
-            this.specs[registerSpec.getReg()] = null;
-            this.size = -1;
-        } catch (ArrayIndexOutOfBoundsException e) {
+            specs[toRemove.getReg()] = null;
+            size = -1;
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("bogus reg");
         }
     }
 
-    public void put(RegisterSpec registerSpec) {
-        int i = 0;
-        RegisterSpec registerSpec2;
+    /**
+     * Puts the given spec into the set. If there is already an element in
+     * the set with the same register number, it is replaced. Additionally,
+     * if the previous element is for a category-2 register, then that
+     * previous element is nullified. Finally, if the given spec is for
+     * a category-2 register, then the immediately subsequent element
+     * is nullified.
+     *
+     * @param spec {@code non-null;} the register spec to put in the instance
+     */
+    public void put(RegisterSpec spec) {
         throwIfImmutable();
-        if (registerSpec == null) {
+
+        if (spec == null) {
             throw new NullPointerException("spec == null");
         }
-        this.size = -1;
+
+        size = -1;
+
         try {
-            int reg = registerSpec.getReg();
-            this.specs[reg] = registerSpec;
-            if (reg > 0 && (registerSpec2 = this.specs[reg - 1]) != null && registerSpec2.getCategory() == 2) {
-                this.specs[i] = null;
+            int reg = spec.getReg();
+            specs[reg] = spec;
+
+            if (reg > 0) {
+                int prevReg = reg - 1;
+                RegisterSpec prevSpec = specs[prevReg];
+                if ((prevSpec != null) && (prevSpec.getCategory() == 2)) {
+                    specs[prevReg] = null;
+                }
             }
-            if (registerSpec.getCategory() == 2) {
-                this.specs[reg + 1] = null;
+
+            if (spec.getCategory() == 2) {
+                specs[reg + 1] = null;
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("spec.getReg() out of range");
         }
     }
 
-    public void putAll(RegisterSpecSet registerSpecSet) {
-        int maxSize = registerSpecSet.getMaxSize();
-        for (int i = 0; i < maxSize; i++) {
-            RegisterSpec registerSpec = registerSpecSet.get(i);
-            if (registerSpec != null) {
-                put(registerSpec);
+    /**
+     * Put the entire contents of the given set into this one.
+     *
+     * @param set {@code non-null;} the set to put into this instance
+     */
+    public void putAll(RegisterSpecSet set) {
+        int max = set.getMaxSize();
+
+        for (int i = 0; i < max; i++) {
+            RegisterSpec spec = set.get(i);
+            if (spec != null) {
+                put(spec);
             }
         }
     }
 
-    public void intersect(RegisterSpecSet registerSpecSet, boolean z) {
-        RegisterSpec intersect;
+    /**
+     * Intersects this instance with the given one, modifying this
+     * instance. The intersection consists of the pairwise
+     * {@link RegisterSpec#intersect} of corresponding elements from
+     * this instance and the given one where both are non-null.
+     *
+     * @param other {@code non-null;} set to intersect with
+     * @param localPrimary whether local variables are primary to
+     * the intersection; if {@code true}, then the only non-null
+     * result elements occur when registers being intersected have
+     * equal names (or both have {@code null} names)
+     */
+    public void intersect(RegisterSpecSet other, boolean localPrimary) {
         throwIfImmutable();
-        RegisterSpec[] registerSpecArr = registerSpecSet.specs;
-        int length = this.specs.length;
-        int min = Math.min(length, registerSpecArr.length);
-        this.size = -1;
-        for (int i = 0; i < min; i++) {
-            RegisterSpec registerSpec = this.specs[i];
-            if (!(registerSpec == null || (intersect = registerSpec.intersect(registerSpecArr[i], z)) == registerSpec)) {
-                this.specs[i] = intersect;
+
+        RegisterSpec[] otherSpecs = other.specs;
+        int thisLen = specs.length;
+        int len = Math.min(thisLen, otherSpecs.length);
+
+        size = -1;
+
+        for (int i = 0; i < len; i++) {
+            RegisterSpec spec = specs[i];
+
+            if (spec == null) {
+                continue;
+            }
+
+            RegisterSpec intersection =
+                spec.intersect(otherSpecs[i], localPrimary);
+            if (intersection != spec) {
+                specs[i] = intersection;
             }
         }
-        while (min < length) {
-            this.specs[min] = null;
-            min++;
+
+        for (int i = len; i < thisLen; i++) {
+            specs[i] = null;
         }
     }
 
-    public RegisterSpecSet withOffset(int i) {
-        int length = this.specs.length;
-        RegisterSpecSet registerSpecSet = new RegisterSpecSet(length + i);
-        for (int i2 = 0; i2 < length; i2++) {
-            RegisterSpec registerSpec = this.specs[i2];
-            if (registerSpec != null) {
-                registerSpecSet.put(registerSpec.withOffset(i));
+    /**
+     * Returns an instance that is identical to this one, except that
+     * all register numbers are offset by the given amount. Mutability
+     * of the result is inherited from the original.
+     *
+     * @param delta the amount to offset the register numbers by
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
+    public RegisterSpecSet withOffset(int delta) {
+        int len = specs.length;
+        RegisterSpecSet result = new RegisterSpecSet(len + delta);
+
+        for (int i = 0; i < len; i++) {
+            RegisterSpec spec = specs[i];
+            if (spec != null) {
+                result.put(spec.withOffset(delta));
             }
         }
-        registerSpecSet.size = this.size;
+
+        result.size = size;
+
         if (isImmutable()) {
-            registerSpecSet.setImmutable();
+            result.setImmutable();
         }
-        return registerSpecSet;
+
+        return result;
     }
 
+    /**
+     * Makes and return a mutable copy of this instance.
+     *
+     * @return {@code non-null;} the mutable copy
+     */
     public RegisterSpecSet mutableCopy() {
-        int length = this.specs.length;
-        RegisterSpecSet registerSpecSet = new RegisterSpecSet(length);
-        for (int i = 0; i < length; i++) {
-            RegisterSpec registerSpec = this.specs[i];
-            if (registerSpec != null) {
-                registerSpecSet.put(registerSpec);
+        int len = specs.length;
+        RegisterSpecSet copy = new RegisterSpecSet(len);
+
+        for (int i = 0; i < len; i++) {
+            RegisterSpec spec = specs[i];
+            if (spec != null) {
+                copy.put(spec);
             }
         }
-        registerSpecSet.size = this.size;
-        return registerSpecSet;
+
+        copy.size = size;
+
+        return copy;
     }
 }

@@ -1,96 +1,187 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dex;
 
 import mod.agus.jcoderz.dex.util.ByteInput;
 import mod.agus.jcoderz.dex.util.ByteOutput;
 
+/**
+ * Read and write {@code encoded_value} primitives.
+ */
 public final class EncodedValueCodec {
     private EncodedValueCodec() {
     }
 
-    public static void writeSignedIntegralValue(ByteOutput byteOutput, int i, long j) {
-        int numberOfLeadingZeros = ((65 - Long.numberOfLeadingZeros((j >> 63) ^ j)) + 7) >> 3;
-        byteOutput.writeByte(((numberOfLeadingZeros - 1) << 5) | i);
-        while (numberOfLeadingZeros > 0) {
-            byteOutput.writeByte((byte) ((int) j));
-            j >>= 8;
-            numberOfLeadingZeros--;
+    /**
+     * Writes a signed integral to {@code out}.
+     */
+    public static void writeSignedIntegralValue(ByteOutput out, int type, long value) {
+        /*
+         * Figure out how many bits are needed to represent the value,
+         * including a sign bit: The bit count is subtracted from 65
+         * and not 64 to account for the sign bit. The xor operation
+         * has the effect of leaving non-negative values alone and
+         * unary complementing negative values (so that a leading zero
+         * count always returns a useful number for our present
+         * purpose).
+         */
+        int requiredBits = 65 - Long.numberOfLeadingZeros(value ^ (value >> 63));
+
+        // Round up the requiredBits to a number of bytes.
+        int requiredBytes = (requiredBits + 0x07) >> 3;
+
+        /*
+         * Write the header byte, which includes the type and
+         * requiredBytes - 1.
+         */
+        out.writeByte(type | ((requiredBytes - 1) << 5));
+
+        // Write the value, per se.
+        while (requiredBytes > 0) {
+            out.writeByte((byte) value);
+            value >>= 8;
+            requiredBytes--;
         }
     }
 
-    public static void writeUnsignedIntegralValue(ByteOutput byteOutput, int i, long j) {
-        int numberOfLeadingZeros = 64 - Long.numberOfLeadingZeros(j);
-        if (numberOfLeadingZeros == 0) {
-            numberOfLeadingZeros = 1;
+    /**
+     * Writes an unsigned integral to {@code out}.
+     */
+    public static void writeUnsignedIntegralValue(ByteOutput out, int type, long value) {
+        // Figure out how many bits are needed to represent the value.
+        int requiredBits = 64 - Long.numberOfLeadingZeros(value);
+        if (requiredBits == 0) {
+            requiredBits = 1;
         }
-        int i2 = (numberOfLeadingZeros + 7) >> 3;
-        byteOutput.writeByte(((i2 - 1) << 5) | i);
-        while (i2 > 0) {
-            byteOutput.writeByte((byte) ((int) j));
-            j >>= 8;
-            i2--;
+
+        // Round up the requiredBits to a number of bytes.
+        int requiredBytes = (requiredBits + 0x07) >> 3;
+
+        /*
+         * Write the header byte, which includes the type and
+         * requiredBytes - 1.
+         */
+        out.writeByte(type | ((requiredBytes - 1) << 5));
+
+        // Write the value, per se.
+        while (requiredBytes > 0) {
+            out.writeByte((byte) value);
+            value >>= 8;
+            requiredBytes--;
         }
     }
 
-    public static void writeRightZeroExtendedValue(ByteOutput byteOutput, int i, long j) {
-        int numberOfTrailingZeros = 64 - Long.numberOfTrailingZeros(j);
-        if (numberOfTrailingZeros == 0) {
-            numberOfTrailingZeros = 1;
+    /**
+     * Writes a right-zero-extended value to {@code out}.
+     */
+    public static void writeRightZeroExtendedValue(ByteOutput out, int type, long value) {
+        // Figure out how many bits are needed to represent the value.
+        int requiredBits = 64 - Long.numberOfTrailingZeros(value);
+        if (requiredBits == 0) {
+            requiredBits = 1;
         }
-        int i2 = (numberOfTrailingZeros + 7) >> 3;
-        long j2 = j >> (64 - (i2 * 8));
-        byteOutput.writeByte(((i2 - 1) << 5) | i);
-        while (i2 > 0) {
-            byteOutput.writeByte((byte) ((int) j2));
-            j2 >>= 8;
-            i2--;
+
+        // Round up the requiredBits to a number of bytes.
+        int requiredBytes = (requiredBits + 0x07) >> 3;
+
+        // Scootch the first bits to be written down to the low-order bits.
+        value >>= 64 - (requiredBytes * 8);
+
+        /*
+         * Write the header byte, which includes the type and
+         * requiredBytes - 1.
+         */
+        out.writeByte(type | ((requiredBytes - 1) << 5));
+
+        // Write the value, per se.
+        while (requiredBytes > 0) {
+            out.writeByte((byte) value);
+            value >>= 8;
+            requiredBytes--;
         }
     }
 
-    public static int readSignedInt(ByteInput byteInput, int i) {
-        int i2 = 0;
-        for (int i3 = i; i3 >= 0; i3--) {
-            i2 = (i2 >>> 8) | ((byteInput.readByte() & 255) << 24);
+    /**
+     * Read a signed integer.
+     *
+     * @param zwidth byte count minus one
+     */
+    public static int readSignedInt(ByteInput in, int zwidth) {
+        int result = 0;
+        for (int i = zwidth; i >= 0; i--) {
+            result = (result >>> 8) | ((in.readByte() & 0xff) << 24);
         }
-        return i2 >> ((3 - i) * 8);
+        result >>= (3 - zwidth) * 8;
+        return result;
     }
 
-    public static int readUnsignedInt(ByteInput byteInput, int i, boolean z) {
-        int i2 = 0;
-        if (!z) {
-            int i3 = 0;
-            for (int i4 = i; i4 >= 0; i4--) {
-                i3 = (i3 >>> 8) | ((byteInput.readByte() & 255) << 24);
+    /**
+     * Read an unsigned integer.
+     *
+     * @param zwidth byte count minus one
+     * @param fillOnRight true to zero fill on the right; false on the left
+     */
+    public static int readUnsignedInt(ByteInput in, int zwidth, boolean fillOnRight) {
+        int result = 0;
+        if (!fillOnRight) {
+            for (int i = zwidth; i >= 0; i--) {
+                result = (result >>> 8) | ((in.readByte() & 0xff) << 24);
             }
-            return i3 >>> ((3 - i) * 8);
-        }
-        while (i >= 0) {
-            i2 = (i2 >>> 8) | ((byteInput.readByte() & 255) << 24);
-            i--;
-        }
-        return i2;
-    }
-
-    public static long readSignedLong(ByteInput byteInput, int i) {
-        long j = 0;
-        for (int i2 = i; i2 >= 0; i2--) {
-            j = (j >>> 8) | ((((long) byteInput.readByte()) & 255) << 56);
-        }
-        return j >> ((7 - i) * 8);
-    }
-
-    public static long readUnsignedLong(ByteInput byteInput, int i, boolean z) {
-        long j = 0;
-        if (!z) {
-            long j2 = 0;
-            for (int i2 = i; i2 >= 0; i2--) {
-                j2 = (j2 >>> 8) | ((((long) byteInput.readByte()) & 255) << 56);
+            result >>>= (3 - zwidth) * 8;
+        } else {
+            for (int i = zwidth; i >= 0; i--) {
+                result = (result >>> 8) | ((in.readByte() & 0xff) << 24);
             }
-            return j2 >>> ((7 - i) * 8);
         }
-        while (i >= 0) {
-            j = (j >>> 8) | ((((long) byteInput.readByte()) & 255) << 56);
-            i--;
+        return result;
+    }
+
+    /**
+     * Read a signed long.
+     *
+     * @param zwidth byte count minus one
+     */
+    public static long readSignedLong(ByteInput in, int zwidth) {
+        long result = 0;
+        for (int i = zwidth; i >= 0; i--) {
+            result = (result >>> 8) | ((in.readByte() & 0xffL) << 56);
         }
-        return j;
+        result >>= (7 - zwidth) * 8;
+        return result;
+    }
+
+    /**
+     * Read an unsigned long.
+     *
+     * @param zwidth byte count minus one
+     * @param fillOnRight true to zero fill on the right; false on the left
+     */
+    public static long readUnsignedLong(ByteInput in, int zwidth, boolean fillOnRight) {
+        long result = 0;
+        if (!fillOnRight) {
+            for (int i = zwidth; i >= 0; i--) {
+                result = (result >>> 8) | ((in.readByte() & 0xffL) << 56);
+            }
+            result >>>= (7 - zwidth) * 8;
+        } else {
+            for (int i = zwidth; i >= 0; i--) {
+                result = (result >>> 8) | ((in.readByte() & 0xffL) << 56);
+            }
+        }
+        return result;
     }
 }
