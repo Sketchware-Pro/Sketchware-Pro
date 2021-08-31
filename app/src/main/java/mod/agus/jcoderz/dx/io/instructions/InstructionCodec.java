@@ -1,675 +1,1113 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.io.instructions;
-
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
-
-import java.io.EOFException;
 
 import mod.agus.jcoderz.dex.DexException;
 import mod.agus.jcoderz.dx.io.IndexType;
 import mod.agus.jcoderz.dx.io.OpcodeInfo;
+import mod.agus.jcoderz.dx.io.Opcodes;
 import mod.agus.jcoderz.dx.util.Hex;
 
+import java.io.EOFException;
+import java.util.Arrays;
+
+/**
+ * Representation of an instruction format, which knows how to decode into
+ * and encode from instances of {@link DecodedInstruction}.
+ */
 public enum InstructionCodec {
-    FORMAT_00X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new ZeroRegisterDecodedInstruction(this, i, 0, null, 0, 0);
+    FORMAT_00X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return new ZeroRegisterDecodedInstruction(
+                    this, opcodeUnit, 0, null,
+                    0, 0L);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(decodedInstruction.getOpcodeUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(insn.getOpcodeUnit());
         }
     },
-    FORMAT_10X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new ZeroRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, (long) InstructionCodec.byte1(i));
+
+    FORMAT_10X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int literal = byte1(opcodeUnit); // should be zero
+            return new ZeroRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(decodedInstruction.getOpcodeUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(insn.getOpcodeUnit());
         }
     },
-    FORMAT_12X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new TwoRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, 0, InstructionCodec.nibble2(i), InstructionCodec.nibble3(i));
+
+    FORMAT_12X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = nibble2(opcodeUnit);
+            int b = nibble3(opcodeUnit);
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, 0L,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcodeUnit(), InstructionCodec.makeByte(decodedInstruction.getA(), decodedInstruction.getB())));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcodeUnit(),
+                             makeByte(insn.getA(), insn.getB())));
         }
     },
-    FORMAT_11N {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new OneRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, (long) ((InstructionCodec.nibble3(i) << 28) >> 28), InstructionCodec.nibble2(i));
+
+    FORMAT_11N() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = nibble2(opcodeUnit);
+            int literal = (nibble3(opcodeUnit) << 28) >> 28; // sign-extend
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcodeUnit(), InstructionCodec.makeByte(decodedInstruction.getA(), decodedInstruction.getLiteralNibble())));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcodeUnit(),
+                             makeByte(insn.getA(), insn.getLiteralNibble())));
         }
     },
-    FORMAT_11X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new OneRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, 0, InstructionCodec.byte1(i));
+
+    FORMAT_11X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, 0L,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(codeUnit(insn.getOpcode(), insn.getA()));
         }
     },
-    FORMAT_10T {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new ZeroRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, ((byte) InstructionCodec.byte1(i)) + (codeInput.cursor() - 1), 0);
+
+    FORMAT_10T() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.cursor() - 1;
+            int opcode = byte0(opcodeUnit);
+            int target = (byte) byte1(opcodeUnit); // sign-extend
+            return new ZeroRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    baseAddress + target, 0L);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getTargetByte(codeOutput.cursor())));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            int relativeTarget = insn.getTargetByte(out.cursor());
+            out.write(codeUnit(insn.getOpcode(), relativeTarget));
         }
     },
-    FORMAT_20T {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new ZeroRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, ((short) codeInput.read()) + (codeInput.cursor() - 1), (long) InstructionCodec.byte1(i));
+
+    FORMAT_20T() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.cursor() - 1;
+            int opcode = byte0(opcodeUnit);
+            int literal = byte1(opcodeUnit); // should be zero
+            int target = (short) in.read(); // sign-extend
+            return new ZeroRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    baseAddress + target, literal);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(decodedInstruction.getOpcodeUnit(), decodedInstruction.getTargetUnit(codeOutput.cursor()));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            short relativeTarget = insn.getTargetUnit(out.cursor());
+            out.write(insn.getOpcodeUnit(), relativeTarget);
         }
     },
-    FORMAT_20BC {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new ZeroRegisterDecodedInstruction(this, InstructionCodec.byte0(i), codeInput.read(), IndexType.VARIES, 0, (long) InstructionCodec.byte1(i));
+
+    FORMAT_20BC() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            // Note: We use the literal field to hold the decoded AA value.
+            int opcode = byte0(opcodeUnit);
+            int literal = byte1(opcodeUnit);
+            int index = in.read();
+            return new ZeroRegisterDecodedInstruction(
+                    this, opcode, index, mod.agus.jcoderz.dx.io.IndexType.VARIES,
+                    0, literal);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getLiteralByte()), decodedInstruction.getIndexUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getLiteralByte()),
+                    insn.getIndexUnit());
         }
     },
-    FORMAT_22X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new TwoRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, 0, InstructionCodec.byte1(i), codeInput.read());
+
+    FORMAT_22X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int b = in.read();
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, 0L,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), decodedInstruction.getBUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    insn.getBUnit());
         }
     },
-    FORMAT_21T {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new OneRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, ((short) codeInput.read()) + (codeInput.cursor() - 1), 0, InstructionCodec.byte1(i));
+
+    FORMAT_21T() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.cursor() - 1;
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int target = (short) in.read(); // sign-extend
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    baseAddress + target, 0L,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), decodedInstruction.getTargetUnit(codeOutput.cursor()));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            short relativeTarget = insn.getTargetUnit(out.cursor());
+            out.write(codeUnit(insn.getOpcode(), insn.getA()), relativeTarget);
         }
     },
-    FORMAT_21S {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new OneRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, (long) ((short) codeInput.read()), InstructionCodec.byte1(i));
+
+    FORMAT_21S() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int literal = (short) in.read(); // sign-extend
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), decodedInstruction.getLiteralUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    insn.getLiteralUnit());
         }
     },
-    FORMAT_21H {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            return new OneRegisterDecodedInstruction(this, byte0, 0, null, 0, ((long) ((short) codeInput.read())) << (byte0 == 21 ? 16 : ExternalAnnotationProvider.NULLABLE), InstructionCodec.byte1(i));
+
+    FORMAT_21H() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            long literal = (short) in.read(); // sign-extend
+
+            /*
+             * Format 21h decodes differently depending on the opcode,
+             * because the "signed hat" might represent either a 32-
+             * or 64- bit value.
+             */
+            literal <<= (opcode == mod.agus.jcoderz.dx.io.Opcodes.CONST_HIGH16) ? 16 : 48;
+
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            int opcode = decodedInstruction.getOpcode();
-            codeOutput.write(InstructionCodec.codeUnit(opcode, decodedInstruction.getA()), (short) ((int) (decodedInstruction.getLiteral() >> (opcode == 21 ? 16 : ExternalAnnotationProvider.NULLABLE))));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            // See above.
+            int opcode = insn.getOpcode();
+            int shift = (opcode == mod.agus.jcoderz.dx.io.Opcodes.CONST_HIGH16) ? 16 : 48;
+            short literal = (short) (insn.getLiteral() >> shift);
+
+            out.write(codeUnit(opcode, insn.getA()), literal);
         }
     },
-    FORMAT_21C {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            return new OneRegisterDecodedInstruction(this, byte0, codeInput.read(), OpcodeInfo.getIndexType(byte0), 0, 0, InstructionCodec.byte1(i));
+
+    FORMAT_21C() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int index = in.read();
+            mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, index, indexType,
+                    0, 0L,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), decodedInstruction.getIndexUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    insn.getIndexUnit());
         }
     },
-    FORMAT_23X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            int byte1 = InstructionCodec.byte1(i);
-            int read = codeInput.read();
-            return new ThreeRegisterDecodedInstruction(this, byte0, 0, null, 0, 0, byte1, InstructionCodec.byte0(read), InstructionCodec.byte1(read));
+
+    FORMAT_23X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int bc = in.read();
+            int b = byte0(bc);
+            int c = byte1(bc);
+            return new ThreeRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, 0L,
+                    a, b, c);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), InstructionCodec.codeUnit(decodedInstruction.getB(), decodedInstruction.getC()));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    codeUnit(insn.getB(), insn.getC()));
         }
     },
-    FORMAT_22B {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            int byte1 = InstructionCodec.byte1(i);
-            int read = codeInput.read();
-            return new TwoRegisterDecodedInstruction(this, byte0, 0, null, 0, (long) ((byte) InstructionCodec.byte1(read)), byte1, InstructionCodec.byte0(read));
+
+    FORMAT_22B() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int bc = in.read();
+            int b = byte0(bc);
+            int literal = (byte) byte1(bc); // sign-extend
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), InstructionCodec.codeUnit(decodedInstruction.getB(), decodedInstruction.getLiteralByte()));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    codeUnit(insn.getB(),
+                             insn.getLiteralByte()));
         }
     },
-    FORMAT_22T {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new TwoRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, ((short) codeInput.read()) + (codeInput.cursor() - 1), 0, InstructionCodec.nibble2(i), InstructionCodec.nibble3(i));
+
+    FORMAT_22T() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.cursor() - 1;
+            int opcode = byte0(opcodeUnit);
+            int a = nibble2(opcodeUnit);
+            int b = nibble3(opcodeUnit);
+            int target = (short) in.read(); // sign-extend
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    baseAddress + target, 0L,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), InstructionCodec.makeByte(decodedInstruction.getA(), decodedInstruction.getB())), decodedInstruction.getTargetUnit(codeOutput.cursor()));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            short relativeTarget = insn.getTargetUnit(out.cursor());
+            out.write(
+                    codeUnit(insn.getOpcode(),
+                             makeByte(insn.getA(), insn.getB())),
+                    relativeTarget);
         }
     },
-    FORMAT_22S {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new TwoRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, (long) ((short) codeInput.read()), InstructionCodec.nibble2(i), InstructionCodec.nibble3(i));
+
+    FORMAT_22S() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = nibble2(opcodeUnit);
+            int b = nibble3(opcodeUnit);
+            int literal = (short) in.read(); // sign-extend
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), InstructionCodec.makeByte(decodedInstruction.getA(), decodedInstruction.getB())), decodedInstruction.getLiteralUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(),
+                             makeByte(insn.getA(), insn.getB())),
+                    insn.getLiteralUnit());
         }
     },
-    FORMAT_22C {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            return new TwoRegisterDecodedInstruction(this, byte0, codeInput.read(), OpcodeInfo.getIndexType(byte0), 0, 0, InstructionCodec.nibble2(i), InstructionCodec.nibble3(i));
+
+    FORMAT_22C() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = nibble2(opcodeUnit);
+            int b = nibble3(opcodeUnit);
+            int index = in.read();
+            mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, index, indexType,
+                    0, 0L,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), InstructionCodec.makeByte(decodedInstruction.getA(), decodedInstruction.getB())), decodedInstruction.getIndexUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(),
+                             makeByte(insn.getA(), insn.getB())),
+                    insn.getIndexUnit());
         }
     },
-    FORMAT_22CS {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new TwoRegisterDecodedInstruction(this, InstructionCodec.byte0(i), codeInput.read(), IndexType.FIELD_OFFSET, 0, 0, InstructionCodec.nibble2(i), InstructionCodec.nibble3(i));
+
+    FORMAT_22CS() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = nibble2(opcodeUnit);
+            int b = nibble3(opcodeUnit);
+            int index = in.read();
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, index, mod.agus.jcoderz.dx.io.IndexType.FIELD_OFFSET,
+                    0, 0L,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), InstructionCodec.makeByte(decodedInstruction.getA(), decodedInstruction.getB())), decodedInstruction.getIndexUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(),
+                             makeByte(insn.getA(), insn.getB())),
+                    insn.getIndexUnit());
         }
     },
-    FORMAT_30T {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            int byte1 = InstructionCodec.byte1(i);
-            return new ZeroRegisterDecodedInstruction(this, byte0, 0, null, codeInput.readInt() + (codeInput.cursor() - 1), (long) byte1);
+
+    FORMAT_30T() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.cursor() - 1;
+            int opcode = byte0(opcodeUnit);
+            int literal = byte1(opcodeUnit); // should be zero
+            int target = in.readInt();
+            return new ZeroRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    baseAddress + target, literal);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            int target = decodedInstruction.getTarget(codeOutput.cursor());
-            codeOutput.write(decodedInstruction.getOpcodeUnit(), InstructionCodec.unit0(target), InstructionCodec.unit1(target));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            int relativeTarget = insn.getTarget(out.cursor());
+            out.write(insn.getOpcodeUnit(),
+                    unit0(relativeTarget), unit1(relativeTarget));
         }
     },
-    FORMAT_32X {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new TwoRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, (long) InstructionCodec.byte1(i), codeInput.read(), codeInput.read());
+
+    FORMAT_32X() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int literal = byte1(opcodeUnit); // should be zero
+            int a = in.read();
+            int b = in.read();
+            return new TwoRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a, b);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            codeOutput.write(decodedInstruction.getOpcodeUnit(), decodedInstruction.getAUnit(), decodedInstruction.getBUnit());
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(insn.getOpcodeUnit(), insn.getAUnit(), insn.getBUnit());
         }
     },
-    FORMAT_31I {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new OneRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, (long) codeInput.readInt(), InstructionCodec.byte1(i));
+
+    FORMAT_31I() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int literal = in.readInt();
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            int literalInt = decodedInstruction.getLiteralInt();
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), InstructionCodec.unit0(literalInt), InstructionCodec.unit1(literalInt));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            int literal = insn.getLiteralInt();
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    unit0(literal),
+                    unit1(literal));
         }
     },
-    FORMAT_31T {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int cursor = codeInput.cursor() - 1;
-            int byte0 = InstructionCodec.byte0(i);
-            int byte1 = InstructionCodec.byte1(i);
-            int readInt = cursor + codeInput.readInt();
-            switch (byte0) {
-                case 43:
-                case 44:
-                    codeInput.setBaseAddress(readInt, cursor);
+
+    FORMAT_31T() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.cursor() - 1;
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int target = baseAddress + in.readInt();
+
+            /*
+             * Switch instructions need to "forward" their addresses to their
+             * payload target instructions.
+             */
+            switch (opcode) {
+                case mod.agus.jcoderz.dx.io.Opcodes.PACKED_SWITCH:
+                case mod.agus.jcoderz.dx.io.Opcodes.SPARSE_SWITCH: {
+                    in.setBaseAddress(target, baseAddress);
                     break;
+                }
+                default: // fall out
             }
-            return new OneRegisterDecodedInstruction(this, byte0, 0, null, readInt, 0, byte1);
+
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    target, 0L,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            int target = decodedInstruction.getTarget(codeOutput.cursor());
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), InstructionCodec.unit0(target), InstructionCodec.unit1(target));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            int relativeTarget = insn.getTarget(out.cursor());
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    unit0(relativeTarget), unit1(relativeTarget));
         }
     },
-    FORMAT_31C {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int byte0 = InstructionCodec.byte0(i);
-            return new OneRegisterDecodedInstruction(this, byte0, codeInput.readInt(), OpcodeInfo.getIndexType(byte0), 0, 0, InstructionCodec.byte1(i));
+
+    FORMAT_31C() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            int index = in.readInt();
+            mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, index, indexType,
+                    0, 0L,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            int index = decodedInstruction.getIndex();
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), InstructionCodec.unit0(index), InstructionCodec.unit1(index));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            int index = insn.getIndex();
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    unit0(index),
+                    unit1(index));
         }
     },
-    FORMAT_35C {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return InstructionCodec.decodeRegisterList(this, i, codeInput);
+
+    FORMAT_35C() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return decodeRegisterList(this, opcodeUnit, in);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            InstructionCodec.encodeRegisterList(decodedInstruction, codeOutput);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            encodeRegisterList(insn, out);
         }
     },
-    FORMAT_35MS {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return InstructionCodec.decodeRegisterList(this, i, codeInput);
+
+    FORMAT_35MS() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return decodeRegisterList(this, opcodeUnit, in);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            InstructionCodec.encodeRegisterList(decodedInstruction, codeOutput);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            encodeRegisterList(insn, out);
         }
     },
-    FORMAT_35MI {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return InstructionCodec.decodeRegisterList(this, i, codeInput);
+
+    FORMAT_35MI() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return decodeRegisterList(this, opcodeUnit, in);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            InstructionCodec.encodeRegisterList(decodedInstruction, codeOutput);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            encodeRegisterList(insn, out);
         }
     },
-    FORMAT_3RC {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return InstructionCodec.decodeRegisterRange(this, i, codeInput);
+
+    FORMAT_3RC() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return decodeRegisterRange(this, opcodeUnit, in);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            InstructionCodec.encodeRegisterRange(decodedInstruction, codeOutput);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            encodeRegisterRange(insn, out);
         }
     },
-    FORMAT_3RMS {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return InstructionCodec.decodeRegisterRange(this, i, codeInput);
+
+    FORMAT_3RMS() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return decodeRegisterRange(this, opcodeUnit, in);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            InstructionCodec.encodeRegisterRange(decodedInstruction, codeOutput);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            encodeRegisterRange(insn, out);
         }
     },
-    FORMAT_3RMI {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return InstructionCodec.decodeRegisterRange(this, i, codeInput);
+
+    FORMAT_3RMI() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            return decodeRegisterRange(this, opcodeUnit, in);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            InstructionCodec.encodeRegisterRange(decodedInstruction, codeOutput);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            encodeRegisterRange(insn, out);
         }
     },
-    FORMAT_51L {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            return new OneRegisterDecodedInstruction(this, InstructionCodec.byte0(i), 0, null, 0, codeInput.readLong(), InstructionCodec.byte1(i));
+
+    FORMAT_51L() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            int a = byte1(opcodeUnit);
+            long literal = in.readLong();
+            return new OneRegisterDecodedInstruction(
+                    this, opcode, 0, null,
+                    0, literal,
+                    a);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            long literal = decodedInstruction.getLiteral();
-            codeOutput.write(InstructionCodec.codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getA()), InstructionCodec.unit0(literal), InstructionCodec.unit1(literal), InstructionCodec.unit2(literal), InstructionCodec.unit3(literal));
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            long literal = insn.getLiteral();
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getA()),
+                    unit0(literal),
+                    unit1(literal),
+                    unit2(literal),
+                    unit3(literal));
         }
     },
-    FORMAT_PACKED_SWITCH_PAYLOAD {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int baseAddressForCursor = codeInput.baseAddressForCursor() - 1;
-            int read = codeInput.read();
-            int readInt = codeInput.readInt();
-            int[] iArr = new int[read];
-            for (int i2 = 0; i2 < read; i2++) {
-                iArr[i2] = codeInput.readInt() + baseAddressForCursor;
+
+    FORMAT_45CC() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            if (opcode != mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC) {
+              // 45cc isn't currently used for anything other than invoke-polymorphic.
+              // If that changes, add a more general DecodedInstruction for this format.
+              throw new UnsupportedOperationException(String.valueOf(opcode));
             }
-            return new PackedSwitchPayloadDecodedInstruction(this, i, readInt, iArr);
+            int g = nibble2(opcodeUnit);
+            int registerCount = nibble3(opcodeUnit);
+            int methodIndex = in.read();
+            int cdef = in.read();
+            int c = nibble0(cdef);
+            int d = nibble1(cdef);
+            int e = nibble2(cdef);
+            int f = nibble3(cdef);
+            int protoIndex = in.read();
+            mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
+
+            if (registerCount < 1 || registerCount > 5) {
+                throw new DexException("bogus registerCount: " + mod.agus.jcoderz.dx.util.Hex.uNibble(registerCount));
+            }
+            int[] registers = {c, d, e, f, g};
+            registers = Arrays.copyOfRange(registers, 0, registerCount);
+
+            return new InvokePolymorphicDecodedInstruction(
+                    this, opcode, methodIndex, indexType, protoIndex, registers);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            PackedSwitchPayloadDecodedInstruction packedSwitchPayloadDecodedInstruction = (PackedSwitchPayloadDecodedInstruction) decodedInstruction;
-            int[] targets = packedSwitchPayloadDecodedInstruction.getTargets();
-            int baseAddressForCursor = codeOutput.baseAddressForCursor();
-            codeOutput.write(packedSwitchPayloadDecodedInstruction.getOpcodeUnit());
-            codeOutput.write(InstructionCodec.asUnsignedUnit(targets.length));
-            codeOutput.writeInt(packedSwitchPayloadDecodedInstruction.getFirstKey());
-            for (int i : targets) {
-                codeOutput.writeInt(i - baseAddressForCursor);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            InvokePolymorphicDecodedInstruction polyInsn =
+                    (InvokePolymorphicDecodedInstruction) insn;
+            out.write(codeUnit(polyInsn.getOpcode(),
+                            makeByte(polyInsn.getG(), polyInsn.getRegisterCount())),
+                    polyInsn.getIndexUnit(),
+                    codeUnit(polyInsn.getC(), polyInsn.getD(), polyInsn.getE(), polyInsn.getF()),
+                    polyInsn.getProtoIndex());
+
+        }
+    },
+
+    FORMAT_4RCC() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int opcode = byte0(opcodeUnit);
+            if (opcode != Opcodes.INVOKE_POLYMORPHIC_RANGE) {
+              // 4rcc isn't currently used for anything other than invoke-polymorphic.
+              // If that changes, add a more general DecodedInstruction for this format.
+              throw new UnsupportedOperationException(String.valueOf(opcode));
+            }
+            int registerCount = byte1(opcodeUnit);
+            int methodIndex = in.read();
+            int c = in.read();
+            int protoIndex = in.read();
+            mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
+            return new InvokePolymorphicRangeDecodedInstruction(
+                    this, opcode, methodIndex, indexType, c, registerCount, protoIndex);
+
+        }
+
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            out.write(
+                    codeUnit(insn.getOpcode(), insn.getRegisterCount()),
+                    insn.getIndexUnit(),
+                    insn.getCUnit(),
+                    insn.getProtoIndex());
+
+        }
+    },
+
+    FORMAT_PACKED_SWITCH_PAYLOAD() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.baseAddressForCursor() - 1; // already read opcode
+            int size = in.read();
+            int firstKey = in.readInt();
+            int[] targets = new int[size];
+
+            for (int i = 0; i < size; i++) {
+                targets[i] = baseAddress + in.readInt();
+            }
+
+            return new PackedSwitchPayloadDecodedInstruction(
+                    this, opcodeUnit, firstKey, targets);
+        }
+
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            PackedSwitchPayloadDecodedInstruction payload =
+                (PackedSwitchPayloadDecodedInstruction) insn;
+            int[] targets = payload.getTargets();
+            int baseAddress = out.baseAddressForCursor();
+
+            out.write(payload.getOpcodeUnit());
+            out.write(asUnsignedUnit(targets.length));
+            out.writeInt(payload.getFirstKey());
+
+            for (int target : targets) {
+                out.writeInt(target - baseAddress);
             }
         }
     },
-    FORMAT_SPARSE_SWITCH_PAYLOAD {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int baseAddressForCursor = codeInput.baseAddressForCursor() - 1;
-            int read = codeInput.read();
-            int[] iArr = new int[read];
-            int[] iArr2 = new int[read];
-            for (int i2 = 0; i2 < read; i2++) {
-                iArr[i2] = codeInput.readInt();
+
+    FORMAT_SPARSE_SWITCH_PAYLOAD() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int baseAddress = in.baseAddressForCursor() - 1; // already read opcode
+            int size = in.read();
+            int[] keys = new int[size];
+            int[] targets = new int[size];
+
+            for (int i = 0; i < size; i++) {
+                keys[i] = in.readInt();
             }
-            for (int i3 = 0; i3 < read; i3++) {
-                iArr2[i3] = codeInput.readInt() + baseAddressForCursor;
+
+            for (int i = 0; i < size; i++) {
+                targets[i] = baseAddress + in.readInt();
             }
-            return new SparseSwitchPayloadDecodedInstruction(this, i, iArr, iArr2);
+
+            return new SparseSwitchPayloadDecodedInstruction(
+                    this, opcodeUnit, keys, targets);
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            SparseSwitchPayloadDecodedInstruction sparseSwitchPayloadDecodedInstruction = (SparseSwitchPayloadDecodedInstruction) decodedInstruction;
-            int[] keys = sparseSwitchPayloadDecodedInstruction.getKeys();
-            int[] targets = sparseSwitchPayloadDecodedInstruction.getTargets();
-            int baseAddressForCursor = codeOutput.baseAddressForCursor();
-            codeOutput.write(sparseSwitchPayloadDecodedInstruction.getOpcodeUnit());
-            codeOutput.write(InstructionCodec.asUnsignedUnit(targets.length));
-            for (int i : keys) {
-                codeOutput.writeInt(i);
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            SparseSwitchPayloadDecodedInstruction payload =
+                (SparseSwitchPayloadDecodedInstruction) insn;
+            int[] keys = payload.getKeys();
+            int[] targets = payload.getTargets();
+            int baseAddress = out.baseAddressForCursor();
+
+            out.write(payload.getOpcodeUnit());
+            out.write(asUnsignedUnit(targets.length));
+
+            for (int key : keys) {
+                out.writeInt(key);
             }
-            for (int i2 : targets) {
-                codeOutput.writeInt(i2 - baseAddressForCursor);
+
+            for (int target : targets) {
+                out.writeInt(target - baseAddress);
             }
         }
     },
-    FORMAT_FILL_ARRAY_DATA_PAYLOAD {
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException {
-            int i2 = 0;
-            int read = codeInput.read();
-            int readInt = codeInput.readInt();
-            switch (read) {
-                case 1:
-                    byte[] bArr = new byte[readInt];
-                    int i3 = 0;
-                    int i4 = 0;
-                    boolean z = true;
-                    while (i4 < readInt) {
-                        if (z) {
-                            i3 = codeInput.read();
+
+    FORMAT_FILL_ARRAY_DATA_PAYLOAD() {
+        @Override
+        public DecodedInstruction decode(int opcodeUnit,
+                CodeInput in) throws EOFException {
+            int elementWidth = in.read();
+            int size = in.readInt();
+
+            switch (elementWidth) {
+                case 1: {
+                    byte[] array = new byte[size];
+                    boolean even = true;
+                    for (int i = 0, value = 0; i < size; i++, even = !even) {
+                        if (even) {
+                            value = in.read();
                         }
-                        bArr[i4] = (byte) (i3 & 255);
-                        int i5 = i3 >> 8;
-                        i4++;
-                        z = !z;
-                        i3 = i5;
+                        array[i] = (byte) (value & 0xff);
+                        value >>= 8;
                     }
-                    return new FillArrayDataPayloadDecodedInstruction((InstructionCodec) this, i, bArr);
-                case 2:
-                    short[] sArr = new short[readInt];
-                    while (i2 < readInt) {
-                        sArr[i2] = (short) codeInput.read();
-                        i2++;
+                    return new FillArrayDataPayloadDecodedInstruction(
+                            this, opcodeUnit, array);
+                }
+                case 2: {
+                    short[] array = new short[size];
+                    for (int i = 0; i < size; i++) {
+                        array[i] = (short) in.read();
                     }
-                    return new FillArrayDataPayloadDecodedInstruction((InstructionCodec) this, i, sArr);
-                case 3:
-                case 5:
-                case 6:
-                case 7:
-                default:
-                    throw new DexException("bogus element_width: " + Hex.u2(read));
-                case 4:
-                    int[] iArr = new int[readInt];
-                    while (i2 < readInt) {
-                        iArr[i2] = codeInput.readInt();
-                        i2++;
+                    return new FillArrayDataPayloadDecodedInstruction(
+                            this, opcodeUnit, array);
+                }
+                case 4: {
+                    int[] array = new int[size];
+                    for (int i = 0; i < size; i++) {
+                        array[i] = in.readInt();
                     }
-                    return new FillArrayDataPayloadDecodedInstruction((InstructionCodec) this, i, iArr);
-                case 8:
-                    long[] jArr = new long[readInt];
-                    while (i2 < readInt) {
-                        jArr[i2] = codeInput.readLong();
-                        i2++;
+                    return new FillArrayDataPayloadDecodedInstruction(
+                            this, opcodeUnit, array);
+                }
+                case 8: {
+                    long[] array = new long[size];
+                    for (int i = 0; i < size; i++) {
+                        array[i] = in.readLong();
                     }
-                    return new FillArrayDataPayloadDecodedInstruction(this, i, jArr);
+                    return new FillArrayDataPayloadDecodedInstruction(
+                            this, opcodeUnit, array);
+                }
+                default: // fall out
             }
+
+            throw new DexException("bogus element_width: "
+                    + mod.agus.jcoderz.dx.util.Hex.u2(elementWidth));
         }
 
-        @Override // mod.agus.jcoderz.dx.io.instructions.InstructionCodec
-        public void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-            FillArrayDataPayloadDecodedInstruction fillArrayDataPayloadDecodedInstruction = (FillArrayDataPayloadDecodedInstruction) decodedInstruction;
-            short elementWidthUnit = fillArrayDataPayloadDecodedInstruction.getElementWidthUnit();
-            Object data = fillArrayDataPayloadDecodedInstruction.getData();
-            codeOutput.write(fillArrayDataPayloadDecodedInstruction.getOpcodeUnit());
-            codeOutput.write(elementWidthUnit);
-            codeOutput.writeInt(fillArrayDataPayloadDecodedInstruction.getSize());
-            switch (elementWidthUnit) {
-                case 1:
-                    codeOutput.write((byte[]) data);
-                    return;
-                case 2:
-                    codeOutput.write((short[]) data);
-                    return;
-                case 3:
-                case 5:
-                case 6:
-                case 7:
-                default:
-                    throw new DexException("bogus element_width: " + Hex.u2(elementWidthUnit));
-                case 4:
-                    codeOutput.write((int[]) data);
-                    return;
-                case 8:
-                    codeOutput.write((long[]) data);
-                    return;
+        @Override
+        public void encode(DecodedInstruction insn, CodeOutput out) {
+            FillArrayDataPayloadDecodedInstruction payload =
+                (FillArrayDataPayloadDecodedInstruction) insn;
+            short elementWidth = payload.getElementWidthUnit();
+            Object data = payload.getData();
+
+            out.write(payload.getOpcodeUnit());
+            out.write(elementWidth);
+            out.writeInt(payload.getSize());
+
+            switch (elementWidth) {
+                case 1: out.write((byte[]) data);  break;
+                case 2: out.write((short[]) data); break;
+                case 4: out.write((int[]) data);   break;
+                case 8: out.write((long[]) data);  break;
+                default: {
+                    throw new DexException("bogus element_width: "
+                            + mod.agus.jcoderz.dx.util.Hex.u2(elementWidth));
+                }
             }
         }
     };
 
-    InstructionCodec() {
+    /**
+     * Decodes an instruction specified by the given opcode unit, reading
+     * any required additional code units from the given input source.
+     */
+    public abstract DecodedInstruction decode(int opcodeUnit, CodeInput in)
+        throws EOFException;
 
-    }
+    /**
+     * Encodes the given instruction.
+     */
+    public abstract void encode(DecodedInstruction insn, CodeOutput out);
 
-    InstructionCodec(InstructionCodec instructionCodec) {
-        this();
-    }
+    /**
+     * Helper method that decodes any of the register-list formats.
+     */
+    private static DecodedInstruction decodeRegisterList(
+            InstructionCodec format, int opcodeUnit, CodeInput in)
+            throws EOFException {
+        int opcode = byte0(opcodeUnit);
+        int e = nibble2(opcodeUnit);
+        int registerCount = nibble3(opcodeUnit);
+        int index = in.read();
+        int abcd = in.read();
+        int a = nibble0(abcd);
+        int b = nibble1(abcd);
+        int c = nibble2(abcd);
+        int d = nibble3(abcd);
+        mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
 
-    public static DecodedInstruction decodeRegisterList(InstructionCodec instructionCodec, int i, CodeInput codeInput) throws EOFException {
-        int byte0 = byte0(i);
-        int nibble2 = nibble2(i);
-        int nibble3 = nibble3(i);
-        int read = codeInput.read();
-        int read2 = codeInput.read();
-        int nibble0 = nibble0(read2);
-        int nibble1 = nibble1(read2);
-        int nibble22 = nibble2(read2);
-        int nibble32 = nibble3(read2);
-        IndexType indexType = OpcodeInfo.getIndexType(byte0);
-        switch (nibble3) {
+        // TODO: Having to switch like this is less than ideal.
+        switch (registerCount) {
             case 0:
-                return new ZeroRegisterDecodedInstruction(instructionCodec, byte0, read, indexType, 0, 0);
+                return new ZeroRegisterDecodedInstruction(
+                        format, opcode, index, indexType,
+                        0, 0L);
             case 1:
-                return new OneRegisterDecodedInstruction(instructionCodec, byte0, read, indexType, 0, 0, nibble0);
+                return new OneRegisterDecodedInstruction(
+                        format, opcode, index, indexType,
+                        0, 0L,
+                        a);
             case 2:
-                return new TwoRegisterDecodedInstruction(instructionCodec, byte0, read, indexType, 0, 0, nibble0, nibble1);
+                return new TwoRegisterDecodedInstruction(
+                        format, opcode, index, indexType,
+                        0, 0L,
+                        a, b);
             case 3:
-                return new ThreeRegisterDecodedInstruction(instructionCodec, byte0, read, indexType, 0, 0, nibble0, nibble1, nibble22);
+                return new ThreeRegisterDecodedInstruction(
+                        format, opcode, index, indexType,
+                        0, 0L,
+                        a, b, c);
             case 4:
-                return new FourRegisterDecodedInstruction(instructionCodec, byte0, read, indexType, 0, 0, nibble0, nibble1, nibble22, nibble32);
+                return new FourRegisterDecodedInstruction(
+                        format, opcode, index, indexType,
+                        0, 0L,
+                        a, b, c, d);
             case 5:
-                return new FiveRegisterDecodedInstruction(instructionCodec, byte0, read, indexType, 0, 0, nibble0, nibble1, nibble22, nibble32, nibble2);
-            default:
-                throw new DexException("bogus registerCount: " + Hex.uNibble(nibble3));
+                return new FiveRegisterDecodedInstruction(
+                        format, opcode, index, indexType,
+                        0, 0L,
+                        a, b, c, d, e);
+            default: // fall out
         }
+
+        throw new DexException("bogus registerCount: "
+                + Hex.uNibble(registerCount));
     }
 
-    public static void encodeRegisterList(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-        codeOutput.write(codeUnit(decodedInstruction.getOpcode(), makeByte(decodedInstruction.getE(), decodedInstruction.getRegisterCount())), decodedInstruction.getIndexUnit(), codeUnit(decodedInstruction.getA(), decodedInstruction.getB(), decodedInstruction.getC(), decodedInstruction.getD()));
+    /**
+     * Helper method that encodes any of the register-list formats.
+     */
+    private static void encodeRegisterList(DecodedInstruction insn,
+            CodeOutput out) {
+        out.write(codeUnit(insn.getOpcode(),
+                        makeByte(insn.getE(), insn.getRegisterCount())),
+                insn.getIndexUnit(),
+                codeUnit(insn.getA(), insn.getB(), insn.getC(), insn.getD()));
     }
 
-    public static DecodedInstruction decodeRegisterRange(InstructionCodec instructionCodec, int i, CodeInput codeInput) throws EOFException {
-        int byte0 = byte0(i);
-        int byte1 = byte1(i);
-        return new RegisterRangeDecodedInstruction(instructionCodec, byte0, codeInput.read(), OpcodeInfo.getIndexType(byte0), 0, 0, codeInput.read(), byte1);
+    /**
+     * Helper method that decodes any of the three-unit register-range formats.
+     */
+    private static DecodedInstruction decodeRegisterRange(
+            InstructionCodec format, int opcodeUnit, CodeInput in)
+            throws EOFException {
+        int opcode = byte0(opcodeUnit);
+        int registerCount = byte1(opcodeUnit);
+        int index = in.read();
+        int a = in.read();
+        IndexType indexType = OpcodeInfo.getIndexType(opcode);
+        return new RegisterRangeDecodedInstruction(
+                format, opcode, index, indexType,
+                0, 0L,
+                a, registerCount);
     }
 
-    public static void encodeRegisterRange(DecodedInstruction decodedInstruction, CodeOutput codeOutput) {
-        codeOutput.write(codeUnit(decodedInstruction.getOpcode(), decodedInstruction.getRegisterCount()), decodedInstruction.getIndexUnit(), decodedInstruction.getAUnit());
+    /**
+     * Helper method that encodes any of the three-unit register-range formats.
+     */
+    private static void encodeRegisterRange(DecodedInstruction insn,
+            CodeOutput out) {
+        out.write(codeUnit(insn.getOpcode(), insn.getRegisterCount()),
+                insn.getIndexUnit(),
+                insn.getAUnit());
     }
 
-    public static short codeUnit(int i, int i2) {
-        if ((i & -256) != 0) {
+    private static short codeUnit(int lowByte, int highByte) {
+        if ((lowByte & ~0xff) != 0) {
             throw new IllegalArgumentException("bogus lowByte");
-        } else if ((i2 & -256) == 0) {
-            return (short) ((i2 << 8) | i);
-        } else {
+        }
+
+        if ((highByte & ~0xff) != 0) {
             throw new IllegalArgumentException("bogus highByte");
         }
+
+        return (short) (lowByte | (highByte << 8));
     }
 
-    private static short codeUnit(int i, int i2, int i3, int i4) {
-        if ((i & -16) != 0) {
+    private static short codeUnit(int nibble0, int nibble1, int nibble2,
+            int nibble3) {
+        if ((nibble0 & ~0xf) != 0) {
             throw new IllegalArgumentException("bogus nibble0");
-        } else if ((i2 & -16) != 0) {
+        }
+
+        if ((nibble1 & ~0xf) != 0) {
             throw new IllegalArgumentException("bogus nibble1");
-        } else if ((i3 & -16) != 0) {
+        }
+
+        if ((nibble2 & ~0xf) != 0) {
             throw new IllegalArgumentException("bogus nibble2");
-        } else if ((i4 & -16) == 0) {
-            return (short) ((i2 << 4) | i | (i3 << 8) | (i4 << 12));
-        } else {
+        }
+
+        if ((nibble3 & ~0xf) != 0) {
             throw new IllegalArgumentException("bogus nibble3");
         }
+
+        return (short) (nibble0 | (nibble1 << 4)
+                | (nibble2 << 8) | (nibble3 << 12));
     }
 
-    public static int makeByte(int i, int i2) {
-        if ((i & -16) != 0) {
+    private static int makeByte(int lowNibble, int highNibble) {
+        if ((lowNibble & ~0xf) != 0) {
             throw new IllegalArgumentException("bogus lowNibble");
-        } else if ((i2 & -16) == 0) {
-            return (i2 << 4) | i;
-        } else {
+        }
+
+        if ((highNibble & ~0xf) != 0) {
             throw new IllegalArgumentException("bogus highNibble");
         }
+
+        return lowNibble | (highNibble << 4);
     }
 
-    public static short asUnsignedUnit(int i) {
-        if ((-65536 & i) == 0) {
-            return (short) i;
+    private static short asUnsignedUnit(int value) {
+        if ((value & ~0xffff) != 0) {
+            throw new IllegalArgumentException("bogus unsigned code unit");
         }
-        throw new IllegalArgumentException("bogus unsigned code unit");
+
+        return (short) value;
     }
 
-    public static short unit0(int i) {
-        return (short) i;
+    private static short unit0(int value) {
+        return (short) value;
     }
 
-    public static short unit1(int i) {
-        return (short) (i >> 16);
+    private static short unit1(int value) {
+        return (short) (value >> 16);
     }
 
-    public static short unit0(long j) {
-        return (short) ((int) j);
+    private static short unit0(long value) {
+        return (short) value;
     }
 
-    public static short unit1(long j) {
-        return (short) ((int) (j >> 16));
+    private static short unit1(long value) {
+        return (short) (value >> 16);
     }
 
-    public static short unit2(long j) {
-        return (short) ((int) (j >> 32));
+    private static short unit2(long value) {
+        return (short) (value >> 32);
     }
 
-    public static short unit3(long j) {
-        return (short) ((int) (j >> 48));
+    private static short unit3(long value) {
+        return (short) (value >> 48);
     }
 
-    public static int byte0(int i) {
-        return i & 255;
+    private static int byte0(int value) {
+        return value & 0xff;
     }
 
-    public static int byte1(int i) {
-        return (i >> 8) & 255;
+    private static int byte1(int value) {
+        return (value >> 8) & 0xff;
     }
 
-    private static int byte2(int i) {
-        return (i >> 16) & 255;
+    private static int byte2(int value) {
+        return (value >> 16) & 0xff;
     }
 
-    private static int byte3(int i) {
-        return i >>> 24;
+    private static int byte3(int value) {
+        return value >>> 24;
     }
 
-    private static int nibble0(int i) {
-        return i & 15;
+    private static int nibble0(int value) {
+        return value & 0xf;
     }
 
-    private static int nibble1(int i) {
-        return (i >> 4) & 15;
+    private static int nibble1(int value) {
+        return (value >> 4) & 0xf;
     }
 
-    public static int nibble2(int i) {
-        return (i >> 8) & 15;
+    private static int nibble2(int value) {
+        return (value >> 8) & 0xf;
     }
 
-    public static int nibble3(int i) {
-        return (i >> 12) & 15;
+    private static int nibble3(int value) {
+        return (value >> 12) & 0xf;
     }
-
-    public abstract DecodedInstruction decode(int i, CodeInput codeInput) throws EOFException;
-
-    public abstract void encode(DecodedInstruction decodedInstruction, CodeOutput codeOutput);
 }

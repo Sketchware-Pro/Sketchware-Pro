@@ -1,240 +1,362 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
+import mod.agus.jcoderz.dex.util.ExceptionWithContext;
+import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import mod.agus.jcoderz.dx.util.Hex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
-import mod.agus.jcoderz.dex.util.ExceptionWithContext;
-import mod.agus.jcoderz.dx.util.AnnotatedOutput;
-import mod.agus.jcoderz.dx.util.Hex;
-
+/**
+ * A section of a {@code .dex} file which consists of a sequence of
+ * {@link mod.agus.jcoderz.dx.dex.file.OffsettedItem} objects, which may each be of a different concrete
+ * class and/or size.
+ *
+ * <b>Note:</b> It is invalid for an item in an instance of this class to
+ * have a larger alignment requirement than the alignment of this instance.
+ */
 public final class MixedItemSection extends Section {
-    private static final Comparator<OffsettedItem> TYPE_SORTER = new Comparator<OffsettedItem>() {
-        /* class mod.agus.jcoderz.dx.dex.file.MixedItemSection.1 */
+    static enum SortType {
+        /** no sorting */
+        NONE,
 
-        /* JADX DEBUG: Method arguments types fixed to match base method, original types: [java.lang.Object, java.lang.Object] */
-        @Override // java.util.Comparator
-        public /* bridge */ /* synthetic */ int compare(OffsettedItem offsettedItem, OffsettedItem offsettedItem2) {
-            return compare(offsettedItem, offsettedItem2);
-        }
+        /** sort by type only */
+        TYPE,
 
-        public int compareTwo(OffsettedItem offsettedItem, OffsettedItem offsettedItem2) {
-            return offsettedItem.itemType().compareTo((ItemType) offsettedItem2.itemType());
+        /** sort in class-major order, with instances sorted per-class */
+        INSTANCE;
+    };
+
+    /** {@code non-null;} sorter which sorts instances by type */
+    private static final Comparator<mod.agus.jcoderz.dx.dex.file.OffsettedItem> TYPE_SORTER =
+        new Comparator<mod.agus.jcoderz.dx.dex.file.OffsettedItem>() {
+        @Override
+        public int compare(mod.agus.jcoderz.dx.dex.file.OffsettedItem item1, mod.agus.jcoderz.dx.dex.file.OffsettedItem item2) {
+            ItemType type1 = item1.itemType();
+            ItemType type2 = item2.itemType();
+            return type1.compareTo(type2);
         }
     };
-    private static /* synthetic */ int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType;
-    private final HashMap<OffsettedItem, OffsettedItem> interns = new HashMap<>(100);
-    private final ArrayList<OffsettedItem> items = new ArrayList<>(100);
+
+    /** {@code non-null;} the items in this part */
+    private final ArrayList<mod.agus.jcoderz.dx.dex.file.OffsettedItem> items;
+
+    /** {@code non-null;} items that have been explicitly interned */
+    private final HashMap<mod.agus.jcoderz.dx.dex.file.OffsettedItem, mod.agus.jcoderz.dx.dex.file.OffsettedItem> interns;
+
+    /** {@code non-null;} how to sort the items */
     private final SortType sort;
+
+    /**
+     * {@code >= -1;} the current size of this part, in bytes, or {@code -1}
+     * if not yet calculated
+     */
     private int writeSize;
 
-    public MixedItemSection(String str, DexFile dexFile, int i, SortType sortType) {
-        super(str, dexFile, i);
-        this.sort = sortType;
+    /**
+     * Constructs an instance. The file offset is initially unknown.
+     *
+     * @param name {@code null-ok;} the name of this instance, for annotation
+     * purposes
+     * @param file {@code non-null;} file that this instance is part of
+     * @param alignment {@code > 0;} alignment requirement for the final output;
+     * must be a power of 2
+     * @param sort how the items should be sorted in the final output
+     */
+    public MixedItemSection(String name, mod.agus.jcoderz.dx.dex.file.DexFile file, int alignment,
+                            SortType sort) {
+        super(name, file, alignment);
+
+        this.items = new ArrayList<mod.agus.jcoderz.dx.dex.file.OffsettedItem>(100);
+        this.interns = new HashMap<mod.agus.jcoderz.dx.dex.file.OffsettedItem, mod.agus.jcoderz.dx.dex.file.OffsettedItem>(100);
+        this.sort = sort;
         this.writeSize = -1;
     }
 
-    static int[] $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType() {
-        int[] iArr = $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType;
-        if (iArr == null) {
-            iArr = new int[SortType.values().length];
-            try {
-                iArr[SortType.INSTANCE.ordinal()] = 3;
-            } catch (NoSuchFieldError e) {
-            }
-            try {
-                iArr[SortType.NONE.ordinal()] = 1;
-            } catch (NoSuchFieldError e2) {
-            }
-            try {
-                iArr[SortType.TYPE.ordinal()] = 2;
-            } catch (NoSuchFieldError e3) {
-            }
-            $SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType = iArr;
-        }
-        return iArr;
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.file.Section
+    /** {@inheritDoc} */
+    @Override
     public Collection<? extends Item> items() {
-        return this.items;
+        return items;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Section
+    /** {@inheritDoc} */
+    @Override
     public int writeSize() {
         throwIfNotPrepared();
-        return this.writeSize;
+        return writeSize;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Section
+    /** {@inheritDoc} */
+    @Override
     public int getAbsoluteItemOffset(Item item) {
-        return ((OffsettedItem) item).getAbsoluteOffset();
+        mod.agus.jcoderz.dx.dex.file.OffsettedItem oi = (mod.agus.jcoderz.dx.dex.file.OffsettedItem) item;
+        return oi.getAbsoluteOffset();
     }
 
+    /**
+     * Gets the size of this instance, in items.
+     *
+     * @return {@code >= 0;} the size
+     */
     public int size() {
-        return this.items.size();
+        return items.size();
     }
 
-    public void writeHeaderPart(AnnotatedOutput annotatedOutput) {
+    /**
+     * Writes the portion of the file header that refers to this instance.
+     *
+     * @param out {@code non-null;} where to write
+     */
+    public void writeHeaderPart(AnnotatedOutput out) {
         throwIfNotPrepared();
-        if (this.writeSize == -1) {
+
+        if (writeSize == -1) {
             throw new RuntimeException("write size not yet set");
         }
-        int i = this.writeSize;
-        int fileOffset = i == 0 ? 0 : getFileOffset();
+
+        int sz = writeSize;
+        int offset = (sz == 0) ? 0 : getFileOffset();
         String name = getName();
+
         if (name == null) {
             name = "<unnamed>";
         }
-        char[] cArr = new char[(15 - name.length())];
-        Arrays.fill(cArr, ' ');
-        String str = new String(cArr);
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(4, name + "_size:" + str + Hex.u4(i));
-            annotatedOutput.annotate(4, name + "_off: " + str + Hex.u4(fileOffset));
+
+        int spaceCount = 15 - name.length();
+        char[] spaceArr = new char[spaceCount];
+        Arrays.fill(spaceArr, ' ');
+        String spaces = new String(spaceArr);
+
+        if (out.annotates()) {
+            out.annotate(4, name + "_size:" + spaces + Hex.u4(sz));
+            out.annotate(4, name + "_off: " + spaces + Hex.u4(offset));
         }
-        annotatedOutput.writeInt(i);
-        annotatedOutput.writeInt(fileOffset);
+
+        out.writeInt(sz);
+        out.writeInt(offset);
     }
 
-    public void add(OffsettedItem offsettedItem) {
+    /**
+     * Adds an item to this instance. This will in turn tell the given item
+     * that it has been added to this instance. It is invalid to add the
+     * same item to more than one instance, nor to add the same items
+     * multiple times to a single instance.
+     *
+     * @param item {@code non-null;} the item to add
+     */
+    public void add(mod.agus.jcoderz.dx.dex.file.OffsettedItem item) {
         throwIfPrepared();
+
         try {
-            if (offsettedItem.getAlignment() > getAlignment()) {
-                throw new IllegalArgumentException("incompatible item alignment");
+            if (item.getAlignment() > getAlignment()) {
+                throw new IllegalArgumentException(
+                        "incompatible item alignment");
             }
-            this.items.add(offsettedItem);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ex) {
+            // Elucidate the exception.
             throw new NullPointerException("item == null");
         }
+
+        items.add(item);
     }
 
-    public synchronized <T extends OffsettedItem> T intern(T t) {
-        T t2;
+    /**
+     * Interns an item in this instance, returning the interned instance
+     * (which may not be the one passed in). This will add the item if no
+     * equal item has been added.
+     *
+     * @param item {@code non-null;} the item to intern
+     * @return {@code non-null;} the equivalent interned instance
+     */
+    public synchronized <T extends mod.agus.jcoderz.dx.dex.file.OffsettedItem> T intern(T item) {
         throwIfPrepared();
-        t2 = (T) this.interns.get(t);
-        if (t2 == null) {
-            add(t);
-            this.interns.put(t, t);
-            t2 = t;
+
+        mod.agus.jcoderz.dx.dex.file.OffsettedItem result = interns.get(item);
+
+        if (result != null) {
+            return (T) result;
         }
-        return t2;
+
+        add(item);
+        interns.put(item, item);
+        return item;
     }
 
-    public <T extends OffsettedItem> T get(T t) {
+    /**
+     * Gets an item which was previously interned.
+     *
+     * @param item {@code non-null;} the item to look for
+     * @return {@code non-null;} the equivalent already-interned instance
+     */
+    public <T extends mod.agus.jcoderz.dx.dex.file.OffsettedItem> T get(T item) {
         throwIfNotPrepared();
-        T t2 = (T) this.interns.get(t);
-        if (t2 != null) {
-            return t2;
+
+        mod.agus.jcoderz.dx.dex.file.OffsettedItem result = interns.get(item);
+
+        if (result != null) {
+            return (T) result;
         }
-        throw new NoSuchElementException(t.toString());
+
+        throw new NoSuchElementException(item.toString());
     }
 
-    public void writeIndexAnnotation(AnnotatedOutput annotatedOutput, ItemType itemType, String str) {
+    /**
+     * Writes an index of contents of the items in this instance of the
+     * given type. If there are none, this writes nothing. If there are any,
+     * then the index is preceded by the given intro string.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param itemType {@code non-null;} the item type of interest
+     * @param intro {@code non-null;} the introductory string for non-empty indices
+     */
+    public void writeIndexAnnotation(AnnotatedOutput out, ItemType itemType,
+            String intro) {
         throwIfNotPrepared();
-        TreeMap treeMap = new TreeMap();
-        Iterator<OffsettedItem> it = this.items.iterator();
-        while (it.hasNext()) {
-            OffsettedItem next = it.next();
-            if (next.itemType() == itemType) {
-                treeMap.put(next.toHuman(), next);
+
+        TreeMap<String, mod.agus.jcoderz.dx.dex.file.OffsettedItem> index =
+            new TreeMap<String, mod.agus.jcoderz.dx.dex.file.OffsettedItem>();
+
+        for (mod.agus.jcoderz.dx.dex.file.OffsettedItem item : items) {
+            if (item.itemType() == itemType) {
+                String label = item.toHuman();
+                index.put(label, item);
             }
         }
-        if (treeMap.size() != 0) {
-            annotatedOutput.annotate(0, str);
-            for (Iterator iterator = treeMap.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) iterator.next();
-                annotatedOutput.annotate(0, ((OffsettedItem) entry.getValue()).offsetString() + ' ' + ((String) entry.getKey()) + '\n');
-            }
+
+        if (index.size() == 0) {
+            return;
+        }
+
+        out.annotate(0, intro);
+
+        for (Map.Entry<String, mod.agus.jcoderz.dx.dex.file.OffsettedItem> entry : index.entrySet()) {
+            String label = entry.getKey();
+            mod.agus.jcoderz.dx.dex.file.OffsettedItem item = entry.getValue();
+            out.annotate(0, item.offsetString() + ' ' + label + '\n');
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Section
+    /** {@inheritDoc} */
+    @Override
     protected void prepare0() {
-        DexFile file = getFile();
+        mod.agus.jcoderz.dx.dex.file.DexFile file = getFile();
+
+        /*
+         * It's okay for new items to be added as a result of an
+         * addContents() call; we just have to deal with the possibility.
+         */
+
         int i = 0;
-        while (true) {
-            int size = this.items.size();
-            if (i < size) {
-                int i2 = i;
-                while (i2 < size) {
-                    this.items.get(i2).addContents(file);
-                    i2++;
-                }
-                i = i2;
-            } else {
-                return;
+        for (;;) {
+            int sz = items.size();
+            if (i >= sz) {
+                break;
+            }
+
+            for (/*i*/; i < sz; i++) {
+                mod.agus.jcoderz.dx.dex.file.OffsettedItem one = items.get(i);
+                one.addContents(file);
             }
         }
     }
 
+    /**
+     * Places all the items in this instance at particular offsets. This
+     * will call {@link mod.agus.jcoderz.dx.dex.file.OffsettedItem#place} on each item. If an item
+     * does not know its write size before the call to {@code place},
+     * it is that call which is responsible for setting the write size.
+     * This method may only be called once per instance; subsequent calls
+     * will throw an exception.
+     */
     public void placeItems() {
         throwIfNotPrepared();
-        switch ($SWITCH_TABLE$mod$agus$jcoderz$dx$dex$file$MixedItemSection$SortType()[this.sort.ordinal()]) {
-            case 2:
-                Collections.sort(this.items, TYPE_SORTER);
+
+        switch (sort) {
+            case INSTANCE: {
+                Collections.sort(items);
                 break;
-            case 3:
-                Collections.sort(this.items);
+            }
+            case TYPE: {
+                Collections.sort(items, TYPE_SORTER);
                 break;
-        }
-        int size = this.items.size();
-        int i = 0;
-        for (int i2 = 0; i2 < size; i2++) {
-            OffsettedItem offsettedItem = this.items.get(i2);
-            try {
-                int place = offsettedItem.place(this, i);
-                if (place < i) {
-                    throw new RuntimeException("bogus place() result for " + offsettedItem);
-                }
-                i = place + offsettedItem.writeSize();
-            } catch (RuntimeException e) {
-                throw ExceptionWithContext.withContext(e, "...while placing " + offsettedItem);
             }
         }
-        this.writeSize = i;
+
+        int sz = items.size();
+        int outAt = 0;
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.dex.file.OffsettedItem one = items.get(i);
+            try {
+                int placedAt = one.place(this, outAt);
+
+                if (placedAt < outAt) {
+                    throw new RuntimeException("bogus place() result for " +
+                            one);
+                }
+
+                outAt = placedAt + one.writeSize();
+            } catch (RuntimeException ex) {
+                throw ExceptionWithContext.withContext(ex,
+                        "...while placing " + one);
+            }
+        }
+
+        writeSize = outAt;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Section
-    protected void writeTo0(AnnotatedOutput annotatedOutput) {
-        boolean annotates = annotatedOutput.annotates();
+    /** {@inheritDoc} */
+    @Override
+    protected void writeTo0(AnnotatedOutput out) {
+        boolean annotates = out.annotates();
+        boolean first = true;
         DexFile file = getFile();
-        Iterator<OffsettedItem> it = this.items.iterator();
-        int i = 0;
-        boolean z = true;
-        while (it.hasNext()) {
-            OffsettedItem next = it.next();
+        int at = 0;
+
+        for (OffsettedItem one : items) {
             if (annotates) {
-                if (z) {
-                    z = false;
+                if (first) {
+                    first = false;
                 } else {
-                    annotatedOutput.annotate(0, "\n");
+                    out.annotate(0, "\n");
                 }
             }
-            int alignment = next.getAlignment() - 1;
-            int i2 = (alignment ^ -1) & (i + alignment);
-            if (i != i2) {
-                annotatedOutput.writeZeroes(i2 - i);
-                i = i2;
+
+            int alignMask = one.getAlignment() - 1;
+            int writeAt = (at + alignMask) & ~alignMask;
+
+            if (at != writeAt) {
+                out.writeZeroes(writeAt - at);
+                at = writeAt;
             }
-            next.writeTo(file, annotatedOutput);
-            i = next.writeSize() + i;
+
+            one.writeTo(file, out);
+            at += one.writeSize();
         }
-        if (i != this.writeSize) {
+
+        if (at != writeSize) {
             throw new RuntimeException("output size mismatch");
         }
-    }
-
-    enum SortType {
-        NONE,
-        TYPE,
-        INSTANCE
     }
 }

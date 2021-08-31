@@ -1,7 +1,22 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.direct;
 
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
-
+import mod.agus.jcoderz.dex.util.FileUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -10,137 +25,268 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import mod.agus.jcoderz.dex.util.FileUtils;
-
+/**
+ * Opens all the class files found in a class path element. Path elements
+ * can point to class files, {jar,zip,apk} files, or directories containing
+ * class files.
+ */
 public class ClassPathOpener {
+
+    /** {@code non-null;} pathname to start with */
+    private final String pathname;
+    /** {@code non-null;} callback interface */
+    private final Consumer consumer;
+    /**
+     * If true, sort such that classes appear before their inner
+     * classes and "package-info" occurs before all other classes in that
+     * package.
+     */
+    private final boolean sort;
+    private FileNameFilter filter;
+
+    /**
+     * Callback interface for {@code ClassOpener}.
+     */
+    public interface Consumer {
+
+        /**
+         * Provides the file name and byte array for a class path element.
+         *
+         * @param name {@code non-null;} filename of element. May not be a valid
+         * filesystem path.
+         *
+         * @param lastModified milliseconds since 1970-Jan-1 00:00:00 GMT
+         * @param bytes {@code non-null;} file data
+         * @return true on success. Result is or'd with all other results
+         * from {@code processFileBytes} and returned to the caller
+         * of {@code process()}.
+         */
+        boolean processFileBytes(String name, long lastModified, byte[] bytes);
+
+        /**
+         * Informs consumer that an exception occurred while processing
+         * this path element. Processing will continue if possible.
+         *
+         * @param ex {@code non-null;} exception
+         */
+        void onException(Exception ex);
+
+        /**
+         * Informs consumer that processing of an archive file has begun.
+         *
+         * @param file {@code non-null;} archive file being processed
+         */
+        void onProcessArchiveStart(File file);
+    }
+
+    /**
+     * Filter interface for {@code ClassOpener}.
+     */
+    public interface FileNameFilter {
+
+        boolean accept(String path);
+    }
+
+    /**
+     * An accept all filter.
+     */
     public static final FileNameFilter acceptAll = new FileNameFilter() {
 
-        @Override // mod.agus.jcoderz.dx.cf.direct.ClassPathOpener.FileNameFilter
-        public boolean accept(String str) {
+        @Override
+        public boolean accept(String path) {
             return true;
         }
     };
-    private final Consumer consumer;
-    private final String pathname;
-    private final boolean sort;
-    private final FileNameFilter filter;
 
-    public ClassPathOpener(String str, boolean z, Consumer consumer2) {
-        this(str, z, acceptAll, consumer2);
+    /**
+     * Constructs an instance.
+     *
+     * @param pathname {@code non-null;} path element to process
+     * @param sort if true, sort such that classes appear before their inner
+     * classes and "package-info" occurs before all other classes in that
+     * package.
+     * @param consumer {@code non-null;} callback interface
+     */
+    public ClassPathOpener(String pathname, boolean sort, Consumer consumer) {
+        this(pathname, sort, acceptAll, consumer);
     }
 
-    public ClassPathOpener(String str, boolean z, FileNameFilter fileNameFilter, Consumer consumer2) {
-        this.pathname = str;
-        this.sort = z;
-        this.consumer = consumer2;
-        this.filter = fileNameFilter;
+    /**
+     * Constructs an instance.
+     *
+     * @param pathname {@code non-null;} path element to process
+     * @param sort if true, sort such that classes appear before their inner
+     * classes and "package-info" occurs before all other classes in that
+     * package.
+     * @param consumer {@code non-null;} callback interface
+     */
+    public ClassPathOpener(String pathname, boolean sort, FileNameFilter filter,
+            Consumer consumer) {
+        this.pathname = pathname;
+        this.sort = sort;
+        this.consumer = consumer;
+        this.filter = filter;
     }
 
-    /* access modifiers changed from: private */
-    public static int compareClassNames(String str, String str2) {
-        return str.replace('$', ExternalAnnotationProvider.NULLABLE).replace("package-info", "").compareTo(str2.replace('$', ExternalAnnotationProvider.NULLABLE).replace("package-info", ""));
-    }
-
+    /**
+     * Processes a path element.
+     *
+     * @return the OR of all return values
+     * from {@code Consumer.processFileBytes()}.
+     */
     public boolean process() {
-        return processOne(new File(this.pathname), true);
+        File file = new File(pathname);
+
+        return processOne(file, true);
     }
 
-    private boolean processOne(File file, boolean z) {
+    /**
+     * Processes one file.
+     *
+     * @param file {@code non-null;} the file to process
+     * @param topLevel whether this is a top-level file (that is,
+     * specified directly on the commandline)
+     * @return whether any processing actually happened
+     */
+    private boolean processOne(File file, boolean topLevel) {
         try {
             if (file.isDirectory()) {
-                return processDirectory(file, z);
+                return processDirectory(file, topLevel);
             }
+
             String path = file.getPath();
-            if (path.endsWith(".zip") || path.endsWith(".jar") || path.endsWith(".apk")) {
+
+            if (path.endsWith(".zip") ||
+                    path.endsWith(".jar") ||
+                    path.endsWith(".apk")) {
                 return processArchive(file);
             }
-            if (!this.filter.accept(path)) {
+            if (filter.accept(path)) {
+                byte[] bytes = FileUtils.readFile(file);
+                return consumer.processFileBytes(path, file.lastModified(), bytes);
+            } else {
                 return false;
             }
-            return this.consumer.processFileBytes(path, file.lastModified(), FileUtils.readFile(file));
-        } catch (Exception e) {
-            this.consumer.onException(e);
+        } catch (Exception ex) {
+            consumer.onException(ex);
             return false;
         }
     }
 
-    private boolean processDirectory(File file, boolean z) {
-        if (z) {
-            file = new File(file, ".");
-        }
-        File[] listFiles = file.listFiles();
-        if (this.sort) {
-            Arrays.sort(listFiles, new Comparator<File>() {
+    /**
+     * Sorts java class names such that outer classes preceed their inner
+     * classes and "package-info" preceeds all other classes in its package.
+     *
+     * @param a {@code non-null;} first class name
+     * @param b {@code non-null;} second class name
+     * @return {@code compareTo()}-style result
+     */
+    private static int compareClassNames(String a, String b) {
+        // Ensure inner classes sort second
+        a = a.replace('$','0');
+        b = b.replace('$','0');
 
-                public int compare(File file, File file2) {
-                    return ClassPathOpener.compareClassNames(file.getName(), file2.getName());
-                }
-            });
-        }
-        boolean z2 = false;
-        for (File file2 : listFiles) {
-            z2 |= processOne(file2, false);
-        }
-        return z2;
+        /*
+         * Assuming "package-info" only occurs at the end, ensures package-info
+         * sorts first.
+         */
+        a = a.replace("package-info", "");
+        b = b.replace("package-info", "");
+
+        return a.compareTo(b);
     }
 
-    private boolean processArchive(File file) throws IOException {
-        byte[] bArr;
-        ZipFile zipFile = new ZipFile(file);
-        ArrayList list = Collections.list(zipFile.entries());
-        if (this.sort) {
-            Collections.sort(list, new Comparator<ZipEntry>() {
+    /**
+     * Processes a directory recursively.
+     *
+     * @param dir {@code non-null;} file representing the directory
+     * @param topLevel whether this is a top-level directory (that is,
+     * specified directly on the commandline)
+     * @return whether any processing actually happened
+     */
+    private boolean processDirectory(File dir, boolean topLevel) {
+        if (topLevel) {
+            dir = new File(dir, ".");
+        }
 
-                public int compare(ZipEntry zipEntry, ZipEntry zipEntry2) {
-                    return ClassPathOpener.compareClassNames(zipEntry.getName(), zipEntry2.getName());
+        File[] files = dir.listFiles();
+        int len = files.length;
+        boolean any = false;
+
+        if (sort) {
+            Arrays.sort(files, new Comparator<File>() {
+                @Override
+                public int compare(File a, File b) {
+                    return compareClassNames(a.getName(), b.getName());
                 }
             });
         }
-        this.consumer.onProcessArchiveStart(file);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(40000);
-        byte[] bArr2 = new byte[20000];
-        Iterator it = list.iterator();
-        boolean z = false;
-        while (it.hasNext()) {
-            ZipEntry zipEntry = (ZipEntry) it.next();
-            boolean isDirectory = zipEntry.isDirectory();
-            String name = zipEntry.getName();
-            if (this.filter.accept(name)) {
+
+        for (int i = 0; i < len; i++) {
+            any |= processOne(files[i], false);
+        }
+
+        return any;
+    }
+
+    /**
+     * Processes the contents of an archive ({@code .zip},
+     * {@code .jar}, or {@code .apk}).
+     *
+     * @param file {@code non-null;} archive file to process
+     * @return whether any processing actually happened
+     * @throws IOException on i/o problem
+     */
+    private boolean processArchive(File file) throws IOException {
+        ZipFile zip = new ZipFile(file);
+
+        ArrayList<? extends java.util.zip.ZipEntry> entriesList
+                = Collections.list(zip.entries());
+
+        if (sort) {
+            Collections.sort(entriesList, new Comparator<ZipEntry>() {
+               @Override
+               public int compare (ZipEntry a, ZipEntry b) {
+                   return compareClassNames(a.getName(), b.getName());
+               }
+            });
+        }
+
+        consumer.onProcessArchiveStart(file);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(40000);
+        byte[] buf = new byte[20000];
+        boolean any = false;
+
+        for (ZipEntry one : entriesList) {
+            final boolean isDirectory = one.isDirectory();
+
+            String path = one.getName();
+            if (filter.accept(path)) {
+                final byte[] bytes;
                 if (!isDirectory) {
-                    InputStream inputStream = zipFile.getInputStream(zipEntry);
-                    byteArrayOutputStream.reset();
-                    while (true) {
-                        int read = inputStream.read(bArr2);
-                        if (read == -1) {
-                            break;
-                        }
-                        byteArrayOutputStream.write(bArr2, 0, read);
+                    InputStream in = zip.getInputStream(one);
+
+                    baos.reset();
+                    int read;
+                    while ((read = in.read(buf)) != -1) {
+                        baos.write(buf, 0, read);
                     }
-                    inputStream.close();
-                    bArr = byteArrayOutputStream.toByteArray();
+
+                    in.close();
+                    bytes = baos.toByteArray();
                 } else {
-                    bArr = new byte[0];
+                    bytes = new byte[0];
                 }
-                z = this.consumer.processFileBytes(name, zipEntry.getTime(), bArr) | z;
+
+                any |= consumer.processFileBytes(path, one.getTime(), bytes);
             }
         }
-        zipFile.close();
-        return z;
-    }
 
-    public interface Consumer {
-        void onException(Exception exc);
-
-        void onProcessArchiveStart(File file);
-
-        boolean processFileBytes(String str, long j, byte[] bArr);
-    }
-
-    public interface FileNameFilter {
-        boolean accept(String str);
+        zip.close();
+        return any;
     }
 }

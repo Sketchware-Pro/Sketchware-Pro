@@ -1,91 +1,153 @@
-package mod.agus.jcoderz.dx.dex.code.form;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.BitSet;
+package mod.agus.jcoderz.dx.dex.code.form;
 
 import mod.agus.jcoderz.dx.dex.code.CstInsn;
 import mod.agus.jcoderz.dx.dex.code.DalvInsn;
 import mod.agus.jcoderz.dx.dex.code.InsnFormat;
+import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import java.util.BitSet;
+
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
+import mod.agus.jcoderz.dx.rop.cst.CstMethodHandle;
+import mod.agus.jcoderz.dx.rop.cst.CstProtoRef;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
-import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
+/**
+ * Instruction format {@code 21c}. See the instruction format spec
+ * for details.
+ */
 public final class Form21c extends InsnFormat {
+    /** {@code non-null;} unique instance of this class */
     public static final InsnFormat THE_ONE = new Form21c();
 
+    /**
+     * Constructs an instance. This class is not publicly
+     * instantiable. Use {@link #THE_ONE}.
+     */
     private Form21c() {
+        // This space intentionally left blank.
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnArgString(DalvInsn dalvInsn) {
-        return dalvInsn.getRegisters().get(0).regString() + ", " + cstString(dalvInsn);
+    /** {@inheritDoc} */
+    @Override
+    public String insnArgString(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        return regs.get(0).regString() + ", " + insn.cstString();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public String insnCommentString(DalvInsn dalvInsn, boolean z) {
-        if (z) {
-            return cstComment(dalvInsn);
+    /** {@inheritDoc} */
+    @Override
+    public String insnCommentString(DalvInsn insn, boolean noteIndices) {
+        if (noteIndices) {
+            return insn.cstComment();
+        } else {
+            return "";
         }
-        return "";
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
         return 2;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public boolean isCompatible(DalvInsn dalvInsn) {
-        RegisterSpec registerSpec;
-        if (!(dalvInsn instanceof CstInsn)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean isCompatible(DalvInsn insn) {
+        if (!(insn instanceof CstInsn)) {
             return false;
         }
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        switch (registers.size()) {
-            case 1:
-                registerSpec = registers.get(0);
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        RegisterSpec reg;
+
+        switch (regs.size()) {
+            case 1: {
+                reg = regs.get(0);
                 break;
-            case 2:
-                registerSpec = registers.get(0);
-                if (registerSpec.getReg() != registers.get(1).getReg()) {
+            }
+            case 2: {
+                /*
+                 * This format is allowed for ops that are effectively
+                 * 2-arg but where the two args are identical.
+                 */
+                reg = regs.get(0);
+                if (reg.getReg() != regs.get(1).getReg()) {
                     return false;
                 }
                 break;
-            default:
+            }
+            default: {
                 return false;
+            }
         }
-        if (!unsignedFitsInByte(registerSpec.getReg())) {
+
+        if (!unsignedFitsInByte(reg.getReg())) {
             return false;
         }
-        CstInsn cstInsn = (CstInsn) dalvInsn;
-        int index = cstInsn.getIndex();
-        Constant constant = cstInsn.getConstant();
-        if (!unsignedFitsInShort(index)) {
+
+        CstInsn ci = (CstInsn) insn;
+        int cpi = ci.getIndex();
+        Constant cst = ci.getConstant();
+
+        if (! unsignedFitsInShort(cpi)) {
             return false;
         }
-        return (constant instanceof CstType) || (constant instanceof CstFieldRef) || (constant instanceof CstString);
+
+        return cst instanceof CstType ||
+            cst instanceof CstFieldRef ||
+            cst instanceof CstString ||
+            cst instanceof CstMethodHandle ||
+            cst instanceof CstProtoRef;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
-        RegisterSpecList registers = dalvInsn.getRegisters();
-        int size = registers.size();
-        BitSet bitSet = new BitSet(size);
-        boolean unsignedFitsInByte = unsignedFitsInByte(registers.get(0).getReg());
-        if (size == 1) {
-            bitSet.set(0, unsignedFitsInByte);
-        } else if (registers.get(0).getReg() == registers.get(1).getReg()) {
-            bitSet.set(0, unsignedFitsInByte);
-            bitSet.set(1, unsignedFitsInByte);
+    /** {@inheritDoc} */
+    @Override
+    public BitSet compatibleRegs(DalvInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList regs = insn.getRegisters();
+        int sz = regs.size();
+        BitSet bits = new BitSet(sz);
+        boolean compat = unsignedFitsInByte(regs.get(0).getReg());
+
+        if (sz == 1) {
+            bits.set(0, compat);
+        } else {
+            if (regs.get(0).getReg() == regs.get(1).getReg()) {
+                bits.set(0, compat);
+                bits.set(1, compat);
+            }
         }
-        return bitSet;
+
+        return bits;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.InsnFormat
-    public void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn) {
-        write(annotatedOutput, opcodeUnit(dalvInsn, dalvInsn.getRegisters().get(0).getReg()), (short) ((CstInsn) dalvInsn).getIndex());
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out, DalvInsn insn) {
+        RegisterSpecList regs = insn.getRegisters();
+        int cpi = ((CstInsn) insn).getIndex();
+
+        write(out,
+              opcodeUnit(insn, regs.get(0).getReg()),
+              (short) cpi);
     }
 }

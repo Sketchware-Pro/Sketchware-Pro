@@ -1,6 +1,20 @@
-package mod.agus.jcoderz.dx.dex.file;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.PrintWriter;
+package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.dex.code.DalvCode;
@@ -9,78 +23,171 @@ import mod.agus.jcoderz.dx.dex.code.LocalList;
 import mod.agus.jcoderz.dx.dex.code.PositionList;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
+import java.io.PrintWriter;
 
 public class DebugInfoItem extends OffsettedItem {
+    /** the required alignment for instances of this class */
     private static final int ALIGNMENT = 1;
+
     private static final boolean ENABLE_ENCODER_SELF_CHECK = false;
+
+    /** {@code non-null;} the code this item represents */
     private final DalvCode code;
-    private final boolean isStatic;
-    private final CstMethodRef ref;
+
     private byte[] encoded;
 
-    public DebugInfoItem(DalvCode dalvCode, boolean z, CstMethodRef cstMethodRef) {
-        super(1, -1);
-        if (dalvCode == null) {
+    private final boolean isStatic;
+    private final CstMethodRef ref;
+
+    public DebugInfoItem(DalvCode code, boolean isStatic, CstMethodRef ref) {
+        // We don't know the write size yet.
+        super (ALIGNMENT, -1);
+
+        if (code == null) {
             throw new NullPointerException("code == null");
         }
-        this.code = dalvCode;
-        this.isStatic = z;
-        this.ref = cstMethodRef;
+
+        this.code = code;
+        this.isStatic = isStatic;
+        this.ref = ref;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_DEBUG_INFO_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        // No contents to add.
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void place0(Section section, int i) {
+    /** {@inheritDoc} */
+    @Override
+    protected void place0(Section addedTo, int offset) {
+        // Encode the data and note the size.
+
         try {
-            this.encoded = encode(section.getFile(), null, null, null, false);
-            setWriteSize(this.encoded.length);
-        } catch (RuntimeException e) {
-            throw ExceptionWithContext.withContext(e, "...while placing debug info for " + this.ref.toHuman());
+            encoded = encode(addedTo.getFile(), null, null, null, false);
+            setWriteSize(encoded.length);
+        } catch (RuntimeException ex) {
+            throw ExceptionWithContext.withContext(ex,
+                    "...while placing debug info for " + ref.toHuman());
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         throw new RuntimeException("unsupported");
     }
 
-    public void annotateTo(DexFile dexFile, AnnotatedOutput annotatedOutput, String str) {
-        encode(dexFile, str, null, annotatedOutput, false);
+    /**
+     * Writes annotations for the elements of this list, as
+     * zero-length. This is meant to be used for dumping this instance
+     * directly after a code dump (with the real local list actually
+     * existing elsewhere in the output).
+     *
+     * @param file {@code non-null;} the file to use for referencing other sections
+     * @param out {@code non-null;} where to annotate to
+     * @param prefix {@code null-ok;} prefix to attach to each line of output
+     */
+    public void annotateTo(mod.agus.jcoderz.dx.dex.file.DexFile file, AnnotatedOutput out, String prefix) {
+        encode(file, prefix, null, out, false);
     }
 
-    public void debugPrint(PrintWriter printWriter, String str) {
-        encode(null, str, printWriter, null, false);
+    /**
+     * Does a human-friendly dump of this instance.
+     *
+     * @param out {@code non-null;} where to dump
+     * @param prefix {@code non-null;} prefix to attach to each line of output
+     */
+    public void debugPrint(PrintWriter out, String prefix) {
+        encode(null, prefix, out, null, false);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(offsetString() + " debug info");
-            encode(dexFile, null, null, annotatedOutput, true);
+    /** {@inheritDoc} */
+    @Override
+    protected void writeTo0(mod.agus.jcoderz.dx.dex.file.DexFile file, AnnotatedOutput out) {
+        if (out.annotates()) {
+            /*
+             * Re-run the encoder to generate the annotations,
+             * but write the bits from the original encode
+             */
+
+            out.annotate(offsetString() + " debug info");
+            encode(file, null, null, out, true);
         }
-        annotatedOutput.write(this.encoded);
+
+        out.write(encoded);
     }
 
-    private byte[] encode(DexFile dexFile, String str, PrintWriter printWriter, AnnotatedOutput annotatedOutput, boolean z) {
-        return encode0(dexFile, str, printWriter, annotatedOutput, z);
-    }
+    /**
+     * Performs debug info encoding.
+     *
+     * @param file {@code null-ok;} file to refer to during encoding
+     * @param prefix {@code null-ok;} prefix to attach to each line of output
+     * @param debugPrint {@code null-ok;} if specified, an alternate output for
+     * annotations
+     * @param out {@code null-ok;} if specified, where annotations should go
+     * @param consume whether to claim to have consumed output for
+     * {@code out}
+     * @return {@code non-null;} the encoded array
+     */
+    private byte[] encode(mod.agus.jcoderz.dx.dex.file.DexFile file, String prefix, PrintWriter debugPrint,
+                          AnnotatedOutput out, boolean consume) {
+        byte[] result = encode0(file, prefix, debugPrint, out, consume);
 
-    private byte[] encode0(DexFile dexFile, String str, PrintWriter printWriter, AnnotatedOutput annotatedOutput, boolean z) {
-        PositionList positions = this.code.getPositions();
-        LocalList locals = this.code.getLocals();
-        DalvInsnList insns = this.code.getInsns();
-        DebugInfoEncoder debugInfoEncoder = new DebugInfoEncoder(positions, locals, dexFile, insns.codeSize(), insns.getRegistersSize(), this.isStatic, this.ref);
-        if (printWriter == null && annotatedOutput == null) {
-            return debugInfoEncoder.convert();
+        if (ENABLE_ENCODER_SELF_CHECK && (file != null)) {
+            try {
+                DebugInfoDecoder.validateEncode(result, file, ref, code,
+                        isStatic);
+            } catch (RuntimeException ex) {
+                // Reconvert, annotating to System.err.
+                encode0(file, "", new PrintWriter(System.err, true), null,
+                        false);
+                throw ex;
+            }
         }
-        return debugInfoEncoder.convertAndAnnotate(str, printWriter, annotatedOutput, z);
+
+        return result;
+    }
+
+    /**
+     * Helper for {@link #encode} to do most of the work.
+     *
+     * @param file {@code null-ok;} file to refer to during encoding
+     * @param prefix {@code null-ok;} prefix to attach to each line of output
+     * @param debugPrint {@code null-ok;} if specified, an alternate output for
+     * annotations
+     * @param out {@code null-ok;} if specified, where annotations should go
+     * @param consume whether to claim to have consumed output for
+     * {@code out}
+     * @return {@code non-null;} the encoded array
+     */
+    private byte[] encode0(DexFile file, String prefix, PrintWriter debugPrint,
+                           AnnotatedOutput out, boolean consume) {
+        PositionList positions = code.getPositions();
+        LocalList locals = code.getLocals();
+        DalvInsnList insns = code.getInsns();
+        int codeSize = insns.codeSize();
+        int regSize = insns.getRegistersSize();
+
+        mod.agus.jcoderz.dx.dex.file.DebugInfoEncoder encoder =
+            new DebugInfoEncoder(positions, locals,
+                    file, codeSize, regSize, isStatic, ref);
+
+        byte[] result;
+
+        if ((debugPrint == null) && (out == null)) {
+            result = encoder.convert();
+        } else {
+            result = encoder.convertAndAnnotate(prefix, debugPrint, out,
+                    consume);
+        }
+
+        return result;
     }
 }

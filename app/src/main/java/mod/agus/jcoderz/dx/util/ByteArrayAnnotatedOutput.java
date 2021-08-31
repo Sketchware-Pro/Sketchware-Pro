@@ -1,41 +1,115 @@
-package mod.agus.jcoderz.dx.util;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
+package mod.agus.jcoderz.dx.util;
 
 import mod.agus.jcoderz.dex.Leb128;
 import mod.agus.jcoderz.dex.util.ByteOutput;
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutput {
+/**
+ * Implementation of {@link AnnotatedOutput} which stores the written data
+ * into a {@code byte[]}.
+ *
+ * <p><b>Note:</b> As per the {@link Output} interface, multi-byte
+ * writes all use little-endian order.</p>
+ */
+public final class ByteArrayAnnotatedOutput
+        implements AnnotatedOutput, ByteOutput {
+    /** default size for stretchy instances */
     private static final int DEFAULT_SIZE = 1000;
+
+    /**
+     * whether the instance is stretchy, that is, whether its array
+     * may be resized to increase capacity
+     */
     private final boolean stretchy;
-    private int annotationWidth;
-    private ArrayList<Annotation> annotations;
-    private int cursor;
+
+    /** {@code non-null;} the data itself */
     private byte[] data;
-    private int hexCols;
+
+    /** {@code >= 0;} current output cursor */
+    private int cursor;
+
+    /** whether annotations are to be verbose */
     private boolean verbose;
 
-    public ByteArrayAnnotatedOutput(byte[] bArr) {
-        this(bArr, false);
+    /**
+     * {@code null-ok;} list of annotations, or {@code null} if this instance
+     * isn't keeping them
+     */
+    private ArrayList<Annotation> annotations;
+
+    /** {@code >= 40 (if used);} the desired maximum annotation width */
+    private int annotationWidth;
+
+    /**
+     * {@code >= 8 (if used);} the number of bytes of hex output to use
+     * in annotations
+     */
+    private int hexCols;
+
+    /**
+     * Constructs an instance with a fixed maximum size. Note that the
+     * given array is the only one that will be used to store data. In
+     * particular, no reallocation will occur in order to expand the
+     * capacity of the resulting instance. Also, the constructed
+     * instance does not keep annotations by default.
+     *
+     * @param data {@code non-null;} data array to use for output
+     */
+    public ByteArrayAnnotatedOutput(byte[] data) {
+        this(data, false);
     }
 
+    /**
+     * Constructs a "stretchy" instance. The underlying array may be
+     * reallocated. The constructed instance does not keep annotations
+     * by default.
+     */
     public ByteArrayAnnotatedOutput() {
-        this(1000);
+        this(DEFAULT_SIZE);
     }
 
-    public ByteArrayAnnotatedOutput(int i) {
-        this(new byte[i], true);
+    /**
+     * Constructs a "stretchy" instance with initial size {@code size}. The
+     * underlying array may be reallocated. The constructed instance does not
+     * keep annotations by default.
+     */
+    public ByteArrayAnnotatedOutput(int size) {
+        this(new byte[size], true);
     }
 
-    private ByteArrayAnnotatedOutput(byte[] bArr, boolean z) {
-        if (bArr == null) {
+    /**
+     * Internal constructor.
+     *
+     * @param data {@code non-null;} data array to use for output
+     * @param stretchy whether the instance is to be stretchy
+     */
+    private ByteArrayAnnotatedOutput(byte[] data, boolean stretchy) {
+        if (data == null) {
             throw new NullPointerException("data == null");
         }
-        this.stretchy = z;
-        this.data = bArr;
+
+        this.stretchy = stretchy;
+        this.data = data;
         this.cursor = 0;
         this.verbose = false;
         this.annotations = null;
@@ -43,353 +117,539 @@ public final class ByteArrayAnnotatedOutput implements AnnotatedOutput, ByteOutp
         this.hexCols = 0;
     }
 
+    /**
+     * Gets the underlying {@code byte[]} of this instance, which
+     * may be larger than the number of bytes written
+     *
+     * @see #toByteArray
+     *
+     * @return {@code non-null;} the {@code byte[]}
+     */
+    public byte[] getArray() {
+        return data;
+    }
+
+    /**
+     * Constructs and returns a new {@code byte[]} that contains
+     * the written contents exactly (that is, with no extra unwritten
+     * bytes at the end).
+     *
+     * @see #getArray
+     *
+     * @return {@code non-null;} an appropriately-constructed array
+     */
+    public byte[] toByteArray() {
+        byte[] result = new byte[cursor];
+        System.arraycopy(data, 0, result, 0, cursor);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getCursor() {
+        return cursor;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void assertCursor(int expectedCursor) {
+        if (cursor != expectedCursor) {
+            throw new ExceptionWithContext("expected cursor " +
+                    expectedCursor + "; actual value: " + cursor);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeByte(int value) {
+        int writeAt = cursor;
+        int end = writeAt + 1;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        data[writeAt] = (byte) value;
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeShort(int value) {
+        int writeAt = cursor;
+        int end = writeAt + 2;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        data[writeAt] = (byte) value;
+        data[writeAt + 1] = (byte) (value >> 8);
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeInt(int value) {
+        int writeAt = cursor;
+        int end = writeAt + 4;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        data[writeAt] = (byte) value;
+        data[writeAt + 1] = (byte) (value >> 8);
+        data[writeAt + 2] = (byte) (value >> 16);
+        data[writeAt + 3] = (byte) (value >> 24);
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeLong(long value) {
+        int writeAt = cursor;
+        int end = writeAt + 8;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        int half = (int) value;
+        data[writeAt] = (byte) half;
+        data[writeAt + 1] = (byte) (half >> 8);
+        data[writeAt + 2] = (byte) (half >> 16);
+        data[writeAt + 3] = (byte) (half >> 24);
+
+        half = (int) (value >> 32);
+        data[writeAt + 4] = (byte) half;
+        data[writeAt + 5] = (byte) (half >> 8);
+        data[writeAt + 6] = (byte) (half >> 16);
+        data[writeAt + 7] = (byte) (half >> 24);
+
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int writeUleb128(int value) {
+        if (stretchy) {
+            ensureCapacity(cursor + 5); // pessimistic
+        }
+        int cursorBefore = cursor;
+        Leb128.writeUnsignedLeb128(this, value);
+        return (cursor - cursorBefore);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int writeSleb128(int value) {
+        if (stretchy) {
+            ensureCapacity(cursor + 5); // pessimistic
+        }
+        int cursorBefore = cursor;
+        Leb128.writeSignedLeb128(this, value);
+        return (cursor - cursorBefore);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void write(ByteArray bytes) {
+        int blen = bytes.size();
+        int writeAt = cursor;
+        int end = writeAt + blen;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        bytes.getBytes(data, writeAt);
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void write(byte[] bytes, int offset, int length) {
+        int writeAt = cursor;
+        int end = writeAt + length;
+        int bytesEnd = offset + length;
+
+        // twos-complement math trick: ((x < 0) || (y < 0)) <=> ((x|y) < 0)
+        if (((offset | length | end) < 0) || (bytesEnd > bytes.length)) {
+            throw new IndexOutOfBoundsException("bytes.length " +
+                                                bytes.length + "; " +
+                                                offset + "..!" + end);
+        }
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        System.arraycopy(bytes, offset, data, writeAt, length);
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void write(byte[] bytes) {
+        write(bytes, 0, bytes.length);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeZeroes(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("count < 0");
+        }
+
+        int end = cursor + count;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        /*
+         * We need to write zeroes, since the array might be reused across different dx invocations.
+         */
+        Arrays.fill(data, cursor, end, (byte) 0);
+
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void alignTo(int alignment) {
+        int mask = alignment - 1;
+
+        if ((alignment < 0) || ((mask & alignment) != 0)) {
+            throw new IllegalArgumentException("bogus alignment");
+        }
+
+        int end = (cursor + mask) & ~mask;
+
+        if (stretchy) {
+            ensureCapacity(end);
+        } else if (end > data.length) {
+            throwBounds();
+            return;
+        }
+
+        /*
+         * We need to write zeroes, since the array might be reused across different dx invocations.
+         */
+        Arrays.fill(data, cursor, end, (byte) 0);
+
+        cursor = end;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean annotates() {
+        return (annotations != null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void annotate(String msg) {
+        if (annotations == null) {
+            return;
+        }
+
+        endAnnotation();
+        annotations.add(new Annotation(cursor, msg));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void annotate(int amt, String msg) {
+        if (annotations == null) {
+            return;
+        }
+
+        endAnnotation();
+
+        int asz = annotations.size();
+        int lastEnd = (asz == 0) ? 0 : annotations.get(asz - 1).getEnd();
+        int startAt;
+
+        if (lastEnd <= cursor) {
+            startAt = cursor;
+        } else {
+            startAt = lastEnd;
+        }
+
+        annotations.add(new Annotation(startAt, startAt + amt, msg));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void endAnnotation() {
+        if (annotations == null) {
+            return;
+        }
+
+        int sz = annotations.size();
+
+        if (sz != 0) {
+            annotations.get(sz - 1).setEndIfUnset(cursor);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getAnnotationWidth() {
+        int leftWidth = 8 + (hexCols * 2) + (hexCols / 2);
+
+        return annotationWidth - leftWidth;
+    }
+
+    /**
+     * Indicates that this instance should keep annotations. This method may
+     * be called only once per instance, and only before any data has been
+     * written to the it.
+     *
+     * @param annotationWidth {@code >= 40;} the desired maximum annotation width
+     * @param verbose whether or not to indicate verbose annotations
+     */
+    public void enableAnnotations(int annotationWidth, boolean verbose) {
+        if ((annotations != null) || (cursor != 0)) {
+            throw new RuntimeException("cannot enable annotations");
+        }
+
+        if (annotationWidth < 40) {
+            throw new IllegalArgumentException("annotationWidth < 40");
+        }
+
+        int hexCols = (((annotationWidth - 7) / 15) + 1) & ~1;
+        if (hexCols < 6) {
+            hexCols = 6;
+        } else if (hexCols > 10) {
+            hexCols = 10;
+        }
+
+        this.annotations = new ArrayList<Annotation>(1000);
+        this.annotationWidth = annotationWidth;
+        this.hexCols = hexCols;
+        this.verbose = verbose;
+    }
+
+    /**
+     * Finishes up annotation processing. This closes off any open
+     * annotations and removes annotations that don't refer to written
+     * data.
+     */
+    public void finishAnnotating() {
+        // Close off the final annotation, if any.
+        endAnnotation();
+
+        // Remove annotations that refer to unwritten data.
+        if (annotations != null) {
+            int asz = annotations.size();
+            while (asz > 0) {
+                Annotation last = annotations.get(asz - 1);
+                if (last.getStart() > cursor) {
+                    annotations.remove(asz - 1);
+                    asz--;
+                } else if (last.getEnd() > cursor) {
+                    last.setEnd(cursor);
+                    break;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Writes the annotated content of this instance to the given writer.
+     *
+     * @param out {@code non-null;} where to write to
+     */
+    public void writeAnnotationsTo(Writer out) throws IOException {
+        int width2 = getAnnotationWidth();
+        int width1 = annotationWidth - width2 - 1;
+
+        TwoColumnOutput twoc = new TwoColumnOutput(out, width1, width2, "|");
+        Writer left = twoc.getLeft();
+        Writer right = twoc.getRight();
+        int leftAt = 0; // left-hand byte output cursor
+        int rightAt = 0; // right-hand annotation index
+        int rightSz = annotations.size();
+
+        while ((leftAt < cursor) && (rightAt < rightSz)) {
+            Annotation a = annotations.get(rightAt);
+            int start = a.getStart();
+            int end;
+            String text;
+
+            if (leftAt < start) {
+                // This is an area with no annotation.
+                end = start;
+                start = leftAt;
+                text = "";
+            } else {
+                // This is an area with an annotation.
+                end = a.getEnd();
+                text = a.getText();
+                rightAt++;
+            }
+
+            left.write(mod.agus.jcoderz.dx.util.Hex.dump(data, start, end - start, start, hexCols, 6));
+            right.write(text);
+            twoc.flush();
+            leftAt = end;
+        }
+
+        if (leftAt < cursor) {
+            // There is unannotated output at the end.
+            left.write(Hex.dump(data, leftAt, cursor - leftAt, leftAt,
+                                hexCols, 6));
+        }
+
+        while (rightAt < rightSz) {
+            // There are zero-byte annotations at the end.
+            right.write(annotations.get(rightAt).getText());
+            rightAt++;
+        }
+
+        twoc.flush();
+    }
+
+    /**
+     * Throws the excpetion for when an attempt is made to write past the
+     * end of the instance.
+     */
     private static void throwBounds() {
         throw new IndexOutOfBoundsException("attempt to write past the end");
     }
 
-    public byte[] getArray() {
-        return this.data;
-    }
-
-    public byte[] toByteArray() {
-        byte[] bArr = new byte[this.cursor];
-        System.arraycopy(this.data, 0, bArr, 0, this.cursor);
-        return bArr;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public int getCursor() {
-        return this.cursor;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void assertCursor(int i) {
-        if (this.cursor != i) {
-            throw new ExceptionWithContext("expected cursor " + i + "; actual value: " + this.cursor);
+    /**
+     * Reallocates the underlying array if necessary. Calls to this method
+     * should be guarded by a test of {@link #stretchy}.
+     *
+     * @param desiredSize {@code >= 0;} the desired minimum total size of the array
+     */
+    private void ensureCapacity(int desiredSize) {
+        if (data.length < desiredSize) {
+            byte[] newData = new byte[desiredSize * 2 + 1000];
+            System.arraycopy(data, 0, newData, 0, cursor);
+            data = newData;
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.util.Output, mod.agus.jcoderz.dex.util.ByteOutput
-    public void writeByte(int i) {
-        int i2 = this.cursor;
-        int i3 = i2 + 1;
-        if (this.stretchy) {
-            ensureCapacity(i3);
-        } else if (i3 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        this.data[i2] = (byte) i;
-        this.cursor = i3;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void writeShort(int i) {
-        int i2 = this.cursor;
-        int i3 = i2 + 2;
-        if (this.stretchy) {
-            ensureCapacity(i3);
-        } else if (i3 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        this.data[i2] = (byte) i;
-        this.data[i2 + 1] = (byte) (i >> 8);
-        this.cursor = i3;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void writeInt(int i) {
-        int i2 = this.cursor;
-        int i3 = i2 + 4;
-        if (this.stretchy) {
-            ensureCapacity(i3);
-        } else if (i3 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        this.data[i2] = (byte) i;
-        this.data[i2 + 1] = (byte) (i >> 8);
-        this.data[i2 + 2] = (byte) (i >> 16);
-        this.data[i2 + 3] = (byte) (i >> 24);
-        this.cursor = i3;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void writeLong(long j) {
-        int i = this.cursor;
-        int i2 = i + 8;
-        if (this.stretchy) {
-            ensureCapacity(i2);
-        } else if (i2 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        int i3 = (int) j;
-        this.data[i] = (byte) i3;
-        this.data[i + 1] = (byte) (i3 >> 8);
-        this.data[i + 2] = (byte) (i3 >> 16);
-        this.data[i + 3] = (byte) (i3 >> 24);
-        int i4 = (int) (j >> 32);
-        this.data[i + 4] = (byte) i4;
-        this.data[i + 5] = (byte) (i4 >> 8);
-        this.data[i + 6] = (byte) (i4 >> 16);
-        this.data[i + 7] = (byte) (i4 >> 24);
-        this.cursor = i2;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public int writeUleb128(int i) {
-        if (this.stretchy) {
-            ensureCapacity(this.cursor + 5);
-        }
-        int i2 = this.cursor;
-        Leb128.writeUnsignedLeb128(this, i);
-        return this.cursor - i2;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public int writeSleb128(int i) {
-        if (this.stretchy) {
-            ensureCapacity(this.cursor + 5);
-        }
-        int i2 = this.cursor;
-        Leb128.writeSignedLeb128(this, i);
-        return this.cursor - i2;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void write(ByteArray byteArray) {
-        int size = byteArray.size();
-        int i = this.cursor;
-        int i2 = size + i;
-        if (this.stretchy) {
-            ensureCapacity(i2);
-        } else if (i2 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        byteArray.getBytes(this.data, i);
-        this.cursor = i2;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void write(byte[] bArr, int i, int i2) {
-        int i3 = this.cursor;
-        int i4 = i3 + i2;
-        int i5 = i + i2;
-        if ((i | i2 | i4) < 0 || i5 > bArr.length) {
-            throw new IndexOutOfBoundsException("bytes.length " + bArr.length + "; " + i + "..!" + i4);
-        }
-        if (this.stretchy) {
-            ensureCapacity(i4);
-        } else if (i4 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        System.arraycopy(bArr, i, this.data, i3, i2);
-        this.cursor = i4;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void write(byte[] bArr) {
-        write(bArr, 0, bArr.length);
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void writeZeroes(int i) {
-        if (i < 0) {
-            throw new IllegalArgumentException("count < 0");
-        }
-        int i2 = this.cursor + i;
-        if (this.stretchy) {
-            ensureCapacity(i2);
-        } else if (i2 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        this.cursor = i2;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.Output
-    public void alignTo(int i) {
-        int i2 = i - 1;
-        if (i < 0 || (i2 & i) != 0) {
-            throw new IllegalArgumentException("bogus alignment");
-        }
-        int i3 = (i2 ^ -1) & (this.cursor + i2);
-        if (this.stretchy) {
-            ensureCapacity(i3);
-        } else if (i3 > this.data.length) {
-            throwBounds();
-            return;
-        }
-        this.cursor = i3;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.AnnotatedOutput
-    public boolean annotates() {
-        return this.annotations != null;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.AnnotatedOutput
-    public boolean isVerbose() {
-        return this.verbose;
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.AnnotatedOutput
-    public void annotate(String str) {
-        if (this.annotations != null) {
-            endAnnotation();
-            this.annotations.add(new Annotation(this.cursor, str));
-        }
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.AnnotatedOutput
-    public void annotate(int i, String str) {
-        if (this.annotations != null) {
-            endAnnotation();
-            int size = this.annotations.size();
-            int end = size == 0 ? 0 : this.annotations.get(size - 1).getEnd();
-            if (end <= this.cursor) {
-                end = this.cursor;
-            }
-            this.annotations.add(new Annotation(end, end + i, str));
-        }
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.AnnotatedOutput
-    public void endAnnotation() {
-        int size;
-        if (this.annotations != null && (size = this.annotations.size()) != 0) {
-            this.annotations.get(size - 1).setEndIfUnset(this.cursor);
-        }
-    }
-
-    @Override // mod.agus.jcoderz.dx.util.AnnotatedOutput
-    public int getAnnotationWidth() {
-        return this.annotationWidth - (((this.hexCols * 2) + 8) + (this.hexCols / 2));
-    }
-
-    public void enableAnnotations(int i, boolean z) {
-        int i2 = 6;
-        if (this.annotations != null || this.cursor != 0) {
-            throw new RuntimeException("cannot enable annotations");
-        } else if (i < 40) {
-            throw new IllegalArgumentException("annotationWidth < 40");
-        } else {
-            int i3 = (((i - 7) / 15) + 1) & -2;
-            if (i3 >= 6) {
-                if (i3 > 10) {
-                    i2 = 10;
-                } else {
-                    i2 = i3;
-                }
-            }
-            this.annotations = new ArrayList<>(1000);
-            this.annotationWidth = i;
-            this.hexCols = i2;
-            this.verbose = z;
-        }
-    }
-
-    public void finishAnnotating() {
-        endAnnotation();
-        if (this.annotations != null) {
-            for (int size = this.annotations.size(); size > 0; size--) {
-                Annotation annotation = this.annotations.get(size - 1);
-                if (annotation.getStart() > this.cursor) {
-                    this.annotations.remove(size - 1);
-                } else if (annotation.getEnd() > this.cursor) {
-                    annotation.setEnd(this.cursor);
-                    return;
-                } else {
-                    return;
-                }
-            }
-        }
-    }
-
-    public void writeAnnotationsTo(Writer writer) throws IOException {
-        String text;
-        int annotationWidth2 = getAnnotationWidth();
-        TwoColumnOutput twoColumnOutput = new TwoColumnOutput(writer, (this.annotationWidth - annotationWidth2) - 1, annotationWidth2, "|");
-        Writer left = twoColumnOutput.getLeft();
-        Writer right = twoColumnOutput.getRight();
-        int size = this.annotations.size();
-        int i = 0;
-        int i2 = 0;
-        while (i2 < this.cursor && i < size) {
-            Annotation annotation = this.annotations.get(i);
-            int start = annotation.getStart();
-            if (i2 < start) {
-                text = "";
-            } else {
-                int end = annotation.getEnd();
-                i++;
-                text = annotation.getText();
-                i2 = start;
-                start = end;
-            }
-            left.write(Hex.dump(this.data, i2, start - i2, i2, this.hexCols, 6));
-            right.write(text);
-            twoColumnOutput.flush();
-            i2 = start;
-        }
-        if (i2 < this.cursor) {
-            left.write(Hex.dump(this.data, i2, this.cursor - i2, i2, this.hexCols, 6));
-        }
-        while (i < size) {
-            right.write(this.annotations.get(i).getText());
-            i++;
-        }
-        twoColumnOutput.flush();
-    }
-
-    private void ensureCapacity(int i) {
-        if (this.data.length < i) {
-            byte[] bArr = new byte[((i * 2) + 1000)];
-            System.arraycopy(this.data, 0, bArr, 0, this.cursor);
-            this.data = bArr;
-        }
-    }
-
-    /* access modifiers changed from: private */
-    public static class Annotation {
+    /**
+     * Annotation on output.
+     */
+    private static class Annotation {
+        /** {@code >= 0;} start of annotated range (inclusive) */
         private final int start;
-        private final String text;
+
+        /**
+         * {@code >= 0;} end of annotated range (exclusive);
+         * {@code Integer.MAX_VALUE} if unclosed
+         */
         private int end;
 
-        public Annotation(int i, int i2, String str) {
-            this.start = i;
-            this.end = i2;
-            this.text = str;
+        /** {@code non-null;} annotation text */
+        private final String text;
+
+        /**
+         * Constructs an instance.
+         *
+         * @param start {@code >= 0;} start of annotated range
+         * @param end {@code >= start;} end of annotated range (exclusive) or
+         * {@code Integer.MAX_VALUE} if unclosed
+         * @param text {@code non-null;} annotation text
+         */
+        public Annotation(int start, int end, String text) {
+            this.start = start;
+            this.end = end;
+            this.text = text;
         }
 
-        public Annotation(int i, String str) {
-            this(i, Integer.MAX_VALUE, str);
+        /**
+         * Constructs an instance. It is initally unclosed.
+         *
+         * @param start {@code >= 0;} start of annotated range
+         * @param text {@code non-null;} annotation text
+         */
+        public Annotation(int start, String text) {
+            this(start, Integer.MAX_VALUE, text);
         }
 
-        public void setEndIfUnset(int i) {
+        /**
+         * Sets the end as given, but only if the instance is unclosed;
+         * otherwise, do nothing.
+         *
+         * @param end {@code >= start;} the end
+         */
+        public void setEndIfUnset(int end) {
             if (this.end == Integer.MAX_VALUE) {
-                this.end = i;
+                this.end = end;
             }
         }
 
+        /**
+         * Sets the end as given.
+         *
+         * @param end {@code >= start;} the end
+         */
+        public void setEnd(int end) {
+            this.end = end;
+        }
+
+        /**
+         * Gets the start.
+         *
+         * @return the start
+         */
         public int getStart() {
-            return this.start;
+            return start;
         }
 
+        /**
+         * Gets the end.
+         *
+         * @return the end
+         */
         public int getEnd() {
-            return this.end;
+            return end;
         }
 
-        public void setEnd(int i) {
-            this.end = i;
-        }
-
+        /**
+         * Gets the text.
+         *
+         * @return {@code non-null;} the text
+         */
         public String getText() {
-            return this.text;
+            return text;
         }
     }
 }

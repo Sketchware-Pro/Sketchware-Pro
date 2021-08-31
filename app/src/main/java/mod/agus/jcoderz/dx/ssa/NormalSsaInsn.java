@@ -1,144 +1,240 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa;
 
 import mod.agus.jcoderz.dx.rop.code.Insn;
+import mod.agus.jcoderz.dx.rop.code.LocalItem;
+import mod.agus.jcoderz.dx.rop.code.RegOps;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.Rop;
 
+/**
+ * A "normal" (non-phi) instruction in SSA form. Always wraps a rop insn.
+ */
 public final class NormalSsaInsn extends SsaInsn implements Cloneable {
-    private Insn insn;
+    /** {@code non-null;} rop insn that we're wrapping */
+    private mod.agus.jcoderz.dx.rop.code.Insn insn;
 
-    NormalSsaInsn(Insn insn2, SsaBasicBlock ssaBasicBlock) {
-        super(insn2.getResult(), ssaBasicBlock);
-        this.insn = insn2;
+    /**
+     * Creates an instance.
+     *
+     * @param insn Rop insn to wrap
+     * @param block block that contains this insn
+     */
+    NormalSsaInsn(final mod.agus.jcoderz.dx.rop.code.Insn insn, final SsaBasicBlock block) {
+        super(insn.getResult(), block);
+        this.insn = insn;
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public final void mapSourceRegisters(RegisterMapper registerMapper) {
-        RegisterSpecList sources = this.insn.getSources();
-        RegisterSpecList map = registerMapper.map(sources);
-        if (map != sources) {
-            this.insn = this.insn.withNewRegisters(getResult(), map);
-            getBlock().getParent().onSourcesChanged(this, sources);
+    /** {@inheritDoc} */
+    @Override
+    public final void mapSourceRegisters(RegisterMapper mapper) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList oldSources = insn.getSources();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources = mapper.map(oldSources);
+
+        if (newSources != oldSources) {
+            insn = insn.withNewRegisters(getResult(), newSources);
+            getBlock().getParent().onSourcesChanged(this, oldSources);
         }
     }
 
-    public final void changeOneSource(int i, RegisterSpec registerSpec) {
-        RegisterSpecList sources = this.insn.getSources();
-        int size = sources.size();
-        RegisterSpecList registerSpecList = new RegisterSpecList(size);
-        int i2 = 0;
-        while (i2 < size) {
-            registerSpecList.set(i2, i2 == i ? registerSpec : sources.get(i2));
-            i2++;
+    /**
+     * Changes one of the insn's sources. New source should be of same type
+     * and category.
+     *
+     * @param index {@code >=0;} index of source to change
+     * @param newSpec spec for new source
+     */
+    public final void changeOneSource(int index, mod.agus.jcoderz.dx.rop.code.RegisterSpec newSpec) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList origSources = insn.getSources();
+        int sz = origSources.size();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources = new mod.agus.jcoderz.dx.rop.code.RegisterSpecList(sz);
+
+        for (int i = 0; i < sz; i++) {
+            newSources.set(i, i == index ? newSpec : origSources.get(i));
         }
-        registerSpecList.setImmutable();
-        RegisterSpec registerSpec2 = sources.get(i);
-        if (registerSpec2.getReg() != registerSpec.getReg()) {
-            getBlock().getParent().onSourceChanged(this, registerSpec2, registerSpec);
+
+        newSources.setImmutable();
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec origSpec = origSources.get(index);
+        if (origSpec.getReg() != newSpec.getReg()) {
+            /*
+             * If the register remains unchanged, we're only changing
+             * the type or local var name so don't update use list
+             */
+            getBlock().getParent().onSourceChanged(this, origSpec, newSpec);
         }
-        this.insn = this.insn.withNewRegisters(getResult(), registerSpecList);
+
+        insn = insn.withNewRegisters(getResult(), newSources);
     }
 
-    public final void setNewSources(RegisterSpecList registerSpecList) {
-        if (this.insn.getSources().size() != registerSpecList.size()) {
+    /**
+     * Changes the source list of the insn. New source list should be the
+     * same size and consist of sources of identical types.
+     *
+     * @param newSources non-null new sources list.
+     */
+    public final void setNewSources (mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList origSources = insn.getSources();
+
+        if (origSources.size() != newSources.size()) {
             throw new RuntimeException("Sources counts don't match");
         }
-        this.insn = this.insn.withNewRegisters(getResult(), registerSpecList);
+
+        insn = insn.withNewRegisters(getResult(), newSources);
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn, mod.agus.jcoderz.dx.ssa.SsaInsn, java.lang.Object
+    /** {@inheritDoc} */
+    @Override
     public NormalSsaInsn clone() {
         return (NormalSsaInsn) super.clone();
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public RegisterSpecList getSources() {
-        return this.insn.getSources();
+    /**
+     * Like rop.Insn.getSources().
+     *
+     * @return {@code null-ok;} sources list
+     */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.RegisterSpecList getSources() {
+        return insn.getSources();
     }
 
-    @Override // mod.agus.jcoderz.dx.util.ToHuman
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
         return toRopInsn().toHuman();
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public Insn toRopInsn() {
-        return this.insn.withNewRegisters(getResult(), this.insn.getSources());
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.Insn toRopInsn() {
+        return insn.withNewRegisters(getResult(), insn.getSources());
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public Rop getOpcode() {
-        return this.insn.getOpcode();
+    /**
+     * @return the Rop opcode for this insn
+     */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.Rop getOpcode() {
+        return insn.getOpcode();
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public Insn getOriginalRopInsn() {
-        return this.insn;
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.Insn getOriginalRopInsn() {
+        return insn;
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public RegisterSpec getLocalAssignment() {
-        RegisterSpec result;
-        if (this.insn.getOpcode().getOpcode() == 54) {
-            result = this.insn.getSources().get(0);
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.code.RegisterSpec getLocalAssignment() {
+        RegisterSpec assignment;
+
+        if (insn.getOpcode().getOpcode() == mod.agus.jcoderz.dx.rop.code.RegOps.MARK_LOCAL) {
+            assignment = insn.getSources().get(0);
         } else {
-            result = getResult();
+            assignment = getResult();
         }
-        if (result == null || result.getLocalItem() == null) {
+
+        if (assignment == null) {
             return null;
         }
-        return result;
+
+        LocalItem local = assignment.getLocalItem();
+
+        if (local == null) {
+            return null;
+        }
+
+        return assignment;
     }
 
+    /**
+     * Upgrades this insn to a version that represents the constant source
+     * literally. If the upgrade is not possible, this does nothing.
+     *
+     * @see Insn#withSourceLiteral
+     */
     public void upgradeToLiteral() {
-        RegisterSpecList sources = this.insn.getSources();
-        this.insn = this.insn.withSourceLiteral();
-        getBlock().getParent().onSourcesChanged(this, sources);
+        RegisterSpecList oldSources = insn.getSources();
+
+        insn = insn.withSourceLiteral();
+        getBlock().getParent().onSourcesChanged(this, oldSources);
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
+    /**
+     * @return true if this is a move (but not a move-operand) instruction
+     */
+    @Override
     public boolean isNormalMoveInsn() {
-        return this.insn.getOpcode().getOpcode() == 2;
+        return insn.getOpcode().getOpcode() == mod.agus.jcoderz.dx.rop.code.RegOps.MOVE;
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
+    /** {@inheritDoc} */
+    @Override
     public boolean isMoveException() {
-        return this.insn.getOpcode().getOpcode() == 4;
+        return insn.getOpcode().getOpcode() == mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_EXCEPTION;
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
+    /** {@inheritDoc} */
+    @Override
     public boolean canThrow() {
-        return this.insn.canThrow();
+        return insn.canThrow();
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public void accept(SsaInsn.Visitor visitor) {
+    /** {@inheritDoc} */
+    @Override
+    public void accept(Visitor v) {
         if (isNormalMoveInsn()) {
-            visitor.visitMoveInsn(this);
+            v.visitMoveInsn(this);
         } else {
-            visitor.visitNonMoveInsn(this);
+            v.visitNonMoveInsn(this);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
-    public boolean isPhiOrMove() {
+    /** {@inheritDoc} */
+    @Override
+    public  boolean isPhiOrMove() {
         return isNormalMoveInsn();
     }
 
-    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn
+    /**
+     * {@inheritDoc}
+     *
+     * TODO: Increase the scope of this.
+     */
+    @Override
     public boolean hasSideEffect() {
-        boolean z;
-        Rop opcode = getOpcode();
-        if (opcode.getBranchingness() != 1) {
+        mod.agus.jcoderz.dx.rop.code.Rop opcode = getOpcode();
+
+        if (opcode.getBranchingness() != Rop.BRANCH_NONE) {
             return true;
         }
-        z = Optimizer.getPreserveLocals() && getLocalAssignment() != null;
+
+        boolean hasLocalSideEffect
+            = Optimizer.getPreserveLocals() && getLocalAssignment() != null;
+
         switch (opcode.getOpcode()) {
-            case 2:
-            case 5:
-            case 55:
-                return z;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_RESULT:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.MOVE:
+            case RegOps.CONST:
+                return hasLocalSideEffect;
             default:
                 return true;
         }

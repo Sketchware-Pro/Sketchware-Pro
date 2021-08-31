@@ -1,15 +1,32 @@
+/*
+ * Copyright (C) 2010 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa;
 
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 
 import mod.agus.jcoderz.dx.rop.code.Exceptions;
 import mod.agus.jcoderz.dx.rop.code.FillArrayDataInsn;
 import mod.agus.jcoderz.dx.rop.code.Insn;
 import mod.agus.jcoderz.dx.rop.code.PlainCstInsn;
 import mod.agus.jcoderz.dx.rop.code.PlainInsn;
+import mod.agus.jcoderz.dx.rop.code.RegOps;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.Rop;
@@ -28,464 +45,803 @@ import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 
+/**
+ * Simple intraprocedural escape analysis. Finds new arrays that don't escape
+ * the method they are created in and replaces the array values with registers.
+ */
 public class EscapeAnalysis {
-    private final ArrayList<EscapeSet> latticeValues = new ArrayList<>();
+    /**
+     * Struct used to generate and maintain escape analysis results.
+     */
+    static class EscapeSet {
+        /** set containing all registers related to an object */
+        BitSet regSet;
+        /** escape state of the object */
+        EscapeState escape;
+        /** list of objects that are put into this object */
+        ArrayList<EscapeSet> childSets;
+        /** list of objects that this object is put into */
+        ArrayList<EscapeSet> parentSets;
+        /** flag to indicate this object is a scalar replaceable array */
+        boolean replaceableArray;
+
+        /**
+         * Constructs an instance of an EscapeSet
+         *
+         * @param reg the SSA register that defines the object
+         * @param size the number of registers in the method
+         * @param escState the lattice value to initially set this to
+         */
+        EscapeSet(int reg, int size, EscapeState escState) {
+            regSet = new BitSet(size);
+            regSet.set(reg);
+            escape = escState;
+            childSets = new ArrayList<EscapeSet>();
+            parentSets = new ArrayList<EscapeSet>();
+            replaceableArray = false;
+        }
+    }
+
+    /**
+     * Lattice values used to indicate escape state for an object. Analysis can
+     * only raise escape state values, not lower them.
+     *
+     * TOP - Used for objects that haven't been analyzed yet
+     * NONE - Object does not escape, and is eligible for scalar replacement.
+     * METHOD - Object remains local to method, but can't be scalar replaced.
+     * INTER - Object is passed between methods. (treated as globally escaping
+     *         since this is an intraprocedural analysis)
+     * GLOBAL - Object escapes globally.
+     */
+    public enum EscapeState {
+        TOP, NONE, METHOD, INTER, GLOBAL
+    }
+
+    /** method we're processing */
+    private final mod.agus.jcoderz.dx.ssa.SsaMethod ssaMeth;
+    /** ssaMeth.getRegCount() */
     private final int regCount;
-    private final SsaMethod ssaMeth;
+    /** Lattice values for each object register group */
+    private final ArrayList<EscapeSet> latticeValues;
 
-    private EscapeAnalysis(SsaMethod ssaMethod) {
-        this.ssaMeth = ssaMethod;
-        this.regCount = ssaMethod.getRegCount();
+    /**
+     * Constructs an instance.
+     *
+     * @param ssaMeth method to process
+     */
+    private EscapeAnalysis(mod.agus.jcoderz.dx.ssa.SsaMethod ssaMeth) {
+        this.ssaMeth = ssaMeth;
+        this.regCount = ssaMeth.getRegCount();
+        this.latticeValues = new ArrayList<EscapeSet>();
     }
 
-    public static void process(SsaMethod ssaMethod) {
-        new EscapeAnalysis(ssaMethod).run();
-    }
-
-    private int findSetIndex(RegisterSpec registerSpec) {
-        int i = 0;
-        while (i < this.latticeValues.size() && !this.latticeValues.get(i).regSet.get(registerSpec.getReg())) {
-            i++;
+    /**
+     * Finds the index in the lattice for a particular register.
+     * Returns the size of the lattice if the register wasn't found.
+     *
+     * @param reg {@code non-null;} register being looked up
+     * @return index of the register or size of the lattice if it wasn't found.
+     */
+    private int findSetIndex(mod.agus.jcoderz.dx.rop.code.RegisterSpec reg) {
+        int i;
+        for (i = 0; i < latticeValues.size(); i++) {
+            EscapeSet e = latticeValues.get(i);
+            if (e.regSet.get(reg.getReg())) {
+                return i;
+            }
         }
         return i;
     }
 
-    private SsaInsn getInsnForMove(SsaInsn ssaInsn) {
-        ArrayList<SsaInsn> insns = this.ssaMeth.getBlocks().get(ssaInsn.getBlock().getPredecessors().nextSetBit(0)).getInsns();
-        return insns.get(insns.size() - 1);
+    /**
+     * Finds the corresponding instruction for a given move result
+     *
+     * @param moveInsn {@code non-null;} a move result instruction
+     * @return {@code non-null;} the instruction that produces the result for
+     * the move
+     */
+    private mod.agus.jcoderz.dx.ssa.SsaInsn getInsnForMove(mod.agus.jcoderz.dx.ssa.SsaInsn moveInsn) {
+        int pred = moveInsn.getBlock().getPredecessors().nextSetBit(0);
+        ArrayList<mod.agus.jcoderz.dx.ssa.SsaInsn> predInsns = ssaMeth.getBlocks().get(pred).getInsns();
+        return predInsns.get(predInsns.size()-1);
     }
 
-    private SsaInsn getMoveForInsn(SsaInsn ssaInsn) {
-        return this.ssaMeth.getBlocks().get(ssaInsn.getBlock().getSuccessors().nextSetBit(0)).getInsns().get(0);
+    /**
+     * Finds the corresponding move result for a given instruction
+     *
+     * @param insn {@code non-null;} an instruction that must always be
+     * followed by a move result
+     * @return {@code non-null;} the move result for the given instruction
+     */
+    private mod.agus.jcoderz.dx.ssa.SsaInsn getMoveForInsn(mod.agus.jcoderz.dx.ssa.SsaInsn insn) {
+        int succ = insn.getBlock().getSuccessors().nextSetBit(0);
+        ArrayList<mod.agus.jcoderz.dx.ssa.SsaInsn> succInsns = ssaMeth.getBlocks().get(succ).getInsns();
+        return succInsns.get(0);
     }
 
-    private void addEdge(EscapeSet escapeSet, EscapeSet escapeSet2) {
-        if (!escapeSet2.parentSets.contains(escapeSet)) {
-            escapeSet2.parentSets.add(escapeSet);
+    /**
+     * Creates a link in the lattice between two EscapeSets due to a put
+     * instruction. The object being put is the child and the object being put
+     * into is the parent. A child set must always have an escape state at
+     * least as high as its parent.
+     *
+     * @param parentSet {@code non-null;} the EscapeSet for the object being put
+     * into
+     * @param childSet {@code non-null;} the EscapeSet for the object being put
+     */
+    private void addEdge(EscapeSet parentSet, EscapeSet childSet) {
+        if (!childSet.parentSets.contains(parentSet)) {
+            childSet.parentSets.add(parentSet);
         }
-        if (!escapeSet.childSets.contains(escapeSet2)) {
-            escapeSet.childSets.add(escapeSet2);
-        }
-    }
-
-    private void replaceNode(EscapeSet escapeSet, EscapeSet escapeSet2) {
-        Iterator<EscapeSet> it = escapeSet2.parentSets.iterator();
-        while (it.hasNext()) {
-            EscapeSet next = it.next();
-            next.childSets.remove(escapeSet2);
-            next.childSets.add(escapeSet);
-            escapeSet.parentSets.add(next);
-        }
-        Iterator<EscapeSet> it2 = escapeSet2.childSets.iterator();
-        while (it2.hasNext()) {
-            EscapeSet next2 = it2.next();
-            next2.parentSets.remove(escapeSet2);
-            next2.parentSets.add(escapeSet);
-            escapeSet.childSets.add(next2);
-        }
-    }
-
-    /* access modifiers changed from: private */
-    /* access modifiers changed from: public */
-    private void processInsn(SsaInsn ssaInsn) {
-        int opcode = ssaInsn.getOpcode().getOpcode();
-        RegisterSpec result = ssaInsn.getResult();
-        if (opcode == 56 && result.getTypeBearer().getBasicType() == 9) {
-            processRegister(result, processMoveResultPseudoInsn(ssaInsn));
-        } else if (opcode == 3 && result.getTypeBearer().getBasicType() == 9) {
-            EscapeSet escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.NONE);
-            this.latticeValues.add(escapeSet);
-            processRegister(result, escapeSet);
-        } else if (opcode == 55 && result.getTypeBearer().getBasicType() == 9) {
-            EscapeSet escapeSet2 = new EscapeSet(result.getReg(), this.regCount, EscapeState.NONE);
-            this.latticeValues.add(escapeSet2);
-            processRegister(result, escapeSet2);
+        if (!parentSet.childSets.contains(childSet)) {
+            parentSet.childSets.add(childSet);
         }
     }
 
-    private EscapeSet processMoveResultPseudoInsn(SsaInsn ssaInsn) {
-        EscapeSet escapeSet;
-        RegisterSpec result = ssaInsn.getResult();
-        SsaInsn insnForMove = getInsnForMove(ssaInsn);
-        switch (insnForMove.getOpcode().getOpcode()) {
-            case 5:
-            case 40:
-                escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.NONE);
+    /**
+     * Merges all links in the lattice among two EscapeSets. On return, the
+     * newNode will have its old links as well as all links from the oldNode.
+     * The oldNode has all its links removed.
+     *
+     * @param newNode {@code non-null;} the EscapeSet to merge all links into
+     * @param oldNode {@code non-null;} the EscapeSet to remove all links from
+     */
+    private void replaceNode(EscapeSet newNode, EscapeSet oldNode) {
+        for (EscapeSet e : oldNode.parentSets) {
+            e.childSets.remove(oldNode);
+            e.childSets.add(newNode);
+            newNode.parentSets.add(e);
+        }
+        for (EscapeSet e : oldNode.childSets) {
+            e.parentSets.remove(oldNode);
+            e.parentSets.add(newNode);
+            newNode.childSets.add(e);
+        }
+    }
+
+    /**
+     * Performs escape analysis on a method. Finds scalar replaceable arrays and
+     * replaces them with equivalent registers.
+     *
+     * @param ssaMethod {@code non-null;} method to process
+     */
+    public static void process(SsaMethod ssaMethod) {
+        new EscapeAnalysis(ssaMethod).run();
+    }
+
+    /**
+     * Process a single instruction, looking for new objects resulting from
+     * move result or move param.
+     *
+     * @param insn {@code non-null;} instruction to process
+     */
+    private void processInsn(mod.agus.jcoderz.dx.ssa.SsaInsn insn) {
+        int op = insn.getOpcode().getOpcode();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec result = insn.getResult();
+        EscapeSet escSet;
+
+        // Identify new objects
+        if (op == mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_RESULT_PSEUDO &&
+                result.getTypeBearer().getBasicType() == mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT) {
+            // Handle objects generated through move_result_pseudo
+            escSet = processMoveResultPseudoInsn(insn);
+            processRegister(result, escSet);
+        } else if (op == mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_PARAM &&
+                      result.getTypeBearer().getBasicType() == mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT) {
+            // Track method arguments that are objects
+            escSet = new EscapeSet(result.getReg(), regCount, EscapeState.NONE);
+            latticeValues.add(escSet);
+            processRegister(result, escSet);
+        } else if (op == mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_RESULT &&
+                result.getTypeBearer().getBasicType() == mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT) {
+            // Track method return values that are objects
+            escSet = new EscapeSet(result.getReg(), regCount, EscapeState.NONE);
+            latticeValues.add(escSet);
+            processRegister(result, escSet);
+        }
+    }
+
+    /**
+     * Determine the origin of a move result pseudo instruction that generates
+     * an object. Creates a new EscapeSet for the new object accordingly.
+     *
+     * @param insn {@code non-null;} move result pseudo instruction to process
+     * @return {@code non-null;} an EscapeSet for the object referred to by the
+     * move result pseudo instruction
+     */
+    private EscapeSet processMoveResultPseudoInsn(mod.agus.jcoderz.dx.ssa.SsaInsn insn) {
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec result = insn.getResult();
+        mod.agus.jcoderz.dx.ssa.SsaInsn prevSsaInsn = getInsnForMove(insn);
+        int prevOpcode = prevSsaInsn.getOpcode().getOpcode();
+        EscapeSet escSet;
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec prevSource;
+
+        switch(prevOpcode) {
+           // New instance / Constant
+            case mod.agus.jcoderz.dx.rop.code.RegOps.NEW_INSTANCE:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.CONST:
+                escSet = new EscapeSet(result.getReg(), regCount,
+                                           EscapeState.NONE);
                 break;
-            case 38:
-            case 43:
-            case 45:
-                RegisterSpec registerSpec = insnForMove.getSources().get(0);
-                int findSetIndex = findSetIndex(registerSpec);
-                if (findSetIndex == this.latticeValues.size()) {
-                    if (registerSpec.getType() != Type.KNOWN_NULL) {
-                        escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.GLOBAL);
-                        break;
-                    } else {
-                        escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.NONE);
-                        break;
-                    }
+            // New array
+            case mod.agus.jcoderz.dx.rop.code.RegOps.NEW_ARRAY:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.FILLED_NEW_ARRAY:
+                prevSource = prevSsaInsn.getSources().get(0);
+                if (prevSource.getTypeBearer().isConstant()) {
+                    // New fixed array
+                    escSet = new EscapeSet(result.getReg(), regCount,
+                                               EscapeState.NONE);
+                    escSet.replaceableArray = true;
                 } else {
-                    EscapeSet escapeSet2 = this.latticeValues.get(findSetIndex);
-                    escapeSet2.regSet.set(result.getReg());
-                    return escapeSet2;
+                    // New variable array
+                    escSet = new EscapeSet(result.getReg(), regCount,
+                                               EscapeState.GLOBAL);
                 }
-            case 41:
-            case 42:
-                if (!insnForMove.getSources().get(0).getTypeBearer().isConstant()) {
-                    escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.GLOBAL);
-                    break;
-                } else {
-                    escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.NONE);
-                    escapeSet.replaceableArray = true;
-                    break;
+                break;
+            // Loading a static object
+            case mod.agus.jcoderz.dx.rop.code.RegOps.GET_STATIC:
+                escSet = new EscapeSet(result.getReg(), regCount,
+                                           EscapeState.GLOBAL);
+                break;
+            // Type cast / load an object from a field or array
+            case mod.agus.jcoderz.dx.rop.code.RegOps.CHECK_CAST:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.GET_FIELD:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.AGET:
+                prevSource = prevSsaInsn.getSources().get(0);
+                int setIndex = findSetIndex(prevSource);
+
+                // Set should already exist, try to find it
+                if (setIndex != latticeValues.size()) {
+                    escSet = latticeValues.get(setIndex);
+                    escSet.regSet.set(result.getReg());
+                    return escSet;
                 }
-            case 46:
-                escapeSet = new EscapeSet(result.getReg(), this.regCount, EscapeState.GLOBAL);
+
+                // Set not found, must be either null or unknown
+                if (prevSource.getType() == mod.agus.jcoderz.dx.rop.type.Type.KNOWN_NULL) {
+                    escSet = new EscapeSet(result.getReg(), regCount,
+                                               EscapeState.NONE);
+               } else {
+                    escSet = new EscapeSet(result.getReg(), regCount,
+                                               EscapeState.GLOBAL);
+                }
                 break;
             default:
                 return null;
         }
-        this.latticeValues.add(escapeSet);
-        return escapeSet;
+
+        // Add the newly created escSet to the lattice and return it
+        latticeValues.add(escSet);
+        return escSet;
     }
 
-    private void processRegister(RegisterSpec registerSpec, EscapeSet escapeSet) {
-        ArrayList<RegisterSpec> arrayList = new ArrayList<>();
-        arrayList.add(registerSpec);
-        while (!arrayList.isEmpty()) {
-            RegisterSpec remove = arrayList.remove(arrayList.size() - 1);
-            for (SsaInsn ssaInsn : this.ssaMeth.getUseListForRegister(remove.getReg())) {
-                if (ssaInsn.getOpcode() == null) {
-                    processPhiUse(ssaInsn, escapeSet, arrayList);
+    /**
+     * Iterate through all the uses of a new object.
+     *
+     * @param result {@code non-null;} register where new object is stored
+     * @param escSet {@code non-null;} EscapeSet for the new object
+     */
+    private void processRegister(mod.agus.jcoderz.dx.rop.code.RegisterSpec result, EscapeSet escSet) {
+        ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec> regWorklist = new ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec>();
+        regWorklist.add(result);
+
+        // Go through the worklist
+        while (!regWorklist.isEmpty()) {
+            int listSize = regWorklist.size() - 1;
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec def = regWorklist.remove(listSize);
+            List<mod.agus.jcoderz.dx.ssa.SsaInsn> useList = ssaMeth.getUseListForRegister(def.getReg());
+
+            // Handle all the uses of this register
+            for (mod.agus.jcoderz.dx.ssa.SsaInsn use : useList) {
+                mod.agus.jcoderz.dx.rop.code.Rop useOpcode = use.getOpcode();
+
+                if (useOpcode == null) {
+                    // Handle phis
+                    processPhiUse(use, escSet, regWorklist);
                 } else {
-                    processUse(remove, ssaInsn, escapeSet, arrayList);
+                    // Handle other opcodes
+                    processUse(def, use, escSet, regWorklist);
                 }
             }
         }
     }
 
-    private void processPhiUse(SsaInsn ssaInsn, EscapeSet escapeSet, ArrayList<RegisterSpec> arrayList) {
-        int findSetIndex = findSetIndex(ssaInsn.getResult());
-        if (findSetIndex != this.latticeValues.size()) {
-            EscapeSet escapeSet2 = this.latticeValues.get(findSetIndex);
-            if (escapeSet2 != escapeSet) {
-                escapeSet.replaceableArray = false;
-                escapeSet.regSet.or(escapeSet2.regSet);
-                if (escapeSet.escape.compareTo((EscapeState) escapeSet2.escape) < 0) {
-                    escapeSet.escape = escapeSet2.escape;
+    /**
+     * Handles phi uses of new objects. Will merge together the sources of a phi
+     * into a single EscapeSet. Adds the result of the phi to the worklist so
+     * its uses can be followed.
+     *
+     * @param use {@code non-null;} phi use being processed
+     * @param escSet {@code non-null;} EscapeSet for the object
+     * @param regWorklist {@code non-null;} worklist of instructions left to
+     * process for this object
+     */
+    private void processPhiUse(mod.agus.jcoderz.dx.ssa.SsaInsn use, EscapeSet escSet,
+                               ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec> regWorklist) {
+        int setIndex = findSetIndex(use.getResult());
+        if (setIndex != latticeValues.size()) {
+            // Check if result is in a set already
+            EscapeSet mergeSet = latticeValues.get(setIndex);
+            if (mergeSet != escSet) {
+                // If it is, merge the sets and states, then delete the copy
+                escSet.replaceableArray = false;
+                escSet.regSet.or(mergeSet.regSet);
+                if (escSet.escape.compareTo(mergeSet.escape) < 0) {
+                    escSet.escape = mergeSet.escape;
                 }
-                replaceNode(escapeSet, escapeSet2);
-                this.latticeValues.remove(findSetIndex);
-                return;
+                replaceNode(escSet, mergeSet);
+                latticeValues.remove(setIndex);
             }
-            return;
+        } else {
+            // If no set is found, add it to this escSet and the worklist
+            escSet.regSet.set(use.getResult().getReg());
+            regWorklist.add(use.getResult());
         }
-        escapeSet.regSet.set(ssaInsn.getResult().getReg());
-        arrayList.add(ssaInsn.getResult());
     }
 
-    /* JADX INFO: Can't fix incorrect switch cases order, some code will duplicate */
-    private void processUse(RegisterSpec registerSpec, SsaInsn ssaInsn, EscapeSet escapeSet, ArrayList<RegisterSpec> arrayList) {
-        switch (ssaInsn.getOpcode().getOpcode()) {
-            case 2:
-                escapeSet.regSet.set(ssaInsn.getResult().getReg());
-                arrayList.add(ssaInsn.getResult());
-                return;
-            case 7:
-            case 8:
-            case 43:
-                if (escapeSet.escape.compareTo((EscapeState) EscapeState.METHOD) < 0) {
-                    escapeSet.escape = EscapeState.METHOD;
-                    return;
+    /**
+     * Handles non-phi uses of new objects. Checks to see how instruction is
+     * used and updates the escape state accordingly.
+     *
+     * @param def {@code non-null;} register holding definition of new object
+     * @param use {@code non-null;} use of object being processed
+     * @param escSet {@code non-null;} EscapeSet for the object
+     * @param regWorklist {@code non-null;} worklist of instructions left to
+     * process for this object
+     */
+    private void processUse(mod.agus.jcoderz.dx.rop.code.RegisterSpec def, mod.agus.jcoderz.dx.ssa.SsaInsn use, EscapeSet escSet,
+                            ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec> regWorklist) {
+        int useOpcode = use.getOpcode().getOpcode();
+        switch (useOpcode) {
+            case mod.agus.jcoderz.dx.rop.code.RegOps.MOVE:
+                // Follow uses of the move by adding it to the worklist
+                escSet.regSet.set(use.getResult().getReg());
+                regWorklist.add(use.getResult());
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_EQ:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_NE:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.CHECK_CAST:
+                // Compared objects can't be replaced, so promote if necessary
+                if (escSet.escape.compareTo(EscapeState.METHOD) < 0) {
+                    escSet.escape = EscapeState.METHOD;
                 }
-                return;
-            case 33:
-            case 35:
-            case 49:
-            case 50:
-            case 51:
-            case 52:
-            case 53:
-                escapeSet.escape = EscapeState.INTER;
-                return;
-            case 38:
-                if (!ssaInsn.getSources().get(1).getTypeBearer().isConstant()) {
-                    escapeSet.replaceableArray = false;
-                    return;
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.APUT:
+                // For array puts, check for a constant array index
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec putIndex = use.getSources().get(2);
+                if (!putIndex.getTypeBearer().isConstant()) {
+                    // If not constant, array can't be replaced
+                    escSet.replaceableArray = false;
                 }
-                return;
-            case 39:
-                if (!ssaInsn.getSources().get(2).getTypeBearer().isConstant()) {
-                    escapeSet.replaceableArray = false;
+                // Intentional fallthrough
+            case mod.agus.jcoderz.dx.rop.code.RegOps.PUT_FIELD:
+                // Skip non-object puts
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec putValue = use.getSources().get(0);
+                if (putValue.getTypeBearer().getBasicType() != mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT) {
                     break;
                 }
-                break;
-            case 47:
-                break;
-            case 48:
-                escapeSet.escape = EscapeState.GLOBAL;
-                return;
-            default:
-                return;
-        }
-        if (ssaInsn.getSources().get(0).getTypeBearer().getBasicType() == 9) {
-            escapeSet.replaceableArray = false;
-            RegisterSpecList sources = ssaInsn.getSources();
-            if (sources.get(0).getReg() == registerSpec.getReg()) {
-                int findSetIndex = findSetIndex(sources.get(1));
-                if (findSetIndex != this.latticeValues.size()) {
-                    EscapeSet escapeSet2 = this.latticeValues.get(findSetIndex);
-                    addEdge(escapeSet2, escapeSet);
-                    if (escapeSet.escape.compareTo((EscapeState) escapeSet2.escape) < 0) {
-                        escapeSet.escape = escapeSet2.escape;
-                        return;
+                escSet.replaceableArray = false;
+
+                // Raise 1st object's escape state to 2nd if 2nd is higher
+                mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources = use.getSources();
+                if (sources.get(0).getReg() == def.getReg()) {
+                    int setIndex = findSetIndex(sources.get(1));
+                    if (setIndex != latticeValues.size()) {
+                        EscapeSet parentSet = latticeValues.get(setIndex);
+                        addEdge(parentSet, escSet);
+                        if (escSet.escape.compareTo(parentSet.escape) < 0) {
+                            escSet.escape = parentSet.escape;
+                        }
                     }
-                    return;
-                }
-                return;
-            }
-            int findSetIndex2 = findSetIndex(sources.get(0));
-            if (findSetIndex2 != this.latticeValues.size()) {
-                EscapeSet escapeSet3 = this.latticeValues.get(findSetIndex2);
-                addEdge(escapeSet, escapeSet3);
-                if (escapeSet3.escape.compareTo((EscapeState) escapeSet.escape) < 0) {
-                    escapeSet3.escape = escapeSet.escape;
-                }
-            }
-        }
-    }
-
-    private void scalarReplacement() {
-        Iterator<EscapeSet> it = this.latticeValues.iterator();
-        while (it.hasNext()) {
-            EscapeSet next = it.next();
-            if (next.replaceableArray && next.escape == EscapeState.NONE) {
-                int nextSetBit = next.regSet.nextSetBit(0);
-                SsaInsn definitionForRegister = this.ssaMeth.getDefinitionForRegister(nextSetBit);
-                SsaInsn insnForMove = getInsnForMove(definitionForRegister);
-                int intBits = ((CstLiteralBits) insnForMove.getSources().get(0).getTypeBearer()).getIntBits();
-                ArrayList<RegisterSpec> arrayList = new ArrayList<>(intBits);
-                HashSet<SsaInsn> hashSet = new HashSet<>();
-                replaceDef(definitionForRegister, insnForMove, intBits, arrayList);
-                hashSet.add(insnForMove);
-                hashSet.add(definitionForRegister);
-                for (SsaInsn ssaInsn : this.ssaMeth.getUseListForRegister(nextSetBit)) {
-                    replaceUse(ssaInsn, insnForMove, arrayList, hashSet);
-                    hashSet.add(ssaInsn);
-                }
-                this.ssaMeth.deleteInsns(hashSet);
-                this.ssaMeth.onInsnsChanged();
-                SsaConverter.updateSsaMethod(this.ssaMeth, this.regCount);
-                movePropagate();
-            }
-        }
-    }
-
-    private void replaceDef(SsaInsn ssaInsn, SsaInsn ssaInsn2, int i, ArrayList<RegisterSpec> arrayList) {
-        Type type = ssaInsn.getResult().getType();
-        for (int i2 = 0; i2 < i; i2++) {
-            Constant zeroFor = Zeroes.zeroFor(type.getComponentType());
-            RegisterSpec make = RegisterSpec.make(this.ssaMeth.makeNewSsaReg(), (TypedConstant) zeroFor);
-            arrayList.add(make);
-            insertPlainInsnBefore(ssaInsn, RegisterSpecList.EMPTY, make, 5, zeroFor);
-        }
-    }
-
-    private void replaceUse(SsaInsn ssaInsn, SsaInsn ssaInsn2, ArrayList<RegisterSpec> arrayList, HashSet<SsaInsn> hashSet) {
-        int size = arrayList.size();
-        switch (ssaInsn.getOpcode().getOpcode()) {
-            case 34:
-                TypeBearer typeBearer = ssaInsn2.getSources().get(0).getTypeBearer();
-                SsaInsn moveForInsn = getMoveForInsn(ssaInsn);
-                insertPlainInsnBefore(moveForInsn, RegisterSpecList.EMPTY, moveForInsn.getResult(), 5, (Constant) typeBearer);
-                hashSet.add(moveForInsn);
-                return;
-            case 38:
-                SsaInsn moveForInsn2 = getMoveForInsn(ssaInsn);
-                RegisterSpecList sources = ssaInsn.getSources();
-                int intBits = ((CstLiteralBits) sources.get(1).getTypeBearer()).getIntBits();
-                if (intBits < size) {
-                    RegisterSpec registerSpec = arrayList.get(intBits);
-                    insertPlainInsnBefore(moveForInsn2, RegisterSpecList.make(registerSpec), registerSpec.withReg(moveForInsn2.getResult().getReg()), 2, null);
                 } else {
-                    insertExceptionThrow(moveForInsn2, sources.get(1), hashSet);
-                    hashSet.add(moveForInsn2.getBlock().getInsns().get(2));
+                    int setIndex = findSetIndex(sources.get(0));
+                    if (setIndex != latticeValues.size()) {
+                        EscapeSet childSet = latticeValues.get(setIndex);
+                        addEdge(escSet, childSet);
+                        if (childSet.escape.compareTo(escSet.escape) < 0) {
+                            childSet.escape = escSet.escape;
+                        }
+                    }
                 }
-                hashSet.add(moveForInsn2);
-                return;
-            case 39:
-                RegisterSpecList sources2 = ssaInsn.getSources();
-                int intBits2 = ((CstLiteralBits) sources2.get(2).getTypeBearer()).getIntBits();
-                if (intBits2 < size) {
-                    RegisterSpec registerSpec2 = sources2.get(0);
-                    RegisterSpec withReg = registerSpec2.withReg(arrayList.get(intBits2).getReg());
-                    insertPlainInsnBefore(ssaInsn, RegisterSpecList.make(registerSpec2), withReg, 2, null);
-                    arrayList.set(intBits2, withReg.withSimpleType());
-                    return;
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.AGET:
+                // For array gets, check for a constant array index
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec getIndex = use.getSources().get(1);
+                if (!getIndex.getTypeBearer().isConstant()) {
+                    // If not constant, array can't be replaced
+                    escSet.replaceableArray = false;
                 }
-                insertExceptionThrow(ssaInsn, sources2.get(2), hashSet);
-                return;
-            case 54:
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.PUT_STATIC:
+                // Static puts cause an object to escape globally
+                escSet.escape = EscapeState.GLOBAL;
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.INVOKE_STATIC:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.INVOKE_VIRTUAL:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.INVOKE_SUPER:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.INVOKE_DIRECT:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.INVOKE_INTERFACE:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.RETURN:
+            case mod.agus.jcoderz.dx.rop.code.RegOps.THROW:
+                // These operations cause an object to escape interprocedurally
+                escSet.escape = EscapeState.INTER;
+                break;
             default:
-                return;
-            case 57:
-                ArrayList<Constant> initValues = ((FillArrayDataInsn) ssaInsn.getOriginalRopInsn()).getInitValues();
-                for (int i = 0; i < size; i++) {
-                    RegisterSpec make = RegisterSpec.make(arrayList.get(i).getReg(), (TypeBearer) initValues.get(i));
-                    insertPlainInsnBefore(ssaInsn, RegisterSpecList.EMPTY, make, 5, initValues.get(i));
-                    arrayList.set(i, make);
-                }
-                return;
+                break;
         }
     }
 
-    private void movePropagate() {
-        for (int i = 0; i < this.ssaMeth.getRegCount(); i++) {
-            SsaInsn definitionForRegister = this.ssaMeth.getDefinitionForRegister(i);
-            if (!(definitionForRegister == null || definitionForRegister.getOpcode() == null || definitionForRegister.getOpcode().getOpcode() != 2)) {
-                ArrayList<SsaInsn>[] useListCopy = this.ssaMeth.getUseListCopy();
-                final RegisterSpec registerSpec = definitionForRegister.getSources().get(0);
-                final RegisterSpec result = definitionForRegister.getResult();
-                if (registerSpec.getReg() >= this.regCount || result.getReg() >= this.regCount) {
-                    RegisterMapper registerMapper = new RegisterMapper() {
-                        /* class mod.agus.jcoderz.dx.ssa.EscapeAnalysis.AnonymousClass1 */
+    /**
+     * Performs scalar replacement on all eligible arrays.
+     */
+    private void scalarReplacement() {
+        // Iterate through lattice, looking for non-escaping replaceable arrays
+        for (EscapeSet escSet : latticeValues) {
+            if (!escSet.replaceableArray || escSet.escape != EscapeState.NONE) {
+                continue;
+            }
 
-                        @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
-                        public int getNewRegisterCount() {
-                            return EscapeAnalysis.this.ssaMeth.getRegCount();
-                        }
+            // Get the instructions for the definition and move of the array
+            int e = escSet.regSet.nextSetBit(0);
+            mod.agus.jcoderz.dx.ssa.SsaInsn def = ssaMeth.getDefinitionForRegister(e);
+            mod.agus.jcoderz.dx.ssa.SsaInsn prev = getInsnForMove(def);
 
-                        @Override // mod.agus.jcoderz.dx.ssa.RegisterMapper
-                        public RegisterSpec map(RegisterSpec registerSpec) {
-                            if (registerSpec.getReg() == result.getReg()) {
-                                return registerSpec;
-                            }
-                            return registerSpec;
-                        }
-                    };
-                    Iterator<SsaInsn> it = useListCopy[result.getReg()].iterator();
-                    while (it.hasNext()) {
-                        it.next().mapSourceRegisters(registerMapper);
-                    }
+            // Create a map for the new registers that will be created
+            mod.agus.jcoderz.dx.rop.type.TypeBearer lengthReg = prev.getSources().get(0).getTypeBearer();
+            int length = ((mod.agus.jcoderz.dx.rop.cst.CstLiteralBits) lengthReg).getIntBits();
+            ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec> newRegs =
+                new ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec>(length);
+            HashSet<mod.agus.jcoderz.dx.ssa.SsaInsn> deletedInsns = new HashSet<mod.agus.jcoderz.dx.ssa.SsaInsn>();
+
+            // Replace the definition of the array with registers
+            replaceDef(def, prev, length, newRegs);
+
+            // Mark definition instructions for deletion
+            deletedInsns.add(prev);
+            deletedInsns.add(def);
+
+            // Go through all uses of the array
+            List<mod.agus.jcoderz.dx.ssa.SsaInsn> useList = ssaMeth.getUseListForRegister(e);
+            for (mod.agus.jcoderz.dx.ssa.SsaInsn use : useList) {
+                // Replace the use with scalars and then mark it for deletion
+                replaceUse(use, prev, newRegs, deletedInsns);
+                deletedInsns.add(use);
+            }
+
+            // Delete all marked instructions
+            ssaMeth.deleteInsns(deletedInsns);
+            ssaMeth.onInsnsChanged();
+
+            // Convert the method back to SSA form
+            SsaConverter.updateSsaMethod(ssaMeth, regCount);
+
+            // Propagate and remove extra moves added by scalar replacement
+            movePropagate();
+        }
+    }
+
+    /**
+     * Replaces the instructions that define an array with equivalent registers.
+     * For each entry in the array, a register is created, initialized to zero.
+     * A mapping between this register and the corresponding array index is
+     * added.
+     *
+     * @param def {@code non-null;} move result instruction for array
+     * @param prev {@code non-null;} instruction for instantiating new array
+     * @param length size of the new array
+     * @param newRegs {@code non-null;} mapping of array indices to new
+     * registers to be populated
+     */
+    private void replaceDef(mod.agus.jcoderz.dx.ssa.SsaInsn def, mod.agus.jcoderz.dx.ssa.SsaInsn prev, int length,
+                            ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec> newRegs) {
+        Type resultType = def.getResult().getType();
+
+        // Create new zeroed out registers for each element in the array
+        for (int i = 0; i < length; i++) {
+            mod.agus.jcoderz.dx.rop.cst.Constant newZero = Zeroes.zeroFor(resultType.getComponentType());
+            mod.agus.jcoderz.dx.rop.cst.TypedConstant typedZero = (TypedConstant) newZero;
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec newReg =
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec.make(ssaMeth.makeNewSsaReg(), typedZero);
+            newRegs.add(newReg);
+            insertPlainInsnBefore(def, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY, newReg,
+                                      mod.agus.jcoderz.dx.rop.code.RegOps.CONST, newZero);
+        }
+    }
+
+    /**
+     * Replaces the use for a scalar replaceable array. Gets and puts become
+     * move instructions, and array lengths and fills are handled. Can also
+     * identify ArrayIndexOutOfBounds exceptions and throw them if detected.
+     *
+     * @param use {@code non-null;} move result instruction for array
+     * @param prev {@code non-null;} instruction for instantiating new array
+     * @param newRegs {@code non-null;} mapping of array indices to new
+     * registers
+     * @param deletedInsns {@code non-null;} set of instructions marked for
+     * deletion
+     */
+    private void replaceUse(mod.agus.jcoderz.dx.ssa.SsaInsn use, mod.agus.jcoderz.dx.ssa.SsaInsn prev,
+                            ArrayList<mod.agus.jcoderz.dx.rop.code.RegisterSpec> newRegs,
+                            HashSet<mod.agus.jcoderz.dx.ssa.SsaInsn> deletedInsns) {
+        int index;
+        int length = newRegs.size();
+        mod.agus.jcoderz.dx.ssa.SsaInsn next;
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources;
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec source, result;
+        mod.agus.jcoderz.dx.rop.cst.CstLiteralBits indexReg;
+
+        switch (use.getOpcode().getOpcode()) {
+            case mod.agus.jcoderz.dx.rop.code.RegOps.AGET:
+                // Replace array gets with moves
+                next = getMoveForInsn(use);
+                sources = use.getSources();
+                indexReg = ((mod.agus.jcoderz.dx.rop.cst.CstLiteralBits) sources.get(1).getTypeBearer());
+                index = indexReg.getIntBits();
+                if (index < length) {
+                    source = newRegs.get(index);
+                    result = source.withReg(next.getResult().getReg());
+                    insertPlainInsnBefore(next, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(source),
+                                              result, mod.agus.jcoderz.dx.rop.code.RegOps.MOVE, null);
+                } else {
+                    // Throw an exception if the index is out of bounds
+                    insertExceptionThrow(next, sources.get(1), deletedInsns);
+                    deletedInsns.add(next.getBlock().getInsns().get(2));
                 }
+                deletedInsns.add(next);
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.APUT:
+                // Replace array puts with moves
+                sources = use.getSources();
+                indexReg = ((CstLiteralBits) sources.get(2).getTypeBearer());
+                index = indexReg.getIntBits();
+                if (index < length) {
+                    source = sources.get(0);
+                    result = source.withReg(newRegs.get(index).getReg());
+                    insertPlainInsnBefore(use, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(source),
+                                              result, mod.agus.jcoderz.dx.rop.code.RegOps.MOVE, null);
+                    // Update the newReg entry to mark value as unknown now
+                    newRegs.set(index, result.withSimpleType());
+                } else {
+                    // Throw an exception if the index is out of bounds
+                    insertExceptionThrow(use, sources.get(2), deletedInsns);
+                }
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.ARRAY_LENGTH:
+                // Replace array lengths with const instructions
+                mod.agus.jcoderz.dx.rop.type.TypeBearer lengthReg = prev.getSources().get(0).getTypeBearer();
+                //CstInteger lengthReg = CstInteger.make(length);
+                next = getMoveForInsn(use);
+                insertPlainInsnBefore(next, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY,
+                                          next.getResult(), mod.agus.jcoderz.dx.rop.code.RegOps.CONST,
+                                          (mod.agus.jcoderz.dx.rop.cst.Constant) lengthReg);
+                deletedInsns.add(next);
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.MARK_LOCAL:
+                // Remove mark local instructions
+                break;
+            case mod.agus.jcoderz.dx.rop.code.RegOps.FILL_ARRAY_DATA:
+                // Create const instructions for each fill value
+                mod.agus.jcoderz.dx.rop.code.Insn ropUse = use.getOriginalRopInsn();
+                mod.agus.jcoderz.dx.rop.code.FillArrayDataInsn fill = (FillArrayDataInsn) ropUse;
+                ArrayList<mod.agus.jcoderz.dx.rop.cst.Constant> constList = fill.getInitValues();
+                for (int i = 0; i < length; i++) {
+                    mod.agus.jcoderz.dx.rop.code.RegisterSpec newFill =
+                        mod.agus.jcoderz.dx.rop.code.RegisterSpec.make(newRegs.get(i).getReg(),
+                                              (TypeBearer) constList.get(i));
+                    insertPlainInsnBefore(use, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY, newFill,
+                                              mod.agus.jcoderz.dx.rop.code.RegOps.CONST, constList.get(i));
+                    // Update the newRegs to hold the new const value
+                    newRegs.set(i, newFill);
+                }
+                break;
+            default:
+        }
+    }
+
+    /**
+     * Identifies extra moves added by scalar replacement and propagates the
+     * source of the move to any users of the result.
+     */
+    private void movePropagate() {
+        for (int i = 0; i < ssaMeth.getRegCount(); i++) {
+            mod.agus.jcoderz.dx.ssa.SsaInsn insn = ssaMeth.getDefinitionForRegister(i);
+
+            // Look for move instructions only
+            if (insn == null || insn.getOpcode() == null ||
+                insn.getOpcode().getOpcode() != mod.agus.jcoderz.dx.rop.code.RegOps.MOVE) {
+                continue;
+            }
+
+            final ArrayList<mod.agus.jcoderz.dx.ssa.SsaInsn>[] useList = ssaMeth.getUseListCopy();
+            final mod.agus.jcoderz.dx.rop.code.RegisterSpec source = insn.getSources().get(0);
+            final mod.agus.jcoderz.dx.rop.code.RegisterSpec result = insn.getResult();
+
+            // Ignore moves that weren't added due to scalar replacement
+            if (source.getReg() < regCount && result.getReg() < regCount) {
+                continue;
+            }
+
+            // Create a mapping from source to result
+            mod.agus.jcoderz.dx.ssa.RegisterMapper mapper = new RegisterMapper() {
+                @Override
+                public int getNewRegisterCount() {
+                    return ssaMeth.getRegCount();
+                }
+
+                @Override
+                public mod.agus.jcoderz.dx.rop.code.RegisterSpec map(mod.agus.jcoderz.dx.rop.code.RegisterSpec registerSpec) {
+                    if (registerSpec.getReg() == result.getReg()) {
+                        return source;
+                    }
+
+                    return registerSpec;
+                }
+            };
+
+            // Modify all uses of the move to use the source of the move instead
+            for (mod.agus.jcoderz.dx.ssa.SsaInsn use : useList[result.getReg()]) {
+                use.mapSourceRegisters(mapper);
             }
         }
     }
 
+    /**
+     * Runs escape analysis and scalar replacement of arrays.
+     */
     private void run() {
-        this.ssaMeth.forEachBlockDepthFirstDom(new SsaBasicBlock.Visitor() {
-            /* class mod.agus.jcoderz.dx.ssa.EscapeAnalysis.AnonymousClass2 */
-
-            @Override // mod.agus.jcoderz.dx.ssa.SsaBasicBlock.Visitor
-            public void visitBlock(SsaBasicBlock ssaBasicBlock, SsaBasicBlock ssaBasicBlock2) {
-                ssaBasicBlock.forEachInsn(new SsaInsn.Visitor() {
-                    /* class mod.agus.jcoderz.dx.ssa.EscapeAnalysis.AnonymousClass2.AnonymousClass1 */
-
-                    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor
-                    public void visitMoveInsn(NormalSsaInsn normalSsaInsn) {
+        ssaMeth.forEachBlockDepthFirstDom(new mod.agus.jcoderz.dx.ssa.SsaBasicBlock.Visitor() {
+            @Override
+            public void visitBlock (mod.agus.jcoderz.dx.ssa.SsaBasicBlock block,
+                                    mod.agus.jcoderz.dx.ssa.SsaBasicBlock unused) {
+                block.forEachInsn(new mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor() {
+                    @Override
+                    public void visitMoveInsn(NormalSsaInsn insn) {
+                        // do nothing
                     }
 
-                    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor
-                    public void visitPhiInsn(PhiInsn phiInsn) {
+                    @Override
+                    public void visitPhiInsn(PhiInsn insn) {
+                        // do nothing
                     }
 
-                    @Override // mod.agus.jcoderz.dx.ssa.SsaInsn.Visitor
-                    public void visitNonMoveInsn(NormalSsaInsn normalSsaInsn) {
-                        EscapeAnalysis.this.processInsn(normalSsaInsn);
+                    @Override
+                    public void visitNonMoveInsn(NormalSsaInsn insn) {
+                        processInsn(insn);
                     }
                 });
             }
         });
-        Iterator<EscapeSet> it = this.latticeValues.iterator();
-        while (it.hasNext()) {
-            EscapeSet next = it.next();
-            if (next.escape != EscapeState.NONE) {
-                Iterator<EscapeSet> it2 = next.childSets.iterator();
-                while (it2.hasNext()) {
-                    EscapeSet next2 = it2.next();
-                    if (next.escape.compareTo((EscapeState) next2.escape) > 0) {
-                        next2.escape = next.escape;
+
+        // Go through lattice and promote fieldSets as necessary
+        for (EscapeSet e : latticeValues) {
+            if (e.escape != EscapeState.NONE) {
+                for (EscapeSet field : e.childSets) {
+                    if (e.escape.compareTo(field.escape) > 0) {
+                        field.escape = e.escape;
                     }
                 }
             }
         }
+
+        // Perform scalar replacement for arrays
         scalarReplacement();
     }
 
-    private void insertExceptionThrow(SsaInsn ssaInsn, RegisterSpec registerSpec, HashSet<SsaInsn> hashSet) {
-        CstType cstType = new CstType(Exceptions.TYPE_ArrayIndexOutOfBoundsException);
-        insertThrowingInsnBefore(ssaInsn, RegisterSpecList.EMPTY, null, 40, cstType);
-        SsaBasicBlock block = ssaInsn.getBlock();
-        SsaBasicBlock insertNewSuccessor = block.insertNewSuccessor(block.getPrimarySuccessor());
-        RegisterSpec make = RegisterSpec.make(this.ssaMeth.makeNewSsaReg(), cstType);
-        insertPlainInsnBefore(insertNewSuccessor.getInsns().get(0), RegisterSpecList.EMPTY, make, 56, null);
-        SsaBasicBlock insertNewSuccessor2 = insertNewSuccessor.insertNewSuccessor(insertNewSuccessor.getPrimarySuccessor());
-        SsaInsn ssaInsn2 = insertNewSuccessor2.getInsns().get(0);
-        insertThrowingInsnBefore(ssaInsn2, RegisterSpecList.make(make, registerSpec), null, 52, new CstMethodRef(cstType, new CstNat(new CstString("<init>"), new CstString("(I)V"))));
-        hashSet.add(ssaInsn2);
-        SsaBasicBlock insertNewSuccessor3 = insertNewSuccessor2.insertNewSuccessor(insertNewSuccessor2.getPrimarySuccessor());
-        SsaInsn ssaInsn3 = insertNewSuccessor3.getInsns().get(0);
-        insertThrowingInsnBefore(ssaInsn3, RegisterSpecList.make(make), null, 35, null);
-        insertNewSuccessor3.replaceSuccessor(insertNewSuccessor3.getPrimarySuccessorIndex(), this.ssaMeth.getExitBlock().getIndex());
-        hashSet.add(ssaInsn3);
+    /**
+     * Replaces instructions that trigger an ArrayIndexOutofBounds exception
+     * with an actual throw of the exception.
+     *
+     * @param insn {@code non-null;} instruction causing the exception
+     * @param index {@code non-null;} index value that is out of bounds
+     * @param deletedInsns {@code non-null;} set of instructions marked for
+     * deletion
+     */
+    private void insertExceptionThrow(mod.agus.jcoderz.dx.ssa.SsaInsn insn, mod.agus.jcoderz.dx.rop.code.RegisterSpec index,
+                                      HashSet<mod.agus.jcoderz.dx.ssa.SsaInsn> deletedInsns) {
+        // Create a new ArrayIndexOutOfBoundsException
+        mod.agus.jcoderz.dx.rop.cst.CstType exception =
+            new CstType(Exceptions.TYPE_ArrayIndexOutOfBoundsException);
+        insertThrowingInsnBefore(insn, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY, null,
+                                     mod.agus.jcoderz.dx.rop.code.RegOps.NEW_INSTANCE, exception);
+
+        // Add a successor block with a move result pseudo for the exception
+        mod.agus.jcoderz.dx.ssa.SsaBasicBlock currBlock = insn.getBlock();
+        mod.agus.jcoderz.dx.ssa.SsaBasicBlock newBlock =
+            currBlock.insertNewSuccessor(currBlock.getPrimarySuccessor());
+        mod.agus.jcoderz.dx.ssa.SsaInsn newInsn = newBlock.getInsns().get(0);
+        mod.agus.jcoderz.dx.rop.code.RegisterSpec newReg =
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec.make(ssaMeth.makeNewSsaReg(), exception);
+        insertPlainInsnBefore(newInsn, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY, newReg,
+                                  mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_RESULT_PSEUDO, null);
+
+        // Add another successor block to initialize the exception
+        mod.agus.jcoderz.dx.ssa.SsaBasicBlock newBlock2 =
+            newBlock.insertNewSuccessor(newBlock.getPrimarySuccessor());
+        mod.agus.jcoderz.dx.ssa.SsaInsn newInsn2 = newBlock2.getInsns().get(0);
+        mod.agus.jcoderz.dx.rop.cst.CstNat newNat = new CstNat(new mod.agus.jcoderz.dx.rop.cst.CstString("<init>"), new CstString("(I)V"));
+        mod.agus.jcoderz.dx.rop.cst.CstMethodRef newRef = new CstMethodRef(exception, newNat);
+        insertThrowingInsnBefore(newInsn2, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(newReg, index),
+                                     null, mod.agus.jcoderz.dx.rop.code.RegOps.INVOKE_DIRECT, newRef);
+        deletedInsns.add(newInsn2);
+
+        // Add another successor block to throw the new exception
+        SsaBasicBlock newBlock3 =
+            newBlock2.insertNewSuccessor(newBlock2.getPrimarySuccessor());
+        mod.agus.jcoderz.dx.ssa.SsaInsn newInsn3 = newBlock3.getInsns().get(0);
+        insertThrowingInsnBefore(newInsn3, mod.agus.jcoderz.dx.rop.code.RegisterSpecList.make(newReg), null,
+                                     mod.agus.jcoderz.dx.rop.code.RegOps.THROW, null);
+        newBlock3.replaceSuccessor(newBlock3.getPrimarySuccessorIndex(),
+                                       ssaMeth.getExitBlock().getIndex());
+        deletedInsns.add(newInsn3);
     }
 
-    private void insertPlainInsnBefore(SsaInsn ssaInsn, RegisterSpecList registerSpecList, RegisterSpec registerSpec, int i, Constant constant) {
-        Rop ropFor;
-        Insn plainCstInsn;
-        Insn originalRopInsn = ssaInsn.getOriginalRopInsn();
-        if (i == 56) {
-            ropFor = Rops.opMoveResultPseudo(registerSpec.getType());
+    /**
+     * Inserts a new PlainInsn before the given instruction.
+     * TODO: move this somewhere more appropriate
+     *
+     * @param insn {@code non-null;} instruction to insert before
+     * @param newSources {@code non-null;} sources of new instruction
+     * @param newResult {@code non-null;} result of new instruction
+     * @param newOpcode opcode of new instruction
+     * @param cst {@code null-ok;} constant for new instruction, if any
+     */
+    private void insertPlainInsnBefore(mod.agus.jcoderz.dx.ssa.SsaInsn insn,
+                                       mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources, mod.agus.jcoderz.dx.rop.code.RegisterSpec newResult, int newOpcode,
+                                       mod.agus.jcoderz.dx.rop.cst.Constant cst) {
+
+        mod.agus.jcoderz.dx.rop.code.Insn originalRopInsn = insn.getOriginalRopInsn();
+        mod.agus.jcoderz.dx.rop.code.Rop newRop;
+        if (newOpcode == RegOps.MOVE_RESULT_PSEUDO) {
+            newRop = mod.agus.jcoderz.dx.rop.code.Rops.opMoveResultPseudo(newResult.getType());
         } else {
-            ropFor = Rops.ropFor(i, registerSpec, registerSpecList, constant);
+            newRop = mod.agus.jcoderz.dx.rop.code.Rops.ropFor(newOpcode, newResult, newSources, cst);
         }
-        if (constant == null) {
-            plainCstInsn = new PlainInsn(ropFor, originalRopInsn.getPosition(), registerSpec, registerSpecList);
+
+        mod.agus.jcoderz.dx.rop.code.Insn newRopInsn;
+        if (cst == null) {
+            newRopInsn = new PlainInsn(newRop,
+                    originalRopInsn.getPosition(), newResult, newSources);
         } else {
-            plainCstInsn = new PlainCstInsn(ropFor, originalRopInsn.getPosition(), registerSpec, registerSpecList, constant);
+            newRopInsn = new PlainCstInsn(newRop,
+                originalRopInsn.getPosition(), newResult, newSources, cst);
         }
-        NormalSsaInsn normalSsaInsn = new NormalSsaInsn(plainCstInsn, ssaInsn.getBlock());
-        ArrayList<SsaInsn> insns = ssaInsn.getBlock().getInsns();
-        insns.add(insns.lastIndexOf(ssaInsn), normalSsaInsn);
-        this.ssaMeth.onInsnAdded(normalSsaInsn);
+
+        NormalSsaInsn newInsn = new NormalSsaInsn(newRopInsn, insn.getBlock());
+        List<mod.agus.jcoderz.dx.ssa.SsaInsn> insns = insn.getBlock().getInsns();
+
+        insns.add(insns.lastIndexOf(insn), newInsn);
+        ssaMeth.onInsnAdded(newInsn);
     }
 
-    private void insertThrowingInsnBefore(SsaInsn ssaInsn, RegisterSpecList registerSpecList, RegisterSpec registerSpec, int i, Constant constant) {
-        Insn throwingCstInsn;
-        Insn originalRopInsn = ssaInsn.getOriginalRopInsn();
-        Rop ropFor = Rops.ropFor(i, registerSpec, registerSpecList, constant);
-        if (constant == null) {
-            throwingCstInsn = new ThrowingInsn(ropFor, originalRopInsn.getPosition(), registerSpecList, StdTypeList.EMPTY);
+    /**
+     * Inserts a new ThrowingInsn before the given instruction.
+     * TODO: move this somewhere more appropriate
+     *
+     * @param insn {@code non-null;} instruction to insert before
+     * @param newSources {@code non-null;} sources of new instruction
+     * @param newResult {@code non-null;} result of new instruction
+     * @param newOpcode opcode of new instruction
+     * @param cst {@code null-ok;} constant for new instruction, if any
+     */
+    private void insertThrowingInsnBefore(mod.agus.jcoderz.dx.ssa.SsaInsn insn,
+                                          RegisterSpecList newSources, RegisterSpec newResult, int newOpcode,
+                                          Constant cst) {
+
+        mod.agus.jcoderz.dx.rop.code.Insn origRopInsn = insn.getOriginalRopInsn();
+        Rop newRop = Rops.ropFor(newOpcode, newResult, newSources, cst);
+        Insn newRopInsn;
+        if (cst == null) {
+            newRopInsn = new ThrowingInsn(newRop,
+                origRopInsn.getPosition(), newSources, mod.agus.jcoderz.dx.rop.type.StdTypeList.EMPTY);
         } else {
-            throwingCstInsn = new ThrowingCstInsn(ropFor, originalRopInsn.getPosition(), registerSpecList, StdTypeList.EMPTY, constant);
+            newRopInsn = new ThrowingCstInsn(newRop,
+                origRopInsn.getPosition(), newSources, StdTypeList.EMPTY, cst);
         }
-        NormalSsaInsn normalSsaInsn = new NormalSsaInsn(throwingCstInsn, ssaInsn.getBlock());
-        ArrayList<SsaInsn> insns = ssaInsn.getBlock().getInsns();
-        insns.add(insns.lastIndexOf(ssaInsn), normalSsaInsn);
-        this.ssaMeth.onInsnAdded(normalSsaInsn);
-    }
 
-    public enum EscapeState {
-        TOP,
-        NONE,
-        METHOD,
-        INTER,
-        GLOBAL
-    }
+        NormalSsaInsn newInsn = new NormalSsaInsn(newRopInsn, insn.getBlock());
+        List<SsaInsn> insns = insn.getBlock().getInsns();
 
-    /* access modifiers changed from: package-private */
-    public static class EscapeSet {
-        ArrayList<EscapeSet> childSets = new ArrayList<>();
-        EscapeState escape;
-        ArrayList<EscapeSet> parentSets = new ArrayList<>();
-        BitSet regSet;
-        boolean replaceableArray = false;
-
-        EscapeSet(int i, int i2, EscapeState escapeState) {
-            this.regSet = new BitSet(i2);
-            this.regSet.set(i);
-            this.escape = escapeState;
-        }
+        insns.add(insns.lastIndexOf(insn), newInsn);
+        ssaMeth.onInsnAdded(newInsn);
     }
 }

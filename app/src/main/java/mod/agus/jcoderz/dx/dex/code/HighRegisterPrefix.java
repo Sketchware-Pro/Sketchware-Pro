@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.code;
 
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
@@ -5,78 +21,126 @@ import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 
+/**
+ * Combination instruction which turns into a variable number of
+ * {@code move*} instructions to move a set of registers into
+ * registers starting at {@code 0} sequentially. This is used
+ * in translating an instruction whose register requirements cannot
+ * be met using a straightforward choice of a single opcode.
+ */
 public final class HighRegisterPrefix extends VariableSizeInsn {
-    private SimpleInsn[] insns;
+    /** {@code null-ok;} cached instructions, if constructed */
+    private mod.agus.jcoderz.dx.dex.code.SimpleInsn[] insns;
 
-    public HighRegisterPrefix(SourcePosition sourcePosition, RegisterSpecList registerSpecList) {
-        super(sourcePosition, registerSpecList);
-        if (registerSpecList.size() == 0) {
+    /**
+     * Constructs an instance. The output address of this instance is initially
+     * unknown ({@code -1}).
+     *
+     * @param position {@code non-null;} source position
+     * @param registers {@code non-null;} source registers
+     */
+    public HighRegisterPrefix(mod.agus.jcoderz.dx.rop.code.SourcePosition position,
+                              mod.agus.jcoderz.dx.rop.code.RegisterSpecList registers) {
+        super(position, registers);
+
+        if (registers.size() == 0) {
             throw new IllegalArgumentException("registers.size() == 0");
         }
-        this.insns = null;
+
+        insns = null;
     }
 
-    private static SimpleInsn moveInsnFor(RegisterSpec registerSpec, int i) {
-        return DalvInsn.makeMove(SourcePosition.NO_INFO, RegisterSpec.make(i, registerSpec.getType()), registerSpec);
-    }
-
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
+    /** {@inheritDoc} */
+    @Override
     public int codeSize() {
+        int result = 0;
+
         calculateInsnsIfNecessary();
-        int i = 0;
-        for (SimpleInsn simpleInsn : this.insns) {
-            i += simpleInsn.codeSize();
+
+        for (mod.agus.jcoderz.dx.dex.code.SimpleInsn insn : insns) {
+            result += insn.codeSize();
         }
-        return i;
+
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public void writeTo(AnnotatedOutput annotatedOutput) {
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(AnnotatedOutput out) {
         calculateInsnsIfNecessary();
-        for (SimpleInsn simpleInsn : this.insns) {
-            simpleInsn.writeTo(annotatedOutput);
+
+        for (mod.agus.jcoderz.dx.dex.code.SimpleInsn insn : insns) {
+            insn.writeTo(out);
         }
     }
 
+    /**
+     * Helper for {@link #codeSize} and {@link #writeTo} which sets up
+     * {@link #insns} if not already done.
+     */
     private void calculateInsnsIfNecessary() {
-        int i = 0;
-        if (this.insns == null) {
-            RegisterSpecList registers = getRegisters();
-            int size = registers.size();
-            this.insns = new SimpleInsn[size];
-            for (int i2 = 0; i2 < size; i2++) {
-                RegisterSpec registerSpec = registers.get(i2);
-                this.insns[i2] = moveInsnFor(registerSpec, i);
-                i += registerSpec.getCategory();
-            }
+        if (insns != null) {
+            return;
+        }
+
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList registers = getRegisters();
+        int sz = registers.size();
+
+        insns = new mod.agus.jcoderz.dx.dex.code.SimpleInsn[sz];
+
+        for (int i = 0, outAt = 0; i < sz; i++) {
+          mod.agus.jcoderz.dx.rop.code.RegisterSpec src = registers.get(i);
+          insns[i] = moveInsnFor(src, outAt);
+          outAt += src.getCategory();
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public DalvInsn withRegisters(RegisterSpecList registerSpecList) {
-        return new HighRegisterPrefix(getPosition(), registerSpecList);
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.dex.code.DalvInsn withRegisters(mod.agus.jcoderz.dx.rop.code.RegisterSpecList registers) {
+        return new HighRegisterPrefix(getPosition(), registers);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public String argString() {
+    /** {@inheritDoc} */
+    @Override
+    protected String argString() {
         return null;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.code.DalvInsn
-    public String listingString0(boolean z) {
-        int i = 0;
+    /** {@inheritDoc} */
+    @Override
+    protected String listingString0(boolean noteIndices) {
         RegisterSpecList registers = getRegisters();
-        int size = registers.size();
-        StringBuffer stringBuffer = new StringBuffer(100);
-        for (int i2 = 0; i2 < size; i2++) {
-            RegisterSpec registerSpec = registers.get(i2);
-            SimpleInsn moveInsnFor = moveInsnFor(registerSpec, i);
-            if (i2 != 0) {
-                stringBuffer.append('\n');
+        int sz = registers.size();
+        StringBuilder sb = new StringBuilder(100);
+
+        for (int i = 0, outAt = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.code.RegisterSpec src = registers.get(i);
+            mod.agus.jcoderz.dx.dex.code.SimpleInsn insn = moveInsnFor(src, outAt);
+
+            if (i != 0) {
+                sb.append('\n');
             }
-            stringBuffer.append(moveInsnFor.listingString0(z));
-            i += registerSpec.getCategory();
+
+            sb.append(insn.listingString0(noteIndices));
+
+            outAt += src.getCategory();
         }
-        return stringBuffer.toString();
+
+        return sb.toString();
+    }
+
+    /**
+     * Returns the proper move instruction for the given source spec
+     * and destination index.
+     *
+     * @param src {@code non-null;} the source register spec
+     * @param destIndex {@code >= 0;} the destination register index
+     * @return {@code non-null;} the appropriate move instruction
+     */
+    private static SimpleInsn moveInsnFor(mod.agus.jcoderz.dx.rop.code.RegisterSpec src, int destIndex) {
+        return DalvInsn.makeMove(SourcePosition.NO_INFO,
+                RegisterSpec.make(destIndex, src.getType()),
+                src);
     }
 }

@@ -1,8 +1,24 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.direct;
 
-import org.eclipse.jdt.internal.compiler.util.SuffixConstants;
-
+import mod.agus.jcoderz.dx.cf.attrib.AttBootstrapMethods;
 import mod.agus.jcoderz.dx.cf.attrib.AttSourceFile;
+import mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList;
 import mod.agus.jcoderz.dx.cf.cst.ConstantPoolParser;
 import mod.agus.jcoderz.dx.cf.iface.Attribute;
 import mod.agus.jcoderz.dx.cf.iface.AttributeList;
@@ -23,306 +39,648 @@ import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Class file with info taken from a {@code byte[]} or slice thereof.
+ */
 public class DirectClassFile implements ClassFile {
-    private static final int CLASS_FILE_MAGIC = -889275714;
-    private static final int CLASS_FILE_MAX_MAJOR_VERSION = 51;
-    private static final int CLASS_FILE_MAX_MINOR_VERSION = 0;
+    /** the expected value of the ClassFile.magic field */
+    private static final int CLASS_FILE_MAGIC = 0xcafebabe;
+
+    /**
+     * minimum {@code .class} file major version
+     *
+     * See http://en.wikipedia.org/wiki/Java_class_file for an up-to-date
+     * list of version numbers. Currently known (taken from that table) are:
+     *
+     *     Java SE 9 = 53 (0x35 hex),
+     *     Java SE 8 = 52 (0x34 hex),
+     *     Java SE 7 = 51 (0x33 hex),
+     *     Java SE 6.0 = 50 (0x32 hex),
+     *     Java SE 5.0 = 49 (0x31 hex),
+     *     JDK 1.4 = 48 (0x30 hex),
+     *     JDK 1.3 = 47 (0x2F hex),
+     *     JDK 1.2 = 46 (0x2E hex),
+     *     JDK 1.1 = 45 (0x2D hex).
+     *
+     * Valid ranges are typically of the form
+     * "A.0 through B.C inclusive" where A <= B and C >= 0,
+     * which is why we don't have a CLASS_FILE_MIN_MINOR_VERSION.
+     */
     private static final int CLASS_FILE_MIN_MAJOR_VERSION = 45;
-    private final ByteArray bytes;
+
+    /**
+     * maximum {@code .class} file major version
+     *
+     * Note: if you change this, please change "java.class.version" in System.java.
+     */
+    private static final int CLASS_FILE_MAX_MAJOR_VERSION = 53;
+
+    /** maximum {@code .class} file minor version */
+    private static final int CLASS_FILE_MAX_MINOR_VERSION = 0;
+
+    /**
+     * {@code non-null;} the file path for the class, excluding any base directory
+     * specification
+     */
     private final String filePath;
+
+    /** {@code non-null;} the bytes of the file */
+    private final mod.agus.jcoderz.dx.util.ByteArray bytes;
+
+    /**
+     * whether to be strict about parsing; if
+     * {@code false}, this avoids doing checks that only exist
+     * for purposes of verification (such as magic number matching and
+     * path-package consistency checking)
+     */
     private final boolean strictParse;
+
+    /**
+     * {@code null-ok;} the constant pool; only ever {@code null}
+     * before the constant pool is successfully parsed
+     */
+    private mod.agus.jcoderz.dx.rop.cst.StdConstantPool pool;
+
+    /**
+     * the class file field {@code access_flags}; will be {@code -1}
+     * before the file is successfully parsed
+     */
     private int accessFlags;
-    private AttributeFactory attributeFactory;
+
+    /**
+     * {@code null-ok;} the class file field {@code this_class},
+     * interpreted as a type constant; only ever {@code null}
+     * before the file is successfully parsed
+     */
+    private mod.agus.jcoderz.dx.rop.cst.CstType thisClass;
+
+    /**
+     * {@code null-ok;} the class file field {@code super_class}, interpreted
+     * as a type constant if non-zero
+     */
+    private mod.agus.jcoderz.dx.rop.cst.CstType superClass;
+
+    /**
+     * {@code null-ok;} the class file field {@code interfaces}; only
+     * ever {@code null} before the file is successfully
+     * parsed
+     */
+    private mod.agus.jcoderz.dx.rop.type.TypeList interfaces;
+
+    /**
+     * {@code null-ok;} the class file field {@code fields}; only ever
+     * {@code null} before the file is successfully parsed
+     */
+    private mod.agus.jcoderz.dx.cf.iface.FieldList fields;
+
+    /**
+     * {@code null-ok;} the class file field {@code methods}; only ever
+     * {@code null} before the file is successfully parsed
+     */
+    private mod.agus.jcoderz.dx.cf.iface.MethodList methods;
+
+    /**
+     * {@code null-ok;} the class file field {@code attributes}; only
+     * ever {@code null} before the file is successfully
+     * parsed
+     */
     private StdAttributeList attributes;
-    private FieldList fields;
-    private TypeList interfaces;
-    private MethodList methods;
-    private ParseObserver observer;
-    private StdConstantPool pool;
-    private CstType superClass;
-    private CstType thisClass;
 
-    public DirectClassFile(ByteArray byteArray, String str, boolean z) {
-        if (byteArray == null) {
-            throw new NullPointerException("bytes == null");
-        } else if (str == null) {
-            throw new NullPointerException("filePath == null");
-        } else {
-            this.filePath = str;
-            this.bytes = byteArray;
-            this.strictParse = z;
-            this.accessFlags = -1;
-        }
-    }
+    /** {@code null-ok;} attribute factory, if any */
+    private mod.agus.jcoderz.dx.cf.direct.AttributeFactory attributeFactory;
 
-    public DirectClassFile(byte[] bArr, String str, boolean z) {
-        this(new ByteArray(bArr), str, z);
-    }
+    /** {@code null-ok;} parse observer, if any */
+    private mod.agus.jcoderz.dx.cf.iface.ParseObserver observer;
 
+    /**
+     * Returns the string form of an object or {@code "(none)"}
+     * (rather than {@code "null"}) for {@code null}.
+     *
+     * @param obj {@code null-ok;} the object to stringify
+     * @return {@code non-null;} the appropriate string form
+     */
     public static String stringOrNone(Object obj) {
         if (obj == null) {
             return "(none)";
         }
+
         return obj.toString();
     }
 
-    public void setObserver(ParseObserver parseObserver) {
-        this.observer = parseObserver;
+    /**
+     * Constructs an instance.
+     *
+     * @param bytes {@code non-null;} the bytes of the file
+     * @param filePath {@code non-null;} the file path for the class,
+     * excluding any base directory specification
+     * @param strictParse whether to be strict about parsing; if
+     * {@code false}, this avoids doing checks that only exist
+     * for purposes of verification (such as magic number matching and
+     * path-package consistency checking)
+     */
+    public DirectClassFile(mod.agus.jcoderz.dx.util.ByteArray bytes, String filePath,
+                           boolean strictParse) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes == null");
+        }
+
+        if (filePath == null) {
+            throw new NullPointerException("filePath == null");
+        }
+
+        this.filePath = filePath;
+        this.bytes = bytes;
+        this.strictParse = strictParse;
+        this.accessFlags = -1;
     }
 
-    public void setAttributeFactory(AttributeFactory attributeFactory2) {
-        if (attributeFactory2 == null) {
+    /**
+     * Constructs an instance.
+     *
+     * @param bytes {@code non-null;} the bytes of the file
+     * @param filePath {@code non-null;} the file path for the class,
+     * excluding any base directory specification
+     * @param strictParse whether to be strict about parsing; if
+     * {@code false}, this avoids doing checks that only exist
+     * for purposes of verification (such as magic number matching and
+     * path-package consistency checking)
+     */
+    public DirectClassFile(byte[] bytes, String filePath,
+                           boolean strictParse) {
+        this(new mod.agus.jcoderz.dx.util.ByteArray(bytes), filePath, strictParse);
+    }
+
+    /**
+     * Sets the parse observer for this instance.
+     *
+     * @param observer {@code null-ok;} the observer
+     */
+    public void setObserver(mod.agus.jcoderz.dx.cf.iface.ParseObserver observer) {
+        this.observer = observer;
+    }
+
+    /**
+     * Sets the attribute factory to use.
+     *
+     * @param attributeFactory {@code non-null;} the attribute factory
+     */
+    public void setAttributeFactory(mod.agus.jcoderz.dx.cf.direct.AttributeFactory attributeFactory) {
+        if (attributeFactory == null) {
             throw new NullPointerException("attributeFactory == null");
         }
-        this.attributeFactory = attributeFactory2;
+
+        this.attributeFactory = attributeFactory;
     }
 
+    /**
+     * Gets the path where this class file is located.
+     *
+     * @return {@code non-null;} the filePath
+     */
     public String getFilePath() {
-        return this.filePath;
+      return filePath;
     }
 
-    public ByteArray getBytes() {
-        return this.bytes;
+    /**
+     * Gets the {@link mod.agus.jcoderz.dx.util.ByteArray} that this instance's data comes from.
+     *
+     * @return {@code non-null;} the bytes
+     */
+    public mod.agus.jcoderz.dx.util.ByteArray getBytes() {
+        return bytes;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public int getMagic() {
         parseToInterfacesIfNecessary();
         return getMagic0();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public int getMinorVersion() {
         parseToInterfacesIfNecessary();
         return getMinorVersion0();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public int getMajorVersion() {
         parseToInterfacesIfNecessary();
         return getMajorVersion0();
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public int getAccessFlags() {
         parseToInterfacesIfNecessary();
-        return this.accessFlags;
+        return accessFlags;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
-    public CstType getThisClass() {
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.cst.CstType getThisClass() {
         parseToInterfacesIfNecessary();
-        return this.thisClass;
+        return thisClass;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
-    public CstType getSuperclass() {
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.cst.CstType getSuperclass() {
         parseToInterfacesIfNecessary();
-        return this.superClass;
+        return superClass;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public ConstantPool getConstantPool() {
         parseToInterfacesIfNecessary();
-        return this.pool;
+        return pool;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
-    public TypeList getInterfaces() {
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.rop.type.TypeList getInterfaces() {
         parseToInterfacesIfNecessary();
-        return this.interfaces;
+        return interfaces;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public FieldList getFields() {
         parseToEndIfNecessary();
-        return this.fields;
+        return fields;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
+    /** {@inheritDoc} */
+    @Override
     public MethodList getMethods() {
         parseToEndIfNecessary();
-        return this.methods;
+        return methods;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile, mod.agus.jcoderz.dx.cf.iface.HasAttribute
-    public AttributeList getAttributes() {
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.cf.iface.AttributeList getAttributes() {
         parseToEndIfNecessary();
-        return this.attributes;
+        return attributes;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.ClassFile
-    public CstString getSourceFile() {
-        Attribute findFirst = getAttributes().findFirst(AttSourceFile.ATTRIBUTE_NAME);
-        if (findFirst instanceof AttSourceFile) {
-            return ((AttSourceFile) findFirst).getSourceFile();
+    /** {@inheritDoc} */
+    @Override
+    public mod.agus.jcoderz.dx.cf.code.BootstrapMethodsList getBootstrapMethods() {
+        mod.agus.jcoderz.dx.cf.attrib.AttBootstrapMethods bootstrapMethodsAttribute =
+                (mod.agus.jcoderz.dx.cf.attrib.AttBootstrapMethods) getAttributes().findFirst(AttBootstrapMethods.ATTRIBUTE_NAME);
+        if (bootstrapMethodsAttribute != null) {
+            return bootstrapMethodsAttribute.getBootstrapMethods();
+        } else {
+            return BootstrapMethodsList.EMPTY;
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CstString getSourceFile() {
+        AttributeList attribs = getAttributes();
+        Attribute attSf = attribs.findFirst(mod.agus.jcoderz.dx.cf.attrib.AttSourceFile.ATTRIBUTE_NAME);
+
+        if (attSf instanceof mod.agus.jcoderz.dx.cf.attrib.AttSourceFile) {
+            return ((AttSourceFile) attSf).getSourceFile();
+        }
+
         return null;
     }
 
-    public TypeList makeTypeList(int i, int i2) {
-        if (i2 == 0) {
+    /**
+     * Constructs and returns an instance of {@link mod.agus.jcoderz.dx.rop.type.TypeList} whose
+     * data comes from the bytes of this instance, interpreted as a
+     * list of constant pool indices for classes, which are in turn
+     * translated to type constants. Instance construction will fail
+     * if any of the (alleged) indices turn out not to refer to
+     * constant pool entries of type {@code Class}.
+     *
+     * @param offset offset into {@link #bytes} for the start of the
+     * data
+     * @param size number of elements in the list (not number of bytes)
+     * @return {@code non-null;} an appropriately-constructed class list
+     */
+    public mod.agus.jcoderz.dx.rop.type.TypeList makeTypeList(int offset, int size) {
+        if (size == 0) {
             return StdTypeList.EMPTY;
         }
-        if (this.pool != null) {
-            return new DcfTypeList(this.bytes, i, i2, this.pool, this.observer);
+
+        if (pool == null) {
+            throw new IllegalStateException("pool not yet initialized");
         }
-        throw new IllegalStateException("pool not yet initialized");
+
+        return new DcfTypeList(bytes, offset, size, pool, observer);
     }
 
+    /**
+     * Gets the class file field {@code magic}, but without doing any
+     * checks or parsing first.
+     *
+     * @return the magic value
+     */
     public int getMagic0() {
-        return this.bytes.getInt(0);
+        return bytes.getInt(0);
     }
 
+    /**
+     * Gets the class file field {@code minor_version}, but
+     * without doing any checks or parsing first.
+     *
+     * @return the minor version
+     */
     public int getMinorVersion0() {
-        return this.bytes.getUnsignedShort(4);
+        return bytes.getUnsignedShort(4);
     }
 
+    /**
+     * Gets the class file field {@code major_version}, but
+     * without doing any checks or parsing first.
+     *
+     * @return the major version
+     */
     public int getMajorVersion0() {
-        return this.bytes.getUnsignedShort(6);
+        return bytes.getUnsignedShort(6);
     }
 
+    /**
+     * Runs {@link #parse} if it has not yet been run to cover up to
+     * the interfaces list.
+     */
     private void parseToInterfacesIfNecessary() {
-        if (this.accessFlags == -1) {
+        if (accessFlags == -1) {
             parse();
         }
     }
 
+    /**
+     * Runs {@link #parse} if it has not yet been run successfully.
+     */
     private void parseToEndIfNecessary() {
-        if (this.attributes == null) {
+        if (attributes == null) {
             parse();
         }
     }
 
+    /**
+     * Does the parsing, handing exceptions.
+     */
     private void parse() {
         try {
             parse0();
-        } catch (ParseException e) {
-            e.addContext("...while parsing " + this.filePath);
-            throw e;
-        } catch (RuntimeException e2) {
-            ParseException parseException = new ParseException(e2);
-            parseException.addContext("...while parsing " + this.filePath);
-            throw parseException;
+        } catch (mod.agus.jcoderz.dx.cf.iface.ParseException ex) {
+            ex.addContext("...while parsing " + filePath);
+            throw ex;
+        } catch (RuntimeException ex) {
+            mod.agus.jcoderz.dx.cf.iface.ParseException pe = new mod.agus.jcoderz.dx.cf.iface.ParseException(ex);
+            pe.addContext("...while parsing " + filePath);
+            throw pe;
         }
     }
 
-    private boolean isGoodVersion(int i, int i2, int i3) {
-        if (i == CLASS_FILE_MAGIC && i2 >= 0) {
-            if (i3 == 51) {
-                return i2 <= 0;
-            } else return i3 < 51 && i3 >= 45;
+    /**
+     * Sees if the .class file header magic has the good value.
+     *
+     * @param magic the value of a classfile "magic" field
+     * @return true if the magic is valid
+     */
+    private boolean isGoodMagic(int magic) {
+        return magic == CLASS_FILE_MAGIC;
+    }
+
+    /**
+     * Sees if the .class file header version are within
+     * range.
+     *
+     * @param minorVersion the value of a classfile "minor_version" field
+     * @param majorVersion the value of a classfile "major_version" field
+     * @return true if the parameters are valid and within range
+     */
+    private boolean isGoodVersion(int minorVersion, int majorVersion) {
+        /* Valid version ranges are typically of the form
+         * "A.0 through B.C inclusive" where A <= B and C >= 0,
+         * which is why we don't have a CLASS_FILE_MIN_MINOR_VERSION.
+         */
+        if (minorVersion >= 0) {
+            /* Check against max first to handle the case where
+             * MIN_MAJOR == MAX_MAJOR.
+             */
+            if (majorVersion == CLASS_FILE_MAX_MAJOR_VERSION) {
+                if (minorVersion <= CLASS_FILE_MAX_MINOR_VERSION) {
+                    return true;
+                }
+            } else if (majorVersion < CLASS_FILE_MAX_MAJOR_VERSION &&
+                       majorVersion >= CLASS_FILE_MIN_MAJOR_VERSION) {
+                return true;
+            }
         }
+
         return false;
     }
 
+    /**
+     * Does the actual parsing.
+     */
     private void parse0() {
-        if (this.bytes.size() < 10) {
-            throw new ParseException("severely truncated class file");
+        if (bytes.size() < 10) {
+            throw new mod.agus.jcoderz.dx.cf.iface.ParseException("severely truncated class file");
         }
-        if (this.observer != null) {
-            this.observer.parsed(this.bytes, 0, 0, "begin classfile");
-            this.observer.parsed(this.bytes, 0, 4, "magic: " + Hex.u4(getMagic0()));
-            this.observer.parsed(this.bytes, 4, 2, "minor_version: " + Hex.u2(getMinorVersion0()));
-            this.observer.parsed(this.bytes, 6, 2, "major_version: " + Hex.u2(getMajorVersion0()));
+
+        if (observer != null) {
+            observer.parsed(bytes, 0, 0, "begin classfile");
+            observer.parsed(bytes, 0, 4, "magic: " + mod.agus.jcoderz.dx.util.Hex.u4(getMagic0()));
+            observer.parsed(bytes, 4, 2,
+                            "minor_version: " + mod.agus.jcoderz.dx.util.Hex.u2(getMinorVersion0()));
+            observer.parsed(bytes, 6, 2,
+                            "major_version: " + mod.agus.jcoderz.dx.util.Hex.u2(getMajorVersion0()));
         }
-        if (!this.strictParse || isGoodVersion(getMagic0(), getMinorVersion0(), getMajorVersion0())) {
-            ConstantPoolParser constantPoolParser = new ConstantPoolParser(this.bytes);
-            constantPoolParser.setObserver(this.observer);
-            this.pool = constantPoolParser.getPool();
-            this.pool.setImmutable();
-            int endOffset = constantPoolParser.getEndOffset();
-            int unsignedShort = this.bytes.getUnsignedShort(endOffset);
-            this.thisClass = (CstType) this.pool.get(this.bytes.getUnsignedShort(endOffset + 2));
-            this.superClass = (CstType) this.pool.get0Ok(this.bytes.getUnsignedShort(endOffset + 4));
-            int unsignedShort2 = this.bytes.getUnsignedShort(endOffset + 6);
-            if (this.observer != null) {
-                this.observer.parsed(this.bytes, endOffset, 2, "access_flags: " + AccessFlags.classString(unsignedShort));
-                this.observer.parsed(this.bytes, endOffset + 2, 2, "this_class: " + this.thisClass);
-                this.observer.parsed(this.bytes, endOffset + 4, 2, "super_class: " + stringOrNone(this.superClass));
-                this.observer.parsed(this.bytes, endOffset + 6, 2, "interfaces_count: " + Hex.u2(unsignedShort2));
-                if (unsignedShort2 != 0) {
-                    this.observer.parsed(this.bytes, endOffset + 8, 0, "interfaces:");
-                }
+
+        if (strictParse) {
+            /* Make sure that this looks like a valid class file with a
+             * version that we can handle.
+             */
+            if (!isGoodMagic(getMagic0())) {
+                throw new mod.agus.jcoderz.dx.cf.iface.ParseException("bad class file magic (" + mod.agus.jcoderz.dx.util.Hex.u4(getMagic0()) + ")");
             }
-            int i = endOffset + 8;
-            this.interfaces = makeTypeList(i, unsignedShort2);
-            int i2 = (unsignedShort2 * 2) + i;
-            if (this.strictParse) {
-                String className = this.thisClass.getClassType().getClassName();
-                if (!this.filePath.endsWith(SuffixConstants.SUFFIX_STRING_class) || !this.filePath.startsWith(className) || this.filePath.length() != className.length() + 6) {
-                    throw new ParseException("class name (" + className + ") does not match path (" + this.filePath + ")");
-                }
+
+            if (!isGoodVersion(getMinorVersion0(), getMajorVersion0())) {
+                throw new mod.agus.jcoderz.dx.cf.iface.ParseException("unsupported class file version " +
+                                         getMajorVersion0() + "." +
+                                         getMinorVersion0());
             }
-            this.accessFlags = unsignedShort;
-            FieldListParser fieldListParser = new FieldListParser(this, this.thisClass, i2, this.attributeFactory);
-            fieldListParser.setObserver(this.observer);
-            this.fields = fieldListParser.getList();
-            MethodListParser methodListParser = new MethodListParser(this, this.thisClass, fieldListParser.getEndOffset(), this.attributeFactory);
-            methodListParser.setObserver(this.observer);
-            this.methods = methodListParser.getList();
-            AttributeListParser attributeListParser = new AttributeListParser(this, 0, methodListParser.getEndOffset(), this.attributeFactory);
-            attributeListParser.setObserver(this.observer);
-            this.attributes = attributeListParser.getList();
-            this.attributes.setImmutable();
-            int endOffset2 = attributeListParser.getEndOffset();
-            if (endOffset2 != this.bytes.size()) {
-                throw new ParseException("extra bytes at end of class file, at offset " + Hex.u4(endOffset2));
-            } else if (this.observer != null) {
-                this.observer.parsed(this.bytes, endOffset2, 0, "end classfile");
+        }
+
+        mod.agus.jcoderz.dx.cf.cst.ConstantPoolParser cpParser = new ConstantPoolParser(bytes);
+        cpParser.setObserver(observer);
+        pool = cpParser.getPool();
+        pool.setImmutable();
+
+        int at = cpParser.getEndOffset();
+        int accessFlags = bytes.getUnsignedShort(at); // u2 access_flags;
+        int cpi = bytes.getUnsignedShort(at + 2); // u2 this_class;
+        thisClass = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get(cpi);
+        cpi = bytes.getUnsignedShort(at + 4); // u2 super_class;
+        superClass = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get0Ok(cpi);
+        int count = bytes.getUnsignedShort(at + 6); // u2 interfaces_count
+
+        if (observer != null) {
+            observer.parsed(bytes, at, 2,
+                            "access_flags: " +
+                            AccessFlags.classString(accessFlags));
+            observer.parsed(bytes, at + 2, 2, "this_class: " + thisClass);
+            observer.parsed(bytes, at + 4, 2, "super_class: " +
+                            stringOrNone(superClass));
+            observer.parsed(bytes, at + 6, 2,
+                            "interfaces_count: " + mod.agus.jcoderz.dx.util.Hex.u2(count));
+            if (count != 0) {
+                observer.parsed(bytes, at + 8, 0, "interfaces:");
             }
-        } else {
-            throw new ParseException("bad class file magic (" + Hex.u4(getMagic0()) + ") or version (" + Hex.u2(getMajorVersion0()) + "." + Hex.u2(getMinorVersion0()) + ")");
+        }
+
+        at += 8;
+        interfaces = makeTypeList(at, count);
+        at += count * 2;
+
+        if (strictParse) {
+            /*
+             * Make sure that the file/jar path matches the declared
+             * package/class name.
+             */
+            String thisClassName = thisClass.getClassType().getClassName();
+            if (!(filePath.endsWith(".class") &&
+                  filePath.startsWith(thisClassName) &&
+                  (filePath.length() == (thisClassName.length() + 6)))) {
+                throw new mod.agus.jcoderz.dx.cf.iface.ParseException("class name (" + thisClassName +
+                                         ") does not match path (" +
+                                         filePath + ")");
+            }
+        }
+
+        /*
+         * Only set the instance variable accessFlags here, since
+         * that's what signals a successful parse of the first part of
+         * the file (through the interfaces list).
+         */
+        this.accessFlags = accessFlags;
+
+        mod.agus.jcoderz.dx.cf.direct.FieldListParser flParser =
+            new mod.agus.jcoderz.dx.cf.direct.FieldListParser(this, thisClass, at, attributeFactory);
+        flParser.setObserver(observer);
+        fields = flParser.getList();
+        at = flParser.getEndOffset();
+
+        mod.agus.jcoderz.dx.cf.direct.MethodListParser mlParser =
+            new mod.agus.jcoderz.dx.cf.direct.MethodListParser(this, thisClass, at, attributeFactory);
+        mlParser.setObserver(observer);
+        methods = mlParser.getList();
+        at = mlParser.getEndOffset();
+
+        mod.agus.jcoderz.dx.cf.direct.AttributeListParser alParser =
+            new mod.agus.jcoderz.dx.cf.direct.AttributeListParser(this, AttributeFactory.CTX_CLASS, at,
+                                    attributeFactory);
+        alParser.setObserver(observer);
+        attributes = alParser.getList();
+        attributes.setImmutable();
+        at = alParser.getEndOffset();
+
+        if (at != bytes.size()) {
+            throw new ParseException("extra bytes at end of class file, " +
+                                     "at offset " + Hex.u4(at));
+        }
+
+        if (observer != null) {
+            observer.parsed(bytes, at, 0, "end classfile");
         }
     }
 
-    public static class DcfTypeList implements TypeList {
-        private final ByteArray bytes;
-        private final StdConstantPool pool;
+    /**
+     * Implementation of {@link mod.agus.jcoderz.dx.rop.type.TypeList} whose data comes directly
+     * from the bytes of an instance of this (outer) class,
+     * interpreted as a list of constant pool indices for classes
+     * which are in turn returned as type constants. Instance
+     * construction will fail if any of the (alleged) indices turn out
+     * not to refer to constant pool entries of type
+     * {@code Class}.
+     */
+    private static class DcfTypeList implements mod.agus.jcoderz.dx.rop.type.TypeList {
+        /** {@code non-null;} array containing the data */
+        private final mod.agus.jcoderz.dx.util.ByteArray bytes;
+
+        /** number of elements in the list (not number of bytes) */
         private final int size;
 
-        public DcfTypeList(ByteArray byteArray, int i, int i2, StdConstantPool stdConstantPool, ParseObserver parseObserver) {
-            if (i2 < 0) {
+        /** {@code non-null;} the constant pool */
+        private final mod.agus.jcoderz.dx.rop.cst.StdConstantPool pool;
+
+        /**
+         * Constructs an instance.
+         *
+         * @param bytes {@code non-null;} original classfile's bytes
+         * @param offset offset into {@link #bytes} for the start of the
+         * data
+         * @param size number of elements in the list (not number of bytes)
+         * @param pool {@code non-null;} the constant pool to use
+         * @param observer {@code null-ok;} parse observer to use, if any
+         */
+        public DcfTypeList(ByteArray bytes, int offset, int size,
+                           StdConstantPool pool, ParseObserver observer) {
+            if (size < 0) {
                 throw new IllegalArgumentException("size < 0");
             }
-            ByteArray slice = byteArray.slice(i, (i2 * 2) + i);
-            this.bytes = slice;
-            this.size = i2;
-            this.pool = stdConstantPool;
-            for (int i3 = 0; i3 < i2; i3++) {
-                int i4 = i3 * 2;
+
+            bytes = bytes.slice(offset, offset + size * 2);
+            this.bytes = bytes;
+            this.size = size;
+            this.pool = pool;
+
+            for (int i = 0; i < size; i++) {
+                offset = i * 2;
+                int idx = bytes.getUnsignedShort(offset);
+                mod.agus.jcoderz.dx.rop.cst.CstType type;
                 try {
-                    CstType cstType = (CstType) stdConstantPool.get(slice.getUnsignedShort(i4));
-                    if (parseObserver != null) {
-                        parseObserver.parsed(slice, i4, 2, "  " + cstType);
-                    }
-                } catch (ClassCastException e) {
-                    throw new RuntimeException("bogus class cpi", e);
+                    type = (mod.agus.jcoderz.dx.rop.cst.CstType) pool.get(idx);
+                } catch (ClassCastException ex) {
+                    // Translate the exception.
+                    throw new RuntimeException("bogus class cpi", ex);
+                }
+                if (observer != null) {
+                    observer.parsed(bytes, offset, 2, "  " + type);
                 }
             }
         }
 
-        @Override // mod.agus.jcoderz.dx.rop.type.TypeList
+        /** {@inheritDoc} */
+        @Override
         public boolean isMutable() {
             return false;
         }
 
-        @Override // mod.agus.jcoderz.dx.rop.type.TypeList
+        /** {@inheritDoc} */
+        @Override
         public int size() {
-            return this.size;
+            return size;
         }
 
-        @Override // mod.agus.jcoderz.dx.rop.type.TypeList
+        /** {@inheritDoc} */
+        @Override
         public int getWordCount() {
-            return this.size;
+            // It is the same as size because all elements are classes.
+            return size;
         }
 
-        @Override // mod.agus.jcoderz.dx.rop.type.TypeList
-        public Type getType(int i) {
-            return ((CstType) this.pool.get(this.bytes.getUnsignedShort(i * 2))).getClassType();
+        /** {@inheritDoc} */
+        @Override
+        public mod.agus.jcoderz.dx.rop.type.Type getType(int n) {
+            int idx = bytes.getUnsignedShort(n * 2);
+            return ((CstType) pool.get(idx)).getClassType();
         }
 
-        @Override // mod.agus.jcoderz.dx.rop.type.TypeList
+        /** {@inheritDoc} */
+        @Override
         public TypeList withAddedType(Type type) {
             throw new UnsupportedOperationException("unsupported");
         }

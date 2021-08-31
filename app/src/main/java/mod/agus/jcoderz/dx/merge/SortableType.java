@@ -1,90 +1,117 @@
-package mod.agus.jcoderz.dx.merge;
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.util.Comparator;
+package mod.agus.jcoderz.dx.merge;
 
 import mod.agus.jcoderz.dex.ClassDef;
 import mod.agus.jcoderz.dex.Dex;
+import mod.agus.jcoderz.dex.DexException;
+import java.util.Comparator;
 
+/**
+ * Name and structure of a type. Used to order types such that each type is
+ * preceded by its supertype and implemented interfaces.
+ */
 final class SortableType {
     public static final Comparator<SortableType> NULLS_LAST_ORDER = new Comparator<SortableType>() {
-
-        @Override // java.util.Comparator
-        public /* bridge */ /* synthetic */ int compare(SortableType sortableType, SortableType sortableType2) {
-            return compare(sortableType, sortableType2);
-        }
-
-        public int compareTwo(SortableType sortableType, SortableType sortableType2) {
-            if (sortableType == sortableType2) {
+        @Override
+        public int compare(SortableType a, SortableType b) {
+            if (a == b) {
                 return 0;
             }
-            if (sortableType2 == null) {
+            if (b == null) {
                 return -1;
             }
-            if (sortableType == null) {
+            if (a == null) {
                 return 1;
             }
-            if (sortableType.depth != sortableType2.depth) {
-                return sortableType.depth - sortableType2.depth;
+            if (a.depth != b.depth) {
+                return a.depth - b.depth;
             }
-            return sortableType.getTypeIndex() - sortableType2.getTypeIndex();
+            return a.getTypeIndex() - b.getTypeIndex();
         }
     };
+
     private final Dex dex;
-    private final IndexMap indexMap;
+    private final mod.agus.jcoderz.dx.merge.IndexMap indexMap;
     private final ClassDef classDef;
     private int depth = -1;
 
-    public SortableType(Dex dex2, IndexMap indexMap2, ClassDef classDef2) {
-        this.dex = dex2;
-        this.indexMap = indexMap2;
-        this.classDef = classDef2;
+    public SortableType(Dex dex, mod.agus.jcoderz.dx.merge.IndexMap indexMap, ClassDef classDef) {
+        this.dex = dex;
+        this.indexMap = indexMap;
+        this.classDef = classDef;
     }
 
     public Dex getDex() {
-        return this.dex;
+        return dex;
     }
 
     public IndexMap getIndexMap() {
-        return this.indexMap;
+        return indexMap;
     }
 
     public ClassDef getClassDef() {
-        return this.classDef;
+        return classDef;
     }
 
     public int getTypeIndex() {
-        return this.classDef.getTypeIndex();
+        return classDef.getTypeIndex();
     }
 
-    public boolean tryAssignDepth(SortableType[] sortableTypeArr) {
-        int i;
-        if (this.classDef.getSupertypeIndex() == -1) {
-            i = 0;
+    /**
+     * Assigns this type's depth if the depths of its supertype and implemented
+     * interfaces are known. Returns false if the depth couldn't be computed
+     * yet.
+     */
+    public boolean tryAssignDepth(SortableType[] types) {
+        int max;
+        if (classDef.getSupertypeIndex() == ClassDef.NO_INDEX) {
+            max = 0; // this is Object.class or an interface
+        } else if (classDef.getSupertypeIndex() == classDef.getTypeIndex()) {
+            // This is an invalid class extending itself.
+            throw new DexException("Class with type index " + classDef.getTypeIndex()
+                    + " extends itself");
         } else {
-            SortableType sortableType = sortableTypeArr[this.classDef.getSupertypeIndex()];
-            if (sortableType == null) {
-                i = 1;
-            } else if (sortableType.depth == -1) {
+            SortableType sortableSupertype = types[classDef.getSupertypeIndex()];
+            if (sortableSupertype == null) {
+                max = 1; // unknown, so assume it's a root.
+            } else if (sortableSupertype.depth == -1) {
                 return false;
             } else {
-                i = sortableType.depth;
+                max = sortableSupertype.depth;
             }
         }
-        for (short s : this.classDef.getInterfaces()) {
-            SortableType sortableType2 = sortableTypeArr[s];
-            if (sortableType2 == null) {
-                i = Math.max(i, 1);
-            } else if (sortableType2.depth == -1) {
+
+        for (short interfaceIndex : classDef.getInterfaces()) {
+            SortableType implemented = types[interfaceIndex];
+            if (implemented == null) {
+                max = Math.max(max, 1); // unknown, so assume it's a root.
+            } else if (implemented.depth == -1) {
                 return false;
             } else {
-                i = Math.max(i, sortableType2.depth);
+                max = Math.max(max, implemented.depth);
             }
         }
-        this.depth = i + 1;
+
+        depth = max + 1;
         return true;
     }
 
     public boolean isDepthAssigned() {
-        return this.depth != -1;
+        return depth != -1;
     }
 }

@@ -478,16 +478,20 @@ public class Jx {
                     .append(moreBlocksCode).append(a);
         }
 
-        for (String value : q) {
+        sb.append(a);
+        for (int i1 = 0, qSize = q.size(); i1 < qSize; i1++) {
+            String adapterCode = q.get(i1);
+
             if (base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {")
-                    || !value.contains("return onTabLayoutNewTabAdded(pos);")) {
-                sb.append(a)
-                        .append(value).append(a);
+                    || !adapterCode.contains("return onTabLayoutNewTabAdded(pos);")) {
+                sb.append(adapterCode);
             } else {
-                sb.append(a)
-                        .append(value.replace("return onTabLayoutNewTabAdded(pos);",
-                                "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method\r\n" +
-                                        "return \"page \" + String.valueOf(pos);")).append(a);
+                sb.append(adapterCode.replace("return onTabLayoutNewTabAdded(pos);",
+                        "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method\r\n" +
+                                "return \"page \" + String.valueOf(pos);"));
+            }
+            if (i1 != qSize - 1) {
+                sb.append(a);
             }
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
@@ -499,7 +503,7 @@ public class Jx {
 
         if (isFragment) {
             code = code.replaceAll("getApplicationContext\\(\\)", "getContext().getApplicationContext()")
-                    .replaceAll("getBaseContext\\(\\)", "getContext().getBaseContext()")
+                    .replaceAll("getBaseContext\\(\\)", "getActivity().getBaseContext()")
                     .replaceAll("\\(ClipboardManager\\) getSystemService", "(ClipboardManager) getContext().getSystemService")
                     .replaceAll("\\(Vibrator\\) getSystemService", "(Vibrator) getContext().getSystemService")
                     .replaceAll("\\(SensorManager\\) getSystemService", "(SensorManager) getContext().getSystemService")

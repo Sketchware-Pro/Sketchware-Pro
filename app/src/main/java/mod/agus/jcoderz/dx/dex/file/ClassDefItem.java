@@ -1,9 +1,22 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-
+import mod.agus.jcoderz.dex.SizeOf;
 import mod.agus.jcoderz.dx.rop.annotation.Annotations;
 import mod.agus.jcoderz.dx.rop.annotation.AnnotationsList;
 import mod.agus.jcoderz.dx.rop.code.AccessFlags;
@@ -18,227 +31,381 @@ import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.Writers;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.ArrayList;
 
+/**
+ * Representation of a Dalvik class, which is basically a set of
+ * members (fields or methods) along with a few more pieces of
+ * information.
+ */
 public final class ClassDefItem extends IndexedItem {
-    private final int accessFlags;
-    private final ClassDataItem classData;
-    private final CstString sourceFile;
-    private final CstType superclass;
-    private final CstType thisClass;
-    private AnnotationsDirectoryItem annotationsDirectory;
-    private TypeListItem interfaces;
-    private EncodedArrayItem staticValuesItem;
 
-    public ClassDefItem(CstType cstType, int i, CstType cstType2, TypeList typeList, CstString cstString) {
-        if (cstType == null) {
+    /** {@code non-null;} type constant for this class */
+    private final CstType thisClass;
+
+    /** access flags */
+    private final int accessFlags;
+
+    /**
+     * {@code null-ok;} superclass or {@code null} if this class is a/the
+     * root class
+     */
+    private final CstType superclass;
+
+    /** {@code null-ok;} list of implemented interfaces */
+    private TypeListItem interfaces;
+
+    /** {@code null-ok;} source file name or {@code null} if unknown */
+    private final CstString sourceFile;
+
+    /** {@code non-null;} associated class data object */
+    private final ClassDataItem classData;
+
+    /**
+     * {@code null-ok;} item wrapper for the static values, initialized
+     * in {@link #addContents}
+     */
+    private mod.agus.jcoderz.dx.dex.file.EncodedArrayItem staticValuesItem;
+
+    /** {@code non-null;} annotations directory */
+    private AnnotationsDirectoryItem annotationsDirectory;
+
+    /**
+     * Constructs an instance. Its sets of members and annotations are
+     * initially empty.
+     *
+     * @param thisClass {@code non-null;} type constant for this class
+     * @param accessFlags access flags
+     * @param superclass {@code null-ok;} superclass or {@code null} if
+     * this class is a/the root class
+     * @param interfaces {@code non-null;} list of implemented interfaces
+     * @param sourceFile {@code null-ok;} source file name or
+     * {@code null} if unknown
+     */
+    public ClassDefItem(CstType thisClass, int accessFlags,
+            CstType superclass, TypeList interfaces, CstString sourceFile) {
+        if (thisClass == null) {
             throw new NullPointerException("thisClass == null");
-        } else if (typeList == null) {
-            throw new NullPointerException("interfaces == null");
-        } else {
-            this.thisClass = cstType;
-            this.accessFlags = i;
-            this.superclass = cstType2;
-            this.interfaces = typeList.size() == 0 ? null : new TypeListItem(typeList);
-            this.sourceFile = cstString;
-            this.classData = new ClassDataItem(cstType);
-            this.staticValuesItem = null;
-            this.annotationsDirectory = new AnnotationsDirectoryItem();
         }
+
+        /*
+         * TODO: Maybe check accessFlags and superclass, at
+         * least for easily-checked stuff?
+         */
+
+        if (interfaces == null) {
+            throw new NullPointerException("interfaces == null");
+        }
+
+        this.thisClass = thisClass;
+        this.accessFlags = accessFlags;
+        this.superclass = superclass;
+        this.interfaces =
+            (interfaces.size() == 0) ? null :  new TypeListItem(interfaces);
+        this.sourceFile = sourceFile;
+        this.classData = new ClassDataItem(thisClass);
+        this.staticValuesItem = null;
+        this.annotationsDirectory = new AnnotationsDirectoryItem();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_CLASS_DEF_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public int writeSize() {
-        return 32;
+        return SizeOf.CLASS_DEF_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        TypeIdsSection typeIds = dexFile.getTypeIds();
-        MixedItemSection byteData = dexFile.getByteData();
-        MixedItemSection wordData = dexFile.getWordData();
-        MixedItemSection typeLists = dexFile.getTypeLists();
-        StringIdsSection stringIds = dexFile.getStringIds();
-        typeIds.intern(this.thisClass);
-        if (!this.classData.isEmpty()) {
-            dexFile.getClassData().add(this.classData);
-            CstArray staticValuesConstant = this.classData.getStaticValuesConstant();
-            if (staticValuesConstant != null) {
-                this.staticValuesItem = (EncodedArrayItem) byteData.intern(new EncodedArrayItem(staticValuesConstant));
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        mod.agus.jcoderz.dx.dex.file.TypeIdsSection typeIds = file.getTypeIds();
+        MixedItemSection byteData = file.getByteData();
+        MixedItemSection wordData = file.getWordData();
+        MixedItemSection typeLists = file.getTypeLists();
+        StringIdsSection stringIds = file.getStringIds();
+
+        typeIds.intern(thisClass);
+
+        if (!classData.isEmpty()) {
+            MixedItemSection classDataSection = file.getClassData();
+            classDataSection.add(classData);
+
+            CstArray staticValues = classData.getStaticValuesConstant();
+            if (staticValues != null) {
+                staticValuesItem =
+                    byteData.intern(new EncodedArrayItem(staticValues));
             }
         }
-        if (this.superclass != null) {
-            typeIds.intern(this.superclass);
-        }
-        if (this.interfaces != null) {
-            this.interfaces = (TypeListItem) typeLists.intern(this.interfaces);
-        }
-        if (this.sourceFile != null) {
-            stringIds.intern(this.sourceFile);
-        }
-        if (this.annotationsDirectory.isEmpty()) {
-            return;
-        }
-        if (this.annotationsDirectory.isInternable()) {
-            this.annotationsDirectory = (AnnotationsDirectoryItem) wordData.intern(this.annotationsDirectory);
-        } else {
-            wordData.add(this.annotationsDirectory);
-        }
-    }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void writeTo(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        int indexOf;
-        int absoluteOffset;
-        int indexOf2;
-        int absoluteOffset2;
-        String human;
-        String human2;
-        boolean annotates = annotatedOutput.annotates();
-        TypeIdsSection typeIds = dexFile.getTypeIds();
-        int indexOf3 = typeIds.indexOf(this.thisClass);
-        if (this.superclass == null) {
-            indexOf = -1;
-        } else {
-            indexOf = typeIds.indexOf(this.superclass);
+        if (superclass != null) {
+            typeIds.intern(superclass);
         }
-        int absoluteOffsetOr0 = OffsettedItem.getAbsoluteOffsetOr0(this.interfaces);
-        if (this.annotationsDirectory.isEmpty()) {
-            absoluteOffset = 0;
-        } else {
-            absoluteOffset = this.annotationsDirectory.getAbsoluteOffset();
+
+        if (interfaces != null) {
+            interfaces = typeLists.intern(interfaces);
         }
-        if (this.sourceFile == null) {
-            indexOf2 = -1;
-        } else {
-            indexOf2 = dexFile.getStringIds().indexOf(this.sourceFile);
+
+        if (sourceFile != null) {
+            stringIds.intern(sourceFile);
         }
-        if (this.classData.isEmpty()) {
-            absoluteOffset2 = 0;
-        } else {
-            absoluteOffset2 = this.classData.getAbsoluteOffset();
-        }
-        int absoluteOffsetOr02 = OffsettedItem.getAbsoluteOffsetOr0(this.staticValuesItem);
-        if (annotates) {
-            annotatedOutput.annotate(0, indexString() + ' ' + this.thisClass.toHuman());
-            annotatedOutput.annotate(4, "  class_idx:           " + Hex.u4(indexOf3));
-            annotatedOutput.annotate(4, "  access_flags:        " + AccessFlags.classString(this.accessFlags));
-            StringBuilder append = new StringBuilder("  superclass_idx:      ").append(Hex.u4(indexOf)).append(" // ");
-            if (this.superclass == null) {
-                human = "<none>";
+
+        if (! annotationsDirectory.isEmpty()) {
+            if (annotationsDirectory.isInternable()) {
+                annotationsDirectory = wordData.intern(annotationsDirectory);
             } else {
-                human = this.superclass.toHuman();
+                wordData.add(annotationsDirectory);
             }
-            annotatedOutput.annotate(4, append.append(human).toString());
-            annotatedOutput.annotate(4, "  interfaces_off:      " + Hex.u4(absoluteOffsetOr0));
-            if (absoluteOffsetOr0 != 0) {
-                TypeList list = this.interfaces.getList();
-                int size = list.size();
-                for (int i = 0; i < size; i++) {
-                    annotatedOutput.annotate(0, "    " + list.getType(i).toHuman());
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(mod.agus.jcoderz.dx.dex.file.DexFile file, AnnotatedOutput out) {
+        boolean annotates = out.annotates();
+        TypeIdsSection typeIds = file.getTypeIds();
+        int classIdx = typeIds.indexOf(thisClass);
+        int superIdx = (superclass == null) ? -1 :
+            typeIds.indexOf(superclass);
+        int interOff = mod.agus.jcoderz.dx.dex.file.OffsettedItem.getAbsoluteOffsetOr0(interfaces);
+        int annoOff = annotationsDirectory.isEmpty() ? 0 :
+            annotationsDirectory.getAbsoluteOffset();
+        int sourceFileIdx = (sourceFile == null) ? -1 :
+            file.getStringIds().indexOf(sourceFile);
+        int dataOff = classData.isEmpty()? 0 : classData.getAbsoluteOffset();
+        int staticValuesOff =
+            OffsettedItem.getAbsoluteOffsetOr0(staticValuesItem);
+
+        if (annotates) {
+            out.annotate(0, indexString() + ' ' + thisClass.toHuman());
+            out.annotate(4, "  class_idx:           " + Hex.u4(classIdx));
+            out.annotate(4, "  access_flags:        " +
+                         AccessFlags.classString(accessFlags));
+            out.annotate(4, "  superclass_idx:      " + Hex.u4(superIdx) +
+                         " // " + ((superclass == null) ? "<none>" :
+                          superclass.toHuman()));
+            out.annotate(4, "  interfaces_off:      " + Hex.u4(interOff));
+            if (interOff != 0) {
+                TypeList list = interfaces.getList();
+                int sz = list.size();
+                for (int i = 0; i < sz; i++) {
+                    out.annotate(0, "    " + list.getType(i).toHuman());
                 }
             }
-            StringBuilder append2 = new StringBuilder("  source_file_idx:     ").append(Hex.u4(indexOf2)).append(" // ");
-            if (this.sourceFile == null) {
-                human2 = "<none>";
-            } else {
-                human2 = this.sourceFile.toHuman();
-            }
-            annotatedOutput.annotate(4, append2.append(human2).toString());
-            annotatedOutput.annotate(4, "  annotations_off:     " + Hex.u4(absoluteOffset));
-            annotatedOutput.annotate(4, "  class_data_off:      " + Hex.u4(absoluteOffset2));
-            annotatedOutput.annotate(4, "  static_values_off:   " + Hex.u4(absoluteOffsetOr02));
+            out.annotate(4, "  source_file_idx:     " + Hex.u4(sourceFileIdx) +
+                         " // " + ((sourceFile == null) ? "<none>" :
+                          sourceFile.toHuman()));
+            out.annotate(4, "  annotations_off:     " + Hex.u4(annoOff));
+            out.annotate(4, "  class_data_off:      " + Hex.u4(dataOff));
+            out.annotate(4, "  static_values_off:   " +
+                    Hex.u4(staticValuesOff));
         }
-        annotatedOutput.writeInt(indexOf3);
-        annotatedOutput.writeInt(this.accessFlags);
-        annotatedOutput.writeInt(indexOf);
-        annotatedOutput.writeInt(absoluteOffsetOr0);
-        annotatedOutput.writeInt(indexOf2);
-        annotatedOutput.writeInt(absoluteOffset);
-        annotatedOutput.writeInt(absoluteOffset2);
-        annotatedOutput.writeInt(absoluteOffsetOr02);
+
+        out.writeInt(classIdx);
+        out.writeInt(accessFlags);
+        out.writeInt(superIdx);
+        out.writeInt(interOff);
+        out.writeInt(sourceFileIdx);
+        out.writeInt(annoOff);
+        out.writeInt(dataOff);
+        out.writeInt(staticValuesOff);
     }
 
+    /**
+     * Gets the constant corresponding to this class.
+     *
+     * @return {@code non-null;} the constant
+     */
     public CstType getThisClass() {
-        return this.thisClass;
+        return thisClass;
     }
 
+    /**
+     * Gets the access flags.
+     *
+     * @return the access flags
+     */
     public int getAccessFlags() {
-        return this.accessFlags;
+        return accessFlags;
     }
 
+    /**
+     * Gets the superclass.
+     *
+     * @return {@code null-ok;} the superclass or {@code null} if
+     * this class is a/the root class
+     */
     public CstType getSuperclass() {
-        return this.superclass;
+        return superclass;
     }
 
+    /**
+     * Gets the list of interfaces implemented.
+     *
+     * @return {@code non-null;} the interfaces list
+     */
     public TypeList getInterfaces() {
-        if (this.interfaces == null) {
+        if (interfaces == null) {
             return StdTypeList.EMPTY;
         }
-        return this.interfaces.getList();
+
+        return interfaces.getList();
     }
 
+    /**
+     * Gets the source file name.
+     *
+     * @return {@code null-ok;} the source file name or {@code null} if unknown
+     */
     public CstString getSourceFile() {
-        return this.sourceFile;
+        return sourceFile;
     }
 
-    public void addStaticField(EncodedField encodedField, Constant constant) {
-        this.classData.addStaticField(encodedField, constant);
+    /**
+     * Adds a static field.
+     *
+     * @param field {@code non-null;} the field to add
+     * @param value {@code null-ok;} initial value for the field, if any
+     */
+    public void addStaticField(mod.agus.jcoderz.dx.dex.file.EncodedField field, Constant value) {
+        classData.addStaticField(field, value);
     }
 
-    public void addInstanceField(EncodedField encodedField) {
-        this.classData.addInstanceField(encodedField);
+    /**
+     * Adds an instance field.
+     *
+     * @param field {@code non-null;} the field to add
+     */
+    public void addInstanceField(EncodedField field) {
+        classData.addInstanceField(field);
     }
 
-    public void addDirectMethod(EncodedMethod encodedMethod) {
-        this.classData.addDirectMethod(encodedMethod);
+    /**
+     * Adds a direct ({@code static} and/or {@code private}) method.
+     *
+     * @param method {@code non-null;} the method to add
+     */
+    public void addDirectMethod(mod.agus.jcoderz.dx.dex.file.EncodedMethod method) {
+        classData.addDirectMethod(method);
     }
 
-    public void addVirtualMethod(EncodedMethod encodedMethod) {
-        this.classData.addVirtualMethod(encodedMethod);
+    /**
+     * Adds a virtual method.
+     *
+     * @param method {@code non-null;} the method to add
+     */
+    public void addVirtualMethod(mod.agus.jcoderz.dx.dex.file.EncodedMethod method) {
+        classData.addVirtualMethod(method);
     }
 
+    /**
+     * Gets all the methods in this class. The returned list is not linked
+     * in any way to the underlying lists contained in this instance, but
+     * the objects contained in the list are shared.
+     *
+     * @return {@code non-null;} list of all methods
+     */
     public ArrayList<EncodedMethod> getMethods() {
-        return this.classData.getMethods();
+        return classData.getMethods();
     }
 
-    public void setClassAnnotations(Annotations annotations, DexFile dexFile) {
-        this.annotationsDirectory.setClassAnnotations(annotations, dexFile);
+    /**
+     * Sets the direct annotations on this class. These are annotations
+     * made on the class, per se, as opposed to on one of its members.
+     * It is only valid to call this method at most once per instance.
+     *
+     * @param annotations {@code non-null;} annotations to set for this class
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void setClassAnnotations(Annotations annotations, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        annotationsDirectory.setClassAnnotations(annotations, dexFile);
     }
 
-    public void addFieldAnnotations(CstFieldRef cstFieldRef, Annotations annotations, DexFile dexFile) {
-        this.annotationsDirectory.addFieldAnnotations(cstFieldRef, annotations, dexFile);
+    /**
+     * Adds a field annotations item to this class.
+     *
+     * @param field {@code non-null;} field in question
+     * @param annotations {@code non-null;} associated annotations to add
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void addFieldAnnotations(CstFieldRef field,
+            Annotations annotations, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        annotationsDirectory.addFieldAnnotations(field, annotations, dexFile);
     }
 
-    public void addMethodAnnotations(CstMethodRef cstMethodRef, Annotations annotations, DexFile dexFile) {
-        this.annotationsDirectory.addMethodAnnotations(cstMethodRef, annotations, dexFile);
+    /**
+     * Adds a method annotations item to this class.
+     *
+     * @param method {@code non-null;} method in question
+     * @param annotations {@code non-null;} associated annotations to add
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void addMethodAnnotations(CstMethodRef method,
+            Annotations annotations, mod.agus.jcoderz.dx.dex.file.DexFile dexFile) {
+        annotationsDirectory.addMethodAnnotations(method, annotations, dexFile);
     }
 
-    public void addParameterAnnotations(CstMethodRef cstMethodRef, AnnotationsList annotationsList, DexFile dexFile) {
-        this.annotationsDirectory.addParameterAnnotations(cstMethodRef, annotationsList, dexFile);
+    /**
+     * Adds a parameter annotations item to this class.
+     *
+     * @param method {@code non-null;} method in question
+     * @param list {@code non-null;} associated list of annotation sets to add
+     * @param dexFile {@code non-null;} dex output
+     */
+    public void addParameterAnnotations(CstMethodRef method,
+            AnnotationsList list, DexFile dexFile) {
+        annotationsDirectory.addParameterAnnotations(method, list, dexFile);
     }
 
-    public Annotations getMethodAnnotations(CstMethodRef cstMethodRef) {
-        return this.annotationsDirectory.getMethodAnnotations(cstMethodRef);
+    /**
+     * Gets the method annotations for a given method, if any. This is
+     * meant for use by debugging / dumping code.
+     *
+     * @param method {@code non-null;} the method
+     * @return {@code null-ok;} the method annotations, if any
+     */
+    public Annotations getMethodAnnotations(CstMethodRef method) {
+        return annotationsDirectory.getMethodAnnotations(method);
     }
 
-    public AnnotationsList getParameterAnnotations(CstMethodRef cstMethodRef) {
-        return this.annotationsDirectory.getParameterAnnotations(cstMethodRef);
+    /**
+     * Gets the parameter annotations for a given method, if any. This is
+     * meant for use by debugging / dumping code.
+     *
+     * @param method {@code non-null;} the method
+     * @return {@code null-ok;} the parameter annotations, if any
+     */
+    public AnnotationsList getParameterAnnotations(CstMethodRef method) {
+        return annotationsDirectory.getParameterAnnotations(method);
     }
 
-    public void debugPrint(Writer writer, boolean z) {
-        PrintWriter printWriterFor = Writers.printWriterFor(writer);
-        printWriterFor.println(getClass().getName() + " {");
-        printWriterFor.println("  accessFlags: " + Hex.u2(this.accessFlags));
-        printWriterFor.println("  superclass: " + this.superclass);
-        printWriterFor.println("  interfaces: " + (this.interfaces == null ? "<none>" : this.interfaces));
-        printWriterFor.println("  sourceFile: " + (this.sourceFile == null ? "<none>" : this.sourceFile.toQuoted()));
-        this.classData.debugPrint(writer, z);
-        this.annotationsDirectory.debugPrint(printWriterFor);
-        printWriterFor.println("}");
+    /**
+     * Prints out the contents of this instance, in a debugging-friendly
+     * way.
+     *
+     * @param out {@code non-null;} where to output to
+     * @param verbose whether to be verbose with the output
+     */
+    public void debugPrint(Writer out, boolean verbose) {
+        PrintWriter pw = Writers.printWriterFor(out);
+
+        pw.println(getClass().getName() + " {");
+        pw.println("  accessFlags: " + Hex.u2(accessFlags));
+        pw.println("  superclass: " + superclass);
+        pw.println("  interfaces: " +
+                ((interfaces == null) ? "<none>" : interfaces));
+        pw.println("  sourceFile: " +
+                ((sourceFile == null) ? "<none>" : sourceFile.toQuoted()));
+
+        classData.debugPrint(out, verbose);
+        annotationsDirectory.debugPrint(pw);
+
+        pw.println("}");
     }
 }

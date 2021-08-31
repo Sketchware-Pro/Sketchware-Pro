@@ -1,77 +1,126 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dx.rop.annotation.Annotations;
-import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstFieldRef;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.ToHuman;
 
-public final class FieldAnnotationStruct implements ToHuman, Comparable<FieldAnnotationStruct> {
-    private final CstFieldRef field;
-    private AnnotationSetItem annotations;
+/**
+ * Association of a field and its annotations.
+ */
+public final class FieldAnnotationStruct
+        implements ToHuman, Comparable<FieldAnnotationStruct> {
+    /** {@code non-null;} the field in question */
+    private final mod.agus.jcoderz.dx.rop.cst.CstFieldRef field;
 
+    /** {@code non-null;} the associated annotations */
+    private mod.agus.jcoderz.dx.dex.file.AnnotationSetItem annotations;
 
-    public FieldAnnotationStruct(CstFieldRef cstFieldRef, AnnotationSetItem annotationSetItem) {
-        if (cstFieldRef == null) {
+    /**
+     * Constructs an instance.
+     *
+     * @param field {@code non-null;} the field in question
+     * @param annotations {@code non-null;} the associated annotations
+     */
+    public FieldAnnotationStruct(mod.agus.jcoderz.dx.rop.cst.CstFieldRef field,
+                                 AnnotationSetItem annotations) {
+        if (field == null) {
             throw new NullPointerException("field == null");
-        } else if (annotationSetItem == null) {
-            throw new NullPointerException("annotations == null");
-        } else {
-            this.field = cstFieldRef;
-            this.annotations = annotationSetItem;
         }
+
+        if (annotations == null) {
+            throw new NullPointerException("annotations == null");
+        }
+
+        this.field = field;
+        this.annotations = annotations;
     }
 
-    @Override // java.lang.Comparable
-    public /* bridge */ /* synthetic */ int compareTo(FieldAnnotationStruct fieldAnnotationStruct) {
-        return compareTo(fieldAnnotationStruct);
-    }
-
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        return this.field.hashCode();
+        return field.hashCode();
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof FieldAnnotationStruct)) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object other) {
+        if (! (other instanceof FieldAnnotationStruct)) {
             return false;
         }
-        return this.field.equals(((FieldAnnotationStruct) obj).field);
+
+        return field.equals(((FieldAnnotationStruct) other).field);
     }
 
-    public int compareToTwo(FieldAnnotationStruct fieldAnnotationStruct) {
-        return this.field.compareTo((Constant) fieldAnnotationStruct.field);
+    /** {@inheritDoc} */
+    @Override
+    public int compareTo(FieldAnnotationStruct other) {
+        return field.compareTo(other.field);
     }
 
-    public void addContents(DexFile dexFile) {
-        FieldIdsSection fieldIds = dexFile.getFieldIds();
-        MixedItemSection wordData = dexFile.getWordData();
-        fieldIds.intern(this.field);
-        this.annotations = (AnnotationSetItem) wordData.intern(this.annotations);
+    /** {@inheritDoc} */
+    public void addContents(DexFile file) {
+        FieldIdsSection fieldIds = file.getFieldIds();
+        MixedItemSection wordData = file.getWordData();
+
+        fieldIds.intern(field);
+        annotations = wordData.intern(annotations);
     }
 
-    public void writeTo(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        int indexOf = dexFile.getFieldIds().indexOf(this.field);
-        int absoluteOffset = this.annotations.getAbsoluteOffset();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, "    " + this.field.toHuman());
-            annotatedOutput.annotate(4, "      field_idx:       " + Hex.u4(indexOf));
-            annotatedOutput.annotate(4, "      annotations_off: " + Hex.u4(absoluteOffset));
+    /** {@inheritDoc} */
+    public void writeTo(DexFile file, AnnotatedOutput out) {
+        int fieldIdx = file.getFieldIds().indexOf(field);
+        int annotationsOff = annotations.getAbsoluteOffset();
+
+        if (out.annotates()) {
+            out.annotate(0, "    " + field.toHuman());
+            out.annotate(4, "      field_idx:       " + mod.agus.jcoderz.dx.util.Hex.u4(fieldIdx));
+            out.annotate(4, "      annotations_off: " +
+                    Hex.u4(annotationsOff));
         }
-        annotatedOutput.writeInt(indexOf);
-        annotatedOutput.writeInt(absoluteOffset);
+
+        out.writeInt(fieldIdx);
+        out.writeInt(annotationsOff);
     }
 
-    @Override // mod.agus.jcoderz.dx.util.ToHuman
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
-        return this.field.toHuman() + ": " + this.annotations;
+        return field.toHuman() + ": " + annotations;
     }
 
+    /**
+     * Gets the field this item is for.
+     *
+     * @return {@code non-null;} the field
+     */
     public CstFieldRef getField() {
-        return this.field;
+        return field;
     }
 
+    /**
+     * Gets the associated annotations.
+     *
+     * @return {@code non-null;} the annotations
+     */
     public Annotations getAnnotations() {
-        return this.annotations.getAnnotations();
+        return annotations.getAnnotations();
     }
 }

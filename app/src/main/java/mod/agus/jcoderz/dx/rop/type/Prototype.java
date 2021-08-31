@@ -1,220 +1,421 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.type;
 
-import org.eclipse.jdt.internal.compiler.util.Util;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import java.util.HashMap;
-
-import io.github.rosemoe.editor.widget.CodeEditor;
-
+/**
+ * Representation of a method descriptor. Instances of this class are
+ * generally interned and may be usefully compared with each other
+ * using {@code ==}.
+ */
 public final class Prototype implements Comparable<Prototype> {
-    private static final HashMap<String, Prototype> internTable = new HashMap<>((int) CodeEditor.DEFAULT_CURSOR_BLINK_PERIOD);
-    private final String descriptor;
-    private final StdTypeList parameterTypes;
-    private final Type returnType;
-    private StdTypeList parameterFrameTypes;
+    /**
+     * Intern table for instances.
+     *
+     * <p>The initial capacity is based on a medium-size project.
+     */
+    private static final ConcurrentMap<String, Prototype> internTable =
+            new ConcurrentHashMap<>(10_000, 0.75f);
 
-    private Prototype(String str, Type type, StdTypeList stdTypeList) {
-        if (str == null) {
+    /** {@code non-null;} method descriptor */
+    private final String descriptor;
+
+    /** {@code non-null;} return type */
+    private final mod.agus.jcoderz.dx.rop.type.Type returnType;
+
+    /** {@code non-null;} list of parameter types */
+    private final mod.agus.jcoderz.dx.rop.type.StdTypeList parameterTypes;
+
+    /** {@code null-ok;} list of parameter frame types, if calculated */
+    private mod.agus.jcoderz.dx.rop.type.StdTypeList parameterFrameTypes;
+
+    /**
+     * Returns the unique instance corresponding to the
+     * given method descriptor. See vmspec-2 sec4.3.3 for details on the
+     * field descriptor syntax.
+     *
+     * @param descriptor {@code non-null;} the descriptor
+     * @return {@code non-null;} the corresponding instance
+     * @throws IllegalArgumentException thrown if the descriptor has
+     * invalid syntax
+     */
+    public static Prototype intern(String descriptor) {
+        if (descriptor == null) {
             throw new NullPointerException("descriptor == null");
-        } else if (type == null) {
-            throw new NullPointerException("returnType == null");
-        } else if (stdTypeList == null) {
-            throw new NullPointerException("parameterTypes == null");
-        } else {
-            this.descriptor = str;
-            this.returnType = type;
-            this.parameterTypes = stdTypeList;
-            this.parameterFrameTypes = null;
         }
+
+        Prototype result = internTable.get(descriptor);
+        if (result != null) {
+            return result;
+        }
+
+        result = fromDescriptor(descriptor);
+        return putIntern(result);
     }
 
-    public static Prototype intern(String str) {
-        Prototype prototype;
-        int i;
-        if (str == null) {
-            throw new NullPointerException("descriptor == null");
+    /**
+     * Returns a prototype for a method descriptor.
+     *
+     * The {@code Prototype} returned will be the interned value if present,
+     * or a new instance otherwise. If a new instance is created, it is not
+     * placed in the intern table.
+     *
+     * @param descriptor {@code non-null;} the descriptor
+     * @return {@code non-null;} the corresponding instance
+     * @throws IllegalArgumentException thrown if the descriptor has
+     * invalid syntax
+     */
+    public static Prototype fromDescriptor(String descriptor) {
+        Prototype result = internTable.get(descriptor);
+        if (result != null) {
+            return result;
         }
-        synchronized (internTable) {
-            prototype = internTable.get(str);
-        }
-        if (prototype != null) {
-            return prototype;
-        }
-        Type[] makeParameterArray = makeParameterArray(str);
-        int i2 = 1;
-        int i3 = 0;
-        while (true) {
-            char charAt = str.charAt(i2);
-            if (charAt == ')') {
-                Type internReturnType = Type.internReturnType(str.substring(i2 + 1));
-                StdTypeList stdTypeList = new StdTypeList(i3);
-                for (int i4 = 0; i4 < i3; i4++) {
-                    stdTypeList.set(i4, makeParameterArray[i4]);
-                }
-                return putIntern(new Prototype(str, internReturnType, stdTypeList));
+
+        mod.agus.jcoderz.dx.rop.type.Type[] params = makeParameterArray(descriptor);
+        int paramCount = 0;
+        int at = 1;
+
+        for (;;) {
+            int startAt = at;
+            char c = descriptor.charAt(at);
+            if (c == ')') {
+                at++;
+                break;
             }
-            int i5 = i2;
-            while (charAt == '[') {
-                i5++;
-                charAt = str.charAt(i5);
+
+            // Skip array markers.
+            while (c == '[') {
+                at++;
+                c = descriptor.charAt(at);
             }
-            if (charAt == 'L') {
-                int indexOf = str.indexOf(59, i5);
-                if (indexOf == -1) {
+
+            if (c == 'L') {
+                // It looks like the start of a class name; find the end.
+                int endAt = descriptor.indexOf(';', at);
+                if (endAt == -1) {
                     throw new IllegalArgumentException("bad descriptor");
                 }
-                i = indexOf + 1;
+                at = endAt + 1;
             } else {
-                i = i5 + 1;
+                at++;
             }
-            makeParameterArray[i3] = Type.intern(str.substring(i2, i));
-            i3++;
-            i2 = i;
+
+            params[paramCount] =
+                mod.agus.jcoderz.dx.rop.type.Type.intern(descriptor.substring(startAt, at));
+            paramCount++;
         }
+
+        mod.agus.jcoderz.dx.rop.type.Type returnType = mod.agus.jcoderz.dx.rop.type.Type.internReturnType(descriptor.substring(at));
+        mod.agus.jcoderz.dx.rop.type.StdTypeList parameterTypes = new mod.agus.jcoderz.dx.rop.type.StdTypeList(paramCount);
+
+        for (int i = 0; i < paramCount; i++) {
+            parameterTypes.set(i, params[i]);
+        }
+
+        return new Prototype(descriptor, returnType, parameterTypes);
     }
 
-    private static Type[] makeParameterArray(String str) {
-        int length = str.length();
-        if (str.charAt(0) != '(') {
+    public static void clearInternTable() {
+        internTable.clear();
+    }
+
+    /**
+     * Helper for {@link #intern} which returns an empty array to
+     * populate with parsed parameter types, and which also ensures
+     * that there is a '(' at the start of the descriptor and a
+     * single ')' somewhere before the end.
+     *
+     * @param descriptor {@code non-null;} the descriptor string
+     * @return {@code non-null;} array large enough to hold all parsed parameter
+     * types, but which is likely actually larger than needed
+     */
+    private static mod.agus.jcoderz.dx.rop.type.Type[] makeParameterArray(String descriptor) {
+        int length = descriptor.length();
+
+        if (descriptor.charAt(0) != '(') {
             throw new IllegalArgumentException("bad descriptor");
         }
-        int i = 1;
-        int i2 = 0;
-        while (true) {
-            if (i >= length) {
-                i = 0;
+
+        /*
+         * This is a cheesy way to establish an upper bound on the
+         * number of parameters: Just count capital letters.
+         */
+        int closeAt = 0;
+        int maxParams = 0;
+        for (int i = 1; i < length; i++) {
+            char c = descriptor.charAt(i);
+            if (c == ')') {
+                closeAt = i;
                 break;
             }
-            char charAt = str.charAt(i);
-            if (charAt == ')') {
-                break;
+            if ((c >= 'A') && (c <= 'Z')) {
+                maxParams++;
             }
-            if (charAt >= 'A' && charAt <= 'Z') {
-                i2++;
-            }
-            i++;
         }
-        if (i == 0 || i == length - 1) {
-            throw new IllegalArgumentException("bad descriptor");
-        } else if (str.indexOf(41, i + 1) == -1) {
-            return new Type[i2];
-        } else {
+
+        if ((closeAt == 0) || (closeAt == (length - 1))) {
             throw new IllegalArgumentException("bad descriptor");
         }
+
+        if (descriptor.indexOf(')', closeAt + 1) != -1) {
+            throw new IllegalArgumentException("bad descriptor");
+        }
+
+        return new mod.agus.jcoderz.dx.rop.type.Type[maxParams];
     }
 
-    public static Prototype intern(String str, Type type, boolean z, boolean z2) {
-        Prototype intern = intern(str);
-        if (z) {
-            return intern;
+    /**
+     * Interns an instance, adding to the descriptor as necessary based
+     * on the given definer, name, and flags. For example, an init
+     * method has an uninitialized object of type {@code definer}
+     * as its first argument.
+     *
+     * @param descriptor {@code non-null;} the descriptor string
+     * @param definer {@code non-null;} class the method is defined on
+     * @param isStatic whether this is a static method
+     * @param isInit whether this is an init method
+     * @return {@code non-null;} the interned instance
+     */
+    public static Prototype intern(String descriptor, mod.agus.jcoderz.dx.rop.type.Type definer,
+            boolean isStatic, boolean isInit) {
+        Prototype base = intern(descriptor);
+
+        if (isStatic) {
+            return base;
         }
-        if (z2) {
-            type = type.asUninitialized(Integer.MAX_VALUE);
+
+        if (isInit) {
+            definer = definer.asUninitialized(Integer.MAX_VALUE);
         }
-        return intern.withFirstParameter(type);
+
+        return base.withFirstParameter(definer);
     }
 
-    public static Prototype internInts(Type type, int i) {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append(Util.C_PARAM_START);
-        for (int i2 = 0; i2 < i; i2++) {
-            stringBuffer.append('I');
+    /**
+     * Interns an instance which consists of the given number of
+     * {@code int}s along with the given return type
+     *
+     * @param returnType {@code non-null;} the return type
+     * @param count {@code > 0;} the number of elements in the prototype
+     * @return {@code non-null;} the interned instance
+     */
+    public static Prototype internInts(mod.agus.jcoderz.dx.rop.type.Type returnType, int count) {
+        // Make the descriptor...
+
+        StringBuilder sb = new StringBuilder(100);
+
+        sb.append('(');
+
+        for (int i = 0; i < count; i++) {
+            sb.append('I');
         }
-        stringBuffer.append(Util.C_PARAM_END);
-        stringBuffer.append(type.getDescriptor());
-        return intern(stringBuffer.toString());
+
+        sb.append(')');
+        sb.append(returnType.getDescriptor());
+
+        // ...and intern it.
+        return intern(sb.toString());
     }
 
-    private static Prototype putIntern(Prototype prototype) {
-        synchronized (internTable) {
-            String descriptor2 = prototype.getDescriptor();
-            Prototype prototype2 = internTable.get(descriptor2);
-            if (prototype2 != null) {
-                return prototype2;
-            }
-            internTable.put(descriptor2, prototype);
-            return prototype;
+    /**
+     * Constructs an instance. This is a private constructor; use one
+     * of the public static methods to get instances.
+     *
+     * @param descriptor {@code non-null;} the descriptor string
+     */
+    private Prototype(String descriptor, mod.agus.jcoderz.dx.rop.type.Type returnType,
+            mod.agus.jcoderz.dx.rop.type.StdTypeList parameterTypes) {
+        if (descriptor == null) {
+            throw new NullPointerException("descriptor == null");
         }
+
+        if (returnType == null) {
+            throw new NullPointerException("returnType == null");
+        }
+
+        if (parameterTypes == null) {
+            throw new NullPointerException("parameterTypes == null");
+        }
+
+        this.descriptor = descriptor;
+        this.returnType = returnType;
+        this.parameterTypes = parameterTypes;
+        this.parameterFrameTypes = null;
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            /*
+             * Since externally-visible instances are interned, this
+             * check helps weed out some easy cases.
+             */
             return true;
         }
-        if (!(obj instanceof Prototype)) {
+
+        if (!(other instanceof Prototype)) {
             return false;
         }
-        return this.descriptor.equals(((Prototype) obj).descriptor);
+
+        return descriptor.equals(((Prototype) other).descriptor);
     }
 
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
-        return this.descriptor.hashCode();
+        return descriptor.hashCode();
     }
 
-    public int compareTo(Prototype prototype) {
-        if (this == prototype) {
+    /** {@inheritDoc} */
+    @Override
+    public int compareTo(Prototype other) {
+        if (this == other) {
             return 0;
         }
-        int compareTo = this.returnType.compareTo(prototype.returnType);
-        if (compareTo != 0) {
-            return compareTo;
+
+        /*
+         * The return type is the major order, and then args in order,
+         * and then the shorter list comes first (similar to string
+         * sorting).
+         */
+
+        int result = returnType.compareTo(other.returnType);
+
+        if (result != 0) {
+            return result;
         }
-        int size = this.parameterTypes.size();
-        int size2 = prototype.parameterTypes.size();
-        int min = Math.min(size, size2);
-        for (int i = 0; i < min; i++) {
-            int compareTo2 = this.parameterTypes.get(i).compareTo(prototype.parameterTypes.get(i));
-            if (compareTo2 != 0) {
-                return compareTo2;
+
+        int thisSize = parameterTypes.size();
+        int otherSize = other.parameterTypes.size();
+        int size = Math.min(thisSize, otherSize);
+
+        for (int i = 0; i < size; i++) {
+            mod.agus.jcoderz.dx.rop.type.Type thisType = parameterTypes.get(i);
+            mod.agus.jcoderz.dx.rop.type.Type otherType = other.parameterTypes.get(i);
+
+            result = thisType.compareTo(otherType);
+
+            if (result != 0) {
+                return result;
             }
         }
-        if (size < size2) {
+
+        if (thisSize < otherSize) {
             return -1;
-        }
-        if (size > size2) {
+        } else if (thisSize > otherSize) {
             return 1;
+        } else {
+            return 0;
         }
-        return 0;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        return this.descriptor;
+        return descriptor;
     }
 
+    /**
+     * Gets the descriptor string.
+     *
+     * @return {@code non-null;} the descriptor
+     */
     public String getDescriptor() {
-        return this.descriptor;
+        return descriptor;
     }
 
-    public Type getReturnType() {
-        return this.returnType;
+    /**
+     * Gets the return type.
+     *
+     * @return {@code non-null;} the return type
+     */
+    public mod.agus.jcoderz.dx.rop.type.Type getReturnType() {
+        return returnType;
     }
 
-    public StdTypeList getParameterTypes() {
-        return this.parameterTypes;
+    /**
+     * Gets the list of parameter types.
+     *
+     * @return {@code non-null;} the list of parameter types
+     */
+    public mod.agus.jcoderz.dx.rop.type.StdTypeList getParameterTypes() {
+        return parameterTypes;
     }
 
-    public StdTypeList getParameterFrameTypes() {
-        if (this.parameterFrameTypes == null) {
-            int size = this.parameterTypes.size();
-            StdTypeList stdTypeList = new StdTypeList(size);
-            boolean z = false;
-            for (int i = 0; i < size; i++) {
-                Type type = this.parameterTypes.get(i);
-                if (type.isIntlike()) {
-                    z = true;
-                    type = Type.INT;
+    /**
+     * Gets the list of frame types corresponding to the list of parameter
+     * types. The difference between the two lists (if any) is that all
+     * "intlike" types (see {@link mod.agus.jcoderz.dx.rop.type.Type#isIntlike}) are replaced by
+     * {@link mod.agus.jcoderz.dx.rop.type.Type#INT}.
+     *
+     * @return {@code non-null;} the list of parameter frame types
+     */
+    public mod.agus.jcoderz.dx.rop.type.StdTypeList getParameterFrameTypes() {
+        if (parameterFrameTypes == null) {
+            int sz = parameterTypes.size();
+            mod.agus.jcoderz.dx.rop.type.StdTypeList list = new mod.agus.jcoderz.dx.rop.type.StdTypeList(sz);
+            boolean any = false;
+            for (int i = 0; i < sz; i++) {
+                mod.agus.jcoderz.dx.rop.type.Type one = parameterTypes.get(i);
+                if (one.isIntlike()) {
+                    any = true;
+                    one = mod.agus.jcoderz.dx.rop.type.Type.INT;
                 }
-                stdTypeList.set(i, type);
+                list.set(i, one);
             }
-            this.parameterFrameTypes = z ? stdTypeList : this.parameterTypes;
+            parameterFrameTypes = any ? list : parameterTypes;
         }
-        return this.parameterFrameTypes;
+
+        return parameterFrameTypes;
     }
 
-    public Prototype withFirstParameter(Type type) {
-        String str = "(" + type.getDescriptor() + this.descriptor.substring(1);
-        StdTypeList withFirst = this.parameterTypes.withFirst(type);
-        withFirst.setImmutable();
-        return putIntern(new Prototype(str, this.returnType, withFirst));
+    /**
+     * Returns a new interned instance, which is the same as this instance,
+     * except that it has an additional parameter prepended to the original's
+     * argument list.
+     *
+     * @param param {@code non-null;} the new first parameter
+     * @return {@code non-null;} an appropriately-constructed instance
+     */
+    public Prototype withFirstParameter(Type param) {
+        String newDesc = "(" + param.getDescriptor() + descriptor.substring(1);
+        StdTypeList newParams = parameterTypes.withFirst(param);
+
+        newParams.setImmutable();
+
+        Prototype result =
+            new Prototype(newDesc, returnType, newParams);
+
+        return putIntern(result);
+    }
+
+    /**
+     * Puts the given instance in the intern table if it's not already
+     * there. If a conflicting value is already in the table, then leave it.
+     * Return the interned value.
+     *
+     * @param desc {@code non-null;} instance to make interned
+     * @return {@code non-null;} the actual interned object
+     */
+    private static Prototype putIntern(Prototype desc) {
+        Prototype result = internTable.putIfAbsent(desc.getDescriptor(), desc);
+        return result != null ? result : desc;
     }
 }

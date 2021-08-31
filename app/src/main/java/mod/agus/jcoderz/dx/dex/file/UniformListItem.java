@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.List;
@@ -5,109 +21,195 @@ import java.util.List;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public final class UniformListItem<T extends OffsettedItem> extends OffsettedItem {
+/**
+ * Class that represents a contiguous list of uniform items. Each
+ * item in the list, in particular, must have the same write size and
+ * alignment.
+ *
+ * <p>This class inherits its alignment from its items, bumped up to
+ * {@code 4} if the items have a looser alignment requirement. If
+ * it is more than {@code 4}, then there will be a gap after the
+ * output list size (which is four bytes) and before the first item.</p>
+ *
+ * @param <T> type of element contained in an instance
+ */
+public final class UniformListItem<T extends OffsettedItem>
+        extends OffsettedItem {
+    /** the size of the list header */
     private static final int HEADER_SIZE = 4;
+
+    /** {@code non-null;} the item type */
     private final ItemType itemType;
+
+    /** {@code non-null;} the contents */
     private final List<T> items;
 
-    public UniformListItem(ItemType itemType2, List<T> list) {
-        super(getAlignment(list), writeSize(list));
-        if (itemType2 == null) {
+    /**
+     * Constructs an instance. It is illegal to modify the given list once
+     * it is used to construct an instance of this class.
+     *
+     * @param itemType {@code non-null;} the type of the item
+     * @param items {@code non-null and non-empty;} list of items to represent
+     */
+    public UniformListItem(ItemType itemType, List<T> items) {
+        super(getAlignment(items), writeSize(items));
+
+        if (itemType == null) {
             throw new NullPointerException("itemType == null");
         }
-        this.items = list;
-        this.itemType = itemType2;
+
+        this.items = items;
+        this.itemType = itemType;
     }
 
-    private static int getAlignment(List<? extends OffsettedItem> list) {
+    /**
+     * Helper for {@link #UniformListItem}, which returns the alignment
+     * requirement implied by the given list. See the header comment for
+     * more details.
+     *
+     * @param items {@code non-null;} list of items being represented
+     * @return {@code >= 4;} the alignment requirement
+     */
+    private static int getAlignment(List<? extends OffsettedItem> items) {
         try {
-            return Math.max(4, ((OffsettedItem) list.get(0)).getAlignment());
-        } catch (IndexOutOfBoundsException e) {
+            // Since they all must have the same alignment, any one will do.
+            return Math.max(HEADER_SIZE, items.get(0).getAlignment());
+        } catch (IndexOutOfBoundsException ex) {
+            // Translate the exception.
             throw new IllegalArgumentException("items.size() == 0");
-        } catch (NullPointerException e2) {
+        } catch (NullPointerException ex) {
+            // Translate the exception.
             throw new NullPointerException("items == null");
         }
     }
 
-    private static int writeSize(List<? extends OffsettedItem> list) {
-        return (((OffsettedItem) list.get(0)).writeSize() * list.size()) + getAlignment(list);
+    /**
+     * Calculates the write size for the given list.
+     *
+     * @param items {@code non-null;} the list in question
+     * @return {@code >= 0;} the write size
+     */
+    private static int writeSize(List<? extends OffsettedItem> items) {
+        /*
+         * This class assumes all included items are the same size,
+         * an assumption which is verified in place0().
+         */
+        OffsettedItem first = items.get(0);
+        return (items.size() * first.writeSize()) + getAlignment(items);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
-        return this.itemType;
+        return itemType;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public String toString() {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append(getClass().getName());
-        stringBuffer.append(this.items);
-        return stringBuffer.toString();
+        StringBuilder sb = new StringBuilder(100);
+
+        sb.append(getClass().getName());
+        sb.append(items);
+
+        return sb.toString();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        for (T t : this.items) {
-            t.addContents(dexFile);
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(DexFile file) {
+        for (OffsettedItem i : items) {
+            i.addContents(file);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+    /** {@inheritDoc} */
+    @Override
     public final String toHuman() {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append("{");
-        boolean z = true;
-        for (T t : this.items) {
-            if (z) {
-                z = false;
+        StringBuilder sb = new StringBuilder(100);
+        boolean first = true;
+
+        sb.append("{");
+
+        for (OffsettedItem i : items) {
+            if (first) {
+                first = false;
             } else {
-                stringBuffer.append(", ");
+                sb.append(", ");
             }
-            stringBuffer.append(t.toHuman());
+            sb.append(i.toHuman());
         }
-        stringBuffer.append("}");
-        return stringBuffer.toString();
+
+        sb.append("}");
+        return sb.toString();
     }
 
+    /**
+     * Gets the underlying list of items.
+     *
+     * @return {@code non-null;} the list
+     */
     public final List<T> getItems() {
-        return this.items;
+        return items;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void place0(Section section, int i) {
-        boolean z = true;
-        int headerSize = i + headerSize();
-        int i2 = -1;
-        int i3 = -1;
-        for (T t : this.items) {
-            int writeSize = t.writeSize();
-            if (z) {
-                i2 = t.getAlignment();
-                z = false;
-                i3 = writeSize;
-            } else if (writeSize != i3) {
-                throw new UnsupportedOperationException("item size mismatch");
-            } else if (t.getAlignment() != i2) {
-                throw new UnsupportedOperationException("item alignment mismatch");
+    /** {@inheritDoc} */
+    @Override
+    protected void place0(Section addedTo, int offset) {
+        offset += headerSize();
+
+        boolean first = true;
+        int theSize = -1;
+        int theAlignment = -1;
+
+        for (OffsettedItem i : items) {
+            int size = i.writeSize();
+            if (first) {
+                theSize = size;
+                theAlignment = i.getAlignment();
+                first = false;
+            } else {
+                if (size != theSize) {
+                    throw new UnsupportedOperationException(
+                            "item size mismatch");
+                }
+                if (i.getAlignment() != theAlignment) {
+                    throw new UnsupportedOperationException(
+                            "item alignment mismatch");
+                }
             }
-            headerSize = t.place(section, headerSize) + writeSize;
+
+            offset = i.place(addedTo, offset) + size;
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        int size = this.items.size();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(0, offsetString() + " " + typeName());
-            annotatedOutput.annotate(4, "  size: " + Hex.u4(size));
+    /** {@inheritDoc} */
+    @Override
+    protected void writeTo0(DexFile file, AnnotatedOutput out) {
+        int size = items.size();
+
+        if (out.annotates()) {
+            out.annotate(0, offsetString() + " " + typeName());
+            out.annotate(4, "  size: " + Hex.u4(size));
         }
-        annotatedOutput.writeInt(size);
-        for (T t : this.items) {
-            t.writeTo(dexFile, annotatedOutput);
+
+        out.writeInt(size);
+
+        for (OffsettedItem i : items) {
+            i.writeTo(file, out);
         }
     }
 
+    /**
+     * Get the size of the header of this list.
+     *
+     * @return {@code >= 0;} the header size
+     */
     private int headerSize() {
+        /*
+         * Because of how this instance was set up, this is the same
+         * as the alignment.
+         */
         return getAlignment();
     }
 }

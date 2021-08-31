@@ -1,5 +1,22 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
+import mod.agus.jcoderz.dex.SizeOf;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.type.Prototype;
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
@@ -7,93 +24,136 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Representation of a method prototype reference inside a Dalvik file.
+ */
 public final class ProtoIdItem extends IndexedItem {
-    private final Prototype prototype;
-    private final CstString shortForm;
+    /** {@code non-null;} the wrapped prototype */
+    private final mod.agus.jcoderz.dx.rop.type.Prototype prototype;
+
+    /** {@code non-null;} the short-form of the prototype */
+    private final mod.agus.jcoderz.dx.rop.cst.CstString shortForm;
+
+    /**
+     * {@code null-ok;} the list of parameter types or {@code null} if this
+     * prototype has no parameters
+     */
     private TypeListItem parameterTypes;
 
-    public ProtoIdItem(Prototype prototype2) {
-        TypeListItem typeListItem;
-        if (prototype2 == null) {
+    /**
+     * Constructs an instance.
+     *
+     * @param prototype {@code non-null;} the constant for the prototype
+     */
+    public ProtoIdItem(mod.agus.jcoderz.dx.rop.type.Prototype prototype) {
+        if (prototype == null) {
             throw new NullPointerException("prototype == null");
         }
-        this.prototype = prototype2;
-        this.shortForm = makeShortForm(prototype2);
-        StdTypeList parameterTypes2 = prototype2.getParameterTypes();
-        if (parameterTypes2.size() == 0) {
-            typeListItem = null;
-        } else {
-            typeListItem = new TypeListItem(parameterTypes2);
-        }
-        this.parameterTypes = typeListItem;
+
+        this.prototype = prototype;
+        this.shortForm = makeShortForm(prototype);
+
+        mod.agus.jcoderz.dx.rop.type.StdTypeList parameters = prototype.getParameterTypes();
+        this.parameterTypes = (parameters.size() == 0) ? null
+            : new TypeListItem(parameters);
     }
 
-    private static CstString makeShortForm(Prototype prototype2) {
-        StdTypeList parameterTypes2 = prototype2.getParameterTypes();
-        int size = parameterTypes2.size();
+    /**
+     * Creates the short-form of the given prototype.
+     *
+     * @param prototype {@code non-null;} the prototype
+     * @return {@code non-null;} the short form
+     */
+    private static mod.agus.jcoderz.dx.rop.cst.CstString makeShortForm(Prototype prototype) {
+        mod.agus.jcoderz.dx.rop.type.StdTypeList parameters = prototype.getParameterTypes();
+        int size = parameters.size();
         StringBuilder sb = new StringBuilder(size + 1);
-        sb.append(shortFormCharFor(prototype2.getReturnType()));
+
+        sb.append(shortFormCharFor(prototype.getReturnType()));
+
         for (int i = 0; i < size; i++) {
-            sb.append(shortFormCharFor(parameterTypes2.getType(i)));
+            sb.append(shortFormCharFor(parameters.getType(i)));
         }
+
         return new CstString(sb.toString());
     }
 
+    /**
+     * Gets the short-form character for the given type.
+     *
+     * @param type {@code non-null;} the type
+     * @return the corresponding short-form character
+     */
     private static char shortFormCharFor(Type type) {
-        char charAt = type.getDescriptor().charAt(0);
-        if (charAt == '[') {
+        char descriptorChar = type.getDescriptor().charAt(0);
+
+        if (descriptorChar == '[') {
             return 'L';
         }
-        return charAt;
+
+        return descriptorChar;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_PROTO_ID_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public int writeSize() {
-        return 12;
+        return SizeOf.PROTO_ID_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        StringIdsSection stringIds = dexFile.getStringIds();
-        TypeIdsSection typeIds = dexFile.getTypeIds();
-        MixedItemSection typeLists = dexFile.getTypeLists();
-        typeIds.intern(this.prototype.getReturnType());
-        stringIds.intern(this.shortForm);
-        if (this.parameterTypes != null) {
-            this.parameterTypes = (TypeListItem) typeLists.intern(this.parameterTypes);
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(DexFile file) {
+        StringIdsSection stringIds = file.getStringIds();
+        TypeIdsSection typeIds = file.getTypeIds();
+        MixedItemSection typeLists = file.getTypeLists();
+
+        typeIds.intern(prototype.getReturnType());
+        stringIds.intern(shortForm);
+
+        if (parameterTypes != null) {
+            parameterTypes = typeLists.intern(parameterTypes);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void writeTo(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        int indexOf = dexFile.getStringIds().indexOf(this.shortForm);
-        int indexOf2 = dexFile.getTypeIds().indexOf(this.prototype.getReturnType());
-        int absoluteOffsetOr0 = OffsettedItem.getAbsoluteOffsetOr0(this.parameterTypes);
-        if (annotatedOutput.annotates()) {
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo(DexFile file, AnnotatedOutput out) {
+        int shortyIdx = file.getStringIds().indexOf(shortForm);
+        int returnIdx = file.getTypeIds().indexOf(prototype.getReturnType());
+        int paramsOff = OffsettedItem.getAbsoluteOffsetOr0(parameterTypes);
+
+        if (out.annotates()) {
             StringBuilder sb = new StringBuilder();
-            sb.append(this.prototype.getReturnType().toHuman());
+            sb.append(prototype.getReturnType().toHuman());
             sb.append(" proto(");
-            StdTypeList parameterTypes2 = this.prototype.getParameterTypes();
-            int size = parameterTypes2.size();
+
+            StdTypeList params = prototype.getParameterTypes();
+            int size = params.size();
+
             for (int i = 0; i < size; i++) {
                 if (i != 0) {
                     sb.append(", ");
                 }
-                sb.append(parameterTypes2.getType(i).toHuman());
+                sb.append(params.getType(i).toHuman());
             }
+
             sb.append(")");
-            annotatedOutput.annotate(0, indexString() + ' ' + sb.toString());
-            annotatedOutput.annotate(4, "  shorty_idx:      " + Hex.u4(indexOf) + " // " + this.shortForm.toQuoted());
-            annotatedOutput.annotate(4, "  return_type_idx: " + Hex.u4(indexOf2) + " // " + this.prototype.getReturnType().toHuman());
-            annotatedOutput.annotate(4, "  parameters_off:  " + Hex.u4(absoluteOffsetOr0));
+            out.annotate(0, indexString() + ' ' + sb.toString());
+            out.annotate(4, "  shorty_idx:      " + mod.agus.jcoderz.dx.util.Hex.u4(shortyIdx) +
+                    " // " + shortForm.toQuoted());
+            out.annotate(4, "  return_type_idx: " + mod.agus.jcoderz.dx.util.Hex.u4(returnIdx) +
+                    " // " + prototype.getReturnType().toHuman());
+            out.annotate(4, "  parameters_off:  " + Hex.u4(paramsOff));
         }
-        annotatedOutput.writeInt(indexOf);
-        annotatedOutput.writeInt(indexOf2);
-        annotatedOutput.writeInt(absoluteOffsetOr0);
+
+        out.writeInt(shortyIdx);
+        out.writeInt(returnIdx);
+        out.writeInt(paramsOff);
     }
 }

@@ -1,240 +1,975 @@
-package mod.agus.jcoderz.dx.io;
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import org.spongycastle.crypto.engines.IDEAEngine;
+package mod.agus.jcoderz.dx.io;
 
 import mod.agus.jcoderz.dx.io.instructions.InstructionCodec;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Information about each Dalvik opcode.
+ */
 public final class OpcodeInfo {
-    public static final Info ADD_DOUBLE = new Info(171, "add-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info ADD_DOUBLE_2ADDR = new Info(Opcodes.ADD_DOUBLE_2ADDR, "add-double/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info ADD_FLOAT = new Info(166, "add-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info ADD_FLOAT_2ADDR = new Info(198, "add-float/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info ADD_INT = new Info(144, "add-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info ADD_INT_2ADDR = new Info(176, "add-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info ADD_INT_LIT16 = new Info(Opcodes.ADD_INT_LIT16, "add-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info ADD_INT_LIT8 = new Info(Opcodes.ADD_INT_LIT8, "add-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info ADD_LONG = new Info(155, "add-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info ADD_LONG_2ADDR = new Info(187, "add-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info AGET = new Info(68, "aget", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AGET_BOOLEAN = new Info(71, "aget-boolean", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AGET_BYTE = new Info(72, "aget-byte", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AGET_CHAR = new Info(73, "aget-char", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AGET_OBJECT = new Info(70, "aget-object", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AGET_SHORT = new Info(74, "aget-short", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AGET_WIDE = new Info(69, "aget-wide", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AND_INT = new Info(149, "and-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AND_INT_2ADDR = new Info(181, "and-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info AND_INT_LIT16 = new Info(Opcodes.AND_INT_LIT16, "and-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info AND_INT_LIT8 = new Info(Opcodes.AND_INT_LIT8, "and-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info AND_LONG = new Info(160, "and-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info AND_LONG_2ADDR = new Info(192, "and-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info APUT = new Info(75, "aput", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info APUT_BOOLEAN = new Info(78, "aput-boolean", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info APUT_BYTE = new Info(79, "aput-byte", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info APUT_CHAR = new Info(80, "aput-char", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info APUT_OBJECT = new Info(77, "aput-object", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info APUT_SHORT = new Info(81, "aput-short", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info APUT_WIDE = new Info(76, "aput-wide", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info ARRAY_LENGTH = new Info(33, "array-length", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info CHECK_CAST = new Info(31, "check-cast", InstructionCodec.FORMAT_21C, IndexType.TYPE_REF);
-    public static final Info CMPG_DOUBLE = new Info(48, "cmpg-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info CMPG_FLOAT = new Info(46, "cmpg-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info CMPL_DOUBLE = new Info(47, "cmpl-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info CMPL_FLOAT = new Info(45, "cmpl-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info CMP_LONG = new Info(49, "cmp-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info CONST = new Info(20, "const", InstructionCodec.FORMAT_31I, IndexType.NONE);
-    public static final Info CONST_16 = new Info(19, "const/16", InstructionCodec.FORMAT_21S, IndexType.NONE);
-    public static final Info CONST_4 = new Info(18, "const/4", InstructionCodec.FORMAT_11N, IndexType.NONE);
-    public static final Info CONST_CLASS = new Info(28, "const-class", InstructionCodec.FORMAT_21C, IndexType.TYPE_REF);
-    public static final Info CONST_HIGH16 = new Info(21, "const/high16", InstructionCodec.FORMAT_21H, IndexType.NONE);
-    public static final Info CONST_STRING = new Info(26, "const-string", InstructionCodec.FORMAT_21C, IndexType.STRING_REF);
-    public static final Info CONST_STRING_JUMBO = new Info(27, "const-string/jumbo", InstructionCodec.FORMAT_31C, IndexType.STRING_REF);
-    public static final Info CONST_WIDE = new Info(24, "const-wide", InstructionCodec.FORMAT_51L, IndexType.NONE);
-    public static final Info CONST_WIDE_16 = new Info(22, "const-wide/16", InstructionCodec.FORMAT_21S, IndexType.NONE);
-    public static final Info CONST_WIDE_32 = new Info(23, "const-wide/32", InstructionCodec.FORMAT_31I, IndexType.NONE);
-    public static final Info CONST_WIDE_HIGH16 = new Info(25, "const-wide/high16", InstructionCodec.FORMAT_21H, IndexType.NONE);
-    public static final Info DIV_DOUBLE = new Info(174, "div-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info DIV_DOUBLE_2ADDR = new Info(Opcodes.DIV_DOUBLE_2ADDR, "div-double/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info DIV_FLOAT = new Info(169, "div-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info DIV_FLOAT_2ADDR = new Info(201, "div-float/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info DIV_INT = new Info(147, "div-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info DIV_INT_2ADDR = new Info(179, "div-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info DIV_INT_LIT16 = new Info(211, "div-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info DIV_INT_LIT8 = new Info(Opcodes.DIV_INT_LIT8, "div-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info DIV_LONG = new Info(158, "div-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info DIV_LONG_2ADDR = new Info(190, "div-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info DOUBLE_TO_FLOAT = new Info(140, "double-to-float", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info DOUBLE_TO_INT = new Info(138, "double-to-int", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info DOUBLE_TO_LONG = new Info(139, "double-to-long", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info FILLED_NEW_ARRAY = new Info(36, "filled-new-array", InstructionCodec.FORMAT_35C, IndexType.TYPE_REF);
-    public static final Info FILLED_NEW_ARRAY_RANGE = new Info(37, "filled-new-array/range", InstructionCodec.FORMAT_3RC, IndexType.TYPE_REF);
-    public static final Info FILL_ARRAY_DATA = new Info(38, "fill-array-data", InstructionCodec.FORMAT_31T, IndexType.NONE);
-    public static final Info FILL_ARRAY_DATA_PAYLOAD = new Info(768, "fill-array-data-payload", InstructionCodec.FORMAT_FILL_ARRAY_DATA_PAYLOAD, IndexType.NONE);
-    public static final Info FLOAT_TO_DOUBLE = new Info(137, "float-to-double", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info FLOAT_TO_INT = new Info(135, "float-to-int", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info FLOAT_TO_LONG = new Info(136, "float-to-long", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info GOTO = new Info(40, "goto", InstructionCodec.FORMAT_10T, IndexType.NONE);
-    public static final Info GOTO_16 = new Info(41, "goto/16", InstructionCodec.FORMAT_20T, IndexType.NONE);
-    public static final Info GOTO_32 = new Info(42, "goto/32", InstructionCodec.FORMAT_30T, IndexType.NONE);
-    public static final Info IF_EQ = new Info(50, "if-eq", InstructionCodec.FORMAT_22T, IndexType.NONE);
-    public static final Info IF_EQZ = new Info(56, "if-eqz", InstructionCodec.FORMAT_21T, IndexType.NONE);
-    public static final Info IF_GE = new Info(53, "if-ge", InstructionCodec.FORMAT_22T, IndexType.NONE);
-    public static final Info IF_GEZ = new Info(59, "if-gez", InstructionCodec.FORMAT_21T, IndexType.NONE);
-    public static final Info IF_GT = new Info(54, "if-gt", InstructionCodec.FORMAT_22T, IndexType.NONE);
-    public static final Info IF_GTZ = new Info(60, "if-gtz", InstructionCodec.FORMAT_21T, IndexType.NONE);
-    public static final Info IF_LE = new Info(55, "if-le", InstructionCodec.FORMAT_22T, IndexType.NONE);
-    public static final Info IF_LEZ = new Info(61, "if-lez", InstructionCodec.FORMAT_21T, IndexType.NONE);
-    public static final Info IF_LT = new Info(52, "if-lt", InstructionCodec.FORMAT_22T, IndexType.NONE);
-    public static final Info IF_LTZ = new Info(58, "if-ltz", InstructionCodec.FORMAT_21T, IndexType.NONE);
-    public static final Info IF_NE = new Info(51, "if-ne", InstructionCodec.FORMAT_22T, IndexType.NONE);
-    public static final Info IF_NEZ = new Info(57, "if-nez", InstructionCodec.FORMAT_21T, IndexType.NONE);
-    public static final Info IGET = new Info(82, "iget", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IGET_BOOLEAN = new Info(85, "iget-boolean", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IGET_BYTE = new Info(86, "iget-byte", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IGET_CHAR = new Info(87, "iget-char", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IGET_OBJECT = new Info(84, "iget-object", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IGET_SHORT = new Info(88, "iget-short", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IGET_WIDE = new Info(83, "iget-wide", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info INSTANCE_OF = new Info(32, "instance-of", InstructionCodec.FORMAT_22C, IndexType.TYPE_REF);
-    public static final Info INT_TO_BYTE = new Info(141, "int-to-byte", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info INT_TO_CHAR = new Info(142, "int-to-char", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info INT_TO_DOUBLE = new Info(131, "int-to-double", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info INT_TO_FLOAT = new Info(130, "int-to-float", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info INT_TO_LONG = new Info(129, "int-to-long", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info INT_TO_SHORT = new Info(143, "int-to-short", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info INVOKE_DIRECT = new Info(112, "invoke-direct", InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
-    public static final Info INVOKE_DIRECT_RANGE = new Info(118, "invoke-direct/range", InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
-    public static final Info INVOKE_INTERFACE = new Info(114, "invoke-interface", InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
-    public static final Info INVOKE_INTERFACE_RANGE = new Info(120, "invoke-interface/range", InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
-    public static final Info INVOKE_STATIC = new Info(113, "invoke-static", InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
-    public static final Info INVOKE_STATIC_RANGE = new Info(119, "invoke-static/range", InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
-    public static final Info INVOKE_SUPER = new Info(111, "invoke-super", InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
-    public static final Info INVOKE_SUPER_RANGE = new Info(117, "invoke-super/range", InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
-    public static final Info INVOKE_VIRTUAL = new Info(110, "invoke-virtual", InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
-    public static final Info INVOKE_VIRTUAL_RANGE = new Info(116, "invoke-virtual/range", InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
-    public static final Info IPUT = new Info(89, "iput", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IPUT_BOOLEAN = new Info(92, "iput-boolean", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IPUT_BYTE = new Info(93, "iput-byte", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IPUT_CHAR = new Info(94, "iput-char", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IPUT_OBJECT = new Info(91, "iput-object", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IPUT_SHORT = new Info(95, "iput-short", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info IPUT_WIDE = new Info(90, "iput-wide", InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
-    public static final Info LONG_TO_DOUBLE = new Info(134, "long-to-double", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info LONG_TO_FLOAT = new Info(133, "long-to-float", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info LONG_TO_INT = new Info(132, "long-to-int", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MONITOR_ENTER = new Info(29, "monitor-enter", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info MONITOR_EXIT = new Info(30, "monitor-exit", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info MOVE = new Info(1, "move", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MOVE_16 = new Info(3, "move/16", InstructionCodec.FORMAT_32X, IndexType.NONE);
-    public static final Info MOVE_EXCEPTION = new Info(13, "move-exception", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info MOVE_FROM16 = new Info(2, "move/from16", InstructionCodec.FORMAT_22X, IndexType.NONE);
-    public static final Info MOVE_OBJECT = new Info(7, "move-object", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MOVE_OBJECT_16 = new Info(9, "move-object/16", InstructionCodec.FORMAT_32X, IndexType.NONE);
-    public static final Info MOVE_OBJECT_FROM16 = new Info(8, "move-object/from16", InstructionCodec.FORMAT_22X, IndexType.NONE);
-    public static final Info MOVE_RESULT = new Info(10, "move-result", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info MOVE_RESULT_OBJECT = new Info(12, "move-result-object", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info MOVE_RESULT_WIDE = new Info(11, "move-result-wide", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info MOVE_WIDE = new Info(4, "move-wide", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MOVE_WIDE_16 = new Info(6, "move-wide/16", InstructionCodec.FORMAT_32X, IndexType.NONE);
-    public static final Info MOVE_WIDE_FROM16 = new Info(5, "move-wide/from16", InstructionCodec.FORMAT_22X, IndexType.NONE);
-    public static final Info MUL_DOUBLE = new Info(173, "mul-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info MUL_DOUBLE_2ADDR = new Info(Opcodes.MUL_DOUBLE_2ADDR, "mul-double/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MUL_FLOAT = new Info(168, "mul-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info MUL_FLOAT_2ADDR = new Info(200, "mul-float/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MUL_INT = new Info(146, "mul-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info MUL_INT_2ADDR = new Info(178, "mul-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info MUL_INT_LIT16 = new Info(Opcodes.MUL_INT_LIT16, "mul-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info MUL_INT_LIT8 = new Info(Opcodes.MUL_INT_LIT8, "mul-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info MUL_LONG = new Info(157, "mul-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info MUL_LONG_2ADDR = new Info(189, "mul-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info NEG_DOUBLE = new Info(128, "neg-double", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info NEG_FLOAT = new Info(127, "neg-float", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info NEG_INT = new Info(123, "neg-int", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info NEG_LONG = new Info(125, "neg-long", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info NEW_ARRAY = new Info(35, "new-array", InstructionCodec.FORMAT_22C, IndexType.TYPE_REF);
-    public static final Info NEW_INSTANCE = new Info(34, "new-instance", InstructionCodec.FORMAT_21C, IndexType.TYPE_REF);
-    public static final Info NOP = new Info(0, "nop", InstructionCodec.FORMAT_10X, IndexType.NONE);
-    public static final Info NOT_INT = new Info(124, "not-int", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info NOT_LONG = new Info(126, "not-long", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info OR_INT = new Info(150, "or-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info OR_INT_2ADDR = new Info(182, "or-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info OR_INT_LIT16 = new Info(Opcodes.OR_INT_LIT16, "or-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info OR_INT_LIT8 = new Info(Opcodes.OR_INT_LIT8, "or-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info OR_LONG = new Info(161, "or-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info OR_LONG_2ADDR = new Info(193, "or-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info PACKED_SWITCH = new Info(43, "packed-switch", InstructionCodec.FORMAT_31T, IndexType.NONE);
-    public static final Info PACKED_SWITCH_PAYLOAD = new Info(256, "packed-switch-payload", InstructionCodec.FORMAT_PACKED_SWITCH_PAYLOAD, IndexType.NONE);
-    public static final Info REM_DOUBLE = new Info(175, "rem-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info REM_DOUBLE_2ADDR = new Info(Opcodes.REM_DOUBLE_2ADDR, "rem-double/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info REM_FLOAT = new Info(170, "rem-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info REM_FLOAT_2ADDR = new Info(Opcodes.REM_FLOAT_2ADDR, "rem-float/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info REM_INT = new Info(148, "rem-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info REM_INT_2ADDR = new Info(180, "rem-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info REM_INT_LIT16 = new Info(Opcodes.REM_INT_LIT16, "rem-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info REM_INT_LIT8 = new Info(Opcodes.REM_INT_LIT8, "rem-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info REM_LONG = new Info(159, "rem-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info REM_LONG_2ADDR = new Info(191, "rem-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info RETURN = new Info(15, "return", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info RETURN_OBJECT = new Info(17, "return-object", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info RETURN_VOID = new Info(14, "return-void", InstructionCodec.FORMAT_10X, IndexType.NONE);
-    public static final Info RETURN_WIDE = new Info(16, "return-wide", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info RSUB_INT = new Info(Opcodes.RSUB_INT, "rsub-int", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info RSUB_INT_LIT8 = new Info(Opcodes.RSUB_INT_LIT8, "rsub-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info SGET = new Info(96, "sget", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SGET_BOOLEAN = new Info(99, "sget-boolean", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SGET_BYTE = new Info(100, "sget-byte", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SGET_CHAR = new Info(101, "sget-char", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SGET_OBJECT = new Info(98, "sget-object", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SGET_SHORT = new Info(102, "sget-short", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SGET_WIDE = new Info(97, "sget-wide", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SHL_INT = new Info(152, "shl-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SHL_INT_2ADDR = new Info(184, "shl-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SHL_INT_LIT8 = new Info(Opcodes.SHL_INT_LIT8, "shl-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info SHL_LONG = new Info(163, "shl-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SHL_LONG_2ADDR = new Info(195, "shl-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SHR_INT = new Info(153, "shr-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SHR_INT_2ADDR = new Info(185, "shr-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SHR_INT_LIT8 = new Info(Opcodes.SHR_INT_LIT8, "shr-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info SHR_LONG = new Info(164, "shr-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SHR_LONG_2ADDR = new Info(196, "shr-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SPARSE_SWITCH = new Info(44, "sparse-switch", InstructionCodec.FORMAT_31T, IndexType.NONE);
-    public static final Info SPARSE_SWITCH_PAYLOAD = new Info(512, "sparse-switch-payload", InstructionCodec.FORMAT_SPARSE_SWITCH_PAYLOAD, IndexType.NONE);
-    public static final Info SPECIAL_FORMAT = new Info(-1, "<special>", InstructionCodec.FORMAT_00X, IndexType.NONE);
-    public static final Info SPUT = new Info(103, "sput", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SPUT_BOOLEAN = new Info(106, "sput-boolean", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SPUT_BYTE = new Info(107, "sput-byte", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SPUT_CHAR = new Info(108, "sput-char", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SPUT_OBJECT = new Info(105, "sput-object", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SPUT_SHORT = new Info(109, "sput-short", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SPUT_WIDE = new Info(104, "sput-wide", InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
-    public static final Info SUB_DOUBLE = new Info(172, "sub-double", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SUB_DOUBLE_2ADDR = new Info(204, "sub-double/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SUB_FLOAT = new Info(167, "sub-float", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SUB_FLOAT_2ADDR = new Info(199, "sub-float/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SUB_INT = new Info(145, "sub-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SUB_INT_2ADDR = new Info(177, "sub-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info SUB_LONG = new Info(156, "sub-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info SUB_LONG_2ADDR = new Info(188, "sub-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info THROW = new Info(39, "throw", InstructionCodec.FORMAT_11X, IndexType.NONE);
-    public static final Info USHR_INT = new Info(154, "ushr-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info USHR_INT_2ADDR = new Info(186, "ushr-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info USHR_INT_LIT8 = new Info(Opcodes.USHR_INT_LIT8, "ushr-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info USHR_LONG = new Info(165, "ushr-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info USHR_LONG_2ADDR = new Info(197, "ushr-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info XOR_INT = new Info(151, "xor-int", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info XOR_INT_2ADDR = new Info(183, "xor-int/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    public static final Info XOR_INT_LIT16 = new Info(Opcodes.XOR_INT_LIT16, "xor-int/lit16", InstructionCodec.FORMAT_22S, IndexType.NONE);
-    public static final Info XOR_INT_LIT8 = new Info(Opcodes.XOR_INT_LIT8, "xor-int/lit8", InstructionCodec.FORMAT_22B, IndexType.NONE);
-    public static final Info XOR_LONG = new Info(162, "xor-long", InstructionCodec.FORMAT_23X, IndexType.NONE);
-    public static final Info XOR_LONG_2ADDR = new Info(194, "xor-long/2addr", InstructionCodec.FORMAT_12X, IndexType.NONE);
-    private static final Info[] INFO = new Info[IDEAEngine.BASE];
+    /*
+     * TODO: Merge at least most of the info from the Dops class into
+     * this one.
+     */
 
+    /** non-null; array containing all the information */
+    private static final Info[] INFO;
+
+    /**
+     * pseudo-opcode used for nonstandard formatted "instructions"
+     * (which are mostly not actually instructions, though they do
+     * appear in instruction lists). TODO: Retire the usage of this
+     * constant.
+     */
+    public static final Info SPECIAL_FORMAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPECIAL_FORMAT, "<special>",
+                InstructionCodec.FORMAT_00X, IndexType.NONE);
+
+    // TODO: These payload opcodes should be generated by opcode-gen.
+
+    public static final Info PACKED_SWITCH_PAYLOAD =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.PACKED_SWITCH_PAYLOAD, "packed-switch-payload",
+                InstructionCodec.FORMAT_PACKED_SWITCH_PAYLOAD,
+                IndexType.NONE);
+
+    public static final Info SPARSE_SWITCH_PAYLOAD =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPARSE_SWITCH_PAYLOAD, "sparse-switch-payload",
+                InstructionCodec.FORMAT_SPARSE_SWITCH_PAYLOAD,
+                IndexType.NONE);
+
+    public static final Info FILL_ARRAY_DATA_PAYLOAD =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FILL_ARRAY_DATA_PAYLOAD, "fill-array-data-payload",
+                InstructionCodec.FORMAT_FILL_ARRAY_DATA_PAYLOAD,
+                IndexType.NONE);
+
+    // BEGIN(opcode-info-defs); GENERATED AUTOMATICALLY BY opcode-gen
+    public static final Info NOP =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NOP, "nop",
+            InstructionCodec.FORMAT_10X, IndexType.NONE);
+
+    public static final Info MOVE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE, "move",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MOVE_FROM16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_FROM16, "move/from16",
+            InstructionCodec.FORMAT_22X, IndexType.NONE);
+
+    public static final Info MOVE_16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_16, "move/16",
+            InstructionCodec.FORMAT_32X, IndexType.NONE);
+
+    public static final Info MOVE_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE, "move-wide",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MOVE_WIDE_FROM16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE_FROM16, "move-wide/from16",
+            InstructionCodec.FORMAT_22X, IndexType.NONE);
+
+    public static final Info MOVE_WIDE_16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_WIDE_16, "move-wide/16",
+            InstructionCodec.FORMAT_32X, IndexType.NONE);
+
+    public static final Info MOVE_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT, "move-object",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MOVE_OBJECT_FROM16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT_FROM16, "move-object/from16",
+            InstructionCodec.FORMAT_22X, IndexType.NONE);
+
+    public static final Info MOVE_OBJECT_16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_OBJECT_16, "move-object/16",
+            InstructionCodec.FORMAT_32X, IndexType.NONE);
+
+    public static final Info MOVE_RESULT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT, "move-result",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info MOVE_RESULT_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT_WIDE, "move-result-wide",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info MOVE_RESULT_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_RESULT_OBJECT, "move-result-object",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info MOVE_EXCEPTION =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MOVE_EXCEPTION, "move-exception",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info RETURN_VOID =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.RETURN_VOID, "return-void",
+            InstructionCodec.FORMAT_10X, IndexType.NONE);
+
+    public static final Info RETURN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.RETURN, "return",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info RETURN_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.RETURN_WIDE, "return-wide",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info RETURN_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.RETURN_OBJECT, "return-object",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info CONST_4 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_4, "const/4",
+            InstructionCodec.FORMAT_11N, IndexType.NONE);
+
+    public static final Info CONST_16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_16, "const/16",
+            InstructionCodec.FORMAT_21S, IndexType.NONE);
+
+    public static final Info CONST =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST, "const",
+            InstructionCodec.FORMAT_31I, IndexType.NONE);
+
+    public static final Info CONST_HIGH16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_HIGH16, "const/high16",
+            InstructionCodec.FORMAT_21H, IndexType.NONE);
+
+    public static final Info CONST_WIDE_16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_16, "const-wide/16",
+            InstructionCodec.FORMAT_21S, IndexType.NONE);
+
+    public static final Info CONST_WIDE_32 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_32, "const-wide/32",
+            InstructionCodec.FORMAT_31I, IndexType.NONE);
+
+    public static final Info CONST_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE, "const-wide",
+            InstructionCodec.FORMAT_51L, IndexType.NONE);
+
+    public static final Info CONST_WIDE_HIGH16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_WIDE_HIGH16, "const-wide/high16",
+            InstructionCodec.FORMAT_21H, IndexType.NONE);
+
+    public static final Info CONST_STRING =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING, "const-string",
+            InstructionCodec.FORMAT_21C, IndexType.STRING_REF);
+
+    public static final Info CONST_STRING_JUMBO =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_STRING_JUMBO, "const-string/jumbo",
+            InstructionCodec.FORMAT_31C, IndexType.STRING_REF);
+
+    public static final Info CONST_CLASS =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_CLASS, "const-class",
+            InstructionCodec.FORMAT_21C, IndexType.TYPE_REF);
+
+    public static final Info MONITOR_ENTER =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MONITOR_ENTER, "monitor-enter",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info MONITOR_EXIT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MONITOR_EXIT, "monitor-exit",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info CHECK_CAST =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CHECK_CAST, "check-cast",
+            InstructionCodec.FORMAT_21C, IndexType.TYPE_REF);
+
+    public static final Info INSTANCE_OF =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INSTANCE_OF, "instance-of",
+            InstructionCodec.FORMAT_22C, IndexType.TYPE_REF);
+
+    public static final Info ARRAY_LENGTH =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ARRAY_LENGTH, "array-length",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info NEW_INSTANCE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NEW_INSTANCE, "new-instance",
+            InstructionCodec.FORMAT_21C, IndexType.TYPE_REF);
+
+    public static final Info NEW_ARRAY =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NEW_ARRAY, "new-array",
+            InstructionCodec.FORMAT_22C, IndexType.TYPE_REF);
+
+    public static final Info FILLED_NEW_ARRAY =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY, "filled-new-array",
+            InstructionCodec.FORMAT_35C, IndexType.TYPE_REF);
+
+    public static final Info FILLED_NEW_ARRAY_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FILLED_NEW_ARRAY_RANGE, "filled-new-array/range",
+            InstructionCodec.FORMAT_3RC, IndexType.TYPE_REF);
+
+    public static final Info FILL_ARRAY_DATA =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FILL_ARRAY_DATA, "fill-array-data",
+            InstructionCodec.FORMAT_31T, IndexType.NONE);
+
+    public static final Info THROW =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.THROW, "throw",
+            InstructionCodec.FORMAT_11X, IndexType.NONE);
+
+    public static final Info GOTO =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.GOTO, "goto",
+            InstructionCodec.FORMAT_10T, IndexType.NONE);
+
+    public static final Info GOTO_16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.GOTO_16, "goto/16",
+            InstructionCodec.FORMAT_20T, IndexType.NONE);
+
+    public static final Info GOTO_32 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.GOTO_32, "goto/32",
+            InstructionCodec.FORMAT_30T, IndexType.NONE);
+
+    public static final Info PACKED_SWITCH =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.PACKED_SWITCH, "packed-switch",
+            InstructionCodec.FORMAT_31T, IndexType.NONE);
+
+    public static final Info SPARSE_SWITCH =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPARSE_SWITCH, "sparse-switch",
+            InstructionCodec.FORMAT_31T, IndexType.NONE);
+
+    public static final Info CMPL_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CMPL_FLOAT, "cmpl-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info CMPG_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CMPG_FLOAT, "cmpg-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info CMPL_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CMPL_DOUBLE, "cmpl-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info CMPG_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CMPG_DOUBLE, "cmpg-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info CMP_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CMP_LONG, "cmp-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info IF_EQ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_EQ, "if-eq",
+            InstructionCodec.FORMAT_22T, IndexType.NONE);
+
+    public static final Info IF_NE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_NE, "if-ne",
+            InstructionCodec.FORMAT_22T, IndexType.NONE);
+
+    public static final Info IF_LT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_LT, "if-lt",
+            InstructionCodec.FORMAT_22T, IndexType.NONE);
+
+    public static final Info IF_GE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_GE, "if-ge",
+            InstructionCodec.FORMAT_22T, IndexType.NONE);
+
+    public static final Info IF_GT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_GT, "if-gt",
+            InstructionCodec.FORMAT_22T, IndexType.NONE);
+
+    public static final Info IF_LE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_LE, "if-le",
+            InstructionCodec.FORMAT_22T, IndexType.NONE);
+
+    public static final Info IF_EQZ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_EQZ, "if-eqz",
+            InstructionCodec.FORMAT_21T, IndexType.NONE);
+
+    public static final Info IF_NEZ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_NEZ, "if-nez",
+            InstructionCodec.FORMAT_21T, IndexType.NONE);
+
+    public static final Info IF_LTZ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_LTZ, "if-ltz",
+            InstructionCodec.FORMAT_21T, IndexType.NONE);
+
+    public static final Info IF_GEZ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_GEZ, "if-gez",
+            InstructionCodec.FORMAT_21T, IndexType.NONE);
+
+    public static final Info IF_GTZ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_GTZ, "if-gtz",
+            InstructionCodec.FORMAT_21T, IndexType.NONE);
+
+    public static final Info IF_LEZ =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IF_LEZ, "if-lez",
+            InstructionCodec.FORMAT_21T, IndexType.NONE);
+
+    public static final Info AGET =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET, "aget",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AGET_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET_WIDE, "aget-wide",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AGET_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET_OBJECT, "aget-object",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AGET_BOOLEAN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET_BOOLEAN, "aget-boolean",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AGET_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET_BYTE, "aget-byte",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AGET_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET_CHAR, "aget-char",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AGET_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AGET_SHORT, "aget-short",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT, "aput",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT_WIDE, "aput-wide",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT_OBJECT, "aput-object",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT_BOOLEAN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT_BOOLEAN, "aput-boolean",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT_BYTE, "aput-byte",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT_CHAR, "aput-char",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info APUT_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.APUT_SHORT, "aput-short",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info IGET =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET, "iget",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IGET_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET_WIDE, "iget-wide",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IGET_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET_OBJECT, "iget-object",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IGET_BOOLEAN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET_BOOLEAN, "iget-boolean",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IGET_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET_BYTE, "iget-byte",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IGET_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET_CHAR, "iget-char",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IGET_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IGET_SHORT, "iget-short",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT, "iput",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT_WIDE, "iput-wide",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT_OBJECT, "iput-object",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT_BOOLEAN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT_BOOLEAN, "iput-boolean",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT_BYTE, "iput-byte",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT_CHAR, "iput-char",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info IPUT_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.IPUT_SHORT, "iput-short",
+            InstructionCodec.FORMAT_22C, IndexType.FIELD_REF);
+
+    public static final Info SGET =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET, "sget",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SGET_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET_WIDE, "sget-wide",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SGET_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET_OBJECT, "sget-object",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SGET_BOOLEAN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET_BOOLEAN, "sget-boolean",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SGET_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET_BYTE, "sget-byte",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SGET_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET_CHAR, "sget-char",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SGET_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SGET_SHORT, "sget-short",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT, "sput",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT_WIDE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT_WIDE, "sput-wide",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT_OBJECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT_OBJECT, "sput-object",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT_BOOLEAN =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT_BOOLEAN, "sput-boolean",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT_BYTE, "sput-byte",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT_CHAR, "sput-char",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info SPUT_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SPUT_SHORT, "sput-short",
+            InstructionCodec.FORMAT_21C, IndexType.FIELD_REF);
+
+    public static final Info INVOKE_VIRTUAL =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL, "invoke-virtual",
+            InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_SUPER =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER, "invoke-super",
+            InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_DIRECT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT, "invoke-direct",
+            InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_STATIC =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC, "invoke-static",
+            InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_INTERFACE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE, "invoke-interface",
+            InstructionCodec.FORMAT_35C, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_VIRTUAL_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_VIRTUAL_RANGE, "invoke-virtual/range",
+            InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_SUPER_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_SUPER_RANGE, "invoke-super/range",
+            InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_DIRECT_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_DIRECT_RANGE, "invoke-direct/range",
+            InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_STATIC_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_STATIC_RANGE, "invoke-static/range",
+            InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
+
+    public static final Info INVOKE_INTERFACE_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_INTERFACE_RANGE, "invoke-interface/range",
+            InstructionCodec.FORMAT_3RC, IndexType.METHOD_REF);
+
+    public static final Info NEG_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NEG_INT, "neg-int",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info NOT_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NOT_INT, "not-int",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info NEG_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NEG_LONG, "neg-long",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info NOT_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NOT_LONG, "not-long",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info NEG_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NEG_FLOAT, "neg-float",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info NEG_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.NEG_DOUBLE, "neg-double",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info INT_TO_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_LONG, "int-to-long",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info INT_TO_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_FLOAT, "int-to-float",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info INT_TO_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_DOUBLE, "int-to-double",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info LONG_TO_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_INT, "long-to-int",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info LONG_TO_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_FLOAT, "long-to-float",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info LONG_TO_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.LONG_TO_DOUBLE, "long-to-double",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info FLOAT_TO_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_INT, "float-to-int",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info FLOAT_TO_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_LONG, "float-to-long",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info FLOAT_TO_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.FLOAT_TO_DOUBLE, "float-to-double",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DOUBLE_TO_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_INT, "double-to-int",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DOUBLE_TO_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_LONG, "double-to-long",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DOUBLE_TO_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DOUBLE_TO_FLOAT, "double-to-float",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info INT_TO_BYTE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_BYTE, "int-to-byte",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info INT_TO_CHAR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_CHAR, "int-to-char",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info INT_TO_SHORT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INT_TO_SHORT, "int-to-short",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info ADD_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT, "add-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SUB_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_INT, "sub-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info MUL_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT, "mul-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info DIV_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT, "div-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info REM_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_INT, "rem-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AND_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AND_INT, "and-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info OR_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.OR_INT, "or-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info XOR_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT, "xor-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SHL_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHL_INT, "shl-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SHR_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHR_INT, "shr-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info USHR_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.USHR_INT, "ushr-int",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info ADD_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG, "add-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SUB_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG, "sub-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info MUL_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG, "mul-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info DIV_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG, "div-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info REM_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_LONG, "rem-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info AND_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AND_LONG, "and-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info OR_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.OR_LONG, "or-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info XOR_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG, "xor-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SHL_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG, "shl-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SHR_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG, "shr-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info USHR_LONG =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG, "ushr-long",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info ADD_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT, "add-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SUB_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT, "sub-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info MUL_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT, "mul-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info DIV_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT, "div-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info REM_FLOAT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT, "rem-float",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info ADD_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE, "add-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info SUB_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE, "sub-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info MUL_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE, "mul-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info DIV_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE, "div-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info REM_DOUBLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE, "rem-double",
+            InstructionCodec.FORMAT_23X, IndexType.NONE);
+
+    public static final Info ADD_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_2ADDR, "add-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SUB_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_INT_2ADDR, "sub-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MUL_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_2ADDR, "mul-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DIV_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_2ADDR, "div-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info REM_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_INT_2ADDR, "rem-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info AND_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AND_INT_2ADDR, "and-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info OR_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.OR_INT_2ADDR, "or-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info XOR_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_2ADDR, "xor-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SHL_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHL_INT_2ADDR, "shl-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SHR_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHR_INT_2ADDR, "shr-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info USHR_INT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.USHR_INT_2ADDR, "ushr-int/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info ADD_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_LONG_2ADDR, "add-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SUB_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_LONG_2ADDR, "sub-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MUL_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_LONG_2ADDR, "mul-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DIV_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_LONG_2ADDR, "div-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info REM_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_LONG_2ADDR, "rem-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info AND_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AND_LONG_2ADDR, "and-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info OR_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.OR_LONG_2ADDR, "or-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info XOR_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.XOR_LONG_2ADDR, "xor-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SHL_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHL_LONG_2ADDR, "shl-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SHR_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHR_LONG_2ADDR, "shr-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info USHR_LONG_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.USHR_LONG_2ADDR, "ushr-long/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info ADD_FLOAT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_FLOAT_2ADDR, "add-float/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SUB_FLOAT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_FLOAT_2ADDR, "sub-float/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MUL_FLOAT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_FLOAT_2ADDR, "mul-float/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DIV_FLOAT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_FLOAT_2ADDR, "div-float/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info REM_FLOAT_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_FLOAT_2ADDR, "rem-float/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info ADD_DOUBLE_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_DOUBLE_2ADDR, "add-double/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info SUB_DOUBLE_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SUB_DOUBLE_2ADDR, "sub-double/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info MUL_DOUBLE_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_DOUBLE_2ADDR, "mul-double/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info DIV_DOUBLE_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_DOUBLE_2ADDR, "div-double/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info REM_DOUBLE_2ADDR =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_DOUBLE_2ADDR, "rem-double/2addr",
+            InstructionCodec.FORMAT_12X, IndexType.NONE);
+
+    public static final Info ADD_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_LIT16, "add-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info RSUB_INT =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT, "rsub-int",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info MUL_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_LIT16, "mul-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info DIV_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_LIT16, "div-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info REM_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_INT_LIT16, "rem-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info AND_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AND_INT_LIT16, "and-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info OR_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.OR_INT_LIT16, "or-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info XOR_INT_LIT16 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_LIT16, "xor-int/lit16",
+            InstructionCodec.FORMAT_22S, IndexType.NONE);
+
+    public static final Info ADD_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.ADD_INT_LIT8, "add-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info RSUB_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.RSUB_INT_LIT8, "rsub-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info MUL_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.MUL_INT_LIT8, "mul-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info DIV_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.DIV_INT_LIT8, "div-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info REM_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.REM_INT_LIT8, "rem-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info AND_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.AND_INT_LIT8, "and-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info OR_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.OR_INT_LIT8, "or-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info XOR_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.XOR_INT_LIT8, "xor-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info SHL_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHL_INT_LIT8, "shl-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info SHR_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.SHR_INT_LIT8, "shr-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info USHR_INT_LIT8 =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.USHR_INT_LIT8, "ushr-int/lit8",
+            InstructionCodec.FORMAT_22B, IndexType.NONE);
+
+    public static final Info INVOKE_POLYMORPHIC =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC, "invoke-polymorphic",
+            InstructionCodec.FORMAT_45CC, IndexType.METHOD_AND_PROTO_REF);
+
+    public static final Info INVOKE_POLYMORPHIC_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_POLYMORPHIC_RANGE, "invoke-polymorphic/range",
+            InstructionCodec.FORMAT_4RCC, IndexType.METHOD_AND_PROTO_REF);
+
+    public static final Info INVOKE_CUSTOM =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM, "invoke-custom",
+            InstructionCodec.FORMAT_35C, IndexType.CALL_SITE_REF);
+
+    public static final Info INVOKE_CUSTOM_RANGE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.INVOKE_CUSTOM_RANGE, "invoke-custom/range",
+            InstructionCodec.FORMAT_3RC, IndexType.CALL_SITE_REF);
+
+    public static final Info CONST_METHOD_HANDLE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_METHOD_HANDLE, "const-method-handle",
+            InstructionCodec.FORMAT_21C, IndexType.METHOD_HANDLE_REF);
+
+    public static final Info CONST_METHOD_TYPE =
+        new Info(mod.agus.jcoderz.dx.io.Opcodes.CONST_METHOD_TYPE, "const-method-type",
+            InstructionCodec.FORMAT_21C, IndexType.PROTO_REF);
+
+    // END(opcode-info-defs)
+
+    // Static initialization.
     static {
+        INFO = new Info[mod.agus.jcoderz.dx.io.Opcodes.MAX_VALUE - mod.agus.jcoderz.dx.io.Opcodes.MIN_VALUE + 1];
+
+        // TODO: Stop using this constant.
         set(SPECIAL_FORMAT);
+
+        // TODO: These payload opcodes should be generated by opcode-gen.
         set(PACKED_SWITCH_PAYLOAD);
         set(SPARSE_SWITCH_PAYLOAD);
         set(FILL_ARRAY_DATA_PAYLOAD);
+
+        // BEGIN(opcode-info-init); GENERATED AUTOMATICALLY BY opcode-gen
         set(NOP);
         set(MOVE);
         set(MOVE_FROM16);
@@ -453,65 +1188,108 @@ public final class OpcodeInfo {
         set(SHL_INT_LIT8);
         set(SHR_INT_LIT8);
         set(USHR_INT_LIT8);
+        set(INVOKE_POLYMORPHIC);
+        set(INVOKE_POLYMORPHIC_RANGE);
+        set(INVOKE_CUSTOM);
+        set(INVOKE_CUSTOM_RANGE);
+        set(CONST_METHOD_HANDLE);
+        set(CONST_METHOD_TYPE);
+        // END(opcode-info-init)
     }
 
+    /**
+     * This class is uninstantiable.
+     */
     private OpcodeInfo() {
+        // This space intentionally left blank.
     }
 
-    public static Info get(int i) {
+    /**
+     * Gets the {@link Info} for the given opcode value.
+     *
+     * @param opcode {@code Opcodes.MIN_VALUE..Opcodes.MAX_VALUE;} the
+     * opcode value
+     * @return non-null; the associated opcode information instance
+     */
+    public static Info get(int opcode) {
+        int idx = opcode - mod.agus.jcoderz.dx.io.Opcodes.MIN_VALUE;
+
         try {
-            Info info = INFO[i + 1];
-            if (info != null) {
-                return info;
+            Info result = INFO[idx];
+            if (result != null) {
+                return result;
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // Fall through.
         }
-        throw new IllegalArgumentException("bogus opcode: " + Hex.u2or4(i));
+
+        throw new IllegalArgumentException("bogus opcode: "
+                + Hex.u2or4(opcode));
     }
 
-    public static String getName(int i) {
-        return get(i).getName();
+    /**
+     * Gets the name of the given opcode.
+     */
+    public static String getName(int opcode) {
+        return get(opcode).getName();
     }
 
-    public static InstructionCodec getFormat(int i) {
-        return get(i).getFormat();
+    /**
+     * Gets the format (an {@link InstructionCodec}) for the given opcode
+     * value.
+     */
+    public static InstructionCodec getFormat(int opcode) {
+        return get(opcode).getFormat();
     }
 
-    public static IndexType getIndexType(int i) {
-        return get(i).getIndexType();
+    /**
+     * Gets the {@link IndexType} for the given opcode value.
+     */
+    public static IndexType getIndexType(int opcode) {
+        return get(opcode).getIndexType();
     }
 
-    private static void set(Info info) {
-        INFO[info.getOpcode() + 1] = info;
+    /**
+     * Puts the given opcode into the table of all ops.
+     *
+     * @param opcode non-null; the opcode
+     */
+    private static void set(Info opcode) {
+        int idx = opcode.getOpcode() - Opcodes.MIN_VALUE;
+        INFO[idx] = opcode;
     }
 
+    /**
+     * Information about an opcode.
+     */
     public static class Info {
+        private final int opcode;
+        private final String name;
         private final InstructionCodec format;
         private final IndexType indexType;
-        private final String name;
-        private final int opcode;
 
-        public Info(int i, String str, InstructionCodec instructionCodec, IndexType indexType2) {
-            this.opcode = i;
-            this.name = str;
-            this.format = instructionCodec;
-            this.indexType = indexType2;
+        public Info(int opcode, String name, InstructionCodec format,
+                IndexType indexType) {
+            this.opcode = opcode;
+            this.name = name;
+            this.format = format;
+            this.indexType = indexType;
         }
 
         public int getOpcode() {
-            return this.opcode;
+            return opcode;
         }
 
         public String getName() {
-            return this.name;
+            return name;
         }
 
         public InstructionCodec getFormat() {
-            return this.format;
+            return format;
         }
 
         public IndexType getIndexType() {
-            return this.indexType;
+            return indexType;
         }
     }
 }

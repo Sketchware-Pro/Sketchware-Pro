@@ -1,53 +1,99 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dex.Leb128;
-import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 
-public final class StringDataItem extends OffsettedItem {
+/**
+ * Representation of string data for a particular string, in a Dalvik file.
+ */
+public final class StringDataItem extends mod.agus.jcoderz.dx.dex.file.OffsettedItem {
+    /** {@code non-null;} the string value */
     private final CstString value;
 
-    public StringDataItem(CstString cstString) {
-        super(1, writeSize(cstString));
-        this.value = cstString;
+    /**
+     * Constructs an instance.
+     *
+     * @param value {@code non-null;} the string value
+     */
+    public StringDataItem(CstString value) {
+        super(1, writeSize(value));
+
+        this.value = value;
     }
 
-    private static int writeSize(CstString cstString) {
-        return Leb128.unsignedLeb128Size(cstString.getUtf16Size()) + cstString.getUtf8Size() + 1;
+    /**
+     * Gets the write size for a given value.
+     *
+     * @param value {@code non-null;} the string value
+     * @return {@code >= 2}; the write size, in bytes
+     */
+    private static int writeSize(CstString value) {
+        int utf16Size = value.getUtf16Size();
+
+        // The +1 is for the '\0' termination byte.
+        return Leb128.unsignedLeb128Size(utf16Size)
+            + value.getUtf8Size() + 1;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_STRING_DATA_ITEM;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
+    /** {@inheritDoc} */
+    @Override
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        // Nothing to do here.
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    public void writeTo0(DexFile dexFile, AnnotatedOutput annotatedOutput) {
-        ByteArray bytes = this.value.getBytes();
-        int utf16Size = this.value.getUtf16Size();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(Leb128.unsignedLeb128Size(utf16Size), "utf16_size: " + Hex.u4(utf16Size));
-            annotatedOutput.annotate(bytes.size() + 1, this.value.toQuoted());
+    /** {@inheritDoc} */
+    @Override
+    public void writeTo0(DexFile file, AnnotatedOutput out) {
+        ByteArray bytes = value.getBytes();
+        int utf16Size = value.getUtf16Size();
+
+        if (out.annotates()) {
+            out.annotate(Leb128.unsignedLeb128Size(utf16Size),
+                    "utf16_size: " + Hex.u4(utf16Size));
+            out.annotate(bytes.size() + 1, value.toQuoted());
         }
-        annotatedOutput.writeUleb128(utf16Size);
-        annotatedOutput.write(bytes);
-        annotatedOutput.writeByte(0);
+
+        out.writeUleb128(utf16Size);
+        out.write(bytes);
+        out.writeByte(0);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
+    /** {@inheritDoc} */
+    @Override
     public String toHuman() {
-        return this.value.toQuoted();
+        return value.toQuoted();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.OffsettedItem
-    protected int compareTo0(OffsettedItem offsettedItem) {
-        return this.value.compareTo((Constant) ((StringDataItem) offsettedItem).value);
+    /** {@inheritDoc} */
+    @Override
+    protected int compareTo0(OffsettedItem other) {
+        StringDataItem otherData = (StringDataItem) other;
+
+        return value.compareTo(otherData.value);
     }
 }

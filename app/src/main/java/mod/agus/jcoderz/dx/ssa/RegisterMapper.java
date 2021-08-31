@@ -1,34 +1,83 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.ssa;
 
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecSet;
 
+/**
+ * Represents a mapping between two register numbering schemes.
+ * Subclasses of this may be mutable, and as such the mapping provided
+ * is only valid for the lifetime of the method call in which
+ * instances of this class are passed.
+ */
 public abstract class RegisterMapper {
+    /**
+     * Gets the count of registers (really, the total register width, since
+     * category width is counted) in the new namespace.
+     * @return &ge; 0 width of new namespace.
+     */
     public abstract int getNewRegisterCount();
 
-    public abstract RegisterSpec map(RegisterSpec registerSpec);
+    /**
+     * @param registerSpec old register
+     * @return register in new space
+     */
+    public abstract mod.agus.jcoderz.dx.rop.code.RegisterSpec map(mod.agus.jcoderz.dx.rop.code.RegisterSpec registerSpec);
 
-    public final RegisterSpecList map(RegisterSpecList registerSpecList) {
-        int size = registerSpecList.size();
-        RegisterSpecList registerSpecList2 = new RegisterSpecList(size);
-        for (int i = 0; i < size; i++) {
-            registerSpecList2.set(i, map(registerSpecList.get(i)));
+    /**
+     *
+     * @param sources old register list
+     * @return new mapped register list, or old if nothing has changed.
+     */
+    public final mod.agus.jcoderz.dx.rop.code.RegisterSpecList map(mod.agus.jcoderz.dx.rop.code.RegisterSpecList sources) {
+        int sz = sources.size();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecList newSources = new RegisterSpecList(sz);
+
+        for (int i = 0; i < sz; i++) {
+            newSources.set(i, map(sources.get(i)));
         }
-        registerSpecList2.setImmutable();
-        return registerSpecList2.equals(registerSpecList) ? registerSpecList : registerSpecList2;
+
+        newSources.setImmutable();
+
+        // Return the old sources if nothing has changed.
+        return newSources.equals(sources) ? sources : newSources;
     }
 
-    public final RegisterSpecSet map(RegisterSpecSet registerSpecSet) {
-        int maxSize = registerSpecSet.getMaxSize();
-        RegisterSpecSet registerSpecSet2 = new RegisterSpecSet(getNewRegisterCount());
-        for (int i = 0; i < maxSize; i++) {
-            RegisterSpec registerSpec = registerSpecSet.get(i);
+    /**
+     *
+     * @param sources old register set
+     * @return new mapped register set, or old if nothing has changed.
+     */
+    public final mod.agus.jcoderz.dx.rop.code.RegisterSpecSet map(mod.agus.jcoderz.dx.rop.code.RegisterSpecSet sources) {
+        int sz = sources.getMaxSize();
+        mod.agus.jcoderz.dx.rop.code.RegisterSpecSet newSources = new RegisterSpecSet(getNewRegisterCount());
+
+        for (int i = 0; i < sz; i++) {
+            RegisterSpec registerSpec = sources.get(i);
             if (registerSpec != null) {
-                registerSpecSet2.put(map(registerSpec));
+                newSources.put(map(registerSpec));
             }
         }
-        registerSpecSet2.setImmutable();
-        return registerSpecSet2.equals(registerSpecSet) ? registerSpecSet : registerSpecSet2;
+
+        newSources.setImmutable();
+
+        // Return the old sources if nothing has changed.
+        return newSources.equals(sources) ? sources : newSources;
     }
 }

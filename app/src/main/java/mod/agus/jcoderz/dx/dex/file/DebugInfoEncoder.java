@@ -1,17 +1,26 @@
-package mod.agus.jcoderz.dx.dex.file;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
+package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.dex.code.LocalList;
 import mod.agus.jcoderz.dx.dex.code.PositionList;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
+import mod.agus.jcoderz.dx.rop.code.SourcePosition;
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
@@ -21,448 +30,904 @@ import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.ByteArrayAnnotatedOutput;
 
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_ADVANCE_LINE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_ADVANCE_PC;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_END_LOCAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_END_SEQUENCE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_FIRST_SPECIAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_LINE_BASE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_LINE_RANGE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_RESTART_LOCAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_SET_PROLOGUE_END;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_START_LOCAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_START_LOCAL_EXTENDED;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collections;
+import java.util.Comparator;
+
+/**
+ * An encoder for the dex debug info state machine format. The format
+ * for each method enrty is as follows:
+ * <ol>
+ * <li> signed LEB128: initial value for line register.
+ * <li> n instances of signed LEB128: string indicies (offset by 1)
+ * for each method argument in left-to-right order
+ * with {@code this} excluded. A value of '0' indicates "no name"
+ * <li> A sequence of special or normal opcodes as defined in
+ * {@code DebugInfoConstants}.
+ * <li> A single terminating {@code OP_END_SEQUENCE}
+ * </ol>
+ */
 public final class DebugInfoEncoder {
     private static final boolean DEBUG = false;
-    private final int codeSize;
-    private final Prototype desc;
+
+    /** {@code null-ok;} positions (line numbers) to encode */
+    private final mod.agus.jcoderz.dx.dex.code.PositionList positions;
+
+    /** {@code null-ok;} local variables to encode */
+    private final mod.agus.jcoderz.dx.dex.code.LocalList locals;
+
+    private final mod.agus.jcoderz.dx.util.ByteArrayAnnotatedOutput output;
     private final DexFile file;
-    private final boolean isStatic;
-    private final LocalList.Entry[] lastEntryForReg;
-    private final LocalList locals;
-    private final ByteArrayAnnotatedOutput output;
-    private final PositionList positions;
+    private final int codeSize;
     private final int regSize;
+
+    private final Prototype desc;
+    private final boolean isStatic;
+
+    /** current encoding state: bytecode address */
     private int address = 0;
-    private AnnotatedOutput annotateTo;
-    private PrintWriter debugPrint;
+
+    /** current encoding state: line number */
     private int line = 1;
+
+    /**
+     * if non-null: the output to write annotations to. No normal
+     * output is written to this.
+     */
+    private mod.agus.jcoderz.dx.util.AnnotatedOutput annotateTo;
+
+    /** if non-null: another possible output for annotations */
+    private PrintWriter debugPrint;
+
+    /** if non-null: the prefix for each annotation or debugPrint line */
     private String prefix;
+
+    /** true if output should be consumed during annotation */
     private boolean shouldConsume;
 
-    public DebugInfoEncoder(PositionList positionList, LocalList localList, DexFile dexFile, int i, int i2, boolean z, CstMethodRef cstMethodRef) {
-        this.positions = positionList;
-        this.locals = localList;
-        this.file = dexFile;
-        this.desc = cstMethodRef.getPrototype();
-        this.isStatic = z;
-        this.codeSize = i;
-        this.regSize = i2;
-        this.output = new ByteArrayAnnotatedOutput();
-        this.lastEntryForReg = new LocalList.Entry[i2];
+    /** indexed by register; last local alive in register */
+    private final mod.agus.jcoderz.dx.dex.code.LocalList.Entry[] lastEntryForReg;
+
+    /**
+     * Creates an instance.
+     *
+     * @param positions {@code null-ok;} positions (line numbers) to encode
+     * @param locals {@code null-ok;} local variables to encode
+     * @param file {@code null-ok;} may only be {@code null} if simply using
+     * this class to do a debug print
+     * @param codeSize
+     * @param regSize
+     * @param isStatic
+     * @param ref
+     */
+    public DebugInfoEncoder(mod.agus.jcoderz.dx.dex.code.PositionList positions, mod.agus.jcoderz.dx.dex.code.LocalList locals,
+                            DexFile file, int codeSize, int regSize,
+                            boolean isStatic, CstMethodRef ref) {
+        this.positions = positions;
+        this.locals = locals;
+        this.file = file;
+        this.desc = ref.getPrototype();
+        this.isStatic = isStatic;
+        this.codeSize = codeSize;
+        this.regSize = regSize;
+
+        output = new ByteArrayAnnotatedOutput();
+        lastEntryForReg = new mod.agus.jcoderz.dx.dex.code.LocalList.Entry[regSize];
     }
 
-    private static int computeOpcode(int i, int i2) {
-        if (i >= -4 && i <= 10) {
-            return i + 4 + (i2 * 15) + 10;
+    /**
+     * Annotates or writes a message to the {@code debugPrint} writer
+     * if applicable.
+     *
+     * @param length the number of bytes associated with this message
+     * @param message the message itself
+     */
+    private void annotate(int length, String message) {
+        if (prefix != null) {
+            message = prefix + message;
         }
-        throw new RuntimeException("Parameter out of range");
+
+        if (annotateTo != null) {
+            annotateTo.annotate(shouldConsume ? length : 0, message);
+        }
+
+        if (debugPrint != null) {
+            debugPrint.println(message);
+        }
     }
 
-    private void annotate(int i, String str) {
-        if (this.prefix != null) {
-            str = this.prefix + str;
-        }
-        if (this.annotateTo != null) {
-            AnnotatedOutput annotatedOutput = this.annotateTo;
-            if (!this.shouldConsume) {
-                i = 0;
-            }
-            annotatedOutput.annotate(i, str);
-        }
-        if (this.debugPrint != null) {
-            this.debugPrint.println(str);
-        }
-    }
-
+    /**
+     * Converts this (PositionList, LocalList) pair into a state machine
+     * sequence.
+     *
+     * @return {@code non-null;} encoded byte sequence without padding and
+     * terminated with a {@code 0x00} byte
+     */
     public byte[] convert() {
         try {
-            return convert0();
-        } catch (IOException e) {
-            throw ExceptionWithContext.withContext(e, "...while encoding debug info");
+            byte[] ret;
+            ret = convert0();
+
+            if (DEBUG) {
+                for (int i = 0 ; i < ret.length; i++) {
+                    System.err.printf("byte %02x\n", (0xff & ret[i]));
+                }
+            }
+
+            return ret;
+        } catch (IOException ex) {
+            throw ExceptionWithContext
+                    .withContext(ex, "...while encoding debug info");
         }
     }
 
-    public byte[] convertAndAnnotate(String str, PrintWriter printWriter, AnnotatedOutput annotatedOutput, boolean z) {
-        this.prefix = str;
-        this.debugPrint = printWriter;
-        this.annotateTo = annotatedOutput;
-        this.shouldConsume = z;
-        return convert();
+    /**
+     * Converts and produces annotations on a stream. Does not write
+     * actual bits to the {@code AnnotatedOutput}.
+     *
+     * @param prefix {@code null-ok;} prefix to attach to each line of output
+     * @param debugPrint {@code null-ok;} if specified, an alternate output for
+     * annotations
+     * @param out {@code null-ok;} if specified, where annotations should go
+     * @param consume whether to claim to have consumed output for
+     * {@code out}
+     * @return {@code non-null;} encoded output
+     */
+    public byte[] convertAndAnnotate(String prefix, PrintWriter debugPrint,
+                                     AnnotatedOutput out, boolean consume) {
+        this.prefix = prefix;
+        this.debugPrint = debugPrint;
+        annotateTo = out;
+        shouldConsume = consume;
+
+        byte[] result = convert();
+
+        return result;
     }
 
     private byte[] convert0() throws IOException {
-        int i;
-        int i2;
-        int i3 = 0;
-        ArrayList<PositionList.Entry> buildSortedPositions = buildSortedPositions();
-        emitHeader(buildSortedPositions, extractMethodArguments());
-        this.output.writeByte(7);
-        if (!(this.annotateTo == null && this.debugPrint == null)) {
-            annotate(1, String.format("%04x: prologue end", Integer.valueOf(this.address)));
+        ArrayList<mod.agus.jcoderz.dx.dex.code.PositionList.Entry> sortedPositions = buildSortedPositions();
+        ArrayList<mod.agus.jcoderz.dx.dex.code.LocalList.Entry> methodArgs = extractMethodArguments();
+
+        emitHeader(sortedPositions, methodArgs);
+
+        // TODO: Make this mark be the actual prologue end.
+        output.writeByte(DBG_SET_PROLOGUE_END);
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(1, String.format("%04x: prologue end",address));
         }
-        int size = buildSortedPositions.size();
-        int size2 = this.locals.size();
-        int i4 = 0;
-        while (true) {
-            int emitLocalsAtAddress = emitLocalsAtAddress(i3);
-            int emitPositionsAtAddress = emitPositionsAtAddress(i4, buildSortedPositions);
-            if (emitLocalsAtAddress < size2) {
-                i = this.locals.get(emitLocalsAtAddress).getAddress();
+
+        int positionsSz = sortedPositions.size();
+        int localsSz = locals.size();
+
+        // Current index in sortedPositions
+        int curPositionIdx = 0;
+        // Current index in locals
+        int curLocalIdx = 0;
+
+        for (;;) {
+            /*
+             * Emit any information for the current address.
+             */
+
+            curLocalIdx = emitLocalsAtAddress(curLocalIdx);
+            curPositionIdx =
+                emitPositionsAtAddress(curPositionIdx, sortedPositions);
+
+            /*
+             * Figure out what the next important address is.
+             */
+
+            int nextAddrL = Integer.MAX_VALUE; // local variable
+            int nextAddrP = Integer.MAX_VALUE; // position (line number)
+
+            if (curLocalIdx < localsSz) {
+                nextAddrL = locals.get(curLocalIdx).getAddress();
+            }
+
+            if (curPositionIdx < positionsSz) {
+                nextAddrP = sortedPositions.get(curPositionIdx).getAddress();
+            }
+
+            int next = Math.min(nextAddrP, nextAddrL);
+
+            // No next important address == done.
+            if (next == Integer.MAX_VALUE) {
+                break;
+            }
+
+            /*
+             * If the only work remaining are local ends at the end of the
+             * block, stop here. Those are implied anyway.
+             */
+            if (next == codeSize
+                    && nextAddrL == Integer.MAX_VALUE
+                    && nextAddrP == Integer.MAX_VALUE) {
+                break;
+            }
+
+            if (next == nextAddrP) {
+                // Combined advance PC + position entry
+                emitPosition(sortedPositions.get(curPositionIdx++));
             } else {
-                i = Integer.MAX_VALUE;
+                emitAdvancePc(next - address);
             }
-            if (emitPositionsAtAddress < size) {
-                i2 = buildSortedPositions.get(emitPositionsAtAddress).getAddress();
-            } else {
-                i2 = Integer.MAX_VALUE;
-            }
-            int min = Math.min(i2, i);
-            if (!(min == Integer.MAX_VALUE || (min == this.codeSize && i == Integer.MAX_VALUE && i2 == Integer.MAX_VALUE))) {
-                if (min == i2) {
-                    i4 = emitPositionsAtAddress + 1;
-                    emitPosition(buildSortedPositions.get(emitPositionsAtAddress));
-                    i3 = emitLocalsAtAddress;
-                } else {
-                    emitAdvancePc(min - this.address);
-                    i3 = emitLocalsAtAddress;
-                    i4 = emitPositionsAtAddress;
-                }
-            }
-            emitEndSequence();
-            return this.output.toByteArray();
         }
+
+        emitEndSequence();
+
+        return output.toByteArray();
     }
 
-    private int emitLocalsAtAddress(int i) throws IOException {
-        int size = this.locals.size();
-        while (i < size && this.locals.get(i).getAddress() == this.address) {
-            int i2 = i + 1;
-            LocalList.Entry entry = this.locals.get(i);
-            int register = entry.getRegister();
-            LocalList.Entry entry2 = this.lastEntryForReg[register];
-            if (entry == entry2) {
-                i = i2;
-            } else {
-                this.lastEntryForReg[register] = entry;
-                if (!entry.isStart()) {
-                    if (entry.getDisposition() != LocalList.Disposition.END_REPLACED) {
-                        emitLocalEnd(entry);
+    /**
+     * Emits all local variable activity that occurs at the current
+     * {@link #address} starting at the given index into {@code
+     * locals} and including all subsequent activity at the same
+     * address.
+     *
+     * @param curLocalIdx Current index in locals
+     * @return new value for {@code curLocalIdx}
+     * @throws IOException
+     */
+    private int emitLocalsAtAddress(int curLocalIdx)
+            throws IOException {
+        int sz = locals.size();
+
+        // TODO: Don't emit ends implied by starts.
+
+        while ((curLocalIdx < sz)
+                && (locals.get(curLocalIdx).getAddress() == address)) {
+            mod.agus.jcoderz.dx.dex.code.LocalList.Entry entry = locals.get(curLocalIdx++);
+            int reg = entry.getRegister();
+            mod.agus.jcoderz.dx.dex.code.LocalList.Entry prevEntry = lastEntryForReg[reg];
+
+            if (entry == prevEntry) {
+                /*
+                 * Here we ignore locals entries for parameters,
+                 * which have already been represented and placed in the
+                 * lastEntryForReg array.
+                 */
+                continue;
+            }
+
+            // At this point we have a new entry one way or another.
+            lastEntryForReg[reg] = entry;
+
+            if (entry.isStart()) {
+                if ((prevEntry != null) && entry.matches(prevEntry)) {
+                    /*
+                     * The previous local in this register has the same
+                     * name and type as the one being introduced now, so
+                     * use the more efficient "restart" form.
+                     */
+                    if (prevEntry.isStart()) {
+                        /*
+                         * We should never be handed a start when a
+                         * a matching local is already active.
+                         */
+                        throw new RuntimeException("shouldn't happen");
                     }
-                    i = i2;
-                } else if (entry2 == null || !entry.matches(entry2)) {
-                    emitLocalStart(entry);
-                    i = i2;
-                } else if (entry2.isStart()) {
-                    throw new RuntimeException("shouldn't happen");
-                } else {
                     emitLocalRestart(entry);
-                    i = i2;
+                } else {
+                    emitLocalStart(entry);
+                }
+            } else {
+                /*
+                 * Only emit a local end if it is *not* due to a direct
+                 * replacement. Direct replacements imply an end of the
+                 * previous local in the same register.
+                 *
+                 * TODO: Make sure the runtime can deal with implied
+                 * local ends from category-2 interactions, and when so,
+                 * also stop emitting local ends for those cases.
+                 */
+                if (entry.getDisposition()
+                        != mod.agus.jcoderz.dx.dex.code.LocalList.Disposition.END_REPLACED) {
+                    emitLocalEnd(entry);
                 }
             }
         }
-        return i;
+
+        return curLocalIdx;
     }
 
-    private int emitPositionsAtAddress(int i, ArrayList<PositionList.Entry> arrayList) throws IOException {
-        int size = arrayList.size();
-        while (i < size && arrayList.get(i).getAddress() == this.address) {
-            emitPosition(arrayList.get(i));
-            i++;
+    /**
+     * Emits all positions that occur at the current {@code address}
+     *
+     * @param curPositionIdx Current index in sortedPositions
+     * @param sortedPositions positions, sorted by ascending address
+     * @return new value for {@code curPositionIdx}
+     * @throws IOException
+     */
+    private int emitPositionsAtAddress(int curPositionIdx,
+            ArrayList<mod.agus.jcoderz.dx.dex.code.PositionList.Entry> sortedPositions)
+            throws IOException {
+        int positionsSz = sortedPositions.size();
+        while ((curPositionIdx < positionsSz)
+                && (sortedPositions.get(curPositionIdx).getAddress()
+                        == address)) {
+            emitPosition(sortedPositions.get(curPositionIdx++));
         }
-        return i;
+        return curPositionIdx;
     }
 
-    private void emitHeader(ArrayList<PositionList.Entry> arrayList, ArrayList<LocalList.Entry> arrayList2) throws IOException {
-        int i;
-        LocalList.Entry entry;
-        String str;
-        boolean z = this.annotateTo != null || this.debugPrint != null;
-        int cursor = this.output.getCursor();
-        if (arrayList.size() > 0) {
-            this.line = arrayList.get(0).getPosition().getLine();
+    /**
+     * Emits the header sequence, which consists of LEB128-encoded initial
+     * line number and string indicies for names of all non-"this" arguments.
+     *
+     * @param sortedPositions positions, sorted by ascending address
+     * @param methodArgs local list entries for method argumens arguments,
+     * in left-to-right order omitting "this"
+     * @throws IOException
+     */
+    private void emitHeader(ArrayList<mod.agus.jcoderz.dx.dex.code.PositionList.Entry> sortedPositions,
+            ArrayList<mod.agus.jcoderz.dx.dex.code.LocalList.Entry> methodArgs) throws IOException {
+        boolean annotate = (annotateTo != null) || (debugPrint != null);
+        int mark = output.getCursor();
+
+        // Start by initializing the line number register.
+        if (sortedPositions.size() > 0) {
+            mod.agus.jcoderz.dx.dex.code.PositionList.Entry entry = sortedPositions.get(0);
+            line = entry.getPosition().getLine();
         }
-        this.output.writeUleb128(this.line);
-        if (z) {
-            annotate(this.output.getCursor() - cursor, "line_start: " + this.line);
+        output.writeUleb128(line);
+
+        if (annotate) {
+            annotate(output.getCursor() - mark, "line_start: " + line);
         }
-        int paramBase = getParamBase();
-        StdTypeList parameterTypes = this.desc.getParameterTypes();
-        int size = parameterTypes.size();
-        if (!this.isStatic) {
-            Iterator<LocalList.Entry> it = arrayList2.iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    break;
-                }
-                LocalList.Entry next = it.next();
-                if (paramBase == next.getRegister()) {
-                    this.lastEntryForReg[paramBase] = next;
+
+        int curParam = getParamBase();
+        // paramTypes will not include 'this'
+        StdTypeList paramTypes = desc.getParameterTypes();
+        int szParamTypes = paramTypes.size();
+
+        /*
+         * Initialize lastEntryForReg to have an initial
+         * entry for the 'this' pointer.
+         */
+        if (!isStatic) {
+            for (mod.agus.jcoderz.dx.dex.code.LocalList.Entry arg : methodArgs) {
+                if (curParam == arg.getRegister()) {
+                    lastEntryForReg[curParam] = arg;
                     break;
                 }
             }
-            i = paramBase + 1;
-        } else {
-            i = paramBase;
+            curParam++;
         }
-        int cursor2 = this.output.getCursor();
-        this.output.writeUleb128(size);
-        if (z) {
-            annotate(this.output.getCursor() - cursor2, String.format("parameters_size: %04x", Integer.valueOf(size)));
+
+        // Write out the number of parameter entries that will follow.
+        mark = output.getCursor();
+        output.writeUleb128(szParamTypes);
+
+        if (annotate) {
+            annotate(output.getCursor() - mark,
+                    String.format("parameters_size: %04x", szParamTypes));
         }
-        int i2 = i;
-        for (int i3 = 0; i3 < size; i3++) {
-            Type type = parameterTypes.get(i3);
-            int cursor3 = this.output.getCursor();
-            Iterator<LocalList.Entry> it2 = arrayList2.iterator();
-            while (true) {
-                if (!it2.hasNext()) {
-                    entry = null;
-                    break;
-                }
-                entry = it2.next();
-                if (i2 == entry.getRegister()) {
-                    if (entry.getSignature() != null) {
+
+        /*
+         * Then emit the string indicies of all the method parameters.
+         * Note that 'this', if applicable, is excluded.
+         */
+        for (int i = 0; i < szParamTypes; i++) {
+            Type pt = paramTypes.get(i);
+            mod.agus.jcoderz.dx.dex.code.LocalList.Entry found = null;
+
+            mark = output.getCursor();
+
+            for (mod.agus.jcoderz.dx.dex.code.LocalList.Entry arg : methodArgs) {
+                if (curParam == arg.getRegister()) {
+                    found = arg;
+
+                    if (arg.getSignature() != null) {
+                        /*
+                         * Parameters with signatures will be re-emitted
+                         * in complete as LOCAL_START_EXTENDED's below.
+                         */
                         emitStringIndex(null);
                     } else {
-                        emitStringIndex(entry.getName());
+                        emitStringIndex(arg.getName());
                     }
-                    this.lastEntryForReg[i2] = entry;
+                    lastEntryForReg[curParam] = arg;
+
+                    break;
                 }
             }
-            if (entry == null) {
+
+            if (found == null) {
+                /*
+                 * Emit a null symbol for "unnamed." This is common
+                 * for, e.g., synthesized methods and inner-class
+                 * this$0 arguments.
+                 */
                 emitStringIndex(null);
             }
-            if (z) {
-                if (entry == null || entry.getSignature() != null) {
-                    str = "<unnamed>";
-                } else {
-                    str = entry.getName().toHuman();
-                }
-                annotate(this.output.getCursor() - cursor3, "parameter " + str + " " + RegisterSpec.PREFIX + i2);
+
+            if (annotate) {
+                String parameterName
+                        = (found == null || found.getSignature() != null)
+                                ? "<unnamed>" : found.getName().toHuman();
+                annotate(output.getCursor() - mark,
+                        "parameter " + parameterName + " "
+                                + mod.agus.jcoderz.dx.rop.code.RegisterSpec.PREFIX + curParam);
             }
-            i2 += type.getCategory();
+
+            curParam += pt.getCategory();
         }
-        LocalList.Entry[] entryArr = this.lastEntryForReg;
-        for (LocalList.Entry entry2 : entryArr) {
-            if (!(entry2 == null || entry2.getSignature() == null)) {
-                emitLocalStartExtended(entry2);
+
+        /*
+         * If anything emitted above has a type signature, emit it again as
+         * a LOCAL_RESTART_EXTENDED
+         */
+
+        for (mod.agus.jcoderz.dx.dex.code.LocalList.Entry arg : lastEntryForReg) {
+            if (arg == null) {
+                continue;
+            }
+
+            mod.agus.jcoderz.dx.rop.cst.CstString signature = arg.getSignature();
+
+            if (signature != null) {
+                emitLocalStartExtended(arg);
             }
         }
     }
 
-    private ArrayList<PositionList.Entry> buildSortedPositions() {
-        int size = this.positions == null ? 0 : this.positions.size();
-        ArrayList<PositionList.Entry> arrayList = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            arrayList.add(this.positions.get(i));
+    /**
+     * Builds a list of position entries, sorted by ascending address.
+     *
+     * @return A sorted positions list
+     */
+    private ArrayList<mod.agus.jcoderz.dx.dex.code.PositionList.Entry> buildSortedPositions() {
+        int sz = (positions == null) ? 0 : positions.size();
+        ArrayList<mod.agus.jcoderz.dx.dex.code.PositionList.Entry> result = new ArrayList(sz);
+
+        for (int i = 0; i < sz; i++) {
+            result.add(positions.get(i));
         }
-        Collections.sort(arrayList, new Comparator<PositionList.Entry>() {
-            @Override // java.util.Comparator
-            public int compare(PositionList.Entry entry, PositionList.Entry entry2) {
-                return compare(entry, entry2);
+
+        // Sort ascending by address.
+        Collections.sort (result, new Comparator<mod.agus.jcoderz.dx.dex.code.PositionList.Entry>() {
+            @Override
+            public int compare (mod.agus.jcoderz.dx.dex.code.PositionList.Entry a, mod.agus.jcoderz.dx.dex.code.PositionList.Entry b) {
+                return a.getAddress() - b.getAddress();
             }
 
-            public int compareTwo(PositionList.Entry entry, PositionList.Entry entry2) {
-                return entry.getAddress() - entry2.getAddress();
-            }
-
-            public boolean equals(Object obj) {
-                return obj == this;
+            @Override
+            public boolean equals (Object obj) {
+               return obj == this;
             }
         });
-        return arrayList;
+        return result;
     }
 
+    /**
+     * Gets the register that begins the method's parameter range (including
+     * the 'this' parameter for non-static methods). The range continues until
+     * {@code regSize}
+     *
+     * @return register as noted above
+     */
     private int getParamBase() {
-        return (this.regSize - this.desc.getParameterTypes().getWordCount()) - (this.isStatic ? 0 : 1);
+        return regSize
+                - desc.getParameterTypes().getWordCount() - (isStatic? 0 : 1);
     }
 
-    private ArrayList<LocalList.Entry> extractMethodArguments() {
-        ArrayList<LocalList.Entry> arrayList = new ArrayList<>(this.desc.getParameterTypes().size());
-        int paramBase = getParamBase();
-        BitSet bitSet = new BitSet(this.regSize - paramBase);
-        int size = this.locals.size();
-        for (int i = 0; i < size; i++) {
-            LocalList.Entry entry = this.locals.get(i);
-            int register = entry.getRegister();
-            if (register >= paramBase && !bitSet.get(register - paramBase)) {
-                bitSet.set(register - paramBase);
-                arrayList.add(entry);
+    /**
+     * Extracts method arguments from a locals list. These will be collected
+     * from the input list and sorted by ascending register in the
+     * returned list.
+     *
+     * @return list of non-{@code this} method argument locals,
+     * sorted by ascending register
+     */
+    private ArrayList<mod.agus.jcoderz.dx.dex.code.LocalList.Entry> extractMethodArguments() {
+        ArrayList<mod.agus.jcoderz.dx.dex.code.LocalList.Entry> result
+                = new ArrayList(desc.getParameterTypes().size());
+        int argBase = getParamBase();
+        BitSet seen = new BitSet(regSize - argBase);
+        int sz = locals.size();
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.dex.code.LocalList.Entry e = locals.get(i);
+            int reg = e.getRegister();
+
+            if (reg < argBase) {
+                continue;
             }
+
+            // only the lowest-start-address entry is included.
+            if (seen.get(reg - argBase)) {
+                continue;
+            }
+
+            seen.set(reg - argBase);
+            result.add(e);
         }
-        Collections.sort(arrayList, new Comparator<LocalList.Entry>() {
-            public int compare(LocalList.Entry entry, LocalList.Entry entry2) {
-                return compare(entry, entry2);
+
+        // Sort by ascending register.
+        Collections.sort(result, new Comparator<mod.agus.jcoderz.dx.dex.code.LocalList.Entry>() {
+            @Override
+            public int compare(mod.agus.jcoderz.dx.dex.code.LocalList.Entry a, mod.agus.jcoderz.dx.dex.code.LocalList.Entry b) {
+                return a.getRegister() - b.getRegister();
             }
 
-            public int compareThree(LocalList.Entry entry, LocalList.Entry entry2) {
-                return entry.getRegister() - entry2.getRegister();
-            }
-
+            @Override
             public boolean equals(Object obj) {
-                return obj == this;
+               return obj == this;
             }
         });
-        return arrayList;
+
+        return result;
     }
 
-    private String entryAnnotationString(LocalList.Entry entry) {
+    /**
+     * Returns a string representation of this LocalList entry that is
+     * appropriate for emitting as an annotation.
+     *
+     * @param e {@code non-null;} entry
+     * @return {@code non-null;} annotation string
+     */
+    private String entryAnnotationString(mod.agus.jcoderz.dx.dex.code.LocalList.Entry e) {
         StringBuilder sb = new StringBuilder();
+
         sb.append(RegisterSpec.PREFIX);
-        sb.append(entry.getRegister());
+        sb.append(e.getRegister());
         sb.append(' ');
-        CstString name = entry.getName();
+
+        mod.agus.jcoderz.dx.rop.cst.CstString name = e.getName();
         if (name == null) {
             sb.append("null");
         } else {
             sb.append(name.toHuman());
         }
         sb.append(' ');
-        CstType type = entry.getType();
+
+        mod.agus.jcoderz.dx.rop.cst.CstType type = e.getType();
         if (type == null) {
             sb.append("null");
         } else {
             sb.append(type.toHuman());
         }
-        CstString signature = entry.getSignature();
+
+        mod.agus.jcoderz.dx.rop.cst.CstString signature = e.getSignature();
+
         if (signature != null) {
             sb.append(' ');
             sb.append(signature.toHuman());
         }
+
         return sb.toString();
     }
 
-    private void emitLocalRestart(LocalList.Entry entry) throws IOException {
-        int cursor = this.output.getCursor();
-        this.output.writeByte(6);
+    /**
+     * Emits a {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_RESTART_LOCAL DBG_RESTART_LOCAL}
+     * sequence.
+     *
+     * @param entry entry associated with this restart
+     * @throws IOException
+     */
+    private void emitLocalRestart(mod.agus.jcoderz.dx.dex.code.LocalList.Entry entry)
+            throws IOException {
+
+        int mark = output.getCursor();
+
+        output.writeByte(DBG_RESTART_LOCAL);
         emitUnsignedLeb128(entry.getRegister());
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(this.output.getCursor() - cursor, String.format("%04x: +local restart %s", Integer.valueOf(this.address), entryAnnotationString(entry)));
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(output.getCursor() - mark,
+                    String.format("%04x: +local restart %s",
+                            address, entryAnnotationString(entry)));
+        }
+
+        if (DEBUG) {
+            System.err.println("emit local restart");
         }
     }
 
-    private void emitStringIndex(CstString cstString) throws IOException {
-        if (cstString == null || this.file == null) {
-            this.output.writeUleb128(0);
+    /**
+     * Emits a string index as an unsigned LEB128. The actual value written
+     * is shifted by 1, so that the '0' value is reserved for "null". The
+     * null symbol is used in some cases by the parameter name list
+     * at the beginning of the sequence.
+     *
+     * @param string {@code null-ok;} string to emit
+     * @throws IOException
+     */
+    private void emitStringIndex(CstString string) throws IOException {
+        if ((string == null) || (file == null)) {
+            output.writeUleb128(0);
         } else {
-            this.output.writeUleb128(this.file.getStringIds().indexOf(cstString) + 1);
+            output.writeUleb128(
+                    1 + file.getStringIds().indexOf(string));
+        }
+
+        if (DEBUG) {
+            System.err.printf("Emit string %s\n",
+                    string == null ? "<null>" : string.toQuoted());
         }
     }
 
-    private void emitTypeIndex(CstType cstType) throws IOException {
-        if (cstType == null || this.file == null) {
-            this.output.writeUleb128(0);
+    /**
+     * Emits a type index as an unsigned LEB128. The actual value written
+     * is shifted by 1, so that the '0' value is reserved for "null".
+     *
+     * @param type {@code null-ok;} type to emit
+     * @throws IOException
+     */
+    private void emitTypeIndex(CstType type) throws IOException {
+        if ((type == null) || (file == null)) {
+            output.writeUleb128(0);
         } else {
-            this.output.writeUleb128(this.file.getTypeIds().indexOf(cstType) + 1);
+            output.writeUleb128(
+                    1 + file.getTypeIds().indexOf(type));
+        }
+
+        if (DEBUG) {
+            System.err.printf("Emit type %s\n",
+                    type == null ? "<null>" : type.toHuman());
         }
     }
 
-    private void emitLocalStart(LocalList.Entry entry) throws IOException {
+    /**
+     * Emits a {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_START_LOCAL DBG_START_LOCAL} or
+     * {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_START_LOCAL_EXTENDED
+     * DBG_START_LOCAL_EXTENDED} sequence.
+     *
+     * @param entry entry to emit
+     * @throws IOException
+     */
+    private void emitLocalStart(mod.agus.jcoderz.dx.dex.code.LocalList.Entry entry)
+        throws IOException {
+
         if (entry.getSignature() != null) {
             emitLocalStartExtended(entry);
             return;
         }
-        int cursor = this.output.getCursor();
-        this.output.writeByte(3);
+
+        int mark = output.getCursor();
+
+        output.writeByte(DBG_START_LOCAL);
+
         emitUnsignedLeb128(entry.getRegister());
         emitStringIndex(entry.getName());
         emitTypeIndex(entry.getType());
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(this.output.getCursor() - cursor, String.format("%04x: +local %s", Integer.valueOf(this.address), entryAnnotationString(entry)));
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(output.getCursor() - mark,
+                    String.format("%04x: +local %s", address,
+                            entryAnnotationString(entry)));
+        }
+
+        if (DEBUG) {
+            System.err.println("emit local start");
         }
     }
 
-    private void emitLocalStartExtended(LocalList.Entry entry) throws IOException {
-        int cursor = this.output.getCursor();
-        this.output.writeByte(4);
+    /**
+     * Emits a {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_START_LOCAL_EXTENDED
+     * DBG_START_LOCAL_EXTENDED} sequence.
+     *
+     * @param entry entry to emit
+     * @throws IOException
+     */
+    private void emitLocalStartExtended(mod.agus.jcoderz.dx.dex.code.LocalList.Entry entry)
+        throws IOException {
+
+        int mark = output.getCursor();
+
+        output.writeByte(DBG_START_LOCAL_EXTENDED);
+
         emitUnsignedLeb128(entry.getRegister());
         emitStringIndex(entry.getName());
         emitTypeIndex(entry.getType());
         emitStringIndex(entry.getSignature());
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(this.output.getCursor() - cursor, String.format("%04x: +localx %s", Integer.valueOf(this.address), entryAnnotationString(entry)));
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(output.getCursor() - mark,
+                    String.format("%04x: +localx %s", address,
+                            entryAnnotationString(entry)));
+        }
+
+        if (DEBUG) {
+            System.err.println("emit local start");
         }
     }
 
-    private void emitLocalEnd(LocalList.Entry entry) throws IOException {
-        int cursor = this.output.getCursor();
-        this.output.writeByte(5);
-        this.output.writeUleb128(entry.getRegister());
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(this.output.getCursor() - cursor, String.format("%04x: -local %s", Integer.valueOf(this.address), entryAnnotationString(entry)));
+    /**
+     * Emits a {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_END_LOCAL DBG_END_LOCAL} sequence.
+     *
+     * @param entry {@code entry non-null;} entry associated with end.
+     * @throws IOException
+     */
+    private void emitLocalEnd(LocalList.Entry entry)
+            throws IOException {
+
+        int mark = output.getCursor();
+
+        output.writeByte(DBG_END_LOCAL);
+        output.writeUleb128(entry.getRegister());
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(output.getCursor() - mark,
+                    String.format("%04x: -local %s", address,
+                            entryAnnotationString(entry)));
+        }
+
+        if (DEBUG) {
+            System.err.println("emit local end");
         }
     }
 
-    private void emitPosition(PositionList.Entry entry) throws IOException {
-        int i;
-        int i2;
-        int line2 = entry.getPosition().getLine();
-        int address2 = entry.getAddress();
-        int i3 = line2 - this.line;
-        int i4 = address2 - this.address;
-        if (i4 < 0) {
-            throw new RuntimeException("Position entries must be in ascending address order");
+    /**
+     * Emits the necessary byte sequences to emit the given position table
+     * entry. This will typically be a single special opcode, although
+     * it may also require DBG_ADVANCE_PC or DBG_ADVANCE_LINE.
+     *
+     * @param entry position entry to emit.
+     * @throws IOException
+     */
+    private void emitPosition(PositionList.Entry entry)
+            throws IOException {
+
+        SourcePosition pos = entry.getPosition();
+        int newLine = pos.getLine();
+        int newAddress = entry.getAddress();
+
+        int opcode;
+
+        int deltaLines = newLine - line;
+        int deltaAddress = newAddress - address;
+
+        if (deltaAddress < 0) {
+            throw new RuntimeException(
+                    "Position entries must be in ascending address order");
         }
-        if (i3 < -4 || i3 > 10) {
-            emitAdvanceLine(i3);
-            i3 = 0;
+
+        if ((deltaLines < DBG_LINE_BASE)
+                || (deltaLines > (DBG_LINE_BASE + DBG_LINE_RANGE -1))) {
+            emitAdvanceLine(deltaLines);
+            deltaLines = 0;
         }
-        int computeOpcode = computeOpcode(i3, i4);
-        if ((computeOpcode & -256) > 0) {
-            emitAdvancePc(i4);
-            int computeOpcode2 = computeOpcode(i3, 0);
-            if ((computeOpcode2 & -256) > 0) {
-                emitAdvanceLine(i3);
-                i = 0;
-                computeOpcode = computeOpcode(0, 0);
-                i2 = 0;
-            } else {
-                computeOpcode = computeOpcode2;
-                i = i3;
-                i2 = 0;
+
+        opcode = computeOpcode (deltaLines, deltaAddress);
+
+        if ((opcode & ~0xff) > 0) {
+            emitAdvancePc(deltaAddress);
+            deltaAddress = 0;
+            opcode = computeOpcode (deltaLines, deltaAddress);
+
+            if ((opcode & ~0xff) > 0) {
+                emitAdvanceLine(deltaLines);
+                deltaLines = 0;
+                opcode = computeOpcode (deltaLines, deltaAddress);
             }
-        } else {
-            i = i3;
-            i2 = i4;
         }
-        this.output.writeByte(computeOpcode);
-        this.line = i + this.line;
-        this.address = i2 + this.address;
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(1, String.format("%04x: line %d", Integer.valueOf(this.address), Integer.valueOf(this.line)));
+
+        output.writeByte(opcode);
+
+        line += deltaLines;
+        address += deltaAddress;
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(1,
+                    String.format("%04x: line %d", address, line));
         }
     }
 
-    private void emitAdvanceLine(int i) throws IOException {
-        int cursor = this.output.getCursor();
-        this.output.writeByte(2);
-        this.output.writeSleb128(i);
-        this.line += i;
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(this.output.getCursor() - cursor, String.format("line = %d", Integer.valueOf(this.line)));
+    /**
+     * Computes a special opcode that will encode the given position change.
+     * If the return value is > 0xff, then the request cannot be fulfilled.
+     * Essentially the same as described in "DWARF Debugging Format Version 3"
+     * section 6.2.5.1.
+     *
+     * @param deltaLines {@code >= DBG_LINE_BASE, <= DBG_LINE_BASE +
+     * DBG_LINE_RANGE;} the line change to encode
+     * @param deltaAddress {@code >= 0;} the address change to encode
+     * @return {@code <= 0xff} if in range, otherwise parameters are out
+     * of range
+     */
+    private static int computeOpcode(int deltaLines, int deltaAddress) {
+        if (deltaLines < DBG_LINE_BASE
+                || deltaLines > (DBG_LINE_BASE + DBG_LINE_RANGE -1)) {
+
+            throw new RuntimeException("Parameter out of range");
+        }
+
+        return (deltaLines - DBG_LINE_BASE)
+            + (DBG_LINE_RANGE * deltaAddress) + DBG_FIRST_SPECIAL;
+    }
+
+    /**
+     * Emits an {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_ADVANCE_LINE DBG_ADVANCE_LINE}
+     * sequence.
+     *
+     * @param deltaLines amount to change line number register by
+     * @throws IOException
+     */
+    private void emitAdvanceLine(int deltaLines) throws IOException {
+        int mark = output.getCursor();
+
+        output.writeByte(DBG_ADVANCE_LINE);
+        output.writeSleb128(deltaLines);
+        line += deltaLines;
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(output.getCursor() - mark,
+                    String.format("line = %d", line));
+        }
+
+        if (DEBUG) {
+            System.err.printf("Emitting advance_line for %d\n", deltaLines);
         }
     }
 
-    private void emitAdvancePc(int i) throws IOException {
-        int cursor = this.output.getCursor();
-        this.output.writeByte(1);
-        this.output.writeUleb128(i);
-        this.address += i;
-        if (this.annotateTo != null || this.debugPrint != null) {
-            annotate(this.output.getCursor() - cursor, String.format("%04x: advance pc", Integer.valueOf(this.address)));
+    /**
+     * Emits an  {@link mod.agus.jcoderz.dx.dex.file.DebugInfoConstants#DBG_ADVANCE_PC DBG_ADVANCE_PC}
+     * sequence.
+     *
+     * @param deltaAddress {@code >= 0;} amount to change program counter by
+     * @throws IOException
+     */
+    private void emitAdvancePc(int deltaAddress) throws IOException {
+        int mark = output.getCursor();
+
+        output.writeByte(DBG_ADVANCE_PC);
+        output.writeUleb128(deltaAddress);
+        address += deltaAddress;
+
+        if (annotateTo != null || debugPrint != null) {
+            annotate(output.getCursor() - mark,
+                    String.format("%04x: advance pc", address));
+        }
+
+        if (DEBUG) {
+            System.err.printf("Emitting advance_pc for %d\n", deltaAddress);
         }
     }
 
-    private void emitUnsignedLeb128(int i) throws IOException {
-        if (i < 0) {
-            throw new RuntimeException("Signed value where unsigned required: " + i);
+    /**
+     * Emits an unsigned LEB128 value.
+     *
+     * @param n {@code >= 0;} value to emit. Note that, although this can
+     * represent integers larger than Integer.MAX_VALUE, we currently don't
+     * allow that.
+     * @throws IOException
+     */
+    private void emitUnsignedLeb128(int n) throws IOException {
+        // We'll never need the top end of the unsigned range anyway.
+        if (n < 0) {
+            throw new RuntimeException(
+                    "Signed value where unsigned required: " + n);
         }
-        this.output.writeUleb128(i);
+
+        output.writeUleb128(n);
     }
 
+    /**
+     * Emits the {@link DebugInfoConstants#DBG_END_SEQUENCE DBG_END_SEQUENCE}
+     * bytecode.
+     */
     private void emitEndSequence() {
-        this.output.writeByte(0);
-        if (this.annotateTo != null || this.debugPrint != null) {
+        output.writeByte(DBG_END_SEQUENCE);
+
+        if (annotateTo != null || debugPrint != null) {
             annotate(1, "end sequence");
         }
     }

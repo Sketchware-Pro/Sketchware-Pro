@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import java.util.ArrayList;
@@ -11,90 +27,161 @@ import mod.agus.jcoderz.dx.rop.type.TypeList;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Class definitions list section of a {@code .dex} file.
+ */
 public final class ClassDefsSection extends UniformItemSection {
-    private final TreeMap<Type, ClassDefItem> classDefs = new TreeMap<>();
-    private ArrayList<ClassDefItem> orderedDefs = null;
+    /**
+     * {@code non-null;} map from type constants for classes to {@link
+     * ClassDefItem} instances that define those classes
+     */
+    private final TreeMap<mod.agus.jcoderz.dx.rop.type.Type, ClassDefItem> classDefs;
 
-    public ClassDefsSection(DexFile dexFile) {
-        super("class_defs", dexFile, 4);
+    /** {@code null-ok;} ordered list of classes; set in {@link #orderItems} */
+    private ArrayList<ClassDefItem> orderedDefs;
+
+    /**
+     * Constructs an instance. The file offset is initially unknown.
+     *
+     * @param file {@code non-null;} file that this instance is part of
+     */
+    public ClassDefsSection(DexFile file) {
+        super("class_defs", file, 4);
+
+        classDefs = new TreeMap<mod.agus.jcoderz.dx.rop.type.Type, ClassDefItem>();
+        orderedDefs = null;
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Section
+    /** {@inheritDoc} */
+    @Override
     public Collection<? extends Item> items() {
-        if (this.orderedDefs != null) {
-            return this.orderedDefs;
+        if (orderedDefs != null) {
+            return orderedDefs;
         }
-        return this.classDefs.values();
+
+        return classDefs.values();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.UniformItemSection
-    public IndexedItem get(Constant constant) {
-        if (constant == null) {
+    /** {@inheritDoc} */
+    @Override
+    public IndexedItem get(Constant cst) {
+        if (cst == null) {
             throw new NullPointerException("cst == null");
         }
+
         throwIfNotPrepared();
-        ClassDefItem classDefItem = this.classDefs.get(((CstType) constant).getClassType());
-        if (classDefItem != null) {
-            return classDefItem;
+
+        mod.agus.jcoderz.dx.rop.type.Type type = ((mod.agus.jcoderz.dx.rop.cst.CstType) cst).getClassType();
+        IndexedItem result = classDefs.get(type);
+
+        if (result == null) {
+            throw new IllegalArgumentException("not found");
         }
-        throw new IllegalArgumentException("not found");
+
+        return result;
     }
 
-    public void writeHeaderPart(AnnotatedOutput annotatedOutput) {
+    /**
+     * Writes the portion of the file header that refers to this instance.
+     *
+     * @param out {@code non-null;} where to write
+     */
+    public void writeHeaderPart(AnnotatedOutput out) {
         throwIfNotPrepared();
-        int size = this.classDefs.size();
-        int fileOffset = size == 0 ? 0 : getFileOffset();
-        if (annotatedOutput.annotates()) {
-            annotatedOutput.annotate(4, "class_defs_size: " + Hex.u4(size));
-            annotatedOutput.annotate(4, "class_defs_off:  " + Hex.u4(fileOffset));
+
+        int sz = classDefs.size();
+        int offset = (sz == 0) ? 0 : getFileOffset();
+
+        if (out.annotates()) {
+            out.annotate(4, "class_defs_size: " + mod.agus.jcoderz.dx.util.Hex.u4(sz));
+            out.annotate(4, "class_defs_off:  " + Hex.u4(offset));
         }
-        annotatedOutput.writeInt(size);
-        annotatedOutput.writeInt(fileOffset);
+
+        out.writeInt(sz);
+        out.writeInt(offset);
     }
 
-    public void add(ClassDefItem classDefItem) {
+    /**
+     * Adds an element to this instance. It is illegal to attempt to add more
+     * than one class with the same name.
+     *
+     * @param clazz {@code non-null;} the class def to add
+     */
+    public void add(ClassDefItem clazz) {
+        mod.agus.jcoderz.dx.rop.type.Type type;
+
         try {
-            Type classType = classDefItem.getThisClass().getClassType();
-            throwIfPrepared();
-            if (this.classDefs.get(classType) != null) {
-                throw new IllegalArgumentException("already added: " + classType);
-            }
-            this.classDefs.put(classType, classDefItem);
-        } catch (NullPointerException e) {
+            type = clazz.getThisClass().getClassType();
+        } catch (NullPointerException ex) {
+            // Elucidate the exception.
             throw new NullPointerException("clazz == null");
         }
+
+        throwIfPrepared();
+
+        if (classDefs.get(type) != null) {
+            throw new IllegalArgumentException("already added: " + type);
+        }
+
+        classDefs.put(type, clazz);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.UniformItemSection
+    /** {@inheritDoc} */
+    @Override
     protected void orderItems() {
-        int size = this.classDefs.size();
-        int i = 0;
-        this.orderedDefs = new ArrayList<>(size);
-        for (Type type : this.classDefs.keySet()) {
-            i = orderItems0(type, i, size - i);
+        int sz = classDefs.size();
+        int idx = 0;
+
+        orderedDefs = new ArrayList<ClassDefItem>(sz);
+
+        /*
+         * Iterate over all the classes, recursively assigning an
+         * index to each, implicitly skipping the ones that have
+         * already been assigned by the time this (top-level)
+         * iteration reaches them.
+         */
+        for (mod.agus.jcoderz.dx.rop.type.Type type : classDefs.keySet()) {
+            idx = orderItems0(type, idx, sz - idx);
         }
     }
 
-    private int orderItems0(Type type, int i, int i2) {
-        ClassDefItem classDefItem = this.classDefs.get(type);
-        if (classDefItem == null || classDefItem.hasIndex()) {
-            return i;
+    /**
+     * Helper for {@link #orderItems}, which recursively assigns indices
+     * to classes.
+     *
+     * @param type {@code null-ok;} type ref to assign, if any
+     * @param idx {@code >= 0;} the next index to assign
+     * @param maxDepth maximum recursion depth; if negative, this will
+     * throw an exception indicating class definition circularity
+     * @return {@code >= 0;} the next index to assign
+     */
+    private int orderItems0(mod.agus.jcoderz.dx.rop.type.Type type, int idx, int maxDepth) {
+        ClassDefItem c = classDefs.get(type);
+
+        if ((c == null) || (c.hasIndex())) {
+            return idx;
         }
-        if (i2 < 0) {
+
+        if (maxDepth < 0) {
             throw new RuntimeException("class circularity with " + type);
         }
-        int i3 = i2 - 1;
-        CstType superclass = classDefItem.getSuperclass();
-        if (superclass != null) {
-            i = orderItems0(superclass.getClassType(), i, i3);
+
+        maxDepth--;
+
+        CstType superclassCst = c.getSuperclass();
+        if (superclassCst != null) {
+            Type superclass = superclassCst.getClassType();
+            idx = orderItems0(superclass, idx, maxDepth);
         }
-        TypeList interfaces = classDefItem.getInterfaces();
-        int size = interfaces.size();
-        for (int i4 = 0; i4 < size; i4++) {
-            i = orderItems0(interfaces.getType(i4), i, i3);
+
+        TypeList interfaces = c.getInterfaces();
+        int sz = interfaces.size();
+        for (int i = 0; i < sz; i++) {
+            idx = orderItems0(interfaces.getType(i), idx, maxDepth);
         }
-        classDefItem.setIndex(i);
-        this.orderedDefs.add(classDefItem);
-        return i + 1;
+
+        c.setIndex(idx);
+        orderedDefs.add(c);
+        return idx + 1;
     }
 }

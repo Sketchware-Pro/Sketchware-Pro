@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2013 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.multidex;
 
 import java.io.File;
@@ -6,37 +22,42 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/**
+ * A folder element.
+ */
 class FolderPathElement implements ClassPathElement {
+
     private final File baseFolder;
 
-    public FolderPathElement(File file) {
-        this.baseFolder = file;
+    public FolderPathElement(File baseFolder) {
+        this.baseFolder = baseFolder;
     }
 
-    @Override // mod.agus.jcoderz.multidex.ClassPathElement
-    public InputStream open(String str) throws FileNotFoundException {
-        return new FileInputStream(new File(this.baseFolder, str.replace(ClassPathElement.SEPARATOR_CHAR, File.separatorChar)));
+    @Override
+    public InputStream open(String path) throws FileNotFoundException {
+        return new FileInputStream(new File(baseFolder,
+                path.replace(SEPARATOR_CHAR, File.separatorChar)));
     }
 
-    @Override // mod.agus.jcoderz.multidex.ClassPathElement
+    @Override
     public void close() {
     }
 
-    @Override // mod.agus.jcoderz.multidex.ClassPathElement
+    @Override
     public Iterable<String> list() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        collect(this.baseFolder, "", arrayList);
-        return arrayList;
+        ArrayList<String> result = new ArrayList<String>();
+        collect(baseFolder, "", result);
+        return result;
     }
 
-    private void collect(File file, String str, ArrayList<String> arrayList) {
-        File[] listFiles = file.listFiles();
-        for (File file2 : listFiles) {
-            if (file2.isDirectory()) {
-                collect(file2, String.valueOf(str) + ClassPathElement.SEPARATOR_CHAR + file2.getName(), arrayList);
+    private void collect(File folder, String prefix, ArrayList<String> result) {
+        for (File file : folder.listFiles()) {
+            if (file.isDirectory()) {
+                collect(file, prefix + SEPARATOR_CHAR + file.getName(), result);
             } else {
-                arrayList.add(String.valueOf(str) + ClassPathElement.SEPARATOR_CHAR + file2.getName());
+                result.add(prefix + SEPARATOR_CHAR + file.getName());
             }
         }
     }
+
 }

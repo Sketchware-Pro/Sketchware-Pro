@@ -1,87 +1,145 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.util;
 
+/**
+ * Utilities for parsing hexadecimal text.
+ */
 public final class HexParser {
+    /**
+     * This class is uninstantiable.
+     */
     private HexParser() {
+        // This space intentionally left blank.
     }
 
-    public static byte[] parse(String str) {
-        String substring;
-        int i;
-        int indexOf;
-        int length = str.length();
-        byte[] bArr = new byte[(length / 2)];
-        int i2 = 0;
-        int i3 = 0;
-        while (i3 < length) {
-            int indexOf2 = str.indexOf(10, i3);
-            if (indexOf2 < 0) {
-                indexOf2 = length;
+    /**
+     * Parses the given text as hex, returning a {@code byte[]}
+     * corresponding to the text. The format is simple: Each line may
+     * start with a hex offset followed by a colon (which is verified
+     * and presumably used just as a comment), and then consists of
+     * hex digits freely interspersed with whitespace. If a pound sign
+     * is encountered, it and the rest of the line are ignored as a
+     * comment. If a double quote is encountered, then the ASCII value
+     * of the subsequent characters is used, until the next double
+     * quote. Quoted strings may not span multiple lines.
+     *
+     * @param src {@code non-null;} the source string
+     * @return {@code non-null;} the parsed form
+     */
+    public static byte[] parse(String src) {
+        int len = src.length();
+        byte[] result = new byte[len / 2];
+        int at = 0;
+        int outAt = 0;
+
+        while (at < len) {
+            int nlAt = src.indexOf('\n', at);
+            if (nlAt < 0) {
+                nlAt = len;
             }
-            int indexOf3 = str.indexOf(35, i3);
-            if (indexOf3 < 0 || indexOf3 >= indexOf2) {
-                substring = str.substring(i3, indexOf2);
+            int poundAt = src.indexOf('#', at);
+
+            String line;
+            if ((poundAt >= 0) && (poundAt < nlAt)) {
+                line = src.substring(at, poundAt);
             } else {
-                substring = str.substring(i3, indexOf3);
+                line = src.substring(at, nlAt);
             }
-            int i4 = indexOf2 + 1;
-            int indexOf4 = substring.indexOf(58);
-            if (indexOf4 != -1 && ((indexOf = substring.indexOf(34)) == -1 || indexOf >= indexOf4)) {
-                String trim = substring.substring(0, indexOf4).trim();
-                substring = substring.substring(indexOf4 + 1);
-                if (Integer.parseInt(trim, 16) != i2) {
-                    throw new RuntimeException("bogus offset marker: " + trim);
+            at = nlAt + 1;
+
+            int colonAt = line.indexOf(':');
+
+            atCheck:
+            if (colonAt != -1) {
+                int quoteAt = line.indexOf('\"');
+                if ((quoteAt != -1) && (quoteAt < colonAt)) {
+                    break atCheck;
+                }
+
+                String atStr = line.substring(0, colonAt).trim();
+                line = line.substring(colonAt + 1);
+                int alleged = Integer.parseInt(atStr, 16);
+                if (alleged != outAt) {
+                    throw new RuntimeException("bogus offset marker: " +
+                                               atStr);
                 }
             }
-            int length2 = substring.length();
-            int i5 = 0;
-            boolean z = false;
-            int i6 = -1;
-            while (i5 < length2) {
-                char charAt = substring.charAt(i5);
-                if (z) {
-                    if (charAt == '\"') {
-                        z = false;
-                        i = i2;
+
+            int lineLen = line.length();
+            int value = -1;
+            boolean quoteMode = false;
+
+            for (int i = 0; i < lineLen; i++) {
+                char c = line.charAt(i);
+
+                if (quoteMode) {
+                    if (c == '\"') {
+                        quoteMode = false;
                     } else {
-                        bArr[i2] = (byte) charAt;
-                        i = i2 + 1;
+                        result[outAt] = (byte) c;
+                        outAt++;
                     }
-                } else if (charAt <= ' ') {
-                    i = i2;
-                } else if (charAt != '\"') {
-                    int digit = Character.digit(charAt, 16);
-                    if (digit == -1) {
-                        throw new RuntimeException("bogus digit character: \"" + charAt + "\"");
-                    } else if (i6 == -1) {
-                        i6 = digit;
-                        i = i2;
-                    } else {
-                        bArr[i2] = (byte) ((i6 << 4) | digit);
-                        i = i2 + 1;
-                        i6 = -1;
+                    continue;
+                }
+
+                if (c <= ' ') {
+                    continue;
+                }
+                if (c == '\"') {
+                    if (value != -1) {
+                        throw new RuntimeException("spare digit around " +
+                                                   "offset " + mod.agus.jcoderz.dx.util.Hex.u4(outAt));
                     }
-                } else if (i6 != -1) {
-                    throw new RuntimeException("spare digit around offset " + Hex.u4(i2));
+                    quoteMode = true;
+                    continue;
+                }
+
+                int digVal = Character.digit(c, 16);
+                if (digVal == -1) {
+                    throw new RuntimeException("bogus digit character: \"" +
+                                               c + "\"");
+                }
+                if (value == -1) {
+                    value = digVal;
                 } else {
-                    z = true;
-                    i = i2;
+                    result[outAt] = (byte) ((value << 4) | digVal);
+                    outAt++;
+                    value = -1;
                 }
-                i5++;
-                i2 = i;
             }
-            if (i6 != -1) {
-                throw new RuntimeException("spare digit around offset " + Hex.u4(i2));
-            } else if (z) {
-                throw new RuntimeException("unterminated quote around offset " + Hex.u4(i2));
-            } else {
-                i3 = i4;
+
+            if (value != -1) {
+                throw new RuntimeException("spare digit around offset " +
+                                           mod.agus.jcoderz.dx.util.Hex.u4(outAt));
+            }
+
+            if (quoteMode) {
+                throw new RuntimeException("unterminated quote around " +
+                                           "offset " + Hex.u4(outAt));
             }
         }
-        if (i2 >= bArr.length) {
-            return bArr;
+
+        if (outAt < result.length) {
+            byte[] newr = new byte[outAt];
+            System.arraycopy(result, 0, newr, 0, outAt);
+            result = newr;
         }
-        byte[] bArr2 = new byte[i2];
-        System.arraycopy(bArr, 0, bArr2, 0, i2);
-        return bArr2;
+
+        return result;
     }
 }

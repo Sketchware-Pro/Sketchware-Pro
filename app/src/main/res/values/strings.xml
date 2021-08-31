@@ -1296,12 +1296,12 @@ ex)\"users/username\""</string>
     <string name="design_library_firebase_hint_enter_data_location">Enter the data location</string>
     <string name="design_library_firebase_hint_enter_firebase_api_key">Enter Firebase API Key</string>
     <string name="design_library_firebase_hint_enter_firebase_app_id">Enter Firebase APP ID</string>
-    <string name="design_library_firebase_hint_enter_firebase_project_id">Enter Firebase Project ID</string>
+    <string name="design_library_firebase_hint_enter_firebase_project_id">Enter Full Firebase Database Url</string>
     <string name="design_library_firebase_hint_enter_firebase_storage_bucket_url">Enter Firebase Storage Bucket Url</string>
-    <string name="design_library_firebase_message_id_fill_out">Project ID, App ID, and API Key must be filled out.</string>
+    <string name="design_library_firebase_message_id_fill_out">Full Database Url, App ID, and API Key must be filled out.</string>
     <string name="design_library_firebase_message_need_compat">AppCompat Library will be enabled since Firebase requires AppCompat as a dependency.</string>
     <string name="design_library_firebase_message_not_input_text">Please provide all necessary information</string>
-    <string name="design_library_firebase_setting_step1_desc">Enter Project ID, Web API Key, and App ID</string>
+    <string name="design_library_firebase_setting_step1_desc">Enter Full Database Url, Web API Key, and App ID</string>
     <string name="design_library_firebase_setting_step1_title">Project Settings</string>
     <string name="design_library_firebase_setting_step2_desc">Enter the Firebase Storage URL</string>
     <string name="design_library_firebase_setting_step2_title">Storage URL Settings</string>
@@ -1314,7 +1314,7 @@ ex)\"users/username\""</string>
     <string name="design_library_firebase_title_firebase_manager">Firebase Manager</string>
     <string name="design_library_firebase_title_firebase_settings">Firebase Settings</string>
     <string name="design_library_firebase_title_firebase_setup_tutorial">Firebase Setup Tutorial</string>
-    <string name="design_library_firebase_title_project_id">Project ID</string>
+    <string name="design_library_firebase_title_project_id">Full Database Url (e.g. sk-pro-default-rtdb.firebaseio.com)</string>
     <string name="design_library_firebase_title_storage_bucket_url">Storage Bucket URL</string>
     <string name="design_library_google_map_button_open_doc">Open Documentation</string>
     <string name="design_library_google_map_title">GoogleMap</string>
@@ -1684,7 +1684,7 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_context_menu_title_slack_open">Open in Slack (Invitation Required)</string>
     <string name="main_drawer_title_ad_label">Another Apps of Sketchware</string>
     <string name="main_drawer_title_docs">Documentation</string>
-    <string name="main_drawer_title_export_urls">Developer Tools</string>
+    <string name="main_drawer_title_export_urls">Export URLs</string>
     <string name="main_drawer_title_language_settings">Language Settings</string>
     <string name="main_drawer_title_program_information">Program information</string>
     <string name="main_drawer_title_purchase_list">Purchase List</string>
@@ -2642,14 +2642,17 @@ Please check the URL again."</string>
     <string name="design_drawer_menu_nativelibs_subtitle">Add native libraries (.so)</string>
     <string name="design_drawer_menu_customblocks">Custom Blocks</string>
     <string name="design_drawer_menu_customblocks_subtitle">See used custom blocks</string>
-    <string name="last">Last</string>
+    <string name="cancel">Cancel</string>
     <string name="copy">Copy</string>
     <string name="cut">Cut</string>
+    <string name="last">Last</string>
+    <string name="more" translatable="false">More</string>
     <string name="next">Next</string>
     <string name="paste">Paste</string>
     <string name="replace">Replace</string>
     <string name="replaceAll">Replace All</string>
     <string name="replacement">Replacement</string>
+    <string name="saveToProject" translatable="false">Project</string>
     <string name="selectAll">Select All</string>
     <string name="text_to_search">Text to search</string>
 </resources>

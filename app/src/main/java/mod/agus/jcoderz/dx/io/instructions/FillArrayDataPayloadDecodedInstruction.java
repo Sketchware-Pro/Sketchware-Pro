@@ -1,52 +1,102 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.io.instructions;
 
-public final class FillArrayDataPayloadDecodedInstruction extends DecodedInstruction {
+/**
+ * A decoded Dalvik instruction which contains the payload for
+ * a {@code packed-switch} instruction.
+ */
+public final class FillArrayDataPayloadDecodedInstruction
+        extends mod.agus.jcoderz.dx.io.instructions.DecodedInstruction {
+    /** data array */
     private final Object data;
-    private final int elementWidth;
+
+    /** number of elements */
     private final int size;
 
-    private FillArrayDataPayloadDecodedInstruction(InstructionCodec instructionCodec, int i, Object obj, int i2, int i3) {
-        super(instructionCodec, i, 0, null, 0, 0);
-        this.data = obj;
-        this.size = i2;
-        this.elementWidth = i3;
+    /** element width */
+    private final int elementWidth;
+
+    /**
+     * Constructs an instance. This private instance doesn't check the
+     * type of the data array.
+     */
+    private FillArrayDataPayloadDecodedInstruction(mod.agus.jcoderz.dx.io.instructions.InstructionCodec format,
+                                                   int opcode, Object data, int size, int elementWidth) {
+        super(format, opcode, 0, null, 0, 0L);
+
+        this.data = data;
+        this.size = size;
+        this.elementWidth = elementWidth;
     }
 
-    public FillArrayDataPayloadDecodedInstruction(InstructionCodec instructionCodec, int i, byte[] bArr) {
-        this(instructionCodec, i, bArr, bArr.length, 1);
+    /**
+     * Constructs an instance.
+     */
+    public FillArrayDataPayloadDecodedInstruction(mod.agus.jcoderz.dx.io.instructions.InstructionCodec format,
+                                                  int opcode, byte[] data) {
+        this(format, opcode, data, data.length, 1);
     }
 
-    public FillArrayDataPayloadDecodedInstruction(InstructionCodec instructionCodec, int i, short[] sArr) {
-        this(instructionCodec, i, sArr, sArr.length, 2);
+    /**
+     * Constructs an instance.
+     */
+    public FillArrayDataPayloadDecodedInstruction(mod.agus.jcoderz.dx.io.instructions.InstructionCodec format,
+                                                  int opcode, short[] data) {
+        this(format, opcode, data, data.length, 2);
     }
 
-    public FillArrayDataPayloadDecodedInstruction(InstructionCodec instructionCodec, int i, int[] iArr) {
-        this(instructionCodec, i, iArr, iArr.length, 4);
+    /**
+     * Constructs an instance.
+     */
+    public FillArrayDataPayloadDecodedInstruction(mod.agus.jcoderz.dx.io.instructions.InstructionCodec format,
+                                                  int opcode, int[] data) {
+        this(format, opcode, data, data.length, 4);
     }
 
-    public FillArrayDataPayloadDecodedInstruction(InstructionCodec instructionCodec, int i, long[] jArr) {
-        this(instructionCodec, i, jArr, jArr.length, 8);
+    /**
+     * Constructs an instance.
+     */
+    public FillArrayDataPayloadDecodedInstruction(InstructionCodec format,
+                                                  int opcode, long[] data) {
+        this(format, opcode, data, data.length, 8);
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
+    /** {@inheritDoc} */
+    @Override
     public int getRegisterCount() {
         return 0;
     }
 
     public short getElementWidthUnit() {
-        return (short) this.elementWidth;
+        return (short) elementWidth;
     }
 
     public int getSize() {
-        return this.size;
+        return size;
     }
 
     public Object getData() {
-        return this.data;
+        return data;
     }
 
-    @Override // mod.agus.jcoderz.dx.io.instructions.DecodedInstruction
-    public DecodedInstruction withIndex(int i) {
+    /** {@inheritDoc} */
+    @Override
+    public DecodedInstruction withIndex(int newIndex) {
         throw new UnsupportedOperationException("no index in instruction");
     }
 }

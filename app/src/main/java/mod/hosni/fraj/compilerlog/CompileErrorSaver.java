@@ -1,9 +1,13 @@
 package mod.hosni.fraj.compilerlog;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -13,8 +17,6 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.CompileLogHelper;
-
-import static mod.SketchwareUtil.getDip;
 
 public class CompileErrorSaver {
 
@@ -52,20 +54,21 @@ public class CompileErrorSaver {
      */
     public void showDialog(Context context) {
         ScrollView scrollView = new ScrollView(context);
+        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
         TextView errorLogTxt = new TextView(context);
         errorLogTxt.setText(CompileLogHelper.colorErrsAndWarnings(getLog()));
+        errorLogTxt.setTextSize(12);
         errorLogTxt.setTextIsSelectable(true);
-        scrollView.addView(errorLogTxt);
+        errorLogTxt.setTypeface(Typeface.MONOSPACE);
+        horizontalScrollView.addView(errorLogTxt);
+        scrollView.addView(horizontalScrollView);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Last compile log")
                 .setPositiveButton(Resources.string.common_word_ok, null)
-                .setNegativeButton("Clear", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        clear();
-                        SketchwareUtil.toast("Cleared log");
-                    }
+                .setNegativeButton("Clear", (dialogInterface, which) -> {
+                    clear();
+                    SketchwareUtil.toast("Cleared log");
                 })
                 .create();
 

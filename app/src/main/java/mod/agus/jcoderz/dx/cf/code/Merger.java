@@ -1,166 +1,304 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.code;
 
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeBearer;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Utility methods to merge various frame information.
+ */
 public final class Merger {
+    /**
+     * This class is uninstantiable.
+     */
     private Merger() {
+        // This space intentionally left blank.
     }
 
-    public static OneLocalsArray mergeLocals(OneLocalsArray oneLocalsArray, OneLocalsArray oneLocalsArray2) {
-        if (oneLocalsArray == oneLocalsArray2) {
-            return oneLocalsArray;
+    /**
+     * Merges two locals arrays. If the merged result is the same as the first
+     * argument, then return the first argument (not a copy).
+     *
+     * @param locals1 {@code non-null;} a locals array
+     * @param locals2 {@code non-null;} another locals array
+     * @return {@code non-null;} the result of merging the two locals arrays
+     */
+    public static mod.agus.jcoderz.dx.cf.code.OneLocalsArray mergeLocals(mod.agus.jcoderz.dx.cf.code.OneLocalsArray locals1,
+                                                                         mod.agus.jcoderz.dx.cf.code.OneLocalsArray locals2) {
+        if (locals1 == locals2) {
+            // Easy out.
+            return locals1;
         }
-        int maxLocals = oneLocalsArray.getMaxLocals();
-        if (oneLocalsArray2.getMaxLocals() != maxLocals) {
+
+        int sz = locals1.getMaxLocals();
+        OneLocalsArray result = null;
+
+        if (locals2.getMaxLocals() != sz) {
             throw new SimException("mismatched maxLocals values");
         }
-        OneLocalsArray oneLocalsArray3 = null;
-        for (int i = 0; i < maxLocals; i++) {
-            TypeBearer orNull = oneLocalsArray.getOrNull(i);
-            TypeBearer mergeType = mergeType(orNull, oneLocalsArray2.getOrNull(i));
-            if (mergeType != orNull) {
-                if (oneLocalsArray3 == null) {
-                    oneLocalsArray3 = oneLocalsArray.copy();
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.type.TypeBearer tb1 = locals1.getOrNull(i);
+            mod.agus.jcoderz.dx.rop.type.TypeBearer tb2 = locals2.getOrNull(i);
+            mod.agus.jcoderz.dx.rop.type.TypeBearer resultType = mergeType(tb1, tb2);
+            if (resultType != tb1) {
+                /*
+                 * We only need to do anything when the result differs
+                 * from what is in the first array, since that's what the
+                 * result gets initialized to.
+                 */
+                if (result == null) {
+                    result = locals1.copy();
                 }
-                if (mergeType == null) {
-                    oneLocalsArray3.invalidate(i);
+
+                if (resultType == null) {
+                    result.invalidate(i);
                 } else {
-                    oneLocalsArray3.set(i, mergeType);
+                    result.set(i, resultType);
                 }
             }
         }
-        if (oneLocalsArray3 == null) {
-            return oneLocalsArray;
+
+        if (result == null) {
+            return locals1;
         }
-        oneLocalsArray3.setImmutable();
-        return oneLocalsArray3;
+
+        result.setImmutable();
+        return result;
     }
 
-    public static ExecutionStack mergeStack(ExecutionStack executionStack, ExecutionStack executionStack2) {
-        if (executionStack == executionStack2) {
-            return executionStack;
+    /**
+     * Merges two stacks. If the merged result is the same as the first
+     * argument, then return the first argument (not a copy).
+     *
+     * @param stack1 {@code non-null;} a stack
+     * @param stack2 {@code non-null;} another stack
+     * @return {@code non-null;} the result of merging the two stacks
+     */
+    public static mod.agus.jcoderz.dx.cf.code.ExecutionStack mergeStack(mod.agus.jcoderz.dx.cf.code.ExecutionStack stack1,
+                                                                        mod.agus.jcoderz.dx.cf.code.ExecutionStack stack2) {
+        if (stack1 == stack2) {
+            // Easy out.
+            return stack1;
         }
-        int size = executionStack.size();
-        if (executionStack2.size() != size) {
+
+        int sz = stack1.size();
+        ExecutionStack result = null;
+
+        if (stack2.size() != sz) {
             throw new SimException("mismatched stack depths");
         }
-        ExecutionStack executionStack3 = null;
-        for (int i = 0; i < size; i++) {
-            TypeBearer peek = executionStack.peek(i);
-            TypeBearer peek2 = executionStack2.peek(i);
-            TypeBearer mergeType = mergeType(peek, peek2);
-            if (mergeType != peek) {
-                if (executionStack3 == null) {
-                    executionStack3 = executionStack.copy();
+
+        for (int i = 0; i < sz; i++) {
+            mod.agus.jcoderz.dx.rop.type.TypeBearer tb1 = stack1.peek(i);
+            mod.agus.jcoderz.dx.rop.type.TypeBearer tb2 = stack2.peek(i);
+            mod.agus.jcoderz.dx.rop.type.TypeBearer resultType = mergeType(tb1, tb2);
+            if (resultType != tb1) {
+                /*
+                 * We only need to do anything when the result differs
+                 * from what is in the first stack, since that's what the
+                 * result gets initialized to.
+                 */
+                if (result == null) {
+                    result = stack1.copy();
                 }
-                if (mergeType == null) {
-                    try {
-                        throw new SimException("incompatible: " + peek + ", " + peek2);
-                    } catch (SimException e) {
-                        e.addContext("...while merging stack[" + Hex.u2(i) + "]");
-                        throw e;
+
+                try {
+                    if (resultType == null) {
+                        throw new SimException("incompatible: " + tb1 + ", " +
+                                               tb2);
+                    } else {
+                        result.change(i, resultType);
                     }
-                } else {
-                    executionStack3.change(i, mergeType);
+                } catch (SimException ex) {
+                    ex.addContext("...while merging stack[" + Hex.u2(i) + "]");
+                    throw ex;
                 }
             }
         }
-        if (executionStack3 == null) {
-            return executionStack;
+
+        if (result == null) {
+            return stack1;
         }
-        executionStack3.setImmutable();
-        return executionStack3;
+
+        result.setImmutable();
+        return result;
     }
 
-    public static TypeBearer mergeType(TypeBearer typeBearer, TypeBearer typeBearer2) {
-        if (typeBearer == null || typeBearer.equals(typeBearer2)) {
-            return typeBearer;
-        }
-        if (typeBearer2 == null) {
+    /**
+     * Merges two frame types.
+     *
+     * @param ft1 {@code non-null;} a frame type
+     * @param ft2 {@code non-null;} another frame type
+     * @return {@code non-null;} the result of merging the two types
+     */
+    public static mod.agus.jcoderz.dx.rop.type.TypeBearer mergeType(mod.agus.jcoderz.dx.rop.type.TypeBearer ft1, mod.agus.jcoderz.dx.rop.type.TypeBearer ft2) {
+        if ((ft1 == null) || ft1.equals(ft2)) {
+            return ft1;
+        } else if (ft2 == null) {
             return null;
-        }
-        Type type = typeBearer.getType();
-        Type type2 = typeBearer2.getType();
-        if (type == type2) {
-            return type;
-        }
-        if (!type.isReference() || !type2.isReference()) {
-            if (!type.isIntlike() || !type2.isIntlike()) {
+        } else {
+            mod.agus.jcoderz.dx.rop.type.Type type1 = ft1.getType();
+            mod.agus.jcoderz.dx.rop.type.Type type2 = ft2.getType();
+
+            if (type1 == type2) {
+                return type1;
+            } else if (type1.isReference() && type2.isReference()) {
+                if (type1 == mod.agus.jcoderz.dx.rop.type.Type.KNOWN_NULL) {
+                    /*
+                     * A known-null merges with any other reference type to
+                     * be that reference type.
+                     */
+                    return type2;
+                } else if (type2 == mod.agus.jcoderz.dx.rop.type.Type.KNOWN_NULL) {
+                    /*
+                     * The same as above, but this time it's type2 that's
+                     * the known-null.
+                     */
+                    return type1;
+                } else if (type1.isArray() && type2.isArray()) {
+                    mod.agus.jcoderz.dx.rop.type.TypeBearer componentUnion =
+                        mergeType(type1.getComponentType(),
+                                type2.getComponentType());
+                    if (componentUnion == null) {
+                        /*
+                         * At least one of the types is a primitive type,
+                         * so the merged result is just Object.
+                         */
+                        return mod.agus.jcoderz.dx.rop.type.Type.OBJECT;
+                    }
+                    return ((mod.agus.jcoderz.dx.rop.type.Type) componentUnion).getArrayType();
+                } else {
+                    /*
+                     * All other unequal reference types get merged to be
+                     * Object in this phase. This is fine here, but it
+                     * won't be the right thing to do in the verifier.
+                     */
+                    return mod.agus.jcoderz.dx.rop.type.Type.OBJECT;
+                }
+            } else if (type1.isIntlike() && type2.isIntlike()) {
+                /*
+                 * Merging two non-identical int-like types results in
+                 * the type int.
+                 */
+                return mod.agus.jcoderz.dx.rop.type.Type.INT;
+            } else {
                 return null;
             }
-            return Type.INT;
-        } else if (type == Type.KNOWN_NULL) {
-            return type2;
-        } else {
-            if (type2 == Type.KNOWN_NULL) {
-                return type;
-            }
-            if (!type.isArray() || !type2.isArray()) {
-                return Type.OBJECT;
-            }
-            TypeBearer mergeType = mergeType(type.getComponentType(), type2.getComponentType());
-            if (mergeType == null) {
-                return Type.OBJECT;
-            }
-            return ((Type) mergeType).getArrayType();
         }
     }
 
-    public static boolean isPossiblyAssignableFrom(TypeBearer typeBearer, TypeBearer typeBearer2) {
-        Type type;
-        int i;
-        Type type2;
-        int i2;
-        Type type3 = typeBearer.getType();
-        Type type4 = typeBearer2.getType();
-        if (type3.equals(type4)) {
+    /**
+     * Returns whether the given supertype is possibly assignable from
+     * the given subtype. This takes into account primitiveness,
+     * int-likeness, known-nullness, and array dimensions, but does
+     * not assume anything about class hierarchy other than that the
+     * type {@code Object} is the supertype of all reference
+     * types and all arrays are assignable to
+     * {@code Serializable} and {@code Cloneable}.
+     *
+     * @param supertypeBearer {@code non-null;} the supertype
+     * @param subtypeBearer {@code non-null;} the subtype
+     */
+    public static boolean isPossiblyAssignableFrom(mod.agus.jcoderz.dx.rop.type.TypeBearer supertypeBearer,
+                                                   TypeBearer subtypeBearer) {
+        mod.agus.jcoderz.dx.rop.type.Type supertype = supertypeBearer.getType();
+        mod.agus.jcoderz.dx.rop.type.Type subtype = subtypeBearer.getType();
+
+        if (supertype.equals(subtype)) {
+            // Easy out.
             return true;
         }
-        int basicType = type3.getBasicType();
-        int basicType2 = type4.getBasicType();
-        if (basicType == 10) {
-            type = Type.OBJECT;
-            i = 9;
-        } else {
-            type = type3;
-            i = basicType;
+
+        int superBt = supertype.getBasicType();
+        int subBt = subtype.getBasicType();
+
+        // Treat return types as Object for the purposes of this method.
+
+        if (superBt == mod.agus.jcoderz.dx.rop.type.Type.BT_ADDR) {
+            supertype = mod.agus.jcoderz.dx.rop.type.Type.OBJECT;
+            superBt = mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT;
         }
-        if (basicType2 == 10) {
-            type2 = Type.OBJECT;
-            i2 = 9;
-        } else {
-            type2 = type4;
-            i2 = basicType2;
+
+        if (subBt == mod.agus.jcoderz.dx.rop.type.Type.BT_ADDR) {
+            subtype = mod.agus.jcoderz.dx.rop.type.Type.OBJECT;
+            subBt = mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT;
         }
-        if (i != 9 || i2 != 9) {
-            return type.isIntlike() && type2.isIntlike();
+
+        if ((superBt != mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT) || (subBt != mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT)) {
+            /*
+             * No two distinct primitive types are assignable in this sense,
+             * unless they are both int-like.
+             */
+            return supertype.isIntlike() && subtype.isIntlike();
         }
-        if (type == Type.KNOWN_NULL) {
+
+        // At this point, we know both types are reference types.
+
+        if (supertype == mod.agus.jcoderz.dx.rop.type.Type.KNOWN_NULL) {
+            /*
+             * A known-null supertype is only assignable from another
+             * known-null (handled in the easy out at the top of the
+             * method).
+             */
             return false;
-        }
-        if (type2 == Type.KNOWN_NULL) {
+        } else if (subtype == mod.agus.jcoderz.dx.rop.type.Type.KNOWN_NULL) {
+            /*
+             * A known-null subtype is in fact assignable to any
+             * reference type.
+             */
             return true;
-        }
-        if (type == Type.OBJECT) {
+        } else if (supertype == mod.agus.jcoderz.dx.rop.type.Type.OBJECT) {
+            /*
+             * Object is assignable from any reference type.
+             */
             return true;
-        }
-        if (type.isArray()) {
-            if (!type2.isArray()) {
+        } else if (supertype.isArray()) {
+            // The supertype is an array type.
+            if (! subtype.isArray()) {
+                // The subtype isn't an array, and so can't be assignable.
                 return false;
             }
+
+            /*
+             * Strip off as many matched component types from both
+             * types as possible, and check the assignability of the
+             * results.
+             */
             do {
-                type = type.getComponentType();
-                type2 = type2.getComponentType();
-                if (!type.isArray()) {
-                    break;
-                }
-            } while (type2.isArray());
-            return isPossiblyAssignableFrom(type, type2);
-        } else if (type2.isArray()) {
-            return type == Type.SERIALIZABLE || type == Type.CLONEABLE;
+                supertype = supertype.getComponentType();
+                subtype = subtype.getComponentType();
+            } while (supertype.isArray() && subtype.isArray());
+
+            return isPossiblyAssignableFrom(supertype, subtype);
+        } else if (subtype.isArray()) {
+            /*
+             * Other than Object (handled above), array types are
+             * assignable only to Serializable and Cloneable.
+             */
+            return (supertype == mod.agus.jcoderz.dx.rop.type.Type.SERIALIZABLE) ||
+                (supertype == Type.CLONEABLE);
         } else {
+            /*
+             * All other unequal reference types are considered at
+             * least possibly assignable.
+             */
             return true;
         }
     }

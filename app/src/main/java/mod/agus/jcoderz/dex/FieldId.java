@@ -1,52 +1,70 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dex;
 
 import mod.agus.jcoderz.dex.util.Unsigned;
 
 public final class FieldId implements Comparable<FieldId> {
-    private final int declaringClassIndex;
     private final Dex dex;
-    private final int nameIndex;
+    private final int declaringClassIndex;
     private final int typeIndex;
+    private final int nameIndex;
 
-    public FieldId(Dex dex2, int i, int i2, int i3) {
-        this.dex = dex2;
-        this.declaringClassIndex = i;
-        this.typeIndex = i2;
-        this.nameIndex = i3;
+    public FieldId(Dex dex, int declaringClassIndex, int typeIndex, int nameIndex) {
+        this.dex = dex;
+        this.declaringClassIndex = declaringClassIndex;
+        this.typeIndex = typeIndex;
+        this.nameIndex = nameIndex;
     }
 
     public int getDeclaringClassIndex() {
-        return this.declaringClassIndex;
+        return declaringClassIndex;
     }
 
     public int getTypeIndex() {
-        return this.typeIndex;
+        return typeIndex;
     }
 
     public int getNameIndex() {
-        return this.nameIndex;
+        return nameIndex;
     }
 
-    public int compareTo(FieldId fieldId) {
-        if (this.declaringClassIndex != fieldId.declaringClassIndex) {
-            return Unsigned.compare(this.declaringClassIndex, fieldId.declaringClassIndex);
+    @Override
+    public int compareTo(FieldId other) {
+        if (declaringClassIndex != other.declaringClassIndex) {
+            return mod.agus.jcoderz.dex.util.Unsigned.compare(declaringClassIndex, other.declaringClassIndex);
         }
-        if (this.nameIndex != fieldId.nameIndex) {
-            return Unsigned.compare(this.nameIndex, fieldId.nameIndex);
+        if (nameIndex != other.nameIndex) {
+            return mod.agus.jcoderz.dex.util.Unsigned.compare(nameIndex, other.nameIndex);
         }
-        return Unsigned.compare(this.typeIndex, fieldId.typeIndex);
+        return Unsigned.compare(typeIndex, other.typeIndex); // should always be 0
     }
 
-    public void writeTo(Dex.Section section) {
-        section.writeUnsignedShort(this.declaringClassIndex);
-        section.writeUnsignedShort(this.typeIndex);
-        section.writeInt(this.nameIndex);
+    public void writeTo(Dex.Section out) {
+        out.writeUnsignedShort(declaringClassIndex);
+        out.writeUnsignedShort(typeIndex);
+        out.writeInt(nameIndex);
     }
 
+    @Override
     public String toString() {
-        if (this.dex == null) {
-            return this.declaringClassIndex + " " + this.typeIndex + " " + this.nameIndex;
+        if (dex == null) {
+            return declaringClassIndex + " " + typeIndex + " " + nameIndex;
         }
-        return this.dex.typeNames().get(this.typeIndex) + "." + this.dex.strings().get(this.nameIndex);
+        return dex.typeNames().get(typeIndex) + "." + dex.strings().get(nameIndex);
     }
 }

@@ -1,316 +1,669 @@
-package mod.agus.jcoderz.dx.dex.code;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import org.eclipse.jdt.internal.compiler.classfmt.ExternalAnnotationProvider;
+package mod.agus.jcoderz.dx.dex.code;
 
 import java.util.BitSet;
 
 import mod.agus.jcoderz.dx.rop.code.RegisterSpec;
 import mod.agus.jcoderz.dx.rop.code.RegisterSpecList;
-import mod.agus.jcoderz.dx.rop.cst.Constant;
 import mod.agus.jcoderz.dx.rop.cst.CstInteger;
 import mod.agus.jcoderz.dx.rop.cst.CstKnownNull;
 import mod.agus.jcoderz.dx.rop.cst.CstLiteral64;
 import mod.agus.jcoderz.dx.rop.cst.CstLiteralBits;
-import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.util.AnnotatedOutput;
 import mod.agus.jcoderz.dx.util.Hex;
 
+/**
+ * Base class for all instruction format handlers. Instruction format
+ * handlers know how to translate {@link mod.agus.jcoderz.dx.dex.code.DalvInsn} instances into
+ * streams of code units, as well as human-oriented listing strings
+ * representing such translations.
+ */
 public abstract class InsnFormat {
-    public static boolean ALLOW_EXTENDED_OPCODES = true;
+    /**
+     * flag to enable/disable the new extended opcode formats; meant as a
+     * temporary measure until VM support for the salient opcodes is
+     * added. TODO: Remove this declaration when the VM can deal.
+     */
+    public static final boolean ALLOW_EXTENDED_OPCODES = true;
 
-    protected static String regListString(RegisterSpecList registerSpecList) {
-        int size = registerSpecList.size();
-        StringBuffer stringBuffer = new StringBuffer((size * 5) + 2);
-        stringBuffer.append('{');
-        for (int i = 0; i < size; i++) {
-            if (i != 0) {
-                stringBuffer.append(", ");
-            }
-            stringBuffer.append(registerSpecList.get(i).regString());
-        }
-        stringBuffer.append('}');
-        return stringBuffer.toString();
-    }
+    /**
+     * Returns the string form, suitable for inclusion in a listing
+     * dump, of the given instruction. The instruction must be of this
+     * instance's format for proper operation.
+     *
+     * @param insn {@code non-null;} the instruction
+     * @param noteIndices whether to include an explicit notation of
+     * constant pool indices
+     * @return {@code non-null;} the string form
+     */
+    public final String listingString(mod.agus.jcoderz.dx.dex.code.DalvInsn insn, boolean noteIndices) {
+        String op = insn.getOpcode().getName();
+        String arg = insnArgString(insn);
+        String comment = insnCommentString(insn, noteIndices);
+        StringBuilder sb = new StringBuilder(100);
 
-    protected static String regRangeString(RegisterSpecList registerSpecList) {
-        int size = registerSpecList.size();
-        StringBuilder sb = new StringBuilder(30);
-        sb.append("{");
-        switch (size) {
-            case 0:
-                break;
-            case 1:
-                sb.append(registerSpecList.get(0).regString());
-                break;
-            default:
-                RegisterSpec registerSpec = registerSpecList.get(size - 1);
-                if (registerSpec.getCategory() == 2) {
-                    registerSpec = registerSpec.withOffset(1);
-                }
-                sb.append(registerSpecList.get(0).regString());
-                sb.append("..");
-                sb.append(registerSpec.regString());
-                break;
+        sb.append(op);
+
+        if (arg.length() != 0) {
+            sb.append(' ');
+            sb.append(arg);
         }
-        sb.append("}");
+
+        if (comment.length() != 0) {
+            sb.append(" // ");
+            sb.append(comment);
+        }
+
         return sb.toString();
     }
 
-    protected static String literalBitsString(CstLiteralBits cstLiteralBits) {
-        StringBuffer stringBuffer = new StringBuffer(100);
-        stringBuffer.append('#');
-        if (cstLiteralBits instanceof CstKnownNull) {
-            stringBuffer.append("null");
-        } else {
-            stringBuffer.append(cstLiteralBits.typeName());
-            stringBuffer.append(' ');
-            stringBuffer.append(cstLiteralBits.toHuman());
-        }
-        return stringBuffer.toString();
-    }
+    /**
+     * Returns the string form of the arguments to the given instruction.
+     * The instruction must be of this instance's format. If the instruction
+     * has no arguments, then the result should be {@code ""}, not
+     * {@code null}.
+     *
+     * <p>Subclasses must override this method.</p>
+     *
+     * @param insn {@code non-null;} the instruction
+     * @return {@code non-null;} the string form
+     */
+    public abstract String insnArgString(mod.agus.jcoderz.dx.dex.code.DalvInsn insn);
 
-    protected static String literalBitsComment(CstLiteralBits cstLiteralBits, int i) {
-        long intBits;
-        StringBuffer stringBuffer = new StringBuffer(20);
-        stringBuffer.append("#");
-        if (cstLiteralBits instanceof CstLiteral64) {
-            intBits = ((CstLiteral64) cstLiteralBits).getLongBits();
-        } else {
-            intBits = (long) cstLiteralBits.getIntBits();
-        }
-        switch (i) {
-            case 4:
-                stringBuffer.append(Hex.uNibble((int) intBits));
-                break;
-            case 8:
-                stringBuffer.append(Hex.u1((int) intBits));
-                break;
-            case 16:
-                stringBuffer.append(Hex.u2((int) intBits));
-                break;
-            case 32:
-                stringBuffer.append(Hex.u4((int) intBits));
-                break;
-            case 64:
-                stringBuffer.append(Hex.u8(intBits));
-                break;
-            default:
-                throw new RuntimeException("shouldn't happen");
-        }
-        return stringBuffer.toString();
-    }
+    /**
+     * Returns the associated comment for the given instruction, if any.
+     * The instruction must be of this instance's format. If the instruction
+     * has no comment, then the result should be {@code ""}, not
+     * {@code null}.
+     *
+     * <p>Subclasses must override this method.</p>
+     *
+     * @param insn {@code non-null;} the instruction
+     * @param noteIndices whether to include an explicit notation of
+     * constant pool indices
+     * @return {@code non-null;} the string form
+     */
+    public abstract String insnCommentString(mod.agus.jcoderz.dx.dex.code.DalvInsn insn,
+                                             boolean noteIndices);
 
-    protected static String branchString(DalvInsn dalvInsn) {
-        int targetAddress = ((TargetInsn) dalvInsn).getTargetAddress();
-        return targetAddress == ((char) targetAddress) ? Hex.u2(targetAddress) : Hex.u4(targetAddress);
-    }
-
-    protected static String branchComment(DalvInsn dalvInsn) {
-        int targetOffset = ((TargetInsn) dalvInsn).getTargetOffset();
-        return targetOffset == ((short) targetOffset) ? Hex.s2(targetOffset) : Hex.s4(targetOffset);
-    }
-
-    protected static String cstString(DalvInsn dalvInsn) {
-        Constant constant = ((CstInsn) dalvInsn).getConstant();
-        return constant instanceof CstString ? ((CstString) constant).toQuoted() : constant.toHuman();
-    }
-
-    protected static String cstComment(DalvInsn dalvInsn) {
-        CstInsn cstInsn = (CstInsn) dalvInsn;
-        if (!cstInsn.hasIndex()) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder(20);
-        int index = cstInsn.getIndex();
-        sb.append(cstInsn.getConstant().typeName());
-        sb.append(ExternalAnnotationProvider.NO_ANNOTATION);
-        if (index < 65536) {
-            sb.append(Hex.u2(index));
-        } else {
-            sb.append(Hex.u4(index));
-        }
-        return sb.toString();
-    }
-
-    protected static boolean signedFitsInNibble(int i) {
-        return i >= -8 && i <= 7;
-    }
-
-    protected static boolean unsignedFitsInNibble(int i) {
-        return i == (i & 15);
-    }
-
-    protected static boolean signedFitsInByte(int i) {
-        return ((byte) i) == i;
-    }
-
-    protected static boolean unsignedFitsInByte(int i) {
-        return i == (i & 255);
-    }
-
-    protected static boolean signedFitsInShort(int i) {
-        return ((short) i) == i;
-    }
-
-    protected static boolean unsignedFitsInShort(int i) {
-        return i == (65535 & i);
-    }
-
-    protected static boolean isRegListSequential(RegisterSpecList registerSpecList) {
-        int size = registerSpecList.size();
-        if (size < 2) {
-            return true;
-        }
-        int reg = registerSpecList.get(0).getReg();
-        for (int i = 0; i < size; i++) {
-            RegisterSpec registerSpec = registerSpecList.get(i);
-            if (registerSpec.getReg() != reg) {
-                return false;
-            }
-            reg += registerSpec.getCategory();
-        }
-        return true;
-    }
-
-    protected static int argIndex(DalvInsn dalvInsn) {
-        int value = ((CstInteger) ((CstInsn) dalvInsn).getConstant()).getValue();
-        if (value >= 0) {
-            return value;
-        }
-        throw new IllegalArgumentException("bogus insn");
-    }
-
-    protected static short opcodeUnit(DalvInsn dalvInsn, int i) {
-        if ((i & 255) != i) {
-            throw new IllegalArgumentException("arg out of range 0..255");
-        }
-        int opcode = dalvInsn.getOpcode().getOpcode();
-        if ((opcode & 255) == opcode) {
-            return (short) (opcode | (i << 8));
-        }
-        throw new IllegalArgumentException("opcode out of range 0..255");
-    }
-
-    protected static short opcodeUnit(DalvInsn dalvInsn) {
-        int opcode = dalvInsn.getOpcode().getOpcode();
-        if (opcode >= 256 && opcode <= 65535) {
-            return (short) opcode;
-        }
-        throw new IllegalArgumentException("opcode out of range 0..65535");
-    }
-
-    protected static short codeUnit(int i, int i2) {
-        if ((i & 255) != i) {
-            throw new IllegalArgumentException("low out of range 0..255");
-        } else if ((i2 & 255) == i2) {
-            return (short) ((i2 << 8) | i);
-        } else {
-            throw new IllegalArgumentException("high out of range 0..255");
-        }
-    }
-
-    protected static short codeUnit(int i, int i2, int i3, int i4) {
-        if ((i & 15) != i) {
-            throw new IllegalArgumentException("n0 out of range 0..15");
-        } else if ((i2 & 15) != i2) {
-            throw new IllegalArgumentException("n1 out of range 0..15");
-        } else if ((i3 & 15) != i3) {
-            throw new IllegalArgumentException("n2 out of range 0..15");
-        } else if ((i4 & 15) == i4) {
-            return (short) ((i2 << 4) | i | (i3 << 8) | (i4 << 12));
-        } else {
-            throw new IllegalArgumentException("n3 out of range 0..15");
-        }
-    }
-
-    protected static int makeByte(int i, int i2) {
-        if ((i & 15) != i) {
-            throw new IllegalArgumentException("low out of range 0..15");
-        } else if ((i2 & 15) == i2) {
-            return (i2 << 4) | i;
-        } else {
-            throw new IllegalArgumentException("high out of range 0..15");
-        }
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s) {
-        annotatedOutput.writeShort(s);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, short s2) {
-        annotatedOutput.writeShort(s);
-        annotatedOutput.writeShort(s2);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, short s2, short s3) {
-        annotatedOutput.writeShort(s);
-        annotatedOutput.writeShort(s2);
-        annotatedOutput.writeShort(s3);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, short s2, short s3, short s4) {
-        annotatedOutput.writeShort(s);
-        annotatedOutput.writeShort(s2);
-        annotatedOutput.writeShort(s3);
-        annotatedOutput.writeShort(s4);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, short s2, short s3, short s4, short s5) {
-        annotatedOutput.writeShort(s);
-        annotatedOutput.writeShort(s2);
-        annotatedOutput.writeShort(s3);
-        annotatedOutput.writeShort(s4);
-        annotatedOutput.writeShort(s5);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, int i) {
-        write(annotatedOutput, s, (short) i, (short) (i >> 16));
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, int i, short s2) {
-        write(annotatedOutput, s, (short) i, (short) (i >> 16), s2);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, int i, short s2, short s3) {
-        write(annotatedOutput, s, (short) i, (short) (i >> 16), s2, s3);
-    }
-
-    protected static void write(AnnotatedOutput annotatedOutput, short s, long j) {
-        write(annotatedOutput, s, (short) ((int) j), (short) ((int) (j >> 16)), (short) ((int) (j >> 32)), (short) ((int) (j >> 48)));
-    }
-
+    /**
+     * Gets the code size of instructions that use this format. The
+     * size is a number of 16-bit code units, not bytes. This should
+     * throw an exception if this format is of variable size.
+     *
+     * @return {@code >= 0;} the instruction length in 16-bit code units
+     */
     public abstract int codeSize();
 
-    public abstract String insnArgString(DalvInsn dalvInsn);
+    /**
+     * Returns whether or not the given instruction's arguments will
+     * fit in this instance's format. This includes such things as
+     * counting register arguments, checking register ranges, and
+     * making sure that additional arguments are of appropriate types
+     * and are in-range. If this format has a branch target but the
+     * instruction's branch offset is unknown, this method will simply
+     * not check the offset.
+     *
+     * <p>Subclasses must override this method.</p>
+     *
+     * @param insn {@code non-null;} the instruction to check
+     * @return {@code true} iff the instruction's arguments are
+     * appropriate for this instance, or {@code false} if not
+     */
+    public abstract boolean isCompatible(mod.agus.jcoderz.dx.dex.code.DalvInsn insn);
 
-    public abstract String insnCommentString(DalvInsn dalvInsn, boolean z);
-
-    public abstract boolean isCompatible(DalvInsn dalvInsn);
-
-    public abstract void writeTo(AnnotatedOutput annotatedOutput, DalvInsn dalvInsn);
-
-    public final String listingString(DalvInsn dalvInsn, boolean z) {
-        String name = dalvInsn.getOpcode().getName();
-        String insnArgString = insnArgString(dalvInsn);
-        String insnCommentString = insnCommentString(dalvInsn, z);
-        StringBuilder sb = new StringBuilder(100);
-        sb.append(name);
-        if (insnArgString.length() != 0) {
-            sb.append(' ');
-            sb.append(insnArgString);
-        }
-        if (insnCommentString.length() != 0) {
-            sb.append(" // ");
-            sb.append(insnCommentString);
-        }
-        return sb.toString();
-    }
-
-    public BitSet compatibleRegs(DalvInsn dalvInsn) {
+    /**
+     * Returns which of a given instruction's registers will fit in
+     * this instance's format.
+     *
+     * <p>The default implementation of this method always returns
+     * an empty BitSet. Subclasses must override this method if they
+     * have registers.</p>
+     *
+     * @param insn {@code non-null;} the instruction to check
+     * @return {@code non-null;} a BitSet flagging registers in the
+     * register list that are compatible to this format
+     */
+    public BitSet compatibleRegs(mod.agus.jcoderz.dx.dex.code.DalvInsn insn) {
         return new BitSet();
     }
 
-    public boolean branchFits(TargetInsn targetInsn) {
+    /**
+     * Returns whether or not the given instruction's branch offset will
+     * fit in this instance's format. This always returns {@code false}
+     * for formats that don't include a branch offset.
+     *
+     * <p>The default implementation of this method always returns
+     * {@code false}. Subclasses must override this method if they
+     * include branch offsets.</p>
+     *
+     * @param insn {@code non-null;} the instruction to check
+     * @return {@code true} iff the instruction's branch offset is
+     * appropriate for this instance, or {@code false} if not
+     */
+    public boolean branchFits(mod.agus.jcoderz.dx.dex.code.TargetInsn insn) {
         return false;
+    }
+
+    /**
+     * Writes the code units for the given instruction to the given
+     * output destination. The instruction must be of this instance's format.
+     *
+     * <p>Subclasses must override this method.</p>
+     *
+     * @param out {@code non-null;} the output destination to write to
+     * @param insn {@code non-null;} the instruction to write
+     */
+    public abstract void writeTo(mod.agus.jcoderz.dx.util.AnnotatedOutput out, mod.agus.jcoderz.dx.dex.code.DalvInsn insn);
+
+    /**
+     * Helper method to return a register list string.
+     *
+     * @param list {@code non-null;} the list of registers
+     * @return {@code non-null;} the string form
+     */
+    protected static String regListString(mod.agus.jcoderz.dx.rop.code.RegisterSpecList list) {
+        int sz = list.size();
+        StringBuilder sb = new StringBuilder(sz * 5 + 2);
+
+        sb.append('{');
+
+        for (int i = 0; i < sz; i++) {
+            if (i != 0) {
+                sb.append(", ");
+            }
+            sb.append(list.get(i).regString());
+        }
+
+        sb.append('}');
+
+        return sb.toString();
+    }
+
+    /**
+     * Helper method to return a register range string.
+     *
+     * @param list {@code non-null;} the list of registers (which must be
+     * sequential)
+     * @return {@code non-null;} the string form
+     */
+    protected static String regRangeString(mod.agus.jcoderz.dx.rop.code.RegisterSpecList list) {
+        int size = list.size();
+        StringBuilder sb = new StringBuilder(30);
+
+        sb.append("{");
+
+        switch (size) {
+            case 0: {
+                // Nothing to do.
+                break;
+            }
+            case 1: {
+                sb.append(list.get(0).regString());
+                break;
+            }
+            default: {
+                mod.agus.jcoderz.dx.rop.code.RegisterSpec lastReg = list.get(size - 1);
+                if (lastReg.getCategory() == 2) {
+                    /*
+                     * Add one to properly represent a list-final
+                     * category-2 register.
+                     */
+                    lastReg = lastReg.withOffset(1);
+                }
+
+                sb.append(list.get(0).regString());
+                sb.append("..");
+                sb.append(lastReg.regString());
+            }
+        }
+
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
+     * Helper method to return a literal bits argument string.
+     *
+     * @param value the value
+     * @return {@code non-null;} the string form
+     */
+    protected static String literalBitsString(mod.agus.jcoderz.dx.rop.cst.CstLiteralBits value) {
+        StringBuilder sb = new StringBuilder(100);
+
+        sb.append('#');
+
+        if (value instanceof CstKnownNull) {
+            sb.append("null");
+        } else {
+            sb.append(value.typeName());
+            sb.append(' ');
+            sb.append(value.toHuman());
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Helper method to return a literal bits comment string.
+     *
+     * @param value the value
+     * @param width the width of the constant, in bits (used for displaying
+     * the uninterpreted bits; one of: {@code 4 8 16 32 64}
+     * @return {@code non-null;} the comment
+     */
+    protected static String literalBitsComment(CstLiteralBits value,
+                                               int width) {
+        StringBuilder sb = new StringBuilder(20);
+
+        sb.append("#");
+
+        long bits;
+
+        if (value instanceof mod.agus.jcoderz.dx.rop.cst.CstLiteral64) {
+            bits = ((CstLiteral64) value).getLongBits();
+        } else {
+            bits = value.getIntBits();
+        }
+
+        switch (width) {
+            case 4:  sb.append(mod.agus.jcoderz.dx.util.Hex.uNibble((int) bits)); break;
+            case 8:  sb.append(mod.agus.jcoderz.dx.util.Hex.u1((int) bits));      break;
+            case 16: sb.append(mod.agus.jcoderz.dx.util.Hex.u2((int) bits));      break;
+            case 32: sb.append(mod.agus.jcoderz.dx.util.Hex.u4((int) bits));      break;
+            case 64: sb.append(mod.agus.jcoderz.dx.util.Hex.u8(bits));            break;
+            default: {
+                throw new RuntimeException("shouldn't happen");
+            }
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Helper method to return a branch address string.
+     *
+     * @param insn {@code non-null;} the instruction in question
+     * @return {@code non-null;} the string form of the instruction's
+     * branch target
+     */
+    protected static String branchString(mod.agus.jcoderz.dx.dex.code.DalvInsn insn) {
+        mod.agus.jcoderz.dx.dex.code.TargetInsn ti = (mod.agus.jcoderz.dx.dex.code.TargetInsn) insn;
+        int address = ti.getTargetAddress();
+
+        return (address == (char) address) ? mod.agus.jcoderz.dx.util.Hex.u2(address) : mod.agus.jcoderz.dx.util.Hex.u4(address);
+    }
+
+    /**
+     * Helper method to return the comment for a branch.
+     *
+     * @param insn {@code non-null;} the instruction in question
+     * @return {@code non-null;} the comment
+     */
+    protected static String branchComment(mod.agus.jcoderz.dx.dex.code.DalvInsn insn) {
+        mod.agus.jcoderz.dx.dex.code.TargetInsn ti = (TargetInsn) insn;
+        int offset = ti.getTargetOffset();
+
+        return (offset == (short) offset) ? mod.agus.jcoderz.dx.util.Hex.s2(offset) : Hex.s4(offset);
+    }
+
+    /**
+     * Helper method to determine if a signed int value fits in a nibble.
+     *
+     * @param value the value in question
+     * @return {@code true} iff it's in the range -8..+7
+     */
+    protected static boolean signedFitsInNibble(int value) {
+        return (value >= -8) && (value <= 7);
+    }
+
+    /**
+     * Helper method to determine if an unsigned int value fits in a nibble.
+     *
+     * @param value the value in question
+     * @return {@code true} iff it's in the range 0..0xf
+     */
+    protected static boolean unsignedFitsInNibble(int value) {
+        return value == (value & 0xf);
+    }
+
+    /**
+     * Helper method to determine if a signed int value fits in a byte.
+     *
+     * @param value the value in question
+     * @return {@code true} iff it's in the range -0x80..+0x7f
+     */
+    protected static boolean signedFitsInByte(int value) {
+        return (byte) value == value;
+    }
+
+    /**
+     * Helper method to determine if an unsigned int value fits in a byte.
+     *
+     * @param value the value in question
+     * @return {@code true} iff it's in the range 0..0xff
+     */
+    protected static boolean unsignedFitsInByte(int value) {
+        return value == (value & 0xff);
+    }
+
+    /**
+     * Helper method to determine if a signed int value fits in a short.
+     *
+     * @param value the value in question
+     * @return {@code true} iff it's in the range -0x8000..+0x7fff
+     */
+    protected static boolean signedFitsInShort(int value) {
+        return (short) value == value;
+    }
+
+    /**
+     * Helper method to determine if an unsigned int value fits in a short.
+     *
+     * @param value the value in question
+     * @return {@code true} iff it's in the range 0..0xffff
+     */
+    protected static boolean unsignedFitsInShort(int value) {
+        return value == (value & 0xffff);
+    }
+
+    /**
+     * Helper method to determine if a list of registers are sequential,
+     * including degenerate cases for empty or single-element lists.
+     *
+     * @param list {@code non-null;} the list of registers
+     * @return {@code true} iff the list is sequentially ordered
+     */
+    protected static boolean isRegListSequential(RegisterSpecList list) {
+        int sz = list.size();
+
+        if (sz < 2) {
+            return true;
+        }
+
+        int first = list.get(0).getReg();
+        int next = first;
+
+        for (int i = 0; i < sz; i++) {
+            RegisterSpec one = list.get(i);
+            if (one.getReg() != next) {
+                return false;
+            }
+            next += one.getCategory();
+        }
+
+        return true;
+    }
+
+    /**
+     * Helper method to extract the callout-argument index from an
+     * appropriate instruction.
+     *
+     * @param insn {@code non-null;} the instruction
+     * @return {@code >= 0;} the callout argument index
+     */
+    protected static int argIndex(mod.agus.jcoderz.dx.dex.code.DalvInsn insn) {
+        int arg = ((CstInteger) ((CstInsn) insn).getConstant()).getValue();
+
+        if (arg < 0) {
+            throw new IllegalArgumentException("bogus insn");
+        }
+
+        return arg;
+    }
+
+    /**
+     * Helper method to combine an opcode and a second byte of data into
+     * the appropriate form for emitting into a code buffer.
+     *
+     * @param insn {@code non-null;} the instruction containing the opcode
+     * @param arg {@code 0..255;} arbitrary other byte value
+     * @return combined value
+     */
+    protected static short opcodeUnit(mod.agus.jcoderz.dx.dex.code.DalvInsn insn, int arg) {
+        if ((arg & 0xff) != arg) {
+            throw new IllegalArgumentException("arg out of range 0..255");
+        }
+
+        int opcode = insn.getOpcode().getOpcode();
+
+        if ((opcode & 0xff) != opcode) {
+            throw new IllegalArgumentException("opcode out of range 0..255");
+        }
+
+        return (short) (opcode | (arg << 8));
+    }
+
+    /**
+     * Helper method to get an extended (16-bit) opcode out of an
+     * instruction, returning it as a code unit. The opcode
+     * <i>must</i> be an extended opcode.
+     *
+     * @param insn {@code non-null;} the instruction containing the
+     * extended opcode
+     * @return the opcode as a code unit
+     */
+    protected static short opcodeUnit(DalvInsn insn) {
+        int opcode = insn.getOpcode().getOpcode();
+
+        if ((opcode < 0x100) || (opcode > 0xffff)) {
+            throw new IllegalArgumentException("opcode out of range 0..65535");
+        }
+
+        return (short) opcode;
+    }
+
+    /**
+     * Helper method to combine two bytes into a code unit.
+     *
+     * @param low {@code 0..255;} low byte
+     * @param high {@code 0..255;} high byte
+     * @return combined value
+     */
+    protected static short codeUnit(int low, int high) {
+        if ((low & 0xff) != low) {
+            throw new IllegalArgumentException("low out of range 0..255");
+        }
+
+        if ((high & 0xff) != high) {
+            throw new IllegalArgumentException("high out of range 0..255");
+        }
+
+        return (short) (low | (high << 8));
+    }
+
+    /**
+     * Helper method to combine four nibbles into a code unit.
+     *
+     * @param n0 {@code 0..15;} low nibble
+     * @param n1 {@code 0..15;} medium-low nibble
+     * @param n2 {@code 0..15;} medium-high nibble
+     * @param n3 {@code 0..15;} high nibble
+     * @return combined value
+     */
+    protected static short codeUnit(int n0, int n1, int n2, int n3) {
+        if ((n0 & 0xf) != n0) {
+            throw new IllegalArgumentException("n0 out of range 0..15");
+        }
+
+        if ((n1 & 0xf) != n1) {
+            throw new IllegalArgumentException("n1 out of range 0..15");
+        }
+
+        if ((n2 & 0xf) != n2) {
+            throw new IllegalArgumentException("n2 out of range 0..15");
+        }
+
+        if ((n3 & 0xf) != n3) {
+            throw new IllegalArgumentException("n3 out of range 0..15");
+        }
+
+        return (short) (n0 | (n1 << 4) | (n2 << 8) | (n3 << 12));
+    }
+
+    /**
+     * Helper method to combine two nibbles into a byte.
+     *
+     * @param low {@code 0..15;} low nibble
+     * @param high {@code 0..15;} high nibble
+     * @return {@code 0..255;} combined value
+     */
+    protected static int makeByte(int low, int high) {
+        if ((low & 0xf) != low) {
+            throw new IllegalArgumentException("low out of range 0..15");
+        }
+
+        if ((high & 0xf) != high) {
+            throw new IllegalArgumentException("high out of range 0..15");
+        }
+
+        return low | (high << 4);
+    }
+
+    /**
+     * Writes one code unit to the given output destination.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0) {
+        out.writeShort(c0);
+    }
+
+    /**
+     * Writes two code units to the given output destination.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, short c1) {
+        out.writeShort(c0);
+        out.writeShort(c1);
+    }
+
+    /**
+     * Writes three code units to the given output destination.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1 code unit to write
+     * @param c2 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, short c1,
+                                short c2) {
+        out.writeShort(c0);
+        out.writeShort(c1);
+        out.writeShort(c2);
+    }
+
+    /**
+     * Writes four code units to the given output destination.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1 code unit to write
+     * @param c2 code unit to write
+     * @param c3 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, short c1,
+                                short c2, short c3) {
+        out.writeShort(c0);
+        out.writeShort(c1);
+        out.writeShort(c2);
+        out.writeShort(c3);
+    }
+
+    /**
+     * Writes five code units to the given output destination.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1 code unit to write
+     * @param c2 code unit to write
+     * @param c3 code unit to write
+     * @param c4 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, short c1,
+                                short c2, short c3, short c4) {
+        out.writeShort(c0);
+        out.writeShort(c1);
+        out.writeShort(c2);
+        out.writeShort(c3);
+        out.writeShort(c4);
+    }
+
+    /**
+     * Writes three code units to the given output destination, where the
+     * second and third are represented as single <code>int</code> and emitted
+     * in little-endian order.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1c2 code unit pair to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, int c1c2) {
+        write(out, c0, (short) c1c2, (short) (c1c2 >> 16));
+    }
+
+    /**
+     * Writes four code units to the given output destination, where the
+     * second and third are represented as single <code>int</code> and emitted
+     * in little-endian order.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1c2 code unit pair to write
+     * @param c3 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, int c1c2,
+                                short c3) {
+        write(out, c0, (short) c1c2, (short) (c1c2 >> 16), c3);
+    }
+
+    /**
+     * Writes five code units to the given output destination, where the
+     * second and third are represented as single <code>int</code> and emitted
+     * in little-endian order.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1c2 code unit pair to write
+     * @param c3 code unit to write
+     * @param c4 code unit to write
+     */
+    protected static void write(mod.agus.jcoderz.dx.util.AnnotatedOutput out, short c0, int c1c2,
+                                short c3, short c4) {
+        write(out, c0, (short) c1c2, (short) (c1c2 >> 16), c3, c4);
+    }
+
+    /**
+     * Writes five code units to the given output destination, where the
+     * second through fifth are represented as single <code>long</code>
+     * and emitted in little-endian order.
+     *
+     * @param out {@code non-null;} where to write to
+     * @param c0 code unit to write
+     * @param c1c2c3c4 code unit quad to write
+     */
+    protected static void write(AnnotatedOutput out, short c0, long c1c2c3c4) {
+        write(out, c0, (short) c1c2c3c4, (short) (c1c2c3c4 >> 16),
+                (short) (c1c2c3c4 >> 32), (short) (c1c2c3c4 >> 48));
     }
 }

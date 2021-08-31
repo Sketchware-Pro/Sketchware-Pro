@@ -1,34 +1,69 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dx.rop.cst.CstBaseMethodRef;
 
+/**
+ * Representation of a method reference inside a Dalvik file.
+ */
 public final class MethodIdItem extends MemberIdItem {
-    public MethodIdItem(CstBaseMethodRef cstBaseMethodRef) {
-        super(cstBaseMethodRef);
+    /**
+     * Constructs an instance.
+     *
+     * @param method {@code non-null;} the constant for the method
+     */
+    public MethodIdItem(CstBaseMethodRef method) {
+        super(method);
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.Item
+    /** {@inheritDoc} */
+    @Override
     public ItemType itemType() {
         return ItemType.TYPE_METHOD_ID_ITEM;
     }
 
+    /** {@inheritDoc} */
     @Override
-    // mod.agus.jcoderz.dx.dex.file.MemberIdItem, mod.agus.jcoderz.dx.dex.file.IdItem, mod.agus.jcoderz.dx.dex.file.Item
-    public void addContents(DexFile dexFile) {
-        super.addContents(dexFile);
-        dexFile.getProtoIds().intern(getMethodRef().getPrototype());
+    public void addContents(mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        super.addContents(file);
+
+        mod.agus.jcoderz.dx.dex.file.ProtoIdsSection protoIds = file.getProtoIds();
+        protoIds.intern(getMethodRef().getPrototype());
     }
 
+    /**
+     * Gets the method constant.
+     *
+     * @return {@code non-null;} the constant
+     */
     public CstBaseMethodRef getMethodRef() {
         return (CstBaseMethodRef) getRef();
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.MemberIdItem
-    protected int getTypoidIdx(DexFile dexFile) {
-        return dexFile.getProtoIds().indexOf(getMethodRef().getPrototype());
+    /** {@inheritDoc} */
+    @Override
+    protected int getTypoidIdx(DexFile file) {
+        ProtoIdsSection protoIds = file.getProtoIds();
+        return protoIds.indexOf(getMethodRef().getPrototype());
     }
 
-    @Override // mod.agus.jcoderz.dx.dex.file.MemberIdItem
+    /** {@inheritDoc} */
+    @Override
     protected String getTypoidName() {
         return "proto_idx";
     }

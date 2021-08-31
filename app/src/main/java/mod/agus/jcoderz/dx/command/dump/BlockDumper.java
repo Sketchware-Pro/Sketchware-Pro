@@ -1,8 +1,20 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.command.dump;
-
-import org.eclipse.jdt.internal.compiler.codegen.ConstantPool;
-
-import java.io.PrintStream;
 
 import mod.agus.jcoderz.dx.cf.code.BasicBlocker;
 import mod.agus.jcoderz.dx.cf.code.ByteBlock;
@@ -16,206 +28,318 @@ import mod.agus.jcoderz.dx.cf.direct.DirectClassFile;
 import mod.agus.jcoderz.dx.cf.direct.StdAttributeFactory;
 import mod.agus.jcoderz.dx.cf.iface.Member;
 import mod.agus.jcoderz.dx.cf.iface.Method;
-import mod.agus.jcoderz.dx.rop.code.AccessFlags;
-import mod.agus.jcoderz.dx.rop.code.BasicBlock;
-import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
-import mod.agus.jcoderz.dx.rop.code.DexTranslationAdvice;
-import mod.agus.jcoderz.dx.rop.code.InsnList;
-import mod.agus.jcoderz.dx.rop.code.RopMethod;
-import mod.agus.jcoderz.dx.rop.cst.CstType;
 import mod.agus.jcoderz.dx.ssa.Optimizer;
 import mod.agus.jcoderz.dx.util.ByteArray;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.IntList;
+import java.io.PrintStream;
 
-public class BlockDumper extends BaseDumper {
-    protected DirectClassFile classFile = null;
-    protected boolean suppressDump = true;
-    private boolean first = true;
-    private final boolean optimize;
+import mod.agus.jcoderz.dx.rop.code.AccessFlags;
+import mod.agus.jcoderz.dx.rop.code.BasicBlock;
+import mod.agus.jcoderz.dx.rop.code.BasicBlockList;
+import mod.agus.jcoderz.dx.rop.code.DexTranslationAdvice;
+import mod.agus.jcoderz.dx.rop.code.Insn;
+import mod.agus.jcoderz.dx.rop.code.InsnList;
+import mod.agus.jcoderz.dx.rop.code.RopMethod;
+import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
+import mod.agus.jcoderz.dx.rop.cst.CstType;
+
+/**
+ * Utility to dump basic block info from methods in a human-friendly form.
+ */
+public class BlockDumper
+        extends BaseDumper {
+    /** whether or not to registerize (make rop blocks) */
     private final boolean rop;
 
-    BlockDumper(byte[] bArr, PrintStream printStream, String str, boolean z, Args args) {
-        super(bArr, printStream, str, args);
-        this.rop = z;
+    /**
+     * {@code null-ok;} the class file object being constructed;
+     * becomes non-null during {@link #dump}
+     */
+    protected DirectClassFile classFile;
+
+    /** whether or not to suppress dumping */
+    protected boolean suppressDump;
+
+    /** whether this is the first method being dumped */
+    private boolean first;
+
+    /** whether or not to run the ssa optimziations */
+    private final boolean optimize;
+
+    /**
+     * Dumps the given array, interpreting it as a class file and dumping
+     * methods with indications of block-level stuff.
+     *
+     * @param bytes {@code non-null;} bytes of the (alleged) class file
+     * @param out {@code non-null;} where to dump to
+     * @param filePath the file path for the class, excluding any base
+     * directory specification
+     * @param rop whether or not to registerize (make rop blocks)
+     * @param args commandline parsedArgs
+     */
+    public static void dump(byte[] bytes, PrintStream out,
+            String filePath, boolean rop, Args args) {
+        BlockDumper bd = new BlockDumper(bytes, out, filePath,
+                rop, args);
+        bd.dump();
+    }
+
+    /**
+     * Constructs an instance. This class is not publicly instantiable.
+     * Use {@link #dump}.
+     */
+    BlockDumper(byte[] bytes, PrintStream out, String filePath,
+            boolean rop, Args args) {
+        super(bytes, out, filePath, args);
+
+        this.rop = rop;
+        this.classFile = null;
+        this.suppressDump = true;
+        this.first = true;
         this.optimize = args.optimize;
     }
 
-    public static void dump(byte[] bArr, PrintStream printStream, String str, boolean z, Args args) {
-        new BlockDumper(bArr, printStream, str, z, args).dump();
-    }
-
+    /**
+     * Does the dumping.
+     */
     public void dump() {
-        ByteArray byteArray = new ByteArray(getBytes());
-        this.classFile = new DirectClassFile(byteArray, getFilePath(), getStrictParse());
-        this.classFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
-        this.classFile.getMagic();
-        DirectClassFile directClassFile = new DirectClassFile(byteArray, getFilePath(), getStrictParse());
-        directClassFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
-        directClassFile.setObserver(this);
-        directClassFile.getMagic();
+        byte[] bytes = getBytes();
+        ByteArray ba = new ByteArray(bytes);
+
+        /*
+         * First, parse the file completely, so we can safely refer to
+         * attributes, etc.
+         */
+        classFile = new DirectClassFile(ba, getFilePath(), getStrictParse());
+        classFile.setAttributeFactory(StdAttributeFactory.THE_ONE);
+        classFile.getMagic(); // Force parsing to happen.
+
+        // Next, reparse it and observe the process.
+        DirectClassFile liveCf =
+            new DirectClassFile(ba, getFilePath(), getStrictParse());
+        liveCf.setAttributeFactory(StdAttributeFactory.THE_ONE);
+        liveCf.setObserver(this);
+        liveCf.getMagic(); // Force parsing to happen.
     }
 
+    /** {@inheritDoc} */
     @Override
-    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void changeIndent(int i) {
-        if (!this.suppressDump) {
-            super.changeIndent(i);
+    public void changeIndent(int indentDelta) {
+        if (!suppressDump) {
+            super.changeIndent(indentDelta);
         }
     }
 
+    /** {@inheritDoc} */
     @Override
-    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void parsed(ByteArray byteArray, int i, int i2, String str) {
-        if (!this.suppressDump) {
-            super.parsed(byteArray, i, i2, str);
+    public void parsed(ByteArray bytes, int offset, int len, String human) {
+        if (!suppressDump) {
+            super.parsed(bytes, offset, len, human);
         }
     }
 
-    /* access modifiers changed from: protected */
-    public boolean shouldDumpMethod(String str) {
-        return this.args.method == null || this.args.method.equals(str);
+    /**
+     * @param name method name
+     * @return true if this method should be dumped
+     */
+    protected boolean shouldDumpMethod(String name) {
+        return args.method == null || args.method.equals(name);
     }
 
+    /** {@inheritDoc} */
     @Override
-    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void startParsingMember(ByteArray byteArray, int i, String str, String str2) {
-        if (str2.indexOf(40) >= 0 && shouldDumpMethod(str)) {
-            setAt(byteArray, i);
-            this.suppressDump = false;
-            if (this.first) {
-                this.first = false;
-            } else {
-                parsed(byteArray, i, 0, "\n");
-            }
-            parsed(byteArray, i, 0, "method " + str + " " + str2);
-            this.suppressDump = true;
+    public void startParsingMember(ByteArray bytes, int offset, String name,
+            String descriptor) {
+        if (descriptor.indexOf('(') < 0) {
+            // It's a field, not a method
+            return;
+        }
+
+        if (!shouldDumpMethod(name)) {
+            return;
+        }
+
+        suppressDump = false;
+
+        if (first) {
+            first = false;
+        } else {
+            parsed(bytes, offset, 0, "\n");
+        }
+
+        parsed(bytes, offset, 0, "method " + name + " " + descriptor);
+        suppressDump = true;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void endParsingMember(ByteArray bytes, int offset, String name,
+            String descriptor, Member member) {
+        if (!(member instanceof Method)) {
+            return;
+        }
+
+        if (!shouldDumpMethod(name)) {
+            return;
+        }
+
+        if ((member.getAccessFlags() & (mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_ABSTRACT |
+                mod.agus.jcoderz.dx.rop.code.AccessFlags.ACC_NATIVE)) != 0) {
+            return;
+        }
+
+        ConcreteMethod meth =
+            new ConcreteMethod((Method) member, classFile, true, true);
+
+        if (rop) {
+            ropDump(meth);
+        } else {
+            regularDump(meth);
         }
     }
 
-    @Override
-    // mod.agus.jcoderz.dx.command.dump.BaseDumper, mod.agus.jcoderz.dx.cf.iface.ParseObserver
-    public void endParsingMember(ByteArray byteArray, int i, String str, String str2, Member member) {
-        if ((member instanceof Method) && shouldDumpMethod(str) && (member.getAccessFlags() & 1280) == 0) {
-            ConcreteMethod concreteMethod = new ConcreteMethod((Method) member, this.classFile, true, true);
-            if (this.rop) {
-                ropDump(concreteMethod);
-            } else {
-                regularDump(concreteMethod);
-            }
-        }
-    }
-
-    private void regularDump(ConcreteMethod concreteMethod) {
-        String human;
-        BytecodeArray code = concreteMethod.getCode();
+    /**
+     * Does a regular basic block dump.
+     *
+     * @param meth {@code non-null;} method data to dump
+     */
+    private void regularDump(ConcreteMethod meth) {
+        BytecodeArray code = meth.getCode();
         ByteArray bytes = code.getBytes();
-        ByteBlockList identifyBlocks = BasicBlocker.identifyBlocks(concreteMethod);
-        int size = identifyBlocks.size();
-        CodeObserver codeObserver = new CodeObserver(bytes, this);
-        setAt(bytes, 0);
-        this.suppressDump = false;
-        int i = 0;
-        int i2 = 0;
-        while (i2 < size) {
-            ByteBlock byteBlock = identifyBlocks.get(i2);
-            int start = byteBlock.getStart();
-            int end = byteBlock.getEnd();
-            if (i < start) {
-                parsed(bytes, i, start - i, "dead code " + Hex.u2(i) + ".." + Hex.u2(start));
+        ByteBlockList list = BasicBlocker.identifyBlocks(meth);
+        int sz = list.size();
+        CodeObserver codeObserver = new CodeObserver(bytes, BlockDumper.this);
+
+        suppressDump = false;
+
+        int byteAt = 0;
+        for (int i = 0; i < sz; i++) {
+            ByteBlock bb = list.get(i);
+            int start = bb.getStart();
+            int end = bb.getEnd();
+
+            if (byteAt < start) {
+                parsed(bytes, byteAt, start - byteAt,
+                       "dead code " + Hex.u2(byteAt) + ".." + Hex.u2(start));
             }
-            parsed(bytes, start, 0, "block " + Hex.u2(byteBlock.getLabel()) + ": " + Hex.u2(start) + ".." + Hex.u2(end));
+
+            parsed(bytes, start, 0,
+                    "block " + Hex.u2(bb.getLabel()) + ": " +
+                    Hex.u2(start) + ".." + Hex.u2(end));
             changeIndent(1);
-            while (start < end) {
-                int parseInstruction = code.parseInstruction(start, codeObserver);
-                codeObserver.setPreviousOffset(start);
-                start += parseInstruction;
+
+            int len;
+            for (int j = start; j < end; j += len) {
+                len = code.parseInstruction(j, codeObserver);
+                codeObserver.setPreviousOffset(j);
             }
-            IntList successors = byteBlock.getSuccessors();
-            int size2 = successors.size();
-            if (size2 == 0) {
+
+            IntList successors = bb.getSuccessors();
+            int ssz = successors.size();
+            if (ssz == 0) {
                 parsed(bytes, end, 0, "returns");
             } else {
-                for (int i3 = 0; i3 < size2; i3++) {
-                    parsed(bytes, end, 0, "next " + Hex.u2(successors.get(i3)));
+                for (int j = 0; j < ssz; j++) {
+                    int succ = successors.get(j);
+                    parsed(bytes, end, 0, "next " + Hex.u2(succ));
                 }
             }
-            ByteCatchList catches = byteBlock.getCatches();
-            int size3 = catches.size();
-            for (int i4 = 0; i4 < size3; i4++) {
-                ByteCatchList.Item item = catches.get(i4);
-                CstType exceptionClass = item.getExceptionClass();
-                StringBuilder sb = new StringBuilder("catch ");
-                if (exceptionClass == CstType.OBJECT) {
-                    human = "<any>";
-                } else {
-                    human = exceptionClass.toHuman();
-                }
-                parsed(bytes, end, 0, sb.append(human).append(" -> ").append(Hex.u2(item.getHandlerPc())).toString());
+
+            ByteCatchList catches = bb.getCatches();
+            int csz = catches.size();
+            for (int j = 0; j < csz; j++) {
+                ByteCatchList.Item one = catches.get(j);
+                mod.agus.jcoderz.dx.rop.cst.CstType exceptionClass = one.getExceptionClass();
+                parsed(bytes, end, 0,
+                       "catch " +
+                       ((exceptionClass == CstType.OBJECT) ? "<any>" :
+                        exceptionClass.toHuman()) + " -> " +
+                       Hex.u2(one.getHandlerPc()));
             }
+
             changeIndent(-1);
-            i2++;
-            i = end;
+            byteAt = end;
         }
-        int size4 = bytes.size();
-        if (i < size4) {
-            parsed(bytes, i, size4 - i, "dead code " + Hex.u2(i) + ".." + Hex.u2(size4));
+
+        int end = bytes.size();
+        if (byteAt < end) {
+            parsed(bytes, byteAt, end - byteAt,
+                    "dead code " + Hex.u2(byteAt) + ".." + Hex.u2(end));
         }
-        this.suppressDump = true;
+
+        suppressDump = true;
     }
 
-    private void ropDump(ConcreteMethod concreteMethod) {
-        DexTranslationAdvice dexTranslationAdvice = DexTranslationAdvice.THE_ONE;
-        ByteArray bytes = concreteMethod.getCode().getBytes();
-        RopMethod convert = Ropper.convert(concreteMethod, dexTranslationAdvice, this.classFile.getMethods());
-        StringBuffer stringBuffer = new StringBuffer((int) ConstantPool.CONSTANTPOOL_INITIAL_SIZE);
-        if (this.optimize) {
-            boolean isStatic = AccessFlags.isStatic(concreteMethod.getAccessFlags());
-            convert = Optimizer.optimize(convert, computeParamWidth(concreteMethod, isStatic), isStatic, true, dexTranslationAdvice);
+    /**
+     * Does a registerizing dump.
+     *
+     * @param meth {@code non-null;} method data to dump
+     */
+    private void ropDump(ConcreteMethod meth) {
+        TranslationAdvice advice = DexTranslationAdvice.THE_ONE;
+        BytecodeArray code = meth.getCode();
+        ByteArray bytes = code.getBytes();
+        RopMethod rmeth = Ropper.convert(meth, advice, classFile.getMethods(), dexOptions);
+        StringBuilder sb = new StringBuilder(2000);
+
+        if (optimize) {
+            boolean isStatic = AccessFlags.isStatic(meth.getAccessFlags());
+            int paramWidth = computeParamWidth(meth, isStatic);
+            rmeth =
+                Optimizer.optimize(rmeth, paramWidth, isStatic, true, advice);
         }
-        BasicBlockList blocks = convert.getBlocks();
-        int[] labelsInOrder = blocks.getLabelsInOrder();
-        stringBuffer.append("first " + Hex.u2(convert.getFirstLabel()) + "\n");
-        for (int i : labelsInOrder) {
-            BasicBlock basicBlock = blocks.get(blocks.indexOfLabel(i));
-            stringBuffer.append("block ");
-            stringBuffer.append(Hex.u2(i));
-            stringBuffer.append("\n");
-            IntList labelToPredecessors = convert.labelToPredecessors(i);
-            int size = labelToPredecessors.size();
-            for (int i2 = 0; i2 < size; i2++) {
-                stringBuffer.append("  pred ");
-                stringBuffer.append(Hex.u2(labelToPredecessors.get(i2)));
-                stringBuffer.append("\n");
+
+        BasicBlockList blocks = rmeth.getBlocks();
+        int[] order = blocks.getLabelsInOrder();
+
+        sb.append("first " + Hex.u2(rmeth.getFirstLabel()) + "\n");
+
+        for (int label : order) {
+            BasicBlock bb = blocks.get(blocks.indexOfLabel(label));
+            sb.append("block ");
+            sb.append(Hex.u2(label));
+            sb.append("\n");
+
+            IntList preds = rmeth.labelToPredecessors(label);
+            int psz = preds.size();
+            for (int i = 0; i < psz; i++) {
+                sb.append("  pred ");
+                sb.append(Hex.u2(preds.get(i)));
+                sb.append("\n");
             }
-            InsnList insns = basicBlock.getInsns();
-            int size2 = insns.size();
-            for (int i3 = 0; i3 < size2; i3++) {
-                insns.get(i3);
-                stringBuffer.append("  ");
-                stringBuffer.append(insns.get(i3).toHuman());
-                stringBuffer.append("\n");
+
+            InsnList il = bb.getInsns();
+            int ilsz = il.size();
+            for (int i = 0; i < ilsz; i++) {
+                Insn one = il.get(i);
+                sb.append("  ");
+                sb.append(il.get(i).toHuman());
+                sb.append("\n");
             }
-            IntList successors = basicBlock.getSuccessors();
-            int size3 = successors.size();
-            if (size3 == 0) {
-                stringBuffer.append("  returns\n");
+
+            IntList successors = bb.getSuccessors();
+            int ssz = successors.size();
+            if (ssz == 0) {
+                sb.append("  returns\n");
             } else {
-                int primarySuccessor = basicBlock.getPrimarySuccessor();
-                for (int i4 = 0; i4 < size3; i4++) {
-                    int i5 = successors.get(i4);
-                    stringBuffer.append("  next ");
-                    stringBuffer.append(Hex.u2(i5));
-                    if (size3 != 1 && i5 == primarySuccessor) {
-                        stringBuffer.append(" *");
+                int primary = bb.getPrimarySuccessor();
+                for (int i = 0; i < ssz; i++) {
+                    int succ = successors.get(i);
+                    sb.append("  next ");
+                    sb.append(Hex.u2(succ));
+
+                    if ((ssz != 1) && (succ == primary)) {
+                        sb.append(" *");
                     }
-                    stringBuffer.append("\n");
+
+                    sb.append("\n");
                 }
             }
         }
-        this.suppressDump = false;
-        setAt(bytes, 0);
-        parsed(bytes, 0, bytes.size(), stringBuffer.toString());
-        this.suppressDump = true;
+
+        suppressDump = false;
+        parsed(bytes, 0, bytes.size(), sb.toString());
+        suppressDump = true;
     }
 }

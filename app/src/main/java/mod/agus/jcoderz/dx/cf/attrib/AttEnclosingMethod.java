@@ -1,32 +1,79 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.cf.attrib;
 
 import mod.agus.jcoderz.dx.rop.cst.CstNat;
 import mod.agus.jcoderz.dx.rop.cst.CstType;
 
+/**
+ * Attribute class for standards-track {@code EnclosingMethod}
+ * attributes.
+ */
 public final class AttEnclosingMethod extends BaseAttribute {
+    /** {@code non-null;} attribute name for attributes of this type */
     public static final String ATTRIBUTE_NAME = "EnclosingMethod";
-    private final CstNat method;
-    private final CstType type;
 
-    public AttEnclosingMethod(CstType cstType, CstNat cstNat) {
+    /** {@code non-null;} the innermost enclosing class */
+    private final mod.agus.jcoderz.dx.rop.cst.CstType type;
+
+    /** {@code null-ok;} the name-and-type of the innermost enclosing method, if any */
+    private final mod.agus.jcoderz.dx.rop.cst.CstNat method;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param type {@code non-null;} the innermost enclosing class
+     * @param method {@code null-ok;} the name-and-type of the innermost enclosing
+     * method, if any
+     */
+    public AttEnclosingMethod(mod.agus.jcoderz.dx.rop.cst.CstType type, mod.agus.jcoderz.dx.rop.cst.CstNat method) {
         super(ATTRIBUTE_NAME);
-        if (cstType == null) {
+
+        if (type == null) {
             throw new NullPointerException("type == null");
         }
-        this.type = cstType;
-        this.method = cstNat;
+
+        this.type = type;
+        this.method = method;
     }
 
-    @Override // mod.agus.jcoderz.dx.cf.iface.Attribute
+    /** {@inheritDoc} */
+    @Override
     public int byteLength() {
         return 10;
     }
 
+    /**
+     * Gets the innermost enclosing class.
+     *
+     * @return {@code non-null;} the innermost enclosing class
+     */
     public CstType getEnclosingClass() {
-        return this.type;
+        return type;
     }
 
+    /**
+     * Gets the name-and-type of the innermost enclosing method, if
+     * any.
+     *
+     * @return {@code null-ok;} the name-and-type of the innermost enclosing
+     * method, if any
+     */
     public CstNat getMethod() {
-        return this.method;
+        return method;
     }
 }

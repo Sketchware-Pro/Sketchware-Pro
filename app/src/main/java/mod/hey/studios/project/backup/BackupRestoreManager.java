@@ -140,7 +140,7 @@ public class BackupRestoreManager {
                         .setPositiveButton("Copy", (dialog, which) -> doRestore(file, true))
                         .setNegativeButton("Don't copy", (dialog, which) -> doRestore(file, false))
                         .setNeutralButton(Resources.string.common_word_cancel, null)
-                        .create().show();
+                        .show();
             } else {
                 doRestore(file, false);
             }

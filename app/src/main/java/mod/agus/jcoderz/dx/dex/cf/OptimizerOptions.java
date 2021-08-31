@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.dex.cf;
 
 import java.io.BufferedReader;
@@ -10,61 +26,154 @@ import mod.agus.jcoderz.dx.rop.code.RopMethod;
 import mod.agus.jcoderz.dx.rop.code.TranslationAdvice;
 import mod.agus.jcoderz.dx.ssa.Optimizer;
 
+/**
+ * Settings for optimization of code.
+ */
 public class OptimizerOptions {
-    private static HashSet<String> dontOptimizeList;
-    private static HashSet<String> optimizeList;
-    private static boolean optimizeListsLoaded;
+    /**
+     * {@code null-ok;} hash set of class name + method names that
+     * should be optimized. {@code null} if this constraint was not
+     * specified on the command line
+     */
+    private HashSet<String> optimizeList;
 
-    private OptimizerOptions() {
-    }
+    /**
+     * {@code null-ok;} hash set of class name + method names that should NOT
+     * be optimized.  null if this constraint was not specified on the
+     * command line
+     */
+    private HashSet<String> dontOptimizeList;
 
-    public static void loadOptimizeLists(String str, String str2) {
-        if (!optimizeListsLoaded) {
-            if (str == null || str2 == null) {
-                if (str != null) {
-                    optimizeList = loadStringsFromFile(str);
-                }
-                if (str2 != null) {
-                    dontOptimizeList = loadStringsFromFile(str2);
-                }
-                optimizeListsLoaded = true;
-                return;
-            }
-            throw new RuntimeException("optimize and don't optimize lists  are mutually exclusive.");
+    /** true if the above lists have been loaded */
+    private boolean optimizeListsLoaded;
+
+
+    /**
+     * Loads the optimize/don't optimize lists from files.
+     *
+     * @param optimizeListFile Pathname
+     * @param dontOptimizeListFile Pathname
+     */
+    public void loadOptimizeLists(String optimizeListFile,
+            String dontOptimizeListFile) {
+        if (optimizeListsLoaded) {
+            return;
         }
+
+        if (optimizeListFile != null && dontOptimizeListFile != null) {
+            /*
+             * We shouldn't get this far. The condition should have
+             * been caught in the arg processor.
+             */
+            throw new RuntimeException("optimize and don't optimize lists "
+                    + " are mutually exclusive.");
+        }
+
+        if (optimizeListFile != null) {
+            optimizeList = loadStringsFromFile(optimizeListFile);
+        }
+
+        if (dontOptimizeListFile != null) {
+            dontOptimizeList = loadStringsFromFile(dontOptimizeListFile);
+        }
+
+        optimizeListsLoaded = true;
     }
 
-    private static HashSet<String> loadStringsFromFile(String str) {
-        HashSet<String> hashSet = new HashSet<>();
+    /**
+     * Loads a list of newline-separated strings into a new HashSet and returns
+     * the HashSet.
+     *
+     * @param filename filename to process
+     * @return set of all unique lines in the file
+     */
+    private static HashSet<String> loadStringsFromFile(String filename) {
+        HashSet<String> result = new HashSet<String>();
+
         try {
-            FileReader fileReader = new FileReader(str);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while (true) {
-                String readLine = bufferedReader.readLine();
-                if (readLine == null) {
-                    fileReader.close();
-                    return hashSet;
-                }
-                hashSet.add(readLine);
+            FileReader fr = new FileReader(filename);
+            BufferedReader bfr = new BufferedReader(fr);
+
+            String line;
+
+            while (null != (line = bfr.readLine())) {
+                result.add(line);
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Error with optimize list: " + str, e);
+
+            fr.close();
+        } catch (IOException ex) {
+            // Let the exception percolate up as a RuntimeException.
+            throw new RuntimeException("Error with optimize list: " +
+                    filename, ex);
         }
+
+        return result;
     }
 
-    public static void compareOptimizerStep(RopMethod ropMethod, int i, boolean z, CfOptions cfOptions, TranslationAdvice translationAdvice, RopMethod ropMethod2) {
-        EnumSet allOf = EnumSet.allOf(Optimizer.OptionalStep.class);
-        allOf.remove(Optimizer.OptionalStep.CONST_COLLECTOR);
-        RopMethod optimize = Optimizer.optimize(ropMethod, i, z, cfOptions.localInfo, translationAdvice, allOf);
-        int effectiveInstructionCount = ropMethod2.getBlocks().getEffectiveInstructionCount();
-        int effectiveInstructionCount2 = optimize.getBlocks().getEffectiveInstructionCount();
-        System.err.printf("optimize step regs:(%d/%d/%.2f%%) insns:(%d/%d/%.2f%%)\n", Integer.valueOf(ropMethod2.getBlocks().getRegCount()), Integer.valueOf(optimize.getBlocks().getRegCount()), Double.valueOf(100.0d * ((double) (((float) (optimize.getBlocks().getRegCount() - ropMethod2.getBlocks().getRegCount())) / ((float) optimize.getBlocks().getRegCount())))), Integer.valueOf(effectiveInstructionCount), Integer.valueOf(effectiveInstructionCount2), Double.valueOf(100.0d * ((double) (((float) (effectiveInstructionCount2 - effectiveInstructionCount)) / ((float) effectiveInstructionCount2)))));
+    /**
+     * Compares the output of the optimizer run normally with a run skipping
+     * some optional steps. Results are printed to stderr.
+     *
+     * @param nonOptRmeth {@code non-null;} origional rop method
+     * @param paramSize {@code >= 0;} parameter size of method
+     * @param isStatic true if this method has no 'this' pointer argument.
+     * @param args {@code non-null;} translator arguments
+     * @param advice {@code non-null;} translation advice
+     * @param rmeth {@code non-null;} method with all optimization steps run.
+     */
+    public void compareOptimizerStep(mod.agus.jcoderz.dx.rop.code.RopMethod nonOptRmeth,
+                                     int paramSize, boolean isStatic, CfOptions args,
+                                     TranslationAdvice advice, mod.agus.jcoderz.dx.rop.code.RopMethod rmeth) {
+        EnumSet<mod.agus.jcoderz.dx.ssa.Optimizer.OptionalStep> steps;
+
+        steps = EnumSet.allOf(mod.agus.jcoderz.dx.ssa.Optimizer.OptionalStep.class);
+
+        // This is the step to skip.
+        steps.remove(mod.agus.jcoderz.dx.ssa.Optimizer.OptionalStep.CONST_COLLECTOR);
+
+        RopMethod skipRopMethod
+                = Optimizer.optimize(nonOptRmeth,
+                        paramSize, isStatic, args.localInfo, advice, steps);
+
+        int normalInsns
+                = rmeth.getBlocks().getEffectiveInstructionCount();
+        int skipInsns
+                = skipRopMethod.getBlocks().getEffectiveInstructionCount();
+
+        System.err.printf(
+                "optimize step regs:(%d/%d/%.2f%%)"
+                + " insns:(%d/%d/%.2f%%)\n",
+                rmeth.getBlocks().getRegCount(),
+                skipRopMethod.getBlocks().getRegCount(),
+                100.0 * ((skipRopMethod.getBlocks().getRegCount()
+                        - rmeth.getBlocks().getRegCount())
+                        / (float) skipRopMethod.getBlocks().getRegCount()),
+                normalInsns, skipInsns,
+                100.0 * ((skipInsns - normalInsns) / (float) skipInsns));
     }
 
-    public static boolean shouldOptimize(String str) {
+    /**
+     * Checks whether the specified method should be optimized
+     *
+     * @param canonicalMethodName name of method being considered
+     * @return true if it should be optimized
+     */
+    public boolean shouldOptimize(String canonicalMethodName) {
+        // Optimize only what's in the optimize list.
         if (optimizeList != null) {
-            return optimizeList.contains(str);
+            return optimizeList.contains(canonicalMethodName);
         }
-        return dontOptimizeList == null || !dontOptimizeList.contains(str);
+
+        /*
+         * Or don't optimize what's listed here. (The two lists are
+         * mutually exclusive.
+         */
+
+        if (dontOptimizeList != null) {
+            return !dontOptimizeList.contains(canonicalMethodName);
+        }
+
+        // If neither list has been specified, then optimize everything.
+        return true;
     }
 }

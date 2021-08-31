@@ -1,10 +1,20 @@
-package mod.agus.jcoderz.dx.dex.file;
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+package mod.agus.jcoderz.dx.dex.file;
 
 import mod.agus.jcoderz.dex.Leb128;
 import mod.agus.jcoderz.dex.util.ByteArrayByteInput;
@@ -14,331 +24,575 @@ import mod.agus.jcoderz.dx.dex.code.DalvCode;
 import mod.agus.jcoderz.dx.dex.code.DalvInsnList;
 import mod.agus.jcoderz.dx.dex.code.LocalList;
 import mod.agus.jcoderz.dx.dex.code.PositionList;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_ADVANCE_LINE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_ADVANCE_PC;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_END_LOCAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_END_SEQUENCE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_FIRST_SPECIAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_LINE_BASE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_LINE_RANGE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_RESTART_LOCAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_SET_EPILOGUE_BEGIN;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_SET_FILE;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_SET_PROLOGUE_END;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_START_LOCAL;
+import static mod.agus.jcoderz.dx.dex.file.DebugInfoConstants.DBG_START_LOCAL_EXTENDED;
+
 import mod.agus.jcoderz.dx.rop.cst.CstMethodRef;
 import mod.agus.jcoderz.dx.rop.cst.CstString;
 import mod.agus.jcoderz.dx.rop.type.Prototype;
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
 import mod.agus.jcoderz.dx.rop.type.Type;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * A decoder for the dex debug info state machine format.
+ * This code exists mostly as a reference implementation and test for
+ * for the {@code DebugInfoEncoder}
+ */
 public class DebugInfoDecoder {
-    private final int codesize;
-    private final Prototype desc;
+    /** encoded debug info */
     private final byte[] encoded;
-    private final DexFile file;
-    private final boolean isStatic;
-    private final LocalEntry[] lastEntryForReg;
-    private final ArrayList<LocalEntry> locals;
+
+    /** positions decoded */
     private final ArrayList<PositionEntry> positions;
+
+    /** locals decoded */
+    private final ArrayList<LocalEntry> locals;
+
+    /** size of code block in code units */
+    private final int codesize;
+
+    /** indexed by register, the last local variable live in a reg */
+    private final LocalEntry[] lastEntryForReg;
+
+    /** method descriptor of method this debug info is for */
+    private final Prototype desc;
+
+    /** true if method is static */
+    private final boolean isStatic;
+
+    /** dex file this debug info will be stored in */
+    private final mod.agus.jcoderz.dx.dex.file.DexFile file;
+
+    /**
+     * register size, in register units, of the register space
+     * used by this method
+     */
     private final int regSize;
-    private final int thisStringIdx;
-    private int address = 0;
+
+    /** current decoding state: line number */
     private int line = 1;
 
-    DebugInfoDecoder(byte[] bArr, int i, int i2, boolean z, CstMethodRef cstMethodRef, DexFile dexFile) {
-        if (bArr == null) {
+    /** current decoding state: bytecode address */
+    private int address = 0;
+
+    /** string index of the string "this" */
+    private final int thisStringIdx;
+
+    /**
+     * Constructs an instance.
+     *
+     * @param encoded encoded debug info
+     * @param codesize size of code block in code units
+     * @param regSize register size, in register units, of the register space
+     * used by this method
+     * @param isStatic true if method is static
+     * @param ref method descriptor of method this debug info is for
+     * @param file dex file this debug info will be stored in
+     */
+    DebugInfoDecoder(byte[] encoded, int codesize, int regSize,
+            boolean isStatic, CstMethodRef ref, mod.agus.jcoderz.dx.dex.file.DexFile file) {
+        if (encoded == null) {
             throw new NullPointerException("encoded == null");
         }
-        this.encoded = bArr;
-        this.isStatic = z;
-        this.desc = cstMethodRef.getPrototype();
-        this.file = dexFile;
-        this.regSize = i2;
-        this.positions = new ArrayList<>();
-        this.locals = new ArrayList<>();
-        this.codesize = i;
-        this.lastEntryForReg = new LocalEntry[i2];
-        int i3 = -1;
+
+        this.encoded = encoded;
+        this.isStatic = isStatic;
+        this.desc = ref.getPrototype();
+        this.file = file;
+        this.regSize = regSize;
+
+        positions = new ArrayList<PositionEntry>();
+        locals = new ArrayList<LocalEntry>();
+        this.codesize = codesize;
+        lastEntryForReg = new LocalEntry[regSize];
+
+        int idx = -1;
+
         try {
-            i3 = dexFile.getStringIds().indexOf(new CstString("this"));
-        } catch (IllegalArgumentException e) {
+            idx = file.getStringIds().indexOf(new CstString("this"));
+        } catch (IllegalArgumentException ex) {
+            /*
+             * Silently tolerate not finding "this". It just means that
+             * no method has local variable info that looks like
+             * a standard instance method.
+             */
         }
-        this.thisStringIdx = i3;
+
+        thisStringIdx = idx;
     }
 
-    public static void validateEncode(byte[] bArr, DexFile dexFile, CstMethodRef cstMethodRef, DalvCode dalvCode, boolean z) {
-        PositionList positions2 = dalvCode.getPositions();
-        LocalList locals2 = dalvCode.getLocals();
-        DalvInsnList insns = dalvCode.getInsns();
-        try {
-            validateEncode0(bArr, insns.codeSize(), insns.getRegistersSize(), z, cstMethodRef, dexFile, positions2, locals2);
-        } catch (RuntimeException e) {
-            System.err.println("instructions:");
-            try {
-                insns.debugPrint((OutputStream) System.err, "  ", true);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-            System.err.println("local list:");
-            locals2.debugPrint(System.err, "  ");
-            throw ExceptionWithContext.withContext(e, "while processing " + cstMethodRef.toHuman());
-        }
-    }
+    /**
+     * An entry in the resulting postions table
+     */
+    static private class PositionEntry {
+        /** bytecode address */
+        public int address;
 
-    private static void validateEncode0(byte[] bArr, int i, int i2, boolean z, CstMethodRef cstMethodRef, DexFile dexFile, PositionList positionList, LocalList localList) {
-        boolean z2;
-        LocalEntry localEntry;
-        int i3 = 0;
-        DebugInfoDecoder debugInfoDecoder = new DebugInfoDecoder(bArr, i, i2, z, cstMethodRef, dexFile);
-        debugInfoDecoder.decode();
-        List<PositionEntry> positionList2 = debugInfoDecoder.getPositionList();
-        if (positionList2.size() != positionList.size()) {
-            throw new RuntimeException("Decoded positions table not same size was " + positionList2.size() + " expected " + positionList.size());
-        }
-        for (PositionEntry positionEntry : positionList2) {
-            boolean z3 = false;
-            int size = positionList.size() - 1;
-            while (true) {
-                if (size < 0) {
-                    break;
-                }
-                PositionList.Entry entry = positionList.get(size);
-                if (positionEntry.line == entry.getPosition().getLine() && positionEntry.address == entry.getAddress()) {
-                    z3 = true;
-                    continue;
-                }
-                size--;
-            }
-            if (!z3) {
-                throw new RuntimeException("Could not match position entry: " + positionEntry.address + ", " + positionEntry.line);
-            }
-        }
-        List<LocalEntry> locals2 = debugInfoDecoder.getLocals();
-        int i4 = debugInfoDecoder.thisStringIdx;
-        int size2 = locals2.size();
-        int paramBase = debugInfoDecoder.getParamBase();
-        int i5 = 0;
-        while (i5 < size2) {
-            LocalEntry localEntry2 = locals2.get(i5);
-            int i6 = localEntry2.nameIndex;
-            if (i6 < 0 || i6 == i4) {
-                int i7 = i5 + 1;
-                while (true) {
-                    if (i7 >= size2) {
-                        break;
-                    }
-                    LocalEntry localEntry3 = locals2.get(i7);
-                    if (localEntry3.address != 0) {
-                        i3 = size2;
-                        break;
-                    }
-                    if (localEntry2.reg == localEntry3.reg && localEntry3.isStart) {
-                        locals2.set(i5, localEntry3);
-                        locals2.remove(i7);
-                        i3 = size2 - 1;
-                        break;
-                    }
-                    i7++;
-                }
-                i5++;
-                size2 = i3;
-            }
-            i3 = size2;
-            i5++;
-            size2 = i3;
-        }
-        int size3 = localList.size();
-        int i8 = 0;
-        int i9 = 0;
-        while (true) {
-            if (i8 >= size3) {
-                z2 = false;
-                break;
-            }
-            LocalList.Entry entry2 = localList.get(i8);
-            if (entry2.getDisposition() != LocalList.Disposition.END_REPLACED) {
-                int i10 = i9;
-                do {
-                    localEntry = locals2.get(i10);
-                    if (localEntry.nameIndex >= 0) {
-                        break;
-                    }
-                    i10++;
-                } while (i10 < size2);
-                int i11 = localEntry.address;
-                if (localEntry.reg != entry2.getRegister()) {
-                    System.err.println("local register mismatch at orig " + i8 + " / decoded " + i10);
-                    z2 = true;
-                    break;
-                } else if (localEntry.isStart != entry2.isStart()) {
-                    System.err.println("local start/end mismatch at orig " + i8 + " / decoded " + i10);
-                    z2 = true;
-                    break;
-                } else if (i11 == entry2.getAddress() || (i11 == 0 && localEntry.reg >= paramBase)) {
-                    i9 = i10 + 1;
-                }
-            }
-            i8++;
-        }
-        if (z2) {
-            System.err.println("decoded locals:");
-            Iterator<LocalEntry> it = locals2.iterator();
-            while (it.hasNext()) {
-                System.err.println("  " + it.next());
-            }
-            throw new RuntimeException("local table problem");
+        /** line number */
+        public int line;
+
+        public PositionEntry(int address, int line) {
+            this.address = address;
+            this.line = line;
         }
     }
 
+    /**
+     * An entry in the resulting locals table
+     */
+    static private class LocalEntry {
+        /** address of event */
+        public int address;
+
+        /** {@code true} iff it's a local start */
+        public boolean isStart;
+
+        /** register number */
+        public int reg;
+
+        /** index of name in strings table */
+        public int nameIndex;
+
+        /** index of type in types table */
+        public int typeIndex;
+
+        /** index of type signature in strings table */
+        public int signatureIndex;
+
+        public LocalEntry(int address, boolean isStart, int reg, int nameIndex,
+                int typeIndex, int signatureIndex) {
+            this.address        = address;
+            this.isStart        = isStart;
+            this.reg            = reg;
+            this.nameIndex      = nameIndex;
+            this.typeIndex      = typeIndex;
+            this.signatureIndex = signatureIndex;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[%x %s v%d %04x %04x %04x]",
+                    address, isStart ? "start" : "end", reg,
+                    nameIndex, typeIndex, signatureIndex);
+        }
+    }
+
+    /**
+     * Gets the decoded positions list.
+     * Valid after calling {@code decode}.
+     *
+     * @return positions list in ascending address order.
+     */
     public List<PositionEntry> getPositionList() {
-        return this.positions;
+        return positions;
     }
 
+    /**
+     * Gets the decoded locals list, in ascending start-address order.
+     * Valid after calling {@code decode}.
+     *
+     * @return locals list in ascending address order.
+     */
     public List<LocalEntry> getLocals() {
-        return this.locals;
+        return locals;
     }
 
+    /**
+     * Decodes the debug info sequence.
+     */
     public void decode() {
         try {
             decode0();
-        } catch (Exception e) {
-            throw ExceptionWithContext.withContext(e, "...while decoding debug info");
+        } catch (Exception ex) {
+            throw ExceptionWithContext.withContext(ex,
+                    "...while decoding debug info");
         }
     }
 
-    private int readStringIndex(ByteInput byteInput) throws IOException {
-        return Leb128.readUnsignedLeb128(byteInput) - 1;
+    /**
+     * Reads a string index. String indicies are offset by 1, and a 0 value
+     * in the stream (-1 as returned by this method) means "null"
+     *
+     * @return index into file's string ids table, -1 means null
+     * @throws IOException
+     */
+    private int readStringIndex(ByteInput bs) throws IOException {
+        int offsetIndex = Leb128.readUnsignedLeb128(bs);
+
+        return offsetIndex - 1;
     }
 
+    /**
+     * Gets the register that begins the method's parameter range (including
+     * the 'this' parameter for non-static methods). The range continues until
+     * {@code regSize}
+     *
+     * @return register as noted above.
+     */
     private int getParamBase() {
-        return (this.regSize - this.desc.getParameterTypes().getWordCount()) - (this.isStatic ? 0 : 1);
+        return regSize
+                - desc.getParameterTypes().getWordCount() - (isStatic? 0 : 1);
     }
 
     private void decode0() throws IOException {
-        LocalEntry localEntry;
-        ByteArrayByteInput byteArrayByteInput = new ByteArrayByteInput(this.encoded);
-        this.line = Leb128.readUnsignedLeb128(byteArrayByteInput);
-        int readUnsignedLeb128 = Leb128.readUnsignedLeb128(byteArrayByteInput);
-        StdTypeList parameterTypes = this.desc.getParameterTypes();
-        int paramBase = getParamBase();
-        if (readUnsignedLeb128 == parameterTypes.size()) {
-            if (!this.isStatic) {
-                LocalEntry localEntry2 = new LocalEntry(0, true, paramBase, this.thisStringIdx, 0, 0);
-                this.locals.add(localEntry2);
-                this.lastEntryForReg[paramBase] = localEntry2;
-                paramBase++;
+        ByteInput bs = new ByteArrayByteInput(encoded);
+
+        line = Leb128.readUnsignedLeb128(bs);
+        int szParams = Leb128.readUnsignedLeb128(bs);
+        StdTypeList params = desc.getParameterTypes();
+        int curReg = getParamBase();
+
+        if (szParams != params.size()) {
+            throw new RuntimeException(
+                    "Mismatch between parameters_size and prototype");
+        }
+
+        if (!isStatic) {
+            // Start off with implicit 'this' entry
+            LocalEntry thisEntry =
+                new LocalEntry(0, true, curReg, thisStringIdx, 0, 0);
+            locals.add(thisEntry);
+            lastEntryForReg[curReg] = thisEntry;
+            curReg++;
+        }
+
+        for (int i = 0; i < szParams; i++) {
+            Type paramType = params.getType(i);
+            LocalEntry le;
+
+            int nameIdx = readStringIndex(bs);
+
+            if (nameIdx == -1) {
+                /*
+                 * Unnamed parameter; often but not always filled in by an
+                 * extended start op after the prologue
+                 */
+                le = new LocalEntry(0, true, curReg, -1, 0, 0);
+            } else {
+                // TODO: Final 0 should be idx of paramType.getDescriptor().
+                le = new LocalEntry(0, true, curReg, nameIdx, 0, 0);
             }
-            for (int i = 0; i < readUnsignedLeb128; i++) {
-                Type type = parameterTypes.getType(i);
-                int readStringIndex = readStringIndex(byteArrayByteInput);
-                if (readStringIndex == -1) {
-                    localEntry = new LocalEntry(0, true, paramBase, -1, 0, 0);
-                } else {
-                    localEntry = new LocalEntry(0, true, paramBase, readStringIndex, 0, 0);
+
+            locals.add(le);
+            lastEntryForReg[curReg] = le;
+            curReg += paramType.getCategory();
+        }
+
+        for (;;) {
+            int opcode = bs.readByte() & 0xff;
+
+            switch (opcode) {
+                case DBG_START_LOCAL: {
+                    int reg = Leb128.readUnsignedLeb128(bs);
+                    int nameIdx = readStringIndex(bs);
+                    int typeIdx = readStringIndex(bs);
+                    LocalEntry le = new LocalEntry(
+                            address, true, reg, nameIdx, typeIdx, 0);
+
+                    locals.add(le);
+                    lastEntryForReg[reg] = le;
                 }
-                this.locals.add(localEntry);
-                this.lastEntryForReg[paramBase] = localEntry;
-                paramBase += type.getCategory();
-            }
-            while (true) {
-                int readByte = byteArrayByteInput.readByte() & 255;
-                switch (readByte) {
-                    case 0:
-                        return;
-                    case 1:
-                        this.address += Leb128.readUnsignedLeb128(byteArrayByteInput);
-                        break;
-                    case 2:
-                        this.line += Leb128.readSignedLeb128(byteArrayByteInput);
-                        break;
-                    case 3:
-                        int readUnsignedLeb1282 = Leb128.readUnsignedLeb128(byteArrayByteInput);
-                        LocalEntry localEntry3 = new LocalEntry(this.address, true, readUnsignedLeb1282, readStringIndex(byteArrayByteInput), readStringIndex(byteArrayByteInput), 0);
-                        this.locals.add(localEntry3);
-                        this.lastEntryForReg[readUnsignedLeb1282] = localEntry3;
-                        break;
-                    case 4:
-                        int readUnsignedLeb1283 = Leb128.readUnsignedLeb128(byteArrayByteInput);
-                        LocalEntry localEntry4 = new LocalEntry(this.address, true, readUnsignedLeb1283, readStringIndex(byteArrayByteInput), readStringIndex(byteArrayByteInput), readStringIndex(byteArrayByteInput));
-                        this.locals.add(localEntry4);
-                        this.lastEntryForReg[readUnsignedLeb1283] = localEntry4;
-                        break;
-                    case 5:
-                        int readUnsignedLeb1284 = Leb128.readUnsignedLeb128(byteArrayByteInput);
-                        try {
-                            LocalEntry localEntry5 = this.lastEntryForReg[readUnsignedLeb1284];
-                            if (localEntry5.isStart) {
-                                LocalEntry localEntry6 = new LocalEntry(this.address, false, readUnsignedLeb1284, localEntry5.nameIndex, localEntry5.typeIndex, localEntry5.signatureIndex);
-                                this.locals.add(localEntry6);
-                                this.lastEntryForReg[readUnsignedLeb1284] = localEntry6;
-                                break;
-                            } else {
-                                throw new RuntimeException("nonsensical END_LOCAL on dead register v" + readUnsignedLeb1284);
-                            }
-                        } catch (NullPointerException e) {
-                            throw new RuntimeException("Encountered END_LOCAL on new v" + readUnsignedLeb1284);
-                        }
-                    case 6:
-                        int readUnsignedLeb1285 = Leb128.readUnsignedLeb128(byteArrayByteInput);
-                        try {
-                            LocalEntry localEntry7 = this.lastEntryForReg[readUnsignedLeb1285];
-                            if (!localEntry7.isStart) {
-                                LocalEntry localEntry8 = new LocalEntry(this.address, true, readUnsignedLeb1285, localEntry7.nameIndex, localEntry7.typeIndex, 0);
-                                this.locals.add(localEntry8);
-                                this.lastEntryForReg[readUnsignedLeb1285] = localEntry8;
-                                break;
-                            } else {
-                                throw new RuntimeException("nonsensical RESTART_LOCAL on live register v" + readUnsignedLeb1285);
-                            }
-                        } catch (NullPointerException e2) {
-                            throw new RuntimeException("Encountered RESTART_LOCAL on new v" + readUnsignedLeb1285);
-                        }
-                    case 7:
-                    case 8:
-                    case 9:
-                        break;
-                    default:
-                        if (readByte >= 10) {
-                            int i2 = readByte - 10;
-                            this.address += i2 / 15;
-                            this.line = ((i2 % 15) - 4) + this.line;
-                            this.positions.add(new PositionEntry(this.address, this.line));
-                            break;
-                        } else {
-                            throw new RuntimeException("Invalid extended opcode encountered " + readByte);
-                        }
+                break;
+
+                case DBG_START_LOCAL_EXTENDED: {
+                    int reg = Leb128.readUnsignedLeb128(bs);
+                    int nameIdx = readStringIndex(bs);
+                    int typeIdx = readStringIndex(bs);
+                    int sigIdx = readStringIndex(bs);
+                    LocalEntry le = new LocalEntry(
+                            address, true, reg, nameIdx, typeIdx, sigIdx);
+
+                    locals.add(le);
+                    lastEntryForReg[reg] = le;
                 }
+                break;
+
+                case DBG_RESTART_LOCAL: {
+                    int reg = Leb128.readUnsignedLeb128(bs);
+                    LocalEntry prevle;
+                    LocalEntry le;
+
+                    try {
+                        prevle = lastEntryForReg[reg];
+
+                        if (prevle.isStart) {
+                            throw new RuntimeException("nonsensical "
+                                    + "RESTART_LOCAL on live register v"
+                                    + reg);
+                        }
+
+                        le = new LocalEntry(address, true, reg,
+                                prevle.nameIndex, prevle.typeIndex, 0);
+                    } catch (NullPointerException ex) {
+                        throw new RuntimeException(
+                                "Encountered RESTART_LOCAL on new v" + reg);
+                    }
+
+                    locals.add(le);
+                    lastEntryForReg[reg] = le;
+                }
+                break;
+
+                case DBG_END_LOCAL: {
+                    int reg = Leb128.readUnsignedLeb128(bs);
+                    LocalEntry prevle;
+                    LocalEntry le;
+
+                    try {
+                        prevle = lastEntryForReg[reg];
+
+                        if (!prevle.isStart) {
+                            throw new RuntimeException("nonsensical "
+                                    + "END_LOCAL on dead register v" + reg);
+                        }
+
+                        le = new LocalEntry(address, false, reg,
+                                prevle.nameIndex, prevle.typeIndex,
+                                prevle.signatureIndex);
+                    } catch (NullPointerException ex) {
+                        throw new RuntimeException(
+                                "Encountered END_LOCAL on new v" + reg);
+                    }
+
+                    locals.add(le);
+                    lastEntryForReg[reg] = le;
+                }
+                break;
+
+                case DBG_END_SEQUENCE:
+                    // all done
+                return;
+
+                case DBG_ADVANCE_PC:
+                    address += Leb128.readUnsignedLeb128(bs);
+                break;
+
+                case DBG_ADVANCE_LINE:
+                    line += Leb128.readSignedLeb128(bs);
+                break;
+
+                case DBG_SET_PROLOGUE_END:
+                    //TODO do something with this.
+                break;
+
+                case DBG_SET_EPILOGUE_BEGIN:
+                    //TODO do something with this.
+                break;
+
+                case DBG_SET_FILE:
+                    //TODO do something with this.
+                break;
+
+                default:
+                    if (opcode < DBG_FIRST_SPECIAL) {
+                        throw new RuntimeException(
+                                "Invalid extended opcode encountered "
+                                        + opcode);
+                    }
+
+                    int adjopcode = opcode - DBG_FIRST_SPECIAL;
+
+                    address += adjopcode / DBG_LINE_RANGE;
+                    line += DBG_LINE_BASE + (adjopcode % DBG_LINE_RANGE);
+
+                    positions.add(new PositionEntry(address, line));
+                break;
+
             }
-        } else {
-            throw new RuntimeException("Mismatch between parameters_size and prototype");
         }
     }
 
-    private static class PositionEntry {
-        public int address;
-        public int line;
+    /**
+     * Validates an encoded debug info stream against data used to encode it,
+     * throwing an exception if they do not match. Used to validate the
+     * encoder.
+     *
+     * @param info encoded debug info
+     * @param file {@code non-null;} file to refer to during decoding
+     * @param ref {@code non-null;} method whose info is being decoded
+     * @param code {@code non-null;} original code object that was encoded
+     * @param isStatic whether the method is static
+     */
+    public static void validateEncode(byte[] info, mod.agus.jcoderz.dx.dex.file.DexFile file,
+            CstMethodRef ref, DalvCode code, boolean isStatic) {
+        PositionList pl = code.getPositions();
+        LocalList ll = code.getLocals();
+        DalvInsnList insns = code.getInsns();
+        int codeSize = insns.codeSize();
+        int countRegisters = insns.getRegistersSize();
 
-        public PositionEntry(int i, int i2) {
-            this.address = i;
-            this.line = i2;
+        try {
+            validateEncode0(info, codeSize, countRegisters,
+                    isStatic, ref, file, pl, ll);
+        } catch (RuntimeException ex) {
+            System.err.println("instructions:");
+            insns.debugPrint(System.err, "  ", true);
+            System.err.println("local list:");
+            ll.debugPrint(System.err, "  ");
+            throw ExceptionWithContext.withContext(ex,
+                    "while processing " + ref.toHuman());
         }
     }
 
-    private static class LocalEntry {
-        public int address;
-        public boolean isStart;
-        public int nameIndex;
-        public int reg;
-        public int signatureIndex;
-        public int typeIndex;
+    private static void validateEncode0(byte[] info, int codeSize,
+                                        int countRegisters, boolean isStatic, CstMethodRef ref,
+                                        DexFile file, PositionList pl, LocalList ll) {
+        DebugInfoDecoder decoder
+                = new DebugInfoDecoder(info, codeSize, countRegisters,
+                    isStatic, ref, file);
 
-        public LocalEntry(int i, boolean z, int i2, int i3, int i4, int i5) {
-            this.address = i;
-            this.isStart = z;
-            this.reg = i2;
-            this.nameIndex = i3;
-            this.typeIndex = i4;
-            this.signatureIndex = i5;
+        decoder.decode();
+
+        /*
+         * Go through the decoded position entries, matching up
+         * with original entries.
+         */
+
+        List<PositionEntry> decodedEntries = decoder.getPositionList();
+
+        if (decodedEntries.size() != pl.size()) {
+            throw new RuntimeException(
+                    "Decoded positions table not same size was "
+                    + decodedEntries.size() + " expected " + pl.size());
         }
 
-        public String toString() {
-            Object[] objArr = new Object[6];
-            objArr[0] = Integer.valueOf(this.address);
-            objArr[1] = this.isStart ? "start" : "end";
-            objArr[2] = Integer.valueOf(this.reg);
-            objArr[3] = Integer.valueOf(this.nameIndex);
-            objArr[4] = Integer.valueOf(this.typeIndex);
-            objArr[5] = Integer.valueOf(this.signatureIndex);
-            return String.format("[%x %s v%d %04x %04x %04x]", objArr);
+        for (PositionEntry entry : decodedEntries) {
+            boolean found = false;
+            for (int i = pl.size() - 1; i >= 0; i--) {
+                PositionList.Entry ple = pl.get(i);
+
+                if (entry.line == ple.getPosition().getLine()
+                        && entry.address == ple.getAddress()) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                throw new RuntimeException ("Could not match position entry: "
+                        + entry.address + ", " + entry.line);
+            }
+        }
+
+        /*
+         * Go through the original local list, in order, matching up
+         * with decoded entries.
+         */
+
+        List<LocalEntry> decodedLocals = decoder.getLocals();
+        int thisStringIdx = decoder.thisStringIdx;
+        int decodedSz = decodedLocals.size();
+        int paramBase = decoder.getParamBase();
+
+        /*
+         * Preflight to fill in any parameters that were skipped in
+         * the prologue (including an implied "this") but then
+         * identified by full signature.
+         */
+        for (int i = 0; i < decodedSz; i++) {
+            LocalEntry entry = decodedLocals.get(i);
+            int idx = entry.nameIndex;
+
+            if ((idx < 0) || (idx == thisStringIdx)) {
+                for (int j = i + 1; j < decodedSz; j++) {
+                    LocalEntry e2 = decodedLocals.get(j);
+                    if (e2.address != 0) {
+                        break;
+                    }
+                    if ((entry.reg == e2.reg) && e2.isStart) {
+                        decodedLocals.set(i, e2);
+                        decodedLocals.remove(j);
+                        decodedSz--;
+                        break;
+                    }
+                }
+            }
+        }
+
+        int origSz = ll.size();
+        int decodeAt = 0;
+        boolean problem = false;
+
+        for (int i = 0; i < origSz; i++) {
+            LocalList.Entry origEntry = ll.get(i);
+
+            if (origEntry.getDisposition()
+                    == LocalList.Disposition.END_REPLACED) {
+                /*
+                 * The encoded list doesn't represent replacements, so
+                 * ignore them for the sake of comparison.
+                 */
+                continue;
+            }
+
+            LocalEntry decodedEntry;
+
+            do {
+                decodedEntry = decodedLocals.get(decodeAt);
+                if (decodedEntry.nameIndex >= 0) {
+                    break;
+                }
+                /*
+                 * A negative name index means this is an anonymous
+                 * parameter, and we shouldn't expect to see it in the
+                 * original list. So, skip it.
+                 */
+                decodeAt++;
+            } while (decodeAt < decodedSz);
+
+            int decodedAddress = decodedEntry.address;
+
+            if (decodedEntry.reg != origEntry.getRegister()) {
+                System.err.println("local register mismatch at orig " + i +
+                        " / decoded " + decodeAt);
+                problem = true;
+                break;
+            }
+
+            if (decodedEntry.isStart != origEntry.isStart()) {
+                System.err.println("local start/end mismatch at orig " + i +
+                        " / decoded " + decodeAt);
+                problem = true;
+                break;
+            }
+
+            /*
+             * The secondary check here accounts for the fact that a
+             * parameter might not be marked as starting at 0 in the
+             * original list.
+             */
+            if ((decodedAddress != origEntry.getAddress())
+                    && !((decodedAddress == 0)
+                            && (decodedEntry.reg >= paramBase))) {
+                System.err.println("local address mismatch at orig " + i +
+                        " / decoded " + decodeAt);
+                problem = true;
+                break;
+            }
+
+            decodeAt++;
+        }
+
+        if (problem) {
+            System.err.println("decoded locals:");
+            for (LocalEntry e : decodedLocals) {
+                System.err.println("  " + e);
+            }
+            throw new RuntimeException("local table problem");
         }
     }
 }

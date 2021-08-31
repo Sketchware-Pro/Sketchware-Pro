@@ -1,94 +1,187 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.util;
 
 import java.util.Arrays;
 
+/**
+ * A list of labeled items, allowing easy lookup by label.
+ */
 public class LabeledList extends FixedSizeList {
+    /**
+     * Sparse array indexed by label to FixedSizeList index;
+     * {@code -1} for an invalid label.
+     */
     private final IntList labelToIndex;
 
-    public LabeledList(int i) {
-        super(i);
-        this.labelToIndex = new IntList(i);
+    /** {@inheritDoc} */
+    public LabeledList(int size) {
+        super(size);
+
+        labelToIndex = new IntList(size);
     }
 
-    public LabeledList(LabeledList labeledList) {
-        super(labeledList.size());
-        this.labelToIndex = labeledList.labelToIndex.mutableCopy();
-        int size = labeledList.size();
-        for (int i = 0; i < size; i++) {
-            Object r2 = labeledList.get0(i);
-            if (r2 != null) {
-                set0(i, r2);
+    /**
+     * Constructs a new instance that is a copy of the old instance.
+     *
+     * @param old instance to copy
+     */
+    public LabeledList(LabeledList old) {
+        super(old.size());
+        labelToIndex = old.labelToIndex.mutableCopy();
+
+        int sz = old.size();
+
+        for (int i = 0; i < sz; i++) {
+            Object one = old.get0(i);
+            if (one != null) {
+                set0(i, one);
             }
         }
     }
 
+    /**
+     * Gets the maximum label (exclusive) of any block added to this instance.
+     *
+     * @return {@code >= 0;} the maximum label
+     */
     public final int getMaxLabel() {
-        int size = this.labelToIndex.size() - 1;
-        while (size >= 0 && this.labelToIndex.get(size) < 0) {
-            size--;
+        int sz = labelToIndex.size();
+
+        // Gobble any deleted labels that may be at the end.
+        int i;
+        for (i = sz - 1; (i >= 0) && (labelToIndex.get(i) < 0); i--)
+            /*empty*/ ;
+
+        int newSize = i + 1;
+
+        labelToIndex.shrink(newSize);
+
+        return newSize;
+    }
+
+    /**
+     * Removes a label from the label-to-index mapping.
+     *
+     * @param oldLabel label to remove
+     */
+    private void removeLabel(int oldLabel) {
+        labelToIndex.set(oldLabel, -1);
+    }
+
+    /**
+     * Adds a label and index to the label-to-index mapping.
+     *
+     * @param label new label
+     * @param index index of block.
+     */
+    private void addLabelIndex(int label, int index) {
+        int origSz = labelToIndex.size();
+
+        for (int i = 0; i <= (label - origSz); i++) {
+            labelToIndex.add(-1);
         }
-        int i = size + 1;
-        this.labelToIndex.shrink(i);
-        return i;
+
+        labelToIndex.set(label, index);
     }
 
-    private void removeLabel(int i) {
-        this.labelToIndex.set(i, -1);
-    }
-
-    private void addLabelIndex(int i, int i2) {
-        int size = this.labelToIndex.size();
-        for (int i3 = 0; i3 <= i - size; i3++) {
-            this.labelToIndex.add(-1);
-        }
-        this.labelToIndex.set(i, i2);
-    }
-
-    public final int indexOfLabel(int i) {
-        if (i >= this.labelToIndex.size()) {
+    /**
+     * Gets the index of the first item in the list with the given
+     * label, if any.
+     *
+     * @param label {@code >= 0;} the label to look for
+     * @return {@code >= -1;} the index of the so-labelled item, or {@code -1}
+     * if none is found
+     */
+    public final int indexOfLabel(int label) {
+        if (label >= labelToIndex.size()) {
             return -1;
+        } else {
+            return labelToIndex.get(label);
         }
-        return this.labelToIndex.get(i);
     }
 
+    /**
+     * Gets an array containing all of the labels used in this instance,
+     * in order. The returned array is freshly-allocated and so may be
+     * modified safely by the caller without impacting this instance.
+     *
+     * @return {@code non-null;} ordered array of labels
+     * @throws NullPointerException thrown if there are any {@code null}
+     * items in this instance
+     */
     public final int[] getLabelsInOrder() {
-        int size = size();
-        int[] iArr = new int[size];
-        for (int i = 0; i < size; i++) {
-            LabeledItem labeledItem = (LabeledItem) get0(i);
-            if (labeledItem == null) {
+        int sz = size();
+        int[] result = new int[sz];
+
+        for (int i = 0; i < sz; i++) {
+            LabeledItem li = (LabeledItem) get0(i);
+            if (li == null) {
                 throw new NullPointerException("null at index " + i);
             }
-            iArr[i] = labeledItem.getLabel();
+            result[i] = li.getLabel();
         }
-        Arrays.sort(iArr);
-        return iArr;
+
+        Arrays.sort(result);
+        return result;
     }
 
-    @Override // mod.agus.jcoderz.dx.util.FixedSizeList
+    /** {@inheritDoc} */
+    @Override
     public void shrinkToFit() {
         super.shrinkToFit();
+
         rebuildLabelToIndex();
     }
 
+    /**
+     * Rebuilds the label-to-index mapping after a {@code shrinkToFit()}.
+     * Note: This assumes that the labels that are in the list are the
+     * same, although the indicies may have changed.
+     */
     private void rebuildLabelToIndex() {
-        int size = size();
-        for (int i = 0; i < size; i++) {
-            LabeledItem labeledItem = (LabeledItem) get0(i);
-            if (labeledItem != null) {
-                this.labelToIndex.set(labeledItem.getLabel(), i);
+        int szItems = size();
+
+        for (int i = 0; i < szItems; i++) {
+            LabeledItem li = (LabeledItem) get0(i);
+
+            if (li != null) {
+                labelToIndex.set(li.getLabel(), i);
             }
         }
     }
 
-    public void set(int i, LabeledItem labeledItem) {
-        LabeledItem labeledItem2 = (LabeledItem) getOrNull0(i);
-        set0(i, labeledItem);
-        if (labeledItem2 != null) {
-            removeLabel(labeledItem2.getLabel());
+    /**
+     * Sets the element at the given index.
+     *
+     * @param n {@code >= 0, < size();} which element
+     * @param item {@code null-ok;} the value to store
+     */
+    protected void set(int n, LabeledItem item) {
+        LabeledItem old = (LabeledItem) getOrNull0(n);
+
+        set0(n, item);
+
+        if (old != null) {
+            removeLabel(old.getLabel());
         }
-        if (labeledItem != null) {
-            addLabelIndex(labeledItem.getLabel(), i);
+
+        if (item != null) {
+            addLabelIndex(item.getLabel(), n);
         }
     }
 }

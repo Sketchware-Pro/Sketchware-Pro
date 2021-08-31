@@ -1,60 +1,119 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.code;
 
 import mod.agus.jcoderz.dx.rop.type.StdTypeList;
+import mod.agus.jcoderz.dx.util.IntList;
 import mod.agus.jcoderz.dx.rop.type.Type;
 import mod.agus.jcoderz.dx.rop.type.TypeList;
-import mod.agus.jcoderz.dx.util.IntList;
 
-public final class SwitchInsn extends Insn {
+/**
+ * Instruction which contains switch cases.
+ */
+public final class SwitchInsn
+        extends Insn {
+    /** {@code non-null;} list of switch cases */
     private final IntList cases;
 
-    public SwitchInsn(Rop rop, SourcePosition sourcePosition, RegisterSpec registerSpec, RegisterSpecList registerSpecList, IntList intList) {
-        super(rop, sourcePosition, registerSpec, registerSpecList);
-        if (rop.getBranchingness() != 5) {
+    /**
+     * Constructs an instance.
+     *
+     * @param opcode {@code non-null;} the opcode
+     * @param position {@code non-null;} source position
+     * @param result {@code null-ok;} spec for the result, if any
+     * @param sources {@code non-null;} specs for all the sources
+     * @param cases {@code non-null;} list of switch cases
+     */
+    public SwitchInsn(Rop opcode, SourcePosition position, RegisterSpec result,
+                      RegisterSpecList sources, IntList cases) {
+        super(opcode, position, result, sources);
+
+        if (opcode.getBranchingness() != Rop.BRANCH_SWITCH) {
             throw new IllegalArgumentException("bogus branchingness");
-        } else if (intList == null) {
-            throw new NullPointerException("cases == null");
-        } else {
-            this.cases = intList;
         }
+
+        if (cases == null) {
+            throw new NullPointerException("cases == null");
+        }
+
+        this.cases = cases;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public String getInlineString() {
-        return this.cases.toString();
+        return cases.toString();
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public TypeList getCatches() {
         return StdTypeList.EMPTY;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public void accept(Insn.Visitor visitor) {
+    /** {@inheritDoc} */
+    @Override
+    public void accept(Visitor visitor) {
         visitor.visitSwitchInsn(this);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
+    /** {@inheritDoc} */
+    @Override
     public Insn withAddedCatch(Type type) {
         throw new UnsupportedOperationException("unsupported");
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withRegisterOffset(int i) {
-        return new SwitchInsn(getOpcode(), getPosition(), getResult().withOffset(i), getSources().withOffset(i), this.cases);
+    /** {@inheritDoc} */
+    @Override
+    public Insn withRegisterOffset(int delta) {
+        return new SwitchInsn(getOpcode(), getPosition(),
+                              getResult().withOffset(delta),
+                              getSources().withOffset(delta),
+                              cases);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public boolean contentEquals(Insn insn) {
+    /**
+     * {@inheritDoc}
+     *
+     * <p> SwitchInsn always compares false. The current use for this method
+     * never encounters {@code SwitchInsn}s
+     */
+    @Override
+    public boolean contentEquals(Insn b) {
         return false;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.code.Insn
-    public Insn withNewRegisters(RegisterSpec registerSpec, RegisterSpecList registerSpecList) {
-        return new SwitchInsn(getOpcode(), getPosition(), registerSpec, registerSpecList, this.cases);
+    /** {@inheritDoc} */
+    @Override
+    public Insn withNewRegisters(RegisterSpec result,
+            RegisterSpecList sources) {
+
+        return new SwitchInsn(getOpcode(), getPosition(),
+                              result,
+                              sources,
+                              cases);
     }
 
+    /**
+     * Gets the list of switch cases.
+     *
+     * @return {@code non-null;} the case list
+     */
     public IntList getCases() {
-        return this.cases;
+        return cases;
     }
 }

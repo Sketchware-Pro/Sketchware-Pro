@@ -1,81 +1,153 @@
+/*
+ * Copyright (C) 2007 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mod.agus.jcoderz.dx.rop.cst;
 
 import mod.agus.jcoderz.dex.util.ExceptionWithContext;
 import mod.agus.jcoderz.dx.util.Hex;
 import mod.agus.jcoderz.dx.util.MutabilityControl;
 
-public final class StdConstantPool extends MutabilityControl implements ConstantPool {
+/**
+ * Standard implementation of {@link ConstantPool}, which directly stores
+ * an array of {@link Constant} objects and can be made immutable.
+ */
+public final class StdConstantPool
+        extends MutabilityControl implements ConstantPool {
+    /** {@code non-null;} array of entries */
     private final Constant[] entries;
 
-    public StdConstantPool(int i) {
-        super(i > 1);
-        if (i < 1) {
+    /**
+     * Constructs an instance. All indices initially contain {@code null}.
+     *
+     * @param size the size of the pool; this corresponds to the
+     * class file field {@code constant_pool_count}, and is in fact
+     * always at least one more than the actual size of the constant pool,
+     * as element {@code 0} is always invalid.
+     */
+    public StdConstantPool(int size) {
+        super(size > 1);
+
+        if (size < 1) {
             throw new IllegalArgumentException("size < 1");
         }
-        this.entries = new Constant[i];
+
+        entries = new Constant[size];
     }
 
-    private static Constant throwInvalid(int i) {
-        throw new ExceptionWithContext("invalid constant pool index " + Hex.u2(i));
-    }
-
-    @Override // mod.agus.jcoderz.dx.rop.cst.ConstantPool
+    /** {@inheritDoc} */
+    @Override
     public int size() {
-        return this.entries.length;
+        return entries.length;
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.ConstantPool
-    public Constant getOrNull(int i) {
+    /** {@inheritDoc} */
+    @Override
+    public Constant getOrNull(int n) {
         try {
-            return this.entries[i];
-        } catch (IndexOutOfBoundsException e) {
-            return throwInvalid(i);
+            return entries[n];
+        } catch (IndexOutOfBoundsException ex) {
+            // Translate the exception.
+            return throwInvalid(n);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.ConstantPool
-    public Constant get0Ok(int i) {
-        if (i == 0) {
+    /** {@inheritDoc} */
+    @Override
+    public Constant get0Ok(int n) {
+        if (n == 0) {
             return null;
         }
-        return get(i);
+
+        return get(n);
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.ConstantPool
-    public Constant get(int i) {
+    /** {@inheritDoc} */
+    @Override
+    public Constant get(int n) {
         try {
-            Constant constant = this.entries[i];
-            if (constant != null) {
-                return constant;
+            Constant result = entries[n];
+
+            if (result == null) {
+                throwInvalid(n);
             }
-            throwInvalid(i);
-            return constant;
-        } catch (IndexOutOfBoundsException e) {
-            return throwInvalid(i);
+
+            return result;
+        } catch (IndexOutOfBoundsException ex) {
+            // Translate the exception.
+            return throwInvalid(n);
         }
     }
 
-    @Override // mod.agus.jcoderz.dx.rop.cst.ConstantPool
+    /**
+     * Get all entries in this constant pool.
+     *
+     * @return the returned array may contain null entries.
+     */
+    @Override
     public Constant[] getEntries() {
-        return this.entries;
+        return entries;
     }
 
-    public void set(int i, Constant constant) {
-        Constant constant2;
+    /**
+     * Sets the entry at the given index.
+     *
+     * @param n {@code >= 1, < size();} which entry
+     * @param cst {@code null-ok;} the constant to store
+     */
+    public void set(int n, Constant cst) {
         throwIfImmutable();
-        boolean z = constant != null && constant.isCategory2();
-        if (i < 1) {
+
+        boolean cat2 = (cst != null) && cst.isCategory2();
+
+        if (n < 1) {
             throw new IllegalArgumentException("n < 1");
         }
-        if (z) {
-            if (i == this.entries.length - 1) {
-                throw new IllegalArgumentException("(n == size - 1) && cst.isCategory2()");
+
+        if (cat2) {
+            // Storing a category-2 entry nulls out the next index.
+            if (n == (entries.length - 1)) {
+                throw new IllegalArgumentException("(n == size - 1) && " +
+                                                   "cst.isCategory2()");
             }
-            this.entries[i + 1] = null;
+            entries[n + 1] = null;
         }
-        if (constant != null && this.entries[i] == null && (constant2 = this.entries[i - 1]) != null && constant2.isCategory2()) {
-            this.entries[i - 1] = null;
+
+        if ((cst != null) && (entries[n] == null)) {
+            /*
+             * Overwriting the second half of a category-2 entry nulls out
+             * the first half.
+             */
+            Constant prev = entries[n - 1];
+            if ((prev != null) && prev.isCategory2()) {
+                entries[n - 1] = null;
+            }
         }
-        this.entries[i] = constant;
+
+        entries[n] = cst;
+    }
+
+    /**
+     * Throws the right exception for an invalid cpi.
+     *
+     * @param idx the bad cpi
+     * @return never
+     * @throws ExceptionWithContext always thrown
+     */
+    private static Constant throwInvalid(int idx) {
+        throw new ExceptionWithContext("invalid constant pool index " +
+                                       Hex.u2(idx));
     }
 }
