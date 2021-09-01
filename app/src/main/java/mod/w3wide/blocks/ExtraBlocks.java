@@ -119,11 +119,11 @@ public class ExtraBlocks {
     }
 
     public boolean isComponentUsed(int componentId) {
-        return jC.a(sc_id).f(javaName, componentId) || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS);
+        return jC.a(sc_id).f(javaName, componentId) || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
     }
 
     public boolean isCustomVarUsed(String variable) {
-        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS)) {
+        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK)) {
             return true;
         }
 
