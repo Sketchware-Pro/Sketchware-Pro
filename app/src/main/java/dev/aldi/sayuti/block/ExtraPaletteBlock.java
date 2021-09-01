@@ -11,7 +11,6 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a.Ss;
 import a.a.a.jC;
 import a.a.a.kq;
 import a.a.a.xq;
@@ -53,7 +52,7 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     private boolean isWidgetUsed(String str) {
-        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS)) {
+        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK)) {
             return true;
         }
 
@@ -84,9 +83,9 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     /*
-    * ExtraPaletteBlock#f(Ss) moved to mod.w3wide.menu.ExtraMenuBean#defineMenuSelector(Ss)
-    * for better block menu selections and to add new stuff easily.
-    */
+     * ExtraPaletteBlock#f(Ss) moved to mod.w3wide.menu.ExtraMenuBean#defineMenuSelector(Ss)
+     * for better block menu selections and to add new stuff easily.
+     */
 
     public boolean e(String str, String str2) {
         switch (str) {
@@ -167,46 +166,46 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     private void variables() {
-        ArrayList<String> varBools = jC.a(sc_id).e(javaName, 0);
-        for (int i = 0; i < varBools.size(); i++) {
-        	if (i == 0) logicEditor.a("Boolean", 0xff555555);
-        	logicEditor.a(varBools.get(i), "b", "getVar").setTag(varBools.get(i));
+        ArrayList<String> booleanVariables = jC.a(sc_id).e(javaName, 0);
+        for (int i = 0; i < booleanVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Boolean", 0xff555555);
+            logicEditor.a(booleanVariables.get(i), "b", "getVar").setTag(booleanVariables.get(i));
         }
 
-        ArrayList<String> varNums = jC.a(sc_id).e(javaName, 1);
-        for (int i = 0; i < varNums.size(); i++) {
-        	if (i == 0) logicEditor.a("Number", 0xff555555);
-        	logicEditor.a(varNums.get(i), "d", "getVar").setTag(varNums.get(i));
+        ArrayList<String> numberVariables = jC.a(sc_id).e(javaName, 1);
+        for (int i = 0; i < numberVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Number", 0xff555555);
+            logicEditor.a(numberVariables.get(i), "d", "getVar").setTag(numberVariables.get(i));
         }
 
-        ArrayList<String> varStrs = jC.a(sc_id).e(javaName, 2);
-        for (int i = 0; i < varStrs.size(); i++) {
-        	if (i == 0) logicEditor.a("String", 0xff555555);
-        	logicEditor.a(varStrs.get(i), "s", "getVar").setTag(varStrs.get(i));
+        ArrayList<String> stringVariables = jC.a(sc_id).e(javaName, 2);
+        for (int i = 0; i < stringVariables.size(); i++) {
+            if (i == 0) logicEditor.a("String", 0xff555555);
+            logicEditor.a(stringVariables.get(i), "s", "getVar").setTag(stringVariables.get(i));
         }
 
-        ArrayList<String> varMaps = jC.a(sc_id).e(javaName, 3);
-        for (int i = 0; i < varMaps.size(); i++) {
-        	if (i == 0) logicEditor.a("Map", 0xff555555);
-        	logicEditor.a(varMaps.get(i), "a", "getVar").setTag(varMaps.get(i));
+        ArrayList<String> mapVariables = jC.a(sc_id).e(javaName, 3);
+        for (int i = 0; i < mapVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Map", 0xff555555);
+            logicEditor.a(mapVariables.get(i), "a", "getVar").setTag(mapVariables.get(i));
         }
 
-        ArrayList<String> varCustoms = jC.a(sc_id).e(javaName, 5);
-        for (int i = 0; i < varCustoms.size(); i++) {
-	    	if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
-	        String[] split = varCustoms.get(i).split(" ");
+        ArrayList<String> customVariables = jC.a(sc_id).e(javaName, 5);
+        for (int i = 0; i < customVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
+            String[] split = customVariables.get(i).split(" ");
             if (split.length > 1) {
-                logicEditor.a(split[1], "v", split[0], "getVar").setTag(varCustoms.get(i));
+                logicEditor.a(split[1], "v", split[0], "getVar").setTag(customVariables.get(i));
             } else {
-                SketchwareUtil.toastError("Received invalid data, content: {" + i + ":\"" + varCustoms.get(i) + "\"}");
+                SketchwareUtil.toastError("Received invalid data, content: {" + i + ":\"" + customVariables.get(i) + "\"}");
             }
         }
         BlocksHandler.primaryBlocksA(
-            logicEditor,
-            extraBlocks.isVariableUsed(0),
-            extraBlocks.isVariableUsed(1),
-            extraBlocks.isVariableUsed(2),
-            extraBlocks.isVariableUsed(3)
+                logicEditor,
+                extraBlocks.isVariableUsed(0),
+                extraBlocks.isVariableUsed(1),
+                extraBlocks.isVariableUsed(2),
+                extraBlocks.isVariableUsed(3)
         );
         blockCustomViews();
         blockDrawer();
@@ -271,7 +270,7 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     public final void blockDrawer() {
-        if (projectFile.hasActivityOption(4)) {
+        if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerViews = jC.a(sc_id).d(projectFile.getDrawerXmlName());
             if (drawerViews != null) {
                 for (int i = 0, drawerViewsSize = drawerViews.size(); i < drawerViewsSize; i++) {
@@ -342,11 +341,11 @@ public class ExtraPaletteBlock extends Activity {
             }
         }
         BlocksHandler.primaryBlocksB(
-            logicEditor,
-            extraBlocks.isListUsed(1),
-            extraBlocks.isListUsed(2),
-            extraBlocks.isListUsed(3),
-            eventName
+                logicEditor,
+                extraBlocks.isListUsed(1),
+                extraBlocks.isListUsed(2),
+                extraBlocks.isListUsed(3),
+                eventName
         );
     }
 
@@ -681,8 +680,8 @@ public class ExtraPaletteBlock extends Activity {
                 }
             }
             {
-                boolean drawerUsed = projectFile.hasActivityOption(4);
-                boolean fabUsed = projectFile.hasActivityOption(8);
+                boolean drawerUsed = projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER);
+                boolean fabUsed = projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
                 boolean bottomNavigationViewUsed = isWidgetUsed("BottomNavigationView");
                 boolean swipeRefreshLayoutUsed = isWidgetUsed("SwipeRefreshLayout");
                 boolean cardViewUsed = isWidgetUsed("CardView");
