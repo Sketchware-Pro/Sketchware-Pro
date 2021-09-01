@@ -262,7 +262,7 @@ public class SketchwareUtil {
     public static void toast(String message, int length) {
         try {
             bB.a(getContext(), message, length).show();
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             LogUtil.e("SketchwareUtil", "Failed to toast regular message, " +
                     "Toast's message was: \"" + message + "\"", e);
         }
@@ -286,7 +286,7 @@ public class SketchwareUtil {
     public static void toastError(String message, int length) {
         try {
             bB.b(getContext(), message, length).show();
-        } catch (NullPointerException e) {
+        } catch (RuntimeException e) {
             LogUtil.e("SketchwareUtil", "Failed to toast regular message, " +
                     "Toast's message was: \"" + message + "\"", e);
         }
