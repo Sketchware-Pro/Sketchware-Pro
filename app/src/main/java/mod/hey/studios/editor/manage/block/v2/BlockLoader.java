@@ -11,28 +11,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 
-//6.3.0
-
+/**
+ * An optimized Custom Blocks loader.
+ *
+ * @since v6.3.0
+ */
 public class BlockLoader {
 
     private static ArrayList<ExtraBlockInfo> blocks;
-    private static ArrayList<HashMap<String, Object>> palettes;
-
-    //public static final String NOT_FOUND = "/*BLOCK NOT FOUND*/";
-
 
     static {
         loadCustomBlocks();
     }
 
-    //NEW CLASS FOR OPTIMIZED CUSTOM BLOCK LOADING
-
     public static ExtraBlockInfo getBlockInfo(String block_name) {
-
         if (blocks == null) {
             loadCustomBlocks();
         }
@@ -45,40 +42,28 @@ public class BlockLoader {
 
         ExtraBlockInfo in = new ExtraBlockInfo();
         in.setName(block_name);
-        //in.setCode(NOT_FOUND);
         in.isMissing = true;
         return in;
     }
 
-
-    //6.3.0
     public static ExtraBlockInfo getBlockFromProject(String sc_id, String block_name) {
-        File file = new File(Environment.getExternalStorageDirectory(),
+        File customBlocksConfig = new File(Environment.getExternalStorageDirectory(),
                 ".sketchware/data/" + sc_id + "/custom_blocks");
-
-        if (file.exists()) {
-
+        if (customBlocksConfig.exists()) {
             try {
-
-                ArrayList<ExtraBlockInfo> infos = new Gson().fromJson(
-                        FileUtil.readFile(file.getAbsolutePath()),
+                ArrayList<ExtraBlockInfo> extraBlocks = new Gson().fromJson(
+                        FileUtil.readFile(customBlocksConfig.getAbsolutePath()),
                         new TypeToken<ArrayList<ExtraBlockInfo>>() {
-                        }.getType()
-                );
+                        }.getType());
 
-                //TODO
-
-                //   log("getBlockFromProject read success:" + new Gson().toJson(infos));
-
-                for (ExtraBlockInfo inf : infos) {
-                    if (block_name.equals(inf.getName())) {
-                        return inf;
+                for (ExtraBlockInfo info : extraBlocks) {
+                    if (block_name.equals(info.getName())) {
+                        return info;
                     }
                 }
 
             } catch (Exception e) {
-                //TODO
-                // log("getBlockFromProject catch:" + e.toString());
+                SketchwareUtil.toastError("Failed to get Custom Blocks for project " + sc_id + ": " + e.getMessage());
             }
         }
 
@@ -88,25 +73,15 @@ public class BlockLoader {
         return in;
     }
 
-    public static void log(String s) {
-        /*String path = new File(Environment.getExternalStorageDirectory(), ".sketchware/debug.txt").getAbsolutePath();
-
-        FileUtil.writeFile(path,
-                       FileUtil.readFile(path) + "\n" + s);*/
-    }
-
-
     private static void loadCustomBlocks() {
-        //ExtraBlockClassInfo.loadEBCI();
-
-        palettes = new PaletteSelector().getPaletteSelector();
+        ArrayList<HashMap<String, Object>> palettes = new PaletteSelector().getPaletteSelector();
 
         blocks = new ArrayList<>();
 
         ArrayList<HashMap<String, Object>> arrList = ExtraBlockFile.getExtraBlockData();
 
-        for (int j = 0; j < arrList.size(); j++) {
-            HashMap<String, Object> map = arrList.get(j);
+        for (int i = 0; i < arrList.size(); i++) {
+            HashMap<String, Object> map = arrList.get(i);
 
             if (!map.containsKey("name")) {
                 continue;
@@ -114,30 +89,91 @@ public class BlockLoader {
 
             ExtraBlockInfo info = new ExtraBlockInfo();
 
-            info.setName(map.get("name").toString());
+            Object name = map.get("name");
+
+            if (name instanceof String) {
+                info.setName((String) name);
+            } else {
+                info.setName("");
+                SketchwareUtil.toastError("Invalid name entry in Custom Block #" + (i + 1));
+                continue;
+            }
 
             if (map.containsKey("spec")) {
-                info.setSpec(map.get("spec").toString());
+                Object spec = map.get("spec");
+
+                if (spec instanceof String) {
+                    info.setSpec((String) spec);
+                }
             }
 
             if (map.containsKey("spec2")) {
-                info.setSpec2(map.get("spec2").toString());
+                Object spec2 = map.get("spec2");
+
+                if (spec2 instanceof String) {
+                    info.setSpec2((String) spec2);
+                }
             }
 
             if (map.containsKey("code")) {
-                info.setCode(map.get("code").toString());
+                Object code = map.get("code");
+
+                if (code instanceof String) {
+                    info.setCode((String) code);
+                }
             }
 
             if (map.containsKey("color")) {
-                info.setColor(Color.parseColor(map.get("color").toString()));
+                Object color = map.get("color");
+
+                if (color instanceof String) {
+                    try {
+                        info.setColor(Color.parseColor((String) color));
+                    } catch (IllegalArgumentException e) {
+                        SketchwareUtil.toastError("Invalid color in Custom Block #" + (i + 1));
+                        continue;
+                    }
+                }
             } else {
                 if (!map.containsKey("palette")) {
                     continue;
                 } else {
-                    for (int m = 0; m < palettes.size(); m++) {
-                        if (Integer.valueOf(map.get("palette").toString()) == palettes.get(m).get("index")) {
-                            info.setPaletteColor((Integer) palettes.get(m).get("color"));
+                    Object mapPalette = map.get("palette");
+                    if (mapPalette instanceof String) {
+                        try {
+                            int mapPaletteNumber = Integer.parseInt((String) mapPalette);
+
+                            for (int j = 0, palettesSize = palettes.size(); j < palettesSize; j++) {
+                                HashMap<String, Object> palette = palettes.get(j);
+                                Object paletteIndex = palette.get("index");
+
+                                if (paletteIndex instanceof Integer) {
+                                    int indexInt = (Integer) paletteIndex;
+
+                                    if (mapPaletteNumber == indexInt) {
+                                        Object paletteColor = palette.get("color");
+
+                                        if (paletteColor instanceof Integer) {
+                                            try {
+                                                info.setPaletteColor((Integer) paletteColor);
+                                            } catch (IllegalArgumentException e) {
+                                                SketchwareUtil.toastError("Invalid color in Custom Block palette #" + (j + 1));
+                                            }
+                                        } else {
+                                            SketchwareUtil.toastError("Invalid color value type in Custom Block palette #" + (j + 1));
+                                        }
+                                    }
+                                } else {
+                                    SketchwareUtil.toastError("Invalid palette index value type in Custom Block palette #" + (j + 1));
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            SketchwareUtil.toastError("Invalid palette number in Custom Block #" + (i + 1));
+                            continue;
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid palette number value type in Custom Block #" + (i + 1));
+                        continue;
                     }
                 }
             }
