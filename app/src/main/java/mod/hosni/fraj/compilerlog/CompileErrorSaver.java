@@ -22,9 +22,9 @@ public class CompileErrorSaver {
 
     private static final String MESSAGE_NO_COMPILE_ERRORS_SAVED = "No compile errors have been saved yet.";
 
-    public String sc_id;
+    public String PROJECT_ID;
     public FilePathUtil filePathUtil = new FilePathUtil();
-    public String path;
+    public String log_path;
 
     /**
      * Create this helper class for saving compile errors.
@@ -32,8 +32,8 @@ public class CompileErrorSaver {
      * @param sc_id The Sketchware project ID for the project to operate on, like 605
      */
     public CompileErrorSaver(String sc_id) {
-        this.sc_id = sc_id;
-        path = FilePathUtil.getLastCompileLogPath(sc_id);
+        this.PROJECT_ID = sc_id;
+        log_path = FilePathUtil.getLastCompileLogPath(sc_id);
         check();
     }
 
@@ -43,8 +43,8 @@ public class CompileErrorSaver {
      * @param errorText The text to save, if possible, with detailed messages
      */
     public void setErrorText(String errorText) {
-        FileUtil.deleteFile(path);
-        FileUtil.writeFile(path, errorText);
+        FileUtil.deleteFile(log_path);
+        FileUtil.writeFile(log_path, errorText);
     }
 
     /**
@@ -89,14 +89,14 @@ public class CompileErrorSaver {
      * Clear the last saved error text.
      */
     public void clear() {
-        FileUtil.deleteFile(path);
+        FileUtil.deleteFile(log_path);
     }
 
     /**
      * @return The last saved error text
      */
     public String getLog() {
-        return FileUtil.readFile(path);
+        return FileUtil.readFile(log_path);
     }
 
     /**
@@ -104,8 +104,8 @@ public class CompileErrorSaver {
      * {@link CompileErrorSaver#MESSAGE_NO_COMPILE_ERRORS_SAVED} will be written to it.
      */
     public void check() {
-        if (!FileUtil.isExistFile(path)) {
-            FileUtil.writeFile(path, MESSAGE_NO_COMPILE_ERRORS_SAVED);
+        if (!FileUtil.isExistFile(log_path)) {
+            FileUtil.writeFile(log_path, MESSAGE_NO_COMPILE_ERRORS_SAVED);
         }
     }
 }
