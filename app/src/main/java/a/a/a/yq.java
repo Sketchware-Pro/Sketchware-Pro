@@ -525,21 +525,25 @@ public class yq {
         }
     }
 
-    public void a(String str, String str2) {
-        if (str.endsWith("java")) {
-            L.b(y + File.separator + n + File.separator + str, str2);
-        } else if (str.equals("AndroidManifest.xml")) {
-            L.b(r, str2);
-        } else if (str.equals("colors.xml") || str.equals("styles.xml") || str.equals("strings.xml")) {
-            L.b(w + File.separator + "values" + File.separator + str, str2);
-        } else if (str.equals("provider_paths.xml")) {
-            L.b(w + File.separator + "xml" + File.separator + str, str2);
+    public void a(String fileName, String fileExtension) {
+        if (fileName.endsWith("java")) {
+            L.b(y + File.separator + n + File.separator + fileName, fileExtension);
+        } else if (fileName.equals("AndroidManifest.xml")) {
+            L.b(r, fileExtension);
+        } else if (fileName.equals("colors.xml") || fileName.equals("styles.xml") || fileName.equals("strings.xml")) {
+            L.b(w + File.separator + "values" + File.separator + fileName, fileExtension);
+        } else if (fileName.equals("provider_paths.xml")) {
+            L.b(w + File.separator + "xml" + File.separator + fileName, fileExtension);
         } else {
-            L.b(x + File.separator + str, str2);
+            L.b(x + File.separator + fileName, fileExtension);
         }
     }
 
-    public void a(iC iCVar, hC hCVar, eC eCVar, boolean z2) {
+    public void a(iC projectLibraryManager, hC projectFileManager, eC projectDataManager, boolean z2) {
+        ProjectLibraryBean admobLib = projectLibraryManager.b();
+        ProjectLibraryBean compatLib = projectLibraryManager.c();
+        ProjectLibraryBean firebaseLib = projectLibraryManager.d();
+        ProjectLibraryBean googleMaplib = projectLibraryManager.e();
         N = new jq();
         N.a = e;
         N.b = f;
@@ -548,31 +552,31 @@ public class yq {
         N.sc_id = b;
         N.e = O.h();
         N.f = !z2;
-        if (iCVar.d().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (firebaseLib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.h = true;
             N.a(jq.PERMISSION_INTERNET);
             N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
         }
-        if (iCVar.c().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (compatLib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
         }
-        if (iCVar.b().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (admobLib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.l = true;
             N.a(jq.PERMISSION_INTERNET);
             N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
-            N.a(iCVar.b());
+            N.a(admobLib);
         }
-        if (iCVar.e().useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (googleMaplib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.m = true;
             N.a(jq.PERMISSION_INTERNET);
             N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
-            N.b(iCVar.e());
+            N.b(googleMaplib);
         }
-        for (ProjectFileBean next : hCVar.b()) {
+        for (ProjectFileBean next : projectFileManager.b()) {
             if (next.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 N.a(next.getActivityName()).a = true;
             }
-            for (ComponentBean component : eCVar.e(next.getJavaName())) {
+            for (ComponentBean component : projectDataManager.e(next.getJavaName())) {
                 if (component.type == ComponentBean.COMPONENT_TYPE_CAMERA || component.type == 35) {
                     N.g = true;
                     N.u = true;
@@ -619,7 +623,7 @@ public class yq {
                     N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
                 }
             }
-            for (Map.Entry<String, ArrayList<BlockBean>> entry : eCVar.b(next.getJavaName()).entrySet()) {
+            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(next.getJavaName()).entrySet()) {
                 for (BlockBean bean : entry.getValue()) {
                     N.x.setParams(bean.parameters, e, bean.opCode);
                     String opCode = bean.opCode;
@@ -647,6 +651,7 @@ public class yq {
 
                         case "fileutilwrite":
                         case "fileutilcopy":
+                        case "fileutilcopydir":
                         case "fileutilmove":
                         case "fileutildelete":
                         case "fileutilmakedir":
@@ -695,15 +700,15 @@ public class yq {
      *
      * @see yq#b(hC, eC, iC, boolean)
      */
-    public void b(hC hCVar, eC eCVar, iC iCVar) {
-        b(hCVar, eCVar, iCVar, false);
+    public void b(hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
+        b(projectFileManager, projectDataManager, projectLibraryManager, false);
     }
 
     /**
      * Generates other miscellaneous XML files, such as <code>provider_paths.xml</code> and <code>secrets.xml</code>.
      */
-    public void b(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
-        ArrayList<SrcCodeBean> srcCodeBeans = a(hCVar, eCVar, iCVar, z2);
+    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean z2) {
+        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, z2);
         if (N.u) {
             Nx pathsTag = new Nx("paths");
             pathsTag.a("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -719,7 +724,7 @@ public class yq {
             a(bean.srcFileName, bean.source);
         }
         if (N.h || N.l || N.m) {
-            ProjectLibraryBean firebaseLibrary = iCVar.d();
+            ProjectLibraryBean firebaseLibrary = projectLibraryManager.d();
             Mx mx = new Mx();
             mx.a("google_play_services_version", 12451000);
             if (N.h) {
@@ -735,7 +740,7 @@ public class yq {
             }
             if (N.m) {
                 // if p3 is false, then "translatable="false" will be added
-                mx.a("google_maps_key", iCVar.e().data, false);
+                mx.a("google_maps_key", projectLibraryManager.e().data, false);
             }
             String filePath = "values/secrets.xml";
             L.b(w + File.separator + filePath,
@@ -747,8 +752,8 @@ public class yq {
     /**
      * Get source code files that are viewable in SrcCodeViewer
      */
-    public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar, boolean z2) {
-        a(iCVar, hCVar, eCVar, z2);
+    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, iC projectLibraryManager, boolean z2) {
+        a(projectLibraryManager, projectFileManager, projectDataManager, z2);
         CommandBlock.x();
 
         final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
@@ -769,35 +774,35 @@ public class yq {
         // Generate Activities unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/java/
         ArrayList<SrcCodeBean> srcCodeBeans = new ArrayList<>();
-        for (ProjectFileBean activity : hCVar.b()) {
+        for (ProjectFileBean activity : projectFileManager.b()) {
             if (!javaFiles.contains(new File(javaDir + activity.getJavaName()))) {
                 srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
-                        new Jx(N, activity, eCVar).a()));
+                        new Jx(N, activity, projectDataManager).a()));
             }
         }
 
         // Generate layouts unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
-        for (ProjectFileBean layout : hCVar.b()) {
+        for (ProjectFileBean layout : projectFileManager.b()) {
             String xmlName = layout.getXmlName();
             Ox ox = new Ox(N, layout);
-            ox.a(eC.a(eCVar.d(xmlName)), eCVar.h(xmlName));
+            ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
             if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
                 srcCodeBeans.add(new SrcCodeBean(xmlName,
                         CommandBlock.applyCommands(xmlName, ox.b())));
             }
         }
-        for (ProjectFileBean layout : hCVar.c()) {
+        for (ProjectFileBean layout : projectFileManager.c()) {
             String xmlName = layout.getXmlName();
             Ox ox = new Ox(N, layout);
-            ox.a(eC.a(eCVar.d(xmlName)));
+            ox.a(eC.a(projectDataManager.d(xmlName)));
             if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
                 srcCodeBeans.add(new SrcCodeBean(xmlName,
                         CommandBlock.applyCommands(xmlName, ox.b())));
             }
         }
 
-        Ix ix = new Ix(N, hCVar.b());
+        Ix ix = new Ix(N, projectFileManager.b());
         ix.setYq(this);
 
         // Make generated classes viewable
@@ -915,10 +920,10 @@ public class yq {
      *
      * @return The Activity specified by <code>javaName</code>'s source or an empty String if not found
      */
-    public String getActivitySrc(String javaName, hC hCVar, eC eCVar, iC iCVar) {
-        a(iCVar, hCVar, eCVar, false);
-        for (ProjectFileBean activity : hCVar.b()) {
-            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, eCVar).a();
+    public String getActivitySrc(String javaName, hC projectFileManager, eC projectDataManger, iC projectLibraryManager) {
+        a(projectLibraryManager, projectFileManager, projectDataManger, false);
+        for (ProjectFileBean activity : projectFileManager.b()) {
+            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, projectDataManger).a();
         }
         return "";
     }
