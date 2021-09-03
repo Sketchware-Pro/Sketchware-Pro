@@ -33,6 +33,7 @@ public class Resources {
         public static final int abc_96 = 0x7f070006;
         public static final int abc_96_color = 0x7f070007;
         public static final int add_96_blue = 0x7f070072;
+        public static final int android_icon = 0x7f070080;
         public static final int android_os_96 = 0x7f070082;
         public static final int arrow_back_white_48dp = 0x7f070089;
         public static final int bg_event_type_activity = 0x7f070095;
@@ -46,6 +47,7 @@ public class Resources {
         public static final int break_warning_96_red = 0x7f0700cf;
         public static final int cart_filled_48 = 0x7f0700da;
         public static final int categorize_48 = 0x7f0700db;
+        public static final int check_upload_apk_48dp = 0x7f0700e0;
         public static final int chrome_96 = 0x7f0700e7;
         public static final int code_icon = 0x7f070108;
         public static final int collect_48 = 0x7f07010b;
@@ -66,11 +68,16 @@ public class Resources {
         public static final int delete_96 = 0x7f070154;
         public static final int enlarge_48 = 0x7f07016b;
         public static final int event_on_accuracy_changed_48dp = 0x7f07016e;
+        public static final int event_on_animation_start_48dp = 0x7f070175;
+        public static final int event_on_page_started_48dp = 0x7f070194;
+        public static final int event_on_progress_changed_48dp = 0x7f070197;
         public static final int event_on_response_48dp = 0x7f070199;
+        public static final int event_on_stop_tracking_touch_48dp = 0x7f0701a0;
         public static final int exit_96 = 0x7f0701a4;
         public static final int expand_48 = 0x7f0701a5;
         public static final int facebook_50 = 0x7f0701ac;
         public static final int file_48_blue = 0x7f0701b6;
+        public static final int file_96 = 0x7f0701b7;
         public static final int file_app_icon = 0x7f0701b8;
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
@@ -166,6 +173,7 @@ public class Resources {
         public static final int widget_fragment = 0x7f070460;
         public static final int ic_property_inject = 0x7f07046b;
         public static final int ic_property_convert = 0x7f07046c;
+        public static final int widget_swipe_refresh = 0x7f070470;
         public static final int add_file_48 = 0x7f070473;
         public static final int widget_phone_auth = 0x7f070474;
         public static final int component_dynamic_link = 0x7f070475;
@@ -510,6 +518,7 @@ public class Resources {
         public static final int codeeditor_more_options = 0x7f0806f8;
         public static final int code_editor_layoutScrollView = 0x7f0806f9;
         public static final int project_config_pref_layout = 0x7f0806fc;
+        public static final int dialog_create_new_file_layoutTitle = 0x7f0806fd;
         // WTF
         public static final int linear3 = 0x7f0806fe;
         public static final int progressbar1 = 0x7f0806ff;
