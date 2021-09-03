@@ -14,7 +14,7 @@ public class LogicHandler {
             ArrayList<String> arr;
             ArrayList<String> arr2 = new ArrayList<>();
             arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
-            for (int i = 0; i < (int) (arr.size()); i++) {
+            for (int i = 0; i < arr.size(); i++) {
                 if (n == 1) {
                     if (!arr.get(i).contains("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF")) { //it doesn't contain the starting code.
                         arr2.add(arr.get(i));
@@ -28,7 +28,7 @@ public class LogicHandler {
                 }
             }
             //assemble
-            for (int i = 0; i < (int) (arr2.size()); i++) {
+            for (int i = 0; i < arr2.size(); i++) {
                 if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
@@ -48,7 +48,7 @@ public class LogicHandler {
             ArrayList<String> arr;
             ArrayList<String> arr2 = new ArrayList<>();
             arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
-            for (int i = 0; i < (int) (arr.size()); i++) {
+            for (int i = 0; i < arr.size(); i++) {
                 if (arr.get(i).contains("//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ")) {//end
                     break;
                 }
@@ -60,7 +60,7 @@ public class LogicHandler {
                 }
             }
             //assemble
-            for (int i = 0; i < (int) (arr2.size()); i++) {
+            for (int i = 0; i < arr2.size(); i++) {
                 if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
@@ -80,7 +80,7 @@ public class LogicHandler {
             ArrayList<String> arr;
             ArrayList<String> arr2 = new ArrayList<>();
             arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
-            for (int i = 0; i < (int) (arr.size()); i++) {
+            for (int i = 0; i < arr.size(); i++) {
                 if (arr.get(i).contains("//F45d45FDs4f56iq")) {
                     break;
                 }
@@ -92,7 +92,7 @@ public class LogicHandler {
                 }
             }
             //assemble
-            for (int i = 0; i < (int) (arr2.size()); i++) {
+            for (int i = 0; i < arr2.size(); i++) {
                 if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
@@ -111,7 +111,7 @@ public class LogicHandler {
             ArrayList<String> arr;
             ArrayList<String> arr2 = new ArrayList<>();
             arr = new ArrayList<>(Arrays.asList(codes.split("\n")));
-            for (int i = 0; i < (int) (arr.size()); i++) {
+            for (int i = 0; i < arr.size(); i++) {
                 if (arr.get(i).contains("//F45d45FDs4f56ic")) {
                     break;
                 }
@@ -123,7 +123,7 @@ public class LogicHandler {
                 }
             }
             //assemble
-            for (int i = 0; i < (int) (arr2.size()); i++) {
+            for (int i = 0; i < arr2.size(); i++) {
                 if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
