@@ -18,7 +18,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.w3wide.tools.ComponentHelper;
 
-public class ComponentsMakerCreator extends Activity {
+public class ComponentsMakerCreator extends Activity implements View.OnClickListener {
 
     private MaterialButton cancel;
     private EditText coAddiVar;
@@ -100,26 +100,31 @@ public class ComponentsMakerCreator extends Activity {
         this.coName.addTextChangedListener(new ComponentHelper(new EditText[]{this.coBuildClass, this.coVarName, this.coTypeName, this.coTypeClass}, this.coTypeClass));
     }
 
-    private void setupViews() {
-        cancel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case 2131232457://back_icon
+            case 2131232502://cancel
                 finish();
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            break;
+
+            case 2131232503://save
                 if (filledIn()) {
                     save();
                 } else {
                     SketchwareUtil.toast("Some required fields are empty");
                 }
-            }
-        });
-        selectIcon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            break;
+
+            case 2131232493://selectIcon
                 showIconSelectorDialog();
-            }
-        });
+            break;
+        }
+    }
+
+    private void setupViews() {
+        cancel.setOnClickListener(this);
+        save.setOnClickListener(this);
+        selectIcon.setOnClickListener(this);
     }
 
     private void showIconSelectorDialog() {
@@ -175,11 +180,7 @@ public class ComponentsMakerCreator extends Activity {
             ((TextView) findViewById(2131232458)).setText("Create a new component");
         }
         ImageView back_icon = findViewById(2131232457);
-        back_icon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        back_icon.setOnClickListener(this);
         Helper.applyRippleToToolbarView(back_icon);
     }
 }
