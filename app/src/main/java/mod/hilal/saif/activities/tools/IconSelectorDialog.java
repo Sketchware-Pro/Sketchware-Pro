@@ -1,10 +1,15 @@
 package mod.hilal.saif.activities.tools;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -15,13 +20,10 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import mod.SketchwareUtil;
 
 public class IconSelectorDialog extends Dialog {
 
-    private final ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+    private final ArrayList<Integer> data = new ArrayList<>();
     private final EditText ed;
     private ViewGroup base;
     private RecyclerView dump;
@@ -43,34 +45,61 @@ public class IconSelectorDialog extends Dialog {
 
     public void setUpViews() {
         GridView gridView = new GridView(getContext());
-        gridView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1, 0.0f));
+        gridView.setLayoutParams(
+            new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0.0f
+            )
+        );
         gridView.setNumColumns(6);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ed.setText(String.valueOf(((Integer) data.get(position).get("n")).intValue()));
+                ed.setText(String.valueOf(data.get(position)));
                 dismiss();
             }
         });
         base.addView(gridView);
         for (int i = 2131165190; i < 2131166368; i++) {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("n", i);
-            data.add(hashMap);
+            data.add(i);
         }
-        gridView.setAdapter(new ListAdapter(data));
+        //data.subList(data.indexOf(2131165192), data.indexOf(2131165274)).clear();
+        gridView.setAdapter(new IconListAdapter(data));
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
+        if (!ed.getText().toString().isEmpty()) {
+	        gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString()))
+			);
+		}
+        
     }
 
     private View pallette(int resourceId) {
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, -1, 0.0f));
-        linearLayout.setGravity(17);
+        linearLayout.setLayoutParams(
+            new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0.0f
+            )
+        );
+        linearLayout.setGravity(Gravity.CENTER);
         ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(new LinearLayout.LayoutParams((int) SketchwareUtil.getDip(50), (int) SketchwareUtil.getDip(50), 0.0f));
+        imageView.setLayoutParams(
+            new LinearLayout.LayoutParams(
+                (int) getDip(50),
+                (int) getDip(50),
+                0.0f
+            )
+        );
         imageView.setImageResource(resourceId);
-        imageView.setPadding((int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(4));
+        imageView.setPadding(
+            (int) getDip(4),
+            (int) getDip(4),
+            (int) getDip(4),
+            (int) getDip(4)
+        );
         linearLayout.addView(imageView);
         return linearLayout;
     }
@@ -79,32 +108,32 @@ public class IconSelectorDialog extends Dialog {
         super.show();
     }
 
-    private class ListAdapter extends BaseAdapter {
+    private class IconListAdapter extends BaseAdapter {
 
-        private final ArrayList<HashMap<String, Object>> _data;
+        private final ArrayList<Integer> iconsList;
 
-        public ListAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            _data = arrayList;
+        public IconListAdapter(ArrayList<Integer> arrayList) {
+            iconsList = arrayList;
         }
 
         @Override
         public int getCount() {
-            return _data.size();
+            return iconsList.size();
         }
 
         @Override
-        public HashMap<String, Object> getItem(int i) {
-            return _data.get(i);
+        public Integer getItem(int index) {
+            return iconsList.get(index);
         }
 
         @Override
-        public long getItemId(int i) {
-            return i;
+        public long getItemId(int index) {
+            return index;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return pallette((Integer) data.get(position).get("n"));
+            return pallette(getItem(position));
         }
     }
 }
