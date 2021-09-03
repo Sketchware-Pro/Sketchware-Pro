@@ -15,6 +15,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
+import mod.jbk.util.LogUtil;
 
 /**
  * An optimized Custom Blocks loader.
@@ -180,6 +181,13 @@ public class BlockLoader {
 
             blocks.add(info);
         }
+    }
+
+    /**
+     * Still used in {@link a.a.a.Rs}, so it must exist (for now).
+     */
+    public static void log(String message) {
+        LogUtil.d("BlockLoader", message);
     }
 
     public static void refresh() {
