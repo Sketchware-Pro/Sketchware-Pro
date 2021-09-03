@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
@@ -47,6 +46,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 import mod.w3wide.highlighter.SimpleHighlighter;
+import mod.w3wide.lib.BaseTextWatcher;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
@@ -58,19 +58,19 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     /**
      * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
      */
-    private String mod = "";
+    private String mode = "";
     /**
      * Position of current editing/adding/inserting block in palette
      */
-    private int n = 0;
+    private int blockPosition = 0;
     private EditText name;
-    private TextView page_title;
-    private String pallet_colour = "";
-    private LinearLayout parameters_hold;
+    private TextView pageTitle;
+    private String palletColour = "";
+    private LinearLayout parametersHolder;
     private String path = "";
     private EditText spec;
     private EditText spec2;
-    private TextInputLayout spec2_lay;
+    private TextInputLayout spec2InputLayout;
     private EditText type;
     private EditText typename;
 
@@ -84,60 +84,54 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
 
     private void initialize() {
         ScrollView vscroll1 = findViewById(Resources.id.vscroll1);
-        ImageView back_icon = findViewById(Resources.id.back_ico);
-        page_title = findViewById(Resources.id.page_title);
-        TextInputLayout name_lay = findViewById(Resources.id.name_lay);
+        ImageView backIcon = findViewById(Resources.id.back_ico);
+        pageTitle = findViewById(Resources.id.page_title);
+        TextInputLayout nameLayout = findViewById(Resources.id.name_lay);
         name = findViewById(Resources.id.name);
-        LinearLayout select_type = findViewById(Resources.id.select_type);
+        LinearLayout selectType = findViewById(Resources.id.select_type);
         type = findViewById(Resources.id.type);
         typename = findViewById(Resources.id.type_name);
         spec = findViewById(Resources.id.spec);
         hscroll1 = findViewById(Resources.id.hscroll1);
-        spec2_lay = findViewById(Resources.id.spec_2lay);
-        LinearLayout color_selector = findViewById(Resources.id.colour_selector);
+        spec2InputLayout = findViewById(Resources.id.spec_2lay);
+        LinearLayout colorSelector = findViewById(Resources.id.colour_selector);
         colour = findViewById(Resources.id.color);
-        parameters_hold = findViewById(Resources.id.parameter_holder);
+        parametersHolder = findViewById(Resources.id.parameter_holder);
         spec2 = findViewById(Resources.id.spec2);
         code = findViewById(Resources.id.code);
         MaterialButton cancel = findViewById(Resources.id.cancel);
         MaterialButton save = findViewById(Resources.id.save);
         LinearLayout reset = findViewById(Resources.id.reset);
 
-        AlertDialog.Builder block_type_dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder blockTypeDialog = new AlertDialog.Builder(this);
 
-        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(back_icon);
+        backIcon.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(backIcon);
 
-        name.addTextChangedListener(new TextWatcher() {
+        name.addTextChangedListener(new BaseTextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String string = s.toString();
                 if (!id_detector.contains(string)) {
-                    name_lay.setErrorEnabled(false);
+                    nameLayout.setErrorEnabled(false);
                     save.setEnabled(true);
-                } else if (!mod.equals("edit")) {
-                    name_lay.setErrorEnabled(true);
-                    name_lay.setError("Block name already in use");
+                } else if (! mode.equals("edit")) {
+                    nameLayout.setErrorEnabled(true);
+                    nameLayout.setError("Block name already in use");
                     save.setEnabled(false);
                 } else {
-                    HashMap<String, Object> savedBlocksListBlock = blocksList.get(n);
+                    HashMap<String, Object> savedBlocksListBlock = blocksList.get(blockPosition);
                     Object blockNameObject = savedBlocksListBlock.get("name");
 
                     if (!string.equals(blockNameObject)) {
-                        name_lay.setErrorEnabled(true);
-                        name_lay.setError("Block name already in use");
+                        nameLayout.setErrorEnabled(true);
+                        nameLayout.setError("Block name already in use");
                         save.setEnabled(false);
                     }
                 }
             }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-            }
         });
 
-        select_type.setOnClickListener(v -> {
+        selectType.setOnClickListener(v -> {
             List<String> types = Arrays.asList(
                     "regular",
                     "c",
@@ -167,7 +161,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                     "Header (h)"
             );
             AtomicInteger choice = new AtomicInteger();
-            block_type_dialog.setTitle("Block type")
+            blockTypeDialog.setTitle("Block type")
                     .setSingleChoiceItems(choices.toArray(new String[0]),
                             types.indexOf(type.getText().toString()), (dialog, which) -> choice.set(which))
                     .setPositiveButton(Resources.string.common_word_save, (dialog, which) -> type.setText(types.get(choice.get())))
@@ -175,64 +169,52 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                     .create().show();
         });
 
-        type.addTextChangedListener(new TextWatcher() {
+        type.addTextChangedListener(new BaseTextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("e")) {
                     AutoTransition transition = new AutoTransition();
                     transition.setDuration(300L);
                     TransitionManager.beginDelayedTransition(vscroll1, transition);
-                    spec2_lay.setVisibility(View.VISIBLE);
+                    spec2InputLayout.setVisibility(View.VISIBLE);
                 } else {
                     AutoTransition transition = new AutoTransition();
                     transition.setDuration(300L);
                     TransitionManager.beginDelayedTransition(vscroll1, transition);
-                    spec2_lay.setVisibility(View.GONE);
+                    spec2InputLayout.setVisibility(View.GONE);
                 }
-                _updateBlockSpec(s.toString(), colour.getText().toString());
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
+                updateBlockSpec(s.toString(), colour.getText().toString());
             }
         });
 
-        spec.addTextChangedListener(new TextWatcher() {
+        spec.addTextChangedListener(new BaseTextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Matcher matcher = Pattern.compile("%[smdb]\\.?[a-zA-Z]*").matcher(s.toString());
                 while (matcher.find()) {
                     try {
                         spec.getEditableText().setSpan(new ForegroundColorSpan(Color.WHITE),
-                                matcher.start(), matcher.end(), 33);
+                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } catch (Exception ignored) {
                     }
                     try {
                         spec.getEditableText().setSpan(new BackgroundColorSpan(0x18000000),
-                                matcher.start(), matcher.end(), 33);
+                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } catch (Exception ignored) {
                     }
                     try {
                         spec.getEditableText().setSpan(new RelativeSizeSpan(-5),
-                                matcher.start(), matcher.end(), 33);
+                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } catch (Exception ignored) {
                     }
                     try {
                         spec.getEditableText().setSpan(new StyleSpan(1), matcher.start(),
-                                matcher.end(), 33);
+                                matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } catch (Exception ignored) {
                     }
                 }
             }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
-            }
         });
 
-        color_selector.setOnClickListener(v -> {
+        colorSelector.setOnClickListener(v -> {
             View inflate = getLayoutInflater().inflate(Resources.layout.color_picker, null);
             Zx zx = new Zx(inflate, BlocksManagerCreatorActivity.this, 0, true, false);
             zx.a(new PCP(colour));
@@ -240,15 +222,9 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
             zx.showAtLocation(inflate, Gravity.CENTER, 0, 0);
         });
 
-        colour.addTextChangedListener(new TextWatcher() {
+        colour.addTextChangedListener(new BaseTextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                _updateBlockSpec(type.getText().toString(), s.toString());
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void afterTextChanged(Editable s) {
+                updateBlockSpec(type.getText().toString(), s.toString());
             }
         });
 
@@ -257,18 +233,18 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
             if (type.getText().toString().equals("")) {
                 type.setText(" ");
             }
-            if (mod.equals("add")) {
-                _AddBlock();
+            if (mode.equals("add")) {
+                addBlock();
             }
-            if (mod.equals("insert")) {
-                _insertBlockAt(n);
+            if (mode.equals("insert")) {
+                insertBlockAt(blockPosition);
             }
-            if (mod.equals("edit")) {
-                _editBlock(n);
+            if (mode.equals("edit")) {
+                editBlock(blockPosition);
             }
         });
 
-        reset.setOnClickListener(v -> colour.setText(pallet_colour));
+        reset.setOnClickListener(v -> colour.setText(palletColour));
         spec.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -285,13 +261,13 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        _inputsProp();
-        _addParams();
-        _receiveIntents();
+        inputProperties();
+        addParameters();
+        receiveIntents();
         new SimpleHighlighter(code);
     }
 
-    private View _k(final String str, String str2) {
+    private View addBlockMenu(final String menu, String name) {
         TextView textView = new TextView(this);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -303,20 +279,20 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                 0
         );
         textView.setTextColor(0xff006064);
-        textView.setText(str2);
+        textView.setText(name);
         textView.setTextSize(14.0f);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setOnClickListener(v -> {
             StringBuilder sb = new StringBuilder(spec.getText().toString());
             int selectionStart = spec.getSelectionStart();
-            sb.insert(selectionStart, str);
+            sb.insert(selectionStart, menu);
             spec.setText(sb);
-            spec.setSelection(selectionStart + str.length());
+            spec.setSelection(selectionStart + menu.length());
         });
         return textView;
     }
 
-    private void _inputsProp() {
+    private void inputProperties() {
         name.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         name.setSingleLine(true);
         type.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -333,55 +309,55 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         code.setSingleLine(false);
         hscroll1.setVerticalScrollBarEnabled(false);
         hscroll1.setHorizontalScrollBarEnabled(false);
-        spec2_lay.setVisibility(View.GONE);
+        spec2InputLayout.setVisibility(View.GONE);
     }
 
-    private void _addParams() {
-        parameters_hold.addView(_k("%s.inputOnly ", "inputOnly"));
-        parameters_hold.addView(_k("%s ", "string"));
-        parameters_hold.addView(_k("%b ", "boolean"));
-        parameters_hold.addView(_k("%d ", "number"));
-        parameters_hold.addView(_k("%m.varMap ", "map"));
-        parameters_hold.addView(_k("%m.view ", "view"));
-        parameters_hold.addView(_k("%m.textview ", "textView"));
-        parameters_hold.addView(_k("%m.edittext ", "editText"));
-        parameters_hold.addView(_k("%m.imageview ", "ImageView"));
-        parameters_hold.addView(_k("%m.listview ", "listView"));
-        parameters_hold.addView(_k("%m.list ", "list"));
-        parameters_hold.addView(_k("%m.listMap ", "listMap"));
-        parameters_hold.addView(_k("%m.listStr ", "listString"));
-        parameters_hold.addView(_k("%m.listInt ", "listNumber"));
-        parameters_hold.addView(_k("%m.intent ", "intent"));
-        parameters_hold.addView(_k("%m.color ", "color"));
-        parameters_hold.addView(_k("%m.activity ", "activity"));
-        parameters_hold.addView(_k("%m.resource ", "resource"));
-        parameters_hold.addView(_k("%m.customViews ", "custom views"));
-        parameters_hold.addView(_k("%m.layout ", "layout"));
-        parameters_hold.addView(_k("%m.anim ", "anim"));
-        parameters_hold.addView(_k("%m.drawable ", "drawable"));
+    private void addParameters() {
+        parametersHolder.addView(addBlockMenu("%s.inputOnly ", "inputOnly"));
+        parametersHolder.addView(addBlockMenu("%s ", "string"));
+        parametersHolder.addView(addBlockMenu("%b ", "boolean"));
+        parametersHolder.addView(addBlockMenu("%d ", "number"));
+        parametersHolder.addView(addBlockMenu("%m.varMap ", "map"));
+        parametersHolder.addView(addBlockMenu("%m.view ", "view"));
+        parametersHolder.addView(addBlockMenu("%m.textview ", "textView"));
+        parametersHolder.addView(addBlockMenu("%m.edittext ", "editText"));
+        parametersHolder.addView(addBlockMenu("%m.imageview ", "ImageView"));
+        parametersHolder.addView(addBlockMenu("%m.listview ", "listView"));
+        parametersHolder.addView(addBlockMenu("%m.list ", "list"));
+        parametersHolder.addView(addBlockMenu("%m.listMap ", "listMap"));
+        parametersHolder.addView(addBlockMenu("%m.listStr ", "listString"));
+        parametersHolder.addView(addBlockMenu("%m.listInt ", "listNumber"));
+        parametersHolder.addView(addBlockMenu("%m.intent ", "intent"));
+        parametersHolder.addView(addBlockMenu("%m.color ", "color"));
+        parametersHolder.addView(addBlockMenu("%m.activity ", "activity"));
+        parametersHolder.addView(addBlockMenu("%m.resource ", "resource"));
+        parametersHolder.addView(addBlockMenu("%m.customViews ", "custom views"));
+        parametersHolder.addView(addBlockMenu("%m.layout ", "layout"));
+        parametersHolder.addView(addBlockMenu("%m.anim ", "anim"));
+        parametersHolder.addView(addBlockMenu("%m.drawable ", "drawable"));
     }
 
-    private void _receiveIntents() {
-        mod = getIntent().getStringExtra("mode");
+    private void receiveIntents() {
+        mode = getIntent().getStringExtra("mode");
         path = getIntent().getStringExtra("path");
-        pallet_colour = getIntent().getStringExtra("color");
-        _getList();
-        if (mod.equals("add")) {
-            n = Integer.parseInt(getIntent().getStringExtra("pallet"));
-            colour.setText(pallet_colour);
-            page_title.setText("Add a new block");
+        palletColour = getIntent().getStringExtra("color");
+        getBlockList();
+        if (mode.equals("add")) {
+            blockPosition = Integer.parseInt(getIntent().getStringExtra("pallet"));
+            colour.setText(palletColour);
+            pageTitle.setText("Add a new block");
             return;
         }
-        n = Integer.parseInt(getIntent().getStringExtra("pos"));
-        colour.setText(pallet_colour);
-        page_title.setText("Insert block");
-        if (mod.equals("edit")) {
-            page_title.setText("Edit block");
-            _fillUpInputs(n);
+        blockPosition = Integer.parseInt(getIntent().getStringExtra("pos"));
+        colour.setText(palletColour);
+        pageTitle.setText("Insert block");
+        if (mode.equals("edit")) {
+            pageTitle.setText("Edit block");
+            fillUpInputs(blockPosition);
         }
     }
 
-    private void _fillUpInputs(int position) {
+    private void fillUpInputs(int position) {
         HashMap<String, Object> block = blocksList.get(position);
 
         Object nameObject = block.get("name");
@@ -437,7 +413,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                 colour.setError("Invalid color block data");
             }
         } else {
-            colour.setText(pallet_colour);
+            colour.setText(palletColour);
         }
 
         Object codeObject = block.get("code");
@@ -448,7 +424,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         }
     }
 
-    private void _getList() {
+    private void getBlockList() {
         try {
             blocksList = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
 
@@ -471,7 +447,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         blocksList = new ArrayList<>();
     }
 
-    private void _updateBlockSpec(String specId, String color) {
+    private void updateBlockSpec(String specId, String color) {
         switch (specId) {
             case " ":
             case "regular":
@@ -504,8 +480,8 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
             spec.setTag(color);
         } catch (Exception e) {
             try {
-                spec.getBackground().setColorFilter(Color.parseColor(pallet_colour), PorterDuff.Mode.MULTIPLY);
-                spec.setTag(pallet_colour);
+                spec.getBackground().setColorFilter(Color.parseColor(palletColour), PorterDuff.Mode.MULTIPLY);
+                spec.setTag(palletColour);
             } catch (Exception e2) {
                 spec.getBackground().setColorFilter(Color.parseColor("#8c8c8c"), PorterDuff.Mode.MULTIPLY);
                 spec.setTag("#8c8c8c");
@@ -513,7 +489,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         }
     }
 
-    private void _AddBlock() {
+    private void addBlock() {
         HashMap<String, Object> tempMap = new HashMap<>();
         tempMap.put("name", name.getText().toString());
         if (type.getText().toString().equals("regular")) {
@@ -530,14 +506,14 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
             tempMap.put("spec2", spec2.getText().toString());
         }
         tempMap.put("code", code.getText().toString());
-        tempMap.put("palette", String.valueOf(n));
+        tempMap.put("palette", String.valueOf(blockPosition));
         blocksList.add(tempMap);
         FileUtil.writeFile(path, new Gson().toJson(blocksList));
         SketchwareUtil.toast("Saved");
         finish();
     }
 
-    private void _insertBlockAt(int position) {
+    private void insertBlockAt(int position) {
         HashMap<String, Object> tempMap = new HashMap<>();
         tempMap.put("name", name.getText().toString());
         if (type.getText().toString().equals("regular") || type.getText().toString().equals("")) {
@@ -559,7 +535,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         finish();
     }
 
-    private void _editBlock(int position) {
+    private void editBlock(int position) {
         HashMap<String, Object> tempMap = blocksList.get(position);
         tempMap.put("name", name.getText().toString());
         if (type.getText().toString().equals("regular") || type.getText().toString().equals("")) {
