@@ -129,7 +129,11 @@ public class LibraryDownloader {
                 bB.a(context, "Invalid dependency", 0).show();
 
             } else {
-                libName = downloadPath + _getLibName(edittext1.getText().toString());
+                if (edittext1.getText().toString().contains("implementation ")) {
+                    libName = downloadPath + _getLibName(edittext1.getText().toString().replace("implementation ", "").replace("'", ""));
+                } else {
+                    libName = downloadPath + _getLibName(edittext1.getText().toString());
+                }
 
                 if (!FileUtil.isExistFile(libName)) {
                     FileUtil.makeDir(libName);
