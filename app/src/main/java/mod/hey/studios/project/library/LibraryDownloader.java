@@ -467,6 +467,7 @@ public class LibraryDownloader {
                             }
                         } else {
                             if (e.isConnectionError()) {
+                                FileUtil.deleteFile(libName);
                                 textview3.setText("Downloading failed. No network");
 
                                 linear8.setEnabled(true);
