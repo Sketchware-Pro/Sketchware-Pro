@@ -622,24 +622,8 @@ public class Lx {
      * private File _file_&lt;component name&gt;;
      * </pre>
      */
-    public static String a(String componentNameId, String componentName, a accessModifier, String... parameters) {
-        String fieldDeclaration;
-        switch (accessModifier) {
-            case a:
-                fieldDeclaration = "private";
-                break;
-
-            case b:
-                fieldDeclaration = "protected";
-                break;
-
-            case c:
-                fieldDeclaration = "public";
-                break;
-
-            default:
-                fieldDeclaration = "";
-        }
+    public static String a(String componentNameId, String componentName, AccessModifier accessModifier, String... parameters) {
+        String fieldDeclaration = accessModifier.getName();
 
         if (componentNameId.equals("include") || componentNameId.equals("#")) {
             fieldDeclaration = "";
@@ -1257,119 +1241,58 @@ public class Lx {
                 "}\r\n";
     }
 
-    public static String b(String var0, String var1, String var2) {
-        byte var3;
-        label68:
-        {
-            switch (var0.hashCode()) {
-                case -1401315045:
-                    if (var0.equals("onDestroy")) {
-                        var3 = 5;
-                        break label68;
-                    }
-                    break;
-                case -1340212393:
-                    if (var0.equals("onPause")) {
-                        var3 = 3;
-                        break label68;
-                    }
-                    break;
-                case -1336895037:
-                    if (var0.equals("onStart")) {
-                        var3 = 1;
-                        break label68;
-                    }
-                    break;
-                case -1111243300:
-                    if (var0.equals("onBackPressed")) {
-                        var3 = 0;
-                        break label68;
-                    }
-                    break;
-                case -1012956543:
-                    if (var0.equals("onStop")) {
-                        var3 = 4;
-                        break label68;
-                    }
-                    break;
-                case 1463983852:
-                    if (var0.equals("onResume")) {
-                        var3 = 2;
-                        break label68;
-                    }
-            }
+    public static String b(String eventName, String viewType, String viewId) {
+        boolean isMapView = viewType.equals("MapView");
+        StringBuilder code = new StringBuilder();
 
-            var3 = -1;
-        }
-
-        StringBuilder var4;
-        if (var3 != 0) {
-            if (var3 != 1) {
-                if (var3 != 2) {
-                    if (var3 != 3) {
-                        if (var3 != 4) {
-                            if (var3 == 5 && var1.equals("MapView")) {
-                                var4 = new StringBuilder();
-                                var4.append(var2);
-                                var4.append(".onDestroy();");
-                                var0 = var4.toString();
-                            } else {
-                                var0 = "";
-                            }
-                        } else if (!var1.equals("MapView")) {
-                            var0 = "";
-                        } else {
-                            var4 = new StringBuilder();
-                            var4.append(var2);
-                            var4.append(".onStop();");
-                            var0 = var4.toString();
-                        }
-                    } else if (!var1.equals("MapView")) {
-                        var0 = "";
-                    } else {
-                        var4 = new StringBuilder();
-                        var4.append(var2);
-                        var4.append(".onPause();");
-                        var0 = var4.toString();
-                    }
-                } else if (!var1.equals("MapView")) {
-                    var0 = "";
-                } else {
-                    var4 = new StringBuilder();
-                    var4.append(var2);
-                    var4.append(".onResume();");
-                    var0 = var4.toString();
+        switch (eventName) {
+            case "onBackPressed":
+                if (viewType.equals("DrawerLayout")) {
+                    code.append("if (").append(viewId)
+                        .append(".isDrawerOpen(GravityCompat.START)) {\r\n")
+                        .append(viewId).append(".closeDrawer(GravityCompat.START);")
+                        .append("\r\n} else {\r\n")
+                        .append("super.onBackPressed();")
+                        .append("\r\n}");
                 }
-            } else if (!var1.equals("MapView")) {
-                var0 = "";
-            } else {
-                var4 = new StringBuilder();
-                var4.append(var2);
-                var4.append(".onStart();");
-                var0 = var4.toString();
-            }
-        } else if (!var1.equals("DrawerLayout")) {
-            var0 = "";
-        } else {
-            var4 = new StringBuilder();
-            var4.append("if (");
-            var4.append(var2);
-            var4.append(".isDrawerOpen(GravityCompat.START)) {");
-            var4.append("\r\n");
-            var4.append(var2);
-            var4.append(".closeDrawer(GravityCompat.START);");
-            var4.append("\r\n");
-            var4.append("}");
-            var4.append("\r\n");
-            var4.append("else {");
-            var4.append("\r\n");
-            var4.append("super.onBackPressed();");
-            var4.append("\r\n");
-            var4.append("}");
-            var0 = var4.toString();
-        }
+                break;
 
-        return var0;
+            case "onDestroy":
+                if (isMapView) {
+                    code.append(viewId)
+                        .append(".onDestroy();");
+                }
+                break;
+
+            case "onPause":
+                if (isMapView) {
+                    code.append(viewId)
+                        .append(".onPause();");
+                }
+                break;
+
+            case "onStart":
+                if (isMapView) {
+                    code.append(viewId)
+                        .append(".onStart()");
+                }
+                break;
+
+            case "onResume":
+                if (isMapView) {
+                    code.append(viewId)
+                        .append(".onResume()");
+                }
+                break;
+
+            case "onStop":
+                if (isMapView) {
+                    code.append(viewId)
+                        .append(".onStop()");
+                }
+                break;
+        }
+        return code.toString();
     }
 
     /**
@@ -2238,6 +2161,22 @@ public class Lx {
                 "                } catch (IOException e) {\r\n" +
                 "                    e.printStackTrace();\r\n" +
                 "                }\r\n" +
+                "            }\r\n" +
+                "        }\r\n" +
+                "    }\r\n" +
+                "\r\n" +
+                "    public static void copyDir(String oldPath, String newPath) {\r\n" +
+                "        File oldFile = new File(oldPath);\r\n" +
+                "        File[] files = oldFile.listFiles();\r\n" +
+                "        File newFile = new File(newPath);\r\n" +
+                "        if (!newFile.exists()) {\r\n" +
+                "            newFile.mkdirs();\r\n" +
+                "        }\r\n" +
+                "        for (File file : files) {\r\n" +
+                "            if (file.isFile()) {\r\n" +
+                "                copyFile(file.getPath(), newPath + \"/\" + file.getName());\r\n" +
+                "            } else if (file.isDirectory()) {\r\n" +
+                "                copyDir(file.getPath(), newPath + \"/\" + file.getName());\r\n" +
                 "            }\r\n" +
                 "        }\r\n" +
                 "    }\r\n" +
@@ -3609,18 +3548,28 @@ public class Lx {
      * A field's access modifier. Can either be
      * <code>private</code>, <code>protected</code> or <code>public</code>.
      */
-    enum a {
+    enum AccessModifier {
         /**
-         * MODE_PRIVATE
-         */
-        a,
+        * MODE_PRIVATE
+        */
+        PRIVATE("private"),
         /**
-         * MODE_PROTECTED
-         */
-        b,
+        * MODE_PROTECTED
+        */
+        PROTECTED("protected"),
         /**
-         * MODE_PUBLIC
-         */
-        c
+        * MODE_PUBLIC
+        */
+        PUBLIC("public");
+        
+        private String name = "";
+        
+        AccessModifier(String name) {
+            this.name = name;
+        }
+        
+        public String getName() {
+            return name;
+        }
     }
 }
