@@ -330,6 +330,7 @@ public class ExtraPaletteBlock extends Activity {
                 case 2:
                 case 3:
                     logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first), "getVar").setTag(intStrPair.second);
+                    break;
 
                 default:
                     String[] split = intStrPair.second.split(" ");
@@ -338,6 +339,7 @@ public class ExtraPaletteBlock extends Activity {
                     } else {
                         SketchwareUtil.toastError("Received invalid data, content: {" + intStrPair.first + ":\"" + intStrPair.second + "\"}");
                     }
+                    break;
             }
         }
         BlocksHandler.primaryBlocksB(
@@ -349,7 +351,7 @@ public class ExtraPaletteBlock extends Activity {
         );
     }
 
-    public void setBlock(int i, int i2) {
+    public void setBlock(int paletteId, int paletteColor) {
         logicEditor.m.a();
         if (eventName.equals("Import")) {
             logicEditor.a("Enter the path without import & semicolon", 0xff555555);
@@ -358,7 +360,7 @@ public class ExtraPaletteBlock extends Activity {
             return;
         }
 
-        switch (i) {
+        switch (paletteId) {
             case 0:
                 logicEditor.b("Add variable", "variableAdd");
                 logicEditor.b("Add custom variable", "variableAddNew", clickListener);
@@ -1156,7 +1158,7 @@ public class ExtraPaletteBlock extends Activity {
                     if (palette instanceof String) {
                         String paletteString = (String) palette;
 
-                        if (paletteString.equals(String.valueOf(i))) {
+                        if (paletteString.equals(String.valueOf(paletteId))) {
                             Object type = map.get("type");
                             if (type instanceof String) {
                                 String typeString = (String) type;
