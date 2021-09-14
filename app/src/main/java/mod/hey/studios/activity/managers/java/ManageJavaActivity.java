@@ -60,28 +60,28 @@ import a.a.a.aB;
 import a.a.a.xB;
 
 public class ManageJavaActivity extends Activity {
-    
+
     private static final String ACTIVITY_TEMPLATE =
-    "package %s;\n" +
-    "\n" +
-    "import android.app.Activity;\n" +
-    "import android.os.Bundle;\n" +
-    "\n" +
-    "public class %s extends Activity {\n" +
-    "\n" +
-    "    @Override\n" +
-    "    protected void onCreate(Bundle savedInstanceState) {\n" +
-    "        super.onCreate(savedInstanceState);\n" +
-    "    }" +
-    "\n" +
-    "}\n";
+        "package %s;\n" +
+            "\n" +
+            "import android.app.Activity;\n" +
+            "import android.os.Bundle;\n" +
+            "\n" +
+            "public class %s extends Activity {\n" +
+            "\n" +
+            "    @Override\n" +
+            "    protected void onCreate(Bundle savedInstanceState) {\n" +
+            "        super.onCreate(savedInstanceState);\n" +
+            "    }" +
+            "\n" +
+            "}\n";
     private static final String CLASS_TEMPLATE =
-    "package %s;\n" +
-    "\n" +
-    "public class %s {\n" +
-    "    \n" +
-    "}\n";
-    
+        "package %s;\n" +
+            "\n" +
+            "public class %s {\n" +
+            "    \n" +
+            "}\n";
+
     private final ArrayList<String> currentTree = new ArrayList<>();
     private String current_path;
     private FloatingActionButton fab;
@@ -100,26 +100,27 @@ public class ManageJavaActivity extends Activity {
     private boolean cut = false;
     private long lastModifiedTime = 0;
     private String lastCurrentPath = "";
-    
+
     private int lastPos = 0;
     private int scrollState = 0;
     private int duration = 300;
     private Handler handler = new Handler();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.manage_file);
-        
+
         sc_id = getIntent().getStringExtra("sc_id");
         Helper.fixFileprovider();
         setupUI();
         frc = new FileResConfig(sc_id);
         fpu = new FilePathUtil();
         current_path = Uri.parse(fpu.getPathJava(sc_id)).getPath().concat("/".concat(getIntent().getStringExtra("pkgName").replace(".", "/")));
+        gridView.setAdapter(new MyAdapter());
         refresh();
     }
-    
+
     @Override
     public void onBackPressed() {
         if (isSelecting()) {
@@ -128,23 +129,21 @@ public class ManageJavaActivity extends Activity {
             return;
         }
         if (Objects.equals(
-        Uri.parse(current_path).getPath(),
-        Uri.parse(fpu.getPathJava(sc_id)).getPath()
-        )) {
-            super.onBackPressed();
-            return;
-        }
-        
+            Uri.parse(current_path).getPath(),
+            Uri.parse(fpu.getPathJava(sc_id)).getPath())) {
+                super.onBackPressed();
+                return;
+            }
         current_path = current_path.substring(0, current_path.lastIndexOf("/"));
         refresh();
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
         refresh();
     }
-    
+
     private void setupUI() {
         back = findViewById(Resources.id.ig_toolbar_back);
         title = findViewById(Resources.id.tx_toolbar_title);
@@ -158,8 +157,8 @@ public class ManageJavaActivity extends Activity {
                 SketchwareUtil.toastError("Failed to copy!");
             }
             return true;
-        });
-        
+        } );
+
         loadFile = findViewById(Resources.id.ig_toolbar_load_file);
         loadFile.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(loadFile);
@@ -169,17 +168,17 @@ public class ManageJavaActivity extends Activity {
                 return;
             }
             showLoadDialog();
-        });
-        
+        } );
+
         fab = findViewById(Resources.id.fab_plus);
         fab.setOnClickListener(v -> showCreateDialog());
-        
+
         gridView = findViewById(Resources.id.list_file);
         gridView.setNumColumns(1);
-        
+
         noteNoFiles = findViewById(Resources.id.text_info);
         noteNoFiles.setText("No files");
-        
+
         Helper.applyRippleToToolbarView(back);
         back.setOnClickListener(v -> {
             if (copyMode) {
@@ -191,106 +190,105 @@ public class ManageJavaActivity extends Activity {
             finish();
         });
         /* title.setText("Java Manager"); */
-        
+
     }
-    
+
     private String getCurrentPkgName() {
         try {
             String trimmedPath = Helper.trimPath(fpu.getPathJava(sc_id));
             String substring = current_path.substring(current_path.indexOf(trimmedPath) + trimmedPath.length());
-            
+
             if (substring.endsWith("/")) {
                 substring = substring.substring(0, substring.length() - 1);
             }
             if (substring.startsWith("/")) {
                 substring = substring.substring(1);
             }
-            
+
             String replace = substring.replace("/", ".");
             return !replace.isEmpty() ? replace : "";
         } catch (Exception e) {
         }
         return "";
     }
-    
+
     private void showCreateDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         View root = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
-        
+
         final EditText inputName = root.findViewById(Resources.id.dialog_edittext_name);
         final RadioGroup radio_fileType = root.findViewById(Resources.id.dialog_radio_filetype);
-        
+
         root.findViewById(Resources.id.dialog_text_cancel)
-        .setOnClickListener(Helper.getDialogDismissListener(dialog));
+            .setOnClickListener(Helper.getDialogDismissListener(dialog));
         root.findViewById(Resources.id.dialog_text_save)
-        .setOnClickListener(v -> {
-            if (inputName.getText().toString().isEmpty()) {
-                SketchwareUtil.toastError("Invalid file name");
-                return;
-            }
-            
-            String name = inputName.getText().toString();
-            String packageName = getCurrentPkgName();
-            
-            String newFileContent;
-            switch (radio_fileType.getCheckedRadioButtonId()) {
-                case Resources.id.dialog_radio_filetype_class:
-                newFileContent = String.format(CLASS_TEMPLATE, packageName, name);
-                break;
-                
-                case Resources.id.dialog_radio_filetype_activity:
-                newFileContent = String.format(ACTIVITY_TEMPLATE, packageName, name);
-                break;
-                
-                case Resources.id.radio_button_folder:
-                FileUtil.makeDir(new File(current_path, name).getAbsolutePath());
+            .setOnClickListener(v -> {
+                if (inputName.getText().toString().isEmpty()) {
+                    SketchwareUtil.toastError("Invalid file name");
+                    return;
+                }
+
+                String name = inputName.getText().toString();
+                String packageName = getCurrentPkgName();
+
+                String newFileContent;
+                switch (radio_fileType.getCheckedRadioButtonId()) {
+                    case Resources.id.dialog_radio_filetype_class:
+                        newFileContent = String.format(CLASS_TEMPLATE, packageName, name);
+                        break;
+
+                    case Resources.id.dialog_radio_filetype_activity:
+                        newFileContent = String.format(ACTIVITY_TEMPLATE, packageName, name);
+                        break;
+
+                    case Resources.id.radio_button_folder:
+                        FileUtil.makeDir(new File(current_path, name).getAbsolutePath());
+                        refresh();
+                        SketchwareUtil.toast("Folder was created successfully");
+                        dialog.dismiss();
+                        return;
+
+                    default:
+                        SketchwareUtil.toast("Select a file type");
+                        return;
+                }
+                if (newFileContent.startsWith("package ;"))
+                    newFileContent = newFileContent.replaceFirst("package ;", "//empty package");
+
+                FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
                 refresh();
-                SketchwareUtil.toast("Folder was created successfully");
+                SketchwareUtil.toast("File was created successfully");
                 dialog.dismiss();
-                return;
-                
-                default:
-                SketchwareUtil.toast("Select a file type");
-                return;
-            }
-            if (newFileContent.startsWith("package ;")) {
-                newFileContent = newFileContent.replaceFirst("package ;", "//empty package");
-            }
-            
-            FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
-            refresh();
-            SketchwareUtil.toast("File was created successfully");
-            dialog.dismiss();
-        });
-        
+            } );
+
         dialog.setView(root);
         dialog.show();
-        
+
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         inputName.requestFocus();
     }
-    
+
     private void showLoadDialog() {
         DialogProperties properties = new DialogProperties();
-        
+
         properties.selection_mode = DialogConfigs.MULTI_MODE;
         properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
         properties.root = Environment.getExternalStorageDirectory();
         properties.error_dir = Environment.getExternalStorageDirectory();
         properties.offset = Environment.getExternalStorageDirectory();
-        properties.extensions = new String[]{".java"};
-        
+        properties.extensions = new String[] {".java"} ;
+
         FilePickerDialog pickerDialog = new FilePickerDialog(this, properties);
-        
+
         pickerDialog.setTitle("Select a Java file");
         pickerDialog.setDialogSelectionListener(selections -> {
             copyMode = false;
             showAddFilesDialog(selections);
         });
-        
+
         pickerDialog.show();
     }
-    
+
     private void showAddFilesDialog(String[] selections) {
         final aB dialog = new aB(this);
         dialog.a(Resources.drawable.rename_96_blue);
@@ -300,22 +298,22 @@ public class ManageJavaActivity extends Activity {
         } else {
             dialog.a("Do you want to rename package name of selected java files with CurrentPkgName?");
         }
-        
+
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_no),
-        v -> {
-            dialog.dismiss();
-            loadFiles(selections, false);
-        });
+            v -> {
+                dialog.dismiss();
+                loadFiles(selections, false);
+            });
         dialog.b("Yes",
-        v -> {
-            dialog.dismiss();
-            loadFiles(selections, true);
-        });
+            v -> {
+                dialog.dismiss();
+                loadFiles(selections, true);
+            });
         dialog.configureDefaultButton(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
         Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
-    
+
     private void loadFiles(String[] selections, final boolean rename) {
         final StringBuilder err = new StringBuilder();
         final ProgressDialog dlg = new ProgressDialog(this);
@@ -335,14 +333,14 @@ public class ManageJavaActivity extends Activity {
                             String filename = new File(path).getName();
                             String output = new File(current_path, filename).getAbsolutePath();
                             if (FileUtil.isExistFile(output) && !FileUtil.isDirectory(path) && !FileUtil.isDirectory(output))
-                            FileUtil.deleteFile(output);
-                            
+                                FileUtil.deleteFile(output);
+
                             FileUtil.renameFile(path, output);
                             if (rename)
-                            addFiles(output, current_path, "", err, rename);
-                            
+                                addFiles(output, current_path, "", err, rename);
+
                             if (FileUtil.isExistFile(path))
-                            err.append(filename + " is moved incorrectly!");
+                                err.append(filename + " is moved incorrectly!");
                         } else {
                             addFiles(path, current_path, "", err, rename);
                         }
@@ -376,19 +374,19 @@ public class ManageJavaActivity extends Activity {
                 copyMode = false;
                 refresh();
             }
-        }.execute(selections);
+        } .execute(selections);
     }
-    
+
     private void addFiles(String path, String currPath, String currName, StringBuilder err, final boolean rename) {
         if (FileUtil.isExistFile(path)) {
             String filename = Uri.parse(path).getLastPathSegment();
             try {
                 if (FileUtil.isDirectory(path)) {
                     String newPath = new File(currPath, filename).getAbsolutePath();
+                    FileUtil.makeDir(newPath);
                     for (File file : new File(path).listFiles()) {
                         addFiles(file.getAbsolutePath(), newPath, currName + "." + filename, err, rename);
                     }
-                    FileUtil.makeDir(newPath);
                 } else {
                     if (filename.endsWith(".java")) {
                         String fileContent = FileUtil.readFile(path);
@@ -402,10 +400,11 @@ public class ManageJavaActivity extends Activity {
                         }
                         if (fileContent.startsWith("//empty package")) {
                             if (pkg.equals("")) {
-                                FileUtil.writeFile(new File(currPath, filename).getAbsolutePath(), fileContent);
+                                FileUtil.writeFile(new File(currPath, filename).getAbsolutePath(),
+                                    fileContent);
                             } else {
                                 FileUtil.writeFile(new File(currPath, filename).getAbsolutePath(),
-                                fileContent.replaceFirst("//empty package", "package " + pkg + ";"));
+                                    fileContent.replaceFirst("//empty package", "package " + pkg + ";"));
                             }
                         } else {
                             if (Pattern.compile("package [.a-zA-Z$0-9]+;").matcher(fileContent).find()) {
@@ -414,13 +413,14 @@ public class ManageJavaActivity extends Activity {
                                     boolean find = m.find();
                                     fileContent = fileContent.substring(m.start());
                                     FileUtil.writeFile(new File(currPath, filename).getAbsolutePath(),
-                                    fileContent.replaceFirst("package [.a-zA-Z$0-9]+;", "//empty package"));
+                                        fileContent.replaceFirst("package [.a-zA-Z$0-9]+;", "//empty package"));
                                 } else {
                                     FileUtil.writeFile(new File(currPath, filename).getAbsolutePath(),
-                                    fileContent.replaceFirst("package [.a-zA-Z$0-9]+;", "package " + pkg + ";"));
+                                        fileContent.replaceFirst("package [.a-zA-Z$0-9]+;", "package " + pkg + ";"));
                                 }
                             } else {
-                                err.append("File " + filename + " is not a valid Java file");
+                                err.append("File " + filename
+                                    + " is not a valid Java file");
                                 err.append("\n");
                             }
                         }
@@ -432,15 +432,15 @@ public class ManageJavaActivity extends Activity {
             }
         }
     }
-    
+
     private void showRenameDialog(final int position) {
         boolean isFolder = adapter.isFolder(position);
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         LinearLayout root = (LinearLayout) getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
-        
+
         final EditText filename = root.findViewById(Resources.id.edittext_change_name);
         filename.setText(adapter.getFileName(position));
-        
+
         CheckBox renameOccurrences = null;
         if (!isFolder) {
             {
@@ -466,49 +466,49 @@ public class ManageJavaActivity extends Activity {
             root.addView(renameOccurrences, 2);
         }
         CheckBox finalRenameOccurrences = renameOccurrences;
-        
+
         root.findViewById(Resources.id.text_cancel)
-        .setOnClickListener(Helper.getDialogDismissListener(dialog));
+            .setOnClickListener(Helper.getDialogDismissListener(dialog));
         root.findViewById(Resources.id.text_save)
-        .setOnClickListener(view -> {
-            if (!filename.getText().toString().isEmpty()) {
-                if (!adapter.isFolder(position)) {
-                    if (frc.getJavaManifestList().contains(adapter.getFullName(position))) {
-                        frc.getJavaManifestList().remove(adapter.getFullName(position));
-                        FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                        SketchwareUtil.toast("NOTE: Removed Activity from manifest");
+            .setOnClickListener(view -> {
+                if (!filename.getText().toString().isEmpty()) {
+                    if (!adapter.isFolder(position)) {
+                        if (frc.getJavaManifestList().contains(adapter.getFullName(position))) {
+                            frc.getJavaManifestList().remove(adapter.getFullName(position));
+                            FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                            SketchwareUtil.toast("NOTE: Removed Activity from manifest");
+                        }
+
+                        if (finalRenameOccurrences != null && finalRenameOccurrences.isChecked()) {
+                            String fileContent = FileUtil.readFile(adapter.getItem(position));
+                            FileUtil.writeFile(adapter.getItem(position),
+                            fileContent.replaceAll(adapter.getFileNameWoExt(position),
+                            FileUtil.getFileNameNoExtension(filename.getText().toString())));
+                        }
                     }
-                    
-                    if (finalRenameOccurrences != null && finalRenameOccurrences.isChecked()) {
-                        String fileContent = FileUtil.readFile(adapter.getItem(position));
-                        FileUtil.writeFile(adapter.getItem(position),
-                        fileContent.replaceAll(adapter.getFileNameWoExt(position),
-                        FileUtil.getFileNameNoExtension(filename.getText().toString())));
-                    }
+
+                    FileUtil.renameFile(adapter.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
+                    refresh();
+                    SketchwareUtil.toast("Renamed successfully");
                 }
-                
-                FileUtil.renameFile(adapter.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
-                refresh();
-                SketchwareUtil.toast("Renamed successfully");
-            }
-            
-            dialog.dismiss();
-        });
-        
+
+                dialog.dismiss();
+            });
+
         dialog.setView(root);
         dialog.show();
-        
+
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         filename.requestFocus();
     }
-    
+
     private void showDeleteDialog(final String[] paths) {
         if (!(paths.length > 0)) {
             copyMode = false;
             refresh();
             return;
         }
-        
+
         for (String path : paths) {
             boolean isFolder = FileUtil.isDirectory(path);
             boolean isMainDir = fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/").startsWith(path.concat("/"));
@@ -520,26 +520,26 @@ public class ManageJavaActivity extends Activity {
             }
         }
         final boolean isInManifest = frc.getJavaManifestList().contains(getFullName(paths[0]));
-        
+
         final aB dialog = new aB(this);
         dialog.a(Resources.drawable.delete_96);
         dialog.b(paths.length > 1 ? "Delete" : new File(paths[0]).getName());
         dialog.a((paths.length > 1 ? "Are you sure you want to delete selected files?"
-        : ("Are you sure you want to delete this " + (FileUtil.isDirectory(paths[0]) ? "folder" : "file") + "?"
-        + (isInManifest ? "\nThis will also remove it from AndroidManifest. " : "")))
-        + "\nThis action cannot be reversed!");
-        
+            : ("Are you sure you want to delete this " + (FileUtil.isDirectory(paths[0]) ? "folder" : "file") + "?"
+            + (isInManifest ? "\nThis will also remove it from AndroidManifest. " : "")))
+            + "\nThis action cannot be reversed!");
+
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_delete),
-        v -> {
-            dialog.dismiss();
-            delete(paths);
-        });
-        
+            v -> {
+                dialog.dismiss();
+                delete(paths);
+            });
+
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
         Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
-    
+
     private void delete(final String[] paths) {
         final ProgressDialog dlg = new ProgressDialog(this);
         dlg.setMessage("Deleting Java files...");
@@ -555,7 +555,7 @@ public class ManageJavaActivity extends Activity {
                             frc.getJavaManifestList().remove(getFullName(path));
                             FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
                         }
-                        
+
                         FileUtil.deleteFile(path);
                     }
                 } catch (Exception e) {
@@ -573,7 +573,7 @@ public class ManageJavaActivity extends Activity {
             }
         }.execute(paths);
     }
-    
+
     private void refresh() {
         /* moving all java files from JavaFolder to (JavaFolder + pkgName) if (JavaFolder + pkgName) does not exist */
         String javaPath = fpu.getPathJava(sc_id);
@@ -583,9 +583,9 @@ public class ManageJavaActivity extends Activity {
         String lastpkgNamePath = Environment.getExternalStorageDirectory() + "/.sketchware/data/" + sc_id + "/java_package_name";
         if (!FileUtil.isExistFile(lastpkgNamePath)) {
             /* java_package_name was created to check whatever the PackageName has changed or not
-            * if changed, the main folder will be renamed to the Current PackageName
-            * so deleting java_package_name is not a good idea
-            */
+             * if changed, the main folder will be renamed to the Current PackageName
+             * so deleting java_package_name is not a good idea
+             */
             FileUtil.writeFile(lastpkgNamePath, "");
         }
         String pkgName = FileUtil.readFile(lastpkgNamePath).replace(".", "/");
@@ -594,8 +594,8 @@ public class ManageJavaActivity extends Activity {
                 javaPath = javaPath + "/" + pkgName;
             }
             if (FileUtil.isExistFile(javaPath)) {
-                String tPath = javaPath.substring(0, javaPath.lastIndexOf("/"));
-                FileUtil.renameFile(javaPath, tPath.concat("/.temp"));
+                String tPath = Environment.getExternalStorageDirectory() + "/.sketchware/data/" + sc_id + "/files/.temp";
+                FileUtil.renameFile(javaPath, tPath);
                 FileUtil.makeDir(javaPkgPath);
                 FileUtil.renameFile(tPath.concat("/.temp"), javaPkgPath);
             } else {
@@ -604,28 +604,31 @@ public class ManageJavaActivity extends Activity {
             FileUtil.writeFile(lastpkgNamePath, currPkgName);
             refresh();
         }
-        
+
+        if (!FileUtil.isExistFile(javaPkgPath))
+            FileUtil.makeDir(javaPkgPath);
+
         if (!FileUtil.isExistFile(fpu.getManifestJava(sc_id))) {
             FileUtil.writeFile(fpu.getManifestJava(sc_id), "");
             refresh();
         }
-        
+
         if (getCurrentPkgName().isEmpty()) {
             title.setText("root");
         } else {
             title.setText(getCurrentPkgName());
         }
-        
+
         // refresh selectedPaths
         if (!lastCurrentPath.equals(current_path)) {
             selectedPaths.clear();
         }
-        
+
         if (copyMode) {
             loadFile.setImageResource(Resources.drawable.icon_checkbox_white_96);
             loadFile.setAlpha(0.355f);
             loadFile.animate().setDuration(150).alpha(1);
-            
+
             back.setImageResource(0x7f070209); // ic_cancel_white_96dp
             back.setAlpha(0.355f);
             back.animate().setDuration(150).alpha(1);
@@ -633,12 +636,12 @@ public class ManageJavaActivity extends Activity {
             loadFile.setImageResource(Resources.drawable.add_file_48);
             loadFile.setAlpha(0.355f);
             loadFile.animate().setDuration(150).alpha(1);
-            
+
             back.setImageResource(Resources.drawable.arrow_back_white_48dp);
             back.setAlpha(0.355f);
             back.animate().setDuration(150).alpha(1);
         }
-        
+
         if (!lastCurrentPath.equals(current_path) || new File(current_path).lastModified() != lastModifiedTime) {
             lastCurrentPath = current_path;
             lastModifiedTime = new File(current_path).lastModified();
@@ -650,13 +653,11 @@ public class ManageJavaActivity extends Activity {
                 setFabVisibility(true);
                 lastPos = 0;
             }
-            
+            adapter = ((MyAdapter)gridView.getAdapter());
             adapter = new MyAdapter();
-            gridView.setAdapter(adapter);
-        } else {
-            ((BaseAdapter)adapter).notifyDataSetChanged();
         }
-        
+        ((BaseAdapter)gridView.getAdapter()).notifyDataSetChanged();
+
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             if (position == 0) {
                 if (!(Objects.equals(
@@ -678,13 +679,13 @@ public class ManageJavaActivity extends Activity {
             adapter.itemContextMenu(view, position, Gravity.CENTER);
             return true;
         });
-        
+
         gridView.setOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView abs, int _scrollState) {
                 // nothing
             }
-            
+
             @Override
             public void onScroll(AbsListView abs, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (!(firstVisibleItem == lastPos)) {
@@ -703,10 +704,10 @@ public class ManageJavaActivity extends Activity {
                 }
             }
         });
-        
+
         noteNoFiles.setVisibility(currentTree.size() > 1 ? View.GONE : View.VISIBLE);
     }
-    
+
     private void setFabVisibility(final boolean VISIBLE) {
         if (VISIBLE) {
             fab.setVisibility(View.VISIBLE);
@@ -720,10 +721,10 @@ public class ManageJavaActivity extends Activity {
                 public void run() {
                     fab.setVisibility(View.GONE);
                 }
-            }, duration);
+            } , duration);
         }
     }
-    
+
     private void select(String path) {
         if (isSelected(path)) {
             selectedPaths.remove(selectedPaths.indexOf(path));
@@ -732,7 +733,7 @@ public class ManageJavaActivity extends Activity {
         }
         refresh();
     }
-    
+
     private void selectAll() {
         if (selectedPaths.size() == (currentTree.size() - 1)) {
             selectedPaths.clear();
@@ -743,36 +744,36 @@ public class ManageJavaActivity extends Activity {
         }
         refresh();
     }
-    
+
     private boolean isSelected(String path) {
         return selectedPaths.indexOf(path) != -1;
     }
-    
+
     private boolean isSelecting() {
         return selectedPaths.size() > 0;
     }
-    
+
     public String getFullName(String path) {
         String readFile = FileUtil.readFile(path);
-        
+
         if (!readFile.contains("package ") || !readFile.contains(";")) {
             return getFileNameWoExt(path);
         }
         int packageIndex = readFile.indexOf("package ") + 8;
-        
+
         return readFile.substring(packageIndex, readFile.indexOf(";", packageIndex)) + "." + getFileNameWoExt(path);
     }
-    
+
     public String getFileNameWoExt(String path) {
         return FileUtil.getFileNameNoExtension(path);
     }
-    
+
     public static void rippleEffect(View v, int rc, int rd, int bc, int s) {
         GradientDrawable shape = new GradientDrawable();
         shape.setColor(bc);
-        shape.setCornerRadii(new float[]{(float)rd,(float)rd,(float)rd,(float)rd,(float)rd,(float)rd,(float)rd,(float)rd});
-        
-        RippleDrawable ripda = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{rc}), shape, null);
+        shape.setCornerRadii(new float[] {(float)rd,(float)rd,(float)rd,(float)rd,(float)rd,(float)rd,(float)rd,(float)rd} );
+
+        RippleDrawable ripda = new RippleDrawable(new ColorStateList(new int[][] {new int[] {} } , new int[] {rc} ), shape, null);
         v.setBackgroundDrawable(ripda);
         try {
             if(Build.VERSION.SDK_INT >= 21) {
@@ -781,80 +782,80 @@ public class ManageJavaActivity extends Activity {
         } catch (Exception e) {
         }
     }
-    
+
     private class MyAdapter extends BaseAdapter {
-        
+
         @Override
         public String getItem(int position) {
             return currentTree.get(position);
         }
-        
+
         @Override
         public int getCount() {
             return currentTree.size();
         }
-        
+
         /**
-        * Gets the full package name of the Java file.
-        *
-        * @param position The Java file's position in this adapter's {@code ArrayList}
-        * @return The full package name of the Java file
-        */
+         * Gets the full package name of the Java file.
+         *
+         * @param position The Java file's position in this adapter's {@code ArrayList}
+         * @return The full package name of the Java file
+         */
         public String getFullName(int position) {
             String readFile = FileUtil.readFile(getItem(position));
-            
+
             if (!readFile.contains("package ") || !readFile.contains(";")) {
                 return getFileNameWoExt(position);
             }
             int packageIndex = readFile.indexOf("package ") + 8;
-            
+
             return readFile.substring(packageIndex, readFile.indexOf(";", packageIndex)) + "." + getFileNameWoExt(position);
         }
-        
+
         /**
-        * @param position The Java file's position in this adapter's {@code ArrayList}
-        * @return The file's filename with extension
-        * @see ManageJavaActivity.MyAdapter#getFileNameWoExt(int)
-        */
+         * @param position The Java file's position in this adapter's {@code ArrayList}
+         * @return The file's filename with extension
+         * @see ManageJavaActivity.MyAdapter#getFileNameWoExt(int)
+         */
         public String getFileName(int position) {
             String item = getItem(position);
             return item.substring(item.lastIndexOf("/") + 1);
         }
-        
+
         /**
-        * @param position The Java file's position in this adapter's {@code ArrayList}
-        * @return The file's filename without extension
-        * @see ManageJavaActivity.MyAdapter#getFileName(int)
-        */
+         * @param position The Java file's position in this adapter's {@code ArrayList}
+         * @return The file's filename without extension
+         * @see ManageJavaActivity.MyAdapter#getFileName(int)
+         */
         public String getFileNameWoExt(int position) {
             return FileUtil.getFileNameNoExtension(getItem(position));
         }
-        
+
         public boolean isFolder(int position) {
             return FileUtil.isDirectory(getItem(position));
         }
-        
+
         public void goEditFile(int position) {
             Intent intent = new Intent();
-            
+
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
             } else {
                 intent.setClass(getApplicationContext(), mod.hey.studios.code.SrcCodeEditor.class);
             }
-            
+
             intent.putExtra("java", "");
             intent.putExtra("title", getFileName(position));
             intent.putExtra("content", getItem(position));
-            
+
             startActivity(intent);
         }
-        
+
         @Override
         public long getItemId(int position) {
             return position;
         }
-        
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
@@ -868,32 +869,32 @@ public class ManageJavaActivity extends Activity {
                 }
             }
             refreshView(convertView, position);
-            
+
             return convertView;
         }
-        
+
         private void refreshView(View convertView, int position) {
             if (convertView != null) {
                 TextView name = convertView.findViewById(Resources.id.title);
                 ImageView icon = convertView.findViewById(Resources.id.icon);
                 ImageView more = convertView.findViewById(Resources.id.more);
-                
+
                 name.setText(getFileName(position));
                 icon.setImageResource(isFolder(position) ? Resources.drawable.ic_folder_48dp : Resources.drawable.java_96);
-                
+
                 Helper.applyRipple(ManageJavaActivity.this, more);
-                
+
                 if (position == 0) {
                     more.setVisibility(View.GONE);
                     rippleEffect(convertView, 0xFF90CAF9, 0, 0xFFFFFFFF, (int)getDip(4));
-                    
+
                     icon.setOnClickListener(v -> selectAll());
                 } else {
                     more.setVisibility(View.VISIBLE);
                     more.setOnClickListener(v -> itemContextMenu(more, position, Gravity.RIGHT));
-                    
+
                     icon.setOnClickListener(v -> select(getItem(position)));
-                    
+
                     if (isSelected(getItem(position))) {
                         rippleEffect(convertView, 0xFF42A5F5, 0, 0xFF42A5F5, (int)getDip(4));
                     } else {
@@ -902,150 +903,150 @@ public class ManageJavaActivity extends Activity {
                 }
             }
         }
-        
+
         private void itemContextMenu(View v, int position, int gravity) {
             PopupMenu popupMenu = new PopupMenu(ManageJavaActivity.this, v, gravity);
             popupMenu.inflate(Resources.menu.popup_menu_double);
-            
+
             Menu popupMenuMenu = popupMenu.getMenu();
             popupMenuMenu.clear();
-            
+
             if (isSelecting()) {
                 popupMenuMenu.add("Copy");
                 popupMenuMenu.add("Cut");
                 popupMenuMenu.add("Delete");
             } else {
-                
+
                 boolean isActivityInManifest = frc.getJavaManifestList().contains(getFullName(position));
                 boolean isServiceInManifest = frc.getServiceManifestList().contains(getFullName(position));
-                
+
                 if (!isFolder(position)) {
                     if (isActivityInManifest) {
                         popupMenuMenu.add("Remove Activity from manifest");
                     } else if (!isServiceInManifest) {
                         popupMenuMenu.add("Add as Activity to manifest");
                     }
-                    
+
                     if (isServiceInManifest) {
                         popupMenuMenu.add("Remove Service from manifest");
                     } else if (!isActivityInManifest) {
                         popupMenuMenu.add("Add as Service to manifest");
                     }
-                    
+
                     popupMenuMenu.add("Edit");
                     popupMenuMenu.add("Edit with...");
                 }
-                
+
                 popupMenuMenu.add("Copy");
                 popupMenuMenu.add("Cut");
                 popupMenuMenu.add("Rename");
                 popupMenuMenu.add("Delete");
-                
+
             }
-            
+
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getTitle().toString()) {
                     case "Add as Activity to manifest":
-                    frc.getJavaManifestList().add(getFullName(position));
-                    FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                    SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Activity to AndroidManifest");
-                    break;
-                    
-                    case "Remove Activity from manifest":
-                    if (frc.getJavaManifestList().remove(getFullName(position))) {
+                        frc.getJavaManifestList().add(getFullName(position));
                         FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                        SketchwareUtil.toast("Successfully removed Activity " + getFileNameWoExt(position) + " from AndroidManifest");
-                    } else {
-                        SketchwareUtil.toast("Activity was not defined in AndroidManifest.");
-                    }
-                    break;
-                    
+                        SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Activity to AndroidManifest");
+                        break;
+
+                    case "Remove Activity from manifest":
+                        if (frc.getJavaManifestList().remove(getFullName(position))) {
+                            FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                            SketchwareUtil.toast("Successfully removed Activity " + getFileNameWoExt(position) + " from AndroidManifest");
+                        } else {
+                            SketchwareUtil.toast("Activity was not defined in AndroidManifest.");
+                        }
+                        break;
+
                     case "Add as Service to manifest":
-                    frc.getServiceManifestList().add(getFullName(position));
-                    FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
-                    SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Service to AndroidManifest");
-                    break;
-                    
-                    case "Remove Service from manifest":
-                    if (frc.getServiceManifestList().remove(getFullName(position))) {
+                        frc.getServiceManifestList().add(getFullName(position));
                         FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
-                        SketchwareUtil.toast("Successfully removed Service " + getFileNameWoExt(position) + " from AndroidManifest");
-                    } else {
-                        SketchwareUtil.toast("Service was not defined in AndroidManifest.");
-                    }
-                    break;
-                    
+                        SketchwareUtil.toast("Successfully added " + getFileNameWoExt(position) + " as Service to AndroidManifest");
+                        break;
+
+                    case "Remove Service from manifest":
+                        if (frc.getServiceManifestList().remove(getFullName(position))) {
+                            FileUtil.writeFile(fpu.getManifestService(sc_id), new Gson().toJson(frc.listServiceManifest));
+                            SketchwareUtil.toast("Successfully removed Service " + getFileNameWoExt(position) + " from AndroidManifest");
+                        } else {
+                            SketchwareUtil.toast("Service was not defined in AndroidManifest.");
+                        }
+                        break;
+
                     case "Edit":
-                    goEditFile(position);
-                    break;
-                    
+                        goEditFile(position);
+                        break;
+
                     case "Edit with...":
-                    Intent launchIntent = new Intent(Intent.ACTION_VIEW);
-                    launchIntent.setDataAndType(Uri.fromFile(new File(getItem(position))), "text/plain");
-                    startActivity(launchIntent);
-                    break;
-                    
+                        Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+                        launchIntent.setDataAndType(Uri.fromFile(new File(getItem(position))), "text/plain");
+                        startActivity(launchIntent);
+                        break;
+
                     case "Rename":
-                    if (FileUtil.isDirectory(getItem(position)) && fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/").startsWith(getItem(position).concat("/"))) {
-                        SketchwareUtil.toastError("You can't rename Main Folder!");
-                        copyMode = false;
-                        refresh();
-                        return false;
-                    }
-                    showRenameDialog(position);
-                    break;
-                    
-                    case "Delete":
-                    if (!isSelecting()) {
-                        select(getItem(position));
-                    }
-                    showDeleteDialog(selectedPaths.toArray(new String[0]));
-                    selectedPaths.clear();
-                    refresh();
-                    break;
-                    
-                    case "Copy":
-                    if (!isSelecting()) {
-                        select(getItem(position));
-                    }
-                    copiedPaths = selectedPaths.toArray(new String[0]);
-                    copyMode = true;
-                    cut = false;
-                    selectedPaths.clear();
-                    refresh();
-                    break;
-                    
-                    case "Cut":
-                    if (!isSelecting()) {
-                        select(getItem(position));
-                    }
-                    copiedPaths = selectedPaths.toArray(new String[0]);
-                    
-                    for (String path : copiedPaths) {
-                        boolean isFolder = FileUtil.isDirectory(path);
-                        boolean isMainDir = fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/").startsWith(path.concat("/"));
-                        if (isFolder && isMainDir) {
-                            SketchwareUtil.toastError("You can't cut Main Folder!");
+                        if (FileUtil.isDirectory(getItem(position)) && fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/").startsWith(getItem(position).concat("/"))) {
+                            SketchwareUtil.toastError("You can't rename Main Folder!");
                             copyMode = false;
-                            selectedPaths.clear();
                             refresh();
                             return false;
                         }
-                    }
-                    copyMode = true;
-                    cut = true;
-                    selectedPaths.clear();
-                    refresh();
-                    break;
-                    
+                        showRenameDialog(position);
+                        break;
+
+                    case "Delete":
+                        if (!isSelecting()) {
+                            select(getItem(position));
+                        }
+                        showDeleteDialog(selectedPaths.toArray(new String[0]));
+                        selectedPaths.clear();
+                        refresh();
+                        break;
+
+                    case "Copy":
+                        if (!isSelecting()) {
+                            select(getItem(position));
+                        }
+                        copiedPaths = selectedPaths.toArray(new String[0]);
+                        copyMode = true;
+                        cut = false;
+                        selectedPaths.clear();
+                        refresh();
+                        break;
+
+                    case "Cut":
+                        if (!isSelecting()) {
+                            select(getItem(position));
+                        }
+                        copiedPaths = selectedPaths.toArray(new String[0]);
+
+                        for (String path : copiedPaths) {
+                            boolean isFolder = FileUtil.isDirectory(path);
+                            boolean isMainDir = fpu.getPathJava(sc_id).concat("/").concat(getIntent().getStringExtra("pkgName").replace(".", "/")).concat("/").startsWith(path.concat("/"));
+                            if (isFolder && isMainDir) {
+                                SketchwareUtil.toastError("You can't cut Main Folder!");
+                                copyMode = false;
+                                selectedPaths.clear();
+                                refresh();
+                                return false;
+                            }
+                        }
+                        copyMode = true;
+                        cut = true;
+                        selectedPaths.clear();
+                        refresh();
+                        break;
+
                     default:
-                    return false;
+                        return false;
                 }
-                
+
                 return true;
-            });
+            } );
             if (position != 0)
-            popupMenu.show();
+                popupMenu.show();
         }
     }
 }
