@@ -46,11 +46,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
 import com.besome.sketch.tools.ExportApkActivity;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdRequest.Builder;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.Resources;
@@ -82,7 +77,6 @@ import a.a.a.to;
 import a.a.a.uo;
 import a.a.a.wq;
 import a.a.a.xB;
-import a.a.a.xo;
 import a.a.a.yB;
 import a.a.a.yq;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
@@ -125,9 +119,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Currently showing tab number
      */
     public int E;
-    public boolean F = false;
-    public AdView G;
-    public View H;
     public to I;
     public DesignActivity.f J = null;
     public Toolbar k;
@@ -138,7 +129,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public CustomViewPager m;
     public CoordinatorLayout n;
     public DrawerLayout o;
-    public LinearLayout p;
     public yq q;
     public DB r;
     public DB s;
@@ -254,16 +244,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public final void m() {
-        if (this.G != null) {
-            try {
-                Builder var1 = new Builder();
-                AdRequest var3 = var1.build();
-                G.loadAd(var3);
-            } catch (Exception ignored) {
-            }
-        }
-    }
 
     public void n() {
         q.b(jC.b(l), jC.a(l), jC.c(l));
@@ -290,9 +270,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (!j.h() && (requestCode == 208 || requestCode == 209 || requestCode == 217 || requestCode == 226 || requestCode == 228 || requestCode == 233 || requestCode == 240 || requestCode == 223 || requestCode == 224) && !j.h()) {
-            xo.k();
-        }
 
         switch (requestCode) {
             case 188:
@@ -378,12 +355,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 m.setCurrentItem(E);
             } else if (t.c("P12I2")) {
                 k();
-                if (!j.h()) {
-                    xo.a(I);
-                    xo.a(getApplicationContext(), 242);
-                } else {
-                    new e(getApplicationContext()).execute();
-                }
+                new e(getApplicationContext()).execute();
 
             } else {
                 q();
@@ -455,23 +427,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (F) {
-                H.setVisibility(View.VISIBLE);
-                p.setVisibility(View.VISIBLE);
-            } else {
-                H.setVisibility(View.GONE);
-                p.setVisibility(View.GONE);
-            }
-        } else {
-            H.setVisibility(View.GONE);
-            p.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.design);
@@ -501,7 +456,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         k.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
         // Replaced empty anonymous class with null
         getSupportFragmentManager().a((Xf.c) null);
-        p = findViewById(Resources.id.layout_ads);
         o = findViewById(Resources.id.drawer_layout);
         o.setDrawerLockMode(1);
         n = findViewById(Resources.id.layout_coordinator);
@@ -601,37 +555,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 new c(getApplicationContext()).execute();
             }
         };
-        H = findViewById(Resources.id.view_ads_boader);
         m.getAdapter().b();
         ((TabLayout) findViewById(Resources.id.tab_layout)).setupWithViewPager(m);
-        if (!j.h()) {
-            xo.a((uo) this);
-            xo.c(getApplicationContext());
-            p();
-        } else {
-            H.setVisibility(View.GONE);
-            p.setVisibility(View.GONE);
-        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(Resources.menu.design_menu, menu);
         return true;
-    }
-
-    @Override
-    public void onDestroy() {
-        if (G != null) {
-            try {
-                G.destroy();
-            } catch (Exception ignored) {
-            }
-        }
-
-        xo.j();
-        xo.i();
-        super.onDestroy();
     }
 
     @Override
@@ -650,18 +581,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @Override
-    public void onPause() {
-        if (G != null) {
-            try {
-                G.pause();
-            } catch (Exception ignored) {
-            }
-        }
-
-        super.onPause();
-    }
-
-    @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         k();
@@ -669,7 +588,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         D = yB.b(map, "sketchware_ver");
         b(yB.c(map, "my_ws_name"));
         q = new yq(getApplicationContext(), wq.d(l), map);
-        m();
 
         try {
             new b(getBaseContext(), savedInstanceState).execute();
@@ -683,13 +601,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onResume();
         if (!j()) {
             finish();
-        }
-
-        if (G != null) {
-            try {
-                G.resume();
-            } catch (Exception ignored) {
-            }
         }
 
         long freeMegabytes = GB.c();
@@ -717,34 +628,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public final void p() {
-        p.removeAllViews();
-        G = new AdView(this);
-        G.setAdListener(new AdListener() {
-            @Override // com.google.android.gms.ads.AdListener
-            public void onAdFailedToLoad(int i) {
-                p.setVisibility(View.GONE);
-                F = false;
-                if (w != null) {
-                    w.b(false);
-                }
-                super.onAdFailedToLoad(i);
-            }
-
-            @Override // com.google.android.gms.ads.AdListener
-            public void onAdLoaded() {
-                F = true;
-                super.onAdLoaded();
-            }
-        });
-        G.setLayoutParams(new LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-        p.addView(G);
-        G.setAdSize(AdSize.BANNER);
-        G.setAdUnitId("ca-app-pub-7978947291427601/3558354213");
-    }
-
     /**
      * Show a dialog asking about saving the project before quitting.
      */
@@ -758,12 +641,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
                 try {
                     k();
-                    if (!j.h()) {
-                        xo.a(I);
-                        xo.a(getApplicationContext(), 242);
-                    } else {
-                        new e(getApplicationContext()).execute();
-                    }
+                    new e(getApplicationContext()).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                     h();
@@ -775,12 +653,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
                 try {
                     k();
-                    if (!j.h()) {
-                        xo.a(I);
-                        xo.a(getApplicationContext(), 243);
-                    } else {
-                        new c(getApplicationContext()).execute();
-                    }
+                    new c(getApplicationContext()).execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                     h();
