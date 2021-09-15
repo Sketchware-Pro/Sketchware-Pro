@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,44 +66,40 @@ public class BlocksManager extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427808);
+        setContentView(Resources.layout.blocks_manager);
         initialize(savedInstanceState);
         initializeLogic();
     }
 
     private void initialize(Bundle _savedInstanceState) {
-        _fab = findViewById(2131231054);
-        background = findViewById(2131232515);
-        toolbar = findViewById(2131231847);
-        listview1 = findViewById(2131232520);
-        back_icon = findViewById(2131232519);
-        page_title = findViewById(2131231582);
-        arrange_icon = findViewById(2131232518);
-        card2 = findViewById(2131232517);
-        card2_icon = findViewById(2131232523);
-        card2_sub = findViewById(2131232522);
+        _fab = findViewById(Resources.id.fab);
+        background = findViewById(Resources.id.background);
+        toolbar = findViewById(Resources.id.toolbar);
+        listview1 = findViewById(Resources.id.list_pallete);
+        back_icon = findViewById(Resources.id.back_icon);
+        page_title = findViewById(Resources.id.page_title);
+        arrange_icon = findViewById(Resources.id.dirs);
+        card2 = findViewById(Resources.id.recycle_bin);
+        card2_icon = findViewById(Resources.id.recycle_icon);
+        card2_sub = findViewById(Resources.id.recycle_sub);
         dia = new AlertDialog.Builder(this);
         dialog = new AlertDialog.Builder(this);
         emptyDialog = new AlertDialog.Builder(this);
-        back_icon.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
         arrange_icon.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final AlertDialog create = new AlertDialog.Builder(BlocksManager.this).create();
-                View inflate = getLayoutInflater().inflate(2131427809, null);
+                View inflate = getLayoutInflater().inflate(Resources.layout.settings_popup, null);
                 create.setView(inflate);
                 create.requestWindowFeature(1);
                 create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                final EditText editText = inflate.findViewById(2131232525);
+                final EditText editText = inflate.findViewById(Resources.id.pallet_dir);
                 editText.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                final EditText editText2 = inflate.findViewById(2131232526);
+                final EditText editText2 = inflate.findViewById(Resources.id.blocks_dir);
                 editText2.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                inflate.findViewById(2131232527).setVisibility(View.GONE);
-                inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(Resources.id.extra_input_layout).setVisibility(View.GONE);
+                inflate.findViewById(Resources.id.save).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         HashMap<String, Object> hashMap = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
                         hashMap.put("palletteDir", editText.getText().toString());
@@ -113,12 +110,9 @@ public class BlocksManager extends AppCompatActivity {
                         create.dismiss();
                     }
                 });
-                inflate.findViewById(2131232351).setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        create.dismiss();
-                    }
-                });
-                inflate.findViewById(2131232530).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(Resources.id.cancel).setOnClickListener(
+                        Helper.getDialogDismissListener(create));
+                inflate.findViewById(Resources.id.defaults).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         HashMap<String, Object> hashMap = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
                         hashMap.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
@@ -137,23 +131,23 @@ public class BlocksManager extends AppCompatActivity {
             public void onClick(View v) {
                 insert_n = -1.0d;
                 final AlertDialog create = new AlertDialog.Builder(BlocksManager.this).create();
-                View inflate = getLayoutInflater().inflate(2131427810, null);
+                View inflate = getLayoutInflater().inflate(Resources.layout.add_new_pallete_customview, null);
                 create.setView(inflate);
                 create.requestWindowFeature(1);
                 create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                final EditText editText = inflate.findViewById(2131231561);
-                final EditText editText2 = inflate.findViewById(2131230904);
-                inflate.findViewById(2131232352).setOnClickListener(new View.OnClickListener() {
+                final EditText editText = inflate.findViewById(Resources.id.name);
+                final EditText editText2 = inflate.findViewById(Resources.id.color);
+                inflate.findViewById(Resources.id.select).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        View inflate = getLayoutInflater().inflate(2131427373, null);
+                        View inflate = getLayoutInflater().inflate(Resources.layout.color_picker, null);
                         Zx zx = new Zx(inflate, BlocksManager.this, 0, true, false);
                         zx.a(new PCP(BlocksManager.this, editText2, create));
-                        zx.setAnimationStyle(2130771968);
+                        zx.setAnimationStyle(Resources.anim.abc_fade_in);
                         zx.showAtLocation(inflate, 17, 0, 0);
                         create.hide();
                     }
                 });
-                inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(Resources.id.save).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         try {
                             Color.parseColor(editText2.getText().toString());
@@ -165,7 +159,7 @@ public class BlocksManager extends AppCompatActivity {
                         }
                     }
                 });
-                inflate.findViewById(2131232351).setOnClickListener(new View.OnClickListener() {
+                inflate.findViewById(Resources.id.cancel).setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         insert_n = -1.0d;
                         create.dismiss();
@@ -320,27 +314,27 @@ public class BlocksManager extends AppCompatActivity {
 
     private void _showEditDial(final double d, String str, String str2) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427810, null);
+        View inflate = getLayoutInflater().inflate(Resources.layout.add_new_pallete_customview, null);
         create.setView(inflate);
         create.requestWindowFeature(1);
         create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        final EditText editText = inflate.findViewById(2131231561);
+        final EditText editText = inflate.findViewById(Resources.id.name);
         editText.setText(str);
-        final EditText editText2 = inflate.findViewById(2131230904);
+        final EditText editText2 = inflate.findViewById(Resources.id.color);
         editText2.setText(str2);
-        ((TextView) inflate.findViewById(2131231837)).setText("Edit palette");
-        TextView textView = inflate.findViewById(2131232351);
-        inflate.findViewById(2131232352).setOnClickListener(new View.OnClickListener() {
+        ((TextView) inflate.findViewById(Resources.id.title)).setText("Edit palette");
+        TextView textView = inflate.findViewById(Resources.id.cancel);
+        inflate.findViewById(Resources.id.select).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                View inflate = getLayoutInflater().inflate(2131427373, null);
+                View inflate = getLayoutInflater().inflate(Resources.layout.color_picker, null);
                 Zx zx = new Zx(inflate, BlocksManager.this, 0, true, false);
                 zx.a(new PCP(BlocksManager.this, editText2, create));
-                zx.setAnimationStyle(2130771968);
+                zx.setAnimationStyle(0x7f010000);
                 zx.showAtLocation(inflate, 17, 0, 0);
                 create.hide();
             }
         });
-        inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
+        inflate.findViewById(Resources.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     Color.parseColor(editText2.getText().toString());
@@ -350,11 +344,7 @@ public class BlocksManager extends AppCompatActivity {
                 }
             }
         });
-        textView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                create.dismiss();
-            }
-        });
+        textView.setOnClickListener(Helper.getDialogDismissListener(create));
         create.show();
     }
 
@@ -398,10 +388,7 @@ public class BlocksManager extends AppCompatActivity {
                         _emptyRecyclebin();
                     }
                 });
-                emptyDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                emptyDialog.setNegativeButton("Cancel", null);
                 emptyDialog.create().show();
                 return true;
             }
@@ -411,23 +398,23 @@ public class BlocksManager extends AppCompatActivity {
     private void _insert_pallete(double d) {
         insert_n = d;
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427810, null);
+        View inflate = getLayoutInflater().inflate(Resources.layout.add_new_pallete_customview, null);
         create.setView(inflate);
         create.requestWindowFeature(1);
         create.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        final EditText editText = inflate.findViewById(2131231561);
-        final EditText editText2 = inflate.findViewById(2131230904);
-        inflate.findViewById(2131232352).setOnClickListener(new View.OnClickListener() {
+        final EditText editText = inflate.findViewById(Resources.id.name);
+        final EditText editText2 = inflate.findViewById(Resources.id.color);
+        inflate.findViewById(Resources.id.select).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                View inflate = getLayoutInflater().inflate(2131427373, null);
+                View inflate = getLayoutInflater().inflate(Resources.layout.color_picker, null);
                 Zx zx = new Zx(inflate, BlocksManager.this, 0, true, false);
                 zx.a(new PCP(BlocksManager.this, editText2, create));
-                zx.setAnimationStyle(2130771968);
+                zx.setAnimationStyle(0x7f010000);
                 zx.showAtLocation(inflate, 17, 0, 0);
                 create.hide();
             }
         });
-        inflate.findViewById(2131232528).setOnClickListener(new View.OnClickListener() {
+        inflate.findViewById(Resources.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
                     Color.parseColor(editText2.getText().toString());
@@ -437,11 +424,8 @@ public class BlocksManager extends AppCompatActivity {
                 }
             }
         });
-        inflate.findViewById(2131232351).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                create.dismiss();
-            }
-        });
+        inflate.findViewById(Resources.id.cancel).setOnClickListener(
+                Helper.getDialogDismissListener(create));
         create.show();
     }
 
@@ -556,13 +540,13 @@ public class BlocksManager extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427811, null);
+                convertView = getLayoutInflater().inflate(Resources.layout.pallet_customview, null);
             }
-            final LinearLayout linearLayout = convertView.findViewById(2131232515);
-            ((TextView) convertView.findViewById(2131231837)).setText(pallet_listmap.get(position).get("name").toString());
-            ((TextView) convertView.findViewById(2131232541)).setText("Blocks: ".concat(String.valueOf((long) _getN(position + 9))));
+            final LinearLayout linearLayout = convertView.findViewById(Resources.id.background);
+            ((TextView) convertView.findViewById(Resources.id.title)).setText(pallet_listmap.get(position).get("name").toString());
+            ((TextView) convertView.findViewById(Resources.id.sub)).setText("Blocks: ".concat(String.valueOf((long) _getN(position + 9))));
             card2_sub.setText("Blocks: ".concat(String.valueOf((long) _getN(-1.0d))));
-            convertView.findViewById(2131230904).setBackgroundColor(Color.parseColor((String) _data.get(position).get("color")));
+            convertView.findViewById(Resources.id.color).setBackgroundColor(Color.parseColor((String) _data.get(position).get("color")));
             _a(linearLayout);
             linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 public boolean onLongClick(View v) {
