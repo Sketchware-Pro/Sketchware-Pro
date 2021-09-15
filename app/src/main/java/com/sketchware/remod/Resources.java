@@ -441,6 +441,7 @@ public class Resources {
         public static final int viewpager = 0x7f080648;
         public static final int linearLayout = 0x7f08065e;
         public static final int cancel = 0x7f08065f;
+        public static final int select = 0x7f080660;
         public static final int list_file = 0x7f080667;
         public static final int fab_plus = 0x7f080668;
         public static final int text_info = 0x7f080669;
@@ -525,7 +526,18 @@ public class Resources {
         public static final int linear8 = 0x7f080701;
         public static final int edittext1 = 0x7f080702;
         public static final int background = 0x7f080703;
+        public static final int recycle_bin = 0x7f080705;
+        public static final int dirs = 0x7f080706;
+        public static final int back_icon = 0x7f080707;
+        public static final int list_pallete = 0x7f080708;
+        public static final int recycle_sub = 0x7f08070a;
+        public static final int recycle_icon = 0x7f08070b;
+        public static final int pallet_dir = 0x7f08070d;
+        public static final int blocks_dir = 0x7f08070e;
+        public static final int extra_input_layout = 0x7f08070f;
         public static final int save = 0x7f080710;
+        public static final int defaults = 0x7f080712;
+        public static final int sub = 0x7f08071d;
         public static final int listview = 0x7f080721;
         public static final int backicon = 0x7f080722;
         public static final int pagetitle = 0x7f080723;
@@ -636,6 +648,10 @@ public class Resources {
         public static final int code_editor_layout_nowrap = 0x7f0b01dd;
         public static final int project_config_layout = 0x7f0b01de;
         public static final int library_downloader_dialog = 0x7f0b01df;
+        public static final int blocks_manager = 0x7f0b01e0;
+        public static final int settings_popup = 0x7f0b01e1;
+        public static final int add_new_pallete_customview = 0x7f0b01e2;
+        public static final int pallet_customview = 0x7f0b01e3;
         public static final int blocks_managers_details = 0x7f0b01e4;
         public static final int block_customview = 0x7f0b01e5;
         public static final int blocks_manager_creator = 0x7f0b01e6;
