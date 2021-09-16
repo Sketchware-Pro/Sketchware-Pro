@@ -9,7 +9,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import a.a.a.ZB;
 import a.a.a.aB;
-import mod.SketchwareUtil;
 
 public class DialogCustomList implements OnClickListener {
 
@@ -42,16 +41,18 @@ public class DialogCustomList implements OnClickListener {
             tilType.setError("Type can't be empty");
         }
 
-        if (validName) {
-            tilName.setError(null);
-        } else {
-            tilName.requestFocus();
-            tilName.setError("Name can't be empty");
+        CharSequence nameError = tilName.getError();
+        if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
+            if (validName) {
+                tilName.setError(null);
+            } else {
+                tilName.requestFocus();
+                tilName.setError("Name can't be empty");
+            }
         }
 
         if (validType && validName && validator.b()) {
             activity.a(4, variableType + " " + variableName + " = new ArrayList<>()");
-            SketchwareUtil.hideKeyboard(tilName);
             dialog.dismiss();
         }
     }

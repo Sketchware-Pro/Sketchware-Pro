@@ -1,6 +1,5 @@
 package dev.aldi.sayuti.block;
 
-import android.app.Activity;
 import android.util.Pair;
 
 import com.besome.sketch.beans.ComponentBean;
@@ -10,12 +9,13 @@ import com.besome.sketch.editor.LogicEditorActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
-import a.a.a.Ss;
 import a.a.a.jC;
 import a.a.a.kq;
 import a.a.a.xq;
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -24,7 +24,7 @@ import mod.hilal.saif.blocks.BlocksHandler;
 import mod.w3wide.blocks.ExtraBlocks;
 import mod.w3wide.control.logic.LogicClickListener;
 
-public class ExtraPaletteBlock extends Activity {
+public class ExtraPaletteBlock {
 
     private final String eventName;
     private final String javaName;
@@ -53,7 +53,7 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     private boolean isWidgetUsed(String str) {
-        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS)) {
+        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK)) {
             return true;
         }
 
@@ -66,9 +66,9 @@ public class ExtraPaletteBlock extends Activity {
             }
         }
         if (eventName.equals("onBindCustomView")) {
-            String str2 = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
-            if (str2 != null && str2.length() > 0) {
-                for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(str2))) {
+            String customView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
+            if (customView != null && customView.length() > 0) {
+                for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
                     if (viewBean.getClassInfo().a(str)) {
                         mapSave.put(str, true);
                         return true;
@@ -84,14 +84,14 @@ public class ExtraPaletteBlock extends Activity {
     }
 
     /*
-    * ExtraPaletteBlock#f(Ss) moved to mod.w3wide.menu.ExtraMenuBean#defineMenuSelector(Ss)
-    * for better block menu selections and to add new stuff easily.
-    */
+     * ExtraPaletteBlock#f(Ss) moved to mod.w3wide.menu.ExtraMenuBean#defineMenuSelector(Ss)
+     * for better block menu selections and to add new stuff easily.
+     */
 
     public boolean e(String str, String str2) {
         switch (str) {
             case "circleimageview":
-                return jC.a(sc_id).g(xmlName, 43, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW, str2);
 
             case "onesignal":
                 return jC.a(sc_id).d(javaName, 32, str2);
@@ -100,10 +100,10 @@ public class ExtraPaletteBlock extends Activity {
                 return jC.a(sc_id).d(javaName, 36, str2);
 
             case "otpview":
-                return jC.a(sc_id).g(xmlName, 46, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW, str2);
 
             case "lottie":
-                return jC.a(sc_id).g(xmlName, 44, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW, str2);
 
             case "phoneauth":
                 return jC.a(sc_id).d(javaName, 28, str2);
@@ -112,10 +112,10 @@ public class ExtraPaletteBlock extends Activity {
                 return jC.a(sc_id).d(javaName, 33, str2);
 
             case "codeview":
-                return jC.a(sc_id).g(xmlName, 47, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW, str2);
 
             case "recyclerview":
-                return jC.a(sc_id).g(xmlName, 48, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
 
             case "googlelogin":
                 return jC.a(sc_id).d(javaName, 31, str2);
@@ -124,89 +124,99 @@ public class ExtraPaletteBlock extends Activity {
                 return jC.a(sc_id).d(javaName, 29, str2);
 
             case "youtubeview":
-                return jC.a(sc_id).g(xmlName, 45, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW, str2);
 
             case "signinbutton":
-                return jC.a(sc_id).g(xmlName, 42, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_SIGNINBUTTON, str2);
 
             case "cardview":
-                return jC.a(sc_id).g(xmlName, 36, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW, str2);
 
             case "radiogroup":
-                return jC.a(sc_id).g(xmlName, 40, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP, str2);
 
             case "fbadinterstitial":
                 return jC.a(sc_id).d(javaName, 34, str2);
 
             case "textinputlayout":
-                return jC.a(sc_id).g(xmlName, 38, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT, str2);
 
             case "collapsingtoolbar":
-                return jC.a(sc_id).g(xmlName, 37, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT, str2);
 
             case "cloudmessage":
                 return jC.a(sc_id).d(javaName, 30, str2);
 
             case "datepicker":
-                return jC.a(sc_id).g(xmlName, 27, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER, str2);
 
             case "customVar":
                 return jC.a(sc_id).f(xmlName, 5, str2);
 
             case "timepicker":
-                return jC.a(sc_id).g(xmlName, 28, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_TIMEPICKER, str2);
 
             case "swiperefreshlayout":
-                return jC.a(sc_id).g(xmlName, 39, str2);
+                return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT, str2);
+
+            default:
+                return true;
         }
-        return true;
     }
 
-    public final void moreBlocks() {
+    /**
+     * @see ReturnMoreblockManager#listMoreblocks(Iterator, LogicEditorActivity)
+     */
+    private void moreBlocks() {
         ReturnMoreblockManager.listMoreblocks(jC.a(sc_id).i(javaName).iterator(), logicEditor);
     }
 
     private void variables() {
-        ArrayList<String> varBools = jC.a(sc_id).e(javaName, 0);
-        for (int i = 0; i < varBools.size(); i++) {
-        	if (i == 0) logicEditor.a("Boolean", 0xff555555);
-        	logicEditor.a(varBools.get(i), "b", "getVar").setTag(varBools.get(i));
+        ArrayList<String> booleanVariables = jC.a(sc_id).e(javaName, 0);
+        for (int i = 0; i < booleanVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Boolean", 0xff555555);
+
+            logicEditor.a(booleanVariables.get(i), "b", "getVar").setTag(booleanVariables.get(i));
         }
 
-        ArrayList<String> varNums = jC.a(sc_id).e(javaName, 1);
-        for (int i = 0; i < varNums.size(); i++) {
-        	if (i == 0) logicEditor.a("Number", 0xff555555);
-        	logicEditor.a(varNums.get(i), "d", "getVar").setTag(varNums.get(i));
+        ArrayList<String> numberVariables = jC.a(sc_id).e(javaName, 1);
+        for (int i = 0; i < numberVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Number", 0xff555555);
+
+            logicEditor.a(numberVariables.get(i), "d", "getVar").setTag(numberVariables.get(i));
         }
 
-        ArrayList<String> varStrs = jC.a(sc_id).e(javaName, 2);
-        for (int i = 0; i < varStrs.size(); i++) {
-        	if (i == 0) logicEditor.a("String", 0xff555555);
-        	logicEditor.a(varStrs.get(i), "s", "getVar").setTag(varStrs.get(i));
+        ArrayList<String> stringVariables = jC.a(sc_id).e(javaName, 2);
+        for (int i = 0; i < stringVariables.size(); i++) {
+            if (i == 0) logicEditor.a("String", 0xff555555);
+
+            logicEditor.a(stringVariables.get(i), "s", "getVar").setTag(stringVariables.get(i));
         }
 
-        ArrayList<String> varMaps = jC.a(sc_id).e(javaName, 3);
-        for (int i = 0; i < varMaps.size(); i++) {
-        	if (i == 0) logicEditor.a("Map", 0xff555555);
-        	logicEditor.a(varMaps.get(i), "a", "getVar").setTag(varMaps.get(i));
+        ArrayList<String> mapVariables = jC.a(sc_id).e(javaName, 3);
+        for (int i = 0; i < mapVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Map", 0xff555555);
+
+            logicEditor.a(mapVariables.get(i), "a", "getVar").setTag(mapVariables.get(i));
         }
 
-        ArrayList<String> varCustoms = jC.a(sc_id).e(javaName, 5);
-        for (int i = 0; i < varCustoms.size(); i++) {
-	    	if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
-	        String[] split = varCustoms.get(i).split(" ");
+        ArrayList<String> customVariables = jC.a(sc_id).e(javaName, 5);
+        for (int i = 0; i < customVariables.size(); i++) {
+            if (i == 0) logicEditor.a("Custom Variable", 0xff555555);
+
+            String[] split = customVariables.get(i).split(" ");
             if (split.length > 1) {
-                logicEditor.a(split[1], "v", split[0], "getVar").setTag(varCustoms.get(i));
+                logicEditor.a(split[1], "v", split[0], "getVar").setTag(customVariables.get(i));
             } else {
-                SketchwareUtil.toastError("Received invalid data, content: {" + i + ":\"" + varCustoms.get(i) + "\"}");
+                SketchwareUtil.toastError("Found invalid data of Custom Variable #" + (i + 1) + ": \"" + customVariables.get(i) + "\"");
             }
         }
         BlocksHandler.primaryBlocksA(
-            logicEditor,
-            extraBlocks.isVariableUsed(0),
-            extraBlocks.isVariableUsed(1),
-            extraBlocks.isVariableUsed(2),
-            extraBlocks.isVariableUsed(3)
+                logicEditor,
+                extraBlocks.isVariableUsed(0),
+                extraBlocks.isVariableUsed(1),
+                extraBlocks.isVariableUsed(2),
+                extraBlocks.isVariableUsed(3)
         );
         blockCustomViews();
         blockDrawer();
@@ -215,7 +225,7 @@ public class ExtraPaletteBlock extends Activity {
         blockComponents();
     }
 
-    public final void blockComponents() {
+    private void blockComponents() {
         ArrayList<ComponentBean> components = jC.a(sc_id).e(javaName);
         for (int i = 0, componentsSize = components.size(); i < componentsSize; i++) {
             ComponentBean component = components.get(i);
@@ -270,8 +280,8 @@ public class ExtraPaletteBlock extends Activity {
         }
     }
 
-    public final void blockDrawer() {
-        if (projectFile.hasActivityOption(4)) {
+    private void blockDrawer() {
+        if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerViews = jC.a(sc_id).d(projectFile.getDrawerXmlName());
             if (drawerViews != null) {
                 for (int i = 0, drawerViewsSize = drawerViews.size(); i < drawerViewsSize; i++) {
@@ -331,6 +341,7 @@ public class ExtraPaletteBlock extends Activity {
                 case 2:
                 case 3:
                     logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first), "getVar").setTag(intStrPair.second);
+                    break;
 
                 default:
                     String[] split = intStrPair.second.split(" ");
@@ -339,19 +350,22 @@ public class ExtraPaletteBlock extends Activity {
                     } else {
                         SketchwareUtil.toastError("Received invalid data, content: {" + intStrPair.first + ":\"" + intStrPair.second + "\"}");
                     }
+                    break;
             }
         }
         BlocksHandler.primaryBlocksB(
-            logicEditor,
-            extraBlocks.isListUsed(1),
-            extraBlocks.isListUsed(2),
-            extraBlocks.isListUsed(3),
-            eventName
+                logicEditor,
+                extraBlocks.isListUsed(1),
+                extraBlocks.isListUsed(2),
+                extraBlocks.isListUsed(3),
+                eventName
         );
     }
 
-    public void setBlock(int i, int i2) {
+    public void setBlock(int paletteId, int paletteColor) {
+        // Remove previous palette's blocks
         logicEditor.m.a();
+
         if (eventName.equals("Import")) {
             logicEditor.a("Enter the path without import & semicolon", 0xff555555);
             logicEditor.a(" ", "customImport");
@@ -359,7 +373,7 @@ public class ExtraPaletteBlock extends Activity {
             return;
         }
 
-        switch (i) {
+        switch (paletteId) {
             case 0:
                 logicEditor.b("Add variable", "variableAdd");
                 logicEditor.b("Add custom variable", "variableAddNew", clickListener);
@@ -681,8 +695,8 @@ public class ExtraPaletteBlock extends Activity {
                 }
             }
             {
-                boolean drawerUsed = projectFile.hasActivityOption(4);
-                boolean fabUsed = projectFile.hasActivityOption(8);
+                boolean drawerUsed = projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER);
+                boolean fabUsed = projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
                 boolean bottomNavigationViewUsed = isWidgetUsed("BottomNavigationView");
                 boolean swipeRefreshLayoutUsed = isWidgetUsed("SwipeRefreshLayout");
                 boolean cardViewUsed = isWidgetUsed("CardView");
@@ -817,7 +831,7 @@ public class ExtraPaletteBlock extends Activity {
             {
                 boolean signInButtonUsed = isWidgetUsed("SignInButton");
                 boolean youtubePlayerViewUsed = isWidgetUsed("YoutubePlayerView");
-                boolean adMobUsed = jC.c(sc_id).b().useYn.equals("Y");
+                boolean adMobUsed = "Y".equals(jC.c(sc_id).b().useYn);
                 boolean mapViewUsed = isWidgetUsed("MapView");
 
                 if (signInButtonUsed || youtubePlayerViewUsed || adMobUsed || mapViewUsed) {
@@ -897,7 +911,8 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("f", "finishActivity");
                     logicEditor.a("f", "finishAffinity");
                 }
-                if (extraBlocks.isComponentUsed(1) || extraBlocks.isCustomVarUsed("Intent")) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_INTENT)
+                        || extraBlocks.isCustomVarUsed("Intent")) {
                     logicEditor.a("Intent", 0xff555555);
                     logicEditor.a(" ", "intentSetAction");
                     logicEditor.a(" ", "intentSetData");
@@ -921,7 +936,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "startService");
                     logicEditor.a(" ", "stopService");
                 }
-                if (extraBlocks.isComponentUsed(2)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_SHAREDPREF)) {
                     logicEditor.a("SharedPreferences", 0xff555555);
                     logicEditor.a("b", "fileContainsData");
                     logicEditor.a("s", "fileGetData");
@@ -936,7 +951,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("TimePickerDialog", 0xff555555);
                     logicEditor.a(" ", "timePickerDialogShow");
                 }
-                if (extraBlocks.isComponentUsed(3)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_CALENDAR)) {
                     logicEditor.a("Calendar", 0xff555555);
                     logicEditor.a(" ", "calendarGetNow");
                     logicEditor.a(" ", "calendarAdd");
@@ -946,11 +961,12 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("d", "calendarGetTime");
                     logicEditor.a(" ", "calendarSetTime");
                 }
-                if (extraBlocks.isComponentUsed(4)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_VIBRATOR)) {
                     logicEditor.a("Vibrator", 0xff555555);
                     logicEditor.a(" ", "vibratorAction");
                 }
-                if (extraBlocks.isComponentUsed(5) || extraBlocks.isCustomVarUsed("Timer")) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_TIMERTASK)
+                        || extraBlocks.isCustomVarUsed("Timer")) {
                     logicEditor.a("Timer", 0xff555555);
                     logicEditor.a("c", "timerAfter");
                     logicEditor.a("c", "timerEvery");
@@ -961,7 +977,8 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "AsyncTaskExecute");
                     logicEditor.a(" ", "AsyncTaskPublishProgress");
                 }
-                if (extraBlocks.isComponentUsed(7) || extraBlocks.isCustomVarUsed("Dialog")) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_DIALOG)
+                        || extraBlocks.isCustomVarUsed("Dialog")) {
                     logicEditor.a("Dialog", 0xff555555);
                     logicEditor.a(" ", "dialogSetTitle");
                     logicEditor.a(" ", "Dialog SetIcon");
@@ -971,7 +988,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a("c", "dialogNeutralButton");
                     logicEditor.a(" ", "dialogShow");
                 }
-                if (extraBlocks.isComponentUsed(8)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_MEDIAPLAYER)) {
                     logicEditor.a("MediaPlayer", 0xff555555);
                     logicEditor.a(" ", "mediaplayerCreate");
                     logicEditor.a(" ", "mediaplayerStart");
@@ -985,14 +1002,14 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "mediaplayerReset");
                     logicEditor.a(" ", "mediaplayerRelease");
                 }
-                if (extraBlocks.isComponentUsed(9)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_SOUNDPOOL)) {
                     logicEditor.a("SoundPool", 0xff555555);
                     logicEditor.a(" ", "soundpoolCreate");
                     logicEditor.a("d", "soundpoolLoad");
                     logicEditor.a("d", "soundpoolStreamPlay");
                     logicEditor.a(" ", "soundpoolStreamStop");
                 }
-                if (extraBlocks.isComponentUsed(10)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR)) {
                     logicEditor.a("ObjectAnimator", 0xff555555);
                     logicEditor.a(" ", "objectanimatorSetTarget");
                     logicEditor.a(" ", "objectanimatorSetProperty");
@@ -1006,7 +1023,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "objectanimatorCancel");
                     logicEditor.a("b", "objectanimatorIsRunning");
                 }
-                if (extraBlocks.isComponentUsed(6)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE)) {
                     logicEditor.a("Firebase", 0xff555555);
                     logicEditor.a(" ", "firebaseAdd");
                     logicEditor.a(" ", "firebasePush");
@@ -1016,7 +1033,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "firebaseStartListen");
                     logicEditor.a(" ", "firebaseStopListen");
                 }
-                if (extraBlocks.isComponentUsed(12)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH)) {
                     logicEditor.a("FirebaseAuth", 0xff555555);
                     logicEditor.a("b", "firebaseauthIsLoggedIn");
                     logicEditor.a("s", "firebaseauthGetCurrentUser");
@@ -1027,47 +1044,40 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "firebaseauthResetPassword");
                     logicEditor.a(" ", "firebaseauthSignOutUser");
                 }
-                jC.a(sc_id).f(javaName, 28);
-                jC.a(sc_id).f(javaName, 29);
-                jC.a(sc_id).f(javaName, 30);
-                jC.a(sc_id).f(javaName, 31);
-                jC.a(sc_id).f(javaName, 32);
-                jC.a(sc_id).f(javaName, 33);
-                jC.a(sc_id).f(javaName, 34);
-                if (extraBlocks.isComponentUsed(11)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_GYROSCOPE)) {
                     logicEditor.a("Gyroscope", 0xff555555);
                     logicEditor.a(" ", "gyroscopeStartListen");
                     logicEditor.a(" ", "gyroscopeStopListen");
                 }
-                if (extraBlocks.isComponentUsed(13)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD)) {
                     logicEditor.a("AdMob", 0xff555555);
                     logicEditor.a(" ", "interstitialadCreate");
                     logicEditor.a(" ", "interstitialadLoadAd");
                     logicEditor.a(" ", "interstitialadShow");
                 }
-                if (extraBlocks.isComponentUsed(14)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE)) {
                     logicEditor.a("Firebase Storage", 0xff555555);
                     logicEditor.a(" ", "firebasestorageUploadFile");
                     logicEditor.a(" ", "firebasestorageDownloadFile");
                     logicEditor.a(" ", "firebasestorageDelete");
                 }
-                if (extraBlocks.isComponentUsed(15)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_CAMERA)) {
                     logicEditor.a("Camera", 0xff555555);
                     logicEditor.a(" ", "camerastarttakepicture");
                 }
-                if (extraBlocks.isComponentUsed(16)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FILE_PICKER)) {
                     logicEditor.a("FilePicker", 0xff555555);
                     logicEditor.a(" ", "filepickerstartpickfiles");
                     logicEditor.a(" ", "imageCrop");
                 }
-                if (extraBlocks.isComponentUsed(17)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK)) {
                     logicEditor.a("RequestNetwork", 0xff555555);
                     logicEditor.a("b", "isConnected");
                     logicEditor.a(" ", "requestnetworkSetParams");
                     logicEditor.a(" ", "requestnetworkSetHeaders");
                     logicEditor.a(" ", "requestnetworkStartRequestNetwork");
                 }
-                if (extraBlocks.isComponentUsed(18)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH)) {
                     logicEditor.a("TextToSpeech", 0xff555555);
                     logicEditor.a("b", "textToSpeechIsSpeaking");
                     logicEditor.a(" ", "textToSpeechSetPitch");
@@ -1076,13 +1086,13 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "textToSpeechStop");
                     logicEditor.a(" ", "textToSpeechShutdown");
                 }
-                if (extraBlocks.isComponentUsed(19)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT)) {
                     logicEditor.a("SpeechToText", 0xff555555);
                     logicEditor.a(" ", "speechToTextStartListening");
                     logicEditor.a(" ", "speechToTextStopListening");
                     logicEditor.a(" ", "speechToTextShutdown");
                 }
-                if (extraBlocks.isComponentUsed(20)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT)) {
                     logicEditor.a("Bluetooth", 0xff555555);
                     logicEditor.a("b", "bluetoothConnectIsBluetoothEnabled");
                     logicEditor.a("b", "bluetoothConnectIsBluetoothActivated");
@@ -1096,7 +1106,7 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "bluetoothConnectActivateBluetooth");
                     logicEditor.a(" ", "bluetoothConnectGetPairedDevices");
                 }
-                if (extraBlocks.isComponentUsed(21)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER)) {
                     logicEditor.a("LocationManager", 0xff555555);
                     logicEditor.a(" ", "locationManagerRequestLocationUpdates");
                     logicEditor.a(" ", "locationManagerRemoveUpdates");
@@ -1111,7 +1121,10 @@ public class ExtraPaletteBlock extends Activity {
                     logicEditor.a(" ", "videoAdPause");
                     logicEditor.a(" ", "videoAdDestroy");
                 }
-                if (extraBlocks.isComponentUsed(23) || extraBlocks.isCustomVarUsed("ProgressDialog") || eventName.equals("onPreExecute") || eventName.equals("onProgressUpdate") || eventName.equals("onPostExecute")) {
+                if (extraBlocks.isComponentUsed(23)
+                        || extraBlocks.isCustomVarUsed("ProgressDialog")
+                        || eventName.equals("onPreExecute") || eventName.equals("onProgressUpdate")
+                        || eventName.equals("onPostExecute")) {
                     logicEditor.a("ProgressDialog", 0xff555555);
                     logicEditor.a(" ", "progressdialogCreate");
                     logicEditor.a(" ", "progressdialogSetTitle");
@@ -1157,7 +1170,7 @@ public class ExtraPaletteBlock extends Activity {
                     if (palette instanceof String) {
                         String paletteString = (String) palette;
 
-                        if (paletteString.equals(String.valueOf(i))) {
+                        if (paletteString.equals(String.valueOf(paletteId))) {
                             Object type = map.get("type");
                             if (type instanceof String) {
                                 String typeString = (String) type;

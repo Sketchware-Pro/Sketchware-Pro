@@ -87,7 +87,7 @@ public class Jx {
      * (Currently) filled with request code constants for FilePicker components
      */
     public ArrayList<String> r = new ArrayList<>();
-    public Lx.a s;
+    public Lx.AccessModifier s;
 
     public Jx(jq jqVar, ProjectFileBean projectFileBean, eC eCVar) {
         b = jqVar.a;
@@ -125,42 +125,12 @@ public class Jx {
     private String getLauncherActivity(String packageName) {
         String theImport = "";
 
-        String activityName = getActivityName(AndroidManifestInjector.getLauncherActivity(d.a));
+        String activityName = ProjectFileBean.getActivityName(AndroidManifestInjector.getLauncherActivity(d.a));
         if (!activityName.equals("MainActivity")) {
             theImport = "import " + packageName + "." + activityName + ";" + a;
         }
 
         return theImport;
-    }
-
-    public String getActivityName(String str) {
-        String str2;
-        int i2;
-        String lowerCase = str.toLowerCase();
-        int i3 = 0;
-        String str3 = "";
-        while (i3 < lowerCase.length()) {
-            char charAt = lowerCase.charAt(i3);
-            if (charAt == '_' && i3 < lowerCase.length() - 1) {
-                i2 = i3 + 1;
-                char charAt2 = lowerCase.charAt(i2);
-                if (Character.isLowerCase(charAt2)) {
-                    str2 = str3 + Character.toUpperCase(charAt2);
-                } else {
-                    str2 = str3 + charAt;
-                    i2 = i3;
-                }
-            } else if (i3 == 0) {
-                str2 = str3 + Character.toUpperCase(charAt);
-                i2 = i3;
-            } else {
-                str2 = str3 + charAt;
-                i2 = i3;
-            }
-            str3 = str2;
-            i3 = i2 + 1;
-        }
-        return str3 + "Activity";
     }
 
     /**
@@ -531,13 +501,13 @@ public class Jx {
     public final String a(int i2, String str) {
         String b2 = mq.b(i2);
         a(mq.c(b2));
-        return Lx.a(b2, str, Lx.a.a);
+        return Lx.a(b2, str, Lx.AccessModifier.PRIVATE);
     }
 
     public final String a(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
         a(mq.c(typeName));
-        return Lx.a(typeName, componentBean.componentId, Lx.a.a, componentBean.param1, componentBean.param2, componentBean.param3);
+        return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
     public final String a(ViewBean viewBean) {
@@ -546,7 +516,7 @@ public class Jx {
             replaceAll = viewBean.getClassInfo().a();
         }
         a(mq.c(replaceAll));
-        return Lx.a(replaceAll, "_drawer_" + viewBean.id, Lx.a.a);
+        return Lx.a(replaceAll, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
     public final void addImport(String str) {
@@ -626,7 +596,7 @@ public class Jx {
     public final String b(int variableType, String name) {
         String variableNameId = mq.c(variableType);
         a(mq.c(variableNameId));
-        return Lx.a(variableNameId, name, Lx.a.a);
+        return Lx.a(variableNameId, name, Lx.AccessModifier.PRIVATE);
     }
 
     /**
@@ -642,7 +612,7 @@ public class Jx {
             replaceAll = viewBean.getClassInfo().a();
         }
         a(mq.c(replaceAll));
-        return Lx.a(replaceAll, viewBean.id, Lx.a.a);
+        return Lx.a(replaceAll, viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
     private void handleAppCompat() {

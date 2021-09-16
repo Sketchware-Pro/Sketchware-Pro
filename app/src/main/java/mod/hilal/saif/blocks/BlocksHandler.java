@@ -2421,11 +2421,13 @@ public class BlocksHandler {
     }
 
     private static boolean showAll() {
-        return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS);
+        return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS)
+                || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
     }
 
     private static boolean showBuiltIn() {
-        return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS);
+        return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS)
+                || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
     }
 
     public static void primaryBlocksA(LogicEditorActivity logicEditorActivity, boolean isBoolUsed, boolean isIntUsed, boolean isStrUsed, boolean isMapUsed) {
