@@ -1,56 +1,52 @@
 package mod.hey.studios.activity.managers.nativelib;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import a.a.a.bB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class ManageNativelibsActivity extends Activity implements View.OnClickListener {
 
-    public CustomAdapter adapter;
-    public FilePickerDialog dialog;
-    public FloatingActionButton fab;
-    public FilePathUtil fpu;
-    public FileResConfig frc;
-    public GridView gridView;
-    public Toolbar toolbar;
-    public String numProj;
-    public DialogProperties properties;
-    public String temp;
-    public TextView tv;
-    private ImageView load_file;
+    private FilePickerDialog filePicker;
+    private FloatingActionButton fab;
+    private FilePathUtil fpu;
+    private FileResConfig frc;
+    private GridView gridView;
+    private String numProj;
+    private String nativeLibrariesPath;
+    private ImageView loadFile;
 
-    public void checkDir() {
+    private void checkDir() {
         if (FileUtil.isExistFile(fpu.getPathNativelibs(numProj))) {
-            temp = fpu.getPathNativelibs(numProj);
-            handleAdapter(temp);
+            nativeLibrariesPath = fpu.getPathNativelibs(numProj);
+            handleAdapter(nativeLibrariesPath);
             handleFab();
 
             return;
@@ -66,119 +62,124 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         checkDir();
     }
 
-    public void handleAdapter(String str) {
+    private void handleAdapter(String str) {
         ArrayList<String> nativelibsFile = frc.getNativelibsFile(str);
-        nativelibsFile.sort(String.CASE_INSENSITIVE_ORDER);
-        adapter = new CustomAdapter(nativelibsFile);
+        Helper.sortPaths(nativelibsFile);
+        CustomAdapter adapter = new CustomAdapter(nativelibsFile);
         gridView.setAdapter(adapter);
     }
 
     private boolean isInMainDirectory() {
-        return temp.equals(fpu.getPathNativelibs(numProj));
+        return nativeLibrariesPath.equals(fpu.getPathNativelibs(numProj));
     }
 
-    public void handleFab() {
+    private void handleFab() {
         if (isInMainDirectory()) {
-            if (load_file != null) {
-                load_file.setVisibility(View.GONE);
+            if (loadFile != null) {
+                loadFile.setVisibility(View.GONE);
             }
 
             fab.setVisibility(View.VISIBLE);
-            return;
+        } else {
+            if (loadFile != null) {
+                loadFile.setVisibility(View.VISIBLE);
+            }
+            fab.setVisibility(View.GONE);
         }
-
-        if (load_file != null) {
-            load_file.setVisibility(View.VISIBLE);
-        }
-
-        fab.setVisibility(View.GONE);
     }
 
-    public void initToolbar() {
-        ((TextView) findViewById(2131232458)).setText("Native library Manager");
-        ImageView back = findViewById(2131232457);
-        Helper.applyRippleToToolbarView(back);
+    private void initToolbar() {
+        ImageView back = findViewById(Resources.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        load_file = findViewById(2131232459);
-        Helper.applyRippleToToolbarView(load_file);
-        load_file.setOnClickListener(v -> dialog.show());
-    }
+        Helper.applyRippleToToolbarView(back);
+        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Native library Manager");
 
-    public void onBackPressed() {
-        temp = temp.substring(0, temp.lastIndexOf("/"));
-
-        if (temp.contains("native_libs")) {
-            handleAdapter(temp);
-            handleFab();
-            return;
-        }
-
-        finish();
+        loadFile = findViewById(Resources.id.ig_toolbar_load_file);
+        Helper.applyRippleToToolbarView(loadFile);
+        loadFile.setOnClickListener(v -> filePicker.show());
     }
 
     @Override
-    public void onClick(View view) {
-        if (view == fab) {
+    public void onBackPressed() {
+        nativeLibrariesPath = nativeLibrariesPath.substring(0, nativeLibrariesPath.lastIndexOf("/"));
+
+        if (nativeLibrariesPath.contains("native_libs")) {
+            handleAdapter(nativeLibrariesPath);
+            handleFab();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == fab) {
             createNewDialog();
         }
     }
 
     private void createNewDialog() {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427800, null);
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        final View root = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
 
-        final EditText editText = inflate.findViewById(2131232463);
-        inflate.findViewById(2131232460).setVisibility(View.GONE);
+        final TextView title = root.findViewById(Resources.id.dialog_create_new_file_layoutTitle);
+        final RadioGroup fileType = root.findViewById(Resources.id.dialog_radio_filetype);
+        final TextInputLayout filenameLayout;
+        final EditText filename = root.findViewById(Resources.id.dialog_edittext_name);
+        filenameLayout = (TextInputLayout) filename.getParent().getParent();
 
-        ((TextView) inflate.findViewById(2131232509)).setText("Create a new folder");
+        title.setText("Create a new folder");
+        fileType.setVisibility(View.GONE);
+        filenameLayout.setHint("Folder name");
 
-        inflate.findViewById(2131232464).setOnClickListener(v -> create.dismiss());
-        inflate.findViewById(2131232465).setOnClickListener(v -> {
-            String path;
+        root.findViewById(Resources.id.dialog_text_cancel).setOnClickListener(
+                Helper.getDialogDismissListener(dialog));
+        root.findViewById(Resources.id.dialog_text_save).setOnClickListener(save -> {
+            String name = filename.getText().toString();
 
-            if (editText.getText().toString().isEmpty()) {
-                SketchwareUtil.toastError("Invalid folder name");
+            if (name.isEmpty()) {
+                filenameLayout.setError("Invalid folder name");
                 return;
             }
+            filenameLayout.setError(null);
 
-            String name = editText.getText().toString();
-            path = fpu.getPathNativelibs(numProj) + "/" + name;
+            String path = fpu.getPathNativelibs(numProj) + "/" + name;
 
             if (FileUtil.isExistFile(path)) {
-                SketchwareUtil.toastError("Folder already exists");
+                filenameLayout.setError("Folder already exists");
                 return;
             }
+            filenameLayout.setError(null);
 
             FileUtil.makeDir(path);
-            handleAdapter(temp);
+            handleAdapter(nativeLibrariesPath);
             SketchwareUtil.toast("Created folder successfully");
 
             dialog.dismiss();
         });
 
-        create.setOnDismissListener(dialog -> SketchwareUtil.hideKeyboard());
-        create.setView(inflate);
-        create.show();
+        dialog.setView(root);
+        dialog.show();
 
-        editText.requestFocus();
-        SketchwareUtil.showKeyboard();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        filename.requestFocus();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427785);
+        setContentView(Resources.layout.manage_file);
 
         if (getIntent().hasExtra("sc_id")) {
             numProj = getIntent().getStringExtra("sc_id");
         }
 
-        gridView = findViewById(2131232359);
+        gridView = findViewById(Resources.id.list_file);
         gridView.setNumColumns(1);
 
-        fab = findViewById(2131232360);
+        fab = findViewById(Resources.id.fab_plus);
 
-        tv = findViewById(2131232361);
+        TextView tv = findViewById(Resources.id.text_info);
         tv.setVisibility(View.GONE);
 
         frc = new FileResConfig(numProj);
@@ -195,7 +196,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
                 menu.getMenu().add("Delete");
                 menu.setOnMenuItemClickListener(item -> {
                     FileUtil.deleteFile(frc.listFileNativeLibs.get(position));
-                    handleAdapter(temp);
+                    handleAdapter(nativeLibrariesPath);
                     SketchwareUtil.toast("Deleted");
 
                     return true;
@@ -208,8 +209,8 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
 
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             if (FileUtil.isDirectory(frc.listFileNativeLibs.get(position))) {
-                temp = frc.listFileNativeLibs.get(position);
-                handleAdapter(temp);
+                nativeLibrariesPath = frc.listFileNativeLibs.get(position);
+                handleAdapter(nativeLibrariesPath);
                 handleFab();
             }
         });
@@ -217,69 +218,76 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         initToolbar();
     }
 
-    public void setupDialog() {
+    private void setupDialog() {
         File externalStorageDir = new File(FileUtil.getExternalStorageDir());
 
-        properties = new DialogProperties();
+        DialogProperties properties = new DialogProperties();
         properties.selection_mode = DialogConfigs.MULTI_MODE;
         properties.selection_type = DialogConfigs.FILE_SELECT;
         properties.root = externalStorageDir;
         properties.error_dir = externalStorageDir;
         properties.offset = externalStorageDir;
-        properties.extensions = new String[] {"so"};
+        properties.extensions = new String[]{"so"};
 
-        dialog = new FilePickerDialog(this, properties);
-        dialog.setTitle("Select a native library (.so)");
-        dialog.setDialogSelectionListener(selections -> {
+        filePicker = new FilePickerDialog(this, properties);
+        filePicker.setTitle("Select a native library (.so)");
+        filePicker.setDialogSelectionListener(selections -> {
             for (String path : selections) {
                 try {
-                    FileUtil.copyDirectory(new File(path), new File(temp + File.separator + Uri.parse(path).getLastPathSegment()));
+                    FileUtil.copyDirectory(new File(path), new File(nativeLibrariesPath + File.separator + Uri.parse(path).getLastPathSegment()));
                 } catch (IOException e) {
-                    bB.a(getApplicationContext(), "Couldn't import library! [" + e.getMessage() + "]", 0);
+                    SketchwareUtil.toastError("Couldn't import library! [" + e.getMessage() + "]");
                 }
             }
 
-            handleAdapter(temp);
+            handleAdapter(nativeLibrariesPath);
             handleFab();
         });
     }
 
-    public void showDialog(final String path) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427790, null);
+    private void showDialog(final String path) {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        final View root = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
 
-        final EditText name = inflate.findViewById(2131232375);
+        final TextInputLayout filenameLayout = root.findViewById(Resources.id.dialoginputlayoutLinearLayout2);
+        final EditText filename = root.findViewById(Resources.id.edittext_change_name);
+        final TextView cancel = root.findViewById(Resources.id.text_cancel);
+        final TextView save = root.findViewById(Resources.id.text_save);
 
-        // what is this
         try {
-            name.setText(path.substring(path.lastIndexOf("/") + 1));
-        } catch (Exception ignored) { }
+            filename.setText(path.substring(path.lastIndexOf("/") + 1));
+        } catch (Exception ignored) {
+        }
+        filenameLayout.setHint("New filename");
 
-        inflate.findViewById(2131232376).setOnClickListener(v -> alertDialog.dismiss());
-        inflate.findViewById(2131232377).setOnClickListener(v -> {
-            if (!name.getText().toString().isEmpty()) {
-                if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf("/")) + "/" + name.getText().toString())) {
+        cancel.setOnClickListener
+                (Helper.getDialogDismissListener(dialog));
+        save.setOnClickListener(saveButton -> {
+            String newName = filename.getText().toString();
+            if (!newName.isEmpty()) {
+                if (FileUtil.renameFile(path,
+                        path.substring(0, path.lastIndexOf(File.separator)) + File.separator + newName)) {
                     SketchwareUtil.toast("Renamed successfully");
                 } else {
                     SketchwareUtil.toastError("Renaming failed");
                 }
 
-                handleAdapter(temp);
+                handleAdapter(nativeLibrariesPath);
                 handleFab();
+                dialog.dismiss();
+            } else {
+                filenameLayout.setError("Enter a name");
             }
-
-            alertDialog.dismiss();
         });
 
-        alertDialog.setOnDismissListener(dialog -> SketchwareUtil.hideKeyboard());
-        alertDialog.setView(inflate);
-        alertDialog.show();
+        dialog.setView(root);
+        dialog.show();
 
-        name.requestFocus();
-        SketchwareUtil.showKeyboard();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        filename.requestFocus();
     }
 
-    public class CustomAdapter extends BaseAdapter {
+    private class CustomAdapter extends BaseAdapter {
 
         private final ArrayList<String> data;
 
@@ -305,12 +313,12 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427823, null);
+                convertView = getLayoutInflater().inflate(Resources.layout.manage_java_item_hs, null);
             }
 
-            TextView name = convertView.findViewById(2131231837);
-            ImageView icon = convertView.findViewById(2131231090);
-            ImageView more = convertView.findViewById(2131232627);
+            TextView name = convertView.findViewById(Resources.id.title);
+            ImageView icon = convertView.findViewById(Resources.id.icon);
+            ImageView more = convertView.findViewById(Resources.id.more);
 
             if (FileUtil.isDirectory(getItem(position))) {
                 more.setVisibility(View.GONE);
@@ -323,7 +331,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
 
             more.setOnClickListener(v -> {
                 PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, v);
-                menu.inflate(2131492893);
+                menu.inflate(Resources.menu.popup_menu_double);
 
                 menu.getMenu().getItem(0).setVisible(false);
                 menu.getMenu().getItem(1).setVisible(false);
@@ -334,7 +342,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
                     switch (title) {
                         case "Delete":
                             FileUtil.deleteFile(frc.listFileNativeLibs.get(position));
-                            handleAdapter(temp);
+                            handleAdapter(nativeLibrariesPath);
                             break;
 
                         case "Rename":
@@ -355,7 +363,8 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         }
 
         private int getImageRes(int position) {
-            return FileUtil.isDirectory(getItem(position)) ? 2131165754 : 2131165623;
+            return FileUtil.isDirectory(getItem(position)) ? Resources.drawable.ic_folder_48dp
+                    : Resources.drawable.file_96;
         }
     }
 }

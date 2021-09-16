@@ -81,7 +81,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
         import_export.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(BlocksManagerDetailsActivity.this, import_export);
+            PopupMenu popupMenu = new PopupMenu(this, import_export);
             final Menu menu = popupMenu.getMenu();
             menu.add("Import blocks");
             menu.add("Export blocks");
@@ -94,7 +94,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     case "Export blocks":
                         Object paletteName = pallet_list.get(palette - 9).get("name");
                         if (paletteName instanceof String) {
-                            String exportTo = new File(BLOCK_EXPORT_PATH, (String) paletteName + ".json").getAbsolutePath();
+                            String exportTo = new File(BLOCK_EXPORT_PATH, paletteName + ".json").getAbsolutePath();
                             FileUtil.writeFile(exportTo, new Gson().toJson(filtered_list));
                             SketchwareUtil.toast("Successfully exported blocks to:\n" + exportTo, Toast.LENGTH_LONG);
                         } else {
@@ -236,7 +236,8 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             pallet_list = new Gson().fromJson(paletteFileContent, Helper.TYPE_MAP_LIST);
             all_blocks_list = new Gson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
         } catch (Exception e) {
-            SketchwareUtil.toastError("Invalid file format!\nMake sure that block.json or palette.json file is formatted correctly.", Toast.LENGTH_LONG);
+            SketchwareUtil.toastError("Invalid file format!\n" +
+                    "Make sure that block.json or palette.json file is formatted correctly.", Toast.LENGTH_LONG);
             pallet_list = new ArrayList<>();
             all_blocks_list = new ArrayList<>();
         }
@@ -251,7 +252,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         filtered_list.add(block);
                     }
                 } catch (NumberFormatException e) {
-                    SketchwareUtil.toastError("Invalid palette entry in block #" + i);
+                    SketchwareUtil.toastError("Invalid palette entry in block #" + (i + 1));
                 }
             }
         }
@@ -357,7 +358,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             if (((String) blockName).matches("(?s).*_copy[0-9][0-9]")) {
                 block.put("name", ((String) blockName).replaceAll("_copy[0-9][0-9]", "_copy" + SketchwareUtil.getRandom(11, 99)));
             } else {
-                block.put("name", ((String) blockName) + "_copy" + SketchwareUtil.getRandom(11, 99));
+                block.put("name", blockName + "_copy" + SketchwareUtil.getRandom(11, 99));
             }
         }
         all_blocks_list.add(position + 1, block);
@@ -386,7 +387,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             if (name instanceof String) {
                 paletteNames.add((String) name);
             } else {
-                SketchwareUtil.toastError("Invalid name of Custom Block palette #" + j);
+                SketchwareUtil.toastError("Invalid name of Custom Block palette #" + (j + 1));
             }
         }
 
@@ -429,7 +430,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                 if (blockName instanceof String) {
                     names.add((String) blockName);
                 } else {
-                    SketchwareUtil.toastError("Invalid name entry of Custom Block #" + i + " in Blocks to import");
+                    SketchwareUtil.toastError("Invalid name entry of Custom Block #" + (i + 1) + " in Blocks to import");
                 }
             }
             AlertDialog.Builder import_dialog = new AlertDialog.Builder(this);
@@ -457,7 +458,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                         for (int i = 0; i < blocks.size(); i++) {
                             if (!toAdd.contains(i)) {
                                 HashMap<String, Object> map = blocks.get(i);
-                                map.put("palette", String.valueOf((long) palette));
+                                map.put("palette", String.valueOf(palette));
                                 all_blocks_list.add(map);
                             }
                         }
@@ -468,7 +469,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     .setNeutralButton("All", (dialog, which) -> {
                         for (int i = 0; i < blocks.size(); i++) {
                             HashMap<String, Object> map = blocks.get(i);
-                            map.put("palette", String.valueOf((long) palette));
+                            map.put("palette", String.valueOf(palette));
                             all_blocks_list.add(map);
                         }
                         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
@@ -593,31 +594,37 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
             if (palette == -1) {
                 spec.getBackground().setColorFilter(new PorterDuffColorFilter(0xff9e9e9e, PorterDuff.Mode.MULTIPLY));
             } else {
-                Object blockColor = block.get("color");
+                if (block.containsKey("color")) {
+                    Object blockColor = block.get("color");
 
-                if (blockColor instanceof String) {
-                    int color = -1;
-                    try {
-                        color = Color.parseColor((String) blockColor);
-                    } catch (IllegalArgumentException e) {
-                        SketchwareUtil.toastError("Invalid color entry in block #" + position);
-
-                        Object paletteColor = pallet_list.get(palette - 9).get("color");
-
-                        if (paletteColor instanceof String) {
-                            try {
-                                color = Color.parseColor((String) paletteColor);
-                            } catch (IllegalArgumentException e2) {
-                                SketchwareUtil.toastError("Invalid color entry in palette!");
-                            }
+                    if (blockColor instanceof String) {
+                        int color = -1;
+                        try {
+                            color = Color.parseColor((String) blockColor);
+                        } catch (IllegalArgumentException e) {
+                            SketchwareUtil.toastError("Invalid color entry in block #" + (position + 1));
                         }
-                    }
 
-                    if (color != -1) {
-                        spec.getBackground().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+                        if (color != -1) {
+                            spec.getBackground().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+                        }
+                    } else {
+                        SketchwareUtil.toastError("Invalid color entry in block #" + (position + 1));
                     }
                 } else {
-                    SketchwareUtil.toastError("Invalid color entry in block #" + position);
+                    HashMap<String, Object> paletteObject = pallet_list.get(palette - 9);
+                    Object paletteColor = paletteObject.get("color");
+
+                    if (paletteColor instanceof String) {
+                        try {
+                            spec.getBackground().setColorFilter(new PorterDuffColorFilter(
+                                    Color.parseColor((String) paletteColor),
+                                    PorterDuff.Mode.MULTIPLY
+                            ));
+                        } catch (IllegalArgumentException e) {
+                            SketchwareUtil.toastError("Invalid color in Custom Block palette #" + (palette - 8));
+                        }
+                    }
                 }
             }
             up.setOnClickListener(v -> {

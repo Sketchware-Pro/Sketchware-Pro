@@ -35,6 +35,7 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
     public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
+    public static final String SETTING_SHOW_EVERY_SINGLE_BLOCK = "show-every-single-block";
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
@@ -106,27 +107,6 @@ public class ConfigActivity extends Activity {
         return false;
     }
 
-    public static String getSettingValue(String keyName, String defaultStr) {
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
-            if (settings.containsKey(keyName)) {
-                Object value = settings.get(keyName);
-                if (value instanceof String) {
-                    return (String) value;
-                } else if (value instanceof Boolean) {
-                    return (boolean) value ? "true" : "false";
-                } else {
-                    SketchwareUtil.toastError("Detected invalid preference for"
-                                    + keyName + ". Restoring defaults",
-                            Toast.LENGTH_LONG);
-                    settings.remove(keyName);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-                }
-            }
-        }
-        return defaultStr;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +127,7 @@ public class ConfigActivity extends Activity {
         root.setOrientation(LinearLayout.VERTICAL);
         setContentView(root);
 
-        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(Resources.layout.toolbar_improved, root, false);
+        View toolbar = getLayoutInflater().inflate(Resources.layout.toolbar_improved, root, false);
         root.addView(toolbar);
         ImageView toolbar_back = toolbar.findViewById(Resources.id.ig_toolbar_back);
         TextView toolbar_title = toolbar.findViewById(Resources.id.tx_toolbar_title);
@@ -161,20 +141,24 @@ public class ConfigActivity extends Activity {
                 "May slow down loading blocks in Logic Editor.",
                 SETTING_SHOW_BUILT_IN_BLOCKS,
                 false);
-        addSwitchPreference("Show all blocks",
+        addSwitchPreference("Show all variable blocks",
                 "All variable blocks will be visible, even if you don't have variables for them.",
                 SETTING_ALWAYS_SHOW_BLOCKS,
                 false);
+        addSwitchPreference("Show all blocks of palettes",
+                "Every single available block will be shown. Will slow down opening palettes!",
+                SETTING_SHOW_EVERY_SINGLE_BLOCK,
+                false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
-                    final LinearLayout container = new LinearLayout(ConfigActivity.this);
+                    final LinearLayout container = new LinearLayout(this);
                     container.setPadding(
                             (int) getDip(20),
                             (int) getDip(8),
                             (int) getDip(20),
                             0);
 
-                    final TextInputLayout tilBackupDirectory = new TextInputLayout(ConfigActivity.this);
+                    final TextInputLayout tilBackupDirectory = new TextInputLayout(this);
                     tilBackupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -182,7 +166,7 @@ public class ConfigActivity extends Activity {
                     tilBackupDirectory.setHelperText("Directory inside /Internal storage/, e.g. sketchware/backups");
                     container.addView(tilBackupDirectory);
 
-                    final EditText backupDirectory = new EditText(ConfigActivity.this);
+                    final EditText backupDirectory = new EditText(this);
                     backupDirectory.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.MATCH_PARENT));
@@ -190,16 +174,15 @@ public class ConfigActivity extends Activity {
                     backupDirectory.setText(getBackupPath());
                     tilBackupDirectory.addView(backupDirectory);
 
-                    AlertDialog dialog = new AlertDialog.Builder(ConfigActivity.this)
+                    new AlertDialog.Builder(this)
                             .setTitle("Backup directory")
-                            .setPositiveButton(Resources.string.common_word_save, (dialog1, which) -> {
+                            .setView(container)
+                            .setPositiveButton(Resources.string.common_word_save, (dialogInterface, which) -> {
                                 setting_map.put(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
                                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                                 SketchwareUtil.toast("Saved");
                             })
-                            .create();
-                    dialog.setView(container);
-                    dialog.show();
+                            .show();
                 });
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
@@ -209,8 +192,8 @@ public class ConfigActivity extends Activity {
                 "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
                 false);
-        addSwitchPreference("Enable ASD highlighter",
-                "Enables syntax highlighting in Add Source Directly blocks.",
+        addSwitchPreference("Enable block text input highlighting",
+                "Enables syntax highlighting while editing blocks' text parameters.",
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
     }
@@ -407,6 +390,7 @@ public class ConfigActivity extends Activity {
         setting_map.put(SETTING_BACKUP_DIRECTORY, "");
         setting_map.put(SETTING_LEGACY_CODE_EDITOR, false);
         setting_map.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
+        setting_map.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
         setting_map.put(SETTING_USE_NEW_VERSION_CONTROL, false);
         setting_map.put(SETTING_USE_ASD_HIGHLIGHTER, false);
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));

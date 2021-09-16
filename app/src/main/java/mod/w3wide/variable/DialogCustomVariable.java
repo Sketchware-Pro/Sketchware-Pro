@@ -8,7 +8,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import a.a.a.ZB;
 import a.a.a.aB;
-import mod.SketchwareUtil;
 
 public class DialogCustomVariable implements View.OnClickListener {
 
@@ -32,7 +31,7 @@ public class DialogCustomVariable implements View.OnClickListener {
     public void onClick(View v) {
         String variableType = tilType.getEditText().getText().toString();
         String variableName = tilName.getEditText().getText().toString();
-        String variableInitializer = TextUtils.isEmpty(tilInitializer.getEditText().getText().toString()) ? "" : tilInitializer.getEditText().getText().toString();
+        String variableInitializer = tilInitializer.getEditText().getText().toString();
 
         boolean validType = !TextUtils.isEmpty(variableType);
         boolean validName = !TextUtils.isEmpty(variableName);
@@ -45,11 +44,14 @@ public class DialogCustomVariable implements View.OnClickListener {
             tilType.setError("Type can't be empty");
         }
 
-        if (validName) {
-            tilName.setError(null);
-        } else {
-            tilName.requestFocus();
-            tilName.setError("Name can't be empty");
+        CharSequence nameError = tilName.getError();
+        if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
+            if (validName) {
+                tilName.setError(null);
+            } else {
+                tilName.requestFocus();
+                tilName.setError("Name can't be empty");
+            }
         }
 
         if (validName && validType && validator.b()) {
@@ -58,7 +60,6 @@ public class DialogCustomVariable implements View.OnClickListener {
                 toAdd += " = " + variableInitializer;
             }
             logicEditor.b(5, toAdd);
-            SketchwareUtil.hideKeyboard(tilName);
             dialog.dismiss();
         }
     }

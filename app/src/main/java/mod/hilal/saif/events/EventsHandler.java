@@ -1,6 +1,7 @@
 package mod.hilal.saif.events;
 
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import org.json.JSONArray;
 
@@ -10,27 +11,26 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.Gx;
+import a.a.a.oq;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.LogUtil;
 
 public class EventsHandler {
 
-    // Array of Event Activities
-    // .sketchware/data/system/activity_events.json
+    /**
+     * Used in {@link oq#a()}
+     *
+     * @return Array of Activity Events.
+     * @apiNote Custom Activity Events can be added by writing to the file
+     * /Internal storage/.sketchware/data/system/events.json and specifying an empty string for "var"
+     */
     public static String[] getActivityEvents() {
         String path = getPath("events");
         ArrayList<String> array = new ArrayList<>();
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+
         try {
             if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-			/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-			for(int i= 0; i < (int)(data.size()); i++) {
-				String ss = (String)data.get(i).get("var");
-				if(ss.equals("")){
-					array.add((String)data.get(i).get("name"));
-				}
-			}*/
-
                 JSONArray arr = new JSONArray(FileUtil.readFile(path));
                 final int len = arr.length();
                 if (len > 0) {
@@ -72,7 +72,10 @@ public class EventsHandler {
         }
     }
 
-    // Add Events, widgets and components
+    /**
+     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#a(Gx, ArrayList)} to retrieve extra
+     * Events for Components, such as custom ones.
+     */
     public static void addEvents(Gx gx, ArrayList<String> list) {
         if (gx.a("Clickable")) {
             list.add(" onLongClick");
@@ -87,20 +90,13 @@ public class EventsHandler {
             list.add("onPostExecute");
         }
         String path = getPath("events");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+
         try {
             if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					if(gx.a((String)data.get(i).get("var"))){
-						list.add(data.get(i).get("name"));
-					}
-				}*/
-
                 JSONArray arr = new JSONArray(FileUtil.readFile(path));
                 final int len = arr.length();
                 if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
+                    for (int i = 0; i < len; i++) {
                         if (gx.a(arr.getJSONObject(i).getString("var"))) {
                             list.add(arr.getJSONObject(i).getString("name"));
                         }
@@ -111,11 +107,12 @@ public class EventsHandler {
         }
     }
 
-    //// add listeners to widgets and Components
+    /**
+     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#b(Gx, ArrayList)} to get extra
+     * listeners for Components and Widgets, such as custom ones.
+     */
     public static void addListeners(Gx gx, ArrayList<String> list) {
-        String path = getPath("events");
         ArrayList<String> temp = new ArrayList<>();
-        ArrayList<HashMap<String, Object>> data;
         if (gx.a("Clickable")) {
             temp.add(" onLongClickListener");
         }
@@ -126,12 +123,14 @@ public class EventsHandler {
             temp.add("AsyncTaskClass");
         }
 
+        String path = getPath("events");
         try {
+
             if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+                ArrayList<HashMap<String, Object>> data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
                 final int len = data.size();
                 if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
+                    for (int i = 0; i < len; i++) {
                         if (gx.a((String) data.get(i).get("var"))) {
                             if (!temp.contains((String) data.get(i).get("listener"))) {
                                 temp.add((String) data.get(i).get("listener"));
@@ -139,469 +138,416 @@ public class EventsHandler {
                         }
                     }
                 }
-				/*
-				JSONArray arr = new JSONArray (FileUtil.readFile(path));
-				for(int i= 0; i < (int)(arr.length()); i++) {
-					if(gx.a(arr.getJSONObject(i).getString("var"))){
-						if(!temp.contains(arr.getJSONObject(i).getString("listener"))){
-							list.add(arr.getJSONObject(i).getString("listener"));
-						}
-					}
-				}*/
             }
-            for (int i = 0; i < (int) (temp.size()); i++) {
-                list.add(temp.get(i));
-            }
+            list.addAll(temp);
         } catch (Exception ignored) {
         }
     }
 
+    /**
+     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#c(String, ArrayList)} to get extra
+     * listeners' Events, such as custom ones.
+     */
     public static void addEventsToListener(String name, ArrayList<String> list) {
-        if (name.equals(" onLongClickListener")) {
-            list.add(" onLongClick");
-        }
-        if (name.equals("onSwipeRefreshLayoutListener")) {
-            list.add("onSwipeRefreshLayout");
-        }
-        if (name.equals("AsyncTaskClass")) {
-            list.add("onPreExecute");
-            list.add("doInBackground");
-            list.add("onProgressUpdate");
-            list.add("onPostExecute");
-        }
-        String path = getPath("events");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("listener");
-					if(name.equals(c)){
-						list.add(data.get(i).get("name"));
-					}
-				}*/
+        switch (name) {
+            case " onLongClickListener":
+                list.add(" onLongClick");
+                break;
 
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("listener");
-                        if (name.equals(c)) {
-                            list.add(arr.getJSONObject(i).getString("name"));
+            case "onSwipeRefreshLayoutListener":
+                list.add("onSwipeRefreshLayout");
+                break;
+
+            case "AsyncTaskClass":
+                list.add("onPreExecute");
+                list.add("doInBackground");
+                list.add("onProgressUpdate");
+                list.add("onPostExecute");
+                break;
+
+            default:
+                String path = getPath("events");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < (len); i++) {
+                                String c = arr.getJSONObject(i).getString("listener");
+                                if (name.equals(c)) {
+                                    list.add(arr.getJSONObject(i).getString("name"));
+                                }
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    LogUtil.e("EventsHandler", "Failed to read Custom Event '" + name + "''s Listeners", e);
                 }
-            }
-        } catch (Exception ignored) {
         }
     }
 
-    // Events' properties
     public static int getIcon(String name) {
-        if (name.equals("Import") || name.equals("onActivityResult") || name.equals("initializeLogic")) {
-            return 2131166270;
-        }
+        switch (name) {
+            case "Import":
+            case "onActivityResult":
+            case "initializeLogic":
+            case "onBackPressed":
+            case "onPostCreate":
+            case "onStart":
+            case "onResume":
+            case "onPause":
+            case "onStop":
+            case "onDestroy":
+            case "onTabLayoutNewTabAdded":
+                return Resources.drawable.widget_source;
 
-        if (name.equals(" onLongClick")) {
-            return 2131165408;
-        }
+            case " onLongClick":
+                return Resources.drawable.check_upload_apk_48dp;
 
-        if (name.equals("onBackPressed")) {
-            return 2131166270;
-        }
-        if (name.equals("onPostCreate")) {
-            return 2131166270;
-        }
-        if (name.equals("onStart")) {
-            return 2131166270;
-        }
-        if (name.equals("onResume")) {
-            return 2131166270;
-        }
-        if (name.equals("onPause")) {
-            return 2131166270;
-        }
-        if (name.equals("onStop")) {
-            return 2131166270;
-        }
-        if (name.equals("onDestroy")) {
-            return 2131166270;
-        }
-        if (name.equals("onSwipeRefreshLayout")) {
-            return 2131166320;
-        }
-        if (name.equals("onPreExecute")) {
-            return 2131165600;
-        }
-        if (name.equals("doInBackground")) {
-            return 2131165557;
-        }
-        if (name.equals("onProgressUpdate")) {
-            return 2131165588;
-        }
-        if (name.equals("onPostExecute")) {
-            return 2131165591;
-        }
-        if (name.equals("onTabLayoutNewTabAdded")) {
-            return 2131166270;
-        }
+            case "onSwipeRefreshLayout":
+                return Resources.drawable.widget_swipe_refresh;
 
-        String path = getPath("events");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+            case "onPreExecute":
+                return Resources.drawable.event_on_stop_tracking_touch_48dp;
 
-        try {
-			/*if(FileUtil.isExistFile(path)){
-				data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("name");
-					if(name.equals(c)){
-						return Integer.valueOf((String)data.get(i).get("icon"));
-					}}} return 2131165312 ;*/
+            case "doInBackground":
+                return Resources.drawable.event_on_animation_start_48dp;
 
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (name.equals(c)) {
-                            return Integer.parseInt(arr.getJSONObject(i).getString("icon"));
+            case "onProgressUpdate":
+                return Resources.drawable.event_on_page_started_48dp;
+
+            case "onPostExecute":
+                return Resources.drawable.event_on_progress_changed_48dp;
+
+            default:
+                String path = getPath("events");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < len; i++) {
+                                String c = arr.getJSONObject(i).getString("name");
+                                if (name.equals(c)) {
+                                    return Integer.parseInt(arr.getJSONObject(i).getString("icon"));
+                                }
+                            }
                         }
                     }
+                    return Resources.drawable.android_icon;
+                } catch (Exception e) {
+                    LogUtil.e("EventsHandler", "Failed to get Custom Event '" + name + "''w icon", e);
+                    return Resources.drawable.android_icon;
                 }
-            }
-            return 2131165312;
-        } catch (Exception e) {
-            return 2131165312;
         }
     }
 
     public static String getDesc(String name) {
-        if (name.equals("Import")) {
-            return "add custom imports";
-        }
-        if (name.equals("onActivityResult")) {
-            return "onActivityResult";
-        }
-        if (name.equals("initializeLogic")) {
-            return "initializeLogic";
-        }
-        if (name.equals("onSwipeRefreshLayout")) {
-            return "On SwipeRefreshLayout swipe";
-        }
+        switch (name) {
+            case "Import":
+                return "add custom imports";
 
-        if (name.equals(" onLongClick")) {
-            return "onLongClick";
-        }
+            case "onActivityResult":
+                return "onActivityResult";
 
-        if (name.equals("onTabLayoutNewTabAdded")) {
-            return "return the name of current tab";
-        }
+            case "initializeLogic":
+                return "initializeLogic";
 
-        if (name.equals("onPreExecute")) {
-            return "This method contains the code which is executed before the background processing starts.";
-        }
-        if (name.equals("doInBackground")) {
-            return "This method contains the code which needs to be executed in background.";
-        }
-        if (name.equals("onProgressUpdate")) {
-            return "This method receives progress updates from doInBackground method.";
-        }
-        if (name.equals("onPostExecute")) {
-            return "This method is called after doInBackground method completes processing.";
-        }
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+            case "onSwipeRefreshLayout":
+                return "On SwipeRefreshLayout swipe";
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (name.equals(c)) {
-                            return arr.getJSONObject(i).getString("description");
+            case " onLongClick":
+                return "onLongClick";
+
+            case "onTabLayoutNewTabAdded":
+                return "return the name of current tab";
+
+            case "onPreExecute":
+                return "This method contains the code which is executed before the background processing starts.";
+
+            case "doInBackground":
+                return "This method contains the code which needs to be executed in background.";
+
+            case "onProgressUpdate":
+                return "This method receives progress updates from doInBackground method.";
+
+            case "onPostExecute":
+                return "This method is called after doInBackground method completes processing.";
+
+            default:
+                String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < len; i++) {
+                                String c = arr.getJSONObject(i).getString("name");
+                                if (name.equals(c)) {
+                                    return arr.getJSONObject(i).getString("description");
+                                }
+                            }
                         }
                     }
+                    return "No_Description";
+                } catch (Exception e) {
+                    LogUtil.e("EventsHandler", "Failed to parse description of Custom Event " +
+                            "'" + name + "'", e);
+                    return "description error: " + e.getMessage();
                 }
-            }
-            return "No_Description";
-        } catch (Exception e) {
-            return "description error";
         }
     }
 
     public static String getEventCode(String name, String param) {
-        if (name.equals("Import")) {
-            return j("//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF\n%s\n//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ", param);
-        }
+        switch (name) {
+            case "Import":
+                // Changed from: "...vF\n${param}\n//3b..."
+                return "//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF\r\n" +
+                        param + "\r\n" +
+                        "//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ";
 
-        if (name.equals("onActivityResult") || name.equals("initializeLogic")) {
-            return "";
-        }
+            case "onActivityResult":
+            case "initializeLogic":
+                return "";
 
-        if (name.equals("onSwipeRefreshLayout")) {
-            return j("@Override \npublic void onRefresh() {\n%s\n}", param);
-        }
+            case "onSwipeRefreshLayout":
+                // Changed from: "@Override \npublic void..."
+                return "@Override\r\n" +
+                        "public void onRefresh() {\n" +
+                        param + "\r\n" +
+                        "}";
 
-        if (name.equals(" onLongClick")) {
-            return j("@Override\r\n	public boolean onLongClick(View _view) {\r\n%s\r\nreturn true;\r\n	}", param);
-        }
+            case " onLongClick":
+                // Changed from: "@Override\r\n public boolean..."
+                return "@Override\r\n" +
+                        "public boolean onLongClick(View _view) {\r\n" +
+                        param + "\r\n" +
+                        "return true;\r\n" +
+                        "}";
 
-        if (name.equals("onTabLayoutNewTabAdded")) {
-            return j("public  CharSequence  onTabLayoutNewTabAdded( int   _position ){\r\n%s\r\n\r\nreturn null;\r\n}", param);
-        }
+            case "onTabLayoutNewTabAdded":
+                // Changed from: "public  CharSequence  onTabLayoutNewTabAdded( int   _position ){..."
+                return "public CharSequence onTabLayoutNewTabAdded(int _position) {\r\n" +
+                        param + "\r\n" +
+                        "return null;\r\n" +
+                        "}";
 
-        if (name.equals("onPreExecute")) {
-            return j("@Override\r\nprotected void onPreExecute() {\r\n%s\r\n}", param);
-        }
-        if (name.equals("doInBackground")) {
-            return j("@Override\r\nprotected String doInBackground(String... params) {\r\nString _param = params[0];\r\n%s\r\n}", param);
-        }
-        if (name.equals("onProgressUpdate")) {
-            return j("@Override\r\nprotected void onProgressUpdate(Integer... values) {\r\nint _value = values[0];\r\n%s\r\n}", param);
-        }
-        if (name.equals("onPostExecute")) {
-            return j("@Override\r\nprotected void onPostExecute(String _result) {\r\n%s\r\n}", param);
-        }
-        String path = getPath("events");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+            case "onPreExecute":
+                return "@Override\r\n" +
+                        "protected void onPreExecute() {\r\n" +
+                        param + "\r\n" +
+                        "}";
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("name");
-					if(name.equals(c)){
-						return j((String)data.get(i).get("code"),param);
-					}
-				}*/
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (name.equals(c)) {
-                            return j(arr.getJSONObject(i).getString("code"), param);
+            case "doInBackground":
+                return "@Override\r\n" +
+                        "protected String doInBackground(String... params) {\r\n" +
+                        "String _param = params[0];\r\n" +
+                        param + "\r\n" +
+                        "}";
+
+            case "onProgressUpdate":
+                return "@Override\r\n" +
+                        "protected void onProgressUpdate(Integer... values) {\r\n" +
+                        "int _value = values[0];\r\n" +
+                        param + "\r\n" +
+                        "}";
+
+            case "onPostExecute":
+                return "@Override\r\n" +
+                        "protected void onPostExecute(String _result) {\r\n" +
+                        param + "\r\n" +
+                        "}";
+
+            default:
+                String path = getPath("events");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < len; i++) {
+                                String c = arr.getJSONObject(i).getString("name");
+                                if (name.equals(c)) {
+                                    return String.format(arr.getJSONObject(i).getString("code"), param);
+                                }
+                            }
                         }
                     }
+                    return "//no code";
+                } catch (Exception e) {
+                    LogUtil.e("EventsHandler", "Failed to parse Custom Event '" + name + "''s code", e);
+                    return "//code error: " + e.getMessage();
                 }
-            }
-            return j("//no code", param);
-        } catch (Exception e) {
-            return j("//code error", param);
         }
     }
 
     public static String getBlocks(String name) {
-        if (name.equals("Import") || name.equals("initializeLogic")) {
-            return "";
-        }
-        if (name.equals("onActivityResult")) {
-            return "%d.requestCode %d.resultCode %m.intent";
-        }
-        if (name.equals("onSwipeRefreshLayout")) {
-            return "";
-        }
-        if (name.equals(" onLongClick")) {
-            return "";
-        }
-        if (name.equals("onTabLayoutNewTabAdded")) {
-            return "%d";
-        }
-        if (name.equals("onPreExecute")) {
-            return "";
-        }
-        if (name.equals("doInBackground")) {
-            return "%s";
-        }
-        if (name.equals("onProgressUpdate")) {
-            return "%d";
-        }
-        if (name.equals("onPostExecute")) {
-            return "%s";
-        }
+        switch (name) {
+            case "Import":
+            case "initializeLogic":
+            case "onSwipeRefreshLayout":
+            case " onLongClick":
+            case "onPreExecute":
+                return "";
 
-        String path = getPath("events");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+            case "onActivityResult":
+                return "%d.requestCode %d.resultCode %m.intent";
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("name");
-					if(name.equals(c)){
-						return (String)data.get(i).get("parameters");
-					}
-				}*/
+            case "onTabLayoutNewTabAdded":
+            case "onProgressUpdate":
+                return "%d";
 
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (name.equals(c)) {
-                            return arr.getJSONObject(i).getString("parameters");
+            case "doInBackground":
+            case "onPostExecute":
+                return "%s";
+
+            default:
+                String path = getPath("events");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < len; i++) {
+                                String c = arr.getJSONObject(i).getString("name");
+                                if (name.equals(c)) {
+                                    return arr.getJSONObject(i).getString("parameters");
+                                }
+                            }
                         }
                     }
+                    return "";
+                } catch (Exception e) {
+                    LogUtil.e("EventsHandler", "Failed to get blocks of Custom Event '" + name + "'", e);
+                    return "";
                 }
-            }
-            return "";
-        } catch (Exception e) {
-            return "";
         }
     }
 
     public static String getSpec(String name, String event) {
-        if (event.equals("Import")) {
-            return "create new import";
-        }
+        switch (event) {
+            case "Import":
+                return "create new import";
 
-        if (event.equals("onActivityResult")) {
-            return "OnActivityResult %d.requestCode %d.resultCode %m.intent.data";
-        }
+            case "onActivityResult":
+                return "OnActivityResult %d.requestCode %d.resultCode %m.intent.data";
 
-        if (event.equals("initializeLogic")) {
-            return "initializeLogic";
-        }
+            case "initializeLogic":
+                return "initializeLogic";
 
-        if (event.equals("onSwipeRefreshLayout")) {
-            return "when " + name + " refresh";
-        }
-        if (event.equals(" onLongClick")) {
-            return "when " + name + " long clicked";
-        }
-        if (event.equals("onTabLayoutNewTabAdded")) {
-            return name + " return tab title %d.position";
-        }
-        if (event.equals("onPreExecute")) {
-            return name + " onPreExecute ";
-        }
-        if (event.equals("doInBackground")) {
-            return name + " doInBackground %s.param";
-        }
-        if (event.equals("onProgressUpdate")) {
-            return name + " onProgressUpdate progress %d.value";
-        }
-        if (event.equals("onPostExecute")) {
-            return name + " onPostExecute result %s.result";
-        }
+            case "onSwipeRefreshLayout":
+                return "when " + name + " refresh";
 
+            case " onLongClick":
+                return "when " + name + " long clicked";
 
-        String path = getPath("events");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+            case "onTabLayoutNewTabAdded":
+                return name + " return tab title %d.position";
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("name");
-					if(event.equals(c)){
-						return ((String)data.get(i).get("headerSpec")).replace("###",name);
-					}
-				}*/
+            case "onPreExecute":
+                return name + " onPreExecute ";
 
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (event.equals(c)) {
-                            return arr.getJSONObject(i).getString("headerSpec").replace("###", name);
+            case "doInBackground":
+                return name + " doInBackground %s.param";
+
+            case "onProgressUpdate":
+                return name + " onProgressUpdate progress %d.value";
+
+            case "onPostExecute":
+                return name + " onPostExecute result %s.result";
+
+            default:
+                String path = getPath("events");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < len; i++) {
+                                String c = arr.getJSONObject(i).getString("name");
+                                if (event.equals(c)) {
+                                    return arr.getJSONObject(i).getString("headerSpec").replace("###", name);
+                                }
+                            }
                         }
                     }
+                    return "no spec";
+                } catch (Exception e) {
+                    return "spec error: " + e.getMessage();
                 }
-            }
-            return "no spec";
-        } catch (Exception e) {
-            return "spec error";
         }
     }
 
     ///listeners codes
     public static String getListenerCode(String name, String var, String param) {
-        if (name.equals(" onLongClickListener")) {
-            return j(var + ".setOnLongClickListener(new View.OnLongClickListener() {\r\n %s\r\n });", param);
-        }
-        if (name.equals("onSwipeRefreshLayoutListener")) {
-            return j(var + ".setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n%s\r\n});", param);
-        }
+        switch (name) {
+            case " onLongClickListener":
+                return var + ".setOnLongClickListener(new View.OnLongClickListener() {\r\n" +
+                        param + "\r\n" +
+                        "});";
 
-        if (name.equals("AsyncTaskClass")) {
-            return j("private class " + var + " extends AsyncTask<String, Integer, String> {\r\n%s\r\n}", param);
-        }
-        String path = getPath("listeners");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+            case "onSwipeRefreshLayoutListener":
+                return var + ".setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n" +
+                        param + "\r\n" +
+                        "});";
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("name");
-					if(name.equals(c)){
-						return j(((String)data.get(i).get("code")).replace("###",var),param);
-					}
-				}*/
+            case "AsyncTaskClass":
+                return "private class " + var + " extends AsyncTask<String, Integer, String> {\r\n" +
+                        param + "\r\n" +
+                        "}";
 
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (name.equals(c)) {
-                            return j(arr.getJSONObject(i).getString("code").replace("###", var), param);
+            default:
+                String path = getPath("listeners");
+
+                try {
+                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
+                        final int len = arr.length();
+                        if (len > 0) {
+                            for (int i = 0; i < len; i++) {
+                                String c = arr.getJSONObject(i).getString("name");
+                                if (name.equals(c)) {
+                                    return String.format(arr.getJSONObject(i).getString("code").replace("###", var), param);
+                                }
+                            }
                         }
                     }
+                    return "//no listener code";
+                } catch (Exception e) {
+                    LogUtil.e("EventsHandler", "Failed to parse Custom Event '" + name + "''s listener code", e);
+                    return "//code listener error: " + e.getMessage();
                 }
-            }
-            return j("//no listener code", param);
-        } catch (Exception e) {
-            return j("//code listener error", param);
         }
     }
 
     public static void getImports(ArrayList<String> list, String name) {
         String path = getPath("listeners");
-        //ArrayList<HashMap<String, Object>> data = new ArrayList<>();
 
         try {
             if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-				/*data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());
-				for(int i= 0; i < (int)(data.size()); i++) {
-					String c = (String)data.get(i).get("name");
-					if(name.equals(c)){
-						if (!((String)data.get(i).get("imports")).equals("")){
-							ArrayList<String> temp = new ArrayList<String>(Arrays.asList(((String)data.get(i).get("imports")).split("\n")));
-							for(int k= 0; k < (int)(temp.size()); k++) {
-								list.add(temp.get(k));
-							}
-						}
-					}
-				}*/
-
                 JSONArray arr = new JSONArray(FileUtil.readFile(path));
                 final int len = arr.length();
                 if (len > 0) {
-                    for (int i = 0; i < (int) (len); i++) {
+                    for (int i = 0; i < len; i++) {
                         String c = arr.getJSONObject(i).getString("name");
                         if (name.equals(c)) {
                             if (!arr.getJSONObject(i).getString("imports").equals("")) {
                                 ArrayList<String> temp = new ArrayList<>(Arrays.asList(arr.getJSONObject(i).getString("imports").split("\n")));
-                                for (int k = 0; k < (int) (temp.size()); k++) {
-                                    list.add(temp.get(k));
-                                }
+                                list.addAll(temp);
                             }
                         }
                     }
                 }
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            LogUtil.e("EventsHandler", "Failed to parse imports of Custom Event '" + name + "'", e);
         }
-    }
-
-    public static String j(String code, String param) {
-        return !code.isEmpty() ? String.format(code, param) : "";
     }
 
     public static String getPath(String type) {
