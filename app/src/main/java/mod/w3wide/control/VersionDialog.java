@@ -1,9 +1,12 @@
 package mod.w3wide.control;
 
 import android.text.TextUtils;
+import android.text.method.DigitsKeyListener;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -76,7 +79,7 @@ public class VersionDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         version_name1.setHint("Version Name");
         version_name1.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        version_name1.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
+        version_name1.setKeyListener(DigitsKeyListener.getInstance("1234567890."));
         version_name1.setPadding(
                 (int) getDip(8),
                 (int) getDip(8),
