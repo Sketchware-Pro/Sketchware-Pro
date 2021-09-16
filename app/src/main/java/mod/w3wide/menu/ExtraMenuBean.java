@@ -177,9 +177,9 @@ public class ExtraMenuBean {
     public void cusA(Ss ss, boolean isNum) {
         AsdOrigin asdOr = new AsdOrigin(logicEditor);
         if (isNum) {
-            asdOr.b(xB.b().a(getContext(), Resources.string.logic_editor_title_enter_number_value));
+            asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_number_value));
         } else {
-            asdOr.b(xB.b().a(getContext(), Resources.string.logic_editor_title_enter_string_value));
+            asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_string_value));
         }
         asdOr.a(Resources.drawable.rename_96_blue);
 
@@ -200,8 +200,8 @@ public class ExtraMenuBean {
         asdOr.a(root);
         asdOr.carry(logicEditor, ss, isNum, edittext);
 
-        asdOr.b(xB.b().a(getContext(), Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, isNum, ss, asdOr));
-        asdOr.a(xB.b().a(getContext(), Resources.string.common_word_cancel), new AsdHandlerCancel(logicEditor, edittext, asdOr));
+        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, isNum, ss, asdOr));
+        asdOr.a(Helper.getResString(Resources.string.common_word_cancel), new AsdHandlerCancel(logicEditor, edittext, asdOr));
         asdOr.show();
     }
 

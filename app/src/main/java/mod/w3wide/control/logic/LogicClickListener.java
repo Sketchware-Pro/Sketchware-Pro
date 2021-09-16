@@ -1,5 +1,6 @@
 package mod.w3wide.control.logic;
 
+import static com.besome.sketch.SketchApplication.getContext;
 import static mod.SketchwareUtil.getDip;
 
 import android.view.View;
@@ -68,12 +69,12 @@ public class LogicClickListener implements View.OnClickListener {
         initializerLayout.addView(initializer);
         root.addView(initializerLayout);
 
-        ZB zb = new ZB(logicEditor.getApplicationContext(), nameLayout, uq.b, uq.a(), jC.a(sc_id).a(projectFile));
+        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), jC.a(sc_id).a(projectFile));
 
         dialog.a(root);
-        dialog.b(xB.b().a(logicEditor.getApplicationContext(), Resources.string.common_word_add),
+        dialog.b(Helper.getResString(Resources.string.common_word_add),
                 new DialogCustomVariable(logicEditor, typeLayout, nameLayout, initializerLayout, zb, dialog));
-        dialog.a(xB.b().a(logicEditor.getApplicationContext(), Resources.string.common_word_cancel),
+        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
 
@@ -100,12 +101,12 @@ public class LogicClickListener implements View.OnClickListener {
         root.addView(typeLayout);
         root.addView(nameLayout);
 
-        ZB zb = new ZB(logicEditor.getApplicationContext(), nameLayout, uq.b, uq.a(), jC.a(sc_id).a(projectFile));
+        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), jC.a(sc_id).a(projectFile));
 
         dialog.a(root);
-        dialog.b(xB.b().a(logicEditor.getApplicationContext(), Resources.string.common_word_add),
+        dialog.b(Helper.getResString(Resources.string.common_word_add),
                 new DialogCustomList(logicEditor, zb, typeLayout, nameLayout, dialog));
-        dialog.a(xB.b().a(logicEditor.getApplicationContext(), Resources.string.common_word_cancel),
+        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
 
