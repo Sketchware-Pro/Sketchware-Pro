@@ -1,22 +1,30 @@
 package mod.hilal.saif.events;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.sketchware.remod.Resources;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.Gx;
 import a.a.a.oq;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
 public class EventsHandler {
+
+    public static final String CUSTOM_EVENTS_FILE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/system/events.json";
+    private static ArrayList<HashMap<String, Object>> cachedCustomEvents = readCustomEvents();
+
+    /**
+     * This is a utility class, don't instantiate it.
+     */
+    private EventsHandler() {
+    }
 
     /**
      * Used in {@link oq#a()}
@@ -26,50 +34,46 @@ public class EventsHandler {
      * /Internal storage/.sketchware/data/system/events.json and specifying an empty string for "var"
      */
     public static String[] getActivityEvents() {
-        String path = getPath("events");
         ArrayList<String> array = new ArrayList<>();
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < len; i++) {
-                        String c = arr.getJSONObject(i).getString("var");
-                        if (c.equals("")) {
-                            array.add(arr.getJSONObject(i).getString("name"));
-                        }
+        array.add("Import");
+        array.add("initializeLogic");
+        array.add("onActivityResult");
+        array.add("onBackPressed");
+        array.add("onPostCreate");
+        array.add("onStart");
+        array.add("onResume");
+        array.add("onPause");
+        array.add("onStop");
+        array.add("onDestroy");
+        array.add("onSaveInstanceState");
+        array.add("onRestoreInstanceState");
+        array.add("onCreateOptionsMenu");
+        array.add("onOptionsItemSelected");
+        array.add("onCreateContextMenu");
+        array.add("onContextItemSelected");
+        array.add("onTabLayoutNewTabAdded");
+
+        for (int i = cachedCustomEvents.size() - 1; i >= 0; i--) {
+            HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+            Object var = customEvent.get("var");
+
+            if (var instanceof String) {
+                if (var.equals("")) {
+                    Object name = customEvent.get("name");
+
+                    if (name instanceof String) {
+                        array.add((String) name);
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
             }
-            array.add("onTabLayoutNewTabAdded");
-            array.add("onContextItemSelected");
-            array.add("onCreateContextMenu");
-            array.add("onOptionsItemSelected");
-            array.add("onCreateOptionsMenu");
-            array.add("onRestoreInstanceState");
-            array.add("onSaveInstanceState");
-            array.add("onDestroy");
-            array.add("onStop");
-            array.add("onPause");
-            array.add("onResume");
-            array.add("onStart");
-            array.add("onPostCreate");
-            array.add("onBackPressed");
-            array.add("onActivityResult");
-            array.add("initializeLogic");
-            array.add("Import");
-            ///array.add("AndroidManifest");
-
-            Collections.reverse(array);
-
-            return array.toArray(new String[0]);
-        } catch (Exception e) {
-            return new String[]{"Import", "initializeLogic", "onActivityResult", "onBackPressed", "onPostCreate", "onStart", "onResume",
-                    "onPause", "onStop", "onDestroy", "onSaveInstanceState", "onRestoreInstanceState",
-                    "onCreateOptionsMenu", "onOptionsItemSelected", "onCreateContextMenu",
-                    "onContextItemSelected", "onTabLayoutNewTabAdded"};
         }
+
+        return array.toArray(new String[0]);
     }
 
     /**
@@ -89,21 +93,24 @@ public class EventsHandler {
             list.add("onProgressUpdate");
             list.add("onPostExecute");
         }
-        String path = getPath("events");
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < len; i++) {
-                        if (gx.a(arr.getJSONObject(i).getString("var"))) {
-                            list.add(arr.getJSONObject(i).getString("name"));
-                        }
+        for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+            HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+            Object var = customEvent.get("var");
+
+            if (var instanceof String) {
+                if (gx.a((String) var)) {
+                    Object name = customEvent.get("name");
+
+                    if (name instanceof String) {
+                        list.add((String) name);
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
             }
-        } catch (Exception ignored) {
         }
     }
 
@@ -112,35 +119,35 @@ public class EventsHandler {
      * listeners for Components and Widgets, such as custom ones.
      */
     public static void addListeners(Gx gx, ArrayList<String> list) {
-        ArrayList<String> temp = new ArrayList<>();
         if (gx.a("Clickable")) {
-            temp.add(" onLongClickListener");
+            list.add(" onLongClickListener");
         }
         if (gx.a("SwipeRefreshLayout")) {
-            temp.add("onSwipeRefreshLayoutListener");
+            list.add("onSwipeRefreshLayoutListener");
         }
         if (gx.a("AsyncTask")) {
-            temp.add("AsyncTaskClass");
+            list.add("AsyncTaskClass");
         }
 
-        String path = getPath("events");
-        try {
+        for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+            HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+            Object var = customEvent.get("var");
 
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                ArrayList<HashMap<String, Object>> data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
-                final int len = data.size();
-                if (len > 0) {
-                    for (int i = 0; i < len; i++) {
-                        if (gx.a((String) data.get(i).get("var"))) {
-                            if (!temp.contains((String) data.get(i).get("listener"))) {
-                                temp.add((String) data.get(i).get("listener"));
-                            }
+            if (var instanceof String) {
+                if (gx.a((String) var)) {
+                    Object listener = customEvent.get("listener");
+
+                    if (listener instanceof String) {
+                        if (!list.contains((String) listener)) {
+                            list.add((String) listener);
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid listener data type in Custom Event #" + (i + 1));
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Found invalid var data type in Custom Event #" + (i + 1));
             }
-            list.addAll(temp);
-        } catch (Exception ignored) {
         }
     }
 
@@ -166,24 +173,25 @@ public class EventsHandler {
                 break;
 
             default:
-                String path = getPath("events");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object listener = customEvent.get("listener");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < (len); i++) {
-                                String c = arr.getJSONObject(i).getString("listener");
-                                if (name.equals(c)) {
-                                    list.add(arr.getJSONObject(i).getString("name"));
-                                }
+                    if (listener instanceof String) {
+                        if (name.equals(listener)) {
+                            Object eventName = customEvent.get("name");
+
+                            if (eventName instanceof String) {
+                                list.add((String) eventName);
+                            } else {
+                                SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid listener data type in Custom Event #" + (i + 1));
                     }
-                } catch (Exception e) {
-                    LogUtil.e("EventsHandler", "Failed to read Custom Event '" + name + "''s Listeners", e);
                 }
+                break;
         }
     }
 
@@ -221,26 +229,31 @@ public class EventsHandler {
                 return Resources.drawable.event_on_progress_changed_48dp;
 
             default:
-                String path = getPath("events");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object eventName = customEvent.get("name");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < len; i++) {
-                                String c = arr.getJSONObject(i).getString("name");
-                                if (name.equals(c)) {
-                                    return Integer.parseInt(arr.getJSONObject(i).getString("icon"));
+                    if (eventName instanceof String) {
+                        if (name.equals(eventName)) {
+                            Object icon = customEvent.get("icon");
+
+                            if (icon instanceof String) {
+                                try {
+                                    return Integer.parseInt((String) icon);
+                                } catch (NumberFormatException e) {
+                                    SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
+                                    return Resources.drawable.android_icon;
                                 }
+                            } else {
+                                SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
-                    return Resources.drawable.android_icon;
-                } catch (Exception e) {
-                    LogUtil.e("EventsHandler", "Failed to get Custom Event '" + name + "''w icon", e);
-                    return Resources.drawable.android_icon;
                 }
+
+                return Resources.drawable.android_icon;
         }
     }
 
@@ -277,27 +290,26 @@ public class EventsHandler {
                 return "This method is called after doInBackground method completes processing.";
 
             default:
-                String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object eventName = customEvent.get("name");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < len; i++) {
-                                String c = arr.getJSONObject(i).getString("name");
-                                if (name.equals(c)) {
-                                    return arr.getJSONObject(i).getString("description");
-                                }
+                    if (eventName instanceof String) {
+                        if (name.equals(eventName)) {
+                            Object description = customEvent.get("description");
+
+                            if (description instanceof String) {
+                                return (String) description;
+                            } else {
+                                SketchwareUtil.toastError("Found invalid description data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
-                    return "No_Description";
-                } catch (Exception e) {
-                    LogUtil.e("EventsHandler", "Failed to parse description of Custom Event " +
-                            "'" + name + "'", e);
-                    return "description error: " + e.getMessage();
                 }
+
+                return "No_Description";
         }
     }
 
@@ -362,26 +374,26 @@ public class EventsHandler {
                         "}";
 
             default:
-                String path = getPath("events");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object eventName = customEvent.get("name");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < len; i++) {
-                                String c = arr.getJSONObject(i).getString("name");
-                                if (name.equals(c)) {
-                                    return String.format(arr.getJSONObject(i).getString("code"), param);
-                                }
+                    if (eventName instanceof String) {
+                        if (name.equals(eventName)) {
+                            Object code = customEvent.get("code");
+
+                            if (code instanceof String) {
+                                return String.format((String) code, param);
+                            } else {
+                                SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
-                    return "//no code";
-                } catch (Exception e) {
-                    LogUtil.e("EventsHandler", "Failed to parse Custom Event '" + name + "''s code", e);
-                    return "//code error: " + e.getMessage();
                 }
+
+                return "//no code";
         }
     }
 
@@ -406,26 +418,26 @@ public class EventsHandler {
                 return "%s";
 
             default:
-                String path = getPath("events");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object eventName = customEvent.get("name");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < len; i++) {
-                                String c = arr.getJSONObject(i).getString("name");
-                                if (name.equals(c)) {
-                                    return arr.getJSONObject(i).getString("parameters");
-                                }
+                    if (eventName instanceof String) {
+                        if (name.equals(eventName)) {
+                            Object parameters = customEvent.get("parameters");
+
+                            if (parameters instanceof String) {
+                                return (String) parameters;
+                            } else {
+                                SketchwareUtil.toastError("Found invalid parameters data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
-                    return "";
-                } catch (Exception e) {
-                    LogUtil.e("EventsHandler", "Failed to get blocks of Custom Event '" + name + "'", e);
-                    return "";
                 }
+
+                return "";
         }
     }
 
@@ -462,25 +474,26 @@ public class EventsHandler {
                 return name + " onPostExecute result %s.result";
 
             default:
-                String path = getPath("events");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object eventName = customEvent.get("name");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < len; i++) {
-                                String c = arr.getJSONObject(i).getString("name");
-                                if (event.equals(c)) {
-                                    return arr.getJSONObject(i).getString("headerSpec").replace("###", name);
-                                }
+                    if (eventName instanceof String) {
+                        if (event.equals(eventName)) {
+                            Object headerSpec = customEvent.get("headerSpec");
+
+                            if (headerSpec instanceof String) {
+                                return ((String) headerSpec).replace("###", name);
+                            } else {
+                                SketchwareUtil.toastError("Found invalid header spec data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
-                    return "no spec";
-                } catch (Exception e) {
-                    return "spec error: " + e.getMessage();
                 }
+
+                return "no spec";
         }
     }
 
@@ -503,63 +516,76 @@ public class EventsHandler {
                         "}";
 
             default:
-                String path = getPath("listeners");
+                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+                    Object eventName = customEvent.get("name");
 
-                try {
-                    if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                        JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                        final int len = arr.length();
-                        if (len > 0) {
-                            for (int i = 0; i < len; i++) {
-                                String c = arr.getJSONObject(i).getString("name");
-                                if (name.equals(c)) {
-                                    return String.format(arr.getJSONObject(i).getString("code").replace("###", var), param);
-                                }
+                    if (eventName instanceof String) {
+                        if (name.equals(eventName)) {
+                            Object code = customEvent.get("code");
+
+                            if (code instanceof String) {
+                                return String.format(((String) code).replace("###", var), param);
+                            } else {
+                                SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                             }
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
                     }
-                    return "//no listener code";
-                } catch (Exception e) {
-                    LogUtil.e("EventsHandler", "Failed to parse Custom Event '" + name + "''s listener code", e);
-                    return "//code listener error: " + e.getMessage();
                 }
+
+                return "//no listener code";
         }
     }
 
     public static void getImports(ArrayList<String> list, String name) {
-        String path = getPath("listeners");
+        for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
+            HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+            Object eventName = customEvent.get("name");
 
-        try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
-                JSONArray arr = new JSONArray(FileUtil.readFile(path));
-                final int len = arr.length();
-                if (len > 0) {
-                    for (int i = 0; i < len; i++) {
-                        String c = arr.getJSONObject(i).getString("name");
-                        if (name.equals(c)) {
-                            if (!arr.getJSONObject(i).getString("imports").equals("")) {
-                                ArrayList<String> temp = new ArrayList<>(Arrays.asList(arr.getJSONObject(i).getString("imports").split("\n")));
-                                list.addAll(temp);
-                            }
+            if (eventName instanceof String) {
+                if (name.equals(eventName)) {
+                    Object imports = customEvent.get("imports");
+
+                    if (imports instanceof String) {
+                        if (!imports.equals("")) {
+                            list.addAll(new ArrayList<>(Arrays.asList(((String) imports).split("\n"))));
                         }
+                    } else {
+                        SketchwareUtil.toastError("Found invalid import data type in Custom Event #" + (i + 1));
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Found invalid name data type in Custom Event #" + (i + 1));
             }
-        } catch (Exception e) {
-            LogUtil.e("EventsHandler", "Failed to parse imports of Custom Event '" + name + "'", e);
         }
     }
 
-    public static String getPath(String type) {
-        if (type.equals("activity_event_array")) {
-            return FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/activity_events.json");
+    public static void refreshCachedCustomEvents() {
+        cachedCustomEvents = readCustomEvents();
+    }
+
+    private static ArrayList<HashMap<String, Object>> readCustomEvents() {
+        ArrayList<HashMap<String, Object>> customEvents = new ArrayList<>();
+
+        if (FileUtil.isExistFile(CUSTOM_EVENTS_FILE_PATH)) {
+            String customEventsContent = FileUtil.readFile(CUSTOM_EVENTS_FILE_PATH);
+
+            if (!customEventsContent.equals("") && !customEventsContent.equals("[]")) {
+                try {
+                    customEvents = new Gson().fromJson(customEventsContent, Helper.TYPE_MAP_LIST);
+
+                    if (customEvents == null) {
+                        LogUtil.e("EventsHandler", "Failed to parse Custom Events file! Now using none");
+                        customEvents = new ArrayList<>();
+                    }
+                } catch (JsonParseException e) {
+                    LogUtil.e("EventsHandler", "Failed to parse Custom Events file! Now using none");
+                }
+            }
         }
-        if (type.equals("events")) {
-            return FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
-        }
-        if (type.equals("listeners")) {
-            return FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/listeners.json");
-        }
-        return "";
+
+        return customEvents;
     }
 }
