@@ -240,30 +240,34 @@ public class ExtraPaletteBlock {
         }
     }
 
-    public final void blockCustomViews() {
+    private void blockCustomViews() {
         if (eventName.equals("onBindCustomView")) {
-            String viewBeanCustomView = jC.a(sc_id).c(xmlName, logicEditor.C).customView;
-            if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
-                ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
-                for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
-                    ViewBean customView = customViews.get(i);
+            String viewId = logicEditor.C;
+            ViewBean viewBean = jC.a(sc_id).c(xmlName, viewId);
+            if (viewBean != null) {
+                String viewBeanCustomView = viewBean.customView;
+                if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
+                    ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
+                    for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
+                        ViewBean customView = customViews.get(i);
 
-                    if (i == 0) {
-                        logicEditor.a("Custom Views", 0xff555555);
-                    }
+                        if (i == 0) {
+                            logicEditor.a("Custom Views", 0xff555555);
+                        }
 
-                    if (!customView.convert.equals("include")) {
-                        String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
-                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
+                        if (!customView.convert.equals("include")) {
+                            String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
+                            logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
+                        }
                     }
                 }
+                logicEditor.a(" ", "notifyDataSetChanged");
+                logicEditor.a("c", "viewOnClick");
+                logicEditor.a("c", "viewOnLongClick");
+                logicEditor.a("c", "checkboxOnChecked");
+                logicEditor.a("b", "checkboxIsChecked");
+                return;
             }
-            logicEditor.a(" ", "notifyDataSetChanged");
-            logicEditor.a("c", "viewOnClick");
-            logicEditor.a("c", "viewOnLongClick");
-            logicEditor.a("c", "checkboxOnChecked");
-            logicEditor.a("b", "checkboxIsChecked");
-            return;
         }
         ArrayList<ViewBean> views = jC.a(sc_id).d(xmlName);
         for (int i = 0, viewsSize = views.size(); i < viewsSize; i++) {
@@ -301,58 +305,71 @@ public class ExtraPaletteBlock {
         }
     }
 
-    public final void blockEvents() {
-        if (eventName.equals("onTabAdded") || eventName.equals("onFragmentAdded") || eventName.equals("onTabLayoutNewTabAdded")) {
-            logicEditor.a("Fragment & TabLayout", 0xff555555);
-            if (eventName.equals("onTabAdded") || eventName.equals("onTabLayoutNewTabAdded")) {
+    private void blockEvents() {
+        switch (eventName) {
+            case "onTabAdded":
+            case "onTabLayoutNewTabAdded":
+                logicEditor.a("Fragment & TabLayout", 0xff555555);
                 logicEditor.a("f", "returnTitle");
-            }
-            if (eventName.equals("onFragmentAdded")) {
+                break;
+
+            case "onFragmentAdded":
+                logicEditor.a("Fragment & TabLayout", 0xff555555);
                 logicEditor.a("f", "returnFragment");
-            }
-        }
-        if (eventName.equals("onScrollChanged")) {
-            logicEditor.a("ListView", 0xff555555);
-            logicEditor.a("d", "listscrollparam");
-            logicEditor.a("d", "getLastVisiblePosition");
-        }
-        if (eventName.equals("onScrollChanged2")) {
-            logicEditor.a("RecyclerView", 0xff555555);
-            logicEditor.a("d", "recyclerscrollparam");
-        }
-        if (eventName.equals("onPageChanged")) {
-            logicEditor.a("ViewPager", 0xff555555);
-            logicEditor.a("d", "pagerscrollparam");
-        }
-        if (eventName.equals("onCreateOptionsMenu")) {
-            logicEditor.a("Menu", 0xff555555);
-            logicEditor.a(" ", "menuInflater");
-            logicEditor.a(" ", "menuAddItem");
-            logicEditor.a(" ", "menuAddMenuItem");
-            logicEditor.a("c", "menuAddSubmenu");
-            logicEditor.a(" ", "submenuAddItem");
+                break;
+
+            case "onScrollChanged":
+                logicEditor.a("ListView", 0xff555555);
+                logicEditor.a("d", "listscrollparam");
+                logicEditor.a("d", "getLastVisiblePosition");
+                break;
+
+            case "onScrollChanged2":
+                logicEditor.a("RecyclerView", 0xff555555);
+                logicEditor.a("d", "recyclerscrollparam");
+                break;
+
+            case "onPageChanged":
+                logicEditor.a("ViewPager", 0xff555555);
+                logicEditor.a("d", "pagerscrollparam");
+                break;
+
+            case "onCreateOptionsMenu":
+                logicEditor.a("Menu", 0xff555555);
+                logicEditor.a(" ", "menuInflater");
+                logicEditor.a(" ", "menuAddItem");
+                logicEditor.a(" ", "menuAddMenuItem");
+                logicEditor.a("c", "menuAddSubmenu");
+                logicEditor.a(" ", "submenuAddItem");
+                break;
+
+            default:
         }
     }
 
-    public final void list() {
-        for (Pair<Integer, String> intStrPair : jC.a(sc_id).j(javaName)) {
-            switch (intStrPair.first) {
+    private void list() {
+        for (Pair<Integer, String> list : jC.a(sc_id).j(javaName)) {
+            int type = list.first;
+            String name = list.second;
+
+            switch (type) {
                 case 1:
                 case 2:
                 case 3:
-                    logicEditor.a(intStrPair.second, "l", kq.a(intStrPair.first), "getVar").setTag(intStrPair.second);
+                    logicEditor.a(name, "l", kq.a(type), "getVar").setTag(name);
                     break;
 
                 default:
-                    String[] split = intStrPair.second.split(" ");
-                    if (split.length > 1) {
-                        logicEditor.a(split[1], "l", "List", "getVar").setTag(intStrPair.second);
+                    String[] splitName = name.split(" ");
+                    if (splitName.length > 1) {
+                        logicEditor.a(splitName[1], "l", "List", "getVar").setTag(name);
                     } else {
-                        SketchwareUtil.toastError("Received invalid data, content: {" + intStrPair.first + ":\"" + intStrPair.second + "\"}");
+                        SketchwareUtil.toastError("Found invalid List data, type:" + type + ", name: \"" + name + "\"");
                     }
                     break;
             }
         }
+
         BlocksHandler.primaryBlocksB(
                 logicEditor,
                 extraBlocks.isListUsed(1),
