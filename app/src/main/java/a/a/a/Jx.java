@@ -357,34 +357,38 @@ public class Jx {
             }
         }
 
-        if (e.g().length() > 0) {
-            sb.append(a)
-                    .append(a)
-                    .append(e.g());
+        String hxG = e.g();
+        if (hxG.length() > 0) {
+            sb.append(a);
+            sb.append(a);
+            sb.append(hxG);
         }
 
-        if (e.c().length() > 0) {
-            sb.append(a)
-                    .append(a)
-                    .append(e.c());
+        String hxC = e.c();
+        if (hxC.length() > 0) {
+            sb.append(a);
+            sb.append(a);
+            sb.append(hxC);
         }
 
-        if (e.d().length() > 0) {
-            sb.append(a)
-                    .append(a)
-                    .append(e.d());
+        String hxD = e.d();
+        if (hxD.length() > 0) {
+            sb.append(a);
+            sb.append(a);
+            sb.append(hxD);
         }
 
-        if (e.f().length() > 0) {
-            sb.append(a)
-                    .append(a)
-                    .append(e.f());
+        String hxF = e.f();
+        if (hxF.length() > 0) {
+            sb.append(a);
+            sb.append(a);
+            sb.append(hxF);
         }
 
-        sb.append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("private void initializeLogic() {").append(a);
+        sb.append(a);
+        sb.append("}").append(a);
+        sb.append(a);
+        sb.append("private void initializeLogic() {").append(a);
         if (o.length() > 0) {
             sb.append(o).append(a);
         }
