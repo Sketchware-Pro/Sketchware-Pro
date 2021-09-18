@@ -1164,13 +1164,19 @@ public class ExtraPaletteBlock {
                 return;
 
             default:
+                int paletteIndex = -1, paletteBlocks = 0;
                 ArrayList<HashMap<String, Object>> extraBlockData = ExtraBlockFile.getExtraBlockData();
-                for (HashMap<String, Object> map : extraBlockData) {
+                for (int i = 0, extraBlockDataSize = extraBlockData.size(); i < extraBlockDataSize; i++) {
+                    HashMap<String, Object> map = extraBlockData.get(i);
+
                     Object palette = map.get("palette");
                     if (palette instanceof String) {
                         String paletteString = (String) palette;
 
                         if (paletteString.equals(String.valueOf(paletteId))) {
+                            if (paletteIndex == -1) paletteIndex = Integer.parseInt(paletteString);
+                            paletteBlocks++;
+
                             Object type = map.get("type");
                             if (type instanceof String) {
                                 String typeString = (String) type;
@@ -1181,6 +1187,9 @@ public class ExtraPaletteBlock {
                                         String specString = (String) spec;
 
                                         logicEditor.a(specString, 0xff555555);
+                                    } else {
+                                        SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
+                                                " of current palette has an invalid spec data type");
                                     }
                                 } else {
                                     Object name = map.get("name");
@@ -1196,17 +1205,21 @@ public class ExtraPaletteBlock {
                                             logicEditor.a("", typeString, "", nameString);
                                         }
                                     } else {
-                                        SketchwareUtil.toastError("Detected invalid Custom Block! Check the \"name\" key's type/value");
+                                        SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
+                                                " of current palette has an invalid name data type");
                                     }
                                 }
                             } else {
-                                SketchwareUtil.toastError("Detected invalid Custom Block! Check the \"type\" key's type/value");
+                                SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
+                                        " of current palette has an invalid block type data type");
                             }
                         }
                     } else {
-                        SketchwareUtil.toastError("Detected invalid Custom Block! Check the \"palette\" key's type/value");
+                        SketchwareUtil.toastError("Custom Block #" + paletteBlocks +
+                                " of current palette has an invalid block palette data type");
                     }
                 }
+                break;
         }
     }
 }
