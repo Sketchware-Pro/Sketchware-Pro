@@ -11,6 +11,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.events.EventsHandler;
 
 public class EventsMaker extends Activity {
 
@@ -67,7 +69,13 @@ public class EventsMaker extends Activity {
         refreshList();
     }
 
-    public void setupViews() {
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventsHandler.refreshCachedCustomEvents();
+    }
+
+    private void setupViews() {
         FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
         listView = findViewById(Resources.id.add_attr_listview);
         ViewGroup base = (ViewGroup) listView.getParent();
@@ -108,12 +116,12 @@ public class EventsMaker extends Activity {
         refreshList();
     }
 
-    public void showAddDial() {
+    private void showAddDial() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(Resources.layout.add_new_listener, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
-        create.requestWindowFeature(1);
+        create.requestWindowFeature(Window.FEATURE_NO_TITLE);
         create.getWindow().setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -147,7 +155,7 @@ public class EventsMaker extends Activity {
         create.show();
     }
 
-    public void a(View view, int i, int i2, boolean z) {
+    private void a(View view, int i, int i2, boolean z) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setCornerRadii(new float[]{(float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f, (float) i, (float) i, ((float) i) / 2.0f, ((float) i) / 2.0f});
@@ -159,7 +167,7 @@ public class EventsMaker extends Activity {
         view.setFocusable(true);
     }
 
-    public void overrideEvents(String before, String after) {
+    private void overrideEvents(String before, String after) {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
             events = new Gson()
@@ -173,7 +181,7 @@ public class EventsMaker extends Activity {
         FileUtil.writeFile(EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
     }
 
-    public void editItemDialog(final int position) {
+    private void editItemDialog(final int position) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(Resources.layout.add_new_listener, null);
         create.setView(inflate);
@@ -232,7 +240,7 @@ public class EventsMaker extends Activity {
         create.show();
     }
 
-    public void refreshList() {
+    private void refreshList() {
         listMap.clear();
         if (FileUtil.isExistFile(LISTENERS_FILE.getAbsolutePath())) {
             listMap = new Gson().fromJson(FileUtil.readFile(LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
@@ -241,13 +249,13 @@ public class EventsMaker extends Activity {
         }
     }
 
-    public void deleteItem(int position) {
+    private void deleteItem(int position) {
         listMap.remove(position);
         FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
         refreshList();
     }
 
-    public void deleteRelatedEvents(String name) {
+    private void deleteRelatedEvents(String name) {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
             events = new Gson()
@@ -261,12 +269,12 @@ public class EventsMaker extends Activity {
         FileUtil.writeFile(EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
     }
 
-    public void addItem() {
+    private void addItem() {
         FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
         refreshList();
     }
 
-    public void openFileExplorerImport() {
+    private void openFileExplorerImport() {
         DialogProperties dialogProperties = new DialogProperties();
         dialogProperties.selection_mode = 0;
         dialogProperties.selection_type = 0;
@@ -295,7 +303,7 @@ public class EventsMaker extends Activity {
         filePickerDialog.show();
     }
 
-    public void importEvents(ArrayList<HashMap<String, Object>> data, ArrayList<HashMap<String, Object>> data2) {
+    private void importEvents(ArrayList<HashMap<String, Object>> data, ArrayList<HashMap<String, Object>> data2) {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
             events = new Gson()
@@ -309,7 +317,7 @@ public class EventsMaker extends Activity {
         SketchwareUtil.toast("Successfully imported events");
     }
 
-    public void exportAll() {
+    private void exportAll() {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
             events = new Gson().fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
@@ -320,7 +328,7 @@ public class EventsMaker extends Activity {
                 "/Internal storage/.sketchware/data/system/export/events", Toast.LENGTH_LONG);
     }
 
-    public void export(int p) {
+    private void export(int p) {
         String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/export/events/");
         ArrayList<HashMap<String, Object>> ex = new ArrayList<>();
         ex.add(listMap.get(p));
@@ -339,7 +347,7 @@ public class EventsMaker extends Activity {
                 "/Internal storage/.sketchware/data/system/export/events", Toast.LENGTH_LONG);
     }
 
-    public String getNumOfEvents(String str) {
+    private String getNumOfEvents(String str) {
         int eventAmount;
         if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
             ArrayList<HashMap<String, Object>> events = new Gson()
@@ -356,18 +364,18 @@ public class EventsMaker extends Activity {
         return "Events: " + eventAmount;
     }
 
-    public void makeup(View view, int resIcon, String title, String description) {
+    private void makeup(View view, int resIcon, String title, String description) {
         View inflate = getLayoutInflater().inflate(Resources.layout.manage_library_base_item, null);
         ImageView icon = inflate.findViewById(Resources.id.lib_icon);
         inflate.findViewById(Resources.id.tv_enable).setVisibility(View.GONE);
         icon.setImageResource(resIcon);
-        ((LinearLayout) icon.getParent()).setGravity(17);
+        ((LinearLayout) icon.getParent()).setGravity(Gravity.CENTER);
         ((TextView) inflate.findViewById(Resources.id.lib_title)).setText(title);
         ((TextView) inflate.findViewById(Resources.id.lib_desc)).setText(description);
         ((ViewGroup) view).addView(inflate);
     }
 
-    public CardView newCard(int width, int height, float weight) {
+    private CardView newCard(int width, int height, float weight) {
         CardView cardView = new CardView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height, weight);
         layoutParams.setMargins(
@@ -388,7 +396,7 @@ public class EventsMaker extends Activity {
         return cardView;
     }
 
-    public LinearLayout newLayout(int width, int height, float weight) {
+    private LinearLayout newLayout(int width, int height, float weight) {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(width, height, weight));
         linearLayout.setPadding(
@@ -405,7 +413,7 @@ public class EventsMaker extends Activity {
         return linearLayout;
     }
 
-    public TextView newText(String str, float size, boolean is, int color, int width, int length, float weight) {
+    private TextView newText(String str, float size, boolean is, int color, int width, int length, float weight) {
         TextView textView = new TextView(this);
         textView.setLayoutParams(new LinearLayout.LayoutParams(width, length, weight));
         textView.setPadding(
@@ -423,7 +431,7 @@ public class EventsMaker extends Activity {
         return textView;
     }
 
-    public void setToolbar() {
+    private void setToolbar() {
         ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Event manager");
         ImageView back_icon = findViewById(Resources.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
@@ -432,7 +440,7 @@ public class EventsMaker extends Activity {
         more_icon.setVisibility(View.VISIBLE);
         more_icon.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
         more_icon.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(EventsMaker.this, more_icon);
+            PopupMenu popupMenu = new PopupMenu(this, more_icon);
             final Menu menu = popupMenu.getMenu();
             menu.add("Import events");
             menu.add("Export events");
@@ -458,9 +466,9 @@ public class EventsMaker extends Activity {
         Helper.applyRippleToToolbarView(more_icon);
     }
 
-    public class ListAdapter extends BaseAdapter {
+    private class ListAdapter extends BaseAdapter {
 
-        final ArrayList<HashMap<String, Object>> _data;
+        private final ArrayList<HashMap<String, Object>> _data;
 
         public ListAdapter(ArrayList<HashMap<String, Object>> arrayList) {
             _data = arrayList;
@@ -491,7 +499,7 @@ public class EventsMaker extends Activity {
             ImageView imageView = convertView.findViewById(Resources.id.custom_view_pro_img);
             TextView textView = convertView.findViewById(Resources.id.custom_view_pro_title);
             imageView.setImageResource(Resources.drawable.event_on_response_48dp);
-            ((LinearLayout) imageView.getParent()).setGravity(17);
+            ((LinearLayout) imageView.getParent()).setGravity(Gravity.CENTER);
             textView.setText((String) _data.get(position).get("name"));
             ((TextView) convertView.findViewById(Resources.id.custom_view_pro_subtitle)).setText(getNumOfEvents(textView.getText().toString()));
             linearLayout.setOnClickListener(v -> {
@@ -501,23 +509,31 @@ public class EventsMaker extends Activity {
                 startActivity(intent);
             });
             linearLayout.setOnLongClickListener(v -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EventsMaker.this)
+                new AlertDialog.Builder(EventsMaker.this)
                         .setTitle(_data.get(position).get("name").toString())
                         .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {
-                            if (which == 0) {
-                                editItemDialog(position);
+                            switch (which) {
+                                case 0:
+                                    editItemDialog(position);
+                                    break;
+
+                                case 1:
+                                    export(1);
+                                    break;
+
+                                case 2:
+                                    deleteRelatedEvents(_data.get(position).get("name").toString());
+                                    deleteItem(position);
+                                    break;
+
+                                default:
                             }
-                            if (which == 1) {
-                                export(position);
-                            }
-                            if (which == 2) {
-                                deleteRelatedEvents(_data.get(position).get("name").toString());
-                                deleteItem(position);
-                            }
-                        });
-                builder.create().show();
+                        })
+                        .show();
+
                 return true;
             });
+
             return convertView;
         }
     }
