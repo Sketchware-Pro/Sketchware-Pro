@@ -384,9 +384,13 @@ public class ExtraPaletteBlock {
         logicEditor.m.a();
 
         if (eventName.equals("Import")) {
-            logicEditor.a("Enter the path without import & semicolon", 0xff555555);
-            logicEditor.a(" ", "customImport");
-            logicEditor.a(" ", "customImport2");
+            if (paletteId == 3) {
+                logicEditor.a(" ", "addSourceDirectly");
+            } else {
+                logicEditor.a("Enter the path without import & semicolon", 0xff555555);
+                logicEditor.a(" ", "customImport");
+                logicEditor.a(" ", "customImport2");
+            }
             return;
         }
 
