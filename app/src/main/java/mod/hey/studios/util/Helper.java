@@ -1,5 +1,8 @@
 package mod.hey.studios.util;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
+import a.a.a.xB;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -47,6 +50,10 @@ public class Helper {
                 Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
             }
         }
+    }
+
+    public static String getResString(int resId) {
+        return xB.b().a(getContext(), resId);
     }
 
     public static View.OnClickListener getBackPressedClickListener(final Activity activity) {
