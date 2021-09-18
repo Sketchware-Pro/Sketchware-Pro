@@ -501,8 +501,12 @@ public class BlocksManager extends AppCompatActivity {
             linearLayout.setOnLongClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(BlocksManager.this, linearLayout);
                 final Menu menu = popupMenu.getMenu();
-                menu.add("Move up");
-                menu.add("Move down");
+                if (position != 0) {
+                    menu.add("Move up");
+                }
+                if (position != getCount() - 1) {
+                    menu.add("Move down");
+                }
                 menu.add("Edit");
                 menu.add("Delete");
                 menu.add("Insert above");
