@@ -326,14 +326,14 @@ public class Jx {
         sb.append("}").append(a);
 
         if (permissionManager.hasPermission && !isFragment) {
-            sb.append(a)
-                    .append("@Override").append(a)
-                    .append("public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {").append(a)
-                    .append("super.onRequestPermissionsResult(requestCode, permissions, grantResults);").append(a)
-                    .append("if (requestCode == 1000) {").append(a)
-                    .append("initializeLogic();").append(a)
-                    .append("}").append(a)
-                    .append("}").append(a);
+            sb.append(a);
+            sb.append("@Override").append(a);
+            sb.append("public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {").append(a);
+            sb.append("super.onRequestPermissionsResult(requestCode, permissions, grantResults);").append(a);
+            sb.append("if (requestCode == 1000) {").append(a);
+            sb.append("initializeLogic();").append(a);
+            sb.append("}").append(a);
+            sb.append("}").append(a);
         }
         sb.append(a);
         if (isFragment) {
@@ -345,15 +345,15 @@ public class Jx {
 
         for (String value : m) {
             if (value.length() > 0) {
-                sb.append(a)
-                        .append(value);
+                sb.append(a);
+                sb.append(value);
             }
         }
 
         for (String componentInitializer : n) {
             if (componentInitializer.length() > 0) {
-                sb.append(a)
-                        .append(componentInitializer);
+                sb.append(a);
+                sb.append(componentInitializer);
             }
         }
 
@@ -398,23 +398,23 @@ public class Jx {
         String onActivityResultLogic = sourceHandler.activityResult(f, c.getActivityName());
         String onActivityResultSwitchLogic = e.a();
         if (!agusComponentsOnActivityResultCode.isEmpty() || !onActivityResultLogic.isEmpty() || !onActivityResultSwitchLogic.isEmpty()) {
-            sb.append(a)
-                    .append("@Override").append(a);
+            sb.append(a);
+            sb.append("@Override").append(a);
             if (isFragment) {
                 sb.append("public");
             } else {
                 sb.append("protected");
             }
-            sb.append(" void onActivityResult(int _requestCode, int _resultCode, Intent _data) {").append(a)
-                    .append(agusComponentsOnActivityResultCode)
-                    .append("super.onActivityResult(_requestCode, _resultCode, _data);").append(a)
-                    .append(onActivityResultLogic).append(a)
-                    .append("switch (_requestCode) {").append(a)
-                    .append(onActivityResultSwitchLogic).append(a)
-                    .append("default:").append(a)
-                    .append("break;").append(a)
-                    .append("}").append(a)
-                    .append("}").append(a);
+            sb.append(" void onActivityResult(int _requestCode, int _resultCode, Intent _data) {").append(a);
+            sb.append(agusComponentsOnActivityResultCode);
+            sb.append("super.onActivityResult(_requestCode, _resultCode, _data);").append(a);
+            sb.append(onActivityResultLogic).append(a);
+            sb.append("switch (_requestCode) {").append(a);
+            sb.append(onActivityResultSwitchLogic).append(a);
+            sb.append("default:").append(a);
+            sb.append("break;").append(a);
+            sb.append("}").append(a);
+            sb.append("}").append(a);
         }
 
         if (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
@@ -432,24 +432,24 @@ public class Jx {
             }
         }
         if (e.k.length() > 0) {
-            sb.append(a)
-                    .append(e.k).append(a);
+            sb.append(a);
+            sb.append(e.k).append(a);
         }
         if (e.l.length() > 0) {
-            sb.append(a)
-                    .append(e.l)
-                    .append(a);
+            sb.append(a);
+            sb.append(e.l);
+            sb.append(a);
         }
 
         String base = LogicHandler.base(e.b());
         if (base.length() > 0) {
-            sb.append(a)
-                    .append(base);
+            sb.append(a);
+            sb.append(base);
         }
 
         for (String moreBlocksCode : p) {
-            sb.append(a)
-                    .append(moreBlocksCode).append(a);
+            sb.append(a);
+            sb.append(moreBlocksCode).append(a);
         }
 
         sb.append(a);
