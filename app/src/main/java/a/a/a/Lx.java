@@ -891,6 +891,9 @@ public class Lx {
         }
     }
 
+    /**
+     * @deprecated Replaced with {@link mod.w3wide.control.logic.PermissionManager#writePermission(boolean, int)}.
+     */
     public static String a(boolean var0, int var1) {
         byte var2 = 0;
         byte var3 = 0;
@@ -3243,30 +3246,29 @@ public class Lx {
             int var19;
             label81:
             {
-                char var10 = codeChars[codeIndex];
+                char codeBit = codeChars[codeIndex];
                 boolean var11;
                 int var16;
                 if (var4) {
-                    if (var10 == '\n') {
-                        formattedCode.append(var10);
+                    if (codeBit == '\n') {
+                        formattedCode.append(codeBit);
                         a(formattedCode, var7);
                         var11 = false;
                         var16 = codeIndex;
                     } else {
-                        formattedCode.append(var10);
+                        formattedCode.append(codeBit);
                         var11 = true;
                         var16 = codeIndex;
                     }
                 } else {
-                    char var14;
                     if (var5) {
                         label78:
                         {
-                            if (var10 == '*') {
+                            if (codeBit == '*') {
                                 var20 = codeIndex + 1;
-                                var14 = codeChars[var20];
+                                char var14 = codeChars[var20];
                                 if (var14 == '/') {
-                                    formattedCode.append(var10);
+                                    formattedCode.append(codeBit);
                                     formattedCode.append(var14);
                                     var5 = false;
                                     var11 = false;
@@ -3275,50 +3277,50 @@ public class Lx {
                                 }
                             }
 
-                            formattedCode.append(var10);
+                            formattedCode.append(codeBit);
                             var11 = false;
                             var16 = codeIndex;
                         }
                     } else if (var6) {
-                        formattedCode.append(var10);
+                        formattedCode.append(codeBit);
                         var6 = false;
                         var11 = false;
                         var16 = codeIndex;
-                    } else if (var10 == '\\') {
-                        formattedCode.append(var10);
+                    } else if (codeBit == '\\') {
+                        formattedCode.append(codeBit);
                         var6 = true;
                         var11 = false;
                         var16 = codeIndex;
                     } else if (var8) {
-                        if (var10 == '\'') {
-                            formattedCode.append(var10);
+                        if (codeBit == '\'') {
+                            formattedCode.append(codeBit);
                             var8 = false;
                             var11 = false;
                             var16 = codeIndex;
                         } else {
-                            formattedCode.append(var10);
+                            formattedCode.append(codeBit);
                             var11 = false;
                             var16 = codeIndex;
                         }
                     } else if (var9) {
-                        if (var10 == '"') {
-                            formattedCode.append(var10);
+                        if (codeBit == '"') {
+                            formattedCode.append(codeBit);
                             var9 = false;
                             var11 = false;
                             var16 = codeIndex;
                         } else {
-                            formattedCode.append(var10);
+                            formattedCode.append(codeBit);
                             var11 = false;
                             var16 = codeIndex;
                         }
                     } else {
                         label87:
                         {
-                            if (var10 == '/') {
+                            if (codeBit == '/') {
                                 var20 = codeIndex + 1;
-                                var14 = codeChars[var20];
+                                char var14 = codeChars[var20];
                                 if (var14 == '/') {
-                                    formattedCode.append(var10);
+                                    formattedCode.append(codeBit);
                                     formattedCode.append(var14);
                                     var16 = var20;
                                     var11 = true;
@@ -3326,7 +3328,7 @@ public class Lx {
                                 }
 
                                 if (var14 == '*') {
-                                    formattedCode.append(var10);
+                                    formattedCode.append(codeBit);
                                     formattedCode.append(var14);
                                     var5 = true;
                                     var11 = false;
@@ -3335,23 +3337,23 @@ public class Lx {
                                 }
                             }
 
-                            if (var10 != '\n') {
-                                if (var10 == '\'') {
+                            if (codeBit != '\n') {
+                                if (codeBit == '\'') {
                                     var8 = true;
                                 }
 
-                                if (var10 == '"') {
+                                if (codeBit == '"') {
                                     var9 = true;
                                 }
 
-                                if (var10 == '{') {
+                                if (codeBit == '{') {
                                     var20 = var7 + 1;
                                 } else {
                                     var20 = var7;
                                 }
 
                                 var7 = var20;
-                                if (var10 == '}') {
+                                if (codeBit == '}') {
                                     --var20;
                                     var7 = var20;
                                     if (formattedCode.charAt(formattedCode.length() - 1) == '\t') {
@@ -3360,7 +3362,7 @@ public class Lx {
                                     }
                                 }
 
-                                formattedCode.append(var10);
+                                formattedCode.append(codeBit);
                                 var20 = codeIndex;
                                 var5 = var8;
                                 codeIndex = var7;
@@ -3370,7 +3372,7 @@ public class Lx {
                                 break label81;
                             }
 
-                            formattedCode.append(var10);
+                            formattedCode.append(codeBit);
                             a(formattedCode, var7);
                             var11 = false;
                             var16 = codeIndex;
