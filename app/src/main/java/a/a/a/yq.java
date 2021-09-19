@@ -36,12 +36,14 @@ public class yq {
      */
     private static final String FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER = "(-default-rtdb)?\\.[a-z](.?)+";
     /**
-     * Assets directory of current project
+     * Assets directory of current project,
+     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets
      */
     public String A;
 
     /**
-     * Imported fonts directory of current project
+     * Imported fonts directory of current project,
+     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets/fonts
      */
     public String B;
 
@@ -464,6 +466,9 @@ public class yq {
         L.b(c + File.separator + "build.gradle", Lx.c("3.4.2", "4.3.3"));
     }
 
+    /**
+     * Extracts a ZIP archive from assets to {@link yq#w}.
+     */
     public void a(Context context, String str) {
         try {
             KB.a(context, str, w);
@@ -525,25 +530,31 @@ public class yq {
         }
     }
 
-    public void a(String fileName, String fileExtension) {
+    /**
+     * Writes a project file to its correct location. Java files, for example, get saved to
+     * <pre>
+     *     {@link yq#y} + File.separator + {@link yq#n}
+     * </pre>, while AndroidManifest.xml gets saved to {@link yq#r}.
+     */
+    public void a(String fileName, String fileContent) {
         if (fileName.endsWith("java")) {
-            L.b(y + File.separator + n + File.separator + fileName, fileExtension);
+            L.b(y + File.separator + n + File.separator + fileName, fileContent);
         } else if (fileName.equals("AndroidManifest.xml")) {
-            L.b(r, fileExtension);
+            L.b(r, fileContent);
         } else if (fileName.equals("colors.xml") || fileName.equals("styles.xml") || fileName.equals("strings.xml")) {
-            L.b(w + File.separator + "values" + File.separator + fileName, fileExtension);
+            L.b(w + File.separator + "values" + File.separator + fileName, fileContent);
         } else if (fileName.equals("provider_paths.xml")) {
-            L.b(w + File.separator + "xml" + File.separator + fileName, fileExtension);
+            L.b(w + File.separator + "xml" + File.separator + fileName, fileContent);
         } else {
-            L.b(x + File.separator + fileName, fileExtension);
+            L.b(x + File.separator + fileName, fileContent);
         }
     }
 
-    public void a(iC projectLibraryManager, hC projectFileManager, eC projectDataManager, boolean z2) {
-        ProjectLibraryBean admobLib = projectLibraryManager.b();
-        ProjectLibraryBean compatLib = projectLibraryManager.c();
-        ProjectLibraryBean firebaseLib = projectLibraryManager.d();
-        ProjectLibraryBean googleMaplib = projectLibraryManager.e();
+    public void a(iC projectLibraryManager, hC projectFileManager, eC projectDataManager, boolean exportingProject) {
+        ProjectLibraryBean adMob = projectLibraryManager.b();
+        ProjectLibraryBean appCompat = projectLibraryManager.c();
+        ProjectLibraryBean firebase = projectLibraryManager.d();
+        ProjectLibraryBean googleMaps = projectLibraryManager.e();
         N = new jq();
         N.a = e;
         N.b = f;
@@ -551,26 +562,26 @@ public class yq {
         N.d = m;
         N.sc_id = b;
         N.e = O.h();
-        N.f = !z2;
-        if (firebaseLib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        N.f = !exportingProject;
+        if (firebase.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.h = true;
             N.a(jq.PERMISSION_INTERNET);
             N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
         }
-        if (compatLib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (appCompat.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.g = true;
         }
-        if (admobLib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.l = true;
             N.a(jq.PERMISSION_INTERNET);
             N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
-            N.a(admobLib);
+            N.a(adMob);
         }
-        if (googleMaplib.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
+        if (googleMaps.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.m = true;
             N.a(jq.PERMISSION_INTERNET);
             N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
-            N.b(googleMaplib);
+            N.b(googleMaps);
         }
         for (ProjectFileBean next : projectFileManager.b()) {
             if (next.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
@@ -705,10 +716,10 @@ public class yq {
     }
 
     /**
-     * Generates other miscellaneous XML files, such as <code>provider_paths.xml</code> and <code>secrets.xml</code>.
+     * Generates the project's files, such as layouts, Java files, but also build.gradle and secrets.xml.
      */
-    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean z2) {
-        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, z2);
+    public void b(hC projectFileManager, eC projectDataManger, iC projectLibraryManager, boolean exportingProject) {
+        ArrayList<SrcCodeBean> srcCodeBeans = a(projectFileManager, projectDataManger, projectLibraryManager, exportingProject);
         if (N.u) {
             Nx pathsTag = new Nx("paths");
             pathsTag.a("xmlns", "android", "http://schemas.android.com/apk/res/android");
@@ -752,8 +763,8 @@ public class yq {
     /**
      * Get source code files that are viewable in SrcCodeViewer
      */
-    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, iC projectLibraryManager, boolean z2) {
-        a(projectLibraryManager, projectFileManager, projectDataManager, z2);
+    public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, iC projectLibraryManager, boolean exportingProject) {
+        a(projectLibraryManager, projectFileManager, projectDataManager, exportingProject);
         CommandBlock.x();
 
         final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
