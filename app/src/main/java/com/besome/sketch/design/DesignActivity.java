@@ -1084,6 +1084,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.c();
                     q.c(a);
                     q.a();
+                    /* Extract project type template */
                     q.a(a, wq.e("600"));
                     if (yB.a(lC.b(l), "custom_icon")) {
                         q.a(wq.e()
