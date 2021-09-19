@@ -3217,9 +3217,7 @@ public class Lx {
                 "        if (_output == null) return;\r\n" +
                 "        _output.clear();\r\n" +
                 "        if (_map == null || _map.size() < 1) return;\r\n" +
-                "        Iterator _itr = _map.entrySet().iterator();\r\n" +
-                "        while (_itr.hasNext()) {\r\n" +
-                "            Map.Entry<String, String> _entry = (Map.Entry) _itr.next();\r\n" +
+                "        for (Map.Entry<String, Object> _entry : _map.entrySet()) {\r\n" +
                 "            _output.add(_entry.getKey());\r\n" +
                 "        }\r\n" +
                 "    }\r\n" +
