@@ -76,6 +76,7 @@ import a.a.a.yq;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
@@ -199,8 +200,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             eCVar.g();
             eCVar.e();
             iCVar.i();
-            project_metadata.b(hCVar, eCVar, iCVar, true);
+
+            /* Extract project type template */
             project_metadata.a(getApplicationContext(), wq.e(xq.a(sc_id) ? "600" : sc_id));
+
+            /* Start generating project files */
+            project_metadata.b(hCVar, eCVar, iCVar, true);
             if (yB.a(lC.b(sc_id), "custom_icon")) {
                 project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
             }
@@ -209,6 +214,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             kCVar.c(project_metadata.w + File.separator + "raw");
             kCVar.a(project_metadata.A + File.separator + "fonts");
             project_metadata.f();
+
+            /* It makes no sense that those methods aren't static */
+            FilePathUtil util = new FilePathUtil();
+            FileUtil.copyDirectory(new File(util.getPathJava(sc_id)), new File(project_metadata.y));
+            FileUtil.copyDirectory(new File(util.getPathResource(sc_id)), new File(project_metadata.w));
+            FileUtil.copyDirectory(new File(util.getPathAssets(sc_id)), new File(project_metadata.A));
+            FileUtil.copyDirectory(new File(util.getPathNativelibs(sc_id)), new File(project_metadata.c, "jni"));
+
             ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(project_metadata.c);
             String str = yB.c(sc_metadata, "my_ws_name") + ".zip";
@@ -969,7 +982,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 kCVar.b(project_metadata.w + File.separator + "drawable-xhdpi");
                 kCVar.c(project_metadata.w + File.separator + "raw");
                 kCVar.a(project_metadata.A + File.separator + "fonts");
-                project_metadata.b(hCVar, eCVar, iCVar, true);
+                project_metadata.b(hCVar, eCVar, iCVar, false);
                 if (d) {
                     cancel(true);
                     return;
