@@ -33,6 +33,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.components.ComponentsHandler;
 
 public class ComponentsMaker extends Activity {
 
@@ -57,6 +58,12 @@ public class ComponentsMaker extends Activity {
     public void onResume() {
         super.onResume();
         refreshList();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ComponentsHandler.refreshCachedCustomComponents();
     }
 
     private void setupViews() {
