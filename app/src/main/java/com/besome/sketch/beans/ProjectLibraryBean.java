@@ -6,18 +6,15 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ProjectLibraryBean implements Parcelable {
     public static final Parcelable.Creator<ProjectLibraryBean> CREATOR = new Parcelable.Creator<ProjectLibraryBean>() {
-        /* class com.besome.sketch.beans.ProjectLibraryBean.AnonymousClass1 */
-
-        @Override // android.os.Parcelable.Creator
+        @Override
         public ProjectLibraryBean createFromParcel(Parcel parcel) {
             return new ProjectLibraryBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public ProjectLibraryBean[] newArray(int i) {
             return new ProjectLibraryBean[i];
         }
@@ -46,27 +43,27 @@ public class ProjectLibraryBean implements Parcelable {
     public String useYn;
 
     public ProjectLibraryBean(int i) {
-        this.libType = i;
-        this.useYn = LIB_USE_N;
-        this.data = "";
-        this.reserved1 = "";
-        this.reserved2 = "";
-        this.reserved3 = "";
-        this.adUnits = new ArrayList<>();
-        this.testDevices = new ArrayList<>();
+        libType = i;
+        useYn = LIB_USE_N;
+        data = "";
+        reserved1 = "";
+        reserved2 = "";
+        reserved3 = "";
+        adUnits = new ArrayList<>();
+        testDevices = new ArrayList<>();
     }
 
     public ProjectLibraryBean(Parcel parcel) {
-        this.libType = parcel.readInt();
-        this.useYn = parcel.readString();
-        this.data = parcel.readString();
-        this.reserved1 = parcel.readString();
-        this.reserved2 = parcel.readString();
-        this.reserved3 = parcel.readString();
-        this.adUnits = new ArrayList<>();
-        parcel.readTypedList(this.adUnits, AdUnitBean.getCreator());
-        this.testDevices = new ArrayList<>();
-        parcel.readTypedList(this.testDevices, AdTestDeviceBean.getCreator());
+        libType = parcel.readInt();
+        useYn = parcel.readString();
+        data = parcel.readString();
+        reserved1 = parcel.readString();
+        reserved2 = parcel.readString();
+        reserved3 = parcel.readString();
+        adUnits = new ArrayList<>();
+        parcel.readTypedList(adUnits, AdUnitBean.getCreator());
+        testDevices = new ArrayList<>();
+        parcel.readTypedList(testDevices, AdTestDeviceBean.getCreator());
     }
 
     public static Parcelable.Creator<ProjectLibraryBean> getCreator() {
@@ -74,90 +71,95 @@ public class ProjectLibraryBean implements Parcelable {
     }
 
     public static int getLibraryIcon(int i) {
-        if (i == 0) {
-            return 2131166245;
+        switch (i) {
+            case 0:
+                return 2131166245;
+            case 1:
+                return 2131165505;
+            case 2:
+                return 2131166234;
+            case 3:
+                return 2131166247;
+            default:
+                return 0;
         }
-        if (i == 1) {
-            return 2131165505;
-        }
-        if (i != 2) {
-            return i != 3 ? 0 : 2131166247;
-        }
-        return 2131166234;
     }
 
     public static int getLibraryResDesc(int i) {
-        if (i == 0) {
-            return 2131625204;
+        switch (i) {
+            case 0:
+                return 2131625204;
+            case 1:
+                return 2131625203;
+            case 2:
+                return 2131625202;
+            case 3:
+                return 2131625205;
+            default:
+                return 0;
         }
-        if (i == 1) {
-            return 2131625203;
-        }
-        if (i != 2) {
-            return i != 3 ? 0 : 2131625205;
-        }
-        return 2131625202;
     }
 
     public static int getLibraryResName(int i) {
-        if (i == 0) {
-            return 2131625234;
+        switch (i) {
+            case 0:
+                return 2131625234;
+            case 1:
+                return 2131625251;
+            case 2:
+                return 2131625194;
+            case 3:
+                return 2131625241;
+            default:
+                return 0;
+
         }
-        if (i == 1) {
-            return 2131625251;
-        }
-        if (i != 2) {
-            return i != 3 ? 0 : 2131625241;
-        }
-        return 2131625194;
     }
 
     public void copy(ProjectLibraryBean projectLibraryBean) {
-        this.libType = projectLibraryBean.libType;
-        this.useYn = projectLibraryBean.useYn;
-        this.data = projectLibraryBean.data;
-        this.reserved1 = projectLibraryBean.reserved1;
-        this.reserved2 = projectLibraryBean.reserved2;
-        this.reserved3 = projectLibraryBean.reserved3;
-        this.adUnits = new ArrayList<>();
-        Iterator<AdUnitBean> it = projectLibraryBean.adUnits.iterator();
-        while (it.hasNext()) {
-            this.adUnits.add(it.next().clone());
+        libType = projectLibraryBean.libType;
+        useYn = projectLibraryBean.useYn;
+        data = projectLibraryBean.data;
+        reserved1 = projectLibraryBean.reserved1;
+        reserved2 = projectLibraryBean.reserved2;
+        reserved3 = projectLibraryBean.reserved3;
+        adUnits = new ArrayList<>();
+        for (AdUnitBean adUnitBean : projectLibraryBean.adUnits) {
+            adUnits.add(adUnitBean.clone());
         }
-        this.testDevices = new ArrayList<>();
-        ArrayList<AdTestDeviceBean> arrayList = projectLibraryBean.testDevices;
-        if (arrayList != null) {
-            Iterator<AdTestDeviceBean> it2 = arrayList.iterator();
-            while (it2.hasNext()) {
-                this.testDevices.add(it2.next().clone());
+        testDevices = new ArrayList<>();
+        if (projectLibraryBean.testDevices != null) {
+            for (AdTestDeviceBean adTestDeviceBean : projectLibraryBean.testDevices) {
+                testDevices.add(adTestDeviceBean.clone());
             }
         }
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
     public boolean isEnabled() {
-        String str = this.useYn;
-        return str != null && !str.isEmpty() && this.useYn.equals(LIB_USE_Y);
+        return useYn != null && ! useYn.isEmpty() && useYn.equals(LIB_USE_Y);
     }
 
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.libType);
-        parcel.writeString(this.useYn);
-        parcel.writeString(this.data);
-        parcel.writeString(this.reserved1);
-        parcel.writeString(this.reserved2);
-        parcel.writeString(this.reserved3);
-        parcel.writeTypedList(this.adUnits);
-        parcel.writeTypedList(this.testDevices);
+        parcel.writeInt(libType);
+        parcel.writeString(useYn);
+        parcel.writeString(data);
+        parcel.writeString(reserved1);
+        parcel.writeString(reserved2);
+        parcel.writeString(reserved3);
+        parcel.writeTypedList(adUnits);
+        parcel.writeTypedList(testDevices);
     }
 
-    @Override // java.lang.Object
+    @Override
     public ProjectLibraryBean clone() {
         ProjectLibraryBean projectLibraryBean = new ProjectLibraryBean(this.libType);
         projectLibraryBean.copy(this);
