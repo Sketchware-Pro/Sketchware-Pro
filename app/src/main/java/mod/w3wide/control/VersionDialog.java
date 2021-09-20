@@ -127,9 +127,9 @@ public class VersionDialog {
         root.addView(versionNamePostfixContainer);
 
         version_code.setText(String.valueOf(Integer.parseInt(activity.I.getText().toString())));
-        version_name1.setText(activity.J.getText().toString().split("-")[0]);
-        if (activity.J.getText().toString().split("-").length > 1) {
-            version_name2.setText(activity.J.getText().toString().split("-")[1]);
+        version_name1.setText(activity.J.getText().toString().split(" ")[0]);
+        if (activity.J.getText().toString().split(" ").length > 1) {
+            version_name2.setText(activity.J.getText().toString().split(" ")[1]);
         }
         dialog.setView(root);
         dialog.setPositiveButton(activity.getString(Resources.string.common_word_save),
@@ -157,7 +157,7 @@ public class VersionDialog {
 
                         if (!mB.a() && validVersionCode && validVersionName) {
                             activity.I.setText(versionCode);
-                            activity.J.setText(versionNamePostfix.length() > 0 ? (versionName + "-" + versionNamePostfix) : versionName);
+                            activity.J.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
                             dialog.dismiss();
                         }
                     }
