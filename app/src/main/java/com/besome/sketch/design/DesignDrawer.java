@@ -30,9 +30,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     public final int m = 104;
     public final int n = 300;
     public final int o = 301;
-    public Context p;
-    public LinearLayout q;
-    public LinearLayout r;
+    public Context context;
+    public LinearLayout menusLayout;
+    public LinearLayout bottomMenuslayout;
 
     public DesignDrawer(Context context) {
         super(context);
@@ -44,30 +44,30 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         a(context);
     }
 
-    public final DrawerItem a(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
-        DrawerItem a = new DrawerItem(p, tag);
-        a.setContent(iconResId, xB.b().a(p, titleResId), xB.b().a(p, descriptionResId));
-        a.setTag(tag);
-        a.setOnClickListener(this);
-        a.setSeparatorVisibility(useSeparator);
-        a.setSubSeparatorVisibility(!useSeparator);
+    public final DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
+        DrawerItem drawerItem = new DrawerItem(context, tag);
+        drawerItem.setContent(iconResId, xB.b().a(context, titleResId), xB.b().a(context, descriptionResId));
+        drawerItem.setTag(tag);
+        drawerItem.setOnClickListener(this);
+        drawerItem.setSeparatorVisibility(useSeparator);
+        drawerItem.setSubSeparatorVisibility(!useSeparator);
         if (tag == 19) {
-            a.setSubSeparatorVisibility(false);
+            drawerItem.setSubSeparatorVisibility(false);
         }
-        return a;
+        return drawerItem;
     }
 
     public final void a(Context context) {
-        p = context;
+        this.context = context;
         wB.a(context, this, Resources.layout.design_drawer);
         TextView tv_title_configuration = findViewById(Resources.id.tv_title_configuration);
         tv_title_configuration.setText(xB.b().a(context, Resources.string.design_drawer_menu_title));
         ((TextView) findViewById(Resources.id.tv_title_global))
                 .setText(xB.b().a(context, Resources.string.design_drawer_menu_bottom_title));
-        q = findViewById(Resources.id.layout_menus);
-        r = findViewById(Resources.id.layout_bottom_menus);
+        menusLayout = findViewById(Resources.id.layout_menus);
+        bottomMenuslayout = findViewById(Resources.id.layout_bottom_menus);
         /* Add collection item */
-        r.addView(a(
+        bottomMenuslayout.addView(addDrawerItem(
                 1,
                 false,
                 Resources.drawable.ic_bookmark_red_48dp,
@@ -76,7 +76,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         ));
         /* Add built-in Library Manager (AppCompat, Firebase, AdMob, Google Maps SDK) */
         /* INCLUDES SECTION SEPARATOR */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 3,
                 true,
                 Resources.drawable.categorize_48,
@@ -84,7 +84,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_description_library
         ));
         /* Add View Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 4,
                 false,
                 Resources.drawable.multiple_devices_48,
@@ -92,7 +92,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_description_view
         ));
         /* Add Image Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 5,
                 false,
                 Resources.drawable.ic_picture_48dp,
@@ -100,7 +100,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_description_image
         ));
         /* Add Sound Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 6,
                 false,
                 Resources.drawable.ic_sound_wave_48dp,
@@ -108,7 +108,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_description_sound
         ));
         /* Add Font Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 7,
                 false,
                 Resources.drawable.ic_font_48dp,
@@ -116,7 +116,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_description_font
         ));
         /* Add Java Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 8,
                 false,
                 Resources.drawable.java_96,
@@ -124,7 +124,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_java
         ));
         /* Add Resource Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 9,
                 false,
                 Resources.drawable.file_app_icon,
@@ -132,7 +132,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_resource
         ));
         /* Add Asset Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 10,
                 false,
                 Resources.drawable.file_48_blue,
@@ -140,7 +140,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_assets
         ));
         /* Add Permission Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 11,
                 false,
                 Resources.drawable.plugin_purple_96,
@@ -148,7 +148,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_permission
         ));
         /* Add AppCompat Injection Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 12,
                 false,
                 Resources.drawable.ic_property_inject,
@@ -156,7 +156,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_injection_subtitle
         ));
         /* Add AndroidManifest Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 13,
                 false,
                 Resources.drawable.icon8_code_am,
@@ -164,7 +164,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_androidmanifest_subtitle
         ));
         /* Add Used Custom Blocks */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 21,
                 false,
                 Resources.drawable.block_96_blue,
@@ -172,7 +172,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.design_drawer_menu_customblocks_subtitle
         ));
         /* Add Local library Manager */
-        q.addView(a(
+        menusLayout.addView(addDrawerItem(
                 14,
                 false,
                 Resources.drawable.open_box_48,
@@ -180,32 +180,32 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_local_library
         ));
         /* Add Native library Manager */
-        q.addView(a(20,
+        menusLayout.addView(addDrawerItem(20,
                 false,
                 Resources.drawable.cpp,
                 Resources.string.design_drawer_menu_nativelibs,
                 Resources.string.design_drawer_menu_nativelibs_subtitle));
         /* Add ProGuard Manager */
-        q.addView(a(17,
+        menusLayout.addView(addDrawerItem(17,
                 false,
                 Resources.drawable.connected_96,
                 Resources.string.design_drawer_menu_proguard,
                 Resources.string.design_drawer_menu_proguard_subtitle));
         /* Add StringFog Manager */
         /* INCLUDES SECTION SEPARATOR */
-        q.addView(a(18,
+        menusLayout.addView(addDrawerItem(18,
                 true,
                 Resources.drawable.color_lock_96,
                 Resources.string.design_drawer_menu_stringfog,
                 Resources.string.design_drawer_menu_stringfog_subtitle));
         /* Add Source Code Viewer */
-        q.addView(a(16,
+        menusLayout.addView(addDrawerItem(16,
                 false,
                 Resources.drawable.code_icon,
                 Resources.string.design_drawer_menu_title_source_code,
                 Resources.string.design_drawer_menu_description_source_code));
         /* Add Direct Code Editor */
-        q.addView(a(19,
+        menusLayout.addView(addDrawerItem(19,
                 false,
                 Resources.drawable.notes_alt2,
                 Resources.string.design_drawer_menu_title_editor_code,
@@ -215,8 +215,8 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (!mB.a()) {
-            if (p instanceof DesignActivity) {
-                DesignActivity designActivity = (DesignActivity) p;
+            if (context instanceof DesignActivity) {
+                DesignActivity designActivity = (DesignActivity) context;
                 switch ((Integer) view.getTag()) {
                     case 1:
                         designActivity.t();
@@ -307,13 +307,13 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
     static class DrawerItem extends LinearLayout {
 
-        public int a;
-        public ImageView b;
-        public TextView c;
-        public TextView d;
-        public View e;
-        public View f;
-        public LinearLayout g;
+        public int tag;
+        public ImageView imgIcon;
+        public TextView titleTextView;
+        public TextView subTitleTextView;
+        public View subSeparator;
+        public View separator;
+        public LinearLayout subItems;
 
         public DrawerItem(Context context) {
             super(context);
@@ -325,34 +325,34 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
             new DrawerItem(context, 0);
         }
 
-        public DrawerItem(Context context, int i) {
+        public DrawerItem(Context context, int tag) {
             super(context);
-            initialize(context, i);
+            initialize(context, tag);
         }
 
         public void setContent(int iconResId, String rootTitleText, String subTitleText) {
-            b.setImageResource(iconResId);
-            c.setText(rootTitleText);
-            d.setText(subTitleText);
+            imgIcon.setImageResource(iconResId);
+            titleTextView.setText(rootTitleText);
+            subTitleTextView.setText(subTitleText);
         }
 
         public final void initialize(Context context, int tag) {
-            a = tag;
+            this.tag = tag;
             wB.a(context, this, Resources.layout.design_drawer_item);
-            b = findViewById(Resources.id.img_icon);
-            c = findViewById(Resources.id.tv_root_title);
-            d = findViewById(Resources.id.tv_sub_title);
-            e = findViewById(Resources.id.sub_separator);
-            f = findViewById(Resources.id.separator);
-            g = findViewById(Resources.id.sub_items);
+            imgIcon = findViewById(Resources.id.img_icon);
+            titleTextView = findViewById(Resources.id.tv_root_title);
+            subTitleTextView = findViewById(Resources.id.tv_sub_title);
+            subSeparator = findViewById(Resources.id.sub_separator);
+            separator = findViewById(Resources.id.separator);
+            subItems = findViewById(Resources.id.sub_items);
         }
 
         public void setSeparatorVisibility(boolean visible) {
-            f.setVisibility(visible ? VISIBLE : GONE);
+            separator.setVisibility(visible ? VISIBLE : GONE);
         }
 
         public void setSubSeparatorVisibility(boolean visible) {
-            e.setVisibility(visible ? VISIBLE : GONE);
+            subSeparator.setVisibility(visible ? VISIBLE : GONE);
         }
     }
 }
