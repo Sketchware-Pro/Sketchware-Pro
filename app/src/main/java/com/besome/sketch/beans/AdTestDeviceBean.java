@@ -7,14 +7,12 @@ import com.google.gson.annotations.Expose;
 
 public class AdTestDeviceBean implements Parcelable {
     public static final Parcelable.Creator<AdTestDeviceBean> CREATOR = new Parcelable.Creator<AdTestDeviceBean>() {
-        /* class com.besome.sketch.beans.AdTestDeviceBean.AnonymousClass1 */
-
-        @Override // android.os.Parcelable.Creator
+        @Override
         public AdTestDeviceBean createFromParcel(Parcel parcel) {
             return new AdTestDeviceBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public AdTestDeviceBean[] newArray(int i) {
             return new AdTestDeviceBean[i];
         }
@@ -27,11 +25,11 @@ public class AdTestDeviceBean implements Parcelable {
     }
 
     public AdTestDeviceBean(String str) {
-        this.deviceId = str;
+        deviceId = str;
     }
 
     public AdTestDeviceBean(Parcel parcel) {
-        this.deviceId = parcel.readString();
+        deviceId = parcel.readString();
     }
 
     public static Parcelable.Creator<AdTestDeviceBean> getCreator() {
@@ -39,9 +37,10 @@ public class AdTestDeviceBean implements Parcelable {
     }
 
     public void copy(AdTestDeviceBean adTestDeviceBean) {
-        this.deviceId = adTestDeviceBean.deviceId;
+        deviceId = adTestDeviceBean.deviceId;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -49,11 +48,12 @@ public class AdTestDeviceBean implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.deviceId);
     }
 
-    @Override // java.lang.Object
+    @Override
     public AdTestDeviceBean clone() {
         AdTestDeviceBean adTestDeviceBean = new AdTestDeviceBean();
         adTestDeviceBean.copy(this);

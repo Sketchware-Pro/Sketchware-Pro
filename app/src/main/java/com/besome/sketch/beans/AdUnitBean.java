@@ -7,13 +7,12 @@ import com.google.gson.annotations.Expose;
 
 public class AdUnitBean implements Parcelable {
     public static final Parcelable.Creator<AdUnitBean> CREATOR = new Parcelable.Creator<AdUnitBean>() {
-
-        @Override // android.os.Parcelable.Creator
+        @Override
         public AdUnitBean createFromParcel(Parcel parcel) {
             return new AdUnitBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public AdUnitBean[] newArray(int i) {
             return new AdUnitBean[i];
         }
@@ -46,6 +45,7 @@ public class AdUnitBean implements Parcelable {
         name = adUnitBean.name;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -53,12 +53,13 @@ public class AdUnitBean implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(name);
     }
 
-    @Override // java.lang.Object
+    @Override
     public AdUnitBean clone() {
         AdUnitBean adUnitBean = new AdUnitBean();
         adUnitBean.copy(this);
