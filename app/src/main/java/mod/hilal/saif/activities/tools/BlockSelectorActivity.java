@@ -208,7 +208,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             autoTransition.setDuration(200L);
             TransitionManager.beginDelayedTransition(background, autoTransition);
             container.setVisibility(View.GONE);
-            setViewsVisibility(false, options_menu, add, edit, delete);
+            Helper.setViewsVisibility(false, options_menu, add, edit, delete);
             spinner1.setEnabled(true);
             listview1.setEnabled(true);
             isNewGroup = false;
@@ -230,7 +230,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             autoTransition2.setDuration(200L);
             TransitionManager.beginDelayedTransition(background, autoTransition2);
             container.setVisibility(View.GONE);
-            setViewsVisibility(false, options_menu, add, edit, delete);
+            Helper.setViewsVisibility(false, options_menu, add, edit, delete);
             spinner1.setEnabled(true);
             listview1.setEnabled(true);
         }
@@ -282,8 +282,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 name.setText("");
                 title.setText("");
                 isNewGroup = true;
-                setViewsVisibility(true, options_menu, add, edit);
-                setViewsVisibility(false, label, delete, container);
+                Helper.setViewsVisibility(true, options_menu, add, edit);
+                Helper.setViewsVisibility(false, label, delete, container);
                 spinner1.setEnabled(false);
                 listview1.setEnabled(false);
             break;
@@ -331,7 +331,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                     title.setText(map.get("title").toString());
                     TransitionManager.beginDelayedTransition(background, autoTransition);
                     container.setVisibility(View.VISIBLE);
-                    setViewsVisibility(true, options_menu, add, edit, delete);
+                    Helper.setViewsVisibility(true, options_menu, add, edit, delete);
                     spinner1.setEnabled(false);
                     listview1.setEnabled(false);
                     return;
@@ -346,8 +346,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             case 2131232610://cancel
                 _fabVisibility(true);
                 TransitionManager.beginDelayedTransition(background, autoTransition);
-                setViewsVisibility(false, options_menu, add, edit, delete);
-                setViewsVisibility(true, container, label);
+                Helper.setViewsVisibility(false, options_menu, add, edit, delete);
+                Helper.setViewsVisibility(true, container, label);
                 spinner1.setEnabled(true);
                 listview1.setEnabled(true);
                 isNewGroup = false;
@@ -361,12 +361,6 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void setViewsVisibility(boolean hide, View... views) {
-        for (View view : views) {
-            view.setVisibility(hide ? View.GONE : View.VISIBLE);
-        }
-    }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -374,7 +368,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initializeLogic() {
-        setViewsVisibility(true, container, label);
+        Helper.setViewsVisibility(true, container, label);
         _readFile();
         if (data.size() != 0) {
             _showItem(0);
