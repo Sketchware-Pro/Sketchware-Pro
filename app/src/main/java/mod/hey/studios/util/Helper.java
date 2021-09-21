@@ -52,6 +52,12 @@ public class Helper {
         }
     }
 
+    public static void setViewsVisibility(boolean hide, View... views) {
+        for (View view : views) {
+            view.setVisibility(hide ? View.GONE : View.VISIBLE);
+        }
+    }
+
     public static String getResString(int resId) {
         return xB.b().a(getContext(), resId);
     }
