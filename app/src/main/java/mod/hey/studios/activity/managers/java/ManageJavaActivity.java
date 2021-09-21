@@ -309,8 +309,8 @@ public class ManageJavaActivity extends Activity {
 
         new AlertDialog.Builder(this)
                 .setTitle(adapter.getFileName(position))
-                .setMessage("Are you sure you want to delete this " + (adapter.isFolder(position) ? "folder" : "file") + "?"
-                        + (isInManifest ? " This will also remove it from AndroidManifest. " : "")
+                .setMessage("Are you sure you want to delete this " + (adapter.isFolder(position) ? "folder" : "file") + "? "
+                        + (isInManifest ? "This will also remove it from AndroidManifest. " : "")
                         + "This action cannot be reversed!")
                 .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> {
                     if (!adapter.isFolder(position) && isInManifest) {
