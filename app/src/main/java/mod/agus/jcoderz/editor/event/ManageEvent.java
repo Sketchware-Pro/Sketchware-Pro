@@ -1397,8 +1397,8 @@ public class ManageEvent {
                         listenerLogic + "\r\n" +
                         "});";
 
-            case "OnNavigationItemSelected":
-                return previousCode + ".setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {\r\n" +
+            case "setOnItemSelectedListener":
+                return previousCode + ".setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
             case "OnLetterSelectedListener":
