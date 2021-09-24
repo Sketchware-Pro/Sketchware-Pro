@@ -76,7 +76,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
 
     private void toCompatActivity(ProjectLibraryBean compatLibraryBean, ProjectLibraryBean firebaseLibraryBean) {
         Intent intent = new Intent(getApplicationContext(), ManageCompatActivity.class);
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("compat", compatLibraryBean);
         intent.putExtra("firebase", firebaseLibraryBean);
         startActivityForResult(intent, 231);
@@ -121,7 +121,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
             intent = new Intent(getApplicationContext(), AdmobActivity.class);
         }
 
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("admob", libraryBean);
         startActivityForResult(intent, 234);
@@ -135,7 +135,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
             intent = new Intent(getApplicationContext(), FirebaseActivity.class);
         }
 
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("firebase", libraryBean);
         startActivityForResult(intent, 230);
@@ -143,7 +143,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
 
     private void toGoogleMapActivity(ProjectLibraryBean libraryBean) {
         Intent intent = new Intent(getApplicationContext(), ManageGoogleMapActivity.class);
-        intent.setFlags(536870912);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("google_map", libraryBean);
         startActivityForResult(intent, 241);
@@ -168,12 +168,12 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         if (resultCode == -1) {
             switch (requestCode) {
                 case 230:
-                    firebaseLibraryBean = (ProjectLibraryBean) data.getParcelableExtra("firebase");
-                    initializeLibrary(firebaseLibraryBean);
-                    if (firebaseLibraryBean.useYn.equals("Y") && !compatLibraryBean.useYn.equals("Y")) {
-                        firebaseLibraryBean = compatLibraryBean;
-                        firebaseLibraryBean.useYn = "Y";
-                        initializeLibrary(firebaseLibraryBean);
+                    ProjectLibraryBean libraryBean = (ProjectLibraryBean) data.getParcelableExtra("firebase");
+                    initializeLibrary(libraryBean);
+                    if (libraryBean.useYn.equals("Y") && !compatLibraryBean.useYn.equals("Y")) {
+                        libraryBean = compatLibraryBean;
+                        libraryBean.useYn = "Y";
+                        initializeLibrary(libraryBean);
                         showFirebaseNeedComaptDialog();
                     }
                     break;
