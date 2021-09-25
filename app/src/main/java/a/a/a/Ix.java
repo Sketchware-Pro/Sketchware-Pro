@@ -199,6 +199,7 @@ public class Ix {
     public String a() {
         boolean addRequestLegacyExternalStorage = false;
         a.a("", "package", c.a);
+
         if (!c.a()) {
             if (c.b(jq.PERMISSION_CALL_PHONE)) {
                 a(a, Manifest.permission.CALL_PHONE);
@@ -247,27 +248,29 @@ public class Ix {
         }
         ConstVarManifest.handlePermissionComponent(a, c.x);
         AndroidManifestInjector.getP(a, c.sc_id);
+
         Nx applicationTag = new Nx("application");
         applicationTag.a("android", "allowBackup", "true");
+        applicationTag.a("android", "icon", "@drawable/app_icon");
         applicationTag.a("android", "label", "@string/app_name");
+        applicationTag.a("android", "name",
+                settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
         if (addRequestLegacyExternalStorage) {
             applicationTag.a("android", "requestLegacyExternalStorage", "true");
         }
-        applicationTag.a("android", "icon", "@drawable/app_icon");
         if (!buildSettings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             applicationTag.a("android", "usesCleartextTraffic", "true");
         }
-        if (c.f) {
-            applicationTag.a("android", "name",
-                    settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
-        }
         AndroidManifestInjector.getAppAttrs(applicationTag, c.sc_id);
+
         for (ProjectFileBean projectFileBean : b) {
             if (!projectFileBean.fileName.contains("_fragment")) {
                 Nx activityTag = new Nx("activity");
+
                 String javaName = projectFileBean.getJavaName();
                 activityTag.a("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
+
                 if (!AndroidManifestInjector.getActivityAttrs(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     activityTag.a("android", "configChanges", "orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout");
                     activityTag.a("android", "hardwareAccelerated", "true");
@@ -275,7 +278,7 @@ public class Ix {
                 }
                 if (!AndroidManifestInjector.isActivityThemeUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     if (c.g) {
-                        if (projectFileBean.hasActivityOption(2)) {
+                        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN)) {
                             activityTag.a("android", "theme", "@style/AppTheme.FullScreen");
                         }
                     } else if (projectFileBean.hasActivityOption(ProjectFileBean.PROJECT_FILE_TYPE_DRAWER)) {
@@ -316,7 +319,7 @@ public class Ix {
                 applicationTag.a(activityTag);
             }
         }
-        if (c.f) {
+        {
             Nx activityTag = new Nx("activity");
             activityTag.a("android", "name", ".DebugActivity");
             activityTag.a("android", "screenOrientation", "portrait");
