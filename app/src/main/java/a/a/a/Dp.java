@@ -443,10 +443,10 @@ public class Dp {
             // Closable gets closed automatically
             Dex firstDex = new Dex(new FileInputStream(toMergeIterator.next()));
             dexObjects.add(firstDex);
-            mergedDexFields = firstDex.fieldIds();
-            mergedDexMethods = firstDex.methodIds();
-            mergedDexProtos = firstDex.protoIds();
-            mergedDexTypes = firstDex.typeIds();
+            mergedDexFields = new ArrayList<>(firstDex.fieldIds());
+            mergedDexMethods = new ArrayList<>(firstDex.methodIds());
+            mergedDexProtos = new ArrayList<>(firstDex.protoIds());
+            mergedDexTypes = new ArrayList<>(firstDex.typeIds());
         }
 
         while (toMergeIterator.hasNext()) {
@@ -457,65 +457,65 @@ public class Dp {
             Dex dex = new Dex(new FileInputStream(dexPath));
 
             boolean canMerge = true;
-            List<FieldId> mergedFieldsTest = new ArrayList<>(mergedDexFields);
-            List<MethodId> mergedMethodsTest = new ArrayList<>(mergedDexMethods);
-            List<ProtoId> mergedProtosTest = new ArrayList<>(mergedDexProtos);
-            List<Integer> mergedTypesTest = new ArrayList<>(mergedDexTypes);
+            List<FieldId> newDexFieldIds = new ArrayList<>();
+            List<MethodId> newDexMethodIds = new ArrayList<>();
+            List<ProtoId> newDexProtoIds = new ArrayList<>();
+            List<Integer> newDexTypeIds = new ArrayList<>();
 
             bruh:
             {
                 for (FieldId fieldId : dex.fieldIds()) {
-                    if (!mergedFieldsTest.contains(fieldId)) {
-                        if (mergedFieldsTest.size() + 1 > 0xffff) {
+                    if (!mergedDexFields.contains(fieldId)) {
+                        if (mergedDexFields.size() + newDexFieldIds.size() + 1 > 0xffff) {
                             LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
                                     " because it has too many new field IDs. "
                                     + nextMergedDexFilename + " will have " + mergedDexFields.size() + " field IDs");
                             canMerge = false;
                             break bruh;
                         } else {
-                            mergedFieldsTest.add(fieldId);
+                            newDexFieldIds.add(fieldId);
                         }
                     }
                 }
 
                 for (MethodId methodId : dex.methodIds()) {
-                    if (!mergedMethodsTest.contains(methodId)) {
-                        if (mergedMethodsTest.size() + 1 > 0xffff) {
+                    if (!newDexMethodIds.contains(methodId)) {
+                        if (mergedDexMethods.size() + newDexMethodIds.size() + 1 > 0xffff) {
                             LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
                                     " because it has too many new method IDs. "
                                     + nextMergedDexFilename + " will have " + mergedDexMethods.size() + " method IDs");
                             canMerge = false;
                             break bruh;
                         } else {
-                            mergedMethodsTest.add(methodId);
+                            newDexMethodIds.add(methodId);
                         }
                     }
                 }
 
                 for (ProtoId protoId : dex.protoIds()) {
-                    if (!mergedProtosTest.contains(protoId)) {
-                        if (mergedProtosTest.size() + 1 > 0xffff) {
+                    if (!newDexProtoIds.contains(protoId)) {
+                        if (mergedDexProtos.size() + newDexProtoIds.size() + 1 > 0xffff) {
                             LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
                                     " because it has too many new proto IDs. "
                                     + nextMergedDexFilename + " will have " + mergedDexProtos.size() + " proto IDs");
                             canMerge = false;
                             break bruh;
                         } else {
-                            mergedProtosTest.add(protoId);
+                            newDexProtoIds.add(protoId);
                         }
                     }
                 }
 
                 for (Integer typeId : dex.typeIds()) {
-                    if (!mergedTypesTest.contains(typeId)) {
-                        if (mergedTypesTest.size() + 1 > 0xffff) {
+                    if (!newDexTypeIds.contains(typeId)) {
+                        if (mergedDexTypes.size() + newDexProtoIds.size() + 1 > 0xffff) {
                             LogUtil.d(TAG, "Can't merge DEX file to " + nextMergedDexFilename +
                                     " because it has too many new type IDs. "
                                     + nextMergedDexFilename + " will have " + mergedDexTypes.size() + " type IDs");
                             canMerge = false;
                             break bruh;
                         } else {
-                            mergedTypesTest.add(typeId);
+                            newDexTypeIds.add(typeId);
                         }
                     }
                 }
@@ -524,19 +524,19 @@ public class Dp {
             if (canMerge) {
                 LogUtil.d(TAG, "Merging DEX #" + dexes.indexOf(dexPath) + " as well to " + nextMergedDexFilename);
                 dexObjects.add(dex);
-                mergedDexFields = mergedFieldsTest;
-                mergedDexMethods = mergedMethodsTest;
-                mergedDexProtos = mergedProtosTest;
-                mergedDexTypes = mergedTypesTest;
+                mergedDexFields.addAll(newDexFieldIds);
+                mergedDexMethods.addAll(newDexMethodIds);
+                mergedDexProtos.addAll(newDexProtoIds);
+                mergedDexTypes.addAll(newDexTypeIds);
             } else {
                 mergeDexes(outputPath.replace("classes.dex", nextMergedDexFilename), dexObjects);
                 dexObjects.clear();
                 dexObjects.add(dex);
 
-                mergedDexFields = dex.fieldIds();
-                mergedDexMethods = dex.methodIds();
-                mergedDexProtos = dex.protoIds();
-                mergedDexTypes = dex.typeIds();
+                mergedDexFields = new ArrayList<>(dex.fieldIds());
+                mergedDexMethods = new ArrayList<>(dex.methodIds());
+                mergedDexProtos = new ArrayList<>(dex.protoIds());
+                mergedDexTypes = new ArrayList<>(dex.typeIds());
                 lastDexNumber++;
             }
         }
