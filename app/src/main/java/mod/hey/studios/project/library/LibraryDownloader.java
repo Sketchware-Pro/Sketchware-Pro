@@ -138,6 +138,24 @@ public class LibraryDownloader {
                 isAarDownloaded = false;
                 isAarAvailable = false;
 
+/* Disable and hide exittext and buttons when start button clicked 
+This is to prevent accidental double click in which the Library downloader triggers multiple times */
+
+                edittext1.setEnabled(false);
+                
+                linear8.setEnabled(false);
+                linear8.setVisibility(View.GONE);
+
+                linear9.setEnabled(false);
+                linear9.setVisibility(View.GONE);
+
+                linear10.setEnabled(false);
+                linear10.setVisibility(View.GONE);
+
+                linear11.setEnabled(true);
+                linear11.setVisibility(View.VISIBLE);
+         
+
                 _getRepository();
                 counter = 0;
                 currentRepo = repoUrls.get((int) counter);
@@ -356,28 +374,51 @@ public class LibraryDownloader {
                 .build()
                 .setOnStartOrResumeListener(() -> {
                     textview3.setText("Library found. Downloading...");
-
+                    edittext1.setEnabled(false);
                     linear4.removeAllViews();
                     linear4.addView(linear3);
 
                     linear8.setEnabled(false);
+                    linear8.setVisibility(View.GONE);
+
                     linear9.setEnabled(true);
+                    linear9.setVisibility(View.VISIBLE);
+
                     linear10.setEnabled(false);
+                    linear10.setVisibility(View.GONE);
+
                     linear11.setEnabled(true);
+                    linear11.setVisibility(View.VISIBLE);
                 })
                 .setOnPauseListener(() -> {
                     textview3.setText("Downloading paused.");
 
                     linear8.setEnabled(false);
+                    linear8.setVisibility(View.GONE);
+
                     linear9.setEnabled(false);
+                    linear9.setVisibility(View.GONE);
+
                     linear10.setEnabled(true);
+                    linear10.setVisibility(View.VISIBLE);
+
                     linear11.setEnabled(true);
+                    linear11.setVisibility(View.VISIBLE);
                 })
                 .setOnCancelListener(() -> {
+                    edittext1.setEnabled(true);
+
                     linear8.setEnabled(true);
+                    linear8.setVisibility(View.VISIBLE);
+
                     linear9.setEnabled(false);
+                    linear9.setVisibility(View.GONE);
+
                     linear10.setEnabled(false);
+                    linear10.setVisibility(View.GONE);
+
                     linear11.setEnabled(false);
+                    linear11.setVisibility(View.GONE);
                 })
                 .setOnProgressListener(progress -> {
                     int progressPercent = (int) (progress.currentBytes * 100 / progress.totalBytes);
@@ -419,10 +460,18 @@ public class LibraryDownloader {
                             }
                         }
 
+                        edittext1.setEnabled(true);
                         linear8.setEnabled(true);
+                        linear8.setVisibility(View.VISIBLE);
+
                         linear9.setEnabled(false);
+                        linear9.setVisibility(View.GONE);
+
                         linear10.setEnabled(false);
+                        linear10.setVisibility(View.GONE);
+
                         linear11.setEnabled(true);
+                        linear11.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -453,22 +502,37 @@ public class LibraryDownloader {
 
                                 } else {
                                     FileUtil.deleteFile(libName);
-                                    textview3.setText("Library is not found in saved repositories");
-
+                                    textview3.setText("Library is not found in loaded repositories");
+                                    edittext1.setEnabled(true);
                                     linear8.setEnabled(true);
+                                    linear8.setVisibility(View.VISIBLE);
+
                                     linear9.setEnabled(false);
+                                    linear9.setVisibility(View.GONE);
+
                                     linear10.setEnabled(false);
+                                    linear10.setVisibility(View.GONE);
+
                                     linear11.setEnabled(true);
+                                    linear11.setVisibility(View.VISIBLE);
                                 }
                             }
                         } else {
                             if (e.isConnectionError()) {
                                 textview3.setText("Downloading failed. No network");
-
+                                edittext1.setEnabled(true);
                                 linear8.setEnabled(true);
+                                linear8.setVisibility(View.VISIBLE);
+
                                 linear9.setEnabled(false);
+                                linear9.setVisibility(View.GONE);
+
                                 linear10.setEnabled(false);
+                                linear10.setVisibility(View.GONE);
+
                                 linear11.setEnabled(true);
+                                linear11.setVisibility(View.VISIBLE);
+
                             }
                         }
                     }
@@ -480,13 +544,25 @@ public class LibraryDownloader {
         repoMap.clear();
         repoNames.clear();
         counter = 0;
-        repoMap = new Gson().fromJson("[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]",
-                Helper.TYPE_MAP_LIST);
+        
+        /* Extracted Default Library Repo Links So User Can Modify If Want */
+ 
+        if ((!FileUtil.isExistFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json")) || FileUtil.readFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json").trim().equals("")) {
+	FileUtil.writeFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json", "[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]");
+         }
 
-        for (int _repeat14 = 0; _repeat14 < repoMap.size(); _repeat14++) {
+        try{
+	repoMap = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir() + "/.sketchware/libs/repo_map.json" , Helper.TYPE_MAP_LIST);
+        }catch(Exception e){
+	repoMap = new Gson().fromJson("[{\"url\":\"https://repo.hortonworks.com/content/repositories/releases\",\"name\":\"HortanWorks\"},{\"url\":\"https://maven.atlassian.com/content/repositories/atlassian-public\",\"name\":\"Atlassian\"},{\"url\":\"https://jitpack.io\",\"name\":\"JitPack\"},{\"url\":\"https://jcenter.bintray.com\",\"name\":\"JCenter\"},{\"url\":\"https://oss.sonatype.org/content/repositories/releases\",\"name\":\"Sonatype\"},{\"url\":\"https://repo.spring.io/plugins-release\",\"name\":\"Spring Plugins\"},{\"url\":\"https://repo.spring.io/libs-milestone\",\"name\":\"Spring Milestone\"},{\"url\":\"https://repo.maven.apache.org/maven2\",\"name\":\"Apache Maven\"},{\"url\":\"https://dl.google.com/dl/android/maven2\",\"name\":\"Google Maven\"},{\"url\":\"https://repo1.maven.org/maven2\",\"name\":\"Maven Central\"}]", Helper.TYPE_MAP_LIST);	
+        bB.a(context, "Failed to load repo list from sdcard. Using default repo lists.\nError:" + e.toString(), 0).show();
+        } 
+     
+  for (int _repeat14 = 0; _repeat14 < repoMap.size(); _repeat14++) {
+          if (repoMap.containsKey("url") && repoMap.containsKey("name")) {
             repoUrls.add(repoMap.get((int) counter).get("url").toString());
             repoNames.add(repoMap.get((int) counter).get("name").toString());
-
+            }
             counter++;
         }
     }
