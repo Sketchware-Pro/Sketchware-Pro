@@ -114,7 +114,7 @@ public class jq {
     public boolean e = false;
 
     /**
-     * Unknown, but most likely if the project is not getting/about to get its sources exported.
+     * If we're building a debug APK, meaning that e.g. test ads should be used.
      */
     public boolean f = false;
 

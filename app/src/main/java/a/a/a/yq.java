@@ -940,7 +940,7 @@ public class yq {
     }
 
     /**
-     * @see yq#a(hC, eC, iC, boolean)
+     * Calls {@link yq#a(hC, eC, iC, boolean)} with the same parameters and <code>false</code>.
      */
     public ArrayList<SrcCodeBean> a(hC hCVar, eC eCVar, iC iCVar) {
         return a(hCVar, eCVar, iCVar, false);
