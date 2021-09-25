@@ -1,6 +1,5 @@
 package mod.hey.studios.project.library;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import com.android.tools.r8.D8;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.sketchware.remod.Resources;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -61,7 +61,7 @@ public class LibraryDownloader {
     private int downloadId;
     private String libName = "";
     private String currentRepo = "";
-    private double counter = 0;
+    private int counter = 0;
     private ArrayList<HashMap<String, Object>> repoMap = new ArrayList<>();
     private ProgressDialog progressDialog;
 
@@ -103,24 +103,23 @@ public class LibraryDownloader {
         }
     }
 
-    @SuppressLint("ResourceType")
     public void showDialog(OnCompleteListener listener) {
         this.listener = listener;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = context.getLayoutInflater();
-        View view = inflater.inflate(0x7F0B01DF /* R.layout.library_downloader_dialog */, null);
+        View view = inflater.inflate(Resources.layout.library_downloader_dialog, null);
 
-        final LinearLayout linear1 = view.findViewById(0x7F080680); // R.id.linear1
-        final LinearLayout progressBarContainer = view.findViewById(0x7F0806FE); // R.id.linear3
-        final ProgressBar progressbar1 = view.findViewById(0x7F0806FF); // R.id.progressbar1
-        final LinearLayout libraryContainer = view.findViewById(0x7F080681); // R.id.linear4
-        final TextView message = view.findViewById(0x7F080682); // R.id.textview3
-        final LinearLayout start = view.findViewById(0x7F080701); // R.id.linear8
-        final LinearLayout pause = view.findViewById(0x7F08068F); // R.id.linear9
-        final LinearLayout resume = view.findViewById(0x7F080692); // R.id.linear10
-        final LinearLayout cancel = view.findViewById(0x7F080694); // R.id.linear11
-        final EditText library = view.findViewById(0x7F080702); // R.id.edittext1
+        final LinearLayout linear1 = view.findViewById(Resources.id.linear1);
+        final LinearLayout progressBarContainer = view.findViewById(Resources.id.linear3);
+        final ProgressBar progressbar1 = view.findViewById(Resources.id.progressbar1);
+        final LinearLayout libraryContainer = view.findViewById(Resources.id.linear4);
+        final TextView message = view.findViewById(Resources.id.textview3);
+        final LinearLayout start = view.findViewById(Resources.id.linear8);
+        final LinearLayout pause = view.findViewById(Resources.id.linear9);
+        final LinearLayout resume = view.findViewById(Resources.id.linear10);
+        final LinearLayout cancel = view.findViewById(Resources.id.linear11);
+        final EditText library = view.findViewById(Resources.id.edittext1);
 
         linear1.removeView(progressBarContainer);
 
@@ -161,7 +160,7 @@ public class LibraryDownloader {
 
                 _getRepository();
                 counter = 0;
-                currentRepo = repoUrls.get((int) counter);
+                currentRepo = repoUrls.get(counter);
 
                 downloadId = _download(
                         currentRepo.concat(_getAarDownloadLink(dependency)),
@@ -476,8 +475,8 @@ public class LibraryDownloader {
                         if (e.isServerError()) {
                             if (!(isAarDownloaded || isAarAvailable)) {
                                 if (counter < repoUrls.size()) {
-                                    currentRepo = repoUrls.get((int) counter);
-                                    String name = repoNames.get((int) counter);
+                                    currentRepo = repoUrls.get(counter);
+                                    String name = repoNames.get(counter);
 
                                     counter++;
                                     message.setText("Searching... " + counter + "/" + repoUrls.size() + " [" + name + "]");
