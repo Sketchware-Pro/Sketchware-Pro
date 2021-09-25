@@ -982,7 +982,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 kCVar.b(project_metadata.w + File.separator + "drawable-xhdpi");
                 kCVar.c(project_metadata.w + File.separator + "raw");
                 kCVar.a(project_metadata.A + File.separator + "fonts");
-                project_metadata.b(hCVar, eCVar, iCVar, false);
+                project_metadata.b(hCVar, eCVar, iCVar, true);
                 if (d) {
                     cancel(true);
                     return;
