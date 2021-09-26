@@ -16,7 +16,7 @@
             android:paddingRight="8dp"
             android:scrollHorizontally="true"
             android:textColor="@color/primary_text_default_material_light"
-            android:textSize="14sp"
+            android:textSize="11sp"
             android:typeface="monospace" />
     </HorizontalScrollView>
 </ScrollView>
