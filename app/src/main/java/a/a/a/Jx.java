@@ -164,24 +164,24 @@ public class Jx {
             sb.append("import ").append(anImport).append(";").append(a);
         }
         if (f.g) {
-            sb.append("import androidx.fragment.app.Fragment;").append(a)
-                    .append("import androidx.fragment.app.FragmentManager;").append(a)
-                    .append("import androidx.fragment.app.DialogFragment;").append(a);
+            sb.append("import androidx.fragment.app.Fragment;").append(a);
+            sb.append("import androidx.fragment.app.FragmentManager;").append(a);
+            sb.append("import androidx.fragment.app.DialogFragment;").append(a);
             if (isBottomDialogFragment) {
                 sb.append("import com.google.android.material.bottomsheet.BottomSheetDialogFragment;").append(a);
             }
         } else {
-            sb.append("import android.app.Fragment;").append(a)
-                    .append("import android.app.FragmentManager;").append(a)
-                    .append("import android.app.DialogFragment;").append(a);
+            sb.append("import android.app.Fragment;").append(a);
+            sb.append("import android.app.FragmentManager;").append(a);
+            sb.append("import android.app.DialogFragment;").append(a);
         }
         if (permissionManager.hasNewPermission() || f.a(c.getActivityName()).a()) {
             if (f.g) {
-                sb.append("import androidx.core.content.ContextCompat;").append(a)
-                        .append("import androidx.core.app.ActivityCompat;").append(a);
+                sb.append("import androidx.core.content.ContextCompat;").append(a);
+                sb.append("import androidx.core.app.ActivityCompat;").append(a);
             }
-            sb.append("import android.Manifest;").append(a)
-                    .append("import android.content.pm.PackageManager;").append(a);
+            sb.append("import android.Manifest;").append(a);
+            sb.append("import android.content.pm.PackageManager;").append(a);
         }
         String importsAddedByImportBlocks = LogicHandler.imports(e.b());
         if (!importsAddedByImportBlocks.isEmpty()) {
@@ -218,8 +218,8 @@ public class Jx {
         for (String constant : r) {
             if (constant.length() > 0) {
                 activityHasFields = true;
-                sb.append(a)
-                        .append(constant);
+                sb.append(a);
+                sb.append(constant);
             }
         }
 
@@ -229,8 +229,8 @@ public class Jx {
 
             for (String componentFieldDeclaration : h) {
                 if (componentFieldDeclaration.length() > 0) {
-                    sb.append(a)
-                            .append(componentFieldDeclaration);
+                    sb.append(a);
+                    sb.append(componentFieldDeclaration);
                 }
             }
         }
@@ -241,8 +241,8 @@ public class Jx {
 
             for (String field : i) {
                 if (field.length() > 0) {
-                    sb.append(a)
-                            .append(field);
+                    sb.append(a);
+                    sb.append(field);
                 }
             }
         }
@@ -253,8 +253,8 @@ public class Jx {
 
             for (String value : j) {
                 if (value.length() > 0) {
-                    sb.append(a)
-                            .append(value);
+                    sb.append(a);
+                    sb.append(value);
                 }
             }
         }
@@ -265,8 +265,8 @@ public class Jx {
 
             for (String viewDeclaration : k) {
                 if (viewDeclaration.length() > 0) {
-                    sb.append(a)
-                            .append(viewDeclaration);
+                    sb.append(a);
+                    sb.append(viewDeclaration);
                 }
             }
         }
@@ -277,8 +277,8 @@ public class Jx {
 
             for (String componentFieldDeclaration : l) {
                 if (componentFieldDeclaration.length() > 0) {
-                    sb.append(a)
-                            .append(componentFieldDeclaration);
+                    sb.append(a);
+                    sb.append(componentFieldDeclaration);
                 }
             }
         }
@@ -289,23 +289,23 @@ public class Jx {
         sb.append(a);
         if (isFragment) {
             if (f.g) {
-                sb.append("@NonNull").append(a)
-                        .append("@Override").append(a)
-                        .append("public View onCreateView(@NonNull LayoutInflater _inflater, " +
-                                "@Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {").append(a);
+                sb.append("@NonNull").append(a);
+                sb.append("@Override").append(a);
+                sb.append("public View onCreateView(@NonNull LayoutInflater _inflater, " +
+                        "@Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {").append(a);
             } else {
-                sb.append("@Override").append(a)
-                        .append("public View onCreateView(LayoutInflater _inflater, ViewGroup _container, " +
-                                "Bundle _savedInstanceState) {").append(a);
+                sb.append("@Override").append(a);
+                sb.append("public View onCreateView(LayoutInflater _inflater, ViewGroup _container, " +
+                        "Bundle _savedInstanceState) {").append(a);
             }
             sb.append("View _view = _inflater.inflate(R.layout.").append(c.fileName).append(", _container, false);").append(a);
             sb.append("initialize(_savedInstanceState, _view);");
         } else {
-            sb.append("@Override").append(a)
-                    .append("protected void onCreate(Bundle _savedInstanceState) {").append(a)
-                    .append("super.onCreate(_savedInstanceState);").append(a)
-                    .append("setContentView(R.layout.").append(c.fileName).append(");").append(a)
-                    .append("initialize(_savedInstanceState);");
+            sb.append("@Override").append(a);
+            sb.append("protected void onCreate(Bundle _savedInstanceState) {").append(a);
+            sb.append("super.onCreate(_savedInstanceState);").append(a);
+            sb.append("setContentView(R.layout.").append(c.fileName).append(");").append(a);
+            sb.append("initialize(_savedInstanceState);");
         }
         sb.append(a);
         if (f.h) {
