@@ -1562,6 +1562,9 @@ public class Lx {
             case "FirebaseStorage":
                 return "private FirebaseStorage _firebase_storage = FirebaseStorage.getInstance();";
 
+            case "InterstitialAd":
+                return "private String _ad_unit_id;";
+
             default:
                 return "";
         }

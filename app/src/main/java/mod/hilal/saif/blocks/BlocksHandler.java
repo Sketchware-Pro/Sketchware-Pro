@@ -2411,6 +2411,57 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "repeat %d: %s.inputOnly --");
         arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "interstitialAdLoad");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "{\r\n" +
+                "AdRequest adRequest = new AdRequest.Builder().build();\r\n" +
+                "InterstitialAd.load(%1$s.this, _ad_unit_id, adRequest, new InterstitialAdLoadCallback() {\r\n" +
+                "%2$s\r\n" +
+                "});\r\n" +
+                "}");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "InterstitialAd load in %m.activity");
+        arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "interstitialAdLoadCallbackOnAdLoaded");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "@Override\r\n" +
+                "public void onAdLoaded(InterstitialAd interstitialAd) {\r\n" +
+                "%s\r\n" +
+                "}\r\n");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "InterstitialAd onAdLoaded ad interstitialAd");
+        arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "interstitialAdLoadCallbackOnAdFailedToLoad");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "@Override\r\n" +
+                "public void onAdFailedToLoad(LoadAdError loadAdError) {\r\n" +
+                "%s\r\n" +
+                "}");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "InterstitialAd onAdFailedToLoad error loadAdError");
+        arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "interstitialAdShow");
+        hashMap.put("type", " ");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "interstitialAd.show(%s.this);");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "InterstitialAd show ad in %m.activity");
+        arrayList.add(0, hashMap);
     }
 
     private static void checkDir() {
