@@ -427,31 +427,6 @@ public class Lx {
                         eventLogic + "\r\n" +
                         "}";
 
-            case "onAdLoaded":
-                return "@Override\r\n" +
-                        "public void onAdLoaded() {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
-            case "onAdFailedToLoad":
-                return "@Override\r\n" +
-                        "public void onAdFailedToLoad(int _param1) {\r\n" +
-                        "final int _errorCode = _param1;\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
-            case "onAdOpened":
-                return "@Override\r\n" +
-                        "public void onAdOpened() {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
-            case "onAdClosed":
-                return "@Override\r\n" +
-                        "public void onAdClosed() {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
             case "onUploadProgress":
                 return "@Override\r\n" +
                         "public void onProgress(UploadTask.TaskSnapshot _param1) {\r\n" +
@@ -662,10 +637,6 @@ public class Lx {
                             "private OnCompleteListener<Void> " + componentName + "_updateProfileListener;\r\n" +
                             "private OnCompleteListener<AuthResult> " + componentName + "_phoneAuthListener;\r\n" +
                             "private OnCompleteListener<AuthResult> " + componentName + "_googleSignInListener;\r\n";
-                    break;
-
-                case "InterstitialAd":
-                    fieldDeclaration += "\r\nprivate AdListener _" + componentName + "_ad_listener;";
                     break;
 
                 case "FirebaseStorage":
@@ -1673,11 +1644,6 @@ public class Lx {
                 return "_" + componentName + "_controller.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {\r\n"
                         + eventLogic + "\r\n"
                         + "});";
-
-            case "adListener":
-                return "_" + componentName + "_ad_listener = new AdListener() {\r\n"
-                        + eventLogic + "\r\n"
-                        + "};";
 
             case "authCreateUserComplete":
                 return "_" + componentName + "_create_user_listener = new OnCompleteListener<AuthResult>() {\r\n"
