@@ -316,6 +316,37 @@ public class Jx {
             }
             sb.append(a);
         }
+
+        if (f.l && !isFragment && h.contains(Lx.d("InterstitialAd"))) {
+            if (!f.h) {
+                sb.append(a);
+            }
+            sb.append("com.google.android.gms.ads.MobileAds.initialize(this);").append(a);
+            sb.append(a);
+            sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
+
+            if (f.f) {
+                StringBuilder testDevicesListCode = new StringBuilder("List<String> testDeviceIds = Arrays.asList(");
+                ArrayList<String> testDevices = f.t;
+                for (int j = 0, testDevicesSize = testDevices.size(); j < testDevicesSize; j++) {
+                    String testDeviceId = testDevices.get(j);
+
+                    testDevicesListCode.append("\"").append(testDeviceId).append("\"");
+                    if (j != testDevicesSize - 1) {
+                        testDevicesListCode.append(", ");
+                    }
+                }
+                testDevicesListCode.append(");").append(a);
+
+                sb.append(a);
+                sb.append(testDevicesListCode);
+                sb.append("com.google.android.gms.ads.MobileAds.setRequestConfiguration(new com.google.android.gms.ads.RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build());");
+            }
+
+            sb.append(a);
+            sb.append(a);
+        }
+
         if (!isFragment) {
             // Adds initializeLogic() call too, don't worry
             sb.append(permissionManager.writePermission(f.g, f.a(c.getActivityName()).c));
@@ -814,6 +845,13 @@ public class Jx {
                     case "setImageUrl":
                         addImport("com.bumptech.glide.Glide");
                         break;
+
+                    case "interstitialAdLoad":
+                        addImport("com.google.android.gms.ads.interstitial.InterstitialAd");
+                        addImport("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
+                        addImport("com.google.android.gms.ads.AdRequest");
+                        addImport("com.google.android.gms.ads.LoadAdError");
+                        break;
                 }
             }
         }
@@ -887,6 +925,7 @@ public class Jx {
             boolean hasTimer = false;
             boolean hasFirebaseDB = false;
             boolean hasFirebaseStorage = false;
+            boolean hasInterstitialAd = false;
             for (ComponentBean bean : componentBeans) {
                 if (bean.type == ComponentBean.COMPONENT_TYPE_TIMERTASK) {
                     hasTimer = true;
@@ -897,6 +936,9 @@ public class Jx {
                 if (bean.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
                     hasFirebaseStorage = true;
                 }
+                if (bean.type == ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD) {
+                    hasInterstitialAd = true;
+                }
             }
             if (hasTimer) {
                 h.add(Lx.d("Timer"));
@@ -906,6 +948,9 @@ public class Jx {
             }
             if (hasFirebaseStorage) {
                 h.add(Lx.d("FirebaseStorage"));
+            }
+            if (hasInterstitialAd) {
+                h.add(Lx.d("InterstitialAd"));
             }
         }
     }
