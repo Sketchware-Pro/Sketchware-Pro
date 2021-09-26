@@ -156,13 +156,13 @@ public class MenuBean {
             case "AdUnit":
                 asdAll.a(2131166209);
                 asdAll.b("Select an AdUnit");
-                selectableItems.addAll(AdmobReader.getAdUnits(sc_id));
+                selectableItems.addAll(AdMobReader.getAdUnits(sc_id));
                 break;
 
             case "TestDevice":
                 asdAll.a(2131165866);
                 asdAll.b("Select a test device");
-                selectableItems.addAll(AdmobReader.getTestDevices(sc_id));
+                selectableItems.addAll(AdMobReader.getTestDevices(sc_id));
                 break;
 
             case "IntentKey":
