@@ -1072,9 +1072,10 @@ public class ExtraPaletteBlock {
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD)) {
                     logicEditor.a("AdMob", 0xff555555);
-                    logicEditor.a(" ", "interstitialadCreate");
-                    logicEditor.a(" ", "interstitialadLoadAd");
-                    logicEditor.a(" ", "interstitialadShow");
+                    logicEditor.a("c", "interstitialAdLoad");
+                    logicEditor.a("c", "interstitialAdLoadCallbackOnAdLoaded");
+                    logicEditor.a("c", "interstitialAdLoadCallbackOnAdFailedToLoad");
+                    logicEditor.a(" ", "interstitialAdShow");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE)) {
                     logicEditor.a("Firebase Storage", 0xff555555);
