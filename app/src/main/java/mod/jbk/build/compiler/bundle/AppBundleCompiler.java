@@ -18,6 +18,7 @@ import java.util.zip.ZipOutputStream;
 
 import a.a.a.Dp;
 import a.a.a.yq;
+import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.util.LogUtil;
 
@@ -30,9 +31,8 @@ public class AppBundleCompiler {
     public static final String MODULE_RES = "res";
     public static final String MODULE_ROOT = "root";
     public static final String MODULE_MANIFEST = "manifest";
+
     private static final String TAG = AppBundleCompiler.class.getSimpleName();
-    public static String BUNDLE_FILE_NAME;
-    public static String APK_SET_FILE_NAME;
     private final DesignActivity.a buildingDialog;
     private final Dp mDp;
     public File mainModuleArchive;
@@ -40,13 +40,19 @@ public class AppBundleCompiler {
     public File apkSet;
 
     public AppBundleCompiler(Dp dp, DesignActivity.a designActivityA) {
-        BUNDLE_FILE_NAME = dp.f.d + ".aab";
-        APK_SET_FILE_NAME = dp.f.d + ".apks";
         buildingDialog = designActivityA;
         mDp = dp;
         mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.f.t, BUNDLE_FILE_NAME);
-        apkSet = new File(dp.f.t, APK_SET_FILE_NAME);
+        appBundle = new File(dp.f.t, getBundleFilename(dp.f.d));
+        apkSet = new File(dp.f.t, getApkSetFilename(dp.f.d));
+    }
+
+    public static String getApkSetFilename(String sc_id) {
+        return sc_id + ".apks";
+    }
+
+    public static String getBundleFilename(String sc_id) {
+        return sc_id + ".aab";
     }
 
     public static File getDefaultAppBundleOutputFile(Context context, String sc_id) {
@@ -120,16 +126,16 @@ public class AppBundleCompiler {
      * @throws IOException Thrown if any I/O exception occurs while creating the archive
      */
     public void createModuleMainArchive() throws IOException {
-        /* Get an automatically closed FileInputStream of <project name>.apk.res */
-        try (FileInputStream apkResStream = new FileInputStream(mDp.f.C)) {
-            /* Create an automatically closed ZipInputStream of <project name>.apk.res */
-            try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
-                /* Get an automatically closed FileOutputStream of module-main.zip */
-                try (FileOutputStream mainModuleStream = new FileOutputStream(mainModuleArchive)) {
-                    /* Buffer writing to module-main.zip */
-                    try (BufferedOutputStream bufferedMainModuleStream = new BufferedOutputStream(mainModuleStream)) {
-                        /* Finally, use it as ZipOutputStream */
-                        try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
+        /* Get an automatically closed FileOutputStream of module-main.zip */
+        try (FileOutputStream mainModuleStream = new FileOutputStream(mainModuleArchive)) {
+            /* Buffer writing to module-main.zip */
+            try (BufferedOutputStream bufferedMainModuleStream = new BufferedOutputStream(mainModuleStream)) {
+                /* Finally, use it as ZipOutputStream */
+                try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
+                    /* Get an automatically closed FileInputStream of <project name>.apk.res */
+                    try (FileInputStream apkResStream = new FileInputStream(mDp.f.C)) {
+                        /* Create an automatically closed ZipInputStream of <project name>.apk.res */
+                        try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
 
                             /* First, compress DEX files into module-main.zip */
                             File[] binDirectoryContent = new File(mDp.f.t).listFiles();
@@ -160,9 +166,6 @@ public class AppBundleCompiler {
                                 if (entry.getName().startsWith("assets/")) {
                                     String entryName = entry.getName().substring(7);
                                     toCompress = new ZipEntry(MODULE_ASSETS + File.separator + entryName);
-                                } else if (entry.getName().startsWith("lib/")) {
-                                    String entryName = entry.getName().substring(4);
-                                    toCompress = new ZipEntry(MODULE_LIB + File.separator + entryName);
                                 } else if (entry.getName().startsWith("res/")) {
                                     String entryName = entry.getName().substring(4);
                                     toCompress = new ZipEntry(MODULE_RES + File.separator + entryName);
@@ -187,6 +190,33 @@ public class AppBundleCompiler {
                                 entry = zipInputStream.getNextEntry();
                             }
                             bufferedMainModuleStream.flush();
+                        }
+                    }
+
+                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.f.b));
+                    File[] architectures = nativeLibrariesDirectory.listFiles();
+
+                    if (architectures != null) {
+                        for (File architecture : architectures) {
+                            File[] nativeLibraries = architecture.listFiles();
+                            if (nativeLibraries != null) {
+                                for (File nativeLibrary : nativeLibraries) {
+                                    /* Create a ZIP-entry of the native library */
+                                    ZipEntry dexZipEntry = new ZipEntry(MODULE_LIB + File.separator +
+                                            architecture.getName() + File.separator + nativeLibrary.getName());
+                                    zipOutputStream.putNextEntry(dexZipEntry);
+
+                                    /* Read the native binary and compress into module-main.zip */
+                                    try (FileInputStream dexInputStream = new FileInputStream(nativeLibrary)) {
+                                        byte[] buffer = new byte[1024];
+                                        int length;
+                                        while ((length = dexInputStream.read(buffer)) > 0) {
+                                            zipOutputStream.write(buffer, 0, length);
+                                        }
+                                    }
+                                    zipOutputStream.closeEntry();
+                                }
+                            }
                         }
                     }
                 }
