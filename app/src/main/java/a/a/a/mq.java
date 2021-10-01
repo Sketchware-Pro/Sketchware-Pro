@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import dev.aldi.sayuti.editor.manage.ImportClass;
+import mod.agus.jcoderz.editor.event.CustomImportEvent;
 import mod.agus.jcoderz.lib.TypeVarComponent;
 
 public class mq {
@@ -602,8 +603,7 @@ public class mq {
 
             case "InterstitialAd":
                 importList.add("com.google.android.gms.ads.AdRequest");
-                importList.add("com.google.android.gms.ads.InterstitialAd");
-                importList.add("com.google.android.gms.ads.AdListener");
+                importList.add("com.google.android.gms.ads.interstitial.InterstitialAd");
                 return importList;
 
             case "FirebaseStorage":
@@ -663,6 +663,7 @@ public class mq {
      */
     public static ArrayList<String> d(String listener) {
         ArrayList<String> importList = new ArrayList<>();
+        CustomImportEvent.a(importList, listener);
 
         switch (listener) {
             case "onClickListener":
