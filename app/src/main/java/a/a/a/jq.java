@@ -184,6 +184,8 @@ public class jq {
      */
     public String s = "ca-app-pub-3940256099942544/1033173712";
 
+    public String appId = "";
+
     public String sc_id = "";
 
     /**

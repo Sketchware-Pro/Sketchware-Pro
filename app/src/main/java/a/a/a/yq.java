@@ -639,6 +639,10 @@ public class yq {
                     N.x.setParams(bean.parameters, e, bean.opCode);
                     String opCode = bean.opCode;
                     switch (opCode) {
+                        case "setAdmobAppId":
+                            N.appId = bean.parameters.get(0);
+                            break;
+
                         case "intentSetAction":
                             // If an Intent setAction (ACTION_CALL) block is used
                             if (bean.parameters.get(1).equals(uq.c[1])) {
