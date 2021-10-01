@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
@@ -174,6 +175,13 @@ public class Ix {
         nx.a(receiverTag);
     }
 
+    private void writeAdmobAppId(Nx nx) {
+        Nx metadataTag = new Nx("meta-data");
+        metadataTag.a("android", "name", "com.google.android.gms.ads.APPLICATION_ID");
+        metadataTag.a("android", "value", c.appId);
+        nx.a(metadataTag);
+    }
+
     /**
      * Registers a {@link Service} in AndroidManifest.
      *
@@ -340,6 +348,9 @@ public class Ix {
         }
         if (c.u) {
             a(applicationTag);
+        }
+        if (c.l && !TextUtils.isEmpty(c.appId)) {
+            writeAdmobAppId(applicationTag);
         }
         if (c.m) {
             c(applicationTag);
