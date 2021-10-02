@@ -317,13 +317,15 @@ public class Jx {
             sb.append(a);
         }
 
-        if (f.l && !isFragment && h.contains(Lx.d("InterstitialAd"))) {
+        if (f.l && !isFragment) {
             if (!f.h) {
                 sb.append(a);
             }
-            sb.append("com.google.android.gms.ads.MobileAds.initialize(this);").append(a);
+            sb.append("com.google.android.gms.ads.MobileAds.initialize(this);");
             sb.append(a);
-            sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
+            if (h.contains(Lx.d("InterstitialAd"))) {
+	            sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
+            }
 
             if (f.f) {
                 StringBuilder testDevicesListCode = new StringBuilder("List<String> testDeviceIds = Arrays.asList(");
@@ -343,7 +345,6 @@ public class Jx {
                 sb.append("com.google.android.gms.ads.MobileAds.setRequestConfiguration(new com.google.android.gms.ads.RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build());");
             }
 
-            sb.append(a);
             sb.append(a);
         }
 
