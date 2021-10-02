@@ -870,7 +870,8 @@ public class ExtraPaletteBlock {
                 }
 
                 if (adMobUsed) {
-                    logicEditor.a(" ", "adViewLoadAd");
+                    logicEditor.a(" ", "bannerAdViewLoadAd");
+                    logicEditor.a(" ", "setAdmobAppId");
                 }
 
                 if (mapViewUsed) {
@@ -1071,10 +1072,8 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "gyroscopeStopListen");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD)) {
-                    logicEditor.a("AdMob", 0xff555555);
-                    logicEditor.a("c", "interstitialAdLoad");
-                    logicEditor.a("c", "interstitialAdLoadCallbackOnAdLoaded");
-                    logicEditor.a("c", "interstitialAdLoadCallbackOnAdFailedToLoad");
+                    logicEditor.a("AdMob Interstatial", 0xff555555);
+                    logicEditor.a(" ", "interstitialAdLoad");
                     logicEditor.a(" ", "interstitialAdShow");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE)) {
