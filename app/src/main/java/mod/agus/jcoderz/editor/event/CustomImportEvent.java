@@ -24,6 +24,21 @@ public class CustomImportEvent {
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
                 break;
+
+            case "fullScreenContentCallback":
+                importList.add("com.google.android.gms.ads.FullScreenContentCallback");
+                importList.add("com.google.android.gms.ads.AdError");
+                break;
+
+            case "interstitialAdLoadCallback":
+                importList.add("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
+                importList.add("com.google.android.gms.ads.LoadAdError");
+                break;
+
+            case "bannerAdViewListener":
+                importList.add("com.google.android.gms.ads.AdListener");
+                importList.add("com.google.android.gms.ads.LoadAdError");
+                break;
         }
         EventsHandler.getImports(importList, listener);
     }
