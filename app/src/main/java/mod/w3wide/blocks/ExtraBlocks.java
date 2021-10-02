@@ -158,7 +158,7 @@ public class ExtraBlocks {
             logicEditor.a("s", "fileGetName");
             logicEditor.a("s", "fileGetParent");
             logicEditor.a("s", "fileGetPath");
-            logicEditor.a("s", "fileIsHidden");
+            logicEditor.a("b", "fileIsHidden");
         }
     }
 }
