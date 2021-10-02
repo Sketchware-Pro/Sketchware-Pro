@@ -327,331 +327,168 @@ public class ManageEvent {
     }
 
     public static int d(String str) {
-        switch (str.hashCode()) {
-            case -2135028390:
-                if (str.equals("onUpdateProfileComplete")) {
-                    return 2131166348;
-                }
-                break;
-            case -2070060406:
-                if (str.equals("FBAdsBanner_onLoggingImpression")) {
-                    return 2131166342;
-                }
-                break;
-            case -2026152080:
-                if (str.equals("onEmailVerificationSent")) {
-                    return 2131166335;
-                }
-                break;
-            case -1927178453:
-                if (str.equals("onScrolled")) {
-                    return 2131165581;
-                }
-                break;
-            case -1881852985:
-                if (str.equals("onDateChanged")) {
-                    return 2131165572;
-                }
-                break;
-            case -1764593907:
-                if (str.equals("onRewarded")) {
-                    return 2131166301;
-                }
-                break;
-            case -1744369339:
-                if (str.equals("onFailureLink")) {
-                    return 2131166336;
-                }
-                break;
-            case -1615009874:
-                if (str.equals("onDeleteUserComplete")) {
-                    return 2131166333;
-                }
-                break;
-            case -1576048703:
-                if (str.equals("onNavigationItemSelected")) {
-                    return 2131165581;
-                }
-                break;
-            case -1521795729:
-                if (str.equals("onRewardedVideoAdFailedToLoad")) {
-                    return 2131165552;
-                }
-                break;
-            case -1515385099:
-                if (str.equals("onDateSet")) {
-                    return 2131165572;
-                }
-                break;
-            case -1495579877:
-                if (str.equals("onCompletion")) {
-                    return 2131165579;
-                }
-                break;
-            case -1491459488:
-                if (str.equals("onSaveInstanceState")) {
-                    return 2131165333;
-                }
-                break;
-            case -1491259806:
-                if (str.equals("onCreateOptionsMenu")) {
-                    return 2131165333;
-                }
-                break;
-            case -1478332706:
-                if (str.equals("onQueryTextChanged")) {
-                    return 2131165849;
-                }
-                break;
-            case -1350032819:
-                if (str.equals("onUpdateEmailComplete")) {
-                    return 2131166334;
-                }
-                break;
-            case -1349867671:
-                if (str.equals("onError")) {
-                    return 2131165548;
-                }
-                break;
-            case -1340743215:
-                if (str.equals("onVerificationCompleted")) {
-                    return 2131166350;
-                }
-                break;
-            case -1321851767:
-                if (str.equals("onRecyclerScrollChanged")) {
-                    return 2131165581;
-                }
-                break;
-            case -1253184269:
-                if (str.equals("onCreateContextMenu")) {
-                    return 2131165333;
-                }
-                break;
-            case -1186339443:
-                if (str.equals("onRestoreInstanceState")) {
-                    return 2131165548;
-                }
-                break;
-            case -923278914:
-                if (str.equals("onContextItemSelected")) {
-                    return 2131165333;
-                }
-                break;
-            case -893469302:
-                if (str.equals("onRecyclerScrolled")) {
-                    return 2131165581;
-                }
-                break;
-            case -812638467:
-                if (str.equals("onRewardedVideoAdClosed")) {
-                    return 2131165551;
-                }
-                break;
-            case -789433538:
-                if (str.equals("onSuccessLink")) {
-                    return 2131166337;
-                }
-                break;
-            case -760958320:
-                if (str.equals("onPatternLockCleared")) {
-                    return 2131166309;
-                }
-                break;
-            case -589155002:
-                if (str.equals("FBAdsInterstitial_onAdClicked")) {
-                    return 2131166338;
-                }
-                break;
-            case -552637034:
-                if (str.equals("onRewardedVideoAdLoaded")) {
-                    return 2131165553;
-                }
-                break;
-            case -465697286:
-                if (str.equals("onRewardedVideoAdOpened")) {
-                    return 2131165554;
-                }
-                break;
-            case -359766219:
-                if (str.equals("onAccountPickerCancelled")) {
-                    return 2131166345;
-                }
-                break;
-            case -233781414:
-                if (str.equals("onPageScrolled")) {
-                    return 2131165581;
-                }
-                break;
-            case -222902665:
-                if (str.equals("onVerificationFailed")) {
-                    return 2131166349;
-                }
-                break;
-            case -172690726:
-                if (str.equals("onGoogleSignIn")) {
-                    return 2131166346;
-                }
-                break;
-            case -108704388:
-                if (str.equals("onAccountPicker")) {
-                    return 2131166344;
-                }
-                break;
-            case -30415631:
-                if (str.equals("onFragmentAdded")) {
-                    return 2131166304;
-                }
-                break;
-            case 22340470:
-                if (str.equals("onTimeSet")) {
-                    return 2131166276;
-                }
-                break;
-            case 51638726:
-                if (str.equals("onPageChanged")) {
-                    return 2131165581;
-                }
-                break;
-            case 140823751:
-                if (str.equals("signInWithPhoneAuthComplete")) {
-                    return 2131166331;
-                }
-                break;
-            case 179352223:
-                if (str.equals("FBAdsInterstitial_onInterstitialDismissed")) {
-                    return 2131166339;
-                }
-                break;
-            case 230462136:
-                if (str.equals("onRatingChanged")) {
-                    return 2131166177;
-                }
-                break;
-            case 267479767:
-                if (str.equals("FBAdsInterstitial_onInterstitialDisplayed")) {
-                    return 2131166340;
-                }
-                break;
-            case 388714441:
-                if (str.equals("onPatternLockProgress")) {
-                    return 2131166309;
-                }
-                break;
-            case 631391277:
-                if (str.equals("onOptionsItemSelected")) {
-                    return 2131165333;
-                }
-                break;
-            case 638018442:
-                if (str.equals("FBAdsInterstitial_onLoggingImpression")) {
-                    return 2131166342;
-                }
-                break;
-            case 780046181:
-                if (str.equals("onPatternLockStarted")) {
-                    return 2131166309;
-                }
-                break;
-            case 790347477:
-                if (str.equals("onPatternLockComplete")) {
-                    return 2131166309;
-                }
-                break;
-            case 823540209:
-                if (str.equals("onTabSelected")) {
-                    return 2131165581;
-                }
-                break;
-            case 903210916:
-                if (str.equals("onTabReselected")) {
-                    return 2131165581;
-                }
-                break;
-            case 948149408:
-                if (str.equals("onLetterSelected")) {
-                    return 2131166313;
-                }
-                break;
-            case 1226449418:
-                if (str.equals("onTabUnselected")) {
-                    return 2131165581;
-                }
-                break;
-            case 1359955401:
-                if (str.equals("onPageSelected")) {
-                    return 2131165581;
-                }
-                break;
-            case 1424438342:
-                if (str.equals("FBAdsBanner_onAdClicked")) {
-                    return 2131166338;
-                }
-                break;
-            case 1490401084:
-                if (str.equals("onPrepared")) {
-                    return 2131165588;
-                }
-                break;
-            case 1530791598:
-                if (str.equals("onQueryTextSubmit")) {
-                    return 2131165849;
-                }
-                break;
-            case 1585314250:
-                if (str.equals("FBAdsInterstitial_onError")) {
-                    return 2131166341;
-                }
-                break;
-            case 1626663686:
-                if (str.equals("FBAdsInterstitial_onAdLoaded")) {
-                    return 2131166343;
-                }
-                break;
-            case 1691618310:
-                if (str.equals("FBAdsBanner_onAdLoaded")) {
-                    return 2131166343;
-                }
-                break;
-            case 1725593802:
-                if (str.equals("FBAdsBanner_onError")) {
-                    return 2131166341;
-                }
-                break;
-            case 1834797418:
-                if (str.equals("onTabAdded")) {
-                    return 2131166303;
-                }
-                break;
-            case 1887055611:
-                if (str.equals("onCompleteRegister")) {
-                    return 2131166332;
-                }
-                break;
-            case 1901942308:
-                if (str.equals("onCodeSent")) {
-                    return 2131166331;
-                }
-                break;
-            case 1921834952:
-                if (str.equals("onTimeChanged")) {
-                    return 2131166276;
-                }
-                break;
-            case 2054104968:
-                if (str.equals("onScrollChanged")) {
-                    return 2131165581;
-                }
-                break;
-            case 2092419228:
-                if (str.equals("onUpdatePasswordComplete")) {
-                    return 2131166347;
-                }
-                break;
+        switch (str) {
+            case "onUpdateProfileComplete":
+                return 2131166348;
+
+            case "FBAdsBanner_onLoggingImpression":
+                return 2131166342;
+
+            case "onEmailVerificationSent":
+                return 2131166335;
+
+            case "onDateChanged":
+                return 2131165572;
+
+            case "onRewarded":
+                return 2131166301;
+
+            case "onFailureLink":
+                return 2131166336;
+
+            case "onDeleteUserComplete":
+                return 2131166333;
+
+            case "onRewardedVideoAdFailedToLoad":
+                return 2131165552;
+
+            case "onDateSet":
+                return 2131165572;
+
+            case "onCompletion":
+                return 2131165579;
+
+            case "onQueryTextChanged":
+                return 2131165849;
+
+            case "onUpdateEmailComplete":
+                return 2131166334;
+
+            case "onError":
+                return 2131165548;
+
+            case "onVerificationCompleted":
+                return 2131166350;
+
+            case "onSaveInstanceState":
+            case "onCreateOptionsMenu":
+            case "onCreateContextMenu":
+            case "onContextItemSelected":
+            case "onOptionsItemSelected":
+                return 2131165333;
+
+            case "onRestoreInstanceState":
+                return 2131165548;
+
+            case "onRewardedVideoAdClosed":
+                return 2131165551;
+
+            case "onSuccessLink":
+                return 2131166337;
+
+            case "onPatternLockCleared":
+            case "onPatternLockProgress":
+                return 2131166309;
+
+            case "FBAdsInterstitial_onAdClicked":
+                return 2131166338;
+
+            case "onRewardedVideoAdLoaded":
+                return 2131165553;
+
+            case "onRewardedVideoAdOpened":
+                return 2131165554;
+
+            case "onAccountPickerCancelled":
+                return 2131166345;
+
+            case "onVerificationFailed":
+                return 2131166349;
+
+            case "onGoogleSignIn":
+                return 2131166346;
+
+            case "onAccountPicker":
+                return 2131166344;
+
+            case "onFragmentAdded":
+                return 2131166304;
+
+            case "onTimeSet":
+                return 2131166276;
+
+            case "signInWithPhoneAuthComplete":
+                return 2131166331;
+
+            case "FBAdsInterstitial_onInterstitialDismissed":
+                return 2131166339;
+
+            case "onRatingChanged":
+                return 2131166177;
+
+            case "FBAdsInterstitial_onInterstitialDisplayed":
+                return 2131166340;
+
+            case "FBAdsInterstitial_onLoggingImpression":
+                return 2131166342;
+
+            case "onPatternLockStarted":
+            case "onPatternLockComplete":
+                return 2131166309;
+
+            case "onLetterSelected":
+                return 2131166313;
+
+            case "onScrollChanged":
+            case "onPageChanged":
+            case "onPageScrolled":
+            case "onRecyclerScrolled":
+            case "onRecyclerScrollChanged":
+            case "onNavigationItemSelected":
+            case "onScrolled":
+            case "onTabUnselected":
+            case "onPageSelected":
+            case "onTabSelected":
+            case "onTabReselected":
+                return 2131165581;
+
+            case "FBAdsBanner_onAdClicked":
+                return 2131166338;
+
+            case "onPrepared":
+                return 2131165588;
+
+            case "onQueryTextSubmit":
+                return 2131165849;
+
+            case "FBAdsInterstitial_onError":
+                return 2131166341;
+
+            case "FBAdsInterstitial_onAdLoaded":
+            case "FBAdsBanner_onAdLoaded":
+                return 2131166343;
+
+            case "FBAdsBanner_onError":
+                return 2131166341;
+
+            case "onTabAdded":
+                return 2131166303;
+
+            case "onCompleteRegister":
+                return 2131166332;
+
+            case "onCodeSent":
+                return 2131166331;
+
+            case "onTimeChanged":
+                return 2131166276;
+
+            case "onUpdatePasswordComplete":
+                return 2131166347;
+
             default:
                 return EventsHandler.getIcon(str);
         }
-        return EventsHandler.getIcon(str);
     }
 
     /**
@@ -659,57 +496,24 @@ public class ManageEvent {
      */
     public static String e(String eventName) {
         switch (eventName) {
-            case "onUpdateProfileComplete":
-                return "onUpdateProfileComplete";
-
             case "FBAdsBanner_onLoggingImpression":
             case "FBAdsInterstitial_onLoggingImpression":
                 return "onLoggingImpression";
 
-            case "onEmailVerificationSent":
-                return "onEmailVerificationSent";
-
             case "onScrolled":
                 return "onScroll";
-
-            case "onDateChanged":
-                return "onDateChanged";
-
-            case "onRewarded":
-                return "onRewarded";
 
             case "onFailureLink":
                 return "onFailure";
 
-            case "onDeleteUserComplete":
-                return "onDeleteUserComplete";
-
-            case "onNavigationItemSelected":
-                return "onNavigationItemSelected";
-
             case "onRewardedVideoAdFailedToLoad":
                 return "onVideoAdFailedToLoad";
-
-            case "onDateSet":
-                return "onDateSet";
-
-            case "onCompletion":
-                return "onCompletion";
 
             case "onSaveInstanceState":
                 return "On activity save instance state";
 
             case "onCreateOptionsMenu":
                 return "On create options menu";
-
-            case "onQueryTextChanged":
-                return "onQueryTextChanged";
-
-            case "onUpdateEmailComplete":
-                return "onUpdateEmailComplete";
-
-            case "onError":
-                return "onError";
 
             case "onVerificationCompleted":
                 return "onVerificationCompleted";
@@ -736,12 +540,6 @@ public class ManageEvent {
             case "onSuccessLink":
                 return "onSuccess";
 
-            case "onPatternLockCleared":
-                return "onPatternLockCleared";
-
-            case "FBAdsInterstitial_onAdClicked":
-                return "onAdClicked";
-
             case "onRewardedVideoAdLoaded":
                 return "onVideoAdLoaded";
 
@@ -751,86 +549,34 @@ public class ManageEvent {
             case "onAccountPickerCancelled":
                 return "onAccountCancelled";
 
-            case "onPageScrolled":
-                return "onPageScrolled";
-
-            case "onVerificationFailed":
-                return "onVerificationFailed";
-
-            case "onGoogleSignIn":
-                return "onGoogleSignIn";
-
-            case "onAccountPicker":
-                return "onAccountPicked";
-
             case "onFragmentAdded":
                 return "Return Fragment";
-
-            case "onTimeSet":
-                return "onTimeSet";
 
             case "onPageChanged":
                 return "onPageScrollStateChanged";
 
-            case "signInWithPhoneAuthComplete":
-                return "signInWithPhoneAuthComplete";
-
             case "FBAdsInterstitial_onInterstitialDismissed":
                 return "onInterstitialDismissed";
-
-            case "onRatingChanged":
-                return "onRatingChanged";
 
             case "FBAdsInterstitial_onInterstitialDisplayed":
                 return "onInterstitialDisplayed";
 
-            case "onPatternLockProgress":
-                return "onPatternLockProgress";
-
             case "onOptionsItemSelected":
                 return "On options menu selected";
 
-            case "onPatternLockStarted":
-                return "onPatternLockStarted";
-
-            case "onPatternLockComplete":
-                return "onPatternLockComplete";
-
-            case "onTabSelected":
-                return "onTabSelected";
-
-            case "onTabReselected":
-                return "onTabReselected";
-
-            case "onLetterSelected":
-                return "onLetterSelected";
-
-            case "onTabUnselected":
-                return "onTabUnselected";
-
-            case "onPageSelected":
-                return "onPageSelected";
-
+            case "onBannerAdClicked":
             case "FBAdsBanner_onAdClicked":
+            case "FBAdsInterstitial_onAdClicked":
                 return "onAdClicked";
 
-            case "onPrepared":
-                return "onPrepared";
-
-            case "onQueryTextSubmit":
-                return "onQueryTextSubmit";
-
+            case "FBAdsBanner_onError":
             case "FBAdsInterstitial_onError":
                 return "onError";
 
+            case "onBannerAdLoaded":
+            case "FBAdsBanner_onAdLoaded":
             case "FBAdsInterstitial_onAdLoaded":
                 return "onAdLoaded";
-
-            case "FBAdsBanner_onAdLoaded":
-                return "onAdLoaded";
-
-            case "FBAdsBanner_onError":
-                return "onError";
 
             case "onTabAdded":
                 return "Return Title";
@@ -838,18 +584,51 @@ public class ManageEvent {
             case "onCompleteRegister":
                 return "onComplete";
 
-            case "onCodeSent":
-                return "onCodeSent";
-
-            case "onTimeChanged":
-                return "onTimeChanged";
-
             case "onScrollChanged":
                 // Nice typo, Agus
                 return "onScrollStateCanged";
 
+            case "onBannerAdFailedToLoad":
+            case "onInterstitialAdFailedToLoad":
+                return "onAdFailedToLoad";
+
+            case "onBannerAdClosed":
+                return "onAdClosed";
+
+            case "onUpdateProfileComplete":
+            case "onEmailVerificationSent":
+            case "onDateChanged":
+            case "onRewarded":
+            case "onDeleteUserComplete":
+            case "onNavigationItemSelected":
+            case "onDateSet":
+            case "onCompletion":
+            case "onPatternLockCleared":
+            case "onQueryTextChanged":
+            case "onUpdateEmailComplete":
+            case "onError":
+            case "onPageScrolled":
+            case "onVerificationFailed":
+            case "onGoogleSignIn":
+            case "onAccountPicker":
+            case "onTimeSet":
+            case "signInWithPhoneAuthComplete":
+            case "onRatingChanged":
+            case "onPatternLockProgress":
+            case "onTabSelected":
+            case "onTabReselected":
+            case "onLetterSelected":
+            case "onTabUnselected":
+            case "onPageSelected":
+            case "onPrepared":
+            case "onQueryTextSubmit":
+            case "onCodeSent":
+            case "onTimeChanged":
             case "onUpdatePasswordComplete":
-                return "onUpdatePasswordComplete";
+            case "onAdDismissedFullScreenContent":
+            case "onAdFailedToShowFullScreenContent":
+            case "onAdShowedFullScreenContent":
+                return eventName;
 
             default:
                 return EventsHandler.getDesc(eventName);
@@ -999,12 +778,6 @@ public class ManageEvent {
                         eventLogic + "\r\n" +
                         "}";
 
-            case "onRewardedVideoAdClosed":
-                return "@Override\r\n" +
-                        "public void onRewardedVideoAdClosed() {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
             case "onSuccessLink":
                 return "@Override\r\n" +
                         "public void onSuccess(PendingDynamicLinkData _pendingDynamicLinkData) {\r\n" +
@@ -1024,15 +797,11 @@ public class ManageEvent {
                         eventLogic + "\r\n" +
                         "}";
 
+            case "onRewardedVideoAdClosed":
             case "onRewardedVideoAdLoaded":
-                return "@Override\r\n" +
-                        "public void onRewardedVideoAdLoaded() {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
             case "onRewardedVideoAdOpened":
                 return "@Override\r\n" +
-                        "public void onRewardedVideoAdOpened() {\r\n" +
+                        "public void " + eventName + "() {\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1181,6 +950,7 @@ public class ManageEvent {
                         "return true;\r\n" +
                         "}";
 
+            case "FBAdsBanner_onError":
             case "FBAdsInterstitial_onError":
                 return "@Override\r\n" +
                         "public void onError(Ad ad, AdError adError) {\r\n" +
@@ -1189,21 +959,9 @@ public class ManageEvent {
                         "}";
 
             case "FBAdsInterstitial_onAdLoaded":
-                return "@Override\r\n" +
-                        "public void onAdLoaded(Ad ad) {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
             case "FBAdsBanner_onAdLoaded":
                 return "@Override\r\n" +
                         "public void onAdLoaded(Ad ad) {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
-            case "FBAdsBanner_onError":
-                return "@Override\r\n" +
-                        "public void onError(Ad ad, AdError adError) {\r\n" +
-                        "final String _errorMsg = adError.getErrorMessage() != null ? adError.getErrorMessage() : \"\";\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1238,6 +996,65 @@ public class ManageEvent {
             case "onScrollChanged":
                 return "@Override\r\n" +
                         "public void onScrollStateChanged(AbsListView abs, int _scrollState) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onInterstitialAdLoaded":
+                return "@Override\r\n" +
+                        "public void onAdLoaded(InterstitialAd _interstitialAd) {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onBannerAdFailedToLoad":
+            case "onInterstitialAdFailedToLoad":
+                return "@Override\r\n" +
+                        "public void onAdFailedToLoad(LoadAdError _param1) {\r\n" +
+                        "final int _errorCode = _param1.getCode();\r\n" +
+                        "final String _errorMsg = _param1.getMessage();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+                        
+            case "onAdDismissedFullScreenContent":
+                return "@Override\r\n" +
+                        "public void onAdDismissedFullScreenContent() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onAdFailedToShowFullScreenContent":
+                return "@Override\r\n" +
+                        "public void onAdFailedToShowFullScreenContent(AdError _adError) {\r\n" +
+                        "final int _errorCode = _adError.getCode();\r\n" +
+                        "final String _errorMsg = _adError.getMessage();\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onAdShowedFullScreenContent":
+                return "@Override\r\n" +
+                        "public void onAdShowedFullScreenContent() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onBannerAdClicked":
+                return "@Override\r\n" +
+                        "public void onAdClicked() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onBannerAdClosed":
+                return "@Override\r\n" +
+                        "public void onAdClosed() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onBannerAdLoaded":
+                return "@Override\r\n" +
+                        "public void onAdLoaded() {\r\n" +
+                        eventLogic + "\r\n" +
+                        "}";
+
+            case "onBannerAdOpened":
+                return "@Override\r\n" +
+                        "public void onAdOpened() {\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1452,7 +1269,22 @@ public class ManageEvent {
                 return previousCode + "_googleSignInListener = new OnCompleteListener<AuthResult>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
+//new start
+            case "interstitialAdLoadCallback":
+                return "_" + previousCode + "_interstitialAdLoadCallback = new InterstitialAdLoadCallback() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
 
+            case "fullScreenContentCallback":
+                return previousCode + ".setFullScreenContentCallback(new FullScreenContentCallback() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
+            case "bannerAdViewListener":
+                return previousCode + ".setAdListener(new AdListener() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+//new end
             default:
                 return EventsHandler.getListenerCode(listenerName, previousCode, listenerLogic);
         }
@@ -1491,6 +1323,7 @@ public class ManageEvent {
                 return "%m.datepicker.datePicker %d.year %d.month %d.day";
 
             case "onQueryTextChanged":
+            case "onQueryTextSubmit":
                 return "%s.charSeq";
 
             case "onError":
@@ -1517,9 +1350,6 @@ public class ManageEvent {
             case "onAccountPicker":
                 return "%m.GoogleSignInAccount.task";
 
-            case "onFragmentAdded":
-                return "%d.position";
-
             case "onTimeSet":
                 return "%d.hour %d.minute";
 
@@ -1539,31 +1369,21 @@ public class ManageEvent {
                 return "%m.listStr.pattern";
 
             case "onTabSelected":
-                return "%d.position";
-
             case "onTabReselected":
+            case "onTabAdded":
+            case "onTabUnselected":
+            case "onFragmentAdded":
                 return "%d.position";
 
             case "onLetterSelected":
                 return "%s.index";
 
-            case "onTabUnselected":
-                return "%d.position";
-
             case "onPageSelected":
                 return "%m.listMap.data %d.position";
 
-            case "onQueryTextSubmit":
-                return "%s.charSeq";
-
             case "FBAdsInterstitial_onError":
-                return "%s.errorMsg";
-
             case "FBAdsBanner_onError":
                 return "%s.errorMsg";
-
-            case "onTabAdded":
-                return "%d.position";
 
             case "onCompleteRegister":
                 return "%b.success %s.token %s.errorMessage";
@@ -1576,7 +1396,16 @@ public class ManageEvent {
 
             case "onScrollChanged":
                 return "%d.scrollState";
+//new start
+            case "onBannerAdFailedToLoad":
+            case "onInterstitialAdFailedToLoad":
+            case "onAdFailedToShowFullScreenContent":
+                return "%d.errorCode %d.errorMsg";
 
+            case "onInterstitialAdLoaded":
+                return "%m.interstitialad.interstitialAd";
+
+//new end
             default:
                 return EventsHandler.getBlocks(eventName);
         }
@@ -1643,686 +1472,177 @@ public class ManageEvent {
     }
 
     public static String i(String str, String str2) {
-        StringBuilder sb = new StringBuilder();
-        switch (str2.hashCode()) {
-            case -2135028390:
-                if (str2.equals("onUpdateProfileComplete")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case -2070060406:
-                if (str2.equals("FBAdsBanner_onLoggingImpression")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case -2026152080:
-                if (str2.equals("onEmailVerificationSent")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case -1927178453:
-                if (str2.equals("onScrolled")) {
-                    sb.append("When ");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.firstVisibleItem %d.visibleItemCount %d.totalItemCount");
-                    break;
-                }
-                break;
-            case -1881852985:
-                if (str2.equals("onDateChanged")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.year %d.month %d.day");
-                    break;
-                }
-                break;
-            case -1764593907:
-                if (str2.equals("onRewarded")) {
-                    sb.append("onRewarded ");
-                    sb.append("%d.rewardItem");
-                    break;
-                }
-                break;
-            case -1744369339:
-                if (str2.equals("onFailureLink")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case -1615009874:
-                if (str2.equals("onDeleteUserComplete")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case -1576048703:
-                if (str2.equals("onNavigationItemSelected")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.itemId");
-                    break;
-                }
-                break;
-            case -1521795729:
-                if (str2.equals("onRewardedVideoAdFailedToLoad")) {
-                    sb.append("onRewardedVideoAdFailedToLoad ");
-                    sb.append("%d.errorCode");
-                    break;
-                }
-                break;
-            case -1515385099:
-                if (str2.equals("onDateSet")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.year %d.month %d.day");
-                    break;
-                }
-                break;
-            case -1495579877:
-                if (str2.equals("onCompletion")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -1491459488:
-                if (str2.equals("onSaveInstanceState")) {
-                    sb.append("When ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -1491259806:
-                if (str2.equals("onCreateOptionsMenu")) {
-                    sb.append("When ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -1478332706:
-                if (str2.equals("onQueryTextChanged")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.charSeq");
-                    break;
-                }
-                break;
-            case -1350032819:
-                if (str2.equals("onUpdateEmailComplete")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case -1349867671:
-                if (str2.equals("onError")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.what %d.extra");
-                    break;
-                }
-                break;
-            case -1340743215:
-                if (str2.equals("onVerificationCompleted")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%m.PhoneAuthCredential.credential");
-                    return sb.toString();
-                }
-                break;
-            case -1321851767:
-                if (str2.equals("onRecyclerScrollChanged")) {
-                    sb.append("When ");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.scrollState");
-                    break;
-                }
-                break;
-            case -1253184269:
-                if (str2.equals("onCreateContextMenu")) {
-                    sb.append("When ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -1186339443:
-                if (str2.equals("onRestoreInstanceState")) {
-                    sb.append("When ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -923278914:
-                if (str2.equals("onContextItemSelected")) {
-                    sb.append("When ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -893469302:
-                if (str2.equals("onRecyclerScrolled")) {
-                    sb.append("When ");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.offsetX %d.offsetY");
-                    break;
-                }
-                break;
-            case -812638467:
-                if (str2.equals("onRewardedVideoAdClosed")) {
-                    sb.append("onRewardedVideoAdClosed");
-                    break;
-                }
-                break;
-            case -789433538:
-                if (str2.equals("onSuccessLink")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.link");
-                    return sb.toString();
-                }
-                break;
-            case -760958320:
-                if (str2.equals("onPatternLockCleared")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case -589155002:
-                if (str2.equals("FBAdsInterstitial_onAdClicked")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case -552637034:
-                if (str2.equals("onRewardedVideoAdLoaded")) {
-                    sb.append("onRewardedVideoAdLoaded");
-                    break;
-                }
-                break;
-            case -465697286:
-                if (str2.equals("onRewardedVideoAdOpened")) {
-                    sb.append("onRewardedVideoAdOpened");
-                    break;
-                }
-                break;
-            case -359766219:
-                if (str2.equals("onAccountPickerCancelled")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case -233781414:
-                if (str2.equals("onPageScrolled")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.position %d.positionOffset %d.positionOffsetPixels");
-                    break;
-                }
-                break;
-            case -222902665:
-                if (str2.equals("onVerificationFailed")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.exception");
-                    return sb.toString();
-                }
-                break;
-            case -172690726:
-                if (str2.equals("onGoogleSignIn")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case -108704388:
-                if (str2.equals("onAccountPicker")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%m.GoogleSignInAccount.task");
-                    return sb.toString();
-                }
-                break;
-            case -30415631:
-                if (str2.equals("onFragmentAdded")) {
-                    sb.append("Fragment getItem");
-                    sb.append("%d.position");
-                    break;
-                }
-                break;
-            case 22340470:
-                if (str2.equals("onTimeSet")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.hour %d.minute");
-                    break;
-                }
-                break;
-            case 51638726:
-                if (str2.equals("onPageChanged")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" onPageScrollStateChanged ");
-                    sb.append("%d.scrollState");
-                    break;
-                }
-                break;
-            case 140823751:
-                if (str2.equals("signInWithPhoneAuthComplete")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case 179352223:
-                if (str2.equals("FBAdsInterstitial_onInterstitialDismissed")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case 230462136:
-                if (str2.equals("onRatingChanged")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.value");
-                    break;
-                }
-                break;
-            case 267479767:
-                if (str2.equals("FBAdsInterstitial_onInterstitialDisplayed")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case 388714441:
-                if (str2.equals("onPatternLockProgress")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%m.listStr.pattern");
-                    break;
-                }
-                break;
-            case 631391277:
-                if (str2.equals("onOptionsItemSelected")) {
-                    sb.append("When ");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append("%d.id %s.title");
-                    break;
-                }
-                break;
-            case 638018442:
-                if (str2.equals("FBAdsInterstitial_onLoggingImpression")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case 780046181:
-                if (str2.equals("onPatternLockStarted")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case 790347477:
-                if (str2.equals("onPatternLockComplete")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%m.listStr.pattern");
-                    break;
-                }
-                break;
-            case 823540209:
-                if (str2.equals("onTabSelected")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.position");
-                    break;
-                }
-                break;
-            case 903210916:
-                if (str2.equals("onTabReselected")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.position");
-                    break;
-                }
-                break;
-            case 948149408:
-                if (str2.equals("onLetterSelected")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.index");
-                    break;
-                }
-                break;
-            case 1226449418:
-                if (str2.equals("onTabUnselected")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.position");
-                    break;
-                }
-                break;
-            case 1359955401:
-                if (str2.equals("onPageSelected")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.position");
-                    break;
-                }
-                break;
-            case 1424438342:
-                if (str2.equals("FBAdsBanner_onAdClicked")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case 1490401084:
-                if (str2.equals("onPrepared")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    break;
-                }
-                break;
-            case 1530791598:
-                if (str2.equals("onQueryTextSubmit")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.charSeq");
-                    break;
-                }
-                break;
-            case 1585314250:
-                if (str2.equals("FBAdsInterstitial_onError")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.errorMsg");
-                    return sb.toString();
-                }
-                break;
-            case 1626663686:
-                if (str2.equals("FBAdsInterstitial_onAdLoaded")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case 1691618310:
-                if (str2.equals("FBAdsBanner_onAdLoaded")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    return sb.toString();
-                }
-                break;
-            case 1725593802:
-                if (str2.equals("FBAdsBanner_onError")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.errorMsg");
-                    return sb.toString();
-                }
-                break;
-            case 1834797418:
-                if (str2.equals("onTabAdded")) {
-                    sb.append("CharSequence getPageTitle");
-                    sb.append("%d.position");
-                    break;
-                }
-                break;
-            case 1887055611:
-                if (str2.equals("onCompleteRegister")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.token %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
-            case 1901942308:
-                if (str2.equals("onCodeSent")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%s.verificationId %m.FirebasePhoneAuth.token");
-                    return sb.toString();
-                }
-                break;
-            case 1921834952:
-                if (str2.equals("onTimeChanged")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.hour %d.minute");
-                    break;
-                }
-                break;
-            case 2054104968:
-                if (str2.equals("onScrollChanged")) {
-                    sb.append("When ");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%d.scrollState");
-                    break;
-                }
-                break;
-            case 2092419228:
-                if (str2.equals("onUpdatePasswordComplete")) {
-                    sb.append("When");
-                    sb.append(" ");
-                    sb.append(str);
-                    sb.append(" ");
-                    sb.append(str2);
-                    sb.append(" ");
-                    sb.append("%b.success %s.errorMessage");
-                    return sb.toString();
-                }
-                break;
+        switch (str2) {
+            case "onUpdateProfileComplete":
+            case "onEmailVerificationSent":
+            case "onDeleteUserComplete":
+            case "onUpdateEmailComplete":
+            case "onGoogleSignIn":
+            case "onUpdatePasswordComplete":
+            case "signInWithPhoneAuthComplete":
+                return "When " + str + " " + str2 + " %b.success %s.errorMessage";
+
+            case "onScrolled":
+                return "When " + str + " " + str2 + " %d.firstVisibleItem %d.visibleItemCount %d.totalItemCount";
+
+            case "onDateChanged":
+                return "When " + str + " " + str2 + " %d.year %d.month %d.day";
+
+            case "onRewarded":
+                return "onRewarded " + "%d.rewardItem";
+
+            case "onFailureLink":
+                return "When " + str + " " + str2 + " %s.errorMessage";
+
+            case "onNavigationItemSelected":
+                return "When " + str + " " + str2 + " %d.itemId";
+
+            case "onRewardedVideoAdFailedToLoad":
+                return "onRewardedVideoAdFailedToLoad " + "%d.errorCode";
+
+            case "onDateSet":
+                return "When " + str + " " + str2 + " %d.year %d.month %d.day";
+
+            case "onPrepared":
+            case "onCompletion":
+            case "onPatternLockCleared":
+            case "onAccountPickerCancelled":
+            case "onPatternLockStarted":
+                return "When " + str + " " + str2;
+
+            case "onSaveInstanceState":
+            case "onCreateOptionsMenu":
+            case "onCreateContextMenu":
+            case "onRestoreInstanceState":
+            case "onContextItemSelected":
+                return "When " + str2;
+
+            case "onQueryTextChanged":
+            case "onQueryTextSubmit":
+                return "When " + str + " " + str2 + " %s.charSeq";
+
+            case "onError":
+                return "When " + str + " " + str2 + " %d.what %d.extra";
+
+            case "onVerificationCompleted":
+                return "When " + str + " " + str2 + " %m.PhoneAuthCredential.credential";
+
+            case "onRecyclerScrollChanged":
+                return "When " + " " + str + " " + str2 + " %d.scrollState";
+
+            case "onRecyclerScrolled":
+                return "When " + " " + str + " " + str2 + " %d.offsetX %d.offsetY";
+
+            case "onRewardedVideoAdClosed":
+                return "onRewardedVideoAdClosed";
+
+            case "onSuccessLink":
+                return "When " + str + " " + str2 + " %s.link";
+
+            case "onRewardedVideoAdLoaded":
+                return "onRewardedVideoAdLoaded";
+
+            case "onRewardedVideoAdOpened":
+                return "onRewardedVideoAdOpened";
+
+            case "onPageScrolled":
+                return "When " + str + " " + str2 + " %d.position %d.positionOffset %d.positionOffsetPixels";
+
+            case "onVerificationFailed":
+                return "When " + str + " " + str2 + " %s.exception";
+
+            case "onAccountPicker":
+                return "When " + str + " " + str2 + " %m.GoogleSignInAccount.task";
+
+            case "onFragmentAdded":
+                return "Fragment getItem" + "%d.position";
+
+            case "onTimeSet":
+                return "When " + str + " " + str2 + " %d.hour %d.minute";
+
+            case "onPageChanged":
+                return "When " + str + " onPageScrollStateChanged %d.scrollState";
+
+            case "FBAdsBanner_onAdClicked":
+            case "FBAdsBanner_onAdLoaded":
+            case "FBAdsBanner_onLoggingImpression":
+            case "FBAdsInterstitial_onAdClicked":
+            case "FBAdsInterstitial_onAdLoaded":
+            case "FBAdsInterstitial_onLoggingImpression":
+            case "FBAdsInterstitial_onInterstitialDismissed":
+            case "FBAdsInterstitial_onInterstitialDisplayed":
+                return str + ": " + str2.split("_")[1];
+
+            case "onRatingChanged":
+                return "When " + str + " " + str2 + " %d.value";
+
+            case "onPatternLockProgress":
+                return "When " + str + " " + str2 + " %m.listStr.pattern";
+
+            case "onOptionsItemSelected":
+                return "When " + str + " %d.id %s.title";
+
+            case "onPatternLockComplete":
+                return "When " + str + " " + str2 + " %m.listStr.pattern";
+
+            case "onTabSelected":
+            case "onTabUnselected":
+            case "onTabReselected":
+            case "onPageSelected":
+                return str + ": " + str2 + " %d.position";
+
+            case "onLetterSelected":
+                return "When " + str + " " + str2 + " %s.index";
+
+            case "FBAdsInterstitial_onError":
+            case "FBAdsBanner_onError":
+                return str + ": onError %s.errorMsg";
+
+            case "onTabAdded":
+                return "CharSequence getPageTitle %d.position";
+
+            case "onCompleteRegister":
+                return "When " + str + " " + str2 + " %b.success %s.token %s.errorMessage";
+
+            case "onCodeSent":
+                return "When " + str + " " + str2 + " %s.verificationId %m.FirebasePhoneAuth.token";
+
+            case "onTimeChanged":
+                return "When " + str + " " + str2 + " %d.hour %d.minute";
+
+            case "onScrollChanged":
+                return "When " + str + " " + str2 + " %d.scrollState";
+
+//new start
+            case "onBannerAdFailedToLoad":
+            case "onInterstitialAdFailedToLoad":
+                return str + ": onAdFailedToLoad %d.errorCode %s.errorMsg";
+
+            case "onInterstitialAdLoaded":
+                return str + ": onAdLoaded %m.interstitialad.interstitialAd";
+
+            case "onAdFailedToShowFullScreenContent":
+                return str + ": " + str2 + " %d.errorCode %s.errorMsg";
+
+            case "onAdDismissedFullScreenContent":
+            case "onAdShowedFullScreenContent":
+                return str + ": " + str2;
+
+            case "onBannerAdLoaded":
+                return str + ": onAdLoaded";
+
+            case "onBannerAdOpened":
+                return str + ": onAdOpened";
+
+            case "onBannerAdClicked":
+                return str + ": onAdClicked";
+
+            case "onBannerAdClosed":
+                return str + ": onAdClosed";
+
+//new end
             default:
                 return EventsHandler.getSpec(str, str2);
         }
-        return sb.toString();
     }
 }
