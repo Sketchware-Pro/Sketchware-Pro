@@ -1018,21 +1018,21 @@ public class Lx {
             case "onStart":
                 if (isMapView) {
                     code.append(viewId)
-                        .append(".onStart()");
+                        .append(".onStart();");
                 }
                 break;
 
             case "onResume":
                 if (isMapView) {
                     code.append(viewId)
-                        .append(".onResume()");
+                        .append(".onResume();");
                 }
                 break;
 
             case "onStop":
                 if (isMapView) {
                     code.append(viewId)
-                        .append(".onStop()");
+                        .append(".onStop();");
                 }
                 break;
         }
