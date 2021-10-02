@@ -462,6 +462,11 @@ public class Jx {
                 e.a("onStop", "MapView", next.id);
                 e.a("onDestroy", "MapView", next.id);
             }
+            if (next.type == ViewBean.VIEW_TYPE_WIDGET_ADVIEW) {
+            	e.a("onResume", "AdView", next.id);
+                e.a("onPause", "AdView", next.id);
+                e.a("onDestroy", "AdView", next.id);
+            }
         }
         if (e.k.length() > 0) {
             sb.append(a);

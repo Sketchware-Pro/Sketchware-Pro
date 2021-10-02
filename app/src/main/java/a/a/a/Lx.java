@@ -992,6 +992,7 @@ public class Lx {
 
     public static String b(String eventName, String viewType, String viewId) {
         boolean isMapView = viewType.equals("MapView");
+        boolean isAdView = viewType.equals("AdView");
         StringBuilder code = new StringBuilder();
 
         switch (eventName) {
@@ -1011,12 +1012,22 @@ public class Lx {
                     code.append(viewId)
                         .append(".onDestroy();");
                 }
+                if (isAdView) {
+                	code.append("if (").append(viewId)
+                        .append(" != null) {\r\n").append(viewId)
+                        .append(".destroy();\r\n}");
+                }
                 break;
 
             case "onPause":
                 if (isMapView) {
                     code.append(viewId)
                         .append(".onPause();");
+                }
+                if (isAdView) {
+                	code.append("if (").append(viewId)
+                        .append(" != null) {\r\n").append(viewId)
+                        .append(".pause();\r\n}");
                 }
                 break;
 
@@ -1031,6 +1042,11 @@ public class Lx {
                 if (isMapView) {
                     code.append(viewId)
                         .append(".onResume();");
+                }
+                if (isAdView) {
+                	code.append("if (").append(viewId)
+                        .append(" != null) {\r\n").append(viewId)
+                        .append(".resume();\r\n}");
                 }
                 break;
 
