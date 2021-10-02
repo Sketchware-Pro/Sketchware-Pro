@@ -639,6 +639,11 @@ public class Lx {
                             "private OnCompleteListener<AuthResult> " + componentName + "_googleSignInListener;\r\n";
                     break;
 
+                case "InterstitialAd":
+                    fieldDeclaration += "\r\nprivate InterstitialAdLoadCallback _" + componentName + "_interstitialAdLoadCallback;";
+                    fieldDeclaration += "\r\nprivate FullScreenContentCallback _" + componentName + "_fullScreenContentCallback;";
+                    break;
+
                 case "FirebaseStorage":
                     fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + componentName + "_upload_success_listener;\r\n" +
                             "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + componentName + "_download_success_listener;\r\n" +
