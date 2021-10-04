@@ -78,6 +78,7 @@ import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
@@ -1010,6 +1011,15 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 if (d) {
                     cancel(true);
                     return;
+                }
+
+                if (KotlinCompilerUtil.areAnyKtFilesPresent(c)) {
+                    publishProgress("Kotlin is compiling...");
+                    c.compileKotlin();
+                    if (d) {
+                        cancel(true);
+                        return;
+                    }
                 }
 
                 publishProgress("Java is compiling...");

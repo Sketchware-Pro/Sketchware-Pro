@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -27,5 +28,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
+    implementation fileTree(
+            dir: 'libs',
+            include: ['*.aar', '*.jar'],
+            excludes: ['kotlin-compiler-compiler_classpath.jar', 'kotlin-compiler-kotlin_classpath.jar']
+    )
+
+    compileOnly files(
+            'libs/kotlin-compiler-compiler_classpath.jar',
+            'libs/kotlin-compiler-kotlin_classpath.jar'
+    )
 }

@@ -272,10 +272,16 @@ public class yq {
     public String t;
 
     /**
-     * Project's compiled Java classes directory,
+     * Project's compiled Java/Kotlin classes directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes
      */
     public String u;
+
+    /**
+     * Project's Kotlin home directory,
+     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/kotlin_home
+     */
+    public String kotlin_home;
 
     /**
      * Project's generated R.java files directory,
@@ -368,6 +374,7 @@ public class yq {
         n = e.replaceAll("\\.", File.separator);
         t = c + "bin";
         u = t + File.separator + "classes";
+        kotlin_home = t + File.separator + "kotlin_home";
         classes_proguard = t + File.separator + "classes_proguard.jar";
         aapt_rules = t + File.separator + "aapt_rules.pro";
         printseeds = t + File.separator + "seeds.txt";

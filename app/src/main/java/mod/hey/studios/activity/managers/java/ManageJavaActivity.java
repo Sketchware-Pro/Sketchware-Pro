@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -21,8 +22,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -34,6 +37,8 @@ import com.sketchware.remod.Resources;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
@@ -43,6 +48,9 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class ManageJavaActivity extends Activity {
+
+    // works for both Java & Kotlin files
+    private static final String PACKAGE_DECL_REGEX = "package (.*?);?\\n";
 
     private static final String ACTIVITY_TEMPLATE =
             "package %s;\n" +
@@ -58,10 +66,32 @@ public class ManageJavaActivity extends Activity {
                     "    }" +
                     "\n" +
                     "}\n";
+
     private static final String CLASS_TEMPLATE =
             "package %s;\n" +
                     "\n" +
                     "public class %s {\n" +
+                    "    \n" +
+                    "}\n";
+
+    private static final String KT_ACTIVITY_TEMPLATE =
+            "package %s\n" +
+                    "\n" +
+                    "import android.app.Activity\n" +
+                    "import android.os.Bundle\n" +
+                    "\n" +
+                    "class %s : Activity() {\n" +
+                    "\n" +
+                    "    override fun onCreate(savedInstanceState: Bundle?) {\n" +
+                    "        super.onCreate(savedInstanceState)\n" +
+                    "    }" +
+                    "\n" +
+                    "}\n";
+
+    private static final String KT_CLASS_TEMPLATE =
+            "package %s\n" +
+                    "\n" +
+                    "class %s {\n" +
                     "    \n" +
                     "}\n";
 
@@ -115,7 +145,7 @@ public class ManageJavaActivity extends Activity {
 
         Helper.applyRippleToToolbarView(back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        title.setText("Java Manager");
+        title.setText("Java/Kotlin Manager");
 
         loadFile.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(loadFile);
@@ -144,12 +174,40 @@ public class ManageJavaActivity extends Activity {
         }
     }
 
+    private RadioButton createRadioButton(CharSequence text, int id) {
+        RadioButton r =  new RadioButton(this);
+        r.setText(text);
+        r.setId(id);
+
+        return r;
+    }
+
     private void showCreateDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         View root = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
 
         final EditText inputName = root.findViewById(Resources.id.dialog_edittext_name);
         final RadioGroup radio_fileType = root.findViewById(Resources.id.dialog_radio_filetype);
+
+        ((TextView)root.findViewById(Resources.id.dialog_radio_filetype_class)).setText("Java Class");
+        ((TextView)root.findViewById(Resources.id.dialog_radio_filetype_activity)).setText("Java Activity");
+
+        // Literally the worst way of doing this but editing resources.arsc is much more painful
+        final int dialog_radio_filetype_kt_class = 1001;
+        final int dialog_radio_filetype_kt_activity = 1001 + 1;
+        {
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            radio_fileType.addView(
+                    createRadioButton("Kotlin Class", dialog_radio_filetype_kt_class),
+                    layoutParams
+            );
+
+            radio_fileType.addView(
+                    createRadioButton("Kotlin Activity", dialog_radio_filetype_kt_activity),
+                    layoutParams
+            );
+        }
 
         root.findViewById(Resources.id.dialog_text_cancel)
                 .setOnClickListener(Helper.getDialogDismissListener(dialog));
@@ -163,14 +221,27 @@ public class ManageJavaActivity extends Activity {
                     String name = inputName.getText().toString();
                     String packageName = getCurrentPkgName();
 
+                    String extension;
                     String newFileContent;
                     switch (radio_fileType.getCheckedRadioButtonId()) {
                         case Resources.id.dialog_radio_filetype_class:
                             newFileContent = String.format(CLASS_TEMPLATE, packageName, name);
+                            extension = ".java";
                             break;
 
                         case Resources.id.dialog_radio_filetype_activity:
                             newFileContent = String.format(ACTIVITY_TEMPLATE, packageName, name);
+                            extension = ".java";
+                            break;
+
+                        case dialog_radio_filetype_kt_class:
+                            newFileContent = String.format(KT_CLASS_TEMPLATE, packageName, name);
+                            extension = ".kt";
+                            break;
+
+                        case dialog_radio_filetype_kt_activity:
+                            newFileContent = String.format(KT_ACTIVITY_TEMPLATE, packageName, name);
+                            extension = ".kt";
                             break;
 
                         case Resources.id.radio_button_folder:
@@ -185,7 +256,14 @@ public class ManageJavaActivity extends Activity {
                             return;
                     }
 
-                    FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
+                    if (Build.VERSION.SDK_INT < 26 && ".kt".equals(extension)) {
+                        SketchwareUtil.toast("Unfortunately you cannot use Kotlin " +
+                                "since kotlinc only works on devices with Android 8 and higher, " +
+                                "sorry for the inconvenience!", Toast.LENGTH_LONG);
+                        return;
+                    }
+
+                    FileUtil.writeFile(new File(current_path, name + extension).getAbsolutePath(), newFileContent);
                     refresh();
                     SketchwareUtil.toast("File was created successfully");
                     dialog.dismiss();
@@ -206,29 +284,32 @@ public class ManageJavaActivity extends Activity {
         properties.root = Environment.getExternalStorageDirectory();
         properties.error_dir = Environment.getExternalStorageDirectory();
         properties.offset = Environment.getExternalStorageDirectory();
-        properties.extensions = new String[]{"java"};
+        properties.extensions = new String[]{"java", "kt"};
 
         FilePickerDialog pickerDialog = new FilePickerDialog(this, properties);
 
-        pickerDialog.setTitle("Select a Java file");
+        pickerDialog.setTitle("Select Java/Kotlin file(s)");
         pickerDialog.setDialogSelectionListener(selections -> {
+
             for (String path : selections) {
                 String filename = Uri.parse(path).getLastPathSegment();
                 String fileContent = FileUtil.readFile(path);
 
-                if (fileContent.contains("package ")) {
-                    int fileContentPackageDeclarationIndex = fileContent.indexOf("package ");
-                    String fileContentWithoutPackageDeclaration =
-                            fileContent.substring(fileContentPackageDeclarationIndex);
-
-                    String substring = fileContent.substring(fileContentPackageDeclarationIndex,
-                            fileContentWithoutPackageDeclaration.indexOf(";"));
-                    FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
-                            fileContent.replace(substring, "package " + getCurrentPkgName()));
-                    refresh();
-                } else {
-                    SketchwareUtil.toastError("File " + filename + " is not a valid Java file");
+                if (Build.VERSION.SDK_INT < 26 && filename.endsWith(".kt")) {
+                    SketchwareUtil.toast("Unfortunately you cannot use Kotlin " +
+                            "since kotlinc only works on devices with Android 8 " +
+                            "and higher, skipping " + filename + "!");
+                    continue;
                 }
+
+                if (fileContent.contains("package ")) {
+                    fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX,
+                            "package " + getCurrentPkgName());
+                }
+
+                FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
+                        fileContent);
+                refresh();
             }
         });
 
@@ -373,20 +454,24 @@ public class ManageJavaActivity extends Activity {
         }
 
         /**
-         * Gets the full package name of the Java file.
+         * Gets the full package name of the Java/Kotlin file.
          *
-         * @param position The Java file's position in this adapter's {@code ArrayList}
-         * @return The full package name of the Java file
+         * @param position The Java/Kotlin file's position in this adapter's {@code ArrayList}
+         * @return The full package name of the Java/Kotlin file
          */
         public String getFullName(int position) {
             String readFile = FileUtil.readFile(getItem(position));
 
-            if (!readFile.contains("package ") || !readFile.contains(";")) {
+            if (!readFile.contains("package ")) {
                 return getFileNameWoExt(position);
             }
-            int packageIndex = readFile.indexOf("package ") + 8;
 
-            return readFile.substring(packageIndex, readFile.indexOf(";", packageIndex)) + "." + getFileNameWoExt(position);
+            Matcher m = Pattern.compile(PACKAGE_DECL_REGEX).matcher(readFile);
+            if (m.find()) {
+                return m.group(1) + "." + getFileNameWoExt(position);
+            }
+
+            return getFileNameWoExt(position);
         }
 
         /**
@@ -444,7 +529,16 @@ public class ManageJavaActivity extends Activity {
             ImageView more = convertView.findViewById(Resources.id.more);
 
             name.setText(getFileName(position));
-            icon.setImageResource(isFolder(position) ? Resources.drawable.ic_folder_48dp : Resources.drawable.java_96);
+
+            if (isFolder(position)) {
+                icon.setImageResource(Resources.drawable.ic_folder_48dp);
+            } else {
+                if (getFileName(position).endsWith(".java")) {
+                    icon.setImageResource(Resources.drawable.java_96);
+                } else if (getFileName(position).endsWith(".kt")) {
+                    // TODO: set Kotlin icon here
+                }
+            }
 
             Helper.applyRipple(ManageJavaActivity.this, more);
 
