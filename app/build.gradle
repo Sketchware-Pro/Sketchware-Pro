@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -81,7 +82,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"], excludes: ["kotlin-compiler-compiler_classpath.jar", "kotlin-compiler-kotlin_classpath.jar"])
+    compileOnly files(
+            "libs/kotlin-compiler-compiler_classpath.jar",
+            "libs/kotlin-compiler-kotlin_classpath.jar"
+    )
 
     implementation "com.android.tools:annotations:30.2.1"
     implementation "com.google.guava:guava:30.1-jre"

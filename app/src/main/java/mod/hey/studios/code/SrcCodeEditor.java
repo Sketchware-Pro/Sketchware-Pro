@@ -364,7 +364,12 @@ public class SrcCodeEditor extends AppCompatActivity {
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
 
         editor.setText(beforeContent);
-        editor.setEditorLanguage(new JavaLanguage());
+
+        if (getIntent().getStringExtra("title").endsWith(".java")) {
+            editor.setEditorLanguage(new JavaLanguage());
+        } else if (getIntent().getStringExtra("title").endsWith(".kt")) {
+            editor.setEditorLanguage(new UniversalLanguage(new KotlinDescription()));
+        }
 
         loadCESettings(this, editor, "act");
     }
