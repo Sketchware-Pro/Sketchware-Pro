@@ -2,6 +2,7 @@ package mod.hey.studios.code;
 
 import io.github.rosemoe.editor.langs.universal.LanguageDescription;
 
+// TODO: use a proper Kotlin lexer instead, to handle stuff like multiline String literals.
 public class KotlinDescription implements LanguageDescription {
 
     @Override
