@@ -304,7 +304,9 @@ public class ManageJavaActivity extends Activity {
 
                 if (fileContent.contains("package ")) {
                     fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX,
-                            "package " + getCurrentPkgName());
+                            "package " + getCurrentPkgName()
+                                    + (filename.endsWith(".java") ? ";" : "")
+                                    + "\n");
                 }
 
                 FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
