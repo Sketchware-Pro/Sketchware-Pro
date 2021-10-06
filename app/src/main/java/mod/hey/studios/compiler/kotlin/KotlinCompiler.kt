@@ -2,8 +2,7 @@ package mod.hey.studios.compiler.kotlin
 
 import a.a.a.Dp
 import mod.hey.studios.build.BuildSettings
-import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil.areAnyKtFilesPresent
-import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil.getFilesToCompile
+import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil.*
 import mod.jbk.util.LogUtil
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
@@ -50,6 +49,7 @@ class KotlinCompiler(
 
         val compiler = K2JVMCompiler()
         val collector = DiagnosticCollector()
+        val plugins = getCompilerPlugins(workspace).map(File::getAbsolutePath).toTypedArray()
 
         val args = K2JVMCompilerArguments().apply {
             compileJava = false
@@ -57,8 +57,10 @@ class KotlinCompiler(
             noJdk = true
             noReflect = true
             noStdlib = true
+
             kotlinHome = mKotlinHome.absolutePath
             destination = mClassOutput.absolutePath
+            pluginClasspaths = plugins
         }
 
         LogUtil.d(TAG, "Running kotlinc with these arguments: $arguments")
