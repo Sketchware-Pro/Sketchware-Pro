@@ -37,6 +37,10 @@ public class FilePathUtil {
         return new File(SKETCHWARE_DATA, sc_id + "/files/java").getAbsolutePath();
     }
 
+    public String getPathKotlinCompilerPlugins(String sc_id) {
+        return new File(SKETCHWARE_DATA, sc_id + "/files/kt_plugins").getAbsolutePath();
+    }
+
     public String getPathResource(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/files/resource").getAbsolutePath();
     }
