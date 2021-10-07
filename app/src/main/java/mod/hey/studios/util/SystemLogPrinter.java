@@ -12,6 +12,10 @@ public class SystemLogPrinter {
     private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
 
     public static void start() {
+        start(PATH);
+    }
+
+    public static void start(String path) {
         // Remove logging in Kellinwood's zipsigner
         LogManager.setLoggerFactory(category -> new Logger() {
             @Override
@@ -68,7 +72,7 @@ public class SystemLogPrinter {
         });
 
         // Reset
-        FileUtil.writeFile(PATH, "");
+        FileUtil.writeFile(path, "");
 
         PrintStream ps = new PrintStream(new OutputStream() {
             private String cache;
@@ -79,8 +83,8 @@ public class SystemLogPrinter {
 
                 if (((char) b) == '\n') {
                     // Write each line printed to the specified path
-                    FileUtil.writeFile(PATH,
-                            FileUtil.readFile(PATH) + "\n" + cache);
+                    FileUtil.writeFile(path,
+                            FileUtil.readFile(path) + "\n" + cache);
 
                     cache = "";
                 } else {
