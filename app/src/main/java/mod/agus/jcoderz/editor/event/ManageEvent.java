@@ -1214,7 +1214,7 @@ public class ManageEvent {
                         listenerLogic + "\r\n" +
                         "});";
 
-            case "setOnItemSelectedListener":
+            case "OnNavigationItemSelected":
                 return previousCode + ".setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
