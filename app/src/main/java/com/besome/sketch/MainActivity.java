@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.besome.sketch.acc.LoginActivity;
 import com.besome.sketch.acc.MyPageSettingsActivity;
 import com.besome.sketch.acc.ProfileActivity;
 import com.besome.sketch.bill.InAppActivity;
@@ -199,7 +197,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(C + 1));
         }
         D = u.a("U1I2", true);
-        r = new String[]{xB.b().a(this,
+        r = new String[] {xB.b().a(this,
                 Resources.string.main_tab_title_myproject)};
         l = findViewById(Resources.id.toolbar);
         a(l);
@@ -303,19 +301,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(Resources.menu.main_menu, menu);
-        if (i.a()) {
-            menu.findItem(Resources.id.menu_login).setVisible(false);
-            menu.findItem(Resources.id.menu_mypage).setVisible(true);
-        } else {
-            menu.findItem(Resources.id.menu_login).setVisible(true);
-            menu.findItem(Resources.id.menu_mypage).setVisible(false);
-        }
-        return true;
-    }
-
-    @Override
     // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onDestroy() {
         super.onDestroy();
@@ -352,14 +337,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         if (n.a(item)) {
             return true;
-        }
-        int itemId = item.getItemId();
-        if (itemId == Resources.id.menu_login || itemId == Resources.id.menu_mypage) {
-            if (i.a()) {
-                toMyPageSettingsActivity();
-            } else {
-                toLoginActivity();
-            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -447,7 +424,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             x = Snackbar.a(w, xB.b().a(getApplicationContext(), Resources.string.common_message_permission_denied), -2);
             x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
                 x.c();
-                nd.a(MainActivity.this, new String[]{
+                nd.a(MainActivity.this, new String[] {
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE},
                         9501);
@@ -455,12 +432,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             x.f(Color.YELLOW);
             x.n();
         }
-    }
-
-    private void toLoginActivity() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, 100);
     }
 
     private void toMyPageSettingsActivity() {
