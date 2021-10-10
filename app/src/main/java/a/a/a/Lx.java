@@ -640,8 +640,8 @@ public class Lx {
                     break;
 
                 case "InterstitialAd":
-                    fieldDeclaration += "\r\nprivate InterstitialAdLoadCallback _" + componentName + "_interstitialAdLoadCallback;";
-                    fieldDeclaration += "\r\nprivate FullScreenContentCallback _" + componentName + "_fullScreenContentCallback;";
+                    fieldDeclaration += "\r\nprivate InterstitialAdLoadCallback _" + componentName + "_interstitial_ad_load_callback;";
+                    fieldDeclaration += "\r\nprivate FullScreenContentCallback _" + componentName + "_full_screen_content_callback;";
                     break;
 
                 case "FirebaseStorage":
