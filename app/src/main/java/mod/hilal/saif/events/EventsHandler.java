@@ -385,7 +385,7 @@ public class EventsHandler {
                             Object code = customEvent.get("code");
 
                             if (code instanceof String) {
-                                return String.format((String) code, param);
+                                return String.format(((String) code).replace("###", targetId), param);
                             } else {
                                 SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                             }
