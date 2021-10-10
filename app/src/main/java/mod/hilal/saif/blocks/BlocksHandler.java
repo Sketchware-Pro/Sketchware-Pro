@@ -2431,7 +2431,7 @@ public class BlocksHandler {
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
         hashMap.put("code", "if (%1$s != null) {\r\n" +
-                "%1$s.show(%2$s);\r\n" +
+                "%1$s.show(%2$s.this);\r\n" +
                 "} else {\r\n" +
                 "SketchwareUtil.showMessage(\"Error: InterstitialAd %1$s hasn't been loaded yet!\");\r\n" +
                 "}");
