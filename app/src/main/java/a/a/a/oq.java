@@ -10,13 +10,15 @@ import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.hilal.saif.events.EventsHandler;
 
 public class oq {
-    public static final String[] a;
 
-    static {
-        String[] var10000 = new String[] {"onBackPressed", "onPostCreate", "onStart", "onResume", "onPause", "onStop", "onDestroy", "onSaveInstanceState", "onRestoreInstanceState", "onCreateOptionsMenu", "onOptionsItemSelected", "onCreateContextMenu", "onContextItemSelected"};
-        a = EventsHandler.getActivityEvents();
-    }
+    /**
+     * The known Event names that can be added to all Activities.
+     */
+    public static final String[] a = EventsHandler.getActivityEvents();
 
+    /**
+     * @return The resource ID for an Event's icon
+     */
     public static int a(String eventName) {
         switch (eventName) {
             case "initializeLogic":
@@ -384,7 +386,7 @@ public class oq {
     }
 
     public static String[] a() {
-        return EventsHandler.getActivityEvents();
+        return a;
     }
 
     public static String[] a(Gx classInfo) {
@@ -412,7 +414,7 @@ public class oq {
         if (classInfo.a("Gyroscope")) {
             eventList.add("onSensorChanged");
         }
-//new start
+
         if (classInfo.a("InterstitialAd")) {
             eventList.add("onInterstitialAdLoaded");
             eventList.add("onInterstitialAdFailedToLoad");
@@ -420,7 +422,7 @@ public class oq {
             eventList.add("onAdFailedToShowFullScreenContent");
             eventList.add("onAdShowedFullScreenContent");
         }
-//new end
+
         if (classInfo.a("FirebaseStorage")) {
             eventList.add("onUploadProgress");
             eventList.add("onDownloadProgress");
@@ -462,7 +464,7 @@ public class oq {
             eventList.add("onLocationChanged");
         }
 
-        return (String[]) eventList.toArray(new String[eventList.size()]);
+        return eventList.toArray(new String[0]);
     }
 
     public static String[] b(Gx classInfo) {
@@ -524,7 +526,7 @@ public class oq {
         if (classInfo.a("Gyroscope")) {
             eventList.add("sensorEventListener");
         }
-//new start
+
         if (classInfo.a("InterstitialAd")) {
             eventList.add("interstitialAdLoadCallback");
             eventList.add("fullScreenContentCallback");
@@ -533,7 +535,7 @@ public class oq {
         if (classInfo.a("AdView")) {
             eventList.add("bannerAdViewListener");
         }
-//new end
+
         if (classInfo.a("FirebaseStorage")) {
             eventList.add("onUploadProgressListener");
             eventList.add("onDownloadProgressListener");
@@ -559,7 +561,7 @@ public class oq {
             eventList.add("locationListener");
         }
 
-        return (String[]) eventList.toArray(new String[eventList.size()]);
+        return eventList.toArray(new String[0]);
     }
 
     public static String[] b(String listenerName) {
@@ -640,7 +642,7 @@ public class oq {
             case "authResetEmailSent":
                 eventList.add("onResetPasswordEmailSent");
                 break;
-//new start
+
             case "interstitialAdLoadCallback":
                 eventList.add("onInterstitialAdLoaded");
                 eventList.add("onInterstitialAdFailedToLoad");
@@ -659,7 +661,7 @@ public class oq {
                 eventList.add("onBannerAdClicked");
                 eventList.add("onBannerAdClosed");
                 break;
-//new end
+
             case "onUploadProgressListener":
                 eventList.add("onUploadProgress");
                 break;
@@ -714,11 +716,11 @@ public class oq {
                 eventList.add("onLocationChanged");
         }
 
-        return (String[]) eventList.toArray(new String[eventList.size()]);
+        return eventList.toArray(new String[0]);
     }
 
     public static String[] c(Gx classInfo) {
-        ArrayList<String> eventList = new ArrayList();
+        ArrayList<String> eventList = new ArrayList<>();
         ManageEvent.a(classInfo, eventList);
         if (classInfo.a("Clickable")) {
             eventList.add("onClick");
@@ -761,7 +763,7 @@ public class oq {
             eventList.add("onMapReady");
             eventList.add("onMarkerClicked");
         }
-//new start
+
         if (classInfo.a("AdView")) {
             eventList.add("onBannerAdLoaded");
             eventList.add("onBannerAdFailedToLoad");
@@ -769,7 +771,7 @@ public class oq {
             eventList.add("onBannerAdClicked");
             eventList.add("onBannerAdClosed");
         }
-//new end
-        return (String[]) eventList.toArray(new String[eventList.size()]);
+
+        return eventList.toArray(new String[0]);
     }
 }
