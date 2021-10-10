@@ -568,6 +568,10 @@ public class EventsHandler {
         cachedCustomEvents = readCustomEvents();
     }
 
+    public static void refreshCachedCustomListeners() {
+        cachedCustomListeners = readCustomListeners();
+    }
+
     private static ArrayList<HashMap<String, Object>> readCustomEvents() {
         ArrayList<HashMap<String, Object>> customEvents = new ArrayList<>();
 
