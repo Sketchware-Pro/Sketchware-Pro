@@ -167,7 +167,7 @@ public class Lx {
         return "public final int REQ_CD_" + componentName.toUpperCase() + " = " + value + ";";
     }
 
-    public static String a(String eventName, String eventLogic) {
+    public static String getEventCode(String targetId, String eventName, String eventLogic) {
         switch (eventName) {
             case "onClick":
                 return "@Override\r\n" +
@@ -586,7 +586,7 @@ public class Lx {
                         "}";
 
             default:
-                return ManageEvent.f(eventName, eventLogic);
+                return ManageEvent.f(targetId, eventName, eventLogic);
         }
     }
 
