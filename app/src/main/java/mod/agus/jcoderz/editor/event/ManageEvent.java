@@ -1001,7 +1001,8 @@ public class ManageEvent {
 
             case "onInterstitialAdLoaded":
                 return "@Override\r\n" +
-                        "public void onAdLoaded(InterstitialAd _interstitialAd) {\r\n" +
+                        "public void onAdLoaded(InterstitialAd _param1) {\r\n" +
+                        targetId + " = _param1;\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1010,7 +1011,7 @@ public class ManageEvent {
                 return "@Override\r\n" +
                         "public void onAdFailedToLoad(LoadAdError _param1) {\r\n" +
                         "final int _errorCode = _param1.getCode();\r\n" +
-                        "final String _errorMsg = _param1.getMessage();\r\n" +
+                        "final String _errorMessage = _param1.getMessage();\r\n" +
                         eventLogic + "\r\n" +
                         "}";
                         
@@ -1024,7 +1025,7 @@ public class ManageEvent {
                 return "@Override\r\n" +
                         "public void onAdFailedToShowFullScreenContent(AdError _adError) {\r\n" +
                         "final int _errorCode = _adError.getCode();\r\n" +
-                        "final String _errorMsg = _adError.getMessage();\r\n" +
+                        "final String _errorMessage = _adError.getMessage();\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1269,16 +1270,16 @@ public class ManageEvent {
                 return previousCode + "_googleSignInListener = new OnCompleteListener<AuthResult>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
-//new start
+
             case "interstitialAdLoadCallback":
-                return "_" + previousCode + "_interstitialAdLoadCallback = new InterstitialAdLoadCallback() {\r\n" +
+                return "_" + previousCode + "_interstitial_ad_load_callback = new InterstitialAdLoadCallback() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "fullScreenContentCallback":
-                return previousCode + ".setFullScreenContentCallback(new FullScreenContentCallback() {\r\n" +
+                return "_" + previousCode + "_full_screen_content_callback = new FullScreenContentCallback() {\r\n" +
                         listenerLogic + "\r\n" +
-                        "});";
+                        "};";
 
             case "bannerAdViewListener":
                 return previousCode + ".setAdListener(new AdListener() {\r\n" +
@@ -1396,16 +1397,12 @@ public class ManageEvent {
 
             case "onScrollChanged":
                 return "%d.scrollState";
-//new start
+
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
-                return "%d.errorCode %d.errorMsg";
+                return "%d.errorCode %d.errorMessage";
 
-            case "onInterstitialAdLoaded":
-                return "%m.interstitialad.interstitialAd";
-
-//new end
             default:
                 return EventsHandler.getBlocks(eventName);
         }
@@ -1616,20 +1613,18 @@ public class ManageEvent {
 //new start
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
-                return str + ": onAdFailedToLoad %d.errorCode %s.errorMsg";
+                return str + ": onAdFailedToLoad %d.errorCode %s.errorMessage";
 
             case "onInterstitialAdLoaded":
-                return str + ": onAdLoaded %m.interstitialad.interstitialAd";
+            case "onBannerAdLoaded":
+                return str + ": onAdLoaded";
 
             case "onAdFailedToShowFullScreenContent":
-                return str + ": " + str2 + " %d.errorCode %s.errorMsg";
+                return str + ": " + str2 + " %d.errorCode %s.errorMessage";
 
             case "onAdDismissedFullScreenContent":
             case "onAdShowedFullScreenContent":
                 return str + ": " + str2;
-
-            case "onBannerAdLoaded":
-                return str + ": onAdLoaded";
 
             case "onBannerAdOpened":
                 return str + ": onAdOpened";

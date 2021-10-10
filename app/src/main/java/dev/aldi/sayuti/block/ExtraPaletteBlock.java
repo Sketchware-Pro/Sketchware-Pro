@@ -1072,9 +1072,10 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "gyroscopeStopListen");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD)) {
-                    logicEditor.a("AdMob Interstatial", 0xff555555);
+                    logicEditor.a("AdMob Interstitial", 0xff555555);
                     logicEditor.a(" ", "interstitialAdLoad");
                     logicEditor.a(" ", "interstitialAdShow");
+                    logicEditor.a(" ", "interstitialAdRegisterFullScreenContentCallback");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE)) {
                     logicEditor.a("Firebase Storage", 0xff555555);
