@@ -102,16 +102,20 @@ public class Hx {
         }
     }
 
-    public final void a(String str, String str2) {
-        for (Hx.a next : this.e) {
-            if (next.name.equals(str)) {
-                next.a(str2);
-                return;
+    private void a(String eventName, String eventLogic) {
+        Hx.a a = null;
+
+        for (Hx.a next : e) {
+            if (next.name.equals(eventName)) {
+                a = next;
             }
         }
-        a aVar = new a(this, str);
-        aVar.a(str2);
-        this.e.add(aVar);
+
+        if (a == null) {
+            a = new Hx.a(eventName);
+        }
+        a.setLogic(eventLogic);
+        e.add(a);
     }
 
     public void a(String str, String str2, String str3) {
@@ -181,13 +185,13 @@ public class Hx {
                 }
             }
             if (!z) {
-                a aVar = new a(this, str);
-                aVar.a(str2);
-                this.e.add(aVar);
+                Hx.a a = new Hx.a(str);
+                a.setLogic(str2);
+                e.add(a);
             }
         }
-        for (Hx.a value : this.e) {
-            String code = value.a();
+        for (Hx.a value : e) {
+            String code = value.getCode();
             if (sb.length() > 0 && code.length() > 0) {
                 sb.append("\r\n");
                 sb.append("\r\n");
@@ -197,10 +201,10 @@ public class Hx {
         return sb.toString();
     }
 
-    public final void b(String str, String str2, String str3) {
-        for (Hx.c next : this.d) {
-            if (next.a.equals(str)) {
-                next.a(str2, str3);
+    private void b(String targetId, String eventName, String eventLogic) {
+        for (Hx.c next : d) {
+            if (next.a.equals(targetId)) {
+                next.a(targetId, eventName, eventLogic);
                 return;
             }
         }
@@ -215,10 +219,10 @@ public class Hx {
         return sb.toString();
     }
 
-    public final void c(String str, String str2, String str3) {
-        for (Hx.c next : this.g) {
-            if (next.a.equals("_drawer_" + str)) {
-                next.a(str2, str3);
+    private void c(String targetId, String eventName, String eventLogic) {
+        for (Hx.c next : g) {
+            if (next.a.equals("_drawer_" + targetId)) {
+                next.a(targetId, eventName, eventLogic);
                 return;
             }
         }
@@ -237,10 +241,10 @@ public class Hx {
         return sb.toString();
     }
 
-    public final void d(String str, String str2, String str3) {
-        for (Hx.c next : this.f) {
-            if (next.a.equals(str)) {
-                next.a(str2, str3);
+    private void d(String targetId, String eventName, String eventLogic) {
+        for (Hx.c next : f) {
+            if (next.a.equals(targetId)) {
+                next.a(targetId, eventName, eventLogic);
                 return;
             }
         }
@@ -250,10 +254,10 @@ public class Hx {
         return this.i;
     }
 
-    public final void e(String str, String str2, String str3) {
+    private void e(String targetId, String eventName, String eventLogic) {
         for (Hx.c next : this.c) {
-            if (next.a.equals(str)) {
-                next.a(str2, str3);
+            if (next.a.equals(targetId)) {
+                next.a(targetId, eventName, eventLogic);
                 return;
             }
         }
@@ -288,21 +292,24 @@ public class Hx {
 
     private static class a {
 
-        private final Hx hx;
         private final String name;
         private String logic = "";
+        private String targetId = "";
 
-        public a(Hx hx, String name) {
-            this.hx = hx;
+        public a(String name) {
             this.name = name;
         }
 
-        public String a() {
-            return Lx.a(name, logic);
+        private String getCode() {
+            return Lx.getEventCode(targetId, name, logic);
         }
 
-        public void a(String logic) {
+        private void setLogic(String logic) {
             this.logic = logic;
+        }
+
+        private void setTargetId(String targetId) {
+            this.targetId = targetId;
         }
     }
 
@@ -370,17 +377,19 @@ public class Hx {
             return sb.toString();
         }
 
-        public void a(String str, String str2) {
-            for (Hx.d dVar : this.c) {
-                for (Hx.a a : dVar.c) {
-                    if (a.name.equals(str)) {
-                        a.a(str2);
-                        dVar.b = true;
+        public void a(String targetId, String eventName, String eventLogic) {
+            for (Hx.d d : c) {
+                for (Hx.a a : d.c) {
+                    if (a.name.equals(eventName)) {
+                        a.setLogic(eventLogic);
+                        a.setTargetId(targetId);
+                        d.b = true;
                         break;
                     }
                 }
-                if (dVar.b) {
-                    d.i.addAll(mq.d(dVar.a));
+
+                if (d.b) {
+                    this.d.i.addAll(mq.d(d.a));
                 }
             }
         }
@@ -399,12 +408,9 @@ public class Hx {
         public d(Hx hx2, String str) {
             this.d = hx2;
             this.a = str;
-            this.c = new ArrayList<>();
-            String[] b2 = oq.b(str);
-            if (b2.length > 0) {
-                for (String str2 : b2) {
-                    this.c.add(new a(hx2, str2));
-                }
+            c = new ArrayList<>();
+            for (String eventName : oq.b(str)) {
+                c.add(new a(eventName));
             }
         }
 
@@ -414,7 +420,7 @@ public class Hx {
             }
             StringBuilder sb = new StringBuilder(4096);
             for (Hx.a value : this.c) {
-                String code = value.a();
+                String code = value.getCode();
                 if (sb.length() > 0 && code.length() > 0) {
                     sb.append("\r\n");
                     sb.append("\r\n");

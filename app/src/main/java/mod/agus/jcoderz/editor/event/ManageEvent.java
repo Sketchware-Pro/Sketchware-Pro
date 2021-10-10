@@ -635,7 +635,7 @@ public class ManageEvent {
         }
     }
 
-    public static String f(String eventName, String eventLogic) {
+    public static String f(String targetId, String eventName, String eventLogic) {
         switch (eventName) {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
@@ -1059,7 +1059,7 @@ public class ManageEvent {
                         "}";
 
             default:
-                return EventsHandler.getEventCode(eventName, eventLogic);
+                return EventsHandler.getEventCode(targetId, eventName, eventLogic);
         }
     }
 
