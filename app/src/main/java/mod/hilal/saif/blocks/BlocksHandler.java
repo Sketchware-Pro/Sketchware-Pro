@@ -2433,7 +2433,7 @@ public class BlocksHandler {
         hashMap.put("code", "if (%1$s != null) {\r\n" +
                 "%1$s.show(%2$s.this);\r\n" +
                 "} else {\r\n" +
-                "SketchwareUtil.showMessage(\"Error: InterstitialAd %1$s hasn't been loaded yet!\");\r\n" +
+                "SketchwareUtil.showMessage(getApplicationContext(), \"Error: InterstitialAd %1$s hasn't been loaded yet!\");\r\n" +
                 "}");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
