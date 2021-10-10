@@ -5,6 +5,7 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.w3wide.blocks.ExtraBlocks;
@@ -2451,9 +2452,10 @@ public class BlocksHandler {
     }
 
     private static void checkDir() {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/block.json");
-        if (!FileUtil.isExistFile(concat) || FileUtil.readFile(concat).equals("")) {
-            FileUtil.writeFile(concat, "[]");
+        String extraBlocksPath = ExtraBlockFile.EXTRA_MENU_BLOCK_FILE.getAbsolutePath();
+
+        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).equals("")) {
+            FileUtil.writeFile(extraBlocksPath, "[]");
         }
     }
 
