@@ -217,10 +217,23 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
             /* It makes no sense that those methods aren't static */
             FilePathUtil util = new FilePathUtil();
-            FileUtil.copyDirectory(new File(util.getPathJava(sc_id)), new File(project_metadata.y));
-            FileUtil.copyDirectory(new File(util.getPathResource(sc_id)), new File(project_metadata.w));
-            FileUtil.copyDirectory(new File(util.getPathAssets(sc_id)), new File(project_metadata.A));
-            FileUtil.copyDirectory(new File(util.getPathNativelibs(sc_id)), new File(project_metadata.c, "jni"));
+            File pathJava = new File(util.getPathJava(sc_id));
+            File pathResources = new File(util.getPathResource(sc_id));
+            File pathAssets = new File(util.getPathAssets(sc_id));
+            File pathNativeLibraries = new File(util.getPathNativelibs(sc_id));
+
+            if (pathJava.exists()) {
+                FileUtil.copyDirectory(pathJava, new File(project_metadata.y));
+            }
+            if (pathResources.exists()) {
+                FileUtil.copyDirectory(pathResources, new File(project_metadata.w));
+            }
+            if (pathAssets.exists()) {
+                FileUtil.copyDirectory(pathAssets, new File(project_metadata.A));
+            }
+            if (pathNativeLibraries.exists()) {
+                FileUtil.copyDirectory(pathNativeLibraries, new File(project_metadata.c, "jni"));
+            }
 
             ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(project_metadata.c);
