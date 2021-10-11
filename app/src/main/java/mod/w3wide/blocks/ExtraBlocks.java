@@ -68,7 +68,7 @@ public class ExtraBlocks {
         arrayList.add(0, addBlock("signInButtonSetColorScheme", " ", "", "%1$s.setColorScheme(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setColorScheme %m.SignButtonColor"));
         arrayList.add(0, addBlock("signInButtonSetSize", " ", "", "%1$s.setSize(SignInButton.%2$s);", "#4a6cd4", "%m.signinbutton setSize %m.SignButtonSize"));
         //Admob's AdView Blocks
-        arrayList.add(0, addBlock("bannerAdViewLoadAd", " ", "", "{\r\nAdRequest adRequest = new AdRequest.Builder().build();\r\n%1$s.load(adRequest);\r\n}", "#4a6cd4", "%m.adview load"));
+        arrayList.add(0, addBlock("bannerAdViewLoadAd", " ", "", "{\r\nAdRequest adRequest = new AdRequest.Builder().build();\r\n%1$s.loadAd(adRequest);\r\n}", "#4a6cd4", "%m.adview load"));
         arrayList.add(0, addBlock("setAdmobAppId", " ", "", "", "#2ca5e2", "setAdmobAppId %s.inputOnly"));
     }
 
