@@ -607,7 +607,7 @@ public class Lx {
             String builtInType = mq.e(componentNameId);
             if (initializer.length() <= 0) {
                 if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
-                    fieldDeclaration += " " + mq.e(componentNameId) + " " + componentName + ";";
+                    fieldDeclaration += " " + builtInType + " " + componentName + ";";
                 } else {
                     fieldDeclaration = ConstVarWidget.a(fieldDeclaration, componentNameId, componentName);
                 }
@@ -998,62 +998,56 @@ public class Lx {
         switch (eventName) {
             case "onBackPressed":
                 if (viewType.equals("DrawerLayout")) {
-                    code.append("if (").append(viewId)
-                        .append(".isDrawerOpen(GravityCompat.START)) {\r\n")
-                        .append(viewId).append(".closeDrawer(GravityCompat.START);")
-                        .append("\r\n} else {\r\n")
-                        .append("super.onBackPressed();")
-                        .append("\r\n}");
+                    code.append("if (").append(viewId).append(".isDrawerOpen(GravityCompat.START)) {\r\n");
+                    code.append(viewId).append(".closeDrawer(GravityCompat.START);").append("\r\n");
+                    code.append("} else {\r\n");
+                    code.append("super.onBackPressed();").append("\r\n");
+                    code.append("}");
                 }
                 break;
 
             case "onDestroy":
                 if (isMapView) {
-                    code.append(viewId)
-                        .append(".onDestroy();");
+                    code.append(viewId).append(".onDestroy();");
                 }
                 if (isAdView) {
-                	code.append("if (").append(viewId)
-                        .append(" != null) {\r\n").append(viewId)
-                        .append(".destroy();\r\n}");
+                    code.append("if (").append(viewId).append(" != null) {\r\n");
+                    code.append(viewId).append(".destroy();\r\n");
+                    code.append("}");
                 }
                 break;
 
             case "onPause":
                 if (isMapView) {
-                    code.append(viewId)
-                        .append(".onPause();");
+                    code.append(viewId).append(".onPause();");
                 }
                 if (isAdView) {
-                	code.append("if (").append(viewId)
-                        .append(" != null) {\r\n").append(viewId)
-                        .append(".pause();\r\n}");
+                    code.append("if (").append(viewId).append(" != null) {\r\n");
+                    code.append(viewId).append(".pause();\r\n");
+                    code.append("}");
                 }
                 break;
 
             case "onStart":
                 if (isMapView) {
-                    code.append(viewId)
-                        .append(".onStart();");
+                    code.append(viewId).append(".onStart();");
                 }
                 break;
 
             case "onResume":
                 if (isMapView) {
-                    code.append(viewId)
-                        .append(".onResume();");
+                    code.append(viewId).append(".onResume();");
                 }
                 if (isAdView) {
-                	code.append("if (").append(viewId)
-                        .append(" != null) {\r\n").append(viewId)
-                        .append(".resume();\r\n}");
+                    code.append("if (").append(viewId).append(" != null) {\r\n");
+                    code.append(viewId).append(".resume();\r\n");
+                    code.append("}");
                 }
                 break;
 
             case "onStop":
                 if (isMapView) {
-                    code.append(viewId)
-                        .append(".onStop();");
+                    code.append(viewId).append(".onStop();");
                 }
                 break;
         }
@@ -3310,24 +3304,24 @@ public class Lx {
      */
     enum AccessModifier {
         /**
-        * MODE_PRIVATE
-        */
+         * MODE_PRIVATE
+         */
         PRIVATE("private"),
         /**
-        * MODE_PROTECTED
-        */
+         * MODE_PROTECTED
+         */
         PROTECTED("protected"),
         /**
-        * MODE_PUBLIC
-        */
+         * MODE_PUBLIC
+         */
         PUBLIC("public");
-        
-        private String name = "";
-        
+
+        private final String name;
+
         AccessModifier(String name) {
             this.name = name;
         }
-        
+
         public String getName() {
             return name;
         }
