@@ -649,6 +649,7 @@ public class yq {
                     default:
                 }
             }
+
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(next.getJavaName()).entrySet()) {
                 for (BlockBean bean : entry.getValue()) {
                     String opCode = bean.opCode;
@@ -705,6 +706,9 @@ public class yq {
                         case "mapToStr":
                         case "strToListMap":
                         case "listMapToStr":
+                        case "GsonListTojsonString":
+                        case "GsonStringToListString":
+                        case "GsonStringToListNumber":
                             N.o = true;
                             break;
 
