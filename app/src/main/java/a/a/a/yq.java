@@ -818,22 +818,28 @@ public class yq {
 
         // Generate layouts unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
-        for (ProjectFileBean layout : projectFileManager.b()) {
-            String xmlName = layout.getXmlName();
-            Ox ox = new Ox(N, layout);
-            ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
-            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
-                srcCodeBeans.add(new SrcCodeBean(xmlName,
-                        CommandBlock.applyCommands(xmlName, ox.b())));
+        {
+            ArrayList<ProjectFileBean> regularLayouts = projectFileManager.b();
+            for (ProjectFileBean layout : regularLayouts) {
+                String xmlName = layout.getXmlName();
+                Ox ox = new Ox(N, layout);
+                ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
+                if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                    srcCodeBeans.add(new SrcCodeBean(xmlName,
+                            CommandBlock.applyCommands(xmlName, ox.b())));
+                }
             }
         }
-        for (ProjectFileBean layout : projectFileManager.c()) {
-            String xmlName = layout.getXmlName();
-            Ox ox = new Ox(N, layout);
-            ox.a(eC.a(projectDataManager.d(xmlName)));
-            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
-                srcCodeBeans.add(new SrcCodeBean(xmlName,
-                        CommandBlock.applyCommands(xmlName, ox.b())));
+        {
+            ArrayList<ProjectFileBean> drawerLayouts = projectFileManager.c();
+            for (ProjectFileBean drawerFile : drawerLayouts) {
+                String xmlName = drawerFile.getXmlName();
+                Ox ox = new Ox(N, drawerFile);
+                ox.a(eC.a(projectDataManager.d(xmlName)));
+                if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                    srcCodeBeans.add(new SrcCodeBean(xmlName,
+                            CommandBlock.applyCommands(xmlName, ox.b())));
+                }
             }
         }
 
