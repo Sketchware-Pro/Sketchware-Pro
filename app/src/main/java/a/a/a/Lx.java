@@ -787,7 +787,7 @@ public class Lx {
                 "\r\n" +
                 "@Override\r\n" +
                 "public View getView(final int _position, View _v, ViewGroup _container) {\r\n" +
-                "LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);\r\n" +
+                "LayoutInflater _inflater = getLayoutInflater();\r\n" +
                 "View _view = _v;\r\n" +
                 "if (_view == null) {\r\n" +
                 "_view = _inflater.inflate(R.layout." + itemResourceName + ", null);\r\n" +
@@ -3261,7 +3261,7 @@ public class Lx {
                 "\r\n" +
                 "@Override\r\n" +
                 "public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {\r\n" +
-                "LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);\r\n" +
+                "LayoutInflater _inflater = getLayoutInflater();\r\n" +
                 "View _v = _inflater.inflate(R.layout." + itemLayoutName + ", null);\r\n" +
                 "RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);\r\n" +
                 "_v.setLayoutParams(_lp);\r\n" +
