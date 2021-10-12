@@ -733,10 +733,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         progress.show();
 
         new Thread(() -> {
-            final String source = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+            final String source = new yq(getApplicationContext(), l).getFileSrc(v.getFileName(), jC.b(l), jC.a(l), jC.c(l));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
-                    .setTitle(v.g)
+                    .setTitle(v.getFileName())
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
@@ -749,7 +749,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 editor.setAutoCompletionEnabled(false);
                 editor.setEditorLanguage(new JavaLanguage());
                 editor.setColorScheme(new EditorColorScheme());
-                editor.setTextSize(16);
+                editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
 
                 AlertDialog dialog = dialogBuilder.create();
