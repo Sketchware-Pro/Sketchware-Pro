@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -126,9 +125,7 @@ public class ConfigActivity extends Activity {
         root = new LinearLayout(this);
         root.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         root.setOrientation(LinearLayout.VERTICAL);
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.addView(root);
-        setContentView(scrollView);
+        setContentView(root);
 
         View toolbar = getLayoutInflater().inflate(Resources.layout.toolbar_improved, root, false);
         root.addView(toolbar);
