@@ -286,7 +286,7 @@ public class BackupFactory {
 
         // Init output zip file
         File outZip = new File(getBackupDir(),
-                app_name + "." + EXTENSION);
+                app_name + "/" + app_name + "." + EXTENSION);
 
         // Create a duplicate if already exists
         if (outFolder.exists() || outZip.exists()) {
