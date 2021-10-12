@@ -957,14 +957,27 @@ public class yq {
     }
 
     /**
-     * Get source code of a single Activity
+     * Get generated source code of a file.
      *
-     * @return The Activity specified by <code>javaName</code>'s source or an empty String if not found
+     * @return The file's code or an empty String if not found
      */
-    public String getActivitySrc(String javaName, hC projectFileManager, eC projectDataManger, iC projectLibraryManager) {
-        a(projectLibraryManager, projectFileManager, projectDataManger, false);
-        for (ProjectFileBean activity : projectFileManager.b()) {
-            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, projectDataManger).a();
+    public String getFileSrc(String filename, hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
+        a(projectLibraryManager, projectFileManager, projectDataManager, false);
+        boolean isJavaFile = filename.endsWith(".java");
+        boolean isDrawerFile = !isJavaFile && filename.startsWith("_drawer_");
+
+        ArrayList<ProjectFileBean> files = !isDrawerFile ? projectFileManager.b() : projectFileManager.c();
+
+        for (ProjectFileBean file : files) {
+            if (filename.equals(isJavaFile ? file.getJavaName() : file.getXmlName())) {
+                if (isJavaFile) {
+                    return new Jx(N, file, projectDataManager).a();
+                } else {
+                    Ox xmlGenerator = new Ox(N, file);
+                    xmlGenerator.a(eC.a(projectDataManager.d(filename)), projectDataManager.h(filename));
+                    return xmlGenerator.b();
+                }
+            }
         }
         return "";
     }
