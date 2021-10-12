@@ -588,56 +588,72 @@ public class yq {
                 N.a(next.getActivityName()).a = true;
             }
             for (ComponentBean component : projectDataManager.e(next.getJavaName())) {
-                if (component.type == ComponentBean.COMPONENT_TYPE_CAMERA || component.type == 35) {
-                    N.g = true;
-                    N.u = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
-                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                }
                 N.x.handleComponent(component.type);
-                if (component.type == ComponentBean.COMPONENT_TYPE_FILE_PICKER) {
-                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
-                    N.o = true;
-                    N.j = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
-                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
-                    N.k = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_VIBRATOR) {
-                    N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH) {
-                    N.i = true;
-                    N.a(next.getActivityName()).b = true;
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK) {
-                    N.o = true;
-                    N.p = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
-                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT) {
-                    N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT) {
-                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
-                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER) {
-                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+
+                switch (component.type) {
+                    case ComponentBean.COMPONENT_TYPE_CAMERA:
+                    case 35:
+                        N.g = true;
+                        N.u = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
+                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
+                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                        N.o = true;
+                        N.j = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                        N.k = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_VIBRATOR:
+                        N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
+                        N.i = true;
+                        N.a(next.getActivityName()).b = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
+                        N.o = true;
+                        N.p = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
+                        N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
+                        N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
+                        N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
+                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+                        break;
+
+                    default:
                 }
             }
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(next.getJavaName()).entrySet()) {
                 for (BlockBean bean : entry.getValue()) {
-                    N.x.setParams(bean.parameters, e, bean.opCode);
                     String opCode = bean.opCode;
+                    N.x.setParams(bean.parameters, e, opCode);
+
                     switch (opCode) {
                         case "setAdmobAppId":
                             N.appId = bean.parameters.get(0);
