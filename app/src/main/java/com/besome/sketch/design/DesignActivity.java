@@ -105,6 +105,7 @@ import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
+import mod.khaled.logcat.LogReaderActivity;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -718,6 +719,16 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.show();
             });
         }).start();
+    }
+
+    /**
+     * Opens {@link LogReaderActivity}.
+     */
+    public void toLogReader() {
+        Intent intent = new Intent(getApplicationContext(), LogReaderActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", l);
+        startActivity(intent);
     }
 
     /**

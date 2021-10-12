@@ -1,0 +1,45 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/doesntneedid"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:padding="4dp"
+		android:background="#FFFFFF"
+		android:gravity="center_vertical"
+		android:orientation="horizontal"
+		android:elevation="1dp">
+		<EditText
+			android:id="@+id/filterEdittext"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:padding="8dp"
+			android:gravity="center_vertical"
+			android:textSize="16sp"
+			android:textColor="#000000"
+			android:hint="Search"
+			android:textColorHint="#607D8B"
+			android:singleLine="true"
+			android:layout_weight="1" />
+		<ImageView
+			android:id="@+id/menu"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="8dp"
+			android:src="@drawable/ic_more_vert_grey600_24dp"
+			android:tint="#000000"
+			android:scaleType="center"
+			android:background="?android:attr/selectableItemBackground" />
+	</LinearLayout>
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/recyclerview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingLeft="4dp"
+		android:paddingRight="4dp" />
+</LinearLayout>

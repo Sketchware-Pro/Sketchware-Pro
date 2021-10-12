@@ -1,0 +1,73 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/clickListener"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#FFFFFF"
+		android:orientation="horizontal">
+		<TextView
+			android:id="@+id/log_type"
+			android:focusable="false"
+			android:layout_width="22dp"
+			android:layout_height="match_parent"
+			android:background="#000000"
+			android:gravity="center_horizontal|center_vertical"
+			android:text="U"
+			android:textSize="12sp"
+			android:textStyle="bold"
+			android:textColor="#FFFFFF"
+			android:maxLength="1"
+			android:clickable="false" />
+		<LinearLayout
+
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="3dp"
+			android:orientation="vertical"
+			android:clickable="false">
+			<TextView
+				android:id="@+id/date_header"
+				android:focusable="false"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Date | Header"
+				android:textSize="12sp"
+				android:textStyle="bold"
+				android:textColor="#757575"
+				android:visibility="gone"
+				android:clickable="false" />
+			<TextView
+				android:id="@+id/log"
+				android:focusable="false"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Nub"
+				android:textSize="12sp"
+				android:textColor="#000000"
+				android:clickable="false" />
+			<TextView
+				android:id="@+id/pkgName"
+				android:focusable="false"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Package"
+				android:textSize="12sp"
+				android:textColor="#757575"
+				android:visibility="gone"
+				android:clickable="false" />
+		</LinearLayout>
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/divider2"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:padding="8dp"
+		android:background="#E0E0E0"
+		android:orientation="horizontal" />
+</LinearLayout>

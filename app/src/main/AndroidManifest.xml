@@ -464,6 +464,8 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="mod.khaled.logcat.LogReaderActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"/>
 
         <service
             android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
