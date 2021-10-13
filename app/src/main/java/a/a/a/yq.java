@@ -492,9 +492,13 @@ public class yq {
     }
 
     /**
-     * Generates DebugActivity.java and SketchApplication.java.
+     * Generates DebugActivity.java and SketchApplication.java. and SketchLogger.java(If Necessary)
      */
     public void a(Context context) {
+
+        boolean logCatEnabled = new BuildSettings(b).getValue(
+                BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+
         String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
         if (!new File(javaDir, "DebugActivity.java").exists()) {
             L.b(y + File.separator
@@ -518,11 +522,33 @@ public class yq {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
                         "Application \\{", "androidx.multidex.MultiDexApplication \\{");
             }
+            if (logCatEnabled) {
+                sketchApplicationFileContent = sketchApplicationFileContent.replace(
+                        "super.onCreate();", "SketchLogger.startLogging(getApplicationContext());\n" +
+                                "        super.onCreate();").replace(
+                        "Process.killProcess(Process.myPid());",
+                        "                SketchLogger.broadcastLog(getApplicationContext(), Log.getStackTraceString(throwable));\n" +
+                                "                SketchLogger.stopLogging();\n" + "Process.killProcess(Process.myPid());"
+                );
+            }
 
             L.b(y + File.separator
                             + n + File.separator
                             + "SketchApplication.java",
                     sketchApplicationFileContent);
+        }
+
+        if (logCatEnabled) {
+            if (!new File(javaDir, "SketchLogger.java").exists()) {
+                L.b(y + File.separator
+                                + n + File.separator
+                                + "SketchLogger.java",
+                        L.b(
+                                context,
+                                "debug" + File.separator
+                                        + "SketchLogger.java"
+                        ).replaceAll("<\\?package_name\\?>", e));
+            }
         }
     }
 

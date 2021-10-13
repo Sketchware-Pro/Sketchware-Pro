@@ -1,47 +1,52 @@
 package <?package_name?>;
 
 import android.content.Intent;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+
 import android.content.Context;
 import android.util.Log;
 
 public class SketchLogger {
 
-/* Logcat Reader Class
-Available Methods:
-SketchLogger.startLogging(Context)
-SketchLogger.startLogging()
+    /**
+     * Logcat Reader Class
+     * Available Methods:
+     * SketchLogger.startLogging(Context)
+     * SketchLogger.startLogging()
+     * <p>
+     * SketchLogger.broadcastLog(Context, String)
+     * SketchLogger.broadcastLog(String)
+     * <p>
+     * SketchLogger.stopLogging()
+     * <p>
+     * Use Cases:
+     * Use "SketchLogger.startLogging(Context)" to Start the Logger from anywhere
+     * Or, Use "SketchLogger.broadcastLog(String)" directly to Send A Log.
+     * Send Context along when logging directly when "startLogging(Context)" hasn't been called yet
+     * Use "SketchLogger.stopLogging()" to stop from anywhere
+     * <p>
+     * *DO NOT CALL THIS MORE THAN ONCE WITHOUT STOPPING THE PREVIOUS**
+     * *OTHERWISE IT WILL RESULT IN DUPLICATE LOGS**
+     */
 
-SketchLogger.broadcastLog(Context, String)
-SketchLogger.broadcastLog(String)
-
-SketchLogger.stopLogging()
-
-Use Cases: 
-Use "SketchLogger.startLogging(Context)" to Start the Logger from anywhere
-Or, Use "SketchLogger.broadcastLog(String)" directly to Send A Log. 
-Send Context along when logging directly when "startLogging(Context)" hasn't been called yet
-Use "SketchLogger.stopLogging()" to stop from anywhere
-
-**DO NOT CALL THIS MORE THAN ONCE WITHOUT STOPPING THE PREVIOUS**
-**OTHERWISE IT WILL RESULT IN DUPLICATE LOGS**
-*/
-
-    static Thread loggerThread;
-    static Context context;
-    static boolean isRunning = false;
-    static String packageName = "Undefined";
+    private static Thread loggerThread;
+    private static Context context;
+    private static boolean isRunning = false;
+    private static String packageName = "Undefined";
 
     public static void startLogging() {
         loggerThread = new Thread() {
             @Override
             public void run() {
                 isRunning = true;
+                BufferedReader bufferedReader = null;
                 try {
                     Runtime.getRuntime().exec("logcat -c");
                     Process process = Runtime.getRuntime().exec("logcat");
-                    BufferedReader bufferedReader = new BufferedReader(
+                    bufferedReader = new BufferedReader(
                             new InputStreamReader(process.getInputStream()));
                     String logTxt = bufferedReader.readLine();
                     do {
@@ -59,6 +64,15 @@ Use "SketchLogger.stopLogging()" to stop from anywhere
                     broadcastLog(e.toString());
                     //Auto Restart Logger When Crashed
                     startLogging();
+                } finally {
+                    if (bufferedReader != null) {
+                        try {
+                            bufferedReader.close();
+                        } catch (IOException e) {
+                            /*I don't wanna get Haunted for Keeping Open InputStream*/
+                            broadcastLog("Oh No! Failed to Close BufferedReader " + e.toString());
+                        }
+                    }
                 }
             }
         };
@@ -68,7 +82,7 @@ Use "SketchLogger.stopLogging()" to stop from anywhere
 
     public static void startLogging(Context _context) {
         context = _context;
-        packageName = _context.getPackageName().toString();
+        packageName = _context.getPackageName();
         startLogging();
     }
 

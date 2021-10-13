@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -36,6 +37,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.annotations.NonNull;
 import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ import mod.SketchwareUtil;
 public class LogReaderActivity extends AppCompatActivity {
 
     private final BroadcastReceiver logger = new logger();
-    private final Pattern logPattern = Pattern.compile("^(.*\\d) (A|D|E|I|W) (.*): (.*)");
+    private final Pattern logPattern = Pattern.compile("^(.*\\d) (V|A|D|E|I|W) (.*): (.*)");
     private PopupMenu options;
     private String pkgFilter = "";
     private boolean autoScroll = false;
@@ -60,6 +62,7 @@ public class LogReaderActivity extends AppCompatActivity {
     private LinearLayout parent;
     private EditText filterEdittext;
     private ImageView menu;
+    private ImageView back;
     private RecyclerView recyclerview;
 
     private AlertDialog.Builder filterPkgDialog;
@@ -73,34 +76,42 @@ public class LogReaderActivity extends AppCompatActivity {
         parent.setOrientation(LinearLayout.VERTICAL);
 
         final LinearLayout base = new LinearLayout(LogReaderActivity.this);
-        base.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(48)));
-        base.setPadding((int) getDip(2), (int) getDip(2), (int) getDip(2), (int) getDip(2));
+        base.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(52)));
+        base.setPadding((int) getDip(10), (int) getDip(0), (int) getDip(4), (int) getDip(0));
         base.setGravity(Gravity.CENTER_VERTICAL);
         base.setOrientation(LinearLayout.HORIZONTAL);
-        base.setBackgroundColor(0xffffff);
+        base.setBackgroundColor(0xff008dcd);
         base.setElevation((float) (int) getDip(1));
+
+        back = new ImageView(LogReaderActivity.this);
+        back.setImageResource(Resources.drawable.arrow_back_white_48dp);
+        back.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(40), (int) getDip(40)));
+        back.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
 
         filterEdittext = new EditText(LogReaderActivity.this);
         filterEdittext.setLayoutParams(new LinearLayout.LayoutParams(0, MATCH_PARENT, 1f));
-        filterEdittext.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
+        filterEdittext.setPadding((int) getDip(8), (int) getDip(2), (int) getDip(8), (int) getDip(2));
         filterEdittext.setGravity(Gravity.CENTER_VERTICAL);
-        filterEdittext.setTextSize((float) 16);
-        filterEdittext.setHint("Search");
+        filterEdittext.setTextSize((float) 15);
+        filterEdittext.setHint("Search Logs");
+        filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
+        filterEdittext.setTextColor(0xffffffff);
         filterEdittext.setSingleLine(true);
         base.setElevation((float) (int) getDip(1));
 
         menu = new ImageView(LogReaderActivity.this);
         menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
-        menu.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
-        menu.setLayoutParams(new LinearLayout.LayoutParams((int)getDip(38), (int)getDip(38)));
+        menu.setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
+        menu.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(40), (int) getDip(40)));
         menu.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
 
         recyclerview = new RecyclerView(LogReaderActivity.this);
         recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         recyclerview.setPadding((int) getDip(4), 0, (int) getDip(4), 0);
 
-        base.addView(filterEdittext, 0);
-        base.addView(menu, 1);
+        base.addView(back, 0);
+        base.addView(filterEdittext, 1);
+        base.addView(menu, 2);
         parent.addView(base, 0);
         parent.addView(recyclerview, 1);
 
@@ -201,6 +212,12 @@ public class LogReaderActivity extends AppCompatActivity {
                 options.show();
             }
         });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View _view) {
+                finish();
+            }
+        });
     }
 
     private void initializeLogic() {
@@ -216,11 +233,13 @@ public class LogReaderActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             HashMap map = new HashMap<>();
-            if (intent.hasExtra("log")) {
+            if (intent.hasExtra("log") && (intent.getStringExtra("log") != null)) {
                 if (intent.hasExtra("pkgName")) {
                     map.put("pkgName", intent.getStringExtra("pkgName"));
                 }
                 map.put("logRaw", intent.getStringExtra("log"));
+                if (intent.getStringExtra("log") == null) return;
+
                 Matcher matcher = logPattern.matcher(intent.getStringExtra("log"));
                 if (matcher.matches()) {
                     //group 1 = pid, time stuff & idk
@@ -375,8 +394,8 @@ public class LogReaderActivity extends AppCompatActivity {
             detailHolder.addView(pkgName, 2);
             clickListener.addView(type, 0);
             clickListener.addView(detailHolder, 1);
-            _v.addView(clickListener,0);
-            _v.addView(divider,1);
+            _v.addView(clickListener, 0);
+            _v.addView(divider, 1);
 
             return new ViewHolder(_v);
         }
@@ -417,6 +436,9 @@ public class LogReaderActivity extends AppCompatActivity {
                     case "I": {
                         type.setBackgroundColor(0xFF4CAF50);
                         break;
+                    }
+                    case "V": {
+                        type.setBackgroundColor(0xFF000000);
                     }
                     case "W": {
                         type.setBackgroundColor(0xFFFFC107);
@@ -467,7 +489,7 @@ public class LogReaderActivity extends AppCompatActivity {
                 @Override
                 public boolean onLongClick(View _view) {
                     SketchwareUtil.showMessage(getApplicationContext(), "Copied To Clipboard");
-                    ((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", log.getText().toString()));
+                    ((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", _data.get(_position).get("logRaw").toString()));
                     return true;
                 }
             });
