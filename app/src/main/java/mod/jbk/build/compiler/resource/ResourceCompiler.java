@@ -20,7 +20,7 @@ import mod.jbk.util.LogUtil;
 
 /**
  * A class responsible for compiling a Project's resources.
- * Supports AAPT and AAPT2.
+ * Supports AAPT2.
  */
 public class ResourceCompiler {
 
@@ -32,14 +32,12 @@ public class ResourceCompiler {
      * </pre>
      */
     private static final String TAG = "AppBuilder";
-    private final boolean useAapt2;
     private final boolean willBuildAppBundle;
     private final File aaptFile;
     private final DesignActivity.a buildingDialog;
     private final Dp dp;
 
-    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, DesignActivity.a dialog, boolean useAapt2) {
-        this.useAapt2 = useAapt2;
+    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, DesignActivity.a dialog) {
         this.willBuildAppBundle = willBuildAppBundle;
         aaptFile = aapt;
         buildingDialog = dialog;
@@ -48,11 +46,7 @@ public class ResourceCompiler {
 
     public void compile() throws IOException, zy {
         Compiler resourceCompiler;
-        if (useAapt2) {
-            resourceCompiler = new Aapt2Compiler(dp, aaptFile, willBuildAppBundle);
-        } else {
-            resourceCompiler = new AaptCompiler(dp);
-        }
+        resourceCompiler = new Aapt2Compiler(dp, aaptFile, willBuildAppBundle);
 
         resourceCompiler.setProgressListener(new Compiler.ProgressListener() {
             @Override
@@ -90,144 +84,6 @@ public class ResourceCompiler {
              * @param newProgress A String provided by the resource compiler the user should see.
              */
             abstract void onProgressUpdate(String newProgress);
-        }
-    }
-
-    /**
-     * A {@link Compiler} implementing AAPT.
-     */
-    static class AaptCompiler implements Compiler {
-
-        private final Dp buildHelper;
-
-        public AaptCompiler(Dp buildHelper) {
-            this.buildHelper = buildHelper;
-        }
-
-        @Override
-        public void compile() throws zy {
-            /* Start generating arguments for AAPT */
-            ArrayList<String> args = new ArrayList<>();
-
-            args.add(buildHelper.i.getAbsolutePath());
-            args.add("package");
-
-            /* Generate R.java for libraries */
-            String extraPackages = buildHelper.e();
-            if (!extraPackages.isEmpty()) {
-                args.add("--extra-packages");
-                args.add(extraPackages);
-            }
-
-            /* Set minSdkVersion */
-            args.add("--min-sdk-version");
-            args.add(buildHelper.settings.getValue("min_sdk", buildHelper.a));
-
-            /* Set targetSdkVersion */
-            args.add("--target-sdk-version");
-            args.add(buildHelper.settings.getValue("target_sdk", buildHelper.b));
-
-            /* Set versionCode */
-            args.add("--version-code");
-            args.add(((buildHelper.f.l == null) || buildHelper.f.l.isEmpty()) ? "1" : buildHelper.f.l);
-
-            /* Set versionName */
-            args.add("--version-name");
-            args.add(((buildHelper.f.m == null) || buildHelper.f.m.isEmpty()) ? "1.0" : buildHelper.f.m);
-
-            args.add("--auto-add-overlay");
-            args.add("--generate-dependencies");
-
-            /* Force overwriting of existing files */
-            args.add("-f");
-
-            args.add("-m");
-
-            /* Don't generate final R.java ID fields */
-            args.add("--non-constant-id");
-
-            /* Generate a text file containing resource symbols */
-            args.add("--output-text-symbols");
-            args.add(buildHelper.f.t);
-
-            if (buildHelper.f.N.g) {
-                args.add("--no-version-vectors");
-            }
-
-            /* Specify resources directory */
-            args.add("-S");
-            args.add(buildHelper.f.w);
-
-            /* Specify local libraries' resource directories */
-            for (String localLibraryResDirectory : buildHelper.mll.getResLocalLibrary()) {
-                args.add("-S");
-                args.add(localLibraryResDirectory);
-            }
-
-            /* Specify imported resources directory */
-            if (FileUtil.isExistFile(buildHelper.fpu.getPathResource(buildHelper.f.b))) {
-                args.add("-S");
-                args.add(buildHelper.fpu.getPathResource(buildHelper.f.b));
-            }
-
-            /* Add assets added by vanilla method */
-            args.add("-A");
-            args.add(buildHelper.f.A);
-
-            /* Add imported assets */
-            if (FileUtil.isExistFile(buildHelper.fpu.getPathAssets(buildHelper.f.b))) {
-                args.add("-A");
-                args.add(buildHelper.fpu.getPathAssets(buildHelper.f.b));
-            }
-
-            /* Add local libraries' assets */
-            for (String localLibraryAssetsDirectory : buildHelper.mll.getAssets()) {
-                args.add("-A");
-                args.add(localLibraryAssetsDirectory);
-            }
-
-            /* Add built-in libraries' assets */
-            for (Jp library : buildHelper.n.a()) {
-                if (library.d()) {
-                    args.add("-A");
-                    args.add(buildHelper.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "assets");
-                }
-
-                if (library.c()) {
-                    args.add("-S");
-                    args.add(buildHelper.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "res");
-                }
-            }
-
-            /* Specify R.java output directory */
-            args.add("-J");
-            args.add(buildHelper.f.v);
-
-            /* Specify where to output ProGuard options to */
-            args.add("-G");
-            args.add(buildHelper.f.aapt_rules);
-
-            /* Specify AndroidManifest.xml's path */
-            args.add("-M");
-            args.add(buildHelper.f.r);
-
-            /* Specify android.jar */
-            args.add("-I");
-            args.add(buildHelper.o);
-
-            /* Specify output APK file */
-            args.add("-F");
-            args.add(buildHelper.f.C);
-
-            LogUtil.d(TAG, "Compiling resources with AAPT and these arguments: " + args);
-            if (buildHelper.j.a(args.toArray(new String[0])) != 0) {
-                throw new zy(buildHelper.j.a.toString());
-            }
-        }
-
-        @Override
-        public void setProgressListener(ProgressListener listener) {
-            // no-op
         }
     }
 
