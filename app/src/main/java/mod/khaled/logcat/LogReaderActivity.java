@@ -1,6 +1,10 @@
 package mod.khaled.logcat;
 
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static mod.SketchwareUtil.getDip;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -9,10 +13,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +32,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sketchware.remod.Resources;
-import com.sketchware.remod.sources.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,23 +57,60 @@ public class LogReaderActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
-    private RecyclerView recyclerview;
+    private LinearLayout parent;
     private EditText filterEdittext;
+    private ImageView menu;
+    private RecyclerView recyclerview;
 
     private AlertDialog.Builder filterPkgDialog;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setContentView(Resources.layout.logreader);
+
+        parent = new LinearLayout(LogReaderActivity.this);
+        parent.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        parent.setOrientation(LinearLayout.VERTICAL);
+
+        final LinearLayout base = new LinearLayout(LogReaderActivity.this);
+        base.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(48)));
+        base.setPadding((int) getDip(2), (int) getDip(2), (int) getDip(2), (int) getDip(2));
+        base.setGravity(Gravity.CENTER_VERTICAL);
+        base.setOrientation(LinearLayout.HORIZONTAL);
+        base.setBackgroundColor(0xffffff);
+        base.setElevation((float) (int) getDip(1));
+
+        filterEdittext = new EditText(LogReaderActivity.this);
+        filterEdittext.setLayoutParams(new LinearLayout.LayoutParams(0, MATCH_PARENT, 1f));
+        filterEdittext.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
+        filterEdittext.setGravity(Gravity.CENTER_VERTICAL);
+        filterEdittext.setTextSize((float) 16);
+        filterEdittext.setHint("Search");
+        filterEdittext.setSingleLine(true);
+        base.setElevation((float) (int) getDip(1));
+
+        menu = new ImageView(LogReaderActivity.this);
+        menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
+        menu.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+        menu.setLayoutParams(new LinearLayout.LayoutParams((int)getDip(38), (int)getDip(38)));
+        menu.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
+
+        recyclerview = new RecyclerView(LogReaderActivity.this);
+        recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        recyclerview.setPadding((int) getDip(4), 0, (int) getDip(4), 0);
+
+        base.addView(filterEdittext, 0);
+        base.addView(menu, 1);
+        parent.addView(base, 0);
+        parent.addView(recyclerview, 1);
+
+        setContentView(parent);
         initialize(_savedInstanceState);
         initializeLogic();
     }
 
     private void initialize(Bundle _savedInstanceState) {
-        recyclerview = findViewById(R.id.recyclerview);
-        filterEdittext = findViewById(R.id.filterEdittext);
-        ImageView menu = findViewById(R.id.menu);
+
         options = new PopupMenu(getApplicationContext(), menu);
         options.getMenu().add("Clear All");
         options.getMenu().add("Filter Package");
@@ -105,8 +151,7 @@ public class LogReaderActivity extends AppCompatActivity {
                         menuItem.setChecked(!menuItem.isChecked());
                         autoScroll = menuItem.isChecked();
                         if (autoScroll) {
-                            ((LinearLayoutManager) recyclerview.getLayoutManager()).c((int) (((RecyclerviewAdapter) recyclerview.getAdapter()).a() - 1), (int) 0);
-                            //scrollToPositionWithOffset
+                            ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition((int) (((RecyclerviewAdapter) recyclerview.getAdapter()).a() - 1));
                         }
                         break;
                     }
@@ -221,17 +266,31 @@ public class LogReaderActivity extends AppCompatActivity {
         filterEdittext.clearFocus();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(logger);
+
+    }
+
     public class RecyclerviewAdapter extends RecyclerView.a<RecyclerviewAdapter.ViewHolder> {
 
         ArrayList<HashMap<String, Object>> _data;
+        LinearLayout clickListener;
+        LinearLayout divider;
+        TextView type;
+        TextView date_header;
+        TextView log;
+        TextView pkgName;
 
         public void updateList(final HashMap _map) {
 
             _data.add(_map);
-            ((RecyclerviewAdapter) recyclerview.getAdapter()).d(_data.size() + 1); //notifyItemInserted
+            ((RecyclerviewAdapter) recyclerview.getAdapter()).d(_data.size() + 1);
+            //notifyItemInserted
 
             if (autoScroll) {
-                ((LinearLayoutManager) recyclerview.getLayoutManager()).c((int) _data.size() - 1, (int) 0); //scrollToPositionWithOffset
+                ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition((int) _data.size() - 1);
             }
         }
 
@@ -248,23 +307,89 @@ public class LogReaderActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View _v = _inflater.inflate(Resources.layout.log_list_customview, null);
-            RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            _v.setLayoutParams(_lp);
+
+            final LinearLayout _v = new LinearLayout(LogReaderActivity.this);
+            _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+            _v.setOrientation(LinearLayout.VERTICAL);
+
+            clickListener = new LinearLayout(LogReaderActivity.this);
+            clickListener.setTag("clickListener");
+            clickListener.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+            clickListener.setOrientation(LinearLayout.HORIZONTAL);
+            clickListener.setBackgroundColor(0xffffffff);
+
+            divider = new LinearLayout(LogReaderActivity.this);
+            divider.setTag("divider");
+            divider.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(1)));
+            divider.setBackgroundColor(0xffe0e0e0);
+
+            type = new TextView(LogReaderActivity.this);
+            type.setTag("type");
+            type.setFocusable(false);
+            type.setClickable(false);
+            type.setText("U");
+            type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            type.setTypeface(null, Typeface.BOLD);
+            type.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+            type.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(22), MATCH_PARENT));
+            type.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            type.setTextColor(0xffffffff);
+            type.setBackgroundColor(0xff000000);
+
+            final LinearLayout detailHolder = new LinearLayout(LogReaderActivity.this);
+            detailHolder.setTag("detailHolder");
+            detailHolder.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+            detailHolder.setOrientation(LinearLayout.VERTICAL);
+            detailHolder.setPadding((int) getDip(3), (int) getDip(3), (int) getDip(3), (int) getDip(3));
+            detailHolder.setClickable(false);
+
+            date_header = new TextView(LogReaderActivity.this);
+            date_header.setTag("date_header");
+            date_header.setFocusable(false);
+            date_header.setClickable(false);
+            date_header.setVisibility(View.GONE);
+            date_header.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            date_header.setTypeface(null, Typeface.BOLD);
+            date_header.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            date_header.setTextColor(0xff757575);
+
+            log = new TextView(LogReaderActivity.this);
+            log.setTag("log");
+            log.setFocusable(false);
+            log.setClickable(false);
+            log.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            log.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            log.setTextColor(0xff000000);
+
+            pkgName = new TextView(LogReaderActivity.this);
+            pkgName.setTag("pkgName");
+            pkgName.setFocusable(false);
+            pkgName.setClickable(false);
+            pkgName.setVisibility(View.GONE);
+            pkgName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            pkgName.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+            pkgName.setTextColor(0xff757575);
+
+            detailHolder.addView(date_header, 0);
+            detailHolder.addView(log, 1);
+            detailHolder.addView(pkgName, 2);
+            clickListener.addView(type, 0);
+            clickListener.addView(detailHolder, 1);
+            _v.addView(clickListener,0);
+            _v.addView(divider,1);
+
             return new ViewHolder(_v);
         }
 
         @Override
         public void b(ViewHolder _holder, final int _position) {
             View _view = _holder.b;
-
-            final LinearLayout clickListener = _view.findViewById(R.id.clickListener);
-            final LinearLayout divider = _view.findViewById(R.id.divider2);
-            final TextView type = _view.findViewById(R.id.log_type);
-            final TextView date_header = _view.findViewById(R.id.date_header);
-            final TextView log = _view.findViewById(R.id.log);
-            final TextView pkgName = _view.findViewById(R.id.pkgName);
+            final LinearLayout clickListener = _view.findViewWithTag("clickListener");
+            final LinearLayout divider = _view.findViewWithTag("divider");
+            final TextView type = _view.findViewWithTag("type");
+            final TextView date_header = _view.findViewWithTag("date_header");
+            final TextView log = _view.findViewWithTag("log");
+            final TextView pkgName = _view.findViewWithTag("pkgName");
 
             if (_data.get((int) (_position)).containsKey("pkgName")) {
                 pkgName.setText(_data.get((int) _position).get("pkgName").toString());
