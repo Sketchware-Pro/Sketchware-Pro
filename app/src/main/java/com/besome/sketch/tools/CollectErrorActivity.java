@@ -41,21 +41,20 @@ public class CollectErrorActivity extends Activity {
 		@Override
 		public void onErrorResponse(String tag, String message) {
 			Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
-                        finish();
 		}
 	};
         Intent intent = getIntent();
         if (intent != null) {
             String error = intent.getStringExtra("error");
-            new AlertDialog.Builder(this)
-                    .setTitle(xB.b().a(getApplicationContext(), Resources.string.common_error_an_error_occurred))
-                    .setMessage("An error occurred while running application.\nDo you want to send this error log?")
-                    .setPositiveButton("send", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            map.put("username", "Crash Reporter");
-                            map.put("avatar_url", "https://i.postimg.cc/FRZTV4jY/Sketchware-Pro.png");
-                            StringBuilder content = new StringBuilder("```\nSKETCHWARE ver=" + GB.d(getApplicationContext())
+            AlertDialog dialog = AlertDialog.Builder(this);
+            dialog.setTitle(xB.b().a(getApplicationContext(), Resources.string.common_error_an_error_occurred));
+            dialog.setMessage("An error occurred while running application.\nDo you want to send this error log?");
+            dialog.setPositiveButton("send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        map.put("username", "Crash Reporter");
+                        map.put("avatar_url", "https://i.postimg.cc/FRZTV4jY/Sketchware-Pro.png");
+                        StringBuilder content = new StringBuilder("```\nSKETCHWARE ver=" + GB.d(getApplicationContext())
                                     + "\nLocale=" + GB.g(getApplicationContext())
                                     + "\nVERSION.RELEASE: " + Build.VERSION.RELEASE
                                     + "\nBRAND: " + Build.BRAND
@@ -80,13 +79,22 @@ public class CollectErrorActivity extends Activity {
                                 reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                             }
                         }
-                    })
-                    .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                 });
+                dialog.setNegativeButton("no", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
-                    }).show();
+                });
+                dialog.setNeutralButton("Show error", new DialogInterface.onClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+                            messageView.setText(error);
+                            messageView.setTextIsSelectable(true);
+                        }
+                });
+                dialog.show();
         }
     }
 
