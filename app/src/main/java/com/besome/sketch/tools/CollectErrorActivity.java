@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import com.google.gson.*;
@@ -32,16 +33,17 @@ public class CollectErrorActivity extends Activity {
         super.onCreate(savedInstanceState);
         reqnet = new RequestNetwork(this);
         listener = new RequestNetwork.RequestListener() {
-			@Override
-			public void onResponse(String tag, String message, HashMap<String, Object> param3) {
-				
-			}
-			
-			@Override
-			public void onErrorResponse(String tag, String message) {
-				
-			}
-		};
+		@Override
+		public void onResponse(String tag, String message, HashMap<String, Object> param3) {
+			finish();
+		}
+		
+		@Override
+		public void onErrorResponse(String tag, String message) {
+			Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
+                        finish();
+		}
+	};
         Intent intent = getIntent();
         if (intent != null) {
             String error = intent.getStringExtra("error");
@@ -63,18 +65,18 @@ public class CollectErrorActivity extends Activity {
                             map = new HashMap<>();
                             if (length.length() > 2000) {
                                 map.put("content", content.toString() + "\n```");
-								reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
                                 reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                                 map = new HashMap<>();
                                 map.put("content", "```\n" + error + "\n```");
-								reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
                                 reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                             } else {
                                 content.append("\r\n\n" + error);
-								content.append("\n```");
+				content.append("\n```");
                                 map.put("content", content.toString());
                                 //idk why it's needed every time before starting request, without this the webhook doesn't get sent
-								reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
                                 reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                             }
                         }
