@@ -8,7 +8,13 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import java.util.HashMap;
+import com.google.gson.*;
+
 import com.sketchware.remod.Resources;
+
+import mod.RequestNetwork;
+import mod.RequestNetworkController;
 
 import a.a.a.GB;
 import a.a.a.rB;
@@ -16,8 +22,26 @@ import a.a.a.xB;
 
 public class CollectErrorActivity extends Activity {
 
+    private HashMap<String, Object> map = new HashMap<>();
+	
+	private RequestNetwork reqnet;
+	private RequestNetwork.RequestListener listener;
+	private String webUrl = "webhook url here";
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        reqnet = new RequestNetwork(this);
+        listener = new RequestNetwork.RequestListener() {
+			@Override
+			public void onResponse(String tag, String message, HashMap<String, Object> param3) {
+				
+			}
+			
+			@Override
+			public void onErrorResponse(String tag, String message) {
+				
+			}
+		};
         Intent intent = getIntent();
         if (intent != null) {
             String error = intent.getStringExtra("error");
@@ -27,20 +51,32 @@ public class CollectErrorActivity extends Activity {
                     .setPositiveButton("send", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            new CollectErrorActivity.a().execute(("SKETCHWARE ver=" + GB.d(getApplicationContext())
+                            map.put("username", "Crash Reporter");
+                            map.put("avatar_url", "https://i.postimg.cc/FRZTV4jY/Sketchware-Pro.png");
+                            StringBuilder content = new StringBuilder("```\nSKETCHWARE ver=" + GB.d(getApplicationContext())
                                     + "\nLocale=" + GB.g(getApplicationContext())
-                                    + "\nVERSION.RELEASE : " + Build.VERSION.RELEASE
-                                    + "\nBOARD : " + Build.BOARD
-                                    + "\nBOOTLOADER : " + Build.BOOTLOADER
-                                    + "\nBRAND : " + Build.BRAND
-                                    + "\nCPU_ABI : " + Build.CPU_ABI
-                                    + "\nCPU_ABI2 : " + Build.CPU_ABI2
-                                    + "\nDISPLAY : " + Build.DISPLAY
-                                    + "\nFINGERPRINT : " + Build.FINGERPRINT
-                                    + "\nHARDWARE : " + Build.HARDWARE
-                                    + "\nMANUFACTURER : " + Build.MANUFACTURER
-                                    + "\nMODEL : " + Build.MODEL
-                                    + "\r\n") + error);
+                                    + "\nVERSION.RELEASE: " + Build.VERSION.RELEASE
+                                    + "\nBRAND: " + Build.BRAND
+                                    + "\nMANUFACTURER: " + Build.MANUFACTURER
+                                    + "\nMODEL: " + Build.MODEL);
+                            StringBuilder length = new StringBuilder(content.toString() + "\r\n\n" + error);
+                            map = new HashMap<>();
+                            if (length.length() > 2000) {
+                                map.put("content", content.toString() + "\n```");
+								reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
+                                map = new HashMap<>();
+                                map.put("content", "```\n" + error + "\n```");
+								reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
+                            } else {
+                                content.append("\r\n\n" + error);
+								content.append("\n```");
+                                map.put("content", content.toString());
+                                //idk why it's needed every time before starting request, without this the webhook doesn't get sent
+								reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
+                            }
                         }
                     })
                     .setNegativeButton("no", new DialogInterface.OnClickListener() {
