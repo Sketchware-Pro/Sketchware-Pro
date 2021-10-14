@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Process;
 import android.util.Log;
 
+import com.besome.sketch.tools.CollectErrorActivity;
+
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
@@ -34,7 +36,7 @@ public class SketchApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             Log.e("SketchApplication", "Uncaught exception on thread " + thread.getName(), throwable);
 
-            Intent intent = new Intent(getApplicationContext(), DebugActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CollectErrorActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("error", Log.getStackTraceString(throwable));
             ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
