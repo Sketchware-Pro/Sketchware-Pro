@@ -649,7 +649,7 @@ public class Tools extends Activity {
                         tv_log.setText(tv_log.getText().toString() + line));
 
                 if (useTestkey) {
-                    if (Build.VERSION.SDK_INT >= 28) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         signer.signWithTestKey(inputApkPath, outputApkPath, callback);
                     } else {
                         try {
@@ -658,7 +658,7 @@ public class Tools extends Activity {
                             zipSigner.signZip(inputApkPath, outputApkPath);
                         } catch (Exception e) {
                             tv_progress.setText("An error occurred. Check the log for more details.");
-                            tv_log.setText("Failed to sign apk with ZipSigner: " + e.toString());
+                            tv_log.setText("Failed to sign APK with zipsigner: " + e);
                         }
                     }
                 } else {
