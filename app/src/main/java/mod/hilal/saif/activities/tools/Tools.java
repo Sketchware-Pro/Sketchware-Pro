@@ -42,23 +42,18 @@ import com.sketchware.remod.Resources;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Enumeration;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 import a.a.a.aB;
 import a.a.a.xB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
-import kellinwood.security.zipsigner.optional.JksKeyStore;
 import kellinwood.security.zipsigner.ZipSigner;
+import kellinwood.security.zipsigner.optional.JksKeyStore;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
@@ -385,7 +380,7 @@ public class Tools extends Activity {
                 TextView tv_collection = own_jks_root.findViewById(Resources.id.tv_collection);
                 CheckBox chk_collection = own_jks_root.findViewById(Resources.id.chk_collection);
 
-                selectFile.setOnClickListener((View.OnClickListener) v1 -> {
+                selectFile.setOnClickListener(v1 -> {
                     DialogProperties properties = new DialogProperties();
                     properties.selection_mode = DialogConfigs.SINGLE_MODE;
                     properties.selection_type = DialogConfigs.FILE_SELECT;
@@ -667,7 +662,7 @@ public class Tools extends Activity {
                 }
 
                 runOnUiThread(() -> {
-                    if (callback.errorCount.get() == 1) {
+                    if (callback.errorCount.get() == 0) {
                         building_dialog.dismiss();
                         SketchwareUtil.toast("Successfully saved signed APK to: /Internal storage/sketchware/signed_apk/"
                                         + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(),
