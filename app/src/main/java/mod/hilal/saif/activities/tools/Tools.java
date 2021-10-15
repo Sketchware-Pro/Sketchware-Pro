@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
@@ -57,6 +58,7 @@ import a.a.a.aB;
 import a.a.a.xB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.optional.JksKeyStore;
+import kellinwood.security.zipsigner.ZipSigner;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
@@ -647,7 +649,18 @@ public class Tools extends Activity {
                         tv_log.setText(tv_log.getText().toString() + line));
 
                 if (useTestkey) {
-                    signer.signWithTestKey(inputApkPath, outputApkPath, callback);
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        signer.signWithTestKey(inputApkPath, outputApkPath, callback);
+                    } else {
+                        try {
+                            ZipSigner zipSigner = new ZipSigner();
+                            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
+                            zipSigner.signZip(inputApkPath, outputApkPath);
+                        } catch (Exception e) {
+                            tv_progress.setText("An error occurred. Check the log for more details.");
+                            tv_log.setText("Failed to sign apk with ZipSigner: " + e.toString());
+                        }
+                    }
                 } else {
                     signer.signWithKeyStore(inputApkPath, outputApkPath,
                             keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword, callback);
