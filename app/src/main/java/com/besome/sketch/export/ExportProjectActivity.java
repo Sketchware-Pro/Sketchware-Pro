@@ -1002,8 +1002,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
                 c = new Dp(a, project_metadata, buildingAppBundle);
 
-                /* Check AAPT/AAPT2 */
-                publishProgress("Extracting AAPT/AAPT2 binaries...");
+                /* Check AAPT2 */
+                publishProgress("Extracting AAPT2 binaries...");
                 c.i();
                 if (d) {
                     cancel(true);
