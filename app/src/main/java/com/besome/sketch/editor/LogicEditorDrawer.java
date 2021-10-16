@@ -53,22 +53,12 @@ public class LogicEditorDrawer extends LinearLayout {
         favorite = (LinearLayout) findViewById(Resources.id.layout_favorite);
         scrollView = (CustomScrollView) findViewById(Resources.id.scv);
 
-        CardView sharedBlocks = (CardView) findViewById(Resources.id.cv_shared_blocks);
-        sharedBlocks.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), SharedBlocksListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
-        });
-
         CardView tools = (CardView) findViewById(Resources.id.new_button);
         tools.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Tools.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             ((LogicEditorActivity) getContext()).startActivityForResult(intent, 463);
         });
-
-        ((TextView) findViewById(Resources.id.tv_shared_blocks)).setText(xB.b().a(getContext(),
-                Resources.string.shared_blocks_list_title_shared_blocks));
     }
 
     public void a() {
