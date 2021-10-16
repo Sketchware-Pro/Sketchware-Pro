@@ -13,7 +13,6 @@ import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
-import com.besome.sketch.shared.blocks.SharedBlocksListActivity;
 import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
