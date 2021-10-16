@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
+import android.widget.TextView;
+import android.view.View;
 
 import java.util.HashMap;
-import com.google.gson.*;
 
+import com.google.gson.*;
 import com.sketchware.remod.Resources;
 
 import mod.RequestNetwork;
@@ -28,6 +30,7 @@ public class CollectErrorActivity extends Activity {
 	private RequestNetwork reqnet;
 	private RequestNetwork.RequestListener listener;
 	private String webUrl = "webhook url here";
+	private AlertDialog dialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,7 @@ public class CollectErrorActivity extends Activity {
 	};
         Intent intent = getIntent();
         if (intent != null) {
-            String error = intent.getStringExtra("error");
+            final String error = intent.getStringExtra("error");
             AlertDialog dialog = AlertDialog.Builder(this);
             dialog.setTitle(xB.b().a(getApplicationContext(), Resources.string.common_error_an_error_occurred));
             dialog.setMessage("An error occurred while running application.\nDo you want to send this error log?");
@@ -80,34 +83,28 @@ public class CollectErrorActivity extends Activity {
                             }
                         }
                  });
-                dialog.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                dialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
                 });
-                dialog.setNeutralButton("Show error", new DialogInterface.onClickListener() {
+                dialogBuilder.setNeutralButton("Show error", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-                            messageView.setText(error);
-                            messageView.setTextIsSelectable(true);
+                        public void onClick(DialogInterface dialoginterface, int which) {
+                            // do nothing because it's gonna be overrided later to stop dialog to dismiss when button is clicked to show error
                         }
                 });
-                dialog.show();
-        }
-    }
-
-    class a extends AsyncTask<String, String, String> {
-
-        public String doInBackground(String... strArr) {
-            new rB().a(strArr[0]);
-            return null;
-        }
-
-        public void onPostExecute(String str) {
-            super.onPostExecute(str);
-            finish();
+                dialog = dialogBuilder.create();
+				dialog.show();
+				dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+						messageView.setTextIsSelectable(true);
+						messageView.setText(error);
+					}
+				});
         }
     }
 }
