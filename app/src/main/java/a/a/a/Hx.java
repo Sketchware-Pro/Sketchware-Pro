@@ -8,29 +8,28 @@ import com.besome.sketch.beans.ViewBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import mod.hilal.saif.components.ComponentExtraCode;
 
 public class Hx {
 
-    public ProjectFileBean a;
-    public jq b;
-    public ArrayList<c> c = new ArrayList<>();
-    public ArrayList<c> d = new ArrayList<>();
-    public ArrayList<a> e = new ArrayList<>();
-    public ArrayList<c> f = new ArrayList<>();
-    public ArrayList<c> g = new ArrayList<>();
-    public ArrayList<b> h = new ArrayList<>();
-    public ArrayList<String> i = new ArrayList<>();
-    public HashMap<String, String> j = new HashMap<>();
+    private final ProjectFileBean projectFileBean;
+    private final jq jq;
+    private final ArrayList<c> c = new ArrayList<>();
+    private final ArrayList<c> d = new ArrayList<>();
+    private final ArrayList<a> e = new ArrayList<>();
+    private final ArrayList<c> f = new ArrayList<>();
+    private final ArrayList<c> g = new ArrayList<>();
+    private final ArrayList<b> h = new ArrayList<>();
+    private final ArrayList<String> i = new ArrayList<>();
+    private final HashMap<String, String> j = new HashMap<>();
     public String k = "";
     public String l = "";
 
     public Hx(jq jq, ProjectFileBean projectFileBean, eC eC) {
-        this.b = jq;
-        this.a = projectFileBean;
+        this.jq = jq;
+        this.projectFileBean = projectFileBean;
 
         ArrayList<ViewBean> views = new ArrayList<>(eC.d(projectFileBean.getXmlName()));
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
@@ -38,23 +37,23 @@ public class Hx {
             views.add(fab);
         }
         for (ViewBean view : views) {
-            this.c.add(new c(this, view.id, view.getClassInfo()));
+            c.add(new c(this, view.id, view.getClassInfo()));
         }
 
         ArrayList<ComponentBean> components = eC.e(projectFileBean.getJavaName());
         for (ComponentBean componentBean : components) {
             int type = componentBean.type;
             if (type == ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH || type == ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD) {
-                this.f.add(new c(this, componentBean.componentId, componentBean.getClassInfo()));
+                f.add(new c(this, componentBean.componentId, componentBean.getClassInfo()));
             } else {
-                this.d.add(new c(this, componentBean.componentId, componentBean.getClassInfo()));
+                d.add(new c(this, componentBean.componentId, componentBean.getClassInfo()));
             }
         }
 
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerViews = eC.d(projectFileBean.getDrawerXmlName());
             for (ViewBean view : drawerViews) {
-                this.g.add(new c(this, "_drawer_" + view.id, view.getClassInfo()));
+                g.add(new c(this, "_drawer_" + view.id, view.getClassInfo()));
             }
         }
 
@@ -63,72 +62,74 @@ public class Hx {
 
     public String a() {
         StringBuilder sb = new StringBuilder(4096);
-        for (Hx.b value : this.h) {
-            String a2 = value.a();
-            if (sb.length() > 0 && a2.length() > 0) {
+        for (b value : h) {
+            String code = value.getCode();
+            if (sb.length() > 0 && code.length() > 0) {
                 sb.append("\r\n");
                 sb.append("\r\n");
             }
-            sb.append(a2);
+            sb.append(code);
         }
         return sb.toString();
     }
 
-    public final void a(int i2, String str, String str2, String str3) {
-        Iterator<b> it = this.h.iterator();
-        boolean z = false;
-        while (it.hasNext()) {
-            b next = it.next();
-            if (next.b.equals(str)) {
-                if (str2.equals("onPictureTaken") || str2.equals("onAccountPicker") || str2.equals("onFilesPicked")) {
-                    next.b(str3);
+    private void a(int targetType, String targetId, String eventName, String eventLogic) {
+        boolean hasOnSuccessLogic = eventName.equals("onPictureTaken") || eventName.equals("onAccountPicker") || eventName.equals("onFilesPicked");
+        boolean hasOnCancelledLogic = eventName.equals("onPictureTakenCancel") || eventName.equals("onFilesPickedCancel") || eventName.equals("onAccountPickerCancelled");
+
+        boolean alreadyRegistered = false;
+        for (b next : h) {
+            if (next.componentName.equals(targetId)) {
+                if (hasOnSuccessLogic) {
+                    next.setOnSuccessLogic(eventLogic);
                     return;
-                } else if (str2.equals("onPictureTakenCancel") || str2.equals("onFilesPickedCancel") || str2.equals("onAccountPickerCancelled")) {
-                    next.a(str3);
+                } else if (hasOnCancelledLogic) {
+                    next.setOnCancelledLogic(eventLogic);
                     return;
                 } else {
-                    z = true;
+                    alreadyRegistered = true;
                 }
             }
         }
-        if (!z) {
-            b bVar = new b(i2, str);
-            if (str2.equals("onPictureTaken") || str2.equals("onFilesPicked") || str2.equals("onAccountPicker")) {
-                bVar.b(str3);
-            } else if (str2.equals("onPictureTakenCancel") || str2.equals("onFilesPickedCancel") || str2.equals("onAccountPickerCancelled")) {
-                bVar.a(str3);
+        if (!alreadyRegistered) {
+            b bVar = new b(targetType, targetId);
+            if (hasOnSuccessLogic) {
+                bVar.setOnSuccessLogic(eventLogic);
+            } else if (hasOnCancelledLogic) {
+                bVar.setOnCancelledLogic(eventLogic);
             }
-            this.h.add(bVar);
+            h.add(bVar);
         }
     }
 
     private void a(String eventName, String eventLogic) {
-        Hx.a a = null;
+        a target = null;
 
-        for (Hx.a next : e) {
+        for (a next : e) {
             if (next.name.equals(eventName)) {
-                a = next;
+                target = next;
+                break;
             }
         }
 
-        if (a == null) {
-            a = new Hx.a(eventName);
+        if (target == null) {
+            target = new a(eventName);
+            e.add(target);
         }
-        a.setLogic(eventLogic);
-        e.add(a);
+        target.setLogic(eventLogic);
     }
 
     public void a(String str, String str2, String str3) {
-        if (!this.j.containsKey(str)) {
-            this.j.put(str, Lx.b(str, str2, str3));
+        if (!j.containsKey(str)) {
+            j.put(str, Lx.b(str, str2, str3));
         }
     }
 
-    public final void a(ArrayList<EventBean> events, HashMap<String, ArrayList<BlockBean>> logicBlocks) {
+    private void a(ArrayList<EventBean> events, HashMap<String, ArrayList<BlockBean>> logicBlocks) {
         for (EventBean eventBean : events) {
             ArrayList<BlockBean> eventLogicBlocks = logicBlocks.get(eventBean.targetId + "_" + eventBean.eventName);
-            String eventLogic = (eventLogicBlocks == null || eventLogicBlocks.size() <= 0) ? "" :
-                    new Fx(this.a.getActivityName(), this.b, eventBean.eventName, eventLogicBlocks).a();
+            String eventLogic = (eventLogicBlocks == null || eventLogicBlocks.size() == 0) ? "" :
+                    new Fx(projectFileBean.getActivityName(), jq, eventBean.eventName, eventLogicBlocks).a();
 
             switch (eventBean.eventType) {
                 case EventBean.EVENT_TYPE_VIEW:
@@ -167,30 +168,26 @@ public class Hx {
     }
 
     public String b() {
-        boolean z;
         StringBuilder sb = new StringBuilder(4096);
-        for (Map.Entry<String, String> entry : this.j.entrySet()) {
-            String str = entry.getKey();
-            String str2 = entry.getValue();
-            Iterator<a> it = this.e.iterator();
-            while (true) {
-                z = false;
-                if (it.hasNext()) {
-                    if (it.next().name.equals(str)) {
-                        z = true;
-                        break;
-                    }
-                } else {
+        for (Map.Entry<String, String> entry : j.entrySet()) {
+            String name = entry.getKey();
+            String logic = entry.getValue();
+
+            boolean found = false;
+            for (a next : e) {
+                if (next.name.equals(name)) {
+                    found = true;
                     break;
                 }
             }
-            if (!z) {
-                Hx.a a = new Hx.a(str);
-                a.setLogic(str2);
+            if (!found) {
+                a a = new a(name);
+                a.setLogic(logic);
                 e.add(a);
             }
         }
-        for (Hx.a value : e) {
+
+        for (a value : e) {
             String code = value.getCode();
             if (sb.length() > 0 && code.length() > 0) {
                 sb.append("\r\n");
@@ -202,7 +199,7 @@ public class Hx {
     }
 
     private void b(String targetId, String eventName, String eventLogic) {
-        for (Hx.c next : d) {
+        for (c next : d) {
             if (next.a.equals(targetId)) {
                 next.a(targetId, eventName, eventLogic);
                 return;
@@ -213,14 +210,14 @@ public class Hx {
     public String c() {
         StringBuilder sb = new StringBuilder(4096);
         ComponentExtraCode componentExtraCode = new ComponentExtraCode(this, sb);
-        for (Hx.c value : this.d) {
-            componentExtraCode.s(value.a());
+        for (c next : d) {
+            componentExtraCode.s(next.a());
         }
         return sb.toString();
     }
 
     private void c(String targetId, String eventName, String eventLogic) {
-        for (Hx.c next : g) {
+        for (c next : g) {
             if (next.a.equals("_drawer_" + targetId)) {
                 next.a(targetId, eventName, eventLogic);
                 return;
@@ -230,8 +227,8 @@ public class Hx {
 
     public String d() {
         StringBuilder sb = new StringBuilder(4096);
-        for (Hx.c value : this.g) {
-            String a2 = value.a();
+        for (c next : g) {
+            String a2 = next.a();
             if (sb.length() > 0 && a2.length() > 0) {
                 sb.append("\r\n");
                 sb.append("\r\n");
@@ -242,7 +239,7 @@ public class Hx {
     }
 
     private void d(String targetId, String eventName, String eventLogic) {
-        for (Hx.c next : f) {
+        for (c next : f) {
             if (next.a.equals(targetId)) {
                 next.a(targetId, eventName, eventLogic);
                 return;
@@ -250,12 +247,15 @@ public class Hx {
         }
     }
 
+    /**
+     * @return {@link Hx#i}
+     */
     public ArrayList<String> e() {
-        return this.i;
+        return i;
     }
 
     private void e(String targetId, String eventName, String eventLogic) {
-        for (Hx.c next : this.c) {
+        for (c next : c) {
             if (next.a.equals(targetId)) {
                 next.a(targetId, eventName, eventLogic);
                 return;
@@ -265,7 +265,7 @@ public class Hx {
 
     public String f() {
         StringBuilder sb = new StringBuilder(4096);
-        for (Hx.c next : this.f) {
+        for (c next : f) {
             next.b();
             String a2 = next.a();
             if (sb.length() > 0 && a2.length() > 0) {
@@ -279,7 +279,7 @@ public class Hx {
 
     public String g() {
         StringBuilder sb = new StringBuilder(4096);
-        for (Hx.c value : this.c) {
+        for (c value : c) {
             String a2 = value.a();
             if (sb.length() > 0 && a2.length() > 0) {
                 sb.append("\r\n");
@@ -296,7 +296,7 @@ public class Hx {
         private String logic = "";
         private String targetId = "";
 
-        public a(String name) {
+        private a(String name) {
             this.name = name;
         }
 
@@ -315,59 +315,71 @@ public class Hx {
 
     private static class b {
 
-        private final int a;
-        private final String b;
-        private String c = "";
-        private String d = "";
+        private final int componentId;
+        private final String componentName;
+        private String onSuccessCode = "";
+        private String onCancelledCode = "";
 
-        public b(int componentId, String componentName) {
-            this.a = componentId;
-            this.b = componentName;
+        private b(int componentId, String componentName) {
+            this.componentId = componentId;
+            this.componentName = componentName;
         }
 
-        public void a(String onCancelledLogic) {
-            this.d = onCancelledLogic;
+        private void setOnCancelledLogic(String onCancelledLogic) {
+            this.onCancelledCode = onCancelledLogic;
         }
 
-        public void b(String onSuccessLogic) {
-            this.c = onSuccessLogic;
+        private void setOnSuccessLogic(String onSuccessLogic) {
+            this.onSuccessCode = onSuccessLogic;
         }
 
-        public String a() {
-            return Lx.a(this.a, this.b, this.c, this.d);
+        private String getCode() {
+            return Lx.a(componentId, componentName, onSuccessCode, onCancelledCode);
         }
     }
 
     private static class c {
 
-        public final Hx d;
-        public String a;
-        public Gx b;
-        public ArrayList<d> c = new ArrayList<>();
+        private final Hx d;
+        private final String a;
+        private final ArrayList<d> c = new ArrayList<>();
 
-        public c(Hx hx, String str, Gx gx) {
+        private c(Hx hx, String str, Gx gx) {
             this.d = hx;
             this.a = str;
-            this.b = gx;
-            String[] b2 = oq.b(gx);
-            if (b2.length > 0) {
-                for (String str2 : b2) {
-                    if (this.c.indexOf(str2) < 0) {
-                        this.c.add(new d(hx, str2));
+
+            String[] listeners = oq.b(gx);
+            if (listeners.length > 0) {
+                for (String str2 : listeners) {
+                    /* Found functionally same instructions in vanilla Sketchware, keep it this way */
+                    if (!c.contains(str2)) {
+                        c.add(new d(str2));
                     }
                 }
-                if (gx.a().equals("FirebaseDB") || gx.a().equals("FirebaseStorage") || gx.a().equals("FirebaseAuth") || gx.a().equals("Gyroscope") || gx.a().equals("WebView") || gx.a().equals("InterstitialAd") || gx.a().equals("RequestNetwork") || gx.a().equals("BluetoothConnect")) {
-                    for (Hx.d value : this.c) {
-                        value.b = true;
-                    }
+
+                switch (gx.a()) {
+                    case "FirebaseDB":
+                    case "FirebaseStorage":
+                    case "FirebaseAuth":
+                    case "Gyroscope":
+                    case "WebView":
+                    case "InterstitialAd":
+                    case "RequestNetwork":
+                    case "BluetoothConnect":
+                        for (d value : c) {
+                            value.b = true;
+                        }
+                        break;
+
+                    default:
                 }
             }
         }
 
-        public String a() {
+        private String a() {
             StringBuilder sb = new StringBuilder(4096);
-            for (Hx.d value : this.c) {
-                String a2 = value.a(this.a);
+            for (d value : c) {
+                String a2 = value.a(a);
                 if (sb.length() > 0 && a2.length() > 0) {
                     sb.append("\r\n");
                     sb.append("\r\n");
@@ -377,14 +389,13 @@ public class Hx {
             return sb.toString();
         }
 
-        public void a(String targetId, String eventName, String eventLogic) {
-            for (Hx.d d : c) {
-                for (Hx.a a : d.c) {
+        private void a(String targetId, String eventName, String eventLogic) {
+            for (d d : c) {
+                for (a a : d.c) {
                     if (a.name.equals(eventName)) {
                         a.setLogic(eventLogic);
                         a.setTargetId(targetId);
                         d.b = true;
-                        break;
                     }
                 }
 
@@ -394,32 +405,33 @@ public class Hx {
             }
         }
 
-        public void b() {
+        private void b() {
         }
     }
 
     private static class d {
 
-        public final Hx d;
-        public String a;
-        public boolean b = false;
-        public ArrayList<a> c;
+        private final String a;
+        private final ArrayList<a> c;
+        /**
+         * Probably "if associated to a Component"/"got its code added"
+         */
+        private boolean b = false;
 
-        public d(Hx hx2, String str) {
-            this.d = hx2;
-            this.a = str;
+        private d(String str) {
+            a = str;
             c = new ArrayList<>();
             for (String eventName : oq.b(str)) {
                 c.add(new a(eventName));
             }
         }
 
-        public String a(String str) {
-            if (!this.b) {
+        private String a(String str) {
+            if (!b) {
                 return "";
             }
             StringBuilder sb = new StringBuilder(4096);
-            for (Hx.a value : this.c) {
+            for (a value : c) {
                 String code = value.getCode();
                 if (sb.length() > 0 && code.length() > 0) {
                     sb.append("\r\n");
@@ -427,7 +439,7 @@ public class Hx {
                 }
                 sb.append(code);
             }
-            return Lx.d(this.a, str, sb.toString());
+            return Lx.d(a, str, sb.toString());
         }
     }
 }

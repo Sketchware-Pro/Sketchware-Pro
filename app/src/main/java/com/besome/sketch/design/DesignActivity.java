@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build.VERSION;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -250,7 +250,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void o() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24) {
             Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.H));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -435,7 +435,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             l = savedInstanceState.getString("sc_id");
         }
-
 
         r = new DB(getApplicationContext(), "P1");
         s = new DB(getApplicationContext(), "P2");
@@ -733,10 +732,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         progress.show();
 
         new Thread(() -> {
-            final String source = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+            final String source = new yq(getApplicationContext(), l).getFileSrc(v.getFileName(), jC.b(l), jC.a(l), jC.c(l));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
-                    .setTitle(v.g)
+                    .setTitle(v.getFileName())
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
@@ -749,7 +748,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 editor.setAutoCompletionEnabled(false);
                 editor.setEditorLanguage(new JavaLanguage());
                 editor.setColorScheme(new EditorColorScheme());
-                editor.setTextSize(16);
+                editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
 
                 AlertDialog dialog = dialogBuilder.create();
@@ -1204,7 +1203,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         }
 
                         publishProgress("Signing APK...");
-                        if (VERSION.SDK_INT >= 26) {
+                        if (Build.VERSION.SDK_INT >= 26) {
                             ApkSigner signer = new ApkSigner(a);
                             signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
                         } else {

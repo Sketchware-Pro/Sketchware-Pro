@@ -2,10 +2,10 @@ package a.a.a;
 
 import android.content.Context;
 
+import com.sketchware.remod.Resources;
+
 import java.util.ArrayList;
 
-import a.a.a.Gx;
-import a.a.a.xB;
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.hilal.saif.events.EventsHandler;
 
@@ -30,168 +30,168 @@ public class oq {
             case "onResume":
             case "onPause":
             case "moreBlock":
-                return 2131165333;
+                return Resources.drawable.bg_event_type_activity;
 
             case "onBannerAdClicked":
             case "onClick":
-                return 2131165565;
+                return Resources.drawable.event_on_click_48dp;
 
             case "onCheckedChange":
-                return 2131165560;
+                return Resources.drawable.event_on_check_changed_48dp;
 
             case "onItemSelected":
-                return 2131165582;
+                return Resources.drawable.event_on_item_selected_48dp;
 
             case "onItemClicked":
-                return 2131165580;
+                return Resources.drawable.event_on_item_clicked_48dp;
 
             case "onItemLongClicked":
-                return 2131165581;
+                return Resources.drawable.event_on_item_long_clicked_48dp;
 
             case "onTextChanged":
-                return 2131165601;
+                return Resources.drawable.event_on_text_changed_48dp;
 
             case "onPageStarted":
-                return 2131165588;
+                return Resources.drawable.event_on_page_started_48dp;
 
             case "onPageFinished":
-                return 2131165587;
+                return Resources.drawable.event_on_page_finished_48dp;
 
             case "onProgressChanged":
-                return 2131165591;
+                return Resources.drawable.event_on_progress_changed_48dp;
 
             case "onStartTrackingTouch":
-                return 2131165599;
+                return Resources.drawable.event_on_start_tracking_touch_48dp;
 
             case "onStopTrackingTouch":
-                return 2131165600;
+                return Resources.drawable.event_on_stop_tracking_touch_48dp;
 
             case "onAnimationStart":
-                return 2131165557;
+                return Resources.drawable.event_on_animation_start_48dp;
 
             case "onAnimationEnd":
-                return 2131165556;
+                return Resources.drawable.event_on_animation_end_48dp;
 
             case "onAnimationCancel":
-                return 2131165555;
+                return Resources.drawable.event_on_animation_cancel_48dp;
 
             case "onAnimationRepeat":
-                return 2131165549;
+                return Resources.drawable.event_animation_repeat_48dp;
 
             case "onBindCustomView":
-                return 2131165558;
+                return Resources.drawable.event_on_bind_custom_view_48dp;
 
             case "onDateChange":
-                return 2131165572;
+                return Resources.drawable.event_on_date_changed_48dp;
 
             case "onChildAdded":
-                return 2131165561;
+                return Resources.drawable.event_on_child_added_48dp;
 
             case "onChildChanged":
-                return 2131165562;
+                return Resources.drawable.event_on_child_changed_48dp;
 
             case "onChildMoved":
-                return 2131165563;
+                return Resources.drawable.event_on_child_moved_48dp;
 
             case "onChildRemoved":
             case "onDeleteSuccess":
-                return 2131165564;
+                return Resources.drawable.event_on_child_removed_48dp;
 
             case "onCancelled":
-                return 2131165559;
+                return Resources.drawable.event_on_cancelled_48dp;
 
             case "onCreateUserComplete":
-                return 2131165569;
+                return Resources.drawable.event_on_create_user_complete_48dp;
 
             case "onSignInUserComplete":
-                return 2131165595;
+                return Resources.drawable.event_on_signin_complete_48dp;
 
             case "onResetPasswordEmailSent":
-                return 2131165592;
+                return Resources.drawable.event_on_reset_password_email_sent_48dp;
 
             case "onSensorChanged":
-                return 2131165594;
+                return Resources.drawable.event_on_sensor_changed_48dp;
 
             case "onAccuracyChanged":
-                return 2131165550;
+                return Resources.drawable.event_on_accuracy_changed_48dp;
 
             case "onInterstitialAdLoaded":
             case "onBannerAdLoaded":
-                return 2131165553;
+                return Resources.drawable.event_on_ad_loaded;
 
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
             case "onFailure":
-                return 2131165552;
+                return Resources.drawable.event_on_ad_failed_to_load;
 
             case "onAdShowedFullScreenContent":
             case "onBannerAdOpened":
-                return 2131165554;
+                return Resources.drawable.event_on_ad_opened;
 
             case "onAdDismissedFullScreenContent":
             case "onBannerAdClosed":
-                return 2131165551;
+                return Resources.drawable.event_on_ad_closed;
 
             case "onUploadProgress":
-                return 2131165602;
+                return Resources.drawable.event_on_upload_progress_48dp;
 
             case "onDownloadProgress":
-                return 2131165573;
+                return Resources.drawable.event_on_download_progress_48dp;
 
             case "onUploadSuccess":
-                return 2131165603;
+                return Resources.drawable.event_on_upload_success_48dp;
 
             case "onDownloadSuccess":
-                return 2131165574;
+                return Resources.drawable.event_on_download_success_48dp;
 
             case "onPictureTaken":
-                return 2131165589;
+                return Resources.drawable.event_on_picture_taken_48dp;
 
             case "onPictureTakenCancel":
-                return 2131165590;
+                return Resources.drawable.event_on_picture_taken_cancel_48dp;
 
             case "onFilesPicked":
-                return 2131165576;
+                return Resources.drawable.event_on_file_picked_48dp;
 
             case "onFilesPickedCancel":
-                return 2131165577;
+                return Resources.drawable.event_on_file_picked_cancel_48dp;
 
             case "onResponse":
-                return 2131165593;
+                return Resources.drawable.event_on_response_48dp;
 
             case "onErrorResponse":
-                return 2131165575;
+                return Resources.drawable.event_on_error_response_48dp;
 
             case "onSpeechResult":
-                return 2131165598;
+                return Resources.drawable.event_on_speech_result;
 
             case "onSpeechError":
-                return 2131165597;
+                return Resources.drawable.event_on_speech_error;
 
             case "onConnected":
-                return 2131165566;
+                return Resources.drawable.event_on_connected_96;
 
             case "onDataReceived":
-                return 2131165570;
+                return Resources.drawable.event_on_data_received_96;
 
             case "onDataSent":
-                return 2131165571;
+                return Resources.drawable.event_on_data_sent_96;
 
             case "onConnectionError":
-                return 2131165567;
+                return Resources.drawable.event_on_connection_error_96;
 
             case "onConnectionStopped":
-                return 2131165568;
+                return Resources.drawable.event_on_connection_stopped_96;
 
             case "onLocationChanged":
-                return 2131165583;
+                return Resources.drawable.event_on_location_changed_96;
 
             case "onMapReady":
-                return 2131165584;
+                return Resources.drawable.event_on_map_ready_96;
 
             case "onMarkerClicked":
-                return 2131165585;
+                return Resources.drawable.event_on_marker_clicked_96;
 
             case "onNothingSelected":
             case "beforeTextChanged":
