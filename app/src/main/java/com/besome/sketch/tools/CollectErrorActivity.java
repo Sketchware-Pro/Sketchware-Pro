@@ -38,6 +38,7 @@ public class CollectErrorActivity extends Activity {
         listener = new RequestNetwork.RequestListener() {
 		@Override
 		public void onResponse(String tag, String message, HashMap<String, Object> param3) {
+                        Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
 			finish();
 		}
 		
@@ -51,8 +52,36 @@ public class CollectErrorActivity extends Activity {
             final String error = intent.getStringExtra("error");
             AlertDialog dialog = AlertDialog.Builder(this);
             dialog.setTitle(xB.b().a(getApplicationContext(), Resources.string.common_error_an_error_occurred));
-            dialog.setMessage("An error occurred while running application.\nDo you want to send this error log?");
+            dialog.setMessage("An error occurred while running application.\n\nDo you want to report this error log so that we can fix it?\nNo personal information will be included.");
             dialog.setPositiveButton("send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    // left blank intentionally
+                    }
+            });
+            dialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+            });
+            dialogBuilder.setNeutralButton("Show error", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialoginterface, int which) {
+                        // do nothing because it's gonna be overrided later to stop dialog to dismiss when button is clicked to show error
+                    }
+            });
+            dialog = dialogBuilder.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+	            @Override
+	            public void onClick(View v) {
+		        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+		        messageView.setTextIsSelectable(true);
+		        messageView.setText(error);
+	            }
+            });
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         map.put("username", "Crash Reporter");
@@ -81,30 +110,9 @@ public class CollectErrorActivity extends Activity {
 				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
                                 reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                             }
-                        }
-                 });
-                dialogBuilder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                            Toast.makeText(getApplicationContext(), "Sending report...", Toast.LENGTH_SHORT).show();
                         }
                 });
-                dialogBuilder.setNeutralButton("Show error", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialoginterface, int which) {
-                            // do nothing because it's gonna be overrided later to stop dialog to dismiss when button is clicked to show error
-                        }
-                });
-                dialog = dialogBuilder.create();
-				dialog.show();
-				dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-						messageView.setTextIsSelectable(true);
-						messageView.setText(error);
-					}
-				});
         }
     }
 }
