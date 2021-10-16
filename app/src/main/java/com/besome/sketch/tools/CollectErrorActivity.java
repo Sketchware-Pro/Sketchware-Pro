@@ -27,10 +27,10 @@ public class CollectErrorActivity extends Activity {
 
     private HashMap<String, Object> map = new HashMap<>();
 	
-	private RequestNetwork reqnet;
-	private RequestNetwork.RequestListener listener;
-	private String webUrl = "webhook url here";
-	private AlertDialog dialog;
+    private RequestNetwork reqnet;
+    private RequestNetwork.RequestListener listener;
+    private String webUrl = "webhook url here";
+    private AlertDialog dialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +39,13 @@ public class CollectErrorActivity extends Activity {
 		@Override
 		public void onResponse(String tag, String message, HashMap<String, Object> param3) {
                         Toast.makeText(getApplicationContext(), "Report sent!", Toast.LENGTH_LONG).show();
-			finish();
+                        finish();
 		}
-		
-		@Override
-		public void onErrorResponse(String tag, String message) {
-			Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
+                @Override
+                public void onErrorResponse(String tag, String message) {
+                    Toast.makeText(getApplicationContext(), "Cannot report the error. You can try reporting manually to our discord server", Toast.LENGTH_LONG).show();
 		}
-	};
+        };
         Intent intent = getIntent();
         if (intent != null) {
             final String error = intent.getStringExtra("error");
@@ -92,26 +91,26 @@ public class CollectErrorActivity extends Activity {
                                     + "\nBRAND: " + Build.BRAND
                                     + "\nMANUFACTURER: " + Build.MANUFACTURER
                                     + "\nMODEL: " + Build.MODEL);
-                            StringBuilder length = new StringBuilder(content.toString() + "\r\n\n" + error);
+                        StringBuilder length = new StringBuilder(content.toString() + "\r\n\n" + error);
+                        map = new HashMap<>();
+                        if (length.length() > 2000) {
+                            map.put("content", content.toString() + "\n```");
+                            reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                            reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                             map = new HashMap<>();
-                            if (length.length() > 2000) {
-                                map.put("content", content.toString() + "\n```");
-				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
-                                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
-                                map = new HashMap<>();
-                                map.put("content", "```\n" + error + "\n```");
-				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
-                                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
-                            } else {
-                                content.append("\r\n\n" + error);
-				content.append("\n```");
-                                map.put("content", content.toString());
-                                //idk why it's needed every time before starting request, without this the webhook doesn't get sent
-				reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
-                                reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
-                            }
-                            Toast.makeText(getApplicationContext(), "Sending report...", Toast.LENGTH_SHORT).show();
+                            map.put("content", "```\n" + error + "\n```");
+                            reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                            reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
+                        } else {
+                            content.append("\r\n\n" + error);
+                            content.append("\n```");
+                            map.put("content", content.toString());
+                            //idk why it's needed every time before starting request, without this the webhook doesn't get sent
+                            reqnet.setParams(map, RequestNetworkController.REQUEST_BODY);
+                            reqnet.startRequestNetwork("POST", webUrl, new Gson().toJson(map), listener);
                         }
+                        Toast.makeText(getApplicationContext(), "Sending report...", Toast.LENGTH_SHORT).show();
+                    }
                 });
         }
     }
