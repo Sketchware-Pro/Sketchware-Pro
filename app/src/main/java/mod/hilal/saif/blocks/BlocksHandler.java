@@ -2073,6 +2073,26 @@ public class BlocksHandler {
         arrayList.add(0, hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "Else");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "else \r\n{\r\n%s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "else");
+        arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "elseIf");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "else if (%s)\r\n{\r\n%s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "else if %b");
+        arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "switchNum");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
@@ -2601,6 +2621,8 @@ public class BlocksHandler {
         }
         logicEditorActivity.a("c", "if");
         logicEditorActivity.a("e", "ifElse");
+        logicEditorActivity.a("c", "elseIf");
+        logicEditorActivity.a("c", "Else");
         if (showBuiltIn()) {
             logicEditorActivity.a("b", "instanceOfOperator");
             logicEditorActivity.a("b", "isEmpty");
