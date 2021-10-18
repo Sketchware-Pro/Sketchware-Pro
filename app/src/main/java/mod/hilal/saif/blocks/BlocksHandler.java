@@ -2620,9 +2620,9 @@ public class BlocksHandler {
             logicEditorActivity.a("c", "whileLoop");
         }
         logicEditorActivity.a("c", "if");
-        logicEditorActivity.a("e", "ifElse");
-        logicEditorActivity.a("c", "elseIf");
+        logicEditorActivity.a("e", "elseIf");
         logicEditorActivity.a("c", "Else");
+        logicEditorActivity.a("c", "ifElse");
         if (showBuiltIn()) {
             logicEditorActivity.a("b", "instanceOfOperator");
             logicEditorActivity.a("b", "isEmpty");
