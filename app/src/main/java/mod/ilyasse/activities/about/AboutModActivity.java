@@ -205,7 +205,7 @@ public class AboutModActivity extends AppCompatActivity {
         moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
         moddersRecycler.setHasFixedSize(true);
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
-        changelogRecycler.setHasFixedSize(true);
+        changelogRecycler.setHasFixedSize(true); //either doesn't matter
         fab.setVisibility(View.GONE);
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -522,14 +522,15 @@ public class AboutModActivity extends AppCompatActivity {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
-            //i'll let you guys fix resources issue cuz idk what the hell is this.
-            final TextView variant = itemView.findViewById(Resources.id.tv_variant);
+            //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
+            //get less lazy when.
+            final TextView variant = itemView.findViewWithTag("tv_variant");
             final TextView title = itemView.findViewById(Resources.id.tv_title);
             final TextView releasedOn = itemView.findViewById(Resources.id.tv_release_note);
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
-            final LinearLayout log_back = itemView.findViewById(Resources.id.log_background);
-            final LinearLayout view_additional_info = itemView.findViewById(Resources.id.view_additional_info);
-            final ImageView arrow = itemView.findViewById(Resources.id.ic_arrow);
+            final LinearLayout log_background = itemView.findViewWithTag("log_background");
+            final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
+            final ImageView arrow = itemView.findViewWithTag("ic_arrow");
 
             HashMap<String, Object> release = changelog.get(position);
 
@@ -564,25 +565,25 @@ public class AboutModActivity extends AppCompatActivity {
                 isBetaVersion = (boolean) isBeta;
             }
 
-            
+
             try {
                 variant.setVisibility(View.VISIBLE);
                 if (isBetaVersion) {
                     variant.setText("Beta");
 
-                    if ((boolean) changelogList.get(position + 1).get("isBeta") || (boolean) changelogList.get(position - 1).get("isBeta")) {
+                    if ((boolean) changelogList.get(position - 1).get("isBeta")) {
                         variant.setVisibility(View.GONE);
                     }
 
                 } else {
                     variant.setText("Official");
-                    if (!(boolean) changelogList.get(position + 1).get("isBeta") || !(boolean) changelogList.get(position - 1).get("isBeta")) {
+                    if (!(boolean) changelogList.get(position - 1).get("isBeta")) {
                         variant.setVisibility(View.GONE);
                     }
                 }
 
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
 
@@ -609,15 +610,16 @@ public class AboutModActivity extends AppCompatActivity {
                         "(Details: Invalid data type of \"description\")");
             }
 
-            log_back.setOnClickListener(v -> {
+            log_background.setOnClickListener(v -> {
                 if (view_additional_info.getVisibility() == View.VISIBLE) {
-                    shadAnim(arrow, "rotation", 270, 300);
+                    shadAnim(arrow, "rotation", 180, 220);
                     view_additional_info.setVisibility(View.GONE);
                 } else {
-                    shadAnim(arrow, "rotation", 90, 300);
+                    shadAnim(arrow, "rotation", 0, 220);
                     view_additional_info.setVisibility(View.VISIBLE);
                 }
-                animateLayoutChanges(log_back);
+                animateLayoutChanges(log_background);
+                c(); //notifyDataSetChanged()
             });
         }
 
