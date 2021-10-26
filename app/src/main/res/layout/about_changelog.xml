@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_variant"
+        android:tag="tv_variant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -20,7 +20,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/log_background"
+        android:tag="log_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -104,18 +104,17 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/ic_arrow"
+                android:tag="ic_arrow"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="8dp"
-                android:rotation="270"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_arrow_back_grey"
-                app:tint="#000" />
+                android:src="@drawable/ic_expand_less_grey600_24dp"
+                app:tint="#000000" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/view_additional_info"
+            android:tag="view_additional_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
