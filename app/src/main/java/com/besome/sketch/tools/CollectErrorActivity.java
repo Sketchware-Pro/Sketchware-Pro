@@ -49,7 +49,7 @@ public class CollectErrorActivity extends Activity {
         Intent intent = getIntent();
         if (intent != null) {
             final String error = intent.getStringExtra("error");
-            AlertDialog dialog = AlertDialog.Builder(this);
+            AlertDialog dialog = new AlertDialog.Builder(this);
             dialog.setTitle(xB.b().a(getApplicationContext(), Resources.string.common_error_an_error_occurred));
             dialog.setMessage("An error occurred while running application.\n\nDo you want to report this error log so that we can fix it?\nNo personal information will be included.");
             dialog.setPositiveButton("send", new DialogInterface.OnClickListener() {
