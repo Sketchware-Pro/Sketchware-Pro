@@ -1165,7 +1165,6 @@ public class ExtraPaletteBlock {
             case 8:
                 logicEditor.b("Create", "blockAdd");
                 logicEditor.b("Import From Collection", "blockImport");
-                logicEditor.b("Explore Shared Collection", "sharedMoreBlock");
                 if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_BUILT_IN_BLOCKS)) {
                     logicEditor.a(" ", "customToast");
                     logicEditor.a(" ", "customToastWithIcon");
