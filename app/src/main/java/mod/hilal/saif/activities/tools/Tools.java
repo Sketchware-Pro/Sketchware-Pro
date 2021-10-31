@@ -57,11 +57,6 @@ public class Tools extends Activity {
         setupViews();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
     private void makeup(View parent, int iconResourceId, String title, String subtitle) {
         View inflate = getLayoutInflater().inflate(Resources.layout.manage_library_base_item, null);
         ImageView icon = inflate.findViewById(Resources.id.lib_icon);
@@ -135,13 +130,13 @@ public class Tools extends Activity {
         dialog.setDialogSelectionListener(files -> {
             final boolean isDirectory = new File(files[0]).isDirectory();
             if (files.length > 1 || isDirectory) {
-                new AlertDialog.Builder(Tools.this)
+                new AlertDialog.Builder(this)
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
-                            new AlertDialog.Builder(Tools.this)
+                            new AlertDialog.Builder(this)
                                     .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
                                     .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
-                                    .setPositiveButton(Resources.string.common_word_delete, (deleteConfirmationDialog, which1) -> {
+                                    .setPositiveButton(Resources.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
                                         for (String file : files) {
                                             FileUtil.deleteFile(file);
                                             deleteConfirmationDialog.dismiss();
@@ -153,7 +148,7 @@ public class Tools extends Activity {
                         })
                         .show();
             } else {
-                new AlertDialog.Builder(Tools.this)
+                new AlertDialog.Builder(this)
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
                             switch (which) {
@@ -168,10 +163,10 @@ public class Tools extends Activity {
                                     break;
 
                                 case 1:
-                                    new AlertDialog.Builder(Tools.this)
+                                    new AlertDialog.Builder(this)
                                             .setTitle("Delete file?")
                                             .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
-                                            .setPositiveButton(Resources.string.common_word_delete, (dialog112, which12) ->
+                                            .setPositiveButton(Resources.string.common_word_delete, (deleteDialog, pressedButton) ->
                                                     FileUtil.deleteFile(files[0]))
                                             .setNegativeButton(Resources.string.common_word_cancel, null)
                                             .show();
@@ -330,7 +325,7 @@ public class Tools extends Activity {
                 .setView(building_root)
                 .create();
 
-        ApkSigner signer = new ApkSigner(Tools.this);
+        ApkSigner signer = new ApkSigner(this);
         new Thread() {
             @Override
             public void run() {
