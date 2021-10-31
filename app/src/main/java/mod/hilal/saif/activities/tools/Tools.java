@@ -206,7 +206,7 @@ public class Tools extends Activity {
         CardView blockManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout newLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         blockManager.addView(newLayout);
-        makeup(newLayout, 2131165374, "Block manager", "Manage your own blocks to use in Logic Editor");
+        makeup(newLayout, Resources.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor");
         base.addView(blockManager);
         newLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), BlocksManager.class)));
@@ -214,7 +214,7 @@ public class Tools extends Activity {
         CardView blockSelectorManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout blockSelectorManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         blockSelectorManager.addView(blockSelectorManagerLayout);
-        makeup(blockSelectorManagerLayout, 2131166037, "Block selector menu manager", "Manage your own block selector menus");
+        makeup(blockSelectorManagerLayout, Resources.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus");
         base.addView(blockSelectorManager);
         blockSelectorManagerLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), BlockSelectorActivity.class)));
@@ -222,7 +222,7 @@ public class Tools extends Activity {
         CardView componentManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout componentManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         componentManager.addView(componentManagerLayout);
-        makeup(componentManagerLayout, 2131165449, "Component manager", "Manage your own components");
+        makeup(componentManagerLayout, Resources.drawable.collage_48, "Component manager", "Manage your own components");
         base.addView(componentManager);
         componentManagerLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ComponentsMaker.class)));
@@ -230,7 +230,7 @@ public class Tools extends Activity {
         CardView eventManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout eventManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         eventManager.addView(eventManagerLayout);
-        makeup(eventManagerLayout, 2131165580, "Event manager", "Manage your own events");
+        makeup(eventManagerLayout, Resources.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events");
         base.addView(eventManager);
         eventManagerLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), EventsMaker.class)));
@@ -238,7 +238,7 @@ public class Tools extends Activity {
         CardView localLibraryManager = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout localLibraryManagerLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         localLibraryManager.addView(localLibraryManagerLayout);
-        makeup(localLibraryManagerLayout, 2131165477, "Local library manager", "Manage and download local libraries");
+        makeup(localLibraryManagerLayout, Resources.drawable.colored_box_96, "Local library manager", "Manage and download local libraries");
         base.addView(localLibraryManager);
         localLibraryManagerLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ManageLocalLibraryActivity.class),
@@ -247,7 +247,7 @@ public class Tools extends Activity {
         CardView modSettings = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout modSettingsLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         modSettings.addView(modSettingsLayout);
-        makeup(modSettingsLayout, 2131165546, "Mod settings", "Change general mod settings");
+        makeup(modSettingsLayout, Resources.drawable.engineering_48, "Mod settings", "Change general mod settings");
         base.addView(modSettings);
         modSettingsLayout.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), ConfigActivity.class)));
@@ -255,14 +255,14 @@ public class Tools extends Activity {
         CardView openWorkingDirectory = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout openWorkingDirectoryLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         openWorkingDirectory.addView(openWorkingDirectoryLayout);
-        makeup(openWorkingDirectoryLayout, 2131558403, "Open working directory", "Open Sketchware Pro's directory and edit files in it");
+        makeup(openWorkingDirectoryLayout, Resources.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it");
         base.addView(openWorkingDirectory);
         openWorkingDirectoryLayout.setOnClickListener(v -> openWorkingDirectory());
 
         CardView signApkFile = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout signApkFileLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         signApkFile.addView(signApkFileLayout);
-        makeup(signApkFileLayout, 0x7f0701f8, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4");
+        makeup(signApkFileLayout, Resources.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4");
         base.addView(signApkFile);
         signApkFileLayout.setOnClickListener(v -> signApkFileDialog());
     }
