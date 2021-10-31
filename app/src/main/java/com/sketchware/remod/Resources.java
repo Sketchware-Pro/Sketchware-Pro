@@ -50,6 +50,7 @@ public class Resources {
         public static final int check_upload_apk_48dp = 0x7f0700e0;
         public static final int chrome_96 = 0x7f0700e7;
         public static final int code_icon = 0x7f070108;
+        public static final int collage_48 = 0x7f070109;
         public static final int collect_48 = 0x7f07010b;
         public static final int color_about_96 = 0x7f07010c;
         public static final int color_ban_96 = 0x7f07010e;
@@ -58,6 +59,7 @@ public class Resources {
         public static final int color_new_96 = 0x7f07011d;
         public static final int color_palette_48 = 0x7f070120;
         public static final int color_save_as_new_96 = 0x7f070121;
+        public static final int colored_box_96 = 0x7f070125;
         public static final int connected_96 = 0x7f070141;
         public static final int copy_48_grey = 0x7f070142;
         public static final int custom_dialog_inset_black = 0x7f070148;
@@ -66,6 +68,7 @@ public class Resources {
         public static final int data_backup_96 = 0x7f07014c;
         public static final int default_icon = 0x7f070151;
         public static final int delete_96 = 0x7f070154;
+        public static final int engineering_48 = 0x7f07016a;
         public static final int enlarge_48 = 0x7f07016b;
         public static final int event_animation_repeat_48dp = 0x7f07016d;
         public static final int event_on_accuracy_changed_48dp = 0x7f07016e;
@@ -742,6 +745,10 @@ public class Resources {
         public static final int manage_admob_menu = 0x7f0c000a;
         public static final int moreblock_menu = 0x7f0c0013;
         public static final int popup_menu_double = 0x7f0c001d;
+    }
+
+    public static final class mipmap {
+        public static final int ic_type_folder = 0x7f0d0003;
     }
 
     public static final class string {
