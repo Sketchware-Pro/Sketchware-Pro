@@ -54,7 +54,9 @@ public class Helper {
 
     public static void setViewsVisibility(boolean hide, View... views) {
         for (View view : views) {
-            view.setVisibility(hide ? View.GONE : View.VISIBLE);
+            if (view != null) {
+                view.setVisibility(hide ? View.GONE : View.VISIBLE);
+            }
         }
     }
 
