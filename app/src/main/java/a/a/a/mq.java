@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import dev.aldi.sayuti.editor.manage.ImportClass;
 import mod.agus.jcoderz.editor.event.CustomImportEvent;
-import mod.agus.jcoderz.lib.TypeVarComponent;
+import mod.hilal.saif.components.ComponentsHandler;
 
 public class mq {
 
@@ -143,8 +143,29 @@ public class mq {
             case 27:
                 return "#";
 
+            case 28:
+                return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
+
+            case 29:
+                return "DynamicLink";
+
+            case 30:
+                return "FirebaseCloudMessage";
+
+            case 31:
+                return "GoogleSignInClient";
+
+            case 32:
+                return "OSSubscriptionObserver";
+
+            case 33:
+                return "com.facebook.ads.AdView";
+
+            case 34:
+                return "com.facebook.ads.InterstitialAd";
+
             default:
-                return TypeVarComponent.a(componentId);
+                return ComponentsHandler.var(componentId);
         }
     }
 
@@ -797,6 +818,17 @@ public class mq {
 
             case "FragmentAdapter":
                 return "#";
+                
+            case "ResString":
+            case "ResStyle":
+            case "ResColor":
+            case "ResArray":
+            case "ResDimen":
+            case "ResBool":
+            case "ResInteger":
+            case "ResAttr":
+            case "ResXml":
+                return "int";
 
             default:
                 return typeName;
