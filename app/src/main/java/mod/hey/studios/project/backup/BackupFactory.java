@@ -282,11 +282,12 @@ public class BackupFactory {
     /************************ BACKUP ************************/
 
     public void backup(String app_name) {
-        String version = yB.c(lC.b(sc_id), "sc_ver_code") + "." + yB.c(lC.b(sc_id), "sc_ver_name");
+        String versionName = yB.c(lC.b(sc_id), "sc_ver_name");
+        String versionCode = yB.c(lC.b(sc_id), "sc_ver_code");
         String pkgName = yB.c(lC.b(sc_id), "my_sc_pkg_name");
         String dateTime = new SimpleDateFormat("yyyy-M-dd'T'hhmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime());
         String appNameOnly = app_name.replaceAll("_d", "").replaceAll(File.separator, "");
-        String finalFileName = appNameOnly +  " v" +version + " (" + pkgName + ", " + sc_id + ") " + dateTime;
+        String finalFileName = appNameOnly +  " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + dateTime;
         //ProjectName v1.0 (com.whatever.projectname, 110) 2021-12-31T125827.swb :pensive:
 
         createBackupsFolder();
