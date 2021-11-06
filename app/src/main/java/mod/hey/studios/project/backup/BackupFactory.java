@@ -17,10 +17,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -279,19 +282,24 @@ public class BackupFactory {
     /************************ BACKUP ************************/
 
     public void backup(String app_name) {
-        String version = "_V" +yB.c(lC.b(sc_id), "sc_ver_code") + "." + yB.c(lC.b(sc_id), "sc_ver_name");
+        String version = yB.c(lC.b(sc_id), "sc_ver_code") + "." + yB.c(lC.b(sc_id), "sc_ver_name");
+        String pkgName = yB.c(lC.b(sc_id), "my_sc_pkg_name");
+        String dateTime = new SimpleDateFormat("yyyy-M-dd'T'hhmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime());
+        String appNameOnly = app_name.replaceAll("_d", "").replaceAll(File.separator, "");
+        String finalFileName = appNameOnly +  " v" +version + " (" + pkgName + ", " + sc_id + ") " + dateTime;
+        //ProjectName v1.0 (com.whatever.projectname, 110) 2021-12-31T125827.swb :pensive:
 
         createBackupsFolder();
 
         // Init temporary backup folder
-        String appNameOnly = app_name.replaceAll(version, "").replaceAll("_d", "").replaceAll(File.separator, "");
+
         File outFolder = new File(getBackupDir(),
                 app_name + "_temp");
 
         // Init output zip file
-        File outZip = new File(getBackupDir() + File.separator + appNameOnly, app_name.replaceAll(version,"") + version + "." + EXTENSION);
+        File outZip = new File(getBackupDir() + File.separator + appNameOnly, finalFileName + "." + EXTENSION);
 
-        // Create a duplicate if already exists
+        // Create a duplicate if already exists (impossible now :3)
         if (outZip.exists()) {
             backup(app_name + "_d");
             return;
