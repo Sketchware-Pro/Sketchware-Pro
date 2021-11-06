@@ -30,6 +30,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import a.a.a.lC;
+import a.a.a.yB;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
@@ -277,25 +279,31 @@ public class BackupFactory {
     /************************ BACKUP ************************/
 
     public void backup(String app_name) {
+        String version = "_V" +yB.c(lC.b(sc_id), "sc_ver_code") + "." + yB.c(lC.b(sc_id), "sc_ver_name");
 
         createBackupsFolder();
 
         // Init temporary backup folder
+        String appNameOnly = app_name.replaceAll(version, "").replaceAll("_d", "").replaceAll(File.separator, "");
         File outFolder = new File(getBackupDir(),
-                app_name);
+                app_name + "_temp");
 
         // Init output zip file
-        File outZip = new File(getBackupDir(),
-                app_name + "." + EXTENSION);
+        File outZip = new File(getBackupDir() + File.separator + appNameOnly, app_name.replaceAll(version,"") + version + "." + EXTENSION);
 
         // Create a duplicate if already exists
-        if (outFolder.exists() || outZip.exists()) {
+        if (outZip.exists()) {
             backup(app_name + "_d");
             return;
         }
+        //delete temp dir if exist
+        if (outFolder.exists()){
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+        }
 
-        // Create temp folder
+        // Create necessary folders
         FileUtil.makeDir(outFolder.getAbsolutePath());
+        FileUtil.makeDir(new File(getBackupDir() + File.separator + appNameOnly).getAbsolutePath());
 
         // Copy data
         File dataF = new File(outFolder, "data");
