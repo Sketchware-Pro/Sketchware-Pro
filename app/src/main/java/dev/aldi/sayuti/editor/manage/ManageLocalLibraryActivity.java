@@ -1,15 +1,22 @@
 package dev.aldi.sayuti.editor.manage;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,10 +24,11 @@ import android.widget.Toolbar;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a._A;
 import a.a.a.bB;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.library.LibraryDownloader;
@@ -35,11 +43,11 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private String local_lib_file = "";
     private String local_libs_path = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
-    private int n = 0;
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
+    @SuppressLint({"ResourceType", "SetTextI18n"})
     public void initToolbar() {
-        ((TextView) findViewById(2131232458)).setText("Local library manager");
+        ((TextView) findViewById(2131232458)).setText("External library manager");
         ImageView back_icon = findViewById(2131232457);
         Helper.applyRippleToToolbarView(back_icon);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
@@ -72,6 +80,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         loadFiles();
     }
 
+    @SuppressLint("ResourceType")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(2131427786);
@@ -92,23 +101,70 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         if (!FileUtil.isExistFile(local_lib_file) || FileUtil.readFile(local_lib_file).equals("")) {
             FileUtil.writeFile(local_lib_file, "[]");
-        } else {
-            project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
         }
+        project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
-        Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
-        n = 0;
-        while (n < arrayList.size()) {
-            if (FileUtil.isDirectory(arrayList.get(n))) {
+        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
+
+        for (String _name : arrayList) {
+            if (FileUtil.isDirectory(_name)) {
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", Uri.parse(arrayList.get(n)).getLastPathSegment());
+                hashMap.put("name", Uri.parse(_name).getLastPathSegment());
+                if (FileUtil.isExistFile(_name + File.separator + "alias") && !FileUtil.readFile(_name + File.separator + "alias").equals("")) {
+                    hashMap.put("alias", FileUtil.readFile(_name + File.separator + "alias"));
+                }
                 main_list.add(hashMap);
             }
-            n++;
         }
         listview.setAdapter(new LibraryAdapter(main_list));
         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+    }
+
+    private void ShowAliasEditorDialog(String LibraryPath) {
+
+        final EditText _aliasEdittext = new EditText(this);
+        _aliasEdittext.setSingleLine(true);
+        _aliasEdittext.setHint("Alias For " + LibraryPath);
+        _aliasEdittext.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
+        if (FileUtil.isExistFile(LibraryPath + File.separator + "alias") && !FileUtil.readFile(LibraryPath + File.separator + "alias").equals("")) {
+            _aliasEdittext.setText(FileUtil.readFile(LibraryPath + File.separator + "alias"));
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins((int) getDip(8), (int) getDip(2), (int) getDip(8), (int) getDip(2));
+        _aliasEdittext.setLayoutParams(lp);
+
+        final AlertDialog.Builder _dialog = new AlertDialog.Builder(this);
+        _dialog.setCancelable(false)
+                .setView(_aliasEdittext)
+                .setTitle("Set Library Alias")
+                .setMessage("Add or remove custom alias to the selected library for quick recognizing.\nCurrent Selection: " + LibraryPath)
+                .setPositiveButton("Save", null)
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
+                .setNeutralButton("Remove", (dialog, which) -> {
+                    if (FileUtil.isExistFile(local_libs_path.concat(LibraryPath).concat("/alias"))) {
+                        FileUtil.deleteFile(local_libs_path.concat(LibraryPath).concat("/alias"));
+                        bB.a(ManageLocalLibraryActivity.this, "Removed alias successfully", 0).show();
+                        loadFiles();
+                    }
+                    dialog.dismiss();
+                });
+
+        AlertDialog dialog = _dialog.create();
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(v -> {
+            if (!_aliasEdittext.getText().toString().trim().equals("")) {
+                FileUtil.writeFile(local_libs_path.concat(LibraryPath).concat("/alias"), _aliasEdittext.getText().toString());
+                bB.a(ManageLocalLibraryActivity.this, "Alias Added successfully", 0).show();
+                loadFiles();
+                dialog.dismiss();
+            } else {
+                bB.a(ManageLocalLibraryActivity.this, "Type Something First! Duh", 0).show();
+            }
+        });
+        dialog.show();
     }
 
     public class LibraryAdapter extends BaseAdapter {
@@ -134,67 +190,82 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             return position;
         }
 
+        @SuppressLint({"ResourceType", "SetTextI18n"})
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427824, null);
+            convertView = (convertView != null) ? convertView : getLayoutInflater().inflate(2131427824, null);
+
+            final CheckBox library_selected = (CheckBox) convertView.findViewById(2131232370);
+            final String libraryName = main_list.get(position).get("name").toString();
+            String alias = "";
+            if (main_list.get(position).containsKey("alias")) {
+                alias = main_list.get(position).get("alias").toString();
             }
-            final CheckBox checkBox = convertView.findViewById(2131232370);
-            checkBox.setText((main_list.get(position)).get("name").toString());
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            library_selected.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            library_selected.setText(alias.equals("") ? libraryName : alias + " (" + libraryName + ")");
+            library_selected.setSelected(true);
+            library_selected.setSingleLine(true);
+
+            library_selected.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", checkBox.getText().toString());
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/config"))) {
-                    hashMap.put("packageName", FileUtil.readFile(local_libs_path.concat(checkBox.getText().toString()).concat("/config")));
+                hashMap.put("name", libraryName);
+
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/config"))) {
+                    hashMap.put("packageName", FileUtil.readFile(local_libs_path.concat(libraryName).concat("/config")));
                 }
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/res"))) {
-                    hashMap.put("resPath", local_libs_path.concat(checkBox.getText().toString()).concat("/res"));
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/res"))) {
+                    hashMap.put("resPath", local_libs_path.concat(libraryName).concat("/res"));
                 }
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/classes.jar"))) {
-                    hashMap.put("jarPath", local_libs_path.concat(checkBox.getText().toString()).concat("/classes.jar"));
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/classes.jar"))) {
+                    hashMap.put("jarPath", local_libs_path.concat(libraryName).concat("/classes.jar"));
                 }
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/classes.dex"))) {
-                    hashMap.put("dexPath", local_libs_path.concat(checkBox.getText().toString()).concat("/classes.dex"));
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/classes.dex"))) {
+                    hashMap.put("dexPath", local_libs_path.concat(libraryName).concat("/classes.dex"));
                 }
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/AndroidManifest.xml"))) {
-                    hashMap.put("manifestPath", local_libs_path.concat(checkBox.getText().toString()).concat("/AndroidManifest.xml"));
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/AndroidManifest.xml"))) {
+                    hashMap.put("manifestPath", local_libs_path.concat(libraryName).concat("/AndroidManifest.xml"));
                 }
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/proguard.txt"))) {
-                    hashMap.put("pgRulesPath", local_libs_path.concat(checkBox.getText().toString()).concat("/proguard.txt"));
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/proguard.txt"))) {
+                    hashMap.put("pgRulesPath", local_libs_path.concat(libraryName).concat("/proguard.txt"));
                 }
-                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/assets"))) {
-                    hashMap.put("assetsPath", local_libs_path.concat(checkBox.getText().toString()).concat("/assets"));
+                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/assets"))) {
+                    hashMap.put("assetsPath", local_libs_path.concat(libraryName).concat("/assets"));
                 }
+
                 if (!isChecked) {
                     project_used_libs.remove(hashMap);
                 } else {
-                    n = 0;
-                    while (n < project_used_libs.size()) {
-                        if (project_used_libs.get(n).get("name").toString().equals(checkBox.getText().toString())) {
+                    for (int n = 0; n < project_used_libs.size(); n++) {
+                        if (project_used_libs.get(n).get("name").toString().equals(libraryName)) {
                             project_used_libs.remove(hashMap);
                         }
-                        n = n + 1;
                     }
                     project_used_libs.add(hashMap);
                 }
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
             });
+
             lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
-            n = 0;
-            while (n < lookup_list.size()) {
-                checkBox.setChecked(false);
-                if (checkBox.getText().toString().equals(lookup_list.get(n).get("name").toString())) {
-                    checkBox.setChecked(true);
-                }
-                n = n + 1;
+            for (int n = 0; n < lookup_list.size(); n++) {
+                library_selected.setChecked((Boolean) libraryName.equals(lookup_list.get(n).get("name").toString()));
             }
-            convertView.findViewById(2131231132).setOnClickListener(v -> {
+            ((ImageView) convertView.findViewById(2131231132)).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
-                popupMenu.getMenu().add(0, 0, 0, "Delete");
+                popupMenu.getMenu().add(0, 0, 0, "Alias");
+                popupMenu.getMenu().add(0, 1, 1, "Delete");
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
-                    FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
-                    bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
-                    loadFiles();
+                    switch (menuItem.getItemId()) {
+                        case (0): { //Alias
+                            ShowAliasEditorDialog(libraryName);
+                            break;
+                        }
+                        case (1): { //Delete
+                            FileUtil.deleteFile(local_libs_path.concat(libraryName));
+                            bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
+                            loadFiles();
+                            break;
+                        }
+                    }
                     return true;
                 });
                 popupMenu.show();
@@ -203,3 +274,4 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
     }
 }
+
