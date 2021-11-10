@@ -3,8 +3,6 @@ package dev.aldi.sayuti.editor.manage;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,13 +20,14 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import a.a.a._A;
 import a.a.a.bB;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.library.LibraryDownloader;
@@ -87,10 +86,27 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         if (getIntent().hasExtra("sc_id")) {
             sc_id = getIntent().getStringExtra("sc_id");
         }
-        listview = findViewById(2131232364);
+        listview = (ListView) findViewById(2131232364);
+        SwipeRefreshLayout refreshList = new SwipeRefreshLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        refreshList.setLayoutParams(lp);
+        ViewGroup parentLayout = ((ViewGroup) listview.getParent());
+        parentLayout.removeView(listview);
+        refreshList.addView(listview);
+        parentLayout.addView(refreshList);
         findViewById(2131232362).setVisibility(View.GONE);
         initToolbar();
         loadFiles();
+
+        refreshList.setOnRefreshListener(new SwipeRefreshLayout.b() {
+            @Override
+            public void a() {
+                loadFiles();
+                refreshList.setRefreshing(false);
+            }
+        });
     }
 
     private void loadFiles() {
@@ -133,7 +149,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins((int) getDip(8), (int) getDip(2), (int) getDip(8), (int) getDip(2));
+        lp.setMargins(getDip(8), getDip(2), getDip(8), getDip(2));
         _aliasEdittext.setLayoutParams(lp);
 
         final AlertDialog.Builder _dialog = new AlertDialog.Builder(this);
@@ -153,6 +169,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 });
 
         AlertDialog dialog = _dialog.create();
+        dialog.show();
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(v -> {
             if (!_aliasEdittext.getText().toString().trim().equals("")) {
@@ -164,7 +181,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 bB.a(ManageLocalLibraryActivity.this, "Type Something First! Duh", 0).show();
             }
         });
-        dialog.show();
+
     }
 
     public class LibraryAdapter extends BaseAdapter {
