@@ -86,7 +86,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         if (getIntent().hasExtra("sc_id")) {
             sc_id = getIntent().getStringExtra("sc_id");
         }
-        listview = (ListView) findViewById(2131232364);
+        listview = findViewById(2131232364);
         SwipeRefreshLayout refreshList = new SwipeRefreshLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -100,12 +100,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         initToolbar();
         loadFiles();
 
-        refreshList.setOnRefreshListener(new SwipeRefreshLayout.b() {
-            @Override
-            public void a() {
-                loadFiles();
-                refreshList.setRefreshing(false);
-            }
+        refreshList.setOnRefreshListener(() -> {
+            loadFiles();
+            refreshList.setRefreshing(false);
         });
     }
 
@@ -137,31 +134,31 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
     }
 
-    private void ShowAliasEditorDialog(String LibraryPath) {
+    private void ShowAliasEditorDialog(String LibraryName) {
 
         final EditText _aliasEdittext = new EditText(this);
         _aliasEdittext.setSingleLine(true);
-        _aliasEdittext.setHint("Alias For " + LibraryPath);
-        _aliasEdittext.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-        if (FileUtil.isExistFile(LibraryPath + File.separator + "alias") && !FileUtil.readFile(LibraryPath + File.separator + "alias").equals("")) {
-            _aliasEdittext.setText(FileUtil.readFile(LibraryPath + File.separator + "alias"));
+        _aliasEdittext.setHint("Alias For " + LibraryName);
+        _aliasEdittext.setPadding(getDip(8), getDip(8), getDip(8), getDip(8));
+        if (FileUtil.isExistFile(local_libs_path + LibraryName + File.separator + "alias") && !FileUtil.readFile(local_libs_path + LibraryName + File.separator + "alias").equals("")) {
+            _aliasEdittext.setText(FileUtil.readFile(local_libs_path + LibraryName + File.separator + "alias"));
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(getDip(8), getDip(2), getDip(8), getDip(2));
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(getDip(24), getDip(8), getDip(24), getDip(8)); //TODO: Figure out why this shit doesn't have any effect
         _aliasEdittext.setLayoutParams(lp);
 
         final AlertDialog.Builder _dialog = new AlertDialog.Builder(this);
         _dialog.setCancelable(false)
                 .setView(_aliasEdittext)
                 .setTitle("Set Library Alias")
-                .setMessage("Add or remove custom alias to the selected library for quick recognizing.\nCurrent Selection: " + LibraryPath)
+                .setMessage("Add or remove custom alias to the selected library for quick recognizing.\nCurrent Selection: " + LibraryName)
                 .setPositiveButton("Save", null)
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
                 .setNeutralButton("Remove", (dialog, which) -> {
-                    if (FileUtil.isExistFile(local_libs_path.concat(LibraryPath).concat("/alias"))) {
-                        FileUtil.deleteFile(local_libs_path.concat(LibraryPath).concat("/alias"));
+                    if (FileUtil.isExistFile(local_libs_path.concat(LibraryName).concat("/alias"))) {
+                        FileUtil.deleteFile(local_libs_path.concat(LibraryName).concat("/alias"));
                         bB.a(ManageLocalLibraryActivity.this, "Removed alias successfully", 0).show();
                         loadFiles();
                     }
@@ -173,7 +170,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(v -> {
             if (!_aliasEdittext.getText().toString().trim().equals("")) {
-                FileUtil.writeFile(local_libs_path.concat(LibraryPath).concat("/alias"), _aliasEdittext.getText().toString());
+                FileUtil.writeFile(local_libs_path.concat(LibraryName).concat("/alias"), _aliasEdittext.getText().toString());
                 bB.a(ManageLocalLibraryActivity.this, "Alias Added successfully", 0).show();
                 loadFiles();
                 dialog.dismiss();
@@ -212,7 +209,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = (convertView != null) ? convertView : getLayoutInflater().inflate(2131427824, null);
 
-            final CheckBox library_selected = (CheckBox) convertView.findViewById(2131232370);
+            final CheckBox library_selected = convertView.findViewById(2131232370);
             final String libraryName = main_list.get(position).get("name").toString();
             String alias = "";
             if (main_list.get(position).containsKey("alias")) {
@@ -264,9 +261,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
             lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
             for (int n = 0; n < lookup_list.size(); n++) {
-                library_selected.setChecked((Boolean) libraryName.equals(lookup_list.get(n).get("name").toString()));
+                library_selected.setChecked(libraryName.equals(lookup_list.get(n).get("name").toString()));
             }
-            ((ImageView) convertView.findViewById(2131231132)).setOnClickListener(v -> {
+            convertView.findViewById(2131231132).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
                 popupMenu.getMenu().add(0, 0, 0, "Alias");
                 popupMenu.getMenu().add(0, 1, 1, "Delete");
