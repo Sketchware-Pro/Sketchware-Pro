@@ -54,8 +54,8 @@
             app:tabInlineLabel="true"
             app:tabMode="fixed"
             app:tabRippleColor="@android:color/transparent"
-            app:tabSelectedTextColor="#008DCD"
-            app:tabTextColor="#008DCD" />
+            app:tabSelectedTextColor="@color/color_primary"
+            app:tabTextColor="#424242" />
 
         <View
             android:layout_width="match_parent"
@@ -174,7 +174,7 @@
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:translationY="0dp"
+        android:translationY="200dp"
         app:rippleColor="#FFFFFF">
 
         <ImageView
