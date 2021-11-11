@@ -4,7 +4,6 @@ import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -228,35 +227,44 @@ public class AndroidManifestInjector {
     }
 
     public static String mHolder(String m, String projectId) {
-        ArrayList<String> m_list = new ArrayList<>();
-        m_list = new ArrayList<String>(Arrays.asList(m.split("\n")));
+        ArrayList<String> manifestLines = new ArrayList<>(Arrays.asList(m.split("\n")));
 
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/activities_components.json");
-        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+        String path = getPathAndroidManifestActivitiesComponents(projectId).getAbsolutePath();
         if (FileUtil.isExistFile(path)) {
-            data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType());
+            ArrayList<HashMap<String, Object>> data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
-                String name = (String) data.get(i).get("name");
-                String value = (String) data.get(i).get("value");
-                if (!value.trim().equals("")) {
-                    for (int k = 3; k < m_list.size(); k++) {
-                        String line = m_list.get(k);
-                        String _line = m_list.get(k - 1);
-                        if (line.contains("android:name=\"") && line.contains(name) && _line.contains("<activity")) {
-                            for (int q = k; q < m_list.size(); q++) {
-                                String v = m_list.get(q);
-                                String v2 = m_list.get(q - 1);
-                                if (v.matches("^		<[a-zA-Z_-]+[^>]")) {
-                                    if (v2.contains("\"/>")) {
-                                        if (!value.trim().equals("")) {
-                                            m_list.set(q - 1, m_list.get(q - 1).replace("\"/>", "\">"));
-                                            m_list.set(q - 1, m_list.get(q - 1).concat("\r\n").concat((String) data.get(i).get("value")).concat("\r\n").concat("</activity>"));
-                                            break;
-                                        }
-                                    } else {
-                                        if (!value.trim().equals("")) {
-                                            m_list.set(q - 2, m_list.get(q - 2).concat("\r\n").concat((String) data.get(i).get("value")));
+                HashMap<String, Object> activityComponents = data.get(i);
+
+                Object name = activityComponents.get("name");
+
+                if (name instanceof String) {
+                    Object value = activityComponents.get("value");
+
+                    if (value instanceof String) {
+                        if (!((String) value).trim().equals("")) {
+                            for (int k = 3; k < manifestLines.size(); k++) {
+                                String line = manifestLines.get(k);
+                                String _line = manifestLines.get(k - 1);
+                                if (line.contains("android:name=\"") && line.contains((String) name) && _line.contains("<activity")) {
+                                    for (int q = k; q < manifestLines.size(); q++) {
+                                        String v = manifestLines.get(q);
+                                        String v2 = manifestLines.get(q - 1);
+                                        if (v.matches("^		<[a-zA-Z_-]+[^>]")) {
+                                            boolean hasShortClosing = false, spaceBeforeClosing = false;
+
+                                            if (v2.contains("\"/>")) {
+                                                hasShortClosing = true;
+                                            } else if (v2.contains("\" />")) {
+                                                hasShortClosing = true;
+                                                spaceBeforeClosing = true;
+                                            }
+
+                                            if (hasShortClosing) {
+                                                manifestLines.set(q - 1, manifestLines.get(q - 1).replace(spaceBeforeClosing ? "\" />" : "\"/>", "\">"));
+                                                manifestLines.set(q - 1, manifestLines.get(q - 1) + "\r\n" + ((String) value) + "\r\n" + "</activity>");
+                                            } else {
+                                                manifestLines.set(q - 2, manifestLines.get(q - 2) + "\r\n" + ((String) value));
+                                            }
                                             break;
                                         }
                                     }
@@ -267,21 +275,23 @@ public class AndroidManifestInjector {
                 }
             }
         }
-        String path2 = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/app_components.txt");
-        if (FileUtil.isExistFile(path2)) {
-            if (!FileUtil.readFile(path2).trim().equals("")) {
-                String str = FileUtil.readFile(path2);
-                String str2 = m_list.get(m_list.size() - 3);
-                String str3 = str2.concat("\r\n").concat(str);
-                m_list.set(m_list.size() - 3, str3);
+
+        File appComponents = getPathAndroidManifestAppComponents(projectId);
+        if (appComponents.exists()) {
+            String appComponentsContent;
+            if (!(appComponentsContent = FileUtil.readFile(appComponents.getAbsolutePath())).trim().equals("")) {
+                String str2 = manifestLines.get(manifestLines.size() - 3);
+                String str3 = str2 + "\r\n" + appComponentsContent;
+                manifestLines.set(manifestLines.size() - 3, str3);
             }
         }
+
         //assemble
-        String return_value = "";
-        for (int k = 0; k < m_list.size(); k++) {
-            return_value = return_value.concat("\n").concat(m_list.get(k));
+        StringBuilder returnValue = new StringBuilder();
+        for (String manifestLine : manifestLines) {
+            returnValue.append("\n").append(manifestLine);
         }
-        return return_value;
+        return returnValue.toString();
     }
 
     public static void addToApp(Nx nx, String projectId) {
