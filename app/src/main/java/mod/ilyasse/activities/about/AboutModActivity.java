@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.text.util.Linkify;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +40,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.LongSerializationPolicy;
 import com.sketchware.remod.Resources;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -164,12 +165,11 @@ public class AboutModActivity extends AppCompatActivity {
 
                     savedData.apply();
 
-                    shadAnim(loading, "translationY", 50, 400);
+                    shadAnim(loading, "translationY", -1000, 300);
+                    shadAnim(loading, "alpha", 0, 300);
                     new Handler().postDelayed(() -> {
                         shadAnim(fab, "translationY", 0, 300);
                         shadAnim(fab, "alpha", 1, 300);
-                        shadAnim(loading, "translationY", -1000, 300);
-                        shadAnim(loading, "alpha", 0, 300);
                     }, 200);
                 } catch (JsonParseException e) {
                     loadingTitle.setText("Something went wrong");
@@ -186,7 +186,7 @@ public class AboutModActivity extends AppCompatActivity {
                 if (sharedPref.getString("moddersBackup", "").isEmpty()
                         || sharedPref.getString("changelogBackup", "").isEmpty()) {
                     loadingTitle.setText("Your device is offline!");
-                    loadingDescription.setText("Check your internet connection, then try again.");
+                    loadingDescription.setText("Check your internet connection and try again.");
                 } else {
                     moddersList = new Gson().fromJson(sharedPref.getString("moddersBackup", ""), Helper.TYPE_MAP_LIST);
                     changelogList = new Gson().fromJson(sharedPref.getString("changelogBackup", ""), Helper.TYPE_MAP_LIST);
@@ -205,11 +205,12 @@ public class AboutModActivity extends AppCompatActivity {
         moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
         moddersRecycler.setHasFixedSize(true);
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
-        changelogRecycler.setHasFixedSize(true);
+        changelogRecycler.setHasFixedSize(true); //either doesn't matter
         fab.setVisibility(View.GONE);
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initViewPager();
+
         requestData.startRequestNetwork(RequestNetworkController.GET,
                 "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
                 requestDataListener);
@@ -294,6 +295,14 @@ public class AboutModActivity extends AppCompatActivity {
         anim.setDuration((long) duration);
         anim.start();
     }
+
+    private void animateLayoutChanges(final LinearLayout view) {
+        //i used this instead of the xml attribute because this one looks better and smoother.
+        AutoTransition autoTransition = new AutoTransition();
+        autoTransition.setDuration((short) 300);
+        TransitionManager.beginDelayedTransition(view, autoTransition);
+    }
+
 
     private void rippleRound(final View view, final String focus, final String pressed, final double round) {
         GradientDrawable GG = new GradientDrawable();
@@ -513,9 +522,15 @@ public class AboutModActivity extends AppCompatActivity {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
+            //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
+            //get less lazy when.
+            final TextView variant = itemView.findViewWithTag("tv_variant");
             final TextView title = itemView.findViewById(Resources.id.tv_title);
             final TextView releasedOn = itemView.findViewById(Resources.id.tv_release_note);
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
+            final LinearLayout log_background = itemView.findViewWithTag("log_background");
+            final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
+            final ImageView arrow = itemView.findViewWithTag("ic_arrow");
 
             HashMap<String, Object> release = changelog.get(position);
 
@@ -541,6 +556,38 @@ public class AboutModActivity extends AppCompatActivity {
                 title.setVisibility(View.GONE);
             }
 
+
+            Object isBeta = release.get("isBeta");
+            boolean isBetaVersion = false;
+            if (isBeta instanceof String) {
+                isBetaVersion = Boolean.parseBoolean((String) isBeta);
+            } else if (isBeta instanceof Boolean) {
+                isBetaVersion = (boolean) isBeta;
+            }
+
+
+            try {
+                variant.setVisibility(View.VISIBLE);
+                if (isBetaVersion) {
+                    variant.setText("Beta");
+
+                    if ((boolean) changelogList.get(position - 1).get("isBeta")) {
+                        variant.setVisibility(View.GONE);
+                    }
+
+                } else {
+                    variant.setText("Official");
+                    if (!(boolean) changelogList.get(position - 1).get("isBeta")) {
+                        variant.setVisibility(View.GONE);
+                    }
+                }
+
+
+            } catch (Exception ignored) {
+
+            }
+
+
             Object releaseDate = release.get("releaseDate");
 
             if (releaseDate instanceof Double) {
@@ -562,6 +609,18 @@ public class AboutModActivity extends AppCompatActivity {
                 subtitle.setText("We've messed something up, sorry for the inconvenience!\n" +
                         "(Details: Invalid data type of \"description\")");
             }
+
+            log_background.setOnClickListener(v -> {
+                if (view_additional_info.getVisibility() == View.VISIBLE) {
+                    shadAnim(arrow, "rotation", 180, 220);
+                    view_additional_info.setVisibility(View.GONE);
+                } else {
+                    shadAnim(arrow, "rotation", 0, 220);
+                    view_additional_info.setVisibility(View.VISIBLE);
+                }
+                animateLayoutChanges(log_background);
+                c(); //notifyDataSetChanged()
+            });
         }
 
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
