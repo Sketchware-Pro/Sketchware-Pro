@@ -3,6 +3,7 @@ package mod.hilal.saif.activities.tools;
 import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,14 +123,28 @@ public class ConfigActivity extends Activity {
         initialize();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initialize() {
         root = new LinearLayout(this);
         root.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
         root.setOrientation(LinearLayout.VERTICAL);
-        setContentView(root);
+
+        ScrollView _scroll = new ScrollView(this);
+        LinearLayout.LayoutParams _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        _scroll.setLayoutParams(_lp);
+
+        LinearLayout _base = new LinearLayout(this);
+        _base.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        _base.setOrientation(LinearLayout.VERTICAL);
+        _base.setLayoutParams(_lp);
 
         View toolbar = getLayoutInflater().inflate(Resources.layout.toolbar_improved, root, false);
-        root.addView(toolbar);
+        _base.addView(toolbar);
+        _base.addView(_scroll);
+        _scroll.addView(root);
+        setContentView(_base);
+
         ImageView toolbar_back = toolbar.findViewById(Resources.id.ig_toolbar_back);
         TextView toolbar_title = toolbar.findViewById(Resources.id.tx_toolbar_title);
         toolbar_back.setClickable(true);
