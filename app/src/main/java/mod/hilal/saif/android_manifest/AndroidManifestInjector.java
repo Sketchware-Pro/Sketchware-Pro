@@ -1,41 +1,103 @@
 package mod.hilal.saif.android_manifest;
 
-import android.net.Uri;
+import android.os.Environment;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import a.a.a.Nx;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 
 public class AndroidManifestInjector {
 
-    public static void getP(Nx nx, String id) {
-        ArrayList<String> listPermission = new ArrayList<>();
-        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-        try {
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(id).concat("/Injection/androidmanifest/attributes.json");
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                if (data.size() > 0) {
-                    for (int i = 0; i < data.size(); i++) {
-                        String str = (String) data.get(i).get("name");
-                        String str2 = (String) data.get(i).get("value");
-                        if (str.equals("_application_permissions")) {
-                            Nx nx2 = new Nx("uses-permission");
-                            //nx2.a("android", "name", str2);
-                            nx2.b(str2);
-                            nx.a(nx2);
-                        }
+    public static File getPathAndroidManifestAttributeInjection(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(),
+                ".sketchware" + File.separator + "data" + File.separator + sc_id + File.separator +
+                        "Injection" + File.separator + "androidmanifest" + File.separator + "attributes.json");
+    }
+
+    public static File getPathAndroidManifestLauncherActivity(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(),
+                ".sketchware" + File.separator + "data" + File.separator + sc_id + File.separator +
+                        "Injection" + File.separator + "androidmanifest" + File.separator + "activity_launcher.txt");
+    }
+
+    public static File getPathAndroidManifestActivitiesComponents(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(),
+                ".sketchware" + File.separator + "data" + File.separator + sc_id + File.separator +
+                        "Injection" + File.separator + "androidmanifest" + File.separator + "activities_components.json");
+    }
+
+    public static File getPathAndroidManifestAppComponents(String sc_id) {
+        return new File(Environment.getExternalStorageDirectory(),
+                ".sketchware" + File.separator + "data" + File.separator + sc_id + File.separator +
+                        "Injection" + File.separator + "androidmanifest" + File.separator + "app_components.txt");
+    }
+
+    private static ArrayList<HashMap<String, Object>> readAndroidManifestAttributeInjections(String sc_id) {
+        ArrayList<HashMap<String, Object>> attributes;
+
+        parseAttributes:
+        {
+            String errorMessage;
+
+            try {
+                File injections = getPathAndroidManifestAttributeInjection(sc_id);
+
+                if (injections.exists()) {
+                    attributes = new Gson().fromJson(FileUtil.readFile(injections.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+
+                    if (attributes == null) {
+                        errorMessage = "result == null";
+                        // fall-through for shared error handling
+                    } else {
+                        break parseAttributes;
                     }
+                } else {
+                    return new ArrayList<>();
                 }
+            } catch (JsonParseException e) {
+                errorMessage = e.toString();
+                // fall-through for shared error handling
             }
-        } catch (Exception e) {
+
+            attributes = new ArrayList<>();
+            SketchwareUtil.toastError("Failed to parse AndroidManifest attribute injections; Reason: " + errorMessage);
+        }
+
+        return attributes;
+    }
+
+    public static void getP(Nx nx, String id) {
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(id);
+
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                Object value = attribute.get("value");
+
+                if (value instanceof String) {
+                    if ("_application_permissions".equals(name)) {
+                        Nx usesPermissionTag = new Nx("uses-permission");
+                        usesPermissionTag.b((String) value);
+                        nx.a(usesPermissionTag);
+                    }
+                } else {
+                    SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
+                }
+            } else {
+                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
+            }
         }
     }
 
@@ -44,123 +106,126 @@ public class AndroidManifestInjector {
     }
 
     public static boolean getActivityAttrs(Nx nx, String projectId, String actName) {
-        try {
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/attributes.json");
-            ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    String temp = actName.substring(0, actName.indexOf(".java"));
-                    if (data.get(i).get("name").equals(temp)) {
-                        //nx.b((String)data.get(i).get("value"));
-                        addToAct(nx, projectId, actName);
-                        return true;
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
+        String className = actName.substring(0, actName.indexOf(".java"));
 
-                    }
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                if (className.equals(name)) {
+                    addToAct(nx, projectId, actName);
+                    return true;
                 }
-                return false;
+            } else {
+                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
             }
-            return false;
-        } catch (Exception e) {
-            return false;
         }
+
+        return false;
     }
 
     public static boolean isActivityThemeUsed(Nx nx, String projectId, String actName) {
-        try {
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/attributes.json");
-            ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    String temp = actName.substring(0, actName.indexOf(".java"));
-                    if (data.get(i).get("name").equals(temp) || data.get(i).get("name").equals("_apply_for_all_activities")) {
-                        //nx.b((String)data.get(i).get("value"));
-                        if (((String) data.get(i).get("value")).contains("android:theme")) {
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
+        String className = actName.substring(0, actName.indexOf(".java"));
+
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
+                    Object value = attribute.get("value");
+
+                    if (value instanceof String) {
+                        if (((String) value).contains("android:theme")) {
                             return true;
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
                     }
                 }
-                return false;
             }
-            return false;
-        } catch (Exception e) {
-            return false;
         }
+
+        return false;
     }
 
     public static boolean isActivityOrientationUsed(Nx nx, String projectId, String actName) {
-        try {
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/attributes.json");
-            ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    String temp = actName.substring(0, actName.indexOf(".java"));
-                    if (data.get(i).get("name").equals(temp) || data.get(i).get("name").equals("_apply_for_all_activities")) {
-                        //nx.b((String)data.get(i).get("value"));
-                        if (((String) data.get(i).get("value")).contains("android:screenOrientation")) {
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
+        String className = actName.substring(0, actName.indexOf(".java"));
+
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
+                    Object value = attribute.get("value");
+
+                    if (value instanceof String) {
+                        if (((String) value).contains("android:screenOrientation")) {
                             return true;
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
                     }
                 }
-                return false;
+            } else {
+                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
             }
-            return false;
-        } catch (Exception e) {
-            return false;
         }
+
+        return false;
     }
 
     public static boolean isActivityKeyboardUsed(Nx nx, String projectId, String actName) {
-        try {
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/attributes.json");
-            ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    String temp = actName.substring(0, actName.indexOf(".java"));
-                    if (data.get(i).get("name").equals(temp) || data.get(i).get("name").equals("_apply_for_all_activities")) {
-                        //nx.b((String)data.get(i).get("value"));
-                        if (((String) data.get(i).get("value")).contains("android:windowSoftInputMode")) {
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
+        String className = actName.substring(0, actName.indexOf(".java"));
+
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
+                    Object value = attribute.get("value");
+
+                    if (value instanceof String) {
+                        if (((String) value).contains("android:windowSoftInputMode")) {
                             return true;
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
                     }
                 }
-                return false;
+            } else {
+                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
             }
-            return false;
-        } catch (Exception e) {
-            return false;
         }
+
+        return false;
     }
 
     public static String getLauncherActivity(String projectId) {
+        File launcherActivityFile = getPathAndroidManifestLauncherActivity(projectId);
 
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/activity_launcher.txt");
-        if (FileUtil.isExistFile(path)) {
-            String str = FileUtil.readFile(path);
-            if (str.contains(" ") || str.contains(".")) {
-                //return "main";
-                return "main";
-            } else {
-                //return "main";
-                return str;
+        if (launcherActivityFile.exists()) {
+            String launcherActivity = FileUtil.readFile(launcherActivityFile.getAbsolutePath());
+
+            if (!launcherActivity.contains(" ") && !launcherActivity.contains(".")) {
+                return launcherActivity;
             }
         }
-        //return "main";
+
         return "main";
     }
 
     public static void setLauncherActivity(String projectId, String a) {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/activity_launcher.txt");
-        FileUtil.writeFile(path, a);
+        FileUtil.writeFile(getPathAndroidManifestLauncherActivity(projectId).getAbsolutePath(),
+                a);
     }
-
 
     public static String mHolder(String m, String projectId) {
         ArrayList<String> m_list = new ArrayList<>();
@@ -219,51 +284,59 @@ public class AndroidManifestInjector {
         return return_value;
     }
 
-
     public static void addToApp(Nx nx, String projectId) {
-        try {
-            boolean isthemeused = false;
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/attributes.json");
-            ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    String str = (String) data.get(i).get("name");
-                    String str2 = (String) data.get(i).get("value");
-                    if (str.equals("_application_attrs")) {
-                        nx.b((String) data.get(i).get("value"));
-                        if (str2.contains("android:theme")) {
-                            isthemeused = true;
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
+
+        boolean themeInjected = false;
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                if ("_application_attrs".equals(name)) {
+                    Object value = attribute.get("value");
+
+                    if (value instanceof String) {
+                        nx.b((String) value);
+
+                        if (!themeInjected && ((String) value).contains("android:theme")) {
+                            themeInjected = true;
                         }
+                    } else {
+                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
                     }
                 }
-                if (!isthemeused) {
-                    nx.b("android:theme=\"@style/AppTheme\"");
-                }
             } else {
-                nx.b("android:theme=\"@style/AppTheme\"");
+                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
             }
-        } catch (Exception e) {
+        }
+
+        if (!themeInjected) {
+            nx.b("android:theme=\"@style/AppTheme\"");
         }
     }
 
     public static void addToAct(Nx nx, String projectId, String actName) {
-        try {
+        ArrayList<HashMap<String, Object>> attributes = readAndroidManifestAttributeInjections(projectId);
+        String className = actName.substring(0, actName.indexOf(".java"));
 
-            String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(projectId).concat("/Injection/androidmanifest/attributes.json");
-            ArrayList<HashMap<String, Object>> data = new ArrayList<>();
-            if (FileUtil.isExistFile(path)) {
-                data = new Gson().fromJson(FileUtil.readFile(path), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                }.getType());
-                for (int i = 0; i < data.size(); i++) {
-                    String temp = actName.substring(0, actName.indexOf(".java"));
-                    if (data.get(i).get("name").equals(temp) || data.get(i).get("name").equals("_apply_for_all_activities")) {
-                        nx.b((String) data.get(i).get("value"));
+        for (int i = 0; i < attributes.size(); i++) {
+            HashMap<String, Object> attribute = attributes.get(i);
+            Object name = attribute.get("name");
+
+            if (name instanceof String) {
+                if (className.equals(name) || "_apply_for_all_activities".equals(name)) {
+                    Object value = attribute.get("value");
+
+                    if (value instanceof String) {
+                        nx.b((String) value);
+                    } else {
+                        SketchwareUtil.toastError("Invalid AndroidManifest attribute injection value in attribute #" + (i + 1));
                     }
                 }
+            } else {
+                SketchwareUtil.toastError("Invalid AndroidManifest attribute injection name in attribute #" + (i + 1));
             }
-        } catch (Exception e) {
         }
     }
 }
