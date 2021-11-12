@@ -51,11 +51,6 @@ public class ProjectSettings {
      */
     public static final String SETTING_DISABLE_OLD_METHODS = "disable_old_methods";
 
-    /**
-     * Setting to disable adding <code>android:largeHeap="true"</code> to the <code>&lt;application&gt;</code> tag in AndroidManifest.xml
-     */
-    public static final String SETTING_DISABLE_LARGE_HEAP = "disable_large_heap";
-
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";
 
