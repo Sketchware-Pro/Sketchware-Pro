@@ -57,8 +57,8 @@ public class AboutModActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private LinearLayout fab;
     private TextView fabLabel;
-    private HashMap<String, Object> moddersMap = new HashMap<>();
-    private HashMap<String, Object> changelogMap = new HashMap<>();
+    private final HashMap<String, Object> moddersMap = new HashMap<>();
+    private final HashMap<String, Object> changelogMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> moddersList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> changelogList = new ArrayList<>();
     private TabLayout tablayout;
@@ -303,7 +303,6 @@ public class AboutModActivity extends AppCompatActivity {
         TransitionManager.beginDelayedTransition(view, autoTransition);
     }
 
-
     private void rippleRound(final View view, final String focus, final String pressed, final double round) {
         GradientDrawable GG = new GradientDrawable();
         GG.setColor(Color.parseColor(focus));
@@ -496,6 +495,7 @@ public class AboutModActivity extends AppCompatActivity {
     // VH stands for ViewHolder?
     private class ChangelogRecyclerAdapter extends RecyclerView.a<ChangelogRecyclerAdapter.ViewHolder> {
 
+        private static final String CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO = "showingAdditionalInfo";
         private final ArrayList<HashMap<String, Object>> changelog;
 
         public ChangelogRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
@@ -525,6 +525,7 @@ public class AboutModActivity extends AppCompatActivity {
             //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
             //get less lazy when.
             final TextView variant = itemView.findViewWithTag("tv_variant");
+            final LinearLayout leftLine = itemView.findViewById(Resources.id.view_leftline);
             final TextView title = itemView.findViewById(Resources.id.tv_title);
             final TextView releasedOn = itemView.findViewById(Resources.id.tv_release_note);
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
@@ -557,34 +558,30 @@ public class AboutModActivity extends AppCompatActivity {
             }
 
 
-            Object isBeta = release.get("isBeta");
             boolean isBetaVersion = false;
+            Object isBeta = release.get("isBeta");
             if (isBeta instanceof String) {
                 isBetaVersion = Boolean.parseBoolean((String) isBeta);
             } else if (isBeta instanceof Boolean) {
                 isBetaVersion = (boolean) isBeta;
             }
 
+            boolean previousIsBetaValueDiffers = true;
+            if (position != 0) {
+                HashMap<String, Object> previousChangelog = changelog.get(position - 1);
 
-            try {
-                variant.setVisibility(View.VISIBLE);
-                if (isBetaVersion) {
-                    variant.setText("Beta");
+                Object previousIsBeta = previousChangelog.get("isBeta");
 
-                    if ((boolean) changelogList.get(position - 1).get("isBeta")) {
-                        variant.setVisibility(View.GONE);
-                    }
-
-                } else {
-                    variant.setText("Official");
-                    if (!(boolean) changelogList.get(position - 1).get("isBeta")) {
-                        variant.setVisibility(View.GONE);
-                    }
+                if (previousIsBeta instanceof String) {
+                    previousIsBetaValueDiffers = Boolean.parseBoolean((String) previousIsBeta) != isBetaVersion;
+                } else if (previousIsBeta instanceof Boolean) {
+                    previousIsBetaValueDiffers = ((boolean) previousIsBeta) != isBetaVersion;
                 }
+            }
 
-
-            } catch (Exception ignored) {
-
+            variant.setVisibility(previousIsBetaValueDiffers ? View.VISIBLE : View.GONE);
+            if (previousIsBetaValueDiffers) {
+                variant.setText(isBetaVersion ? "Beta" : "Official");
             }
 
 
@@ -610,16 +607,34 @@ public class AboutModActivity extends AppCompatActivity {
                         "(Details: Invalid data type of \"description\")");
             }
 
+            boolean showingAdditionalInfo = false;
+            Object showingAdditionalInfoObject;
+            if (release.containsKey(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO) &&
+                    (showingAdditionalInfoObject = release.get(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO)) instanceof Boolean &&
+                    ((Boolean) showingAdditionalInfoObject)) {
+                showingAdditionalInfo = true;
+            }
+
+            view_additional_info.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
+            arrow.setRotation(showingAdditionalInfo ? 0 : 180);
+
+            arrow.setOnClickListener(v -> log_background.performClick());
+
             log_background.setOnClickListener(v -> {
                 if (view_additional_info.getVisibility() == View.VISIBLE) {
                     shadAnim(arrow, "rotation", 180, 220);
                     view_additional_info.setVisibility(View.GONE);
+                    release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, false);
                 } else {
                     shadAnim(arrow, "rotation", 0, 220);
                     view_additional_info.setVisibility(View.VISIBLE);
+                    release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, true);
                 }
                 animateLayoutChanges(log_background);
-                c(); //notifyDataSetChanged()
+
+                // RecyclerView$Adapter<VH extends ViewHolder>#notifyItemChanged(int) got obfuscated to
+                // RecyclerView$a<VH extends RecyclerView.v>.c(int)
+                c(position);
             });
         }
 
