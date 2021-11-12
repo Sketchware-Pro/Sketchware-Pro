@@ -49,9 +49,9 @@
             app:tabIndicatorFullWidth="false"
             app:tabInlineLabel="true"
             app:tabMode="fixed"
-            app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="@color/color_primary"
-            app:tabTextColor="#424242" />
+            app:tabTextColor="#424242"
+            app:tabUnboundedRipple="true" />
 
         <View
             android:layout_width="match_parent"
