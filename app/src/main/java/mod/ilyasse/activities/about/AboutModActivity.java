@@ -100,6 +100,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
+        rippleRound(back, "#ffffff", "#1F000000", 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         // RecyclerView$OnScrollListener got obfuscated to RecyclerView$m
