@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!-- android:id="@+id/rootrelativeview" -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical">
-        <!-- android:id="@+id/maindataholder" -->
 
         <LinearLayout
             android:id="@+id/toolbar"
@@ -67,7 +65,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <!-- android:id="@+id/viewpagerholder" -->
 
             <LinearLayout
                 android:id="@+id/root"
@@ -86,7 +83,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <!-- android:id="@+id/viewpagercontent" -->
 
             <LinearLayout
                 android:id="@+id/layout1"
@@ -131,7 +127,6 @@
             android:layout_height="200dp"
             android:scaleType="fitCenter"
             android:src="@drawable/girl_swimming_flat" />
-        <!-- android:id="@+id/img_loading" -->
 
         <TextView
             android:id="@+id/tv_loading"
