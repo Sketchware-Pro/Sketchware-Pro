@@ -58,8 +58,6 @@ public class AboutModActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private LinearLayout fab;
     private TextView fabLabel;
-    private final HashMap<String, Object> moddersMap = new HashMap<>();
-    private final HashMap<String, Object> changelogMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> moddersList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> changelogList = new ArrayList<>();
     private TabLayout tablayout;
