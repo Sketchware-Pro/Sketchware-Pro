@@ -15,13 +15,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/img_back"
-                android:layout_width="40dp"
-                android:layout_height="28dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/arrow_back_white_48dp"
                 app:tint="#424242" />
@@ -30,9 +31,6 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:padding="8dp"
                 android:text="About Sketchware Pro"
                 android:textColor="#424242"
