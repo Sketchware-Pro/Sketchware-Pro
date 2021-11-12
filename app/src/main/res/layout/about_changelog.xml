@@ -103,7 +103,7 @@
                     tools:text="Released on: ----- (= never ¯\\_(ツ)_/¯)" />
             </LinearLayout>
 
-            <ImageView
+            <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="8dp"

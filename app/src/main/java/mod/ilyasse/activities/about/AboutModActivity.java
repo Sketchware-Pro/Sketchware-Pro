@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -531,7 +532,7 @@ public class AboutModActivity extends AppCompatActivity {
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
             final LinearLayout log_background = itemView.findViewWithTag("log_background");
             final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
-            final ImageView arrow = itemView.findViewWithTag("ic_arrow");
+            final ImageButton arrow = itemView.findViewWithTag("ic_arrow");
 
             HashMap<String, Object> release = changelog.get(position);
 
