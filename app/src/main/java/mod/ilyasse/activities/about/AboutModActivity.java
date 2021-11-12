@@ -617,8 +617,8 @@ public class AboutModActivity extends AppCompatActivity {
             view_additional_info.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             arrow.setRotation(showingAdditionalInfo ? 0 : 180);
 
-            rippleRound(log_background, "#ffffff", "#848484", 0);
-            rippleRound(arrow, "#ffffff", "#848484", 90);
+            rippleRound(log_background, "#ffffff", "#1F000000", 0);
+            rippleRound(arrow, "#ffffff", "#1F000000", 90);
             arrow.setOnClickListener(v -> log_background.performClick());
 
             log_background.setOnClickListener(v -> {
