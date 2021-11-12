@@ -141,7 +141,6 @@ public class AboutModActivity extends AppCompatActivity {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
-                    String discordInviteLink = null;
                     GsonBuilder builder = new GsonBuilder();
                     builder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
                     AboutUsData data = builder.create().fromJson(response, AboutUsData.class);
