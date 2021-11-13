@@ -30,11 +30,43 @@ public class LogUtil {
     }
 
     /**
-     * Similar to {@link Log#d(String, String)}, but to log to {@link System#out}, or while compiling,
+     * Similar to {@link Log#d(String, String, Throwable)}, but to log to {@link System#out}, or while compiling,
      * /Internal storage/.sketchware/debug.txt
      */
     public static void d(String tag, String message, Throwable throwable) {
         LogUtil.println('D', tag, message, throwable);
+    }
+
+    /**
+     * Similar to {@link Log#w(String, String)}, but to log to {@link System#out}, or while compiling,
+     * /Internal storage/.sketchware/debug.txt
+     */
+    public static void w(String tag, String message) {
+        LogUtil.w(tag, message, null);
+    }
+
+    /**
+     * Similar to {@link Log#w(String, String, Throwable)}, but to log to {@link System#out}, or while compiling,
+     * /Internal storage/.sketchware/debug.txt
+     */
+    public static void w(String tag, String message, Throwable throwable) {
+        LogUtil.println('W', tag, message, throwable);
+    }
+
+    /**
+     * Similar to {@link Log#e(String, String)}, but to log to {@link System#out}, or while compiling,
+     * * /Internal storage/.sketchware/debug.txt
+     */
+    public static void e(String tag, String message) {
+        LogUtil.e(tag, message, null);
+    }
+
+    /**
+     * Similar to {@link Log#e(String, String, Throwable)}, but to log to {@link System#out}, or while compiling,
+     * * /Internal storage/.sketchware/debug.txt
+     */
+    public static void e(String tag, String message, Throwable throwable) {
+        LogUtil.println('E', tag, message, throwable);
     }
 
     private static void println(char type, String tag, String message, Throwable throwable) {
@@ -70,22 +102,6 @@ public class LogUtil {
                     break;
             }
         }
-    }
-
-    /**
-     * Similar to {@link Log#e(String, String)}, but to log to {@link System#out}, or while compiling,
-     * * /Internal storage/.sketchware/debug.txt
-     */
-    public static void e(String tag, String message) {
-        LogUtil.e(tag, message, null);
-    }
-
-    /**
-     * Similar to {@link Log#e(String, String, Throwable)}, but to log to {@link System#out}, or while compiling,
-     * * /Internal storage/.sketchware/debug.txt
-     */
-    public static void e(String tag, String message, Throwable throwable) {
-        LogUtil.println('E', tag, message, throwable);
     }
 
     private static String getDateAndTime(long millis) {
