@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:tag="tv_variant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -14,20 +13,21 @@
         android:layout_marginRight="10dp"
         android:focusable="false"
         android:padding="8dp"
-        android:text="Official / Beta"
+        android:tag="tv_variant"
         android:textColor="#424242"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="Official / Beta" />
 
     <LinearLayout
-        android:tag="log_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:animateLayoutChanges="true"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:tag="log_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,23 +103,23 @@
                     tools:text="Released on: ----- (= never ¯\\_(ツ)_/¯)" />
             </LinearLayout>
 
-            <ImageView
-                android:tag="ic_arrow"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_expand_less_grey600_24dp"
+                android:tag="ic_arrow"
                 app:tint="#000000" />
         </LinearLayout>
 
         <LinearLayout
-            android:tag="view_additional_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:tag="view_additional_info">
 
             <View
                 android:layout_width="match_parent"
