@@ -100,17 +100,14 @@ public class Dp {
     private boolean buildAppBundle = false;
 
     public Dp(Context context, yq yqVar) {
-        /*
-         * Detect some bad behaviour of the app.
-         */
+        /* Detect some bad behaviour of the app */
+        /* Detect some bad behaviour of the app */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
                 .build()
         );
-        /*
-         * Start logging to debug.txt stored in /Internal storage/.sketchware/.
-         */
+
         SystemLogPrinter.start();
         e = context;
         f = yqVar;
@@ -118,7 +115,9 @@ public class Dp {
         j = new Fp();
         h = new File(context.getFilesDir(), "tmp");
         if (!h.exists()) {
-            h.mkdir();
+            if (!h.mkdir()) {
+                throw new IllegalStateException("Couldn't create directory " + h.getAbsolutePath());
+            }
         }
         aapt2Dir = new File(h, "aapt2");
         l = new File(context.getFilesDir(), "libs");
@@ -617,7 +616,10 @@ public class Dp {
                 }
 
                 /* Avoid "package ;" line in that file causing issues while compiling */
-                new File(f.v, "R.java").delete();
+                File rJavaFileWithoutPackage = new File(f.v, "R.java");
+                if (rJavaFileWithoutPackage.exists() && !rJavaFileWithoutPackage.delete()) {
+                    LogUtil.w(TAG, "Failed to delete file " + rJavaFileWithoutPackage.getAbsolutePath());
+                }
 
                 /* Start compiling */
                 org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
