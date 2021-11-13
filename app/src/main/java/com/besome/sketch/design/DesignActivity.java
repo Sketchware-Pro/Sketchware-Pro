@@ -78,7 +78,6 @@ import a.a.a.yB;
 import a.a.a.yq;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
-import id.indosw.mod.DirectEditorActivity;
 import io.github.rosemoe.editor.langs.java.JavaLanguage;
 import io.github.rosemoe.editor.widget.CodeEditor;
 import io.github.rosemoe.editor.widget.EditorColorScheme;
@@ -957,30 +956,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     public void z() {
         Intent intent = new Intent(getApplicationContext(), SrcViewerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
-        if (m.getCurrentItem() == 0) {
-            try {
-                intent.putExtra("current", w.d().getXmlName());
-            } catch (Exception ignored) {
-            }
-        } else if (m.getCurrentItem() != 1) {
-            intent.putExtra("current", "");
-        } else {
-            try {
-                intent.putExtra("current", x.d().getJavaName());
-            } catch (Exception ignored) {
-            }
-        }
-
-        startActivityForResult(intent, 240);
-    }
-
-    /**
-     * Opens {@link DirectEditorActivity}.
-     */
-    public void zz() {
-        Intent intent = new Intent(getApplicationContext(), DirectEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", l);
         if (m.getCurrentItem() == 0) {

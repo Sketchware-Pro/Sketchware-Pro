@@ -4757,7 +4757,6 @@
     <public type="layout" name="add_new_listener" id="0x7f0b01e8" />
     <public type="layout" name="menu_activity" id="0x7f0b01e9" />
     <public type="layout" name="manage_proguard" id="0x7f0b01ea" />
-    <public type="layout" name="direct_editor" id="0x7f0b01eb" />
     <public type="layout" name="list_spinner_editor" id="0x7f0b01ec" />
     <public type="layout" name="suggestion_list_item" id="0x7f0b01ed" />
     <public type="layout" name="manage_stringfog" id="0x7f0b01ee" />

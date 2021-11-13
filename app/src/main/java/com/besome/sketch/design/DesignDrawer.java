@@ -34,9 +34,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         drawerItem.setOnClickListener(this);
         drawerItem.setSeparatorVisibility(useSeparator);
         drawerItem.setSubSeparatorVisibility(!useSeparator);
-        if (tag == 19) {
-            drawerItem.setSubSeparatorVisibility(false);
-        }
         return drawerItem;
     }
 
@@ -148,7 +145,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         ));
         /* Add Used Custom Blocks */
         menusLayout.addView(addDrawerItem(
-                21,
+                20,
                 false,
                 Resources.drawable.block_96_blue,
                 Resources.string.design_drawer_menu_customblocks,
@@ -163,7 +160,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_local_library
         ));
         /* Add Native library Manager */
-        menusLayout.addView(addDrawerItem(20,
+        menusLayout.addView(addDrawerItem(19,
                 false,
                 Resources.drawable.cpp,
                 Resources.string.design_drawer_menu_nativelibs,
@@ -187,12 +184,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.drawable.code_icon,
                 Resources.string.design_drawer_menu_title_source_code,
                 Resources.string.design_drawer_menu_description_source_code));
-        /* Add Direct Code Editor */
-        menusLayout.addView(addDrawerItem(19,
-                false,
-                Resources.drawable.notes_alt2,
-                Resources.string.design_drawer_menu_title_editor_code,
-                Resources.string.design_drawer_menu_subtitle_editor_code));
     }
 
     @Override
@@ -270,14 +261,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         return;
 
                     case 19:
-                        designActivity.zz();
-                        return;
-
-                    case 20:
                         designActivity.toNativelibs();
                         return;
 
-                    case 21:
+                    case 20:
                         designActivity.toCustomBlocks();
                         return;
 
