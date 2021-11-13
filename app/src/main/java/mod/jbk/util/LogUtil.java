@@ -26,14 +26,7 @@ public class LogUtil {
      * /Internal storage/.sketchware/debug.txt
      */
     public static void d(String tag, String message) {
-        if (loggingEnabled) {
-            System.out.println(new StringBuilder(getDateAndTime(System.currentTimeMillis()))
-                    .append(" D/").append(tag).append(": ").append(message));
-        }
-
-        if (logToLogcatToo) {
-            Log.d(tag, message);
-        }
+        d(tag, message, null);
     }
 
     /**
@@ -41,14 +34,41 @@ public class LogUtil {
      * /Internal storage/.sketchware/debug.txt
      */
     public static void d(String tag, String message, Throwable throwable) {
+        LogUtil.println('D', tag, message, throwable);
+    }
+
+    private static void println(char type, String tag, String message, Throwable throwable) {
         if (loggingEnabled) {
-            System.out.println(new StringBuilder(getDateAndTime(System.currentTimeMillis()))
-                    .append(" D/").append(tag).append(": ").append(message).append('\n')
-                    .append(Log.getStackTraceString(throwable)));
+            StringBuilder toLog = new StringBuilder(getDateAndTime(System.currentTimeMillis()));
+            toLog.append(" ");
+            toLog.append(type);
+            toLog.append('/');
+            toLog.append(tag);
+            toLog.append(": ");
+            toLog.append(message);
+
+            if (throwable != null) {
+                toLog.append('\n');
+                toLog.append(Log.getStackTraceString(throwable));
+            }
+
+            System.out.println(toLog);
         }
 
         if (logToLogcatToo) {
-            Log.d(tag, message, throwable);
+            switch (type) {
+                case 'D':
+                    Log.d(tag, message, throwable);
+                    break;
+
+                case 'W':
+                    Log.w(tag, message, throwable);
+                    break;
+
+                case 'E':
+                    Log.e(tag, message, throwable);
+                    break;
+            }
         }
     }
 
@@ -57,14 +77,7 @@ public class LogUtil {
      * * /Internal storage/.sketchware/debug.txt
      */
     public static void e(String tag, String message) {
-        if (loggingEnabled) {
-            System.out.println(new StringBuilder(getDateAndTime(System.currentTimeMillis()))
-                    .append(" E/").append(tag).append(": ").append(message));
-        }
-
-        if (logToLogcatToo) {
-            Log.e(tag, message);
-        }
+        LogUtil.e(tag, message, null);
     }
 
     /**
@@ -72,15 +85,7 @@ public class LogUtil {
      * * /Internal storage/.sketchware/debug.txt
      */
     public static void e(String tag, String message, Throwable throwable) {
-        if (loggingEnabled) {
-            System.out.println(new StringBuilder(getDateAndTime(System.currentTimeMillis()))
-                    .append(" E/").append(tag).append(": ").append(message).append('\n')
-                    .append(Log.getStackTraceString(throwable)));
-        }
-
-        if (logToLogcatToo) {
-            Log.e(tag, message, throwable);
-        }
+        LogUtil.println('E', tag, message, throwable);
     }
 
     private static String getDateAndTime(long millis) {
