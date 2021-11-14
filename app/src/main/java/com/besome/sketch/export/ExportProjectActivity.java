@@ -1126,6 +1126,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             super.onCancelled();
             c = null;
             project_metadata.b();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            // Dismiss the ProgressDialog
             i();
             layout_apk_path.setVisibility(View.GONE);
             layout_apk_url.setVisibility(View.GONE);
@@ -1134,6 +1136,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
             loading_sign_apk.setVisibility(View.GONE);
             btn_sign_apk.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onPreExecute() {
+            super.onPreExecute();
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
         @Override
@@ -1159,6 +1167,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         @Override // a.a.a.MA
         public void a() {
             project_metadata.b();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();
             if (project_metadata.g()) {
@@ -1186,6 +1195,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         @Override // a.a.a.MA
         public void a(String str) {
             project_metadata.b();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            // Dismiss the ProgressDialog
             i();
             ExportProjectActivity.this.b(str);
             layout_apk_path.setVisibility(View.GONE);

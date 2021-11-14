@@ -15,59 +15,39 @@ import a.a.a.xB;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
-    public final int a = 1;
-    public final int b = 2;
-    public final int c = 3;
-    public final int d = 4;
-    public final int e = 5;
-    public final int f = 6;
-    public final int g = 7;
-    public final int h = 8;
-    public final int i = 100;
-    public final int j = 101;
-    public final int k = 102;
-    public final int l = 103;
-    public final int m = 104;
-    public final int n = 300;
-    public final int o = 301;
-    public Context context;
-    public LinearLayout menusLayout;
-    public LinearLayout bottomMenuslayout;
+    private Context context;
 
     public DesignDrawer(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
     public DesignDrawer(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
-    public final DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
+    private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
         DrawerItem drawerItem = new DrawerItem(context, tag);
         drawerItem.setContent(iconResId, xB.b().a(context, titleResId), xB.b().a(context, descriptionResId));
         drawerItem.setTag(tag);
         drawerItem.setOnClickListener(this);
         drawerItem.setSeparatorVisibility(useSeparator);
         drawerItem.setSubSeparatorVisibility(!useSeparator);
-        if (tag == 19) {
-            drawerItem.setSubSeparatorVisibility(false);
-        }
         return drawerItem;
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         this.context = context;
         wB.a(context, this, Resources.layout.design_drawer);
         TextView tv_title_configuration = findViewById(Resources.id.tv_title_configuration);
         tv_title_configuration.setText(xB.b().a(context, Resources.string.design_drawer_menu_title));
         ((TextView) findViewById(Resources.id.tv_title_global))
                 .setText(xB.b().a(context, Resources.string.design_drawer_menu_bottom_title));
-        menusLayout = findViewById(Resources.id.layout_menus);
-        bottomMenuslayout = findViewById(Resources.id.layout_bottom_menus);
+        LinearLayout menusLayout = findViewById(Resources.id.layout_menus);
+        LinearLayout bottomMenusLayout = findViewById(Resources.id.layout_bottom_menus);
         /* Add collection item */
-        bottomMenuslayout.addView(addDrawerItem(
+        bottomMenusLayout.addView(addDrawerItem(
                 1,
                 false,
                 Resources.drawable.ic_bookmark_red_48dp,
@@ -165,7 +145,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         ));
         /* Add Used Custom Blocks */
         menusLayout.addView(addDrawerItem(
-                21,
+                20,
                 false,
                 Resources.drawable.block_96_blue,
                 Resources.string.design_drawer_menu_customblocks,
@@ -180,7 +160,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.string.text_subtitle_menu_local_library
         ));
         /* Add Native library Manager */
-        menusLayout.addView(addDrawerItem(20,
+        menusLayout.addView(addDrawerItem(19,
                 false,
                 Resources.drawable.cpp,
                 Resources.string.design_drawer_menu_nativelibs,
@@ -204,12 +184,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 Resources.drawable.code_icon,
                 Resources.string.design_drawer_menu_title_source_code,
                 Resources.string.design_drawer_menu_description_source_code));
-        /* Add Direct Code Editor */
-        menusLayout.addView(addDrawerItem(19,
-                false,
-                Resources.drawable.notes_alt2,
-                Resources.string.design_drawer_menu_title_editor_code,
-                Resources.string.design_drawer_menu_subtitle_editor_code));
     }
 
     @Override
@@ -287,14 +261,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         return;
 
                     case 19:
-                        designActivity.zz();
-                        return;
-
-                    case 20:
                         designActivity.toNativelibs();
                         return;
 
-                    case 21:
+                    case 20:
                         designActivity.toCustomBlocks();
                         return;
 
@@ -307,13 +277,11 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
     static class DrawerItem extends LinearLayout {
 
-        public int tag;
-        public ImageView imgIcon;
-        public TextView titleTextView;
-        public TextView subTitleTextView;
-        public View subSeparator;
-        public View separator;
-        public LinearLayout subItems;
+        private ImageView imgIcon;
+        private TextView titleTextView;
+        private TextView subTitleTextView;
+        private View subSeparator;
+        private View separator;
 
         public DrawerItem(Context context) {
             super(context);
@@ -337,14 +305,12 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         }
 
         public final void initialize(Context context, int tag) {
-            this.tag = tag;
             wB.a(context, this, Resources.layout.design_drawer_item);
             imgIcon = findViewById(Resources.id.img_icon);
             titleTextView = findViewById(Resources.id.tv_root_title);
             subTitleTextView = findViewById(Resources.id.tv_sub_title);
             subSeparator = findViewById(Resources.id.sub_separator);
             separator = findViewById(Resources.id.separator);
-            subItems = findViewById(Resources.id.sub_items);
         }
 
         public void setSeparatorVisibility(boolean visible) {
