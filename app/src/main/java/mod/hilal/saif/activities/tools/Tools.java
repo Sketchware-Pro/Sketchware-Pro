@@ -23,9 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.tools.r8.v.b.V;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -34,7 +32,6 @@ import com.sketchware.remod.Resources;
 
 import java.io.File;
 
-import a.a.a.L;
 import a.a.a.aB;
 import a.a.a.xB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
