@@ -109,6 +109,14 @@ public class AppBundleCompiler {
         args.add("--modules=" + mainModuleArchive.getAbsolutePath());
         args.add("--overwrite");
         args.add("--output=" + appBundle.getAbsolutePath());
+        if (mDp.proguard.isDebugFilesEnabled()) {
+            /* Add ProGuard mapping if available for automatic import to ProGuard mappings in Google Play */
+            File mapping = new File(mDp.f.printmapping);
+            if (mapping.exists()) {
+                args.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
+                        mapping.getAbsolutePath());
+            }
+        }
 
         LogUtil.d(TAG, "Running BundleToolMain with these arguments: " + args);
         try {

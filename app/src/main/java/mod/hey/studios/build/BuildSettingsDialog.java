@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,8 +49,8 @@ public class BuildSettingsDialog {
         title.setText("Build Settings");
 
         View[] viewArr = {
-                addInputPref(BuildSettings.SETTING_ANDROID_JAR_PATH, "", "Custom android.jar", 1, contentView),
-                addInputPref(BuildSettings.SETTING_CLASSPATH, "", "Classpath (separated by :)", 1, contentView),
+                addInputPref(BuildSettings.SETTING_ANDROID_JAR_PATH, "", "Custom android.jar", EditorInfo.TYPE_CLASS_TEXT, contentView),
+                addInputPref(BuildSettings.SETTING_CLASSPATH, "", "Classpath (separated by :)", EditorInfo.TYPE_CLASS_TEXT, contentView),
                 addSingleChoicePref(BuildSettings.SETTING_DEXER, new String[]{"Dx", "D8"}, "Dx", "Dexer", contentView),
                 addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, new String[]{"1.7", "1.8"}, "1.7", "Java version", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, false, "Hide warnings in error log", 12, contentView),
