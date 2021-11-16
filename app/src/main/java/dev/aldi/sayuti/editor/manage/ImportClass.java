@@ -161,6 +161,8 @@ public class ImportClass {
                 break;
 
             case "DynamicLink":
+                imports.add("com.google.android.gms.tasks.OnSuccessListener");
+                imports.add("com.google.android.gms.tasks.OnFailureListener");
                 imports.add("com.google.firebase.dynamiclinks.DynamicLink");
                 imports.add("com.google.firebase.dynamiclinks.FirebaseDynamicLinks");
                 imports.add("com.google.firebase.dynamiclinks.PendingDynamicLinkData");

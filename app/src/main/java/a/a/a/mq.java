@@ -705,11 +705,6 @@ public class mq {
                 importList.add("android.widget.AdapterView");
                 return importList;
 
-            case "onSeekBarChangeListener":
-            case "onDateChangeListener":
-            default:
-                return importList;
-
             case "webViewClient":
                 importList.add("android.webkit.WebViewClient");
                 return importList;
@@ -787,6 +782,8 @@ public class mq {
                 importList.add("com.google.android.gms.ads.LoadAdError");
                 return importList;
 
+            case "onSeekBarChangeListener":
+            case "onDateChangeListener":
             default:
                 EventsHandler.getImports(importList, listener);
                 return importList;
