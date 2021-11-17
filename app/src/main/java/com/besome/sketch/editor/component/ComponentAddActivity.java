@@ -341,7 +341,15 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentList.add(new ComponentBean(24));
         componentList.add(new ComponentBean(25));
         componentList.add(new ComponentBean(26));
-        ManageComponent.a(componentList);
+        components.add(new ComponentBean(27));
+        ComponentsHandler.add(components);
+        components.add(new ComponentBean(28));
+        components.add(new ComponentBean(29));
+        components.add(new ComponentBean(30));
+        components.add(new ComponentBean(31));
+        components.add(new ComponentBean(32));
+        components.add(new ComponentBean(33));
+        components.add(new ComponentBean(34));
         componentsAdapter.c();
     }
 
