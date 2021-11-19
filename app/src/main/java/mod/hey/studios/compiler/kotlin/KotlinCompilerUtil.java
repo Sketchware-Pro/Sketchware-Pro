@@ -16,6 +16,7 @@ public class KotlinCompilerUtil {
      * Returns whether there are any .kt files in
      *
      * > .sketchware/mysc/xxx/app/src/main/java,
+     * > .sketchware/mysc/xxx/gen,
      * > .sketchware/data/xxx/files/java
      *
      * or not.
@@ -43,6 +44,11 @@ public class KotlinCompilerUtil {
         // .sketchware/mysc/xxx/app/src/main/java
         mFilesToCompile.addAll(getSourceFiles(
                 new File(workspace.y)
+        ));
+
+        // .sketchware/mysc/xxx/gen
+        mFilesToCompile.addAll(getSourceFiles(
+                new File(workspace.v)
         ));
 
         // .sketchware/data/xxx/files/java
