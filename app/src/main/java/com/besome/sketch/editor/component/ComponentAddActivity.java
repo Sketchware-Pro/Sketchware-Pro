@@ -1,8 +1,10 @@
 package com.besome.sketch.editor.component;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
@@ -43,111 +45,124 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import a.a.a.xB;
 import mod.agus.jcoderz.component.ManageComponent;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
-public class ComponentAddActivity extends BaseDialogActivity {
+public class ComponentAddActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    public TextView A;
-    public TextView B;
-    public ImageView C;
-    public ImageView D;
-    public ImageView E;
+    public TextView tvDescription;
+    public TextView tvName;
+    public ImageView imgIcon;
+    public ImageView imgBack;
+    public ImageView imgFilePicker;
     /**
      * The sc_id of the currently open project
      */
-    public String F;
-    public ProjectFileBean G;
-    public LinearLayout H;
-    public TextView I;
-    public EditText J;
-    public EditText K;
-    public EditText L;
-    public EditText M;
-    public TextInputLayout N;
-    public TextInputLayout O;
-    public TextInputLayout P;
-    public TextInputLayout Q;
-    public TextView R;
-    public TextView S;
+    public String sc_id;
+    public ProjectFileBean projectFileBean;
+    public LinearLayout inputFilePickerLayout;
+    public TextView tvWarnning;
+    public EditText edInput;
+    public EditText edInputFilename;
+    public EditText edInputFirebasePath;
+    public EditText edInputFilePicker;
+    public TextInputLayout tiInput;
+    public TextInputLayout tiInputFilename;
+    public TextInputLayout tiInputFirebasePath;
+    public TextInputLayout tiInputFilePicker;
+    public TextView tvDescFirebasePath;
+    public TextView tvDescFilePicker;
     public ZB T;
     public SB U;
     public SB V;
     public SB W;
-    public LinearLayout X;
-    public LinearLayout Y;
-    public RelativeLayout Z;
-    public Button aa;
-    public Button ba;
-    public RecyclerView t;
-    public ComponentAddActivity.a u;
-    public ArrayList<ComponentBean> v;
+    public LinearLayout inputsLayout;
+    public LinearLayout imgIconLayout;
+    public RelativeLayout descriptionLayout;
+    public Button addButton;
+    public Button docsButton;
+    public RecyclerView componentsList;
+    public ComponentsAdapter componentsAdapter;
+    public ArrayList<ComponentBean> componentList;
     public HashMap<Integer, Pair<Integer, Integer>> w;
     public boolean x;
     public boolean y;
-    public TextView z;
+    public TextView tvComponentTitle;
 
-    public final boolean n() {
-        int i = v.get(u.c).type;
-        String obj = J.getText().toString();
+    private boolean checks() {
+        int componentType = componentList.get(componentsAdapter.layoutPosition).type;
+        String componentId = edInput.getText().toString();
         if (!T.b()) {
             return false;
         }
-        if (i == 2) {
-            if (!U.b()) {
-                return false;
-            }
-            jC.a(F).a(G.getJavaName(), i, obj, K.getText().toString());
-        } else if (i == 6 || i == 14) {
-            if (!V.b()) {
-                return false;
-            }
-            if (jC.c(F).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                bB.b(this, xB.b().a(this, Resources.string.design_library_guide_setup_first), 1).show();
-                return false;
-            }
-            jC.a(F).a(G.getJavaName(), i, obj, L.getText().toString());
-        } else if (i == 12) {
-            if (jC.c(F).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                bB.b(this, xB.b().a(this, Resources.string.design_library_guide_setup_first), 1).show();
-                return false;
-            } else if (jC.c(F).d().reserved2.trim().length() == 0) {
-                bB.b(this, xB.b().a(this, Resources.string.design_library_firebase_guide_setup_first), 1).show();
-                return false;
-            } else {
-                jC.a(F).a(G.getJavaName(), i, obj, L.getText().toString());
-            }
-        } else if (i == 13) {
-            if (jC.c(F).b().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                bB.b(this, xB.b().a(this, Resources.string.design_library_admob_component_setup_first), 1).show();
-                return false;
-            }
-            jC.a(F).a(G.getJavaName(), i, obj);
-        } else if (i != 16) {
-            jC.a(F).a(G.getJavaName(), i, obj);
-        } else if (M.getText().toString().length() == 0 || !W.b()) {
-            return false;
-        } else {
-            jC.a(F).a(G.getJavaName(), i, obj, M.getText().toString());
-        }
-        jC.a(F).k();
-        return true;
-    }
+        switch (componentType) {
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
+                if (!U.b()) {
+                    return false;
+                }
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFilename.getText().toString());
+                break;
 
-    public final void o() {
-        bB.a(this, xB.b().a(this, Resources.string.component_message_component_block_added), 1).show();
-        mB.a(getApplicationContext(), J);
-        setResult(-1);
-        finish();
+            case ComponentBean.COMPONENT_TYPE_FIREBASE:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                if (!V.b()) {
+                    return false;
+                }
+                if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
+                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    return false;
+                }
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFirebasePath.getText().toString());
+                break;
+
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
+                if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
+                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    return false;
+                } else if (jC.c(sc_id).d().reserved2.trim().length() == 0) {
+                    bB.b(this, Helper.getResString(Resources.string.design_library_firebase_guide_setup_first), 1).show();
+                    return false;
+                } else {
+                    jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFirebasePath.getText().toString());
+                }
+                break;
+
+            case 27:
+                if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
+                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    return false;
+                }
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
+                break;
+
+            case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
+                if (jC.c(sc_id).b().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
+                    bB.b(this, Helper.getResString(Resources.string.design_library_admob_component_setup_first), 1).show();
+                    return false;
+                }
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
+                break;
+
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
+                if (edInputFilePicker.getText().toString().length() == 0 || !W.b()) {
+                    return false;
+                }
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFilePicker.getText().toString());
+                break;
+
+            default:
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
+        }
+        jC.a(sc_id).k();
+        return true;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 275 && resultCode == -1) {
-            M.setText(data.getStringExtra("mime_type"));
+            edInputFilePicker.setText(data.getStringExtra("mime_type"));
         }
     }
 
@@ -168,260 +183,249 @@ public class ComponentAddActivity extends BaseDialogActivity {
         m();
         if (savedInstanceState == null) {
             Intent intent = getIntent();
-            F = intent.getStringExtra("sc_id");
-            G = intent.getParcelableExtra("project_file");
+            sc_id = intent.getStringExtra("sc_id");
+            projectFileBean = intent.getParcelableExtra("project_file");
         } else {
-            F = savedInstanceState.getString("sc_id");
-            G = savedInstanceState.getParcelable("project_file");
+            sc_id = savedInstanceState.getString("sc_id");
+            projectFileBean = savedInstanceState.getParcelable("project_file");
         }
-        z = findViewById(Resources.id.tv_component_title);
-        A = findViewById(Resources.id.tv_description);
-        B = findViewById(Resources.id.tv_name);
-        I = findViewById(Resources.id.tv_warning);
-        R = findViewById(Resources.id.tv_desc_firebase_path);
-        S = findViewById(Resources.id.tv_desc_file_picker);
-        J = findViewById(Resources.id.ed_input);
-        L = findViewById(Resources.id.ed_input_firebase_path);
-        K = findViewById(Resources.id.ed_input_filename);
-        M = findViewById(Resources.id.ed_input_file_picker);
-        X = findViewById(Resources.id.layout_inputs);
-        D = findViewById(Resources.id.img_back);
-        D.setVisibility(View.GONE);
-        E = findViewById(Resources.id.img_file_picker);
-        N = findViewById(Resources.id.ti_input);
-        O = findViewById(Resources.id.ti_input_filename);
-        P = findViewById(Resources.id.ti_input_firebase_path);
-        Q = findViewById(Resources.id.ti_input_file_picker);
-        Y = findViewById(Resources.id.layout_img_icon);
-        Z = findViewById(Resources.id.layout_description);
-        H = findViewById(Resources.id.layout_input_file_picker);
-        J.setPrivateImeOptions("defaultInputmode=english;");
-        aa = findViewById(Resources.id.add_button);
-        aa.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_add));
-        ba = findViewById(Resources.id.docs_button);
-        ba.setText(xB.b().a(getApplicationContext(), Resources.string.component_add_docs_button_title_go_to_docs));
-        z.setText(xB.b().a(getApplicationContext(), Resources.string.component_title_add_component));
-        t = findViewById(Resources.id.components_list);
+        tvComponentTitle = findViewById(Resources.id.tv_component_title);
+        tvDescription = findViewById(Resources.id.tv_description);
+        tvName = findViewById(Resources.id.tv_name);
+        tvWarnning = findViewById(Resources.id.tv_warning);
+        tvDescFirebasePath = findViewById(Resources.id.tv_desc_firebase_path);
+        tvDescFilePicker = findViewById(Resources.id.tv_desc_file_picker);
+        edInput = findViewById(Resources.id.ed_input);
+        edInputFirebasePath = findViewById(Resources.id.ed_input_firebase_path);
+        edInputFilename = findViewById(Resources.id.ed_input_filename);
+        edInputFilePicker = findViewById(Resources.id.ed_input_file_picker);
+        inputsLayout = findViewById(Resources.id.layout_inputs);
+        imgBack = findViewById(Resources.id.img_back);
+        imgBack.setVisibility(View.GONE);
+        imgFilePicker = findViewById(Resources.id.img_file_picker);
+        tiInput = findViewById(Resources.id.ti_input);
+        tiInputFilename = findViewById(Resources.id.ti_input_filename);
+        tiInputFirebasePath = findViewById(Resources.id.ti_input_firebase_path);
+        tiInputFilePicker = findViewById(Resources.id.ti_input_file_picker);
+        imgIconLayout = findViewById(Resources.id.layout_img_icon);
+        descriptionLayout = findViewById(Resources.id.layout_description);
+        inputFilePickerLayout = findViewById(Resources.id.layout_input_file_picker);
+        edInput.setPrivateImeOptions("defaultInputmode=english;");
+        addButton = findViewById(Resources.id.add_button);
+        addButton.setText(Helper.getResString(Resources.string.common_word_add));
+        docsButton = findViewById(Resources.id.docs_button);
+        docsButton.setText(Helper.getResString(Resources.string.component_add_docs_button_title_go_to_docs));
+        tvComponentTitle.setText(Helper.getResString(Resources.string.component_title_add_component));
+        componentsList = findViewById(Resources.id.components_list);
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
         flexboxLayoutManager.setJustifyContent(JustifyContent.CENTER);
         flexboxLayoutManager.setAlignItems(AlignItems.CENTER);
-        t.setLayoutManager(flexboxLayoutManager);
-        u = new a();
-        t.setHasFixedSize(true);
-        t.setAdapter(u);
-        Z.setVisibility(View.GONE);
-        C = findViewById(Resources.id.img_icon);
+        componentsList.setLayoutManager(flexboxLayoutManager);
+        componentsAdapter = new ComponentsAdapter();
+        componentsList.setHasFixedSize(true);
+        componentsList.setAdapter(componentsAdapter);
+        descriptionLayout.setVisibility(View.GONE);
+        imgIcon = findViewById(Resources.id.img_icon);
         T = new ZB(
                 this,
-                N,
+                tiInput,
                 uq.b,
                 uq.a(),
-                jC.a(F).a(G)
+                jC.a(sc_id).a(projectFileBean)
         );
         U = new SB(
                 this,
-                O,
+                tiInputFilename,
                 1,
                 20
         );
         V = new SB(
                 this,
-                P,
+                tiInputFirebasePath,
                 0,
                 100
         );
         W = new SB(
                 this,
-                Q,
+                tiInputFilePicker,
                 1,
                 50
         );
-        R.setText(xB.b().a(this, Resources.string.design_library_firebase_guide_path_example));
-        S.setText(xB.b().a(this, Resources.string.component_description_file_picker_guide_mime_type_example));
-        N.setHint(xB.b().a(this, Resources.string.component_hint_enter_name));
-        O.setHint(xB.b().a(this, Resources.string.component_file_hint_enter_file_name));
-        P.setHint(xB.b().a(this, Resources.string.design_library_firebase_hint_enter_data_location));
-        Q.setHint(xB.b().a(this, Resources.string.component_file_picker_hint_mime_type));
+        tvDescFirebasePath.setText(Helper.getResString(Resources.string.design_library_firebase_guide_path_example));
+        tvDescFilePicker.setText(Helper.getResString(Resources.string.component_description_file_picker_guide_mime_type_example));
+        tiInput.setHint(Helper.getResString(Resources.string.component_hint_enter_name));
+        tiInputFilename.setHint(Helper.getResString(Resources.string.component_file_hint_enter_file_name));
+        tiInputFirebasePath.setHint(Helper.getResString(Resources.string.design_library_firebase_hint_enter_data_location));
+        tiInputFilePicker.setHint(Helper.getResString(Resources.string.component_file_picker_hint_mime_type));
         w = new HashMap<>();
-        D.setOnClickListener(v -> {
-            if (!mB.a()) {
-                onBackPressed();
-            }
-        });
-        aa.setOnClickListener(v -> {
-            if (!mB.a() && n()) {
-                o();
-            }
-        });
-        ba.setOnClickListener(v -> {
-            if (!mB.a()) {
-                r();
-            }
-        });
-        E.setOnClickListener(v -> u());
+        imgBack.setOnClickListener(this);
+        addButton.setOnClickListener(this);
+        docsButton.setOnClickListener(this);
+        imgFilePicker.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case Resources.id.add_button:
+                if (!mB.a() && checks()) {
+                    bB.a(this, Helper.getResString(Resources.string.component_message_component_block_added), 1).show();
+                    mB.a(getApplicationContext(), edInput);
+                    setResult(-1);
+                    finish();
+                }
+                break;
+
+            case Resources.id.img_back:
+                if (!mB.a()) {
+                    onBackPressed();
+                }
+                break;
+
+            case Resources.id.docs_button:
+                if (!mB.a()) {
+                    String componentDocsUrlByTypeName = ComponentBean.getComponentDocsUrlByTypeName(componentList.get(componentsAdapter.layoutPosition).type);
+                    if (componentDocsUrlByTypeName.equals("")) {
+                        bB.a(getApplicationContext(), Helper.getResString(Resources.string.component_add_message_docs_updated_soon), 0).show();
+                        return;
+                    }
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setData(Uri.parse(componentDocsUrlByTypeName));
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                        startActivity(intent);
+                    } catch (Exception unused) {
+                        t();
+                    }
+                }
+                break;
+
+            case Resources.id.img_file_picker:
+                startActivityForResult(new Intent(this, ShowFilePickerTypesActivity.class), 275);
+                break;
+        }
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        q();
+        componentList = new ArrayList<>();
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTENT));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SHAREDPREF));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CALENDAR));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_VIBRATOR));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TIMERTASK));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_DIALOG));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_MEDIAPLAYER));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SOUNDPOOL));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CAMERA));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FILE_PICKER));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_GYROSCOPE));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER));
+        componentList.add(new ComponentBean(22));
+        componentList.add(new ComponentBean(23));
+        componentList.add(new ComponentBean(24));
+        componentList.add(new ComponentBean(25));
+        componentList.add(new ComponentBean(26));
+        ManageComponent.a(componentList);
+        componentsAdapter.c();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putString("sc_id", F);
-        savedInstanceState.putParcelable("project_file", G);
+        savedInstanceState.putString("sc_id", sc_id);
+        savedInstanceState.putParcelable("project_file", projectFileBean);
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public final void p() {
+    private void p() {
         if (!y) {
             View currentFocus = getCurrentFocus();
             if (currentFocus != null) {
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             y = true;
-            A.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            X.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            aa.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            ba.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
-            Pair<Integer, Integer> pair = w.get(u.c);
-            Y.animate()
+            tvDescription.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
+            inputsLayout.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
+            addButton.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
+            docsButton.animate().alpha(FlexItem.FLEX_GROW_DEFAULT).start();
+            Pair<Integer, Integer> pair = w.get(componentsAdapter.layoutPosition);
+            imgIconLayout.animate()
                     .translationX((float) pair.first)
                     .translationY((float) pair.second)
                     .setDuration(300)
-                    .setListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                        }
-
+                    .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             y = false;
                             x = false;
-                            Z.setVisibility(View.GONE);
-                            A.setVisibility(View.GONE);
-                            D.setVisibility(View.GONE);
-                            Y.setVisibility(View.GONE);
-                            t.setVisibility(View.VISIBLE);
-                            z.setText(xB.b().a(getApplicationContext(), Resources.string.component_title_add_component));
-                            u.c();
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
+                            Helper.setViewsVisibility(true, descriptionLayout, tvDescription, imgBack, imgIconLayout);
+                            componentsList.setVisibility(View.VISIBLE);
+                            tvComponentTitle.setText(Helper.getResString(Resources.string.component_title_add_component));
+                            componentsAdapter.c();
                         }
                     }).start();
         }
     }
 
-    public final void q() {
-        v = new ArrayList<>();
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTENT));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SHAREDPREF));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CALENDAR));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_VIBRATOR));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TIMERTASK));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_DIALOG));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_MEDIAPLAYER));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SOUNDPOOL));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_CAMERA));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FILE_PICKER));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_GYROSCOPE));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT));
-        v.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER));
-        v.add(new ComponentBean(22));
-        v.add(new ComponentBean(23));
-        v.add(new ComponentBean(24));
-        v.add(new ComponentBean(25));
-        v.add(new ComponentBean(26));
-        ManageComponent.a(v);
-        u.c();
-    }
+    private void s() {
+        Helper.setViewsVisibility(false, imgIcon, descriptionLayout, inputsLayout, imgIconLayout, tvDescription, imgBack);
+        componentsList.setVisibility(View.GONE);
+        imgIconLayout.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
+        imgIconLayout.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+        ComponentBean componentBean = componentList.get(componentsAdapter.layoutPosition);
+        Helper.setViewsVisibility(true, tvWarnning, tiInputFilename, tvDescFirebasePath, tvDescFilePicker, tiInputFirebasePath, inputFilePickerLayout);
+        switch (componentBean.type) {
+            case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
+                tiInputFilename.setVisibility(View.VISIBLE);
+                break;
 
-    public final void r() {
-        String componentDocsUrlByTypeName = ComponentBean.getComponentDocsUrlByTypeName(v.get(u.c).type);
-        if (componentDocsUrlByTypeName.equals("")) {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.component_add_message_docs_updated_soon), 0).show();
-            return;
-        }
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setData(Uri.parse(componentDocsUrlByTypeName));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            startActivity(intent);
-        } catch (Exception unused) {
-            t();
-        }
-    }
+            case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                Helper.setViewsVisibility(false, tvDescFirebasePath, tiInputFirebasePath);
+                break;
 
-    public final void s() {
-        C.setVisibility(View.VISIBLE);
-        Z.setVisibility(View.VISIBLE);
-        X.setVisibility(View.VISIBLE);
-        Y.setVisibility(View.VISIBLE);
-        A.setVisibility(View.VISIBLE);
-        D.setVisibility(View.VISIBLE);
-        t.setVisibility(View.GONE);
-        Y.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-        Y.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
-        ComponentBean componentBean = v.get(u.c);
-        I.setVisibility(View.GONE);
-        O.setVisibility(View.GONE);
-        R.setVisibility(View.GONE);
-        S.setVisibility(View.GONE);
-        P.setVisibility(View.GONE);
-        H.setVisibility(View.GONE);
-        int type = componentBean.type;
-        if (type == 2) {
-            O.setVisibility(View.VISIBLE);
-        } else if (type == 6) {
-            R.setVisibility(View.VISIBLE);
-            P.setVisibility(View.VISIBLE);
-        } else if (type != 11) {
-            if (type == 14) {
-                R.setVisibility(View.VISIBLE);
-                P.setVisibility(View.VISIBLE);
-            } else if (type == 16) {
-                S.setVisibility(View.VISIBLE);
-                H.setVisibility(View.VISIBLE);
-            }
-        } else if (!GB.b(this, 4)) {
-            I.setVisibility(View.VISIBLE);
-            I.setText(xB.b().a(this, Resources.string.message_device_not_support));
+            case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
+                if (!GB.b(this, Sensor.TYPE_GYROSCOPE)) {
+                    tvWarnning.setVisibility(View.VISIBLE);
+                    tvWarnning.setText(Helper.getResString(Resources.string.message_device_not_support));
+                }
+                break;
+
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                Helper.setViewsVisibility(false, tvDescFirebasePath, tiInputFirebasePath);
+                break;
+
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
+                Helper.setViewsVisibility(false, tvDescFilePicker, inputFilePickerLayout);
+                break;
         }
-        C.setImageResource(ComponentBean.getIconResource(componentBean.type));
-        z.setText(ComponentBean.getComponentName(getApplicationContext(), componentBean.type));
-        xB.b();
-        getApplicationContext();
-        A.setText(ComponentsHandler.description(componentBean.type));
-        A.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        X.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        aa.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        ba.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
-        X.setTranslationY(300.0f);
-        A.animate().alpha(1.0f).start();
-        D.animate().alpha(1.0f).start();
-        X.animate().alpha(1.0f).translationY(FlexItem.FLEX_GROW_DEFAULT).start();
-        aa.animate().setStartDelay(150).alpha(1.0f).start();
-        ba.animate().setStartDelay(150).alpha(1.0f).start();
+        imgIcon.setImageResource(ComponentBean.getIconResource(componentBean.type));
+        tvComponentTitle.setText(ComponentBean.getComponentName(getApplicationContext(), componentBean.type));
+        tvDescription.setText(ComponentsHandler.description(componentBean.type));
+        tvDescription.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
+        inputsLayout.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
+        addButton.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
+        docsButton.setAlpha(FlexItem.FLEX_GROW_DEFAULT);
+        inputsLayout.setTranslationY(300.0f);
+        tvDescription.animate().alpha(1.0f).start();
+        imgBack.animate().alpha(1.0f).start();
+        inputsLayout.animate().alpha(1.0f).translationY(FlexItem.FLEX_GROW_DEFAULT).start();
+        addButton.animate().setStartDelay(150).alpha(1.0f).start();
+        docsButton.animate().setStartDelay(150).alpha(1.0f).start();
     }
 
     /**
@@ -430,125 +434,120 @@ public class ComponentAddActivity extends BaseDialogActivity {
     public final void t() {
         aB dialog = new aB(this);
         dialog.a(Resources.drawable.chrome_96);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.title_compatible_chrome_browser));
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.message_compatible_chrome_brower));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
-            if (!mB.a()) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("market://details?id=com.android.chrome"));
-                startActivity(intent);
-                dialog.dismiss();
+        dialog.b(Helper.getResString(Resources.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(Resources.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(Resources.string.common_word_ok), new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mB.a()) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("market://details?id=com.android.chrome"));
+                    startActivity(intent);
+                    dialog.dismiss();
+                }
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
-    public final void u() {
-        startActivityForResult(new Intent(this, ShowFilePickerTypesActivity.class), 275);
-    }
+    public class ComponentsAdapter extends RecyclerView.a<ComponentsAdapter.ViewHolder> {
 
-    public class a extends RecyclerView.a<ComponentAddActivity.a.ViewHolder> {
+        public int layoutPosition = -1;
+        public RecyclerView recyclerView;
 
-        public int c = -1;
-        public RecyclerView d;
-
-        public a() {
+        public ComponentsAdapter() {
         }
 
+        @Override
         public long a(int i) {
             return i;
         }
 
+        @Override
         public void a(RecyclerView recyclerView) {
             super.a(recyclerView);
-            d = recyclerView;
+            this.recyclerView = recyclerView;
         }
 
-        public void b(ViewHolder viewHolderVar, int i) {
-            String componentName = ComponentBean.getComponentName(getApplicationContext(), v.get(i).type);
-            viewHolderVar.b.setAlpha(1.0f);
-            viewHolderVar.b.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-            viewHolderVar.b.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
-            viewHolderVar.u.setAlpha(1.0f);
-            viewHolderVar.u.setText(componentName);
-            viewHolderVar.t.setImageResource(ComponentBean.getIconResource(v.get(i).type));
+        @Override
+        public void b(ViewHolder viewHolder, int position) {
+            String componentName = ComponentBean.getComponentName(getApplicationContext(), componentList.get(position).type);
+            viewHolder.b.setAlpha(1.0f);
+            viewHolder.b.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
+            viewHolder.b.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+            viewHolder.itemName.setAlpha(1.0f);
+            viewHolder.itemName.setText(componentName);
+            viewHolder.itemIcon.setImageResource(ComponentBean.getIconResource(componentList.get(position).type));
             if (!x) {
                 return;
             }
-            if (i == this.c) {
-                Pair<Integer, Integer> pair = w.get(i);
-                viewHolderVar.u.animate()
+            if (position == this.layoutPosition) {
+                Pair<Integer, Integer> pair = w.get(position);
+                viewHolder.itemName.animate()
                         .setDuration(100)
                         .alpha(FlexItem.FLEX_GROW_DEFAULT)
                         .start();
-                viewHolderVar.b.animate()
+                viewHolder.b.animate()
                         .setStartDelay(300)
                         .translationX((float) (-pair.first))
                         .translationY((float) (-pair.second))
                         .setDuration(300)
-                        .setListener(new Animator.AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                            }
-
+                        .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                B.setText(componentName);
+                                tvName.setText(componentName);
                                 s();
                                 y = false;
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animation) {
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animation) {
                             }
                         }).start();
                 return;
             }
-            viewHolderVar.b.animate()
+            viewHolder.b.animate()
                     .alpha(FlexItem.FLEX_GROW_DEFAULT)
                     .start();
         }
 
+        @Override
         public ViewHolder b(ViewGroup viewGroup, int i) {
-            View a = wB.a(viewGroup.getContext(), Resources.layout.component_add_item);
+            View itemView = wB.a(viewGroup.getContext(), Resources.layout.component_add_item);
             int lengthAndWidth = (int) wB.a(viewGroup.getContext(), 76.0f);
-            a.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
-            return new ViewHolder(a);
+            itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
+            return new ViewHolder(itemView);
         }
 
+        @Override
         public int a() {
-            return v.size();
+            return componentList.size();
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        public class ViewHolder extends RecyclerView.v implements View.OnClickListener {
 
-            public ImageView t;
-            public TextView u;
+            public ImageView itemIcon;
+            public TextView itemName;
 
             public ViewHolder(View view) {
                 super(view);
-                t = view.findViewById(Resources.id.icon);
-                u = view.findViewById(Resources.id.name);
-                view.setOnClickListener(v -> {
-                    if (!y) {
-                        y = true;
-                        ComponentAddActivity.a.this.c = j();
-                        x = true;
-                        int[] viewLocationInWindow = new int[2];
-                        view.getLocationInWindow(viewLocationInWindow);
-                        int[] dLocationInWindow = new int[2];
-                        ComponentAddActivity.a.this.d.getLocationInWindow(dLocationInWindow);
-                        int i = viewLocationInWindow[0] - dLocationInWindow[0];
-                        w.put(ComponentAddActivity.a.this.c, new Pair<>(i, (int) (((float) (viewLocationInWindow[1] - dLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
-                        ComponentAddActivity.a.this.c();
-                    }
-                });
+                itemIcon = view.findViewById(Resources.id.icon);
+                itemName = view.findViewById(Resources.id.name);
+                view.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                if (!y) {
+                    y = true;
+                    ComponentsAdapter.this.layoutPosition = j();
+                    x = true;
+                    int[] itemViewLocationInWindow = new int[2];
+                    view.getLocationInWindow(itemViewLocationInWindow);
+                    int[] recyclerViewLocationInWindow = new int[2];
+                    ComponentsAdapter.this.recyclerView.getLocationInWindow(recyclerViewLocationInWindow);
+                    int i = itemViewLocationInWindow[0] - recyclerViewLocationInWindow[0];
+                    w.put(ComponentsAdapter.this.layoutPosition, new Pair<>(i, (int) (((float) (itemViewLocationInWindow[1] - recyclerViewLocationInWindow[1])) - wB.a(getApplicationContext(), 16.0f))));
+                    ComponentsAdapter.this.c();
+                }
             }
         }
     }
