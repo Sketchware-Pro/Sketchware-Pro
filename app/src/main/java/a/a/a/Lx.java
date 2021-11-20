@@ -12,7 +12,6 @@ import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.editor.event.ManageEventComponent;
 import mod.agus.jcoderz.handle.code.CodeResult;
 import mod.agus.jcoderz.handle.component.ConstVarWidget;
-import mod.agus.jcoderz.lib.TypeVarComponent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
@@ -863,7 +862,7 @@ public class Lx {
                 return "new Intent(Intent.ACTION_GET_CONTENT)";
 
             default:
-                return TypeVarComponent.b(name);
+                return "";
         }
     }
 
