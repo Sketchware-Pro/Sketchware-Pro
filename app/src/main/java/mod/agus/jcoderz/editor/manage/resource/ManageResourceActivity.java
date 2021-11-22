@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -328,7 +329,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
             } else {
                 try {
                     if (FileUtil.isImageFile(getItem(position))) {
-                        icon.setImageURI(Uri.fromFile(new File(getItem(position))));
+                        Glide.with(ManageResourceActivity.this).load(new File(getItem(position))).into(icon);
                     } else {
                         icon.setImageResource(Resources.drawable.file_48_blue);
                     }
