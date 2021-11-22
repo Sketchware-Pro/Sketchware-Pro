@@ -101,7 +101,6 @@ public class Dp {
 
     public Dp(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
-        /* Detect some bad behaviour of the app */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
