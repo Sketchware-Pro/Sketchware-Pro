@@ -21,13 +21,8 @@ public class DebugActivity extends Activity {
                         .setMessage(error)
                         .setPositiveButton("End Application", (dialog1, which) -> finish())
                         .create();
-
-                TextView messageView = dialog.findViewById(android.R.id.message);
-                if (messageView != null) {
-                    messageView.setTextIsSelectable(true);
-                }
-
                 dialog.show();
+                ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
             }
         }
     }
