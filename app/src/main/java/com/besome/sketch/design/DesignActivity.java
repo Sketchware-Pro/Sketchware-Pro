@@ -1162,13 +1162,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
-                        /* Merge DEX file(s) with libraries' dexes */
-                        publishProgress("Merging libraries' DEX files...");
-                        mDp.h();
-                        if (d) {
-                            cancel(true);
-                            return;
-                        }
+/*
+ * Do not merge dex files because it's a debug build and merging them isn't necessary.
+ *
+ *                        /* Merge DEX file(s) with libraries' dexes */
+ *                        publishProgress("Merging libraries' DEX files...");
+ *                        mDp.h();
+ *                        if (d) {
+ *                            cancel(true);
+ *                            return;
+ *                       }
+ */
 
                         publishProgress("Building APK...");
                         mDp.g();
