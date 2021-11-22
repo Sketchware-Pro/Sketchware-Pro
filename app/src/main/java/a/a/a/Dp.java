@@ -171,6 +171,16 @@ public class Dp {
         try {
             if (!Integer.parseInt(this.a) >= 21) {
                 dexLibraries(outputPath, dexes);
+            } else {
+                Iterator it = dexes.iterator();
+                while (it.hasNext()) {
+                    String dexPath = it.next();
+                    int n = 2;
+                    while (new File(outputPath, "classes" + n + ".dex").exists()) {
+                        n++;
+                    }
+                    FileUtil.copyFile(dexPath, "classes" + n + ".dex");
+                }
             }
         } catch (Throwable e) {
             LogUtil.e(TAG, "Failed to parse minSdk as int: " + e.getMessage(), e);
