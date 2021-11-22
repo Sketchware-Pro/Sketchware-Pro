@@ -174,6 +174,7 @@ public class Dp {
             }
         } catch (Throwable e) {
             LogUtil.e(TAG, "Failed to parse minSdk as int: " + e.getMessage(), e);
+            dexLibraries(outputPath, dexes);
         }
     }
 
