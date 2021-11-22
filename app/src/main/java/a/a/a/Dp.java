@@ -172,7 +172,7 @@ public class Dp {
             if (!(Integer.parseInt(this.a) >= 21)) {
                 dexLibraries(outputPath, dexes);
             } else {
-                Iterator it = dexes.iterator();
+                Iterator<String> it = dexes.iterator();
                 while (it.hasNext()) {
                     String dexPath = it.next();
                     int n = 2;
