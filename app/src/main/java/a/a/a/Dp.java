@@ -168,7 +168,13 @@ public class Dp {
      * @throws Exception Thrown if dexing had problems
      */
     public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
-        dexLibraries(outputPath, dexes);
+        try {
+            if (!Integer.parseInt(this.a) >= 21) {
+                dexLibraries(outputPath, dexes);
+            }
+        } catch (Throwable e) {
+            LogUtil.e(TAG, "Failed to parse minSdk as int: " + e.getMessage(), e);
+        }
     }
 
     /**
