@@ -169,7 +169,7 @@ public class Dp {
      */
     public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
         try {
-            if (!Integer.parseInt(this.a) >= 21) {
+            if (!(Integer.parseInt(this.a) >= 21)) {
                 dexLibraries(outputPath, dexes);
             } else {
                 Iterator it = dexes.iterator();
