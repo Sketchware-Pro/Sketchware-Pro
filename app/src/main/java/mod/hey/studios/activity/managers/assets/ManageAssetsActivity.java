@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -280,7 +282,7 @@ public class ManageAssetsActivity extends Activity {
             } else {
                 try {
                     if (FileUtil.isImageFile(getItem(position))) {
-                        icon.setImageURI(Uri.fromFile(new File(getItem(position))));
+                        Glide.with(ManageAssetsActivity.this).load(new File(getItem(position))).into(icon);
                     } else {
                         icon.setImageResource(Resources.drawable.file_48_blue);
                     }
