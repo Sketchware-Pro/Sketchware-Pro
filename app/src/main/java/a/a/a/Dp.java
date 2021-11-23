@@ -169,7 +169,8 @@ public class Dp {
      */
     public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
         try {
-            if (!(Integer.parseInt(this.a) >= 21)) {
+            int minSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
+            if (minSdkVersion < 21) {
                 dexLibraries(outputPath, dexes);
             } else {
                 Iterator<String> it = dexes.iterator();
