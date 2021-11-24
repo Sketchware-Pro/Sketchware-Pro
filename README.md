@@ -1,5 +1,5 @@
-<p align="center">
-<img src="assets/Sketchware-Pro.png" />
+<p style="text-align: center;">
+    <img src="assets/Sketchware-Pro.png" />
 </p>
 
 # Sketchware Pro
