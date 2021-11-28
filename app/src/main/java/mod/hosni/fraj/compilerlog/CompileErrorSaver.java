@@ -5,12 +5,14 @@ import static mod.SketchwareUtil.getDip;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.besome.sketch.tools.CompileLogActivity;
 import com.sketchware.remod.Resources;
 
 import mod.SketchwareUtil;
@@ -52,37 +54,12 @@ public class CompileErrorSaver {
      *
      * @param context The context to show the dialog on
      */
-    public void showDialog(Context context) {
-        ScrollView scrollView = new ScrollView(context);
-        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
-        TextView errorLogTxt = new TextView(context);
-        errorLogTxt.setText(CompileLogHelper.colorErrsAndWarnings(getLog()));
-        errorLogTxt.setTextSize(12);
-        errorLogTxt.setTextIsSelectable(true);
-        errorLogTxt.setTypeface(Typeface.MONOSPACE);
-        horizontalScrollView.addView(errorLogTxt);
-        scrollView.addView(horizontalScrollView);
-
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle("Last compile log")
-                .setPositiveButton(Resources.string.common_word_ok, null)
-                .setNegativeButton("Clear", (dialogInterface, which) -> {
-                    clear();
-                    SketchwareUtil.toast("Cleared log");
-                })
-                .create();
-
-        dialog.setView(scrollView,
-                (int) getDip(24),
-                (int) getDip(8),
-                (int) getDip(24),
-                (int) getDip(8));
-
-        dialog.show();
-
-        if (errorLogTxt.getText().toString().equals(MESSAGE_NO_COMPILE_ERRORS_SAVED)) {
-            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.GONE);
-        }
+    public void showLastErrors(Context context) {
+        Intent intent = new Intent(context, CompileLogActivity.class);
+        intent.putExtra("error", getLog());
+        intent.putExtra("showingLastError", true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
     }
 
     /**
