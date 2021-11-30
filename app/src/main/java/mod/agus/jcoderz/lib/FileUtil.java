@@ -38,6 +38,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+@SuppressWarnings("unused")
 public class FileUtil {
 
     public static boolean renameFile(String str, String str2) {
@@ -718,5 +720,14 @@ public class FileUtil {
         } else {
             throw new AssertionError("Not on an API level 30 or higher device!");
         }
+    }
+
+    /**
+     * Checks if a provided file is image or not. I don't know if it throws any exceptions
+     * TODO: Find a better solution if available
+     */
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
     }
 }

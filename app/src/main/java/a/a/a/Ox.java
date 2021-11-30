@@ -351,42 +351,42 @@ public class Ox {
     public void d(Nx nx, ViewBean viewBean) {
         int gravity = viewBean.layout.gravity;
         if (gravity != 0) {
-            String str = "";
-            int i2 = gravity & Gravity.FILL_VERTICAL;
-            int i3 = gravity & Gravity.FILL_HORIZONTAL;
-            if (i3 == 1) {
-                str = "center_horizontal";
+            String attrValue = "";
+            int verticalGravity = gravity & Gravity.FILL_VERTICAL;
+            int horizontalGravity = gravity & Gravity.FILL_HORIZONTAL;
+            if (horizontalGravity == Gravity.CENTER_HORIZONTAL) {
+                attrValue = "center_horizontal";
             } else {
-                if ((i3 & 3) == 3) {
-                    str = "left";
+                if ((horizontalGravity & Gravity.LEFT) == Gravity.LEFT) {
+                    attrValue = "left";
                 }
-                if ((i3 & 5) == 5) {
-                    if (str.length() > 0) {
-                        str = str + "|";
+                if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
+                    if (attrValue.length() > 0) {
+                        attrValue += "|";
                     }
-                    str = str + "right";
+                    attrValue += "right";
                 }
             }
-            if (i2 == 16) {
-                if (str.length() > 0) {
-                    str = str + "|";
+            if (verticalGravity == Gravity.CENTER_VERTICAL) {
+                if (attrValue.length() > 0) {
+                    attrValue += "|";
                 }
-                str = str + "center_vertical";
+                attrValue += "center_vertical";
             } else {
-                if ((i2 & 48) == 48) {
-                    if (str.length() > 0) {
-                        str = str + "|";
+                if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
+                    if (attrValue.length() > 0) {
+                        attrValue += "|";
                     }
-                    str = str + "top";
+                    attrValue += "top";
                 }
-                if ((i2 & 80) == 80) {
-                    if (str.length() > 0) {
-                        str = str + "|";
+                if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
+                    if (attrValue.length() > 0) {
+                        attrValue += "|";
                     }
-                    str = str + "bottom";
+                    attrValue += "bottom";
                 }
             }
-            nx.a("android", "gravity", str);
+            nx.a("android", "gravity", attrValue);
         }
     }
 
@@ -435,44 +435,44 @@ public class Ox {
      * @see Gravity
      */
     public void f(Nx nx, ViewBean viewBean) {
-        int i = viewBean.layout.layoutGravity;
-        if (i != 0) {
-            String str = "";
-            int i2 = i & 112;
-            int i3 = i & 7;
-            if (i3 == 1) {
-                str = "center_horizontal";
+        int gravity = viewBean.layout.layoutGravity;
+        if (gravity != 0) {
+            String attrValue = "";
+            int verticalGravity = gravity & Gravity.FILL_VERTICAL;
+            int horizontalGravity = gravity & Gravity.FILL_HORIZONTAL;
+            if (horizontalGravity == 1) {
+                attrValue = "center_horizontal";
             } else {
-                if ((i3 & 3) == 3) {
-                    str = "left";
+                if ((horizontalGravity & Gravity.LEFT) == Gravity.LEFT) {
+                    attrValue = "left";
                 }
-                if ((i3 & 5) == 5) {
-                    if (str.length() > 0) {
-                        str = str + "|";
+                if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
+                    if (attrValue.length() > 0) {
+                        attrValue += "|";
                     }
-                    str = str + "right";
+                    attrValue += "right";
                 }
             }
-            if (i2 == 16) {
-                if (str.length() > 0) {
-                    str = str + "|";
+            if (verticalGravity == Gravity.CENTER_VERTICAL) {
+                if (attrValue.length() > 0) {
+                    attrValue += "|";
                 }
-                str = str + "center_vertical";
+                attrValue += "center_vertical";
             } else {
-                if ((i2 & 48) == 48) {
-                    if (str.length() > 0) {
-                        str = str + "|";
+                if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
+                    if (attrValue.length() > 0) {
+                        attrValue += "|";
                     }
-                    str = str + "top";
+                    attrValue += "top";
                 }
-                if ((i2 & 80) == 80) {
-                    if (str.length() > 0) {
-                        str = str + "|";
+                if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
+                    if (attrValue.length() > 0) {
+                        attrValue += "|";
                     }
-                    str = str + "bottom";
+                    attrValue += "bottom";
                 }
             }
-            nx.a("android", "layout_gravity", str);
+            nx.a("android", "layout_gravity", attrValue);
         }
     }
 
@@ -513,7 +513,8 @@ public class Ox {
      * @see LinearLayout#getOrientation()
      */
     public void h(Nx nx, ViewBean viewBean) {
-        if(viewBean.inject.trim().replace(" ", "").contains("tools:remove=\"orientation\"")) return;
+        if (viewBean.inject.trim().replace(" ", "").contains("tools:remove=\"orientation\""))
+            return;
         int orientation = viewBean.layout.orientation;
         if (orientation == LinearLayout.HORIZONTAL) {
             nx.a("android", "orientation", "horizontal");

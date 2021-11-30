@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import dev.aldi.sayuti.editor.manage.ImportClass;
-import mod.agus.jcoderz.editor.event.CustomImportEvent;
-import mod.agus.jcoderz.lib.TypeVarComponent;
+import mod.hilal.saif.components.ComponentsHandler;
+import mod.hilal.saif.events.EventsHandler;
 
 public class mq {
 
@@ -143,8 +143,29 @@ public class mq {
             case 27:
                 return "#";
 
+            case 28:
+                return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
+
+            case 29:
+                return "DynamicLink";
+
+            case 30:
+                return "FirebaseCloudMessage";
+
+            case 31:
+                return "GoogleSignInClient";
+
+            case 32:
+                return "OSSubscriptionObserver";
+
+            case 33:
+                return "com.facebook.ads.AdView";
+
+            case 34:
+                return "com.facebook.ads.InterstitialAd";
+
             default:
-                return TypeVarComponent.a(componentId);
+                return ComponentsHandler.var(componentId);
         }
     }
 
@@ -663,7 +684,6 @@ public class mq {
      */
     public static ArrayList<String> d(String listener) {
         ArrayList<String> importList = new ArrayList<>();
-        CustomImportEvent.a(importList, listener);
 
         switch (listener) {
             case "onClickListener":
@@ -683,11 +703,6 @@ public class mq {
             case "onItemClickListener":
             case "onItemLongClickListener":
                 importList.add("android.widget.AdapterView");
-                return importList;
-
-            case "onSeekBarChangeListener":
-            case "onDateChangeListener":
-            default:
                 return importList;
 
             case "webViewClient":
@@ -733,6 +748,44 @@ public class mq {
                 importList.add("androidx.fragment.app.Fragment");
                 importList.add("androidx.fragment.app.FragmentManager");
                 importList.add("androidx.fragment.app.FragmentStatePagerAdapter");
+                return importList;
+
+            case "OnFailureListener":
+                importList.add("com.google.android.gms.tasks.OnFailureListener");
+                return importList;
+
+            case "OTPListener":
+                importList.add("affan.ahmad.otp.OTPListener");
+                return importList;
+
+            case "OnSuccessListener":
+                importList.add("com.google.android.gms.tasks.OnSuccessListener");
+                return importList;
+
+            case "OnCompleteListenerFCM":
+                importList.add("com.google.android.gms.tasks.OnCompleteListener");
+                importList.add("com.google.android.gms.tasks.Task");
+                return importList;
+
+            case "fullScreenContentCallback":
+                importList.add("com.google.android.gms.ads.FullScreenContentCallback");
+                importList.add("com.google.android.gms.ads.AdError");
+                return importList;
+
+            case "interstitialAdLoadCallback":
+                importList.add("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
+                importList.add("com.google.android.gms.ads.LoadAdError");
+                return importList;
+
+            case "bannerAdViewListener":
+                importList.add("com.google.android.gms.ads.AdListener");
+                importList.add("com.google.android.gms.ads.LoadAdError");
+                return importList;
+
+            case "onSeekBarChangeListener":
+            case "onDateChangeListener":
+            default:
+                EventsHandler.getImports(importList, listener);
                 return importList;
         }
     }
@@ -797,6 +850,17 @@ public class mq {
 
             case "FragmentAdapter":
                 return "#";
+
+            case "ResString":
+            case "ResStyle":
+            case "ResColor":
+            case "ResArray":
+            case "ResDimen":
+            case "ResBool":
+            case "ResInteger":
+            case "ResAttr":
+            case "ResXml":
+                return "int";
 
             default:
                 return typeName;
