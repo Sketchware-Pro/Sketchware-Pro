@@ -1,16 +1,14 @@
 package mod.agus.jcoderz.editor.manage.resource;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -20,15 +18,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
-import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.Resources;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import a.a.a.bB;
 import mod.SketchwareUtil;
@@ -39,6 +37,7 @@ import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
+@SuppressLint({"ResourceType", "SetTextI18n"})
 public class ManageResourceActivity extends Activity implements View.OnClickListener {
 
     public CustomAdapter adapter;
@@ -58,7 +57,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         if (FileUtil.isExistFile(fpu.getPathResource(numProj))) {
             temp = fpu.getPathResource(numProj);
             handleAdapter(temp);
-            handleFab(temp);
+            handleFab();
             return;
         }
         FileUtil.makeDir(fpu.getPathResource(numProj));
@@ -73,7 +72,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     public void handleAdapter(String str) {
         ArrayList<String> resourceFile = frc.getResourceFile(str);
-        Collections.sort(resourceFile, String.CASE_INSENSITIVE_ORDER);
+        resourceFile.sort(String.CASE_INSENSITIVE_ORDER);
         adapter = new CustomAdapter(resourceFile);
         gridView.setAdapter(adapter);
     }
@@ -82,7 +81,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         return temp.equals(fpu.getPathResource(numProj));
     }
 
-    public void handleFab(String str) {
+    public void handleFab() {
         if (isInMainDirectory()) {
             if (load_file != null) {
                 load_file.setVisibility(View.GONE);
@@ -99,12 +98,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
         load_file = findViewById(2131232459);
         Helper.applyRippleToToolbarView(load_file);
-        load_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.show();
-            }
-        });
+        load_file.setOnClickListener(view -> dialog.show());
     }
 
     public void onBackPressed() {
@@ -112,7 +106,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
             temp = temp.substring(0, temp.lastIndexOf("/"));
             if (temp.contains("resource")) {
                 handleAdapter(temp);
-                handleFab(temp);
+                handleFab();
                 return;
             }
         } catch (IndexOutOfBoundsException ignored) {
@@ -137,46 +131,33 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         ((RadioGroup) inflate.findViewById(2131232460)).setVisibility(View.GONE);
         ((TextView) inflate.findViewById(2131232509)).setText(isFolder ? "Create a new folder" : "Create a new file");
         if (!isFolder) editText.setText(".xml");
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                create.dismiss();
+        cancel.setOnClickListener(v -> create.dismiss());
+        save.setOnClickListener(v -> {
+            String path;
+            if (editText.getText().toString().isEmpty()) {
+                bB.b(getApplicationContext(), "Invalid name", 0).show();
+                return;
             }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String path;
-                if (editText.getText().toString().isEmpty()) {
-                    bB.b(getApplicationContext(), "Invalid name", 0).show();
-                    return;
-                }
-                String name = editText.getText().toString();
-                if (isFolder) {
-                    path = fpu.getPathResource(numProj) + "/" + name;
-                } else {
-                    path = new File(temp + File.separator + name).getAbsolutePath();
-                }
-                if (FileUtil.isExistFile(path)) {
-                    bB.b(getApplicationContext(), "File exists already", 0).show();
-                    return;
-                }
-                if (isFolder) {
-                    FileUtil.makeDir(path);
-                } else {
-                    FileUtil.writeFile(path, "<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                }
-                handleAdapter(temp);
-                bB.a(getApplicationContext(), "Created file successfully", 0).show();
-                create.dismiss();
+            String name = editText.getText().toString();
+            if (isFolder) {
+                path = fpu.getPathResource(numProj) + "/" + name;
+            } else {
+                path = new File(temp + File.separator + name).getAbsolutePath();
             }
-        });
-        create.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                SketchwareUtil.hideKeyboard();
+            if (FileUtil.isExistFile(path)) {
+                bB.b(getApplicationContext(), "File exists already", 0).show();
+                return;
             }
+            if (isFolder) {
+                FileUtil.makeDir(path);
+            } else {
+                FileUtil.writeFile(path, "<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            }
+            handleAdapter(temp);
+            bB.a(getApplicationContext(), "Created file successfully", 0).show();
+            create.dismiss();
         });
+        create.setOnDismissListener(dialogInterface -> SketchwareUtil.hideKeyboard());
         create.setView(inflate);
         create.show();
         editText.requestFocus();
@@ -201,35 +182,26 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         setupDialog();
         checkDir();
         fab.setOnClickListener(this);
-        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                if (FileUtil.isDirectory(frc.listFileResource.get(position))) {
-                    PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, view);
-                    popupMenu.getMenu().add("Delete");
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            showDeleteDialog(position);
-                            return true;
-                        }
-                    });
-                    popupMenu.show();
-                }
-                return true;
+        gridView.setOnItemLongClickListener((parent, view, position, id) -> {
+            if (FileUtil.isDirectory(frc.listFileResource.get(position))) {
+                PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, view);
+                popupMenu.getMenu().add("Delete");
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    showDeleteDialog(position);
+                    return true;
+                });
+                popupMenu.show();
             }
+            return true;
         });
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (FileUtil.isDirectory(frc.listFileResource.get(position))) {
-                    temp = frc.listFileResource.get(position);
-                    handleAdapter(temp);
-                    handleFab(temp);
-                    return;
-                }
-                goEdit(position);
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            if (FileUtil.isDirectory(frc.listFileResource.get(position))) {
+                temp = frc.listFileResource.get(position);
+                handleAdapter(temp);
+                handleFab();
+                return;
             }
+            goEdit(position);
         });
         initToolbar();
     }
@@ -244,19 +216,16 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         properties.extensions = null;
         dialog = new FilePickerDialog(this, properties);
         dialog.setTitle("Select a resource file");
-        dialog.setDialogSelectionListener(new DialogSelectionListener() {
-            @Override
-            public void onSelectedFilePaths(String[] selections) {
-                for (String path : selections) {
-                    try {
-                        FileUtil.copyDirectory(new File(path), new File(temp + File.separator + Uri.parse(path).getLastPathSegment()));
-                    } catch (IOException e) {
-                        bB.b(getApplicationContext(), "Couldn't import resource! [" + e.getMessage() + "]", 0).show();
-                    }
+        dialog.setDialogSelectionListener(selections -> {
+            for (String path : selections) {
+                try {
+                    FileUtil.copyDirectory(new File(path), new File(temp + File.separator + Uri.parse(path).getLastPathSegment()));
+                } catch (IOException e) {
+                    bB.b(getApplicationContext(), "Couldn't import resource! [" + e.getMessage() + "]", 0).show();
                 }
-                handleAdapter(temp);
-                handleFab(temp);
             }
+            handleAdapter(temp);
+            handleFab();
         });
     }
 
@@ -269,33 +238,20 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         } catch (IndexOutOfBoundsException e) {
             editText.setText(path);
         }
-        ((TextView) inflate.findViewById(2131232376)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                create.dismiss();
-            }
-        });
-        ((TextView) inflate.findViewById(2131232377)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!editText.getText().toString().isEmpty()) {
-                    if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf("/")) + "/" + editText.getText().toString())) {
-                        bB.a(getApplicationContext(), "Renamed successfully", 0).show();
-                    } else {
-                        bB.b(getApplicationContext(), "Renaming failed", 0).show();
-                    }
-                    handleAdapter(temp);
-                    handleFab(temp);
+        ((TextView) inflate.findViewById(2131232376)).setOnClickListener(v -> create.dismiss());
+        ((TextView) inflate.findViewById(2131232377)).setOnClickListener(v -> {
+            if (!editText.getText().toString().isEmpty()) {
+                if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf("/")) + "/" + editText.getText().toString())) {
+                    bB.a(getApplicationContext(), "Renamed successfully", 0).show();
+                } else {
+                    bB.b(getApplicationContext(), "Renaming failed", 0).show();
                 }
-                create.dismiss();
+                handleAdapter(temp);
+                handleFab();
             }
+            create.dismiss();
         });
-        create.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                SketchwareUtil.hideKeyboard();
-            }
-        });
+        create.setOnDismissListener(dialogInterface -> SketchwareUtil.hideKeyboard());
         create.setView(inflate);
         create.show();
         editText.requestFocus();
@@ -308,13 +264,10 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                 .setMessage("Are you sure you want to delete this "
                         + (FileUtil.isDirectory(adapter.getItem(position)) ? "folder" : "file") + "? "
                         + "This action cannot be reverted!")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FileUtil.deleteFile(frc.listFileResource.get(position));
-                        handleAdapter(temp);
-                        bB.a(getApplicationContext(), "Deleted", 0).show();
-                    }
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    FileUtil.deleteFile(frc.listFileResource.get(position));
+                    handleAdapter(temp);
+                    bB.a(getApplicationContext(), "Deleted", 0).show();
                 })
                 .setNegativeButton("Cancel", null)
                 .create().show();
@@ -355,10 +308,6 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
             return data.size();
         }
 
-        public int getImageRes(int position) {
-            return FileUtil.isDirectory(getItem(position)) ? 2131165754 : 2131165623;
-        }
-
         @Override
         public long getItemId(int position) {
             return (long) position;
@@ -372,54 +321,58 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
             TextView name = (TextView) convertView.findViewById(2131231837);
             ImageView icon = (ImageView) convertView.findViewById(2131231090);
             ImageView more = (ImageView) convertView.findViewById(2131232627);
-            if (FileUtil.isDirectory(getItem(position))) {
-                more.setVisibility(View.GONE);
-            } else {
-                more.setVisibility(View.VISIBLE);
-            }
+            more.setVisibility(FileUtil.isDirectory(getItem(position)) ? View.GONE : View.VISIBLE);
             name.setText(Uri.parse(getItem(position)).getLastPathSegment());
-            icon.setImageResource(getImageRes(position));
-            more.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, v);
-                    popupMenu.inflate(2131492893);
-                    popupMenu.getMenu().getItem(0).setVisible(false);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getTitle().toString()) {
-                                case "Edit with...":
-                                    if (frc.listFileResource.get(position).endsWith("xml")) {
-                                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setDataAndType(Uri.fromFile(new File(frc.listFileResource.get(position))), "text/plain");
-                                        startActivity(intent);
-                                    } else {
-                                        bB.a(getApplicationContext(), "Only XML files can be edited", 0).show();
-                                    }
-                                    break;
 
-                                case "Edit":
-                                    goEdit(position);
-                                    break;
-
-                                case "Delete":
-                                    FileUtil.deleteFile(frc.listFileResource.get(position));
-                                    handleAdapter(temp);
-                                    break;
-
-                                case "Rename":
-                                    showDialog(frc.listFileResource.get(position));
-                                    break;
-
-                                default:
-                                    return false;
-                            }
-                            return true;
-                        }
-                    });
-                    popupMenu.show();
+            if (FileUtil.isDirectory(getItem(position))) {
+                icon.setImageResource(Resources.drawable.ic_folder_48dp);
+            } else {
+                try {
+                    if (FileUtil.isImageFile(getItem(position))) {
+                        Glide.with(ManageResourceActivity.this).load(new File(getItem(position))).into(icon);
+                    } else {
+                        icon.setImageResource(Resources.drawable.file_48_blue);
+                    }
+                } catch (Exception ignored) {
+                    icon.setImageResource(Resources.drawable.file_48_blue);
                 }
+            }
+
+            more.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, v);
+                popupMenu.inflate(2131492893);
+                popupMenu.getMenu().getItem(0).setVisible(false);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getTitle().toString()) {
+                        case "Edit with...":
+                            if (frc.listFileResource.get(position).endsWith("xml")) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(new File(frc.listFileResource.get(position))), "text/plain");
+                                startActivity(intent);
+                            } else {
+                                bB.a(getApplicationContext(), "Only XML files can be edited", 0).show();
+                            }
+                            break;
+
+                        case "Edit":
+                            goEdit(position);
+                            break;
+
+                        case "Delete":
+                            FileUtil.deleteFile(frc.listFileResource.get(position));
+                            handleAdapter(temp);
+                            break;
+
+                        case "Rename":
+                            showDialog(frc.listFileResource.get(position));
+                            break;
+
+                        default:
+                            return false;
+                    }
+                    return true;
+                });
+                popupMenu.show();
             });
             return convertView;
         }
