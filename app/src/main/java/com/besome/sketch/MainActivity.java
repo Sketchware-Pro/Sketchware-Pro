@@ -1,6 +1,7 @@
 package com.besome.sketch;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,7 +51,9 @@ import a.a.a.nd;
 import a.a.a.sB;
 import a.a.a.xB;
 import a.a.a.zI;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.tyron.backup.CallBackTask;
@@ -197,7 +200,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(C + 1));
         }
         D = u.a("U1I2", true);
-        r = new String[] {xB.b().a(this,
+        r = new String[]{xB.b().a(this,
                 Resources.string.main_tab_title_myproject)};
         l = findViewById(Resources.id.toolbar);
         a(l);
@@ -258,7 +261,28 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                     @Override
                     public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
-                        new BackupRestoreManager(MainActivity.this, y).doRestore(path, true);
+
+                        if (wasSuccessful) {
+
+                            final boolean local_libs = BackupFactory.zipContainsFile(path, "local_libs");
+                            if (local_libs) {
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("Warning")
+                                        .setMessage(new BackupRestoreManager(MainActivity.this).containsLocalLibsDialogMessage())
+                                        .setPositiveButton("Copy", (dialog, which) -> new BackupRestoreManager(MainActivity.this, y).doRestore(path, true))
+                                        .setNegativeButton("Don't copy", (dialog, which) -> new BackupRestoreManager(MainActivity.this, y).doRestore(path, false))
+                                        .setNeutralButton(Resources.string.common_word_cancel, null)
+                                        .show();
+                            } else {
+                                new BackupRestoreManager(MainActivity.this, y).doRestore(path, true);
+                            }
+                            //Clear intent so it doesn't duplicate
+                            getIntent().setData(null);
+
+                        } else {
+                            SketchwareUtil.toastError("Failed to restore the given backup.\nERROR:" + reason);
+
+                        }
                     }
                 }).execute(data);
             }
@@ -424,7 +448,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             x = Snackbar.a(w, xB.b().a(getApplicationContext(), Resources.string.common_message_permission_denied), -2);
             x.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
                 x.c();
-                nd.a(MainActivity.this, new String[] {
+                nd.a(MainActivity.this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE},
                         9501);

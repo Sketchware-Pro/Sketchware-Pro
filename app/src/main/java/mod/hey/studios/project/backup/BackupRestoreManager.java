@@ -32,7 +32,7 @@ public class BackupRestoreManager {
     // Needed to refresh the project list after restoring
     private GC gc;
 
-    private HashMap<Integer, Boolean> bckpDialogStates;
+    private HashMap<Integer, Boolean> backupDialogStates;
 
     public BackupRestoreManager(Activity act) {
         this.act = act;
@@ -43,12 +43,16 @@ public class BackupRestoreManager {
         this.gc = gc;
     }
 
+    public final String containsLocalLibsDialogMessage() {
+        return "Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+    }
+
     public void backup(final String sc_id, final String project_name) {
         final String localLibrariesTag = "local libraries";
         final String customBlocksTag = "Custom Blocks";
-        bckpDialogStates = new HashMap<>();
-        bckpDialogStates.put(0, false);
-        bckpDialogStates.put(1, false);
+        backupDialogStates = new HashMap<>();
+        backupDialogStates.put(0, false);
+        backupDialogStates.put(1, false);
 
         aB dialog = new aB(act);
         dialog.a(Resources.drawable.ic_backup);
@@ -78,7 +82,7 @@ public class BackupRestoreManager {
                     default:
                         return;
                 }
-                bckpDialogStates.put(index, isChecked);
+                backupDialogStates.put(index, isChecked);
             }
         };
 
@@ -111,7 +115,7 @@ public class BackupRestoreManager {
     }
 
     private void doBackup(final String sc_id, final String project_name /*, final SparseBooleanArray arr*/) {
-        new BackupAsyncTask(new WeakReference<>(act), sc_id, project_name, bckpDialogStates)
+        new BackupAsyncTask(new WeakReference<>(act), sc_id, project_name, backupDialogStates)
                 .execute("");
     }
 
@@ -119,7 +123,7 @@ public class BackupRestoreManager {
 
     public void restore() {
         DialogProperties properties = new DialogProperties();
-        properties.selection_mode = 0;
+        properties.selection_mode = 1; //0 = Single; 1 = Multi
         properties.selection_type = 0;
         properties.root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
         properties.error_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -129,24 +133,34 @@ public class BackupRestoreManager {
         FilePickerDialog fpd = new FilePickerDialog(act, properties);
         fpd.setTitle("Select a backup file (" + BackupFactory.EXTENSION + ")");
         fpd.setDialogSelectionListener(files -> {
-            final String file = files[0];
 
-            final boolean local_libs = BackupFactory.zipContainsFile(file, "local_libs");
-
+            boolean local_libs = false;
+            for (String _f : files) {
+                if (BackupFactory.zipContainsFile(_f, "local_libs")) {
+                    local_libs = true;
+                    break;
+                }
+            }
             if (local_libs) {
                 new AlertDialog.Builder(act)
                         .setTitle("Warning")
-                        .setMessage("Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?")
-                        .setPositiveButton("Copy", (dialog, which) -> doRestore(file, true))
-                        .setNegativeButton("Don't copy", (dialog, which) -> doRestore(file, false))
+                        .setMessage(containsLocalLibsDialogMessage())
+                        .setPositiveButton("Copy", (dialog, which) -> doRestoreMulti(files, true))
+                        .setNegativeButton("Don't copy", (dialog, which) -> doRestoreMulti(files, false))
                         .setNeutralButton(Resources.string.common_word_cancel, null)
                         .show();
             } else {
-                doRestore(file, false);
+                doRestoreMulti(files, false);
             }
         });
 
         fpd.show();
+    }
+
+    public void doRestoreMulti(final String[] files, final boolean restoreLocalLibs) {
+        for (String file : files) {
+            new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, gc).execute("");
+        }
     }
 
     public void doRestore(final String file, final boolean restoreLocalLibs) {
