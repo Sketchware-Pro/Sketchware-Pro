@@ -1,5 +1,6 @@
 package mod.hey.studios.activity.managers.assets;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -40,9 +43,9 @@ public class ManageAssetsActivity extends Activity {
     private String current_path;
     private FilePathUtil fpu;
     private GridView gridView;
-    private MyAdapter myadp;
+    private MyAdapter myAdapter;
     private String sc_id;
-    private TextView tv_nofiles;
+    private TextView tv_noFileExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class ManageAssetsActivity extends Activity {
         refresh();
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupUI() {
         gridView = findViewById(Resources.id.list_file);
         gridView.setNumColumns(1);
@@ -66,8 +70,8 @@ public class ManageAssetsActivity extends Activity {
         FloatingActionButton fab = findViewById(Resources.id.fab_plus);
         fab.setOnClickListener(v -> showCreateDialog());
 
-        tv_nofiles = findViewById(Resources.id.text_info);
-        tv_nofiles.setText("No files");
+        tv_noFileExist = findViewById(Resources.id.text_info);
+        tv_noFileExist.setText("No files");
 
         ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Asset Manager");
         ImageView imageView = findViewById(Resources.id.ig_toolbar_back);
@@ -96,6 +100,7 @@ public class ManageAssetsActivity extends Activity {
         refresh();
     }
 
+    @SuppressLint("SetTextI18n")
     private void showCreateDialog() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
 
@@ -177,12 +182,12 @@ public class ManageAssetsActivity extends Activity {
         final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
         final EditText newFileName = inflate.findViewById(Resources.id.edittext_change_name);
-        newFileName.setText(myadp.getFileName(position));
+        newFileName.setText(myAdapter.getFileName(position));
         TextView cancel = inflate.findViewById(Resources.id.text_cancel);
 
         inflate.findViewById(Resources.id.text_save).setOnClickListener(v -> {
             if (!newFileName.getText().toString().isEmpty()) {
-                FileUtil.renameFile(myadp.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
+                FileUtil.renameFile(myAdapter.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
                 refresh();
                 SketchwareUtil.toast("Renamed successfully");
             }
@@ -201,11 +206,11 @@ public class ManageAssetsActivity extends Activity {
 
     private void showDeleteDialog(final int position) {
         new AlertDialog.Builder(this)
-                .setTitle(myadp.getFileName(position))
-                .setMessage("Are you sure you want to delete this " + (myadp.isFolder(position) ? "folder" : "file") + "? "
+                .setTitle(myAdapter.getFileName(position))
+                .setMessage("Are you sure you want to delete this " + (myAdapter.isFolder(position) ? "folder" : "file") + "? "
                         + "This action cannot be reversed!")
                 .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> {
-                    FileUtil.deleteFile(myadp.getItem(position));
+                    FileUtil.deleteFile(myAdapter.getItem(position));
                     refresh();
                     SketchwareUtil.toast("Deleted successfully");
                 })
@@ -224,23 +229,23 @@ public class ManageAssetsActivity extends Activity {
         FileUtil.listDir(current_path, currentTree);
         Helper.sortPaths(currentTree);
 
-        myadp = new MyAdapter();
+        myAdapter = new MyAdapter();
 
-        gridView.setAdapter(myadp);
+        gridView.setAdapter(myAdapter);
         gridView.setOnItemClickListener((parent, view, position, id) -> {
-            if (myadp.isFolder(position)) {
-                current_path = myadp.getItem(position);
+            if (myAdapter.isFolder(position)) {
+                current_path = myAdapter.getItem(position);
                 refresh();
                 return;
             }
 
-            myadp.goEditFile(position);
+            myAdapter.goEditFile(position);
         });
 
         if (currentTree.size() == 0) {
-            tv_nofiles.setVisibility(View.VISIBLE);
+            tv_noFileExist.setVisibility(View.VISIBLE);
         } else {
-            tv_nofiles.setVisibility(View.GONE);
+            tv_noFileExist.setVisibility(View.GONE);
         }
     }
 
@@ -272,7 +277,19 @@ public class ManageAssetsActivity extends Activity {
             ImageView more = convertView.findViewById(Resources.id.more);
 
             name.setText(getFileName(position));
-            icon.setImageResource(isFolder(position) ? Resources.drawable.ic_folder_48dp : Resources.drawable.file_48_blue);
+            if (isFolder(position)) {
+                icon.setImageResource(Resources.drawable.ic_folder_48dp);
+            } else {
+                try {
+                    if (FileUtil.isImageFile(getItem(position))) {
+                        Glide.with(ManageAssetsActivity.this).load(new File(getItem(position))).into(icon);
+                    } else {
+                        icon.setImageResource(Resources.drawable.file_48_blue);
+                    }
+                } catch (Exception ignored) {
+                    icon.setImageResource(Resources.drawable.file_48_blue);
+                }
+            }
             Helper.applyRipple(ManageAssetsActivity.this, more);
             more.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageAssetsActivity.this, v);
