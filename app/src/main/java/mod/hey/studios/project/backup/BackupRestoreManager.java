@@ -24,6 +24,7 @@ import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.xB;
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 public class BackupRestoreManager {
@@ -44,8 +45,12 @@ public class BackupRestoreManager {
         this.gc = gc;
     }
 
-    public final String containsLocalLibsDialogMessage() {
-        return "Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+    public static String getRestoreIntegratedLocalLibrariesMessage(boolean restoringMultipleBackups, int currentRestoringIndex, int totalAmountOfBackups, String filename) {
+        if (!restoringMultipleBackups) {
+            return "Looks like the backup file you selected contains some Local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+        } else {
+            return "Looks like backup file " + filename + " (" + (currentRestoringIndex + 1) + " out of " + totalAmountOfBackups + ") contains some Local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+        }
     }
 
     public void backup(final String sc_id, final String project_name) {
@@ -134,34 +139,27 @@ public class BackupRestoreManager {
         FilePickerDialog fpd = new FilePickerDialog(act, properties);
         fpd.setTitle("Select backups to restore (" + BackupFactory.EXTENSION + ")");
         fpd.setDialogSelectionListener(files -> {
+            for (int i = 0; i < files.length; i++) {
+                String backupFilePath = files[i];
 
-            boolean local_libs = false;
-            for (String _f : files) {
-                if (BackupFactory.zipContainsFile(_f, "local_libs")) {
-                    local_libs = true;
-                    break;
+                if (BackupFactory.zipContainsFile(backupFilePath, "local_libs")) {
+                    boolean restoringMultipleBackups = files.length > 1;
+
+                    new AlertDialog.Builder(act)
+                            .setTitle("Warning")
+                            .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
+                                    FileUtil.getFileNameNoExtension(backupFilePath)))
+                            .setPositiveButton("Copy", (dialog, which) ->
+                                    doRestore(backupFilePath, true))
+                            .setNegativeButton("Don't copy", (dialog, which) ->
+                                    doRestore(backupFilePath, false))
+                            .setNeutralButton(Resources.string.common_word_cancel, null)
+                            .show();
                 }
-            }
-            if (local_libs) {
-                new AlertDialog.Builder(act)
-                        .setTitle("Warning")
-                        .setMessage(containsLocalLibsDialogMessage())
-                        .setPositiveButton("Copy", (dialog, which) -> doRestoreMulti(files, true))
-                        .setNegativeButton("Don't copy", (dialog, which) -> doRestoreMulti(files, false))
-                        .setNeutralButton(Resources.string.common_word_cancel, null)
-                        .show();
-            } else {
-                doRestoreMulti(files, false);
             }
         });
 
         fpd.show();
-    }
-
-    public void doRestoreMulti(final String[] files, final boolean restoreLocalLibs) {
-        for (String file : files) {
-            new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, gc).execute("");
-        }
     }
 
     public void doRestore(final String file, final boolean restoreLocalLibs) {
