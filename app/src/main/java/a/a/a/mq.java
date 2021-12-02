@@ -141,7 +141,7 @@ public class mq {
                 return "Notification";
 
             case 27:
-                return "#";
+                return "FragmentStatePagerAdapter";
 
             case 28:
                 return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
@@ -849,7 +849,10 @@ public class mq {
                 return "Notification";
 
             case "FragmentAdapter":
-                return "#";
+                return "FragmentStatePagerAdapter";
+                
+            case "Context":
+                return "Activity";
 
             case "ResString":
             case "ResStyle":
@@ -860,6 +863,7 @@ public class mq {
             case "ResInteger":
             case "ResAttr":
             case "ResXml":
+            case "Color":
                 return "int";
 
             default:

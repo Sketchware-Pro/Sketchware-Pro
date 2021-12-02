@@ -1154,6 +1154,9 @@ public class Lx {
 
             case "RewardedVideoAd":
                 return componentName + " = MobileAds.getRewardedVideoAdInstance(this);";
+                
+            case "FragmentStatePagerAdapter":
+                return componentName + " = new " + a(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
 
             default:
                 return ManageEventComponent.b(componentNameId, componentName);
