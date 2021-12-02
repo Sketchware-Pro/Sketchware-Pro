@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -261,27 +262,25 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                     @Override
                     public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
-
                         if (wasSuccessful) {
+                            BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, y);
 
-                            final boolean local_libs = BackupFactory.zipContainsFile(path, "local_libs");
-                            if (local_libs) {
+                            if (BackupFactory.zipContainsFile(path, "local_libs")) {
                                 new AlertDialog.Builder(MainActivity.this)
                                         .setTitle("Warning")
-                                        .setMessage(new BackupRestoreManager(MainActivity.this).containsLocalLibsDialogMessage())
-                                        .setPositiveButton("Copy", (dialog, which) -> new BackupRestoreManager(MainActivity.this, y).doRestore(path, true))
-                                        .setNegativeButton("Don't copy", (dialog, which) -> new BackupRestoreManager(MainActivity.this, y).doRestore(path, false))
+                                        .setMessage(manager.containsLocalLibsDialogMessage())
+                                        .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
+                                        .setNegativeButton("Don't copy", (dialog, which) -> manager.doRestore(path, false))
                                         .setNeutralButton(Resources.string.common_word_cancel, null)
                                         .show();
                             } else {
-                                new BackupRestoreManager(MainActivity.this, y).doRestore(path, true);
+                                manager.doRestore(path, true);
                             }
-                            //Clear intent so it doesn't duplicate
+
+                            // Clear intent so it doesn't duplicate
                             getIntent().setData(null);
-
                         } else {
-                            SketchwareUtil.toastError("Failed to restore the given backup.\nERROR:" + reason);
-
+                            SketchwareUtil.toastError("Failed to copy backup file to temporary location: " + reason, Toast.LENGTH_LONG);
                         }
                     }
                 }).execute(data);

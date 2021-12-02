@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.Resources;
@@ -114,7 +115,7 @@ public class BackupRestoreManager {
         dialog.show();
     }
 
-    private void doBackup(final String sc_id, final String project_name /*, final SparseBooleanArray arr*/) {
+    private void doBackup(final String sc_id, final String project_name) {
         new BackupAsyncTask(new WeakReference<>(act), sc_id, project_name, backupDialogStates)
                 .execute("");
     }
@@ -123,15 +124,15 @@ public class BackupRestoreManager {
 
     public void restore() {
         DialogProperties properties = new DialogProperties();
-        properties.selection_mode = 1; //0 = Single; 1 = Multi
-        properties.selection_type = 0;
-        properties.root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        properties.error_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        properties.selection_mode = DialogConfigs.MULTI_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
         properties.offset = new File(BackupFactory.getBackupDir());
         properties.extensions = new String[]{BackupFactory.EXTENSION};
 
         FilePickerDialog fpd = new FilePickerDialog(act, properties);
-        fpd.setTitle("Select a backup file (" + BackupFactory.EXTENSION + ")");
+        fpd.setTitle("Select backups to restore (" + BackupFactory.EXTENSION + ")");
         fpd.setDialogSelectionListener(files -> {
 
             boolean local_libs = false;
