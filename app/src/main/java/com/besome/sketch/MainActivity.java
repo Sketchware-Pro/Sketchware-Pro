@@ -268,7 +268,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                             if (BackupFactory.zipContainsFile(path, "local_libs")) {
                                 new AlertDialog.Builder(MainActivity.this)
                                         .setTitle("Warning")
-                                        .setMessage(manager.containsLocalLibsDialogMessage())
+                                        .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
                                         .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
                                         .setNegativeButton("Don't copy", (dialog, which) -> manager.doRestore(path, false))
                                         .setNeutralButton(Resources.string.common_word_cancel, null)
