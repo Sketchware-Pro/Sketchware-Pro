@@ -1084,7 +1084,7 @@ public class ManageEvent {
 
             case "OnQueryTextListener":
                 return targetId + ".setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n" +
-                        targetId + "\r\n" +
+                        listenerLogic + "\r\n" +
                         "});";
 
             case "OnVerificationStateChangedListener":
