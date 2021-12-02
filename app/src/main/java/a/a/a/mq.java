@@ -141,7 +141,7 @@ public class mq {
                 return "Notification";
 
             case 27:
-                return "#";
+                return "FragmentStatePagerAdapter";
 
             case 28:
                 return "PhoneAuthProvider.OnVerificationStateChangedCallbacks";
@@ -849,7 +849,6 @@ public class mq {
                 return "Notification";
 
             case "FragmentAdapter":
-                //Why was Hash (#) here?
                 return "FragmentStatePagerAdapter";
                 
             case "Context":
