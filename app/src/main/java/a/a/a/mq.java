@@ -849,7 +849,11 @@ public class mq {
                 return "Notification";
 
             case "FragmentAdapter":
-                return "#";
+                //Why was Hash (#) here?
+                return "FragmentStatePagerAdapter";
+                
+            case "Context":
+                return "Activity";
 
             case "ResString":
             case "ResStyle":
@@ -860,6 +864,7 @@ public class mq {
             case "ResInteger":
             case "ResAttr":
             case "ResXml":
+            case "Color":
                 return "int";
 
             default:
