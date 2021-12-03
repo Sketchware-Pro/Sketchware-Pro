@@ -1553,10 +1553,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerSetFragmentAdapter");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setAdapter(new MyFragmentAdapter(getApplicationContext(), getSupportFragmentManager(), %s));");
+        hashMap.put("code", "%1$s.setAdapter(%2$s);\r\n%2$s.setTabCount(%3$s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.viewpager setFragmentAdapter TabCount %d");
+        hashMap.put("spec", "%m.viewpager setFragmentAdapter %m.fragmentAdapter TabCount %d");
         arrayList.add(0, hashMap);
 
         hashMap = new HashMap<>();
