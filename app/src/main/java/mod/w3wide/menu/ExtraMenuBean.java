@@ -159,6 +159,7 @@ public class ExtraMenuBean {
                     case "seekbar":
                     case "calendarview":
                     case "compoundButton":
+                    case "materialButton":
                     case "adview":
                     case "progressbar":
                     case "mapview":

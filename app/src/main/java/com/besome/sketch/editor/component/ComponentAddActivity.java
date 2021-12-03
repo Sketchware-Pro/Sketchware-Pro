@@ -45,7 +45,6 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import mod.agus.jcoderz.component.ManageComponent;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
@@ -341,15 +340,15 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentList.add(new ComponentBean(24));
         componentList.add(new ComponentBean(25));
         componentList.add(new ComponentBean(26));
-        components.add(new ComponentBean(27));
-        ComponentsHandler.add(components);
-        components.add(new ComponentBean(28));
-        components.add(new ComponentBean(29));
-        components.add(new ComponentBean(30));
-        components.add(new ComponentBean(31));
-        components.add(new ComponentBean(32));
-        components.add(new ComponentBean(33));
-        components.add(new ComponentBean(34));
+        componentList.add(new ComponentBean(27));
+        ComponentsHandler.add(componentList);
+        componentList.add(new ComponentBean(28));
+        componentList.add(new ComponentBean(29));
+        componentList.add(new ComponentBean(30));
+        componentList.add(new ComponentBean(31));
+        componentList.add(new ComponentBean(32));
+        componentList.add(new ComponentBean(33));
+        componentList.add(new ComponentBean(34));
         componentsAdapter.c();
     }
 
