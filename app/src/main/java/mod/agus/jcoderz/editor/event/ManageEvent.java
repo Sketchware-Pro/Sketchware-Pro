@@ -3,6 +3,7 @@ package mod.agus.jcoderz.editor.event;
 import java.util.ArrayList;
 
 import a.a.a.Gx;
+import a.a.a.Lx;
 import mod.hilal.saif.events.EventsHandler;
 
 public class ManageEvent {
@@ -1084,7 +1085,7 @@ public class ManageEvent {
 
             case "OnQueryTextListener":
                 return targetId + ".setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n" +
-                        targetId + "\r\n" +
+                        listenerLogic + "\r\n" +
                         "});";
 
             case "OnVerificationStateChangedListener":
@@ -1103,15 +1104,20 @@ public class ManageEvent {
                         "};";
 
             case "FragmentStatePagerAdapter":
-                return "public class MyFragmentAdapter extends FragmentStatePagerAdapter {\r\n" +
+                String className = Lx.a(targetId + "Fragment");
+                return "public class " + className +" extends FragmentStatePagerAdapter {\r\n" +
                         "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
                         "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +
                         "Context context;\r\n" +
                         "int tabCount;\r\n" +
                         "\r\n" +
-                        "public MyFragmentAdapter(Context context, FragmentManager manager, int tabCount) {\r\n" +
+                        "public " + className + "(Context context, FragmentManager manager) {\r\n" +
                         "super(manager);\r\n" +
                         "this.context = context;\r\n" +
+                        "}\r\n" +
+                        "\r\n" +
+                        "@Override\r\n" +
+                        "public int setTabCount(int tabCount) {\r\n" +
                         "this.tabCount = tabCount;\r\n" +
                         "}\r\n" +
                         "\r\n" +
