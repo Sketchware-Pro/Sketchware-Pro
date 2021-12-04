@@ -38,6 +38,7 @@ public class ConfigActivity extends Activity {
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
+    public static final String SETTING_BACKUP_FILENAME = "backup-filename";
     public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
     public static final String SETTING_SHOW_EVERY_SINGLE_BLOCK = "show-every-single-block";
@@ -70,18 +71,23 @@ public class ConfigActivity extends Activity {
         return "/.sketchware/backups/";
     }
 
-    public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
-        HashMap<String, Object> settings = readSettings();
-
-        Object value = settings.get(settingKey);
-        if (value instanceof String) {
-            return (String) value;
-        } else {
-            settings.put(settingKey, toReturnAndSetIfNotFound);
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-
-            return toReturnAndSetIfNotFound;
+    public static String getBackupFileName() {
+        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
+            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            if (settings.containsKey(SETTING_BACKUP_FILENAME)) {
+                Object value = settings.get(SETTING_BACKUP_FILENAME);
+                if (value instanceof String) {
+                    return (String) value;
+                } else {
+                    SketchwareUtil.toastError("Detected invalid preference "
+                                    + "for backup filename. Restoring defaults",
+                            Toast.LENGTH_LONG);
+                    settings.remove(SETTING_BACKUP_FILENAME);
+                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+                }
+            }
         }
+        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-M-dd'T'HHmmss)";
     }
 
     public static boolean isLegacyCeEnabled() {
@@ -264,6 +270,7 @@ public class ConfigActivity extends Activity {
                                 ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
                                 SketchwareUtil.toast("Saved");
                             })
+                            .setNegativeButton(Resources.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
                             .show();
                 });
         addSwitchPreference("Use legacy Code Editor",
@@ -278,6 +285,58 @@ public class ConfigActivity extends Activity {
                 "Enables syntax highlighting while editing blocks' text parameters.",
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
+        addTextInputPreference("Backup Filename Format",
+                "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-M-dd'T'HHmmss)\"", v -> {
+                    final LinearLayout container = new LinearLayout(this);
+                    container.setPadding(
+                            (int) getDip(20),
+                            (int) getDip(8),
+                            (int) getDip(20),
+                            0);
+
+                    final TextInputLayout tilBackupFormat = new TextInputLayout(this);
+                    tilBackupFormat.setLayoutParams(new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    tilBackupFormat.setHint("Backup Filename Format");
+                    tilBackupFormat.setHelperText("This defines how your backup files will be named.\n" +
+                            "Available Syntax:\n" +
+                            "$projectName - For Project Name" +
+                            "$versionCode - For Projects version code\n" +
+                            "$versionName -  For Projects version name\n" +
+                            "$pkgName - Package Name of the project\n" +
+                            "$timeInMs - Time of backup in milliseconds :3\n" +
+                            "Additionally you can format your own time like this(Supports All Java Time Syntax):\n" +
+                            "$time(yyyy-M-dd'T'HHmmss) \n" +
+                            "Make sure you put your time format inside those brackets like upper one.\n" +
+                            "\n" +
+                            "Use them however you like. (Note: Default format will be used if there's any error with your defined format)");
+                    container.addView(tilBackupFormat);
+
+                    final EditText backupFilename = new EditText(this);
+                    backupFilename.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT));
+                    backupFilename.setTextSize(14.0f);
+                    backupFilename.setText(getBackupFileName());
+                    tilBackupFormat.addView(backupFilename);
+
+                    new AlertDialog.Builder(this)
+                            .setTitle("Backup Filename Format")
+                            .setView(container)
+                            .setNegativeButton(Resources.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                            .setPositiveButton(Resources.string.common_word_save, (dialogInterface, which) -> {
+                                setting_map.put(SETTING_BACKUP_FILENAME, backupFilename.getText().toString());
+                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                                SketchwareUtil.toast("Saved");
+                            })
+                            .setNeutralButton(Resources.string.common_word_reset, (dialogInterface, which) -> {
+                                setting_map.remove(SETTING_BACKUP_FILENAME);
+                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                                SketchwareUtil.toast("Reset to default complete.");
+                            })
+                            .show();
+                });
     }
 
     private void applyDesign(View view) {

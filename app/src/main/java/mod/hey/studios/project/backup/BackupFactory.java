@@ -2,6 +2,7 @@ package mod.hey.studios.project.backup;
 
 import android.os.Environment;
 
+import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.BlockBean;
 import com.google.gson.Gson;
 
@@ -24,6 +25,9 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -35,6 +39,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import a.a.a.lC;
 import a.a.a.yB;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
@@ -274,36 +279,54 @@ public class BackupFactory {
 
             zp.close();
 
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         return false;
     }
 
     /************************ BACKUP ************************/
 
-    public void backup(String app_name) {
+    public void backup(String project_name) {
+        String customFileName = ConfigActivity.getBackupFileName();
+
         String versionName = yB.c(lC.b(sc_id), "sc_ver_name");
         String versionCode = yB.c(lC.b(sc_id), "sc_ver_code");
         String pkgName = yB.c(lC.b(sc_id), "my_sc_pkg_name");
-        String dateTime = new SimpleDateFormat("yyyy-M-dd'T'HHmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime());
-        String appNameOnly = app_name.replaceAll("_d", "").replaceAll(File.separator, "");
+        String projectNameOnly = project_name.replace("_d", "").replace(File.separator, "");
+        String finalFileName = "";
 
-        // Example name: InternalDemo v1.0 (com.jbk.internal.demo, 1) 2021-12-31T125827
-        String finalFileName = appNameOnly + " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + dateTime;
-
+        try {
+            finalFileName = customFileName
+                    .replace("$projectName", projectNameOnly)
+                    .replace("$versionCode", versionCode)
+                    .replace("$versionName", versionName)
+                    .replace("$pkgName", pkgName)
+                    .replace("$versionCode", versionCode)
+                    .replace("$timeInMs", String.valueOf(Calendar.getInstance(Locale.ENGLISH).getTimeInMillis()));
+            final Matcher matcher = Pattern.compile("\\$time\\((.*?)\\)").matcher(customFileName);
+            while (matcher.find()) {
+                finalFileName = finalFileName.replaceFirst(Pattern.quote(Objects.requireNonNull(matcher.group(0))), getFormattedDateFrom(matcher.group(1)));
+            }
+        } catch (Exception ignored) {
+            SketchwareUtil.toastError("Failed To Parse Custom Filename For Backup. Using default");
+            // Example name: InternalDemo v1.0 (com.jbk.internal.demo, 1) 2021-12-31T125827
+            finalFileName = projectNameOnly + " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + getFormattedDateFrom("yyyy-M-dd'T'HHmmss");
+        }
         createBackupsFolder();
 
         // Init temporary backup folder
-
         File outFolder = new File(getBackupDir(),
-                app_name + "_temp");
+                project_name + "_temp");
 
         // Init output zip file
-        File outZip = new File(getBackupDir() + File.separator + appNameOnly, finalFileName + "." + EXTENSION);
+        File outZip = new File(getBackupDir() + File.separator + projectNameOnly, finalFileName +
+                //Adds all the _d if exists. Otherwise its possible that there'll be an infinite loop
+                (project_name.contains("_d") ? project_name.replace(projectNameOnly, "") : "") + "." + EXTENSION);
 
         // Create a duplicate if already exists (impossible now :3)
         if (outZip.exists()) {
-            backup(app_name + "_d");
+            backup(project_name + "_d");
             return;
         }
         //delete temp dir if exist
@@ -313,7 +336,7 @@ public class BackupFactory {
 
         // Create necessary folders
         FileUtil.makeDir(outFolder.getAbsolutePath());
-        FileUtil.makeDir(new File(getBackupDir() + File.separator + appNameOnly).getAbsolutePath());
+        FileUtil.makeDir(new File(getBackupDir() + File.separator + projectNameOnly).getAbsolutePath());
 
         // Copy data
         File dataF = new File(outFolder, "data");
@@ -405,6 +428,10 @@ public class BackupFactory {
 
         // Put outZip to global variable
         outPath = outZip;
+    }
+
+    private String getFormattedDateFrom(String format) {
+        return new SimpleDateFormat(format, Locale.ENGLISH).format(Calendar.getInstance().getTime());
     }
 
     public File getOutFile() {
