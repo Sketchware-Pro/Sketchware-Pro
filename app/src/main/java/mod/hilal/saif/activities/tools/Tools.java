@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.github.angads25.filepicker.model.DialogConfigs;
@@ -44,17 +43,27 @@ import mod.hey.studios.util.Helper;
 
 public class Tools extends Activity {
 
-    private ViewGroup base;
+    private LinearLayout base;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.view_events);
-        RecyclerView dump = findViewById(Resources.id.list_events);
-        base = (ViewGroup) dump.getParent();
-        base.removeView(dump);
-        newToolbar(base);
+        LinearLayout.LayoutParams _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout _base = new LinearLayout(this);
+        _base.setOrientation(LinearLayout.VERTICAL);
+        _base.setLayoutParams(_lp);
+        newToolbar(_base);
+        ScrollView _scroll = new ScrollView(this);
+
+        base = new LinearLayout(this);
+        base.setOrientation(LinearLayout.VERTICAL);
+        base.setLayoutParams(_lp);
+        _scroll.setLayoutParams(_lp);
+        _scroll.addView(base);
+        _base.addView(_scroll);
         setupViews();
+        setContentView(_base);
     }
 
     private void makeup(View parent, int iconResourceId, String title, String subtitle) {
