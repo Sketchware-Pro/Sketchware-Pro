@@ -101,7 +101,6 @@ public class Dp {
 
     public Dp(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
-        /* Detect some bad behaviour of the app */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
@@ -159,17 +158,6 @@ public class Dp {
         } catch (IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
-    }
-
-    /**
-     * Stub simply calling {@link Dp#dexLibraries(String, ArrayList)}
-     *
-     * @param outputPath The output file, usually classes2.dex
-     * @param dexes      The path of DEX files to merge
-     * @throws Exception Thrown if dexing had problems
-     */
-    public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
-        dexLibraries(outputPath, dexes);
     }
 
     /**
