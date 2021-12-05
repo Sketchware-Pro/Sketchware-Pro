@@ -1116,8 +1116,7 @@ public class ManageEvent {
                         "this.context = context;\r\n" +
                         "}\r\n" +
                         "\r\n" +
-                        "@Override\r\n" +
-                        "public int setTabCount(int tabCount) {\r\n" +
+                        "public void setTabCount(int tabCount) {\r\n" +
                         "this.tabCount = tabCount;\r\n" +
                         "}\r\n" +
                         "\r\n" +
