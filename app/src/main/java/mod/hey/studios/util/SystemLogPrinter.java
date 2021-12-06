@@ -1,11 +1,14 @@
 package mod.hey.studios.util;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 import kellinwood.logging.LogManager;
 import kellinwood.logging.Logger;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.util.LogUtil;
 
 public class SystemLogPrinter {
 
@@ -74,26 +77,40 @@ public class SystemLogPrinter {
         // Reset
         FileUtil.writeFile(path, "");
 
-        PrintStream ps = new PrintStream(new OutputStream() {
-            private String cache;
+        try {
+            FileWriter writer = new FileWriter(path, true);
+            PrintStream ps = new PrintStream(new SpecializedOutputStream(writer), true);
 
-            @Override
-            public void write(int b) {
-                if (cache == null) cache = "";
+            System.setOut(ps);
+            System.setErr(ps);
+        } catch (IOException e) {
+            LogUtil.e("SystemLogPrinter", "IOException while creating FileWriter to " + path, e);
+        }
+    }
 
-                if (((char) b) == '\n') {
-                    // Write each line printed to the specified path
-                    FileUtil.writeFile(path,
-                            FileUtil.readFile(path) + "\n" + cache);
+    private static class SpecializedOutputStream extends OutputStream {
 
-                    cache = "";
-                } else {
-                    cache += (char) b;
-                }
-            }
-        });
+        private final FileWriter writer;
 
-        System.setOut(ps);
-        System.setErr(ps);
+        SpecializedOutputStream(FileWriter writer) {
+            this.writer = writer;
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            writer.write(b);
+        }
+
+        @Override
+        public void flush() throws IOException {
+            writer.flush();
+            super.flush();
+        }
+
+        @Override
+        public void close() throws IOException {
+            writer.close();
+            super.close();
+        }
     }
 }
