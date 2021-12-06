@@ -1,9 +1,13 @@
 package a.a.a;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
@@ -108,6 +112,20 @@ public class Dp {
         );
 
         SystemLogPrinter.start();
+
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+
+            LogUtil.d(TAG, "Running Sketchware Pro " + info.versionName + " (" + info.versionCode + ")");
+
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+
+            long fileSizeInBytes = new File(applicationInfo.sourceDir).length();
+            LogUtil.d(TAG, "base.apk's size is " + Formatter.formatFileSize(context, fileSizeInBytes) + " (" + fileSizeInBytes + " B)");
+        } catch (PackageManager.NameNotFoundException e) {
+            LogUtil.e(TAG, "Somehow failed to get package info about us!", e);
+        }
+
         e = context;
         f = yqVar;
         g = new oB(false);
