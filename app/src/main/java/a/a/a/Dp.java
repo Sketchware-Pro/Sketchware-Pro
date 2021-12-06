@@ -294,15 +294,7 @@ public class Dp {
         }
 
         /* Include MultiDex library if needed */
-        int minSdkVersion;
-        try {
-            minSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
-                    "21"));
-        } catch (NumberFormatException e) {
-            SketchwareUtil.toastError("Invalid minSdkVersion set in Project Settings, using 21");
-            minSdkVersion = 21;
-        }
-        if (minSdkVersion < 21) {
+        if (settings.getMinSdkVersion() < 21) {
             classpath.append(":")
                     .append(l.getAbsolutePath())
                     .append(File.separator)
@@ -694,16 +686,7 @@ public class Dp {
         ArrayList<String> dexes = new ArrayList<>();
 
         /* Add AndroidX MultiDex library if needed */
-        int minSdkVersion;
-        try {
-            minSdkVersion = Integer.parseInt(
-                    settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
-                            "21"));
-        } catch (NumberFormatException e) {
-            minSdkVersion = 21;
-        }
-
-        if (minSdkVersion < 21) {
+        if (settings.getMinSdkVersion() < 21) {
             dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + "multidex-2.0.1.dex");
         }
 
