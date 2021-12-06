@@ -98,6 +98,7 @@ public class Dp {
     public ProguardHandler proguard;
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
+    private ArrayList<String> dexes = new ArrayList<>();
 
     public Dp(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
@@ -674,6 +675,15 @@ public class Dp {
             }
         }
 
+        /* Add all used libraries */
+        if (!dexes.isEmpty()) {
+            Iterator<String> libs = dexes.iterator();
+            while (libs.hasNext()) {
+                File file = new File(libs.next());
+                apkBuilder.addFile(file);
+            }
+        }
+
         apkBuilder.setDebugMode(false);
         apkBuilder.sealApk();
     }
@@ -703,7 +713,6 @@ public class Dp {
      */
     public void h() throws Exception {
         long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> dexes = new ArrayList<>();
 
         /* Add AndroidX MultiDex library if needed */
         int minSdkVersion;
@@ -770,9 +779,12 @@ public class Dp {
 
         dexes.addAll(FileUtil.listFiles(f.t + File.separator + "dex", "dex"));
 
-        LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
-        dexLibraries(f.E, dexes);
-        LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        if (minSdkVersion < 21) {
+            LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
+            dexLibraries(f.E, dexes);
+            LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            dexes = new ArrayList<>();
+        }
     }
 
     /**
