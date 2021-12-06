@@ -677,10 +677,17 @@ public class Dp {
 
         /* Add all used libraries */
         if (!dexes.isEmpty()) {
+            int n = 2;
             Iterator<String> libs = dexes.iterator();
+            /* Making its file object as idk if that returned string ends with "/" or not */
+            File path = new File(f.t);
             while (libs.hasNext()) {
-                File file = new File(libs.next());
-                apkBuilder.addFile(file);
+                File dex = new File(libs.next());
+                String name = "classes" + Integer.toString(n) + ".dex";
+                /* Copy that file or else it will be added with names like "multidex-xxx.dex", which will crash the apk */
+                FileUtil.copyFile(dex.getAbsolutePath(), path.getAbsolutePath() + name);
+                apkBuilder.addFile(new File(path, name));
+                n++;
             }
         }
 
