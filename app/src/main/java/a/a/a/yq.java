@@ -505,14 +505,7 @@ public class yq {
         }
 
         if (!new File(javaDir, "SketchApplication.java").exists()) {
-            int minSdkVersion;
-            try {
-                minSdkVersion = Integer.parseInt(projectSettings.getValue(
-                        ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
-            } catch (NumberFormatException e) {
-                minSdkVersion = 21;
-            }
-            boolean applyMultiDex = minSdkVersion < 21;
+            boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = L.b(
                     context,
