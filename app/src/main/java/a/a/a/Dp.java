@@ -103,6 +103,11 @@ public class Dp {
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
 
+    /**
+     * Timestamp keeping track of when compiling the project's resources started, needed for stats of how long compiling took.
+     */
+    private long timestampResourceCompilationStarted;
+
     public Dp(Context context, yq yqVar) {
         /* Detect some bad behaviour of the app */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
@@ -164,9 +169,9 @@ public class Dp {
      * @throws Exception Thrown when anything goes wrong while compiling resources
      */
     public void a() throws Exception {
-        long savedTimeMillis = System.currentTimeMillis();
+        timestampResourceCompilationStarted = System.currentTimeMillis();
         b();
-        LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
 
     public void a(iI iIVar, String str) {
@@ -674,6 +679,9 @@ public class Dp {
 
         apkBuilder.setDebugMode(false);
         apkBuilder.sealApk();
+
+        LogUtil.d(TAG, "Time passed since starting to compile resources until building the unsigned APK: " +
+                (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
 
     /**
