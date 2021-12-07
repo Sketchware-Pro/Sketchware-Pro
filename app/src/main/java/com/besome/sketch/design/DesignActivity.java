@@ -394,7 +394,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 3:
-                            new CompileErrorSaver(l).showDialog(DesignActivity.this);
+                            new CompileErrorSaver(l).showLastErrors(DesignActivity.this);
                             break;
 
                         case 4:
