@@ -102,6 +102,7 @@ public class Dp {
     public ProguardHandler proguard;
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
+    private ArrayList<String> dexesToAddButNotMerge = new ArrayList<>();
 
     /**
      * Timestamp keeping track of when compiling the project's resources started, needed for stats of how long compiling took.
@@ -647,7 +648,9 @@ public class Dp {
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
     public void g() {
-        ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(f.E), null, null, System.out);
+        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? f.E : dexesToAddButNotMerge.remove(0);
+
+        ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(firstDexPath), null, null, System.out);
 
         for (Jp library : n.a()) {
             apkBuilder.addResourcesFromJar(new File(l, m + File.separator + library.a() + File.separator + "classes.jar"));
@@ -670,10 +673,21 @@ public class Dp {
             apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
         }
 
-        List<String> dexFiles = FileUtil.listFiles(f.t, "dex");
-        for (String dexFile : dexFiles) {
-            if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
-                apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+        if (dexesToAddButNotMerge.isEmpty()) {
+            List<String> dexFiles = FileUtil.listFiles(f.t, "dex");
+            for (String dexFile : dexFiles) {
+                if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
+                    apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+                }
+            }
+        } else {
+            int dexNumber = 2;
+
+            for (String dexPath : dexesToAddButNotMerge) {
+                File dexFile = new File(dexPath);
+
+                apkBuilder.addFile(dexFile, "classes" + dexNumber + ".dex");
+                dexNumber++;
             }
         }
 
@@ -768,7 +782,13 @@ public class Dp {
         dexes.addAll(FileUtil.listFiles(f.t + File.separator + "dex", "dex"));
 
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
-        dexLibraries(f.E, dexes);
+
+        if (settings.getMinSdkVersion() < 21 || !f.N.f) {
+            dexLibraries(f.E, dexes);
+        } else {
+            dexesToAddButNotMerge = dexes;
+        }
+
         LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
