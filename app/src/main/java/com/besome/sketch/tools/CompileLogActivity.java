@@ -1,7 +1,6 @@
 package com.besome.sketch.tools;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,76 +12,82 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.besome.sketch.common.SrcViewerActivity;
 import com.besome.sketch.lib.base.BaseActivity;
 import com.sketchware.remod.Resources;
 
 import mod.hey.studios.util.CompileLogHelper;
 
 public class CompileLogActivity extends BaseActivity {
-    ViewGroup rootLayout;
-    ImageView menu;
-    TextView tv_compile_log;
-    HorizontalScrollView err_hScroll;
-    ScrollView err_vScroll;
+
+    private TextView tv_compile_log;
+    private HorizontalScrollView err_hScroll;
+    private ScrollView err_vScroll;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.compile_log);
-        rootLayout = (ViewGroup) ((ViewGroup) this
-                .findViewById(android.R.id.content)).getChildAt(0);
-        menu = findViewById(Resources.id.ig_toolbar_load_file);
+
+        View rootLayout = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+        ImageView back = findViewById(Resources.id.ig_toolbar_back);
+        TextView title = findViewById(Resources.id.tx_toolbar_title);
+        ImageView menu = findViewById(Resources.id.ig_toolbar_load_file);
         tv_compile_log = findViewById(Resources.id.tv_compile_log);
-        err_hScroll = (HorizontalScrollView) rootLayout.findViewWithTag("err_hScroll");
-        err_vScroll = (ScrollView) rootLayout.findViewWithTag("err_vScroll");
+        err_hScroll = rootLayout.findViewWithTag("err_hScroll");
+        err_vScroll = rootLayout.findViewWithTag("err_vScroll");
 
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText(
-                (getIntent().getBooleanExtra("showingLastError", false))
-                        ? "Last Compile Log" : "Compilation Log");
+        back.setOnClickListener(v -> onBackPressed());
 
-        findViewById(Resources.id.ig_toolbar_back).setOnClickListener(v -> onBackPressed());
+        if (getIntent().getBooleanExtra("showingLastError", false)) {
+            title.setText("Last compile log");
+        } else {
+            title.setText("Compile log");
+        }
+
         menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
         menu.setVisibility(View.VISIBLE);
-        PopupMenu options = new PopupMenu(getApplicationContext(), menu);
-        options.getMenu().add("Wrap Text").setCheckable(true);
-        options.getMenu().add("Monospaced Font").setCheckable(true).setChecked(true);
-        options.getMenu().add("Font Size");
-        options.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
-            switch (menuItem.getTitle().toString()) {
 
-                case "Wrap Text": {
+        final String wrapTextLabel = "Wrap text";
+        final String monospacedFontLabel = "Monospaced font";
+        final String fontSizeLabel = "Font size";
+
+        PopupMenu options = new PopupMenu(getApplicationContext(), menu);
+        options.getMenu().add(wrapTextLabel).setCheckable(true);
+        options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(true);
+        options.getMenu().add(fontSizeLabel);
+
+        options.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getTitle().toString()) {
+                case wrapTextLabel:
                     menuItem.setChecked(!menuItem.isChecked());
                     toggleWrapText(menuItem.isChecked());
                     break;
-                }
-                case "Monospaced Font": {
+
+                case monospacedFontLabel:
                     menuItem.setChecked(!menuItem.isChecked());
                     toggleMonospacedText(menuItem.isChecked());
                     break;
-                }
-                case "Font Size": {
+
+                case fontSizeLabel:
                     changeFontSizeDialog();
                     break;
-                }
-            }
-            return true;
 
+                default:
+                    return false;
+            }
+
+            return true;
         });
 
-        menu.setOnClickListener(v ->
-                options.show());
+        menu.setOnClickListener(v -> options.show());
 
-
-        Intent intent = getIntent();
-        if (intent == null) {
+        String error = getIntent().getStringExtra("error");
+        if (error == null) {
             finish();
         } else {
-
-            tv_compile_log.setText(CompileLogHelper.colorErrsAndWarnings(intent.getStringExtra("error")));
+            tv_compile_log.setText(CompileLogHelper.colorErrsAndWarnings(error));
             tv_compile_log.setTextIsSelectable(true);
         }
     }
@@ -128,11 +133,10 @@ public class CompileLogActivity extends BaseActivity {
                 Gravity.CENTER));
 
         new AlertDialog.Builder(this)
-                .setTitle("Select Font Size")
+                .setTitle("Select font size")
                 .setView(layout)
-                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-                    tv_compile_log.setTextSize((float) picker.getValue());
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, which) ->
+                        tv_compile_log.setTextSize((float) picker.getValue()))
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
