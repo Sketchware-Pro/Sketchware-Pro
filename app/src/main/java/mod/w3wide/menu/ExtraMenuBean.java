@@ -441,6 +441,11 @@ public class ExtraMenuBean {
                 menus = getComponentMenus(26);
                 break;
 
+            case "fragmentAdapter":
+                asdAll.b("Select FragmentAdapter Component");
+                menus = getComponentMenus(27);
+                break;
+
             case "phoneauth":
                 asdAll.b("Select FirebasePhone Component");
                 menus = getComponentMenus(28);
