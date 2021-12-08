@@ -155,6 +155,9 @@ public class ExtraBlockClassInfo {
             case "materialButton":
                 return "MaterialButton";
 
+            case "fragmentAdapter":
+                return "FragmentAdapter";
+
             default:
                 return str;
         }
