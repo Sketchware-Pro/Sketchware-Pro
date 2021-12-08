@@ -128,7 +128,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case 27:
-                if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
+                if (jC.c(sc_id).c().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
                     bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
                     return false;
                 }
@@ -160,7 +160,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 275 && resultCode == -1) {
+        if (requestCode == 275 && resultCode == RESULT_OK) {
             edInputFilePicker.setText(data.getStringExtra("mime_type"));
         }
     }
@@ -272,7 +272,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 if (!mB.a() && checks()) {
                     bB.a(this, Helper.getResString(Resources.string.component_message_component_block_added), 1).show();
                     mB.a(getApplicationContext(), edInput);
-                    setResult(-1);
+                    setResult(RESULT_OK);
                     finish();
                 }
                 break;
