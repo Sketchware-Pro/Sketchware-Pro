@@ -18,6 +18,7 @@ import com.besome.sketch.lib.base.BaseActivity;
 import com.sketchware.remod.Resources;
 
 import mod.hey.studios.util.CompileLogHelper;
+import mod.hey.studios.util.Helper;
 
 public class CompileLogActivity extends BaseActivity {
 
@@ -39,6 +40,7 @@ public class CompileLogActivity extends BaseActivity {
         err_vScroll = rootLayout.findViewWithTag("err_vScroll");
 
         back.setOnClickListener(v -> onBackPressed());
+        Helper.applyRippleToToolbarView(back);
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
             title.setText("Last compile log");
@@ -48,6 +50,7 @@ public class CompileLogActivity extends BaseActivity {
 
         menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
         menu.setVisibility(View.VISIBLE);
+        Helper.applyRippleToToolbarView(menu);
 
         final String wrapTextLabel = "Wrap text";
         final String monospacedFontLabel = "Monospaced font";
