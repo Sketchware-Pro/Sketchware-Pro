@@ -185,6 +185,15 @@ public class AppBundleCompiler {
                                     String entryName = entry.getName();
                                     toCompress = new ZipEntry(MODULE_ROOT + File.separator + entryName);
                                 }
+
+                                int entryMethod = entry.getMethod();
+                                toCompress.setMethod(entryMethod);
+                                if (entryMethod == ZipEntry.STORED) {
+                                    toCompress.setCompressedSize(entry.getCompressedSize());
+                                    toCompress.setSize(entry.getSize());
+                                    toCompress.setCrc(entry.getCrc());
+                                }
+
                                 zipOutputStream.putNextEntry(toCompress);
 
                                 byte[] buffer = new byte[1024];
