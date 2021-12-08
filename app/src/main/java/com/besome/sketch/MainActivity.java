@@ -1,6 +1,7 @@
 package com.besome.sketch;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +13,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -25,7 +26,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.besome.sketch.acc.LoginActivity;
 import com.besome.sketch.acc.MyPageSettingsActivity;
 import com.besome.sketch.acc.ProfileActivity;
 import com.besome.sketch.bill.InAppActivity;
@@ -52,7 +52,9 @@ import a.a.a.nd;
 import a.a.a.sB;
 import a.a.a.xB;
 import a.a.a.zI;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.tyron.backup.CallBackTask;
@@ -260,7 +262,26 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                     @Override
                     public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
-                        new BackupRestoreManager(MainActivity.this, y).doRestore(path, true);
+                        if (wasSuccessful) {
+                            BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, y);
+
+                            if (BackupFactory.zipContainsFile(path, "local_libs")) {
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("Warning")
+                                        .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
+                                        .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
+                                        .setNegativeButton("Don't copy", (dialog, which) -> manager.doRestore(path, false))
+                                        .setNeutralButton(Resources.string.common_word_cancel, null)
+                                        .show();
+                            } else {
+                                manager.doRestore(path, true);
+                            }
+
+                            // Clear intent so it doesn't duplicate
+                            getIntent().setData(null);
+                        } else {
+                            SketchwareUtil.toastError("Failed to copy backup file to temporary location: " + reason, Toast.LENGTH_LONG);
+                        }
                     }
                 }).execute(data);
             }
@@ -303,19 +324,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(Resources.menu.main_menu, menu);
-        if (i.a()) {
-            menu.findItem(Resources.id.menu_login).setVisible(false);
-            menu.findItem(Resources.id.menu_mypage).setVisible(true);
-        } else {
-            menu.findItem(Resources.id.menu_login).setVisible(true);
-            menu.findItem(Resources.id.menu_mypage).setVisible(false);
-        }
-        return true;
-    }
-
-    @Override
     // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onDestroy() {
         super.onDestroy();
@@ -352,14 +360,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         if (n.a(item)) {
             return true;
-        }
-        int itemId = item.getItemId();
-        if (itemId == Resources.id.menu_login || itemId == Resources.id.menu_mypage) {
-            if (i.a()) {
-                toMyPageSettingsActivity();
-            } else {
-                toLoginActivity();
-            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -455,12 +455,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             x.f(Color.YELLOW);
             x.n();
         }
-    }
-
-    private void toLoginActivity() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, 100);
     }
 
     private void toMyPageSettingsActivity() {

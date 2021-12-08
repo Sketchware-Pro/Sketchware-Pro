@@ -3,6 +3,7 @@ package mod.agus.jcoderz.editor.event;
 import java.util.ArrayList;
 
 import a.a.a.Gx;
+import a.a.a.Lx;
 import mod.hilal.saif.events.EventsHandler;
 
 public class ManageEvent {
@@ -501,6 +502,7 @@ public class ManageEvent {
                 return "onLoggingImpression";
 
             case "onScrolled":
+            case "onRecyclerScrolled":
                 return "onScroll";
 
             case "onFailureLink":
@@ -519,6 +521,7 @@ public class ManageEvent {
                 return "onVerificationCompleted";
 
             case "onRecyclerScrollChanged":
+            case "onScrollChanged":
                 // Nice typo, Agus
                 return "onScrollStateCanged";
 
@@ -530,9 +533,6 @@ public class ManageEvent {
 
             case "onContextItemSelected":
                 return "On context menu selected";
-
-            case "onRecyclerScrolled":
-                return "onScroll";
 
             case "onRewardedVideoAdClosed":
                 return "onVideoAdClosed";
@@ -584,10 +584,6 @@ public class ManageEvent {
             case "onCompleteRegister":
                 return "onComplete";
 
-            case "onScrollChanged":
-                // Nice typo, Agus
-                return "onScrollStateCanged";
-
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
                 return "onAdFailedToLoad";
@@ -635,7 +631,7 @@ public class ManageEvent {
         }
     }
 
-    public static String f(String eventName, String eventLogic) {
+    public static String f(String targetId, String eventName, String eventLogic) {
         switch (eventName) {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
@@ -1001,7 +997,8 @@ public class ManageEvent {
 
             case "onInterstitialAdLoaded":
                 return "@Override\r\n" +
-                        "public void onAdLoaded(InterstitialAd _interstitialAd) {\r\n" +
+                        "public void onAdLoaded(InterstitialAd _param1) {\r\n" +
+                        targetId + " = _param1;\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1010,10 +1007,10 @@ public class ManageEvent {
                 return "@Override\r\n" +
                         "public void onAdFailedToLoad(LoadAdError _param1) {\r\n" +
                         "final int _errorCode = _param1.getCode();\r\n" +
-                        "final String _errorMsg = _param1.getMessage();\r\n" +
+                        "final String _errorMessage = _param1.getMessage();\r\n" +
                         eventLogic + "\r\n" +
                         "}";
-                        
+
             case "onAdDismissedFullScreenContent":
                 return "@Override\r\n" +
                         "public void onAdDismissedFullScreenContent() {\r\n" +
@@ -1024,7 +1021,7 @@ public class ManageEvent {
                 return "@Override\r\n" +
                         "public void onAdFailedToShowFullScreenContent(AdError _adError) {\r\n" +
                         "final int _errorCode = _adError.getCode();\r\n" +
-                        "final String _errorMsg = _adError.getMessage();\r\n" +
+                        "final String _errorMessage = _adError.getMessage();\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1059,17 +1056,17 @@ public class ManageEvent {
                         "}";
 
             default:
-                return EventsHandler.getEventCode(eventName, eventLogic);
+                return EventsHandler.getEventCode(targetId, eventName, eventLogic);
         }
     }
 
     /**
      * @return Code of extra listeners, used in {@link a.a.a.Lx#d(String, String, String)}
      */
-    public static String g(String listenerName, String previousCode, String listenerLogic) {
+    public static String g(String listenerName, String targetId, String listenerLogic) {
         switch (listenerName) {
             case "OnCompletionListener":
-                return previousCode + ".setOnCompletionListener(new MediaPlayer.OnCompletionListener() {\r\n" +
+                return targetId + ".setOnCompletionListener(new MediaPlayer.OnCompletionListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
@@ -1087,35 +1084,39 @@ public class ManageEvent {
                         "}";
 
             case "OnQueryTextListener":
-                return previousCode + ".setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n" +
-                        previousCode + "\r\n" +
+                return targetId + ".setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n" +
+                        listenerLogic + "\r\n" +
                         "});";
 
             case "OnVerificationStateChangedListener":
-                return previousCode + " = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {\r\n" +
+                return targetId + " = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnScrollListener":
-                return previousCode + ".setOnScrollListener(new AbsListView.OnScrollListener() {\r\n" +
+                return targetId + ".setOnScrollListener(new AbsListView.OnScrollListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "authsignInWithPhoneAuth":
-                return previousCode + "_phoneAuthListener = new OnCompleteListener<AuthResult>() {\r\n" +
+                return targetId + "_phoneAuthListener = new OnCompleteListener<AuthResult>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "FragmentStatePagerAdapter":
-                return "public class MyFragmentAdapter extends FragmentStatePagerAdapter {\r\n" +
+                String className = Lx.a(targetId + "Fragment");
+                return "public class " + className +" extends FragmentStatePagerAdapter {\r\n" +
                         "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
                         "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +
                         "Context context;\r\n" +
                         "int tabCount;\r\n" +
                         "\r\n" +
-                        "public MyFragmentAdapter(Context context, FragmentManager manager, int tabCount) {\r\n" +
+                        "public " + className + "(Context context, FragmentManager manager) {\r\n" +
                         "super(manager);\r\n" +
                         "this.context = context;\r\n" +
+                        "}\r\n" +
+                        "\r\n" +
+                        "public void setTabCount(int tabCount) {\r\n" +
                         "this.tabCount = tabCount;\r\n" +
                         "}\r\n" +
                         "\r\n" +
@@ -1128,7 +1129,7 @@ public class ManageEvent {
                         "}";
 
             case "OnVideoAdListener":
-                return previousCode + "_listener = new RewardedVideoAdListener() {\r\n" +
+                return targetId + "_listener = new RewardedVideoAdListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "\r\n" +
                         "@Override\r\n" +
@@ -1145,148 +1146,149 @@ public class ManageEvent {
                         "};";
 
             case "OnTimeSetListener":
-                return previousCode + "_listener = new TimePickerDialog.OnTimeSetListener() {\r\n" +
+                return targetId + "_listener = new TimePickerDialog.OnTimeSetListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnFailureListener":
-                return previousCode + "_onFailureLink = new OnFailureListener() {\r\n" +
+                return targetId + "_onFailureLink = new OnFailureListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "authUpdatePasswordComplete":
-                return previousCode + "_updatePasswordListener = new OnCompleteListener<Void>() {\r\n" +
+                return targetId + "_updatePasswordListener = new OnCompleteListener<Void>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnSuccessListener":
-                return previousCode + "_onSuccessLink = new OnSuccessListener<PendingDynamicLinkData>() {\r\n" +
+                return targetId + "_onSuccessLink = new OnSuccessListener<PendingDynamicLinkData>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnGridItemClickListener":
-                return previousCode + ".setOnItemClickListener(new AdapterView.OnItemClickListener() {\r\n" +
+                return targetId + ".setOnItemClickListener(new AdapterView.OnItemClickListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "OnRecyclerScrollListener":
-                return previousCode + ".addOnScrollListener(new RecyclerView.OnScrollListener() {\r\n" +
+                return targetId + ".addOnScrollListener(new RecyclerView.OnScrollListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "OnTimeChangeListener":
-                return previousCode + ".setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {\r\n" +
+                return targetId + ".setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "authDeleteUserComplete":
-                return previousCode + "_deleteUserListener = new OnCompleteListener<Void>() {\r\n" +
+                return targetId + "_deleteUserListener = new OnCompleteListener<Void>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "authUpdateProfileComplete":
-                return previousCode + "_updateProfileListener = new OnCompleteListener<Void>() {\r\n" +
+                return targetId + "_updateProfileListener = new OnCompleteListener<Void>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnPageChangeListener":
-                return previousCode + ".addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\r\n" +
+                return targetId + ".addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "OnErrorListener":
-                return previousCode + ".setOnErrorListener(new MediaPlayer.OnErrorListener() {\r\n" +
+                return targetId + ".setOnErrorListener(new MediaPlayer.OnErrorListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "authEmailVerificationSent":
-                return previousCode + "_emailVerificationSentListener = new OnCompleteListener<Void>() {\r\n" +
+                return targetId + "_emailVerificationSentListener = new OnCompleteListener<Void>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "authUpdateEmailComplete":
-                return previousCode + "_updateEmailListener = new OnCompleteListener<Void>() {\r\n" +
+                return targetId + "_updateEmailListener = new OnCompleteListener<Void>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnPreparedListener":
-                return previousCode + ".setOnPreparedListener(new MediaPlayer.OnPreparedListener() {\r\n" +
+                return targetId + ".setOnPreparedListener(new MediaPlayer.OnPreparedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
-            case "setOnItemSelectedListener":
-                return previousCode + ".setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {\r\n" +
+            case "OnNavigationItemSelected":
+                return targetId + ".setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
+
             case "OnLetterSelectedListener":
-                return previousCode + ".setOnLetterSelectedListener(new WaveSideBar.OnLetterSelectedListener() {\r\n" +
+                return targetId + ".setOnLetterSelectedListener(new WaveSideBar.OnLetterSelectedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "FBAdsInterstitial_InterstitialAdListener":
-                return previousCode + "_InterstitialAdListener = new InterstitialAdListener() {\r\n" +
+                return targetId + "_InterstitialAdListener = new InterstitialAdListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnRatingBarChangeListener":
-                return previousCode + ".setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {\r\n" +
+                return targetId + ".setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "OnTabSelectedListener":
-                return previousCode + ".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\r\n" +
+                return targetId + ".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "OnDateChangeListener":
                 return "Calendar _calendar = Calendar.getInstance();\r\n" +
-                        previousCode + ".init(_calendar.get(Calendar.YEAR), _calendar.get(Calendar.MONTH), " +
+                        targetId + ".init(_calendar.get(Calendar.YEAR), _calendar.get(Calendar.MONTH), " +
                         "_calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "OnCompleteListenerFCM":
-                return previousCode + "_onCompleteListener = new OnCompleteListener<InstanceIdResult>() {\r\n" +
+                return targetId + "_onCompleteListener = new OnCompleteListener<InstanceIdResult>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "PatternLockViewListener":
-                return previousCode + ".addPatternLockListener(new PatternLockViewListener() {\r\n" +
+                return targetId + ".addPatternLockListener(new PatternLockViewListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "FBAdsBanner_AdListener":
-                return previousCode + "_AdListener = new AdListener() {\r\n" +
+                return targetId + "_AdListener = new AdListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "OnGridItemLongClickListener":
-                return previousCode + ".setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {\r\n" +
+                return targetId + ".setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
             case "googleSignInListener":
-                return previousCode + "_googleSignInListener = new OnCompleteListener<AuthResult>() {\r\n" +
+                return targetId + "_googleSignInListener = new OnCompleteListener<AuthResult>() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
-//new start
+
             case "interstitialAdLoadCallback":
-                return "_" + previousCode + "_interstitialAdLoadCallback = new InterstitialAdLoadCallback() {\r\n" +
+                return "_" + targetId + "_interstitial_ad_load_callback = new InterstitialAdLoadCallback() {\r\n" +
                         listenerLogic + "\r\n" +
                         "};";
 
             case "fullScreenContentCallback":
-                return previousCode + ".setFullScreenContentCallback(new FullScreenContentCallback() {\r\n" +
+                return "_" + targetId + "_full_screen_content_callback = new FullScreenContentCallback() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "};";
+
+            case "bannerAdViewListener":
+                return targetId + ".setAdListener(new AdListener() {\r\n" +
                         listenerLogic + "\r\n" +
                         "});";
 
-            case "bannerAdViewListener":
-                return previousCode + ".setAdListener(new AdListener() {\r\n" +
-                        listenerLogic + "\r\n" +
-                        "});";
-//new end
             default:
-                return EventsHandler.getListenerCode(listenerName, previousCode, listenerLogic);
+                return EventsHandler.getListenerCode(listenerName, targetId, listenerLogic);
         }
     }
 
@@ -1396,16 +1398,12 @@ public class ManageEvent {
 
             case "onScrollChanged":
                 return "%d.scrollState";
-//new start
+
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
-                return "%d.errorCode %d.errorMsg";
+                return "%d.errorCode %d.errorMessage";
 
-            case "onInterstitialAdLoaded":
-                return "%m.interstitialad.interstitialAd";
-
-//new end
             default:
                 return EventsHandler.getBlocks(eventName);
         }
@@ -1471,8 +1469,8 @@ public class ManageEvent {
         EventsHandler.addEvents(gx, list);
     }
 
-    public static String i(String str, String str2) {
-        switch (str2) {
+    public static String i(String targetId, String eventName) {
+        switch (eventName) {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
             case "onDeleteUserComplete":
@@ -1480,64 +1478,62 @@ public class ManageEvent {
             case "onGoogleSignIn":
             case "onUpdatePasswordComplete":
             case "signInWithPhoneAuthComplete":
-                return "When " + str + " " + str2 + " %b.success %s.errorMessage";
+                return "When " + targetId + " " + eventName + " %b.success %s.errorMessage";
 
             case "onScrolled":
-                return "When " + str + " " + str2 + " %d.firstVisibleItem %d.visibleItemCount %d.totalItemCount";
+                return "When " + targetId + " " + eventName + " %d.firstVisibleItem %d.visibleItemCount %d.totalItemCount";
 
             case "onDateChanged":
-                return "When " + str + " " + str2 + " %d.year %d.month %d.day";
+            case "onDateSet":
+                return "When " + targetId + " " + eventName + " %d.year %d.month %d.day";
 
             case "onRewarded":
                 return "onRewarded " + "%d.rewardItem";
 
             case "onFailureLink":
-                return "When " + str + " " + str2 + " %s.errorMessage";
+                return "When " + targetId + " " + eventName + " %s.errorMessage";
 
             case "onNavigationItemSelected":
-                return "When " + str + " " + str2 + " %d.itemId";
+                return "When " + targetId + " " + eventName + " %d.itemId";
 
             case "onRewardedVideoAdFailedToLoad":
                 return "onRewardedVideoAdFailedToLoad " + "%d.errorCode";
-
-            case "onDateSet":
-                return "When " + str + " " + str2 + " %d.year %d.month %d.day";
 
             case "onPrepared":
             case "onCompletion":
             case "onPatternLockCleared":
             case "onAccountPickerCancelled":
             case "onPatternLockStarted":
-                return "When " + str + " " + str2;
+                return "When " + targetId + " " + eventName;
 
             case "onSaveInstanceState":
             case "onCreateOptionsMenu":
             case "onCreateContextMenu":
             case "onRestoreInstanceState":
             case "onContextItemSelected":
-                return "When " + str2;
+                return "When " + eventName;
 
             case "onQueryTextChanged":
             case "onQueryTextSubmit":
-                return "When " + str + " " + str2 + " %s.charSeq";
+                return "When " + targetId + " " + eventName + " %s.charSeq";
 
             case "onError":
-                return "When " + str + " " + str2 + " %d.what %d.extra";
+                return "When " + targetId + " " + eventName + " %d.what %d.extra";
 
             case "onVerificationCompleted":
-                return "When " + str + " " + str2 + " %m.PhoneAuthCredential.credential";
+                return "When " + targetId + " " + eventName + " %m.PhoneAuthCredential.credential";
 
             case "onRecyclerScrollChanged":
-                return "When " + " " + str + " " + str2 + " %d.scrollState";
+                return "When " + " " + targetId + " " + eventName + " %d.scrollState";
 
             case "onRecyclerScrolled":
-                return "When " + " " + str + " " + str2 + " %d.offsetX %d.offsetY";
+                return "When " + " " + targetId + " " + eventName + " %d.offsetX %d.offsetY";
 
             case "onRewardedVideoAdClosed":
                 return "onRewardedVideoAdClosed";
 
             case "onSuccessLink":
-                return "When " + str + " " + str2 + " %s.link";
+                return "When " + targetId + " " + eventName + " %s.link";
 
             case "onRewardedVideoAdLoaded":
                 return "onRewardedVideoAdLoaded";
@@ -1546,22 +1542,22 @@ public class ManageEvent {
                 return "onRewardedVideoAdOpened";
 
             case "onPageScrolled":
-                return "When " + str + " " + str2 + " %d.position %d.positionOffset %d.positionOffsetPixels";
+                return "When " + targetId + " " + eventName + " %d.position %d.positionOffset %d.positionOffsetPixels";
 
             case "onVerificationFailed":
-                return "When " + str + " " + str2 + " %s.exception";
+                return "When " + targetId + " " + eventName + " %s.exception";
 
             case "onAccountPicker":
-                return "When " + str + " " + str2 + " %m.GoogleSignInAccount.task";
+                return "When " + targetId + " " + eventName + " %m.GoogleSignInAccount.task";
 
             case "onFragmentAdded":
-                return "Fragment getItem" + "%d.position";
+                return "Fragment getItem %d.position";
 
             case "onTimeSet":
-                return "When " + str + " " + str2 + " %d.hour %d.minute";
+                return "When " + targetId + " " + eventName + " %d.hour %d.minute";
 
             case "onPageChanged":
-                return "When " + str + " onPageScrollStateChanged %d.scrollState";
+                return "When " + targetId + " onPageScrollStateChanged %d.scrollState";
 
             case "FBAdsBanner_onAdClicked":
             case "FBAdsBanner_onAdLoaded":
@@ -1571,78 +1567,74 @@ public class ManageEvent {
             case "FBAdsInterstitial_onLoggingImpression":
             case "FBAdsInterstitial_onInterstitialDismissed":
             case "FBAdsInterstitial_onInterstitialDisplayed":
-                return str + ": " + str2.split("_")[1];
+                return targetId + ": " + eventName.split("_")[1];
 
             case "onRatingChanged":
-                return "When " + str + " " + str2 + " %d.value";
+                return "When " + targetId + " " + eventName + " %d.value";
 
             case "onPatternLockProgress":
-                return "When " + str + " " + str2 + " %m.listStr.pattern";
+                return "When " + targetId + " " + eventName + " %m.listStr.pattern";
 
             case "onOptionsItemSelected":
-                return "When " + str + " %d.id %s.title";
+                return "When " + targetId + " %d.id %s.title";
 
             case "onPatternLockComplete":
-                return "When " + str + " " + str2 + " %m.listStr.pattern";
+                return "When " + targetId + " " + eventName + " %m.listStr.pattern";
 
             case "onTabSelected":
             case "onTabUnselected":
             case "onTabReselected":
             case "onPageSelected":
-                return str + ": " + str2 + " %d.position";
+                return targetId + ": " + eventName + " %d.position";
 
             case "onLetterSelected":
-                return "When " + str + " " + str2 + " %s.index";
+                return "When " + targetId + " " + eventName + " %s.index";
 
             case "FBAdsInterstitial_onError":
             case "FBAdsBanner_onError":
-                return str + ": onError %s.errorMsg";
+                return targetId + ": onError %s.errorMsg";
 
             case "onTabAdded":
                 return "CharSequence getPageTitle %d.position";
 
             case "onCompleteRegister":
-                return "When " + str + " " + str2 + " %b.success %s.token %s.errorMessage";
+                return "When " + targetId + " " + eventName + " %b.success %s.token %s.errorMessage";
 
             case "onCodeSent":
-                return "When " + str + " " + str2 + " %s.verificationId %m.FirebasePhoneAuth.token";
+                return "When " + targetId + " " + eventName + " %s.verificationId %m.FirebasePhoneAuth.token";
 
             case "onTimeChanged":
-                return "When " + str + " " + str2 + " %d.hour %d.minute";
+                return "When " + targetId + " " + eventName + " %d.hour %d.minute";
 
             case "onScrollChanged":
-                return "When " + str + " " + str2 + " %d.scrollState";
+                return "When " + targetId + " " + eventName + " %d.scrollState";
 
-//new start
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
-                return str + ": onAdFailedToLoad %d.errorCode %s.errorMsg";
+                return targetId + ": onAdFailedToLoad %d.errorCode %s.errorMessage";
 
             case "onInterstitialAdLoaded":
-                return str + ": onAdLoaded %m.interstitialad.interstitialAd";
+            case "onBannerAdLoaded":
+                return targetId + ": onAdLoaded";
 
             case "onAdFailedToShowFullScreenContent":
-                return str + ": " + str2 + " %d.errorCode %s.errorMsg";
+                return targetId + ": " + eventName + " %d.errorCode %s.errorMessage";
 
             case "onAdDismissedFullScreenContent":
             case "onAdShowedFullScreenContent":
-                return str + ": " + str2;
-
-            case "onBannerAdLoaded":
-                return str + ": onAdLoaded";
+                return targetId + ": " + eventName;
 
             case "onBannerAdOpened":
-                return str + ": onAdOpened";
+                return targetId + ": onAdOpened";
 
             case "onBannerAdClicked":
-                return str + ": onAdClicked";
+                return targetId + ": onAdClicked";
 
             case "onBannerAdClosed":
-                return str + ": onAdClosed";
+                return targetId + ": onAdClosed";
 
-//new end
             default:
-                return EventsHandler.getSpec(str, str2);
+                return EventsHandler.getSpec(targetId, eventName);
         }
     }
 }

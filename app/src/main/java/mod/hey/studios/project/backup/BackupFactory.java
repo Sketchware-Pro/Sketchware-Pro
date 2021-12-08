@@ -17,10 +17,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -30,6 +33,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import a.a.a.lC;
+import a.a.a.yB;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
@@ -277,25 +282,38 @@ public class BackupFactory {
     /************************ BACKUP ************************/
 
     public void backup(String app_name) {
+        String versionName = yB.c(lC.b(sc_id), "sc_ver_name");
+        String versionCode = yB.c(lC.b(sc_id), "sc_ver_code");
+        String pkgName = yB.c(lC.b(sc_id), "my_sc_pkg_name");
+        String dateTime = new SimpleDateFormat("yyyy-M-dd'T'HHmmss", Locale.ENGLISH).format(Calendar.getInstance().getTime());
+        String appNameOnly = app_name.replaceAll("_d", "").replaceAll(File.separator, "");
+
+        // Example name: InternalDemo v1.0 (com.jbk.internal.demo, 1) 2021-12-31T125827
+        String finalFileName = appNameOnly + " v" + versionName + " (" + pkgName + ", " + versionCode + ") " + dateTime;
 
         createBackupsFolder();
 
         // Init temporary backup folder
+
         File outFolder = new File(getBackupDir(),
-                app_name);
+                app_name + "_temp");
 
         // Init output zip file
-        File outZip = new File(getBackupDir(),
-                app_name + "." + EXTENSION);
+        File outZip = new File(getBackupDir() + File.separator + appNameOnly, finalFileName + "." + EXTENSION);
 
-        // Create a duplicate if already exists
-        if (outFolder.exists() || outZip.exists()) {
+        // Create a duplicate if already exists (impossible now :3)
+        if (outZip.exists()) {
             backup(app_name + "_d");
             return;
         }
+        //delete temp dir if exist
+        if (outFolder.exists()){
+            FileUtil.deleteFile(outFolder.getAbsolutePath());
+        }
 
-        // Create temp folder
+        // Create necessary folders
         FileUtil.makeDir(outFolder.getAbsolutePath());
+        FileUtil.makeDir(new File(getBackupDir() + File.separator + appNameOnly).getAbsolutePath());
 
         // Copy data
         File dataF = new File(outFolder, "data");

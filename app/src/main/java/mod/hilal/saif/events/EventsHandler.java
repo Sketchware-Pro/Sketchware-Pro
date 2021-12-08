@@ -18,7 +18,9 @@ import mod.jbk.util.LogUtil;
 public class EventsHandler {
 
     public static final String CUSTOM_EVENTS_FILE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/system/events.json";
+    public static final String CUSTOM_LISTENERE_FILE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/system/listeners.json";
     private static ArrayList<HashMap<String, Object>> cachedCustomEvents = readCustomEvents();
+    private static ArrayList<HashMap<String, Object>> cachedCustomListeners = readCustomListeners();
 
     /**
      * This is a utility class, don't instantiate it.
@@ -313,7 +315,7 @@ public class EventsHandler {
         }
     }
 
-    public static String getEventCode(String name, String param) {
+    public static String getEventCode(String targetId, String name, String param) {
         switch (name) {
             case "Import":
                 // Changed from: "...vF\n${param}\n//3b..."
@@ -383,7 +385,7 @@ public class EventsHandler {
                             Object code = customEvent.get("code");
 
                             if (code instanceof String) {
-                                return String.format((String) code, param);
+                                return String.format(((String) code).replace("###", targetId), param);
                             } else {
                                 SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                             }
@@ -516,13 +518,13 @@ public class EventsHandler {
                         "}";
 
             default:
-                for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
-                    HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
-                    Object eventName = customEvent.get("name");
+                for (int i = 0, cachedCustomListenersSize = cachedCustomListeners.size(); i < cachedCustomListenersSize; i++) {
+                    HashMap<String, Object> customListener = cachedCustomListeners.get(i);
+                    Object eventName = customListener.get("name");
 
                     if (eventName instanceof String) {
                         if (name.equals(eventName)) {
-                            Object code = customEvent.get("code");
+                            Object code = customListener.get("code");
 
                             if (code instanceof String) {
                                 return String.format(((String) code).replace("###", var), param);
@@ -540,8 +542,8 @@ public class EventsHandler {
     }
 
     public static void getImports(ArrayList<String> list, String name) {
-        for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
-            HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
+        for (int i = 0, cachedCustomListenersSize = cachedCustomListeners.size(); i < cachedCustomListenersSize; i++) {
+            HashMap<String, Object> customEvent = cachedCustomListeners.get(i);
             Object eventName = customEvent.get("name");
 
             if (eventName instanceof String) {
@@ -566,6 +568,10 @@ public class EventsHandler {
         cachedCustomEvents = readCustomEvents();
     }
 
+    public static void refreshCachedCustomListeners() {
+        cachedCustomListeners = readCustomListeners();
+    }
+
     private static ArrayList<HashMap<String, Object>> readCustomEvents() {
         ArrayList<HashMap<String, Object>> customEvents = new ArrayList<>();
 
@@ -587,5 +593,28 @@ public class EventsHandler {
         }
 
         return customEvents;
+    }
+
+    private static ArrayList<HashMap<String, Object>> readCustomListeners() {
+        ArrayList<HashMap<String, Object>> customListeners = new ArrayList<>();
+
+        if (FileUtil.isExistFile(CUSTOM_LISTENERE_FILE_PATH)) {
+            String customListenersContent = FileUtil.readFile(CUSTOM_LISTENERE_FILE_PATH);
+
+            if (!customListenersContent.equals("") && !customListenersContent.equals("[]")) {
+                try {
+                    customListeners = new Gson().fromJson(customListenersContent, Helper.TYPE_MAP_LIST);
+
+                    if (customListeners == null) {
+                        LogUtil.e("EventsHandler", "Failed to parse Custom Listeners file! Now using none");
+                        customListeners = new ArrayList<>();
+                    }
+                } catch (JsonParseException e) {
+                    LogUtil.e("EventsHandler", "Failed to parse Custom Listeners file! Now using none");
+                }
+            }
+        }
+
+        return customListeners;
     }
 }

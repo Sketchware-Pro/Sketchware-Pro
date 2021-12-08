@@ -96,8 +96,7 @@ public class ApkSigner {
                     "--ks-key-alias",
                     keyStoreKeyAlias,
                     "--key-pass",
-                    "pass:" + keyPassword,
-                    "--ks-type", "jks"
+                    "pass:" + keyPassword
             );
 
             logger.write("Signing an APK with a JKS keystore and these arguments: ");

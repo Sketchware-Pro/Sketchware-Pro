@@ -16,10 +16,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.text.util.Linkify;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,7 +41,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.LongSerializationPolicy;
 import com.sketchware.remod.Resources;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,8 +58,6 @@ public class AboutModActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private LinearLayout fab;
     private TextView fabLabel;
-    private HashMap<String, Object> moddersMap = new HashMap<>();
-    private HashMap<String, Object> changelogMap = new HashMap<>();
     private ArrayList<HashMap<String, Object>> moddersList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> changelogList = new ArrayList<>();
     private TabLayout tablayout;
@@ -100,6 +100,7 @@ public class AboutModActivity extends AppCompatActivity {
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
+        rippleRound(back, "#ffffff", "#1F000000", 90);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         // RecyclerView$OnScrollListener got obfuscated to RecyclerView$m
@@ -139,7 +140,6 @@ public class AboutModActivity extends AppCompatActivity {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
-                    String discordInviteLink = null;
                     GsonBuilder builder = new GsonBuilder();
                     builder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
                     AboutUsData data = builder.create().fromJson(response, AboutUsData.class);
@@ -164,12 +164,11 @@ public class AboutModActivity extends AppCompatActivity {
 
                     savedData.apply();
 
-                    shadAnim(loading, "translationY", 50, 400);
+                    shadAnim(loading, "translationY", -1000, 300);
+                    shadAnim(loading, "alpha", 0, 300);
                     new Handler().postDelayed(() -> {
                         shadAnim(fab, "translationY", 0, 300);
                         shadAnim(fab, "alpha", 1, 300);
-                        shadAnim(loading, "translationY", -1000, 300);
-                        shadAnim(loading, "alpha", 0, 300);
                     }, 200);
                 } catch (JsonParseException e) {
                     loadingTitle.setText("Something went wrong");
@@ -186,7 +185,7 @@ public class AboutModActivity extends AppCompatActivity {
                 if (sharedPref.getString("moddersBackup", "").isEmpty()
                         || sharedPref.getString("changelogBackup", "").isEmpty()) {
                     loadingTitle.setText("Your device is offline!");
-                    loadingDescription.setText("Check your internet connection, then try again.");
+                    loadingDescription.setText("Check your internet connection and try again.");
                 } else {
                     moddersList = new Gson().fromJson(sharedPref.getString("moddersBackup", ""), Helper.TYPE_MAP_LIST);
                     changelogList = new Gson().fromJson(sharedPref.getString("changelogBackup", ""), Helper.TYPE_MAP_LIST);
@@ -205,11 +204,12 @@ public class AboutModActivity extends AppCompatActivity {
         moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
         moddersRecycler.setHasFixedSize(true);
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
-        changelogRecycler.setHasFixedSize(true);
+        changelogRecycler.setHasFixedSize(true); //either doesn't matter
         fab.setVisibility(View.GONE);
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         initViewPager();
+
         requestData.startRequestNetwork(RequestNetworkController.GET,
                 "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
                 requestDataListener);
@@ -293,6 +293,13 @@ public class AboutModActivity extends AppCompatActivity {
         anim.setFloatValues((float) value);
         anim.setDuration((long) duration);
         anim.start();
+    }
+
+    private void animateLayoutChanges(final LinearLayout view) {
+        //i used this instead of the xml attribute because this one looks better and smoother.
+        AutoTransition autoTransition = new AutoTransition();
+        autoTransition.setDuration((short) 300);
+        TransitionManager.beginDelayedTransition(view, autoTransition);
     }
 
     private void rippleRound(final View view, final String focus, final String pressed, final double round) {
@@ -487,6 +494,7 @@ public class AboutModActivity extends AppCompatActivity {
     // VH stands for ViewHolder?
     private class ChangelogRecyclerAdapter extends RecyclerView.a<ChangelogRecyclerAdapter.ViewHolder> {
 
+        private static final String CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO = "showingAdditionalInfo";
         private final ArrayList<HashMap<String, Object>> changelog;
 
         public ChangelogRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
@@ -513,9 +521,16 @@ public class AboutModActivity extends AppCompatActivity {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
+            //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
+            //get less lazy when.
+            final TextView variant = itemView.findViewWithTag("tv_variant");
+            final LinearLayout leftLine = itemView.findViewById(Resources.id.view_leftline);
             final TextView title = itemView.findViewById(Resources.id.tv_title);
             final TextView releasedOn = itemView.findViewById(Resources.id.tv_release_note);
             final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
+            final LinearLayout log_background = itemView.findViewWithTag("log_background");
+            final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
+            final ImageButton arrow = itemView.findViewWithTag("ic_arrow");
 
             HashMap<String, Object> release = changelog.get(position);
 
@@ -541,6 +556,34 @@ public class AboutModActivity extends AppCompatActivity {
                 title.setVisibility(View.GONE);
             }
 
+
+            boolean isBetaVersion = false;
+            Object isBeta = release.get("isBeta");
+            if (isBeta instanceof String) {
+                isBetaVersion = Boolean.parseBoolean((String) isBeta);
+            } else if (isBeta instanceof Boolean) {
+                isBetaVersion = (boolean) isBeta;
+            }
+
+            boolean previousIsBetaValueDiffers = true;
+            if (position != 0) {
+                HashMap<String, Object> previousChangelog = changelog.get(position - 1);
+
+                Object previousIsBeta = previousChangelog.get("isBeta");
+
+                if (previousIsBeta instanceof String) {
+                    previousIsBetaValueDiffers = Boolean.parseBoolean((String) previousIsBeta) != isBetaVersion;
+                } else if (previousIsBeta instanceof Boolean) {
+                    previousIsBetaValueDiffers = ((boolean) previousIsBeta) != isBetaVersion;
+                }
+            }
+
+            variant.setVisibility(previousIsBetaValueDiffers ? View.VISIBLE : View.GONE);
+            if (previousIsBetaValueDiffers) {
+                variant.setText(isBetaVersion ? "Beta" : "Official");
+            }
+
+
             Object releaseDate = release.get("releaseDate");
 
             if (releaseDate instanceof Double) {
@@ -562,6 +605,40 @@ public class AboutModActivity extends AppCompatActivity {
                 subtitle.setText("We've messed something up, sorry for the inconvenience!\n" +
                         "(Details: Invalid data type of \"description\")");
             }
+
+            boolean showingAdditionalInfo = false;
+            Object showingAdditionalInfoObject;
+            if (release.containsKey(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO) &&
+                    (showingAdditionalInfoObject = release.get(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO)) instanceof Boolean &&
+                    ((Boolean) showingAdditionalInfoObject)) {
+                showingAdditionalInfo = true;
+            }
+
+            view_additional_info.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
+            arrow.setRotation(showingAdditionalInfo ? 0 : 180);
+
+            rippleRound(log_background, "#ffffff", "#1F000000", 0);
+            rippleRound(arrow, "#ffffff", "#1F000000", 90);
+            arrow.setOnClickListener(v -> log_background.performClick());
+
+            log_background.setOnClickListener(v -> {
+                if (view_additional_info.getVisibility() == View.VISIBLE) {
+                    shadAnim(arrow, "rotation", 180, 220);
+                    view_additional_info.setVisibility(View.GONE);
+                    release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, false);
+                } else {
+                    shadAnim(arrow, "rotation", 0, 220);
+                    view_additional_info.setVisibility(View.VISIBLE);
+                    release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, true);
+                }
+                animateLayoutChanges(log_background);
+
+                // RecyclerView$Adapter<VH extends ViewHolder>#notifyItemChanged(int) got obfuscated to
+                // RecyclerView$a<VH extends RecyclerView.v>.c(int)
+                c(position);
+            });
+
+            advancedCorners(leftLine, "#008dcd");
         }
 
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated

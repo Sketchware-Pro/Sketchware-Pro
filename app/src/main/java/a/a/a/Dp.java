@@ -1,9 +1,13 @@
 package a.a.a;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
@@ -68,7 +72,7 @@ public class Dp {
     public final String c = File.separator;
     public final String m = "libs";
     /**
-     * Command(s) to execute after extracting AAPT/AAPT2 (put the filename to index 2 before using)
+     * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
     public File aapt2Dir;
@@ -82,10 +86,6 @@ public class Dp {
      * Directory "tmp" in files directory, where libs are extracted and compiled
      */
     public File h;
-    /**
-     * File object that represents aapt
-     */
-    public File i;
     public Fp j;
     /**
      * A StringBuffer with System.err of Eclipse compiler. If compilation succeeds, it doesn't have any content, if it doesn't, there is.
@@ -104,29 +104,46 @@ public class Dp {
     public ProguardHandler proguard;
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
+    private ArrayList<String> dexesToAddButNotMerge = new ArrayList<>();
+
+    /**
+     * Timestamp keeping track of when compiling the project's resources started, needed for stats of how long compiling took.
+     */
+    private long timestampResourceCompilationStarted;
 
     public Dp(Context context, yq yqVar) {
-        /*
-         * Detect some bad behaviour of the app.
-         */
+        /* Detect some bad behaviour of the app */
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectAll()
                 .penaltyLog()
                 .build()
         );
-        /*
-         * Start logging to debug.txt stored in /Internal storage/.sketchware/.
-         */
+
         SystemLogPrinter.start();
+
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+
+            LogUtil.d(TAG, "Running Sketchware Pro " + info.versionName + " (" + info.versionCode + ")");
+
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+
+            long fileSizeInBytes = new File(applicationInfo.sourceDir).length();
+            LogUtil.d(TAG, "base.apk's size is " + Formatter.formatFileSize(context, fileSizeInBytes) + " (" + fileSizeInBytes + " B)");
+        } catch (PackageManager.NameNotFoundException e) {
+            LogUtil.e(TAG, "Somehow failed to get package info about us!", e);
+        }
+
         e = context;
         f = yqVar;
         g = new oB(false);
         j = new Fp();
         h = new File(context.getFilesDir(), "tmp");
         if (!h.exists()) {
-            h.mkdir();
+            if (!h.mkdir()) {
+                throw new IllegalStateException("Couldn't create directory " + h.getAbsolutePath());
+            }
         }
-        i = new File(h, "aapt");
         aapt2Dir = new File(h, "aapt2");
         l = new File(context.getFilesDir(), "libs");
         n = new Kp();
@@ -155,9 +172,9 @@ public class Dp {
      * @throws Exception Thrown when anything goes wrong while compiling resources
      */
     public void a() throws Exception {
-        long savedTimeMillis = System.currentTimeMillis();
+        timestampResourceCompilationStarted = System.currentTimeMillis();
         b();
-        LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+        LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
 
     public void a(iI iIVar, String str) {
@@ -167,17 +184,6 @@ public class Dp {
         } catch (IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
-    }
-
-    /**
-     * Stub simply calling {@link Dp#dexLibraries(String, ArrayList)}
-     *
-     * @param outputPath The output file, usually classes2.dex
-     * @param dexes      The path of DEX files to merge
-     * @throws Exception Thrown if dexing had problems
-     */
-    public final void a(String outputPath, ArrayList<String> dexes) throws Exception {
-        dexLibraries(outputPath, dexes);
     }
 
     /**
@@ -211,17 +217,16 @@ public class Dp {
     }
 
     /**
-     * Compile the project's resources, either with AAPT or AAPT2 automatically.
+     * Compile the project's resources, with AAPT2 automatically.
      *
-     * @throws Exception Thrown in case AAPT/AAPT2 has an error while compiling resources.
+     * @throws Exception Thrown in case AAPT2 has an error while compiling resources.
      */
     public void b() throws Exception {
         ResourceCompiler compiler = new ResourceCompiler(
                 this,
                 aapt2Dir,
                 buildAppBundle,
-                buildingDialog,
-                true);
+                buildingDialog);
         compiler.compile();
     }
 
@@ -324,15 +329,7 @@ public class Dp {
         }
 
         /* Include MultiDex library if needed */
-        int minSdkVersion;
-        try {
-            minSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
-                    "21"));
-        } catch (NumberFormatException e) {
-            SketchwareUtil.toastError("Invalid minSdkVersion set in Project Settings, using 21");
-            minSdkVersion = 21;
-        }
-        if (minSdkVersion < 21) {
+        if (settings.getMinSdkVersion() < 21) {
             classpath.append(":")
                     .append(l.getAbsolutePath())
                     .append(File.separator)
@@ -641,7 +638,10 @@ public class Dp {
                 }
 
                 /* Avoid "package ;" line in that file causing issues while compiling */
-                new File(f.v, "R.java").delete();
+                File rJavaFileWithoutPackage = new File(f.v, "R.java");
+                if (rJavaFileWithoutPackage.exists() && !rJavaFileWithoutPackage.delete()) {
+                    LogUtil.w(TAG, "Failed to delete file " + rJavaFileWithoutPackage.getAbsolutePath());
+                }
 
                 /* Start compiling */
                 org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
@@ -666,7 +666,9 @@ public class Dp {
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
     public void g() {
-        ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(f.E), null, null, System.out);
+        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? f.E : dexesToAddButNotMerge.remove(0);
+
+        ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(firstDexPath), null, null, System.out);
 
         for (Jp library : n.a()) {
             apkBuilder.addResourcesFromJar(new File(l, m + File.separator + library.a() + File.separator + "classes.jar"));
@@ -689,15 +691,29 @@ public class Dp {
             apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
         }
 
-        List<String> dexFiles = FileUtil.listFiles(f.t, "dex");
-        for (String dexFile : dexFiles) {
-            if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
-                apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+        if (dexesToAddButNotMerge.isEmpty()) {
+            List<String> dexFiles = FileUtil.listFiles(f.t, "dex");
+            for (String dexFile : dexFiles) {
+                if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
+                    apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+                }
+            }
+        } else {
+            int dexNumber = 2;
+
+            for (String dexPath : dexesToAddButNotMerge) {
+                File dexFile = new File(dexPath);
+
+                apkBuilder.addFile(dexFile, "classes" + dexNumber + ".dex");
+                dexNumber++;
             }
         }
 
         apkBuilder.setDebugMode(false);
         apkBuilder.sealApk();
+
+        LogUtil.d(TAG, "Time passed since starting to compile resources until building the unsigned APK: " +
+                (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
 
     /**
@@ -728,16 +744,7 @@ public class Dp {
         ArrayList<String> dexes = new ArrayList<>();
 
         /* Add AndroidX MultiDex library if needed */
-        int minSdkVersion;
-        try {
-            minSdkVersion = Integer.parseInt(
-                    settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
-                            "21"));
-        } catch (NumberFormatException e) {
-            minSdkVersion = 21;
-        }
-
-        if (minSdkVersion < 21) {
+        if (settings.getMinSdkVersion() < 21) {
             dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + "multidex-2.0.1.dex");
         }
 
@@ -793,40 +800,37 @@ public class Dp {
         dexes.addAll(FileUtil.listFiles(f.t + File.separator + "dex", "dex"));
 
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
-        dexLibraries(f.E, dexes);
+
+        if (settings.getMinSdkVersion() < 21 || !f.N.f) {
+            dexLibraries(f.E, dexes);
+        } else {
+            dexesToAddButNotMerge = dexes;
+        }
+
         LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
-     * Extracts AAPT/AAPT2 binaries (if they need to be extracted).
+     * Extracts AAPT2 binaries (if they need to be extracted).
      *
      * @throws Exception If anything goes wrong while extracting
      */
     public void i() throws Exception {
-        String aaptPathInAssets = "aapt/";
         String aapt2PathInAssets = "aapt/";
         if (GB.a().toLowerCase().contains("x86")) {
-            aaptPathInAssets += "aapt-x86";
             aapt2PathInAssets += "aapt2-x86";
         } else {
-            aaptPathInAssets += "aapt-arm";
             aapt2PathInAssets += "aapt2-arm";
         }
         try {
-            /* Check if we need to update AAPT's binary */
-            if (a(aaptPathInAssets, i.getAbsolutePath())) {
-                makeExecutableCommand[2] = i.getAbsolutePath();
-                j.a(makeExecutableCommand);
-            }
-
             /* Check if we need to update AAPT2's binary */
             if (a(aapt2PathInAssets, aapt2Dir.getAbsolutePath())) {
                 makeExecutableCommand[2] = aapt2Dir.getAbsolutePath();
                 j.a(makeExecutableCommand);
             }
         } catch (Exception e) {
-            LogUtil.e(TAG, "Failed to extract AAPT/AAPT2 binaries", e);
-            throw new By("Couldn't extract AAPT binaries! Message: " + e.getMessage());
+            LogUtil.e(TAG, "Failed to extract AAPT2 binaries", e);
+            throw new By("Couldn't extract AAPT2 binaries! Message: " + e.getMessage());
         }
     }
 
@@ -1017,7 +1021,7 @@ public class Dp {
         args.add("-include");
         args.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
 
-        /* Include ProGuard rules generated by AAPT/AAPT2 */
+        /* Include ProGuard rules generated by AAPT2 */
         args.add("-include");
         args.add(f.aapt_rules);
 

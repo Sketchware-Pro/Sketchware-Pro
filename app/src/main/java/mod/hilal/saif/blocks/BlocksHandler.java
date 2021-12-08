@@ -5,6 +5,7 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.w3wide.blocks.ExtraBlocks;
@@ -1552,10 +1553,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "pagerSetFragmentAdapter");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setAdapter(new MyFragmentAdapter(getApplicationContext(), getSupportFragmentManager(), %s));");
+        hashMap.put("code", "%1$s.setAdapter(%2$s);\r\n%2$s.setTabCount(%3$s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.viewpager setFragmentAdapter TabCount %d");
+        hashMap.put("spec", "%m.viewpager setFragmentAdapter %m.fragmentAdapter TabCount %d");
         arrayList.add(0, hashMap);
 
         hashMap = new HashMap<>();
@@ -2418,7 +2419,8 @@ public class BlocksHandler {
         hashMap.put("typeName", "");
         hashMap.put("code", "{\r\n" +
                 "AdRequest adRequest = new AdRequest.Builder().build();\r\n" +
-                "InterstitialAd.load(%2$s.this, _ad_unit_id, adRequest, _%1$s_InterstitialAdLoadCallback);\r\n}");
+                "InterstitialAd.load(%2$s.this, _ad_unit_id, adRequest, _%1$s_interstitial_ad_load_callback);\r\n" +
+                "}");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.interstitialad load in %m.activity");
@@ -2428,17 +2430,32 @@ public class BlocksHandler {
         hashMap.put("name", "interstitialAdShow");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "%1$s = _interstitialAd;\r\n_interstitialAd.show(%2$s.this);");
+        hashMap.put("code", "if (%1$s != null) {\r\n" +
+                "%1$s.show(%2$s.this);\r\n" +
+                "} else {\r\n" +
+                "SketchwareUtil.showMessage(getApplicationContext(), \"Error: InterstitialAd %1$s hasn't been loaded yet!\");\r\n" +
+                "}");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.interstitialad show ad in %m.activity");
         arrayList.add(0, hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "interstitialAdRegisterFullScreenContentCallback");
+        hashMap.put("type", " ");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%1$s.setFullScreenContentCallback(_%1$s_full_screen_content_callback);");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%m.interstitialad register fullscreen content callbacks");
+        arrayList.add(0, hashMap);
     }
 
     private static void checkDir() {
-        String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/My Block/block.json");
-        if (!FileUtil.isExistFile(concat) || FileUtil.readFile(concat).equals("")) {
-            FileUtil.writeFile(concat, "[]");
+        String extraBlocksPath = ExtraBlockFile.EXTRA_MENU_BLOCK_FILE.getAbsolutePath();
+
+        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).equals("")) {
+            FileUtil.writeFile(extraBlocksPath, "[]");
         }
     }
 

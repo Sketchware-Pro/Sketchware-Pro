@@ -79,7 +79,6 @@ import a.a.a.yB;
 import a.a.a.yq;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
-import id.indosw.mod.DirectEditorActivity;
 import io.github.rosemoe.editor.langs.java.JavaLanguage;
 import io.github.rosemoe.editor.widget.CodeEditor;
 import io.github.rosemoe.editor.widget.EditorColorScheme;
@@ -252,7 +251,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void o() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24) {
             Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.H));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -414,7 +413,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 3:
-                            new CompileErrorSaver(l).showDialog(DesignActivity.this);
+                            new CompileErrorSaver(l).showLastErrors(DesignActivity.this);
                             break;
 
                         case 4:
@@ -454,7 +453,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             l = savedInstanceState.getString("sc_id");
         }
-
 
         r = new DB(getApplicationContext(), "P1");
         s = new DB(getApplicationContext(), "P2");
@@ -752,10 +750,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         progress.show();
 
         new Thread(() -> {
-            final String source = new yq(getApplicationContext(), l).getActivitySrc(v.g, jC.b(l), jC.a(l), jC.c(l));
+            final String source = new yq(getApplicationContext(), l).getFileSrc(v.getFileName(), jC.b(l), jC.a(l), jC.c(l));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
-                    .setTitle(v.g)
+                    .setTitle(v.getFileName())
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
@@ -768,7 +766,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 editor.setAutoCompletionEnabled(false);
                 editor.setEditorLanguage(new JavaLanguage());
                 editor.setColorScheme(new EditorColorScheme());
-                editor.setTextSize(16);
+                editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
 
                 AlertDialog dialog = dialogBuilder.create();
@@ -977,30 +975,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     public void z() {
         Intent intent = new Intent(getApplicationContext(), SrcViewerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
-        if (m.getCurrentItem() == 0) {
-            try {
-                intent.putExtra("current", w.d().getXmlName());
-            } catch (Exception ignored) {
-            }
-        } else if (m.getCurrentItem() != 1) {
-            intent.putExtra("current", "");
-        } else {
-            try {
-                intent.putExtra("current", x.d().getJavaName());
-            } catch (Exception ignored) {
-            }
-        }
-
-        startActivityForResult(intent, 240);
-    }
-
-    /**
-     * Opens {@link DirectEditorActivity}.
-     */
-    public void zz() {
-        Intent intent = new Intent(getApplicationContext(), DirectEditorActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", l);
         if (m.getCurrentItem() == 0) {
@@ -1232,7 +1206,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         }
 
                         publishProgress("Signing APK...");
-                        if (VERSION.SDK_INT >= 26) {
+                        if (Build.VERSION.SDK_INT >= 26) {
                             ApkSigner signer = new ApkSigner(a);
                             signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
                         } else {

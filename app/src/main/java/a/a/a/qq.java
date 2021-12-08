@@ -296,13 +296,18 @@ public class qq {
                 knownDependencies.add("annotation-1.1.0");
                 knownDependencies.add("appcompat-1.0.0");
                 knownDependencies.add("cardview-1.0.0");
+                knownDependencies.add("coordinatorlayout-1.0.0");
+                knownDependencies.add("constraintlayout-1.1.3");
                 knownDependencies.add("core-1.0.0");
                 knownDependencies.add("drawerlayout-1.0.0");
+                knownDependencies.add("dynamic-animation-1.1.0");
+                knownDependencies.add("annotation-experimental-1.1.0");
                 knownDependencies.add("fragment-1.0.0");
-                knownDependencies.add("legacy-support-core-ui-1.0.0");
-                knownDependencies.add("legacy-support-core-utils-1.0.0");
+                knownDependencies.add("lifecycle-runtime-2.0.0");
                 knownDependencies.add("recyclerview-1.0.0");
                 knownDependencies.add("transition-1.0.0");
+                knownDependencies.add("vectordrawable-1.0.0");
+                knownDependencies.add("viewpager2-1.0.0");
                 break;
 
             case "lifecycle-livedata-2.0.0":

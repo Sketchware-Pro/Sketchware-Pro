@@ -2,7 +2,6 @@ package mod.hey.studios.util;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
-import a.a.a.xB;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
@@ -54,12 +54,18 @@ public class Helper {
 
     public static void setViewsVisibility(boolean hide, View... views) {
         for (View view : views) {
-            view.setVisibility(hide ? View.GONE : View.VISIBLE);
+            if (view != null) {
+                view.setVisibility(hide ? View.GONE : View.VISIBLE);
+            }
         }
     }
 
     public static String getResString(int resId) {
         return xB.b().a(getContext(), resId);
+    }
+
+    public static String getResString(int resId, Object... formatArgs) {
+        return String.format(getResString(resId), formatArgs);
     }
 
     public static View.OnClickListener getBackPressedClickListener(final Activity activity) {

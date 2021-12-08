@@ -93,7 +93,7 @@ public class tq {
         a.add(new QuizBean("New component blocks are added when you add a component.", 0));
         a.add(new QuizBean("MoreBlock is a purple block you can create for repetitive tasks.", 0));
         a.add(new QuizBean("You can programmatically change the font style.", 0));
-        a.add(new QuizBean("There is a Slack community that can help you.", 0));
+        a.add(new QuizBean("There is a Discord community that can help you.", 0));
         a.add(new QuizBean("You can add onClick event on Widgets other than the Button.", 0));
         a.add(new QuizBean("You can also add events inside the \"Component\" tab.", 0));
         a.add(new QuizBean("You can change the language settings for Sketchware.", 0));

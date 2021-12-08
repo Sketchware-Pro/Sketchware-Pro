@@ -4754,11 +4754,9 @@
     <public type="layout" name="blocks_managers_details" id="0x7f0b01e4" />
     <public type="layout" name="block_customview" id="0x7f0b01e5" />
     <public type="layout" name="blocks_manager_creator" id="0x7f0b01e6" />
-    <!-- <public type="layout" name="mod_config_activity" id="0x7f0b01e7" /> -->
     <public type="layout" name="add_new_listener" id="0x7f0b01e8" />
     <public type="layout" name="menu_activity" id="0x7f0b01e9" />
     <public type="layout" name="manage_proguard" id="0x7f0b01ea" />
-    <public type="layout" name="direct_editor" id="0x7f0b01eb" />
     <public type="layout" name="list_spinner_editor" id="0x7f0b01ec" />
     <public type="layout" name="suggestion_list_item" id="0x7f0b01ed" />
     <public type="layout" name="manage_stringfog" id="0x7f0b01ee" />
@@ -4781,7 +4779,6 @@
     <public type="menu" name="language_detail_menu" id="0x7f0c0006" />
     <public type="menu" name="language_menu" id="0x7f0c0007" />
     <public type="menu" name="logic_menu" id="0x7f0c0008" />
-    <public type="menu" name="main_menu" id="0x7f0c0009" />
     <public type="menu" name="manage_admob_menu" id="0x7f0c000a" />
     <public type="menu" name="manage_collection_menu" id="0x7f0c000b" />
     <public type="menu" name="manage_firebase_menu" id="0x7f0c000c" />

@@ -28,14 +28,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(
-            dir: 'libs',
-            include: ['*.aar', '*.jar'],
-            excludes: ['kotlin-compiler-compiler_classpath.jar', 'kotlin-compiler-kotlin_classpath.jar']
-    )
-
-    compileOnly files(
-            'libs/kotlin-compiler-compiler_classpath.jar',
-            'libs/kotlin-compiler-kotlin_classpath.jar'
-    )
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 }

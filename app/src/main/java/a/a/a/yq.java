@@ -512,14 +512,7 @@ public class yq {
         }
 
         if (!new File(javaDir, "SketchApplication.java").exists()) {
-            int minSdkVersion;
-            try {
-                minSdkVersion = Integer.parseInt(projectSettings.getValue(
-                        ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
-            } catch (NumberFormatException e) {
-                minSdkVersion = 21;
-            }
-            boolean applyMultiDex = minSdkVersion < 21;
+            boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = L.b(
                     context,
@@ -595,56 +588,73 @@ public class yq {
                 N.a(next.getActivityName()).a = true;
             }
             for (ComponentBean component : projectDataManager.e(next.getJavaName())) {
-                if (component.type == ComponentBean.COMPONENT_TYPE_CAMERA || component.type == 35) {
-                    N.g = true;
-                    N.u = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
-                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                }
                 N.x.handleComponent(component.type);
-                if (component.type == ComponentBean.COMPONENT_TYPE_FILE_PICKER) {
-                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
-                    N.o = true;
-                    N.j = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
-                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
-                    N.k = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                    N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_VIBRATOR) {
-                    N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH) {
-                    N.i = true;
-                    N.a(next.getActivityName()).b = true;
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK) {
-                    N.o = true;
-                    N.p = true;
-                    N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
-                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT) {
-                    N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT) {
-                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
-                    N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
-                }
-                if (component.type == ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER) {
-                    N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+
+                switch (component.type) {
+                    case ComponentBean.COMPONENT_TYPE_CAMERA:
+                    case 35:
+                        N.g = true;
+                        N.u = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
+                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
+                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                        N.o = true;
+                        N.j = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                        N.k = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_VIBRATOR:
+                        N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
+                        N.i = true;
+                        N.a(next.getActivityName()).b = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
+                        N.o = true;
+                        N.p = true;
+                        N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
+                        N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
+                        N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
+                        N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
+                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+                        break;
+
+                    default:
                 }
             }
+
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(next.getJavaName()).entrySet()) {
                 for (BlockBean bean : entry.getValue()) {
-                    N.x.setParams(bean.parameters, e, bean.opCode);
                     String opCode = bean.opCode;
+                    N.x.setParams(bean.parameters, e, opCode);
+
                     switch (opCode) {
                         case "setAdmobAppId":
                             N.appId = bean.parameters.get(0);
@@ -696,6 +706,9 @@ public class yq {
                         case "mapToStr":
                         case "strToListMap":
                         case "listMapToStr":
+                        case "GsonListTojsonString":
+                        case "GsonStringToListString":
+                        case "GsonStringToListNumber":
                             N.o = true;
                             break;
 
@@ -805,22 +818,28 @@ public class yq {
 
         // Generate layouts unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
-        for (ProjectFileBean layout : projectFileManager.b()) {
-            String xmlName = layout.getXmlName();
-            Ox ox = new Ox(N, layout);
-            ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
-            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
-                srcCodeBeans.add(new SrcCodeBean(xmlName,
-                        CommandBlock.applyCommands(xmlName, ox.b())));
+        {
+            ArrayList<ProjectFileBean> regularLayouts = projectFileManager.b();
+            for (ProjectFileBean layout : regularLayouts) {
+                String xmlName = layout.getXmlName();
+                Ox ox = new Ox(N, layout);
+                ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
+                if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                    srcCodeBeans.add(new SrcCodeBean(xmlName,
+                            CommandBlock.applyCommands(xmlName, ox.b())));
+                }
             }
         }
-        for (ProjectFileBean layout : projectFileManager.c()) {
-            String xmlName = layout.getXmlName();
-            Ox ox = new Ox(N, layout);
-            ox.a(eC.a(projectDataManager.d(xmlName)));
-            if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
-                srcCodeBeans.add(new SrcCodeBean(xmlName,
-                        CommandBlock.applyCommands(xmlName, ox.b())));
+        {
+            ArrayList<ProjectFileBean> drawerLayouts = projectFileManager.c();
+            for (ProjectFileBean drawerFile : drawerLayouts) {
+                String xmlName = drawerFile.getXmlName();
+                Ox ox = new Ox(N, drawerFile);
+                ox.a(eC.a(projectDataManager.d(xmlName)));
+                if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
+                    srcCodeBeans.add(new SrcCodeBean(xmlName,
+                            CommandBlock.applyCommands(xmlName, ox.b())));
+                }
             }
         }
 
@@ -938,14 +957,27 @@ public class yq {
     }
 
     /**
-     * Get source code of a single Activity
+     * Get generated source code of a file.
      *
-     * @return The Activity specified by <code>javaName</code>'s source or an empty String if not found
+     * @return The file's code or an empty String if not found
      */
-    public String getActivitySrc(String javaName, hC projectFileManager, eC projectDataManger, iC projectLibraryManager) {
-        a(projectLibraryManager, projectFileManager, projectDataManger, false);
-        for (ProjectFileBean activity : projectFileManager.b()) {
-            if (javaName.equals(activity.getJavaName())) return new Jx(N, activity, projectDataManger).a();
+    public String getFileSrc(String filename, hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
+        a(projectLibraryManager, projectFileManager, projectDataManager, false);
+        boolean isJavaFile = filename.endsWith(".java");
+        boolean isDrawerFile = !isJavaFile && filename.startsWith("_drawer_");
+
+        ArrayList<ProjectFileBean> files = !isDrawerFile ? projectFileManager.b() : projectFileManager.c();
+
+        for (ProjectFileBean file : files) {
+            if (filename.equals(isJavaFile ? file.getJavaName() : file.getXmlName())) {
+                if (isJavaFile) {
+                    return new Jx(N, file, projectDataManager).a();
+                } else {
+                    Ox xmlGenerator = new Ox(N, file);
+                    xmlGenerator.a(eC.a(projectDataManager.d(filename)), projectDataManager.h(filename));
+                    return xmlGenerator.b();
+                }
+            }
         }
         return "";
     }

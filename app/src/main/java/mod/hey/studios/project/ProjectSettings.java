@@ -17,8 +17,11 @@ import java.util.HashMap;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.LogUtil;
 
 public class ProjectSettings {
+
+    private static final String TAG = "ProjectSettings";
 
     /**
      * Setting for the final app's {@code minSdkVersion}
@@ -51,11 +54,6 @@ public class ProjectSettings {
      */
     public static final String SETTING_DISABLE_OLD_METHODS = "disable_old_methods";
 
-    /**
-     * Setting to disable adding <code>android:largeHeap="true"</code> to the <code>&lt;application&gt;</code> tag in AndroidManifest.xml
-     */
-    public static final String SETTING_DISABLE_LARGE_HEAP = "disable_large_heap";
-
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";
 
@@ -78,6 +76,24 @@ public class ProjectSettings {
             }
         } else {
             hashmap = new HashMap<>();
+        }
+    }
+
+    /**
+     * @return The configured minimum SDK version. Returns 21 if none or an invalid value was set.
+     * @see #SETTING_MINIMUM_SDK_VERSION
+     */
+    public int getMinSdkVersion() {
+        if (hashmap.containsKey(SETTING_MINIMUM_SDK_VERSION)) {
+            try {
+                //noinspection ConstantConditions because we catch that already
+                return Integer.parseInt(hashmap.get(SETTING_MINIMUM_SDK_VERSION));
+            } catch (NumberFormatException | NullPointerException e) {
+                LogUtil.e(TAG, "Failed to parse the project's minimum SDK version! Defaulting to 21", e);
+                return 21;
+            }
+        } else {
+            return 21;
         }
     }
 

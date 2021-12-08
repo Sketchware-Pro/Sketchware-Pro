@@ -3,27 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!-- android:id="@+id/rootrelativeview" -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical">
-        <!-- android:id="@+id/maindataholder" -->
 
         <LinearLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/img_back"
-                android:layout_width="40dp"
-                android:layout_height="28dp"
-                android:layout_marginStart="10dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/arrow_back_white_48dp"
                 app:tint="#424242" />
@@ -32,9 +31,6 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:padding="8dp"
                 android:text="About Sketchware Pro"
                 android:textColor="#424242"
@@ -53,9 +49,9 @@
             app:tabIndicatorFullWidth="false"
             app:tabInlineLabel="true"
             app:tabMode="fixed"
-            app:tabRippleColor="@android:color/transparent"
-            app:tabSelectedTextColor="#008DCD"
-            app:tabTextColor="#008DCD" />
+            app:tabSelectedTextColor="@color/color_primary"
+            app:tabTextColor="#424242"
+            app:tabUnboundedRipple="true" />
 
         <View
             android:layout_width="match_parent"
@@ -67,7 +63,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <!-- android:id="@+id/viewpagerholder" -->
 
             <LinearLayout
                 android:id="@+id/root"
@@ -86,7 +81,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-            <!-- android:id="@+id/viewpagercontent" -->
 
             <LinearLayout
                 android:id="@+id/layout1"
@@ -131,7 +125,6 @@
             android:layout_height="200dp"
             android:scaleType="fitCenter"
             android:src="@drawable/girl_swimming_flat" />
-        <!-- android:id="@+id/img_loading" -->
 
         <TextView
             android:id="@+id/tv_loading"
@@ -174,7 +167,7 @@
         android:orientation="horizontal"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:translationY="0dp"
+        android:translationY="200dp"
         app:rippleColor="#FFFFFF">
 
         <ImageView

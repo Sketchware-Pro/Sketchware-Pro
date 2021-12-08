@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.Resources;
@@ -23,6 +24,7 @@ import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.xB;
 import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 public class BackupRestoreManager {
@@ -32,7 +34,7 @@ public class BackupRestoreManager {
     // Needed to refresh the project list after restoring
     private GC gc;
 
-    private HashMap<Integer, Boolean> bckpDialogStates;
+    private HashMap<Integer, Boolean> backupDialogStates;
 
     public BackupRestoreManager(Activity act) {
         this.act = act;
@@ -43,12 +45,20 @@ public class BackupRestoreManager {
         this.gc = gc;
     }
 
+    public static String getRestoreIntegratedLocalLibrariesMessage(boolean restoringMultipleBackups, int currentRestoringIndex, int totalAmountOfBackups, String filename) {
+        if (!restoringMultipleBackups) {
+            return "Looks like the backup file you selected contains some Local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+        } else {
+            return "Looks like backup file " + filename + " (" + (currentRestoringIndex + 1) + " out of " + totalAmountOfBackups + ") contains some Local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?";
+        }
+    }
+
     public void backup(final String sc_id, final String project_name) {
         final String localLibrariesTag = "local libraries";
         final String customBlocksTag = "Custom Blocks";
-        bckpDialogStates = new HashMap<>();
-        bckpDialogStates.put(0, false);
-        bckpDialogStates.put(1, false);
+        backupDialogStates = new HashMap<>();
+        backupDialogStates.put(0, false);
+        backupDialogStates.put(1, false);
 
         aB dialog = new aB(act);
         dialog.a(Resources.drawable.ic_backup);
@@ -78,7 +88,7 @@ public class BackupRestoreManager {
                     default:
                         return;
                 }
-                bckpDialogStates.put(index, isChecked);
+                backupDialogStates.put(index, isChecked);
             }
         };
 
@@ -110,8 +120,8 @@ public class BackupRestoreManager {
         dialog.show();
     }
 
-    private void doBackup(final String sc_id, final String project_name /*, final SparseBooleanArray arr*/) {
-        new BackupAsyncTask(new WeakReference<>(act), sc_id, project_name, bckpDialogStates)
+    private void doBackup(final String sc_id, final String project_name) {
+        new BackupAsyncTask(new WeakReference<>(act), sc_id, project_name, backupDialogStates)
                 .execute("");
     }
 
@@ -119,30 +129,33 @@ public class BackupRestoreManager {
 
     public void restore() {
         DialogProperties properties = new DialogProperties();
-        properties.selection_mode = 0;
-        properties.selection_type = 0;
-        properties.root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        properties.error_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        properties.selection_mode = DialogConfigs.MULTI_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
         properties.offset = new File(BackupFactory.getBackupDir());
         properties.extensions = new String[]{BackupFactory.EXTENSION};
 
         FilePickerDialog fpd = new FilePickerDialog(act, properties);
-        fpd.setTitle("Select a backup file (" + BackupFactory.EXTENSION + ")");
+        fpd.setTitle("Select backups to restore (" + BackupFactory.EXTENSION + ")");
         fpd.setDialogSelectionListener(files -> {
-            final String file = files[0];
+            for (int i = 0; i < files.length; i++) {
+                String backupFilePath = files[i];
 
-            final boolean local_libs = BackupFactory.zipContainsFile(file, "local_libs");
+                if (BackupFactory.zipContainsFile(backupFilePath, "local_libs")) {
+                    boolean restoringMultipleBackups = files.length > 1;
 
-            if (local_libs) {
-                new AlertDialog.Builder(act)
-                        .setTitle("Warning")
-                        .setMessage("Looks like the backup file you selected contains some local libraries. Do you want to copy them to your local_libs directory (if they do not already exist)?")
-                        .setPositiveButton("Copy", (dialog, which) -> doRestore(file, true))
-                        .setNegativeButton("Don't copy", (dialog, which) -> doRestore(file, false))
-                        .setNeutralButton(Resources.string.common_word_cancel, null)
-                        .show();
-            } else {
-                doRestore(file, false);
+                    new AlertDialog.Builder(act)
+                            .setTitle("Warning")
+                            .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
+                                    FileUtil.getFileNameNoExtension(backupFilePath)))
+                            .setPositiveButton("Copy", (dialog, which) ->
+                                    doRestore(backupFilePath, true))
+                            .setNegativeButton("Don't copy", (dialog, which) ->
+                                    doRestore(backupFilePath, false))
+                            .setNeutralButton(Resources.string.common_word_cancel, null)
+                            .show();
+                }
             }
         });
 
