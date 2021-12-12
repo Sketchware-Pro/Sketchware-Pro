@@ -155,6 +155,8 @@ public class BackupRestoreManager {
                                     doRestore(backupFilePath, false))
                             .setNeutralButton(Resources.string.common_word_cancel, null)
                             .show();
+                } else {
+                    doRestore(backupFilePath, false);
                 }
             }
         });
