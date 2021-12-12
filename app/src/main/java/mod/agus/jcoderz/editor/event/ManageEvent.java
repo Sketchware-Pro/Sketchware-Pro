@@ -1001,7 +1001,7 @@ public class ManageEvent {
                 if (targetId.equals("")) {
                     eventCode = "\r\n";
                 } else {
-                    eventCode = targetId + " = param1;\r\n" +
+                    eventCode = targetId + " = _param1;\r\n" +
                             eventLogic + "\r\n";
                 }
 
