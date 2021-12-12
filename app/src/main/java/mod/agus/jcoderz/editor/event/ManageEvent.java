@@ -996,10 +996,18 @@ public class ManageEvent {
                         "}";
 
             case "onInterstitialAdLoaded":
+                String eventCode;
+
+                if (targetId.equals("")) {
+                    eventCode = "\r\n";
+                } else {
+                    eventCode = targetId + " = param1;\r\n" +
+                            eventLogic + "\r\n";
+                }
+
                 return "@Override\r\n" +
                         "public void onAdLoaded(InterstitialAd _param1) {\r\n" +
-                        targetId + " = _param1;\r\n" +
-                        eventLogic + "\r\n" +
+                        eventCode +
                         "}";
 
             case "onBannerAdFailedToLoad":
