@@ -401,14 +401,18 @@ public class ConfigActivity extends Activity {
     }
 
     private void restoreDefaultSettings() {
-        setting_map = new HashMap<>();
-        setting_map.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
-        setting_map.put(SETTING_BACKUP_DIRECTORY, "");
-        setting_map.put(SETTING_LEGACY_CODE_EDITOR, false);
-        setting_map.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
-        setting_map.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
-        setting_map.put(SETTING_USE_NEW_VERSION_CONTROL, false);
-        setting_map.put(SETTING_USE_ASD_HIGHLIGHTER, false);
-        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+        restoreDefaultSettings(setting_map);
+    }
+
+    private static void restoreDefaultSettings(HashMap<String, Object> settings) {
+        settings.clear();
+        settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
+        settings.put(SETTING_BACKUP_DIRECTORY, "");
+        settings.put(SETTING_LEGACY_CODE_EDITOR, false);
+        settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
+        settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
+        settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
+        settings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
     }
 }
