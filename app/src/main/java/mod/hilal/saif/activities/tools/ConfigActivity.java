@@ -109,6 +109,20 @@ public class ConfigActivity extends Activity {
         return false;
     }
 
+    public static void setSetting(String key, Object value) {
+        HashMap<String, Object> settings;
+
+        if (!SETTINGS_FILE.exists()) {
+            settings = new HashMap<>();
+            restoreDefaultSettings(settings);
+        } else {
+            settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+        }
+
+        settings.put(key, value);
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
