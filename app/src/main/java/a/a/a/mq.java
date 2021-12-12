@@ -625,6 +625,10 @@ public class mq {
             case "InterstitialAd":
                 importList.add("com.google.android.gms.ads.AdRequest");
                 importList.add("com.google.android.gms.ads.interstitial.InterstitialAd");
+                importList.add("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
+                importList.add("com.google.android.gms.ads.AdError");
+                importList.add("com.google.android.gms.ads.FullScreenContentCallback");
+                importList.add("com.google.android.gms.ads.LoadAdError");
                 return importList;
 
             case "FirebaseStorage":
@@ -765,16 +769,6 @@ public class mq {
             case "OnCompleteListenerFCM":
                 importList.add("com.google.android.gms.tasks.OnCompleteListener");
                 importList.add("com.google.android.gms.tasks.Task");
-                return importList;
-
-            case "fullScreenContentCallback":
-                importList.add("com.google.android.gms.ads.FullScreenContentCallback");
-                importList.add("com.google.android.gms.ads.AdError");
-                return importList;
-
-            case "interstitialAdLoadCallback":
-                importList.add("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
-                importList.add("com.google.android.gms.ads.LoadAdError");
                 return importList;
 
             case "bannerAdViewListener":
