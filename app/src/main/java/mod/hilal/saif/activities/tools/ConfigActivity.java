@@ -208,8 +208,7 @@ public class ConfigActivity extends Activity {
                             .setTitle("Backup directory")
                             .setView(container)
                             .setPositiveButton(Resources.string.common_word_save, (dialogInterface, which) -> {
-                                setting_map.put(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
-                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                                ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
                                 SketchwareUtil.toast("Saved");
                             })
                             .show();
@@ -327,10 +326,8 @@ public class ConfigActivity extends Activity {
 
         preferenceRoot.setOnClickListener(v -> switchView.setChecked(!switchView.isChecked()));
 
-        switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            setting_map.put(keyName, isChecked);
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-        });
+        switchView.setOnCheckedChangeListener((buttonView, isChecked) ->
+                ConfigActivity.setSetting(keyName, isChecked));
 
         if (setting_map.containsKey(keyName)) {
             Object value = setting_map.get(keyName);
