@@ -854,8 +854,6 @@ public class Jx {
                         break;
 
                     case "interstitialAdLoad":
-                        addImport("com.google.android.gms.ads.interstitial.InterstitialAd");
-                        addImport("com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback");
                         addImport("com.google.android.gms.ads.AdRequest");
                         addImport("com.google.android.gms.ads.LoadAdError");
                         break;
