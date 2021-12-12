@@ -738,9 +738,9 @@ public class Ox {
                 }
 
                 if (a.f) {
-                    nx.a("app", "adUnitId", a.r);
-                } else {
                     nx.a("app", "adUnitId", "ca-app-pub-3940256099942544/6300978111");
+                } else {
+                    nx.a("app", "adUnitId", a.r);
                 }
                 break;
 
