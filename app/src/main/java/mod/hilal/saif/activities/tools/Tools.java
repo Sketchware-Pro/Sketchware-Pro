@@ -257,7 +257,7 @@ public class Tools extends Activity {
         CardView openLogcatReader = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
         LinearLayout LogcatReaderLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
         openLogcatReader.addView(LogcatReaderLayout);
-        makeup(LogcatReaderLayout, Resources.drawable.icons8_app_components, getString(Resources.string.design_drawer_menu_title_logcat_reader), getString(Resources.string.design_drawer_menu_subtitle_logcat_reader));
+        makeup(LogcatReaderLayout, R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader));
         base.addView(openLogcatReader);
         openLogcatReader.setOnClickListener(new ActivityLauncher(
                 new Intent(getApplicationContext(), LogReaderActivity.class)));

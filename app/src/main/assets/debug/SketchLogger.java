@@ -88,7 +88,7 @@ public class SketchLogger {
 
     public static void broadcastLog(String log) {
         Intent intent = new Intent();
-        intent.setAction("RECEIVE_NUB_LOGS");
+        intent.setAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
         intent.putExtra("log", log);
         intent.putExtra("pkgName", packageName);
         if (context != null) {

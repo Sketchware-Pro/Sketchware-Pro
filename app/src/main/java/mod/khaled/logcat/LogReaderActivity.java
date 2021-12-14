@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.annotations.NonNull;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +84,7 @@ public class LogReaderActivity extends AppCompatActivity {
         base.setElevation((float) (int) getDip(1));
 
         back = new ImageView(LogReaderActivity.this);
-        back.setImageResource(Resources.drawable.arrow_back_white_48dp);
+        back.setImageResource(R.drawable.arrow_back_white_48dp);
         back.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(40), (int) getDip(40)));
         back.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
 
@@ -100,7 +100,7 @@ public class LogReaderActivity extends AppCompatActivity {
         base.setElevation((float) (int) getDip(1));
 
         menu = new ImageView(LogReaderActivity.this);
-        menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
+        menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
         menu.setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
         menu.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(40), (int) getDip(40)));
         menu.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
@@ -224,9 +224,9 @@ public class LogReaderActivity extends AppCompatActivity {
         recyclerview.setAdapter(new RecyclerviewAdapter(new ArrayList<HashMap<String, Object>>()));
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         autoScroll = true;
-        IntentFilter nub = new IntentFilter();
-        nub.addAction("RECEIVE_NUB_LOGS");
-        registerReceiver(logger, nub);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
+        registerReceiver(logger, intentFilter);
     }
 
     public class logger extends BroadcastReceiver {
