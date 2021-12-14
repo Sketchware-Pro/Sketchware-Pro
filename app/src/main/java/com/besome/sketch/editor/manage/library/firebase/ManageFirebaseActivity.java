@@ -292,7 +292,11 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         pickerDialog.setDialogSelectionListener(selections -> {
             for (String path : selections) {
                 String fileContent = FileUtil.readFile(path);
-                parseDataFromGoogleServicesJson(fileContent);
+                if (fileContent == null) {
+                    SketchwareUtil.toastError("The file you selected is invalid or failed to read selected file");
+                } else {
+                    parseDataFromGoogleServicesJson(fileContent);
+                }
             }
         });
 
