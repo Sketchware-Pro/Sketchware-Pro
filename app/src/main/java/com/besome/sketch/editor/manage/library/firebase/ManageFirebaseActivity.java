@@ -340,7 +340,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
             hasNullConfig = true;
         }
         if (rtdbMatcher.find()) {
-            configureImportFirebaseConfigFromJson(realtime_db, rtdbMatcher.group(1));
+            configureImportFirebaseConfigFromJson(realtime_db, rtdbMatcher.group(1).replace("https://", ""));
         } else {
             notFoundLog.append("Realtime Database, ");
             configureImportFirebaseConfigFromJson(realtime_db, "");
