@@ -24,3 +24,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Upload debug apk
+      uses: actions/upload-artifact@v2
+      if: ${{ !github.head_ref }}
+      with:
+        name: apk-debug
+        path: app/build/outputs/apk
+    - name: Post cleanup
+      run: rm -rf app/build
