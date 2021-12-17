@@ -172,9 +172,9 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
                     initializeLibrary(libraryBean);
                     if (libraryBean.useYn.equals("Y") && !compatLibraryBean.useYn.equals("Y")) {
                         libraryBean = compatLibraryBean;
-                        libraryBean.useYn = "Y";
+                        libraryBean.useYn = "N";
                         initializeLibrary(libraryBean);
-                        showFirebaseNeedComaptDialog();
+                        //showFirebaseNeedComaptDialog();
                     }
                     break;
 
