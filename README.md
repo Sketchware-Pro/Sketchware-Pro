@@ -27,7 +27,7 @@ There are a few things that you should consider before contributing to Sketchwar
 
 ### Note
 This repository can't create a working APK, and you also can't use Android Studio's Run button to test out your changes.
-This is due to an issue with resource IDs being regenerated, and most classes still use the older ones made during
+This is due to problem with resource IDs being regenerated, and most classes still use the older ones made during
 vanilla Sketchware's compilation. In the future, this might be fixed, but it's sadly rather unrealistic.  
 We might make a tutorial on how to build working APKs, but for now we'll only link the tool we use to build
 Sketchware Pro: [apktool](https://ibotpeaches.github.io/Apktool/).
