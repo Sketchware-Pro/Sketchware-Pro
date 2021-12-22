@@ -320,7 +320,7 @@ public class AboutModActivity extends AppCompatActivity {
         // PagerAdapter.getCount() got obfuscated to kk.a()
         @Override
         public int a() {
-            return 2;
+            return 3;
         }
 
         // PagerAdapter.instantiateItem(ViewGroup, int) got obfuscated to
@@ -346,6 +346,27 @@ public class AboutModActivity extends AppCompatActivity {
                     parent.removeView(changelogRecyclerContainer);
                 }
                 viewContainer.addView(changelogRecyclerContainer);
+            } else if (position == 2) {
+                TextView majorChanges = new TextView(AboutModActivity.this);
+                {
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    int tenDp = SketchwareUtil.dpToPx(10);
+                    params.leftMargin = tenDp;
+                    params.topMargin = tenDp;
+                    params.rightMargin = tenDp;
+                    majorChanges.setLayoutParams(params);
+
+                    int eightDp = SketchwareUtil.dpToPx(8);
+                    majorChanges.setPadding(eightDp, eightDp, eightDp, eightDp);
+
+                    majorChanges.setTextColor(getColor(Resources.color.primary_text_default_material_light));
+                    majorChanges.setTextSize(14);
+                }
+
+                majorChanges.setText("<placeholder for actual major changes text>");
+                viewContainer.addView(majorChanges);
             }
             container.addView(v, 0);
             return v;
@@ -368,6 +389,9 @@ public class AboutModActivity extends AppCompatActivity {
 
                 case 1:
                     return "Changelog";
+
+                case 2:
+                    return "Major changes";
 
                 default:
                     return null;
