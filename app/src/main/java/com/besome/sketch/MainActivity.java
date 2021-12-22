@@ -55,6 +55,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.ilyasse.activities.about.AboutModActivity;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
@@ -283,6 +285,27 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     }
                 }).execute(data);
             }
+        }
+
+        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
+            aB dialog = new aB(this);
+            dialog.b("New changes in v6.4.0");
+            dialog.a("Just as a reminder; There have been many changes since v6.3.0 fix1, " +
+                    "and it's important to know them all if you want your projects to still work.\n" +
+                    "You can view all changes whenever you want at the updated About Sketchware Pro screen.");
+
+            dialog.b("View", v -> {
+                dialog.dismiss();
+                Intent launcher = new Intent(this, AboutModActivity.class);
+                launcher.putExtra("select", "majorChanges");
+                startActivity(launcher);
+            });
+            dialog.a("Close", Helper.getDialogDismissListener(dialog));
+            dialog.configureDefaultButton("Never show again", v -> {
+                ConfigActivity.setSetting(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER, true);
+                dialog.dismiss();
+            });
+            dialog.show();
         }
     }
 
