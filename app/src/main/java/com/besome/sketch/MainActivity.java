@@ -2,9 +2,7 @@ package com.besome.sketch;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -285,41 +283,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                     }
                 }).execute(data);
             }
-        }
-
-        File skipBetaWarningDialog = new File(getFilesDir(), ".skip_beta_warning");
-        if (!skipBetaWarningDialog.exists()) {
-            aB dialog = new aB(this);
-            dialog.a(0x7f0701e5);
-            dialog.b("Beta version");
-            dialog.a("First of all, join our Discord server for more information about this build!\n" +
-                    "Secondly, this is a beta version of Sketchware Pro, which means it could be unstable " +
-                    "and even break projects! Please back up /Internal storage/.sketchware/ if possible.\n" +
-                    "\n" +
-                    "If you have found any bugs or have comments, tell us in the Discord server.\n" +
-                    "Thank you for testing Sketchware Pro v6.4.0 out before it gets officially released, " +
-                    "and enjoy new features such as AAPT2!");
-            dialog.a("Discord", v -> {
-                SharedPreferences aboutUsStore = getSharedPreferences("AboutMod", Context.MODE_PRIVATE);
-                String inviteLink = aboutUsStore.getString("discordInviteLinkBackup", "");
-                if ("".equals(inviteLink)) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/p7D5Nt687K")));
-                } else {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink)));
-                }
-            });
-            dialog.configureDefaultButton("Don't show anymore", v -> {
-                try {
-                    skipBetaWarningDialog.createNewFile();
-                } catch (IOException e) {
-                    Log.e("MainActivity", "IOException while trying to write \"Don't show Beta warning\" file: "
-                            + e.getMessage(), e);
-                }
-                dialog.dismiss();
-            });
-            dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
-                    Helper.getDialogDismissListener(dialog));
-            dialog.show();
         }
     }
 
