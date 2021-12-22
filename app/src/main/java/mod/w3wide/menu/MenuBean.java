@@ -142,17 +142,6 @@ public class MenuBean {
                 selectableItems.addAll(getProjectFiles(ResourcePath.getXmlPath(sc_id), ".xml"));
                 break;
 
-            case "Assets":
-                asdAll.b("Select an Asset file");
-                selectableItems.addAll(getProjectFiles(ResourcePath.getAssetsPath(sc_id), ""));
-                break;
-
-            case "NativeLib":
-                asdAll.a(2131166382);
-                asdAll.b("Select a Native Library");
-                selectableItems.addAll(getProjectFiles(ResourcePath.getNativePath(sc_id), ".so"));
-                break;
-
             case "AdUnit":
                 asdAll.a(2131166209);
                 asdAll.b("Select an AdUnit");
