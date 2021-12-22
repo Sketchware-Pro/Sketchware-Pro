@@ -212,8 +212,12 @@ public class AboutModActivity extends AppCompatActivity {
                 "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
                 requestDataListener);
         rippleRound(fab, "#7289DA", "#FFFFFF", 90);
-        if ("changelog".equals(getIntent().getStringExtra("select"))) {
+
+        String toSelect = getIntent().getStringExtra("select");
+        if ("changelog".equals(toSelect)) {
             viewPager.setCurrentItem(1);
+        } else if ("majorChanges".equals(toSelect)) {
+            viewPager.setCurrentItem(2);
         }
     }
 
@@ -327,7 +331,6 @@ public class AboutModActivity extends AppCompatActivity {
         // kk.a(ViewGroup, int)
         @Override
         public Object a(ViewGroup container, int position) {
-
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(Resources.layout.about_empty_viewpager, null);
 
