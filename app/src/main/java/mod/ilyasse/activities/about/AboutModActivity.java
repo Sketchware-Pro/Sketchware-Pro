@@ -202,9 +202,7 @@ public class AboutModActivity extends AppCompatActivity {
 
     private void initializeLogic() {
         moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
-        moddersRecycler.setHasFixedSize(true);
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
-        changelogRecycler.setHasFixedSize(true); //either doesn't matter
         fab.setVisibility(View.GONE);
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
