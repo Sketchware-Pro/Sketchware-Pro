@@ -174,7 +174,6 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
                         libraryBean = compatLibraryBean;
                         libraryBean.useYn = "N";
                         initializeLibrary(libraryBean);
-                        //showFirebaseNeedComaptDialog();
                     }
                     break;
 
@@ -324,15 +323,6 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         outState.putString("originalAdmobUseYn", originalAdmobUseYn);
         outState.putString("originalGoogleMapUseYn", originalGoogleMapUseYn);
         super.onSaveInstanceState(outState);
-    }
-
-    private void showFirebaseNeedComaptDialog() {
-        aB dialog = new aB(this);
-        dialog.a(2131166245);
-        dialog.b(Helper.getResString(2131625047));
-        dialog.a(Helper.getResString(2131625223));
-        dialog.b(Helper.getResString(2131625010), Helper.getDialogDismissListener(dialog));
-        dialog.show();
     }
 
     public class SaveLibraryTask extends MA {
