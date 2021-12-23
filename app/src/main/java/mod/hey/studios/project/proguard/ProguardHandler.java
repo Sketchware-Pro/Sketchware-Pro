@@ -122,7 +122,8 @@ public class ProguardHandler {
             }
 
             try {
-                enabled = ((ArrayList<String>) new Gson().fromJson(configContent, arrayListStringType)).contains(library);
+                ArrayList<String> config = new Gson().fromJson(configContent, arrayListStringType);
+                enabled = config.contains(library);
                 return enabled;
             } catch (Exception ignored) {
             }
