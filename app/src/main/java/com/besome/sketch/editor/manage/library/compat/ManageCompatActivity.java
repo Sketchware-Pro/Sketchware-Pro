@@ -78,13 +78,6 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     public void onClick(View v) {
         if (v.getId() == 2131231408) {
             libSwitch.setChecked(libSwitch.isChecked() ^ true);
-/**
-            if (!libSwitch.isChecked() && "Y".equals(firebaseLibraryBean.useYn)) {
-                showFirebaseNeedDisableDialog();
-                libSwitch.setChecked(true);
-                return;
-            }
-**/
 
             if ("Y".equals(compatLibraryBean.useYn) && !libSwitch.isChecked()) {
                 configureLibraryDialog();
