@@ -142,7 +142,7 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
-    public void start(a dialog, Dp dp) {
+    public void start(a dialog, Dp dp) throws Exception {
         if (isProguardEnabled()) {
             if (dialog != null) dialog.c("ProGuarding classes...");
             dp.runProguard();
