@@ -775,6 +775,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private String signingAliasName = "";
         private char[] signingAliasPassword = new char[0];
         private String signingAlgorithm = "";
+        private boolean signWithTestkey = false;
 
         public BuildingAsyncTask(Context context) {
             super(context);
@@ -926,19 +927,26 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                             + File.separator + "sketchware"
                             + File.separator + "signed_aab";
                     FileUtil.makeDir(signedAppBundleDirectoryPath);
+                    String outputPath = signedAppBundleDirectoryPath + File.separator +
+                            Uri.fromFile(new File(createdBundlePath)).getLastPathSegment();
 
-                    Security.addProvider(new BouncyCastleProvider());
-                    CustomKeySigner.signZip(
-                            new ZipSigner(),
-                            signingKeystorePath,
-                            signingKeystorePassword,
-                            signingAliasName,
-                            signingAliasPassword,
-                            signingAlgorithm,
-                            createdBundlePath,
-                            signedAppBundleDirectoryPath
-                                    + File.separator + Uri.fromFile(new File(createdBundlePath)).getLastPathSegment()
-                    );
+                    if (signWithTestkey) {
+                        ZipSigner signer = new ZipSigner();
+                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
+                        signer.signZip(createdBundlePath, outputPath);
+                    } else {
+                        Security.addProvider(new BouncyCastleProvider());
+                        CustomKeySigner.signZip(
+                                new ZipSigner(),
+                                signingKeystorePath,
+                                signingKeystorePassword,
+                                signingAliasName,
+                                signingAliasPassword,
+                                signingAlgorithm,
+                                createdBundlePath,
+                                outputPath
+                        );
+                    }
                 } else {
                     publishProgress("Building APK...");
                     c.g();
@@ -948,7 +956,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     }
 
                     publishProgress("Signing APK...");
-                    c.b(new String(signingKeystorePassword), signingAliasName);
+                    if (signWithTestkey) {
+                        ZipSigner signer = new ZipSigner();
+                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
+                        signer.signZip(c.f.G, c.f.I);
+                    } else {
+                        c.b(new String(signingKeystorePassword), signingAliasName);
+                    }
                 }
             } catch (Throwable throwable) {
                 Log.e("AppExporter", throwable.getMessage(), throwable);
@@ -1064,6 +1078,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             signingAliasName = aliasName;
             signingAliasPassword = aliasPassword;
             signingAlgorithm = signatureAlgorithm;
+        }
+
+        /**
+         * Whether to sign the result with testkey or not.
+         * Note that this value will always be prioritized over values set with {@link #configureResultJarSigning(String, char[], String, char[], String)}.
+         */
+        public void setSignWithTestkey(boolean signWithTestkey) {
+            this.signWithTestkey = signWithTestkey;
         }
     }
 
