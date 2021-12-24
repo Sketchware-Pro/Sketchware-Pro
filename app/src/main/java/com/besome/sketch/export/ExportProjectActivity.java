@@ -14,8 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -42,7 +39,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.beans.UploadFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.tools.ExportApkActivity;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.net.MediaType;
 import com.sketchware.remod.Resources;
 
@@ -81,6 +77,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
+import mod.jbk.export.GetKeyStoreCredentialsDialog;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
@@ -478,104 +475,29 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.a("Generating an .aab file currently requires an Android 8 or higher device. We're sorry for any inconvenience.");
                 dialog.b(Helper.getResString(Resources.string.common_word_close),
                         Helper.getDialogDismissListener(dialog));
+                dialog.show();
             } else {
-                dialog.a(Resources.drawable.color_about_96);
-                dialog.b("Sign outputted AAB");
-                dialog.a("The generated .aab file must be signed.\n" +
+                GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
+                        Resources.drawable.color_about_96, "Sign outputted AAB", "The generated .aab file must be signed.\n" +
                         "Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
                         "and enter the alias' password.");
+                credentialsDialog.setListener(credentials -> {
+                    btnExportAppBundle.setVisibility(View.GONE);
+                    layoutExportAppBundle.setVisibility(View.GONE);
 
-                LinearLayout input_container = new LinearLayout(ExportProjectActivity.this);
-                input_container.setOrientation(LinearLayout.VERTICAL);
-                input_container.setPadding(
-                        (int) getDip(4),
-                        0,
-                        (int) getDip(4),
-                        0
-                );
-
-                TextInputLayout til_alias = new TextInputLayout(ExportProjectActivity.this);
-
-                EditText et_alias = new EditText(ExportProjectActivity.this);
-                et_alias.setHint("Keystore alias");
-                til_alias.addView(et_alias, 0, new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                input_container.addView(til_alias);
-
-                TextInputLayout til_password = new TextInputLayout(ExportProjectActivity.this);
-
-                EditText et_password = new EditText(ExportProjectActivity.this);
-                et_password.setHint("Alias password");
-                et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                til_password.setPasswordVisibilityToggleEnabled(true);
-                til_password.addView(et_password, 0, new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                input_container.addView(til_password);
-
-                TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
-                til_signing_algorithm.setHelperText("Example: SHA256WITHRSA");
-
-                EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
-                et_signing_algorithm.setHint("Signing algorithm");
-                til_signing_algorithm.addView(et_signing_algorithm, new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                input_container.addView(til_signing_algorithm);
-
-                dialog.a(input_container);
-
-                dialog.a(Helper.getResString(Resources.string.common_word_cancel),
-                        Helper.getDialogDismissListener(dialog));
-
-                dialog.b(Helper.getResString(Resources.string.common_word_next), v1 -> {
-                    // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
-                    if (new File(wq.j()).exists()) {
-                        boolean aliasEmpty = TextUtils.isEmpty(et_alias.getText().toString());
-                        boolean passwordEmpty = TextUtils.isEmpty(et_password.getText().toString());
-                        boolean algorithmEmpty = TextUtils.isEmpty(et_signing_algorithm.getText().toString());
-
-                        if (aliasEmpty) {
-                            til_alias.setError("Alias can't be empty");
-                        } else {
-                            til_alias.setError(null);
-                        }
-                        if (passwordEmpty) {
-                            til_password.setError("Password can't be empty");
-                        } else {
-                            til_password.setError(null);
-                        }
-                        if (algorithmEmpty) {
-                            til_signing_algorithm.setError("Algorithm can't be empty");
-                        } else {
-                            til_signing_algorithm.setError(null);
-                        }
-
-                        if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
-                            dialog.dismiss();
-                            btnExportAppBundle.setVisibility(View.GONE);
-                            layoutExportAppBundle.setVisibility(View.GONE);
-
-                            BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
-                            task.enableAppBundleBuild();
-                            task.configureResultJarSigning(
-                                    wq.j(),
-                                    et_password.getText().toString().toCharArray(),
-                                    et_alias.getText().toString(),
-                                    et_password.getText().toString().toCharArray(),
-                                    et_signing_algorithm.getText().toString()
-                            );
-                            task.execute();
-                        }
-                    } else {
-                        SketchwareUtil.toastError("Keystore not found");
-                    }
+                    BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
+                    task.enableAppBundleBuild();
+                    task.configureResultJarSigning(
+                            wq.j(),
+                            credentials.getKeyStorePassword().toCharArray(),
+                            credentials.getKeyAlias(),
+                            credentials.getKeyPassword().toCharArray(),
+                            credentials.getSigningAlgorithm()
+                    );
+                    task.execute();
                 });
-                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                et_alias.requestFocus();
+                credentialsDialog.show();
             }
-            dialog.show();
         });
     }
 
@@ -675,107 +597,31 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         layout_apk_path.setVisibility(View.GONE);
         layout_apk_url.setVisibility(View.GONE);
         btn_sign_apk.setOnClickListener(v -> {
-            aB dialog = new aB(ExportProjectActivity.this);
-            dialog.a(Resources.drawable.color_about_96);
-            dialog.b("Sign an APK");
-            dialog.a("To sign an APK, you need a keystore. Use your already created one, and copy it to " +
-                    "/Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.\n" +
-                    "Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, " +
-                    "use a 3rd-party tool (for now).");
+            GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
+                    Resources.drawable.color_about_96,
+                    "Sign an APK",
+                    "To sign an APK, you need a keystore. Use your already created one, and copy it to " +
+                            "/Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.\n" +
+                            "Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, " +
+                            "use a 3rd-party tool (for now).");
+            credentialsDialog.setListener(credentials -> {
+                btn_sign_apk.setVisibility(View.GONE);
+                layout_apk_path.setVisibility(View.GONE);
+                layout_apk_url.setVisibility(View.GONE);
+                loading_sign_apk.setVisibility(View.VISIBLE);
+                loading_sign_apk.j();
 
-            LinearLayout input_container = new LinearLayout(ExportProjectActivity.this);
-            input_container.setOrientation(LinearLayout.VERTICAL);
-            input_container.setPadding(
-                    (int) getDip(4),
-                    0,
-                    (int) getDip(4),
-                    0
-            );
-
-            TextInputLayout til_alias = new TextInputLayout(ExportProjectActivity.this);
-
-            EditText et_alias = new EditText(ExportProjectActivity.this);
-            et_alias.setHint("Keystore alias");
-            til_alias.addView(et_alias, 0, new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            input_container.addView(til_alias);
-
-            TextInputLayout til_password = new TextInputLayout(ExportProjectActivity.this);
-
-            EditText et_password = new EditText(ExportProjectActivity.this);
-            et_password.setHint("Alias password");
-            et_password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            til_password.setPasswordVisibilityToggleEnabled(true);
-            til_password.addView(et_password, 0, new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            input_container.addView(til_password);
-
-            TextInputLayout til_signing_algorithm = new TextInputLayout(ExportProjectActivity.this);
-            til_signing_algorithm.setHelperText("Example: SHA256withRSA");
-
-            EditText et_signing_algorithm = new EditText(ExportProjectActivity.this);
-            et_signing_algorithm.setHint("Signing algorithm");
-            til_signing_algorithm.addView(et_signing_algorithm, new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            input_container.addView(til_signing_algorithm);
-
-            dialog.a(input_container);
-
-            dialog.a(Helper.getResString(Resources.string.common_word_cancel),
-                    Helper.getDialogDismissListener(dialog));
-
-            dialog.b(Helper.getResString(Resources.string.common_word_ok), v1 -> {
-                // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
-                if (new File(wq.j()).exists()) {
-                    boolean aliasEmpty = TextUtils.isEmpty(et_alias.getText().toString());
-                    boolean passwordEmpty = TextUtils.isEmpty(et_password.getText().toString());
-                    boolean algorithmEmpty = TextUtils.isEmpty(et_signing_algorithm.getText().toString());
-
-                    if (aliasEmpty) {
-                        til_alias.setError("Alias can't be empty");
-                    } else {
-                        til_alias.setError(null);
-                    }
-                    if (passwordEmpty) {
-                        til_password.setError("Password can't be empty");
-                    } else {
-                        til_password.setError(null);
-                    }
-                    if (algorithmEmpty) {
-                        til_signing_algorithm.setError("Algorithm can't be empty");
-                    } else {
-                        til_signing_algorithm.setError(null);
-                    }
-
-                    if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
-                        dialog.dismiss();
-                        btn_sign_apk.setVisibility(View.GONE);
-                        layout_apk_path.setVisibility(View.GONE);
-                        layout_apk_url.setVisibility(View.GONE);
-                        loading_sign_apk.setVisibility(View.VISIBLE);
-                        loading_sign_apk.j();
-
-                        BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
-                        task.configureResultJarSigning(
-                                wq.j(),
-                                et_password.getText().toString().toCharArray(),
-                                et_alias.getText().toString(),
-                                et_password.getText().toString().toCharArray(),
-                                et_signing_algorithm.getText().toString()
-                        );
-                        task.execute();
-                    }
-                } else {
-                    SketchwareUtil.toastError("Keystore not found");
-                }
+                BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
+                task.configureResultJarSigning(
+                        wq.j(),
+                        credentials.getKeyStorePassword().toCharArray(),
+                        credentials.getKeyAlias(),
+                        credentials.getKeyPassword().toCharArray(),
+                        credentials.getSigningAlgorithm()
+                );
+                task.execute();
             });
-            dialog.show();
-
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-            et_alias.requestFocus();
+            credentialsDialog.show();
         });
         btn_export_apk.setOnClickListener(v -> r());
     }
