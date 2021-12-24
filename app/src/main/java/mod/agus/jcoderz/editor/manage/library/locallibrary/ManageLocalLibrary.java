@@ -124,6 +124,23 @@ public class ManageLocalLibrary {
         return imports;
     }
 
+    public ArrayList<File> getLocalLibraryJars() {
+        ArrayList<File> jars = new ArrayList<>();
+
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            HashMap<String, Object> localLibrary = list.get(i);
+            Object jarPath = localLibrary.get("jarPath");
+
+            if (jarPath instanceof String) {
+                jars.add(new File((String) jarPath));
+            } else {
+                SketchwareUtil.toastError("Invalid JAR path of enabled Local library #" + i, Toast.LENGTH_LONG);
+            }
+        }
+
+        return jars;
+    }
+
     public String getJarLocalLibrary() {
         StringBuilder classpath = new StringBuilder();
 
