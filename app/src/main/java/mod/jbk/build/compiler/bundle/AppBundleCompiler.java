@@ -17,7 +17,9 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import a.a.a.Dp;
+import a.a.a.Jp;
 import a.a.a.yq;
+import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.jbk.util.LogUtil;
@@ -232,6 +234,43 @@ public class AppBundleCompiler {
                                         }
                                     }
                                     zipOutputStream.closeEntry();
+                                }
+                            }
+                        }
+                    }
+
+                    /* Start with enabled Local libraries' JARs */
+                    ArrayList<File> jars = new ManageLocalLibrary(mDp.f.b).getLocalLibraryJars();
+
+                    /* Add built-in libraries' JARs */
+                    String prependToLibraryName = mDp.l.getAbsolutePath() + File.separator + mDp.m + File.separator;
+                    String appendToLibraryName = File.separator + "classes.jar";
+                    for (Jp library : mDp.n.a()) {
+                        jars.add(new File(prependToLibraryName + library.a() + appendToLibraryName));
+                    }
+
+                    for (File jar : jars) {
+                        try (FileInputStream jarStream = new FileInputStream(jar)) {
+                            try (ZipInputStream jarArchiveStream = new ZipInputStream(jarStream)) {
+
+                                ZipEntry jarArchiveEntry = jarArchiveStream.getNextEntry();
+
+                                while (jarArchiveEntry != null) {
+                                    String pathInJar = jarArchiveEntry.getName();
+                                    if (!jarArchiveEntry.isDirectory() && !pathInJar.equals("META-INF/MANIFEST.MF") && !pathInJar.endsWith(".class")) {
+                                        ZipEntry nonClassFileToAddToModule = new ZipEntry(MODULE_ROOT + File.separator +
+                                                pathInJar);
+                                        zipOutputStream.putNextEntry(nonClassFileToAddToModule);
+
+                                        byte[] buffer = new byte[1024];
+                                        int length;
+                                        while ((length = jarArchiveStream.read(buffer)) > 0) {
+                                            zipOutputStream.write(buffer, 0, length);
+                                        }
+                                        zipOutputStream.closeEntry();
+                                    }
+
+                                    jarArchiveEntry = jarArchiveStream.getNextEntry();
                                 }
                             }
                         }
