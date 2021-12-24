@@ -34,6 +34,7 @@ public class GetKeyStoreCredentialsDialog {
 
     public GetKeyStoreCredentialsDialog(Activity activity, int iconResourceId, String title, String noticeText) {
         dialog = new aB(activity);
+        dialog.a(iconResourceId);
         dialog.b(title);
         dialog.a(noticeText);
         dialog.a(Helper.getResString(Resources.string.common_word_cancel),
