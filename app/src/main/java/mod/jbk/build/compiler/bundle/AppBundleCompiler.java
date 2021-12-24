@@ -131,7 +131,7 @@ public class AppBundleCompiler {
     }
 
     /**
-     * Re-compresses <project name>.apk.res to module-main.zip in the right format.
+     * Re-compresses &lt;project name&gt;.apk.res to module-main.zip in the right format.
      *
      * @throws IOException Thrown if any I/O exception occurs while creating the archive
      */
