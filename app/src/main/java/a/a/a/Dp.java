@@ -54,6 +54,8 @@ import mod.hey.studios.util.SystemLogPrinter;
 import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
+import proguard.Configuration;
+import proguard.ConfigurationParser;
 import proguard.ProGuard;
 
 public class Dp {
@@ -989,7 +991,7 @@ public class Dp {
         args.add(f.rules_generated);
     }
 
-    public void runProguard() {
+    public void runProguard() throws Exception {
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
 
@@ -1038,7 +1040,18 @@ public class Dp {
             args.add(f.printmapping);
         }
         LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
-        ProGuard.main(args.toArray(new String[0]));
+
+        Configuration configuration = new Configuration();
+        ConfigurationParser parser = new ConfigurationParser(args.toArray(new String[0]), System.getProperties());
+
+        try {
+            parser.parse(configuration);
+        } finally {
+            parser.close();
+        }
+
+        new ProGuard(configuration).execute();
+
         LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
