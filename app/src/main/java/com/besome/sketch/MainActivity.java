@@ -2,9 +2,7 @@ package com.besome.sketch;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -57,6 +55,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.ilyasse.activities.about.AboutModActivity;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
@@ -287,38 +287,24 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
         }
 
-        File skipBetaWarningDialog = new File(getFilesDir(), ".skip_beta_warning");
-        if (!skipBetaWarningDialog.exists()) {
+        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
             aB dialog = new aB(this);
-            dialog.a(0x7f0701e5);
-            dialog.b("Beta version");
-            dialog.a("First of all, join our Discord server for more information about this build!\n" +
-                    "Secondly, this is a beta version of Sketchware Pro, which means it could be unstable " +
-                    "and even break projects! Please back up /Internal storage/.sketchware/ if possible.\n" +
-                    "\n" +
-                    "If you have found any bugs or have comments, tell us in the Discord server.\n" +
-                    "Thank you for testing Sketchware Pro v6.4.0 out before it gets officially released, " +
-                    "and enjoy new features such as AAPT2!");
-            dialog.a("Discord", v -> {
-                SharedPreferences aboutUsStore = getSharedPreferences("AboutMod", Context.MODE_PRIVATE);
-                String inviteLink = aboutUsStore.getString("discordInviteLinkBackup", "");
-                if ("".equals(inviteLink)) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/p7D5Nt687K")));
-                } else {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(inviteLink)));
-                }
+            dialog.b("New changes in v6.4.0");
+            dialog.a("Just as a reminder; There have been many changes since v6.3.0 fix1, " +
+                    "and it's important to know them all if you want your projects to still work.\n" +
+                    "You can view all changes whenever you want at the updated About Sketchware Pro screen.");
+
+            dialog.b("View", v -> {
+                dialog.dismiss();
+                Intent launcher = new Intent(this, AboutModActivity.class);
+                launcher.putExtra("select", "majorChanges");
+                startActivity(launcher);
             });
-            dialog.configureDefaultButton("Don't show anymore", v -> {
-                try {
-                    skipBetaWarningDialog.createNewFile();
-                } catch (IOException e) {
-                    Log.e("MainActivity", "IOException while trying to write \"Don't show Beta warning\" file: "
-                            + e.getMessage(), e);
-                }
+            dialog.a("Close", Helper.getDialogDismissListener(dialog));
+            dialog.configureDefaultButton("Never show again", v -> {
+                ConfigActivity.setSetting(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER, true);
                 dialog.dismiss();
             });
-            dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
-                    Helper.getDialogDismissListener(dialog));
             dialog.show();
         }
     }

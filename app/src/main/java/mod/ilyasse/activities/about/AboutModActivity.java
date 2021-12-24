@@ -202,9 +202,7 @@ public class AboutModActivity extends AppCompatActivity {
 
     private void initializeLogic() {
         moddersRecycler.setLayoutManager(new LinearLayoutManager(this));
-        moddersRecycler.setHasFixedSize(true);
         changelogRecycler.setLayoutManager(new LinearLayoutManager(this));
-        changelogRecycler.setHasFixedSize(true); //either doesn't matter
         fab.setVisibility(View.GONE);
         getWindow().setStatusBarColor(Color.WHITE);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -214,8 +212,12 @@ public class AboutModActivity extends AppCompatActivity {
                 "https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json", "",
                 requestDataListener);
         rippleRound(fab, "#7289DA", "#FFFFFF", 90);
-        if ("changelog".equals(getIntent().getStringExtra("select"))) {
+
+        String toSelect = getIntent().getStringExtra("select");
+        if ("changelog".equals(toSelect)) {
             viewPager.setCurrentItem(1);
+        } else if ("majorChanges".equals(toSelect)) {
+            viewPager.setCurrentItem(2);
         }
     }
 
@@ -322,14 +324,13 @@ public class AboutModActivity extends AppCompatActivity {
         // PagerAdapter.getCount() got obfuscated to kk.a()
         @Override
         public int a() {
-            return 2;
+            return 3;
         }
 
         // PagerAdapter.instantiateItem(ViewGroup, int) got obfuscated to
         // kk.a(ViewGroup, int)
         @Override
         public Object a(ViewGroup container, int position) {
-
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(Resources.layout.about_empty_viewpager, null);
 
@@ -348,6 +349,27 @@ public class AboutModActivity extends AppCompatActivity {
                     parent.removeView(changelogRecyclerContainer);
                 }
                 viewContainer.addView(changelogRecyclerContainer);
+            } else if (position == 2) {
+                TextView majorChanges = new TextView(AboutModActivity.this);
+                {
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                    int tenDp = SketchwareUtil.dpToPx(10);
+                    params.leftMargin = tenDp;
+                    params.topMargin = tenDp;
+                    params.rightMargin = tenDp;
+                    majorChanges.setLayoutParams(params);
+
+                    int eightDp = SketchwareUtil.dpToPx(8);
+                    majorChanges.setPadding(eightDp, eightDp, eightDp, eightDp);
+
+                    majorChanges.setTextColor(getColor(Resources.color.primary_text_default_material_light));
+                    majorChanges.setTextSize(14);
+                }
+
+                majorChanges.setText("<placeholder for actual major changes text>");
+                viewContainer.addView(majorChanges);
             }
             container.addView(v, 0);
             return v;
@@ -370,6 +392,9 @@ public class AboutModActivity extends AppCompatActivity {
 
                 case 1:
                     return "Changelog";
+
+                case 2:
+                    return "Major changes";
 
                 default:
                     return null;
