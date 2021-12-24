@@ -101,7 +101,7 @@ public class GetKeyStoreCredentialsDialog {
         inputContainer.addView(tilPassword);
 
         tilSigningAlgorithm = new TextInputLayout(activity);
-        tilSigningAlgorithm.setHelperText("Example: SHA256WITHRSA");
+        tilSigningAlgorithm.setHelperText("Example: SHA256withRSA");
         signingAlgorithm = new EditText(activity);
         signingAlgorithm.setHint("Signing algorithm");
         tilSigningAlgorithm.addView(signingAlgorithm, 0, new LinearLayout.LayoutParams(
