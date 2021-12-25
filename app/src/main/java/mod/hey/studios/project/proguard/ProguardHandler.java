@@ -122,7 +122,8 @@ public class ProguardHandler {
             }
 
             try {
-                enabled = ((ArrayList<String>) new Gson().fromJson(configContent, arrayListStringType)).contains(library);
+                ArrayList<String> config = new Gson().fromJson(configContent, arrayListStringType);
+                enabled = config.contains(library);
                 return enabled;
             } catch (Exception ignored) {
             }
@@ -142,7 +143,7 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
-    public void start(a dialog, Dp dp) {
+    public void start(a dialog, Dp dp) throws Exception {
         if (isProguardEnabled()) {
             if (dialog != null) dialog.c("ProGuarding classes...");
             dp.runProguard();

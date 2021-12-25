@@ -1138,12 +1138,12 @@
     <public type="dimen" name="checkbox_margin" id="0x7f060106" />
     <public type="dimen" name="toolbar_image_margin" id="0x7f060107" />
     <public type="dimen" name="checkbox_dimens" id="0x7f060108" />
-    <public type="drawable" name="$avd_hide_password__0" id="0x7f070000" />
-    <public type="drawable" name="$avd_hide_password__1" id="0x7f070001" />
-    <public type="drawable" name="$avd_hide_password__2" id="0x7f070002" />
-    <public type="drawable" name="$avd_show_password__0" id="0x7f070003" />
-    <public type="drawable" name="$avd_show_password__1" id="0x7f070004" />
-    <public type="drawable" name="$avd_show_password__2" id="0x7f070005" />
+    <public type="drawable" name="avd_hide_password__0" id="0x7f070000" />
+    <public type="drawable" name="avd_hide_password__1" id="0x7f070001" />
+    <public type="drawable" name="avd_hide_password__2" id="0x7f070002" />
+    <public type="drawable" name="avd_show_password__0" id="0x7f070003" />
+    <public type="drawable" name="avd_show_password__1" id="0x7f070004" />
+    <public type="drawable" name="avd_show_password__2" id="0x7f070005" />
     <public type="drawable" name="abc_96" id="0x7f070006" />
     <public type="drawable" name="abc_96_color" id="0x7f070007" />
     <public type="drawable" name="abc_ab_share_pack_mtrl_alpha" id="0x7f070008" />
