@@ -20,6 +20,7 @@ public class Resources {
         public static final int color_primary = 0x7f05003e;
         public static final int color_primary_dark = 0x7f050040;
         public static final int grey = 0x7f050069;
+        public static final int primary_text_default_material_light = 0x7f0500a1;
         public static final int scolor_black_01 = 0x7f0500aa;
         public static final int scolor_green_normal = 0x7f0500b0;
         public static final int scolor_red_02 = 0x7f0500b6;

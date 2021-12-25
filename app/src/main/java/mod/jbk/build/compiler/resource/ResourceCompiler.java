@@ -154,8 +154,7 @@ public class ResourceCompiler {
             args.add("--no-version-transitions");
 
             args.add("--min-sdk-version");
-            args.add(buildHelper.settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
-                    "21"));
+            args.add(String.valueOf(buildHelper.settings.getMinSdkVersion()));
             args.add("--target-sdk-version");
             args.add(buildHelper.settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION,
                     "28"));
