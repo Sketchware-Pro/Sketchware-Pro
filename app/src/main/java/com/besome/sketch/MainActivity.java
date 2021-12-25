@@ -3,6 +3,7 @@ package com.besome.sketch;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -287,7 +289,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
         }
 
-        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
+        if ((ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
+            return;
+        } else {
             aB dialog = new aB(this);
             dialog.b("New changes in v6.4.0");
             dialog.a("Just as a reminder; There have been many changes since v6.3.0 fix1, " +
