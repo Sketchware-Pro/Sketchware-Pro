@@ -96,7 +96,7 @@ public class ConfigActivity extends Activity {
         HashMap<String, Object> settings = new Gson().fromJson(
                 FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
                 Helper.TYPE_MAP);
-        if (settings.containsKey(keyName)) {
+        if (settings != null && settings.containsKey(keyName)) {
             Object value = settings.get(keyName);
             if (value instanceof Boolean) {
                 return (Boolean) value;
