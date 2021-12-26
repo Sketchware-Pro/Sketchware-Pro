@@ -27,6 +27,7 @@ import com.sketchware.remod.Resources;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import a.a.a.bB;
 import mod.SketchwareUtil;
@@ -72,7 +73,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     public void handleAdapter(String str) {
         ArrayList<String> resourceFile = frc.getResourceFile(str);
-        resourceFile.sort(String.CASE_INSENSITIVE_ORDER);
+        Collections.sort(resourceFile, String.CASE_INSENSITIVE_ORDER);
         adapter = new CustomAdapter(resourceFile);
         gridView.setAdapter(adapter);
     }
