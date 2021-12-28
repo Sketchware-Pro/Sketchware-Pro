@@ -367,6 +367,14 @@ public class qq {
                 knownDependencies.add("annotation-1.1.0");
                 break;
 
+            case "viewpager2-1.0.0":
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("fragment-1.0.0");
+                knownDependencies.add("recyclerview-1.0.0");
+                knownDependencies.add("core-1.0.0");
+                knownDependencies.add("collection-1.0.0");
+                break;
+
             default:
                 knownDependencies = ExtLibSelection.a(name);
                 break;
@@ -483,6 +491,7 @@ public class qq {
             case "swiperefreshlayout-1.0.0":
             case "transition-1.0.0":
             case "work-runtime-2.1.0":
+            case "viewpager2-1.0.0":
                 return true;
 
             default:
