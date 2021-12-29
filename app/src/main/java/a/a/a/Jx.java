@@ -566,6 +566,15 @@ public class Jx {
         return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
     }
 
+    private String getViewDeclarationAndAddImports(ViewBean viewBean) {
+        String viewType = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        if (viewType.equals("")) {
+            viewType = viewBean.getClassInfo().a();
+        }
+        addImports(mq.c(viewType));
+        return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE);
+    }
+
     private String getDeprecatedMethodsCode() {
         return "@Deprecated" + a +
                 "public void showMessage(String _s) {" + a +
@@ -638,15 +647,6 @@ public class Jx {
      */
     public final String b(ComponentBean componentBean) {
         return Lx.b(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
-    }
-
-    public final String b(ViewBean viewBean) {
-        String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
-        if (replaceAll.equals("")) {
-            replaceAll = viewBean.getClassInfo().a();
-        }
-        addImports(mq.c(replaceAll));
-        return Lx.a(replaceAll, viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
     private void handleAppCompat() {
@@ -907,7 +907,7 @@ public class Jx {
             j.add(getListDeclarationAndAddImports(next2.first, next2.second));
         }
         for (ViewBean viewBean : d.d(c.getXmlName())) {
-            k.add(b(viewBean));
+            k.add(getViewDeclarationAndAddImports(viewBean));
         }
         if (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             for (ViewBean viewBean : d.d(c.getDrawerXmlName())) {
