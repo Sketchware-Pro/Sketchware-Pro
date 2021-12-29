@@ -60,6 +60,9 @@ public class mq {
         }
     }
 
+    /**
+     * @return The Type name of a Component
+     */
     public static String a(int componentId) {
         switch (componentId) {
             case ComponentBean.COMPONENT_TYPE_INTENT:
