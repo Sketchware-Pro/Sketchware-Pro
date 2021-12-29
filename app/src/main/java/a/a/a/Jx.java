@@ -557,6 +557,15 @@ public class Jx {
         return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
+    /**
+     * @return Definition line for a Variable
+     */
+    private String getVariableDeclarationAndAddImports(int variableType, String name) {
+        String variableTypeName = mq.c(variableType);
+        addImports(mq.c(variableTypeName));
+        return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
+    }
+
     public final void addImport(String str) {
         if (!g.contains(str)) {
             g.add(str);
@@ -625,15 +634,6 @@ public class Jx {
                 addImport(value);
             }
         }
-    }
-
-    /**
-     * @return Definition line for a Variable
-     */
-    public final String b(int variableType, String name) {
-        String variableNameId = mq.c(variableType);
-        addImports(mq.c(variableNameId));
-        return Lx.a(variableNameId, name, Lx.AccessModifier.PRIVATE);
     }
 
     /**
@@ -903,7 +903,7 @@ public class Jx {
             if (intValue == 9) {
                 addImport(str);
             } else {
-                i.add(b(intValue, str));
+                i.add(getVariableDeclarationAndAddImports(intValue, str));
             }
         }
         for (Pair<Integer, String> next2 : d.j(javaName)) {
