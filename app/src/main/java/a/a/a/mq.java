@@ -418,6 +418,9 @@ public class mq {
         }
     }
 
+    /**
+     * @return The Type name of the Variable taken from its ID
+     */
     public static String c(int type) {
         switch (type) {
             case 0:
