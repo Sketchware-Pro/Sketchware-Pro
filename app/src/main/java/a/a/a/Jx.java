@@ -507,7 +507,7 @@ public class Jx {
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            deprecatedMethods(sb);
+            sb.append(getDeprecatedMethodsCode());
         }
         sb.append("}").append(a);
         String code = sb.toString();
@@ -567,58 +567,57 @@ public class Jx {
         }
     }
 
-    public final void deprecatedMethods(StringBuilder sb) {
-        sb.append(a)
-                .append("@Deprecated").append(a)
-                .append("public void showMessage(String _s) {").append(a)
-                .append("Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getLocationX(View _v) {").append(a)
-                .append("int _location[] = new int[2];").append(a)
-                .append("_v.getLocationInWindow(_location);").append(a)
-                .append("return _location[0];").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getLocationY(View _v) {").append(a)
-                .append("int _location[] = new int[2];").append(a)
-                .append("_v.getLocationInWindow(_location);").append(a)
-                .append("return _location[1];").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getRandom(int _min, int _max) {").append(a)
-                .append("Random random = new Random();").append(a)
-                .append("return random.nextInt(_max - _min + 1) + _min;").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {").append(a)
-                .append("ArrayList<Double> _result = new ArrayList<Double>();").append(a)
-                .append("SparseBooleanArray _arr = _list.getCheckedItemPositions();").append(a)
-                .append("for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {").append(a)
-                .append("if (_arr.valueAt(_iIdx))").append(a)
-                .append("_result.add((double)_arr.keyAt(_iIdx));").append(a)
-                .append("}").append(a)
-                .append("return _result;").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public float getDip(int _input) {").append(a)
-                .append("return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getDisplayWidthPixels() {").append(a)
-                .append("return getResources().getDisplayMetrics().widthPixels;").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getDisplayHeightPixels() {").append(a)
-                .append("return getResources().getDisplayMetrics().heightPixels;").append(a)
-                .append("}").append(a);
+    private String getDeprecatedMethodsCode() {
+        return "@Deprecated" + a +
+                "public void showMessage(String _s) {" + a +
+                "Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getLocationX(View _v +  {" + a +
+                "int _location[] = new int[2];" + a +
+                "_v.getLocationInWindow(_location + ;" + a +
+                "return _location[0];" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getLocationY(View _v +  {" + a +
+                "int _location[] = new int[2];" + a +
+                "_v.getLocationInWindow(_location + ;" + a +
+                "return _location[1];" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getRandom(int _min, int _max +  {" + a +
+                "Random random = new Random( + ;" + a +
+                "return random.nextInt(_max - _min + 1 +  + _min;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list +  {" + a +
+                "ArrayList<Double> _result = new ArrayList<Double>( + ;" + a +
+                "SparseBooleanArray _arr = _list.getCheckedItemPositions( + ;" + a +
+                "for (int _iIdx = 0; _iIdx < _arr.size( + ; _iIdx++ +  {" + a +
+                "if (_arr.valueAt(_iIdx +  + " + a +
+                "_result.add((double + _arr.keyAt(_iIdx +  + ;" + a +
+                "}" + a +
+                "return _result;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public float getDip(int _input +  {" + a +
+                "return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources( + .getDisplayMetrics( +  + ;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getDisplayWidthPixels( +  {" + a +
+                "return getResources( + .getDisplayMetrics( + .widthPixels;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getDisplayHeightPixels( +  {" + a +
+                "return getResources( + .getDisplayMetrics( + .heightPixels;" + a +
+                "}" + a;
     }
 
     /**
