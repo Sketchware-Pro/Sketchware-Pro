@@ -590,90 +590,90 @@ public class Lx {
     }
 
     /**
-     * @return One or more lines which declare a component's needed fields.
-     * Example for a Camera component:
+     * @return One or more lines which declare a Type's needed fields.
+     * Example for a Camera Component:
      * <pre>
      * private File _file_&lt;component name&gt;;
      * </pre>
      */
-    public static String a(String componentNameId, String componentName, AccessModifier accessModifier, String... parameters) {
+    public static String a(String typeName, String typeInstanceName, AccessModifier accessModifier, String... parameters) {
         String fieldDeclaration = accessModifier.getName();
 
-        if (componentNameId.equals("include") || componentNameId.equals("#")) {
+        if (typeName.equals("include") || typeName.equals("#")) {
             fieldDeclaration = "";
         } else {
-            String initializer = a(componentNameId, componentName, parameters);
-            String builtInType = mq.e(componentNameId);
+            String initializer = a(typeName, typeInstanceName, parameters);
+            String builtInType = mq.e(typeName);
             if (initializer.length() <= 0) {
                 if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
-                    fieldDeclaration += " " + builtInType + " " + componentName + ";";
+                    fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
-                    fieldDeclaration = ConstVarWidget.a(fieldDeclaration, componentNameId, componentName);
+                    fieldDeclaration = ConstVarWidget.a(fieldDeclaration, typeName, typeInstanceName);
                 }
             } else {
-                fieldDeclaration += " " + (builtInType.equals("") ? ConstVarWidget.b(componentNameId) : builtInType)
-                        + " " + componentName + " = " + initializer + ";";
+                fieldDeclaration += " " + (builtInType.equals("") ? ConstVarWidget.b(typeName) : builtInType)
+                        + " " + typeInstanceName + " = " + initializer + ";";
             }
 
-            switch (componentNameId) {
+            switch (typeName) {
                 case "FirebaseDB":
-                    fieldDeclaration += "\r\nprivate ChildEventListener _" + componentName + "_child_listener;";
+                    fieldDeclaration += "\r\nprivate ChildEventListener _" + typeInstanceName + "_child_listener;";
                     break;
 
                 case "Gyroscope":
-                    fieldDeclaration += "\r\nprivate SensorEventListener _" + componentName + "_sensor_listener;";
+                    fieldDeclaration += "\r\nprivate SensorEventListener _" + typeInstanceName + "_sensor_listener;";
                     break;
 
                 case "FirebaseAuth":
-                    fieldDeclaration += "\r\nprivate OnCompleteListener<AuthResult> _" + componentName + "_create_user_listener;\r\n" +
-                            "private OnCompleteListener<AuthResult> _" + componentName + "_sign_in_listener;\r\n" +
-                            "private OnCompleteListener<Void> _" + componentName + "_reset_password_listener;\r\n" +
+                    fieldDeclaration += "\r\nprivate OnCompleteListener<AuthResult> _" + typeInstanceName + "_create_user_listener;\r\n" +
+                            "private OnCompleteListener<AuthResult> _" + typeInstanceName + "_sign_in_listener;\r\n" +
+                            "private OnCompleteListener<Void> _" + typeInstanceName + "_reset_password_listener;\r\n" +
                             // Fields/Events added by Agus
-                            "private OnCompleteListener<Void> " + componentName + "_updateEmailListener;\r\n" +
-                            "private OnCompleteListener<Void> " + componentName + "_updatePasswordListener;\r\n" +
-                            "private OnCompleteListener<Void> " + componentName + "_emailVerificationSentListener;\r\n" +
-                            "private OnCompleteListener<Void> " + componentName + "_deleteUserListener;\r\n" +
-                            "private OnCompleteListener<Void> " + componentName + "_updateProfileListener;\r\n" +
-                            "private OnCompleteListener<AuthResult> " + componentName + "_phoneAuthListener;\r\n" +
-                            "private OnCompleteListener<AuthResult> " + componentName + "_googleSignInListener;\r\n";
+                            "private OnCompleteListener<Void> " + typeInstanceName + "_updateEmailListener;\r\n" +
+                            "private OnCompleteListener<Void> " + typeInstanceName + "_updatePasswordListener;\r\n" +
+                            "private OnCompleteListener<Void> " + typeInstanceName + "_emailVerificationSentListener;\r\n" +
+                            "private OnCompleteListener<Void> " + typeInstanceName + "_deleteUserListener;\r\n" +
+                            "private OnCompleteListener<Void> " + typeInstanceName + "_updateProfileListener;\r\n" +
+                            "private OnCompleteListener<AuthResult> " + typeInstanceName + "_phoneAuthListener;\r\n" +
+                            "private OnCompleteListener<AuthResult> " + typeInstanceName + "_googleSignInListener;\r\n";
                     break;
 
                 case "InterstitialAd":
-                    fieldDeclaration += "\r\nprivate InterstitialAdLoadCallback _" + componentName + "_interstitial_ad_load_callback;";
-                    fieldDeclaration += "\r\nprivate FullScreenContentCallback _" + componentName + "_full_screen_content_callback;";
+                    fieldDeclaration += "\r\nprivate InterstitialAdLoadCallback _" + typeInstanceName + "_interstitial_ad_load_callback;";
+                    fieldDeclaration += "\r\nprivate FullScreenContentCallback _" + typeInstanceName + "_full_screen_content_callback;";
                     break;
 
                 case "FirebaseStorage":
-                    fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + componentName + "_upload_success_listener;\r\n" +
-                            "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + componentName + "_download_success_listener;\r\n" +
-                            "private OnSuccessListener _" + componentName + "_delete_success_listener;\r\n" +
-                            "private OnProgressListener _" + componentName + "_upload_progress_listener;\r\n" +
-                            "private OnProgressListener _" + componentName + "_download_progress_listener;\r\n" +
-                            "private OnFailureListener _" + componentName + "_failure_listener;\r\n";
+                    fieldDeclaration += "\r\nprivate OnCompleteListener<Uri> _" + typeInstanceName + "_upload_success_listener;\r\n" +
+                            "private OnSuccessListener<FileDownloadTask.TaskSnapshot> _" + typeInstanceName + "_download_success_listener;\r\n" +
+                            "private OnSuccessListener _" + typeInstanceName + "_delete_success_listener;\r\n" +
+                            "private OnProgressListener _" + typeInstanceName + "_upload_progress_listener;\r\n" +
+                            "private OnProgressListener _" + typeInstanceName + "_download_progress_listener;\r\n" +
+                            "private OnFailureListener _" + typeInstanceName + "_failure_listener;\r\n";
                     break;
 
                 case "Camera":
-                    fieldDeclaration += "\r\nprivate File _file_" + componentName + ";";
+                    fieldDeclaration += "\r\nprivate File _file_" + typeInstanceName + ";";
                     break;
 
                 case "RequestNetwork":
-                    fieldDeclaration += "\r\nprivate RequestNetwork.RequestListener _" + componentName + "_request_listener;";
+                    fieldDeclaration += "\r\nprivate RequestNetwork.RequestListener _" + typeInstanceName + "_request_listener;";
                     break;
 
                 case "BluetoothConnect":
-                    fieldDeclaration += "\r\nprivate BluetoothConnect.BluetoothConnectionListener _" + componentName + "_bluetooth_connection_listener;";
+                    fieldDeclaration += "\r\nprivate BluetoothConnect.BluetoothConnectionListener _" + typeInstanceName + "_bluetooth_connection_listener;";
                     break;
 
                 case "LocationManager":
-                    fieldDeclaration += "\r\nprivate LocationListener _" + componentName + "_location_listener;";
+                    fieldDeclaration += "\r\nprivate LocationListener _" + typeInstanceName + "_location_listener;";
                     break;
 
                 case "MapView":
-                    fieldDeclaration += "\r\nprivate GoogleMapController _" + componentName + "_controller;";
+                    fieldDeclaration += "\r\nprivate GoogleMapController _" + typeInstanceName + "_controller;";
                     break;
 
                 default:
-                    fieldDeclaration = ManageEventComponent.a(componentNameId, fieldDeclaration, componentName);
+                    fieldDeclaration = ManageEventComponent.a(typeName, fieldDeclaration, typeInstanceName);
             }
         }
 
