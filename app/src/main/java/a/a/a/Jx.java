@@ -548,13 +548,13 @@ public class Jx {
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
-    public final String a(ViewBean viewBean) {
-        String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
-        if (replaceAll.equals("")) {
-            replaceAll = viewBean.getClassInfo().a();
+    private String getDrawerViewDeclarationAndAddImports(ViewBean viewBean) {
+        String viewType = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        if (viewType.equals("")) {
+            viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.c(replaceAll));
-        return Lx.a(replaceAll, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
+        addImports(mq.c(viewType));
+        return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
     public final void addImport(String str) {
@@ -914,7 +914,7 @@ public class Jx {
         }
         if (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             for (ViewBean viewBean : d.d(c.getDrawerXmlName())) {
-                k.add(a(viewBean));
+                k.add(getDrawerViewDeclarationAndAddImports(viewBean));
             }
         }
         ArrayList<ComponentBean> componentBeans = d.e(javaName);
