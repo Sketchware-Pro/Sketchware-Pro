@@ -538,13 +538,13 @@ public class Jx {
 
     public final String a(int i2, String str) {
         String b2 = mq.b(i2);
-        a(mq.c(b2));
+        addImports(mq.c(b2));
         return Lx.a(b2, str, Lx.AccessModifier.PRIVATE);
     }
 
     public final String a(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
-        a(mq.c(typeName));
+        addImports(mq.c(typeName));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
@@ -553,7 +553,7 @@ public class Jx {
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
         }
-        a(mq.c(replaceAll));
+        addImports(mq.c(replaceAll));
         return Lx.a(replaceAll, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -619,7 +619,7 @@ public class Jx {
     /**
      * Adds imports to {@link Jx#g}.
      */
-    public final void a(ArrayList<String> imports) {
+    private void addImports(ArrayList<String> imports) {
         if (imports != null) {
             for (String value : imports) {
                 addImport(value);
@@ -632,7 +632,7 @@ public class Jx {
      */
     public final String b(int variableType, String name) {
         String variableNameId = mq.c(variableType);
-        a(mq.c(variableNameId));
+        addImports(mq.c(variableNameId));
         return Lx.a(variableNameId, name, Lx.AccessModifier.PRIVATE);
     }
 
@@ -648,7 +648,7 @@ public class Jx {
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
         }
-        a(mq.c(replaceAll));
+        addImports(mq.c(replaceAll));
         return Lx.a(replaceAll, viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -715,7 +715,7 @@ public class Jx {
                                 a +
                                 "LinearLayout _nav_view = findViewById(R.id._nav_view);" + a
                 );
-                a(mq.c("LinearLayout"));
+                addImports(mq.c("LinearLayout"));
             }
         }
         addImport("android.app.*");
@@ -801,7 +801,7 @@ public class Jx {
 
     public final void e() {
         e = new Hx(f, c, d);
-        a(e.e());
+        addImports(e.e());
     }
 
     /**
