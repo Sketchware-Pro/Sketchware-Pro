@@ -18,7 +18,6 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
-import mod.jbk.util.LogUtil;
 import mod.w3wide.control.logic.PermissionManager;
 import mod.w3wide.control.logic.SourceHandler;
 
@@ -534,9 +533,6 @@ public class Jx {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
 
-        LogUtil.log("Jx", "Dump of La/a/a/Jx;:",
-                "Logging a dump of La/a/a/Jx; over multiple lines because of length.",
-                LogUtil.dump(this));
         return CommandBlock.CB(Lx.j(code));
     }
 
