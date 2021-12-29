@@ -490,8 +490,8 @@ public class Jx {
         }
 
         sb.append(a);
-        for (int i1 = 0, qSize = q.size(); i1 < qSize; i1++) {
-            String adapterCode = q.get(i1);
+        for (int j = 0, qSize = q.size(); j < qSize; j++) {
+            String adapterCode = q.get(j);
 
             if (base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {")
                     || !adapterCode.contains("return onTabLayoutNewTabAdded(pos);")) {
@@ -501,7 +501,7 @@ public class Jx {
                         "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method\r\n" +
                                 "return \"page \" + String.valueOf(pos);"));
             }
-            if (i1 != qSize - 1) {
+            if (j != qSize - 1) {
                 sb.append(a);
             }
         }
