@@ -190,6 +190,9 @@ public class mq {
         return paramClass;
     }
 
+    /**
+     * @return The internal type name of a List taken from its number
+     */
     public static String b(int type) {
         switch (type) {
             case 1:
