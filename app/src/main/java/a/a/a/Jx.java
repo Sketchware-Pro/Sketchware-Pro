@@ -566,12 +566,6 @@ public class Jx {
         return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
     }
 
-    public final void addImport(String str) {
-        if (!g.contains(str)) {
-            g.add(str);
-        }
-    }
-
     private String getDeprecatedMethodsCode() {
         return "@Deprecated" + a +
                 "public void showMessage(String _s) {" + a +
@@ -625,9 +619,12 @@ public class Jx {
                 "}" + a;
     }
 
-    /**
-     * Adds imports to {@link Jx#g}.
-     */
+    private void addImport(String classToImport) {
+        if (!g.contains(classToImport)) {
+            g.add(classToImport);
+        }
+    }
+
     private void addImports(ArrayList<String> imports) {
         if (imports != null) {
             for (String value : imports) {
