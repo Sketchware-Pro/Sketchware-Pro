@@ -589,55 +589,56 @@ public class Jx {
     }
 
     private String getDeprecatedMethodsCode() {
-        return "@Deprecated" + a +
+        return a +
+                "@Deprecated" + a +
                 "public void showMessage(String _s) {" + a +
                 "Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public int getLocationX(View _v +  {" + a +
+                "public int getLocationX(View _v) {" + a +
                 "int _location[] = new int[2];" + a +
-                "_v.getLocationInWindow(_location + ;" + a +
+                "_v.getLocationInWindow(_location);" + a +
                 "return _location[0];" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public int getLocationY(View _v +  {" + a +
+                "public int getLocationY(View _v) {" + a +
                 "int _location[] = new int[2];" + a +
-                "_v.getLocationInWindow(_location + ;" + a +
+                "_v.getLocationInWindow(_location);" + a +
                 "return _location[1];" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public int getRandom(int _min, int _max +  {" + a +
-                "Random random = new Random( + ;" + a +
-                "return random.nextInt(_max - _min + 1 +  + _min;" + a +
+                "public int getRandom(int _min, int _max) {" + a +
+                "Random random = new Random();" + a +
+                "return random.nextInt(_max - _min + 1) + _min;" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list +  {" + a +
-                "ArrayList<Double> _result = new ArrayList<Double>( + ;" + a +
-                "SparseBooleanArray _arr = _list.getCheckedItemPositions( + ;" + a +
-                "for (int _iIdx = 0; _iIdx < _arr.size( + ; _iIdx++ +  {" + a +
-                "if (_arr.valueAt(_iIdx +  + " + a +
-                "_result.add((double + _arr.keyAt(_iIdx +  + ;" + a +
+                "public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {" + a +
+                "ArrayList<Double> _result = new ArrayList<Double>();" + a +
+                "SparseBooleanArray _arr = _list.getCheckedItemPositions();" + a +
+                "for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {" + a +
+                "if (_arr.valueAt(_iIdx))" + a +
+                "_result.add((double)_arr.keyAt(_iIdx));" + a +
                 "}" + a +
                 "return _result;" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public float getDip(int _input +  {" + a +
-                "return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources( + .getDisplayMetrics( +  + ;" + a +
+                "public float getDip(int _input) {" + a +
+                "return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public int getDisplayWidthPixels( +  {" + a +
-                "return getResources( + .getDisplayMetrics( + .widthPixels;" + a +
+                "public int getDisplayWidthPixels() {" + a +
+                "return getResources().getDisplayMetrics().widthPixels;" + a +
                 "}" + a +
                 a +
                 "@Deprecated" + a +
-                "public int getDisplayHeightPixels( +  {" + a +
-                "return getResources( + .getDisplayMetrics( + .heightPixels;" + a +
+                "public int getDisplayHeightPixels() {" + a +
+                "return getResources().getDisplayMetrics().heightPixels;" + a +
                 "}" + a;
     }
 
