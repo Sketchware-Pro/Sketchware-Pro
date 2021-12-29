@@ -696,21 +696,18 @@ public class Jx {
                 addImport("androidx.appcompat.app.ActionBarDrawerToggle");
 
                 i.add("private DrawerLayout _drawer;");
-                m.add(
+                m.add("_drawer = findViewById(R.id._drawer);" + a +
+                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
+                        c.getActivityName() + ".this, _drawer, " +
+
                         (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
-                                "_drawer = findViewById(R.id._drawer);" + a +
-                                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                                        c.getActivityName() +
-                                        ".this, _drawer, _toolbar, R.string.app_name, R.string.app_name);" +
-                                        a :
-                                "_drawer = findViewById(R.id._drawer);" + a +
-                                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                                        c.getActivityName() +
-                                        ".this, _drawer, R.string.app_name, R.string.app_name);" + a) +
-                                "_drawer.addDrawerListener(_toggle);" + a +
-                                "_toggle.syncState();" + a +
-                                a +
-                                "LinearLayout _nav_view = findViewById(R.id._nav_view);" + a
+                                "_toolbar, " : "") +
+
+                        "R.string.app_name, R.string.app_name);" + a +
+                        "_drawer.addDrawerListener(_toggle);" + a +
+                        "_toggle.syncState();" + a +
+                        a +
+                        "LinearLayout _nav_view = findViewById(R.id._nav_view);" + a
                 );
                 addImports(mq.c("LinearLayout"));
             }
