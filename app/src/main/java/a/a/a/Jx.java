@@ -536,10 +536,10 @@ public class Jx {
         return CommandBlock.CB(Lx.j(code));
     }
 
-    public final String a(int i2, String str) {
-        String b2 = mq.b(i2);
-        addImports(mq.c(b2));
-        return Lx.a(b2, str, Lx.AccessModifier.PRIVATE);
+    private String a(int listType, String listName) {
+        String typeName = mq.b(listType);
+        addImports(mq.c(typeName));
+        return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
     public final String a(ComponentBean componentBean) {
