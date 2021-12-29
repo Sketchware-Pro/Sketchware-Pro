@@ -323,7 +323,7 @@ public class Jx {
             sb.append("com.google.android.gms.ads.MobileAds.initialize(this);");
             sb.append(a);
             if (h.contains(Lx.d("InterstitialAd"))) {
-	            sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
+                sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
             }
 
             if (f.f) {
@@ -462,7 +462,7 @@ public class Jx {
                 e.a("onDestroy", "MapView", next.id);
             }
             if (next.type == ViewBean.VIEW_TYPE_WIDGET_ADVIEW) {
-            	e.a("onResume", "AdView", next.id);
+                e.a("onResume", "AdView", next.id);
                 e.a("onPause", "AdView", next.id);
                 e.a("onDestroy", "AdView", next.id);
             }
