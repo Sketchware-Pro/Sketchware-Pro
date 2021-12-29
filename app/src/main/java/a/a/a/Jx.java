@@ -542,7 +542,7 @@ public class Jx {
         return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
-    public final String a(ComponentBean componentBean) {
+    private String getComponentDeclarationAndAddImports(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
         addImports(mq.c(typeName));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
@@ -919,7 +919,7 @@ public class Jx {
         }
         ArrayList<ComponentBean> componentBeans = d.e(javaName);
         for (ComponentBean bean : componentBeans) {
-            l.add(a(bean));
+            l.add(getComponentDeclarationAndAddImports(bean));
         }
         if (componentBeans.size() > 0) {
             boolean hasTimer = false;
