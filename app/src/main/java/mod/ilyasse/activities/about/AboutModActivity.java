@@ -364,7 +364,7 @@ public class AboutModActivity extends AppCompatActivity {
                     int eightDp = SketchwareUtil.dpToPx(8);
                     majorChanges.setPadding(eightDp, eightDp, eightDp, eightDp);
 
-                    majorChanges.setTextColor(getColor(Resources.color.primary_text_default_material_light));
+                    majorChanges.setTextColor(getResources().getColor(Resources.color.primary_text_default_material_light));
                     majorChanges.setTextSize(14);
                 }
 
