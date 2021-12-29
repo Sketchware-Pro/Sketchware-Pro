@@ -536,7 +536,7 @@ public class Jx {
         return CommandBlock.CB(Lx.j(code));
     }
 
-    private String a(int listType, String listName) {
+    private String getListDeclarationAndAddImports(int listType, String listName) {
         String typeName = mq.b(listType);
         addImports(mq.c(typeName));
         return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
@@ -907,7 +907,7 @@ public class Jx {
             }
         }
         for (Pair<Integer, String> next2 : d.j(javaName)) {
-            j.add(a(next2.first, next2.second));
+            j.add(getListDeclarationAndAddImports(next2.first, next2.second));
         }
         for (ViewBean viewBean : d.d(c.getXmlName())) {
             k.add(b(viewBean));
