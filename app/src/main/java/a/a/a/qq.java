@@ -383,6 +383,11 @@ public class qq {
                 knownDependencies.add("lifecycle-viewmodel-2.0.0");
                 break;
 
+            case "concurrent-futures-1.1.0":
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("listenablefuture-1.0.0");
+                break;
+
             default:
                 knownDependencies = ExtLibSelection.a(name);
                 break;
