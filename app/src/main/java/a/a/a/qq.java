@@ -234,9 +234,11 @@ public class qq {
 
             case "core-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("annotation-experimental-1.1.0");
                 knownDependencies.add("lifecycle-runtime-2.0.0");
                 knownDependencies.add("versionedparcelable-1.0.0");
                 knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("concurrent-futures-1.1.0");
                 break;
 
             case "core-runtime-2.0.0":
