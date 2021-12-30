@@ -362,7 +362,11 @@ public class qq {
                 knownDependencies.add("viewpager-1.0.0");
                 knownDependencies.add("loader-1.0.0");
                 knownDependencies.add("activity-1.0.0");
+                knownDependencies.add("lifecycle-livedata-core-2.0.0");
                 knownDependencies.add("lifecycle-viewmodel-2.0.0");
+                knownDependencies.add("lifecycle-viewmodel-savedstate-2.3.1");
+                knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("annotation-experimental-1.2.0");
                 break;
 
             case "lifecycle-runtime-2.0.0":
