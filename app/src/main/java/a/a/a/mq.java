@@ -60,6 +60,9 @@ public class mq {
         }
     }
 
+    /**
+     * @return The Type name of a Component
+     */
     public static String a(int componentId) {
         switch (componentId) {
             case ComponentBean.COMPONENT_TYPE_INTENT:
@@ -190,6 +193,9 @@ public class mq {
         return paramClass;
     }
 
+    /**
+     * @return The internal type name of a List taken from its number
+     */
     public static String b(int type) {
         switch (type) {
             case 1:
@@ -412,6 +418,9 @@ public class mq {
         }
     }
 
+    /**
+     * @return The Type name of the Variable taken from its ID
+     */
     public static String c(int type) {
         switch (type) {
             case 0:

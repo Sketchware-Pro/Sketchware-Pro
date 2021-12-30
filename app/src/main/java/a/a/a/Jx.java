@@ -18,7 +18,6 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
-import mod.jbk.util.LogUtil;
 import mod.w3wide.control.logic.PermissionManager;
 import mod.w3wide.control.logic.SourceHandler;
 
@@ -158,6 +157,19 @@ public class Jx {
         if (c.getActivityName().equals("MainActivity")) {
             sb.append(getLauncherActivity(b));
         }
+
+        if (f.h) {
+            addImport("com.google.firebase.FirebaseApp");
+        }
+
+        if (f.l) {
+            addImport("com.google.android.gms.ads.MobileAds");
+
+            if (f.f) {
+                addImport("com.google.android.gms.ads.RequestConfiguration");
+            }
+        }
+
         removeExtraImports();
 
         for (String anImport : g) {
@@ -310,9 +322,9 @@ public class Jx {
         sb.append(a);
         if (f.h) {
             if (isFragment) {
-                sb.append("com.google.firebase.FirebaseApp.initializeApp(getContext());");
+                sb.append("FirebaseApp.initializeApp(getContext());");
             } else {
-                sb.append("com.google.firebase.FirebaseApp.initializeApp(this);");
+                sb.append("FirebaseApp.initializeApp(this);");
             }
             sb.append(a);
         }
@@ -321,10 +333,10 @@ public class Jx {
             if (!f.h) {
                 sb.append(a);
             }
-            sb.append("com.google.android.gms.ads.MobileAds.initialize(this);");
+            sb.append("MobileAds.initialize(this);");
             sb.append(a);
             if (h.contains(Lx.d("InterstitialAd"))) {
-	            sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
+                sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
             }
 
             if (f.f) {
@@ -342,7 +354,7 @@ public class Jx {
 
                 sb.append(a);
                 sb.append(testDevicesListCode);
-                sb.append("com.google.android.gms.ads.MobileAds.setRequestConfiguration(new com.google.android.gms.ads.RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build());");
+                sb.append("MobileAds.setRequestConfiguration(new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build());");
             }
 
             sb.append(a);
@@ -463,7 +475,7 @@ public class Jx {
                 e.a("onDestroy", "MapView", next.id);
             }
             if (next.type == ViewBean.VIEW_TYPE_WIDGET_ADVIEW) {
-            	e.a("onResume", "AdView", next.id);
+                e.a("onResume", "AdView", next.id);
                 e.a("onPause", "AdView", next.id);
                 e.a("onDestroy", "AdView", next.id);
             }
@@ -490,8 +502,8 @@ public class Jx {
         }
 
         sb.append(a);
-        for (int i1 = 0, qSize = q.size(); i1 < qSize; i1++) {
-            String adapterCode = q.get(i1);
+        for (int j = 0, qSize = q.size(); j < qSize; j++) {
+            String adapterCode = q.get(j);
 
             if (base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {")
                     || !adapterCode.contains("return onTabLayoutNewTabAdded(pos);")) {
@@ -501,13 +513,13 @@ public class Jx {
                         "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method\r\n" +
                                 "return \"page \" + String.valueOf(pos);"));
             }
-            if (i1 != qSize - 1) {
+            if (j != qSize - 1) {
                 sb.append(a);
             }
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            deprecatedMethods(sb);
+            sb.append(getDeprecatedMethodsCode());
         }
         sb.append("}").append(a);
         String code = sb.toString();
@@ -534,97 +546,109 @@ public class Jx {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
 
-        LogUtil.log("Jx", "Dump of La/a/a/Jx;:",
-                "Logging a dump of La/a/a/Jx; over multiple lines because of length.",
-                LogUtil.dump(this));
         return CommandBlock.CB(Lx.j(code));
     }
 
-    public final String a(int i2, String str) {
-        String b2 = mq.b(i2);
-        a(mq.c(b2));
-        return Lx.a(b2, str, Lx.AccessModifier.PRIVATE);
+    private String getListDeclarationAndAddImports(int listType, String listName) {
+        String typeName = mq.b(listType);
+        addImports(mq.c(typeName));
+        return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
-    public final String a(ComponentBean componentBean) {
+    private String getComponentDeclarationAndAddImports(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
-        a(mq.c(typeName));
+        addImports(mq.c(typeName));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
-    public final String a(ViewBean viewBean) {
-        String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
-        if (replaceAll.equals("")) {
-            replaceAll = viewBean.getClassInfo().a();
+    private String getDrawerViewDeclarationAndAddImports(ViewBean viewBean) {
+        String viewType = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        if (viewType.equals("")) {
+            viewType = viewBean.getClassInfo().a();
         }
-        a(mq.c(replaceAll));
-        return Lx.a(replaceAll, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
-    }
-
-    public final void addImport(String str) {
-        if (!g.contains(str)) {
-            g.add(str);
-        }
-    }
-
-    public final void deprecatedMethods(StringBuilder sb) {
-        sb.append(a)
-                .append("@Deprecated").append(a)
-                .append("public void showMessage(String _s) {").append(a)
-                .append("Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getLocationX(View _v) {").append(a)
-                .append("int _location[] = new int[2];").append(a)
-                .append("_v.getLocationInWindow(_location);").append(a)
-                .append("return _location[0];").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getLocationY(View _v) {").append(a)
-                .append("int _location[] = new int[2];").append(a)
-                .append("_v.getLocationInWindow(_location);").append(a)
-                .append("return _location[1];").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getRandom(int _min, int _max) {").append(a)
-                .append("Random random = new Random();").append(a)
-                .append("return random.nextInt(_max - _min + 1) + _min;").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {").append(a)
-                .append("ArrayList<Double> _result = new ArrayList<Double>();").append(a)
-                .append("SparseBooleanArray _arr = _list.getCheckedItemPositions();").append(a)
-                .append("for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {").append(a)
-                .append("if (_arr.valueAt(_iIdx))").append(a)
-                .append("_result.add((double)_arr.keyAt(_iIdx));").append(a)
-                .append("}").append(a)
-                .append("return _result;").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public float getDip(int _input) {").append(a)
-                .append("return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getDisplayWidthPixels() {").append(a)
-                .append("return getResources().getDisplayMetrics().widthPixels;").append(a)
-                .append("}").append(a)
-                .append(a)
-                .append("@Deprecated").append(a)
-                .append("public int getDisplayHeightPixels() {").append(a)
-                .append("return getResources().getDisplayMetrics().heightPixels;").append(a)
-                .append("}").append(a);
+        addImports(mq.c(viewType));
+        return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
     /**
-     * Adds imports to {@link Jx#g}.
+     * @return Definition line for a Variable
      */
-    public final void a(ArrayList<String> imports) {
+    private String getVariableDeclarationAndAddImports(int variableType, String name) {
+        String variableTypeName = mq.c(variableType);
+        addImports(mq.c(variableTypeName));
+        return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
+    }
+
+    private String getViewDeclarationAndAddImports(ViewBean viewBean) {
+        String viewType = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
+        if (viewType.equals("")) {
+            viewType = viewBean.getClassInfo().a();
+        }
+        addImports(mq.c(viewType));
+        return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE);
+    }
+
+    private String getDeprecatedMethodsCode() {
+        return a +
+                "@Deprecated" + a +
+                "public void showMessage(String _s) {" + a +
+                "Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getLocationX(View _v) {" + a +
+                "int _location[] = new int[2];" + a +
+                "_v.getLocationInWindow(_location);" + a +
+                "return _location[0];" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getLocationY(View _v) {" + a +
+                "int _location[] = new int[2];" + a +
+                "_v.getLocationInWindow(_location);" + a +
+                "return _location[1];" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getRandom(int _min, int _max) {" + a +
+                "Random random = new Random();" + a +
+                "return random.nextInt(_max - _min + 1) + _min;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {" + a +
+                "ArrayList<Double> _result = new ArrayList<Double>();" + a +
+                "SparseBooleanArray _arr = _list.getCheckedItemPositions();" + a +
+                "for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {" + a +
+                "if (_arr.valueAt(_iIdx))" + a +
+                "_result.add((double)_arr.keyAt(_iIdx));" + a +
+                "}" + a +
+                "return _result;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public float getDip(int _input) {" + a +
+                "return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getDisplayWidthPixels() {" + a +
+                "return getResources().getDisplayMetrics().widthPixels;" + a +
+                "}" + a +
+                a +
+                "@Deprecated" + a +
+                "public int getDisplayHeightPixels() {" + a +
+                "return getResources().getDisplayMetrics().heightPixels;" + a +
+                "}" + a;
+    }
+
+    private void addImport(String classToImport) {
+        if (!g.contains(classToImport)) {
+            g.add(classToImport);
+        }
+    }
+
+    private void addImports(ArrayList<String> imports) {
         if (imports != null) {
             for (String value : imports) {
                 addImport(value);
@@ -633,28 +657,10 @@ public class Jx {
     }
 
     /**
-     * @return Definition line for a Variable
-     */
-    public final String b(int variableType, String name) {
-        String variableNameId = mq.c(variableType);
-        a(mq.c(variableNameId));
-        return Lx.a(variableNameId, name, Lx.AccessModifier.PRIVATE);
-    }
-
-    /**
      * @see Lx#b(String, String, String...)
      */
     public final String b(ComponentBean componentBean) {
         return Lx.b(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
-    }
-
-    public final String b(ViewBean viewBean) {
-        String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
-        if (replaceAll.equals("")) {
-            replaceAll = viewBean.getClassInfo().a();
-        }
-        a(mq.c(replaceAll));
-        return Lx.a(replaceAll, viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
     private void handleAppCompat() {
@@ -704,23 +710,20 @@ public class Jx {
                 addImport("androidx.appcompat.app.ActionBarDrawerToggle");
 
                 i.add("private DrawerLayout _drawer;");
-                m.add(
+                m.add("_drawer = findViewById(R.id._drawer);" + a +
+                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
+                        c.getActivityName() + ".this, _drawer, " +
+
                         (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
-                                "_drawer = findViewById(R.id._drawer);" + a +
-                                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                                        c.getActivityName() +
-                                        ".this, _drawer, _toolbar, R.string.app_name, R.string.app_name);" +
-                                        a :
-                                "_drawer = findViewById(R.id._drawer);" + a +
-                                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                                        c.getActivityName() +
-                                        ".this, _drawer, R.string.app_name, R.string.app_name);" + a) +
-                                "_drawer.addDrawerListener(_toggle);" + a +
-                                "_toggle.syncState();" + a +
-                                a +
-                                "LinearLayout _nav_view = findViewById(R.id._nav_view);" + a
+                                "_toolbar, " : "") +
+
+                        "R.string.app_name, R.string.app_name);" + a +
+                        "_drawer.addDrawerListener(_toggle);" + a +
+                        "_toggle.syncState();" + a +
+                        a +
+                        "LinearLayout _nav_view = findViewById(R.id._nav_view);" + a
                 );
-                a(mq.c("LinearLayout"));
+                addImports(mq.c("LinearLayout"));
             }
         }
         addImport("android.app.*");
@@ -806,7 +809,7 @@ public class Jx {
 
     public final void e() {
         e = new Hx(f, c, d);
-        a(e.e());
+        addImports(e.e());
     }
 
     /**
@@ -908,23 +911,23 @@ public class Jx {
             if (intValue == 9) {
                 addImport(str);
             } else {
-                i.add(b(intValue, str));
+                i.add(getVariableDeclarationAndAddImports(intValue, str));
             }
         }
         for (Pair<Integer, String> next2 : d.j(javaName)) {
-            j.add(a(next2.first, next2.second));
+            j.add(getListDeclarationAndAddImports(next2.first, next2.second));
         }
         for (ViewBean viewBean : d.d(c.getXmlName())) {
-            k.add(b(viewBean));
+            k.add(getViewDeclarationAndAddImports(viewBean));
         }
         if (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             for (ViewBean viewBean : d.d(c.getDrawerXmlName())) {
-                k.add(a(viewBean));
+                k.add(getDrawerViewDeclarationAndAddImports(viewBean));
             }
         }
         ArrayList<ComponentBean> componentBeans = d.e(javaName);
         for (ComponentBean bean : componentBeans) {
-            l.add(a(bean));
+            l.add(getComponentDeclarationAndAddImports(bean));
         }
         if (componentBeans.size() > 0) {
             boolean hasTimer = false;
