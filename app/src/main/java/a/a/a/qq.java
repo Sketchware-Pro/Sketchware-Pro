@@ -221,6 +221,9 @@ public class qq {
                 knownDependencies.add("lifecycle-runtime-2.0.0");
                 knownDependencies.add("lifecycle-viewmodel-2.0.0");
                 knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("lifecycle-viewmodel-savedstate-2.3.1");
+                knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("tracing-1.0.0");
                 break;
 
             case "vectordrawable-1.0.0":
