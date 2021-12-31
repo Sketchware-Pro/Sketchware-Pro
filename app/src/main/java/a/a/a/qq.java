@@ -403,6 +403,11 @@ public class qq {
                 knownDependencies.add("tracing-1.0.0");
                 break;
 
+            case "lifecycle-process-2.4.0":
+                knownDependencies.add("lifecycle-runtime-2.0.0");
+                knownDependencies.add("startup-runtime-1.1.0");
+                break;
+
             default:
                 knownDependencies = ExtLibSelection.a(name);
                 break;
