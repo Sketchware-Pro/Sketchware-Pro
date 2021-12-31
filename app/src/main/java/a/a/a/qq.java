@@ -359,7 +359,6 @@ public class qq {
                 break;
 
             case "constraintlayout-1.1.3":
-            case "constraintlayout-solver-1.1.3":
             case "swiperefreshlayout-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
                 knownDependencies.add("core-1.0.0");
