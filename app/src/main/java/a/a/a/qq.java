@@ -270,9 +270,17 @@ public class qq {
                 knownDependencies.add("annotation-1.1.0");
                 knownDependencies.add("core-1.0.0");
                 knownDependencies.add("cursoradapter-1.0.0");
+                knownDependencies.add("activity-1.0.0");
                 knownDependencies.add("fragment-1.0.0");
                 knownDependencies.add("appcompat-resources-1.1.0");
                 knownDependencies.add("drawerlayout-1.0.0");
+                knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("emoji2-1.0.1");
+                knownDependencies.add("emoji2-views-helper-1.0.1");
+                knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("lifecycle-runtime-2.0.0");
+                knownDependencies.add("lifecycle-viewmodel-2.0.0");
+                knownDependencies.add("resourceinspection-annotation-1.0.0");
                 break;
 
             case "browser-1.0.0":
