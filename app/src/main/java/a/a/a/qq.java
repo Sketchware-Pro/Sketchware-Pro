@@ -302,7 +302,7 @@ public class qq {
                 knownDependencies.add("slidingpanelayout-1.0.0");
                 knownDependencies.add("interpolator-1.0.0");
                 knownDependencies.add("swiperefreshlayout-1.0.0");
-                knownDependencies.add("constraintlayout-1.1.3");
+                knownDependencies.add("constraintlayout-2.1.2");
                 knownDependencies.add("asynclayoutinflater-1.0.0");
                 knownDependencies.add("cursoradapter-1.0.0");
                 break;
@@ -312,7 +312,7 @@ public class qq {
                 knownDependencies.add("appcompat-1.0.0");
                 knownDependencies.add("cardview-1.0.0");
                 knownDependencies.add("coordinatorlayout-1.0.0");
-                knownDependencies.add("constraintlayout-1.1.3");
+                knownDependencies.add("constraintlayout-2.1.2");
                 knownDependencies.add("core-1.0.0");
                 knownDependencies.add("drawerlayout-1.0.0");
                 knownDependencies.add("dynamic-animation-1.1.0");
@@ -358,7 +358,6 @@ public class qq {
                 knownDependencies.add("firebase-common-19.0.0");
                 break;
 
-            case "constraintlayout-1.1.3":
             case "swiperefreshlayout-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
                 knownDependencies.add("core-1.0.0");
@@ -430,6 +429,12 @@ public class qq {
                 knownDependencies.add("collection-1.0.0");
                 break;
 
+            case "constraintlayout-2.1.2":
+                knownDependencies.add("appcompat-1.0.0");
+                knownDependencies.add("core-1.0.0");
+                knownDependencies.add("constraintlayout-core-1.0.2");
+                break;
+
             default:
                 knownDependencies = ExtLibSelection.a(name);
                 break;
@@ -455,7 +460,7 @@ public class qq {
             case "cardview-1.0.0":
                 return "androidx.cardview";
 
-            case "constraintlayout-1.0.0":
+            case "constraintlayout-2.1.2":
                 return "androidx.constraintlayout";
 
             case "coordinatorlayout-1.0.0":
@@ -527,7 +532,7 @@ public class qq {
             case "appcompat-resources-1.1.0":
             case "browser-1.0.0":
             case "cardview-1.0.0":
-            case "constraintlayout-1.1.3":
+            case "constraintlayout-2.1.2":
             case "coordinatorlayout-1.0.0":
             case "core-1.0.0":
             case "drawerlayout-1.0.0":
