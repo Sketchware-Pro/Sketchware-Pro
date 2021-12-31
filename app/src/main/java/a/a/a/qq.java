@@ -398,6 +398,11 @@ public class qq {
                 knownDependencies.add("listenablefuture-1.0.0");
                 break;
 
+            case "startup-runtime-1.1.0":
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("tracing-1.0.0");
+                break;
+
             default:
                 knownDependencies = ExtLibSelection.a(name);
                 break;
