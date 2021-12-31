@@ -63,6 +63,7 @@ public class qq {
             case "collection-1.0.0":
             case "lifecycle-common-2.0.0":
             case "tracing-1.0.0":
+            case "resourceinspection-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
                 break;
 
