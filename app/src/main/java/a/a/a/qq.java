@@ -416,6 +416,12 @@ public class qq {
                 knownDependencies.add("lifecycle-process-2.4.0");
                 break;
 
+            case "emoji2-views-helper-1.0.1":
+                knownDependencies.add("core-1.0.0");
+                knownDependencies.add("emoji2-1.0.1");
+                knownDependencies.add("collection-1.0.0");
+                break;
+
             default:
                 knownDependencies = ExtLibSelection.a(name);
                 break;
