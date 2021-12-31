@@ -384,6 +384,7 @@ public class qq {
                 knownDependencies.add("lifecycle-common-2.0.0");
                 knownDependencies.add("core-common-2.0.0");
                 knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("core-runtime-2.0.0");
                 break;
 
             case "viewpager2-1.0.0":
