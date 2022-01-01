@@ -461,7 +461,7 @@ public class qq {
                 return "androidx.cardview";
 
             case "constraintlayout-2.1.2":
-                return "androidx.constraintlayout";
+                return "androidx.constraintlayout.widget";
 
             case "coordinatorlayout-1.0.0":
                 return "androidx.coordinatorlayout";
