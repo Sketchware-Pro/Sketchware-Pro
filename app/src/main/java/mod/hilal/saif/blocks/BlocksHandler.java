@@ -296,7 +296,7 @@ public class BlocksHandler {
         hashMap.put("code", "import %s;");
         hashMap.put("color", "#EE7D15");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "import %s.inputOnly");
+        hashMap.put("spec", "import %s.import");
         arrayList.add(0, hashMap);
 
         hashMap = new HashMap<>();

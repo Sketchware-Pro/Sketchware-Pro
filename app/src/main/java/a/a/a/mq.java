@@ -27,6 +27,7 @@ public class mq {
                 switch (typeName) {
                     case "inputOnly":
                     case "inputCode":
+                    case "import":
                         return new Gx("Input");
 
                     default:
