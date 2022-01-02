@@ -374,8 +374,7 @@ public class ExtraPaletteBlock {
                 logicEditor,
                 extraBlocks.isListUsed(1),
                 extraBlocks.isListUsed(2),
-                extraBlocks.isListUsed(3),
-                eventName
+                extraBlocks.isListUsed(3)
         );
     }
 
