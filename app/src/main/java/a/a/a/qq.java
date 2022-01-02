@@ -62,6 +62,8 @@ public class qq {
             case "documentfile-1.0.0":
             case "collection-1.0.0":
             case "lifecycle-common-2.0.0":
+            case "tracing-1.0.0":
+            case "resourceinspection-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
                 break;
 
@@ -220,6 +222,9 @@ public class qq {
                 knownDependencies.add("lifecycle-runtime-2.0.0");
                 knownDependencies.add("lifecycle-viewmodel-2.0.0");
                 knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("lifecycle-viewmodel-savedstate-2.3.1");
+                knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("tracing-1.0.0");
                 break;
 
             case "vectordrawable-1.0.0":
@@ -230,9 +235,11 @@ public class qq {
 
             case "core-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("annotation-experimental-1.1.0");
                 knownDependencies.add("lifecycle-runtime-2.0.0");
                 knownDependencies.add("versionedparcelable-1.0.0");
                 knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("concurrent-futures-1.1.0");
                 break;
 
             case "core-runtime-2.0.0":
@@ -263,9 +270,17 @@ public class qq {
                 knownDependencies.add("annotation-1.1.0");
                 knownDependencies.add("core-1.0.0");
                 knownDependencies.add("cursoradapter-1.0.0");
+                knownDependencies.add("activity-1.0.0");
                 knownDependencies.add("fragment-1.0.0");
                 knownDependencies.add("appcompat-resources-1.1.0");
                 knownDependencies.add("drawerlayout-1.0.0");
+                knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("emoji2-1.0.1");
+                knownDependencies.add("emoji2-views-helper-1.0.1");
+                knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("lifecycle-runtime-2.0.0");
+                knownDependencies.add("lifecycle-viewmodel-2.0.0");
+                knownDependencies.add("resourceinspection-annotation-1.0.0");
                 break;
 
             case "browser-1.0.0":
@@ -287,7 +302,7 @@ public class qq {
                 knownDependencies.add("slidingpanelayout-1.0.0");
                 knownDependencies.add("interpolator-1.0.0");
                 knownDependencies.add("swiperefreshlayout-1.0.0");
-                knownDependencies.add("constraintlayout-1.1.3");
+                knownDependencies.add("constraintlayout-2.1.2");
                 knownDependencies.add("asynclayoutinflater-1.0.0");
                 knownDependencies.add("cursoradapter-1.0.0");
                 break;
@@ -297,7 +312,7 @@ public class qq {
                 knownDependencies.add("appcompat-1.0.0");
                 knownDependencies.add("cardview-1.0.0");
                 knownDependencies.add("coordinatorlayout-1.0.0");
-                knownDependencies.add("constraintlayout-1.1.3");
+                knownDependencies.add("constraintlayout-2.1.2");
                 knownDependencies.add("core-1.0.0");
                 knownDependencies.add("drawerlayout-1.0.0");
                 knownDependencies.add("dynamic-animation-1.1.0");
@@ -343,8 +358,6 @@ public class qq {
                 knownDependencies.add("firebase-common-19.0.0");
                 break;
 
-            case "constraintlayout-1.1.3":
-            case "constraintlayout-solver-1.1.3":
             case "swiperefreshlayout-1.0.0":
                 knownDependencies.add("annotation-1.1.0");
                 knownDependencies.add("core-1.0.0");
@@ -358,13 +371,18 @@ public class qq {
                 knownDependencies.add("viewpager-1.0.0");
                 knownDependencies.add("loader-1.0.0");
                 knownDependencies.add("activity-1.0.0");
+                knownDependencies.add("lifecycle-livedata-core-2.0.0");
                 knownDependencies.add("lifecycle-viewmodel-2.0.0");
+                knownDependencies.add("lifecycle-viewmodel-savedstate-2.3.1");
+                knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("annotation-experimental-1.1.0");
                 break;
 
             case "lifecycle-runtime-2.0.0":
                 knownDependencies.add("lifecycle-common-2.0.0");
                 knownDependencies.add("core-common-2.0.0");
                 knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("core-runtime-2.0.0");
                 break;
 
             case "viewpager2-1.0.0":
@@ -373,6 +391,48 @@ public class qq {
                 knownDependencies.add("recyclerview-1.0.0");
                 knownDependencies.add("core-1.0.0");
                 knownDependencies.add("collection-1.0.0");
+                break;
+
+            case "lifecycle-viewmodel-savedstate-2.3.1":
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("savedstate-1.0.0");
+                knownDependencies.add("lifecycle-livedata-core-2.0.0");
+                knownDependencies.add("lifecycle-viewmodel-2.0.0");
+                break;
+
+            case "concurrent-futures-1.1.0":
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("listenablefuture-1.0.0");
+                break;
+
+            case "startup-runtime-1.1.0":
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("tracing-1.0.0");
+                break;
+
+            case "lifecycle-process-2.4.0":
+                knownDependencies.add("lifecycle-runtime-2.0.0");
+                knownDependencies.add("startup-runtime-1.1.0");
+                break;
+
+            case "emoji2-1.0.1":
+                knownDependencies.add("core-1.0.0");
+                knownDependencies.add("startup-runtime-1.1.0");
+                knownDependencies.add("collection-1.0.0");
+                knownDependencies.add("annotation-1.1.0");
+                knownDependencies.add("lifecycle-process-2.4.0");
+                break;
+
+            case "emoji2-views-helper-1.0.1":
+                knownDependencies.add("core-1.0.0");
+                knownDependencies.add("emoji2-1.0.1");
+                knownDependencies.add("collection-1.0.0");
+                break;
+
+            case "constraintlayout-2.1.2":
+                knownDependencies.add("appcompat-1.0.0");
+                knownDependencies.add("core-1.0.0");
+                knownDependencies.add("constraintlayout-core-1.0.2");
                 break;
 
             default:
@@ -400,8 +460,8 @@ public class qq {
             case "cardview-1.0.0":
                 return "androidx.cardview";
 
-            case "constraintlayout-1.0.0":
-                return "androidx.constraintlayout";
+            case "constraintlayout-2.1.2":
+                return "androidx.constraintlayout.widget";
 
             case "coordinatorlayout-1.0.0":
                 return "androidx.coordinatorlayout";
@@ -472,7 +532,7 @@ public class qq {
             case "appcompat-resources-1.1.0":
             case "browser-1.0.0":
             case "cardview-1.0.0":
-            case "constraintlayout-1.1.3":
+            case "constraintlayout-2.1.2":
             case "coordinatorlayout-1.0.0":
             case "core-1.0.0":
             case "drawerlayout-1.0.0":
