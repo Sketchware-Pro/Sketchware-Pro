@@ -116,6 +116,10 @@ public class ExtraMenuBean {
                         codeMenu(ss);
                         return;
 
+                    case "import":
+                        asdDialog(ss, false, "Enter the path without import & semicolon");
+                        return;
+
                     default:
                         asdDialog(ss, false, null);
                 }
