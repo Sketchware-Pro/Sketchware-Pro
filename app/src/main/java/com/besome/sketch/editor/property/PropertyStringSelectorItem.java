@@ -22,68 +22,60 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyStringSelectorItem extends RelativeLayout implements View.OnClickListener {
 
-    public String a = "";
-    public String b = "";
-    public TextView c;
-    public TextView d;
-    public ImageView e;
-    public int f;
-    public View g;
-    public View h;
-    public ViewGroup i;
-    public Kw j;
+    public String key = "";
+    public String value = "";
+    public TextView tvName;
+    public TextView tvValue;
+    public ImageView imgLeftIcon;
+    public int icon;
+    public View propertyItem;
+    public View propertyMenuItem;
+    public ViewGroup radioGroupContent;
+    public Kw valueChangeListener;
 
     public PropertyStringSelectorItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     public String getKey() {
-        return a;
+        return key;
     }
 
-    public void setKey(String str) {
-        a = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+    public void setKey(String key) {
+        this.key = key;
+        int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            c.setText(xB.b().a(getResources(), identifier));
-            char type = 65535;
-            switch (str) {
+            tvName.setText(xB.b().a(getResources(), identifier));
+            switch (key) {
                 case "property_ad_size":
-                    type = 0;
+                    icon = Resources.drawable.widget_admob;
                     break;
 
                 case "property_indeterminate":
-                    type = 2;
+                    icon = Resources.drawable.event_on_accuracy_changed_48dp;
                     break;
 
                 case "property_scale_type":
-                    type = 1;
+                    icon = Resources.drawable.enlarge_48;
                     break;
             }
-            if (type == 0) {
-                f = Resources.drawable.widget_admob;
-            } else if (type == 1) {
-                f = Resources.drawable.enlarge_48;
-            } else if (type == 2) {
-                f = Resources.drawable.event_on_accuracy_changed_48dp;
-            }
-            if (h.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(f);
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            e.setImageResource(f);
+            imgLeftIcon.setImageResource(icon);
         }
     }
 
     public String getValue() {
-        return b;
+        return value;
     }
 
-    public void setValue(String str) {
-        b = str;
-        d.setText(str);
+    public void setValue(String value) {
+        this.value = value;
+        tvValue.setText(value);
     }
 
     @Override
@@ -93,27 +85,27 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        j = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            g.setVisibility(GONE);
-            h.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
         } else {
-            g.setVisibility(VISIBLE);
-            h.setVisibility(GONE);
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
     }
 
-    public final void a(Context context, boolean z) {
+    private void initialize(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
-        c = findViewById(Resources.id.tv_name);
-        d = findViewById(Resources.id.tv_value);
-        e = findViewById(Resources.id.img_left_icon);
-        g = findViewById(Resources.id.property_item);
-        h = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -122,51 +114,36 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
 
     public final void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(c.getText().toString());
-        dialog.a(f);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
-        i = view.findViewById(Resources.id.rg_content);
+        radioGroupContent = view.findViewById(Resources.id.rg_content);
 
-        byte type;
-        switch (a) {
+        String[] items;
+        switch (key) {
             case "property_ad_size":
-                type = 1;
+                items = sq.k;
                 break;
 
             case "property_indeterminate":
-                type = 2;
+                items = sq.l;
                 break;
 
             case "property_scale_type":
-                type = 0;
+                items = sq.j;
                 break;
 
             default:
-                type = -1;
+                items = null;
         }
 
-        String[] items;
-        if (type == 0) {
-            items = sq.j;
-        } else {
-            if (type == 1) {
-                items = sq.k;
-            } else {
-                if (type == 2) {
-                    items = sq.l;
-                } else {
-                    items = null;
-                }
-            }
+        for (String item : items) {
+            radioGroupContent.addView(a(item));
         }
 
-        for (String s : items) {
-            i.addView(a(s));
-        }
-
-        for (int counter = 0; counter < i.getChildCount(); counter++) {
-            RadioButton childAt = (RadioButton) i.getChildAt(counter);
-            if (childAt.getTag().toString().equals(b)) {
+        for (int counter = 0; counter < radioGroupContent.getChildCount(); counter++) {
+            RadioButton childAt = (RadioButton) radioGroupContent.getChildAt(counter);
+            if (childAt.getTag().toString().equals(value)) {
                 childAt.setChecked(true);
                 break;
             }
@@ -176,21 +153,21 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int childCount = i.getChildCount();
+                int childCount = radioGroupContent.getChildCount();
                 int counter = 0;
                 while (true) {
                     if (counter >= childCount) {
                         break;
                     }
-                    RadioButton radioButton = (RadioButton) i.getChildAt(counter);
+                    RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(counter);
                     if (radioButton.isChecked()) {
                         setValue(radioButton.getTag().toString());
                         break;
                     }
                     counter++;
                 }
-                if (j != null) {
-                    j.a(a, b);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
                 }
                 dialog.dismiss();
             }

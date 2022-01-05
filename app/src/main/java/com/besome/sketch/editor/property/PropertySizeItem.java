@@ -20,86 +20,82 @@ import mod.hey.studios.util.Helper;
 
 public class PropertySizeItem extends RelativeLayout implements View.OnClickListener {
 
-    public Context a;
-    public String b = "";
-    public int c = 1;
-    public TextView d;
-    public TextView e;
-    public ImageView f;
-    public int g;
-    public View h;
-    public View i;
-    public Kw j;
+    public Context context;
+    public String key = "";
+    public int value = 1;
+    public TextView tvName;
+    public TextView tvValue;
+    public ImageView imgLeftIcon;
+    public int icon;
+    public View propertyItem;
+    public View propertyMenuItem;
+    public Kw valueChangeListener;
 
     public PropertySizeItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     public String getKey() {
-        return b;
+        return key;
     }
 
     public void setKey(String str) {
-        b = str;
+        key = str;
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
-            d.setText(xB.b().a(getResources(), identifier));
-            g = Resources.drawable.expand_48;
-            if (i.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(g);
+            tvName.setText(xB.b().a(getResources(), identifier));
+            icon = Resources.drawable.expand_48;
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
             } else {
-                f.setImageResource(g);
+                imgLeftIcon.setImageResource(icon);
             }
         }
     }
 
     public int getValue() {
-        return c;
+        return value;
     }
 
     public void setValue(int value) {
-        c = value;
-        TextView textView = e;
-        textView.setText(c + " dp");
+        this.value = value;
+        TextView textView = tvValue;
+        textView.setText(this.value + " dp");
     }
 
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            char type = 65535;
-            if ("property_divider_height".equals(b)) {
-                type = 0;
-            }
-            if (type == 0) {
+            if (key.equals("property_divider_height")) {
                 a();
             }
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        j = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            h.setVisibility(GONE);
-            i.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
         } else {
-            h.setVisibility(VISIBLE);
-            i.setVisibility(GONE);
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
     }
 
-    public final void a(Context context, boolean z) {
-        a = context;
+    private void initialize(Context context, boolean z) {
+        this.context = context;
         wB.a(context, this, Resources.layout.property_input_item);
-        d = findViewById(Resources.id.tv_name);
-        e = findViewById(Resources.id.tv_value);
-        f = findViewById(Resources.id.img_left_icon);
-        h = findViewById(Resources.id.property_item);
-        i = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setSoundEffectsEnabled(true);
             setOnClickListener(this);
@@ -108,17 +104,17 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
 
     public final void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(d.getText().toString());
-        dialog.a(g);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_input_size);
-        TB tb = new TB(a, view.findViewById(Resources.id.ti_input), 0, 999);
-        tb.a(String.valueOf(c));
+        TB tb = new TB(context, view.findViewById(Resources.id.ti_input), 0, 999);
+        tb.a(String.valueOf(value));
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
             if (tb.b()) {
                 setValue(Integer.parseInt(((EditText) view.findViewById(Resources.id.et_input)).getText().toString()));
-                if (j != null) {
-                    j.a(b, c);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
                 }
                 dialog.dismiss();
             }

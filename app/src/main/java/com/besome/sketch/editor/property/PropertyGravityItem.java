@@ -2,6 +2,7 @@ package com.besome.sketch.editor.property;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -20,88 +21,82 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyGravityItem extends RelativeLayout implements View.OnClickListener {
 
-    public String a = "";
-    public int b = -1;
-    public TextView c;
-    public TextView d;
-    public ImageView e;
-    public int f;
-    public View g;
-    public View h;
-    public Kw i;
+    public String key = "";
+    public int gravityValue = -1;
+    public TextView tvName;
+    public TextView tvValue;
+    public ImageView imgLeftIcon;
+    public int icon;
+    public View propertyItem;
+    public View propertyMenuItem;
+    public Kw valueChangeListener;
 
     public PropertyGravityItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     public String getKey() {
-        return a;
+        return key;
     }
 
     public void setKey(String str) {
-        a = str;
+        key = str;
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
-            c.setText(xB.b().a(getResources(), identifier));
-            f = Resources.drawable.gravity_96;
-            if (h.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(f);
+            tvName.setText(xB.b().a(getResources(), identifier));
+            icon = Resources.drawable.gravity_96;
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            e.setImageResource(f);
+            imgLeftIcon.setImageResource(icon);
         }
     }
 
     public int getValue() {
-        return b;
+        return gravityValue;
     }
 
     public void setValue(int value) {
-        b = value;
-        d.setText(sq.a(value));
+        gravityValue = value;
+        tvValue.setText(sq.a(value));
     }
 
+    @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            char c2 = 65535;
-            switch (a) {
+            switch (key) {
                 case "property_gravity":
-                    c2 = 0;
-                    break;
-
                 case "property_layout_gravity":
-                    c2 = 1;
+                    a();
                     break;
-            }
-            if (c2 == 0 || c2 == 1) {
-                a();
             }
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        i = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            g.setVisibility(GONE);
-            h.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
         } else {
-            g.setVisibility(VISIBLE);
-            h.setVisibility(GONE);
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
     }
 
-    public final void a(Context context, boolean z) {
+    private void initialize(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
-        c = findViewById(Resources.id.tv_name);
-        d = findViewById(Resources.id.tv_value);
-        e = findViewById(Resources.id.img_left_icon);
-        g = findViewById(Resources.id.property_item);
-        h = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -110,8 +105,8 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
 
     public final void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(c.getText().toString());
-        dialog.a(f);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_selector_gravity);
         CheckBox chk_left = view.findViewById(Resources.id.chk_left);
         CheckBox chk_right = view.findViewById(Resources.id.chk_right);
@@ -119,49 +114,49 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         CheckBox chk_top = view.findViewById(Resources.id.chk_top);
         CheckBox chk_bottom = view.findViewById(Resources.id.chk_bottom);
         CheckBox chk_vcenter = view.findViewById(Resources.id.chk_vcenter);
-        int i2 = b & 112;
-        int i3 = b & 7;
-        if (i3 == 1) {
+        int verticalGravity = gravityValue & Gravity.FILL_VERTICAL;
+        int horizontalGravity = gravityValue & Gravity.FILL_HORIZONTAL;
+        if (horizontalGravity == Gravity.CENTER_HORIZONTAL) {
             chk_hcenter.setChecked(true);
         } else {
-            if ((i3 & 3) == 3) {
+            if ((horizontalGravity & Gravity.LEFT) == Gravity.LEFT) {
                 chk_left.setChecked(true);
             }
-            if ((i3 & 5) == 5) {
+            if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
                 chk_right.setChecked(true);
             }
         }
-        if (i2 == 16) {
+        if (verticalGravity == Gravity.CENTER_VERTICAL) {
             chk_vcenter.setChecked(true);
         } else {
-            if ((i2 & 48) == 48) {
+            if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
                 chk_top.setChecked(true);
             }
-            if ((i2 & 80) == 80) {
+            if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
                 chk_bottom.setChecked(true);
             }
         }
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
-            int value = chk_left.isChecked() ? 3 : 0;
+            int value = chk_left.isChecked() ? Gravity.LEFT : Gravity.NO_GRAVITY;
             if (chk_right.isChecked()) {
-                value |= 5;
+                value |= Gravity.RIGHT;
             }
             if (chk_hcenter.isChecked()) {
-                value |= 1;
+                value |= Gravity.CENTER_HORIZONTAL;
             }
             if (chk_top.isChecked()) {
-                value |= 48;
+                value |= Gravity.TOP;
             }
             if (chk_bottom.isChecked()) {
-                value |= 80;
+                value |= Gravity.BOTTOM;
             }
             if (chk_vcenter.isChecked()) {
-                value |= 16;
+                value |= Gravity.CENTER_VERTICAL;
             }
             setValue(value);
-            if (i != null) {
-                i.a(a, b);
+            if (valueChangeListener != null) {
+                valueChangeListener.a(key, gravityValue);
             }
             dialog.dismiss();
         });
