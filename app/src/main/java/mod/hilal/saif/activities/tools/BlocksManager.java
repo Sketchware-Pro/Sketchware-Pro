@@ -49,7 +49,7 @@ public class BlocksManager extends AppCompatActivity {
     private HashMap<String, Object> m = new HashMap<>();
 
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
 
     private ListView listview1;
@@ -102,11 +102,10 @@ public class BlocksManager extends AppCompatActivity {
                     save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {
-                            HashMap<String, Object> _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
-
-                            _t.put("palletteDir", pallet.getText().toString());
-                            _t.put("blockDir", block.getText().toString());
-                            FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(_t));
+                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                                    pallet.getText().toString());
+                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                                    block.getText().toString());
 
                             _readSettings();
                             _refresh_list();
@@ -117,11 +116,10 @@ public class BlocksManager extends AppCompatActivity {
                     de.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {
-                            HashMap<String, Object> _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
-
-                            _t.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
-                            _t.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
-                            FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(_t));
+                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                                    "/.sketchware/resources/block/My Block/palette.json");
+                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                                    "/.sketchware/resources/block/My Block/block.json");
 
                             _readSettings();
                             _refresh_list();
@@ -216,49 +214,10 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _readSettings() {
-        if (FileUtil.isExistFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"))) {
-            if (!FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")).equals("")) {
-                HashMap<String, Object> _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
-
-                if (_t.containsKey("palletteDir")) {
-                    pallet_dir = FileUtil.getExternalStorageDir().concat(_t.get("palletteDir").toString());
-                } else {
-                    _t.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
-
-                    pallet_dir = FileUtil.getExternalStorageDir().concat(_t.get("palletteDir").toString());
-                    FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(_t));
-                }
-
-                if (_t.containsKey("blockDir")) {
-                    blocks_dir = FileUtil.getExternalStorageDir().concat(_t.get("blockDir").toString());
-                    all_blocks_list.clear();
-
-                    if (FileUtil.isExistFile(blocks_dir) && !FileUtil.readFile(blocks_dir).equals("")) {
-                        try {
-                            all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
-                        } catch (Exception e) {
-                        }
-                    }
-                } else {
-                    _t.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
-
-                    blocks_dir = FileUtil.getExternalStorageDir().concat(_t.get("blockDir").toString());
-                    FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(_t));
-                }
-            } else {
-                HashMap<String, Object> _t = new HashMap<>();
-                _t.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
-                _t.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
-                FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(_t));
-                _readSettings();
-            }
-        } else {
-            HashMap<String, Object> _t = new HashMap<>();
-            _t.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
-            _t.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
-            FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"), new Gson().toJson(_t));
-            _readSettings();
-        }
+        pallet_dir = ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                "/.sketchware/resources/block/My Block/palette.json");
+        blocks_dir = ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+                "/.sketchware/resources/block/My Block/block.json");
     }
 
     private void _refresh_list() {
