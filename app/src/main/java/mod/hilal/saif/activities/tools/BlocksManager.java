@@ -35,6 +35,7 @@ import java.util.HashMap;
 
 import a.a.a.Zx;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 
@@ -61,6 +62,13 @@ public class BlocksManager extends AppCompatActivity {
         setContentView(Resources.layout.blocks_manager);
         initialize();
         initializeLogic();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        BlockLoader.refresh();
     }
 
     private void initialize() {
