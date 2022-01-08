@@ -70,11 +70,18 @@ public class ConfigActivity extends Activity {
         return "/.sketchware/backups/";
     }
 
-    public static String getStringSettingValue(String settingKey, String defaultValue) {
+    public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
         HashMap<String, Object> settings = readSettings();
 
         Object value = settings.get(settingKey);
-        return value instanceof String ? (String) value : defaultValue;
+        if (value instanceof String) {
+            return (String) value;
+        } else {
+            settings.put(settingKey, toReturnAndSetIfNotFound);
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+
+            return toReturnAndSetIfNotFound;
+        }
     }
 
     public static boolean isLegacyCeEnabled() {
