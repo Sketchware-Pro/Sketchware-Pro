@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,18 +63,18 @@ public class BlocksManager extends AppCompatActivity {
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setContentView(2131427808);
+        setContentView(Resources.layout.blocks_manager);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        FloatingActionButton _fab = findViewById(2131232516);
-        listview1 = findViewById(2131232520);
-        ImageView back_icon = findViewById(2131232519);
-        ImageView arrange_icon = findViewById(2131232518);
-        card2 = findViewById(2131232517);
-        card2_sub = findViewById(2131232522);
+        FloatingActionButton _fab = findViewById(Resources.id.fab);
+        listview1 = findViewById(Resources.id.list_pallete);
+        ImageView back_icon = findViewById(Resources.id.back_icon);
+        ImageView arrange_icon = findViewById(Resources.id.dirs);
+        card2 = findViewById(Resources.id.recycle_bin);
+        card2_sub = findViewById(Resources.id.recycle_sub);
         dialog = new AlertDialog.Builder(this);
         emptyDialog = new AlertDialog.Builder(this);
 
@@ -85,19 +86,19 @@ public class BlocksManager extends AppCompatActivity {
                 {
                     final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
                     LayoutInflater inflater = getLayoutInflater();
-                    final View convertView = inflater.inflate(2131427809, null);
+                    final View convertView = inflater.inflate(Resources.layout.settings_popup, null);
                     dialog.setView(convertView);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-                    final EditText pallet = convertView.findViewById(2131232525);
+                    final EditText pallet = convertView.findViewById(Resources.id.pallet_dir);
                     pallet.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                    final EditText block = convertView.findViewById(2131232526);
+                    final EditText block = convertView.findViewById(Resources.id.blocks_dir);
                     block.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                    final TextInputLayout extra = convertView.findViewById(2131232527);
+                    final TextInputLayout extra = convertView.findViewById(Resources.id.extra_input_layout);
                     extra.setVisibility(View.GONE);
-                    final TextView save = convertView.findViewById(2131232528);
-                    final TextView cancel = convertView.findViewById(2131232529);
-                    final TextView de = convertView.findViewById(2131232530);
+                    final TextView save = convertView.findViewById(Resources.id.save);
+                    final TextView cancel = convertView.findViewById(Resources.id.cancel);
+                    final TextView de = convertView.findViewById(Resources.id.defaults);
                     save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {
@@ -139,21 +140,21 @@ public class BlocksManager extends AppCompatActivity {
                 {
                     final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
                     LayoutInflater inflater = getLayoutInflater();
-                    final View convertView = inflater.inflate(2131427810, null);
+                    final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
                     dialog.setView(convertView);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-                    final EditText name = convertView.findViewById(2131232534);
-                    final EditText colour = convertView.findViewById(2131232535);
-                    final TextView save = convertView.findViewById(2131232536);
-                    final TextView cancel = convertView.findViewById(2131232537);
-                    final ImageView select = convertView.findViewById(2131232538);
+                    final EditText name = convertView.findViewById(Resources.id.name);
+                    final EditText colour = convertView.findViewById(Resources.id.color);
+                    final TextView save = convertView.findViewById(Resources.id.save);
+                    final TextView cancel = convertView.findViewById(Resources.id.cancel);
+                    final ImageView select = convertView.findViewById(Resources.id.select);
 
                     select.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {
                             LayoutInflater inf = getLayoutInflater();
-                            final View a = inf.inflate(2131427373, null);
+                            final View a = inf.inflate(Resources.layout.color_picker, null);
                             final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
                             zx.a(new PCP(BlocksManager.this, colour, dialog));
                             zx.setAnimationStyle(2130771968);
@@ -204,7 +205,7 @@ public class BlocksManager extends AppCompatActivity {
 
     private void _a(final View _view) {
         GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(0);
+        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         gradientDrawable.setColor(Color.parseColor("#ffffff"));
         RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
         if (Build.VERSION.SDK_INT >= 21) {
@@ -342,24 +343,24 @@ public class BlocksManager extends AppCompatActivity {
         {
             final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
             LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(2131427810, null);
+            final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
             dialog.setView(convertView);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(2131232534);
+            final EditText name = convertView.findViewById(Resources.id.name);
             name.setText(_name);
-            final EditText colour = convertView.findViewById(2131232535);
+            final EditText colour = convertView.findViewById(Resources.id.color);
             colour.setText(_c);
-            final TextView title = convertView.findViewById(2131232539);
+            final TextView title = convertView.findViewById(Resources.id.title);
             title.setText("Edit Pallette");
-            final TextView save = convertView.findViewById(2131232536);
-            final TextView cancel = convertView.findViewById(2131232537);
-            final ImageView select = convertView.findViewById(2131232538);
+            final TextView save = convertView.findViewById(Resources.id.save);
+            final TextView cancel = convertView.findViewById(Resources.id.cancel);
+            final ImageView select = convertView.findViewById(Resources.id.select);
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View _view) {
                     LayoutInflater inf = getLayoutInflater();
-                    final View a = inf.inflate(2131427373, null);
+                    final View a = inf.inflate(Resources.layout.color_picker, null);
                     final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
                     zx.a(new PCP(BlocksManager.this, colour, dialog));
                     zx.setAnimationStyle(2130771968);
@@ -441,20 +442,20 @@ public class BlocksManager extends AppCompatActivity {
         {
             final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
             LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(2131427810, null);
+            final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
             dialog.setView(convertView);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(2131232534);
-            final EditText colour = convertView.findViewById(2131232535);
-            final TextView save = convertView.findViewById(2131232536);
-            final TextView cancel = convertView.findViewById(2131232537);
-            final ImageView select = convertView.findViewById(2131232538);
+            final EditText name = convertView.findViewById(Resources.id.name);
+            final EditText colour = convertView.findViewById(Resources.id.color);
+            final TextView save = convertView.findViewById(Resources.id.save);
+            final TextView cancel = convertView.findViewById(Resources.id.cancel);
+            final ImageView select = convertView.findViewById(Resources.id.select);
             select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View _view) {
                     LayoutInflater inf = getLayoutInflater();
-                    final View a = inf.inflate(2131427373, null);
+                    final View a = inf.inflate(Resources.layout.color_picker, null);
                     final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
                     zx.a(new PCP(BlocksManager.this, colour, dialog));
                     zx.setAnimationStyle(2130771968);
@@ -595,13 +596,13 @@ public class BlocksManager extends AppCompatActivity {
             LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View _view = _v;
             if (_view == null) {
-                _view = _inflater.inflate(2131427811, null);
+                _view = _inflater.inflate(Resources.layout.pallet_customview, null);
             }
 
-            final LinearLayout linear2 = _view.findViewById(2131232543);
-            final LinearLayout colour = _view.findViewById(2131232542);
-            final TextView title = _view.findViewById(2131232540);
-            final TextView sub = _view.findViewById(2131232541);
+            final LinearLayout linear2 = _view.findViewById(Resources.id.background);
+            final LinearLayout colour = _view.findViewById(Resources.id.color);
+            final TextView title = _view.findViewById(Resources.id.title);
+            final TextView sub = _view.findViewById(Resources.id.sub);
 
             title.setText(pallet_listmap.get(_position).get("name").toString());
             sub.setText("blocks : ".concat(String.valueOf((long) (_getN(_position + 9)))));
