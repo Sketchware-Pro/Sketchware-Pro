@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
@@ -34,15 +35,17 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.Zx;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
+import mod.jbk.util.LogUtil;
 
 public class BlocksManager extends AppCompatActivity {
 
     private final HashMap<String, Object> map = new HashMap<>();
-    private final ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
     private final Intent intent = new Intent();
     private String blocks_dir = "";
@@ -224,6 +227,15 @@ public class BlocksManager extends AppCompatActivity {
                 "/.sketchware/resources/block/My Block/palette.json");
         blocks_dir = FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
                 "/.sketchware/resources/block/My Block/block.json");
+
+        if (FileUtil.isExistFile(blocks_dir)) {
+            try {
+                all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
+            } catch (JsonParseException e) {
+                SketchwareUtil.toastError("Failed to parse " + blocks_dir + ", using none.");
+                LogUtil.e("BlocksManager", "Failed to parse " + blocks_dir, e);
+            }
+        }
     }
 
     private void _refresh_list() {
