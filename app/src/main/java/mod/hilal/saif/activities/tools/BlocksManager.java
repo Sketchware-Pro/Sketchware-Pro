@@ -2,7 +2,6 @@ package mod.hilal.saif.activities.tools;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -236,35 +234,29 @@ public class BlocksManager extends AppCompatActivity {
                 listview1.setAdapter(new Listview1Adapter(pallet_listmap));
                 ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
             }
-            card2_sub.setText("blocks : ".concat(String.valueOf((long) (_getN(-1)))));
+            card2_sub.setText("Blocks: " + (long) (_getN(-1)));
         } catch (Exception e) {
         }
     }
 
     private void _remove_pallete(final double _p) {
         dialog.setTitle(pallet_listmap.get((int) _p).get("name").toString());
-        dialog.setMessage("Do you want to remove all blocks related to this pallette??");
-        dialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface _dialog, int _which) {
-                pallet_listmap.remove((int) (_p));
-                FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                _removeRelatedBlocks(_p + 9);
-                _readSettings();
-                _refresh_list();
-            }
+        dialog.setMessage("Remove all blocks related to this palette?");
+        dialog.setPositiveButton("Remove permanently", (dialog, which) -> {
+            pallet_listmap.remove((int) (_p));
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+            _removeRelatedBlocks(_p + 9);
+            _readSettings();
+            _refresh_list();
         });
-        dialog.setNegativeButton("no", null);
-        dialog.setNeutralButton("recycle bin", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface _dialog, int _which) {
-                _moveRelatedBlocksToRecycleBin(_p + 9);
-                pallet_listmap.remove((int) (_p));
-                FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                _removeRelatedBlocks(_p + 9);
-                _readSettings();
-                _refresh_list();
-            }
+        dialog.setNegativeButton(Resources.string.common_word_cancel, null);
+        dialog.setNeutralButton("Move to recycle bin", (dialog, which) -> {
+            _moveRelatedBlocksToRecycleBin(_p + 9);
+            pallet_listmap.remove((int) (_p));
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+            _removeRelatedBlocks(_p + 9);
+            _readSettings();
+            _refresh_list();
         });
         dialog.create().show();
     }
@@ -311,7 +303,7 @@ public class BlocksManager extends AppCompatActivity {
             final EditText colour = convertView.findViewById(Resources.id.color);
             colour.setText(_c);
             final TextView title = convertView.findViewById(Resources.id.title);
-            title.setText("Edit Pallette");
+            title.setText("Edit palette");
             final TextView save = convertView.findViewById(Resources.id.save);
             final TextView cancel = convertView.findViewById(Resources.id.cancel);
             final ImageView select = convertView.findViewById(Resources.id.select);
@@ -382,14 +374,10 @@ public class BlocksManager extends AppCompatActivity {
             @Override
             public boolean onLongClick(View _view) {
                 emptyDialog.setTitle("Recycle bin");
-                emptyDialog.setMessage("do you want to empty recycle bin?");
-                emptyDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface _dialog, int _which) {
-                        _emptyRecyclebin();
-                    }
-                });
-                emptyDialog.setNegativeButton("cancel", null);
+                emptyDialog.setMessage("Are you sure you want to empty the recycle bin? " +
+                        "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!");
+                emptyDialog.setPositiveButton("Empty", (dialog, which) -> _emptyRecyclebin());
+                emptyDialog.setNegativeButton(Resources.string.common_word_cancel, null);
                 emptyDialog.create().show();
                 return true;
             }
@@ -564,51 +552,55 @@ public class BlocksManager extends AppCompatActivity {
             final TextView sub = _view.findViewById(Resources.id.sub);
 
             title.setText(pallet_listmap.get(_position).get("name").toString());
-            sub.setText("blocks : ".concat(String.valueOf((long) (_getN(_position + 9)))));
-            card2_sub.setText("blocks : ".concat(String.valueOf((long) (_getN(-1)))));
+            sub.setText("Blocks: " + (long) (_getN(_position + 9)));
+            card2_sub.setText("Blocks: " + (long) (_getN(-1)));
             colour.setBackgroundColor(Color.parseColor((String) _data.get(_position).get("color")));
             _a(linear2);
             linear2.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View _view) {
-                    {
-                        PopupMenu popup = new PopupMenu(BlocksManager.this, linear2);
-                        Menu menu = popup.getMenu();
-                        menu.add("move up");
-                        menu.add("move down");
-                        menu.add("edit");
-                        menu.add("delete");
-                        menu.add("insert");
-                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                switch (item.getTitle().toString()) {
-                                    case "edit": {
-                                        _showEditDial(_position, pallet_listmap.get(_position).get("name").toString(), pallet_listmap.get(_position).get("color").toString());
-                                        break;
-                                    }
-                                    case "delete": {
-                                        _remove_pallete(_position);
-                                        break;
-                                    }
-                                    case "move up": {
-                                        _MoveUp(_position);
-                                        break;
-                                    }
-                                    case "move down": {
-                                        _moveDown(_position);
-                                        break;
-                                    }
-                                    case "insert": {
-                                        _insert_pallete(_position);
-                                        break;
-                                    }
-                                }
-                                return true;
-                            }
-                        });
-                        popup.show();
-                    }
+                    final String moveUp = "Move up";
+                    final String moveDown = "move down";
+                    final String edit = "edit";
+                    final String delete = "Delete";
+                    final String insert = "Insert";
+
+                    PopupMenu popup = new PopupMenu(BlocksManager.this, linear2);
+                    Menu menu = popup.getMenu();
+                    menu.add(moveUp);
+                    menu.add(moveDown);
+                    menu.add(edit);
+                    menu.add(delete);
+                    menu.add(insert);
+                    popup.setOnMenuItemClickListener(item -> {
+                        switch (item.getTitle().toString()) {
+                            case edit:
+                                _showEditDial(_position, pallet_listmap.get(_position).get("name").toString(),
+                                        pallet_listmap.get(_position).get("color").toString());
+                                break;
+
+                            case delete:
+                                _remove_pallete(_position);
+                                break;
+
+                            case moveUp:
+                                _MoveUp(_position);
+                                break;
+
+                            case moveDown:
+                                _moveDown(_position);
+                                break;
+
+                            case insert:
+                                _insert_pallete(_position);
+                                break;
+
+                            default:
+                        }
+                        return true;
+                    });
+                    popup.show();
+
                     return true;
                 }
             });
