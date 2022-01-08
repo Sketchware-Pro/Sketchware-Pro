@@ -67,6 +67,13 @@ public class ConfigActivity extends Activity {
         return "/.sketchware/backups/";
     }
 
+    public static String getStringSettingValue(String settingKey, String defaultValue) {
+        HashMap<String, Object> settings = readSettings();
+
+        Object value = settings.get(settingKey);
+        return value instanceof String ? (String) value : defaultValue;
+    }
+
     public static boolean isLegacyCeEnabled() {
         /* The legacy Code Editor is specifically opt-in */
         if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
