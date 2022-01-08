@@ -50,7 +50,7 @@ public class ConfigActivity extends Activity {
 
     public static String getBackupPath() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            HashMap<String, Object> settings = readSettings();
             if (settings.containsKey(SETTING_BACKUP_DIRECTORY)) {
                 Object value = settings.get(SETTING_BACKUP_DIRECTORY);
                 if (value instanceof String) {
@@ -73,9 +73,7 @@ public class ConfigActivity extends Activity {
             return false;
         }
 
-        HashMap<String, Object> settings = new Gson().fromJson(
-                FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
-                Helper.TYPE_MAP);
+        HashMap<String, Object> settings = readSettings();
         if (settings.containsKey(SETTING_LEGACY_CODE_EDITOR)) {
             Object value = settings.get(SETTING_LEGACY_CODE_EDITOR);
             if (value instanceof Boolean) {
@@ -96,10 +94,8 @@ public class ConfigActivity extends Activity {
             return false;
         }
 
-        HashMap<String, Object> settings = new Gson().fromJson(
-                FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()),
-                Helper.TYPE_MAP);
-        if (settings != null && settings.containsKey(keyName)) {
+        HashMap<String, Object> settings = readSettings();
+        if (settings.containsKey(keyName)) {
             Object value = settings.get(keyName);
             if (value instanceof Boolean) {
                 return (Boolean) value;
@@ -114,15 +110,7 @@ public class ConfigActivity extends Activity {
     }
 
     public static void setSetting(String key, Object value) {
-        HashMap<String, Object> settings;
-
-        if (!SETTINGS_FILE.exists()) {
-            settings = new HashMap<>();
-            restoreDefaultSettings(settings);
-        } else {
-            settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
-        }
-
+        HashMap<String, Object> settings = readSettings();
         settings.put(key, value);
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
     }
@@ -161,7 +149,7 @@ public class ConfigActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            setting_map = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+            setting_map = readSettings();
             if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS)) {
                 restoreDefaultSettings();
             }
