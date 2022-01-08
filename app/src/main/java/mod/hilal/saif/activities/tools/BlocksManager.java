@@ -40,21 +40,18 @@ import mod.hilal.saif.lib.PCP;
 
 public class BlocksManager extends AppCompatActivity {
 
-    private String blocks_dir = "";
-    private String pallet_dir = "";
     private final HashMap<String, Object> map = new HashMap<>();
-    private double insert_n = 0;
-    private HashMap<String, Object> m = new HashMap<>();
-
-    private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
-
+    private final Intent intent = new Intent();
+    private String blocks_dir = "";
+    private String pallet_dir = "";
+    private double insert_n = 0;
+    private HashMap<String, Object> m = new HashMap<>();
+    private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ListView listview1;
     private LinearLayout card2;
     private TextView card2_sub;
-
-    private final Intent intent = new Intent();
     private AlertDialog.Builder dialog;
     private AlertDialog.Builder emptyDialog;
 
