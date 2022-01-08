@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +36,7 @@ import java.util.HashMap;
 
 import a.a.a.Zx;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 
 public class BlocksManager extends AppCompatActivity {
@@ -77,12 +77,7 @@ public class BlocksManager extends AppCompatActivity {
         dialog = new AlertDialog.Builder(this);
         emptyDialog = new AlertDialog.Builder(this);
 
-        back_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                finish();
-            }
-        });
+        back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         arrange_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,9 +101,7 @@ public class BlocksManager extends AppCompatActivity {
                     save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {
-                            HashMap<String, Object> _t = new HashMap<>();
-                            _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), new TypeToken<HashMap<String, Object>>() {
-                            }.getType());
+                            HashMap<String, Object> _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
 
                             _t.put("palletteDir", pallet.getText().toString());
                             _t.put("blockDir", block.getText().toString());
@@ -119,18 +112,11 @@ public class BlocksManager extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View _view) {
-                            dialog.dismiss();
-                        }
-                    });
+                    cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
                     de.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {
-                            HashMap<String, Object> _t = new HashMap<>();
-                            _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), new TypeToken<HashMap<String, Object>>() {
-                            }.getType());
+                            HashMap<String, Object> _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
 
                             _t.put("palletteDir", "/.sketchware/resources/block/My Block/palette.json");
                             _t.put("blockDir", "/.sketchware/resources/block/My Block/block.json");
@@ -231,10 +217,7 @@ public class BlocksManager extends AppCompatActivity {
     private void _readSettings() {
         if (FileUtil.isExistFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json"))) {
             if (!FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")).equals("")) {
-                HashMap<String, Object> _t = new HashMap<>();
-
-                _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), new TypeToken<HashMap<String, Object>>() {
-                }.getType());
+                HashMap<String, Object> _t = new Gson().fromJson(FileUtil.readFile(FileUtil.getExternalStorageDir().concat("/.sketchware/data/settings.json")), Helper.TYPE_MAP);
 
                 if (_t.containsKey("palletteDir")) {
                     pallet_dir = FileUtil.getExternalStorageDir().concat(_t.get("palletteDir").toString());
@@ -251,8 +234,7 @@ public class BlocksManager extends AppCompatActivity {
 
                     if (FileUtil.isExistFile(blocks_dir) && !FileUtil.readFile(blocks_dir).equals("")) {
                         try {
-                            all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                            }.getType());
+                            all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
                         } catch (Exception e) {
                         }
                     }
@@ -284,8 +266,7 @@ public class BlocksManager extends AppCompatActivity {
                 {
                     android.os.Parcelable prcl;
                     prcl = listview1.onSaveInstanceState();
-                    pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
+                    pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
                     listview1.setAdapter(new Listview1Adapter(pallet_listmap));
                     ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
                     listview1.onRestoreInstanceState(prcl);
@@ -397,12 +378,7 @@ public class BlocksManager extends AppCompatActivity {
                     }
                 }
             });
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    dialog.dismiss();
-                }
-            });
+            cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
             dialog.show();
         }
     }
@@ -497,12 +473,7 @@ public class BlocksManager extends AppCompatActivity {
                     }
                 }
             });
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    dialog.dismiss();
-                }
-            });
+            cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
             dialog.show();
         }
     }
