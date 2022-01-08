@@ -19,8 +19,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.sketchware.remod.Resources;
 
 import java.io.File;
@@ -29,6 +31,7 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.LogUtil;
 
 public class ConfigActivity extends Activity {
 
@@ -122,6 +125,36 @@ public class ConfigActivity extends Activity {
 
         settings.put(key, value);
         FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+    }
+
+    @NonNull
+    private static HashMap<String, Object> readSettings() {
+        HashMap<String, Object> settings;
+
+        if (SETTINGS_FILE.exists()) {
+            Exception toLog;
+
+            try {
+                settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+
+                if (settings != null) {
+                    return settings;
+                }
+
+                toLog = new NullPointerException("settings == null");
+                // fall-through to shared error handler
+            } catch (JsonParseException e) {
+                toLog = e;
+                // fall-through to shared error handler
+            }
+
+            SketchwareUtil.toastError("Couldn't parse Mod Settings! Restoring defaults.");
+            LogUtil.e("ConfigActivity", "Failed to parse Mod Settings.", toLog);
+        }
+        settings = new HashMap<>();
+        restoreDefaultSettings(settings);
+
+        return settings;
     }
 
     @Override
