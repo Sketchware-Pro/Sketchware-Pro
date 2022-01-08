@@ -440,7 +440,7 @@ public class ConfigActivity extends Activity {
     private static void restoreDefaultSettings(HashMap<String, Object> settings) {
         settings.clear();
         settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
-        settings.put(SETTING_BACKUP_DIRECTORY, "");
+        settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
         settings.put(SETTING_LEGACY_CODE_EDITOR, false);
         settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
