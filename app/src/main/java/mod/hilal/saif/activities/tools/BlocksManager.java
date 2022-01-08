@@ -107,7 +107,7 @@ public class BlocksManager extends AppCompatActivity {
                         public void onClick(View _view) {
                             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                                     pallet.getText().toString());
-                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
                                     block.getText().toString());
 
                             _readSettings();
@@ -121,7 +121,7 @@ public class BlocksManager extends AppCompatActivity {
                         public void onClick(View _view) {
                             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                                     "/.sketchware/resources/block/My Block/palette.json");
-                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
                                     "/.sketchware/resources/block/My Block/block.json");
 
                             _readSettings();
@@ -220,9 +220,9 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _readSettings() {
-        pallet_dir = ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+        pallet_dir = FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                 "/.sketchware/resources/block/My Block/palette.json");
-        blocks_dir = ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+        blocks_dir = FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
                 "/.sketchware/resources/block/My Block/block.json");
     }
 
