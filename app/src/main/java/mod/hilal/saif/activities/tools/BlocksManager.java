@@ -168,11 +168,14 @@ public class BlocksManager extends AppCompatActivity {
                         @Override
                         public void onClick(View _view) {
                             try {
-                                int c = Color.parseColor(colour.getText().toString());
+                                Color.parseColor(colour.getText().toString());
+
                                 _createPallette(name.getText().toString(), colour.getText().toString());
                                 insert_n = -1;
                                 dialog.dismiss();
-                            } catch (Exception e) {
+                            } catch (IllegalArgumentException e) {
+                                colour.setError("Malformed hexadecimal color");
+                                colour.requestFocus();
                             }
                         }
                     });
