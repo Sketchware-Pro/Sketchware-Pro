@@ -44,6 +44,9 @@ public class ConfigActivity extends Activity {
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
+    public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
+    public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
+
     private static final int DEFAULT_BACKGROUND_COLOR = Color.parseColor("#fafafa");
     private LinearLayout root;
     private HashMap<String, Object> setting_map = new HashMap<>();
@@ -150,6 +153,20 @@ public class ConfigActivity extends Activity {
         restoreDefaultSettings(settings);
 
         return settings;
+    }
+
+    private static void restoreDefaultSettings(HashMap<String, Object> settings) {
+        settings.clear();
+        settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
+        settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
+        settings.put(SETTING_LEGACY_CODE_EDITOR, false);
+        settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
+        settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
+        settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
+        settings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
+        settings.put(SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, "/.sketchware/resources/block/My Block/palette.json");
+        settings.put(SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, "/.sketchware/resources/block/My Block/block.json");
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
     }
 
     @Override
@@ -442,17 +459,5 @@ public class ConfigActivity extends Activity {
 
     private void restoreDefaultSettings() {
         restoreDefaultSettings(setting_map);
-    }
-
-    private static void restoreDefaultSettings(HashMap<String, Object> settings) {
-        settings.clear();
-        settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
-        settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
-        settings.put(SETTING_LEGACY_CODE_EDITOR, false);
-        settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
-        settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
-        settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
-        settings.put(SETTING_USE_ASD_HIGHLIGHTER, false);
-        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
     }
 }
