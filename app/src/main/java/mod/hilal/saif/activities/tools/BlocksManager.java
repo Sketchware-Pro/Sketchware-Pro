@@ -206,12 +206,12 @@ public class BlocksManager extends AppCompatActivity {
             if (FileUtil.isExistFile(pallet_dir) && !FileUtil.readFile(pallet_dir).equals("")) {
                 Parcelable savedState = listview1.onSaveInstanceState();
                 pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
-                listview1.setAdapter(new Listview1Adapter(pallet_listmap));
+                listview1.setAdapter(new PaletteAdapter(pallet_listmap));
                 ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
                 listview1.onRestoreInstanceState(savedState);
             } else {
                 pallet_listmap.clear();
-                listview1.setAdapter(new Listview1Adapter(pallet_listmap));
+                listview1.setAdapter(new PaletteAdapter(pallet_listmap));
                 ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
             }
             card2_sub.setText("Blocks: " + (long) (_getN(-1)));
@@ -471,54 +471,54 @@ public class BlocksManager extends AppCompatActivity {
         };
     }
 
-    public class Listview1Adapter extends BaseAdapter {
-        ArrayList<HashMap<String, Object>> _data;
+    public class PaletteAdapter extends BaseAdapter {
 
-        public Listview1Adapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+        private final ArrayList<HashMap<String, Object>> palettes;
+
+        public PaletteAdapter(ArrayList<HashMap<String, Object>> palettes) {
+            this.palettes = palettes;
         }
 
         @Override
         public int getCount() {
-            return _data.size();
+            return palettes.size();
         }
 
         @Override
-        public HashMap<String, Object> getItem(int _index) {
-            return _data.get(_index);
+        public HashMap<String, Object> getItem(int position) {
+            return palettes.get(position);
         }
 
         @Override
-        public long getItemId(int _index) {
-            return _index;
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
-        public View getView(final int _position, View _v, ViewGroup _container) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View _view = _v;
-            if (_view == null) {
-                _view = _inflater.inflate(Resources.layout.pallet_customview, null);
+            if (convertView == null) {
+                convertView = _inflater.inflate(Resources.layout.pallet_customview, null);
             }
 
-            final LinearLayout linear2 = _view.findViewById(Resources.id.background);
-            final LinearLayout colour = _view.findViewById(Resources.id.color);
-            final TextView title = _view.findViewById(Resources.id.title);
-            final TextView sub = _view.findViewById(Resources.id.sub);
+            final LinearLayout background = convertView.findViewById(Resources.id.background);
+            final LinearLayout color = convertView.findViewById(Resources.id.color);
+            final TextView title = convertView.findViewById(Resources.id.title);
+            final TextView sub = convertView.findViewById(Resources.id.sub);
 
-            title.setText(pallet_listmap.get(_position).get("name").toString());
-            sub.setText("Blocks: " + (long) (_getN(_position + 9)));
+            title.setText(pallet_listmap.get(position).get("name").toString());
+            sub.setText("Blocks: " + (long) (_getN(position + 9)));
             card2_sub.setText("Blocks: " + (long) (_getN(-1)));
-            colour.setBackgroundColor(Color.parseColor((String) _data.get(_position).get("color")));
-            _a(linear2);
-            linear2.setOnLongClickListener(v -> {
+            color.setBackgroundColor(Color.parseColor((String) palettes.get(position).get("color")));
+            _a(background);
+            background.setOnLongClickListener(v -> {
                 final String moveUp = "Move up";
-                final String moveDown = "move down";
-                final String edit = "edit";
+                final String moveDown = "Move down";
+                final String edit = "Edit";
                 final String delete = "Delete";
                 final String insert = "Insert";
 
-                PopupMenu popup = new PopupMenu(BlocksManager.this, linear2);
+                PopupMenu popup = new PopupMenu(BlocksManager.this, background);
                 Menu menu = popup.getMenu();
                 menu.add(moveUp);
                 menu.add(moveDown);
@@ -528,24 +528,24 @@ public class BlocksManager extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(item -> {
                     switch (item.getTitle().toString()) {
                         case edit:
-                            _showEditDial(_position, pallet_listmap.get(_position).get("name").toString(),
-                                    pallet_listmap.get(_position).get("color").toString());
+                            _showEditDial(position, pallet_listmap.get(position).get("name").toString(),
+                                    pallet_listmap.get(position).get("color").toString());
                             break;
 
                         case delete:
-                            _remove_pallete(_position);
+                            _remove_pallete(position);
                             break;
 
                         case moveUp:
-                            _MoveUp(_position);
+                            _MoveUp(position);
                             break;
 
                         case moveDown:
-                            _moveDown(_position);
+                            _moveDown(position);
                             break;
 
                         case insert:
-                            _insert_pallete(_position);
+                            _insert_pallete(position);
                             break;
 
                         default:
@@ -557,15 +557,15 @@ public class BlocksManager extends AppCompatActivity {
                 return true;
             });
 
-            linear2.setOnClickListener(v -> {
+            background.setOnClickListener(v -> {
                 Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
-                intent.putExtra("position", String.valueOf((long) (_position + 9)));
+                intent.putExtra("position", String.valueOf((long) (position + 9)));
                 intent.putExtra("dirB", blocks_dir);
                 intent.putExtra("dirP", pallet_dir);
                 startActivity(intent);
             });
 
-            return _view;
+            return convertView;
         }
     }
 }
