@@ -82,112 +82,87 @@ public class BlocksManager extends AppCompatActivity {
 
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        arrange_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                {
-                    final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-                    LayoutInflater inflater = getLayoutInflater();
-                    final View convertView = inflater.inflate(Resources.layout.settings_popup, null);
-                    dialog.setView(convertView);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    final EditText pallet = convertView.findViewById(Resources.id.pallet_dir);
-                    pallet.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                    final EditText block = convertView.findViewById(Resources.id.blocks_dir);
-                    block.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-                    final TextInputLayout extra = convertView.findViewById(Resources.id.extra_input_layout);
-                    extra.setVisibility(View.GONE);
-                    final TextView save = convertView.findViewById(Resources.id.save);
-                    final TextView cancel = convertView.findViewById(Resources.id.cancel);
-                    final TextView de = convertView.findViewById(Resources.id.defaults);
-                    save.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View _view) {
-                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                                    pallet.getText().toString());
-                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
-                                    block.getText().toString());
+        arrange_icon.setOnClickListener(v -> {
+            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
+            LayoutInflater inflater = getLayoutInflater();
+            final View convertView = inflater.inflate(Resources.layout.settings_popup, null);
+            dialog.setView(convertView);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            final EditText pallet = convertView.findViewById(Resources.id.pallet_dir);
+            pallet.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
+            final EditText block = convertView.findViewById(Resources.id.blocks_dir);
+            block.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
+            final TextInputLayout extra = convertView.findViewById(Resources.id.extra_input_layout);
+            extra.setVisibility(View.GONE);
+            final TextView save = convertView.findViewById(Resources.id.save);
+            final TextView cancel = convertView.findViewById(Resources.id.cancel);
+            final TextView de = convertView.findViewById(Resources.id.defaults);
+            save.setOnClickListener(saveView -> {
+                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                        pallet.getText().toString());
+                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+                        block.getText().toString());
 
-                            _readSettings();
-                            _refresh_list();
-                            dialog.dismiss();
-                        }
-                    });
-                    cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-                    de.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View _view) {
-                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                                    "/.sketchware/resources/block/My Block/palette.json");
-                            ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
-                                    "/.sketchware/resources/block/My Block/block.json");
+                _readSettings();
+                _refresh_list();
+                dialog.dismiss();
+            });
+            cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
+            de.setOnClickListener(defaultsView -> {
+                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
+                        "/.sketchware/resources/block/My Block/palette.json");
+                ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+                        "/.sketchware/resources/block/My Block/block.json");
 
-                            _readSettings();
-                            _refresh_list();
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-                }
-            }
+                _readSettings();
+                _refresh_list();
+                dialog.dismiss();
+            });
+            dialog.show();
         });
 
-        _fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                insert_n = -1;
-                {
-                    final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-                    LayoutInflater inflater = getLayoutInflater();
-                    final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
-                    dialog.setView(convertView);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    final EditText name = convertView.findViewById(Resources.id.name);
-                    final EditText colour = convertView.findViewById(Resources.id.color);
-                    final TextView save = convertView.findViewById(Resources.id.save);
-                    final TextView cancel = convertView.findViewById(Resources.id.cancel);
-                    final ImageView select = convertView.findViewById(Resources.id.select);
+        _fab.setOnClickListener(v -> {
+            insert_n = -1;
+            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
+            LayoutInflater inflater = getLayoutInflater();
+            final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
+            dialog.setView(convertView);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            final EditText name = convertView.findViewById(Resources.id.name);
+            final EditText colour = convertView.findViewById(Resources.id.color);
+            final TextView save = convertView.findViewById(Resources.id.save);
+            final TextView cancel = convertView.findViewById(Resources.id.cancel);
+            final ImageView select = convertView.findViewById(Resources.id.select);
 
-                    select.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View _view) {
-                            LayoutInflater inf = getLayoutInflater();
-                            final View a = inf.inflate(Resources.layout.color_picker, null);
-                            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-                            zx.a(new PCP(BlocksManager.this, colour, dialog));
-                            zx.setAnimationStyle(Resources.anim.abc_fade_in);
-                            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
-                            dialog.hide();
-                        }
-                    });
+            select.setOnClickListener(selectView -> {
+                LayoutInflater inf = getLayoutInflater();
+                final View a = inf.inflate(Resources.layout.color_picker, null);
+                final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
+                zx.a(new PCP(BlocksManager.this, colour, dialog));
+                zx.setAnimationStyle(Resources.anim.abc_fade_in);
+                zx.showAtLocation(a, Gravity.CENTER, 0, 0);
+                dialog.hide();
+            });
 
-                    save.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View _view) {
-                            try {
-                                Color.parseColor(colour.getText().toString());
+            save.setOnClickListener(saveView -> {
+                try {
+                    Color.parseColor(colour.getText().toString());
 
-                                _createPallette(name.getText().toString(), colour.getText().toString());
-                                insert_n = -1;
-                                dialog.dismiss();
-                            } catch (IllegalArgumentException e) {
-                                colour.setError("Malformed hexadecimal color");
-                                colour.requestFocus();
-                            }
-                        }
-                    });
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View _view) {
-                            insert_n = -1;
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
+                    _createPallette(name.getText().toString(), colour.getText().toString());
+                    insert_n = -1;
+                    dialog.dismiss();
+                } catch (IllegalArgumentException e) {
+                    colour.setError("Malformed hexadecimal color");
+                    colour.requestFocus();
                 }
-            }
+            });
+            cancel.setOnClickListener(cancelView -> {
+                insert_n = -1;
+                dialog.dismiss();
+            });
+            dialog.show();
         });
     }
 
@@ -305,48 +280,40 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _showEditDial(final double _p, final String _name, final String _c) {
-        {
-            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-            LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
-            dialog.setView(convertView);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(Resources.id.name);
-            name.setText(_name);
-            final EditText colour = convertView.findViewById(Resources.id.color);
-            colour.setText(_c);
-            final TextView title = convertView.findViewById(Resources.id.title);
-            title.setText("Edit palette");
-            final TextView save = convertView.findViewById(Resources.id.save);
-            final TextView cancel = convertView.findViewById(Resources.id.cancel);
-            final ImageView select = convertView.findViewById(Resources.id.select);
-            select.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    LayoutInflater inf = getLayoutInflater();
-                    final View a = inf.inflate(Resources.layout.color_picker, null);
-                    final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-                    zx.a(new PCP(BlocksManager.this, colour, dialog));
-                    zx.setAnimationStyle(Resources.anim.abc_fade_in);
-                    zx.showAtLocation(a, Gravity.CENTER, 0, 0);
-                    dialog.hide();
-                }
-            });
-            save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    try {
-                        int c = Color.parseColor(colour.getText().toString());
-                        _editPallete(_p, name.getText().toString(), colour.getText().toString());
-                        dialog.dismiss();
-                    } catch (Exception e) {
-                    }
-                }
-            });
-            cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-            dialog.show();
-        }
+        final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
+        dialog.setView(convertView);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final EditText name = convertView.findViewById(Resources.id.name);
+        name.setText(_name);
+        final EditText colour = convertView.findViewById(Resources.id.color);
+        colour.setText(_c);
+        final TextView title = convertView.findViewById(Resources.id.title);
+        title.setText("Edit palette");
+        final TextView save = convertView.findViewById(Resources.id.save);
+        final TextView cancel = convertView.findViewById(Resources.id.cancel);
+        final ImageView select = convertView.findViewById(Resources.id.select);
+        select.setOnClickListener(v -> {
+            LayoutInflater inf = getLayoutInflater();
+            final View a = inf.inflate(Resources.layout.color_picker, null);
+            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
+            zx.a(new PCP(BlocksManager.this, colour, dialog));
+            zx.setAnimationStyle(Resources.anim.abc_fade_in);
+            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
+            dialog.hide();
+        });
+        save.setOnClickListener(v -> {
+            try {
+                int c = Color.parseColor(colour.getText().toString());
+                _editPallete(_p, name.getText().toString(), colour.getText().toString());
+                dialog.dismiss();
+            } catch (Exception e) {
+            }
+        });
+        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     private void _editPallete(final double _p, final String _n, final String _c) {
@@ -360,84 +327,70 @@ public class BlocksManager extends AppCompatActivity {
     private void _MoveUp(final double _p) {
         if (_p > 0) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + -1));
-            {
-                Parcelable savedState = listview1.onSaveInstanceState();
-                FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                _swapRelatedBlocks(_p + 9, _p + 8);
-                _readSettings();
-                _refresh_list();
-                listview1.onRestoreInstanceState(savedState);
-            }
+
+            Parcelable savedState = listview1.onSaveInstanceState();
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+            _swapRelatedBlocks(_p + 9, _p + 8);
+            _readSettings();
+            _refresh_list();
+            listview1.onRestoreInstanceState(savedState);
         }
     }
 
     private void _recycleBin(final View _v) {
         _a(_v);
-        card2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
-                intent.putExtra("position", "-1");
-                intent.putExtra("dirB", blocks_dir);
-                intent.putExtra("dirP", pallet_dir);
-                startActivity(intent);
-            }
+        card2.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
+            intent.putExtra("position", "-1");
+            intent.putExtra("dirB", blocks_dir);
+            intent.putExtra("dirP", pallet_dir);
+            startActivity(intent);
         });
-        card2.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View _view) {
-                new AlertDialog.Builder(BlocksManager.this)
-                        .setTitle("Recycle bin")
-                        .setMessage("Are you sure you want to empty the recycle bin? " +
-                                "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!")
-                        .setPositiveButton("Empty", (dialog, which) -> _emptyRecyclebin())
-                        .setNegativeButton(Resources.string.common_word_cancel, null)
-                        .show();
-                return true;
-            }
+        card2.setOnLongClickListener(v -> {
+            new AlertDialog.Builder(BlocksManager.this)
+                    .setTitle("Recycle bin")
+                    .setMessage("Are you sure you want to empty the recycle bin? " +
+                            "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!")
+                    .setPositiveButton("Empty", (dialog, which) -> _emptyRecyclebin())
+                    .setNegativeButton(Resources.string.common_word_cancel, null)
+                    .show();
+            return true;
         });
     }
 
     private void _insert_pallete(final double _p) {
         insert_n = _p;
-        {
-            final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
-            LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
-            dialog.setView(convertView);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(Resources.id.name);
-            final EditText colour = convertView.findViewById(Resources.id.color);
-            final TextView save = convertView.findViewById(Resources.id.save);
-            final TextView cancel = convertView.findViewById(Resources.id.cancel);
-            final ImageView select = convertView.findViewById(Resources.id.select);
-            select.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    LayoutInflater inf = getLayoutInflater();
-                    final View a = inf.inflate(Resources.layout.color_picker, null);
-                    final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-                    zx.a(new PCP(BlocksManager.this, colour, dialog));
-                    zx.setAnimationStyle(Resources.anim.abc_fade_in);
-                    zx.showAtLocation(a, Gravity.CENTER, 0, 0);
-                    dialog.hide();
-                }
-            });
-            save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    try {
-                        int c = Color.parseColor(colour.getText().toString());
-                        _createPallette(name.getText().toString(), colour.getText().toString());
-                        dialog.dismiss();
-                    } catch (Exception e) {
-                    }
-                }
-            });
-            cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
-            dialog.show();
-        }
+
+        final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
+        LayoutInflater inflater = getLayoutInflater();
+        final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
+        dialog.setView(convertView);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final EditText name = convertView.findViewById(Resources.id.name);
+        final EditText colour = convertView.findViewById(Resources.id.color);
+        final TextView save = convertView.findViewById(Resources.id.save);
+        final TextView cancel = convertView.findViewById(Resources.id.cancel);
+        final ImageView select = convertView.findViewById(Resources.id.select);
+        select.setOnClickListener(v -> {
+            LayoutInflater inf = getLayoutInflater();
+            final View a = inf.inflate(Resources.layout.color_picker, null);
+            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
+            zx.a(new PCP(BlocksManager.this, colour, dialog));
+            zx.setAnimationStyle(Resources.anim.abc_fade_in);
+            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
+            dialog.hide();
+        });
+        save.setOnClickListener(v -> {
+            try {
+                int c = Color.parseColor(colour.getText().toString());
+                _createPallette(name.getText().toString(), colour.getText().toString());
+                dialog.dismiss();
+            } catch (Exception e) {
+            }
+        });
+        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     private void _moveDown(final double _p) {
@@ -566,64 +519,58 @@ public class BlocksManager extends AppCompatActivity {
             card2_sub.setText("Blocks: " + (long) (_getN(-1)));
             colour.setBackgroundColor(Color.parseColor((String) _data.get(_position).get("color")));
             _a(linear2);
-            linear2.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View _view) {
-                    final String moveUp = "Move up";
-                    final String moveDown = "move down";
-                    final String edit = "edit";
-                    final String delete = "Delete";
-                    final String insert = "Insert";
+            linear2.setOnLongClickListener(v -> {
+                final String moveUp = "Move up";
+                final String moveDown = "move down";
+                final String edit = "edit";
+                final String delete = "Delete";
+                final String insert = "Insert";
 
-                    PopupMenu popup = new PopupMenu(BlocksManager.this, linear2);
-                    Menu menu = popup.getMenu();
-                    menu.add(moveUp);
-                    menu.add(moveDown);
-                    menu.add(edit);
-                    menu.add(delete);
-                    menu.add(insert);
-                    popup.setOnMenuItemClickListener(item -> {
-                        switch (item.getTitle().toString()) {
-                            case edit:
-                                _showEditDial(_position, pallet_listmap.get(_position).get("name").toString(),
-                                        pallet_listmap.get(_position).get("color").toString());
-                                break;
+                PopupMenu popup = new PopupMenu(BlocksManager.this, linear2);
+                Menu menu = popup.getMenu();
+                menu.add(moveUp);
+                menu.add(moveDown);
+                menu.add(edit);
+                menu.add(delete);
+                menu.add(insert);
+                popup.setOnMenuItemClickListener(item -> {
+                    switch (item.getTitle().toString()) {
+                        case edit:
+                            _showEditDial(_position, pallet_listmap.get(_position).get("name").toString(),
+                                    pallet_listmap.get(_position).get("color").toString());
+                            break;
 
-                            case delete:
-                                _remove_pallete(_position);
-                                break;
+                        case delete:
+                            _remove_pallete(_position);
+                            break;
 
-                            case moveUp:
-                                _MoveUp(_position);
-                                break;
+                        case moveUp:
+                            _MoveUp(_position);
+                            break;
 
-                            case moveDown:
-                                _moveDown(_position);
-                                break;
+                        case moveDown:
+                            _moveDown(_position);
+                            break;
 
-                            case insert:
-                                _insert_pallete(_position);
-                                break;
+                        case insert:
+                            _insert_pallete(_position);
+                            break;
 
-                            default:
-                        }
-                        return true;
-                    });
-                    popup.show();
-
+                        default:
+                    }
                     return true;
-                }
+                });
+                popup.show();
+
+                return true;
             });
 
-            linear2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
-                    intent.putExtra("position", String.valueOf((long) (_position + 9)));
-                    intent.putExtra("dirB", blocks_dir);
-                    intent.putExtra("dirP", pallet_dir);
-                    startActivity(intent);
-                }
+            linear2.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
+                intent.putExtra("position", String.valueOf((long) (_position + 9)));
+                intent.putExtra("dirB", blocks_dir);
+                intent.putExtra("dirP", pallet_dir);
+                startActivity(intent);
             });
 
             return _view;
