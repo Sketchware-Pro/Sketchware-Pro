@@ -136,15 +136,7 @@ public class BlocksManager extends AppCompatActivity {
             final TextView cancel = convertView.findViewById(Resources.id.cancel);
             final ImageView select = convertView.findViewById(Resources.id.select);
 
-            select.setOnClickListener(selectView -> {
-                LayoutInflater inf = getLayoutInflater();
-                final View a = inf.inflate(Resources.layout.color_picker, null);
-                final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-                zx.a(new PCP(BlocksManager.this, colour, dialog));
-                zx.setAnimationStyle(Resources.anim.abc_fade_in);
-                zx.showAtLocation(a, Gravity.CENTER, 0, 0);
-                dialog.hide();
-            });
+            select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
 
             save.setOnClickListener(saveView -> {
                 try {
@@ -295,21 +287,15 @@ public class BlocksManager extends AppCompatActivity {
         final TextView save = convertView.findViewById(Resources.id.save);
         final TextView cancel = convertView.findViewById(Resources.id.cancel);
         final ImageView select = convertView.findViewById(Resources.id.select);
-        select.setOnClickListener(v -> {
-            LayoutInflater inf = getLayoutInflater();
-            final View a = inf.inflate(Resources.layout.color_picker, null);
-            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-            zx.a(new PCP(BlocksManager.this, colour, dialog));
-            zx.setAnimationStyle(Resources.anim.abc_fade_in);
-            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
-            dialog.hide();
-        });
+        select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
         save.setOnClickListener(v -> {
             try {
-                int c = Color.parseColor(colour.getText().toString());
+                Color.parseColor(colour.getText().toString());
                 _editPallete(_p, name.getText().toString(), colour.getText().toString());
                 dialog.dismiss();
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
+                colour.setError("Malformed hexadecimal color");
+                colour.requestFocus();
             }
         });
         cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
@@ -372,21 +358,15 @@ public class BlocksManager extends AppCompatActivity {
         final TextView save = convertView.findViewById(Resources.id.save);
         final TextView cancel = convertView.findViewById(Resources.id.cancel);
         final ImageView select = convertView.findViewById(Resources.id.select);
-        select.setOnClickListener(v -> {
-            LayoutInflater inf = getLayoutInflater();
-            final View a = inf.inflate(Resources.layout.color_picker, null);
-            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
-            zx.a(new PCP(BlocksManager.this, colour, dialog));
-            zx.setAnimationStyle(Resources.anim.abc_fade_in);
-            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
-            dialog.hide();
-        });
+        select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
         save.setOnClickListener(v -> {
             try {
-                int c = Color.parseColor(colour.getText().toString());
+                Color.parseColor(colour.getText().toString());
                 _createPallette(name.getText().toString(), colour.getText().toString());
                 dialog.dismiss();
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
+                colour.setError("Malformed hexadecimal color");
+                colour.requestFocus();
             }
         });
         cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
@@ -477,6 +457,18 @@ public class BlocksManager extends AppCompatActivity {
         FileUtil.writeFile(blocks_dir, new Gson().toJson(temp_list));
         _readSettings();
         _refresh_list();
+    }
+
+    private View.OnClickListener getSharedPaletteColorPickerShower(AlertDialog dialog, EditText storePickedResultIn) {
+        return v -> {
+            LayoutInflater inf = getLayoutInflater();
+            final View a = inf.inflate(Resources.layout.color_picker, null);
+            final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
+            zx.a(new PCP(BlocksManager.this, storePickedResultIn, dialog));
+            zx.setAnimationStyle(Resources.anim.abc_fade_in);
+            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
+            dialog.hide();
+        };
     }
 
     public class Listview1Adapter extends BaseAdapter {
