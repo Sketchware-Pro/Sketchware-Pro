@@ -11,6 +11,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -156,8 +157,8 @@ public class BlocksManager extends AppCompatActivity {
                             final View a = inf.inflate(Resources.layout.color_picker, null);
                             final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
                             zx.a(new PCP(BlocksManager.this, colour, dialog));
-                            zx.setAnimationStyle(2130771968);
-                            zx.showAtLocation(a, 17, 0, 0);
+                            zx.setAnimationStyle(Resources.anim.abc_fade_in);
+                            zx.showAtLocation(a, Gravity.CENTER, 0, 0);
                             dialog.hide();
                         }
                     });
@@ -327,8 +328,8 @@ public class BlocksManager extends AppCompatActivity {
                     final View a = inf.inflate(Resources.layout.color_picker, null);
                     final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
                     zx.a(new PCP(BlocksManager.this, colour, dialog));
-                    zx.setAnimationStyle(2130771968);
-                    zx.showAtLocation(a, 17, 0, 0);
+                    zx.setAnimationStyle(Resources.anim.abc_fade_in);
+                    zx.showAtLocation(a, Gravity.CENTER, 0, 0);
                     dialog.hide();
                 }
             });
@@ -418,8 +419,8 @@ public class BlocksManager extends AppCompatActivity {
                     final View a = inf.inflate(Resources.layout.color_picker, null);
                     final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
                     zx.a(new PCP(BlocksManager.this, colour, dialog));
-                    zx.setAnimationStyle(2130771968);
-                    zx.showAtLocation(a, 17, 0, 0);
+                    zx.setAnimationStyle(Resources.anim.abc_fade_in);
+                    zx.showAtLocation(a, Gravity.CENTER, 0, 0);
                     dialog.hide();
                 }
             });
