@@ -520,8 +520,8 @@ public class BlocksManager extends AppCompatActivity {
 
                 PopupMenu popup = new PopupMenu(BlocksManager.this, background);
                 Menu menu = popup.getMenu();
-                menu.add(moveUp);
-                menu.add(moveDown);
+                if (position != 0) menu.add(moveUp);
+                if (position != getCount() - 1) menu.add(moveDown);
                 menu.add(edit);
                 menu.add(delete);
                 menu.add(insert);
