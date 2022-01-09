@@ -1,7 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -496,7 +495,7 @@ public class BlocksManager extends AppCompatActivity {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater _inflater = getLayoutInflater();
             if (convertView == null) {
                 convertView = _inflater.inflate(Resources.layout.pallet_customview, null);
             }
