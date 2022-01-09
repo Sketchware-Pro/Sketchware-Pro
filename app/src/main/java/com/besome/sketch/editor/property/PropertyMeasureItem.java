@@ -110,7 +110,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         }
     }
 
-    public final void a(Context context, boolean z) {
+    private void a(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
         tvName = findViewById(Resources.id.tv_name);
         tvValue = findViewById(Resources.id.tv_value);
@@ -123,7 +123,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         }
     }
 
-    public final void a() {
+    private void showDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(imgLeftIconDrawableResId);

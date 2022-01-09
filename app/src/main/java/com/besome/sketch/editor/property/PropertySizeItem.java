@@ -102,7 +102,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         }
     }
 
-    public final void a() {
+    private void a() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
