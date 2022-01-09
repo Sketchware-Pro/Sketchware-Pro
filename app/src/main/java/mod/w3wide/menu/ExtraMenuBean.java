@@ -1,6 +1,7 @@
 package mod.w3wide.menu;
 
 import static mod.SketchwareUtil.getDip;
+import static android.text.TextUtils.isEmpty;
 
 import android.util.Pair;
 import android.view.View;
@@ -115,8 +116,12 @@ public class ExtraMenuBean {
                         codeMenu(ss);
                         return;
 
+                    case "import":
+                        asdDialog(ss, false, "Enter the path without import & semicolon");
+                        return;
+
                     default:
-                        cusA(ss, false);
+                        asdDialog(ss, false, null);
                 }
                 break;
 
@@ -518,7 +523,7 @@ public class ExtraMenuBean {
                 ArrayList<String> activityMenu = new ArrayList<>();
                 asdAll.b(Helper.getResString(2131625530));
                 for (ProjectFileBean projectFileBean : jC.b(sc_id).b()) {
-                    activityMenu.add(projectFileBean.getJavaName().substring(0, projectFileBean.getJavaName().indexOf(".java")));
+                    activityMenu.add(projectFileBean.getActivityName());
                 }
                 for (String activity : activityMenu) {
                     viewGroup.addView(logicEditor.e(activity));
@@ -605,7 +610,7 @@ public class ExtraMenuBean {
         return jC.a(sc_id).b(logicEditor.M.getJavaName(), type);
     }
 
-    private void cusA(Ss ss, boolean isNum) {
+    private void asdDialog(Ss ss, boolean isNum, String message) {
         AsdOrigin asdOr = new AsdOrigin(logicEditor);
         if (isNum) {
             asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_number_value));
@@ -613,6 +618,8 @@ public class ExtraMenuBean {
             asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_string_value));
         }
         asdOr.a(Resources.drawable.rename_96_blue);
+
+        if (!isEmpty(message)) asdOr.a(message);
 
         View root = wB.a(logicEditor, Resources.layout.property_popup_input_text);
         EditText edittext = root.findViewById(Resources.id.ed_input);
