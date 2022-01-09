@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -44,20 +46,15 @@ import mod.jbk.util.LogUtil;
 
 public class BlocksManager extends AppCompatActivity {
 
-    private final HashMap<String, Object> map = new HashMap<>();
-    private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private final ArrayList<HashMap<String, Object>> temp_list = new ArrayList<>();
-    private final Intent intent = new Intent();
+    private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir = "";
     private String pallet_dir = "";
     private double insert_n = 0;
-    private HashMap<String, Object> m = new HashMap<>();
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ListView listview1;
     private LinearLayout card2;
     private TextView card2_sub;
-    private AlertDialog.Builder dialog;
-    private AlertDialog.Builder emptyDialog;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
@@ -81,8 +78,6 @@ public class BlocksManager extends AppCompatActivity {
         ImageView arrange_icon = findViewById(Resources.id.dirs);
         card2 = findViewById(Resources.id.recycle_bin);
         card2_sub = findViewById(Resources.id.recycle_sub);
-        dialog = new AlertDialog.Builder(this);
-        emptyDialog = new AlertDialog.Builder(this);
 
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
 
@@ -95,7 +90,7 @@ public class BlocksManager extends AppCompatActivity {
                     final View convertView = inflater.inflate(Resources.layout.settings_popup, null);
                     dialog.setView(convertView);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     final EditText pallet = convertView.findViewById(Resources.id.pallet_dir);
                     pallet.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
                     final EditText block = convertView.findViewById(Resources.id.blocks_dir);
@@ -147,7 +142,7 @@ public class BlocksManager extends AppCompatActivity {
                     final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
                     dialog.setView(convertView);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     final EditText name = convertView.findViewById(Resources.id.name);
                     final EditText colour = convertView.findViewById(Resources.id.color);
                     final TextView save = convertView.findViewById(Resources.id.save);
@@ -241,14 +236,11 @@ public class BlocksManager extends AppCompatActivity {
     private void _refresh_list() {
         try {
             if (FileUtil.isExistFile(pallet_dir) && !FileUtil.readFile(pallet_dir).equals("")) {
-                {
-                    android.os.Parcelable prcl;
-                    prcl = listview1.onSaveInstanceState();
-                    pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
-                    listview1.setAdapter(new Listview1Adapter(pallet_listmap));
-                    ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
-                    listview1.onRestoreInstanceState(prcl);
-                }
+                Parcelable savedState = listview1.onSaveInstanceState();
+                pallet_listmap = new Gson().fromJson(FileUtil.readFile(pallet_dir), Helper.TYPE_MAP_LIST);
+                listview1.setAdapter(new Listview1Adapter(pallet_listmap));
+                ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
+                listview1.onRestoreInstanceState(savedState);
             } else {
                 pallet_listmap.clear();
                 listview1.setAdapter(new Listview1Adapter(pallet_listmap));
@@ -260,25 +252,25 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _remove_pallete(final double _p) {
-        dialog.setTitle(pallet_listmap.get((int) _p).get("name").toString());
-        dialog.setMessage("Remove all blocks related to this palette?");
-        dialog.setPositiveButton("Remove permanently", (dialog, which) -> {
-            pallet_listmap.remove((int) (_p));
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-            _removeRelatedBlocks(_p + 9);
-            _readSettings();
-            _refresh_list();
-        });
-        dialog.setNegativeButton(Resources.string.common_word_cancel, null);
-        dialog.setNeutralButton("Move to recycle bin", (dialog, which) -> {
-            _moveRelatedBlocksToRecycleBin(_p + 9);
-            pallet_listmap.remove((int) (_p));
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-            _removeRelatedBlocks(_p + 9);
-            _readSettings();
-            _refresh_list();
-        });
-        dialog.create().show();
+        new AlertDialog.Builder(this)
+                .setTitle(pallet_listmap.get((int) _p).get("name").toString())
+                .setMessage("Remove all blocks related to this palette?")
+                .setPositiveButton("Remove permanently", (dialog, which) -> {
+                    pallet_listmap.remove((int) (_p));
+                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                    _removeRelatedBlocks(_p + 9);
+                    _readSettings();
+                    _refresh_list();
+                })
+                .setNegativeButton(Resources.string.common_word_cancel, null)
+                .setNeutralButton("Move to recycle bin", (dialog, which) -> {
+                    _moveRelatedBlocksToRecycleBin(_p + 9);
+                    pallet_listmap.remove((int) (_p));
+                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                    _removeRelatedBlocks(_p + 9);
+                    _readSettings();
+                    _refresh_list();
+                }).show();
     }
 
     private double _getN(final double _p) {
@@ -292,22 +284,23 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _createPallette(final String _name, final String _colour) {
+        HashMap<String, Object> map = new HashMap<>();
         map.put("name", _name);
         map.put("color", _colour);
+
         if (insert_n == -1) {
             pallet_listmap.add(map);
             FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _readSettings();
             _refresh_list();
-            insert_n = -1;
         } else {
             pallet_listmap.add((int) insert_n, map);
             FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _readSettings();
             _refresh_list();
             _insertBlocksAt(insert_n + 9);
-            insert_n = -1;
         }
+        insert_n = -1;
     }
 
     private void _showEditDial(final double _p, final String _name, final String _c) {
@@ -317,7 +310,7 @@ public class BlocksManager extends AppCompatActivity {
             final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
             dialog.setView(convertView);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             final EditText name = convertView.findViewById(Resources.id.name);
             name.setText(_name);
             final EditText colour = convertView.findViewById(Resources.id.color);
@@ -367,13 +360,12 @@ public class BlocksManager extends AppCompatActivity {
         if (_p > 0) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + -1));
             {
-                android.os.Parcelable prcl;
-                prcl = listview1.onSaveInstanceState();
+                Parcelable savedState = listview1.onSaveInstanceState();
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                 _swapRelatedBlocks(_p + 9, _p + 8);
                 _readSettings();
                 _refresh_list();
-                listview1.onRestoreInstanceState(prcl);
+                listview1.onRestoreInstanceState(savedState);
             }
         }
     }
@@ -383,7 +375,7 @@ public class BlocksManager extends AppCompatActivity {
         card2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                intent.setClass(getApplicationContext(), BlocksManagerDetailsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
                 intent.putExtra("position", "-1");
                 intent.putExtra("dirB", blocks_dir);
                 intent.putExtra("dirP", pallet_dir);
@@ -393,12 +385,13 @@ public class BlocksManager extends AppCompatActivity {
         card2.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View _view) {
-                emptyDialog.setTitle("Recycle bin");
-                emptyDialog.setMessage("Are you sure you want to empty the recycle bin? " +
-                        "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!");
-                emptyDialog.setPositiveButton("Empty", (dialog, which) -> _emptyRecyclebin());
-                emptyDialog.setNegativeButton(Resources.string.common_word_cancel, null);
-                emptyDialog.create().show();
+                new AlertDialog.Builder(BlocksManager.this)
+                        .setTitle("Recycle bin")
+                        .setMessage("Are you sure you want to empty the recycle bin? " +
+                                "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!")
+                        .setPositiveButton("Empty", (dialog, which) -> _emptyRecyclebin())
+                        .setNegativeButton(Resources.string.common_word_cancel, null)
+                        .show();
                 return true;
             }
         });
@@ -412,7 +405,7 @@ public class BlocksManager extends AppCompatActivity {
             final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
             dialog.setView(convertView);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             final EditText name = convertView.findViewById(Resources.id.name);
             final EditText colour = convertView.findViewById(Resources.id.color);
             final TextView save = convertView.findViewById(Resources.id.save);
@@ -450,24 +443,22 @@ public class BlocksManager extends AppCompatActivity {
         if (_p < (pallet_listmap.size() - 1)) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + 1));
             {
-                android.os.Parcelable prcl;
-                prcl = listview1.onSaveInstanceState();
+                Parcelable savedState = listview1.onSaveInstanceState();
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                 _swapRelatedBlocks(_p + 9, _p + 10);
                 _readSettings();
                 _refresh_list();
-                listview1.onRestoreInstanceState(prcl);
+                listview1.onRestoreInstanceState(savedState);
             }
         }
     }
 
     private void _removeRelatedBlocks(final double _p) {
         temp_list.clear();
-        m = new HashMap<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == _p)) {
                 if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) > _p) {
-                    m = all_blocks_list.get(i);
+                    HashMap<String, Object> m = all_blocks_list.get(i);
                     m.put("palette", String.valueOf((long) (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) - 1)));
                     temp_list.add(m);
                 } else {
@@ -512,7 +503,6 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void _moveRelatedBlocksToRecycleBin(final double _p) {
-        m = new HashMap<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == _p) {
                 all_blocks_list.get(i).put("palette", "-1");
@@ -525,7 +515,6 @@ public class BlocksManager extends AppCompatActivity {
 
     private void _emptyRecyclebin() {
         temp_list.clear();
-        m = new HashMap<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == -1)) {
                 temp_list.add(all_blocks_list.get(i));
@@ -628,7 +617,7 @@ public class BlocksManager extends AppCompatActivity {
             linear2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View _view) {
-                    intent.setClass(getApplicationContext(), BlocksManagerDetailsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
                     intent.putExtra("position", String.valueOf((long) (_position + 9)));
                     intent.putExtra("dirB", blocks_dir);
                     intent.putExtra("dirP", pallet_dir);
