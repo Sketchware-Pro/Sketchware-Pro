@@ -23,83 +23,80 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyStringPairSelectorItem extends RelativeLayout implements View.OnClickListener {
 
-    public String a = "";
-    public String b = "";
-    public TextView c;
-    public TextView d;
-    public ImageView e;
-    public int f;
-    public View g;
-    public View h;
-    public ViewGroup i;
-    public Kw j;
+    public String key = "";
+    public String value = "";
+    public TextView tvName;
+    public TextView tvValue;
+    public ImageView imgLeftIcon;
+    public int icon;
+    public View propertyItem;
+    public View propertyMenuItem;
+    public ViewGroup radioGroupContent;
+    public Kw valueChangeListener;
 
     public PropertyStringPairSelectorItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     public String getKey() {
-        return a;
+        return key;
     }
 
-    public void setKey(String str) {
-        a = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+    public void setKey(String key) {
+        this.key = key;
+        int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            c.setText(xB.b().a(getResources(), identifier));
-            char type = 65535;
-            if (str.equals("property_progressbar_style")) {
-                type = 0;
+            tvName.setText(xB.b().a(getResources(), identifier));
+            if (key.equals("property_progressbar_style")) {
+                icon = Resources.drawable.style_48dp;
             }
-            if (type == 0) {
-                f = Resources.drawable.style_48dp;
-            }
-            if (h.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(f);
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            e.setImageResource(f);
+            imgLeftIcon.setImageResource(icon);
         }
     }
 
     public String getValue() {
-        return b;
+        return value;
     }
 
     public void setValue(String value) {
-        b = value;
-        d.setText(value);
+        this.value = value;
+        tvValue.setText(value);
     }
 
+    @Override
     public void onClick(View v) {
         if (!mB.a()) {
             a();
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        j = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            g.setVisibility(GONE);
-            h.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
             return;
         }
-        g.setVisibility(VISIBLE);
-        h.setVisibility(GONE);
+        propertyItem.setVisibility(VISIBLE);
+        propertyMenuItem.setVisibility(GONE);
     }
 
-    public final void a(Context context, boolean z) {
+    public final void initialize(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
-        c = findViewById(Resources.id.tv_name);
-        d = findViewById(Resources.id.tv_value);
-        e = findViewById(Resources.id.img_left_icon);
-        g = findViewById(Resources.id.property_item);
-        h = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -108,21 +105,21 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
 
     public final void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(c.getText().toString());
-        dialog.a(f);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
-        i = view.findViewById(Resources.id.rg_content);
+        radioGroupContent = view.findViewById(Resources.id.rg_content);
         int counter = 0;
-        for (Pair<String, String> pair : sq.b(a)) {
-            i.addView(a(pair));
+        for (Pair<String, String> pair : sq.b(key)) {
+            radioGroupContent.addView(a(pair));
         }
-        int childCount = i.getChildCount();
+        int childCount = radioGroupContent.getChildCount();
         while (true) {
             if (counter >= childCount) {
                 break;
             }
-            RadioButton radioButton = (RadioButton) i.getChildAt(counter);
-            if (radioButton.getTag().toString().equals(b)) {
+            RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(counter);
+            if (radioButton.getTag().toString().equals(value)) {
                 radioButton.setChecked(true);
                 break;
             }
@@ -132,21 +129,21 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int childCount = i.getChildCount();
+                int childCount = radioGroupContent.getChildCount();
                 int counter = 0;
                 while (true) {
                     if (counter >= childCount) {
                         break;
                     }
-                    RadioButton radioButton = (RadioButton) i.getChildAt(counter);
+                    RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(counter);
                     if (radioButton.isChecked()) {
                         setValue(radioButton.getTag().toString());
                         break;
                     }
                     counter++;
                 }
-                if (j != null) {
-                    j.a(a, b);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
                 }
                 dialog.dismiss();
             }

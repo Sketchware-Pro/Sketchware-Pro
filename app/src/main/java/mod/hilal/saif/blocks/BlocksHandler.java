@@ -296,7 +296,7 @@ public class BlocksHandler {
         hashMap.put("code", "import %s;");
         hashMap.put("color", "#EE7D15");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "import %s.inputOnly");
+        hashMap.put("spec", "import %s.import");
         arrayList.add(0, hashMap);
 
         hashMap = new HashMap<>();
@@ -2521,7 +2521,10 @@ public class BlocksHandler {
         }
     }
 
-    public static void primaryBlocksB(LogicEditorActivity logicEditorActivity, boolean isListNumUsed, boolean isListStrUsed, boolean isListMapUsed, String eventName) {
+    public static void primaryBlocksB(LogicEditorActivity logicEditorActivity, boolean isListNumUsed, boolean isListStrUsed, boolean isListMapUsed) {
+        String eventName = logicEditorActivity.D;
+        boolean inOnBindCustomViewEvent = eventName.equals("onBindCustomView");
+        boolean inOnFilesPickedEvent = eventName.equals("onFilesPicked");
         if (showBuiltIn()) {
             checkDir();
         }
@@ -2539,7 +2542,7 @@ public class BlocksHandler {
         if (showBuiltIn() && (showAll() || isListNumUsed)) {
             logicEditorActivity.a(" ", "sortListnum");
         }
-        if (showAll() || isListStrUsed) {
+        if (showAll() || isListStrUsed || inOnFilesPickedEvent) {
             logicEditorActivity.a("List String", 0xff555555);
             logicEditorActivity.a("b", "containListStr");
             logicEditorActivity.a("d", "indexListStr");
@@ -2572,7 +2575,7 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "deleteMapFromListmap");
             logicEditorActivity.a(" ", "sortListmap");
         }
-        if (showAll() || isListMapUsed || isListStrUsed || isListNumUsed || eventName.equals("onBindCustomView")) {
+        if (showAll() || isListMapUsed || isListStrUsed || isListNumUsed || inOnBindCustomViewEvent || inOnFilesPickedEvent) {
             logicEditorActivity.a("General", 0xff555555);
             logicEditorActivity.a(" ", "listAddAll");
             logicEditorActivity.a("d", "lengthList");

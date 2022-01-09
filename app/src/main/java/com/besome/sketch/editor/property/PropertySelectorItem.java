@@ -23,237 +23,156 @@ import mod.hey.studios.util.Helper;
 
 public class PropertySelectorItem extends RelativeLayout implements View.OnClickListener {
 
-    public String a = "";
-    public int b = -1;
-    public TextView c;
-    public TextView d;
-    public ImageView e;
-    public int f;
-    public View g;
-    public View h;
-    public ViewGroup i;
-    public Kw j;
+    public String key = "";
+    public int value = -1;
+    public TextView tvName;
+    public TextView tvValue;
+    public ImageView imgLeftIcon;
+    public int icon;
+    public View propertyItem;
+    public View propertyMenuItem;
+    public ViewGroup radioGroupContent;
+    public Kw valueChangeListener;
 
     public PropertySelectorItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     public String getKey() {
-        return a;
+        return key;
     }
 
     public void setKey(String str) {
-        a = str;
+        key = str;
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
-            c.setText(xB.b().a(getResources(), identifier));
-            char type = 65535;
-            switch (a) {
+            tvName.setText(xB.b().a(getResources(), identifier));
+            switch (key) {
                 case "property_orientation":
-                    type = 0;
+                    icon = Resources.drawable.grid_3_48;
                     break;
 
                 case "property_text_style":
-                    type = 1;
+                    icon = Resources.drawable.abc_96_color;
                     break;
 
                 case "property_text_size":
-                    type = 2;
+                    icon = Resources.drawable.text_width_96;
                     break;
 
                 case "property_ime_option":
-                    type = 3;
-                    break;
-
                 case "property_input_type":
-                    type = 4;
+                    icon = Resources.drawable.keyboard_48;
                     break;
 
                 case "property_spinner_mode":
-                    type = 5;
+                    icon = Resources.drawable.pull_down_48;
                     break;
 
                 case "property_choice_mode":
-                    type = 6;
+                    icon = Resources.drawable.multiple_choice_48;
                     break;
 
                 case "property_first_day_of_week":
-                    type = 7;
+                    icon = Resources.drawable.monday_48;
                     break;
             }
-            switch (type) {
-                case 0:
-                    f = Resources.drawable.grid_3_48;
-                    break;
-
-                case 1:
-                    f = Resources.drawable.abc_96_color;
-                    break;
-
-                case 2:
-                    f = Resources.drawable.text_width_96;
-                    break;
-
-                case 3:
-                case 4:
-                    f = Resources.drawable.keyboard_48;
-                    break;
-
-                case 5:
-                    f = Resources.drawable.pull_down_48;
-                    break;
-
-                case 6:
-                    f = Resources.drawable.multiple_choice_48;
-                    break;
-
-                case 7:
-                    f = Resources.drawable.monday_48;
-                    break;
-            }
-            if (h.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(f);
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            e.setImageResource(f);
+            imgLeftIcon.setImageResource(icon);
         }
     }
 
     public int getValue() {
-        return b;
+        return value;
     }
 
     public void setValue(int value) {
-        b = value;
-        d.setText(sq.a(a, value));
+        this.value = value;
+        tvValue.setText(sq.a(key, value));
     }
 
     public void onClick(View v) {
         if (!mB.a()) {
-            char type = 65535;
-            switch (a) {
+            switch (key) {
                 case "property_orientation":
-                    type = 0;
-                    break;
-
                 case "property_text_style":
-                    type = 1;
-                    break;
-
                 case "property_text_size":
-                    type = 2;
-                    break;
-
                 case "property_ime_option":
-                    type = 3;
-                    break;
-
                 case "property_input_type":
-                    type = 4;
-                    break;
-
                 case "property_spinner_mode":
-                    type = 5;
-                    break;
-
                 case "property_choice_mode":
-                    type = 6;
-                    break;
-
                 case "property_first_day_of_week":
-                    type = 7;
-                    break;
-            }
-            switch (type) {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
                     a();
             }
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        j = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            g.setVisibility(GONE);
-            h.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
             return;
         }
-        g.setVisibility(VISIBLE);
-        h.setVisibility(GONE);
+        propertyItem.setVisibility(VISIBLE);
+        propertyMenuItem.setVisibility(GONE);
     }
 
-    public final void a(Context context, boolean z) {
+    public final void initialize(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
-        c = findViewById(Resources.id.tv_name);
-        d = findViewById(Resources.id.tv_value);
-        e = findViewById(Resources.id.img_left_icon);
-        g = findViewById(Resources.id.property_item);
-        h = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
         }
     }
 
-    public final void a() {
+    private void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(c.getText().toString());
-        dialog.a(f);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
-        i = view.findViewById(Resources.id.rg_content);
+        radioGroupContent = view.findViewById(Resources.id.rg_content);
         TextView desc = view.findViewById(Resources.id.desc);
-        int counter = 0;
-        if (a.equals("property_ime_option")) {
+        if (key.equals("property_ime_option")) {
             desc.setText(xB.b().a(getContext(), Resources.string.property_description_edittext_ime_options));
             desc.setVisibility(VISIBLE);
         } else {
             desc.setVisibility(GONE);
         }
-        for (Pair<Integer, String> pair : sq.a(a)) {
-            i.addView(a(pair));
+        for (Pair<Integer, String> pair : sq.a(key)) {
+            radioGroupContent.addView(a(pair));
         }
-        int childCount = i.getChildCount();
-        while (true) {
-            if (counter >= childCount) {
-                break;
-            }
-            RadioButton radioButton = (RadioButton) i.getChildAt(counter);
-            if (Integer.parseInt(radioButton.getTag().toString()) == b) {
+        for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
+            RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
+            if (Integer.parseInt(radioButton.getTag().toString()) == value) {
                 radioButton.setChecked(true);
-                break;
             }
-            counter++;
         }
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int counter = 0;
-                while (true) {
-                    if (counter >= i.getChildCount()) {
-                        break;
-                    }
-                    RadioButton radioButton = (RadioButton) i.getChildAt(counter);
+                for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
+                    RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
                     if (radioButton.isChecked()) {
                         setValue(Integer.parseInt(radioButton.getTag().toString()));
-                        break;
                     }
-                    counter++;
                 }
-                if (j != null) {
-                    j.a(a, b);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
                 }
                 dialog.dismiss();
             }
