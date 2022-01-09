@@ -126,7 +126,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         propertyMenuItem.setVisibility(GONE);
     }
 
-    public final void initialize(Context context, boolean z) {
+    private void initialize(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
         tvName = findViewById(Resources.id.tv_name);
         tvValue = findViewById(Resources.id.tv_value);
@@ -182,7 +182,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         dialog.show();
     }
 
-    public final RadioButton a(Pair<Integer, String> pair) {
+    private RadioButton a(Pair<Integer, String> pair) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText(pair.second);
         radioButton.setTag(pair.first);

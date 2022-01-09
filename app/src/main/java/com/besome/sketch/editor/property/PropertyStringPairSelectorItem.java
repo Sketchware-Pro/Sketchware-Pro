@@ -90,7 +90,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         propertyMenuItem.setVisibility(GONE);
     }
 
-    public final void initialize(Context context, boolean z) {
+    private void initialize(Context context, boolean z) {
         wB.a(context, this, Resources.layout.property_selector_item);
         tvName = findViewById(Resources.id.tv_name);
         tvValue = findViewById(Resources.id.tv_value);
@@ -103,7 +103,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         }
     }
 
-    public final void a() {
+    private void a() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
@@ -153,7 +153,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         dialog.show();
     }
 
-    public final RadioButton a(Pair<String, String> pair) {
+    private RadioButton a(Pair<String, String> pair) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText(pair.second);
         radioButton.setTag(pair.first);

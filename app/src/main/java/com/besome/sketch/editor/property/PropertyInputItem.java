@@ -338,7 +338,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    public final void b() {
+    private void b() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(f.getText().toString());
         dialog.a(e);
@@ -373,7 +373,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         k = projectFileBean;
     }
 
-    public final void a() {
+    private void a() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(f.getText().toString());
         dialog.a(e);
@@ -431,7 +431,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    public final void a(int i, int i2) {
+    private void a(int i, int i2) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(f.getText().toString());
         dialog.a(e);

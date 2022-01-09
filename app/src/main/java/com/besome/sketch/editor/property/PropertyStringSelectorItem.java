@@ -112,7 +112,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
     }
 
-    public final void a() {
+    private void a() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
@@ -177,7 +177,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         dialog.show();
     }
 
-    public final RadioButton a(String str) {
+    private RadioButton a(String str) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setTextSize(2, 12.0f);
         radioButton.setText(str);
