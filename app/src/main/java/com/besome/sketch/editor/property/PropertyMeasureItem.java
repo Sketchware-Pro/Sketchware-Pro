@@ -30,7 +30,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     private ImageView imgLeftIcon;
     private View propertyItem;
     private View propertyMenuItem;
-    private Kw listener;
+    private Kw valueChangeListener;
     private boolean isMatchParent = true;
     private boolean isWrapContent = true;
     private boolean isCustomValue = true;
@@ -86,7 +86,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            a();
+            showDialog();
         }
     }
 
@@ -96,8 +96,8 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         isCustomValue = (itemEnabled & 4) == 4;
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        listener = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
@@ -200,8 +200,8 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             } else {
                 return;
             }
-            if (listener != null) {
-                listener.a(key, measureValue);
+            if (valueChangeListener != null) {
+                valueChangeListener.a(key, measureValue);
             }
             dialog.dismiss();
         });
