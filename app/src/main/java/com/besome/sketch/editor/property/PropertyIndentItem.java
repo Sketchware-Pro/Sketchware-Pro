@@ -23,105 +23,92 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyIndentItem extends RelativeLayout implements View.OnClickListener {
 
-    public Context a;
-    public String b = "";
-    public String c = "";
-    public View d;
-    public View e;
-    public ImageView f;
-    public int g;
-    public TextView h;
-    public TextView i;
+    public Context context;
+    public String key = "";
+    public String value = "";
+    public View propertyItem;
+    public View propertyMenuItem;
+    public ImageView imgLeftIcon;
+    public int icon;
+    public TextView tvName;
+    public TextView tvValue;
     public int j;
     public int k;
     public int l;
     public int m;
-    public Kw n;
+    public Kw valueChangeListener;
 
     public PropertyIndentItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     public String getKey() {
-        return b;
+        return key;
     }
 
-    public void setKey(String str) {
-        b = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+    public void setKey(String key) {
+        this.key = key;
+        int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            h.setText(xB.b().a(getResources(), identifier));
-            char c2 = 65535;
-            switch (b) {
+            tvName.setText(xB.b().a(getResources(), identifier));
+            switch (this.key) {
                 case "property_padding":
-                    c2 = 1;
+                    icon = Resources.drawable.insert_white_space_48;
                     break;
 
                 case "property_margin":
-                    c2 = 0;
+                    icon = Resources.drawable.collect_48;
                     break;
             }
-            if (c2 == 0) {
-                g = Resources.drawable.insert_white_space_48;
-            } else if (c2 == 1) {
-                g = Resources.drawable.collect_48;
-            }
-            if (e.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(g);
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(Resources.id.tv_title))
                         .setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            f.setImageResource(g);
+            imgLeftIcon.setImageResource(icon);
         }
     }
 
     public String getValue() {
-        return c;
+        return value;
     }
 
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            char c2 = 65535;
-            switch (b) {
+            switch (key) {
                 case "property_padding":
-                    c2 = 1;
-                    break;
-
                 case "property_margin":
-                    c2 = 0;
+                    a();
                     break;
-            }
-            if (c2 == 0 || c2 == 1) {
-                a();
             }
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        n = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            d.setVisibility(GONE);
-            e.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
         } else {
-            d.setVisibility(VISIBLE);
-            e.setVisibility(GONE);
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
     }
 
-    public final void a(Context context, boolean z) {
-        a = context;
+    private void initialize(Context context, boolean z) {
+        this.context = context;
         wB.a(context, this, Resources.layout.property_input_item);
-        h = findViewById(Resources.id.tv_name);
-        i = findViewById(Resources.id.tv_value);
-        f = findViewById(Resources.id.img_left_icon);
-        d = findViewById(Resources.id.property_item);
-        e = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setSoundEffectsEnabled(true);
             setOnClickListener(this);
@@ -133,13 +120,13 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         k = top;
         l = right;
         m = bottom;
-        i.setText("left: " + j + ", top: " + k + ", right: " + l + ", bottom: " + m);
+        tvValue.setText("left: " + j + ", top: " + k + ", right: " + l + ", bottom: " + m);
     }
 
-    public final void a() {
-        aB aBVar = new aB((Activity) getContext());
-        aBVar.b(h.getText().toString());
-        aBVar.a(g);
+    private void a() {
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_input_indent);
         CheckBox chk_pty_all = view.findViewById(Resources.id.chk_pty_all);
         chk_pty_all.setText(xB.b().a(getContext(), Resources.string.common_word_all));
@@ -148,11 +135,11 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         EditText et_top = view.findViewById(Resources.id.et_top);
         EditText et_right = view.findViewById(Resources.id.et_right);
         EditText et_bottom = view.findViewById(Resources.id.et_bottom);
-        TB ti_all = new TB(a, view.findViewById(Resources.id.ti_all), 0, 999);
-        TB ti_left = new TB(a, view.findViewById(Resources.id.ti_left), 0, 999);
-        TB ti_right = new TB(a, view.findViewById(Resources.id.ti_right), 0, 999);
-        TB ti_top = new TB(a, view.findViewById(Resources.id.ti_top), 0, 999);
-        TB ti_bottom = new TB(a, view.findViewById(Resources.id.ti_bottom), 0, 999);
+        TB ti_all = new TB(context, view.findViewById(Resources.id.ti_all), 0, 999);
+        TB ti_left = new TB(context, view.findViewById(Resources.id.ti_left), 0, 999);
+        TB ti_right = new TB(context, view.findViewById(Resources.id.ti_right), 0, 999);
+        TB ti_top = new TB(context, view.findViewById(Resources.id.ti_top), 0, 999);
+        TB ti_bottom = new TB(context, view.findViewById(Resources.id.ti_bottom), 0, 999);
         ti_left.a(String.valueOf(j));
         ti_top.a(String.valueOf(k));
         ti_right.a(String.valueOf(l));
@@ -214,8 +201,8 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 ti_bottom.a(et_all.getText().toString());
             }
         });
-        aBVar.a(view);
-        aBVar.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.a(view);
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
             if (chk_pty_all.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
                     int left = Integer.parseInt(et_left.getText().toString());
@@ -223,9 +210,9 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                     int right = Integer.parseInt(et_right.getText().toString());
                     int bottom = Integer.parseInt(et_bottom.getText().toString());
                     a(left, top, right, bottom);
-                    if (n != null) {
-                        n.a(b, new int[]{left, top, right, bottom});
-                        aBVar.dismiss();
+                    if (valueChangeListener != null) {
+                        valueChangeListener.a(key, new int[]{left, top, right, bottom});
+                        dialog.dismiss();
                     }
                 }
             } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
@@ -234,14 +221,14 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 int right = Integer.parseInt(et_right.getText().toString());
                 int bottom = Integer.parseInt(et_bottom.getText().toString());
                 a(left, top, right, bottom);
-                if (n != null) {
-                    n.a(b, new int[]{left, top, right, bottom});
-                    aBVar.dismiss();
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, new int[]{left, top, right, bottom});
+                    dialog.dismiss();
                 }
             }
         });
-        aBVar.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 }
