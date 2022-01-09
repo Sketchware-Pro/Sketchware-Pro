@@ -12,27 +12,27 @@ import a.a.a.wB;
 
 public class PropertySubheader extends RelativeLayout {
 
-    public ImageView a;
-    public TextView b;
+    public ImageView imgAdd;
+    public TextView tvName;
 
     public PropertySubheader(Context context) {
         super(context);
         a(context);
     }
 
-    public final void a(Context context) {
+    private void a(Context context) {
         wB.a(context, this, Resources.layout.property_subheader);
-        b = findViewById(Resources.id.tv_name);
-        a = findViewById(Resources.id.img_add);
+        tvName = findViewById(Resources.id.tv_name);
+        imgAdd = findViewById(Resources.id.img_add);
     }
 
     public void setHeaderName(String str) {
-        b.setText(str);
+        tvName.setText(str);
     }
 
     @Override
     public void setOnClickListener(View.OnClickListener onClickListener) {
-        a.setVisibility(VISIBLE);
-        a.setOnClickListener(onClickListener);
+        imgAdd.setVisibility(VISIBLE);
+        imgAdd.setOnClickListener(onClickListener);
     }
 }

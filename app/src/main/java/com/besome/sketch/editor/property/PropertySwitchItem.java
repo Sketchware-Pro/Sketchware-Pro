@@ -13,61 +13,61 @@ import a.a.a.wB;
 
 public class PropertySwitchItem extends RelativeLayout implements View.OnClickListener {
 
-    public int a = -1;
-    public boolean b = false;
-    public TextView c;
-    public TextView d;
-    public Switch e;
+    public int key = -1;
+    public boolean value = false;
+    public TextView tvName;
+    public TextView tvDesc;
+    public Switch switchValue;
 
     public PropertySwitchItem(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, Resources.layout.property_switch_item);
-        c = findViewById(Resources.id.tv_name);
-        d = findViewById(Resources.id.tv_desc);
-        e = findViewById(Resources.id.switch_value);
+        tvName = findViewById(Resources.id.tv_name);
+        tvDesc = findViewById(Resources.id.tv_desc);
+        switchValue = findViewById(Resources.id.switch_value);
         setOnClickListener(this);
         setSoundEffectsEnabled(true);
     }
 
     public int getKey() {
-        return a;
+        return key;
     }
 
-    public void setKey(int i) {
-        a = i;
+    public void setKey(int key) {
+        this.key = key;
     }
 
     public boolean getValue() {
-        return b;
+        return value;
     }
 
     public void setValue(boolean value) {
-        b = value;
-        e.setChecked(value);
+        this.value = value;
+        switchValue.setChecked(value);
     }
 
     public void onClick(View view) {
-        setValue(!b);
+        setValue(!value);
     }
 
     public void setDesc(String str) {
-        d.setText(str);
+        tvDesc.setText(str);
     }
 
     public void setName(String str) {
-        c.setText(str);
+        tvName.setText(str);
     }
 
     public void setSwitchChangedListener(CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
-        e.setOnCheckedChangeListener(onCheckedChangeListener);
+        switchValue.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 
     public void setTextColor(int textColor) {
-        c.setTextColor(textColor);
-        d.setTextColor(textColor);
+        tvName.setTextColor(textColor);
+        tvDesc.setTextColor(textColor);
     }
 }

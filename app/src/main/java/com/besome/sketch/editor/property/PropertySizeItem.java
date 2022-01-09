@@ -107,11 +107,11 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_input_size);
-        TB tb = new TB(context, view.findViewById(Resources.id.ti_input), 0, 999);
-        tb.a(String.valueOf(value));
+        TB validator = new TB(context, view.findViewById(Resources.id.ti_input), 0, 999);
+        validator.a(String.valueOf(value));
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
-            if (tb.b()) {
+            if (validator.b()) {
                 setValue(Integer.parseInt(((EditText) view.findViewById(Resources.id.et_input)).getText().toString()));
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);
