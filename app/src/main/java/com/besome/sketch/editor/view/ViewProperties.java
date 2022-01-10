@@ -19,100 +19,99 @@ import a.a.a.Jw;
 import a.a.a.wB;
 import a.a.a.xB;
 
-public class ViewProperties extends RelativeLayout {
+public class ViewProperties extends RelativeLayout implements AdapterView.OnItemSelectedListener {
 
-    public Spinner a;
-    public ArrayList<String> b = new ArrayList<>();
-    public a c;
-    public Jw d = null;
+    public Spinner spnWidget;
+    public ArrayList<String> viewsIdList = new ArrayList<>();
+    public SpinnerItemAdapter spinnerItemAdapter;
+    public Jw propertyTargetChangeListener = null;
 
     public ViewProperties(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
     public ViewProperties(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
-    public void setOnPropertyTargetChangeListener(Jw jw) {
-        d = jw;
+    public void setOnPropertyTargetChangeListener(Jw onPropertyTargetChangeListener) {
+        propertyTargetChangeListener = onPropertyTargetChangeListener;
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, Resources.layout.view_properties);
         ((TextView) findViewById(Resources.id.btn_editproperties)).setText(xB.b().a(context, Resources.string.design_button_properties));
-        a = findViewById(Resources.id.spn_widget);
-        c = new a(context, b);
-        a.setAdapter(c);
-        a.setSelection(0);
-        a.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                c.a(position);
-                a(b.get(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        spnWidget = findViewById(Resources.id.spn_widget);
+        spinnerItemAdapter = new SpinnerItemAdapter(context, viewsIdList);
+        spnWidget.setAdapter(spinnerItemAdapter);
+        spnWidget.setSelection(0);
+        spnWidget.setOnItemSelectedListener(this);
     }
 
-    public final void a(String str) {
-        if (d != null) {
-            d.a(str);
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        spinnerItemAdapter.setLayoutPosition(position);
+        if (propertyTargetChangeListener != null) {
+            propertyTargetChangeListener.a(viewsIdList.get(position));
         }
     }
 
-    static class a extends BaseAdapter {
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
-        public Context a;
-        public int b;
-        public ArrayList<String> c;
+    static class SpinnerItemAdapter extends BaseAdapter {
 
-        public a(Context context, ArrayList<String> arrayList) {
-            a = context;
-            c = arrayList;
+        public Context context;
+        public int layoutPosition;
+        public ArrayList<String> data;
+
+        public SpinnerItemAdapter(Context context, ArrayList<String> arrayList) {
+            this.context = context;
+            data = arrayList;
         }
 
-        public void a(int i) {
-            b = i;
+        public void setLayoutPosition(int position) {
+            layoutPosition = position;
         }
 
+        @Override
         public int getCount() {
-            if (c == null) {
-                return 0;
-            }
-            return c.size();
+            if (data == null) return 0;
+            return data.size();
         }
 
-        public View getDropDownView(int i, View view, ViewGroup viewGroup) {
-            return a(i, view, viewGroup, b == i);
+        @Override
+        public View getDropDownView(int position, View view, ViewGroup viewGroup) {
+            return createSpinnerItemView(position, view, viewGroup, layoutPosition == position);
         }
 
-        public Object getItem(int position) {
-            return c.get(position);
+        @Override
+        public String getItem(int position) {
+            return data.get(position);
         }
 
+        @Override
         public long getItemId(int position) {
             return position;
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return a(position, convertView, parent, false);
+            return createSpinnerItemView(position, convertView, parent, false);
         }
 
-        public final ViewIdSpinnerItem a(int position, View convertView, ViewGroup parent, boolean z) {
+        private ViewIdSpinnerItem createSpinnerItemView(int position, View convertView, ViewGroup parent, boolean z) {
             ViewIdSpinnerItem viewIdSpinnerItem;
             if (convertView != null) {
                 viewIdSpinnerItem = (ViewIdSpinnerItem) convertView;
             } else {
-                viewIdSpinnerItem = new ViewIdSpinnerItem(a);
+                viewIdSpinnerItem = new ViewIdSpinnerItem(context);
                 viewIdSpinnerItem.setTextSize(Resources.dimen.text_size_body_small);
             }
-            viewIdSpinnerItem.a(0, c.get(position), z);
+            viewIdSpinnerItem.a(0, data.get(position), z);
             viewIdSpinnerItem.a(false, 0xff404040, 0xff404040);
             return viewIdSpinnerItem;
         }
