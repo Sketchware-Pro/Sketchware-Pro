@@ -43,12 +43,12 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         return key;
     }
 
-    public void setKey(String str) {
-        key = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+    public void setKey(String key) {
+        this.key = key;
+        int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(xB.b().a(getResources(), identifier));
-            switch (key) {
+            switch (this.key) {
                 case "property_orientation":
                     icon = Resources.drawable.grid_3_48;
                     break;
@@ -107,7 +107,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
                 case "property_spinner_mode":
                 case "property_choice_mode":
                 case "property_first_day_of_week":
-                    a();
+                    showDialog();
             }
         }
     }
@@ -139,7 +139,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         }
     }
 
-    private void a() {
+    private void showDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
