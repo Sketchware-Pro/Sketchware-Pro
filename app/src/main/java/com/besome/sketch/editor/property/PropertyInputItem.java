@@ -2,6 +2,7 @@ package com.besome.sketch.editor.property;
 
 import android.app.Activity;
 import android.content.Context;
+impport android.viw.inputmethod.EditorInfo;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,312 +27,173 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
 
-    public Context a;
-    public String b = "";
-    public String c = "";
-    public ImageView d;
-    public int e;
-    public TextView f;
-    public TextView g;
-    public View h;
-    public View i;
-    public String j;
-    public ProjectFileBean k;
-    public Kw l;
+    public Context context;
+    public String key = "";
+    public String value = "";
+    public ImageView imgLeftIcon;
+    public int icon;
+    public TextView tvName;
+    public TextView tvValue;
+    public View propertyItem;
+    public View propertyMenuItem;
+    public String sc_id;
+    public ProjectFileBean projectFileBean;
+    public Kw valueChangeListener;
 
     public PropertyInputItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     private void setIcon(ImageView imageView) {
-        char type;
-        switch (b) {
+        switch (key) {
             case "property_id":
-                type = 0;
+                icon = Resources.drawable.rename_96_blue;
                 break;
 
             case "property_text":
-                type = 1;
+                icon = Resources.drawable.abc_96;
                 break;
 
             case "property_hint":
-                type = 2;
+                icon = Resources.drawable.help_96_blue;
                 break;
 
             case "property_weight":
-                type = 3;
-                break;
-
             case "property_weight_sum":
-                type = 4;
+                icon = Resources.drawable.one_to_many_48;
                 break;
 
             case "property_rotate":
-                type = 5;
+                icon = Resources.drawable.ic_reset_color_32dp;
                 break;
 
             case "property_lines":
-                type = 6;
-                break;
-
             case "property_max":
-                type = 7;
-                break;
-
             case "property_progress":
-                type = 8;
+                icon = Resources.drawable.numbers_48;
                 break;
 
             case "property_alpha":
-                type = 9;
+                icon = Resources.drawable.opacity_48;
                 break;
 
             case "property_translation_x":
-                type = 10;
+                icon = Resources.drawable.swipe_right_48;
                 break;
 
             case "property_translation_y":
-                type = 11;
+                icon = Resources.drawable.swipe_down_48;
                 break;
 
             case "property_scale_x":
-                type = 12;
-                break;
-
             case "property_scale_y":
-                type = 13;
+                icon = Resources.drawable.resize_48;
                 break;
 
             case "property_inject":
-                type = 14;
+                icon = Resources.drawable.ic_property_inject;
                 break;
 
             case "property_convert":
-                type = 15;
-                break;
-
-            default:
-                type = 65535;
+                icon = Resources.drawable.ic_property_convert;
                 break;
         }
-        switch (type) {
-            case 0:
-                e = Resources.drawable.rename_96_blue;
-                break;
-
-            case 1:
-                e = Resources.drawable.abc_96;
-                break;
-
-            case 2:
-                e = Resources.drawable.help_96_blue;
-                break;
-
-            case 3:
-            case 4:
-                e = Resources.drawable.one_to_many_48;
-                break;
-
-            case 5:
-                e = Resources.drawable.ic_reset_color_32dp;
-                break;
-
-            case 6:
-            case 7:
-            case '\b':
-                e = Resources.drawable.numbers_48;
-                break;
-
-            case '\t':
-                e = Resources.drawable.opacity_48;
-                break;
-
-            case '\n':
-                e = Resources.drawable.swipe_right_48;
-                break;
-
-            case 11:
-                e = Resources.drawable.swipe_down_48;
-                break;
-
-            case '\f':
-            case '\r':
-                e = Resources.drawable.resize_48;
-                break;
-
-            case 14:
-                e = Resources.drawable.ic_property_inject;
-                break;
-
-            case 15:
-                e = Resources.drawable.ic_property_convert;
-                break;
-        }
-        imageView.setImageResource(e);
+        imageView.setImageResource(icon);
     }
 
     public String getKey() {
-        return b;
+        return key;
     }
 
-    public void setKey(String str) {
-        b = str;
-        int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
+    public void setKey(String key) {
+        this.key = key;
+        int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            f.setText(xB.b().a(getResources(), identifier));
-            if (i.getVisibility() == VISIBLE) {
+            tvName.setText(xB.b().a(getResources(), identifier));
+            if (propertyMenuItem.getVisibility() == VISIBLE) {
                 setIcon(findViewById(Resources.id.img_icon));
                 ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            setIcon(d);
+            setIcon(imgLeftIcon);
         }
     }
 
     public String getValue() {
-        return c;
+        return value;
     }
 
     public void setValue(String value) {
-        c = value;
-        g.setText(value);
+        this.value = value;
+        tvValue.setText(value);
     }
 
+    @Override
     public void onClick(View view) {
         if (!mB.a()) {
-            char type;
-            switch (b) {
+            switch (key) {
                 case "property_id":
-                    type = 0;
-                    break;
-
-                case "property_text":
-                    type = 1;
-                    break;
-
-                case "property_hint":
-                    type = 2;
-                    break;
-
-                case "property_weight":
-                    type = 3;
-                    break;
-
-                case "property_weight_sum":
-                    type = 4;
-                    break;
-
-                case "property_rotate":
-                    type = 5;
-                    break;
-
-                case "property_lines":
-                    type = 6;
-                    break;
-
-                case "property_max":
-                    type = 7;
-                    break;
-
-                case "property_progress":
-                    type = 8;
-                    break;
-
-                case "property_alpha":
-                    type = 9;
-                    break;
-
-                case "property_translation_x":
-                    type = 10;
-                    break;
-
-                case "property_translation_y":
-                    type = 11;
-                    break;
-
-                case "property_scale_x":
-                    type = 12;
-                    break;
-
-                case "property_scale_y":
-                    type = 13;
-                    break;
-
-                case "property_inject":
-                    type = 14;
-                    break;
-
-                case "property_convert":
-                    type = 15;
-                    break;
-
-                default:
-                    type = 65535;
-                    break;
-            }
-            switch (type) {
-                case 0:
                     b();
                     return;
 
-                case 1:
-                case 2:
-                case 14:
+                case "property_text":
+                case "property_hint":
+                case "property_inject":
                     b(0, 9999);
                     return;
 
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case '\b':
+                case "property_weight":
+                case "property_weight_sum":
+                case "property_rotate":
+                case "property_lines":
+                case "property_max":
+                case "property_progress":
                     a();
                     return;
 
-                case '\t':
+                case "property_alpha":
                     a(0, 1);
                     return;
 
-                case '\n':
-                case 11:
+                case "property_translation_x":
+                case "property_translation_y":
                     a(-9999, 9999);
                     return;
 
-                case '\f':
-                case '\r':
+                case "property_scale_x":
+                case "property_scale_y":
                     a(0, 99);
                     return;
 
-                case 15:
+                case "property_convert":
                     b(0, 99);
             }
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        l = kw;
+    public void setOnPropertyValueChangeListener(Kw onPropertyValueChangeListener) {
+        valueChangeListener = onPropertyValueChangeListener;
     }
 
     public void setOrientationItem(int orientationItem) {
         if (orientationItem == 0) {
-            h.setVisibility(GONE);
-            i.setVisibility(VISIBLE);
+            propertyItem.setVisibility(GONE);
+            propertyMenuItem.setVisibility(VISIBLE);
             return;
         }
-        h.setVisibility(VISIBLE);
-        i.setVisibility(GONE);
+        propertyItem.setVisibility(VISIBLE);
+        propertyMenuItem.setVisibility(GONE);
     }
 
-    public final void a(Context context, boolean z) {
-        a = context;
+    private void initialize(Context context, boolean z) {
+        this.context = context;
         wB.a(context, this, Resources.layout.property_input_item);
-        f = findViewById(Resources.id.tv_name);
-        g = findViewById(Resources.id.tv_value);
-        d = findViewById(Resources.id.img_left_icon);
-        h = findViewById(Resources.id.property_item);
-        i = findViewById(Resources.id.property_menu_item);
+        tvName = findViewById(Resources.id.tv_name);
+        tvValue = findViewById(Resources.id.tv_value);
+        imgLeftIcon = findViewById(Resources.id.img_left_icon);
+        propertyItem = findViewById(Resources.id.property_item);
+        propertyMenuItem = findViewById(Resources.id.property_menu_item);
         if (z) {
             setSoundEffectsEnabled(true);
             setOnClickListener(this);
@@ -340,25 +202,23 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void b() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(f.getText().toString());
-        dialog.a(e);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View a2 = wB.a(getContext(), Resources.layout.property_popup_input_text);
         EditText editText = a2.findViewById(Resources.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
         editText.setInputType(524289);
-        editText.setImeOptions(6);
-        _B _b = new _B(a, a2.findViewById(Resources.id.ti_input), uq.b, uq.a(), jC.a(j).a(k), c);
-        _b.a(c);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        _B validator = new _B(context, a2.findViewById(Resources.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
+        validator.a(value);
         dialog.a(a2);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (_b.b()) {
+                if (validator.b()) {
                     setValue(editText.getText().toString());
-                    if (l != null) {
-                        l.a(b, c);
-                    }
+                    if (valueChangeListener != null) valueChangeListener.a(key, value);
                     dialog.dismiss();
                 }
             }
@@ -368,35 +228,33 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    public void a(String str, ProjectFileBean projectFileBean) {
-        j = str;
-        k = projectFileBean;
+    public void a(String projectId, ProjectFileBean projectFileBean) {
+        sc_id = projectId;
+        this.projectFileBean = projectFileBean;
     }
 
     private void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(f.getText().toString());
-        dialog.a(e);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_input_text);
         EditText editText = view.findViewById(Resources.id.ed_input);
         editText.setInputType(4098);
-        editText.setText(c);
-        TB tb = new TB(
-                a,
+        editText.setText(value);
+        TB validator = new TB(
+                context,
                 view.findViewById(Resources.id.ti_input),
                 0,
-                (b.equals("property_max") || b.equals("property_progress"))
+                (key.equals("property_max") || key.equals("property_progress"))
                         ? 0x7fffffff : 999
         );
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tb.b()) {
+                if (validator.b()) {
                     setValue(editText.getText().toString());
-                    if (l != null) {
-                        l.a(b, c);
-                    }
+                    if (valueChangeListener != null) valueChangeListener.a(key, value);
                     dialog.dismiss();
                 }
             }
@@ -406,22 +264,20 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    public final void b(int i, int i2) {
+    private void b(int minValue, int maxValue) {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(f.getText().toString());
-        dialog.a(e);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_input_text);
-        SB sb = new SB(a, view.findViewById(Resources.id.ti_input), i, i2);
-        sb.a(c);
+        SB lengthValidator = new SB(context, view.findViewById(Resources.id.ti_input), minValue, maxValue);
+        lengthValidator.a(value);
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sb.b()) {
+                if (lengthValidator.b()) {
                     setValue(((EditText) view.findViewById(Resources.id.ed_input)).getText().toString());
-                    if (l != null) {
-                        l.a(b, c);
-                    }
+                    if (valueChangeListener != null) valueChangeListener.a(key, value);
                     dialog.dismiss();
                 }
             }
@@ -431,24 +287,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    private void a(int i, int i2) {
+    private void a(int minValue, int maxValue) {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(f.getText().toString());
-        dialog.a(e);
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
         View view = wB.a(getContext(), Resources.layout.property_popup_input_text);
         EditText editText = view.findViewById(Resources.id.ed_input);
-        editText.setInputType(i < 0 ? 12290 : 8194);
-        editText.setText(c);
-        OB ob = new OB(a, view.findViewById(Resources.id.ti_input), i, i2);
+        editText.setInputType(minValue < 0 ? 12290 : 8194);
+        editText.setText(value);
+        OB validator = new OB(context, view.findViewById(Resources.id.ti_input), minValue, maxValue);
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ob.b()) {
+                if (validator.b()) {
                     setValue(editText.getText().toString());
-                    if (l != null) {
-                        l.a(b, c);
-                    }
+                    if (valueChangeListener != null) valueChangeListener.a(key, value);
                     dialog.dismiss();
                 }
             }
