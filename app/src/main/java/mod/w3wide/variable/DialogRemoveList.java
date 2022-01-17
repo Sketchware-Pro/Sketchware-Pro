@@ -5,7 +5,7 @@ import a.a.a.*;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.besome.sketch.editor.LogicEditorActivity;
@@ -28,8 +28,8 @@ public class DialogRemoveList implements OnClickListener {
         String eventName = logicEditor.C + "_" + logicEditor.D;
 
         for (int i = 0; i < childCount; i++) {
-            if (viewGroup.getChildAt(i) instanceof CheckBox) {
-                CheckBox radioButton = (CheckBox) viewGroup.getChildAt(i);
+            if (viewGroup.getChildAt(i) instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 String list = radioButton.getText().toString();
 
                 if (radioButton.isChecked()) {

@@ -9,7 +9,7 @@ import a.a.a.xB;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.besome.sketch.editor.LogicEditorActivity;
@@ -33,10 +33,10 @@ public class DialogRemoveVariable implements OnClickListener {
         String javaName = logicEditor.M.getJavaName();
 
         for (int i = 0; i < childCount; i++) {
-            if (viewGroup.getChildAt(i) instanceof CheckBox) {
-                CheckBox checkBox = (CheckBox) viewGroup.getChildAt(i);
-                String variable = checkBox.getText().toString();
-                if (checkBox.isChecked()) {
+            if (viewGroup.getChildAt(i) instanceof RadioButton) {
+                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
+                String variable = radioButton.getText().toString();
+                if (radioButton.isChecked()) {
                     if (!logicEditor.o.c(variable)) {
                         if (!jC.a(logicEditor.B).c(javaName, variable, eventName)) {
                             logicEditor.m(variable);
