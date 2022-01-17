@@ -397,14 +397,14 @@ public class ExtraPaletteBlock {
             case 0:
                 logicEditor.b("Add variable", "variableAdd");
                 logicEditor.b("Add custom variable", "variableAddNew", clickListener);
-                logicEditor.b("Remove variable", "variableRemove");
+                logicEditor.b("Remove variable", "variableRemove", clickListener);
                 variables();
                 return;
 
             case 1:
                 logicEditor.b("Add list", "listAdd");
                 logicEditor.b("Add custom List", "listAddCustom", clickListener);
-                logicEditor.b("Remove list", "listRemove");
+                logicEditor.b("Remove list", "listRemove", clickListener);
                 list();
                 return;
 
