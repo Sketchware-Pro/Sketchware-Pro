@@ -33,7 +33,7 @@ public class MenuBean {
     static {
         ArrayList<String> permissions = new ArrayList<>();
         for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
-            permissions.add("Manifest.permission." + permissionField.getName());
+            permissions.add(permissionField.getName());
         }
         permission = permissions.toArray(new String[0]);
     }
@@ -71,14 +71,14 @@ public class MenuBean {
         String menuName = ss.getMenuName();
         asdAll.b("Select " + menuName);
         switch (menuName) {
-        	case "SignButtonColor":
+            case "SignButtonColor":
                 asdAll.b("Select a SignInButton Color");
                 selectableItems.add("COLOR_AUTO");
                 selectableItems.add("COLOR_DARK");
                 selectableItems.add("COLOR_LIGHT");
                 break;
 
-        	case "SignButtonSize":
+            case "SignButtonSize":
                 asdAll.b("Select SignInButton Size");
                 selectableItems.add("SIZE_ICON_ONLY");
                 selectableItems.add("SIZE_STANDARD");
