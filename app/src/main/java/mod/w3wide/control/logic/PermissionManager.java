@@ -25,7 +25,12 @@ public class PermissionManager {
         for (Entry<String, ArrayList<BlockBean>> blocks : jC.a(sc_id).b(javaName).entrySet()) {
             for (BlockBean block : blocks.getValue()) {
                 if (block.opCode.equals("addPermission") && !block.parameters.get(0).trim().isEmpty()) {
-                    permList.add(block.parameters.get(0));
+                    String firstParam = block.parameters.get(0);
+                    if (firstParam.startsWith("Manifest")) {
+                        permList.add(block.parameters.get(0));
+                    } else {
+                        permList.add("Manifest.permission." + block.parameters.get(0));
+                    }
                 }
             }
         }
@@ -51,6 +56,7 @@ public class PermissionManager {
         for (Entry<String, ArrayList<BlockBean>> blocks : jC.a(sc_id).b(javaName).entrySet()) {
             for (BlockBean block : blocks.getValue()) {
                 if (block.opCode.equals("removePermission") && !block.parameters.get(0).trim().isEmpty()) {
+                    String permission = block.parameters.get(0).startsWith("Manifest") ? block.parameters.get(0) : ("Manifest.permission." + block.parameters.get(0));
                     checkPerm.remove(formatPermission(isAppCompat, block.parameters.get(0)));
                     reqPerm.remove(block.parameters.get(0));
                 }
