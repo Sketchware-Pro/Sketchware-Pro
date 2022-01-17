@@ -32,84 +32,84 @@ public class Nx {
         return a(0);
     }
 
-    public final String a(int i) {
+    public final String a(int indentSize) {
         StringBuilder str = new StringBuilder();
-        for (int i2 = 0; i2 < this.b + i; i2++) {
+        for (int i = 0; i < b + indentSize; i++) {
             str.append("\t");
         }
         return str.toString();
     }
 
-    public void a(int i, String str, String str2, String str3) {
-        this.e.add(i, new a(this, str, str2, str3));
+    public void a(int position, String namespace, String attr, String value) {
+        e.add(position, new a(this, namespace, attr, value));
     }
 
-    public void a(Nx nx) {
-        nx.b(this.b + 1);
-        this.f.add(nx);
+    public void a(Nx xmlBuilder) {
+        xmlBuilder.b(b + 1);
+        f.add(xmlBuilder);
     }
 
     public void a(String str) {
-        this.c = str;
+        c = str;
     }
 
-    public void a(String str, String str2, String str3) {
-        this.e.add(new a(this, str, str2, str3));
+    public void a(String namespace, String attr, String value) {
+        e.add(new a(this, namespace, attr, value));
     }
 
-    public void b(String str) {
-        this.e.add(new a(this, str));
+    public void b(String value) {
+        e.add(new a(this, value));
     }
 
     public String b() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(a());
-        sb.append("<");
-        sb.append(this.a);
-        for (Nx.a aVar : this.e) {
-            if (this.e.size() <= 1 || this.d) {
-                sb.append(MinimalPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR);
+        StringBuilder resultCode = new StringBuilder();
+        resultCode.append(a());
+        resultCode.append("<");
+        resultCode.append(a);
+        for (Nx.a attr : e) {
+            if (e.size() <= 1 || d) {
+                resultCode.append(MinimalPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR);
             } else {
-                sb.append("\r\n");
-                sb.append(a(1));
-                this.g = "\r\n" + a(1);
+                resultCode.append("\r\n");
+                resultCode.append(a(1));
+                g = "\r\n" + a(1);
             }
-            sb.append(aVar.a());
+            resultCode.append(attr.a());
         }
-        if (this.f.size() <= 0) {
-            if (this.c == null || this.c.length() <= 0) {
-                sb.append(" />");
+        if (f.size() <= 0) {
+            if (c == null || c.length() <= 0) {
+                resultCode.append(" />");
             } else {
-                sb.append(">");
-                sb.append(this.c);
-                sb.append("</");
-                sb.append(this.a);
-                sb.append(">");
+                resultCode.append(">");
+                resultCode.append(c);
+                resultCode.append("</");
+                resultCode.append(a);
+                resultCode.append(">");
             }
         } else {
-            sb.append(">");
-            sb.append("\r\n");
-            for (Nx nx : this.f) {
-                sb.append(nx.b());
+            resultCode.append(">");
+            resultCode.append("\r\n");
+            for (Nx xmlBuilder : f) {
+                resultCode.append(xmlBuilder.b());
             }
-            sb.append(a());
-            sb.append("</");
-            sb.append(this.a);
-            sb.append(">");
+            resultCode.append(a());
+            resultCode.append("</");
+            resultCode.append(a);
+            resultCode.append(">");
         }
-        sb.append("\r\n");
-        return sb.toString();
+        resultCode.append("\r\n");
+        return resultCode.toString();
     }
 
     public String c() {
-        return this.a.replaceAll("\\w*\\..*\\.", "");
+        return a.replaceAll("\\w*\\..*\\.", "");
     }
 
-    public void b(int i) {
-        this.b = i;
-        if (this.f != null) {
-            for (Nx nx : this.f) {
-                nx.b(i + 1);
+    public void b(int indentSize) {
+        b = indentSize;
+        if (f != null) {
+            for (Nx nx : f) {
+                nx.b(indentSize + 1);
             }
         }
     }
@@ -120,25 +120,25 @@ public class Nx {
         public String str2;
         public String str3;
 
-        public a(Nx nx2, String str4, String str5, String str6) {
-            this.nx = nx2;
-            this.str = str4;
-            this.str2 = str5;
-            this.str3 = str6;
+        public a(Nx xmlBuilder, String namespace, String attr, String value) {
+            nx = xmlBuilder;
+            str = namespace;
+            str2 = attr;
+            str3 = value;
         }
 
-        public a(Nx nx2, String str4) {
-            this.nx = nx2;
-            this.str3 = str4;
+        public a(Nx xmlBuilder, String value) {
+            nx = xmlBuilder;
+            str3 = value;
         }
 
         public String a() {
-            if (this.str != null && this.str.length() > 0) {
-                return this.str + ":" + this.str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + this.str3 + "\"";
-            } else if (this.str2 == null || this.str2.length() <= 0) {
-                return this.str3.replaceAll("\n", Nx.this.g);
+            if (str != null && str.length() > 0) {
+                return str + ":" + str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + str3 + "\"";
+            } else if (str2 == null || str2.length() <= 0) {
+                return str3.replaceAll("\n", Nx.this.g);
             } else {
-                return this.str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + this.str3 + "\"";
+                return str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + str3 + "\"";
             }
         }
     }
