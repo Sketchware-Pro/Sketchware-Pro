@@ -9,14 +9,13 @@ import a.a.a.nA;
 
 public class TextBean extends nA implements Parcelable {
     public static final Parcelable.Creator<TextBean> CREATOR = new Parcelable.Creator<TextBean>() {
-        /* class com.besome.sketch.beans.TextBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public TextBean createFromParcel(Parcel parcel) {
             return new TextBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public TextBean[] newArray(int i) {
             return new TextBean[i];
         }
@@ -66,9 +65,9 @@ public class TextBean extends nA implements Parcelable {
         this.text = "";
         this.textSize = 12;
         this.textType = TEXT_TYPE_NORMAL;
-        this.textColor = -16777216;
+        this.textColor = 0xff000000;
         this.hint = "";
-        this.hintColor = -10453621;
+        this.hintColor = 0xff607d8b;
         this.singleLine = 0;
         this.line = 0;
         this.inputType = INPUT_TYPE_TEXT;
