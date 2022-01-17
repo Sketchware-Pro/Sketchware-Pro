@@ -26,10 +26,6 @@ public class MenuBean {
     private static final String[] patternFlags = new String[]{"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
     private static final String[] permission;
 
-    private final LogicEditorActivity logic;
-    public String javaName;
-    public String sc_id;
-
     static {
         ArrayList<String> permissions = new ArrayList<>();
         for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
@@ -37,6 +33,10 @@ public class MenuBean {
         }
         permission = permissions.toArray(new String[0]);
     }
+
+    private final LogicEditorActivity logic;
+    public String javaName;
+    public String sc_id;
 
     public MenuBean(LogicEditorActivity activity) {
         javaName = activity.M.getJavaName();
