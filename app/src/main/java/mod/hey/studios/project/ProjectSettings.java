@@ -21,8 +21,6 @@ import mod.jbk.util.LogUtil;
 
 public class ProjectSettings {
 
-    private static final String TAG = "ProjectSettings";
-
     /**
      * Setting for the final app's {@code minSdkVersion}
      *
@@ -53,10 +51,9 @@ public class ProjectSettings {
      * Setting to disable showing deprecated methods included in every generated class, e.g. showMessage(String)
      */
     public static final String SETTING_DISABLE_OLD_METHODS = "disable_old_methods";
-
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";
-
+    private static final String TAG = "ProjectSettings";
     private final String path;
     public String sc_id;
     private HashMap<String, String> hashmap;

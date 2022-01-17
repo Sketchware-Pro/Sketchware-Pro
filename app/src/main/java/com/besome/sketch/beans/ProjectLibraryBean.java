@@ -141,7 +141,7 @@ public class ProjectLibraryBean implements Parcelable {
     }
 
     public boolean isEnabled() {
-        return useYn != null && ! useYn.isEmpty() && useYn.equals(LIB_USE_Y);
+        return useYn != null && !useYn.isEmpty() && useYn.equals(LIB_USE_Y);
     }
 
     public void print() {

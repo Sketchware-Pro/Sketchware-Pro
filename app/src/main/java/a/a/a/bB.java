@@ -29,9 +29,9 @@ public class bB {
         Toast toast = new Toast(context);
         toast.setDuration(duration);
         toast.setGravity(
-            gravity,
-            (int) xOffset,
-            (int) yOffset
+                gravity,
+                (int) xOffset,
+                (int) yOffset
         );
         toast.setView(inflate);
         return toast;
@@ -53,9 +53,9 @@ public class bB {
             Toast toast = new Toast(context);
             toast.setDuration(duration);
             toast.setGravity(
-                gravity,
-                (int) wB.a(context, xOffset),
-                (int) wB.a(context, yOffset)
+                    gravity,
+                    (int) wB.a(context, xOffset),
+                    (int) wB.a(context, yOffset)
             );
             toast.setView(inflate);
             return toast;

@@ -50,14 +50,14 @@ public final class JarCheck {
                     }
 
                     int major =
-                        ((chunk[chunkLength - 2] & 0xff) << 8) +
-                        (chunk[chunkLength - 1] & 0xff);
+                            ((chunk[chunkLength - 2] & 0xff) << 8) +
+                                    (chunk[chunkLength - 1] & 0xff);
 
                     if (!(low <= major && major <= high)) {
                         success = false;
                     }
                 }
-            } catch (EOFException ignored) { }
+            } catch (EOFException ignored) {}
 
             zip.close();
             return success;

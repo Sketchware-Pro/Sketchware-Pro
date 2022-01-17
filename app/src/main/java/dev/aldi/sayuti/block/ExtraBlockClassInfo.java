@@ -151,7 +151,7 @@ public class ExtraBlockClassInfo {
 
             case "signinbutton":
                 return "SignInButton";
-                
+
             case "materialButton":
                 return "MaterialButton";
 

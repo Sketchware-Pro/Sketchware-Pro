@@ -38,14 +38,14 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         dialog.a(Helper.getResString(2131625245));
         dialog.setCancelable(false);
         dialog.b(Helper.getResString(2131624986), new View.OnClickListener() {
-        	@Override
+            @Override
             public void onClick(View v) {
                 libSwitch.setChecked(false);
                 dialog.dismiss();
             }
         });
         dialog.a(Helper.getResString(2131624974), new View.OnClickListener() {
-        	@Override
+            @Override
             public void onClick(View v) {
                 libSwitch.setChecked(true);
                 dialog.dismiss();

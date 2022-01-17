@@ -115,7 +115,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
                 if (!id_detector.contains(string)) {
                     nameLayout.setErrorEnabled(false);
                     save.setEnabled(true);
-                } else if (! mode.equals("edit")) {
+                } else if (!mode.equals("edit")) {
                     nameLayout.setErrorEnabled(true);
                     nameLayout.setError("Block name already in use");
                     save.setEnabled(false);
