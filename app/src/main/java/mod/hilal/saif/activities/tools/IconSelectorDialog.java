@@ -46,11 +46,11 @@ public class IconSelectorDialog extends Dialog {
     public void setUpViews() {
         GridView gridView = new GridView(getContext());
         gridView.setLayoutParams(
-            new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0.0f
-            )
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0.0f
+                )
         );
         gridView.setNumColumns(6);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
@@ -69,36 +69,36 @@ public class IconSelectorDialog extends Dialog {
         gridView.setAdapter(new IconListAdapter(data));
         ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
         if (!ed.getText().toString().isEmpty()) {
-	        gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString()))
-			);
-		}
-        
+            gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(ed.getText().toString()))
+            );
+        }
+
     }
 
     private View pallette(int resourceId) {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(
-            new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0.0f
-            )
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0.0f
+                )
         );
         linearLayout.setGravity(Gravity.CENTER);
         ImageView imageView = new ImageView(getContext());
         imageView.setLayoutParams(
-            new LinearLayout.LayoutParams(
-                (int) getDip(50),
-                (int) getDip(50),
-                0.0f
-            )
+                new LinearLayout.LayoutParams(
+                        (int) getDip(50),
+                        (int) getDip(50),
+                        0.0f
+                )
         );
         imageView.setImageResource(resourceId);
         imageView.setPadding(
-            (int) getDip(4),
-            (int) getDip(4),
-            (int) getDip(4),
-            (int) getDip(4)
+                (int) getDip(4),
+                (int) getDip(4),
+                (int) getDip(4),
+                (int) getDip(4)
         );
         linearLayout.addView(imageView);
         return linearLayout;

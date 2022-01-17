@@ -168,7 +168,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 return true;
             }
         });
-        
+
         options_menu = new ImageView(this);
         options_menu.setImageResource(2131165791);
         options_menu.setPadding((int) SketchwareUtil.getDip(9),
@@ -185,7 +185,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         toolbar.addView(options_menu);
         applyRippleToView(back_icon, delete, edit, add, cancel, save, add_value, options_menu);
     }
-    
+
     private void save() {
         if (isNewGroup) {
             if (name.getText().toString().isEmpty()) {
@@ -236,7 +236,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         }
         label.setVisibility(View.GONE);
     }
-    
+
     private void showOptionsMenu() {
         PopupMenu popupMenu = new PopupMenu(BlockSelectorActivity.this, options_menu);
         Menu menu = popupMenu.getMenu();
@@ -286,7 +286,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 Helper.setViewsVisibility(false, label, delete, container);
                 spinner1.setEnabled(false);
                 listview1.setEnabled(false);
-            break;
+                break;
 
             case 2131232615://add_value
                 if (current_item != 0) {
@@ -302,7 +302,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                     return;
                 }
                 SketchwareUtil.toastError("This menu can't be modified.");
-            break;
+                break;
 
             case 2131232604://delete
                 if (current_item != 0) {
@@ -337,12 +337,12 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                     return;
                 }
                 SketchwareUtil.toastError("This menu can't be modified.");
-            break;
+                break;
 
             case 2131232528://save
                 save();
-            break;
-            
+                break;
+
             case 2131232610://cancel
                 _fabVisibility(true);
                 TransitionManager.beginDelayedTransition(background, autoTransition);
@@ -351,7 +351,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 spinner1.setEnabled(true);
                 listview1.setEnabled(true);
                 isNewGroup = false;
-            break;
+                break;
         }
     }
 

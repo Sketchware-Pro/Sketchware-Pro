@@ -307,7 +307,7 @@ public class BackupFactory {
             return;
         }
         //delete temp dir if exist
-        if (outFolder.exists()){
+        if (outFolder.exists()) {
             FileUtil.deleteFile(outFolder.getAbsolutePath());
         }
 
@@ -363,7 +363,7 @@ public class BackupFactory {
 
                     }
 
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {}
             }
         }
 

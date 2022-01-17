@@ -854,7 +854,7 @@ public class mq {
 
             case "FragmentAdapter":
                 return "FragmentStatePagerAdapter";
-                
+
             case "Context":
                 return "Activity";
 

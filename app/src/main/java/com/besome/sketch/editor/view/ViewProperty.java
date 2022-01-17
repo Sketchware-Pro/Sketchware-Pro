@@ -43,57 +43,57 @@ import mod.hey.studios.util.Helper;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
-    public final String a = "see_all";
     public String b;
     public ProjectFileBean c;
-    public Spinner d;
+    public Spinner spnWidget;
     public ArrayList<ViewBean> e = new ArrayList<>();
     public c f;
     public Jw g = null;
-    public CustomHorizontalScrollView h;
-    public LinearLayout i;
-    public LinearLayout j;
-    public ViewPropertyItems k;
+    public CustomHorizontalScrollView hcvProperty;
+    public LinearLayout propertyContents;
+    public LinearLayout layoutPropertySeeAll;
+    public ViewPropertyItems viewPropertyItems;
     public b l;
-    public View m;
-    public ViewEvents n;
+    public View propertyLayout;
+    public ViewEvents viewEvent;
     public Iw o = null;
     public Lw p;
-    public LinearLayout q;
+    public LinearLayout layoutPropertyGroup;
     public int r;
-    public ImageView s;
+    public ImageView imgSave;
     public ObjectAnimator t;
     public ObjectAnimator u;
     public boolean v = true;
+    private String a = "see_all";
 
     public ViewProperty(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
     public ViewProperty(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
     public void a(String str, Object obj) {
     }
 
-    public void setOnEventClickListener(Qs qs) {
-        n.setOnEventClickListener(qs);
+    public void setOnEventClickListener(Qs onEventClickListener) {
+        viewEvent.setOnEventClickListener(onEventClickListener);
     }
 
-    public void setOnPropertyListener(Iw iw) {
-        o = iw;
+    public void setOnPropertyListener(Iw onPropertyListener) {
+        o = onPropertyListener;
     }
 
-    public void setOnPropertyTargetChangeListener(Jw jw) {
-        g = jw;
+    public void setOnPropertyTargetChangeListener(Jw onPropertyTargetChangeListener) {
+        g = onPropertyTargetChangeListener;
     }
 
-    public void setOnPropertyValueChangedListener(Lw lw) {
-        p = lw;
-        k.setOnPropertyValueChangedListener(new Lw() {
+    public void setOnPropertyValueChangedListener(Lw onPropertyValueChangedListener) {
+        p = onPropertyValueChangedListener;
+        viewPropertyItems.setOnPropertyValueChangedListener(new Lw() {
             @Override
             public void a(ViewBean viewBean) {
                 if (p != null) {
@@ -103,7 +103,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         });
     }
 
-    public final void b() {
+    private void b() {
         if (t.isRunning()) {
             t.cancel();
         }
@@ -112,63 +112,63 @@ public class ViewProperty extends LinearLayout implements Kw {
         }
     }
 
-    public final void c() {
+    private void c() {
         if (t == null) {
-            t = ObjectAnimator.ofFloat(j, View.TRANSLATION_Y, 0.0f);
+            t = ObjectAnimator.ofFloat(layoutPropertySeeAll, View.TRANSLATION_Y, 0.0f);
             t.setDuration(400L);
             t.setInterpolator(new DecelerateInterpolator());
         }
         if (u == null) {
-            u = ObjectAnimator.ofFloat(j, View.TRANSLATION_Y, wB.a(getContext(), 84.0f));
+            u = ObjectAnimator.ofFloat(layoutPropertySeeAll, View.TRANSLATION_Y, wB.a(getContext(), 84.0f));
             u.setDuration(200L);
             u.setInterpolator(new DecelerateInterpolator());
         }
     }
 
     public void d() {
-        ViewPropertyItems viewPropertyItems = k;
+        ViewPropertyItems viewPropertyItems = this.viewPropertyItems;
         if (viewPropertyItems != null) {
             viewPropertyItems.b();
         }
     }
 
     public void e() {
-        for (int i2 = 0; i2 < q.getChildCount(); i2++) {
-            a aVar = (a) q.getChildAt(i2);
+        for (int i2 = 0; i2 < layoutPropertyGroup.getChildCount(); i2++) {
+            a aVar = (a) layoutPropertyGroup.getChildAt(i2);
             if (r == (Integer) aVar.getTag()) {
                 aVar.setSelected(true);
-                aVar.c.setTextColor(-1);
+                aVar.tvTitle.setTextColor(-1);
                 aVar.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).start();
             } else {
                 aVar.setSelected(false);
-                aVar.c.setTextColor(-14868183);
+                aVar.tvTitle.setTextColor(-14868183);
                 aVar.animate().scaleX(0.8f).scaleY(0.8f).alpha(0.6f).start();
             }
         }
-        if (f.a() < e.size()) {
-            ViewBean viewBean = e.get(f.a());
+        if (f.getLayoutPosition() < e.size()) {
+            ViewBean viewBean = e.get(f.getLayoutPosition());
             if (r == 0) {
-                m.setVisibility(VISIBLE);
-                j.setVisibility(VISIBLE);
-                k.a(b, viewBean);
+                propertyLayout.setVisibility(VISIBLE);
+                layoutPropertySeeAll.setVisibility(VISIBLE);
+                viewPropertyItems.a(b, viewBean);
                 a(viewBean);
-                n.setVisibility(GONE);
+                viewEvent.setVisibility(GONE);
             } else if (r == 1) {
-                m.setVisibility(VISIBLE);
-                k.e(viewBean);
-                j.setVisibility(GONE);
+                propertyLayout.setVisibility(VISIBLE);
+                viewPropertyItems.e(viewBean);
+                layoutPropertySeeAll.setVisibility(GONE);
             } else if (r == 2) {
-                m.setVisibility(GONE);
-                n.setVisibility(VISIBLE);
-                n.a(b, c, viewBean);
+                propertyLayout.setVisibility(GONE);
+                viewEvent.setVisibility(VISIBLE);
+                viewEvent.a(b, c, viewBean);
             }
         }
     }
 
-    public final void f() {
-        aB aBVar = new aB((Activity) getContext());
-        aBVar.b(xB.b().a(getContext(), Resources.string.view_widget_favorites_save_title));
-        aBVar.a(Resources.drawable.ic_bookmark_red_48dp);
+    private void f() {
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(xB.b().a(getContext(), Resources.string.view_widget_favorites_save_title));
+        dialog.a(Resources.drawable.ic_bookmark_red_48dp);
         View view = wB.a(getContext(), Resources.layout.property_popup_save_to_favorite);
         ((TextView) view.findViewById(Resources.id.tv_favorites_guide)).setText(xB.b().a(getContext(), Resources.string.view_widget_favorites_save_guide_new));
         EditText editText = view.findViewById(Resources.id.ed_input);
@@ -177,13 +177,13 @@ public class ViewProperty extends LinearLayout implements Kw {
         editText.setInputType(524289);
         editText.setImeOptions(6);
         NB nb = new NB(getContext(), view.findViewById(Resources.id.ti_input), Rp.h().g());
-        aBVar.a(view);
-        aBVar.b(xB.b().a(getContext(), 2131625031), new OnClickListener() {
+        dialog.a(view);
+        dialog.b(xB.b().a(getContext(), 2131625031), new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a() && nb.b()) {
                     String obj = editText.getText().toString();
-                    ArrayList<ViewBean> viewBeans = jC.a(b).b(c.getXmlName(), e.get(f.a()));
+                    ArrayList<ViewBean> viewBeans = jC.a(b).b(c.getXmlName(), e.get(f.getLayoutPosition()));
                     for (ViewBean viewBean : viewBeans) {
                         String backgroundResource = viewBean.layout.backgroundResource;
                         String resName = viewBean.image.resName;
@@ -208,26 +208,26 @@ public class ViewProperty extends LinearLayout implements Kw {
                         o.a();
                     }
                     bB.a(getContext(), xB.b().a(getContext(), Resources.string.common_message_complete_save), Toast.LENGTH_SHORT).show();
-                    aBVar.dismiss();
+                    dialog.dismiss();
                 }
             }
         });
-        aBVar.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, Resources.layout.view_property);
-        q = findViewById(Resources.id.layout_property_group);
+        layoutPropertyGroup = findViewById(Resources.id.layout_property_group);
         //OnClickListener was empty inside Sketchware 3.10.0, replaced with null to save a class
-        q.setOnClickListener(null);
-        h = findViewById(Resources.id.hcv_property);
-        m = findViewById(Resources.id.property_layout);
-        i = findViewById(Resources.id.property_contents);
-        j = findViewById(Resources.id.layout_property_see_all);
-        n = findViewById(Resources.id.view_event);
-        h.setOnScrollChangedListener(new CustomHorizontalScrollView.a() {
+        layoutPropertyGroup.setOnClickListener(null);
+        hcvProperty = findViewById(Resources.id.hcv_property);
+        propertyLayout = findViewById(Resources.id.property_layout);
+        propertyContents = findViewById(Resources.id.property_contents);
+        layoutPropertySeeAll = findViewById(Resources.id.layout_property_see_all);
+        viewEvent = findViewById(Resources.id.view_event);
+        hcvProperty.setOnScrollChangedListener(new CustomHorizontalScrollView.a() {
             @Override
             public void a(int i, int i1, int i2, int i3) {
                 if (Math.abs(i - i3) <= 5) {
@@ -246,8 +246,8 @@ public class ViewProperty extends LinearLayout implements Kw {
                 }
             }
         });
-        s = findViewById(Resources.id.img_save);
-        s.setOnClickListener(new OnClickListener() {
+        imgSave = findViewById(Resources.id.img_save);
+        imgSave.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mB.a()) {
@@ -255,11 +255,11 @@ public class ViewProperty extends LinearLayout implements Kw {
                 }
             }
         });
-        d = findViewById(Resources.id.spn_widget);
+        spnWidget = findViewById(Resources.id.spn_widget);
         f = new c(context, e);
-        d.setAdapter(f);
-        d.setSelection(0);
-        d.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spnWidget.setAdapter(f);
+        spnWidget.setSelection(0);
+        spnWidget.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 f.a(position);
@@ -272,22 +272,22 @@ public class ViewProperty extends LinearLayout implements Kw {
         });
         a();
         c();
-        k = new ViewPropertyItems(getContext());
-        k.setOrientation(HORIZONTAL);
-        i.addView(k);
+        viewPropertyItems = new ViewPropertyItems(getContext());
+        viewPropertyItems.setOrientation(HORIZONTAL);
+        propertyContents.addView(viewPropertyItems);
     }
 
-    public final void b(ViewBean viewBean) {
+    private void b(ViewBean viewBean) {
         Jw jw = g;
         if (jw != null) {
             jw.a(viewBean.id);
         }
         if ("_fab".equals(viewBean.id)) {
-            s.setVisibility(GONE);
+            imgSave.setVisibility(GONE);
         } else {
-            s.setVisibility(VISIBLE);
+            imgSave.setVisibility(VISIBLE);
         }
-        k.setProjectFileBean(c);
+        viewPropertyItems.setProjectFileBean(c);
         e();
     }
 
@@ -299,7 +299,7 @@ public class ViewProperty extends LinearLayout implements Kw {
     public void a(String str) {
         for (int i = 0; i < e.size(); i++) {
             if (e.get(i).id.equals(str)) {
-                d.setSelection(i);
+                spnWidget.setSelection(i);
                 return;
             }
         }
@@ -314,17 +314,17 @@ public class ViewProperty extends LinearLayout implements Kw {
         f.notifyDataSetChanged();
     }
 
-    public final void a() {
+    private void a() {
         a(0, Resources.string.property_group_basic);
         a(1, Resources.string.property_group_recent);
         a(2, Resources.string.property_group_event);
     }
 
-    public final void a(int i2, int i3) {
+    private void a(int i2, int i3) {
         a aVar = new a(getContext());
         aVar.a(i2, i3);
         aVar.setTag(i2);
-        q.addView(aVar);
+        layoutPropertyGroup.addView(aVar);
     }
 
     public void a(ViewBean viewBean) {
@@ -333,7 +333,7 @@ public class ViewProperty extends LinearLayout implements Kw {
             l = new b(getContext());
             l.a("see_all", Resources.drawable.color_more_96, Resources.string.common_word_see_all);
             l.a(viewBean);
-            j.addView(l);
+            layoutPropertySeeAll.addView(l);
             return;
         }
         bVar.a(viewBean);
@@ -342,38 +342,36 @@ public class ViewProperty extends LinearLayout implements Kw {
     class c extends BaseAdapter {
 
         public Context a;
-        public int b;
-        public ArrayList<ViewBean> c;
+        public int layoutPosition;
+        public ArrayList<ViewBean> viewBeanList;
 
         public c(Context context, ArrayList<ViewBean> arrayList) {
             a = context;
-            c = arrayList;
+            viewBeanList = arrayList;
         }
 
-        public void a(int i) {
-            b = i;
+        public void a(int position) {
+            layoutPosition = position;
         }
 
         @Override
         public int getCount() {
-            if (c == null) {
-                return 0;
-            }
-            return c.size();
+            if (viewBeanList == null) return 0;
+            return viewBeanList.size();
         }
 
-        public View getDropDownView(int i, View view, ViewGroup viewGroup) {
-            return a(i, view, viewGroup, b == i, true);
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return c.get(position);
+        public View getDropDownView(int position, View view, ViewGroup viewGroup) {
+            return a(position, view, viewGroup, layoutPosition == position, true);
         }
 
         @Override
-        public long getItemId(int i) {
-            return i;
+        public ViewBean getItem(int position) {
+            return viewBeanList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
@@ -381,11 +379,11 @@ public class ViewProperty extends LinearLayout implements Kw {
             return a(position, convertView, parent, false, false);
         }
 
-        public int a() {
-            return b;
+        public int getLayoutPosition() {
+            return layoutPosition;
         }
 
-        public final ViewIdSpinnerItem a(int position, View convertView, ViewGroup parent, boolean z, boolean z2) {
+        private ViewIdSpinnerItem a(int position, View convertView, ViewGroup parent, boolean z, boolean z2) {
             ViewIdSpinnerItem viewIdSpinnerItem;
             if (convertView != null) {
                 viewIdSpinnerItem = (ViewIdSpinnerItem) convertView;
@@ -394,7 +392,7 @@ public class ViewProperty extends LinearLayout implements Kw {
                 viewIdSpinnerItem.setTextSize(Resources.dimen.text_size_body_small);
             }
             viewIdSpinnerItem.setDropDown(z2);
-            ViewBean viewBean = c.get(position);
+            ViewBean viewBean = viewBeanList.get(position);
             viewIdSpinnerItem.a(ViewBean.getViewTypeResId(viewBean.type), viewBean.id, z);
             return viewIdSpinnerItem;
         }
@@ -403,18 +401,18 @@ public class ViewProperty extends LinearLayout implements Kw {
     class a extends LinearLayout implements View.OnClickListener {
 
         public int a;
-        public View b;
-        public TextView c;
+        public View propertyGroupItem;
+        public TextView tvTitle;
 
         public a(Context context) {
             super(context);
             a(context);
         }
 
-        public final void a(Context context) {
+        private void a(Context context) {
             wB.a(context, this, Resources.layout.property_group_item);
-            b = findViewById(Resources.id.property_group_item);
-            c = findViewById(Resources.id.tv_title);
+            propertyGroupItem = findViewById(Resources.id.property_group_item);
+            tvTitle = findViewById(Resources.id.tv_title);
         }
 
         public void onClick(View view) {
@@ -425,7 +423,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         public void a(int i, int i2) {
             a = i;
             setTag(i);
-            c.setText(xB.b().a(getContext(), i2));
+            tvTitle.setText(xB.b().a(getContext(), i2));
             setOnClickListener(this);
         }
     }
@@ -433,42 +431,39 @@ public class ViewProperty extends LinearLayout implements Kw {
     class b extends LinearLayout implements View.OnClickListener {
 
         public String a;
-        public View b;
-        public ImageView c;
-        public TextView d;
-        public TextView e;
-        public ViewBean f;
+        public View propertyMenuItem;
+        public ImageView imgIcon;
+        public TextView tvTitle;
+        public TextView tvSubtitle;
+        public ViewBean viewBean;
 
         public b(Context context) {
             super(context);
-            a(context);
-        }
-
-        public final void a(Context context) {
             wB.a(context, this, Resources.layout.property_grid_item);
-            b = findViewById(Resources.id.property_menu_item);
-            c = findViewById(Resources.id.img_icon);
-            d = findViewById(Resources.id.tv_title);
-            e = findViewById(Resources.id.tv_sub_title);
+            propertyMenuItem = findViewById(Resources.id.property_menu_item);
+            imgIcon = findViewById(Resources.id.img_icon);
+            tvTitle = findViewById(Resources.id.tv_title);
+            tvSubtitle = findViewById(Resources.id.tv_sub_title);
         }
 
+        @Override
         public void onClick(View view) {
             if (o != null) {
-                o.a(ViewProperty.this.c.getXmlName(), f);
+                o.a(ViewProperty.this.c.getXmlName(), viewBean);
             }
         }
 
         public void a(String str, int i, int i2) {
-            b.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(VISIBLE);
             a = str;
-            c.setImageResource(i);
-            d.setText(xB.b().a(getContext(), i2));
-            d.setTextColor(0xffff951b);
+            imgIcon.setImageResource(i);
+            tvTitle.setText(xB.b().a(getContext(), i2));
+            tvTitle.setTextColor(0xffff951b);
             setOnClickListener(this);
         }
 
         public void a(ViewBean viewBean) {
-            f = viewBean;
+            this.viewBean = viewBean;
         }
     }
 }

@@ -129,7 +129,7 @@ public class SrcCodeEditorDialog {
                 new AlertDialog.Builder(c)
                         .setTitle("Switch language")
                         .setSingleChoiceItems(new String[] {"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1, (dialog, which) -> {
-                            EditorLanguage editorLanguage;
+                                    EditorLanguage editorLanguage;
 
                                     switch (which) {
                                         default:
@@ -168,7 +168,7 @@ public class SrcCodeEditorDialog {
                 break;
 
             case "Switch theme":
-                String[] themes = new String[] {"Default", "GitHub", "Eclipse", "Darcula", "VS2019", "NotepadXX"};
+                String[] themes = new String[]{"Default", "GitHub", "Eclipse", "Darcula", "VS2019", "NotepadXX"};
                 new AlertDialog.Builder(c)
                         .setTitle("Switch theme")
                         .setSingleChoiceItems(themes, -1, (dialog, which) -> {

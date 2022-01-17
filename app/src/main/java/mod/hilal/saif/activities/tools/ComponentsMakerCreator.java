@@ -105,7 +105,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
             case 2131232457://back_icon
             case 2131232502://cancel
                 finish();
-            break;
+                break;
 
             case 2131232503://save
                 if (filledIn()) {
@@ -113,11 +113,11 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
                 } else {
                     SketchwareUtil.toast("Some required fields are empty");
                 }
-            break;
+                break;
 
             case 2131232493://selectIcon
                 showIconSelectorDialog();
-            break;
+                break;
         }
     }
 
