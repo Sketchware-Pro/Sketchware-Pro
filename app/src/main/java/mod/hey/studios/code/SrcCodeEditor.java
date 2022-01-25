@@ -66,6 +66,13 @@ public class SrcCodeEditor extends AppCompatActivity {
 
     public static void loadCESettings(Context c, CodeEditor ed, String prefix) {
         pref = c.getSharedPreferences("hsce", Activity.MODE_PRIVATE);
+  
+
+      SymbolInputView inputView = findViewById(R.id.sysbar);
+
+        inputView.bindEditor(editor);
+        inputView.addSymbols(new String[]{"->", "{", "}", "(", ")", "<" , ">" ,  ",", ".", ";", "&","<-","?", "+", "-", "*", "/"},
+                new String[]{"\t", "{}", "}", "(", ")", ",", ".", ";", "\"", "?", "+", "-", "*", "/"});
 
         int text_size = pref.getInt(prefix + "_ts", 12);
         int theme = pref.getInt(prefix + "_theme", 3);
