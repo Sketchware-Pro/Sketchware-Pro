@@ -42,7 +42,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private ListView listview;
     private String local_lib_file = "";
     private String local_libs_path = "";
-    private HashMap<String, HashMap<String, Object>> project_used_libs = new HashMap<>();
+    private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
     SwipeRefreshLayout refreshList;
 
     @SuppressLint({"ResourceType", "SetTextI18n"})
@@ -118,11 +118,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
                 if (!sc_id.equals("system")) {
                     try {
-                        project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), new TypeToken<HashMap<String, HashMap<String, Object>>>() {
-                        }.getType());
-                        if (project_used_libs == null) project_used_libs = new HashMap<>();
+                        project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
+                        if (project_used_libs == null) project_used_libs = new ArrayList<>();
                     } catch (Exception e) {
-                        FileUtil.writeFile(local_lib_file, new Gson().toJson(new HashMap<>()));
+                        FileUtil.writeFile(local_lib_file, new Gson().toJson(new ArrayList<>()));
                     }
                 }
                 ArrayList<String> localLibsList = new ArrayList<>();
@@ -239,14 +238,18 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             library_selected.setText(alias.equals("") ? libraryName : alias + " (" + libraryName + ")");
             library_selected.setSelected(true); //For Marquee
             library_selected.setSingleLine(true);
-            library_selected.setChecked(project_used_libs.containsKey(libraryName));
+            library_selected.setChecked(libContainsInProject(project_used_libs, libraryName));
             if (sc_id.equals("system")) {
                 library_selected.setButtonDrawable(null);
             } else {
                 library_selected.setOnClickListener(v -> {
                     boolean isChecked = library_selected.isChecked();
                     if (!isChecked) {
-                        project_used_libs.remove(libraryName);
+                        for (int n = 0; n < project_used_libs.size(); n++) {
+                            if (project_used_libs.get(n).get("name").toString().equals(libraryName)) {
+                                project_used_libs.remove(n);
+                            }
+                        }
                     } else {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("name", libraryName);
@@ -272,8 +275,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                         if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/assets"))) {
                             hashMap.put("assetsPath", local_libs_path.concat(libraryName).concat("/assets"));
                         }
-
-                        project_used_libs.put(libraryName, hashMap);
+                        project_used_libs.add(hashMap);
                     }
                     FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
                 });
@@ -302,6 +304,13 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             });
             return convertView;
         }
+    }
+
+    private boolean libContainsInProject(ArrayList<HashMap<String, Object>> projectLibsList, String libName) {
+        for (int i = 0; i < projectLibsList.size(); i++) {
+            if (libName.equals(projectLibsList.get(i).get("name").toString())) return true;
+        }
+        return false;
     }
 }
 
