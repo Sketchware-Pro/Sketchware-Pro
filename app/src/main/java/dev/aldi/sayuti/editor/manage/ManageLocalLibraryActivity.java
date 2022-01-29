@@ -23,6 +23,7 @@ import android.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,8 +42,8 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private ListView listview;
     private String local_lib_file = "";
     private String local_libs_path = "";
-    private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
+    private HashMap<String, HashMap<String, Object>> project_used_libs = new HashMap<>();
+    SwipeRefreshLayout refreshList;
 
     @SuppressLint({"ResourceType", "SetTextI18n"})
     public void initToolbar() {
@@ -87,7 +88,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             sc_id = getIntent().getStringExtra("sc_id");
         }
         listview = findViewById(2131232364);
-        SwipeRefreshLayout refreshList = new SwipeRefreshLayout(this);
+        refreshList = new SwipeRefreshLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -98,40 +99,59 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         parentLayout.addView(refreshList);
         findViewById(2131232362).setVisibility(View.GONE);
         initToolbar();
+        refreshList.setRefreshing(true);
         loadFiles();
 
         refreshList.setOnRefreshListener(() -> {
+            listview.setVisibility(View.GONE);
             loadFiles();
-            refreshList.setRefreshing(false);
         });
     }
 
     private void loadFiles() {
-        main_list.clear();
-        project_used_libs.clear();
-        lookup_list.clear();
-        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
-        local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
-        if (!FileUtil.isExistFile(local_lib_file) || FileUtil.readFile(local_lib_file).equals("")) {
-            FileUtil.writeFile(local_lib_file, "[]");
-        }
-        project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
-        ArrayList<String> arrayList = new ArrayList<>();
-        FileUtil.listDir(local_libs_path, arrayList);
-        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
-
-        for (String _name : arrayList) {
-            if (FileUtil.isDirectory(_name)) {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", Uri.parse(_name).getLastPathSegment());
-                if (FileUtil.isExistFile(_name + File.separator + "alias") && !FileUtil.readFile(_name + File.separator + "alias").equals("")) {
-                    hashMap.put("alias", FileUtil.readFile(_name + File.separator + "alias"));
+        new Thread() {
+            @Override
+            public void run() {
+                main_list.clear();
+                project_used_libs.clear();
+                local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+                local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
+                if (!sc_id.equals("system")) {
+                    try {
+                        project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), new TypeToken<HashMap<String, HashMap<String, Object>>>() {
+                        }.getType());
+                        if (project_used_libs == null) project_used_libs = new HashMap<>();
+                    } catch (Exception e) {
+                        FileUtil.writeFile(local_lib_file, new Gson().toJson(new HashMap<>()));
+                    }
                 }
-                main_list.add(hashMap);
+                ArrayList<String> localLibsList = new ArrayList<>();
+                FileUtil.listDir(local_libs_path, localLibsList);
+                localLibsList.sort(String.CASE_INSENSITIVE_ORDER);
+
+                for (String _name : localLibsList) {
+                    if (FileUtil.isDirectory(_name)) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("name", Uri.parse(_name).getLastPathSegment());
+                        if (FileUtil.isExistFile(_name + File.separator + "alias") && !FileUtil.readFile(_name + File.separator + "alias").equals("")) {
+                            hashMap.put("alias", FileUtil.readFile(_name + File.separator + "alias"));
+                        }
+                        main_list.add(hashMap);
+                    }
+                }
+                if (listview != null) { //Is null check necessary?? IDK
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listview.setVisibility(View.VISIBLE);
+                            listview.setAdapter(new LibraryAdapter(new ArrayList<>(main_list)));
+                            refreshList.setRefreshing(false);
+                        }
+                    });
+
+                }
             }
-        }
-        listview.setAdapter(new LibraryAdapter(main_list));
-        ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
+        }.start();
     }
 
     private void ShowAliasEditorDialog(String LibraryName) {
@@ -217,52 +237,48 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             }
             library_selected.setEllipsize(TextUtils.TruncateAt.MARQUEE);
             library_selected.setText(alias.equals("") ? libraryName : alias + " (" + libraryName + ")");
-            library_selected.setSelected(true);
+            library_selected.setSelected(true); //For Marquee
             library_selected.setSingleLine(true);
+            library_selected.setChecked(project_used_libs.containsKey(libraryName));
+            if (sc_id.equals("system")) {
+                library_selected.setButtonDrawable(null);
+            } else {
+                library_selected.setOnClickListener(v -> {
+                    boolean isChecked = library_selected.isChecked();
+                    if (!isChecked) {
+                        project_used_libs.remove(libraryName);
+                    } else {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("name", libraryName);
 
-            library_selected.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", libraryName);
-
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/config"))) {
-                    hashMap.put("packageName", FileUtil.readFile(local_libs_path.concat(libraryName).concat("/config")));
-                }
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/res"))) {
-                    hashMap.put("resPath", local_libs_path.concat(libraryName).concat("/res"));
-                }
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/classes.jar"))) {
-                    hashMap.put("jarPath", local_libs_path.concat(libraryName).concat("/classes.jar"));
-                }
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/classes.dex"))) {
-                    hashMap.put("dexPath", local_libs_path.concat(libraryName).concat("/classes.dex"));
-                }
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/AndroidManifest.xml"))) {
-                    hashMap.put("manifestPath", local_libs_path.concat(libraryName).concat("/AndroidManifest.xml"));
-                }
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/proguard.txt"))) {
-                    hashMap.put("pgRulesPath", local_libs_path.concat(libraryName).concat("/proguard.txt"));
-                }
-                if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/assets"))) {
-                    hashMap.put("assetsPath", local_libs_path.concat(libraryName).concat("/assets"));
-                }
-
-                if (!isChecked) {
-                    project_used_libs.remove(hashMap);
-                } else {
-                    for (int n = 0; n < project_used_libs.size(); n++) {
-                        if (project_used_libs.get(n).get("name").toString().equals(libraryName)) {
-                            project_used_libs.remove(hashMap);
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/config"))) {
+                            hashMap.put("packageName", FileUtil.readFile(local_libs_path.concat(libraryName).concat("/config")));
                         }
-                    }
-                    project_used_libs.add(hashMap);
-                }
-                FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
-            });
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/res"))) {
+                            hashMap.put("resPath", local_libs_path.concat(libraryName).concat("/res"));
+                        }
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/classes.jar"))) {
+                            hashMap.put("jarPath", local_libs_path.concat(libraryName).concat("/classes.jar"));
+                        }
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/classes.dex"))) {
+                            hashMap.put("dexPath", local_libs_path.concat(libraryName).concat("/classes.dex"));
+                        }
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/AndroidManifest.xml"))) {
+                            hashMap.put("manifestPath", local_libs_path.concat(libraryName).concat("/AndroidManifest.xml"));
+                        }
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/proguard.txt"))) {
+                            hashMap.put("pgRulesPath", local_libs_path.concat(libraryName).concat("/proguard.txt"));
+                        }
+                        if (FileUtil.isExistFile(local_libs_path.concat(libraryName).concat("/assets"))) {
+                            hashMap.put("assetsPath", local_libs_path.concat(libraryName).concat("/assets"));
+                        }
 
-            lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
-            for (int n = 0; n < lookup_list.size(); n++) {
-                library_selected.setChecked(libraryName.equals(lookup_list.get(n).get("name").toString()));
+                        project_used_libs.put(libraryName, hashMap);
+                    }
+                    FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
+                });
             }
+
             convertView.findViewById(2131231132).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
                 popupMenu.getMenu().add(0, 0, 0, "Alias");
