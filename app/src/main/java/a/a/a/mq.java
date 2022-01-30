@@ -852,12 +852,6 @@ public class mq {
             case "Color":
                 return "int";
 
-            case "InterstitialAd":
-            case "RewardedVideoAd":
-            case "ProgressDialog":
-            case "DatePickerDialog":
-            case "TimePickerDialog":
-            case "Notification":
             default:
                 return typeName;
         }
