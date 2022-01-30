@@ -751,7 +751,7 @@ public class Jx {
         o = new Fx(c.getActivityName(), f, "onCreate_initializeLogic", d.a(c.getJavaName(), "onCreate_initializeLogic")).a();
     }
 
-    public final String c(ViewBean viewBean) {
+    private String getDrawerViewInitializer(ViewBean viewBean) {
         String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
@@ -876,7 +876,7 @@ public class Jx {
         if (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerBeans = d.d(c.getDrawerXmlName());
             for (ViewBean viewBean : drawerBeans) {
-                m.add(c(viewBean));
+                m.add(getDrawerViewInitializer(viewBean));
             }
         }
         ArrayList<ComponentBean> componentBeans = d.e(c.getJavaName());
