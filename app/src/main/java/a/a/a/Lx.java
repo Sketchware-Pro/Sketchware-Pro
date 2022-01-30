@@ -602,7 +602,7 @@ public class Lx {
         if (typeName.equals("include") || typeName.equals("#")) {
             fieldDeclaration = "";
         } else {
-            String initializer = a(typeName, typeInstanceName, parameters);
+            String initializer = getInitializer(typeName, typeInstanceName, parameters);
             String builtInType = mq.e(typeName);
             if (initializer.length() <= 0) {
                 if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
@@ -813,7 +813,7 @@ public class Lx {
      * Example initializer for an Intent component: <code>new Intent()</code>
      * Example initializer for a boolean variable: <code>false</code>
      */
-    public static String a(String name, String componentName, String... parameters) {
+    public static String getInitializer(String name, String componentName, String... parameters) {
         switch (name) {
             case "boolean":
                 return "false";
