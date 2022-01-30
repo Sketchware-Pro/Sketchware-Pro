@@ -777,7 +777,7 @@ public class Jx {
         }
     }
 
-    public final String d(ViewBean viewBean) {
+    private String getViewInitializer(ViewBean viewBean) {
         String replaceAll = viewBean.convert.replaceAll("\\w*\\..*\\.", "");
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
@@ -871,7 +871,7 @@ public class Jx {
     public final void g() {
         ArrayList<ViewBean> viewBeans = d.d(c.getXmlName());
         for (ViewBean viewBean : viewBeans) {
-            m.add(d(viewBean));
+            m.add(getViewInitializer(viewBean));
         }
         if (c.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerBeans = d.d(c.getDrawerXmlName());
