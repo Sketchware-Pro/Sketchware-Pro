@@ -1556,7 +1556,7 @@ public class Lx {
     /**
      * @return A single line to initialize a drawer view.
      */
-    public static String c(String type, String viewName, String viewContainerName) {
+    public static String getDrawerViewInitializer(String type, String viewName, String viewContainerName) {
         String initializer = "";
         if (!type.equals("include") && !type.equals("#")) {
             initializer = "_drawer_" + viewName + " = " + viewContainerName + ".findViewById(R.id." + viewName + ");";
