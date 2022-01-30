@@ -783,9 +783,9 @@ public class Jx {
             replaceAll = viewBean.getClassInfo().a();
         }
         if (c.fileName.contains("_fragment")) {
-            return Lx.b(replaceAll, viewBean.id, true);
+            return Lx.getViewInitializer(replaceAll, viewBean.id, true);
         }
-        return Lx.b(replaceAll, viewBean.id, false);
+        return Lx.getViewInitializer(replaceAll, viewBean.id, false);
     }
 
     /**
