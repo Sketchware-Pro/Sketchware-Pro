@@ -1056,7 +1056,7 @@ public class Lx {
     /**
      * @return Initializer of a View to be added to _initialize(Bundle)
      */
-    public static String b(String type, String name, boolean isInFragment) {
+    public static String getViewInitializer(String type, String name, boolean isInFragment) {
         String initializer = "";
 
         if (!type.equals("include") && !type.equals("#")) {
