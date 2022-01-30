@@ -756,7 +756,7 @@ public class Jx {
         if (replaceAll.equals("")) {
             replaceAll = viewBean.getClassInfo().a();
         }
-        return Lx.c(replaceAll, viewBean.id, "_nav_view");
+        return Lx.getDrawerViewInitializer(replaceAll, viewBean.id, "_nav_view");
     }
 
     public final void c() {
