@@ -659,7 +659,7 @@ public class Jx {
     /**
      * @see Lx#b(String, String, String...)
      */
-    public final String b(ComponentBean componentBean) {
+    private String getComponentBeanInitializer(ComponentBean componentBean) {
         return Lx.b(mq.a(componentBean.type), componentBean.componentId, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
@@ -881,7 +881,7 @@ public class Jx {
         }
         ArrayList<ComponentBean> componentBeans = d.e(c.getJavaName());
         for (ComponentBean componentBean : componentBeans) {
-            n.add(b(componentBean));
+            n.add(getComponentBeanInitializer(componentBean));
         }
     }
 
