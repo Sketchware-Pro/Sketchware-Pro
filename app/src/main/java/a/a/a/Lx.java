@@ -683,7 +683,7 @@ public class Lx {
     /**
      * @return Code of a More Block
      */
-    public static String a(String moreBlockName, String moreBlockSpec, String moreBlockLogic) {
+    public static String getMoreBlockCode(String moreBlockName, String moreBlockSpec, String moreBlockLogic) {
         String code = "public " + ReturnMoreblockManager.getMbTypeCode(moreBlockName) + " _" +
                 ReturnMoreblockManager.getMbName(moreBlockName) + "(";
         ArrayList<String> parameterSpecs = FB.c(moreBlockSpec);
