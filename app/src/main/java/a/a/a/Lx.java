@@ -683,14 +683,14 @@ public class Lx {
     /**
      * @return Code of a More Block
      */
-    public static String a(String var0, String var1, String moreBlockLogic) {
-        String code = "public " + ReturnMoreblockManager.getMbTypeCode(var0) + " _" +
-                ReturnMoreblockManager.getMbName(var0) + "(";
-        ArrayList<String> var10 = FB.c(var1);
+    public static String a(String moreBlockName, String moreBlockSpec, String moreBlockLogic) {
+        String code = "public " + ReturnMoreblockManager.getMbTypeCode(moreBlockName) + " _" +
+                ReturnMoreblockManager.getMbName(moreBlockName) + "(";
+        ArrayList<String> parameterSpecs = FB.c(moreBlockSpec);
         boolean isFirstParameter = true;
 
         processingParameters:
-        for (String parameterSpec : var10) {
+        for (String parameterSpec : parameterSpecs) {
             // Avoid label spec parts
             if (parameterSpec.charAt(0) == '%') {
                 char parameterType = parameterSpec.charAt(1);
@@ -866,9 +866,9 @@ public class Lx {
         }
     }
 
-    public static void a(StringBuilder var0, int var1) {
-        for (int var2 = 0; var2 < var1; ++var2) {
-            var0.append('\t');
+    public static void a(StringBuilder stringBuilder, int indentSize) {
+        for (int i = 0; i < indentSize; ++i) {
+            stringBuilder.append('\t');
         }
     }
 
