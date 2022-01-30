@@ -797,7 +797,7 @@ public class Jx {
         for (int index = 0, pairsSize = pairs.size(); index < pairsSize; index++) {
             Pair<String, String> next = pairs.get(index);
             String name = next.first + "_moreBlock";
-            String code = Lx.a(next.first, next.second, new Fx(c.getActivityName(), f, name, d.a(javaName, name)).a());
+            String code = Lx.getMoreBlockCode(next.first, next.second, new Fx(c.getActivityName(), f, name, d.a(javaName, name)).a());
             if (index < (pairsSize - 1)) {
                 p.add(code);
             } else {
