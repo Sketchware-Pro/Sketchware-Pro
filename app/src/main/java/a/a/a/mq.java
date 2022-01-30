@@ -824,9 +824,6 @@ public class mq {
             case "FirebaseDB":
                 return "DatabaseReference";
 
-            case "InterstitialAd":
-                return "InterstitialAd";
-
             case "FirebaseStorage":
                 return "StorageReference";
 
@@ -836,21 +833,6 @@ public class mq {
 
             case "SpeechToText":
                 return "SpeechRecognizer";
-
-            case "RewardedVideoAd":
-                return "RewardedVideoAd";
-
-            case "ProgressDialog":
-                return "ProgressDialog";
-
-            case "DatePickerDialog":
-                return "DatePickerDialog";
-
-            case "TimePickerDialog":
-                return "TimePickerDialog";
-
-            case "Notification":
-                return "Notification";
 
             case "FragmentAdapter":
                 return "FragmentStatePagerAdapter";
@@ -870,6 +852,12 @@ public class mq {
             case "Color":
                 return "int";
 
+            case "InterstitialAd":
+            case "RewardedVideoAd":
+            case "ProgressDialog":
+            case "DatePickerDialog":
+            case "TimePickerDialog":
+            case "Notification":
             default:
                 return typeName;
         }
