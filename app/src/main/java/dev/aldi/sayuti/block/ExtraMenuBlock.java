@@ -69,40 +69,50 @@ public class ExtraMenuBlock {
         FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable/"), drawables);
         FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable-xhdpi/"), drawables_xhdpi);
         try {
-            if (json.getString("id").equals("menu")) {
-                asdAll.b("Select a menu");
-                for (String menu : menus) {
-                    selectableItems.add(Uri.parse(menu).getLastPathSegment().substring(0, Uri.parse(menu).getLastPathSegment().indexOf(".xml")));
-                }
-            } else if (json.getString("id").equals("layout")) {
-                asdAll.b("Select a layout");
-                for (String layout : layouts) {
-                    selectableItems.add(Uri.parse(layout).getLastPathSegment().substring(0, Uri.parse(layout).getLastPathSegment().indexOf(".xml")));
-                }
-                for (String str4 : jC.b(a.B).e()) {
-                    selectableItems.add(str4.substring(0, str4.indexOf(".xml")));
-                }
-            } else if (json.getString("id").equals("anim")) {
-                asdAll.b("Select an animation");
-                for (String animation : animations) {
-                    selectableItems.add(Uri.parse(animation).getLastPathSegment().substring(0, Uri.parse(animation).getLastPathSegment().indexOf(".xml")));
-                }
-            } else if (json.getString("id").equals("drawable")) {
-                asdAll.b("Select a drawable");
-                for (String drawable : drawables) {
-                    selectableItems.add(Uri.parse(drawable).getLastPathSegment().substring(0, Uri.parse(drawable).getLastPathSegment().indexOf(".xml")));
-                }
-            } else if (json.getString("id").equals("image")) {
-                asdAll.b("Select an image");
-                for (String drawable_xhdpi : drawables_xhdpi) {
-                    if (drawable_xhdpi.contains(".png") || drawable_xhdpi.contains(".jpg")) {
-                        if (drawable_xhdpi.contains(".png")) {
-                            selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".png")));
-                        } else {
-                            selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".jpg")));
+            switch (json.getString("id")) {
+                case "menu":
+                    asdAll.b("Select a menu");
+                    for (String menu : menus) {
+                        selectableItems.add(Uri.parse(menu).getLastPathSegment().substring(0, Uri.parse(menu).getLastPathSegment().indexOf(".xml")));
+                    }
+                    break;
+
+                case "layout":
+                    asdAll.b("Select a layout");
+                    for (String layout : layouts) {
+                        selectableItems.add(Uri.parse(layout).getLastPathSegment().substring(0, Uri.parse(layout).getLastPathSegment().indexOf(".xml")));
+                    }
+                    for (String str4 : jC.b(sc_id).e()) {
+                        selectableItems.add(str4.substring(0, str4.indexOf(".xml")));
+                    }
+                    break;
+
+                case "anim":
+                    asdAll.b("Select an animation");
+                    for (String animation : animations) {
+                        selectableItems.add(Uri.parse(animation).getLastPathSegment().substring(0, Uri.parse(animation).getLastPathSegment().indexOf(".xml")));
+                    }
+                    break;
+
+                case "drawable":
+                    asdAll.b("Select a drawable");
+                    for (String drawable : drawables) {
+                        selectableItems.add(Uri.parse(drawable).getLastPathSegment().substring(0, Uri.parse(drawable).getLastPathSegment().indexOf(".xml")));
+                    }
+                    break;
+
+                case "image":
+                    asdAll.b("Select an image");
+                    for (String drawable_xhdpi : drawables_xhdpi) {
+                        if (drawable_xhdpi.contains(".png") || drawable_xhdpi.contains(".jpg")) {
+                            if (drawable_xhdpi.contains(".png")) {
+                                selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".png")));
+                            } else {
+                                selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".jpg")));
+                            }
                         }
                     }
-                }
+                    break;
             }
         } catch (JSONException ignored) {
         }
