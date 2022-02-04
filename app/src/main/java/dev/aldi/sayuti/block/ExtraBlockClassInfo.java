@@ -52,7 +52,7 @@ public class ExtraBlockClassInfo {
             } catch (JSONException e) {
             }
         }
-        return a(str);
+        return getDefaultName(str);
     }
 
     public static String getType(String str) {
@@ -66,10 +66,10 @@ public class ExtraBlockClassInfo {
             } catch (JSONException e) {
             }
         }
-        return b(str);
+        return getDefaultType(str);
     }
 
-    public static String a(String str) {
+    private static String getDefaultName(String str) {
         switch (str) {
             case "circleimageview":
                 return "CircleImageView";
@@ -163,7 +163,7 @@ public class ExtraBlockClassInfo {
         }
     }
 
-    public static String b(String str) {
+    private static String getDefaultType(String str) {
         switch (str) {
             case "onesignal":
             case "phoneauth":
