@@ -533,7 +533,7 @@ public class Jx {
                     .replaceAll("Typeface.createFromAsset\\(getAssets\\(\\)", "Typeface.createFromAsset(getContext().getAssets()")
                     .replaceAll("= getAssets\\(\\).open", "= getContext().getAssets().open")
                     .replaceAll("getSharedPreferences", "getContext().getSharedPreferences")
-                    .replaceAll("AlertDialog.Builder\\(this\\);", "AlertDialog.Builder(getContext());")
+                    .replaceAll("AlertDialog.Builder\\(this\\);", "AlertDialog.Builder(getActivity());")
                     .replaceAll("SpeechRecognizer.createSpeechRecognizer\\(this\\);", "SpeechRecognizer.createSpeechRecognizer(getContext());")
                     .replaceAll("new RequestNetwork\\(this\\);", "new RequestNetwork((Activity) getContext());")
                     .replaceAll("new BluetoothConnect\\(this\\);", "new BluetoothConnect((Activity) getContext());")
