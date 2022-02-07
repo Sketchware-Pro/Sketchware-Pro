@@ -957,21 +957,31 @@ public class yq {
     public String getFileSrc(String filename, hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
         a(projectLibraryManager, projectFileManager, projectDataManager, false);
         boolean isJavaFile = filename.endsWith(".java");
-        boolean isDrawerFile = !isJavaFile && filename.startsWith("_drawer_");
+        boolean isXmlFile = filename.endsWith(".xml");
+        ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
+        files.addAll(new ArrayList<>(projectFileManager.c()));
 
-        ArrayList<ProjectFileBean> files = !isDrawerFile ? projectFileManager.b() : projectFileManager.c();
+        if (isXmlFile) {
+            /*
+              Generating every java file is necessary to make command blocks for xml work
+             */
+            for (ProjectFileBean file : files) {
+                CommandBlock.CBForXml(new Jx(N, file, projectDataManager).a());
+            }
+        }
 
         for (ProjectFileBean file : files) {
             if (filename.equals(isJavaFile ? file.getJavaName() : file.getXmlName())) {
                 if (isJavaFile) {
                     return new Jx(N, file, projectDataManager).a();
-                } else {
+                } else if (isXmlFile) {
                     Ox xmlGenerator = new Ox(N, file);
                     xmlGenerator.a(eC.a(projectDataManager.d(filename)), projectDataManager.h(filename));
-                    return xmlGenerator.b();
+                    return CommandBlock.applyCommands(filename, xmlGenerator.b());
                 }
             }
         }
+
         return "";
     }
 
