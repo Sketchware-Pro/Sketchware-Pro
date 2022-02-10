@@ -444,7 +444,7 @@ public class mq {
     /**
      * @return Imports needed for a type
      */
-    public static ArrayList<String> c(String name) {
+    public static ArrayList<String> getImportsByTypeName(String name) {
         ArrayList<String> importList = new ArrayList<>();
 
         switch (name) {
