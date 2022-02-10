@@ -551,13 +551,13 @@ public class Jx {
 
     private String getListDeclarationAndAddImports(int listType, String listName) {
         String typeName = mq.b(listType);
-        addImports(mq.c(typeName));
+        addImports(mq.getImportsByTypeName(typeName));
         return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
     private String getComponentDeclarationAndAddImports(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
-        addImports(mq.c(typeName));
+        addImports(mq.getImportsByTypeName(typeName));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
@@ -566,7 +566,7 @@ public class Jx {
         if (viewType.equals("")) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.c(viewType));
+        addImports(mq.getImportsByTypeName(viewType));
         return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -575,7 +575,7 @@ public class Jx {
      */
     private String getVariableDeclarationAndAddImports(int variableType, String name) {
         String variableTypeName = mq.c(variableType);
-        addImports(mq.c(variableTypeName));
+        addImports(mq.getImportsByTypeName(variableTypeName));
         return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
     }
 
@@ -584,7 +584,7 @@ public class Jx {
         if (viewType.equals("")) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.c(viewType));
+        addImports(mq.getImportsByTypeName(viewType));
         return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -723,7 +723,7 @@ public class Jx {
                         a +
                         "LinearLayout _nav_view = findViewById(R.id._nav_view);" + a
                 );
-                addImports(mq.c("LinearLayout"));
+                addImports(mq.getImportsByTypeName("LinearLayout"));
             }
         }
         addImport("android.app.*");
