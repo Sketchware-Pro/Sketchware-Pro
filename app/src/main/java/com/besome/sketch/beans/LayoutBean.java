@@ -81,7 +81,7 @@ public class LayoutBean extends nA implements Parcelable {
         this.layoutGravity = 0;
         this.orientation = -1;
         this.backgroundColor = FlexItem.MAX_SIZE;
-        this.borderColor = -16740915;
+        this.borderColor = 0xff008dcd;
     }
 
     public LayoutBean(Parcel parcel) {
