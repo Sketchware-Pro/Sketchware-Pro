@@ -7,14 +7,13 @@ import a.a.a.nA;
 
 public class SelectableItemBean extends nA implements Parcelable {
     public static final Parcelable.Creator<SelectableItemBean> CREATOR = new Parcelable.Creator<SelectableItemBean>() {
-        /* class com.besome.sketch.beans.SelectableItemBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public SelectableItemBean createFromParcel(Parcel parcel) {
             return new SelectableItemBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public SelectableItemBean[] newArray(int i) {
             return new SelectableItemBean[i];
         }
@@ -35,7 +34,7 @@ public class SelectableItemBean extends nA implements Parcelable {
 
     public SelectableItemBean() {
         this.isSelected = false;
-        this.type = -1;
+        this.type = SRC_TYPE_NONE;
         this.name = "";
         this.desc = "";
         this.isNew = false;
@@ -44,10 +43,10 @@ public class SelectableItemBean extends nA implements Parcelable {
         this.reserved3 = 0;
     }
 
-    public SelectableItemBean(String str) {
+    public SelectableItemBean(String name) {
         this.isSelected = false;
-        this.type = -1;
-        this.name = str;
+        this.type = SRC_TYPE_NONE;
+        this.name = name;
         this.desc = "";
         this.isNew = false;
         this.reserved1 = 0;
@@ -55,21 +54,21 @@ public class SelectableItemBean extends nA implements Parcelable {
         this.reserved3 = 0;
     }
 
-    public SelectableItemBean(int i, String str, int i2, int i3, int i4) {
+    public SelectableItemBean(int type, String name, int reserved1, int reserved2, int reserved3) {
         this.isSelected = false;
-        this.type = i;
-        this.name = str;
+        this.type = type;
+        this.name = name;
         this.desc = "";
         this.isNew = false;
-        this.reserved1 = i2;
-        this.reserved2 = i3;
-        this.reserved3 = i4;
+        this.reserved1 = reserved1;
+        this.reserved2 = reserved2;
+        this.reserved3 = reserved3;
     }
 
-    public SelectableItemBean(int i, String str) {
+    public SelectableItemBean(int type, String name) {
         this.isSelected = false;
-        this.type = i;
-        this.name = str;
+        this.type = type;
+        this.name = name;
         this.desc = "";
         this.isNew = false;
         this.reserved1 = 0;
@@ -77,48 +76,48 @@ public class SelectableItemBean extends nA implements Parcelable {
         this.reserved3 = 0;
     }
 
-    public SelectableItemBean(int i, String str, String str2) {
+    public SelectableItemBean(int type, String name, String desc) {
         this.isSelected = false;
-        this.type = i;
-        this.name = str;
-        this.desc = str2;
+        this.type = type;
+        this.name = name;
+        this.desc = desc;
         this.isNew = false;
         this.reserved1 = 0;
         this.reserved2 = 0;
         this.reserved3 = 0;
     }
 
-    public SelectableItemBean(int i, String str, String str2, boolean z) {
+    public SelectableItemBean(int type, String name, String desc, boolean isNew) {
         this.isSelected = false;
-        this.type = i;
-        this.name = str;
-        this.desc = str2;
-        this.isNew = z;
+        this.type = type;
+        this.name = name;
+        this.desc = desc;
+        this.isNew = isNew;
         this.reserved1 = 0;
         this.reserved2 = 0;
         this.reserved3 = 0;
     }
 
-    public SelectableItemBean(int i, String str, String str2, boolean z, int i2) {
+    public SelectableItemBean(int type, String name, String desc, boolean isNew, int reserved1) {
         this.isSelected = false;
-        this.type = i;
-        this.name = str;
-        this.desc = str2;
-        this.isNew = z;
-        this.reserved1 = i2;
+        this.type = type;
+        this.name = name;
+        this.desc = desc;
+        this.isNew = isNew;
+        this.reserved1 = reserved1;
         this.reserved2 = 0;
         this.reserved3 = 0;
     }
 
-    public SelectableItemBean(int i, String str, String str2, boolean z, int i2, int i3, int i4) {
+    public SelectableItemBean(int type, String name, String desc, boolean isNew, int reserved1, int reserved2, int reserved3) {
         this.isSelected = false;
-        this.type = i;
-        this.name = str;
-        this.desc = str2;
-        this.isNew = z;
-        this.reserved1 = i2;
-        this.reserved2 = i3;
-        this.reserved3 = i4;
+        this.type = type;
+        this.name = name;
+        this.desc = desc;
+        this.isNew = isNew;
+        this.reserved1 = reserved1;
+        this.reserved2 = reserved2;
+        this.reserved3 = reserved3;
     }
 
     public SelectableItemBean(Parcel parcel) {

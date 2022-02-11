@@ -10,14 +10,13 @@ import a.a.a.nA;
 
 public class LayoutBean extends nA implements Parcelable {
     public static final Parcelable.Creator<LayoutBean> CREATOR = new Parcelable.Creator<LayoutBean>() {
-        /* class com.besome.sketch.beans.LayoutBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public LayoutBean createFromParcel(Parcel parcel) {
             return new LayoutBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public LayoutBean[] newArray(int i) {
             return new LayoutBean[i];
         }

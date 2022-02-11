@@ -15,16 +15,16 @@ public class SelectableBean extends nA {
         this(-1);
     }
 
-    public SelectableBean(int i) {
-        this(i, false);
+    public SelectableBean(int position) {
+        this(position, false);
     }
 
-    public SelectableBean(int i, boolean z) {
+    public SelectableBean(int savedPosition, boolean isnew) {
         this.savedPos = -1;
         this.isSelected = false;
         this.isNew = false;
         this.isSelected = false;
-        this.savedPos = i;
-        this.isNew = z;
+        this.savedPos = savedPosition;
+        this.isNew = isnew;
     }
 }

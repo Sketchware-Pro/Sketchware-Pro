@@ -149,31 +149,31 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
     }
 
     public static String getActivityName(String name) {
-        String toLowerCase = name.toLowerCase();
-        String str2 = "";
+        name = name.toLowerCase();
+        String activityName = "";
         int i = 0;
-        while (i < toLowerCase.length()) {
-            int i2;
-            char charAt = toLowerCase.charAt(i);
-            if (charAt == '_' && i < toLowerCase.length() - 1) {
-                i2 = i + 1;
-                char charAt2 = toLowerCase.charAt(i2);
+        while (i < name.length()) {
+            int j;
+            char charAt = name.charAt(i);
+            if (charAt == '_' && i < name.length() - 1) {
+                j = i + 1;
+                char charAt2 = name.charAt(j);
                 if (Character.isLowerCase(charAt2)) {
-                    str2 += Character.toUpperCase(charAt2);
+                    activityName += Character.toUpperCase(charAt2);
                 } else {
-                    str2 += charAt;
-                    i2 = i;
+                    activityName += charAt;
+                    j = i;
                 }
             } else if (i == 0) {
-                str2 += Character.toUpperCase(charAt);
-                i2 = i;
+                activityName += Character.toUpperCase(charAt);
+                j = i;
             } else {
-                str2 += charAt;
-                i2 = i;
+                activityName += charAt;
+                j = i;
             }
-            i = i2 + 1;
+            i = j + 1;
         }
-        return str2 + "Activity";
+        return activityName + "Activity";
     }
 
     public static Creator<ProjectFileBean> getCreator() {
@@ -229,7 +229,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
 
     public String getDrawersJavaName() {
         return fileType != THEME_FULLSCREEN ? "" : !fileName.contains("_drawer_") ? "" :
-                getJavaName(this.fileName.substring(OPTION_ACTIVITY_FAB));
+                getJavaName(fileName.substring(OPTION_ACTIVITY_FAB));
     }
 
     public String getJavaName() {

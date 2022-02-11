@@ -7,14 +7,13 @@ import com.google.gson.annotations.Expose;
 
 public class ProjectResourceBean extends SelectableBean implements Parcelable {
     public static final Parcelable.Creator<ProjectResourceBean> CREATOR = new Parcelable.Creator<ProjectResourceBean>() {
-        /* class com.besome.sketch.beans.ProjectResourceBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public ProjectResourceBean createFromParcel(Parcel parcel) {
             return new ProjectResourceBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public ProjectResourceBean[] newArray(int i) {
             return new ProjectResourceBean[i];
         }
@@ -35,10 +34,10 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     public int rotate;
     public int totalSoundDuration;
 
-    public ProjectResourceBean(int i, String str, String str2) {
-        this.resType = i;
-        this.resName = str;
-        this.resFullName = str2;
+    public ProjectResourceBean(int resType, String resName, String resFullName) {
+        this.resType = resType;
+        this.resName = resName;
+        this.resFullName = resFullName;
         this.isEdited = false;
         this.isDuplicateCollection = false;
         this.curSoundPosition = 0;
@@ -68,8 +67,8 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         return CREATOR;
     }
 
-    public static boolean isNinePatch(String str) {
-        return str.endsWith(".9.png");
+    public static boolean isNinePatch(String resFullName) {
+        return resFullName.endsWith(".9.png");
     }
 
     public void copy(ProjectResourceBean projectResourceBean) {
@@ -113,7 +112,7 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         parcel.writeInt(this.isNew ? 1 : 0);
     }
 
-    @Override // java.lang.Object
+    @Override
     public ProjectResourceBean clone() {
         ProjectResourceBean projectResourceBean = new ProjectResourceBean(this.resType, this.resName, this.resFullName);
         projectResourceBean.copy(this);

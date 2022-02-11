@@ -14,14 +14,13 @@ public class TutorialStepBean extends nA implements Parcelable {
     public static final int ACTION_MANUAL_WAIT = 3;
     public static final int ACTION_TOUCH_NEXT = 0;
     public static final Parcelable.Creator<TutorialStepBean> CREATOR = new Parcelable.Creator<TutorialStepBean>() {
-        /* class com.besome.sketch.beans.TutorialStepBean.AnonymousClass1 */
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public TutorialStepBean createFromParcel(Parcel parcel) {
             return new TutorialStepBean(parcel);
         }
 
-        @Override // android.os.Parcelable.Creator
+        @Override
         public TutorialStepBean[] newArray(int i) {
             return new TutorialStepBean[i];
         }

@@ -10,28 +10,25 @@ public class ColorBean {
     public int displayNameColor;
     public int icon;
 
-    public ColorBean(String str, String str2, String str3, int i) {
-        this(Color.parseColor(str), str2, Color.parseColor(str3), i);
+    public ColorBean(String color, String name, String displayColor, int icon) {
+        this(Color.parseColor(color), name, Color.parseColor(displayColor), icon);
     }
 
-    public ColorBean(int i, String str, int i2, int i3) {
-        this.colorCode = i;
-        this.colorName = str;
-        this.displayNameColor = i2;
-        this.icon = i3;
+    public ColorBean(int color, String name, int displayColor, int icon) {
+        this.colorCode = color;
+        this.colorName = name;
+        this.displayNameColor = displayColor;
+        this.icon = icon;
     }
 
-    public String getColorCode(boolean z) {
-        int i = this.colorCode;
-        if (i == 0) {
-            return "TRANSPARENT";
-        }
-        if (i == 16777215) {
-            return "NONE";
-        }
-        if (z) {
-            return String.format("#%08X", Integer.valueOf(i));
-        }
-        return String.format("#%06X", Integer.valueOf(i & FlexItem.MAX_SIZE));
+    public String getColorCode(boolean isWideFilling) {
+        int color = this.colorCode;
+        if (color == 0) return "TRANSPARENT";
+
+        if (color == 16777215) return "NONE";
+
+        if (isWideFilling) return String.format("#%08X", Integer.valueOf(color));
+
+        return String.format("#%06X", Integer.valueOf(color & FlexItem.MAX_SIZE));
     }
 }
