@@ -104,7 +104,7 @@ public class LogicClickListener implements View.OnClickListener {
         initializerLayout.addView(initializer);
         root.addView(initializerLayout);
 
-        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), jC.a(sc_id).a(projectFile));
+        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
         dialog.b(Helper.getResString(Resources.string.common_word_add),
@@ -179,7 +179,7 @@ public class LogicClickListener implements View.OnClickListener {
         root.addView(typeLayout);
         root.addView(nameLayout);
 
-        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), jC.a(sc_id).a(projectFile));
+        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
         dialog.b(Helper.getResString(Resources.string.common_word_add),
