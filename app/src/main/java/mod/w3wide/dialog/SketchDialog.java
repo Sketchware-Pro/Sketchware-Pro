@@ -145,6 +145,11 @@ public class SketchDialog extends Dialog {
         mMessage = str;
     }
 
+    public void setMessage(String str, int color) {
+        mMessage = str;
+        dialog_msg.setTextColor(color);
+    }
+
     public void setPositiveButton(String str, View.OnClickListener listener) {
         if (str.length() > 0) {
             mPostiveStr = str;
