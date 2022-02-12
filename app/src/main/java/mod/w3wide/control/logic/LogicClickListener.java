@@ -217,7 +217,7 @@ public class LogicClickListener implements View.OnClickListener {
             viewGroup.addView(commonRadioButton(listMaps.get(i)));
         }
 
-        ArrayList<String> listCustom = jC.a(sc_id).d(projectFile.getJavaName(), 3);
+        ArrayList<String> listCustom = jC.a(sc_id).d(projectFile.getJavaName(), 4);
         for (int i = 0, listCustomSize = listCustom.size(); i < listCustomSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Custom (" + listCustomSize + ")"));
             viewGroup.addView(commonRadioButton(listCustom.get(i)));
