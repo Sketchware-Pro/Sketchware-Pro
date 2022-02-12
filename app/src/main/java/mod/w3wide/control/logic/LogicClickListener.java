@@ -200,26 +200,26 @@ public class LogicClickListener implements View.OnClickListener {
         ViewGroup viewGroup = (ViewGroup) var2.findViewById(2131231668);
 
         ArrayList<String> listInts = jC.a(sc_id).d(projectFile.getJavaName(), 1);
-        for (int i = 0; i < listInts.size(); i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List Integer"));
+        for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
+            if (i == 0) viewGroup.addView(commonTextView("List Integer (" + listIntSize + ")"));
             viewGroup.addView(commonRadioButton(listInts.get(i)));
         }
 
         ArrayList<String> listStrs = jC.a(sc_id).d(projectFile.getJavaName(), 2);
-        for (int i = 0; i < listStrs.size(); i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List String"));
+        for (int i = 0, listStrSize = listStrs.size(); i < listStrSize; i++) {
+            if (i == 0) viewGroup.addView(commonTextView("List String (" + listStrSize + ")"));
             viewGroup.addView(commonRadioButton(listStrs.get(i)));
         }
 
         ArrayList<String> listMaps = jC.a(sc_id).d(projectFile.getJavaName(), 3);
-        for (int i = 0; i < listMaps.size(); i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List Map"));
+        for (int i = 0, listMapSize = listMaps.size(); i < listMapSize; i++) {
+            if (i == 0) viewGroup.addView(commonTextView("List Map (" + listMapSize + ")"));
             viewGroup.addView(commonRadioButton(listMaps.get(i)));
         }
 
         ArrayList<String> listCustom = jC.a(sc_id).d(projectFile.getJavaName(), 3);
-        for (int i = 0; i < listCustom.size(); i++) {
-            if (i == 0) viewGroup.addView(commonTextView("List Custom"));
+        for (int i = 0, listCustomSize = listCustom.size(); i < listCustomSize; i++) {
+            if (i == 0) viewGroup.addView(commonTextView("List Custom (" + listCustomSize + ")"));
             viewGroup.addView(commonRadioButton(listCustom.get(i)));
         }
 
