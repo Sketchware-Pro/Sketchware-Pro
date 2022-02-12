@@ -20,8 +20,10 @@ import android.widget.TextView;
 
 import com.sketchware.remod.Resources;
 
+import mod.hey.studios.util.Helper;
+
 @SuppressLint("ResourceType")
-public class SketchDialog extends Dialog implements View.OnClickListener {
+public class SketchDialog extends Dialog {
 
     private final Context mContext;
     //initialize view by id
@@ -122,24 +124,13 @@ public class SketchDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case Resources.id.common_dialog_default_button:
-            case Resources.id.dialog_btn_no:
-            case Resources.id.dialog_btn_yes:
-                dismiss();
-                return;
-        }
-    }
-
     public void setIcon(int resDrawable) {
         mIcon = resDrawable;
     }
 
     public void setRightIcon(int resDrawable, View.OnClickListener listener) {
         mRightIcon = resDrawable;
-        mRightIconClick = listener == null ? this : listener;
+        mRightIconClick = listener;
     }
 
     public void setView(View view) {
@@ -158,21 +149,21 @@ public class SketchDialog extends Dialog implements View.OnClickListener {
         if (str.length() > 0) {
             mPostiveStr = str;
         }
-        mPositiveClick = listener == null ? this : listener;
+        mPositiveClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
     public void setNeutralButton(String str, View.OnClickListener listener) {
         if (!isEmpty(str)) {
             mNeutralStr = str;
         }
-        mNeutralClick = listener == null ? this : listener;
+        mNeutralClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
     public void setNegativeButton(String str, View.OnClickListener listener) {
         if (str.length() > 0) {
             mNegativeStr = str;
         }
-        mNegativeClick = listener == null ? this : listener;
+        mNegativeClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
     private void applyRippleEffect(final View view, final int color) {
