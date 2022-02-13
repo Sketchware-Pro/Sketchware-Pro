@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.eC;
 import a.a.a.jC;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
@@ -18,12 +19,14 @@ public class ExtraBlocks {
     private final String javaName;
     private final String sc_id;
     private final LogicEditorActivity logicEditor;
+    private final eC projectDataManager;
 
     public ExtraBlocks(LogicEditorActivity logicEditor) {
         eventName = logicEditor.D;
         this.logicEditor = logicEditor;
         javaName = logicEditor.M.getJavaName();
         sc_id = logicEditor.B;
+        projectDataManager = jC.a(logicEditor.B);
     }
 
     public static void extraBlocks(ArrayList<HashMap<String, Object>> arrayList) {
@@ -104,7 +107,7 @@ public class ExtraBlocks {
     }
 
     public boolean isVariableUsed(int varId) {
-        ArrayList<Pair<Integer, String>> arrayList = jC.a(sc_id).k(javaName);
+        ArrayList<Pair<Integer, String>> arrayList = projectDataManager.k(javaName);
         ArrayList<Integer> variableList = new ArrayList<>();
         for (Pair<Integer, String> intStrPair : arrayList) {
             variableList.add(intStrPair.first);
@@ -113,7 +116,7 @@ public class ExtraBlocks {
     }
 
     public boolean isListUsed(int listId) {
-        ArrayList<Pair<Integer, String>> arrayList = jC.a(sc_id).j(javaName);
+        ArrayList<Pair<Integer, String>> arrayList = projectDataManager.j(javaName);
         ArrayList<Integer> listVar = new ArrayList<>();
         for (Pair<Integer, String> intStrPair : arrayList) {
             listVar.add(intStrPair.first);
@@ -122,7 +125,7 @@ public class ExtraBlocks {
     }
 
     public boolean isComponentUsed(int componentId) {
-        return jC.a(sc_id).f(javaName, componentId) || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
+        return projectDataManager.f(javaName, componentId) || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
     }
 
     public boolean isCustomVarUsed(String variable) {
@@ -131,7 +134,7 @@ public class ExtraBlocks {
         }
 
         ArrayList<String> arrayList = new ArrayList<>();
-        for (String variableName : jC.a(sc_id).e(javaName, 5)) {
+        for (String variableName : projectDataManager.e(javaName, 5)) {
             Matcher matcher = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(variableName);
             while (matcher.find()) {
                 arrayList.add(matcher.group(1));

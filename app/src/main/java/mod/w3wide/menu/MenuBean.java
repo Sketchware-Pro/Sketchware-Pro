@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.eC;
 import a.a.a.Ss;
 import a.a.a.jC;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -34,6 +35,7 @@ public class MenuBean {
         permission = permissions.toArray(new String[0]);
     }
 
+    private final eC projectDataManager;
     private final LogicEditorActivity logic;
     public String javaName;
     public String sc_id;
@@ -42,17 +44,7 @@ public class MenuBean {
         javaName = activity.M.getJavaName();
         logic = activity;
         sc_id = activity.B;
-    }
-
-    public static ArrayList<String> readResNames(String filePath, String pattern) {
-        ArrayList<String> resNames = new ArrayList<>();
-        if (FileUtil.isExistFile(filePath)) {
-            Matcher matcher = Pattern.compile(pattern).matcher(FileUtil.readFile(filePath));
-            while (matcher.find()) {
-                resNames.add(matcher.group(1));
-            }
-        }
-        return resNames;
+        projectDataManager = jC.a(activity.B);
     }
 
     public static ArrayList<String> getProjectFiles(String path, String extension) {
@@ -137,21 +129,21 @@ public class MenuBean {
 
             case "Variable":
                 asdAll.b("Select a Variable");
-                for (Pair<Integer, String> integerStringPair : jC.a(sc_id).k(javaName)) {
+                for (Pair<Integer, String> integerStringPair : projectDataManager.k(javaName)) {
                     selectableItems.add(integerStringPair.second.replaceFirst("^\\w+[\\s]+(\\w+)", "$1"));
                 }
                 break;
 
             case "Component":
                 asdAll.b("Select a Component");
-                for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
+                for (ComponentBean componentBean : projectDataManager.e(javaName)) {
                     selectableItems.add(componentBean.componentId);
                 }
                 break;
 
             case "CustomVar":
                 asdAll.b("Select a Custom Variable");
-                for (String s : jC.a(sc_id).e(javaName, 5)) {
+                for (String s : projectDataManager.e(javaName, 5)) {
                     Matcher matcher = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
                     while (matcher.find()) {
                         selectableItems.add(matcher.group(2));
@@ -160,7 +152,7 @@ public class MenuBean {
                 break;
         }
 
-        for (String s : jC.a(sc_id).e(javaName, 5)) {
+        for (String s : projectDataManager.e(javaName, 5)) {
             Matcher matcher2 = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
             while (matcher2.find()) {
                 if (menuName.equals(matcher2.group(1))) {
@@ -169,7 +161,7 @@ public class MenuBean {
                 }
             }
         }
-        for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
+        for (ComponentBean componentBean : projectDataManager.e(javaName)) {
             if (componentBean.type > 36 && menuName.equals(ComponentBean.getComponentTypeName(componentBean.type))) {
                 asdAll.b("Select a " + ComponentBean.getComponentTypeName(componentBean.type));
                 selectableItems.add(componentBean.componentId);
