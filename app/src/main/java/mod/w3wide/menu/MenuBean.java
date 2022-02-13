@@ -86,60 +86,16 @@ public class MenuBean {
                 break;
 
             case "ResString":
-                asdAll.b("Select a resource String");
-                selectableItems.add("app_name");
-                selectableItems.addAll(readResNames(ResourcePath.getStringPath(sc_id), "string[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "string[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResStyle":
-                asdAll.b("Select a resource Style");
-                selectableItems.addAll(readResNames(ResourcePath.getStylePath(sc_id), "style[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "style[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResColor":
-                asdAll.a(2131165472);
-                asdAll.b("Select a resource Color");
-                selectableItems.addAll(new ArrayList<>(Arrays.asList(defaultColor)));
-                selectableItems.addAll(readResNames(ResourcePath.getColorPath(sc_id), "color[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "color[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResArray":
-                asdAll.b("Select a resource String array");
-                selectableItems.addAll(readResNames(ResourcePath.getArrayPath(sc_id), "string-array[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "string-array[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResDimen":
-                asdAll.b("Select a resource Dimension");
-                selectableItems.addAll(readResNames(ResourcePath.getDimenPath(sc_id), "dimen[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "dimen[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResBool":
-                asdAll.b("Select a resource Boolean");
-                selectableItems.addAll(readResNames(ResourcePath.getBoolPath(sc_id), "bool[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "bool[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResInteger":
-                asdAll.b("Select a resource Integer");
-                selectableItems.addAll(readResNames(ResourcePath.getIntegerPath(sc_id), "integer[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "integer[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResAttr":
-                asdAll.b("Select a resource Attribute");
-                selectableItems.addAll(readResNames(ResourcePath.getAttrPath(sc_id), "attr[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "attr[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResXml":
-                asdAll.a(2131166280);
-                asdAll.b("Select a resource XML file");
-                selectableItems.addAll(getProjectFiles(ResourcePath.getXmlPath(sc_id), ".xml"));
+                asdAll.b("Deprecated");
+                asdAll.a("This block menu has been deprecated because it used to read the file for the value which is very heavy on the I/O. But you still can use CodeEditor.");
                 break;
 
             case "AdUnit":
