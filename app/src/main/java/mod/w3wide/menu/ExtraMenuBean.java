@@ -3,6 +3,7 @@ package mod.w3wide.menu;
 import static mod.SketchwareUtil.getDip;
 import static android.text.TextUtils.isEmpty;
 
+import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -627,7 +628,7 @@ public class ExtraMenuBean {
         View root = wB.a(logicEditor, Resources.layout.property_popup_input_text);
         EditText edittext = root.findViewById(Resources.id.ed_input);
         if (isNum) {
-            edittext.setInputType(12290);
+            edittext.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_NUMBER_FLAG_SIGNED);
             edittext.setImeOptions(EditorInfo.IME_ACTION_DONE);
             edittext.setMaxLines(1);
         } else {
