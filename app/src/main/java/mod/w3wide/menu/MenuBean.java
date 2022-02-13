@@ -52,8 +52,9 @@ public class MenuBean {
         ArrayList<String> projectFiles = new ArrayList<>();
         FileUtil.listDir(path, files);
         for (String file : files) {
+            String lastPathSegment = Uri.parse(file).getLastPathSegment();
             if (file.endsWith(extension)) {
-                projectFiles.add(Uri.parse(file).getLastPathSegment().substring(0, Uri.parse(file).getLastPathSegment().indexOf(extension)));
+                projectFiles.add(lastPathSegment.substring(0, lastPathSegment.indexOf(extension)));
             }
         }
         return projectFiles;
