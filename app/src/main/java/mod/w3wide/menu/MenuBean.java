@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.eC;
 import a.a.a.Ss;
 import a.a.a.jC;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -34,6 +35,7 @@ public class MenuBean {
         permission = permissions.toArray(new String[0]);
     }
 
+    private final eC projectDataManager;
     private final LogicEditorActivity logic;
     public String javaName;
     public String sc_id;
@@ -42,17 +44,7 @@ public class MenuBean {
         javaName = activity.M.getJavaName();
         logic = activity;
         sc_id = activity.B;
-    }
-
-    public static ArrayList<String> readResNames(String filePath, String pattern) {
-        ArrayList<String> resNames = new ArrayList<>();
-        if (FileUtil.isExistFile(filePath)) {
-            Matcher matcher = Pattern.compile(pattern).matcher(FileUtil.readFile(filePath));
-            while (matcher.find()) {
-                resNames.add(matcher.group(1));
-            }
-        }
-        return resNames;
+        projectDataManager = jC.a(activity.B);
     }
 
     public static ArrayList<String> getProjectFiles(String path, String extension) {
@@ -60,8 +52,9 @@ public class MenuBean {
         ArrayList<String> projectFiles = new ArrayList<>();
         FileUtil.listDir(path, files);
         for (String file : files) {
+            String lastPathSegment = Uri.parse(file).getLastPathSegment();
             if (file.endsWith(extension)) {
-                projectFiles.add(Uri.parse(file).getLastPathSegment().substring(0, Uri.parse(file).getLastPathSegment().indexOf(extension)));
+                projectFiles.add(lastPathSegment.substring(0, lastPathSegment.indexOf(extension)));
             }
         }
         return projectFiles;
@@ -86,60 +79,16 @@ public class MenuBean {
                 break;
 
             case "ResString":
-                asdAll.b("Select a resource String");
-                selectableItems.add("app_name");
-                selectableItems.addAll(readResNames(ResourcePath.getStringPath(sc_id), "string[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "string[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResStyle":
-                asdAll.b("Select a resource Style");
-                selectableItems.addAll(readResNames(ResourcePath.getStylePath(sc_id), "style[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "style[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResColor":
-                asdAll.a(2131165472);
-                asdAll.b("Select a resource Color");
-                selectableItems.addAll(new ArrayList<>(Arrays.asList(defaultColor)));
-                selectableItems.addAll(readResNames(ResourcePath.getColorPath(sc_id), "color[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "color[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResArray":
-                asdAll.b("Select a resource String array");
-                selectableItems.addAll(readResNames(ResourcePath.getArrayPath(sc_id), "string-array[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "string-array[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResDimen":
-                asdAll.b("Select a resource Dimension");
-                selectableItems.addAll(readResNames(ResourcePath.getDimenPath(sc_id), "dimen[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "dimen[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResBool":
-                asdAll.b("Select a resource Boolean");
-                selectableItems.addAll(readResNames(ResourcePath.getBoolPath(sc_id), "bool[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "bool[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResInteger":
-                asdAll.b("Select a resource Integer");
-                selectableItems.addAll(readResNames(ResourcePath.getIntegerPath(sc_id), "integer[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "integer[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResAttr":
-                asdAll.b("Select a resource Attribute");
-                selectableItems.addAll(readResNames(ResourcePath.getAttrPath(sc_id), "attr[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                selectableItems.addAll(readResNames(ResourcePath.getValuesPath(sc_id), "attr[ \\w\\=\\\"]+name=\\\"(\\w+)\\\""));
-                break;
-
             case "ResXml":
-                asdAll.a(2131166280);
-                asdAll.b("Select a resource XML file");
-                selectableItems.addAll(getProjectFiles(ResourcePath.getXmlPath(sc_id), ".xml"));
+                asdAll.b("Deprecated");
+                asdAll.a("This block menu has been deprecated because it used to read the file for the value which is very heavy on the I/O. But you still can use CodeEditor.");
                 break;
 
             case "AdUnit":
@@ -181,21 +130,21 @@ public class MenuBean {
 
             case "Variable":
                 asdAll.b("Select a Variable");
-                for (Pair<Integer, String> integerStringPair : jC.a(sc_id).k(javaName)) {
+                for (Pair<Integer, String> integerStringPair : projectDataManager.k(javaName)) {
                     selectableItems.add(integerStringPair.second.replaceFirst("^\\w+[\\s]+(\\w+)", "$1"));
                 }
                 break;
 
             case "Component":
                 asdAll.b("Select a Component");
-                for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
+                for (ComponentBean componentBean : projectDataManager.e(javaName)) {
                     selectableItems.add(componentBean.componentId);
                 }
                 break;
 
             case "CustomVar":
                 asdAll.b("Select a Custom Variable");
-                for (String s : jC.a(sc_id).e(javaName, 5)) {
+                for (String s : projectDataManager.e(javaName, 5)) {
                     Matcher matcher = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
                     while (matcher.find()) {
                         selectableItems.add(matcher.group(2));
@@ -204,7 +153,7 @@ public class MenuBean {
                 break;
         }
 
-        for (String s : jC.a(sc_id).e(javaName, 5)) {
+        for (String s : projectDataManager.e(javaName, 5)) {
             Matcher matcher2 = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
             while (matcher2.find()) {
                 if (menuName.equals(matcher2.group(1))) {
@@ -213,7 +162,7 @@ public class MenuBean {
                 }
             }
         }
-        for (ComponentBean componentBean : jC.a(sc_id).e(javaName)) {
+        for (ComponentBean componentBean : projectDataManager.e(javaName)) {
             if (componentBean.type > 36 && menuName.equals(ComponentBean.getComponentTypeName(componentBean.type))) {
                 asdAll.b("Select a " + ComponentBean.getComponentTypeName(componentBean.type));
                 selectableItems.add(componentBean.componentId);

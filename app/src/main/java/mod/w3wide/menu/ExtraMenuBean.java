@@ -3,6 +3,7 @@ package mod.w3wide.menu;
 import static mod.SketchwareUtil.getDip;
 import static android.text.TextUtils.isEmpty;
 
+import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import a.a.a.eC;
 import a.a.a.Ss;
 import a.a.a.jC;
 import a.a.a.uq;
@@ -62,6 +64,7 @@ public class ExtraMenuBean {
     private final FileResConfig frc;
     private final LogicEditorActivity logicEditor;
     private final DialogProperties mProperty = new DialogProperties();
+    private final eC projectDataManager;
     private final String sc_id;
 
     private String splitter;
@@ -73,6 +76,7 @@ public class ExtraMenuBean {
         fpu = new FilePathUtil();
         frc = new FileResConfig(logicA.B);
         extraMenuBlock = new ExtraMenuBlock(logicA);
+        projectDataManager = jC.a(logicA.B);
     }
 
     private void codeMenu(Ss menu) {
@@ -253,7 +257,7 @@ public class ExtraMenuBean {
 
             case "list":
                 asdAll.b(Helper.getResString(2131625563));
-                menus = jC.a(sc_id).c(logicEditor.M.getJavaName());
+                menus = projectDataManager.c(logicEditor.M.getJavaName());
                 break;
 
             case "intent":
@@ -599,15 +603,15 @@ public class ExtraMenuBean {
     }
 
     private ArrayList<String> getVarMenus(int type) {
-        return jC.a(sc_id).e(logicEditor.M.getJavaName(), type);
+        return projectDataManager.e(logicEditor.M.getJavaName(), type);
     }
 
     private ArrayList<String> getListMenus(int type) {
-        return jC.a(sc_id).d(logicEditor.M.getJavaName(), type);
+        return projectDataManager.d(logicEditor.M.getJavaName(), type);
     }
 
     private ArrayList<String> getComponentMenus(int type) {
-        return jC.a(sc_id).b(logicEditor.M.getJavaName(), type);
+        return projectDataManager.b(logicEditor.M.getJavaName(), type);
     }
 
     private void asdDialog(Ss ss, boolean isNum, String message) {
@@ -624,7 +628,7 @@ public class ExtraMenuBean {
         View root = wB.a(logicEditor, Resources.layout.property_popup_input_text);
         EditText edittext = root.findViewById(Resources.id.ed_input);
         if (isNum) {
-            edittext.setInputType(12290);
+            edittext.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_NUMBER_FLAG_SIGNED);
             edittext.setImeOptions(EditorInfo.IME_ACTION_DONE);
             edittext.setMaxLines(1);
         } else {

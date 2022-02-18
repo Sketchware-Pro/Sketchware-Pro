@@ -513,8 +513,6 @@ public class Ox {
      * @see LinearLayout#getOrientation()
      */
     public void h(Nx nx, ViewBean viewBean) {
-        if (viewBean.inject.trim().replace(" ", "").contains("tools:remove=\"orientation\""))
-            return;
         int orientation = viewBean.layout.orientation;
         if (orientation == LinearLayout.HORIZONTAL) {
             nx.a("android", "orientation", "horizontal");
