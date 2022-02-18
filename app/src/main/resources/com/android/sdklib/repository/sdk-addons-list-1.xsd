@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+ * Copyright (C) 2010 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<xsd:schema targetNamespace="http://schemas.android.com/sdk/android/addons-list/1"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sa1="http://schemas.android.com/sdk/android/addons-list/1" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="1">
+
+    <!--
+        A simple list of add-ons sites that is loaded by default by the SDK Manager.
+    -->
+
+    <xsd:element name="sdk-addons-list" type="sa1:addonsListType" />
+
+    <xsd:complexType name="addonsListType">
+        <xsd:annotation>
+            <xsd:documentation>
+                A simple list of add-ons site.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="addon-site" type="sa1:addonSiteType" />
+        </xsd:choice>
+    </xsd:complexType>
+
+    <!-- The definition of an Add-on Site. -->
+
+    <xsd:complexType name="addonSiteType">
+        <xsd:annotation>
+            <xsd:documentation>An SDK add-on site.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:all>
+            <!-- The URL of the site.
+
+                This can be either the exact URL of the an XML resource conforming
+                to the latest sdk-addon-N.xsd schema, or it can be the URL of a
+                'directory', in which case the manager will look for a resource
+                named 'addon.xml' at this location.
+
+                Examples:
+                    http://www.example.com/android/my_addons.xml
+                or
+                    http://www.example.com/android/
+
+                In the second example, the manager will actually look for:
+                    http://www.example.com/android/addon.xml
+            -->
+            <xsd:element name="url" type="xsd:token" />
+
+            <!-- The UI-visible name of the add-on. -->
+            <xsd:element name="name" type="xsd:normalizedString" />
+        </xsd:all>
+    </xsd:complexType>
+
+</xsd:schema>

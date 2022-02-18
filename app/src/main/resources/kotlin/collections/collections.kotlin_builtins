@@ -1,0 +1,253 @@
+// IntelliJ API Decompiler stub source generated from a class file
+// Implementation of methods is not available
+
+package kotlin.collections
+
+abstract class BooleanIterator() : kotlin.collections.Iterator<kotlin.Boolean> {
+    operator fun next(): kotlin.Boolean { /* compiled code */ }
+
+    abstract fun nextBoolean(): kotlin.Boolean
+}
+
+abstract class ByteIterator() : kotlin.collections.Iterator<kotlin.Byte> {
+    operator fun next(): kotlin.Byte { /* compiled code */ }
+
+    abstract fun nextByte(): kotlin.Byte
+}
+
+abstract class CharIterator() : kotlin.collections.Iterator<kotlin.Char> {
+    operator fun next(): kotlin.Char { /* compiled code */ }
+
+    abstract fun nextChar(): kotlin.Char
+}
+
+interface Collection<out E> : kotlin.collections.Iterable<E> {
+    val size: kotlin.Int
+
+    operator fun contains(element: @kotlin.UnsafeVariance E): kotlin.Boolean
+
+    fun containsAll(elements: kotlin.collections.Collection<@kotlin.UnsafeVariance E>): kotlin.Boolean
+
+    fun isEmpty(): kotlin.Boolean
+
+    operator fun iterator(): kotlin.collections.Iterator<E>
+}
+
+abstract class DoubleIterator() : kotlin.collections.Iterator<kotlin.Double> {
+    operator fun next(): kotlin.Double { /* compiled code */ }
+
+    abstract fun nextDouble(): kotlin.Double
+}
+
+abstract class FloatIterator() : kotlin.collections.Iterator<kotlin.Float> {
+    operator fun next(): kotlin.Float { /* compiled code */ }
+
+    abstract fun nextFloat(): kotlin.Float
+}
+
+abstract class IntIterator() : kotlin.collections.Iterator<kotlin.Int> {
+    operator fun next(): kotlin.Int { /* compiled code */ }
+
+    abstract fun nextInt(): kotlin.Int
+}
+
+interface Iterable<out T> {
+    operator fun iterator(): kotlin.collections.Iterator<T>
+}
+
+interface Iterator<out T> {
+    operator fun hasNext(): kotlin.Boolean
+
+    operator fun next(): T
+}
+
+interface List<out E> : kotlin.collections.Collection<E> {
+    val size: kotlin.Int
+
+    operator fun contains(element: @kotlin.UnsafeVariance E): kotlin.Boolean
+
+    fun containsAll(elements: kotlin.collections.Collection<@kotlin.UnsafeVariance E>): kotlin.Boolean
+
+    operator fun get(index: kotlin.Int): E
+
+    fun indexOf(element: @kotlin.UnsafeVariance E): kotlin.Int
+
+    fun isEmpty(): kotlin.Boolean
+
+    operator fun iterator(): kotlin.collections.Iterator<E>
+
+    fun lastIndexOf(element: @kotlin.UnsafeVariance E): kotlin.Int
+
+    fun listIterator(): kotlin.collections.ListIterator<E>
+
+    fun listIterator(index: kotlin.Int): kotlin.collections.ListIterator<E>
+
+    fun subList(fromIndex: kotlin.Int, toIndex: kotlin.Int): kotlin.collections.List<E>
+}
+
+interface ListIterator<out T> : kotlin.collections.Iterator<T> {
+    operator fun hasNext(): kotlin.Boolean
+
+    fun hasPrevious(): kotlin.Boolean
+
+    operator fun next(): T
+
+    fun nextIndex(): kotlin.Int
+
+    fun previous(): T
+
+    fun previousIndex(): kotlin.Int
+}
+
+abstract class LongIterator() : kotlin.collections.Iterator<kotlin.Long> {
+    operator fun next(): kotlin.Long { /* compiled code */ }
+
+    abstract fun nextLong(): kotlin.Long
+}
+
+interface Map<K, out V> {
+    val entries: kotlin.collections.Set<kotlin.collections.Map.Entry<K, V>>
+
+    val keys: kotlin.collections.Set<K>
+
+    val size: kotlin.Int
+
+    val values: kotlin.collections.Collection<V>
+
+    fun containsKey(key: K): kotlin.Boolean
+
+    fun containsValue(value: @kotlin.UnsafeVariance V): kotlin.Boolean
+
+    operator fun get(key: K): V?
+
+    @kotlin.SinceKotlin @kotlin.internal.PlatformDependent fun getOrDefault(key: K, defaultValue: @kotlin.UnsafeVariance V): V { /* compiled code */ }
+
+    fun isEmpty(): kotlin.Boolean
+
+    interface Entry<out K, out V> {
+        val key: K
+
+        val value: V
+    }
+}
+
+interface MutableCollection<E> : kotlin.collections.Collection<E>, kotlin.collections.MutableIterable<E> {
+    fun add(element: E): kotlin.Boolean
+
+    fun addAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun clear(): kotlin.Unit
+
+    operator fun iterator(): kotlin.collections.MutableIterator<E>
+
+    fun remove(element: E): kotlin.Boolean
+
+    fun removeAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun retainAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+}
+
+interface MutableIterable<out T> : kotlin.collections.Iterable<T> {
+    operator fun iterator(): kotlin.collections.MutableIterator<T>
+}
+
+interface MutableIterator<out T> : kotlin.collections.Iterator<T> {
+    fun remove(): kotlin.Unit
+}
+
+interface MutableList<E> : kotlin.collections.List<E>, kotlin.collections.MutableCollection<E> {
+    fun add(element: E): kotlin.Boolean
+
+    fun add(index: kotlin.Int, element: E): kotlin.Unit
+
+    fun addAll(index: kotlin.Int, elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun addAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun clear(): kotlin.Unit
+
+    fun listIterator(): kotlin.collections.MutableListIterator<E>
+
+    fun listIterator(index: kotlin.Int): kotlin.collections.MutableListIterator<E>
+
+    fun remove(element: E): kotlin.Boolean
+
+    fun removeAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun removeAt(index: kotlin.Int): E
+
+    fun retainAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    operator fun set(index: kotlin.Int, element: E): E
+
+    fun subList(fromIndex: kotlin.Int, toIndex: kotlin.Int): kotlin.collections.MutableList<E>
+}
+
+interface MutableListIterator<T> : kotlin.collections.ListIterator<T>, kotlin.collections.MutableIterator<T> {
+    fun add(element: T): kotlin.Unit
+
+    operator fun hasNext(): kotlin.Boolean
+
+    operator fun next(): T
+
+    fun remove(): kotlin.Unit
+
+    fun set(element: T): kotlin.Unit
+}
+
+interface MutableMap<K, V> : kotlin.collections.Map<K, V> {
+    val entries: kotlin.collections.MutableSet<kotlin.collections.MutableMap.MutableEntry<K, V>>
+
+    val keys: kotlin.collections.MutableSet<K>
+
+    val values: kotlin.collections.MutableCollection<V>
+
+    fun clear(): kotlin.Unit
+
+    fun put(key: K, value: V): V?
+
+    fun putAll(from: kotlin.collections.Map<out K, V>): kotlin.Unit
+
+    fun remove(key: K): V?
+
+    @kotlin.SinceKotlin @kotlin.internal.PlatformDependent fun remove(key: K, value: V): kotlin.Boolean { /* compiled code */ }
+
+    interface MutableEntry<K, V> : kotlin.collections.Map.Entry<K, V> {
+        fun setValue(newValue: V): V
+    }
+}
+
+interface MutableSet<E> : kotlin.collections.Set<E>, kotlin.collections.MutableCollection<E> {
+    fun add(element: E): kotlin.Boolean
+
+    fun addAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun clear(): kotlin.Unit
+
+    operator fun iterator(): kotlin.collections.MutableIterator<E>
+
+    fun remove(element: E): kotlin.Boolean
+
+    fun removeAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+
+    fun retainAll(elements: kotlin.collections.Collection<E>): kotlin.Boolean
+}
+
+interface Set<out E> : kotlin.collections.Collection<E> {
+    val size: kotlin.Int
+
+    operator fun contains(element: @kotlin.UnsafeVariance E): kotlin.Boolean
+
+    fun containsAll(elements: kotlin.collections.Collection<@kotlin.UnsafeVariance E>): kotlin.Boolean
+
+    fun isEmpty(): kotlin.Boolean
+
+    operator fun iterator(): kotlin.collections.Iterator<E>
+}
+
+abstract class ShortIterator() : kotlin.collections.Iterator<kotlin.Short> {
+    operator fun next(): kotlin.Short { /* compiled code */ }
+
+    abstract fun nextShort(): kotlin.Short
+}
+
