@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sketchware.remod.sources">
+    package="com.sketchware.remod">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -43,7 +43,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.sketchware.remod.sources.provider"
+            android:authorities="com.sketchware.remod.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -688,12 +688,12 @@
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.sketchware.remod.sources.firebaseinitprovider"
+            android:authorities="com.sketchware.remod.firebaseinitprovider"
             android:exported="false"
             android:initOrder="100" />
         <provider
             android:name="com.google.android.gms.ads.MobileAdsInitProvider"
-            android:authorities="com.sketchware.remod.sources.mobileadsinitprovider"
+            android:authorities="com.sketchware.remod.mobileadsinitprovider"
             android:exported="false"
             android:initOrder="100" />
 
@@ -743,7 +743,7 @@
 
         <provider
             android:name="com.facebook.ads.AudienceNetworkContentProvider"
-            android:authorities="com.sketchware.remod.sources.AudienceNetworkContentProvider"
+            android:authorities="com.sketchware.remod.AudienceNetworkContentProvider"
             android:exported="false" />
 
         <meta-data

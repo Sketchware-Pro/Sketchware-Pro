@@ -7,11 +7,12 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId 'com.sketchware.remod.sources'
-        minSdkVersion 25
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId 'com.sketchware.remod'
+        minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
+        targetSdkVersion 28
+        versionCode 150
+        versionName "v6.4.0-rc02"
     }
 
     buildTypes {
