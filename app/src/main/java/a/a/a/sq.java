@@ -52,7 +52,7 @@ public class sq {
 
     static {
         a = new Pair[]{new Pair(-1, "match_parent"), new Pair(-2, "wrap_content")};
-        b = new Pair[]{new Pair(0, "horizontal"), new Pair(1, "vertical")};
+        b = new Pair[]{new Pair(-1, "none"), new Pair(0, "horizontal"), new Pair(1, "vertical")};
         c = new Pair[]{new Pair(48, "top"), new Pair(80, "bottom"), new Pair(16, "center_vertical"), new Pair(3, "left"), new Pair(5, "right"), new Pair(1, "center_horizontal")};
         d = new Pair[]{new Pair(TextBean.TEXT_TYPE_NORMAL, "normal"), new Pair(TextBean.TEXT_TYPE_BOLD, "bold"), new Pair(TextBean.TEXT_TYPE_ITALIC, "italic"), new Pair(TextBean.TEXT_TYPE_BOLDITALIC, "bold|italic")};
         e = new Pair[]{new Pair(TextBean.IME_OPTION_NORMAL, "normal"), new Pair(TextBean.IME_OPTION_NONE, "none"), new Pair(TextBean.IME_OPTION_GO, "go"), new Pair(TextBean.IME_OPTION_SEARCH, "search"), new Pair(TextBean.IME_OPTION_SEND, "send"), new Pair(TextBean.IME_OPTION_NEXT, "next"), new Pair(TextBean.IME_OPTION_DONE, "done")};
