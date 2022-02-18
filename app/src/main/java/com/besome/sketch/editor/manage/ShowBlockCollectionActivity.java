@@ -30,6 +30,7 @@ import a.a.a.Ts;
 import a.a.a.bB;
 import a.a.a.xB;
 import mod.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 import mod.w3wide.tools.ImageFactory;
 
 public class ShowBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -133,12 +134,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         d().a(xB.b().a(getApplicationContext(), 2131625253));
         d().e(true);
         d().d(true);
-        k.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         l = getIntent().getStringExtra("block_name");
         m = findViewById(2131231015);
         m.setScrollEnabled(true);
