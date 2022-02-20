@@ -132,6 +132,7 @@ public class Resources {
         public static final int file_48_blue = 0x7f0701b6;
         public static final int file_96 = 0x7f0701b7;
         public static final int file_app_icon = 0x7f0701b8;
+        public static final int full_image_48 = 0x7f0701ca;
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
@@ -678,6 +679,7 @@ public class Resources {
         public static final int main_drawer_item = 0x7f0b00b0;
         public static final int make_block = 0x7f0b00b1;
         public static final int manage_collection_popup_import_more_block_list_item = 0x7f0b00b7;
+        public static final int manage_collection_show_block = 0x7f0b00b8;
         public static final int manage_collection_show_widget = 0x7f0b00b9;
         public static final int manage_font_add = 0x7f0b00c1;
         public static final int manage_library_base_item = 0x7f0b00d1;
@@ -869,6 +871,8 @@ public class Resources {
         public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
         public static final int design_library_guide_setup_first = 0x7f0e051c;
         public static final int design_library_settings_title_enabled = 0x7f0e0521;
+        public static final int design_manager_block_detail_actionbar_title = 0x7f0e0525;
+        public static final int design_manager_block_hint_enter_block_name = 0x7f0e0526;
         public static final int design_manager_message_edit_complete = 0x7f0e053f;
         public static final int design_manager_widget_hint_enter_widget_name = 0x7f0e0559;
         public static final int design_manager_widget_title_actionbar_title = 0x7f0e055a;
