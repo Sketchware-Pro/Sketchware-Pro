@@ -38,17 +38,17 @@ import mod.w3wide.tools.ImageFactory;
 
 public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public Toolbar k;
-    public String l;
-    public ViewBlockCollectionEditor m;
-    public BlockPane n;
-    public EditText o;
-    public EasyDeleteEditText p;
-    public Button q;
-    public LinearLayout r;
-    public NB s;
+    private Toolbar k;
+    private String l;
+    private ViewBlockCollectionEditor m;
+    private BlockPane n;
+    private EditText o;
+    private EasyDeleteEditText p;
+    private Button q;
+    private LinearLayout r;
+    private NB s;
 
-    public final void a(ArrayList<BlockBean> arrayList, int i, int i2) {
+    private void a(ArrayList<BlockBean> arrayList, int i, int i2) {
         Rs rs;
         Rs rs2;
         Rs rs3;
@@ -102,7 +102,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         n.b();
     }
 
-    public final void b(String str) {
+    private void b(String str) {
         Rs rs = null;
         n.a(str, "moreBlock");
         ArrayList<String> c = FB.c(str);
@@ -130,7 +130,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         n.getRoot().k();
     }
 
-    public final void l() {
+    private void l() {
         int i = getResources().getDisplayMetrics().heightPixels;
         r.measure(0, 0);
         m.setLayoutParams(new LinearLayout.LayoutParams(-1, ((i - GB.a(e)) - GB.f(e)) - r.getMeasuredHeight()));
@@ -194,7 +194,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         super.onResume();
     }
 
-    public final Rs a(BlockBean blockBean) {
+    private Rs a(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
