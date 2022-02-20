@@ -51,7 +51,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
 
         boolean isFirstBlock = true;
         for (BlockBean blockBean : blockBeans) {
-            Rs block = a(blockBean);
+            Rs block = getBlock(blockBean);
             int blockId = (Integer) block.getTag();
             hashMap.put(blockId, block);
 
@@ -193,9 +193,10 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        MoreBlockCollectionBean a2 = Pp.h().a(moreBlockName);
-        addHeaderBlock(a2.spec);
-        addBlocks(a2.blocks);
+
+        MoreBlockCollectionBean moreBlock = Pp.h().a(moreBlockName);
+        addHeaderBlock(moreBlock.spec);
+        addBlocks(moreBlock.blocks);
         resizeBottomViews();
     }
 
@@ -204,7 +205,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         super.onResume();
     }
 
-    private Rs a(BlockBean blockBean) {
+    private Rs getBlock(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
