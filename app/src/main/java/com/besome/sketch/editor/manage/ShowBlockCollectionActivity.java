@@ -37,17 +37,14 @@ import mod.w3wide.tools.ImageFactory;
 
 public class ShowBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public Toolbar k;
-    public String l;
-    public ViewBlockCollectionEditor m;
-    public BlockPane n;
-    public EditText o;
-    public EasyDeleteEditText p;
-    public Button q;
-    public LinearLayout r;
-    public NB s;
+    private String l;
+    private ViewBlockCollectionEditor m;
+    private BlockPane n;
+    private EditText o;
+    private LinearLayout r;
+    private NB s;
 
-    public final void a(ArrayList<BlockBean> arrayList, int i, int i2) {
+    private void a(ArrayList<BlockBean> arrayList, int i, int i2) {
         Rs rs;
         Rs rs2;
         Rs rs3;
@@ -102,7 +99,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         n.b();
     }
 
-    public final void l() {
+    private void l() {
         int i = getResources().getDisplayMetrics().heightPixels;
         r.measure(0, 0);
         m.setLayoutParams(new LinearLayout.LayoutParams(
@@ -111,6 +108,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         m.requestLayout();
     }
 
+    @Override
     public void onClick(View view) {
         if (view.getId() == Resources.id.save_button && s.b()) {
             Mp.h().a(l, o.getText().toString(), true);
@@ -120,48 +118,51 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         }
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
+    @Override
     public void onConfigurationChanged(Configuration configuration) {
         super.onConfigurationChanged(configuration);
         l();
     }
 
     @Override
-    // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(Resources.layout.manage_collection_show_block);
-        k = findViewById(Resources.id.toolbar);
-        a(k);
+
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        a(toolbar);
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().a(xB.b().a(getApplicationContext(), Resources.string.design_manager_block_detail_actionbar_title));
         d().e(true);
         d().d(true);
-        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+
         l = getIntent().getStringExtra("block_name");
         m = findViewById(Resources.id.editor);
         m.setScrollEnabled(true);
         n = m.getBlockPane();
-        p = findViewById(Resources.id.ed_input);
-        o = p.getEditText();
+
+        EasyDeleteEditText input = findViewById(Resources.id.ed_input);
+        o = input.getEditText();
         o.setPrivateImeOptions("defaultInputmode=english;");
         o.setText(l);
-        p.setHint(xB.b().a(this, Resources.string.design_manager_block_hint_enter_block_name));
-        q = findViewById(Resources.id.save_button);
-        q.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_save));
-        q.setOnClickListener(this);
-        s = new NB(this, p.getTextInputLayout(), Mp.h().g());
+        input.setHint(xB.b().a(this, Resources.string.design_manager_block_hint_enter_block_name));
+
+        Button save = findViewById(Resources.id.save_button);
+        save.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_save));
+        save.setOnClickListener(this);
+        s = new NB(this, input.getTextInputLayout(), Mp.h().g());
         r = findViewById(Resources.id.layout_button);
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity
+    @Override
     public void onPostCreate(Bundle bundle) {
         super.onPostCreate(bundle);
         a(Mp.h().a(l).blocks, 10, 10);
         l();
     }
 
-    public final Rs a(BlockBean blockBean) {
+    private Rs a(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
