@@ -98,29 +98,31 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         pane.b();
     }
 
-    private void b(String str) {
-        Rs rs = null;
-        pane.a(str, "moreBlock");
-        ArrayList<String> c = FB.c(str);
-        int i = 0;
-        for (int i2 = 0; i2 < c.size(); i2++) {
-            String str2 = c.get(i2);
-            if (str2.charAt(0) == '%') {
-                if (str2.charAt(1) == 'b') {
-                    rs = new Rs(getBaseContext(), i + 1, str2.substring(3), "b", "getArg");
-                } else if (str2.charAt(1) == 'd') {
-                    rs = new Rs(getBaseContext(), i + 1, str2.substring(3), "d", "getArg");
-                } else if (str2.charAt(1) == 's') {
-                    rs = new Rs(getBaseContext(), i + 1, str2.substring(3), "s", "getArg");
-                } else if (str2.charAt(1) == 'm') {
-                    String substring = str2.substring(str2.lastIndexOf(".") + 1);
-                    String substring2 = str2.substring(str2.indexOf(".") + 1, str2.lastIndexOf("."));
-                    rs = new Rs(getBaseContext(), i + 1, substring, kq.a(substring2), kq.b(substring2), "getArg");
+    private void addHeaderBlock(String spec) {
+        Rs header = null;
+        pane.a(spec, "moreBlock");
+
+        ArrayList<String> parameterSpecs = FB.c(spec);
+        int idCounter = 0;
+        for (int i = 0; i < parameterSpecs.size(); i++) {
+            String parameterSpec = parameterSpecs.get(i);
+            if (parameterSpec.charAt(0) == '%') {
+                if (parameterSpec.charAt(1) == 'b') {
+                    header = new Rs(getBaseContext(), idCounter + 1, parameterSpec.substring(3), "b", "getArg");
+                } else if (parameterSpec.charAt(1) == 'd') {
+                    header = new Rs(getBaseContext(), idCounter + 1, parameterSpec.substring(3), "d", "getArg");
+                } else if (parameterSpec.charAt(1) == 's') {
+                    header = new Rs(getBaseContext(), idCounter + 1, parameterSpec.substring(3), "s", "getArg");
+                } else if (parameterSpec.charAt(1) == 'm') {
+                    String parameterName = parameterSpec.substring(parameterSpec.lastIndexOf(".") + 1);
+                    String parameterType = parameterSpec.substring(parameterSpec.indexOf(".") + 1, parameterSpec.lastIndexOf("."));
+                    header = new Rs(getBaseContext(), idCounter + 1, parameterName, kq.a(parameterType), kq.b(parameterType), "getArg");
                 }
-                rs.setBlockType(1);
-                pane.addView(rs);
-                pane.getRoot().a((Ts) pane.getRoot().V.get(i), rs);
-                i++;
+
+                header.setBlockType(1);
+                pane.addView(header);
+                pane.getRoot().a((Ts) pane.getRoot().V.get(idCounter), header);
+                idCounter++;
             }
         }
         pane.getRoot().k();
@@ -180,7 +182,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         MoreBlockCollectionBean a2 = Pp.h().a(moreBlockName);
-        b(a2.spec);
+        addHeaderBlock(a2.spec);
         a(a2.blocks, 10, 10);
         l();
     }
