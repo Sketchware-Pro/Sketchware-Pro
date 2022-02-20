@@ -1,14 +1,15 @@
 package com.besome.sketch.editor.manage;
 
-import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,6 +17,7 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,15 +105,17 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     public final void l() {
         int i = getResources().getDisplayMetrics().heightPixels;
         r.measure(0, 0);
-        m.setLayoutParams(new LinearLayout.LayoutParams(-1, ((i - GB.a(e)) - GB.f(e)) - r.getMeasuredHeight()));
+        m.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ((i - GB.a(e)) - GB.f(e)) - r.getMeasuredHeight()));
         m.requestLayout();
     }
 
-    @SuppressLint("ResourceType")
     public void onClick(View view) {
-        if (view.getId() == 2131231681 && s.b()) {
+        if (view.getId() == Resources.id.save_button && s.b()) {
             Mp.h().a(l, o.getText().toString(), true);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279), 0).show();
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
+                    Resources.string.design_manager_message_edit_complete), Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -122,33 +126,32 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         l();
     }
 
-    @SuppressLint("ResourceType")
     @Override
     // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(2131427512);
-        k = findViewById(2131231847);
+        setContentView(Resources.layout.manage_collection_show_block);
+        k = findViewById(Resources.id.toolbar);
         a(k);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), 2131625253));
+        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), Resources.string.design_manager_block_detail_actionbar_title));
         d().e(true);
         d().d(true);
         k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         l = getIntent().getStringExtra("block_name");
-        m = findViewById(2131231015);
+        m = findViewById(Resources.id.editor);
         m.setScrollEnabled(true);
         n = m.getBlockPane();
-        p = findViewById(2131230990);
+        p = findViewById(Resources.id.ed_input);
         o = p.getEditText();
         o.setPrivateImeOptions("defaultInputmode=english;");
         o.setText(l);
-        p.setHint(xB.b().a(this, 2131625254));
-        q = findViewById(2131231681);
-        q.setText(xB.b().a(getApplicationContext(), 2131625031));
+        p.setHint(xB.b().a(this, Resources.string.design_manager_block_hint_enter_block_name));
+        q = findViewById(Resources.id.save_button);
+        q.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_save));
         q.setOnClickListener(this);
         s = new NB(this, p.getTextInputLayout(), Mp.h().g());
-        r = findViewById(2131231320);
+        r = findViewById(Resources.id.layout_button);
     }
 
     @Override // androidx.appcompat.app.AppCompatActivity
@@ -162,11 +165,10 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem saveImageItem = menu.add(0, 12, 0, "Save image");
-        saveImageItem.setIcon(2131165642);
+        saveImageItem.setIcon(Resources.drawable.full_image_48);
         saveImageItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
