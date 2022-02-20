@@ -12,8 +12,8 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import a.a.a.eC;
 import a.a.a.Ss;
+import a.a.a.eC;
 import a.a.a.jC;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.asd.asdforall.AsdAll;
@@ -88,7 +88,7 @@ public class MenuBean {
             case "ResAttr":
             case "ResXml":
                 asdAll.b("Deprecated");
-                asdAll.a("This block menu has been deprecated because it used to read the file for the value which is very heavy on the I/O. But you still can use CodeEditor.");
+                asdAll.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
                 break;
 
             case "AdUnit":
