@@ -1,11 +1,13 @@
 package com.besome.sketch.editor.manage;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -128,10 +130,12 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         pane.getRoot().k();
     }
 
-    private void l() {
-        int i = getResources().getDisplayMetrics().heightPixels;
+    private void resizeBottomViews() {
+        int height = getResources().getDisplayMetrics().heightPixels;
         actionSection.measure(0, 0);
-        blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(-1, ((i - GB.a(e)) - GB.f(e)) - actionSection.getMeasuredHeight()));
+        blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ((height - GB.a((Context) this)) - GB.f((Context) this)) - actionSection.getMeasuredHeight()));
         blockCollectionEditor.requestLayout();
     }
 
@@ -147,7 +151,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        l();
+        resizeBottomViews();
     }
 
     @SuppressLint("ResourceType")
@@ -184,7 +188,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         MoreBlockCollectionBean a2 = Pp.h().a(moreBlockName);
         addHeaderBlock(a2.spec);
         a(a2.blocks, 10, 10);
-        l();
+        resizeBottomViews();
     }
 
     @Override
