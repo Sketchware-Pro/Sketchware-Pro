@@ -158,12 +158,6 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         l();
     }
 
-    @Override
-    // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onResume() {
-        super.onResume();
-    }
-
     public final Rs a(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }

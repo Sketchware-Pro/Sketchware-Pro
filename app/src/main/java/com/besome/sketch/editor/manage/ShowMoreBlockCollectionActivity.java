@@ -205,11 +205,6 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         resizeBottomViews();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private Rs getBlock(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
