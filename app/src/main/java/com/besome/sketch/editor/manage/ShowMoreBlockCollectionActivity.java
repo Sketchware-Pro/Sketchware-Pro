@@ -138,25 +138,24 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     }
 
     @SuppressLint("ResourceType")
-    public void onClick(View view) {
-        if (view.getId() == 2131231681 && s.b()) {
+    public void onClick(View v) {
+        if (v.getId() == 2131231681 && s.b()) {
             Pp.h().a(l, o.getText().toString(), true);
             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279), 0).show();
             finish();
         }
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         l();
     }
 
     @SuppressLint("ResourceType")
     @Override
-    // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(2131427512);
         k = findViewById(2131231847);
         a(k);
@@ -181,7 +180,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         r = findViewById(2131231320);
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity
+    @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         MoreBlockCollectionBean a2 = Pp.h().a(l);
@@ -191,7 +190,6 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     }
 
     @Override
-    // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
     }
