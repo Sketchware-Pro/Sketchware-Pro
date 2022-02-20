@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -19,6 +19,7 @@ import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -147,11 +148,12 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         blockCollectionEditor.requestLayout();
     }
 
-    @SuppressLint("ResourceType")
+    @Override
     public void onClick(View v) {
-        if (v.getId() == 2131231681 && moreBlockNameValidator.b()) {
+        if (v.getId() == Resources.id.save_button && moreBlockNameValidator.b()) {
             Pp.h().a(moreBlockName, moreBlockNameEditorText.getText().toString(), true);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279), 0).show();
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
+                    Resources.string.design_manager_message_edit_complete), Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -162,32 +164,35 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         resizeBottomViews();
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427512);
-        Toolbar toolbar = findViewById(2131231847);
+        setContentView(Resources.layout.manage_collection_show_block);
+
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
         a(toolbar);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), 2131625253));
+        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), Resources.string.design_manager_block_detail_actionbar_title));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+
         moreBlockName = getIntent().getStringExtra("block_name");
-        blockCollectionEditor = findViewById(2131231015);
+        blockCollectionEditor = findViewById(Resources.id.editor);
         blockCollectionEditor.setScrollEnabled(true);
         pane = blockCollectionEditor.getBlockPane();
-        EasyDeleteEditText input = findViewById(2131230990);
+
+        EasyDeleteEditText input = findViewById(Resources.id.ed_input);
         moreBlockNameEditorText = input.getEditText();
         moreBlockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
         moreBlockNameEditorText.setText(moreBlockName);
-        input.setHint(xB.b().a(this, 2131625254));
-        Button save = findViewById(2131231681);
-        save.setText(xB.b().a(getApplicationContext(), 2131625031));
+        input.setHint(xB.b().a(this, Resources.string.design_manager_block_hint_enter_block_name));
+
+        Button save = findViewById(Resources.id.save_button);
+        save.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_save));
         save.setOnClickListener(this);
         moreBlockNameValidator = new NB(this, input.getTextInputLayout(), Pp.h().g());
-        actionSection = findViewById(2131231320);
+        actionSection = findViewById(Resources.id.layout_button);
     }
 
     @Override
@@ -209,11 +214,10 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem saveImageItem = menu.add(0, 12, 0, "Save image");
-        saveImageItem.setIcon(2131165642);
+        saveImageItem.setIcon(Resources.drawable.full_image_48);
         saveImageItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
