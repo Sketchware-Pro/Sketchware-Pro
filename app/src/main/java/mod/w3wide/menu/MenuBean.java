@@ -94,13 +94,13 @@ public class MenuBean {
 
             case "AdUnit":
                 asdAll.a(Resources.drawable.unit_96);
-                asdAll.b("Select an AdUnit");
+                asdAll.b("Select an Ad Unit");
                 selectableItems.addAll(AdMobReader.getAdUnits(sc_id));
                 break;
 
             case "TestDevice":
                 asdAll.a(Resources.drawable.ic_test_device_48dp);
-                asdAll.b("Select a test device");
+                asdAll.b("Select a Test device");
                 selectableItems.addAll(AdMobReader.getTestDevices(sc_id));
                 break;
 
