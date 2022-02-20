@@ -161,6 +161,7 @@ public class Resources {
         public static final int ic_screen_portrait_grey600_24dp = 0x7f070296;
         public static final int ic_screen_rotation_grey600_24dp = 0x7f070297;
         public static final int ic_sound_wave_48dp = 0x7f0702a5;
+        public static final int ic_test_device_48dp = 0x7f0702aa;
         public static final int ic_undo_white_48dp = 0x7f0702b6;
         public static final int icon_checkbox_white_96 = 0x7f0702c6;
         public static final int icon_file_white_96 = 0x7f0702cb;
@@ -196,6 +197,7 @@ public class Resources {
         public static final int swipe_down_48 = 0x7f0703e4;
         public static final int swipe_right_48 = 0x7f0703e5;
         public static final int text_width_96 = 0x7f0703ef;
+        public static final int unit_96 = 0x7f070401;
         public static final int widget_admob = 0x7f07041a;
         public static final int widget_alertdialog = 0x7f07041b;
         public static final int widget_bluetooth = 0x7f07041c;
