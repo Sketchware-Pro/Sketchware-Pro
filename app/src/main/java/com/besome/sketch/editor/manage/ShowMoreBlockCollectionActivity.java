@@ -22,7 +22,6 @@ import com.besome.sketch.lib.ui.EasyDeleteEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import a.a.a.FB;
 import a.a.a.GB;
@@ -47,50 +46,59 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     private LinearLayout actionSection;
     private NB moreBlockNameValidator;
 
-    private void a(ArrayList<BlockBean> arrayList, int i, int i2) {
-        Rs rs;
-        Rs rs2;
-        Rs rs3;
+    private void addBlocks(ArrayList<BlockBean> blockBeans) {
         HashMap<Integer, Rs> hashMap = new HashMap<>();
-        Iterator<BlockBean> it = arrayList.iterator();
-        boolean z = true;
-        while (it.hasNext()) {
-            Rs a2 = a(it.next());
-            hashMap.put((Integer) a2.getTag(), a2);
-            pane.g = Math.max(pane.g, (Integer) a2.getTag() + 1);
-            pane.a(a2, 0, 0);
-            if (z) {
-                pane.getRoot().b(a2);
-                z = false;
+
+        boolean isFirstBlock = true;
+        for (BlockBean blockBean : blockBeans) {
+            Rs block = a(blockBean);
+            int blockId = (Integer) block.getTag();
+            hashMap.put(blockId, block);
+
+            pane.g = Math.max(pane.g, blockId + 1);
+            pane.a(block, 0, 0);
+
+            if (isFirstBlock) {
+                pane.getRoot().b(block);
+                isFirstBlock = false;
             }
         }
-        for (BlockBean next : arrayList) {
-            Rs rs4 = hashMap.get(Integer.valueOf(next.id));
-            if (rs4 != null) {
-                int i3 = next.subStack1;
-                if (i3 >= 0 && (rs3 = hashMap.get(i3)) != null) {
-                    rs4.e(rs3);
+
+        for (BlockBean blockBean : blockBeans) {
+            Rs block = hashMap.get(Integer.valueOf(blockBean.id));
+
+            if (block != null) {
+                int subStack1Id = blockBean.subStack1;
+                Rs subStack1;
+                if (subStack1Id >= 0 && (subStack1 = hashMap.get(subStack1Id)) != null) {
+                    block.e(subStack1);
                 }
-                int i4 = next.subStack2;
-                if (i4 >= 0 && (rs2 = hashMap.get(i4)) != null) {
-                    rs4.f(rs2);
+
+                int subStack2Id = blockBean.subStack2;
+                Rs subStack2;
+                if (subStack2Id >= 0 && (subStack2 = hashMap.get(subStack2Id)) != null) {
+                    block.f(subStack2);
                 }
-                int i5 = next.nextBlock;
-                if (i5 >= 0 && (rs = hashMap.get(i5)) != null) {
-                    rs4.b(rs);
+
+                int nextBlockId = blockBean.nextBlock;
+                Rs nextBlock;
+                if (nextBlockId >= 0 && (nextBlock = hashMap.get(nextBlockId)) != null) {
+                    block.b(nextBlock);
                 }
-                int size = next.parameters.size();
-                for (int i6 = 0; i6 < size; i6++) {
-                    String str = next.parameters.get(i6);
-                    if (str != null && str.length() > 0) {
-                        if (str.charAt(0) == '@') {
-                            Rs rs5 = hashMap.get(Integer.valueOf(str.substring(1)));
-                            if (rs5 != null) {
-                                rs4.a((Ts) rs4.V.get(i6), rs5);
+
+                ArrayList<String> parameters = blockBean.parameters;
+                for (int i = 0; i < parameters.size(); i++) {
+                    String parameter = parameters.get(i);
+
+                    if (parameter != null && parameter.length() > 0) {
+                        if (parameter.charAt(0) == '@') {
+                            Rs parameterBlock = hashMap.get(Integer.valueOf(parameter.substring(1)));
+                            if (parameterBlock != null) {
+                                block.a((Ts) block.V.get(i), parameterBlock);
                             }
                         } else {
-                            ((Ss) rs4.V.get(i6)).setArgValue(str);
-                            rs4.m();
+                            ((Ss) block.V.get(i)).setArgValue(parameter);
+                            block.m();
                         }
                     }
                 }
@@ -187,7 +195,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         super.onPostCreate(savedInstanceState);
         MoreBlockCollectionBean a2 = Pp.h().a(moreBlockName);
         addHeaderBlock(a2.spec);
-        a(a2.blocks, 10, 10);
+        addBlocks(a2.blocks);
         resizeBottomViews();
     }
 
