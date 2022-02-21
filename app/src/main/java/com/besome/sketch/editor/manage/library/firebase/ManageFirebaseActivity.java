@@ -124,7 +124,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 237 && resultCode == -1) {
-            initializeLibrary((ProjectLibraryBean) data.getParcelableExtra("firebase"));
+            initializeLibrary(data.getParcelableExtra("firebase"));
         }
     }
 
@@ -155,7 +155,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(2131427547);
-        toolbar = (Toolbar) findViewById(2131231847);
+        toolbar = findViewById(2131231847);
         a(toolbar);
         findViewById(2131231370).setVisibility(8);
         d().a(xB.b().a(super.e, 2131625235));
@@ -163,20 +163,20 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         s = new DB(getApplicationContext(), "P1");
-        firebaseLibraryBean = (ProjectLibraryBean) getIntent().getParcelableExtra("firebase");
-        switchLayout = (LinearLayout) findViewById(2131231408);
+        firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
+        switchLayout = findViewById(2131231408);
         switchLayout.setOnClickListener(this);
-        libSwitch = (Switch) findViewById(2131231429);
+        libSwitch = findViewById(2131231429);
         ((TextView) findViewById(2131231965)).setText(Helper.getResString(2131625249));
         ((TextView) findViewById(2131232232)).setText(xB.b().a(super.e, 2131625238));
         ((TextView) findViewById(2131232199)).setText(xB.b().a(super.e, 2131625232));
         ((TextView) findViewById(2131232197)).setText(xB.b().a(super.e, 2131625231));
         ((TextView) findViewById(2131232241)).setText(xB.b().a(super.e, 2131625239));
-        tvProjectId = (TextView) findViewById(2131232089);
-        tvAppId = (TextView) findViewById(2131231880);
-        tvApiKey = (TextView) findViewById(2131231875);
-        tvStorageUrl = (TextView) findViewById(2131232181);
-        btnConsole = (Button) findViewById(2131230815);
+        tvProjectId = findViewById(2131232089);
+        tvAppId = findViewById(2131231880);
+        tvApiKey = findViewById(2131231875);
+        tvStorageUrl = findViewById(2131232181);
+        btnConsole = findViewById(2131230815);
         btnConsole.setText(Helper.getResString(2131625207));
         btnConsole.setOnClickListener(this);
         configure();

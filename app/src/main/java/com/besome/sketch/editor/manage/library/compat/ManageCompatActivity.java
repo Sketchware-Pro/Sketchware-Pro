@@ -95,18 +95,18 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(2131427546);
-        toolbar = (Toolbar) findViewById(2131231847);
+        toolbar = findViewById(2131231847);
         a(toolbar);
         findViewById(2131231370).setVisibility(8);
         d().a(Helper.getResString(2131625251));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        compatLibraryBean = (ProjectLibraryBean) getIntent().getParcelableExtra("compat");
-        firebaseLibraryBean = (ProjectLibraryBean) getIntent().getParcelableExtra("firebase");
-        switchLayout = (LinearLayout) findViewById(2131231408);
+        compatLibraryBean = getIntent().getParcelableExtra("compat");
+        firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
+        switchLayout = findViewById(2131231408);
         switchLayout.setOnClickListener(this);
-        libSwitch = (Switch) findViewById(2131231429);
+        libSwitch = findViewById(2131231429);
         ((TextView) findViewById(2131231944)).setText(Helper.getResString(2131625199));
         ((TextView) findViewById(2131231965)).setText(Helper.getResString(2131625249));
         ((TextView) findViewById(2131232285)).setText(Helper.getResString(2131625247));

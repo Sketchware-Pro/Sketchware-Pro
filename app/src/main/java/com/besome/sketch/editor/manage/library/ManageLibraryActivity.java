@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage.library;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,7 +105,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
             if (libraryBean.libType == (Integer) libraryItemView.getTag()) {
                 libraryItemView.setData(libraryBean);
                 if (libraryItemView instanceof ru) {
-                    ((ru) libraryItemView).setData(libraryBean);
+                    libraryItemView.setData(libraryBean);
                 }
             }
         }
@@ -166,7 +167,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         if (resultCode == -1) {
             switch (requestCode) {
                 case 230:
-                    ProjectLibraryBean libraryBean = (ProjectLibraryBean) data.getParcelableExtra("firebase");
+                    ProjectLibraryBean libraryBean = data.getParcelableExtra("firebase");
                     initializeLibrary(libraryBean);
                     if (libraryBean.useYn.equals("Y") && !compatLibraryBean.useYn.equals("Y")) {
                         libraryBean = compatLibraryBean;
@@ -177,15 +178,15 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
                     break;
 
                 case 231:
-                    initializeLibrary((ProjectLibraryBean) data.getParcelableExtra("compat"));
+                    initializeLibrary(data.getParcelableExtra("compat"));
                     break;
 
                 case 234:
-                    initializeLibrary((ProjectLibraryBean) data.getParcelableExtra("admob"));
+                    initializeLibrary(data.getParcelableExtra("admob"));
                     break;
 
                 case 241:
-                    initializeLibrary((ProjectLibraryBean) data.getParcelableExtra("google_map"));
+                    initializeLibrary(data.getParcelableExtra("google_map"));
                     break;
 
                 case 505:
@@ -200,7 +201,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         k();
         try {
             new Handler().postDelayed(() -> {
-                new SaveLibraryTask(getBaseContext()).execute(new Void[0]);
+                new SaveLibraryTask(getBaseContext()).execute();
             }, 500L);
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,6 +235,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         }
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,14 +250,14 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         }
 
         setContentView(2131427531);
-        Toolbar toolbar = (Toolbar) findViewById(2131231847);
+        Toolbar toolbar = findViewById(2131231847);
         a(toolbar);
         findViewById(2131231370).setVisibility(8);
         d().a(Helper.getResString(2131625133));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        libraryItemLayout = (LinearLayout) findViewById(2131230934);
+        libraryItemLayout = findViewById(2131230934);
     }
 
     @Override
@@ -286,13 +288,13 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
             }
             originalGoogleMapUseYn = googleMapLibraryBean.useYn;
         } else {
-            firebaseLibraryBean = (ProjectLibraryBean) savedInstanceState.getParcelable("firebase");
+            firebaseLibraryBean = savedInstanceState.getParcelable("firebase");
             originalFirebaseUseYn = savedInstanceState.getString("originalFirebaseUseYn");
-            compatLibraryBean = (ProjectLibraryBean) savedInstanceState.getParcelable("compat");
+            compatLibraryBean = savedInstanceState.getParcelable("compat");
             originalCompatUseYn = savedInstanceState.getString("originalCompatUseYn");
-            admobLibraryBean = (ProjectLibraryBean) savedInstanceState.getParcelable("admob");
+            admobLibraryBean = savedInstanceState.getParcelable("admob");
             originalAdmobUseYn = savedInstanceState.getString("originalAdmobUseYn");
-            googleMapLibraryBean = (ProjectLibraryBean) savedInstanceState.getParcelable("google_map");
+            googleMapLibraryBean = savedInstanceState.getParcelable("google_map");
             originalGoogleMapUseYn = savedInstanceState.getString("originalGoogleMapUseYn");
         }
 
