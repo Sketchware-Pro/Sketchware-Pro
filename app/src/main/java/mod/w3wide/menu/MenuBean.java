@@ -21,7 +21,6 @@ import mod.hilal.saif.asd.asdforall.AsdAll;
 public class MenuBean {
 
     private static final String[] adSize = new String[]{"AUTO_HEIGHT", "BANNER", "FLUID", "FULL_BANNER", "FULL_WIDTH", "INVALID", "LARGE_BANNER", "LEADERBOARD", "MEDIUM_RECTANGLE", "SEARCH", "SMART_BANNER", "WIDE_SKYSCRAPER"};
-    private static final String[] defaultColor = new String[]{"colorAccent", "colorControlHighlight", "colorControlNormal", "colorPrimary", "colorPrimaryDark"};
     private static final String[] intentKey = new String[]{"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
     private static final String[] pixelFormat = new String[]{"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
     private static final String[] patternFlags = new String[]{"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
@@ -36,13 +35,11 @@ public class MenuBean {
     }
 
     private final eC projectDataManager;
-    private final LogicEditorActivity logic;
     public String javaName;
     public String sc_id;
 
     public MenuBean(LogicEditorActivity activity) {
         javaName = activity.M.getJavaName();
-        logic = activity;
         sc_id = activity.B;
         projectDataManager = jC.a(activity.B);
     }

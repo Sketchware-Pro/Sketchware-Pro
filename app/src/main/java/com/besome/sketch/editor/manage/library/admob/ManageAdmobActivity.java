@@ -35,7 +35,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
 
     public DB A = null;
     public TestDeviceAdapter testDeviceAdapter;
-    public ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList();
+    public ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList<>();
     public LinearLayout p;
     public LinearLayout switchLayout;
     public Switch libSwitch;
@@ -51,9 +51,9 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     private int o = 8002;
 
     @Override
-    public void a(int rquestCode, String idk) {
-        if (rquestCode == 8001 || rquestCode == 8002) {
-            n(rquestCode);
+    public void a(int requestCode, String idk) {
+        if (requestCode == 8001 || requestCode == 8002) {
+            n(requestCode);
         }
 
     }
@@ -188,7 +188,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
                         i(8001);
                     } else {
                         Switch enableAdmobSwitch = libSwitch;
-                        enableAdmobSwitch.setChecked(enableAdmobSwitch.isChecked() ^ true);
+                        enableAdmobSwitch.setChecked(!enableAdmobSwitch.isChecked());
                         if ("Y".equals(admobLibraryBean.useYn) && !libSwitch.isChecked()) {
                             configureLibrary();
                         } else {

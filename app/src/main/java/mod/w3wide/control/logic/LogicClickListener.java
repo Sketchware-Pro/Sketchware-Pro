@@ -39,11 +39,9 @@ public class LogicClickListener implements View.OnClickListener {
     private final eC projectDataManager;
     private final LogicEditorActivity logicEditor;
     private final ProjectFileBean projectFile;
-    private final String sc_id;
 
     public LogicClickListener(LogicEditorActivity logicEditor) {
         this.logicEditor = logicEditor;
-        this.sc_id = logicEditor.B;
         projectDataManager = jC.a(logicEditor.B);
         this.projectFile = logicEditor.M;
     }

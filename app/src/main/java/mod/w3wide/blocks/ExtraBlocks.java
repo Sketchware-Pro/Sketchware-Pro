@@ -17,7 +17,6 @@ public class ExtraBlocks {
 
     private final String eventName;
     private final String javaName;
-    private final String sc_id;
     private final LogicEditorActivity logicEditor;
     private final eC projectDataManager;
 
@@ -25,7 +24,6 @@ public class ExtraBlocks {
         eventName = logicEditor.D;
         this.logicEditor = logicEditor;
         javaName = logicEditor.M.getJavaName();
-        sc_id = logicEditor.B;
         projectDataManager = jC.a(logicEditor.B);
     }
 

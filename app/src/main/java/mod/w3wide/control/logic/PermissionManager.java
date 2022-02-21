@@ -57,8 +57,8 @@ public class PermissionManager {
             for (BlockBean block : blocks.getValue()) {
                 if (block.opCode.equals("removePermission") && !block.parameters.get(0).trim().isEmpty()) {
                     String permission = block.parameters.get(0).startsWith("Manifest") ? block.parameters.get(0) : ("Manifest.permission." + block.parameters.get(0));
-                    checkPerm.remove(formatPermission(isAppCompat, block.parameters.get(0)));
-                    reqPerm.remove(block.parameters.get(0));
+                    checkPerm.remove(formatPermission(isAppCompat, permission));
+                    reqPerm.remove(permission);
                 }
             }
         }
