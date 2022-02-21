@@ -157,7 +157,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         if (resultCode == -1) {
             switch (requestCode) {
                 case 236:
-                    initializeLibrary((ProjectLibraryBean) data.getParcelableExtra("admob"));
+                    initializeLibrary(data.getParcelableExtra("admob"));
                     break;
                 case 8001:
                     libSwitch.setChecked(true);
@@ -204,8 +204,8 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(2131427545);
-        p = (LinearLayout) findViewById(2131231332);
-        toolbar = (Toolbar) findViewById(2131231847);
+        p = findViewById(2131231332);
+        toolbar = findViewById(2131231847);
         a(toolbar);
         findViewById(2131231370).setVisibility(View.GONE);
         d().a(Helper.getResString(2131625195));
@@ -213,7 +213,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         A = new DB(this.getApplicationContext(), "P1");
-        admobLibraryBean = (ProjectLibraryBean) getIntent().getParcelableExtra("admob");
+        admobLibraryBean = getIntent().getParcelableExtra("admob");
         ((TextView) findViewById(2131231965)).setText(Helper.getResString(2131625249));
         ((TextView) findViewById(2131232201)).setText(Helper.getResString(2131625196));
         ((TextView) findViewById(2131232203)).setText(Helper.getResString(2131625192) + " : ");
@@ -222,18 +222,18 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         ((TextView) findViewById(2131232222)).setText(Helper.getResString(2131625192) + " : ");
         ((TextView) findViewById(2131232221)).setText(Helper.getResString(2131625193) + " : ");
         ((TextView) findViewById(2131232246)).setText(Helper.getResString(2131625177));
-        tvBannerId = (TextView) findViewById(2131231887);
-        tvBannerName = (TextView) findViewById(2131231889);
-        tvInterId = (TextView) findViewById(2131232012);
-        tvInterName = (TextView) findViewById(2131232014);
-        listTestDevice = (RecyclerView) findViewById(2131231468);
+        tvBannerId = findViewById(2131231887);
+        tvBannerName = findViewById(2131231889);
+        tvInterId = findViewById(2131232012);
+        tvInterName = findViewById(2131232014);
+        listTestDevice = findViewById(2131231468);
         listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
         testDeviceAdapter = new TestDeviceAdapter();
         listTestDevice.setAdapter(testDeviceAdapter);
-        libSwitch = (Switch) findViewById(2131231429);
-        switchLayout = (LinearLayout) findViewById(2131231408);
+        libSwitch = findViewById(2131231429);
+        switchLayout = findViewById(2131231408);
         switchLayout.setOnClickListener(this);
-        btnConsole = (Button) findViewById(2131230815);
+        btnConsole = findViewById(2131230815);
         btnConsole.setText(Helper.getResString(2131625160));
         btnConsole.setOnClickListener(this);
         configure();
@@ -326,7 +326,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         }
 
         public void b(ViewHolder viewHolder, int index) {
-            AdTestDeviceBean adTestDeviceBean = (AdTestDeviceBean) testDeviceList.get(index);
+            AdTestDeviceBean adTestDeviceBean = testDeviceList.get(index);
             viewHolder.tvDeviceId.setText(adTestDeviceBean.deviceId);
         }
 
@@ -340,8 +340,8 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
 
             public ViewHolder(View view) {
                 super(view);
-                tvDeviceId = (TextView) view.findViewById(2131231956);
-                imageView = (ImageView) view.findViewById(2131231132);
+                tvDeviceId = view.findViewById(2131231956);
+                imageView = view.findViewById(2131231132);
                 imageView.setVisibility(View.GONE);
             }
         }

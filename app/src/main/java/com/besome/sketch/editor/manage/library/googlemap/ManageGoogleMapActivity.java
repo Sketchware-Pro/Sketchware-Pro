@@ -186,10 +186,10 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         findViewById(2131231370).setVisibility(8);
         if (svedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
-            googleMapLibraryBean = (ProjectLibraryBean) getIntent().getParcelableExtra("google_map");
+            googleMapLibraryBean = getIntent().getParcelableExtra("google_map");
         } else {
             sc_id = svedInstanceState.getString("sc_id");
-            googleMapLibraryBean = (ProjectLibraryBean) svedInstanceState.getParcelable("google_map");
+            googleMapLibraryBean = svedInstanceState.getParcelable("google_map");
         }
 
         d().a("GoogleMap Settings");
