@@ -1,7 +1,5 @@
 package mod.w3wide.variable;
 
-import a.a.a.*;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -9,6 +7,10 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.besome.sketch.editor.LogicEditorActivity;
+
+import a.a.a.aB;
+import a.a.a.jC;
+import a.a.a.xB;
 
 public class DialogRemoveList implements OnClickListener {
 

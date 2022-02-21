@@ -1,12 +1,12 @@
 package mod.w3wide.control;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.text.TextUtils;
 import android.text.method.DigitsKeyListener;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -18,8 +18,6 @@ import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import mod.w3wide.dialog.SketchDialog;
 import mod.w3wide.validator.VersionNamePostfixValidator;
-
-import static mod.SketchwareUtil.getDip;
 
 public class VersionDialog {
 

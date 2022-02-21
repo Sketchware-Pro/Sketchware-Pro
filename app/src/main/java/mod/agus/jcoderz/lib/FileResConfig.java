@@ -2,8 +2,6 @@ package mod.agus.jcoderz.lib;
 
 import com.google.gson.Gson;
 
-import java.lang.ref.Reference;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import mod.hey.studios.util.Helper;

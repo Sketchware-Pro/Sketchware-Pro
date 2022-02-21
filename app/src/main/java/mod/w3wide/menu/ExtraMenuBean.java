@@ -1,9 +1,8 @@
 package mod.w3wide.menu;
 
-import static mod.SketchwareUtil.getDip;
 import static android.text.TextUtils.isEmpty;
+import static mod.SketchwareUtil.getDip;
 
-import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import a.a.a.eC;
 import a.a.a.Ss;
+import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;

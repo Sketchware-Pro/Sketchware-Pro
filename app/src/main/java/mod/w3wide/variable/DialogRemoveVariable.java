@@ -2,10 +2,6 @@ package mod.w3wide.variable;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
-import a.a.a.eC;
-import a.a.a.jC;
-import a.a.a.xB;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -14,6 +10,8 @@ import android.widget.Toast;
 
 import com.besome.sketch.editor.LogicEditorActivity;
 
+import a.a.a.jC;
+import a.a.a.xB;
 import mod.w3wide.dialog.SketchDialog;
 
 public class DialogRemoveVariable implements OnClickListener {
