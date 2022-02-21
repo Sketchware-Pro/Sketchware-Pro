@@ -244,10 +244,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         designActivity.toLocalLibrary();
                         return;
 
-                    case 15:
-                        designActivity.toBroadcast();
-                        return;
-
                     case 16:
                         designActivity.z();
                         return;
