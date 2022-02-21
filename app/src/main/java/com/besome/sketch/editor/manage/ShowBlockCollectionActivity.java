@@ -21,7 +21,6 @@ import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import a.a.a.GB;
 import a.a.a.Mp;
@@ -44,57 +43,66 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     private LinearLayout actionSection;
     private NB blockNameValidator;
 
-    private void addBlocks(ArrayList<BlockBean> arrayList, int i, int i2) {
-        Rs rs;
-        Rs rs2;
-        Rs rs3;
-        HashMap<Integer, Rs> hashMap = new HashMap<>();
-        Iterator<BlockBean> it = arrayList.iterator();
-        Rs rs4 = null;
-        boolean z = true;
-        while (it.hasNext()) {
-            Rs a2 = getBlock(it.next());
-            hashMap.put((Integer) a2.getTag(), a2);
-            pane.g = Math.max(pane.g, (Integer) a2.getTag() + 1);
-            pane.a(a2, i, i2);
-            if (z) {
-                rs4 = a2;
-                z = false;
+    private void addBlocks(ArrayList<BlockBean> blocks, int someXValue, int someYValue) {
+        HashMap<Integer, Rs> blockIdsWithBlocks = new HashMap<>();
+        Rs firstBlock = null;
+
+        boolean isFirstBlock = true;
+        for (BlockBean blockBean : blocks) {
+            Rs block = getBlock(blockBean);
+            int blockId = (Integer) block.getTag();
+
+            blockIdsWithBlocks.put(blockId, block);
+            pane.g = Math.max(pane.g, blockId + 1);
+            pane.a(block, someXValue, someYValue);
+
+            if (isFirstBlock) {
+                firstBlock = block;
+                isFirstBlock = false;
             }
         }
-        for (BlockBean next : arrayList) {
-            Rs rs5 = hashMap.get(Integer.valueOf(next.id));
-            if (rs5 != null) {
-                int i3 = next.subStack1;
-                if (i3 >= 0 && (rs3 = hashMap.get(i3)) != null) {
-                    rs5.e(rs3);
+
+        for (BlockBean blockBean : blocks) {
+            Rs block = blockIdsWithBlocks.get(Integer.valueOf(blockBean.id));
+
+            if (block != null) {
+                int subStack1Id = blockBean.subStack1;
+                Rs subStack1;
+                if (subStack1Id >= 0 && (subStack1 = blockIdsWithBlocks.get(subStack1Id)) != null) {
+                    block.e(subStack1);
                 }
-                int i4 = next.subStack2;
-                if (i4 >= 0 && (rs2 = hashMap.get(i4)) != null) {
-                    rs5.f(rs2);
+
+                int subStack2Id = blockBean.subStack2;
+                Rs subStack2;
+                if (subStack2Id >= 0 && (subStack2 = blockIdsWithBlocks.get(subStack2Id)) != null) {
+                    block.f(subStack2);
                 }
-                int i5 = next.nextBlock;
-                if (i5 >= 0 && (rs = hashMap.get(i5)) != null) {
-                    rs5.b(rs);
+
+                int nextBlockId = blockBean.nextBlock;
+                Rs nextBlock;
+                if (nextBlockId >= 0 && (nextBlock = blockIdsWithBlocks.get(nextBlockId)) != null) {
+                    block.b(nextBlock);
                 }
-                int size = next.parameters.size();
-                for (int i6 = 0; i6 < size; i6++) {
-                    String str = next.parameters.get(i6);
-                    if (str != null && str.length() > 0) {
-                        if (str.charAt(0) == '@') {
-                            Rs rs6 = hashMap.get(Integer.valueOf(str.substring(1)));
-                            if (rs6 != null) {
-                                rs5.a((Ts) rs5.V.get(i6), rs6);
+
+                ArrayList<String> parameters = blockBean.parameters;
+                for (int i = 0; i < parameters.size(); i++) {
+                    String parameter = blockBean.parameters.get(i);
+
+                    if (parameter != null && parameter.length() > 0) {
+                        if (parameter.charAt(0) == '@') {
+                            Rs parameterBlock = blockIdsWithBlocks.get(Integer.valueOf(parameter.substring(1)));
+                            if (parameterBlock != null) {
+                                block.a((Ts) block.V.get(i), parameterBlock);
                             }
                         } else {
-                            ((Ss) rs5.V.get(i6)).setArgValue(str);
-                            rs5.m();
+                            ((Ss) block.V.get(i)).setArgValue(parameter);
+                            block.m();
                         }
                     }
                 }
             }
         }
-        rs4.k();
+        firstBlock.k();
         pane.b();
     }
 
