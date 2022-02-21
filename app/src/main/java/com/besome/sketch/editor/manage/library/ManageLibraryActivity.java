@@ -28,7 +28,6 @@ import mod.hey.studios.util.Helper;
 
 public class ManageLibraryActivity extends BaseSessionAppCompatActivity implements View.OnClickListener {
     private String sc_id;
-    private Toolbar toolbar;
     private LinearLayout libraryItemLayout;
 
     private ProjectLibraryBean firebaseLibraryBean;
@@ -249,7 +248,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
         }
 
         setContentView(2131427531);
-        toolbar = (Toolbar) findViewById(2131231847);
+        Toolbar toolbar = (Toolbar) findViewById(2131231847);
         a(toolbar);
         findViewById(2131231370).setVisibility(8);
         d().a(Helper.getResString(2131625133));
