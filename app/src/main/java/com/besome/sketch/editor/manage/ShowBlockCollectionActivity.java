@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.manage;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
@@ -111,7 +112,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         actionSection.measure(0, 0);
         blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ((i - GB.a(e)) - GB.f(e)) - actionSection.getMeasuredHeight()));
+                ((i - GB.a((Context) this)) - GB.f((Context) this)) - actionSection.getMeasuredHeight()));
         blockCollectionEditor.requestLayout();
     }
 
