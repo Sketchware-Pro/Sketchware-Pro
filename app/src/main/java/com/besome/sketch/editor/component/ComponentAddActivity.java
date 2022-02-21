@@ -402,6 +402,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FIREBASE:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
                 Helper.setViewsVisibility(false, tvDescFirebasePath, tiInputFirebasePath);
                 break;
 
@@ -410,10 +411,6 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     tvWarnning.setVisibility(View.VISIBLE);
                     tvWarnning.setText(Helper.getResString(Resources.string.message_device_not_support));
                 }
-                break;
-
-            case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                Helper.setViewsVisibility(false, tvDescFirebasePath, tiInputFirebasePath);
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
