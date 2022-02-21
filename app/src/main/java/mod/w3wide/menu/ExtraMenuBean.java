@@ -50,7 +50,7 @@ public class ExtraMenuBean {
     public static final int VARIABLE_TYPE_MAP = 3;
     public static final int VARIABLE_TYPE_STRING = 2;
 
-    public static final int LIST_TYPE_INTRGER = 1;
+    public static final int LIST_TYPE_INTEGER = 1;
     public static final int LIST_TYPE_MAP = 3;
     public static final int LIST_TYPE_STRING = 2;
 
@@ -241,7 +241,7 @@ public class ExtraMenuBean {
 
             case "listInt":
                 asdAll.b(Helper.getResString(2131625566));
-                menus = getListMenus(LIST_TYPE_INTRGER);
+                menus = getListMenus(LIST_TYPE_INTEGER);
                 break;
 
             case "listStr":
