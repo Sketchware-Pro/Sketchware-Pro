@@ -111,11 +111,11 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         if (GB.h(this.getApplicationContext())) {
             try {
                 Intent intent = new Intent("android.intent.action.VIEW");
-                intent.addFlags(268435456);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(Uri.parse("https://apps.admob.com/v2/home"));
-                intent.addFlags(1);
-                intent.addFlags(2);
-                intent.addFlags(64);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -140,11 +140,11 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         try {
             this.A.a("P1I16", true);
             Intent intent = new Intent("android.intent.action.VIEW");
-            intent.addFlags(268435456);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setData(Uri.parse("https://docs.sketchware.io/docs/admob-getting-started.html"));
-            intent.addFlags(1);
-            intent.addFlags(2);
-            intent.addFlags(64);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             startActivity(intent);
         } catch (Exception e) {
             downloadChromeDialog();
@@ -207,7 +207,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         p = (LinearLayout) findViewById(2131231332);
         toolbar = (Toolbar) findViewById(2131231847);
         a(toolbar);
-        findViewById(2131231370).setVisibility(8);
+        findViewById(2131231370).setVisibility(View.GONE);
         d().a(Helper.getResString(2131625195));
         d().e(true);
         d().d(true);
