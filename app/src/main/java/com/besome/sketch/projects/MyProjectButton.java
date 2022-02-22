@@ -25,8 +25,8 @@ public class MyProjectButton extends LinearLayout {
         layoutParams.weight = 1.0f;
         setLayoutParams(layoutParams);
         wB.a(context, this, 2131427580);
-        this.c = (LinearLayout) findViewById(2131231120);
-        this.d = (ImageView) findViewById(2131231090);
-        this.e = (TextView) findViewById(2131231561);
+        this.c = findViewById(2131231120);
+        this.d = findViewById(2131231090);
+        this.e = findViewById(2131231561);
     }
 }

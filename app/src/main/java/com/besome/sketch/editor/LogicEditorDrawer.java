@@ -49,10 +49,10 @@ public class LogicEditorDrawer extends LinearLayout {
         wB.a(context, this, Resources.layout.logic_editor_drawer);
         ((TextView) findViewById(Resources.id.tv_block_collection)).setText(xB.b().a(getContext(),
                 Resources.string.logic_editor_title_block_collection));
-        favorite = (LinearLayout) findViewById(Resources.id.layout_favorite);
-        scrollView = (CustomScrollView) findViewById(Resources.id.scv);
+        favorite = findViewById(Resources.id.layout_favorite);
+        scrollView = findViewById(Resources.id.scv);
 
-        CardView tools = (CardView) findViewById(Resources.id.new_button);
+        CardView tools = findViewById(Resources.id.new_button);
         tools.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), Tools.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
