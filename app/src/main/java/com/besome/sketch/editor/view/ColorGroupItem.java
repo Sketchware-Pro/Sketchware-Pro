@@ -16,8 +16,8 @@ public class ColorGroupItem extends RelativeLayout {
     public ColorGroupItem(Context context) {
         super(context);
         wB.a(context, this, 2131427374);
-        tvColorName = (TextView) findViewById(2131231916);
-        imgSelector = (ImageView) findViewById(2131231182);
+        tvColorName = findViewById(2131231916);
+        imgSelector = findViewById(2131231182);
         setPadding(0, 0, 4, 0);
     }
 }

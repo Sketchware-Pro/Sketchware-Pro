@@ -43,10 +43,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
     public void initToolbar() {
         ((TextView) findViewById(2131232458)).setText("Local library manager");
-        ImageView back_icon = (ImageView) findViewById(2131232457);
+        ImageView back_icon = findViewById(2131232457);
         Helper.applyRippleToToolbarView(back_icon);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        ImageView import_library_icon = (ImageView) findViewById(2131232459);
+        ImageView import_library_icon = findViewById(2131232459);
         import_library_icon.setPadding(getDip(2), getDip(2), getDip(2), getDip(2));
         import_library_icon.setImageResource(2131166368);
         import_library_icon.setVisibility(View.VISIBLE);
@@ -91,8 +91,8 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         if (getIntent().hasExtra("sc_id")) {
             sc_id = getIntent().getStringExtra("sc_id");
         }
-        listview = (ListView) findViewById(2131232364);
-        findViewById(2131232362).setVisibility(8);
+        listview = findViewById(2131232364);
+        findViewById(2131232362).setVisibility(View.GONE);
         initToolbar();
         loadFiles();
     }
@@ -106,16 +106,16 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         if (!FileUtil.isExistFile(local_lib_file) || FileUtil.readFile(local_lib_file).equals("")) {
             FileUtil.writeFile(local_lib_file, "[]");
         } else {
-            project_used_libs = (ArrayList<HashMap<String, Object>>) new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
+            project_used_libs = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
         Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
         n = 0;
         while (n < arrayList.size()) {
-            if (FileUtil.isDirectory((String) arrayList.get(n))) {
+            if (FileUtil.isDirectory(arrayList.get(n))) {
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("name", Uri.parse((String) arrayList.get(n)).getLastPathSegment());
+                hashMap.put("name", Uri.parse(arrayList.get(n)).getLastPathSegment());
                 main_list.add(hashMap);
             }
             n++;
@@ -144,7 +144,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
         @Override
         public long getItemId(int position) {
-            return (long) position;
+            return position;
         }
 
         @Override
@@ -152,7 +152,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(2131427824, null);
             }
-            final CheckBox checkBox = (CheckBox) convertView.findViewById(2131232370);
+            final CheckBox checkBox = convertView.findViewById(2131232370);
             checkBox.setText((main_list.get(position)).get("name").toString());
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -204,7 +204,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 }
                 n = n + 1;
             }
-            ((ImageView) convertView.findViewById(2131231132)).setOnClickListener(new View.OnClickListener() {
+            convertView.findViewById(2131231132).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
