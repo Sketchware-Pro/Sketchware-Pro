@@ -26,14 +26,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.acc.MyPageSettingsActivity;
 import com.besome.sketch.acc.ProfileActivity;
-import com.besome.sketch.bill.InAppActivity;
-import com.besome.sketch.bill.SubscribeActivity;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
-import com.besome.sketch.shared.project.SharedProjectDetailActivity;
 import com.google.ads.consent.ConsentForm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.Resources;
 
 import java.io.File;
@@ -64,7 +60,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     public final int k = 2;
     public ImageView A;
-    public FirebaseAnalytics B;
     public int C;
     public boolean D;
     public LinearLayout E;
@@ -112,9 +107,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     public void l(int i) {
-        if (p != null) {
-            p.a(i, true);
-        }
+        if (p != null) p.a(i, true);
     }
 
     @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
@@ -226,26 +219,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         F = findViewById(Resources.id.fab);
         w = findViewById(Resources.id.layout_coordinator);
         l(0);
-        B = FirebaseAnalytics.getInstance(this);
-        try {
-            String stringExtra = getIntent().getStringExtra("auto_run_activity");
-            if (stringExtra != null) {
-                if (!"InAppActivity".equals(stringExtra)) {
-                    if (!"SubscribeActivity".equals(stringExtra)) {
-                        if ("SharedProjectDetailActivity".equals(stringExtra)) {
-                            Intent intent = new Intent(getApplicationContext(), SharedProjectDetailActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.putExtra("shared_id", Integer.parseInt(getIntent().getStringExtra("shared_id")));
-                            startActivity(intent);
-                        }
-                    }
-                }
-                Intent intent = new Intent(getApplicationContext(), SubscribeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(intent, 505);
-            }
-        } catch (Exception ignored) {
-        }
         if (C > 0 && !j()) {
             showNoticeNeedStorageAccess();
         }
@@ -320,37 +293,9 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         xB.b().a();
     }
 
-    @Override // androidx.fragment.app.FragmentActivity
-    public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        try {
-            String autoRunActivity = intent.getStringExtra("auto_run_activity");
-            if (autoRunActivity != null) {
-                if (!"InAppActivity".equals(autoRunActivity)) {
-                    if (!"SubscribeActivity".equals(autoRunActivity)) {
-                        if ("SharedProjectDetailActivity".equals(autoRunActivity)) {
-                            Intent launchIntent = new Intent(getApplicationContext(), SharedProjectDetailActivity.class);
-                            launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            launchIntent.putExtra("shared_id", Integer.parseInt(intent.getStringExtra("shared_id")));
-                            startActivity(launchIntent);
-                            return;
-                        }
-                        return;
-                    }
-                }
-                Intent launchIntent = new Intent(getApplicationContext(), InAppActivity.class);
-                launchIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(launchIntent, 505);
-            }
-        } catch (Exception ignored) {
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (n.a(item)) {
-            return true;
-        }
+        if (n.a(item)) return true;
         return super.onOptionsItemSelected(item);
     }
 
@@ -372,11 +317,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (j() && x != null && x.j()) {
             x.c();
         }
-    }
-
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
-    public void onStart() {
-        super.onStart();
     }
 
     private void allFilesAccessCheck() {
