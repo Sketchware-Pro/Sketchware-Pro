@@ -145,8 +145,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        String useYn = libSwitch.isChecked() ? "Y" : "N";
-        googleMapLibraryBean.useYn = useYn;
+        googleMapLibraryBean.useYn = libSwitch.isChecked() ? "Y" : "N";
         googleMapLibraryBean.data = editApiKey.getText().toString();
         intent.putExtra("google_map", googleMapLibraryBean);
         setResult(RESULT_OK, intent);
@@ -169,7 +168,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                 break;
 
             case 2131231408:
-                libSwitch.setChecked(libSwitch.isChecked() ^ true);
+                libSwitch.setChecked(!libSwitch.isChecked());
                 if ("Y".equals(googleMapLibraryBean.useYn) && !libSwitch.isChecked()) {
                     configureLibrary();
                 }
@@ -257,7 +256,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
 
         @Override
         public void b(ViewHolder viewHolder, int index) {
-            HashMap projectMap = (HashMap) projectsList.get(index);
+            HashMap<String, Object> projectMap = projectsList.get(index);
             String sc_id = yB.c(projectMap, "sc_id");
             viewHolder.imgIcon.setImageResource(2131165521);
             if (yB.a(projectMap, "custom_icon")) {
