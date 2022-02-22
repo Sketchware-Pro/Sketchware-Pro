@@ -120,11 +120,11 @@ public class ExtraMenuBean {
                         return;
 
                     case "import":
-                        asdDialog(ss, false, "Enter the path without import & semicolon");
+                        asdDialog(ss, "Enter the path without import & semicolon");
                         return;
 
                     default:
-                        asdDialog(ss, false, null);
+                        asdDialog(ss, null);
                 }
                 break;
 
@@ -613,35 +613,26 @@ public class ExtraMenuBean {
         return projectDataManager.b(logicEditor.M.getJavaName(), type);
     }
 
-    private void asdDialog(Ss ss, boolean isNum, String message) {
+    private void asdDialog(Ss ss, String message) {
         AsdOrigin asdOr = new AsdOrigin(logicEditor);
-        if (isNum) {
-            asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_number_value));
-        } else {
-            asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_string_value));
-        }
+        asdOr.b(Helper.getResString(Resources.string.logic_editor_title_enter_string_value));
         asdOr.a(Resources.drawable.rename_96_blue);
 
         if (!isEmpty(message)) asdOr.a(message);
 
         View root = wB.a(logicEditor, Resources.layout.property_popup_input_text);
         EditText edittext = root.findViewById(Resources.id.ed_input);
-        if (isNum) {
-            edittext.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_NUMBER_FLAG_SIGNED);
-            edittext.setImeOptions(EditorInfo.IME_ACTION_DONE);
-            edittext.setMaxLines(1);
-        } else {
-            edittext.setInputType(655361);
-            edittext.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        }
-        if (!isNum && ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_ASD_HIGHLIGHTER)) {
+        edittext.setInputType(655361);
+        edittext.setImeOptions(EditorInfo.IME_ACTION_NONE);
+
+        if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_ASD_HIGHLIGHTER)) {
             new SimpleHighlighter(edittext);
         }
         edittext.setText(ss.getArgValue().toString());
         asdOr.a(root);
-        asdOr.carry(logicEditor, ss, isNum, edittext);
+        asdOr.carry(logicEditor, ss, false, edittext);
 
-        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, isNum, ss, asdOr));
+        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, false, ss, asdOr));
         asdOr.a(Helper.getResString(Resources.string.common_word_cancel), new AsdHandlerCancel(logicEditor, edittext, asdOr));
         asdOr.show();
     }
