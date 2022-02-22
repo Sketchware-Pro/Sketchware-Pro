@@ -82,7 +82,6 @@ import io.github.rosemoe.editor.langs.java.JavaLanguage;
 import io.github.rosemoe.editor.widget.CodeEditor;
 import io.github.rosemoe.editor.widget.EditorColorScheme;
 import mod.SketchwareUtil;
-import mod.agus.jcoderz.editor.manage.background.ManageBackgroundActivity;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -800,17 +799,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         Intent intent = new Intent(getApplicationContext(), ManageAssetsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", l);
-        startActivity(intent);
-    }
-
-    /**
-     * Opens {@link ManageBackgroundActivity}.
-     */
-    public void toBroadcast() {
-        Intent intent = new Intent(getApplicationContext(), ManageBackgroundActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
-        intent.putExtra("pkgName", q.e);
         startActivity(intent);
     }
 

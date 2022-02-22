@@ -1,14 +1,16 @@
 package com.besome.sketch.editor.manage;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,10 +18,10 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import a.a.a.GB;
 import a.a.a.Mp;
@@ -35,144 +37,147 @@ import mod.w3wide.tools.ImageFactory;
 
 public class ShowBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public Toolbar k;
-    public String l;
-    public ViewBlockCollectionEditor m;
-    public BlockPane n;
-    public EditText o;
-    public EasyDeleteEditText p;
-    public Button q;
-    public LinearLayout r;
-    public NB s;
+    private String blockName;
+    private ViewBlockCollectionEditor blockCollectionEditor;
+    private BlockPane pane;
+    private EditText blockNameEditorText;
+    private LinearLayout actionSection;
+    private NB blockNameValidator;
 
-    public final void a(ArrayList<BlockBean> arrayList, int i, int i2) {
-        Rs rs;
-        Rs rs2;
-        Rs rs3;
-        HashMap<Integer, Rs> hashMap = new HashMap<>();
-        Iterator<BlockBean> it = arrayList.iterator();
-        Rs rs4 = null;
-        boolean z = true;
-        while (it.hasNext()) {
-            Rs a2 = a(it.next());
-            hashMap.put((Integer) a2.getTag(), a2);
-            BlockPane blockPane = n;
-            blockPane.g = Math.max(blockPane.g, (Integer) a2.getTag() + 1);
-            n.a(a2, i, i2);
-            if (z) {
-                rs4 = a2;
-                z = false;
+    private void addBlocks(ArrayList<BlockBean> blocks, int someXValue, int someYValue) {
+        HashMap<Integer, Rs> blockIdsWithBlocks = new HashMap<>();
+        Rs firstBlock = null;
+
+        boolean isFirstBlock = true;
+        for (BlockBean blockBean : blocks) {
+            Rs block = getBlock(blockBean);
+            int blockId = (Integer) block.getTag();
+
+            blockIdsWithBlocks.put(blockId, block);
+            pane.g = Math.max(pane.g, blockId + 1);
+            pane.a(block, someXValue, someYValue);
+
+            if (isFirstBlock) {
+                firstBlock = block;
+                isFirstBlock = false;
             }
         }
-        for (BlockBean next : arrayList) {
-            Rs rs5 = hashMap.get(Integer.valueOf(next.id));
-            if (rs5 != null) {
-                int i3 = next.subStack1;
-                if (i3 >= 0 && (rs3 = hashMap.get(i3)) != null) {
-                    rs5.e(rs3);
+
+        for (BlockBean blockBean : blocks) {
+            Rs block = blockIdsWithBlocks.get(Integer.valueOf(blockBean.id));
+
+            if (block != null) {
+                int subStack1Id = blockBean.subStack1;
+                Rs subStack1;
+                if (subStack1Id >= 0 && (subStack1 = blockIdsWithBlocks.get(subStack1Id)) != null) {
+                    block.e(subStack1);
                 }
-                int i4 = next.subStack2;
-                if (i4 >= 0 && (rs2 = hashMap.get(i4)) != null) {
-                    rs5.f(rs2);
+
+                int subStack2Id = blockBean.subStack2;
+                Rs subStack2;
+                if (subStack2Id >= 0 && (subStack2 = blockIdsWithBlocks.get(subStack2Id)) != null) {
+                    block.f(subStack2);
                 }
-                int i5 = next.nextBlock;
-                if (i5 >= 0 && (rs = hashMap.get(i5)) != null) {
-                    rs5.b(rs);
+
+                int nextBlockId = blockBean.nextBlock;
+                Rs nextBlock;
+                if (nextBlockId >= 0 && (nextBlock = blockIdsWithBlocks.get(nextBlockId)) != null) {
+                    block.b(nextBlock);
                 }
-                int size = next.parameters.size();
-                for (int i6 = 0; i6 < size; i6++) {
-                    String str = next.parameters.get(i6);
-                    if (str != null && str.length() > 0) {
-                        if (str.charAt(0) == '@') {
-                            Rs rs6 = hashMap.get(Integer.valueOf(str.substring(1)));
-                            if (rs6 != null) {
-                                rs5.a((Ts) rs5.V.get(i6), rs6);
+
+                ArrayList<String> parameters = blockBean.parameters;
+                for (int i = 0; i < parameters.size(); i++) {
+                    String parameter = blockBean.parameters.get(i);
+
+                    if (parameter != null && parameter.length() > 0) {
+                        if (parameter.charAt(0) == '@') {
+                            Rs parameterBlock = blockIdsWithBlocks.get(Integer.valueOf(parameter.substring(1)));
+                            if (parameterBlock != null) {
+                                block.a((Ts) block.V.get(i), parameterBlock);
                             }
                         } else {
-                            ((Ss) rs5.V.get(i6)).setArgValue(str);
-                            rs5.m();
+                            ((Ss) block.V.get(i)).setArgValue(parameter);
+                            block.m();
                         }
                     }
                 }
             }
         }
-        rs4.k();
-        n.b();
+        firstBlock.k();
+        pane.b();
     }
 
-    public final void l() {
+    private void resizeBottomViews() {
         int i = getResources().getDisplayMetrics().heightPixels;
-        r.measure(0, 0);
-        m.setLayoutParams(new LinearLayout.LayoutParams(-1, ((i - GB.a(e)) - GB.f(e)) - r.getMeasuredHeight()));
-        m.requestLayout();
+        actionSection.measure(0, 0);
+        blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ((i - GB.a((Context) this)) - GB.f((Context) this)) - actionSection.getMeasuredHeight()));
+        blockCollectionEditor.requestLayout();
     }
 
-    @SuppressLint("ResourceType")
-    public void onClick(View view) {
-        if (view.getId() == 2131231681 && s.b()) {
-            Mp.h().a(l, o.getText().toString(), true);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625279), 0).show();
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == Resources.id.save_button && blockNameValidator.b()) {
+            Mp.h().a(blockName, blockNameEditorText.getText().toString(), true);
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
+                    Resources.string.design_manager_message_edit_complete), Toast.LENGTH_SHORT).show();
             finish();
         }
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
-    public void onConfigurationChanged(Configuration configuration) {
-        super.onConfigurationChanged(configuration);
-        l();
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        resizeBottomViews();
     }
 
-    @SuppressLint("ResourceType")
     @Override
-    // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        setContentView(2131427512);
-        k = findViewById(2131231847);
-        a(k);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), 2131625253));
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(Resources.layout.manage_collection_show_block);
+
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        a(toolbar);
+        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), Resources.string.design_manager_block_detail_actionbar_title));
         d().e(true);
         d().d(true);
-        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        l = getIntent().getStringExtra("block_name");
-        m = findViewById(2131231015);
-        m.setScrollEnabled(true);
-        n = m.getBlockPane();
-        p = findViewById(2131230990);
-        o = p.getEditText();
-        o.setPrivateImeOptions("defaultInputmode=english;");
-        o.setText(l);
-        p.setHint(xB.b().a(this, 2131625254));
-        q = findViewById(2131231681);
-        q.setText(xB.b().a(getApplicationContext(), 2131625031));
-        q.setOnClickListener(this);
-        s = new NB(this, p.getTextInputLayout(), Mp.h().g());
-        r = findViewById(2131231320);
-    }
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
-    @Override // androidx.appcompat.app.AppCompatActivity
-    public void onPostCreate(Bundle bundle) {
-        super.onPostCreate(bundle);
-        a(Mp.h().a(l).blocks, 10, 10);
-        l();
+        blockName = getIntent().getStringExtra("block_name");
+        blockCollectionEditor = findViewById(Resources.id.editor);
+        blockCollectionEditor.setScrollEnabled(true);
+        pane = blockCollectionEditor.getBlockPane();
+
+        EasyDeleteEditText input = findViewById(Resources.id.ed_input);
+        blockNameEditorText = input.getEditText();
+        blockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
+        blockNameEditorText.setText(blockName);
+        input.setHint(xB.b().a(this, Resources.string.design_manager_block_hint_enter_block_name));
+
+        Button save = findViewById(Resources.id.save_button);
+        save.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_save));
+        save.setOnClickListener(this);
+        blockNameValidator = new NB(this, input.getTextInputLayout(), Mp.h().g());
+        actionSection = findViewById(Resources.id.layout_button);
     }
 
     @Override
-    // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
-    public void onResume() {
-        super.onResume();
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        addBlocks(Mp.h().a(blockName).blocks, 10, 10);
+        resizeBottomViews();
     }
 
-    public final Rs a(BlockBean blockBean) {
+    private Rs getBlock(BlockBean blockBean) {
         return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem saveImageItem = menu.add(0, 12, 0, "Save image");
-        saveImageItem.setIcon(2131165642);
+        saveImageItem.setIcon(Resources.drawable.full_image_48);
         saveImageItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
@@ -181,8 +186,8 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == 12) {
-            if (ImageFactory.saveBitmap(m.getChildAt(0), l).exists()) {
-                SketchwareUtil.toast("Saved image to /Internal storage/sketchware/saved_block/" + l + ".png!");
+            if (ImageFactory.saveBitmap(blockCollectionEditor.getChildAt(0), blockName).exists()) {
+                SketchwareUtil.toast("Saved image to /Internal storage/sketchware/saved_block/" + blockName + ".png!");
             } else {
                 SketchwareUtil.toastError("Couldn't save image");
             }

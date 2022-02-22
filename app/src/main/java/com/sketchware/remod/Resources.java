@@ -132,6 +132,7 @@ public class Resources {
         public static final int file_48_blue = 0x7f0701b6;
         public static final int file_96 = 0x7f0701b7;
         public static final int file_app_icon = 0x7f0701b8;
+        public static final int full_image_48 = 0x7f0701ca;
         public static final int globe_96 = 0x7f0701d0;
         public static final int google_96 = 0x7f0701d3;
         public static final int gravity_96 = 0x7f0701dc;
@@ -161,6 +162,7 @@ public class Resources {
         public static final int ic_screen_portrait_grey600_24dp = 0x7f070296;
         public static final int ic_screen_rotation_grey600_24dp = 0x7f070297;
         public static final int ic_sound_wave_48dp = 0x7f0702a5;
+        public static final int ic_test_device_48dp = 0x7f0702aa;
         public static final int ic_undo_white_48dp = 0x7f0702b6;
         public static final int icon_checkbox_white_96 = 0x7f0702c6;
         public static final int icon_file_white_96 = 0x7f0702cb;
@@ -196,6 +198,7 @@ public class Resources {
         public static final int swipe_down_48 = 0x7f0703e4;
         public static final int swipe_right_48 = 0x7f0703e5;
         public static final int text_width_96 = 0x7f0703ef;
+        public static final int unit_96 = 0x7f070401;
         public static final int widget_admob = 0x7f07041a;
         public static final int widget_alertdialog = 0x7f07041b;
         public static final int widget_bluetooth = 0x7f07041c;
@@ -676,6 +679,7 @@ public class Resources {
         public static final int main_drawer_item = 0x7f0b00b0;
         public static final int make_block = 0x7f0b00b1;
         public static final int manage_collection_popup_import_more_block_list_item = 0x7f0b00b7;
+        public static final int manage_collection_show_block = 0x7f0b00b8;
         public static final int manage_collection_show_widget = 0x7f0b00b9;
         public static final int manage_font_add = 0x7f0b00c1;
         public static final int manage_library_base_item = 0x7f0b00d1;
@@ -867,6 +871,8 @@ public class Resources {
         public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
         public static final int design_library_guide_setup_first = 0x7f0e051c;
         public static final int design_library_settings_title_enabled = 0x7f0e0521;
+        public static final int design_manager_block_detail_actionbar_title = 0x7f0e0525;
+        public static final int design_manager_block_hint_enter_block_name = 0x7f0e0526;
         public static final int design_manager_message_edit_complete = 0x7f0e053f;
         public static final int design_manager_widget_hint_enter_widget_name = 0x7f0e0559;
         public static final int design_manager_widget_title_actionbar_title = 0x7f0e055a;
