@@ -131,41 +131,45 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         invalidateOptionsMenu();
-        if (requestCode == 100) {
-            invalidateOptionsMenu();
-            if (resultCode == -1) {
-                if (i.g().isEmpty()) {
-                    Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivityForResult(intent, 108);
-                } else {
-                    toMyPageSettingsActivity();
-                }
+        if (resultCode == -1) {
+            switch (requestCode) {
+                case 100:
+                    invalidateOptionsMenu();
+                    if (i.g().isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivityForResult(intent, 108);
+                    } else {
+                        toMyPageSettingsActivity();
+                    }
+                    if (o != null) o.i();
+                    break;
+
+                case 105:
+                    l(0);
+                    sB.a(this, data.getBooleanExtra("onlyConfig", true));
+                    break;
+
+                case 111:
+                    invalidateOptionsMenu();
+                    break;
+
+                case 113:
+                    if (data != null && data.getBooleanExtra("not_show_popup_anymore", false)) {
+                        u.a("U1I2", (Object) false);
+                    }
+                    break;
+
+                case 212:
+                    if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
+                        y.g();
+                    }
+                    break;
+
+                case 505:
+                    if (o != null) o.i();
+                    break;
             }
-            if (o != null) {
-                o.i();
-            }
-        } else if (requestCode == 105) {
-            if (resultCode == -1) {
-                l(0);
-                sB.a(this, data.getBooleanExtra("onlyConfig", true));
-            }
-        } else if (requestCode == 111) {
-            if (resultCode == -1) {
-                invalidateOptionsMenu();
-            }
-        } else if (requestCode == 113) {
-            if (resultCode == -1 && data != null && data.getBooleanExtra("not_show_popup_anymore", false)) {
-                u.a("U1I2", (Object) false);
-            }
-        } else if (requestCode == 212) {
-            if (resultCode == -1) {
-                if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
-                    y.g();
-                }
-            }
-        } else if (requestCode == 505 && o != null) {
-            o.i();
         }
     }
 
