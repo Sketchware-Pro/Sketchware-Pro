@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.LogicEditorActivity;
+import com.sketchware.remod.Resources;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -85,18 +86,18 @@ public class MenuBean {
             case "ResAttr":
             case "ResXml":
                 asdAll.b("Deprecated");
-                asdAll.a("This block menu has been deprecated because it used to read the file for the value which is very heavy on the I/O. But you still can use CodeEditor.");
+                asdAll.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
                 break;
 
             case "AdUnit":
-                asdAll.a(2131166209);
-                asdAll.b("Select an AdUnit");
+                asdAll.a(Resources.drawable.unit_96);
+                asdAll.b("Select an Ad Unit");
                 selectableItems.addAll(AdMobReader.getAdUnits(sc_id));
                 break;
 
             case "TestDevice":
-                asdAll.a(2131165866);
-                asdAll.b("Select a test device");
+                asdAll.a(Resources.drawable.ic_test_device_48dp);
+                asdAll.b("Select a Test device");
                 selectableItems.addAll(AdMobReader.getTestDevices(sc_id));
                 break;
 
