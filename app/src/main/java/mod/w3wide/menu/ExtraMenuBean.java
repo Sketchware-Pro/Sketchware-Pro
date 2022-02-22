@@ -3,6 +3,7 @@ package mod.w3wide.menu;
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
 
+import android.annotation.SuppressLint;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -212,11 +213,12 @@ public class ExtraMenuBean {
         }
     }
 
+    @SuppressLint("ResourceType")
     private void defaultMenus(Ss menu) {
         String menuName = menu.getMenuName();
         AsdAll asdAll = new AsdAll(logicEditor);
         View rootView = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(2131231668);
+        ViewGroup viewGroup = rootView.findViewById(2131231668);
         ArrayList<String> menus = new ArrayList<>();
         switch (menuName) {
             case "varInt":

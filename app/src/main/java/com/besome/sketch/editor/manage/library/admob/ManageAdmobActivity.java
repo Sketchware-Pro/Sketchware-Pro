@@ -47,8 +47,8 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     public Toolbar toolbar;
     public Button btnConsole;
     public ProjectLibraryBean admobLibraryBean;
-    private int n = 8001;
-    private int o = 8002;
+    private final int n = 8001;
+    private final int o = 8002;
 
     @Override
     public void a(int requestCode, String idk) {
