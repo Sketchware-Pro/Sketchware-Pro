@@ -50,44 +50,38 @@ import mod.hilal.saif.components.ComponentsHandler;
 
 public class ComponentAddActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    public TextView tvDescription;
-    public TextView tvName;
-    public ImageView imgIcon;
-    public ImageView imgBack;
-    public ImageView imgFilePicker;
-    /**
-     * The sc_id of the currently open project
-     */
-    public String sc_id;
-    public ProjectFileBean projectFileBean;
-    public LinearLayout inputFilePickerLayout;
-    public TextView tvWarnning;
-    public EditText edInput;
-    public EditText edInputFilename;
-    public EditText edInputFirebasePath;
-    public EditText edInputFilePicker;
-    public TextInputLayout tiInput;
-    public TextInputLayout tiInputFilename;
-    public TextInputLayout tiInputFirebasePath;
-    public TextInputLayout tiInputFilePicker;
-    public TextView tvDescFirebasePath;
-    public TextView tvDescFilePicker;
-    public ZB T;
-    public SB U;
-    public SB V;
-    public SB W;
-    public LinearLayout inputsLayout;
-    public LinearLayout imgIconLayout;
-    public RelativeLayout descriptionLayout;
-    public Button addButton;
-    public Button docsButton;
-    public RecyclerView componentsList;
-    public ComponentsAdapter componentsAdapter;
-    public ArrayList<ComponentBean> componentList;
-    public HashMap<Integer, Pair<Integer, Integer>> w;
-    public boolean x;
-    public boolean y;
-    public TextView tvComponentTitle;
+    private TextView tvDescription;
+    private TextView tvName;
+    private ImageView imgIcon;
+    private ImageView imgBack;
+    private String sc_id;
+    private ProjectFileBean projectFileBean;
+    private LinearLayout inputFilePickerLayout;
+    private TextView tvWarning;
+    private EditText edInput;
+    private EditText edInputFilename;
+    private EditText edInputFirebasePath;
+    private EditText edInputFilePicker;
+    private TextInputLayout tiInputFilename;
+    private TextInputLayout tiInputFirebasePath;
+    private TextView tvDescFirebasePath;
+    private TextView tvDescFilePicker;
+    private ZB T;
+    private SB U;
+    private SB V;
+    private SB W;
+    private LinearLayout inputsLayout;
+    private LinearLayout imgIconLayout;
+    private RelativeLayout descriptionLayout;
+    private Button addButton;
+    private Button docsButton;
+    private RecyclerView componentsList;
+    private ComponentsAdapter componentsAdapter;
+    private ArrayList<ComponentBean> componentList;
+    private HashMap<Integer, Pair<Integer, Integer>> w;
+    private boolean x;
+    private boolean y;
+    private TextView tvComponentTitle;
 
     private boolean checks() {
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
@@ -191,7 +185,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         tvComponentTitle = findViewById(Resources.id.tv_component_title);
         tvDescription = findViewById(Resources.id.tv_description);
         tvName = findViewById(Resources.id.tv_name);
-        tvWarnning = findViewById(Resources.id.tv_warning);
+        tvWarning = findViewById(Resources.id.tv_warning);
         tvDescFirebasePath = findViewById(Resources.id.tv_desc_firebase_path);
         tvDescFilePicker = findViewById(Resources.id.tv_desc_file_picker);
         edInput = findViewById(Resources.id.ed_input);
@@ -201,11 +195,11 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         inputsLayout = findViewById(Resources.id.layout_inputs);
         imgBack = findViewById(Resources.id.img_back);
         imgBack.setVisibility(View.GONE);
-        imgFilePicker = findViewById(Resources.id.img_file_picker);
-        tiInput = findViewById(Resources.id.ti_input);
+        ImageView imgFilePicker = findViewById(Resources.id.img_file_picker);
+        TextInputLayout tiInput = findViewById(Resources.id.ti_input);
         tiInputFilename = findViewById(Resources.id.ti_input_filename);
         tiInputFirebasePath = findViewById(Resources.id.ti_input_firebase_path);
-        tiInputFilePicker = findViewById(Resources.id.ti_input_file_picker);
+        TextInputLayout tiInputFilePicker = findViewById(Resources.id.ti_input_file_picker);
         imgIconLayout = findViewById(Resources.id.layout_img_icon);
         descriptionLayout = findViewById(Resources.id.layout_description);
         inputFilePickerLayout = findViewById(Resources.id.layout_input_file_picker);
@@ -395,7 +389,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         imgIconLayout.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
         imgIconLayout.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
         ComponentBean componentBean = componentList.get(componentsAdapter.layoutPosition);
-        Helper.setViewsVisibility(true, tvWarnning, tiInputFilename, tvDescFirebasePath, tvDescFilePicker, tiInputFirebasePath, inputFilePickerLayout);
+        Helper.setViewsVisibility(true, tvWarning, tiInputFilename, tvDescFirebasePath, tvDescFilePicker, tiInputFirebasePath, inputFilePickerLayout);
         switch (componentBean.type) {
             case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
                 tiInputFilename.setVisibility(View.VISIBLE);
@@ -408,8 +402,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
                 if (!GB.b(this, Sensor.TYPE_GYROSCOPE)) {
-                    tvWarnning.setVisibility(View.VISIBLE);
-                    tvWarnning.setText(Helper.getResString(Resources.string.message_device_not_support));
+                    tvWarning.setVisibility(View.VISIBLE);
+                    tvWarning.setText(Helper.getResString(Resources.string.message_device_not_support));
                 }
                 break;
 
