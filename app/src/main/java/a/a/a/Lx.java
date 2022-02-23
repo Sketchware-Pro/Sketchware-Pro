@@ -605,7 +605,7 @@ public class Lx {
             String initializer = getInitializer(typeName, typeInstanceName, parameters);
             String builtInType = mq.e(typeName);
             if (initializer.length() <= 0) {
-                if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
+                if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage") && !builtInType.equals("FragmentStatePagerAdapter")) {
                     fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
                     fieldDeclaration = ConstVarWidget.a(fieldDeclaration, typeName, typeInstanceName);

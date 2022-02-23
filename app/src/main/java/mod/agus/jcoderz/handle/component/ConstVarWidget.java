@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.handle.component;
 
+import a.a.a.Lx;
+
 public class ConstVarWidget {
 
     /**
@@ -9,8 +11,11 @@ public class ConstVarWidget {
     public static String a(String fieldDeclaration, String componentNameId, String componentName) {
         if ("FirebaseCloudMessage".equals(componentNameId)) {
             return "";
+        } else if ("FragmentStatePagerAdapter".equals(componentNameId)) {
+            return fieldDeclaration + " " + Lx.a(componentName + "Fragment") + " " + componentName + ";";
+        } else {
+            return fieldDeclaration + " " + componentNameId + " " + componentName + ";";
         }
-        return fieldDeclaration + " " + componentNameId + " " + componentName + ";";
     }
 
     /**
