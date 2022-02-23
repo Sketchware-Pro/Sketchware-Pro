@@ -958,8 +958,8 @@ public class yq {
         a(projectLibraryManager, projectFileManager, projectDataManager, false);
         boolean isJavaFile = filename.endsWith(".java");
         boolean isXmlFile = filename.endsWith(".xml");
-        ArrayList<ProjectFileBean> files = new ArrayList<ProjectFileBean>(projectFileManager.b());
-        files.addAll(new ArrayList<ProjectFileBean>(projectFileManager.c()));
+        ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
+        files.addAll(new ArrayList<>(projectFileManager.c()));
 
         if (isXmlFile) {
             /*
