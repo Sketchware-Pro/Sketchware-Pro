@@ -11,7 +11,6 @@ import java.util.Iterator;
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.editor.event.ManageEventComponent;
 import mod.agus.jcoderz.handle.code.CodeResult;
-import mod.agus.jcoderz.handle.component.ConstVarWidget;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
@@ -617,8 +616,13 @@ public class Lx {
                     }
                 }
             } else {
-                fieldDeclaration += " " + (builtInType.equals("") ? ConstVarWidget.b(typeName) : builtInType)
-                        + " " + typeInstanceName + " = " + initializer + ";";
+                String typeNameOfField = builtInType;
+
+                if (builtInType.equals("") && "Videos".equals(typeName)) {
+                    typeNameOfField = "Intent";
+                }
+
+                fieldDeclaration += " " + typeNameOfField + " " + typeInstanceName + " = " + initializer + ";";
             }
 
             switch (typeName) {
