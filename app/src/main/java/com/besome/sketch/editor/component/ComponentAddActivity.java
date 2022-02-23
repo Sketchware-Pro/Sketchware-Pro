@@ -66,10 +66,10 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private TextInputLayout tiInputFirebasePath;
     private TextView tvDescFirebasePath;
     private TextView tvDescFilePicker;
-    private ZB T;
-    private SB U;
-    private SB V;
-    private SB W;
+    private ZB componentNameValidator;
+    private SB componentFileNameValidator;
+    private SB componentFirebasePathValidator;
+    private SB componentMimeTypeValidator;
     private LinearLayout inputsLayout;
     private LinearLayout imgIconLayout;
     private RelativeLayout descriptionLayout;
@@ -86,12 +86,12 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private boolean checks() {
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
         String componentId = edInput.getText().toString();
-        if (!T.b()) {
+        if (!componentNameValidator.b()) {
             return false;
         }
         switch (componentType) {
             case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
-                if (!U.b()) {
+                if (!componentFileNameValidator.b()) {
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFilename.getText().toString());
@@ -99,7 +99,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             case ComponentBean.COMPONENT_TYPE_FIREBASE:
             case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                if (!V.b()) {
+                if (!componentFirebasePathValidator.b()) {
                     return false;
                 }
                 if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
@@ -138,7 +138,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                if (edInputFilePicker.getText().toString().length() == 0 || !W.b()) {
+                if (edInputFilePicker.getText().toString().length() == 0 || !componentMimeTypeValidator.b()) {
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFilePicker.getText().toString());
@@ -221,30 +221,30 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentsList.setAdapter(componentsAdapter);
         descriptionLayout.setVisibility(View.GONE);
         imgIcon = findViewById(Resources.id.img_icon);
-        T = new ZB(
+        componentNameValidator = new ZB(
                 this,
                 tiInput,
                 uq.b,
                 uq.a(),
                 jC.a(sc_id).a(projectFileBean)
         );
-        U = new SB(
+        componentFileNameValidator = new SB(
                 this,
                 tiInputFilename,
-                1,
-                20
+                1 /* minimum amount of characters in input */,
+                20 /* maximum amount of characters in input */
         );
-        V = new SB(
+        componentFirebasePathValidator = new SB(
                 this,
                 tiInputFirebasePath,
-                0,
-                100
+                0 /* minimum amount of characters in input */,
+                100 /* maximum amount of characters in input */
         );
-        W = new SB(
+        componentMimeTypeValidator = new SB(
                 this,
                 tiInputFilePicker,
-                1,
-                50
+                1 /* minimum amount of characters in input */,
+                50 /* maximum amount of characters in input */
         );
         tvDescFirebasePath.setText(Helper.getResString(Resources.string.design_library_firebase_guide_path_example));
         tvDescFilePicker.setText(Helper.getResString(Resources.string.component_description_file_picker_guide_mime_type_example));
