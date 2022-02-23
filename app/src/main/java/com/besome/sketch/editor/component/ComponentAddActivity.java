@@ -452,8 +452,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
     public class ComponentsAdapter extends RecyclerView.a<ComponentsAdapter.ViewHolder> {
 
-        public int layoutPosition = -1;
-        public RecyclerView recyclerView;
+        private int layoutPosition = -1;
+        private RecyclerView recyclerView;
 
         public ComponentsAdapter() {
         }
