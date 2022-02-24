@@ -217,237 +217,237 @@ public class ExtraMenuBean {
     private void defaultMenus(Ss menu) {
         String menuName = menu.getMenuName();
         AsdAll asdAll = new AsdAll(logicEditor);
-        View rootView = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = rootView.findViewById(2131231668);
+        View rootView = wB.a(logicEditor, Resources.layout.property_popup_selector_single);
+        ViewGroup viewGroup = rootView.findViewById(Resources.id.rg_content);
         ArrayList<String> menus = new ArrayList<>();
         switch (menuName) {
             case "varInt":
-                asdAll.b(Helper.getResString(2131625572));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_variable_number));
                 menus = getVarMenus(VARIABLE_TYPE_INTEGER);
                 break;
 
             case "varBool":
-                asdAll.b(Helper.getResString(2131625570));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_variable_boolean));
                 menus = getVarMenus(VARIABLE_TYPE_BOOLEAN);
                 break;
 
             case "varStr":
-                asdAll.b(Helper.getResString(2131625573));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_variable_string));
                 menus = getVarMenus(VARIABLE_TYPE_STRING);
                 break;
 
             case "varMap":
-                asdAll.b(Helper.getResString(2131625571));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_variable_map));
                 menus = getVarMenus(VARIABLE_TYPE_MAP);
                 break;
 
             case "listInt":
-                asdAll.b(Helper.getResString(2131625566));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_list_number));
                 menus = getListMenus(LIST_TYPE_INTEGER);
                 break;
 
             case "listStr":
-                asdAll.b(Helper.getResString(2131625567));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_list_string));
                 menus = getListMenus(LIST_TYPE_STRING);
                 break;
 
             case "listMap":
-                asdAll.b(Helper.getResString(2131625565));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_list_map));
                 menus = getListMenus(LIST_TYPE_MAP);
                 break;
 
             case "list":
-                asdAll.b(Helper.getResString(2131625563));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_list));
                 menus = projectDataManager.c(logicEditor.M.getJavaName());
                 break;
 
             case "intent":
-                asdAll.b(Helper.getResString(2131625545));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_intent));
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_INTENT);
                 break;
 
             case "file":
-                asdAll.b(Helper.getResString(2131625540));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_file));
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_SHAREDPREF);
                 break;
 
             case "intentAction":
-                asdAll.b(Helper.getResString(2131625546));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_intent_action));
                 menus = new ArrayList<>(Arrays.asList(uq.b()));
                 break;
 
             case "intentFlags":
-                asdAll.b(Helper.getResString(2131625547));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_intent_flags));
                 menus = new ArrayList<>(Arrays.asList(uq.c()));
                 break;
 
             case "calendar":
-                asdAll.b(Helper.getResString(2131625536));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_calendar));
                 menus = getComponentMenus(ComponentBean.COMPONENT_TYPE_CALENDAR);
                 break;
 
             case "calendarField":
-                asdAll.b(Helper.getResString(2131625537));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_calendar_field));
                 menus = new ArrayList<>(Arrays.asList(uq.e));
                 break;
 
             case "vibrator":
-                asdAll.b(Helper.getResString(2131625557));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_vibrator));
                 menus = getComponentMenus(4);
                 break;
 
             case "timer":
-                asdAll.b(Helper.getResString(2131625556));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_timer));
                 menus = getComponentMenus(5);
                 break;
 
             case "firebase":
-                asdAll.b(Helper.getResString(2131625542));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_firebase));
                 menus = getComponentMenus(6);
                 break;
 
             case "firebaseauth":
-                asdAll.b(Helper.getResString(2131625489));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_component_firebaseauth_title_select_firebase_auth));
                 menus = getComponentMenus(12);
                 break;
 
             case "firebasestorage":
-                asdAll.b(Helper.getResString(2131625543));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_firebasestorage));
                 menus = getComponentMenus(14);
                 break;
 
             case "dialog":
-                asdAll.b(Helper.getResString(2131625539));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_dialog));
                 menus = getComponentMenus(7);
                 break;
 
             case "mediaplayer":
-                asdAll.b(Helper.getResString(2131625550));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_mediaplayer));
                 menus = getComponentMenus(8);
                 break;
 
             case "soundpool":
-                asdAll.b(Helper.getResString(2131625553));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_soundpool));
                 menus = getComponentMenus(9);
                 break;
 
             case "objectanimator":
-                asdAll.b(Helper.getResString(2131625551));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_objectanimator));
                 menus = getComponentMenus(10);
                 break;
 
             case "aniRepeatMode":
-                asdAll.b(Helper.getResString(2131625532));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_animator_repeat_mode));
                 menus = new ArrayList<>(Arrays.asList(uq.j));
                 break;
 
             case "aniInterpolator":
-                asdAll.b(Helper.getResString(2131625531));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_animator_interpolator));
                 menus = new ArrayList<>(Arrays.asList(uq.k));
                 break;
 
             case "visible":
-                asdAll.b(Helper.getResString(2131625575));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_visibility));
                 menus = new ArrayList<>(Arrays.asList(uq.g));
                 break;
 
             case "cacheMode":
-                asdAll.b(Helper.getResString(2131625534));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_cache_mode));
                 menus = new ArrayList<>(Arrays.asList(uq.h));
                 break;
 
             case "animatorproperty":
-                asdAll.b(Helper.getResString(2131625533));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_animator_target_property));
                 menus = new ArrayList<>(Arrays.asList(uq.i));
                 break;
 
             case "gyroscope":
-                asdAll.b(Helper.getResString(2131625544));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_gyroscope));
                 menus = getComponentMenus(11);
                 break;
 
             case "interstitialad":
-                asdAll.b(Helper.getResString(2131625548));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_interstitialad));
                 menus = getComponentMenus(13);
                 break;
 
             case "camera":
-                asdAll.b(Helper.getResString(2131625538));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_camera));
                 menus = getComponentMenus(15);
                 break;
 
             case "filepicker":
-                asdAll.b(Helper.getResString(2131625541));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_filepicker));
                 menus = getComponentMenus(16);
                 break;
 
             case "directoryType":
-                asdAll.b(Helper.getResString(2131625558));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_directory_type));
                 menus = new ArrayList<>(Arrays.asList(uq.l));
                 break;
 
             case "requestnetwork":
-                asdAll.b(Helper.getResString(2131625552));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_request_network));
                 menus = getComponentMenus(17);
                 break;
 
             case "method":
-                asdAll.b(Helper.getResString(2131625528));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_request_network_method));
                 menus = new ArrayList<>(Arrays.asList(uq.n));
                 break;
 
             case "requestType":
-                asdAll.b(Helper.getResString(2131625529));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_request_network_request_type));
                 menus = new ArrayList<>(Arrays.asList(uq.o));
                 break;
 
             case "texttospeech":
-                asdAll.b(Helper.getResString(2131625555));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_text_to_speech));
                 menus = getComponentMenus(18);
                 break;
 
             case "speechtotext":
-                asdAll.b(Helper.getResString(2131625554));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_speech_to_text));
                 menus = getComponentMenus(19);
                 break;
 
             case "bluetoothconnect":
-                asdAll.b(Helper.getResString(2131625535));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_bluetooth_connect));
                 menus = getComponentMenus(20);
                 break;
 
             case "locationmanager":
-                asdAll.b(Helper.getResString(2131625549));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component_location_manager));
                 menus = getComponentMenus(21);
                 break;
 
             case "videoad":
-                asdAll.b(Helper.getResString(2131626499));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component));
                 menus = getComponentMenus(22);
                 break;
 
             case "progressdialog":
-                asdAll.b(Helper.getResString(2131626499));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component));
                 menus = getComponentMenus(23);
                 break;
 
             case "datepickerdialog":
-                asdAll.b(Helper.getResString(2131626499));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component));
                 menus = getComponentMenus(24);
                 break;
 
             case "asynctask":
-                asdAll.b(Helper.getResString(2131626499));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component));
                 menus = getComponentMenus(36);
                 break;
 
             case "timepickerdialog":
-                asdAll.b(Helper.getResString(2131626499));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component));
                 menus = getComponentMenus(25);
                 break;
 
             case "notification":
-                asdAll.b(Helper.getResString(2131626499));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_component));
                 menus = getComponentMenus(26);
                 break;
 
@@ -492,17 +492,17 @@ public class ExtraMenuBean {
                 break;
 
             case "providerType":
-                asdAll.b(Helper.getResString(2131625523));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_location_manager_provider_type));
                 menus = new ArrayList<>(Arrays.asList(uq.p));
                 break;
 
             case "mapType":
-                asdAll.b(Helper.getResString(2131625524));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_mapview_map_type));
                 menus = new ArrayList<>(Arrays.asList(uq.q));
                 break;
 
             case "markerColor":
-                asdAll.b(Helper.getResString(2131625525));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_mapview_marker_color));
                 menus = new ArrayList<>(Arrays.asList(uq.r));
                 break;
             /**
@@ -526,7 +526,7 @@ public class ExtraMenuBean {
 
             case "activity":
                 ArrayList<String> activityMenu = new ArrayList<>();
-                asdAll.b(Helper.getResString(2131625530));
+                asdAll.b(Helper.getResString(Resources.string.logic_editor_title_select_activity));
                 for (ProjectFileBean projectFileBean : jC.b(sc_id).b()) {
                     activityMenu.add(projectFileBean.getActivityName());
                 }
