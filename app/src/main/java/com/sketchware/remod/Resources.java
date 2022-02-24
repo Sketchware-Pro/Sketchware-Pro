@@ -1025,11 +1025,11 @@ public class Resources {
         public static final int text_subtitle_menu_local_library = 0x7f0e09fb;
         public static final int component_description_video_ad = 0x7f0e09fe;
         public static final int component_description_progress_dialog = 0x7f0e09ff;
-        public static final int component_description_date_picker_dialog = 0x7fe0a00;
-        public static final int component_description_time_picker_dialog = 0x7fe0a01;
-        public static final int component_description_notification = 0x7fe0a02;
+        public static final int component_description_date_picker_dialog = 0x7f0e0a00;
+        public static final int component_description_time_picker_dialog = 0x7f0e0a01;
+        public static final int component_description_notification = 0x7f0e0a02;
         public static final int logic_editor_title_select_component = 0x7f0e0a03;
-        public static final int component_description_fragment_adapter = 0x7fe0a07;
+        public static final int component_description_fragment_adapter = 0x7f0e0a07;
         public static final int design_drawer_menu_injection = 0x7f0e0a08;
         public static final int design_drawer_menu_injection_subtitle = 0x7f0e0a09;
         public static final int component_description_fb_phone_auth = 0x7f0e0a0a;
