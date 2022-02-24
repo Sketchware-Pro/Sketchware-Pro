@@ -25,6 +25,9 @@ android {
     aaptOptions {
         additionalParameters("--stable-ids", "public-stable-ids.txt")
     }
+    lintOptions {
+    abortOnError false
+    }
 
     compileOptions {
         coreLibraryDesugaringEnabled true
