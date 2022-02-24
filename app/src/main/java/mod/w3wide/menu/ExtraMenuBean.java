@@ -273,12 +273,12 @@ public class ExtraMenuBean {
 
             case "intentAction":
                 asdAll.b(Helper.getResString(2131625546));
-                menus = new ArrayList(Arrays.asList(uq.b()));
+                menus = new ArrayList<>(Arrays.asList(uq.b()));
                 break;
 
             case "intentFlags":
                 asdAll.b(Helper.getResString(2131625547));
-                menus = new ArrayList(Arrays.asList(uq.c()));
+                menus = new ArrayList<>(Arrays.asList(uq.c()));
                 break;
 
             case "calendar":
@@ -288,7 +288,7 @@ public class ExtraMenuBean {
 
             case "calendarField":
                 asdAll.b(Helper.getResString(2131625537));
-                menus = new ArrayList(Arrays.asList(uq.e));
+                menus = new ArrayList<>(Arrays.asList(uq.e));
                 break;
 
             case "vibrator":
@@ -338,27 +338,27 @@ public class ExtraMenuBean {
 
             case "aniRepeatMode":
                 asdAll.b(Helper.getResString(2131625532));
-                menus = new ArrayList(Arrays.asList(uq.j));
+                menus = new ArrayList<>(Arrays.asList(uq.j));
                 break;
 
             case "aniInterpolator":
                 asdAll.b(Helper.getResString(2131625531));
-                menus = new ArrayList(Arrays.asList(uq.k));
+                menus = new ArrayList<>(Arrays.asList(uq.k));
                 break;
 
             case "visible":
                 asdAll.b(Helper.getResString(2131625575));
-                menus = new ArrayList(Arrays.asList(uq.g));
+                menus = new ArrayList<>(Arrays.asList(uq.g));
                 break;
 
             case "cacheMode":
                 asdAll.b(Helper.getResString(2131625534));
-                menus = new ArrayList(Arrays.asList(uq.h));
+                menus = new ArrayList<>(Arrays.asList(uq.h));
                 break;
 
             case "animatorproperty":
                 asdAll.b(Helper.getResString(2131625533));
-                menus = new ArrayList(Arrays.asList(uq.i));
+                menus = new ArrayList<>(Arrays.asList(uq.i));
                 break;
 
             case "gyroscope":
@@ -383,7 +383,7 @@ public class ExtraMenuBean {
 
             case "directoryType":
                 asdAll.b(Helper.getResString(2131625558));
-                menus = new ArrayList(Arrays.asList(uq.l));
+                menus = new ArrayList<>(Arrays.asList(uq.l));
                 break;
 
             case "requestnetwork":
@@ -393,12 +393,12 @@ public class ExtraMenuBean {
 
             case "method":
                 asdAll.b(Helper.getResString(2131625528));
-                menus = new ArrayList(Arrays.asList(uq.n));
+                menus = new ArrayList<>(Arrays.asList(uq.n));
                 break;
 
             case "requestType":
                 asdAll.b(Helper.getResString(2131625529));
-                menus = new ArrayList(Arrays.asList(uq.o));
+                menus = new ArrayList<>(Arrays.asList(uq.o));
                 break;
 
             case "texttospeech":
@@ -493,17 +493,17 @@ public class ExtraMenuBean {
 
             case "providerType":
                 asdAll.b(Helper.getResString(2131625523));
-                menus = new ArrayList(Arrays.asList(uq.p));
+                menus = new ArrayList<>(Arrays.asList(uq.p));
                 break;
 
             case "mapType":
                 asdAll.b(Helper.getResString(2131625524));
-                menus = new ArrayList(Arrays.asList(uq.q));
+                menus = new ArrayList<>(Arrays.asList(uq.q));
                 break;
 
             case "markerColor":
                 asdAll.b(Helper.getResString(2131625525));
-                menus = new ArrayList(Arrays.asList(uq.r));
+                menus = new ArrayList<>(Arrays.asList(uq.r));
                 break;
             /**
              * Using {@link mod.agus.jcoderz.beans.ServiceBean}'s logic directly
@@ -568,7 +568,7 @@ public class ExtraMenuBean {
             default:
                 Pair<String, String[]> menuPair = BlockMenu.getMenu(menu.getMenuName());
                 asdAll.b(menuPair.first);
-                menus = new ArrayList(Arrays.asList(menuPair.second));
+                menus = new ArrayList<>(Arrays.asList(menuPair.second));
                 extraMenuBlock.a(menu, asdAll, menus);
         }
         for (String menuArg : menus) {
