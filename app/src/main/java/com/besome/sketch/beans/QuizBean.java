@@ -15,17 +15,17 @@ public class QuizBean extends nA {
     public QuizBean() {
     }
 
-    public QuizBean(String str, int i) {
-        this.type = 1;
-        this.question = str;
-        this.answer = i;
+    public QuizBean(String question, int answer) {
+        this.type = QUIZ_TYPE_OX;
+        this.question = question;
+        this.answer = answer;
     }
 
-    public QuizBean(String str, int i, String str2, String str3) {
-        this.type = 2;
-        this.question = str;
-        this.answer = i;
-        this.answerA = str2;
-        this.answerB = str3;
+    public QuizBean(String question, int answer, String answerA, String answerB) {
+        this.type = QUIZ_TYPE_ANSWER;
+        this.question = question;
+        this.answer = answer;
+        this.answerA = answerA;
+        this.answerB = answerB;
     }
 }
