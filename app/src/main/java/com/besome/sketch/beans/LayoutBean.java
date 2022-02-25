@@ -3,7 +3,6 @@ package com.besome.sketch.beans;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.flexbox.FlexItem;
 import com.google.gson.annotations.Expose;
 
 import a.a.a.nA;
@@ -75,12 +74,12 @@ public class LayoutBean extends nA implements Parcelable {
     public int width;
 
     public LayoutBean() {
-        this.width = -2;
-        this.height = -2;
-        this.gravity = 0;
-        this.layoutGravity = 0;
-        this.orientation = -1;
-        this.backgroundColor = FlexItem.MAX_SIZE;
+        this.width = LAYOUT_WRAP_CONTENT;
+        this.height = LAYOUT_WRAP_CONTENT;
+        this.gravity = GRAVITY_NONE;
+        this.layoutGravity = GRAVITY_NONE;
+        this.orientation = ORIENTATION_NONE;
+        this.backgroundColor = 0xffffff;
         this.borderColor = 0xff008dcd;
     }
 
@@ -135,14 +134,14 @@ public class LayoutBean extends nA implements Parcelable {
     }
 
     public boolean isEqual(LayoutBean layoutBean) {
-        if (this.width != layoutBean.width || this.height != layoutBean.height || this.orientation != layoutBean.orientation || this.gravity != layoutBean.gravity || this.paddingLeft != layoutBean.paddingLeft || this.paddingTop != layoutBean.paddingTop || this.paddingRight != layoutBean.paddingRight || this.paddingBottom != layoutBean.paddingBottom || this.marginLeft != layoutBean.marginLeft || this.marginTop != layoutBean.marginTop || this.marginRight != layoutBean.marginRight || this.marginBottom != layoutBean.marginBottom || this.weight != layoutBean.weight || this.weightSum != layoutBean.weightSum || this.layoutGravity != layoutBean.layoutGravity || this.backgroundColor != layoutBean.backgroundColor || this.borderColor != layoutBean.borderColor) {
+        if (width != layoutBean.width || height != layoutBean.height || orientation != layoutBean.orientation || gravity != layoutBean.gravity || paddingLeft != layoutBean.paddingLeft || paddingTop != layoutBean.paddingTop || paddingRight != layoutBean.paddingRight || paddingBottom != layoutBean.paddingBottom || marginLeft != layoutBean.marginLeft || marginTop != layoutBean.marginTop || marginRight != layoutBean.marginRight || marginBottom != layoutBean.marginBottom || weight != layoutBean.weight || weightSum != layoutBean.weightSum || layoutGravity != layoutBean.layoutGravity || backgroundColor != layoutBean.backgroundColor || borderColor != layoutBean.borderColor) {
             return false;
         }
-        String str = this.backgroundResource;
-        if (str != null) {
-            String str2 = layoutBean.backgroundResource;
-            return str2 != null && str.equals(str2);
-        } else return layoutBean.backgroundResource == null;
+        if (backgroundResource != null) {
+            return backgroundResource.equals(layoutBean.backgroundResource);
+        } else {
+            return layoutBean.backgroundResource == null;
+        }
     }
 
     public void print() {
