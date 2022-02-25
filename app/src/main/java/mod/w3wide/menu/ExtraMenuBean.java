@@ -505,18 +505,12 @@ public class ExtraMenuBean {
                 asdAll.b(Helper.getResString(2131625525));
                 menus = new ArrayList(Arrays.asList(uq.r));
                 break;
-            /**
-             * Using {@link mod.agus.jcoderz.beans.ServiceBean}'s logic directly
-             */
             case "service":
                 asdAll.b("Select Background Service");
                 if (FileUtil.isExistFile(fpu.getManifestService(sc_id))) {
                     menus = frc.getServiceManifestList();
                 }
                 break;
-            /**
-             * Using {@link mod.agus.jcoderz.beans.BroadcastBean}'s logic directly
-             */
             case "broadcast":
                 asdAll.b("Select Broadcast Receiver");
                 if (FileUtil.isExistFile(fpu.getManifestBroadcast(sc_id))) {
