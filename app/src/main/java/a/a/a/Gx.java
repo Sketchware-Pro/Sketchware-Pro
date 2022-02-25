@@ -21,18 +21,12 @@ public class Gx {
     }
 
     public boolean a(String classInfo) {
-        if (classInfo.equals("!")) {
-            return true;
-        } else if (classInfo.equals(a)) {
+        if (classInfo.equals("!") || classInfo.equals(a)) {
             return true;
         } else {
-            String[] classInfoArray = b;
-            for (int i = 0; i < classInfoArray.length; ++i) {
-                if (classInfoArray[i].equals(classInfo)) {
-                    return true;
-                }
+            for (String s : b) {
+                if (s.equals(classInfo)) return true;
             }
-
             return false;
         }
     }
