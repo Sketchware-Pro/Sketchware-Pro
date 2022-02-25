@@ -2,8 +2,6 @@ package com.besome.sketch.beans;
 
 import android.graphics.Color;
 
-import com.google.android.flexbox.FlexItem;
-
 public class ColorBean {
     public int colorCode;
     public String colorName;
@@ -25,10 +23,10 @@ public class ColorBean {
         int color = this.colorCode;
         if (color == 0) return "TRANSPARENT";
 
-        if (color == 16777215) return "NONE";
+        if (color == 0xffffff) return "NONE";
 
-        if (isWideFilling) return String.format("#%08X", Integer.valueOf(color));
+        if (isWideFilling) return String.format("#%08X", color);
 
-        return String.format("#%06X", Integer.valueOf(color & FlexItem.MAX_SIZE));
+        return String.format("#%06X", color & 0xffffff);
     }
 }
