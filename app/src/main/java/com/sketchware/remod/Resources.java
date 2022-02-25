@@ -349,6 +349,7 @@ public class Resources {
         public static final int img_orientation = 0x7f0801bc;
         public static final int img_save = 0x7f0801c9;
         public static final int img_selected = 0x7f0801cd;
+        public static final int img_selector = 0x7f0801ce;
         public static final int img_theme_color_help = 0x7f0801d4;
         public static final int img_title_logo = 0x7f0801d9;
         public static final int img_user_icon = 0x7f0801df;
@@ -460,6 +461,7 @@ public class Resources {
         public static final int tv_change_icon = 0x7f08049b;
         public static final int tv_code = 0x7f0804a8;
         public static final int tv_collection = 0x7f0804a9;
+        public static final int tv_color_name = 0x7f0804ac;
         public static final int tv_compile_log = 0x7f0804b2;
         public static final int tv_component_title = 0x7f0804b5;
         public static final int tv_data_url = 0x7f0804c0;
@@ -661,6 +663,7 @@ public class Resources {
     public static final class layout {
         public static final int build_progress_msg_box = 0x7f0b002c;
         public static final int color_picker = 0x7f0b002d;
+        public static final int color_picker_grid_item = 0x7f0b002e;
         public static final int compile_log = 0x7f0b003c;
         public static final int component_add_item = 0x7f0b003d;
         public static final int custom_toast = 0x7f0b0040;

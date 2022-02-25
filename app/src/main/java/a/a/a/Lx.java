@@ -11,7 +11,6 @@ import java.util.Iterator;
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.editor.event.ManageEventComponent;
 import mod.agus.jcoderz.handle.code.CodeResult;
-import mod.agus.jcoderz.handle.component.ConstVarWidget;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
@@ -605,14 +604,25 @@ public class Lx {
             String initializer = getInitializer(typeName, typeInstanceName, parameters);
             String builtInType = mq.e(typeName);
             if (initializer.length() <= 0) {
-                if (!builtInType.equals("") && !builtInType.equals("FirebaseCloudMessage")) {
+                if (!(builtInType.equals("") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
                     fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
-                    fieldDeclaration = ConstVarWidget.a(fieldDeclaration, typeName, typeInstanceName);
+                    if ("FirebaseCloudMessage".equals(typeName)) {
+                        fieldDeclaration = "";
+                    } else if ("FragmentStatePagerAdapter".equals(typeName)) {
+                        fieldDeclaration += " " + a(typeName + "Fragment") + " " + typeName + ";";
+                    } else {
+                        fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
+                    }
                 }
             } else {
-                fieldDeclaration += " " + (builtInType.equals("") ? ConstVarWidget.b(typeName) : builtInType)
-                        + " " + typeInstanceName + " = " + initializer + ";";
+                String typeNameOfField = builtInType;
+
+                if (builtInType.equals("") && "Videos".equals(typeName)) {
+                    typeNameOfField = "Intent";
+                }
+
+                fieldDeclaration += " " + typeNameOfField + " " + typeInstanceName + " = " + initializer + ";";
             }
 
             switch (typeName) {

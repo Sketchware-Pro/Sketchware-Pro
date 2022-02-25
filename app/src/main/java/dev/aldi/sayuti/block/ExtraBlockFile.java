@@ -24,8 +24,11 @@ public class ExtraBlockFile {
             ".sketchware/resources/block/Menu Block/block.json");
 
     public static ArrayList<HashMap<String, Object>> getExtraBlockData() {
-        ArrayList<HashMap<String, Object>> blocks = new Gson().fromJson(getExtraBlockFile(), Helper.TYPE_MAP_LIST);
+        ArrayList<HashMap<String, Object>> blocks = new ArrayList<>();
         BlocksHandler.builtInBlocks(blocks);
+
+        ArrayList<HashMap<String, Object>> customBlocks = new Gson().fromJson(getExtraBlockFile(), Helper.TYPE_MAP_LIST);
+        blocks.addAll(customBlocks);
 
         return blocks;
     }
