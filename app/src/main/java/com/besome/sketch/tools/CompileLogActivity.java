@@ -1,5 +1,6 @@
 package com.besome.sketch.tools;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 import com.besome.sketch.lib.base.BaseActivity;
 import com.sketchware.remod.Resources;
 
+import mod.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
+import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 
 public class CompileLogActivity extends BaseActivity {
 
@@ -26,6 +29,7 @@ public class CompileLogActivity extends BaseActivity {
     private HorizontalScrollView err_hScroll;
     private ScrollView err_vScroll;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,7 @@ public class CompileLogActivity extends BaseActivity {
 
         back.setOnClickListener(v -> onBackPressed());
         Helper.applyRippleToToolbarView(back);
+        CompileErrorSaver compileError = new CompileErrorSaver(getIntent().getStringExtra("sc_id"));
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
             title.setText("Last compile log");
@@ -55,11 +60,16 @@ public class CompileLogActivity extends BaseActivity {
         final String wrapTextLabel = "Wrap text";
         final String monospacedFontLabel = "Monospaced font";
         final String fontSizeLabel = "Font size";
+        final String clearCompileLogsLabel = "Clear Logs";
 
         PopupMenu options = new PopupMenu(getApplicationContext(), menu);
         options.getMenu().add(wrapTextLabel).setCheckable(true);
         options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(true);
         options.getMenu().add(fontSizeLabel);
+
+        if (compileError.logFileExists()) {
+            options.getMenu().add(clearCompileLogsLabel);
+        }
 
         options.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getTitle().toString()) {
@@ -75,6 +85,15 @@ public class CompileLogActivity extends BaseActivity {
 
                 case fontSizeLabel:
                     changeFontSizeDialog();
+                    break;
+
+                case clearCompileLogsLabel:
+                    if (compileError.logFileExists()) {
+                        compileError.deleteSavedLogs();
+                        SketchwareUtil.toast("Compile logs has been cleared.");
+                    } else {
+                        SketchwareUtil.toast("No compile logs found.");
+                    }
                     break;
 
                 default:
