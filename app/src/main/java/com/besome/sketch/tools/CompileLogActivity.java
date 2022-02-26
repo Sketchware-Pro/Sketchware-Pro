@@ -1,5 +1,7 @@
 package com.besome.sketch.tools;
 
+import static mod.SketchwareUtil.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
@@ -53,6 +55,34 @@ public class CompileLogActivity extends BaseActivity {
             title.setText("Compile log");
         }
 
+        if (compileError.logFileExists()) {
+            ImageView delete = new ImageView(this);
+            delete.setLayoutParams(new LinearLayout.LayoutParams(
+                    dpToPx(40),
+                    dpToPx(40)));
+            delete.setPadding(
+                    dpToPx(9),
+                    dpToPx(9),
+                    dpToPx(9),
+                    dpToPx(9)
+            );
+            delete.setImageResource(Resources.drawable.ic_delete_white_24dp);
+            delete.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            ((ViewGroup) menu.getParent()).addView(delete, ((ViewGroup) menu.getParent()).indexOfChild(menu));
+            Helper.applyRippleToToolbarView(delete);
+            delete.setOnClickListener(v -> {
+                if (compileError.logFileExists()) {
+                    compileError.deleteSavedLogs();
+                    getIntent().removeExtra("error");
+                    SketchwareUtil.toast("Compile logs have been cleared.");
+                } else {
+                    SketchwareUtil.toast("No compile logs found.");
+                }
+
+                setErrorText();
+            });
+        }
+
         menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
         menu.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(menu);
@@ -60,16 +90,11 @@ public class CompileLogActivity extends BaseActivity {
         final String wrapTextLabel = "Wrap text";
         final String monospacedFontLabel = "Monospaced font";
         final String fontSizeLabel = "Font size";
-        final String clearCompileLogsLabel = "Clear Logs";
 
         PopupMenu options = new PopupMenu(getApplicationContext(), menu);
         options.getMenu().add(wrapTextLabel).setCheckable(true);
         options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(true);
         options.getMenu().add(fontSizeLabel);
-
-        if (compileError.logFileExists()) {
-            options.getMenu().add(clearCompileLogsLabel);
-        }
 
         options.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getTitle().toString()) {
@@ -87,15 +112,6 @@ public class CompileLogActivity extends BaseActivity {
                     changeFontSizeDialog();
                     break;
 
-                case clearCompileLogsLabel:
-                    if (compileError.logFileExists()) {
-                        compileError.deleteSavedLogs();
-                        SketchwareUtil.toast("Compile logs has been cleared.");
-                    } else {
-                        SketchwareUtil.toast("No compile logs found.");
-                    }
-                    break;
-
                 default:
                     return false;
             }
@@ -105,6 +121,10 @@ public class CompileLogActivity extends BaseActivity {
 
         menu.setOnClickListener(v -> options.show());
 
+        setErrorText();
+    }
+
+    private void setErrorText() {
         String error = getIntent().getStringExtra("error");
         if (error == null) {
             finish();
