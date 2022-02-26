@@ -179,13 +179,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     /**
-     * Shows a Snackbar indicating that a problem occurred while compiling. Clicking the action button won't open a new activity.
+     * Shows a Snackbar indicating that a problem occurred while compiling. Clicking the action button was supposed to open a new activity containing the problem.
      *
      * @param errorId The ID of the error message. Can be 900, 901, 1001, 1002, 1003, or any other value (the others don't get a specific error text).
      */
     public final void c(String errorId) {
         Snackbar snackbar = Snackbar.a(this.n, nq.a(getApplicationContext(), errorId), -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_show), v -> {
+        snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
             if (!mB.a()) {
                 snackbar.c();
             }
@@ -201,13 +201,14 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
     public final void d(String error) {
-        new CompileErrorSaver(q.b).setErrorText(error);
+        new CompileErrorSaver(q.b).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.a(this.n, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_show), v -> {
             if (!mB.a()) {
                 snackbar.c();
                 Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
                 intent.putExtra("error", error);
+                intent.putExtra("sc_id", l);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
