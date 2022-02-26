@@ -610,7 +610,7 @@ public class Lx {
                     if ("FirebaseCloudMessage".equals(typeName)) {
                         fieldDeclaration = "";
                     } else if ("FragmentStatePagerAdapter".equals(typeName)) {
-                        fieldDeclaration += " " + a(typeName + "Fragment") + " " + typeName + ";";
+                        fieldDeclaration += " " + a(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
                     } else {
                         fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
                     }
