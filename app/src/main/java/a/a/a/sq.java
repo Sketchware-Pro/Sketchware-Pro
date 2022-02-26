@@ -6,7 +6,9 @@ import android.view.Gravity;
 
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.beans.ImageBean;
+import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.TextBean;
+import com.besome.sketch.beans.ViewBean;
 
 public class sq {
 
@@ -51,19 +53,19 @@ public class sq {
     public static ColorBean[] z;
 
     static {
-        a = new Pair[]{new Pair(-1, "match_parent"), new Pair(-2, "wrap_content")};
-        b = new Pair[]{new Pair(-1, "none"), new Pair(0, "horizontal"), new Pair(1, "vertical")};
-        c = new Pair[]{new Pair(48, "top"), new Pair(80, "bottom"), new Pair(16, "center_vertical"), new Pair(3, "left"), new Pair(5, "right"), new Pair(1, "center_horizontal")};
+        a = new Pair[]{new Pair(LayoutBean.LAYOUT_MATCH_PARENT, "match_parent"), new Pair(LayoutBean.LAYOUT_WRAP_CONTENT, "wrap_content")};
+        b = new Pair[]{new Pair(LayoutBean.ORIENTATION_NONE, "none"), new Pair(LayoutBean.ORIENTATION_HORIZONTAL, "horizontal"), new Pair(LayoutBean.ORIENTATION_VERTICAL, "vertical")};
+        c = new Pair[]{new Pair(LayoutBean.GRAVITY_TOP, "top"), new Pair(LayoutBean.GRAVITY_BOTTOM, "bottom"), new Pair(LayoutBean.GRAVITY_CENTER_VERTICAL, "center_vertical"), new Pair(LayoutBean.GRAVITY_LEFT, "left"), new Pair(LayoutBean.GRAVITY_RIGHT, "right"), new Pair(LayoutBean.GRAVITY_CENTER_HORIZONTAL, "center_horizontal")};
         d = new Pair[]{new Pair(TextBean.TEXT_TYPE_NORMAL, "normal"), new Pair(TextBean.TEXT_TYPE_BOLD, "bold"), new Pair(TextBean.TEXT_TYPE_ITALIC, "italic"), new Pair(TextBean.TEXT_TYPE_BOLDITALIC, "bold|italic")};
         e = new Pair[]{new Pair(TextBean.IME_OPTION_NORMAL, "normal"), new Pair(TextBean.IME_OPTION_NONE, "none"), new Pair(TextBean.IME_OPTION_GO, "go"), new Pair(TextBean.IME_OPTION_SEARCH, "search"), new Pair(TextBean.IME_OPTION_SEND, "send"), new Pair(TextBean.IME_OPTION_NEXT, "next"), new Pair(TextBean.IME_OPTION_DONE, "done")};
-        f = new Pair[]{new Pair(0, "dialog"), new Pair(1, "dropdown")};
-        g = new Pair[]{new Pair(0, "none"), new Pair(1, "single"), new Pair(2, "multi")};
+        f = new Pair[]{new Pair(ViewBean.SPINNER_MODE_DIALOG, "dialog"), new Pair(ViewBean.SPINNER_MODE_DROPDOWN, "dropdown")};
+        g = new Pair[]{new Pair(ViewBean.CHOICE_MODE_NONE, "none"), new Pair(ViewBean.CHOICE_MODE_SINGLE, "single"), new Pair(ViewBean.CHOICE_MODE_MULTI, "multi")};
         h = new Pair[]{new Pair(1, "Sunday"), new Pair(2, "Monday"), new Pair(3, "Tuesday"), new Pair(4, "Wednesday"), new Pair(5, "Thursday"), new Pair(6, "Friday"), new Pair(7, "Saturday")};
         i = new Pair[]{new Pair(TextBean.INPUT_TYPE_TEXT, "text"), new Pair(TextBean.INPUT_TYPE_NUMBER_SIGNED, "numberSigned"), new Pair(TextBean.INPUT_TYPE_NUMBER_DECIMAL, "numberDecimal"), new Pair(TextBean.INPUT_TYPE_NUMBER_SIGNED_DECIMAL, "numberSigned|numberDecimal"), new Pair(TextBean.INPUT_TYPE_PHONE, "phone"), new Pair(TextBean.INPUT_TYPE_PASSWORD, "textPassword")};
         j = new String[]{ImageBean.SCALE_TYPE_FIT_XY, ImageBean.SCALE_TYPE_FIT_START, ImageBean.SCALE_TYPE_FIT_CENTER, ImageBean.SCALE_TYPE_FIT_END, ImageBean.SCALE_TYPE_CENTER, ImageBean.SCALE_TYPE_CENTER_CROP, ImageBean.SCALE_TYPE_CENTER_INSIDE};
         k = new String[]{"BANNER", "MEDIUM_RECTANGLE", "LARGE_BANNER", "SMART_BANNER"};
         l = new String[]{"true", "false"};
-        m = new Pair[]{new Pair("?android:progressBarStyle", "Circle"), new Pair("?android:progressBarStyleHorizontal", "Horizontal")};
+        m = new Pair[]{new Pair(ViewBean.PROGRESSBAR_STYLE_CIRCLE, "Circle"), new Pair(ViewBean.PROGRESSBAR_STYLE_HORIZONTAL, "Horizontal")};
         n = new Pair[]{new Pair(10, "10sp"), new Pair(11, "11sp"), new Pair(12, "12sp"), new Pair(13, "13sp"), new Pair(14, "14sp"), new Pair(15, "15sp"), new Pair(16, "16sp"), new Pair(17, "17sp"), new Pair(18, "18sp")};
         o = new Pair[]{new Pair(10, "10sp"), new Pair(11, "11sp"), new Pair(12, "12sp"), new Pair(14, "14sp"), new Pair(16, "16sp"), new Pair(18, "18sp"), new Pair(20, "20sp"), new Pair(25, "25sp"), new Pair(30, "30sp"), new Pair(40, "40sp"), new Pair(50, "50sp"), new Pair(60, "60sp"), new Pair(70, "70sp"), new Pair(80, "80sp"), new Pair(90, "90sp"), new Pair(100, "100sp")};
         p = new ColorBean[]{new ColorBean("#F44336", "RED", "#ffffff", 2131165414), new ColorBean("#FFEBEE", "RED", "#212121", 2131165412), new ColorBean("#FFCDD2", "RED", "#212121", 2131165412), new ColorBean("#EF9A9A", "RED", "#212121", 2131165412), new ColorBean("#E57373", "RED", "#ffffff", 2131165414), new ColorBean("#EF5350", "RED", "#ffffff", 2131165414), new ColorBean("#F44336", "RED", "#ffffff", 2131165414), new ColorBean("#E53935", "RED", "#ffffff", 2131165414), new ColorBean("#D32F2F", "RED", "#ffffff", 2131165414), new ColorBean("#C62828", "RED", "#ffffff", 2131165414), new ColorBean("#B71C1C", "RED", "#ffffff", 2131165414), new ColorBean("#FF8A80", "RED", "#212121", 2131165412), new ColorBean("#FF5252", "RED", "#ffffff", 2131165414), new ColorBean("#FF1744", "RED", "#ffffff", 2131165414), new ColorBean("#D50000", "RED", "#ffffff", 2131165414)};
