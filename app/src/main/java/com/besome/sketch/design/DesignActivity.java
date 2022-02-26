@@ -67,7 +67,6 @@ import a.a.a.jr;
 import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
-import a.a.a.nq;
 import a.a.a.oB;
 import a.a.a.rs;
 import a.a.a.to;
@@ -176,23 +175,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         } else {
             m.k();
         }
-    }
-
-    /**
-     * Shows a Snackbar indicating that a problem occurred while compiling. Clicking the action button was supposed to open a new activity containing the problem.
-     *
-     * @param errorId The ID of the error message. Can be 900, 901, 1001, 1002, 1003, or any other value (the others don't get a specific error text).
-     */
-    public final void c(String errorId) {
-        Snackbar snackbar = Snackbar.a(this.n, nq.a(getApplicationContext(), errorId), -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
-            if (!mB.a()) {
-                snackbar.c();
-            }
-        });
-        /* Set the text color to yellow */
-        snackbar.f(Color.YELLOW);
-        snackbar.n();
     }
 
     /**
