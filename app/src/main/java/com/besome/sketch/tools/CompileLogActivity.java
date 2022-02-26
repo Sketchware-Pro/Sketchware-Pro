@@ -4,6 +4,8 @@ import static mod.SketchwareUtil.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,11 +33,18 @@ public class CompileLogActivity extends BaseActivity {
     private HorizontalScrollView err_hScroll;
     private ScrollView err_vScroll;
 
+    private SharedPreferences logViewerPreferences;
+    private static final String PREFERENCE_WRAPPED_TEXT = "wrapped_text";
+    private static final String PREFERENCE_USE_MONOSPACED_FONT = "use_monospaced_font";
+    private static final String PREFERENCE_FONT_SIZE = "font_size";
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.compile_log);
+
+        logViewerPreferences = getPreferences(Context.MODE_PRIVATE);
 
         View rootLayout = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
         ImageView back = findViewById(Resources.id.ig_toolbar_back);
@@ -93,8 +102,8 @@ public class CompileLogActivity extends BaseActivity {
         final String fontSizeLabel = "Font size";
 
         PopupMenu options = new PopupMenu(this, menu);
-        options.getMenu().add(wrapTextLabel).setCheckable(true);
-        options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(true);
+        options.getMenu().add(wrapTextLabel).setCheckable(true).setChecked(getWrappedTextPreference());
+        options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(getMonospacedFontPreference());
         options.getMenu().add(fontSizeLabel);
 
         options.setOnMenuItemClickListener(menuItem -> {
@@ -122,6 +131,8 @@ public class CompileLogActivity extends BaseActivity {
 
         menu.setOnClickListener(v -> options.show());
 
+        applyLogViewerPreferences();
+
         setErrorText();
     }
 
@@ -135,14 +146,33 @@ public class CompileLogActivity extends BaseActivity {
         }
     }
 
+    private void applyLogViewerPreferences() {
+        toggleWrapText(getWrappedTextPreference());
+        toggleMonospacedText(getMonospacedFontPreference());
+        tv_compile_log.setTextSize(getFontSizePreference());
+    }
+
+    private boolean getWrappedTextPreference() {
+        return logViewerPreferences.getBoolean(PREFERENCE_WRAPPED_TEXT, false);
+    }
+
+    private boolean getMonospacedFontPreference() {
+        return logViewerPreferences.getBoolean(PREFERENCE_USE_MONOSPACED_FONT, true);
+    }
+
+    private int getFontSizePreference() {
+        return logViewerPreferences.getInt(PREFERENCE_FONT_SIZE, 11);
+    }
+
     private void toggleWrapText(boolean isChecked) {
+        logViewerPreferences.edit().putBoolean(PREFERENCE_WRAPPED_TEXT, isChecked).apply();
+
         if (isChecked) {
             err_vScroll.removeAllViews();
             if (tv_compile_log.getParent() != null) {
                 ((ViewGroup) tv_compile_log.getParent()).removeView(tv_compile_log);
             }
             err_vScroll.addView(tv_compile_log);
-
         } else {
             err_vScroll.removeAllViews();
             if (tv_compile_log.getParent() != null) {
@@ -155,6 +185,8 @@ public class CompileLogActivity extends BaseActivity {
     }
 
     private void toggleMonospacedText(boolean isChecked) {
+        logViewerPreferences.edit().putBoolean(PREFERENCE_USE_MONOSPACED_FONT, isChecked).apply();
+
         if (isChecked) {
             tv_compile_log.setTypeface(Typeface.MONOSPACE);
         } else {
@@ -167,7 +199,7 @@ public class CompileLogActivity extends BaseActivity {
         picker.setMinValue(10); //Must not be less than setValue(), which is currently 11 in compile_log.xml
         picker.setMaxValue(70);
         picker.setWrapSelectorWheel(false);
-        picker.setValue((int) (tv_compile_log.getTextSize() / getResources().getDisplayMetrics().scaledDensity));
+        picker.setValue(getFontSizePreference());
 
         LinearLayout layout = new LinearLayout(this);
         layout.addView(picker, new LinearLayout.LayoutParams(
@@ -178,8 +210,11 @@ public class CompileLogActivity extends BaseActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Select font size")
                 .setView(layout)
-                .setPositiveButton(android.R.string.ok, (dialog, which) ->
-                        tv_compile_log.setTextSize((float) picker.getValue()))
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    logViewerPreferences.edit().putInt(PREFERENCE_FONT_SIZE, picker.getValue()).apply();
+
+                    tv_compile_log.setTextSize((float) picker.getValue());
+                })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
