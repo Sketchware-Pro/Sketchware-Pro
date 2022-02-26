@@ -451,42 +451,42 @@ public class ExtraMenuBean {
                 break;
 
             case "fragmentAdapter":
-                title = "Select FragmentAdapter Component";
+                title = "Select a FragmentAdapter Component";
                 menus = getComponentMenus(27);
                 break;
 
             case "phoneauth":
-                title = "Select FirebasePhone Component";
+                title = "Select a FirebasePhone Component";
                 menus = getComponentMenus(28);
                 break;
 
             case "dynamiclink":
-                title = "Select DynamicLink Component";
+                title = "Select a DynamicLink Component";
                 menus = getComponentMenus(29);
                 break;
 
             case "cloudmessage":
-                title = "Select CloudMessage Component";
+                title = "Select a CloudMessage Component";
                 menus = getComponentMenus(30);
                 break;
 
             case "googlelogin":
-                title = "Select FirebaseGoogle Component";
+                title = "Select a FirebaseGoogle Component";
                 menus = getComponentMenus(31);
                 break;
 
             case "onesignal":
-                title = "Select OneSignal Component";
+                title = "Select a OneSignal Component";
                 menus = getComponentMenus(32);
                 break;
 
             case "fbadbanner":
-                title = "Select FBAdsBanner Component ";
+                title = "Select an FBAdsBanner Component";
                 menus = getComponentMenus(33);
                 break;
 
             case "fbadinterstitial":
-                title = "Select FBAdsInterstitial Component";
+                title = "Select an FBAdsInterstitial Component";
                 menus = getComponentMenus(34);
                 break;
 
@@ -508,7 +508,7 @@ public class ExtraMenuBean {
              * Using {@link mod.agus.jcoderz.beans.ServiceBean}'s logic directly
              */
             case "service":
-                title = "Select Background Service";
+                title = "Select a Background Service";
                 if (FileUtil.isExistFile(fpu.getManifestService(sc_id))) {
                     menus = frc.getServiceManifestList();
                 }
@@ -517,7 +517,7 @@ public class ExtraMenuBean {
              * Using {@link mod.agus.jcoderz.beans.BroadcastBean}'s logic directly
              */
             case "broadcast":
-                title = "Select Broadcast Receiver";
+                title = "Select a Broadcast Receiver";
                 if (FileUtil.isExistFile(fpu.getManifestBroadcast(sc_id))) {
                     menus = frc.getBroadcastManifestList();
                 }
@@ -558,7 +558,7 @@ public class ExtraMenuBean {
                 break;
 
             case "customViews":
-                title = "Select a custom view";
+                title = "Select a Custom View";
                 for (ProjectFileBean projectFileBean : jC.b(sc_id).c()) {
                     menus.add(projectFileBean.fileName);
                 }
