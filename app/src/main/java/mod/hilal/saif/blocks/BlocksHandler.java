@@ -1292,7 +1292,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "bottomMenuAddItem");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.getMenu().add(%s, %s).setIcon(R.drawable.%s);");
+        hashMap.put("code", "%s.getMenu().add(0, %s, 0, %s).setIcon(R.drawable.%s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.bottomnavigation add item id %d title %s icon %m.resource");
