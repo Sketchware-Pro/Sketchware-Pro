@@ -730,10 +730,12 @@ public class mq {
             case "onUploadSuccessListener":
             case "onDownloadSuccessListener":
             case "onDeleteSuccessListener":
+            case "OnSuccessListener":
                 importList.add("com.google.android.gms.tasks.OnSuccessListener");
                 return importList;
 
             case "onFailureListener":
+            case "OnFailureListener":
                 importList.add("com.google.android.gms.tasks.OnFailureListener");
                 return importList;
 
@@ -764,16 +766,8 @@ public class mq {
                 importList.add("androidx.fragment.app.FragmentStatePagerAdapter");
                 return importList;
 
-            case "OnFailureListener":
-                importList.add("com.google.android.gms.tasks.OnFailureListener");
-                return importList;
-
             case "OTPListener":
                 importList.add("affan.ahmad.otp.OTPListener");
-                return importList;
-
-            case "OnSuccessListener":
-                importList.add("com.google.android.gms.tasks.OnSuccessListener");
                 return importList;
 
             case "OnCompleteListenerFCM":

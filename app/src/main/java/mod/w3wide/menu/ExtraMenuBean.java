@@ -504,18 +504,12 @@ public class ExtraMenuBean {
                 title = Helper.getResString(Resources.string.logic_editor_title_mapview_marker_color);
                 menus = new ArrayList<>(Arrays.asList(uq.r));
                 break;
-            /**
-             * Using {@link mod.agus.jcoderz.beans.ServiceBean}'s logic directly
-             */
             case "service":
                 title = "Select a Background Service";
                 if (FileUtil.isExistFile(fpu.getManifestService(sc_id))) {
                     menus = frc.getServiceManifestList();
                 }
                 break;
-            /**
-             * Using {@link mod.agus.jcoderz.beans.BroadcastBean}'s logic directly
-             */
             case "broadcast":
                 title = "Select a Broadcast Receiver";
                 if (FileUtil.isExistFile(fpu.getManifestBroadcast(sc_id))) {
