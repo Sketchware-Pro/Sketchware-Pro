@@ -145,6 +145,7 @@ public class Resources {
         public static final int ic_bookmark_red_48dp = 0x7f070204;
         public static final int ic_class_48 = 0x7f070215;
         public static final int ic_delete_grey_48dp = 0x7f070220;
+        public static final int ic_delete_white_24dp = 0x7f070223;
         public static final int ic_detail_setting_48dp = 0x7f070225;
         public static final int ic_expire_48dp = 0x7f070234;
         public static final int ic_export_grey_48dp = 0x7f070235;
