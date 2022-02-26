@@ -92,7 +92,7 @@ public class CompileLogActivity extends BaseActivity {
         final String monospacedFontLabel = "Monospaced font";
         final String fontSizeLabel = "Font size";
 
-        PopupMenu options = new PopupMenu(getApplicationContext(), menu);
+        PopupMenu options = new PopupMenu(this, menu);
         options.getMenu().add(wrapTextLabel).setCheckable(true);
         options.getMenu().add(monospacedFontLabel).setCheckable(true).setChecked(true);
         options.getMenu().add(fontSizeLabel);
