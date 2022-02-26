@@ -45,15 +45,16 @@ public class CompileLogActivity extends BaseActivity {
         err_hScroll = rootLayout.findViewWithTag("err_hScroll");
         err_vScroll = rootLayout.findViewWithTag("err_vScroll");
 
-        back.setOnClickListener(v -> onBackPressed());
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back);
-        CompileErrorSaver compileError = new CompileErrorSaver(getIntent().getStringExtra("sc_id"));
 
         if (getIntent().getBooleanExtra("showingLastError", false)) {
             title.setText("Last compile log");
         } else {
             title.setText("Compile log");
         }
+
+        CompileErrorSaver compileError = new CompileErrorSaver(getIntent().getStringExtra("sc_id"));
 
         if (compileError.logFileExists()) {
             ImageView delete = new ImageView(this);
