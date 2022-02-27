@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
-import com.android.sdklib.internal.avd.AvdManager;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.Resources;
@@ -33,6 +31,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.GB;
 import a.a.a.HB;
@@ -59,33 +58,30 @@ import mod.w3wide.control.VersionDialog;
 
 public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    private final String[] t = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
-    private final String[] u = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
-    private EditText A;
-    private EditText B;
-    private EditText C;
-    private LinearLayout D;
-    private ImageView F;
-    private LinearLayout G;
-    private ImageView H;
-    public TextView I;
-    public TextView J;
-    private UB K;
-    private VB L;
-    private LB M;
-    private boolean N = false;
-    private boolean O = false;
-    private int Q = 1;
-    private int S;
-    private int T;
-    private int U;
-    private int V;
-    private boolean W;
-    private final int[] v = new int[t.length];
-    /**
-     * The sc_id of the currently editing project
-     */
-    private String w;
+    private static final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
+    private static final int REQUEST_CODE_PICK_ICON = 207;
+    private final String[] themeColorKeys = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
+    private final String[] themeColorLabels = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
+    private EditText projectAppName;
+    private EditText projectPackageName;
+    private EditText projectName;
+    private LinearLayout themeColorsContainer;
+    private ImageView colorGuide;
+    private LinearLayout advancedSettingsContainer;
+    private ImageView appIcon;
+    public TextView projectVersionCodeView;
+    public TextView projectVersionNameView;
+    private UB projectPackageNameValidator;
+    private VB projectNameValidator;
+    private LB projectAppNameValidator;
+    private boolean projectHasCustomIcon = false;
+    private boolean updatingExistingProject = false;
+    private int projectVersionCode = 1;
+    private int projectVersionNameFirstPart;
+    private int projectVersionNameSecondPart;
+    private boolean shownPackageNameChangeWarning;
+    private final int[] projectThemeColors = new int[themeColorKeys.length];
+    private String sc_id;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,28 +92,28 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             return;
         }
         Uri uri = data.getData();
-        if (requestCode == 207) {
-            if (resultCode == -1 && uri != null) {
+        if (requestCode == REQUEST_CODE_PICK_ICON) {
+            if (resultCode == RESULT_OK && uri != null) {
                 String filename = HB.a(getApplicationContext(), uri);
                 Bitmap bitmap = iB.a(filename, 96, 96);
                 try {
                     int attributeInt = new ExifInterface(filename).getAttributeInt("Orientation", -1);
                     Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
-                    H.setImageBitmap(newBitmap);
-                    a(newBitmap, p());
-                    N = true;
+                    appIcon.setImageBitmap(newBitmap);
+                    saveBitmapTo(newBitmap, getCustomIconPath());
+                    projectHasCustomIcon = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         } else {
             Bundle extras = data.getExtras();
-            if (requestCode == 216 && resultCode == -1 && extras != null) {
+            if (requestCode == REQUEST_CODE_PICK_CROPPED_ICON && resultCode == RESULT_OK && extras != null) {
                 try {
-                    Bitmap bitmap = extras.getParcelable(AvdManager.DATA_FOLDER);
-                    H.setImageBitmap(bitmap);
-                    N = true;
-                    a(bitmap, p());
+                    Bitmap bitmap = extras.getParcelable("data");
+                    appIcon.setImageBitmap(bitmap);
+                    projectHasCustomIcon = true;
+                    saveBitmapTo(bitmap, getCustomIconPath());
                 } catch (Exception ignored) {
                 }
             }
@@ -132,7 +128,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 return;
 
             case Resources.id.app_icon_layout:
-                t();
+                showCustomIconOptions();
                 return;
 
             case Resources.id.common_dialog_cancel_button:
@@ -141,8 +137,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
             case Resources.id.common_dialog_ok_button:
                 mB.a(v);
-                if (q()) {
-                    new b(getApplicationContext()).execute();
+                if (isInputValid()) {
+                    new SaveProjectAsyncTask(getApplicationContext()).execute();
                     return;
                 }
                 return;
@@ -152,10 +148,10 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 return;
 
             case Resources.id.img_theme_color_help:
-                if (F.getVisibility() == View.VISIBLE) {
-                    F.setVisibility(View.GONE);
+                if (colorGuide.getVisibility() == View.VISIBLE) {
+                    colorGuide.setVisibility(View.GONE);
                 } else {
-                    F.setVisibility(View.VISIBLE);
+                    colorGuide.setVisibility(View.VISIBLE);
                 }
                 return;
 
@@ -164,104 +160,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
                     new VersionDialog(this).show();
                 } else {
-                    v();
+                    showOldVersionControlDialog();
                 }
         }
-    }
-
-    /**
-     * Shows a Project Version Control dialog, made by Hosni Fraj. Currently unused.
-     */
-    public final void showNewVersionControl() {
-        final aB dialog = new aB(this);
-
-        dialog.a(Resources.drawable.numbers_48);
-        dialog.b("Version Control");
-        final LinearLayout base_layout = new LinearLayout(this);
-        base_layout.setOrientation(LinearLayout.VERTICAL);
-
-        final LinearLayout version_name_container = new LinearLayout(this);
-        version_name_container.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        final TextInputLayout til_version_name = new TextInputLayout(this);
-        final EditText version_name_picker = new EditText(this);
-        version_name_picker.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        til_version_name.addView(version_name_picker);
-        til_version_name.setHint("Version Name");
-        til_version_name.setLayoutParams(new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f));
-        version_name_container.addView(til_version_name);
-
-        final TextInputLayout til_version_name_postfix = new TextInputLayout(this);
-        final EditText version_name_postfix_picker = new EditText(this);
-        version_name_postfix_picker.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        til_version_name_postfix.addView(version_name_postfix_picker);
-        til_version_name_postfix.setHint("Version Name Postfix");
-        til_version_name_postfix.setLayoutParams(new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f));
-        version_name_container.addView(til_version_name_postfix);
-
-        final TextInputLayout til_version_code = new TextInputLayout(this);
-        final EditText version_code_picker = new EditText(this);
-        version_code_picker.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        til_version_code.addView(version_code_picker);
-        til_version_code.setHint("Version Code");
-
-        int sc_ver_code = Integer.parseInt(I.getText().toString());
-        int sc_ver_code5 = sc_ver_code - 5;
-        int min_value1 = 1;
-        if (sc_ver_code5 <= 0) {
-            // when the v code is less than 1 so he will return t to one like
-            // Current v: 6 min v will be 1 so he will return it to 1 but  when the current v 11 thein v will be 11 - 5
-            sc_ver_code5 = 1;
-        }
-
-        version_code_picker.setText(String.valueOf(sc_ver_code));
-
-        String[] sc_ver_name = J.getText().toString().split("\\.");
-        U = a(sc_ver_name[0], min_value1);
-        V = a(sc_ver_name[min_value1], 0);
-        if (U - 5 > 0) {
-            min_value1 = U - 5;
-        }
-
-        version_name_picker.setText(String.valueOf(U));
-        int version_name = V;
-        int min_value = 0;
-        if ((version_name - 20) > 0) {
-            min_value = version_name - 20;
-        }
-
-        version_name_postfix_picker.setText(String.valueOf(V));
-        base_layout.addView(version_name_container);
-        base_layout.addView(til_version_code);
-
-        dialog.a(base_layout);
-        dialog.b(xB.b().a(this, Resources.string.common_word_save), v -> {
-            if (!mB.a()) {
-                I.setText(version_code_picker.getText().toString());
-                J.setText(version_name_picker.getText().toString()
-                        + "."
-                        + version_name_postfix_picker.getText().toString());
-                dialog.dismiss();
-            }
-        });
-
-        dialog.a(xB.b().a(this, Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
-        dialog.show();
     }
 
     @Override
@@ -271,18 +172,19 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         if (!j()) {
             finish();
         }
-        w = getIntent().getStringExtra("sc_id");
-        O = getIntent().getBooleanExtra("is_update", false);
+        sc_id = getIntent().getStringExtra("sc_id");
+        updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
         boolean expandAdvancedOptions = getIntent().getBooleanExtra("advanced_open", false);
+
         ((TextView) findViewById(Resources.id.tv_change_icon))
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_description_change_icon));
         findViewById(Resources.id.contents).setOnClickListener(this);
         findViewById(Resources.id.app_icon_layout).setOnClickListener(this);
         findViewById(Resources.id.advanced_setting).setOnClickListener(this);
-        I = findViewById(Resources.id.ver_code);
-        I.setOnClickListener(this);
-        J = findViewById(Resources.id.ver_name);
-        J.setOnClickListener(this);
+        projectVersionCodeView = findViewById(Resources.id.ver_code);
+        projectVersionCodeView.setOnClickListener(this);
+        projectVersionNameView = findViewById(Resources.id.ver_name);
+        projectVersionNameView.setOnClickListener(this);
         TextInputLayout appName = findViewById(Resources.id.ti_app_name);
         TextInputLayout packageName = findViewById(Resources.id.ti_package_name);
         TextInputLayout projectName = findViewById(Resources.id.ti_project_name);
@@ -292,110 +194,119 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 Resources.string.myprojects_settings_hint_enter_package_name));
         projectName.setHint(xB.b().a(this,
                 Resources.string.myprojects_settings_hint_enter_project_name));
-        A = findViewById(Resources.id.et_app_name);
-        B = findViewById(Resources.id.et_package_name);
-        C = findViewById(Resources.id.et_project_name);
+        projectAppName = findViewById(Resources.id.et_app_name);
+        projectPackageName = findViewById(Resources.id.et_package_name);
+        this.projectName = findViewById(Resources.id.et_project_name);
         ((TextView) findViewById(Resources.id.tv_advanced_settings))
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_title_advanced_settings));
-        H = findViewById(Resources.id.app_icon);
-        M = new LB(getApplicationContext(), appName);
-        K = new UB(getApplicationContext(), packageName);
-        L = new VB(getApplicationContext(), projectName);
-        B.setPrivateImeOptions("defaultInputmode=english;");
-        C.setPrivateImeOptions("defaultInputmode=english;");
-        B.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!W && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
-                u();
+        appIcon = findViewById(Resources.id.app_icon);
+
+        projectAppNameValidator = new LB(getApplicationContext(), appName);
+        projectPackageNameValidator = new UB(getApplicationContext(), packageName);
+        projectNameValidator = new VB(getApplicationContext(), projectName);
+        projectPackageName.setPrivateImeOptions("defaultInputmode=english;");
+        this.projectName.setPrivateImeOptions("defaultInputmode=english;");
+        projectPackageName.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
+                    showPackageNameChangeWarning();
+                }
             }
         });
-        D = findViewById(Resources.id.layout_theme_colors);
-        ImageView themeColorHelp = findViewById(Resources.id.img_theme_color_help);
-        themeColorHelp.setOnClickListener(this);
-        F = findViewById(Resources.id.img_color_guide);
-        G = findViewById(Resources.id.advanced_setting_layout);
+        themeColorsContainer = findViewById(Resources.id.layout_theme_colors);
+        findViewById(Resources.id.img_theme_color_help).setOnClickListener(this);
+        colorGuide = findViewById(Resources.id.img_color_guide);
+        advancedSettingsContainer = findViewById(Resources.id.advanced_setting_layout);
+        /* Save & Cancel buttons */
         r.setOnClickListener(this);
         s.setOnClickListener(this);
-        v[0] = getResources().getColor(Resources.color.color_accent);
-        v[1] = getResources().getColor(Resources.color.color_primary);
-        v[2] = getResources().getColor(Resources.color.color_primary_dark);
-        v[3] = getResources().getColor(Resources.color.color_control_highlight);
-        v[4] = getResources().getColor(Resources.color.color_control_normal);
-        for (int i = 0; i < t.length; i++) {
+
+        projectThemeColors[0] = getResources().getColor(Resources.color.color_accent);
+        projectThemeColors[1] = getResources().getColor(Resources.color.color_primary);
+        projectThemeColors[2] = getResources().getColor(Resources.color.color_primary_dark);
+        projectThemeColors[3] = getResources().getColor(Resources.color.color_control_highlight);
+        projectThemeColors[4] = getResources().getColor(Resources.color.color_control_normal);
+        for (int i = 0; i < themeColorKeys.length; i++) {
             a aVar = new a(getApplicationContext(), i);
-            aVar.name.setText(u[i]);
+            aVar.name.setText(themeColorLabels[i]);
             aVar.color.setBackgroundColor(Color.WHITE);
-            D.addView(aVar);
+            themeColorsContainer.addView(aVar);
             aVar.setOnClickListener(v -> {
                 if (!mB.a()) {
-                    g((Integer) v.getTag());
+                    pickColor((Integer) v.getTag());
                 }
             });
         }
+        /* Set the cancel button's label */
         b(xB.b().a(this, Resources.string.common_word_cancel));
-        if (O) {
+
+        if (updatingExistingProject) {
+            /* Set the dialog's title & save button label */
             e(xB.b().a(getApplicationContext(), Resources.string.myprojects_settings_actionbar_title_project_settings));
             d(xB.b().a(this, Resources.string.myprojects_settings_button_save));
-            HashMap<String, Object> map = lC.b(w);
-            B.setText(yB.c(map, "my_sc_pkg_name"));
-            C.setText(yB.c(map, "my_ws_name"));
-            A.setText(yB.c(map, "my_app_name"));
-            Q = a(yB.c(map, "sc_ver_code"), 1);
-            f(yB.c(map, "sc_ver_name"));
-            I.setText(yB.c(map, "sc_ver_code"));
-            J.setText(yB.c(map, "sc_ver_name"));
-            N = yB.a(map, "custom_icon");
-            if (N) {
+
+            HashMap<String, Object> metadata = lC.b(sc_id);
+            projectPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
+            this.projectName.setText(yB.c(metadata, "my_ws_name"));
+            projectAppName.setText(yB.c(metadata, "my_app_name"));
+            projectVersionCode = parseInt(yB.c(metadata, "sc_ver_code"), 1);
+            parseVersion(yB.c(metadata, "sc_ver_name"));
+            projectVersionCodeView.setText(yB.c(metadata, "sc_ver_code"));
+            projectVersionNameView.setText(yB.c(metadata, "sc_ver_name"));
+            projectHasCustomIcon = yB.a(metadata, "custom_icon");
+            if (projectHasCustomIcon) {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    H.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", o()));
+                    appIcon.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
                 } else {
-                    H.setImageURI(Uri.fromFile(o()));
+                    appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
                 }
             }
-            int counter = 0;
-            while (counter < t.length) {
-                int[] iArr = v;
-                iArr[counter] = yB.a(map, t[counter], iArr[counter]);
-                counter++;
+
+            for (int i = 0; i < themeColorKeys.length; i++) {
+                projectThemeColors[i] = yB.a(metadata, themeColorKeys[i], projectThemeColors[i]);
             }
-            x();
         } else {
+            /* Set the dialog's title & create button label */
             e(xB.b().a(getApplicationContext(), Resources.string.myprojects_settings_actionbar_title_new_projet));
             d(xB.b().a(this, Resources.string.myprojects_settings_button_create_app));
-            String wsName = getIntent().getStringExtra("my_ws_name");
-            String scPkgName = getIntent().getStringExtra("my_sc_pkg_name");
-            if (w == null || w.equals("")) {
-                w = lC.b();
-                wsName = lC.c();
-                scPkgName = "com.my." + wsName.toLowerCase();
+
+            String newProjectName = getIntent().getStringExtra("my_ws_name");
+            String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
+            if (sc_id == null || sc_id.equals("")) {
+                sc_id = lC.b();
+                newProjectName = lC.c();
+                newProjectPackageName = "com.my." + newProjectName.toLowerCase();
             }
-            B.setText(scPkgName);
-            C.setText(wsName);
-            A.setText(getIntent().getStringExtra("my_app_name"));
-            String verCode = getIntent().getStringExtra("sc_ver_code");
-            String verName = getIntent().getStringExtra("sc_ver_name");
-            if (verCode == null || verCode.isEmpty()) {
-                verCode = "1";
+            projectPackageName.setText(newProjectPackageName);
+            this.projectName.setText(newProjectName);
+            projectAppName.setText(getIntent().getStringExtra("my_app_name"));
+
+            String newProjectVersionCode = getIntent().getStringExtra("sc_ver_code");
+            String newProjectVersionName = getIntent().getStringExtra("sc_ver_name");
+            if (newProjectVersionCode == null || newProjectVersionCode.isEmpty()) {
+                newProjectVersionCode = "1";
             }
-            if (verName == null || verName.isEmpty()) {
-                verName = "1.0";
+            if (newProjectVersionName == null || newProjectVersionName.isEmpty()) {
+                newProjectVersionName = "1.0";
             }
-            Q = a(verCode, 1);
-            f(verName);
-            I.setText(verCode);
-            J.setText(verName);
-            N = getIntent().getBooleanExtra("custom_icon", false);
-            if (N) {
+            projectVersionCode = parseInt(newProjectVersionCode, 1);
+            parseVersion(newProjectVersionName);
+            projectVersionCodeView.setText(newProjectVersionCode);
+            projectVersionNameView.setText(newProjectVersionName);
+            projectHasCustomIcon = getIntent().getBooleanExtra("custom_icon", false);
+            if (projectHasCustomIcon) {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    H.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", o()));
+                    appIcon.setImageURI(FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
                 } else {
-                    H.setImageURI(Uri.fromFile(o()));
+                    appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
                 }
             }
-            x();
         }
+        syncThemeColors();
+
         if (expandAdvancedOptions) {
-            G.setVisibility(View.VISIBLE);
-            B.requestFocus();
+            advancedSettingsContainer.setVisibility(View.VISIBLE);
+            projectPackageName.requestFocus();
         }
     }
 
@@ -413,11 +324,11 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         super.onStart();
 
         oB oBVar = new oB();
-        oBVar.f(wq.e() + File.separator + w);
-        oBVar.f(wq.g() + File.separator + w);
-        oBVar.f(wq.t() + File.separator + w);
-        oBVar.f(wq.d() + File.separator + w);
-        File o = o();
+        oBVar.f(wq.e() + File.separator + sc_id);
+        oBVar.f(wq.g() + File.separator + sc_id);
+        oBVar.f(wq.t() + File.separator + sc_id);
+        oBVar.f(wq.d() + File.separator + sc_id);
+        File o = getCustomIcon();
         if (!o.exists()) {
             try {
                 o.createNewFile();
@@ -427,7 +338,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
     }
 
-    public final void v() {
+    private void showOldVersionControlDialog() {
         aB dialog = new aB(this);
         dialog.a(Resources.drawable.numbers_48);
         dialog.b(xB.b().a(this, Resources.string.myprojects_settings_version_control_title));
@@ -436,67 +347,67 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_code));
         ((TextView) view.findViewById(Resources.id.tv_name))
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_name));
-        NumberPicker numberPicker = view.findViewById(Resources.id.version_code);
-        NumberPicker numberPicker2 = view.findViewById(Resources.id.version_name1);
-        NumberPicker numberPicker3 = view.findViewById(Resources.id.version_name2);
-        int i = 0;
-        numberPicker.setWrapSelectorWheel(false);
-        numberPicker2.setWrapSelectorWheel(false);
-        numberPicker3.setWrapSelectorWheel(false);
-        int parseInt = Integer.parseInt(I.getText().toString());
-        int i2 = parseInt - 5;
-        int i3 = 1;
-        if (i2 <= 0) {
-            i2 = 1;
+
+        NumberPicker versionCodePicker = view.findViewById(Resources.id.version_code);
+        NumberPicker versionNameFirstPartPicker = view.findViewById(Resources.id.version_name1);
+        NumberPicker versionNameSecondPartPicker = view.findViewById(Resources.id.version_name2);
+
+        versionCodePicker.setWrapSelectorWheel(false);
+        versionNameFirstPartPicker.setWrapSelectorWheel(false);
+        versionNameSecondPartPicker.setWrapSelectorWheel(false);
+
+        int versionCode = Integer.parseInt(projectVersionCodeView.getText().toString());
+        int versionCodeMinimum = versionCode - 5;
+        int versionNameFirstPartMinimum = 1;
+        if (versionCodeMinimum <= 0) {
+            versionCodeMinimum = 1;
         }
-        numberPicker.setMinValue(i2);
-        numberPicker.setMaxValue(parseInt + 5);
-        numberPicker.setValue(parseInt);
-        String[] split = J.getText().toString().split("\\.");
-        U = a(split[0], 1);
-        V = a(split[1], 0);
-        int i4 = U;
-        if (i4 - 5 > 0) {
-            i3 = i4 - 5;
+        versionCodePicker.setMinValue(versionCodeMinimum);
+        versionCodePicker.setMaxValue(versionCode + 5);
+        versionCodePicker.setValue(versionCode);
+
+        String[] split = projectVersionNameView.getText().toString().split("\\.");
+        AtomicInteger projectNewVersionNameFirstPart = new AtomicInteger(parseInt(split[0], 1));
+        AtomicInteger projectNewVersionNameSecondPart = new AtomicInteger(parseInt(split[1], 0));
+        if (projectNewVersionNameFirstPart.get() - 5 > 0) {
+            versionNameFirstPartMinimum = projectNewVersionNameFirstPart.get() - 5;
         }
-        numberPicker2.setMinValue(i3);
-        numberPicker2.setMaxValue(U + 5);
-        numberPicker2.setValue(U);
-        int i5 = V;
-        if (i5 - 20 > 0) {
-            i = i5 - 20;
-        }
-        numberPicker3.setMinValue(i);
-        numberPicker3.setMaxValue(V + 20);
-        numberPicker3.setValue(V);
+        versionNameFirstPartPicker.setMinValue(versionNameFirstPartMinimum);
+        versionNameFirstPartPicker.setMaxValue(projectNewVersionNameFirstPart.get() + 5);
+        versionNameFirstPartPicker.setValue(projectNewVersionNameFirstPart.get());
+
+        versionNameSecondPartPicker.setMinValue(Math.max(projectNewVersionNameSecondPart.get() - 20, 0));
+        versionNameSecondPartPicker.setMaxValue(projectNewVersionNameSecondPart.get() + 20);
+        versionNameSecondPartPicker.setValue(projectNewVersionNameSecondPart.get());
         dialog.a(view);
-        numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            if (oldVal > newVal && newVal < Q) {
-                picker.setValue(Q);
+
+        versionCodePicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if (oldVal > newVal && newVal < projectVersionCode) {
+                picker.setValue(projectVersionCode);
             }
         });
-        numberPicker2.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            U = newVal;
+        versionNameFirstPartPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            projectNewVersionNameFirstPart.set(newVal);
             if (oldVal > newVal) {
-                if (newVal < S) {
-                    numberPicker.setValue(S);
+                if (newVal < projectVersionNameFirstPart) {
+                    versionCodePicker.setValue(projectVersionNameFirstPart);
                 }
-                if (U == S || V <= T) {
-                    numberPicker3.setValue(T);
-                    V = T;
+                if (projectNewVersionNameFirstPart.get() == projectVersionNameFirstPart || projectNewVersionNameSecondPart.get() <= projectVersionNameSecondPart) {
+                    versionNameSecondPartPicker.setValue(projectVersionNameSecondPart);
+                    projectNewVersionNameSecondPart.set(projectVersionNameSecondPart);
                 }
             }
         });
-        numberPicker3.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            V = newVal;
-            if (oldVal > newVal && newVal < T && U < S) {
-                picker.setValue(T);
+        versionNameSecondPartPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            projectNewVersionNameSecondPart.set(newVal);
+            if (oldVal > newVal && newVal < projectVersionNameSecondPart && projectNewVersionNameFirstPart.get() < projectVersionNameFirstPart) {
+                picker.setValue(projectVersionNameSecondPart);
             }
         });
         dialog.b(xB.b().a(this, Resources.string.common_word_save), v -> {
             if (!mB.a()) {
-                I.setText(String.valueOf(numberPicker.getValue()));
-                J.setText(U + "." + V);
+                projectVersionCodeView.setText(String.valueOf(versionCodePicker.getValue()));
+                projectVersionNameView.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
                 dialog.dismiss();
             }
         });
@@ -505,20 +416,20 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         dialog.show();
     }
 
-    public final void w() {
-        if (!G.isShown()) {
-            G.setVisibility(View.VISIBLE);
-            gB.b(G, 300, null);
+    private void w() {
+        if (!advancedSettingsContainer.isShown()) {
+            advancedSettingsContainer.setVisibility(View.VISIBLE);
+            gB.b(advancedSettingsContainer, 300, null);
             return;
         }
-        gB.a(G, 300, new AnimatorListenerAdapter() {
+        gB.a(advancedSettingsContainer, 300, new AnimatorListenerAdapter() {
             @Override
             public void onAnimationCancel(Animator animation) {
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                G.setVisibility(View.GONE);
+                advancedSettingsContainer.setVisibility(View.GONE);
             }
 
             @Override
@@ -531,67 +442,67 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         });
     }
 
-    public final void x() {
-        for (int i = 0; i < v.length; i++) {
-            ((a) D.getChildAt(i)).color.setBackgroundColor(v[i]);
+    private void syncThemeColors() {
+        for (int i = 0; i < projectThemeColors.length; i++) {
+            ((a) themeColorsContainer.getChildAt(i)).color.setBackgroundColor(projectThemeColors[i]);
         }
     }
 
-    public final void f(String str) {
+    private void parseVersion(String toParse) {
         try {
-            String[] split = str.split("\\.");
-            S = a(split[0], 1);
-            T = a(split[1], 0);
+            String[] split = toParse.split("\\.");
+            projectVersionNameFirstPart = parseInt(split[0], 1);
+            projectVersionNameSecondPart = parseInt(split[1], 0);
         } catch (Exception ignored) {
         }
     }
 
-    public final void g(int i) {
+    private void pickColor(int colorIndex) {
         View view = wB.a(this, Resources.layout.color_picker);
         view.setAnimation(AnimationUtils.loadAnimation(this, Resources.anim.abc_fade_in));
-        Zx zx = new Zx(view, this, v[i], false, false);
-        zx.a(i2 -> {
-            v[i] = i2;
-            x();
+        Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
+        zx.a(pickedColor -> {
+            projectThemeColors[colorIndex] = pickedColor;
+            syncThemeColors();
         });
         zx.setAnimationStyle(Resources.anim.abc_fade_in);
         zx.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
-    public final void n() {
+    private void showResetIconConfirmation() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings));
         dialog.a(Resources.drawable.default_icon);
         dialog.a(xB.b().a(this, Resources.string.myprojects_settings_confirm_reset_icon));
         dialog.b(xB.b().a(this, Resources.string.common_word_reset), v -> {
-            H.setImageResource(Resources.drawable.default_icon);
-            N = false;
+            appIcon.setImageResource(Resources.drawable.default_icon);
+            projectHasCustomIcon = false;
             dialog.dismiss();
         });
         dialog.a(xB.b().a(this, Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
-    public final File o() {
-        return new File(p());
+    private File getCustomIcon() {
+        return new File(getCustomIconPath());
     }
 
-    public final String p() {
-        return wq.e() + File.separator + w + File.separator + "icon.png";
+    private String getCustomIconPath() {
+        return wq.e() + File.separator + sc_id + File.separator + "icon.png";
     }
 
-    public final boolean q() {
-        return K.b() && L.b() && M.b();
+    private boolean isInputValid() {
+        return projectPackageNameValidator.b() && projectNameValidator.b() && projectAppNameValidator.b();
     }
 
-    public final void r() {
+    private void pickCustomIcon() {
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
-            Context applicationContext = getApplicationContext();
-            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", o());
+            uri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
         } else {
-            uri = Uri.fromFile(o());
+            uri = Uri.fromFile(getCustomIcon());
         }
+
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.putExtra("output", uri);
@@ -600,21 +511,22 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         startActivityForResult(Intent.createChooser(
                 intent,
                 xB.b().a(this, Resources.string.common_word_choose)),
-                207);
+                REQUEST_CODE_PICK_ICON);
     }
 
-    public final void s() {
+    private void pickAndCropCustomIcon() {
         Uri uri;
         Intent intent = new Intent(Intent.ACTION_PICK);
         if (Build.VERSION.SDK_INT >= 24) {
             Context applicationContext = getApplicationContext();
-            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", o());
+            uri = FileProvider.a(applicationContext, getApplicationContext().getPackageName() + ".provider", getCustomIcon());
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         } else {
-            uri = Uri.fromFile(o());
+            uri = Uri.fromFile(getCustomIcon());
         }
+
         intent.setDataAndType(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
@@ -631,7 +543,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 216);
     }
 
-    public final void t() {
+    private void showCustomIconOptions() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose));
         builder.setItems(new String[]{
@@ -641,15 +553,15 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }, (dialog, which) -> {
             switch (which) {
                 case 0:
-                    r();
+                    pickCustomIcon();
                     break;
 
                 case 1:
-                    s();
+                    pickAndCropCustomIcon();
                     break;
 
                 case 2:
-                    if (N) n();
+                    if (projectHasCustomIcon) showResetIconConfirmation();
                     break;
             }
         });
@@ -658,8 +570,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         create.show();
     }
 
-    public final void u() {
-        W = true;
+    private void showPackageNameChangeWarning() {
+        shownPackageNameChangeWarning = true;
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
         dialog.a(Resources.drawable.break_warning_96_red);
@@ -669,16 +581,16 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         dialog.show();
     }
 
-    public final int a(String str, int i) {
+    private int parseInt(String input, int fallback) {
         try {
-            return Integer.parseInt(str);
+            return Integer.parseInt(input);
         } catch (Exception unused) {
-            return i;
+            return fallback;
         }
     }
 
-    public final void a(Bitmap bitmap, String str) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(str)) {
+    private void saveBitmapTo(Bitmap bitmap, String path) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.flush();
         } catch (IOException ignored) {
@@ -703,9 +615,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
     }
 
-    class b extends MA {
+    private class SaveProjectAsyncTask extends MA {
 
-        public b(Context context) {
+        public SaveProjectAsyncTask(Context context) {
             super(context);
             MyProjectSettingActivity.this.a(this);
             k();
@@ -715,8 +627,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         public void a() {
             h();
             Intent intent = getIntent();
-            intent.putExtra("sc_id", w);
-            intent.putExtra("is_new", !O);
+            intent.putExtra("sc_id", sc_id);
+            intent.putExtra("is_new", !updatingExistingProject);
             intent.putExtra("index", intent.getIntExtra("index", -1));
             setResult(-1, intent);
             finish();
@@ -725,31 +637,31 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         @Override
         public void b() {
             HashMap<String, Object> data = new HashMap<>();
-            data.put("sc_id", w);
-            data.put("my_sc_pkg_name", B.getText().toString());
-            data.put("my_ws_name", C.getText().toString());
-            data.put("my_app_name", A.getText().toString());
-            if (O) {
-                data.put("custom_icon", N);
-                data.put("sc_ver_code", I.getText().toString());
-                data.put("sc_ver_name", J.getText().toString());
+            data.put("sc_id", sc_id);
+            data.put("my_sc_pkg_name", projectPackageName.getText().toString());
+            data.put("my_ws_name", projectName.getText().toString());
+            data.put("my_app_name", projectAppName.getText().toString());
+            if (updatingExistingProject) {
+                data.put("custom_icon", projectHasCustomIcon);
+                data.put("sc_ver_code", projectVersionCodeView.getText().toString());
+                data.put("sc_ver_name", projectVersionNameView.getText().toString());
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
-                for (int i = 0; i < t.length; i++) {
-                    data.put(t[i], v[i]);
+                for (int i = 0; i < themeColorKeys.length; i++) {
+                    data.put(themeColorKeys[i], projectThemeColors[i]);
                 }
-                lC.b(w, data);
+                lC.b(sc_id, data);
             } else {
                 data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
-                data.put("custom_icon", N);
-                data.put("sc_ver_code", I.getText().toString());
-                data.put("sc_ver_name", J.getText().toString());
+                data.put("custom_icon", projectHasCustomIcon);
+                data.put("sc_ver_code", projectVersionCodeView.getText().toString());
+                data.put("sc_ver_name", projectVersionNameView.getText().toString());
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
-                for (int i = 0; i < t.length; i++) {
-                    data.put(t[i], v[i]);
+                for (int i = 0; i < themeColorKeys.length; i++) {
+                    data.put(themeColorKeys[i], projectThemeColors[i]);
                 }
-                lC.a(w, data);
-                wq.a(getApplicationContext(), w);
-                new oB().b(wq.b(w));
+                lC.a(sc_id, data);
+                wq.a(getApplicationContext(), sc_id);
+                new oB().b(wq.b(sc_id));
             }
         }
 
