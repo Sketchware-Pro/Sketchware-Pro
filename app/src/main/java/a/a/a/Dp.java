@@ -233,7 +233,7 @@ public class Dp {
         compiler.compile();
     }
 
-    public void b(String password, String alias) {
+    public void b(String password, String alias, String signingAlgorithm) {
         Security.addProvider(new BouncyCastleProvider());
         try {
             CustomKeySigner.signZip(
@@ -242,7 +242,7 @@ public class Dp {
                     password.toCharArray(),
                     alias,
                     password.toCharArray(),
-                    "SHA1WITHRSA",
+                    signingAlgorithm,
                     f.G,
                     f.I
             );

@@ -968,7 +968,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
                         signer.signZip(c.f.alignedApkPath, c.f.I);
                     } else {
-                        c.b(new String(signingKeystorePassword), signingAliasName);
+                        c.b(new String(signingKeystorePassword), signingAliasName, signingAlgorithm);
                     }
                 }
             } catch (Throwable throwable) {
