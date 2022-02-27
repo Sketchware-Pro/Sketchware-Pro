@@ -955,11 +955,18 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         return;
                     }
 
+                    publishProgress("Aligning APK...");
+                    c.runZipalign();
+                    if (d) {
+                        cancel(true);
+                        return;
+                    }
+
                     publishProgress("Signing APK...");
                     if (signWithTestkey) {
                         ZipSigner signer = new ZipSigner();
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(c.f.G, c.f.I);
+                        signer.signZip(c.f.alignedApkPath, c.f.I);
                     } else {
                         c.b(new String(signingKeystorePassword), signingAliasName);
                     }

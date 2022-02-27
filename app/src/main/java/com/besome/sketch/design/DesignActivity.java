@@ -1148,10 +1148,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
+                        publishProgress("Aligning APK...");
+                        mDp.runZipalign();
+                        if (d) {
+                            cancel(true);
+                            return;
+                        }
+
                         publishProgress("Signing APK...");
                         if (Build.VERSION.SDK_INT >= 26) {
                             ApkSigner signer = new ApkSigner(a);
-                            signer.signWithTestKey(mDp.f.G, mDp.f.H, null);
+                            signer.signWithTestKey(mDp.f.alignedApkPath, mDp.f.H, null);
                         } else {
                             mDp.k();
                         }
