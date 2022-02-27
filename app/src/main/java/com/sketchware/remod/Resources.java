@@ -690,6 +690,7 @@ public class Resources {
         public static final int manage_library_manage_admob = 0x7f0b00d9;
         public static final int manage_library_setting_admob_test_device_item = 0x7f0b00e3;
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
+        public static final int myproject_button = 0x7f0b00fc;
         public static final int myproject_buttons = 0x7f0b00fd;
         public static final int myproject_color = 0x7f0b00fe;
         public static final int myproject_setting = 0x7f0b00ff;

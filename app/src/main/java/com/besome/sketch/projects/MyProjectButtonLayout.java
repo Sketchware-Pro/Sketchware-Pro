@@ -120,8 +120,8 @@ public class MyProjectButtonLayout extends FrameLayout {
     public final MyProjectButton a(int i2, int i3, String str) {
         MyProjectButton myProjectButton = new MyProjectButton(a);
         myProjectButton.b = i2;
-        myProjectButton.d.setImageResource(i3);
-        myProjectButton.e.setText(str);
+        myProjectButton.icon.setImageResource(i3);
+        myProjectButton.name.setText(str);
         return myProjectButton;
     }
 
