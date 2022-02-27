@@ -122,6 +122,12 @@ public class yq {
     public String aapt_rules;
 
     /**
+     * Path of the aligned, still unsigned APK,
+     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned.aligned
+     */
+    public String alignedApkPath;
+
+    /**
      * Project's sc_id,
      * e.g. 605
      */
@@ -393,6 +399,7 @@ public class yq {
         q = y + File.separator + n;
         q += File.separator + "SketchApplication.java";
         G = t + File.separator + d + ".apk.unsigned";
+        alignedApkPath = G + ".aligned";
         H = t + File.separator + d + ".apk";
         I = wq.o() + File.separator + d + "_release.apk";
     }

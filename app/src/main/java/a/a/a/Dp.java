@@ -45,6 +45,7 @@ import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
+import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
@@ -76,6 +77,7 @@ public class Dp {
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
     public File aapt2Dir;
+    private final File zipalignBinaryPath;
     public BuildSettings build_settings;
     public DesignActivity.a buildingDialog;
     public Context e;
@@ -145,6 +147,7 @@ public class Dp {
             }
         }
         aapt2Dir = new File(h, "aapt2");
+        zipalignBinaryPath = new File(h, "zipalign");
         l = new File(context.getFilesDir(), "libs");
         n = new Kp();
         o = new File(l, "android.jar").getAbsolutePath();
@@ -933,7 +936,7 @@ public class Dp {
             ZipSigner zipSigner = new ZipSigner();
             KeyStoreFileManager.setProvider(new BouncyCastleProvider());
             zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(f.G, f.H);
+            zipSigner.signZip(f.alignedApkPath, f.H);
             return true;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
@@ -1071,5 +1074,62 @@ public class Dp {
         } catch (Exception e) {
             LogUtil.e("Stringfog", e.toString());
         }
+    }
+
+    public void runZipalign() throws By {
+        maybeExtractZipalignBinary();
+
+        ArrayList<String> args = new ArrayList<>();
+        args.add(zipalignBinaryPath.getAbsolutePath());
+        args.add("-f");
+        args.add("-p");
+        args.add("4");
+        args.add(f.G);
+        args.add(f.alignedApkPath);
+
+        LogUtil.d(TAG, "About to run zipalign with this cmdline: " + args);
+
+        BinaryExecutor executor = new BinaryExecutor();
+        executor.setCommands(args);
+        if (!executor.execute().isEmpty()) {
+            LogUtil.e(TAG, executor.getLog());
+            throw new By(executor.getLog());
+        }
+    }
+
+    private void maybeExtractZipalignBinary() throws By {
+        String zipalignPathInAssets = "zipalign" + File.separator + getZipalignExecutableName();
+
+        try {
+            /* Check if we need to update zipalign's binary */
+            if (a(zipalignPathInAssets, zipalignBinaryPath.getAbsolutePath())) {
+                makeExecutableCommand[2] = zipalignBinaryPath.getAbsolutePath();
+                j.a(makeExecutableCommand);
+            }
+        } catch (Exception e) {
+            LogUtil.e(TAG, "Failed to extract the zipalign binary", e);
+            throw new By("Couldn't extract the zipalign binary! Message: " + e.getMessage());
+        }
+    }
+
+    private String getZipalignExecutableName() {
+        String filename = "zipalign-";
+        String abi = GB.a().toLowerCase();
+
+        if (abi.contains("64")) {
+            if (abi.contains("x86")) {
+                filename += "x86_64";
+            } else {
+                filename += "arm64-v8a";
+            }
+        } else {
+            if (abi.contains("x86")) {
+                filename += "x86";
+            } else {
+                filename += "armeabi-v7a";
+            }
+        }
+
+        return filename;
     }
 }
