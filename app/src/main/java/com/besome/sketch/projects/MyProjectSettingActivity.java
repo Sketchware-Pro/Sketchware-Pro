@@ -124,7 +124,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     public void onClick(View v) {
         switch (v.getId()) {
             case Resources.id.advanced_setting:
-                w();
+                showHideAdvancedSettings();
                 return;
 
             case Resources.id.app_icon_layout:
@@ -227,11 +227,11 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         projectThemeColors[3] = getResources().getColor(Resources.color.color_control_highlight);
         projectThemeColors[4] = getResources().getColor(Resources.color.color_control_normal);
         for (int i = 0; i < themeColorKeys.length; i++) {
-            a aVar = new a(getApplicationContext(), i);
-            aVar.name.setText(themeColorLabels[i]);
-            aVar.color.setBackgroundColor(Color.WHITE);
-            themeColorsContainer.addView(aVar);
-            aVar.setOnClickListener(v -> {
+            ThemeColorView colorView = new ThemeColorView(getApplicationContext(), i);
+            colorView.name.setText(themeColorLabels[i]);
+            colorView.color.setBackgroundColor(Color.WHITE);
+            themeColorsContainer.addView(colorView);
+            colorView.setOnClickListener(v -> {
                 if (!mB.a()) {
                     pickColor((Integer) v.getTag());
                 }
@@ -416,7 +416,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         dialog.show();
     }
 
-    private void w() {
+    private void showHideAdvancedSettings() {
         if (!advancedSettingsContainer.isShown()) {
             advancedSettingsContainer.setVisibility(View.VISIBLE);
             gB.b(advancedSettingsContainer, 300, null);
@@ -444,7 +444,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     private void syncThemeColors() {
         for (int i = 0; i < projectThemeColors.length; i++) {
-            ((a) themeColorsContainer.getChildAt(i)).color.setBackgroundColor(projectThemeColors[i]);
+            ((ThemeColorView) themeColorsContainer.getChildAt(i)).color.setBackgroundColor(projectThemeColors[i]);
         }
     }
 
@@ -597,12 +597,12 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
     }
 
-    public static class a extends LinearLayout {
+    private static class ThemeColorView extends LinearLayout {
 
         private TextView color;
         private TextView name;
 
-        public a(Context context, int tag) {
+        public ThemeColorView(Context context, int tag) {
             super(context);
             initialize(context, tag);
         }
