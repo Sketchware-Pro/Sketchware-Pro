@@ -540,7 +540,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         startActivityForResult(Intent.createChooser(
                 intent,
                 xB.b().a(this, Resources.string.common_word_choose)),
-                216);
+                REQUEST_CODE_PICK_CROPPED_ICON);
     }
 
     private void showCustomIconOptions() {
@@ -630,7 +630,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             intent.putExtra("sc_id", sc_id);
             intent.putExtra("is_new", !updatingExistingProject);
             intent.putExtra("index", intent.getIntExtra("index", -1));
-            setResult(-1, intent);
+            setResult(RESULT_OK, intent);
             finish();
         }
 
