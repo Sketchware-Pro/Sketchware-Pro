@@ -121,7 +121,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 }
                 break;
 
-            case 27:
+            case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 if (jC.c(sc_id).c().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
                     bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
                     return false;
@@ -329,20 +329,20 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT));
         componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER));
-        componentList.add(new ComponentBean(22));
-        componentList.add(new ComponentBean(23));
-        componentList.add(new ComponentBean(24));
-        componentList.add(new ComponentBean(25));
-        componentList.add(new ComponentBean(26));
-        componentList.add(new ComponentBean(27));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_NOTIFICATION));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER));
         ComponentsHandler.add(componentList);
-        componentList.add(new ComponentBean(28));
-        componentList.add(new ComponentBean(29));
-        componentList.add(new ComponentBean(30));
-        componentList.add(new ComponentBean(31));
-        componentList.add(new ComponentBean(32));
-        componentList.add(new ComponentBean(33));
-        componentList.add(new ComponentBean(34));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_ONESIGNAL));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER));
+        componentList.add(new ComponentBean(ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL));
         componentsAdapter.c();
     }
 

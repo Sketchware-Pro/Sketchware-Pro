@@ -33,6 +33,19 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final int COMPONENT_TYPE_SPEECH_TO_TEXT = 19;
     public static final int COMPONENT_TYPE_BLUETOOTH_CONNECT = 20;
     public static final int COMPONENT_TYPE_LOCATION_MANAGER = 21;
+    public static final int COMPONENT_TYPE_REWARDED_VIDEO_AD = 22;
+    public static final int COMPONENT_TYPE_PROGRESS_DIALOG = 23;
+    public static final int COMPONENT_TYPE_DATE_PICKER_DIALOG = 24;
+    public static final int COMPONENT_TYPE_TIME_PICKER_DIALOG = 25;
+    public static final int COMPONENT_TYPE_NOTIFICATION = 26;
+    public static final int COMPONENT_TYPE_FRAGMENT_ADAPTER = 27;
+    public static final int COMPONENT_TYPE_FIREBASE_AUTH_PHONE = 28;
+    public static final int COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS = 29;
+    public static final int COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE = 30;
+    public static final int COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN = 31;
+    public static final int COMPONENT_TYPE_ONESIGNAL = 32;
+    public static final int COMPONENT_TYPE_FACEBOOK_ADS_BANNER = 33;
+    public static final int COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL = 34;
 
     public static final Parcelable.Creator<ComponentBean> CREATOR = new Parcelable.Creator<ComponentBean>() {
         @Override
@@ -232,43 +245,43 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
 
-            case 22:
+            case COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 return "RewardedVideoAd";
 
-            case 23:
+            case COMPONENT_TYPE_PROGRESS_DIALOG:
                 return "ProgressDialog";
 
-            case 24:
+            case COMPONENT_TYPE_DATE_PICKER_DIALOG:
                 return "DatePickerDialog";
 
-            case 25:
+            case COMPONENT_TYPE_TIME_PICKER_DIALOG:
                 return "TimePickerDialog";
 
-            case 26:
+            case COMPONENT_TYPE_NOTIFICATION:
                 return "Notification";
 
-            case 27:
+            case COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 return "FragmentAdapter";
 
-            case 28:
+            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
                 return "PhoneAuth";
 
-            case 29:
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 return "Dynamic Link";
 
-            case 30:
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 return "Cloud Message";
 
-            case 31:
+            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 return "Google Login";
 
-            case 32:
+            case COMPONENT_TYPE_ONESIGNAL:
                 return "OneSignal";
 
-            case 33:
+            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
                 return "Facebook Ads Banner";
 
-            case 34:
+            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 return "Facebook Ads Interstitial";
 
             default:
@@ -342,43 +355,43 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
                 return COMPONENT_TYPE_LOCATION_MANAGER;
 
             case "RewardedVideoAd":
-                return 22;
+                return COMPONENT_TYPE_REWARDED_VIDEO_AD;
 
             case "ProgressDialog":
-                return 23;
+                return COMPONENT_TYPE_PROGRESS_DIALOG;
 
             case "DatePickerDialog":
-                return 24;
+                return COMPONENT_TYPE_DATE_PICKER_DIALOG;
 
             case "TimePickerDialog":
-                return 25;
+                return COMPONENT_TYPE_TIME_PICKER_DIALOG;
 
             case "Notification":
-                return 26;
+                return COMPONENT_TYPE_NOTIFICATION;
 
             case "FragmentAdapter":
-                return 27;
+                return COMPONENT_TYPE_FRAGMENT_ADAPTER;
 
             case "FirebasePhoneAuth":
-                return 28;
+                return COMPONENT_TYPE_FIREBASE_AUTH_PHONE;
 
             case "FirebaseDynamicLink":
-                return 29;
+                return COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS;
 
             case "FirebaseCloudMessage":
-                return 30;
+                return COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE;
 
             case "FirebaseGoogleLogin":
-                return 31;
+                return COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN;
 
             case "OneSignal":
-                return 32;
+                return COMPONENT_TYPE_ONESIGNAL;
 
             case "FBAdsBanner":
-                return 33;
+                return COMPONENT_TYPE_FACEBOOK_ADS_BANNER;
 
             case "FBAdsInterstitial":
-                return 34;
+                return COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL;
 
             default:
                 return ComponentsHandler.id(typeName);
@@ -450,43 +463,43 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_LOCATION_MANAGER:
                 return "LocationManager";
 
-            case 22:
+            case COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 return "RewardedVideoAd";
 
-            case 23:
+            case COMPONENT_TYPE_PROGRESS_DIALOG:
                 return "ProgressDialog";
 
-            case 24:
+            case COMPONENT_TYPE_DATE_PICKER_DIALOG:
                 return "DatePickerDialog";
 
-            case 25:
+            case COMPONENT_TYPE_TIME_PICKER_DIALOG:
                 return "TimePickerDialog";
 
-            case 26:
+            case COMPONENT_TYPE_NOTIFICATION:
                 return "Notification";
 
-            case 27:
+            case COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 return "FragmentAdapter";
 
-            case 28:
+            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
                 return "FirebasePhoneAuth";
 
-            case 29:
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 return "FirebaseDynamicLink";
 
-            case 30:
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 return "FirebaseCloudMessage";
 
-            case 31:
+            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 return "FirebaseGoogleLogin";
 
-            case 32:
+            case COMPONENT_TYPE_ONESIGNAL:
                 return "OneSignal";
 
-            case 33:
+            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
                 return "FBAdsBanner";
 
-            case 34:
+            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 return "FBAdsInterstitial";
 
             default:
@@ -563,43 +576,43 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_LOCATION_MANAGER:
                 return Resources.string.component_description_location_manager;
 
-            case 22:
+            case COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 return Resources.string.component_description_video_ad;
 
-            case 23:
+            case COMPONENT_TYPE_PROGRESS_DIALOG:
                 return Resources.string.component_description_progress_dialog;
 
-            case 24:
+            case COMPONENT_TYPE_DATE_PICKER_DIALOG:
                 return Resources.string.component_description_date_picker_dialog;
 
-            case 25:
+            case COMPONENT_TYPE_TIME_PICKER_DIALOG:
                 return Resources.string.component_description_time_picker_dialog;
 
-            case 26:
+            case COMPONENT_TYPE_NOTIFICATION:
                 return Resources.string.component_description_notification;
 
-            case 27:
+            case COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 return Resources.string.component_description_fragment_adapter;
 
-            case 28:
+            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
                 return Resources.string.component_description_fb_phone_auth;
 
-            case 29:
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 return Resources.string.component_description_fb_dynamic;
 
-            case 30:
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 return Resources.string.component_description_fb_fcm;
 
-            case 31:
+            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 return Resources.string.component_description_fb_google;
 
-            case 32:
+            case COMPONENT_TYPE_ONESIGNAL:
                 return Resources.string.component_description_fb_admin;
 
-            case 33:
+            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
                 return Resources.string.component_description_fb_ads_banner;
 
-            case 34:
+            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 return Resources.string.component_description_fb_ads_interstitial;
 
             default:
@@ -668,43 +681,43 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_LOCATION_MANAGER:
                 return Resources.drawable.widget_location;
 
-            case 22:
+            case COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 return Resources.drawable.widget_media_controller;
 
-            case 23:
+            case COMPONENT_TYPE_PROGRESS_DIALOG:
                 return Resources.drawable.widget_progress_dialog;
 
-            case 24:
+            case COMPONENT_TYPE_DATE_PICKER_DIALOG:
                 return Resources.drawable.widget_date_picker_dialog;
 
-            case 25:
+            case COMPONENT_TYPE_TIME_PICKER_DIALOG:
                 return Resources.drawable.widget_time_picker_dialog;
 
-            case 26:
+            case COMPONENT_TYPE_NOTIFICATION:
                 return Resources.drawable.widget_notification;
 
-            case 27:
+            case COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 return Resources.drawable.widget_fragment;
 
-            case 28:
+            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
                 return Resources.drawable.widget_phone_auth;
 
-            case 29:
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 return Resources.drawable.component_dynamic_link;
 
-            case 30:
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 return Resources.drawable.component_fcm;
 
-            case 31:
+            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 return Resources.drawable.component_firebase_google;
 
-            case 32:
+            case COMPONENT_TYPE_ONESIGNAL:
                 return Resources.drawable.component_firebase_admin;
 
-            case 33:
+            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
                 return Resources.drawable.component_fbads_banner;
 
-            case 34:
+            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 return Resources.drawable.component_fbads_interstitial;
 
             default:
@@ -799,55 +812,55 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
                 typeName = "LocationManager";
                 break;
 
-            case 22:
+            case COMPONENT_TYPE_REWARDED_VIDEO_AD:
                 typeName = "RewardedVideoAd";
                 break;
 
-            case 23:
+            case COMPONENT_TYPE_PROGRESS_DIALOG:
                 typeName = "ProgressDialog";
                 break;
 
-            case 24:
+            case COMPONENT_TYPE_DATE_PICKER_DIALOG:
                 typeName = "DatePickerDialog";
                 break;
 
-            case 25:
+            case COMPONENT_TYPE_TIME_PICKER_DIALOG:
                 typeName = "TimePickerDialog";
                 break;
 
-            case 26:
+            case COMPONENT_TYPE_NOTIFICATION:
                 typeName = "Notification";
                 break;
 
-            case 27:
+            case COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 typeName = "FragmentAdapter";
                 break;
 
-            case 28:
+            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
                 typeName = "FirebasePhoneAuth";
                 break;
 
-            case 29:
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 typeName = "FirebaseDynamicLink";
                 break;
 
-            case 30:
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
                 typeName = "FirebaseCloudMessage";
                 break;
 
-            case 31:
+            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 typeName = "FirebaseGoogleLogin";
                 break;
 
-            case 32:
+            case COMPONENT_TYPE_ONESIGNAL:
                 typeName = "OneSignal";
                 break;
 
-            case 33:
+            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
                 typeName = "FBAdsBanner";
                 break;
 
-            case 34:
+            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
                 typeName = "FBAdsInterstitial";
                 break;
 
