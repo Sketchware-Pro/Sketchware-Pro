@@ -17,133 +17,139 @@ import a.a.a.xB;
 
 public class MyProjectButtonLayout extends FrameLayout {
 
-    public Context a;
-    public View b;
-    public TextView c;
-    public View d;
-    public View e;
-    public TextView f;
-    public TextView g;
-    public LinearLayout h;
-    public AnimatorSet i;
-    public AnimatorSet j;
-    public AnimatorSet k;
-    public AnimatorSet l;
-    public MyProjectButton m;
-    public MyProjectButton n;
-    public MyProjectButton o;
-    public MyProjectButton p;
-    public MyProjectButton q;
+    private Context context;
+    private View confirmLayout;
+    private View confirmYes;
+    private View confirmNo;
+    private LinearLayout buttonContainer;
+    private AnimatorSet flipTopIn;
+    private AnimatorSet flipTopOut;
+    private AnimatorSet flipBottomIn;
+    private AnimatorSet flipBottomOut;
+    private MyProjectButton settings;
+    private MyProjectButton backUp;
+    private MyProjectButton signExport;
+    private MyProjectButton delete;
+    private MyProjectButton config;
 
     public MyProjectButtonLayout(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
-    public void setButtonOnClickListener(View.OnClickListener onClickListener) {
-        d.setOnClickListener(onClickListener);
-        e.setOnClickListener(onClickListener);
-        m.setOnClickListener(onClickListener);
-        n.setOnClickListener(onClickListener);
-        o.setOnClickListener(onClickListener);
-        p.setOnClickListener(onClickListener);
-        q.setOnClickListener(onClickListener);
+    public void setButtonOnClickListener(View.OnClickListener l) {
+        confirmYes.setOnClickListener(l);
+        confirmNo.setOnClickListener(l);
+        settings.setOnClickListener(l);
+        backUp.setOnClickListener(l);
+        signExport.setOnClickListener(l);
+        delete.setOnClickListener(l);
+        config.setOnClickListener(l);
     }
 
-    public final void a(Context context) {
-        a = context;
+    private void initialize(Context context) {
+        this.context = context;
         wB.a(context, this, Resources.layout.myproject_buttons);
-        h = findViewById(Resources.id.project_buttons);
-        b = findViewById(Resources.id.confirm_layout);
-        c = findViewById(Resources.id.confirm_title);
-        c.setText(xB.b().a(getContext(), Resources.string.language_message_confirm_delete));
-        d = findViewById(Resources.id.confirm_yes);
-        e = findViewById(Resources.id.confirm_no);
-        f = findViewById(Resources.id.confirm_yes_text);
-        f.setText(xB.b().a(getContext(), Resources.string.common_word_delete));
-        g = findViewById(Resources.id.confirm_no_text);
-        g.setText(xB.b().a(getContext(), Resources.string.common_word_cancel));
-        c.setText(xB.b().a(context, Resources.string.myprojects_confirm_project_delete));
-        f.setText(xB.b().a(context, Resources.string.common_word_delete));
-        g.setText(xB.b().a(context, Resources.string.common_word_cancel));
-        b.setVisibility(INVISIBLE);
-        m = a(0,
+
+        buttonContainer = findViewById(Resources.id.project_buttons);
+        confirmLayout = findViewById(Resources.id.confirm_layout);
+        TextView confirmDelete = findViewById(Resources.id.confirm_title);
+        confirmDelete.setText(xB.b().a(getContext(), Resources.string.language_message_confirm_delete));
+        confirmYes = findViewById(Resources.id.confirm_yes);
+        confirmNo = findViewById(Resources.id.confirm_no);
+        TextView confirmYesText = findViewById(Resources.id.confirm_yes_text);
+        confirmYesText.setText(xB.b().a(getContext(), Resources.string.common_word_delete));
+        TextView confirmNoText = findViewById(Resources.id.confirm_no_text);
+        confirmNoText.setText(xB.b().a(getContext(), Resources.string.common_word_cancel));
+        confirmDelete.setText(xB.b().a(context, Resources.string.myprojects_confirm_project_delete));
+        confirmYesText.setText(xB.b().a(context, Resources.string.common_word_delete));
+        confirmNoText.setText(xB.b().a(context, Resources.string.common_word_cancel));
+        confirmLayout.setVisibility(INVISIBLE);
+
+        settings = createButton(0,
                 Resources.drawable.settings_96,
                 xB.b().a(context, Resources.string.myprojects_list_menu_title_settings));
-        n = a(1,
+        backUp = createButton(1,
                 Resources.drawable.ic_backup,
                 "Back up");
-        o = a(2,
+        signExport = createButton(2,
                 Resources.drawable.ic_export_grey_48dp,
                 xB.b().a(context, Resources.string.myprojects_list_menu_title_sign_export));
-        p = a(3,
+        delete = createButton(3,
                 Resources.drawable.ic_delete_grey_48dp,
                 xB.b().a(context, Resources.string.myprojects_list_menu_title_delete));
-        q = a(4,
+        config = createButton(4,
                 Resources.drawable.settings_96,
                 "Config");
-        h.addView(m);
-        h.addView(n);
-        h.addView(o);
-        h.addView(p);
-        h.addView(q);
-        i = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_top_in);
-        j = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_top_out);
-        k = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_bottom_in);
-        l = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_bottom_out);
+        buttonContainer.addView(settings);
+        buttonContainer.addView(backUp);
+        buttonContainer.addView(signExport);
+        buttonContainer.addView(delete);
+        buttonContainer.addView(config);
+
+        flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_top_in);
+        flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_top_out);
+        flipBottomIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_bottom_in);
+        flipBottomOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_bottom_out);
     }
 
+    /*
+     * Referenced by a.a.a.GC.d, a.a.a.IC
+     */
     public void b() {
-        j.setTarget(h);
-        i.setTarget(b);
+        flipTopOut.setTarget(buttonContainer);
+        flipTopIn.setTarget(confirmLayout);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(j).with(i);
+        animatorSet.play(flipTopOut).with(flipTopIn);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                p.setEnabled(false);
-                e.setEnabled(true);
-                h.setVisibility(INVISIBLE);
+                delete.setEnabled(false);
+                confirmNo.setEnabled(true);
+                buttonContainer.setVisibility(INVISIBLE);
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                b.setVisibility(VISIBLE);
-                p.setEnabled(false);
-                e.setEnabled(false);
+                confirmLayout.setVisibility(VISIBLE);
+                delete.setEnabled(false);
+                confirmNo.setEnabled(false);
             }
         });
         animatorSet.start();
     }
 
-    public final MyProjectButton a(int i2, int i3, String str) {
-        MyProjectButton myProjectButton = new MyProjectButton(a);
-        myProjectButton.b = i2;
-        myProjectButton.icon.setImageResource(i3);
-        myProjectButton.name.setText(str);
+    private MyProjectButton createButton(int id, int imageResId, String label) {
+        MyProjectButton myProjectButton = new MyProjectButton(context);
+        myProjectButton.b = id;
+        myProjectButton.icon.setImageResource(imageResId);
+        myProjectButton.name.setText(label);
         return myProjectButton;
     }
 
+    /*
+     * Referenced by a.a.a.GC.d
+     */
     public void a() {
-        k.setTarget(h);
-        l.setTarget(b);
+        flipBottomIn.setTarget(buttonContainer);
+        flipBottomOut.setTarget(confirmLayout);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(k).with(l);
+        animatorSet.play(flipBottomIn).with(flipBottomOut);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                p.setEnabled(true);
-                e.setEnabled(false);
-                b.setVisibility(INVISIBLE);
+                delete.setEnabled(true);
+                confirmNo.setEnabled(false);
+                confirmLayout.setVisibility(INVISIBLE);
             }
 
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                h.setVisibility(VISIBLE);
-                p.setEnabled(false);
-                e.setEnabled(false);
+                buttonContainer.setVisibility(VISIBLE);
+                delete.setEnabled(false);
+                confirmNo.setEnabled(false);
             }
         });
         animatorSet.start();
