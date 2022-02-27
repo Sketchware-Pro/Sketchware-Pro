@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -257,16 +256,13 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         base_layout.addView(til_version_code);
 
         dialog.a(base_layout);
-        dialog.b(xB.b().a(this, Resources.string.common_word_save), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    I.setText(version_code_picker.getText().toString());
-                    J.setText(version_name_picker.getText().toString()
-                            + "."
-                            + version_name_postfix_picker.getText().toString());
-                    dialog.dismiss();
-                }
+        dialog.b(xB.b().a(this, Resources.string.common_word_save), v -> {
+            if (!mB.a()) {
+                I.setText(version_code_picker.getText().toString());
+                J.setText(version_name_picker.getText().toString()
+                        + "."
+                        + version_name_postfix_picker.getText().toString());
+                dialog.dismiss();
             }
         });
 
@@ -276,7 +272,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     }
 
     @Override
-    // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.myproject_setting);
@@ -315,13 +310,10 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         L = new VB(getApplicationContext(), z);
         B.setPrivateImeOptions("defaultInputmode=english;");
         C.setPrivateImeOptions("defaultInputmode=english;");
-        B.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                EditText editText = (EditText) v;
-                if (!W && !editText.getText().toString().trim().contains("com.my.newproject")) {
-                    u();
-                }
+        B.setOnFocusChangeListener((v, hasFocus) -> {
+            EditText editText = (EditText) v;
+            if (!W && !editText.getText().toString().trim().contains("com.my.newproject")) {
+                u();
             }
         });
         D = findViewById(Resources.id.layout_theme_colors);
@@ -341,12 +333,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             aVar.e.setText(u[i]);
             aVar.d.setBackgroundColor(Color.WHITE);
             D.addView(aVar);
-            aVar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!mB.a()) {
-                        g((Integer) v.getTag());
-                    }
+            aVar.setOnClickListener(v -> {
+                if (!mB.a()) {
+                    g((Integer) v.getTag());
                 }
             });
         }
@@ -418,9 +407,10 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
+    @Override
     public void onResume() {
         super.onResume();
+
         if (!j()) {
             finish();
         }
@@ -429,6 +419,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     @Override
     public void onStart() {
         super.onStart();
+
         oB oBVar = new oB();
         oBVar.f(wq.e() + File.separator + w);
         oBVar.f(wq.g() + File.separator + w);
@@ -488,46 +479,34 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         numberPicker3.setMaxValue(V + 20);
         numberPicker3.setValue(V);
         aBVar.a(view);
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                if (oldVal > newVal && newVal < Q) {
-                    picker.setValue(Q);
+        numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if (oldVal > newVal && newVal < Q) {
+                picker.setValue(Q);
+            }
+        });
+        numberPicker2.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            U = newVal;
+            if (oldVal > newVal) {
+                if (newVal < S) {
+                    numberPicker.setValue(S);
+                }
+                if (U == S || V <= T) {
+                    numberPicker3.setValue(T);
+                    V = T;
                 }
             }
         });
-        numberPicker2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                U = newVal;
-                if (oldVal > newVal) {
-                    if (newVal < S) {
-                        numberPicker.setValue(S);
-                    }
-                    if (U == S || V <= T) {
-                        numberPicker3.setValue(T);
-                        V = T;
-                    }
-                }
+        numberPicker3.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            V = newVal;
+            if (oldVal > newVal && newVal < T && U < S) {
+                picker.setValue(T);
             }
         });
-        numberPicker3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                V = newVal;
-                if (oldVal > newVal && newVal < T && U < S) {
-                    picker.setValue(T);
-                }
-            }
-        });
-        aBVar.b(xB.b().a(this, Resources.string.common_word_save), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    I.setText(String.valueOf(numberPicker.getValue()));
-                    J.setText(U + "." + V);
-                    aBVar.dismiss();
-                }
+        aBVar.b(xB.b().a(this, Resources.string.common_word_save), v -> {
+            if (!mB.a()) {
+                I.setText(String.valueOf(numberPicker.getValue()));
+                J.setText(U + "." + V);
+                aBVar.dismiss();
             }
         });
         aBVar.a(xB.b().a(this, Resources.string.common_word_cancel),
@@ -580,12 +559,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         View view = wB.a(this, Resources.layout.color_picker);
         view.setAnimation(AnimationUtils.loadAnimation(this, Resources.anim.abc_fade_in));
         Zx zx = new Zx(view, this, v[i], false, false);
-        zx.a(new Zx.b() {
-            @Override
-            public void a(int i2) {
-                v[i] = i2;
-                x();
-            }
+        zx.a(i2 -> {
+            v[i] = i2;
+            x();
         });
         zx.setAnimationStyle(Resources.anim.abc_fade_in);
         zx.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -596,20 +572,12 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings));
         aBVar.a(Resources.drawable.default_icon);
         aBVar.a(xB.b().a(this, Resources.string.myprojects_settings_confirm_reset_icon));
-        aBVar.b(xB.b().a(this, Resources.string.common_word_reset), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                H.setImageResource(Resources.drawable.default_icon);
-                N = false;
-                aBVar.dismiss();
-            }
+        aBVar.b(xB.b().a(this, Resources.string.common_word_reset), v -> {
+            H.setImageResource(Resources.drawable.default_icon);
+            N = false;
+            aBVar.dismiss();
         });
-        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                aBVar.dismiss();
-            }
-        });
+        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
@@ -679,22 +647,19 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery),
                 xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
                 xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery_default)
-        }, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        r();
-                        break;
+        }, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    r();
+                    break;
 
-                    case 1:
-                        s();
-                        break;
+                case 1:
+                    s();
+                    break;
 
-                    case 2:
-                        if (N) n();
-                        break;
-                }
+                case 2:
+                    if (N) n();
+                    break;
             }
         });
         AlertDialog create = builder.create();
