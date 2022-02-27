@@ -59,39 +59,33 @@ import mod.w3wide.control.VersionDialog;
 
 public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    public final String[] t = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
-    public final String[] u = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
-    public EditText A;
-    public EditText B;
-    public EditText C;
-    public LinearLayout D;
-    public ImageView E;
-    public ImageView F;
-    public LinearLayout G;
-    public ImageView H;
+    private final String[] t = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
+    private final String[] u = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
+    private EditText A;
+    private EditText B;
+    private EditText C;
+    private LinearLayout D;
+    private ImageView F;
+    private LinearLayout G;
+    private ImageView H;
     public TextView I;
     public TextView J;
-    public UB K;
-    public VB L;
-    public LB M;
-    public boolean N = false;
-    public boolean O = false;
-    public boolean P = false;
-    public int Q = 1;
-    public int R = 1;
-    public int S;
-    public int T;
-    public int U;
-    public int V;
-    public boolean W;
-    public int[] v = new int[t.length];
+    private UB K;
+    private VB L;
+    private LB M;
+    private boolean N = false;
+    private boolean O = false;
+    private int Q = 1;
+    private int S;
+    private int T;
+    private int U;
+    private int V;
+    private boolean W;
+    private final int[] v = new int[t.length];
     /**
      * The sc_id of the currently editing project
      */
-    public String w;
-    public TextInputLayout x;
-    public TextInputLayout y;
-    public TextInputLayout z;
+    private String w;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -179,7 +173,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
      * Shows a Project Version Control dialog, made by Hosni Fraj. Currently unused.
      */
     public final void showNewVersionControl() {
-        R = Q;
         final aB dialog = new aB(this);
 
         dialog.a(Resources.drawable.numbers_48);
@@ -280,7 +273,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         }
         w = getIntent().getStringExtra("sc_id");
         O = getIntent().getBooleanExtra("is_update", false);
-        P = getIntent().getBooleanExtra("advanced_open", false);
+        boolean expandAdvancedOptions = getIntent().getBooleanExtra("advanced_open", false);
         ((TextView) findViewById(Resources.id.tv_change_icon))
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_description_change_icon));
         findViewById(Resources.id.contents).setOnClickListener(this);
@@ -290,14 +283,14 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         I.setOnClickListener(this);
         J = findViewById(Resources.id.ver_name);
         J.setOnClickListener(this);
-        x = findViewById(Resources.id.ti_app_name);
-        y = findViewById(Resources.id.ti_package_name);
-        z = findViewById(Resources.id.ti_project_name);
-        x.setHint(xB.b().a(this,
+        TextInputLayout appName = findViewById(Resources.id.ti_app_name);
+        TextInputLayout packageName = findViewById(Resources.id.ti_package_name);
+        TextInputLayout projectName = findViewById(Resources.id.ti_project_name);
+        appName.setHint(xB.b().a(this,
                 Resources.string.myprojects_settings_hint_enter_application_name));
-        y.setHint(xB.b().a(this,
+        packageName.setHint(xB.b().a(this,
                 Resources.string.myprojects_settings_hint_enter_package_name));
-        z.setHint(xB.b().a(this,
+        projectName.setHint(xB.b().a(this,
                 Resources.string.myprojects_settings_hint_enter_project_name));
         A = findViewById(Resources.id.et_app_name);
         B = findViewById(Resources.id.et_package_name);
@@ -305,20 +298,19 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         ((TextView) findViewById(Resources.id.tv_advanced_settings))
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_title_advanced_settings));
         H = findViewById(Resources.id.app_icon);
-        M = new LB(getApplicationContext(), x);
-        K = new UB(getApplicationContext(), y);
-        L = new VB(getApplicationContext(), z);
+        M = new LB(getApplicationContext(), appName);
+        K = new UB(getApplicationContext(), packageName);
+        L = new VB(getApplicationContext(), projectName);
         B.setPrivateImeOptions("defaultInputmode=english;");
         C.setPrivateImeOptions("defaultInputmode=english;");
         B.setOnFocusChangeListener((v, hasFocus) -> {
-            EditText editText = (EditText) v;
-            if (!W && !editText.getText().toString().trim().contains("com.my.newproject")) {
+            if (!W && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
                 u();
             }
         });
         D = findViewById(Resources.id.layout_theme_colors);
-        E = findViewById(Resources.id.img_theme_color_help);
-        E.setOnClickListener(this);
+        ImageView themeColorHelp = findViewById(Resources.id.img_theme_color_help);
+        themeColorHelp.setOnClickListener(this);
         F = findViewById(Resources.id.img_color_guide);
         G = findViewById(Resources.id.advanced_setting_layout);
         r.setOnClickListener(this);
@@ -330,8 +322,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         v[4] = getResources().getColor(Resources.color.color_control_normal);
         for (int i = 0; i < t.length; i++) {
             a aVar = new a(getApplicationContext(), i);
-            aVar.e.setText(u[i]);
-            aVar.d.setBackgroundColor(Color.WHITE);
+            aVar.name.setText(u[i]);
+            aVar.color.setBackgroundColor(Color.WHITE);
             D.addView(aVar);
             aVar.setOnClickListener(v -> {
                 if (!mB.a()) {
@@ -401,7 +393,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             }
             x();
         }
-        if (P) {
+        if (expandAdvancedOptions) {
             G.setVisibility(View.VISIBLE);
             B.requestFocus();
         }
@@ -436,10 +428,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     }
 
     public final void v() {
-        R = Q;
-        aB aBVar = new aB(this);
-        aBVar.a(Resources.drawable.numbers_48);
-        aBVar.b(xB.b().a(this, Resources.string.myprojects_settings_version_control_title));
+        aB dialog = new aB(this);
+        dialog.a(Resources.drawable.numbers_48);
+        dialog.b(xB.b().a(this, Resources.string.myprojects_settings_version_control_title));
         View view = wB.a(getApplicationContext(), Resources.layout.property_popup_version_control);
         ((TextView) view.findViewById(Resources.id.tv_code))
                 .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_code));
@@ -478,7 +469,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         numberPicker3.setMinValue(i);
         numberPicker3.setMaxValue(V + 20);
         numberPicker3.setValue(V);
-        aBVar.a(view);
+        dialog.a(view);
         numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
             if (oldVal > newVal && newVal < Q) {
                 picker.setValue(Q);
@@ -502,16 +493,16 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 picker.setValue(T);
             }
         });
-        aBVar.b(xB.b().a(this, Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(this, Resources.string.common_word_save), v -> {
             if (!mB.a()) {
                 I.setText(String.valueOf(numberPicker.getValue()));
                 J.setText(U + "." + V);
-                aBVar.dismiss();
+                dialog.dismiss();
             }
         });
-        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(this, Resources.string.common_word_cancel),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public final void w() {
@@ -542,7 +533,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     public final void x() {
         for (int i = 0; i < v.length; i++) {
-            ((a) D.getChildAt(i)).d.setBackgroundColor(v[i]);
+            ((a) D.getChildAt(i)).color.setBackgroundColor(v[i]);
         }
     }
 
@@ -568,17 +559,17 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     }
 
     public final void n() {
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings));
-        aBVar.a(Resources.drawable.default_icon);
-        aBVar.a(xB.b().a(this, Resources.string.myprojects_settings_confirm_reset_icon));
-        aBVar.b(xB.b().a(this, Resources.string.common_word_reset), v -> {
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings));
+        dialog.a(Resources.drawable.default_icon);
+        dialog.a(xB.b().a(this, Resources.string.myprojects_settings_confirm_reset_icon));
+        dialog.b(xB.b().a(this, Resources.string.common_word_reset), v -> {
             H.setImageResource(Resources.drawable.default_icon);
             N = false;
-            aBVar.dismiss();
+            dialog.dismiss();
         });
-        aBVar.a(xB.b().a(this, Resources.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(this, Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public final File o() {
@@ -669,13 +660,13 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     public final void u() {
         W = true;
-        aB aBVar = new aB(this);
-        aBVar.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
-        aBVar.a(Resources.drawable.break_warning_96_red);
-        aBVar.a(xB.b().a(this, Resources.string.myprojects_settings_message_package_rename));
-        aBVar.b(xB.b().a(this, Resources.string.common_word_ok),
-                Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
+        dialog.a(Resources.drawable.break_warning_96_red);
+        dialog.a(xB.b().a(this, Resources.string.myprojects_settings_message_package_rename));
+        dialog.b(xB.b().a(this, Resources.string.common_word_ok),
+                Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     public final int a(String str, int i) {
@@ -696,25 +687,19 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     public static class a extends LinearLayout {
 
-        public Context a;
-        public int b;
-        public LinearLayout c;
-        public TextView d;
-        public TextView e;
+        private TextView color;
+        private TextView name;
 
-        public a(Context context, int i) {
+        public a(Context context, int tag) {
             super(context);
-            a(context, i);
+            initialize(context, tag);
         }
 
-        public final void a(Context context, int i) {
-            a = context;
-            b = i;
-            setTag(i);
+        private void initialize(Context context, int tag) {
+            setTag(tag);
             wB.a(context, this, Resources.layout.myproject_color);
-            c = findViewById(Resources.id.layout_theme_color);
-            d = findViewById(Resources.id.color);
-            e = findViewById(Resources.id.name);
+            color = findViewById(Resources.id.color);
+            name = findViewById(Resources.id.name);
         }
     }
 
