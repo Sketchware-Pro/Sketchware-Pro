@@ -29,7 +29,7 @@ public class SyntaxScheme {
     }
 
     public static ArrayList<SyntaxScheme> JAVA() {
-        ArrayList<SyntaxScheme> arrayList = new ArrayList();
+        ArrayList<SyntaxScheme> arrayList = new ArrayList<>();
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), Color.parseColor(PRIMARY_COLOR)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[2] + mJavaPattern[3] + mJavaPattern[4]), Color.parseColor(SECONDARY_COLOR)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[5]), Color.parseColor(NUMBERS_COLOR)));
@@ -43,7 +43,7 @@ public class SyntaxScheme {
     }
 
     public static ArrayList<SyntaxScheme> XML() {
-        ArrayList<SyntaxScheme> arrayList = new ArrayList();
+        ArrayList<SyntaxScheme> arrayList = new ArrayList<>();
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), Color.parseColor(PRIMARY_COLOR)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[2]), Color.parseColor(SECONDARY_COLOR)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[0]), Color.parseColor(VARIABLE_COLOR)));
