@@ -1,5 +1,7 @@
 package mod.hilal.saif.asd;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,8 +37,6 @@ import mod.SketchwareUtil;
 import mod.hey.studios.code.ResHelper;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-
-import static mod.SketchwareUtil.getDip;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
 
@@ -128,18 +128,25 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                                         .setTitle("Switch language")
                                         .setSingleChoiceItems(languageItems, -1, new OnClickListener() {
                                             public void onClick(DialogInterface dialog, int which) {
-                                                if (which == 0) {
-                                                    codeEditor.setEditorLanguage(new UniversalLanguage(new CDescription()));
-                                                } else if (which == 1) {
-                                                    codeEditor.setEditorLanguage(new UniversalLanguage(new CppDescription()));
-                                                } else if (which == 2) {
-                                                    codeEditor.setEditorLanguage(new JavaLanguage());
-                                                } else if (which == 3) {
-                                                    codeEditor.setEditorLanguage(new UniversalLanguage(new JavaScriptDescription()));
-                                                } else if (which == 4) {
-                                                    codeEditor.setEditorLanguage(new PythonLanguage());
-                                                } else if (which == 5) {
-                                                    codeEditor.setEditorLanguage(new EmptyLanguage());
+                                                switch (which) {
+                                                    case 0:
+                                                        codeEditor.setEditorLanguage(new UniversalLanguage(new CDescription()));
+                                                        break;
+                                                    case 1:
+                                                        codeEditor.setEditorLanguage(new UniversalLanguage(new CppDescription()));
+                                                        break;
+                                                    case 2:
+                                                        codeEditor.setEditorLanguage(new JavaLanguage());
+                                                        break;
+                                                    case 3:
+                                                        codeEditor.setEditorLanguage(new UniversalLanguage(new JavaScriptDescription()));
+                                                        break;
+                                                    case 4:
+                                                        codeEditor.setEditorLanguage(new PythonLanguage());
+                                                        break;
+                                                    case 5:
+                                                        codeEditor.setEditorLanguage(new EmptyLanguage());
+                                                        break;
                                                 }
                                                 dialog.dismiss();
                                             }
