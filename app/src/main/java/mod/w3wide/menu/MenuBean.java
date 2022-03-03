@@ -3,6 +3,8 @@ package mod.w3wide.menu;
 import android.net.Uri;
 import android.util.Pair;
 
+import com.besome.sketch.beans.AdTestDeviceBean;
+import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.sketchware.remod.Resources;
@@ -92,13 +94,17 @@ public class MenuBean {
             case "AdUnit":
                 asdAll.a(Resources.drawable.unit_96);
                 asdAll.b("Select an Ad Unit");
-                selectableItems.addAll(AdMobReader.getAdUnits(sc_id));
+                for (AdUnitBean bean : jC.c(sc_id).e.adUnits) {
+                    selectableItems.add(bean.id);
+                }
                 break;
 
             case "TestDevice":
                 asdAll.a(Resources.drawable.ic_test_device_48dp);
                 asdAll.b("Select a Test device");
-                selectableItems.addAll(AdMobReader.getTestDevices(sc_id));
+                for (AdTestDeviceBean testDevice : jC.c(sc_id).e.testDevices) {
+                    selectableItems.add(testDevice.deviceId);
+                }
                 break;
 
             case "IntentKey":
