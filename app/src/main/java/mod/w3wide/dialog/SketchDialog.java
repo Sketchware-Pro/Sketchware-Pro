@@ -5,8 +5,6 @@ import static android.text.TextUtils.isEmpty;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -62,11 +60,11 @@ public class SketchDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(Resources.layout.dialog);
-        initialize(savedInstanceState);
+        initialize();
         initializeLogic();
     }
 
-    private void initialize(Bundle savedInstanceState) {
+    private void initialize() {
         sdialog_root = findViewById(Resources.id.sdialog_root);
         dialog_img = findViewById(Resources.id.dialog_img);
         dialog_title = findViewById(Resources.id.dialog_title);
@@ -111,9 +109,6 @@ public class SketchDialog extends Dialog {
         dialog_btn_no.setText(mNegativeStr);
         dialog_btn_yes.setText(mPostiveStr);
 
-        //applyRippleEffect(dialog_btn_no, 0xffffffff);
-        //applyRippleEffect(dialog_btn_yes, 0xffffffff);
-
         if (mCustomView != null) {
             custom_view.addView(mCustomView);
         } else {
@@ -134,50 +129,32 @@ public class SketchDialog extends Dialog {
         mCustomView = view;
     }
 
-    public void setTitle(String str) {
-        mTitle = str;
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
-    public void setMessage(String str) {
-        mMessage = str;
+    public void setMessage(String message) {
+        mMessage = message;
     }
 
-    public void setMessage(String str, int color) {
-        mMessage = str;
+    public void setMessage(String message, int color) {
+        mMessage = message;
         dialog_msg.setTextColor(color);
     }
 
     public void setPositiveButton(String str, View.OnClickListener listener) {
-        if (str.length() > 0) {
-            mPostiveStr = str;
-        }
+        if (str.length() > 0) mPostiveStr = str;
         mPositiveClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
     public void setNeutralButton(String str, View.OnClickListener listener) {
-        if (!isEmpty(str)) {
-            mNeutralStr = str;
-        }
+        if (!isEmpty(str)) mNeutralStr = str;
         mNeutralClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
     public void setNegativeButton(String str, View.OnClickListener listener) {
-        if (str.length() > 0) {
-            mNegativeStr = str;
-        }
+        if (str.length() > 0) mNegativeStr = str;
         mNegativeClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
-    private void applyRippleEffect(final View view, final int color) {
-        ColorStateList colorStateList = new ColorStateList(new int[][]{
-                new int[]{}
-        }, new int[]{
-                color
-        });
-        RippleDrawable rippleDrawable = new RippleDrawable(colorStateList, null, null);
-        if (!view.isClickable()) {
-            view.setClickable(true);
-        }
-        view.setBackground(rippleDrawable);
-    }
 }
