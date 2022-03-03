@@ -27,12 +27,6 @@ public class SimpleHighlighter {
         init();
     }
 
-    public SimpleHighlighter(EditText editor, List<SyntaxScheme> syntaxList) {
-        this.mEditor = editor;
-        this.syntaxList = syntaxList;
-        init();
-    }
-
     private void init() {
         removeSpans(mEditor.getText(), ForegroundColorSpan.class);
         createHighlightSpans(syntaxList, mEditor.getText());
