@@ -41,8 +41,8 @@ import io.github.rosemoe.editor.widget.EditorColorScheme;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
-import mod.hilal.saif.android_manifest.AppComponentsDialog;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
 
 @SuppressLint("SetTextI18n")
@@ -51,7 +51,7 @@ public class AndroidManifestInjection extends Activity {
     private final ArrayList<HashMap<String, Object>> list_map = new ArrayList<>();
     private ViewGroup base;
     private ListView act_list;
-    private String src_id;
+    private String sc_id;
     private String activityName;
     private AlertDialog.Builder dia;
 
@@ -63,7 +63,7 @@ public class AndroidManifestInjection extends Activity {
         base = (ViewGroup) dump.getParent();
         base.removeView(dump);
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
-            src_id = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
             activityName = getIntent().getStringExtra("file_name").replaceAll(".java", "");
         }
         createToolbar(base);
@@ -81,7 +81,7 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void checkAttrs() {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(src_id).concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         if (FileUtil.isExistFile(path)) {
             ArrayList<HashMap<String, Object>> data = new Gson().fromJson(FileUtil.readFile(path),
                     Helper.TYPE_MAP_LIST);
@@ -95,12 +95,10 @@ public class AndroidManifestInjection extends Activity {
                     }
                 }
             }
-            {
-                HashMap<String, Object> _item = new HashMap<>();
-                _item.put("name", "_application_attrs");
-                _item.put("value", "android:theme=\"@style/AppTheme\"");
-                data.add(_item);
-            }
+            HashMap<String, Object> _item = new HashMap<>();
+            _item.put("name", "_application_attrs");
+            _item.put("value", "android:theme=\"@style/AppTheme\"");
+            data.add(_item);
             FileUtil.writeFile(path, new Gson().toJson(data));
         }
     }
@@ -115,7 +113,7 @@ public class AndroidManifestInjection extends Activity {
         application_skin.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-            intent.putExtra("sc_id", src_id);
+            intent.putExtra("sc_id", sc_id);
             intent.putExtra("file_name", activityName);
             intent.putExtra("type", "application");
             startActivity(intent);
@@ -130,7 +128,7 @@ public class AndroidManifestInjection extends Activity {
             permission_skin.setOnClickListener(_view -> {
                 Intent inta = new Intent();
                 inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                inta.putExtra("sc_id", src_id);
+                inta.putExtra("sc_id", sc_id);
                 inta.putExtra("file_name", activityName);
                 inta.putExtra("type", "permission");
                 startActivity(inta);
@@ -143,7 +141,7 @@ public class AndroidManifestInjection extends Activity {
             permission_card.addView(permission_skin);
             makeup(permission_skin, 0x7f07035b, "Launcher Activity", "Change the default Launcher Activity");
             base.addView(permission_card);
-            permission_skin.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(src_id)));
+            permission_skin.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
         }
 
         CardView allAct_card = newCard(-1, -2, 0);
@@ -154,7 +152,7 @@ public class AndroidManifestInjection extends Activity {
         allAct_skin.setOnClickListener(v -> {
             Intent inta = new Intent();
             inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-            inta.putExtra("sc_id", src_id);
+            inta.putExtra("sc_id", sc_id);
             inta.putExtra("file_name", activityName);
             inta.putExtra("type", "all");
             startActivity(inta);
@@ -231,7 +229,19 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void showAppComponentDialog() {
-        new AppComponentsDialog(this, src_id).show();
+        Intent intent = new Intent();
+        if (ConfigActivity.isLegacyCeEnabled()) {
+            intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
+        } else {
+            intent.setClass(getApplicationContext(), mod.hey.studios.code.SrcCodeEditor.class);
+        }
+
+        String APP_COMPONENTS_PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/app_components.txt");
+        if (!FileUtil.isExistFile(APP_COMPONENTS_PATH)) FileUtil.writeFile(APP_COMPONENTS_PATH, "");
+        intent.putExtra("content", APP_COMPONENTS_PATH);
+        intent.putExtra("xml", "");
+        intent.putExtra("title", "App Components");
+        startActivity(intent);
     }
 
 
@@ -255,7 +265,7 @@ public class AndroidManifestInjection extends Activity {
 
         btnSave.setOnClickListener(v -> {
             create.dismiss();
-            AndroidManifestInjector.setLauncherActivity(src_id, inputValue.getText().toString());
+            AndroidManifestInjector.setLauncherActivity(sc_id, inputValue.getText().toString());
             SketchwareUtil.toast("Saved");
         });
 
@@ -294,7 +304,7 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void addNewActivity(String componentName) {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(src_id).concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         if (FileUtil.isExistFile(path)) {
             data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
@@ -364,17 +374,16 @@ public class AndroidManifestInjection extends Activity {
 
     private void refreshList() {
         list_map.clear();
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(src_id).concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
             data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
-                if (!temp.contains(data.get(i).get("name"))) { //what's so sussy here?? lint says it's sus
+                if (!temp.contains(Objects.requireNonNull(data.get(i).get("name")).toString())) {
                     if (!Objects.requireNonNull(data.get(i).get("name")).equals("_application_attrs") && !Objects.requireNonNull(data.get(i).get("name")).equals("_apply_for_all_activities") && !Objects.requireNonNull(data.get(i).get("name")).equals("_application_permissions")) {
                         temp.add((String) data.get(i).get("name"));
                     }
-
                 }
             }
             for (int i = 0; i < temp.size(); i++) {
@@ -390,7 +399,7 @@ public class AndroidManifestInjection extends Activity {
     private void deleteActivity(int pos) {
 
         String activity_name = (String) list_map.get(pos).get("act_name");
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(src_id).concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<HashMap<String, Object>> data;
         data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         for (int i = data.size() - 1; i > -1; i--) {
@@ -406,7 +415,7 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void removeComponents(String str) {
-        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(src_id).concat("/Injection/androidmanifest/activities_components.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/activities_components.json");
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
             data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
@@ -489,7 +498,7 @@ public class AndroidManifestInjection extends Activity {
         progress.show();
 
         new Thread(() -> {
-            final String l = src_id;
+            final String l = sc_id;
             final String source = new yq(getApplicationContext(), l).getFileSrc("AndroidManifest.xml", jC.b(l), jC.a(l), jC.c(l));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
@@ -578,7 +587,7 @@ public class AndroidManifestInjection extends Activity {
             linearLayout.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                intent.putExtra("sc_id", src_id);
+                intent.putExtra("sc_id", sc_id);
                 intent.putExtra("file_name", (String) _data.get(position).get("act_name"));
                 intent.putExtra("type", "activity");
                 startActivity(intent);

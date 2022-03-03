@@ -55,8 +55,11 @@ import io.github.rosemoe.editor.widget.schemes.SchemeVS2019;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
-///6.3.0
+//6.3.0??
 
+/**
+ * Sora Editor aka Rosemoe Editor
+ */
 public class SrcCodeEditor extends AppCompatActivity {
 
     public static SharedPreferences pref;
