@@ -35,20 +35,15 @@ import mod.hey.studios.util.Helper;
 
 public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements View.OnClickListener {
 
-    public DB A = null;
-    public TestDeviceAdapter testDeviceAdapter;
-    public ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList<>();
-    public LinearLayout p;
-    public LinearLayout switchLayout;
-    public Switch libSwitch;
-    public TextView tvBannerName;
-    public TextView tvBannerId;
-    public TextView tvInterName;
-    public TextView tvInterId;
-    public RecyclerView listTestDevice;
-    public Toolbar toolbar;
-    public Button btnConsole;
-    public ProjectLibraryBean admobLibraryBean;
+    private DB A = null;
+    private TestDeviceAdapter testDeviceAdapter;
+    private ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList<>();
+    private Switch libSwitch;
+    private TextView tvBannerName;
+    private TextView tvBannerId;
+    private TextView tvInterName;
+    private TextView tvInterId;
+    private ProjectLibraryBean admobLibraryBean;
     private final int n = 8001;
     private final int o = 8002;
 
@@ -201,14 +196,15 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.manage_library_manage_admob);
-        p = findViewById(Resources.id.layout_content);
-        toolbar = findViewById(Resources.id.toolbar);
+
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
         a(toolbar);
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().a(Helper.getResString(Resources.string.design_library_admob_title_admob_manager));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+
         A = new DB(this.getApplicationContext(), "P1");
         admobLibraryBean = getIntent().getParcelableExtra("admob");
         ((TextView) findViewById(Resources.id.tv_enable)).setText(Helper.getResString(Resources.string.design_library_settings_title_enabled));
@@ -223,16 +219,20 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         tvBannerName = findViewById(Resources.id.tv_banner_name);
         tvInterId = findViewById(Resources.id.tv_inter_id);
         tvInterName = findViewById(Resources.id.tv_inter_name);
-        listTestDevice = findViewById(Resources.id.list_test_device);
+
+        RecyclerView listTestDevice = findViewById(Resources.id.list_test_device);
         listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
         testDeviceAdapter = new TestDeviceAdapter();
         listTestDevice.setAdapter(testDeviceAdapter);
+
         libSwitch = findViewById(Resources.id.lib_switch);
-        switchLayout = findViewById(Resources.id.layout_switch);
+        LinearLayout switchLayout = findViewById(Resources.id.layout_switch);
         switchLayout.setOnClickListener(this);
-        btnConsole = findViewById(Resources.id.btn_console);
+
+        Button btnConsole = findViewById(Resources.id.btn_console);
         btnConsole.setText(Helper.getResString(Resources.string.design_library_admob_button_goto_console));
         btnConsole.setOnClickListener(this);
+
         configure();
     }
 
@@ -315,7 +315,6 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     }
 
     public class TestDeviceAdapter extends RecyclerView.a<TestDeviceAdapter.ViewHolder> {
-        public int index = -1;
 
         @Override
         public int a() {
@@ -334,14 +333,15 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         }
 
         public class ViewHolder extends RecyclerView.v {
-            public TextView tvDeviceId;
-            public ImageView imageView;
+
+            private final TextView tvDeviceId;
 
             public ViewHolder(View view) {
                 super(view);
                 tvDeviceId = view.findViewById(Resources.id.tv_device_id);
-                imageView = view.findViewById(Resources.id.img_delete);
-                imageView.setVisibility(View.GONE);
+                ImageView imgDelete = view.findViewById(Resources.id.img_delete);
+
+                imgDelete.setVisibility(View.GONE);
             }
         }
     }
