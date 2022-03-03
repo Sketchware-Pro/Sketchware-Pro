@@ -41,7 +41,7 @@ public class SketchDialog extends Dialog {
     //Defaults Strings
     public String mTitle = "";
     public String mMessage = "";
-    public String mPostiveStr = "Ok";
+    public String mPositiveStr = "Ok";
     public String mNegativeStr = "Cancel";
     public String mNeutralStr = "";
     //View.OnClickListener
@@ -107,7 +107,7 @@ public class SketchDialog extends Dialog {
         dialog_msg.setVisibility(mMessage.length() == 0 ? View.GONE : View.VISIBLE);
 
         dialog_btn_no.setText(mNegativeStr);
-        dialog_btn_yes.setText(mPostiveStr);
+        dialog_btn_yes.setText(mPositiveStr);
 
         if (mCustomView != null) {
             custom_view.addView(mCustomView);
@@ -143,7 +143,7 @@ public class SketchDialog extends Dialog {
     }
 
     public void setPositiveButton(String str, View.OnClickListener listener) {
-        if (str.length() > 0) mPostiveStr = str;
+        if (str.length() > 0) mPositiveStr = str;
         mPositiveClick = listener == null ? Helper.getDialogDismissListener(this) : listener;
     }
 
