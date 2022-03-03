@@ -965,6 +965,7 @@ public class yq {
         a(projectLibraryManager, projectFileManager, projectDataManager, false);
         boolean isJavaFile = filename.endsWith(".java");
         boolean isXmlFile = filename.endsWith(".xml");
+        boolean isManifestFile = filename.equals("AndroidManifest.xml");
         ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
         files.addAll(new ArrayList<>(projectFileManager.c()));
 
@@ -975,6 +976,12 @@ public class yq {
             for (ProjectFileBean file : files) {
                 CommandBlock.CBForXml(new Jx(N, file, projectDataManager).a());
             }
+        }
+
+        if (isManifestFile) {
+            Ix ix = new Ix(N, projectFileManager.b());
+            ix.setYq(this);
+            return CommandBlock.applyCommands("AndroidManifest.xml", ix.a());
         }
 
         for (ProjectFileBean file : files) {
