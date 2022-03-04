@@ -18,11 +18,9 @@ import mod.hey.studios.util.Helper;
 
 public class ManageCompatActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public Toolbar toolbar;
-    public LinearLayout switchLayout;
-    public Switch libSwitch;
-    public ProjectLibraryBean compatLibraryBean;
-    public ProjectLibraryBean firebaseLibraryBean;
+    private Switch libSwitch;
+    private ProjectLibraryBean compatLibraryBean;
+    private ProjectLibraryBean firebaseLibraryBean;
 
     private void showFirebaseNeedDisableDialog() {
         aB dialog = new aB(this);
@@ -55,15 +53,8 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
+        compatLibraryBean.useYn = libSwitch.isChecked() ? "Y" : "N";
         Intent intent = new Intent();
-        String useYn;
-        if (libSwitch.isChecked()) {
-            useYn = "Y";
-        } else {
-            useYn = "N";
-        }
-
-        compatLibraryBean.useYn = useYn;
         intent.putExtra("compat", compatLibraryBean);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
@@ -90,7 +81,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.manage_library_manage_compat);
 
-        toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
         a(toolbar);
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().a(Helper.getResString(Resources.string.design_library_title_appcompat_and_design));
@@ -100,7 +91,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
 
         compatLibraryBean = getIntent().getParcelableExtra("compat");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
-        switchLayout = findViewById(Resources.id.layout_switch);
+        LinearLayout switchLayout = findViewById(Resources.id.layout_switch);
         switchLayout.setOnClickListener(this);
         libSwitch = findViewById(Resources.id.lib_switch);
         ((TextView) findViewById(Resources.id.tv_desc)).setText(Helper.getResString(Resources.string.design_library_appcompat_description));
