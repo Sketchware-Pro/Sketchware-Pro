@@ -393,6 +393,8 @@ public class Resources {
         public static final int makeblock_view = 0x7f080300;
         public static final int menu_admob_help = 0x7f080309;
         public static final int menu_admob_settings = 0x7f08030a;
+        public static final int menu_firebase_help = 0x7f080313;
+        public static final int menu_firebase_settings = 0x7f080314;
         public static final int menu_list = 0x7f08031f;
         public static final int menu_login = 0x7f080322;
         public static final int menu_mypage = 0x7f080326;
@@ -451,9 +453,11 @@ public class Resources {
         public static final int toolbar = 0x7f080467;
         public static final int tv_activity_name = 0x7f080477;
         public static final int tv_advanced_settings = 0x7f08047b;
+        public static final int tv_api_key = 0x7f080483;
         public static final int tv_apk_path = 0x7f080485;
         public static final int tv_apk_url = 0x7f080486;
         public static final int tv_apk_url_expire = 0x7f080487;
+        public static final int tv_app_id = 0x7f080488;
         public static final int tv_banner_id = 0x7f08048f;
         public static final int tv_banner_name = 0x7f080491;
         public static final int tv_block_collection = 0x7f080494;
@@ -484,14 +488,18 @@ public class Resources {
         public static final int tv_menu_name = 0x7f08052c;
         public static final int tv_name = 0x7f080537;
         public static final int tv_progress = 0x7f080557;
+        public static final int tv_project_id = 0x7f080559;
         public static final int tv_release_note = 0x7f080577;
         public static final int tv_root_title = 0x7f080589;
         public static final int tv_shared_blocks = 0x7f08059e;
         public static final int tv_slogan = 0x7f0805a8;
         public static final int tv_src_path = 0x7f0805ac;
         public static final int tv_stoast = 0x7f0805b4;
+        public static final int tv_storage_url = 0x7f0805b5;
         public static final int tv_sub_title = 0x7f0805b6;
         public static final int tv_title = 0x7f0805c3;
+        public static final int tv_title_api_key = 0x7f0805c5;
+        public static final int tv_title_app_id = 0x7f0805c7;
         public static final int tv_title_banner = 0x7f0805c9;
         public static final int tv_title_banner_id = 0x7f0805ca;
         public static final int tv_title_banner_name = 0x7f0805cb;
@@ -500,6 +508,8 @@ public class Resources {
         public static final int tv_title_inter = 0x7f0805dc;
         public static final int tv_title_inter_id = 0x7f0805dd;
         public static final int tv_title_inter_name = 0x7f0805de;
+        public static final int tv_title_project_id = 0x7f0805e8;
+        public static final int tv_title_storage_url = 0x7f0805f1;
         public static final int tv_title_test_device = 0x7f0805f6;
         public static final int tv_user_name = 0x7f08060c;
         public static final int tv_value = 0x7f08060e;
@@ -689,6 +699,7 @@ public class Resources {
         public static final int manage_library_base_item = 0x7f0b00d1;
         public static final int manage_library_manage_admob = 0x7f0b00d9;
         public static final int manage_library_manage_compat = 0x7f0b00da;
+        public static final int manage_library_manage_firebase = 0x7f0b00db;
         public static final int manage_library_setting_admob_test_device_item = 0x7f0b00e3;
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
         public static final int myproject_button = 0x7f0b00fc;
@@ -754,6 +765,7 @@ public class Resources {
         public static final int design_menu = 0x7f0c0002;
         public static final int main_menu = 0x7f0c0009;
         public static final int manage_admob_menu = 0x7f0c000a;
+        public static final int manage_firebase_menu = 0x7f0c000c;
         public static final int moreblock_menu = 0x7f0c0013;
         public static final int popup_menu_double = 0x7f0c001d;
     }
@@ -873,10 +885,17 @@ public class Resources {
         public static final int design_library_admob_title_interstitial = 0x7f0e04ed;
         public static final int design_library_appcompat_description = 0x7f0e04ef;
         public static final int design_library_appcompat_need_firebase_disable = 0x7f0e04f0;
+        public static final int design_library_firebase_button_goto_firebase_console = 0x7f0e04f7;
         public static final int design_library_firebase_description_about_firebase = 0x7f0e04fb;
+        public static final int design_library_firebase_dialog_description_confirm_uncheck_firebase = 0x7f0e04fe;
         public static final int design_library_firebase_guide_path_example = 0x7f0e04ff;
         public static final int design_library_firebase_guide_setup_first = 0x7f0e0500;
         public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
+        public static final int design_library_firebase_title_api_key = 0x7f0e050f;
+        public static final int design_library_firebase_title_app_id = 0x7f0e0510;
+        public static final int design_library_firebase_title_firebase_manager = 0x7f0e0513;
+        public static final int design_library_firebase_title_project_id = 0x7f0e0516;
+        public static final int design_library_firebase_title_storage_bucket_url = 0x7f0e0517;
         public static final int design_library_guide_setup_first = 0x7f0e051c;
         public static final int design_library_message_confirm_uncheck_appcompat_and_design = 0x7f0e051d;
         public static final int design_library_message_slow_down_compilation_time = 0x7f0e051f;
