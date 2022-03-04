@@ -688,6 +688,7 @@ public class Resources {
         public static final int manage_font_add = 0x7f0b00c1;
         public static final int manage_library_base_item = 0x7f0b00d1;
         public static final int manage_library_manage_admob = 0x7f0b00d9;
+        public static final int manage_library_manage_compat = 0x7f0b00da;
         public static final int manage_library_setting_admob_test_device_item = 0x7f0b00e3;
         public static final int manage_screen_activity_add_view_preset_setting = 0x7f0b00e9;
         public static final int myproject_button = 0x7f0b00fc;
@@ -870,12 +871,17 @@ public class Resources {
         public static final int design_library_admob_title_admob_manager = 0x7f0e04eb;
         public static final int design_library_admob_title_banner = 0x7f0e04ec;
         public static final int design_library_admob_title_interstitial = 0x7f0e04ed;
+        public static final int design_library_appcompat_description = 0x7f0e04ef;
+        public static final int design_library_appcompat_need_firebase_disable = 0x7f0e04f0;
         public static final int design_library_firebase_description_about_firebase = 0x7f0e04fb;
         public static final int design_library_firebase_guide_path_example = 0x7f0e04ff;
         public static final int design_library_firebase_guide_setup_first = 0x7f0e0500;
         public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
         public static final int design_library_guide_setup_first = 0x7f0e051c;
+        public static final int design_library_message_confirm_uncheck_appcompat_and_design = 0x7f0e051d;
+        public static final int design_library_message_slow_down_compilation_time = 0x7f0e051f;
         public static final int design_library_settings_title_enabled = 0x7f0e0521;
+        public static final int design_library_title_appcompat_and_design = 0x7f0e0523;
         public static final int design_manager_block_detail_actionbar_title = 0x7f0e0525;
         public static final int design_manager_block_hint_enter_block_name = 0x7f0e0526;
         public static final int design_manager_message_edit_complete = 0x7f0e053f;
