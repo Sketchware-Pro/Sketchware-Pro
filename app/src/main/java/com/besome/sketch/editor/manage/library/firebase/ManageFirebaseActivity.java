@@ -27,16 +27,13 @@ import mod.hey.studios.util.Helper;
 
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    public LinearLayout switchLayout;
-    public Switch libSwitch;
-    public TextView tvProjectId;
-    public TextView tvAppId;
-    public TextView tvApiKey;
-    public TextView tvStorageUrl;
-    public Toolbar toolbar;
-    public Button btnConsole;
-    public DB s = null;
-    public ProjectLibraryBean firebaseLibraryBean;
+    private Switch libSwitch;
+    private TextView tvProjectId;
+    private TextView tvAppId;
+    private TextView tvApiKey;
+    private TextView tvStorageUrl;
+    private DB s = null;
+    private ProjectLibraryBean firebaseLibraryBean;
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         firebaseLibraryBean = libraryBean;
@@ -133,7 +130,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                 break;
 
             case Resources.id.layout_switch:
-                libSwitch.setChecked(libSwitch.isChecked() ^ true);
+                libSwitch.setChecked(!libSwitch.isChecked());
                 if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
                     configureLibraryDialog();
                 } else {
@@ -147,29 +144,33 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.manage_library_manage_firebase);
 
-        toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
         a(toolbar);
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(super.e, Resources.string.design_library_firebase_title_firebase_manager));
+        d().a(xB.b().a(this, Resources.string.design_library_firebase_title_firebase_manager));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         s = new DB(getApplicationContext(), "P1");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
-        switchLayout = findViewById(Resources.id.layout_switch);
+        LinearLayout switchLayout = findViewById(Resources.id.layout_switch);
         switchLayout.setOnClickListener(this);
         libSwitch = findViewById(Resources.id.lib_switch);
         ((TextView) findViewById(Resources.id.tv_enable)).setText(Helper.getResString(Resources.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(Resources.id.tv_title_project_id)).setText(xB.b().a(super.e, Resources.string.design_library_firebase_title_project_id));
-        ((TextView) findViewById(Resources.id.tv_title_app_id)).setText(xB.b().a(super.e, Resources.string.design_library_firebase_title_app_id));
-        ((TextView) findViewById(Resources.id.tv_title_api_key)).setText(xB.b().a(super.e, Resources.string.design_library_firebase_title_api_key));
-        ((TextView) findViewById(Resources.id.tv_title_storage_url)).setText(xB.b().a(super.e, Resources.string.design_library_firebase_title_storage_bucket_url));
+        ((TextView) findViewById(Resources.id.tv_title_project_id)).setText(
+                xB.b().a(this, Resources.string.design_library_firebase_title_project_id));
+        ((TextView) findViewById(Resources.id.tv_title_app_id)).setText(
+                xB.b().a(this, Resources.string.design_library_firebase_title_app_id));
+        ((TextView) findViewById(Resources.id.tv_title_api_key)).setText(
+                xB.b().a(this, Resources.string.design_library_firebase_title_api_key));
+        ((TextView) findViewById(Resources.id.tv_title_storage_url)).setText(
+                xB.b().a(this, Resources.string.design_library_firebase_title_storage_bucket_url));
         tvProjectId = findViewById(Resources.id.tv_project_id);
         tvAppId = findViewById(Resources.id.tv_app_id);
         tvApiKey = findViewById(Resources.id.tv_api_key);
         tvStorageUrl = findViewById(Resources.id.tv_storage_url);
-        btnConsole = findViewById(Resources.id.btn_console);
+        Button btnConsole = findViewById(Resources.id.btn_console);
         btnConsole.setText(Helper.getResString(Resources.string.design_library_firebase_button_goto_firebase_console));
         btnConsole.setOnClickListener(this);
         configure();
