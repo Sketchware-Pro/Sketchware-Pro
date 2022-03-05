@@ -340,8 +340,6 @@ public class SrcCodeEditor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.code_editor_hs);
 
-        ResHelper.isInASD = false;
-
         initialize();
         initializeLogic();
     }

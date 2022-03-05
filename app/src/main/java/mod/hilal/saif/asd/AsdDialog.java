@@ -34,7 +34,6 @@ import io.github.rosemoe.editor.langs.python.PythonLanguage;
 import io.github.rosemoe.editor.langs.universal.UniversalLanguage;
 import io.github.rosemoe.editor.widget.CodeEditor;
 import mod.SketchwareUtil;
-import mod.hey.studios.code.ResHelper;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 
@@ -60,7 +59,6 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.code_editor_hs);
-        ResHelper.isInASD = true;
         codeEditor = findViewById(Resources.id.editor);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
         codeEditor.setOverScrollEnabled(false);
