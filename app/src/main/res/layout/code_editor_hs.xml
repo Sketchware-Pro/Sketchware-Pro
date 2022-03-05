@@ -74,7 +74,7 @@
             android:src="@drawable/ic_more_vert_white_24dp" />
     </LinearLayout>
 
-    <io.github.rosemoe.editor.widget.CodeEditor
+    <io.github.rosemoe.sora.widget.CodeEditor
         android:id="@id/editor"
         style="@style/AppTheme.Et"
         android:layout_width="match_parent"

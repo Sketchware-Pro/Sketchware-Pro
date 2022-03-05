@@ -4,7 +4,7 @@ import android.view.View;
 
 import com.besome.sketch.editor.LogicEditorActivity;
 
-import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.CodeEditor;
 import mod.SketchwareUtil;
 
 public class AsdHandlerCodeEditorCancel implements View.OnClickListener {
