@@ -38,20 +38,15 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import io.github.rosemoe.editor.interfaces.EditorLanguage;
-import io.github.rosemoe.editor.langs.EmptyLanguage;
-import io.github.rosemoe.editor.langs.desc.CDescription;
-import io.github.rosemoe.editor.langs.desc.CppDescription;
-import io.github.rosemoe.editor.langs.desc.JavaScriptDescription;
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.langs.universal.UniversalLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
-import io.github.rosemoe.editor.widget.EditorColorScheme;
-import io.github.rosemoe.editor.widget.schemes.SchemeDarcula;
-import io.github.rosemoe.editor.widget.schemes.SchemeEclipse;
-import io.github.rosemoe.editor.widget.schemes.SchemeGitHub;
-import io.github.rosemoe.editor.widget.schemes.SchemeNotepadXX;
-import io.github.rosemoe.editor.widget.schemes.SchemeVS2019;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+import io.github.rosemoe.sora.widget.schemes.SchemeEclipse;
+import io.github.rosemoe.sora.widget.schemes.SchemeGitHub;
+import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX;
+import io.github.rosemoe.sora.widget.schemes.SchemeVS2019;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 
@@ -76,7 +71,7 @@ public class SrcCodeEditor extends AppCompatActivity {
 
         ed.setTextSize(text_size);
         ed.setWordwrap(word_wrap);
-        ed.setAutoCompletionEnabled(auto_c);
+        ed.getComponent(EditorAutoCompletion.class).setEnabled(auto_c);
     }
 
     public static void selectTheme(CodeEditor ed, int which) {
@@ -355,11 +350,6 @@ public class SrcCodeEditor extends AppCompatActivity {
         setTitle(getIntent().getStringExtra("title"));
 
         editor.setTypefaceText(Typeface.MONOSPACE);
-        //6.3.0 fix1
-        editor.setOverScrollEnabled(false);
-
-        //Removed temporarily
-        //editor.setEdgeEnabled(false);
 
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
 
@@ -476,42 +466,7 @@ public class SrcCodeEditor extends AppCompatActivity {
                 break;
 
             case "Switch language":
-                new AlertDialog.Builder(SrcCodeEditor.this)
-                        .setTitle("Switch language")
-                        .setSingleChoiceItems(new String[]{"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1,
-                                (dialog, which) -> {
-                                    EditorLanguage editorLanguage;
-
-                                    switch (which) {
-                                        default:
-                                        case 0:
-                                            editorLanguage = new UniversalLanguage(new CDescription());
-                                            break;
-
-                                        case 1:
-                                            editorLanguage = new UniversalLanguage(new CppDescription());
-                                            break;
-
-                                        case 2:
-                                            editorLanguage = new JavaLanguage();
-                                            break;
-
-                                        case 3:
-                                            editorLanguage = new UniversalLanguage(new JavaScriptDescription());
-                                            break;
-
-                                        case 4:
-                                            editorLanguage = new EmptyLanguage();
-                                            break;
-                                    }
-
-                                    editor.setEditorLanguage(editorLanguage);
-
-                                    dialog.dismiss();
-                                }
-                        )
-                        .setNegativeButton(Resources.string.common_word_cancel, null)
-                        .show();
+                SketchwareUtil.toast("Currently not supported, sorry!");
                 break;
 
             case "Find & Replace":
@@ -544,7 +499,7 @@ public class SrcCodeEditor extends AppCompatActivity {
             case "Auto complete":
                 item.setChecked(!item.isChecked());
 
-                editor.setAutoCompletionEnabled(item.isChecked());
+                editor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
                 pref.edit().putBoolean("act_ac", item.isChecked()).apply();
                 break;
 

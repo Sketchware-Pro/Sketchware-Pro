@@ -5,7 +5,7 @@ import android.view.View;
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import a.a.a.Ss;
-import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.CodeEditor;
 import mod.SketchwareUtil;
 
 public class AsdHandlerCodeEditor implements View.OnClickListener {
