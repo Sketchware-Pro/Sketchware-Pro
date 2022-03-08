@@ -14,14 +14,9 @@ import android.widget.PopupMenu;
 import com.sketchware.remod.Resources;
 
 import a.a.a.bB;
-import io.github.rosemoe.editor.interfaces.EditorLanguage;
-import io.github.rosemoe.editor.langs.EmptyLanguage;
-import io.github.rosemoe.editor.langs.desc.CDescription;
-import io.github.rosemoe.editor.langs.desc.CppDescription;
-import io.github.rosemoe.editor.langs.desc.JavaScriptDescription;
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.langs.universal.UniversalLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 //6.3.0
@@ -43,10 +38,6 @@ public class SrcCodeEditorDialog {
 
         editor = ed.findViewById(Resources.id.editor);
         editor.setTypefaceText(Typeface.MONOSPACE);
-        editor.setOverScrollEnabled(true);
-
-        // Temporarily removed
-        //editor.setEdgeEnabled(false);
 
         editor.setEditorLanguage(new JavaLanguage());
         editor.setText("");
@@ -126,40 +117,7 @@ public class SrcCodeEditorDialog {
                 break;
 
             case "Switch language":
-                new AlertDialog.Builder(c)
-                        .setTitle("Switch language")
-                        .setSingleChoiceItems(new String[] {"C", "C++", "Java", "JavaScript", /*"S5droid",*/ "None"}, -1, (dialog, which) -> {
-                                    EditorLanguage editorLanguage;
-
-                                    switch (which) {
-                                        default:
-                                        case 0:
-                                            editorLanguage = new UniversalLanguage(new CDescription());
-                                            break;
-
-                                        case 1:
-                                            editorLanguage = new UniversalLanguage(new CppDescription());
-                                            break;
-
-                                        case 2:
-                                            editorLanguage = new JavaLanguage();
-                                            break;
-
-                                        case 3:
-                                            editorLanguage = new UniversalLanguage(new JavaScriptDescription());
-                                            break;
-
-                                        case 4:
-                                            editorLanguage = new EmptyLanguage();
-                                            break;
-                                    }
-
-                                    editor.setEditorLanguage(editorLanguage);
-                                    dialog.dismiss();
-                                }
-                        )
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .show();
+                SketchwareUtil.toast("Currently not supported, sorry!");
                 break;
 
             case "Find & Replace":

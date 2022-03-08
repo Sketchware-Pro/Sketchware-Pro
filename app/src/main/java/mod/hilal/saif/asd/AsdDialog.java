@@ -25,16 +25,10 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.sketchware.remod.Resources;
 
 import a.a.a.Ss;
-import io.github.rosemoe.editor.langs.EmptyLanguage;
-import io.github.rosemoe.editor.langs.desc.CDescription;
-import io.github.rosemoe.editor.langs.desc.CppDescription;
-import io.github.rosemoe.editor.langs.desc.JavaScriptDescription;
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.langs.python.PythonLanguage;
-import io.github.rosemoe.editor.langs.universal.UniversalLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import mod.SketchwareUtil;
-import mod.hey.studios.code.ResHelper;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 
@@ -60,11 +54,8 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.code_editor_hs);
-        ResHelper.isInASD = true;
         codeEditor = findViewById(Resources.id.editor);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
-        codeEditor.setOverScrollEnabled(false);
-        /* codeEditor.setEdgeEnabled(false); */
         codeEditor.setEditorLanguage(new JavaLanguage());
         codeEditor.setText(str);
         SrcCodeEditor.loadCESettings(act, codeEditor, "dlg");
@@ -116,41 +107,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                                 break;
 
                             case "Switch language":
-                                String[] languageItems = new String[]{
-                                        "C",
-                                        "C++",
-                                        "Java",
-                                        "JavaScript",
-                                        "Python",
-                                        "None"
-                                };
-                                new AlertDialog.Builder(act)
-                                        .setTitle("Switch language")
-                                        .setSingleChoiceItems(languageItems, -1, new OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                switch (which) {
-                                                    case 0:
-                                                        codeEditor.setEditorLanguage(new UniversalLanguage(new CDescription()));
-                                                        break;
-                                                    case 1:
-                                                        codeEditor.setEditorLanguage(new UniversalLanguage(new CppDescription()));
-                                                        break;
-                                                    case 2:
-                                                        codeEditor.setEditorLanguage(new JavaLanguage());
-                                                        break;
-                                                    case 3:
-                                                        codeEditor.setEditorLanguage(new UniversalLanguage(new JavaScriptDescription()));
-                                                        break;
-                                                    case 4:
-                                                        codeEditor.setEditorLanguage(new PythonLanguage());
-                                                        break;
-                                                    case 5:
-                                                        codeEditor.setEditorLanguage(new EmptyLanguage());
-                                                        break;
-                                                }
-                                                dialog.dismiss();
-                                            }
-                                        }).setNegativeButton(Resources.string.common_word_cancel, null).show();
+                                SketchwareUtil.toast("Currently not supported, sorry!");
                                 break;
 
                             case "Find & Replace":
@@ -202,7 +159,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
 
                             case "Auto complete":
                                 item.setChecked(!item.isChecked());
-                                codeEditor.setAutoCompletionEnabled(item.isChecked());
+                                codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
                                 pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
                                 break;
 

@@ -8,19 +8,17 @@ import android.graphics.Typeface;
 
 import com.sketchware.remod.Resources;
 
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
-import io.github.rosemoe.editor.widget.EditorColorScheme;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 
 public class SourceCodeDialog {
 
     public static void show(Context context, String code) {
         CodeEditor codeEditor = new CodeEditor(context);
-        codeEditor.setAutoCompletionEnabled(false);
         codeEditor.setColorScheme(new EditorColorScheme());
         codeEditor.setEditable(false);
         codeEditor.setEditorLanguage(new JavaLanguage());
-        codeEditor.setOverScrollEnabled(false);
         codeEditor.setText(code);
         codeEditor.setTextSize(12);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
