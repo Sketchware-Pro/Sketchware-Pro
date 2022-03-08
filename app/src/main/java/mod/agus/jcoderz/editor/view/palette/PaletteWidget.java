@@ -26,100 +26,106 @@ import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
 public class PaletteWidget {
 
     public static View a(String str, String str2, String str3, Context context) {
-        if (str2.equals("DatePicker")) {
-            return new IconDatePicker(context);
+        switch (str2) {
+            case "DatePicker":
+                return new IconDatePicker(context);
+
+            case "RatingBar":
+                return new IconRatingBar(context);
+
+            case "SearchView":
+                return new IconSearchView(context);
+
+            case "DigitalClock":
+                return new IconDigitalClock(context);
+
+            case "RadioButton":
+                return new IconRadioButton(context);
+
+            case "GridView":
+                return new IconGridView(context);
+
+            case "AutoCompleteTextView":
+                return new IconAutoCompleteTextView(context);
+
+            case "MultiAutoCompleteTextView":
+                return new IconMultiAutoCompleteTextView(context);
+
+            case "VideoView":
+                return new IconVideoView(context);
+
+            case "TimePicker":
+                return new IconTimePicker(context);
+
+            case "AnalogClock":
+                return new IconAnalogClock(context);
+
+            case "ViewPager":
+                return new IconViewPager(context);
+
+            case "BadgeView":
+                return new IconBadgeView(context);
+
+            case "PatternLockView":
+                return new IconPatternLockView(context);
+
+            case "WaveSideBar":
+                return new IconWaveSideBar(context);
+
+            case "SignInButton":
+                return new IconGoogleSignInButton(context);
+
+            case "MaterialButton":
+                return new IconMaterialButton(context);
+
+            case "CircleImageView":
+                return new IconCircleImageView(context);
+
+            case "LottieAnimation":
+                return new IconLottieAnimation(context);
+
+            case "YoutubePlayer":
+                return new IconYoutubePlayer(context);
+
+            case "OTPView":
+                return new IconOTPView(context);
+
+            case "CodeView":
+                return new IconCodeView(context);
+
+            case "RecyclerView":
+                return new IconRecyclerView(context);
+
+            default:
+                return null;
         }
-        if (str2.equals("RatingBar")) {
-            return new IconRatingBar(context);
-        }
-        if (str2.equals("SearchView")) {
-            return new IconSearchView(context);
-        }
-        if (str2.equals("DigitalClock")) {
-            return new IconDigitalClock(context);
-        }
-        if (str2.equals("RadioButton")) {
-            return new IconRadioButton(context);
-        }
-        if (str2.equals("GridView")) {
-            return new IconGridView(context);
-        }
-        if (str2.equals("AutoCompleteTextView")) {
-            return new IconAutoCompleteTextView(context);
-        }
-        if (str2.equals("MultiAutoCompleteTextView")) {
-            return new IconMultiAutoCompleteTextView(context);
-        }
-        if (str2.equals("VideoView")) {
-            return new IconVideoView(context);
-        }
-        if (str2.equals("TimePicker")) {
-            return new IconTimePicker(context);
-        }
-        if (str2.equals("AnalogClock")) {
-            return new IconAnalogClock(context);
-        }
-        if (str2.equals("ViewPager")) {
-            return new IconViewPager(context);
-        }
-        if (str2.equals("BadgeView")) {
-            return new IconBadgeView(context);
-        }
-        if (str2.equals("PatternLockView")) {
-            return new IconPatternLockView(context);
-        }
-        if (str2.equals("WaveSideBar")) {
-            return new IconWaveSideBar(context);
-        }
-        if (str2.equals("SignInButton")) {
-            return new IconGoogleSignInButton(context);
-        }
-        if (str2.equals("MaterialButton")) {
-            return new IconMaterialButton(context);
-        }
-        if (str2.equals("CircleImageView")) {
-            return new IconCircleImageView(context);
-        }
-        if (str2.equals("LottieAnimation")) {
-            return new IconLottieAnimation(context);
-        }
-        if (str2.equals("YoutubePlayer")) {
-            return new IconYoutubePlayer(context);
-        }
-        if (str2.equals("OTPView")) {
-            return new IconOTPView(context);
-        }
-        if (str2.equals("CodeView")) {
-            return new IconCodeView(context);
-        }
-        if (str2.equals("RecyclerView")) {
-            return new IconRecyclerView(context);
-        }
-        return null;
     }
 
     public static View b(Context context, String str, String str2) {
-        if (str2.equals("TabLayout")) {
-            return new IconTabLayout(context);
+        switch (str2) {
+            case "TabLayout":
+                return new IconTabLayout(context);
+
+            case "BottomNavigationView":
+                return new IconBottomNavigationView(context);
+
+            case "CollapsingToolbarLayout":
+                return new IconCollapsingToolbar(context);
+
+            case "SwipeRefreshLayout":
+                return new IconSwipeRefreshLayout(context);
+
+            case "RadioGroup":
+                return new IconRadioGroup(context);
+
+            case "CardView":
+                return new IconCardView(context);
+
+            case "TextInputLayout":
+                return new IconTextInputLayout(context);
+
+            default:
+                return null;
         }
-        if (str2.equals("BottomNavigationView")) {
-            return new IconBottomNavigationView(context);
-        }
-        if (str2.equals("CollapsingToolbarLayout")) {
-            return new IconCollapsingToolbar(context);
-        }
-        if (str2.equals("SwipeRefreshLayout")) {
-            return new IconSwipeRefreshLayout(context);
-        }
-        if (str2.equals("RadioGroup")) {
-            return new IconRadioGroup(context);
-        }
-        if (str2.equals("CardView")) {
-            return new IconCardView(context);
-        }
-        if (str2.equals("TextInputLayout")) {
-            return new IconTextInputLayout(context);
-        }
-        return null;
     }
 }
