@@ -70,6 +70,7 @@ import a.a.a.yB;
 import a.a.a.yq;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
+import kellinwood.security.zipsigner.optional.LoadKeystoreException;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -992,9 +993,18 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     }
                 }
             } catch (Throwable throwable) {
-                Log.e("AppExporter", throwable.getMessage(), throwable);
-                runOnUiThread(() ->
-                        ExportProjectActivity.this.b(Log.getStackTraceString(throwable)));
+                if (throwable instanceof LoadKeystoreException &&
+                        "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
+                    runOnUiThread(() -> ExportProjectActivity.this.b(
+                            "Either an incorrect password was entered, " +
+                                    "or your key store is corrupted."));
+                } else {
+                    Log.e("AppExporter", throwable.getMessage(), throwable);
+                    runOnUiThread(() ->
+                            ExportProjectActivity.this.b(Log.getStackTraceString(throwable)));
+                }
+
+                cancel(true);
             }
         }
 
