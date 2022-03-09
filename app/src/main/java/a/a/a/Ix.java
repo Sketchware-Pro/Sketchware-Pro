@@ -43,10 +43,10 @@ public class Ix {
     /**
      * Adds FileProvider metadata to AndroidManifest.
      *
-     * @param nx AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link Nx} object
      * @return The {@code provider} {@link Nx} tag
      */
-    public final Nx a(Nx nx) {
+    public final Nx writeFileProvider(Nx applicationTag) {
         Nx providerTag = new Nx("provider");
         providerTag.a("android", "authorities", c.a + ".provider");
         providerTag.a("android", "name", "androidx.core.content.FileProvider");
@@ -56,15 +56,15 @@ public class Ix {
         metadataTag.a("android", "name", "android.support.FILE_PROVIDER_PATHS");
         metadataTag.a("android", "resource", "@xml/provider_paths");
         providerTag.a(metadataTag);
-        nx.a(providerTag);
+        applicationTag.a(providerTag);
         return providerTag;
     }
 
     /**
      * Adds a permission to AndroidManifest.
      *
-     * @param nx  AndroidManifest {@link Nx} object
-     * @param str The {@code uses-permission} {@link Nx} tag
+     * @param manifestTag    AndroidManifest {@link Nx} object
+     * @param permissionName The {@code uses-permission} {@link Nx} tag
      */
     public final void writePermission(Nx manifestTag, String permissionName) {
         Nx usesPermissionTag = new Nx("uses-permission");
@@ -75,16 +75,16 @@ public class Ix {
     /**
      * Adds Firebase metadata to AndroidManifest.
      *
-     * @param nx AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link Nx} object
      * @return The {@code provider} {@link Nx} tag
      */
-    public final Nx b(Nx nx) {
+    public final Nx writeFirebaseMetaData(Nx applicationTag) {
         Nx providerTag = new Nx("provider");
         providerTag.a("android", "name", "com.google.firebase.provider.FirebaseInitProvider");
         providerTag.a("android", "authorities", c.a + ".firebaseinitprovider");
         providerTag.a("android", "exported", "false");
         providerTag.a("android", "initOrder", "100");
-        nx.a(providerTag);
+        applicationTag.a(providerTag);
         Nx serviceTag = new Nx("service");
         serviceTag.a("android", "name", "com.google.firebase.components.ComponentDiscoveryService");
         serviceTag.a("android", "exported", "false");
@@ -107,82 +107,82 @@ public class Ix {
             serviceTag.a(metadataTag);
         }
         ConstVarManifest.handleMetadata(serviceTag, c.x);
-        nx.a(serviceTag);
+        applicationTag.a(serviceTag);
         return providerTag;
     }
 
     /**
      * Adds the Google Maps SDK API key metadata to AndroidManifest.
      *
-     * @param nx AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link Nx} object
      * @return The {@code meta-data} {@link Nx} tag
      */
-    public final Nx writeGoogleMapMetaData(Nx nx) {
+    public final Nx writeGoogleMapMetaData(Nx applicationTag) {
         Nx metadataTag = new Nx("meta-data");
         metadataTag.a("android", "name", "com.google.android.geo.API_KEY");
         metadataTag.a("android", "value", "@string/google_maps_key");
-        nx.a(metadataTag);
+        applicationTag.a(metadataTag);
         return metadataTag;
     }
 
     /**
      * Specifies in AndroidManifest that the app uses Apache HTTP legacy library.
      *
-     * @param nx AndroidManifest {@link Nx} object
+     * @param applicationTag AndroidManifest {@link Nx} object
      * @return The {@code uses-library} {@link Nx} tag
      */
-    public final Nx d(Nx nx) {
+    public final Nx writeLegacyLibrary(Nx applicationTag) {
         Nx usesLibraryTag = new Nx("uses-library");
         usesLibraryTag.a("android", "name", "org.apache.http.legacy");
         usesLibraryTag.a("android", "required", "false");
-        nx.a(usesLibraryTag);
+        applicationTag.a(usesLibraryTag);
         return usesLibraryTag;
     }
 
     /**
      * Adds metadata about the GMS library version (a resource integer).
      *
-     * @param nx {@link Nx} object to add the {@code meta-data} tag to
+     * @param applicationTag {@link Nx} object to add the {@code meta-data} tag to
      * @return The {@code meta-data} {@link Nx} object
      */
-    public final Nx writeGMSVersion(Nx nx) {
+    public final Nx writeGMSVersion(Nx applicationTag) {
         Nx metadataTag = new Nx("meta-data");
         metadataTag.a("android", "name", "com.google.android.gms.version");
         metadataTag.a("android", "value", "@integer/google_play_services_version");
-        nx.a(metadataTag);
+        applicationTag.a(metadataTag);
         return metadataTag;
     }
 
     /**
      * Registers a {@link BroadcastReceiver} in AndroidManifest.
      *
-     * @param nx            AndroidManifest {@link Nx} object
-     * @param componentName The component name of the broadcast
+     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param receiverName  The component name of the broadcast
      * @see ComponentName
      */
-    public final void writeBroadcast(Nx nx, String componentName) {
+    public final void writeBroadcast(Nx applicationTag, String receiverName) {
         Nx receiverTag = new Nx("receiver");
-        receiverTag.a("android", "name", componentName);
+        receiverTag.a("android", "name", receiverName);
         Nx intentFilterTag = new Nx("intent-filter");
         Nx actionTag = new Nx("action");
-        actionTag.a("android", "name", componentName);
+        actionTag.a("android", "name", receiverName);
         intentFilterTag.a(actionTag);
         receiverTag.a(intentFilterTag);
-        nx.a(receiverTag);
+        applicationTag.a(receiverTag);
     }
 
-    private void writeAdmobAppId(Nx nx) {
+    private void writeAdmobAppId(Nx applicationTag) {
         Nx metadataTag = new Nx("meta-data");
         metadataTag.a("android", "name", "com.google.android.gms.ads.APPLICATION_ID");
         metadataTag.a("android", "value", c.appId);
-        nx.a(metadataTag);
+        applicationTag.a(metadataTag);
     }
 
     /**
      * Registers a {@link Service} in AndroidManifest.
      *
-     * @param nx  AndroidManifest {@link Nx} object
-     * @param str The component name of the service
+     * @param applicationTag AndroidManifest {@link Nx} object
+     * @param serviceName    The component name of the service
      */
     public final void writeService(Nx applicationTag, String serviceName) {
         Nx serviceTag = new Nx("service");
@@ -340,10 +340,10 @@ public class Ix {
             writeGMSVersion(applicationTag);
         }
         if (c.h) {
-            b(applicationTag);
+            writeFirebaseMetaData(applicationTag);
         }
         if (c.u) {
-            a(applicationTag);
+            writeFileProvider(applicationTag);
         }
         if (c.l && !TextUtils.isEmpty(c.appId)) {
             writeAdmobAppId(applicationTag);
@@ -354,13 +354,13 @@ public class Ix {
         ConstVarManifest.handleBgTaskComponent(applicationTag, c.x);
         if (FileUtil.isExistFile(fpu.getManifestJava(c.sc_id))) {
             ArrayList<HashMap<String, Object>> activityAttrs = getActivityAttrs();
-            for (String s : frc.getJavaManifestList()) {
-                writeJava(applicationTag, s, activityAttrs);
+            for (String activityName : frc.getJavaManifestList()) {
+                writeJava(applicationTag, activityName, activityAttrs);
             }
         }
         if (buildSettings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_FALSE)) {
-            d(applicationTag);
+            writeLegacyLibrary(applicationTag);
         }
         if (FileUtil.isExistFile(fpu.getManifestService(c.sc_id))) {
             for (String serviceName : frc.getServiceManifestList()) {
@@ -368,19 +368,19 @@ public class Ix {
             }
         }
         if (FileUtil.isExistFile(fpu.getManifestBroadcast(c.sc_id))) {
-            for (String s : frc.getBroadcastManifestList()) {
-                writeBroadcast(applicationTag, s);
+            for (String receiverName : frc.getBroadcastManifestList()) {
+                writeBroadcast(applicationTag, receiverName);
             }
         }
         a.a(applicationTag);
         return AndroidManifestInjector.mHolder(a.b(), c.sc_id);
     }
 
-    public final void writeJava(Nx nx, String activityName, ArrayList<HashMap<String, Object>> arrayList) {
+    public final void writeJava(Nx applicationTag, String activityName, ArrayList<HashMap<String, Object>> activityAttrs) {
         Nx activityTag = new Nx("activity");
         boolean specifiedActivityName = false;
         boolean specifiedConfigChanges = false;
-        for (HashMap<String, Object> hashMap : arrayList) {
+        for (HashMap<String, Object> hashMap : activityAttrs) {
             if (hashMap.containsKey("name") && hashMap.containsKey("value")) {
                 Object nameObject = hashMap.get("name");
                 Object valueObject = hashMap.get("value");
@@ -404,7 +404,7 @@ public class Ix {
         if (!specifiedConfigChanges) {
             activityTag.a("android", "configChanges", "orientation|screenSize");
         }
-        nx.a(activityTag);
+        applicationTag.a(activityTag);
     }
 
     public ArrayList<HashMap<String, Object>> getActivityAttrs() {
