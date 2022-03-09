@@ -11,30 +11,6 @@ import a.a.a.Nx;
  */
 public class EditorManifest {
 
-    public static void writeAttrIntentFilter(Nx activityTag, HashMap<String, ArrayList<String>> arguments) {
-        Nx intentFilterTag = new Nx("intent-filter");
-        Nx intentFilterActionTag = new Nx("action");
-        intentFilterActionTag.a("android", "name", "android.intent.action.VIEW");
-        Nx intentFilterCategoryDefaultTag = new Nx("category");
-        intentFilterCategoryDefaultTag.a("android", "name", "android.intent.category.DEFAULT");
-        Nx intentFilterCategoryBrowsableTag = new Nx("category");
-        intentFilterCategoryBrowsableTag.a("android", "name", "android.intent.category.BROWSABLE");
-        Nx intentFilterDataTag = new Nx("data");
-        if (arguments.size() > 0) {
-            intentFilterDataTag.a("android", "host", arguments.get("FirebaseDynamicLink setDataHost").get(0));
-        }
-        if (arguments.size() > 1) {
-            intentFilterDataTag.a("android", "scheme", arguments.get("FirebaseDynamicLink setDataHost").get(1));
-        }
-        intentFilterTag.a(intentFilterActionTag);
-        intentFilterTag.a(intentFilterCategoryDefaultTag);
-        intentFilterTag.a(intentFilterCategoryBrowsableTag);
-        if (arguments.size() != 0) {
-            intentFilterTag.a(intentFilterDataTag);
-        }
-        activityTag.a(intentFilterTag);
-    }
-
     public static void writeDefFCM(Nx applicationTag) {
         Nx firebaseMessagingServiceTag = new Nx("service");
         firebaseMessagingServiceTag.a("android", "name", "com.google.firebase.messaging.FirebaseMessagingService");
