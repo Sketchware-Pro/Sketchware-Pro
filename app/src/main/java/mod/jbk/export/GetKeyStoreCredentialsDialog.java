@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -25,6 +26,8 @@ public class GetKeyStoreCredentialsDialog {
     private final aB dialog;
     private CredentialsReceiver receiver;
 
+    private CheckBox signOrNot;
+    private final LinearLayout inputContainer;
     private TextInputLayout tilAlias;
     private EditText alias;
     private TextInputLayout tilPassword;
@@ -40,47 +43,73 @@ public class GetKeyStoreCredentialsDialog {
         dialog.a(Helper.getResString(Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.b(Helper.getResString(Resources.string.common_word_next), next -> {
-            // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
-            if (new File(wq.j()).exists()) {
-                boolean aliasEmpty = TextUtils.isEmpty(alias.getText().toString());
-                boolean passwordEmpty = TextUtils.isEmpty(password.getText().toString());
-                boolean algorithmEmpty = TextUtils.isEmpty(signingAlgorithm.getText().toString());
+            if (signOrNot.isChecked()) {
+                // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
+                if (new File(wq.j()).exists()) {
+                    boolean aliasEmpty = TextUtils.isEmpty(alias.getText().toString());
+                    boolean passwordEmpty = TextUtils.isEmpty(password.getText().toString());
+                    boolean algorithmEmpty = TextUtils.isEmpty(signingAlgorithm.getText().toString());
 
-                if (aliasEmpty) {
-                    tilAlias.setError("Alias can't be empty");
-                } else {
-                    tilAlias.setError(null);
-                }
-                if (passwordEmpty) {
-                    tilPassword.setError("Password can't be empty");
-                } else {
-                    tilPassword.setError(null);
-                }
-                if (algorithmEmpty) {
-                    tilSigningAlgorithm.setError("Algorithm can't be empty");
-                } else {
-                    tilSigningAlgorithm.setError(null);
-                }
+                    if (aliasEmpty) {
+                        tilAlias.setError("Alias can't be empty");
+                    } else {
+                        tilAlias.setError(null);
+                    }
+                    if (passwordEmpty) {
+                        tilPassword.setError("Password can't be empty");
+                    } else {
+                        tilPassword.setError(null);
+                    }
+                    if (algorithmEmpty) {
+                        tilSigningAlgorithm.setError("Algorithm can't be empty");
+                    } else {
+                        tilSigningAlgorithm.setError(null);
+                    }
 
-                if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
-                    dialog.dismiss();
+                    if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
+                        dialog.dismiss();
 
-                    receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString(),
-                            password.getText().toString(), alias.getText().toString(), password.getText().toString()));
+                        receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString(),
+                                password.getText().toString(), alias.getText().toString(), password.getText().toString()));
+                    }
+                } else {
+                    SketchwareUtil.toastError("Keystore not found");
                 }
             } else {
-                SketchwareUtil.toastError("Keystore not found");
+                dialog.dismiss();
+
+                receiver.gotCredentials(null);
             }
         });
 
-        LinearLayout inputContainer = new LinearLayout(activity);
-        inputContainer.setOrientation(LinearLayout.VERTICAL);
-        inputContainer.setPadding(
+        LinearLayout contentView = new LinearLayout(activity);
+        contentView.setOrientation(LinearLayout.VERTICAL);
+        contentView.setPadding(
                 dpToPx(4),
                 0,
                 dpToPx(4),
                 0
         );
+
+        signOrNot = new CheckBox(activity);
+        signOrNot.setChecked(true);
+        signOrNot.setText("Sign file");
+        signOrNot.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            tilAlias.setEnabled(isChecked);
+            tilPassword.setEnabled(isChecked);
+            tilSigningAlgorithm.setEnabled(isChecked);
+        });
+        contentView.addView(signOrNot);
+
+        inputContainer = new LinearLayout(activity);
+        inputContainer.setOrientation(LinearLayout.VERTICAL);
+        inputContainer.setPadding(
+                dpToPx(12),
+                dpToPx(12),
+                dpToPx(12),
+                dpToPx(12)
+        );
+        contentView.addView(inputContainer);
 
         tilAlias = new TextInputLayout(activity);
         alias = new EditText(activity);
@@ -109,7 +138,7 @@ public class GetKeyStoreCredentialsDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         inputContainer.addView(tilSigningAlgorithm);
 
-        dialog.a(inputContainer);
+        dialog.a(contentView);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
@@ -123,6 +152,10 @@ public class GetKeyStoreCredentialsDialog {
     }
 
     public interface CredentialsReceiver {
+        /**
+         * @param credentials The {@link Credentials} object made from user input.
+         *                    May be null. In that case, the user disabled signing the file.
+         */
         void gotCredentials(Credentials credentials);
     }
 
