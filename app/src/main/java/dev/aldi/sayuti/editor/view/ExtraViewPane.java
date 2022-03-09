@@ -15,7 +15,6 @@ import com.besome.sketch.editor.view.ViewPane;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import a.a.a.bB;
 import a.a.a.kC;
@@ -23,18 +22,24 @@ import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 
 public class ExtraViewPane {
     public static void a(View view, ViewBean viewBean, ViewPane viewPane, kC kCVar) {
-        String lastPath = getLastPath(viewBean.convert);
-        if (lastPath.equals("SearchView")) {
-            a((EditText) view, viewBean);
-        }
-        if (lastPath.equals("AutoCompleteTextView")) {
-            b((AutoCompleteTextView) view, viewBean);
-        }
-        if (lastPath.equals("MultiAutoCompleteTextView")) {
-            c((MultiAutoCompleteTextView) view, viewBean);
-        }
-        if (lastPath.equals("CircleImageView") && viewBean.type == 43) {
-            d((ItemCircleImageView) view, viewBean, viewPane, kCVar);
+        switch (getLastPath(viewBean.convert)) {
+            case "SearchView":
+                a((EditText) view, viewBean);
+                break;
+
+            case "AutoCompleteTextView":
+                b((AutoCompleteTextView) view, viewBean);
+                break;
+
+            case "MultiAutoCompleteTextView":
+                c((MultiAutoCompleteTextView) view, viewBean);
+                break;
+
+            case "CircleImageView":
+                if (viewBean.type == 43) {
+                    d((ItemCircleImageView) view, viewBean, viewPane, kCVar);
+                }
+                break;
         }
     }
 
@@ -69,30 +74,28 @@ public class ExtraViewPane {
             }
         }
         itemCircleImageView.setScaleType(ImageView.ScaleType.valueOf("CENTER_CROP"));
-        Iterator it = new ArrayList(Arrays.asList(viewBean.inject.split("\n"))).iterator();
-        while (it.hasNext()) {
-            String str = (String) it.next();
-            if (str.contains("border_color")) {
-                str = str.replaceAll("app:civ_border_color=\"|\"", "");
+        for (String splitLine : new ArrayList<>(Arrays.asList(viewBean.inject.split("\n")))) {
+            if (splitLine.contains("border_color")) {
+                splitLine = splitLine.replaceAll("app:civ_border_color=\"|\"", "");
                 try {
-                    itemCircleImageView.setBorderColor(Color.parseColor(str));
+                    itemCircleImageView.setBorderColor(Color.parseColor(splitLine));
                 } catch (Exception e2) {
                     itemCircleImageView.setBorderColor(Color.parseColor("#FF008DCD"));
                     bB.a(viewPane.getContext(), "Invalid border color!", 0).show();
                 }
             }
-            if (str.contains("background_color")) {
-                str = str.replaceAll("app:civ_circle_background_color=\"|\"", "");
+            if (splitLine.contains("background_color")) {
+                splitLine = splitLine.replaceAll("app:civ_circle_background_color=\"|\"", "");
                 try {
-                    itemCircleImageView.setCircleBackgroundColor(Color.parseColor(str));
+                    itemCircleImageView.setCircleBackgroundColor(Color.parseColor(splitLine));
                 } catch (Exception e3) {
                     itemCircleImageView.setBorderColor(Color.parseColor("#FF008DCD"));
                     bB.a(viewPane.getContext(), "Invalid backgroud color!", 0).show();
                 }
             }
-            if (str.contains("border_width")) {
+            if (splitLine.contains("border_width")) {
                 try {
-                    itemCircleImageView.setBorderWidth(Integer.valueOf(str.replaceAll("app:civ_border_width=\"|dp\"", "")).intValue());
+                    itemCircleImageView.setBorderWidth(Integer.parseInt(splitLine.replaceAll("app:civ_border_width=\"|dp\"", "")));
                 } catch (Exception e4) {
                     itemCircleImageView.setBorderWidth(3);
                 }
