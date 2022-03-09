@@ -66,10 +66,10 @@ public class Ix {
      * @param nx  AndroidManifest {@link Nx} object
      * @param str The {@code uses-permission} {@link Nx} tag
      */
-    public final void a(Nx nx, String str) {
+    public final void writePermission(Nx manifestTag, String permissionName) {
         Nx usesPermissionTag = new Nx("uses-permission");
-        usesPermissionTag.a("android", "name", str);
-        nx.a(usesPermissionTag);
+        usesPermissionTag.a("android", "name", permissionName);
+        manifestTag.a(usesPermissionTag);
     }
 
     /**
@@ -117,7 +117,7 @@ public class Ix {
      * @param nx AndroidManifest {@link Nx} object
      * @return The {@code meta-data} {@link Nx} tag
      */
-    public final Nx c(Nx nx) {
+    public final Nx writeGoogleMapMetaData(Nx nx) {
         Nx metadataTag = new Nx("meta-data");
         metadataTag.a("android", "name", "com.google.android.geo.API_KEY");
         metadataTag.a("android", "value", "@string/google_maps_key");
@@ -145,7 +145,7 @@ public class Ix {
      * @param nx {@link Nx} object to add the {@code meta-data} tag to
      * @return The {@code meta-data} {@link Nx} object
      */
-    public final Nx e(Nx nx) {
+    public final Nx writeGMSVersion(Nx nx) {
         Nx metadataTag = new Nx("meta-data");
         metadataTag.a("android", "name", "com.google.android.gms.version");
         metadataTag.a("android", "value", "@integer/google_play_services_version");
@@ -188,11 +188,11 @@ public class Ix {
      * @param nx  AndroidManifest {@link Nx} object
      * @param str The component name of the service
      */
-    public final void writeService(Nx nx, String str) {
+    public final void writeService(Nx applicationTag, String serviceName) {
         Nx serviceTag = new Nx("service");
-        serviceTag.a("android", "name", str);
+        serviceTag.a("android", "name", serviceName);
         serviceTag.a("android", "enabled", "true");
-        nx.a(serviceTag);
+        applicationTag.a(serviceTag);
     }
 
     public void setYq(yq yqVar) {
@@ -210,19 +210,19 @@ public class Ix {
 
         if (!c.a()) {
             if (c.b(jq.PERMISSION_CALL_PHONE)) {
-                a(a, Manifest.permission.CALL_PHONE);
+                writePermission(a, Manifest.permission.CALL_PHONE);
             }
             if (c.b(jq.PERMISSION_INTERNET)) {
-                a(a, Manifest.permission.INTERNET);
+                writePermission(a, Manifest.permission.INTERNET);
             }
             if (c.b(jq.PERMISSION_VIBRATE)) {
-                a(a, Manifest.permission.VIBRATE);
+                writePermission(a, Manifest.permission.VIBRATE);
             }
             if (c.b(jq.PERMISSION_ACCESS_NETWORK_STATE)) {
-                a(a, Manifest.permission.ACCESS_NETWORK_STATE);
+                writePermission(a, Manifest.permission.ACCESS_NETWORK_STATE);
             }
             if (c.b(jq.PERMISSION_CAMERA)) {
-                a(a, Manifest.permission.CAMERA);
+                writePermission(a, Manifest.permission.CAMERA);
             }
             if (c.b(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
                 try {
@@ -231,27 +231,27 @@ public class Ix {
                     }
                 } catch (NumberFormatException ignored) {
                 }
-                a(a, Manifest.permission.READ_EXTERNAL_STORAGE);
+                writePermission(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (c.b(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
-                a(a, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                writePermission(a, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
             if (c.b(jq.PERMISSION_RECORD_AUDIO)) {
-                a(a, Manifest.permission.RECORD_AUDIO);
+                writePermission(a, Manifest.permission.RECORD_AUDIO);
             }
             if (c.b(jq.PERMISSION_BLUETOOTH)) {
-                a(a, Manifest.permission.BLUETOOTH);
+                writePermission(a, Manifest.permission.BLUETOOTH);
             }
             if (c.b(jq.PERMISSION_BLUETOOTH_ADMIN)) {
-                a(a, Manifest.permission.BLUETOOTH_ADMIN);
+                writePermission(a, Manifest.permission.BLUETOOTH_ADMIN);
             }
             if (c.b(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
-                a(a, Manifest.permission.ACCESS_FINE_LOCATION);
+                writePermission(a, Manifest.permission.ACCESS_FINE_LOCATION);
             }
         }
         if (FileUtil.isExistFile(fpu.getPathPermission(c.sc_id))) {
             for (String s : frc.getPermissionList()) {
-                a(a, s);
+                writePermission(a, s);
             }
         }
         ConstVarManifest.handlePermissionComponent(a, c.x);
@@ -341,7 +341,7 @@ public class Ix {
             applicationTag.a(activityTag);
         }
         if (c.h || c.l || c.m) {
-            e(applicationTag);
+            writeGMSVersion(applicationTag);
         }
         if (c.h) {
             b(applicationTag);
@@ -353,7 +353,7 @@ public class Ix {
             writeAdmobAppId(applicationTag);
         }
         if (c.m) {
-            c(applicationTag);
+            writeGoogleMapMetaData(applicationTag);
         }
         ConstVarManifest.handleBgTaskComponent(applicationTag, c.x);
         if (FileUtil.isExistFile(fpu.getManifestJava(c.sc_id))) {
@@ -367,8 +367,8 @@ public class Ix {
             d(applicationTag);
         }
         if (FileUtil.isExistFile(fpu.getManifestService(c.sc_id))) {
-            for (String s : frc.getServiceManifestList()) {
-                writeService(applicationTag, s);
+            for (String serviceName : frc.getServiceManifestList()) {
+                writeService(applicationTag, serviceName);
             }
         }
         if (FileUtil.isExistFile(fpu.getManifestBroadcast(c.sc_id))) {
