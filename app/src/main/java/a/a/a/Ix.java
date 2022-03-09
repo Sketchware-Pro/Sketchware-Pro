@@ -153,10 +153,6 @@ public class Ix {
         return metadataTag;
     }
 
-    public void f(Nx nx) {
-        ConstVarManifest.handleAttrComponent(nx, c.x);
-    }
-
     /**
      * Registers a {@link BroadcastReceiver} in AndroidManifest.
      *
@@ -307,7 +303,7 @@ public class Ix {
                         activityTag.a("android", "screenOrientation", "landscape");
                     }
                 }
-                f(activityTag);
+                ConstVarManifest.handleAttrComponent(activityTag, c.x);
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
                     if (keyboardSetting.length() > 0) {
