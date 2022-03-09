@@ -487,13 +487,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                     BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                     task.enableAppBundleBuild();
-                    task.configureResultJarSigning(
-                            wq.j(),
-                            credentials.getKeyStorePassword().toCharArray(),
-                            credentials.getKeyAlias(),
-                            credentials.getKeyPassword().toCharArray(),
-                            credentials.getSigningAlgorithm()
-                    );
+                    if (credentials != null) {
+                        task.configureResultJarSigning(
+                                wq.j(),
+                                credentials.getKeyStorePassword().toCharArray(),
+                                credentials.getKeyAlias(),
+                                credentials.getKeyPassword().toCharArray(),
+                                credentials.getSigningAlgorithm()
+                        );
+                    } else {
+                    }
                     task.execute();
                 });
                 credentialsDialog.show();
@@ -612,13 +615,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 loading_sign_apk.j();
 
                 BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
-                task.configureResultJarSigning(
-                        wq.j(),
-                        credentials.getKeyStorePassword().toCharArray(),
-                        credentials.getKeyAlias(),
-                        credentials.getKeyPassword().toCharArray(),
-                        credentials.getSigningAlgorithm()
-                );
+                if (credentials != null) {
+                    task.configureResultJarSigning(
+                            wq.j(),
+                            credentials.getKeyStorePassword().toCharArray(),
+                            credentials.getKeyAlias(),
+                            credentials.getKeyPassword().toCharArray(),
+                            credentials.getSigningAlgorithm()
+                    );
+                } else {
+                    task.disableResultJarSigning();
+                }
                 task.execute();
             });
             credentialsDialog.show();
@@ -770,11 +777,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         public iI g = new iI();
         public String h = null;
         private boolean buildingAppBundle = false;
-        private String signingKeystorePath = "";
-        private char[] signingKeystorePassword = new char[0];
-        private String signingAliasName = "";
-        private char[] signingAliasPassword = new char[0];
-        private String signingAlgorithm = "";
+        private String signingKeystorePath = null;
+        private char[] signingKeystorePassword = null;
+        private String signingAliasName = null;
+        private char[] signingAliasPassword = null;
+        private String signingAlgorithm = null;
         private boolean signWithTestkey = false;
 
         public BuildingAsyncTask(Context context) {
@@ -823,7 +830,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
                 project_metadata.c();
-                project_metadata.d();
+                File outputFile = new File(getCorrectResultFilename(project_metadata.I));
+                if (outputFile.exists()) {
+                    if (!outputFile.delete()) {
+                        throw new IllegalStateException("Couldn't delete file " + outputFile.getAbsolutePath());
+                    }
+                }
                 project_metadata.c(a);
                 if (d) {
                     cancel(true);
@@ -935,17 +947,21 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
                         signer.signZip(createdBundlePath, outputPath);
                     } else {
-                        Security.addProvider(new BouncyCastleProvider());
-                        CustomKeySigner.signZip(
-                                new ZipSigner(),
-                                signingKeystorePath,
-                                signingKeystorePassword,
-                                signingAliasName,
-                                signingAliasPassword,
-                                signingAlgorithm,
-                                createdBundlePath,
-                                outputPath
-                        );
+                        if (isResultJarSigningEnabled()) {
+                            Security.addProvider(new BouncyCastleProvider());
+                            CustomKeySigner.signZip(
+                                    new ZipSigner(),
+                                    signingKeystorePath,
+                                    signingKeystorePassword,
+                                    signingAliasName,
+                                    signingAliasPassword,
+                                    signingAlgorithm,
+                                    createdBundlePath,
+                                    outputPath
+                            );
+                        } else {
+                            FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
+                        }
                     }
                 } else {
                     publishProgress("Building APK...");
@@ -968,7 +984,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
                         signer.signZip(c.f.alignedApkPath, c.f.I);
                     } else {
-                        c.b(new String(signingKeystorePassword), signingAliasName, signingAlgorithm);
+                        if (isResultJarSigningEnabled()) {
+                            c.b(new String(signingKeystorePassword), signingAliasName, signingAlgorithm);
+                        } else {
+                            FileUtil.copyFile(c.f.G, getCorrectResultFilename(c.f.I));
+                        }
                     }
                 }
             } catch (Throwable throwable) {
@@ -1037,11 +1057,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();
-            if (project_metadata.g()) {
-                f(project_metadata.d + "_release.apk");
+
+            if (new File(getCorrectResultFilename(project_metadata.I)).exists()) {
+                f(getCorrectResultFilename(project_metadata.d + "_release.apk"));
             }
 
-            String aabFilename = project_metadata.d + ".aab";
+            String aabFilename = getCorrectResultFilename(project_metadata.d + ".aab");
             if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(),
                     "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
                 aB dialog = new aB(ExportProjectActivity.this);
@@ -1079,6 +1100,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             buildingAppBundle = true;
         }
 
+        /**
+         * Configures parameters for JAR signing the result.
+         * <p></p>
+         * If {@link #signWithTestkey} is <code>true</code> though, the result will be signed
+         * regardless of {@link #configureResultJarSigning(String, char[], String, char[], String)} and {@link #disableResultJarSigning()} calls.
+         */
         public void configureResultJarSigning(String keystorePath, char[] keystorePassword, String aliasName, char[] aliasPassword, String signatureAlgorithm) {
             signingKeystorePath = keystorePath;
             signingKeystorePassword = keystorePassword;
@@ -1093,6 +1120,36 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         public void setSignWithTestkey(boolean signWithTestkey) {
             this.signWithTestkey = signWithTestkey;
+        }
+
+        /**
+         * Disables JAR signing of the result. Equivalent to calling {@link #configureResultJarSigning(String, char[], String, char[], String)}
+         * with <code>null</code> parameters.
+         * <p></p>
+         * If {@link #signWithTestkey} is <code>true</code> though, the result will be signed
+         * regardless of {@link #configureResultJarSigning(String, char[], String, char[], String)} and {@link #disableResultJarSigning()} calls.
+         */
+        public void disableResultJarSigning() {
+            signingKeystorePath = null;
+            signingKeystorePassword = null;
+            signingAliasName = null;
+            signingAliasPassword = null;
+            signingAlgorithm = null;
+        }
+
+        public boolean isResultJarSigningEnabled() {
+            return signingKeystorePath != null && signingKeystorePassword != null &&
+                    signingAliasName != null && signingAliasPassword != null && signingAlgorithm != null;
+        }
+
+        private String getCorrectResultFilename(String oldFormatFilename) {
+            if (buildingAppBundle && !isResultJarSigningEnabled()) {
+                return oldFormatFilename.replace(".aab", ".unsigned.aab");
+            } else if (!buildingAppBundle && !isResultJarSigningEnabled()) {
+                return oldFormatFilename.replace("_release", "_release.unsigned");
+            } else {
+                return oldFormatFilename;
+            }
         }
     }
 
