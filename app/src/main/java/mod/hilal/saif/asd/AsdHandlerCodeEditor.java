@@ -10,25 +10,24 @@ import mod.SketchwareUtil;
 
 public class AsdHandlerCodeEditor implements View.OnClickListener {
 
-    public final boolean b;
-    public final String content;
-    public final AsdDialog asdDialog;
-    public final LogicEditorActivity logicEditorActivity;
-    public final CodeEditor codeEditor;
-    public final Ss ss;
+    private final boolean enteringNumber;
+    private final AsdDialog asdDialog;
+    private final LogicEditorActivity logicEditorActivity;
+    private final CodeEditor codeEditor;
+    private final Ss ss;
 
-    public AsdHandlerCodeEditor(LogicEditorActivity logicEditorActivity, String str, boolean z, Ss ss, AsdDialog asdDialog, CodeEditor codeEditor) {
+    public AsdHandlerCodeEditor(LogicEditorActivity logicEditorActivity, boolean enteringNumber, Ss ss, AsdDialog asdDialog, CodeEditor codeEditor) {
         this.logicEditorActivity = logicEditorActivity;
-        content = str;
-        b = z;
+        this.enteringNumber = enteringNumber;
         this.ss = ss;
         this.asdDialog = asdDialog;
         this.codeEditor = codeEditor;
     }
 
+    @Override
     public void onClick(View v) {
         String content = codeEditor.getText().toString();
-        if (b) {
+        if (enteringNumber) {
             try {
                 double parseDouble = Double.parseDouble(content);
                 if (Double.isNaN(parseDouble) || Double.isInfinite(parseDouble)) {

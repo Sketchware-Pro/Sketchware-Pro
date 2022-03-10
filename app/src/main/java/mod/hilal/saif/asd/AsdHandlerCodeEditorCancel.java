@@ -2,23 +2,20 @@ package mod.hilal.saif.asd;
 
 import android.view.View;
 
-import com.besome.sketch.editor.LogicEditorActivity;
-
 import io.github.rosemoe.sora.widget.CodeEditor;
 import mod.SketchwareUtil;
 
 public class AsdHandlerCodeEditorCancel implements View.OnClickListener {
 
-    public final CodeEditor codeEditor;
-    public final AsdDialog asdDialog;
-    public final LogicEditorActivity logicEditorActivity;
+    private final CodeEditor codeEditor;
+    private final AsdDialog asdDialog;
 
-    public AsdHandlerCodeEditorCancel(LogicEditorActivity logicEditorActivity, CodeEditor codeEditor, AsdDialog asdDialog) {
+    public AsdHandlerCodeEditorCancel(CodeEditor codeEditor, AsdDialog asdDialog) {
         this.codeEditor = codeEditor;
         this.asdDialog = asdDialog;
-        this.logicEditorActivity = logicEditorActivity;
     }
 
+    @Override
     public void onClick(View v) {
         SketchwareUtil.hideKeyboard(codeEditor);
         asdDialog.dismiss();
