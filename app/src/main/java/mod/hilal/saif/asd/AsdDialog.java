@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -34,16 +33,14 @@ import mod.hey.studios.util.Helper;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
 
-    static SharedPreferences pref;
-    public Activity act;
-    public ViewGroup base;
-    public TextView cancel;
-    public View.OnClickListener cancel_l = null;
-    public CodeEditor codeEditor;
-    public TextView save;
-    public View.OnClickListener save_l = null;
-    public String str;
-    LinearLayout lin;
+    private static SharedPreferences pref;
+    private final Activity act;
+    private ViewGroup base;
+    private TextView cancel;
+    private CodeEditor codeEditor;
+    private TextView save;
+    private String str;
+    private LinearLayout lin;
 
     public AsdDialog(Activity activity) {
         super(activity);
@@ -54,127 +51,111 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.code_editor_hs);
+
         codeEditor = findViewById(Resources.id.editor);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
         codeEditor.setEditorLanguage(new JavaLanguage());
         codeEditor.setText(str);
         SrcCodeEditor.loadCESettings(act, codeEditor, "dlg");
         pref = SrcCodeEditor.pref;
+
         ImageView redo = findViewById(Resources.id.menu_view_redo);
-        redo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                codeEditor.undo();
-            }
-        });
+        redo.setOnClickListener(v -> codeEditor.undo());
         ImageView undo = findViewById(Resources.id.menu_view_undo);
-        undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                codeEditor.redo();
-            }
-        });
+        undo.setOnClickListener(v -> codeEditor.redo());
         ImageView more = findViewById(Resources.id.more);
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(act, v);
-                populateMenu(popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        String charSequence = item.getTitle().toString();
-                        switch (charSequence) {
-                            case "Pretty print":
-                                StringBuilder sb = new StringBuilder();
-                                String[] split = codeEditor.getText().toString().split("\n");
-                                for (String s : split) {
-                                    String trim = (s + "X").trim();
-                                    sb.append(trim.substring(0, trim.length() - 1));
-                                    sb.append("\n");
-                                }
-                                boolean failed = false;
-                                String code = sb.toString();
-                                try {
-                                    code = SrcCodeEditor.j(code);
-                                } catch (Exception e) {
-                                    failed = true;
-                                    SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
-                                }
-                                if (!failed) {
-                                    codeEditor.setText(code);
-                                }
-                                break;
-
-                            case "Switch language":
-                                SketchwareUtil.toast("Currently not supported, sorry!");
-                                break;
-
-                            case "Find & Replace":
-                                codeEditor.getSearcher().stopSearch();
-                                codeEditor.beginSearchMode();
-                                break;
-
-                            case "Switch theme":
-                                String[] themeItems = new String[]{
-                                        "Default",
-                                        "GitHub",
-                                        "Eclipse",
-                                        "Dracula",
-                                        "VS2019",
-                                        "NotepadXX"
-                                };
-                                new AlertDialog.Builder(act)
-                                        .setTitle("Switch theme")
-                                        .setSingleChoiceItems(
-                                                themeItems, -1, new OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        SrcCodeEditor.selectTheme(codeEditor, which);
-                                                        AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
-                                                        if (isDark()) {
-                                                            lin.setBackgroundColor(Color.parseColor("#FF292929"));
-                                                            save.setBackground(new DialogButtonGradientDrawable()
-                                                                    .getIns((int) getDip(4), 0, -13421773, -13421773));
-                                                            cancel.setBackground(new DialogButtonGradientDrawable()
-                                                                    .getIns((int) getDip(4), 0, -13421773, -13421773));
-                                                        } else {
-                                                            lin.setBackgroundColor(-1);
-                                                            save.setBackground(new DialogButtonGradientDrawable()
-                                                                    .getIns((int) getDip(4), 0, -14575885, -14575885));
-                                                            cancel.setBackground(new DialogButtonGradientDrawable()
-                                                                    .getIns((int) getDip(4), 0, -14575885, -14575885));
-                                                        }
-                                                        dialog.dismiss();
-                                                    }
-                                                })
-                                        .setNegativeButton(Resources.string.common_word_cancel, null)
-                                        .show();
-                                break;
-
-                            case "Word wrap":
-                                item.setChecked(!item.isChecked());
-                                codeEditor.setWordwrap(item.isChecked());
-                                pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
-                                break;
-
-                            case "Auto complete":
-                                item.setChecked(!item.isChecked());
-                                codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
-                                pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
-                                break;
-
-                            case "Paste":
-                                codeEditor.setText(SrcCodeEditor.paste(act));
-                                break;
-
-                            default:
-                                return false;
+        more.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(act, v);
+            populateMenu(popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                String charSequence = item.getTitle().toString();
+                switch (charSequence) {
+                    case "Pretty print":
+                        StringBuilder sb = new StringBuilder();
+                        String[] split = codeEditor.getText().toString().split("\n");
+                        for (String s : split) {
+                            String trim = (s + "X").trim();
+                            sb.append(trim.substring(0, trim.length() - 1));
+                            sb.append("\n");
                         }
-                        return true;
-                    }
-                });
-                popupMenu.show();
-            }
+                        boolean failed = false;
+                        String code = sb.toString();
+                        try {
+                            code = SrcCodeEditor.j(code);
+                        } catch (Exception e) {
+                            failed = true;
+                            SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
+                        }
+                        if (!failed) {
+                            codeEditor.setText(code);
+                        }
+                        break;
+
+                    case "Switch language":
+                        SketchwareUtil.toast("Currently not supported, sorry!");
+                        break;
+
+                    case "Find & Replace":
+                        codeEditor.getSearcher().stopSearch();
+                        codeEditor.beginSearchMode();
+                        break;
+
+                    case "Switch theme":
+                        String[] themeItems = new String[]{
+                                "Default",
+                                "GitHub",
+                                "Eclipse",
+                                "Dracula",
+                                "VS2019",
+                                "NotepadXX"
+                        };
+                        new AlertDialog.Builder(act)
+                                .setTitle("Switch theme")
+                                .setSingleChoiceItems(
+                                        themeItems, -1, (dialog, which) -> {
+                                            SrcCodeEditor.selectTheme(codeEditor, which);
+                                            AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
+                                            if (isDark()) {
+                                                lin.setBackgroundColor(0xff292929);
+                                                save.setBackground(new DialogButtonGradientDrawable()
+                                                        .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                                                cancel.setBackground(new DialogButtonGradientDrawable()
+                                                        .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                                            } else {
+                                                lin.setBackgroundColor(Color.WHITE);
+                                                save.setBackground(new DialogButtonGradientDrawable()
+                                                        .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                                                cancel.setBackground(new DialogButtonGradientDrawable()
+                                                        .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                                            }
+                                            dialog.dismiss();
+                                        })
+                                .setNegativeButton(Resources.string.common_word_cancel, null)
+                                .show();
+                        break;
+
+                    case "Word wrap":
+                        item.setChecked(!item.isChecked());
+                        codeEditor.setWordwrap(item.isChecked());
+                        pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
+                        break;
+
+                    case "Auto complete":
+                        item.setChecked(!item.isChecked());
+                        codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
+                        pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
+                        break;
+
+                    case "Paste":
+                        codeEditor.setText(SrcCodeEditor.paste(act));
+                        break;
+
+                    default:
+                        return false;
+                }
+                return true;
+            });
+            popupMenu.show();
         });
         Helper.applyRipple(getContext(), redo);
         Helper.applyRipple(getContext(), undo);
@@ -200,7 +181,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         pref.edit().putInt("dlg_ts", (int) (codeEditor.getTextSizePx() / act.getResources().getDisplayMetrics().scaledDensity)).apply();
     }
 
-    public void populateMenu(Menu menu) {
+    private void populateMenu(Menu menu) {
         menu.add(0, 0, 0, "Paste");
         menu.add(0, 4, 0, "Word wrap")
                 .setCheckable(true)
@@ -213,15 +194,15 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 .setChecked(pref.getBoolean("dlg_ac", true));
     }
 
-    public boolean isThemeDark(int theme) {
+    private boolean isThemeDark(int theme) {
         return theme == 3 || theme == 4;
     }
 
-    public boolean isDark() {
+    private boolean isDark() {
         return isThemeDark(pref.getInt("dlg_theme", 3));
     }
 
-    public void addControl() {
+    private void addControl() {
         lin = new LinearLayout(getContext());
         lin.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -320,13 +301,11 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     }
 
     public void saveLis(LogicEditorActivity logicEditorActivity, boolean z, Ss ss, AsdDialog asdDialog) {
-        save_l = new AsdHandlerCodeEditor(logicEditorActivity, z, ss, asdDialog, codeEditor);
-        save.setOnClickListener(save_l);
+        save.setOnClickListener(new AsdHandlerCodeEditor(logicEditorActivity, z, ss, asdDialog, codeEditor));
     }
 
     public void cancelLis(AsdDialog asdDialog) {
-        cancel_l = new AsdHandlerCodeEditorCancel(codeEditor, asdDialog);
-        cancel.setOnClickListener(cancel_l);
+        cancel.setOnClickListener(new AsdHandlerCodeEditorCancel(codeEditor, asdDialog));
     }
 
     public void setCon(String str2) {
