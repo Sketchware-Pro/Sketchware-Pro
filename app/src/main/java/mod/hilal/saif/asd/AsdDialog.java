@@ -320,12 +320,12 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     }
 
     public void saveLis(LogicEditorActivity logicEditorActivity, boolean z, Ss ss, AsdDialog asdDialog) {
-        save_l = new AsdHandlerCodeEditor(logicEditorActivity, codeEditor.getText().toString(), z, ss, asdDialog, codeEditor);
+        save_l = new AsdHandlerCodeEditor(logicEditorActivity, z, ss, asdDialog, codeEditor);
         save.setOnClickListener(save_l);
     }
 
-    public void cancelLis(LogicEditorActivity logicEditorActivity, AsdDialog asdDialog) {
-        cancel_l = new AsdHandlerCodeEditorCancel(logicEditorActivity, codeEditor, asdDialog);
+    public void cancelLis(AsdDialog asdDialog) {
+        cancel_l = new AsdHandlerCodeEditorCancel(codeEditor, asdDialog);
         cancel.setOnClickListener(cancel_l);
     }
 
