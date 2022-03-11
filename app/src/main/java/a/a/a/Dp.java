@@ -76,8 +76,8 @@ public class Dp {
      * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
-    public File aapt2Dir;
     private final File zipalignBinaryPath;
+    public File aapt2Dir;
     public BuildSettings build_settings;
     public DesignActivity.a buildingDialog;
     public Context e;
