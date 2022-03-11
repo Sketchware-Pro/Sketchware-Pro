@@ -34,15 +34,6 @@ public class EditorManifest {
         applicationTag.a(firebaseInstanceIdReceiverTag);
     }
 
-    public static void writeMetadataComponentFirebase(Nx applicationTag, String componentName) {
-        Nx metadataTag = new Nx("meta-data");
-        if ("Firebase Cloud Message".equals(componentName)) {
-            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
-        }
-        metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
-        applicationTag.a(metadataTag);
-    }
-
     public static void manifestOneSignal(Nx applicationTag, String packageName, HashMap<String, ArrayList<String>> hashMap) {
         if (hashMap.size() != 0) {
             Nx metadataTag = new Nx("meta-data");

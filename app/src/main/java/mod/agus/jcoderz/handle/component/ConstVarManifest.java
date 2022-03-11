@@ -57,12 +57,6 @@ public class ConstVarManifest {
         }
     }
 
-    public static void handleMetadata(Nx nx, ConstVarComponent component) {
-        if (component.isFCMUsed) {
-            EditorManifest.writeMetadataComponentFirebase(nx, "Firebase Cloud Message");
-        }
-    }
-
     public static void writePermission(Nx nx, String permissionName) {
         Nx usesPermissionTag = new Nx("uses-permission");
         usesPermissionTag.a("android", "name", permissionName);

@@ -111,7 +111,12 @@ public class Ix {
             metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
-        ConstVarManifest.handleMetadata(serviceTag, c.x);
+        if (c.x.isFCMUsed) {
+            Nx metadataTag = new Nx("meta-data");
+            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
+            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            serviceTag.a(metadataTag);
+        }
         applicationTag.a(serviceTag);
     }
 
