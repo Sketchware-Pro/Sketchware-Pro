@@ -10,7 +10,6 @@ public class ConstVarComponent {
 
     public boolean isCircleImageViewUsed = false;
     public boolean isCodeViewUsed = false;
-    public boolean isDynamicLinkUsed = false;
     public boolean isFBAdsUsed = false;
     public boolean isFBGoogleUsed = false;
     public boolean isFCMUsed = false;
