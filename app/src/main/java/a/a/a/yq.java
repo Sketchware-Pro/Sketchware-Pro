@@ -2,6 +2,7 @@ package a.a.a;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.core.content.ContextCompat;
 
@@ -661,7 +662,7 @@ public class yq {
 
                     switch (opCode) {
                         case "setDynamicLinkDataHost":
-                            N.dlDataList.add(bean.parameters.get(0), bean.parameters.get(1));
+                            N.dlDataList.add(new Pair<>(bean.parameters.get(0), bean.parameters.get(1)));
                             break;
 
                         case "setAdmobAppId":
