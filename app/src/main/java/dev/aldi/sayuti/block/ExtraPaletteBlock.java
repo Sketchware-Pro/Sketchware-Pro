@@ -1065,6 +1065,9 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "firebaseauthResetPassword");
                     logicEditor.a(" ", "firebaseauthSignOutUser");
                 }
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS)) {
+                    logicEditor.a(" ", "setDynamicLinkDataHost");
+                }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_GYROSCOPE)) {
                     logicEditor.a("Gyroscope", 0xff555555);
                     logicEditor.a(" ", "gyroscopeStartListen");
