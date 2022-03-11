@@ -57,38 +57,9 @@ public class ConstVarManifest {
         }
     }
 
-    public static void handleAttrComponent(Nx nx, ConstVarComponent component) {
-        if (component.isDynamicLinkUsed) {
-            Nx intentFilterTag = new Nx("intent-filter");
-            Nx intentFilterActionTag = new Nx("action");
-            intentFilterActionTag.a("android", "name", "android.intent.action.VIEW");
-            Nx intentFilterCategoryDefaultTag = new Nx("category");
-            intentFilterCategoryDefaultTag.a("android", "name", "android.intent.category.DEFAULT");
-            Nx intentFilterCategoryBrowsableTag = new Nx("category");
-            intentFilterCategoryBrowsableTag.a("android", "name", "android.intent.category.BROWSABLE");
-            Nx intentFilterDataTag = new Nx("data");
-            if (component.param.size() > 0) {
-                intentFilterDataTag.a("android", "host", component.param.get("FirebaseDynamicLink setDataHost").get(0));
-            }
-            if (component.param.size() > 1) {
-                intentFilterDataTag.a("android", "scheme", component.param.get("FirebaseDynamicLink setDataHost").get(1));
-            }
-            intentFilterTag.a(intentFilterActionTag);
-            intentFilterTag.a(intentFilterCategoryDefaultTag);
-            intentFilterTag.a(intentFilterCategoryBrowsableTag);
-            if (component.param.size() != 0) {
-                intentFilterTag.a(intentFilterDataTag);
-            }
-            nx.a(intentFilterTag);
-        }
-    }
-
     public static void handleMetadata(Nx nx, ConstVarComponent component) {
         if (component.isFCMUsed) {
             EditorManifest.writeMetadataComponentFirebase(nx, "Firebase Cloud Message");
-        }
-        if (component.isDynamicLinkUsed) {
-            EditorManifest.writeMetadataComponentFirebase(nx, "Firebase Dynamic Link");
         }
     }
 

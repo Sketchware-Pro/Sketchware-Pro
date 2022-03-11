@@ -1,11 +1,13 @@
 package a.a.a;
 
+import static android.text.TextUtils.isEmpty;
+
 import android.Manifest;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.text.TextUtils;
+import android.util.Pair;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
@@ -106,6 +108,12 @@ public class Ix {
             metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
+        if (c.isDynamicLinkUsed) {
+            Nx metadataTag = new Nx("meta-data");
+            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
+            metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
+            serviceTag.a(metadataTag);
+        }
         ConstVarManifest.handleMetadata(serviceTag, c.x);
         applicationTag.a(serviceTag);
         return providerTag;
@@ -189,6 +197,30 @@ public class Ix {
         serviceTag.a("android", "name", serviceName);
         serviceTag.a("android", "enabled", "true");
         applicationTag.a(serviceTag);
+    }
+
+    public void writeDLIntentFilter(Nx activityTag) {
+        Nx intentFilterTag = new Nx("intent-filter");
+        Nx intentFilterActionTag = new Nx("action");
+        intentFilterActionTag.a("android", "name", "android.intent.action.VIEW");
+        Nx intentFilterCategoryDefaultTag = new Nx("category");
+        intentFilterCategoryDefaultTag.a("android", "name", "android.intent.category.DEFAULT");
+        Nx intentFilterCategoryBrowsableTag = new Nx("category");
+        intentFilterCategoryBrowsableTag.a("android", "name", "android.intent.category.BROWSABLE");
+        intentFilterTag.a(intentFilterActionTag);
+        intentFilterTag.a(intentFilterCategoryDefaultTag);
+        intentFilterTag.a(intentFilterCategoryBrowsableTag);
+        for (Pair<String, String> stringStringPair : c.dlDataList) {
+            if (!isEmpty(stringStringPair.first) && !isEmpty(stringStringPair.second)) {
+                Nx intentFilterDataTag = new Nx("data");
+                intentFilterDataTag.a("android", "host", stringStringPair.first);
+                intentFilterDataTag.a("android", "scheme", stringStringPair.second);
+                if (c.dlDataList.size() != 0) {
+                    intentFilterTag.a(intentFilterDataTag);
+                }
+            }
+        }
+        activityTag.a(intentFilterTag);
     }
 
     public void setYq(yq yqVar) {
@@ -303,7 +335,9 @@ public class Ix {
                         activityTag.a("android", "screenOrientation", "landscape");
                     }
                 }
-                ConstVarManifest.handleAttrComponent(activityTag, c.x);
+                if (c.isDynamicLinkUsed) {
+                    writeDLIntentFilter(activityTag);
+                }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
                     if (keyboardSetting.length() > 0) {
@@ -345,7 +379,7 @@ public class Ix {
         if (c.u) {
             writeFileProvider(applicationTag);
         }
-        if (c.l && !TextUtils.isEmpty(c.appId)) {
+        if (c.l && !isEmpty(c.appId)) {
             writeAdmobAppId(applicationTag);
         }
         if (c.m) {

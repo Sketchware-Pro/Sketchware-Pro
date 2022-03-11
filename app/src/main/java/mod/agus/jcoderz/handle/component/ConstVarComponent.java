@@ -25,10 +25,6 @@ public class ConstVarComponent {
 
     public void handleComponent(int componentId) {
         switch (componentId) {
-            case 29:
-                isDynamicLinkUsed = true;
-                return;
-
             case 30:
                 isFCMUsed = true;
                 return;
@@ -58,10 +54,6 @@ public class ConstVarComponent {
 
             case "FirebaseCloudMessage":
                 isFCMUsed = false;
-                break;
-
-            case "FirebaseDynamicLink":
-                isDynamicLinkUsed = false;
                 break;
 
             case "FirebaseGoogleLogin":
@@ -116,7 +108,6 @@ public class ConstVarComponent {
             case "OneSignal setAppId":
             case "OnResultBillingResponse":
             case "Youtube useWebUI":
-            case "FirebaseDynamicLink setDataHost":
             case "FacebookAds setProvider":
                 if (arrayList != null && arrayList.size() > 0) {
                     if (param == null) param = new HashMap<>();
