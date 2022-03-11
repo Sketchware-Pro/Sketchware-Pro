@@ -105,37 +105,31 @@ import mod.tyron.compiler.IncrementalCompiler;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
-    public ImageView A;
-    public boolean B = false;
-    public View C;
-    public int D = -1;
+    private ImageView A;
+    private boolean B = false;
     /**
      * Currently showing tab number
      */
-    public int E;
-    public to I;
-    public DesignActivity.f J = null;
-    public Toolbar k;
+    private int E;
+    private DesignActivity.f J = null;
     /**
      * The sc_id of the current opened project, like 605
      */
-    public String l;
-    public CustomViewPager m;
-    public CoordinatorLayout n;
-    public DrawerLayout o;
-    public yq q;
-    public DB r;
-    public DB s;
-    public DB t;
+    private String l;
+    private CustomViewPager m;
+    private CoordinatorLayout n;
+    private DrawerLayout o;
+    private yq q;
+    private DB r;
+    private DB t;
     /**
      * The Run-Button in bottom right corner
      */
-    public Button u;
-    public ProjectFileSelector v;
-    public jr w = null;
-    public rs x = null;
-    public br y = null;
-    public oB z;
+    private Button u;
+    private ProjectFileSelector v;
+    private jr w = null;
+    private rs x = null;
+    private br y = null;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -148,7 +142,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public void a(boolean var1) {
+    private void a(boolean var1) {
         jC.a(l, var1);
         jC.b(l, var1);
         kC var2 = jC.d(l, var1);
@@ -182,7 +176,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      *
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
-    public final void d(String error) {
+    private void d(String error) {
         new CompileErrorSaver(q.b).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.a(this.n, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_show), v -> {
@@ -216,13 +210,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.finish();
     }
 
-    public final void l() {
+    private void l() {
         if (jC.c(l).g() || jC.b(l).g() || jC.d(l).q() || jC.a(l).d() || jC.a(l).c()) {
             s();
         }
     }
 
-    public void n() {
+    private void n() {
         q.b(jC.b(l), jC.a(l), jC.c(l));
     }
 
@@ -418,10 +412,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         r = new DB(getApplicationContext(), "P1");
-        s = new DB(getApplicationContext(), "P2");
+        DB s = new DB(getApplicationContext(), "P2");
         t = new DB(getApplicationContext(), "P12");
-        z = new oB();
-        k = findViewById(Resources.id.toolbar);
+        oB z = new oB();
+        Toolbar k = findViewById(Resources.id.toolbar);
         k.setSubtitle(l);
 
         a(k);
@@ -440,7 +434,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         u.setOnClickListener(this);
         findViewById(Resources.id.btn_compiler_opt).setOnClickListener(this);
         A = findViewById(Resources.id.img_orientation);
-        C = findViewById(Resources.id.layout_btn_group);
+        View c1 = findViewById(Resources.id.layout_btn_group);
         v = findViewById(Resources.id.file_selector);
         v.setScId(l);
         v.setOnSelectedFileChangeListener((i, projectFileBean) -> {
@@ -524,7 +518,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 E = i;
             }
         });
-        I = i -> {
+        to i1 = i -> {
             if (i == 242) {
                 new e(getApplicationContext()).execute();
             } else if (i == 243) {
@@ -561,7 +555,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         super.onPostCreate(savedInstanceState);
         k();
         HashMap<String, Object> map = lC.b(l);
-        D = yB.b(map, "sketchware_ver");
+        int d1 = yB.b(map, "sketchware_ver");
         b(yB.c(map, "my_ws_name"));
         q = new yq(getApplicationContext(), wq.d(l), map);
 
@@ -607,7 +601,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Show a dialog asking about saving the project before quitting.
      */
-    public final void q() {
+    private void q() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_quit_title_exit_projet));
         dialog.a(Resources.drawable.exit_96);
@@ -644,7 +638,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Show a dialog warning the user about low free space.
      */
-    public final void r() {
+    private void r() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
         dialog.a(Resources.drawable.break_warning_96_red);
@@ -654,7 +648,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.show();
     }
 
-    public final void s() {
+    private void s() {
         B = true;
         aB dialog = new aB(this);
         dialog.a(Resources.drawable.data_backup_96);
