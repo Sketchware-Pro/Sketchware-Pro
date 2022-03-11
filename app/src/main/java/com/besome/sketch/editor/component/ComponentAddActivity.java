@@ -129,6 +129,14 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
                 break;
 
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
+                if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
+                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    return false;
+                }
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
+                break;
+
             case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
                 if (jC.c(sc_id).b().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
                     bB.b(this, Helper.getResString(Resources.string.design_library_admob_component_setup_first), 1).show();
