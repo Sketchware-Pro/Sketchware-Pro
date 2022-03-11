@@ -12,9 +12,6 @@ public class ExtLibSelected {
     }
 
     public static void addUsedDependencies(ConstVarComponent component, Kp kp) {
-        if (component.isDynamicLinkUsed) {
-            kp.a("firebase-dynamic-links-19.0.0");
-        }
         if (component.isFCMUsed) {
             kp.a("firebase-messaging-19.0.0");
         }

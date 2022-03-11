@@ -36,15 +36,8 @@ public class EditorManifest {
 
     public static void writeMetadataComponentFirebase(Nx applicationTag, String componentName) {
         Nx metadataTag = new Nx("meta-data");
-
-        switch (componentName) {
-            case "Firebase Dynamic Link":
-                metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.dynamiclinks.internal.FirebaseDynamicLinkRegistrar");
-                break;
-
-            case "Firebase Cloud Message":
-                metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
-                break;
+        if ("Firebase Cloud Message".equals(componentName)) {
+            metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.iid.Registrar");
         }
         metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
         applicationTag.a(metadataTag);

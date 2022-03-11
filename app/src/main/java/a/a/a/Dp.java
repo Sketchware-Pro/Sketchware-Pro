@@ -924,6 +924,9 @@ public class Dp {
         if (f.N.p) {
             n.a("okhttp-3.9.1");
         }
+        if (f.N.isDynamicLinkUsed) {
+            n.a("firebase-dynamic-links-19.0.0");
+        }
         ExtLibSelected.addUsedDependencies(f.N.x, n);
     }
 

@@ -646,6 +646,10 @@ public class yq {
                         N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
                         break;
 
+                    case 29:
+                        N.isDynamicLinkUsed = true;
+                        break;
+
                     default:
                 }
             }
@@ -656,6 +660,10 @@ public class yq {
                     N.x.setParams(bean.parameters, e, opCode);
 
                     switch (opCode) {
+                        case "setDynamicLinkDataHost":
+                            N.dlDataList.add(bean.parameters.get(0), bean.parameters.get(1));
+                            break;
+
                         case "setAdmobAppId":
                             N.appId = bean.parameters.get(0);
                             break;
