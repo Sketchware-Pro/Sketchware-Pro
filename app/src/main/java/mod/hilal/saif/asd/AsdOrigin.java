@@ -1,5 +1,7 @@
 package mod.hilal.saif.asd;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -21,8 +23,6 @@ import com.sketchware.remod.Resources;
 import a.a.a.Ss;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.old.AsdOldDialog;
-
-import static mod.SketchwareUtil.getDip;
 
 public class AsdOrigin extends Dialog {
 
@@ -121,7 +121,7 @@ public class AsdOrigin extends Dialog {
                     asdDialog.setCon(editText.getText().toString());
                     asdDialog.show();
                     asdDialog.saveLis(logicEditorActivity, boo, ss, asdDialog);
-                    asdDialog.cancelLis(logicEditorActivity, asdDialog);
+                    asdDialog.cancelLis(asdDialog);
                 }
                 dismiss();
             }

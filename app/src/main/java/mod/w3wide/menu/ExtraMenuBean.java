@@ -92,7 +92,7 @@ public class ExtraMenuBean {
             asdDialog.show();
             /* p2 as true is for number */
             asdDialog.saveLis(logicEditor, false, menu, asdDialog);
-            asdDialog.cancelLis(logicEditor, asdDialog);
+            asdDialog.cancelLis(asdDialog);
         }
     }
 

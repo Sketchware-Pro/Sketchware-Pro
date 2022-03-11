@@ -696,7 +696,9 @@ public class Resources {
         public static final int manage_collection_show_block = 0x7f0b00b8;
         public static final int manage_collection_show_widget = 0x7f0b00b9;
         public static final int manage_font_add = 0x7f0b00c1;
+        public static final int manage_library = 0x7f0b00cb;
         public static final int manage_library_base_item = 0x7f0b00d1;
+        public static final int manage_library_common_item = 0x7f0b00d2;
         public static final int manage_library_manage_admob = 0x7f0b00d9;
         public static final int manage_library_manage_compat = 0x7f0b00da;
         public static final int manage_library_manage_firebase = 0x7f0b00db;
@@ -857,6 +859,7 @@ public class Resources {
         public static final int component_hint_enter_name = 0x7f0e04a4;
         public static final int component_message_component_block_added = 0x7f0e04a5;
         public static final int component_title_add_component = 0x7f0e04a7;
+        public static final int design_actionbar_title_library = 0x7f0e04ad;
         public static final int design_button_properties = 0x7f0e04b4;
         public static final int design_drawer_menu_bottom_title = 0x7f0e04b5;
         public static final int design_drawer_menu_description_collection = 0x7f0e04b6;
@@ -891,6 +894,7 @@ public class Resources {
         public static final int design_library_firebase_guide_path_example = 0x7f0e04ff;
         public static final int design_library_firebase_guide_setup_first = 0x7f0e0500;
         public static final int design_library_firebase_hint_enter_data_location = 0x7f0e0501;
+        public static final int design_library_firebase_message_need_compat = 0x7f0e0507;
         public static final int design_library_firebase_title_api_key = 0x7f0e050f;
         public static final int design_library_firebase_title_app_id = 0x7f0e0510;
         public static final int design_library_firebase_title_firebase_manager = 0x7f0e0513;

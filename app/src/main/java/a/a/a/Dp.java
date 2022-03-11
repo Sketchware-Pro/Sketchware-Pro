@@ -233,22 +233,18 @@ public class Dp {
         compiler.compile();
     }
 
-    public void b(String password, String alias, String signingAlgorithm) {
+    public void b(String password, String alias, String signingAlgorithm) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
-        try {
-            CustomKeySigner.signZip(
-                    new ZipSigner(),
-                    wq.j(),
-                    password.toCharArray(),
-                    alias,
-                    password.toCharArray(),
-                    signingAlgorithm,
-                    f.G,
-                    f.I
-            );
-        } catch (Exception e) {
-            LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
-        }
+        CustomKeySigner.signZip(
+                new ZipSigner(),
+                wq.j(),
+                password.toCharArray(),
+                alias,
+                password.toCharArray(),
+                signingAlgorithm,
+                f.G,
+                f.I
+        );
     }
 
     public boolean isD8Enabled() {
