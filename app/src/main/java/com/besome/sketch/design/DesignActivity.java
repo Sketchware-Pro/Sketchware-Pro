@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.common.SrcViewerActivity;
 import com.besome.sketch.editor.manage.ManageCollectionActivity;
 import com.besome.sketch.editor.manage.font.ManageFontActivity;
@@ -67,9 +69,7 @@ import a.a.a.jr;
 import a.a.a.kC;
 import a.a.a.lC;
 import a.a.a.mB;
-import a.a.a.oB;
 import a.a.a.rs;
-import a.a.a.to;
 import a.a.a.uo;
 import a.a.a.wq;
 import a.a.a.xB;
@@ -105,50 +105,44 @@ import mod.tyron.compiler.IncrementalCompiler;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
-    private ImageView A;
+    private ImageView xmlLayoutOrientation;
     private boolean B = false;
-    /**
-     * Currently showing tab number
-     */
-    private int E;
+    private int currentTabNumber;
     private DesignActivity.f J = null;
-    /**
-     * The sc_id of the current opened project, like 605
-     */
-    private String l;
-    private CustomViewPager m;
-    private CoordinatorLayout n;
-    private DrawerLayout o;
+    private String sc_id;
+    private CustomViewPager viewPager;
+    private CoordinatorLayout coordinatorLayout;
+    private DrawerLayout drawer;
     private yq q;
     private DB r;
     private DB t;
     /**
      * The Run-Button in bottom right corner
      */
-    private Button u;
-    private ProjectFileSelector v;
-    private jr w = null;
-    private rs x = null;
-    private br y = null;
+    private Button runProject;
+    private ProjectFileSelector projectFileSelector;
+    private jr viewTabAdapter = null;
+    private rs eventTabAdapter = null;
+    private br componentTabAdapter = null;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
      */
     private void A() {
-        HashMap<String, Object> projectMetadata = lC.b(l);
+        HashMap<String, Object> projectMetadata = lC.b(sc_id);
         if (projectMetadata != null) {
             projectMetadata.put("sketchware_ver", GB.d(getApplicationContext()));
-            lC.b(l, projectMetadata);
+            lC.b(sc_id, projectMetadata);
         }
     }
 
     private void a(boolean var1) {
-        jC.a(l, var1);
-        jC.b(l, var1);
-        kC var2 = jC.d(l, var1);
-        jC.c(l, var1);
-        cC.c(l);
-        bC.d(l);
+        jC.a(sc_id, var1);
+        jC.b(sc_id, var1);
+        kC var2 = jC.d(sc_id, var1);
+        jC.c(sc_id, var1);
+        cC.c(sc_id);
+        bC.d(sc_id);
         if (!var1) {
             var2.f();
             var2.g();
@@ -165,9 +159,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     public void b(boolean var1) {
         if (var1) {
-            m.l();
+            viewPager.l();
         } else {
-            m.k();
+            viewPager.k();
         }
     }
 
@@ -178,13 +172,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void d(String error) {
         new CompileErrorSaver(q.b).writeLogsToFile(error);
-        Snackbar snackbar = Snackbar.a(this.n, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
+        Snackbar snackbar = Snackbar.a(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_show), v -> {
             if (!mB.a()) {
                 snackbar.c();
                 Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
                 intent.putExtra("error", error);
-                intent.putExtra("sc_id", l);
+                intent.putExtra("sc_id", sc_id);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
@@ -206,18 +200,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         jC.a();
         cC.a();
         bC.a();
-        setResult(0, getIntent());
+        setResult(RESULT_CANCELED, getIntent());
         super.finish();
     }
 
     private void l() {
-        if (jC.c(l).g() || jC.b(l).g() || jC.d(l).q() || jC.a(l).d() || jC.a(l).c()) {
+        if (jC.c(sc_id).g() || jC.b(sc_id).g() || jC.d(sc_id).q() || jC.a(sc_id).d() || jC.a(sc_id).c()) {
             s();
         }
     }
 
     private void n() {
-        q.b(jC.b(l), jC.a(l), jC.c(l));
+        q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
     }
 
     /**
@@ -248,20 +242,20 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 break;
 
             case 208:
-                if (resultCode == -1) {
-                    if (v != null) {
-                        v.a();
+                if (resultCode == RESULT_OK) {
+                    if (projectFileSelector != null) {
+                        projectFileSelector.a();
                     }
-                    if (w != null) {
-                        w.n();
+                    if (viewTabAdapter != null) {
+                        viewTabAdapter.n();
                     }
                 }
                 break;
 
             case 209:
-                if (resultCode == -1) {
-                    if (w != null) {
-                        w.i();
+                if (resultCode == RESULT_OK) {
+                    if (viewTabAdapter != null) {
+                        viewTabAdapter.i();
                     }
                 }
                 break;
@@ -271,44 +265,44 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 break;
 
             case 223:
-                if (resultCode == -1) {
-                    if (x != null) {
-                        x.f();
+                if (resultCode == RESULT_OK) {
+                    if (eventTabAdapter != null) {
+                        eventTabAdapter.f();
                     }
                 }
                 break;
 
             case 224:
-                if (resultCode == -1) {
-                    if (y != null) {
-                        y.d();
+                if (resultCode == RESULT_OK) {
+                    if (componentTabAdapter != null) {
+                        componentTabAdapter.d();
                     }
                 }
                 break;
 
             case 226:
-                if (resultCode == -1) {
-                    if (v != null) {
-                        v.a();
+                if (resultCode == RESULT_OK) {
+                    if (projectFileSelector != null) {
+                        projectFileSelector.a();
                     }
                 }
                 break;
 
             case 233:
-                if (resultCode == -1) {
-                    w.j();
+                if (resultCode == RESULT_OK) {
+                    viewTabAdapter.j();
                 }
                 break;
 
             case 263:
-                if (resultCode == -1) {
-                    v.setXmlFileName(data.getParcelableExtra("project_file"));
+                if (resultCode == RESULT_OK) {
+                    projectFileSelector.setXmlFileName(data.getParcelableExtra("project_file"));
                 }
                 break;
 
             case 462:
-                if (resultCode == -1 && data.getBooleanExtra("req_update_design_activity", false)) {
-                    w.j();
+                if (resultCode == RESULT_OK && data.getBooleanExtra("req_update_design_activity", false)) {
+                    viewTabAdapter.j();
                 }
                 break;
         }
@@ -316,18 +310,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onBackPressed() {
-        if (o.f(8388613)) {
-            o.a(8388613);
-        } else if (w.g()) {
-            w.a(false);
+        if (drawer.f(Gravity.END)) {
+            drawer.a(Gravity.END);
+        } else if (viewTabAdapter.g()) {
+            viewTabAdapter.a(false);
         } else {
-            if (E > 0) {
-                E--;
-                m.setCurrentItem(E);
+            if (currentTabNumber > 0) {
+                currentTabNumber--;
+                viewPager.setCurrentItem(currentTabNumber);
             } else if (t.c("P12I2")) {
                 k();
                 new e(getApplicationContext()).execute();
-
             } else {
                 q();
             }
@@ -355,7 +348,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case 1:
-                            new BuildSettingsDialog(DesignActivity.this, l).show();
+                            new BuildSettingsDialog(DesignActivity.this, sc_id).show();
                             break;
 
                         case 2:
@@ -370,7 +363,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 3:
-                            new CompileErrorSaver(l).showLastErrors(DesignActivity.this);
+                            new CompileErrorSaver(sc_id).showLastErrors(DesignActivity.this);
                             break;
 
                         case 4:
@@ -406,69 +399,67 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         if (savedInstanceState == null) {
-            l = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         } else {
-            l = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         }
 
         r = new DB(getApplicationContext(), "P1");
-        DB s = new DB(getApplicationContext(), "P2");
         t = new DB(getApplicationContext(), "P12");
-        oB z = new oB();
-        Toolbar k = findViewById(Resources.id.toolbar);
-        k.setSubtitle(l);
 
-        a(k);
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        toolbar.setSubtitle(sc_id);
+        a(toolbar);
         findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
         d().d(true);
         d().e(true);
-        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        k.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
+
         // Replaced empty anonymous class with null
         getSupportFragmentManager().a((Xf.c) null);
-        o = findViewById(Resources.id.drawer_layout);
-        o.setDrawerLockMode(1);
-        n = findViewById(Resources.id.layout_coordinator);
-        u = findViewById(Resources.id.btn_execute);
-        u.setText(xB.b().a(this, Resources.string.common_word_run));
-        u.setOnClickListener(this);
+        drawer = findViewById(Resources.id.drawer_layout);
+        drawer.setDrawerLockMode(1 /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
+        coordinatorLayout = findViewById(Resources.id.layout_coordinator);
+        runProject = findViewById(Resources.id.btn_execute);
+        runProject.setText(xB.b().a(this, Resources.string.common_word_run));
+        runProject.setOnClickListener(this);
         findViewById(Resources.id.btn_compiler_opt).setOnClickListener(this);
-        A = findViewById(Resources.id.img_orientation);
-        View c1 = findViewById(Resources.id.layout_btn_group);
-        v = findViewById(Resources.id.file_selector);
-        v.setScId(l);
-        v.setOnSelectedFileChangeListener((i, projectFileBean) -> {
+        xmlLayoutOrientation = findViewById(Resources.id.img_orientation);
+        projectFileSelector = findViewById(Resources.id.file_selector);
+        projectFileSelector.setScId(sc_id);
+        projectFileSelector.setOnSelectedFileChangeListener((i, projectFileBean) -> {
             if (i == 0) {
-                if (w != null && projectFileBean != null) {
+                if (viewTabAdapter != null && projectFileBean != null) {
                     int orientation = projectFileBean.orientation;
-                    if (orientation == 0) {
-                        A.setImageResource(Resources.drawable.ic_screen_portrait_grey600_24dp);
-                    } else if (orientation == 1) {
-                        A.setImageResource(Resources.drawable.ic_screen_landscape_grey600_24dp);
+                    if (orientation == ProjectFileBean.ORIENTATION_PORTRAIT) {
+                        xmlLayoutOrientation.setImageResource(Resources.drawable.ic_screen_portrait_grey600_24dp);
+                    } else if (orientation == ProjectFileBean.ORIENTATION_LANDSCAPE) {
+                        xmlLayoutOrientation.setImageResource(Resources.drawable.ic_screen_landscape_grey600_24dp);
                     } else {
-                        A.setImageResource(Resources.drawable.ic_screen_rotation_grey600_24dp);
+                        xmlLayoutOrientation.setImageResource(Resources.drawable.ic_screen_rotation_grey600_24dp);
                     }
-                    w.a(projectFileBean);
+                    viewTabAdapter.a(projectFileBean);
                 }
             } else if (i == 1) {
-                if (x != null) {
+                if (eventTabAdapter != null) {
                     if (projectFileBean != null) {
-                        x.a(projectFileBean);
-                        x.f();
+                        eventTabAdapter.a(projectFileBean);
+                        eventTabAdapter.f();
                     } else {
                         return;
                     }
                 }
-                if (y != null && projectFileBean != null) {
-                    y.a(projectFileBean);
-                    y.d();
+                if (componentTabAdapter != null && projectFileBean != null) {
+                    componentTabAdapter.a(projectFileBean);
+                    componentTabAdapter.d();
                 }
             }
         });
-        m = findViewById(Resources.id.viewpager);
-        m.setAdapter(new DesignActivity.g(getSupportFragmentManager(), this));
-        m.setOffscreenPageLimit(3);
-        m.a(new ViewPager.e() {
+        viewPager = findViewById(Resources.id.viewpager);
+        viewPager.setAdapter(new DesignActivity.g(getSupportFragmentManager(), this));
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.a(new ViewPager.e() {
 
             @Override
             public void a(int i) {
@@ -480,53 +471,46 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
             @Override
             public void b(int i) {
-                if (E == 1) {
-                    if (x != null) {
-                        x.c();
+                if (currentTabNumber == 1) {
+                    if (eventTabAdapter != null) {
+                        eventTabAdapter.c();
                     }
-                } else if (E == 2 && y != null) {
-                    y.c();
+                } else if (currentTabNumber == 2 && componentTabAdapter != null) {
+                    componentTabAdapter.c();
                 }
                 if (i == 0) {
-                    if (w != null) {
-                        w.c(true);
-                        A.setVisibility(View.VISIBLE);
-                        v.setFileType(0);
-                        v.a();
+                    if (viewTabAdapter != null) {
+                        viewTabAdapter.c(true);
+                        xmlLayoutOrientation.setVisibility(View.VISIBLE);
+                        projectFileSelector.setFileType(0);
+                        projectFileSelector.a();
                     }
                 } else if (i == 1) {
-                    if (w != null) {
-                        A.setVisibility(View.GONE);
-                        w.c(false);
-                        v.setFileType(1);
-                        v.a();
-                        if (x != null) {
-                            x.f();
+                    if (viewTabAdapter != null) {
+                        xmlLayoutOrientation.setVisibility(View.GONE);
+                        viewTabAdapter.c(false);
+                        projectFileSelector.setFileType(1);
+                        projectFileSelector.a();
+                        if (eventTabAdapter != null) {
+                            eventTabAdapter.f();
                         }
                     }
                 } else {
-                    if (w != null) {
-                        w.c(false);
-                        A.setVisibility(View.GONE);
-                        v.setFileType(1);
-                        v.a();
-                        if (y != null) {
-                            y.d();
+                    if (viewTabAdapter != null) {
+                        viewTabAdapter.c(false);
+                        xmlLayoutOrientation.setVisibility(View.GONE);
+                        projectFileSelector.setFileType(1);
+                        projectFileSelector.a();
+                        if (componentTabAdapter != null) {
+                            componentTabAdapter.d();
                         }
                     }
                 }
-                E = i;
+                currentTabNumber = i;
             }
         });
-        to i1 = i -> {
-            if (i == 242) {
-                new e(getApplicationContext()).execute();
-            } else if (i == 243) {
-                new c(getApplicationContext()).execute();
-            }
-        };
-        m.getAdapter().b();
-        ((TabLayout) findViewById(Resources.id.tab_layout)).setupWithViewPager(m);
+        viewPager.getAdapter().b();
+        ((TabLayout) findViewById(Resources.id.tab_layout)).setupWithViewPager(viewPager);
     }
 
     @Override
@@ -543,8 +527,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 k();
                 new d(getApplicationContext()).execute();
             }
-        } else if (!o.f(8388613)) {
-            o.h(8388613);
+        } else if (!drawer.f(Gravity.END)) {
+            drawer.h(Gravity.END);
         }
 
         return super.onOptionsItemSelected(item);
@@ -554,10 +538,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         k();
-        HashMap<String, Object> map = lC.b(l);
-        int d1 = yB.b(map, "sketchware_ver");
-        b(yB.c(map, "my_ws_name"));
-        q = new yq(getApplicationContext(), wq.d(l), map);
+
+        HashMap<String, Object> projectInfo = lC.b(sc_id);
+        b(yB.c(projectInfo, "my_ws_name"));
+        q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
         try {
             new b(getBaseContext(), savedInstanceState).execute();
@@ -581,8 +565,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", l);
-        v.b(outState);
+        outState.putString("sc_id", sc_id);
+        projectFileSelector.b(outState);
         super.onSaveInstanceState(outState);
         if (!j()) {
             finish();
@@ -656,39 +640,39 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.a(xB.b().a(getApplicationContext(), Resources.string.design_restore_data_message_confirm));
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_restore), v -> {
             if (!mB.a()) {
-                boolean g = jC.c(l).g();
-                boolean g2 = jC.b(l).g();
-                boolean q = jC.d(l).q();
-                boolean d = jC.a(l).d();
-                boolean c = jC.a(l).c();
+                boolean g = jC.c(sc_id).g();
+                boolean g2 = jC.b(sc_id).g();
+                boolean q = jC.d(sc_id).q();
+                boolean d = jC.a(sc_id).d();
+                boolean c = jC.a(sc_id).c();
                 if (g) {
-                    jC.c(l).h();
+                    jC.c(sc_id).h();
                 }
                 if (g2) {
-                    jC.b(l).h();
+                    jC.b(sc_id).h();
                 }
                 if (q) {
-                    jC.d(l).r();
+                    jC.d(sc_id).r();
                 }
                 if (d) {
-                    jC.a(l).h();
+                    jC.a(sc_id).h();
                 }
                 if (c) {
-                    jC.a(l).f();
+                    jC.a(sc_id).f();
                 }
                 if (g) {
-                    jC.b(l).a(jC.c(l));
-                    jC.a(l).a(jC.c(l).d());
+                    jC.b(sc_id).a(jC.c(sc_id));
+                    jC.a(sc_id).a(jC.c(sc_id).d());
                 }
                 if (g2 || g) {
-                    jC.a(l).a(jC.b(l));
+                    jC.a(sc_id).a(jC.b(sc_id));
                 }
                 if (q) {
-                    jC.a(l).b(jC.d(l));
-                    jC.a(l).c(jC.d(l));
-                    jC.a(l).a(jC.d(l));
+                    jC.a(sc_id).b(jC.d(sc_id));
+                    jC.a(sc_id).c(jC.d(sc_id));
+                    jC.a(sc_id).a(jC.d(sc_id));
                 }
-                DesignActivity.this.v.a();
+                projectFileSelector.a();
                 B = false;
                 dialog.dismiss();
             }
@@ -707,10 +691,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         progress.show();
 
         new Thread(() -> {
-            final String source = new yq(getApplicationContext(), l).getFileSrc(v.getFileName(), jC.b(l), jC.a(l), jC.c(l));
+            final String source = new yq(getApplicationContext(), sc_id).getFileSrc(projectFileSelector.getFileName(), jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
-                    .setTitle(v.getFileName())
+                    .setTitle(projectFileSelector.getFileName())
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
@@ -741,7 +725,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void t() {
         Intent intent = new Intent(getApplicationContext(), ManageCollectionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, 233);
     }
 
@@ -751,8 +735,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toAndroidManifest() {
         Intent intent = new Intent(getApplicationContext(), AndroidManifestInjection.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
-        intent.putExtra("file_name", v.g);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("file_name", projectFileSelector.g);
         startActivity(intent);
     }
 
@@ -762,8 +746,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toAppCompatInjection() {
         Intent intent = new Intent(getApplicationContext(), ManageCustomAttributeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
-        intent.putExtra("file_name", v.f);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("file_name", projectFileSelector.f);
         startActivity(intent);
     }
 
@@ -773,7 +757,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toAssets() {
         Intent intent = new Intent(getApplicationContext(), ManageAssetsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -781,7 +765,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Shows a {@link CustomBlocksDialog}.
      */
     public void toCustomBlocks() {
-        CustomBlocksDialog.show(this, l);
+        CustomBlocksDialog.show(this, sc_id);
     }
 
     /**
@@ -789,7 +773,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     public void toExportApk() {
         Intent intent = new Intent(getApplicationContext(), ExportApkActivity.class);
-        intent.putExtra("scId", l);
+        intent.putExtra("scId", sc_id);
         startActivity(intent);
     }
 
@@ -799,7 +783,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toJava() {
         Intent intent = new Intent(getApplicationContext(), ManageJavaActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         intent.putExtra("pkgName", q.e);
         startActivity(intent);
     }
@@ -810,7 +794,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toLocalLibrary() {
         Intent intent = new Intent(getApplicationContext(), ManageLocalLibraryActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -820,7 +804,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toNativelibs() {
         Intent intent = new Intent(getApplicationContext(), ManageNativelibsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -830,7 +814,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toPermission() {
         Intent intent = new Intent(getApplicationContext(), ManagePermissionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -840,7 +824,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toProguard() {
         Intent intent = new Intent(getApplicationContext(), ManageProguardActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -850,7 +834,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toResource() {
         Intent intent = new Intent(getApplicationContext(), ManageResourceActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -860,7 +844,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void toStringfog() {
         Intent intent = new Intent(getApplicationContext(), ManageStringfogActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivity(intent);
     }
 
@@ -870,7 +854,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void u() {
         Intent intent = new Intent(getApplicationContext(), ManageFontActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, 228);
     }
 
@@ -880,7 +864,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void v() {
         Intent intent = new Intent(getApplicationContext(), ManageImageActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, 209);
     }
 
@@ -890,7 +874,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void w() {
         Intent intent = new Intent(getApplicationContext(), ManageLibraryActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, 226);
     }
 
@@ -900,7 +884,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void x() {
         Intent intent = new Intent(getApplicationContext(), ManageViewActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, 208);
     }
 
@@ -910,7 +894,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void y() {
         Intent intent = new Intent(getApplicationContext(), ManageSoundActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
+        intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, 217);
     }
 
@@ -920,17 +904,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void z() {
         Intent intent = new Intent(getApplicationContext(), SrcViewerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", l);
-        if (m.getCurrentItem() == 0) {
+        intent.putExtra("sc_id", sc_id);
+        if (viewPager.getCurrentItem() == 0) {
             try {
-                intent.putExtra("current", w.d().getXmlName());
+                intent.putExtra("current", viewTabAdapter.d().getXmlName());
             } catch (Exception ignored) {
             }
-        } else if (m.getCurrentItem() != 1) {
+        } else if (viewPager.getCurrentItem() != 1) {
             intent.putExtra("current", "");
         } else {
             try {
-                intent.putExtra("current", x.d().getJavaName());
+                intent.putExtra("current", eventTabAdapter.d().getJavaName());
             } catch (Exception ignored) {
             }
         }
@@ -968,8 +952,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void a() {
             q.b();
             c();
-            u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
-            u.setClickable(true);
+            runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
+            runProject.setClickable(true);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
@@ -985,8 +969,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 q.b();
                 c();
                 SketchwareUtil.toastError("APK build failed");
-                u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
-                u.setClickable(true);
+                runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
+                runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
         }
@@ -1019,17 +1003,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     q.a();
                     /* Extract project type template */
                     q.a(a, wq.e("600"));
-                    if (yB.a(lC.b(l), "custom_icon")) {
+                    if (yB.a(lC.b(sc_id), "custom_icon")) {
                         q.a(wq.e()
-                                + File.separator + l
+                                + File.separator + sc_id
                                 + File.separator + "icon.png");
                     }
 
-                    kC kC = jC.d(l);
+                    kC kC = jC.d(sc_id);
                     kC.b(q.w + File.separator + "drawable-xhdpi");
-                    kC = jC.d(l);
+                    kC = jC.d(sc_id);
                     kC.c(q.w + File.separator + "raw");
-                    kC = jC.d(l);
+                    kC = jC.d(sc_id);
                     kC.a(q.A + File.separator + "fonts");
                     n();
                     q.f();
@@ -1213,8 +1197,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void onCancelled() {
             super.onCancelled();
             runOnUiThread(() -> {
-                u.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
-                u.setClickable(true);
+                runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
+                runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
             q.b();
@@ -1229,8 +1213,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void onPreExecute() {
             super.onPreExecute();
-            u.setText("Building APK file...");
-            u.setClickable(false);
+            runProject.setText("Building APK file...");
+            runProject.setClickable(false);
             r.a("P1I10", true);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -1249,15 +1233,15 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             if (c != null) {
-                v.a(c);
+                projectFileSelector.a(c);
                 if (c.getInt("file_selector_current_file_type") == 0) {
-                    A.setVisibility(View.VISIBLE);
+                    xmlLayoutOrientation.setVisibility(View.VISIBLE);
                 } else {
-                    A.setVisibility(View.GONE);
+                    xmlLayoutOrientation.setVisibility(View.GONE);
                 }
             }
 
-            v.a();
+            projectFileSelector.a();
             h();
             if (c == null) {
                 l();
@@ -1305,9 +1289,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         public void b() {
             publishProgress("Now processing..");
-            jC.d(l).v();
-            jC.d(l).w();
-            jC.d(l).u();
+            jC.d(sc_id).v();
+            jC.d(sc_id).w();
+            jC.d(sc_id).u();
         }
 
         @Override
@@ -1331,9 +1315,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
             A();
             h();
-            jC.d(l).f();
-            jC.d(l).g();
-            jC.d(l).e();
+            jC.d(sc_id).f();
+            jC.d(sc_id).g();
+            jC.d(sc_id).e();
         }
 
         @Override
@@ -1345,11 +1329,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void b() {
             publishProgress("Now saving..");
-            jC.d(l).a();
-            jC.b(l).m();
-            jC.a(l).j();
-            jC.d(l).x();
-            jC.c(l).l();
+            jC.d(sc_id).a();
+            jC.b(sc_id).m();
+            jC.a(sc_id).j();
+            jC.d(sc_id).x();
+            jC.c(sc_id).l();
         }
 
         @Override
@@ -1385,12 +1369,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void b() {
             publishProgress("Now saving..");
-            jC.d(l).a();
-            jC.b(l).m();
-            jC.a(l).j();
-            jC.d(l).x();
-            jC.c(l).l();
-            jC.d(l).h();
+            jC.d(sc_id).a();
+            jC.b(sc_id).m();
+            jC.a(sc_id).j();
+            jC.d(sc_id).x();
+            jC.c(sc_id).l();
+            jC.d(sc_id).h();
         }
 
         @Override
@@ -1416,7 +1400,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void b() {
-            jC.a(l).k();
+            jC.a(sc_id).k();
         }
 
         @Override
@@ -1458,11 +1442,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public Object a(ViewGroup viewGroup, int i) {
             Fragment fragment = (Fragment) super.a(viewGroup, i);
             if (i == 0) {
-                w = (jr) fragment;
+                viewTabAdapter = (jr) fragment;
             } else if (i == 1) {
-                x = (rs) fragment;
+                eventTabAdapter = (rs) fragment;
             } else {
-                y = (br) fragment;
+                componentTabAdapter = (br) fragment;
             }
 
             return fragment;
