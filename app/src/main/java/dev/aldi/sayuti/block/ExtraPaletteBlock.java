@@ -959,11 +959,11 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "fileSetData");
                     logicEditor.a(" ", "fileRemoveData");
                 }
-                if (extraBlocks.isComponentUsed(24)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG)) {
                     logicEditor.a("DatePickerDialog", 0xff555555);
                     logicEditor.a(" ", "datePickerDialogShow");
                 }
-                if (extraBlocks.isComponentUsed(25)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG)) {
                     logicEditor.a("TimePickerDialog", 0xff555555);
                     logicEditor.a(" ", "timePickerDialogShow");
                 }
@@ -1130,7 +1130,7 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "locationManagerRequestLocationUpdates");
                     logicEditor.a(" ", "locationManagerRemoveUpdates");
                 }
-                if (extraBlocks.isComponentUsed(22)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD)) {
                     logicEditor.a("Video Ad", 0xff555555);
                     logicEditor.a(" ", "videoAdCreate");
                     logicEditor.a(" ", "videoAdLoad");
@@ -1140,7 +1140,7 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "videoAdPause");
                     logicEditor.a(" ", "videoAdDestroy");
                 }
-                if (extraBlocks.isComponentUsed(23)
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG)
                         || extraBlocks.isCustomVarUsed("ProgressDialog")
                         || eventName.equals("onPreExecute") || eventName.equals("onProgressUpdate")
                         || eventName.equals("onPostExecute")) {
