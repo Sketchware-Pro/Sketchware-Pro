@@ -13,7 +13,6 @@ import java.util.Iterator;
 
 import a.a.a.jC;
 import a.a.a.kq;
-import a.a.a.xq;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.lib.FileResConfig;
@@ -926,24 +925,20 @@ public class ExtraPaletteBlock {
                 logicEditor.a(" ", "doToast");
                 logicEditor.a(" ", "copyToClipboard");
                 logicEditor.a(" ", "setTitle");
-                if (xq.a(sc_id) || xq.b(sc_id)) {
-                    logicEditor.a("b", "intentHasExtra");
-                    logicEditor.a("s", "intentGetString");
-                    logicEditor.a("f", "finishActivity");
-                    logicEditor.a("f", "finishAffinity");
-                }
+                logicEditor.a("b", "intentHasExtra");
+                logicEditor.a("s", "intentGetString");
+                logicEditor.a("f", "finishActivity");
+                logicEditor.a("f", "finishAffinity");
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_INTENT)
                         || extraBlocks.isCustomVarUsed("Intent")) {
                     logicEditor.a("Intent", 0xff555555);
                     logicEditor.a(" ", "intentSetAction");
                     logicEditor.a(" ", "intentSetData");
                     logicEditor.a(" ", "intentSetType");
-                    if (xq.a(sc_id) || xq.b(sc_id)) {
-                        logicEditor.a(" ", "intentSetScreen");
-                        logicEditor.a(" ", "launchApp");
-                        logicEditor.a(" ", "intentPutExtra");
-                        logicEditor.a(" ", "intentRemoveExtra");
-                    }
+                    logicEditor.a(" ", "intentSetScreen");
+                    logicEditor.a(" ", "launchApp");
+                    logicEditor.a(" ", "intentPutExtra");
+                    logicEditor.a(" ", "intentRemoveExtra");
                     logicEditor.a(" ", "intentSetFlags");
                     logicEditor.a(" ", "startActivity");
                     logicEditor.a(" ", "startActivityWithChooser");
@@ -964,11 +959,11 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "fileSetData");
                     logicEditor.a(" ", "fileRemoveData");
                 }
-                if (extraBlocks.isComponentUsed(24)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG)) {
                     logicEditor.a("DatePickerDialog", 0xff555555);
                     logicEditor.a(" ", "datePickerDialogShow");
                 }
-                if (extraBlocks.isComponentUsed(25)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG)) {
                     logicEditor.a("TimePickerDialog", 0xff555555);
                     logicEditor.a(" ", "timePickerDialogShow");
                 }
@@ -1065,6 +1060,9 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "firebaseauthResetPassword");
                     logicEditor.a(" ", "firebaseauthSignOutUser");
                 }
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS)) {
+                    logicEditor.a(" ", "setDynamicLinkDataHost");
+                }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_GYROSCOPE)) {
                     logicEditor.a("Gyroscope", 0xff555555);
                     logicEditor.a(" ", "gyroscopeStartListen");
@@ -1132,7 +1130,7 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "locationManagerRequestLocationUpdates");
                     logicEditor.a(" ", "locationManagerRemoveUpdates");
                 }
-                if (extraBlocks.isComponentUsed(22)) {
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD)) {
                     logicEditor.a("Video Ad", 0xff555555);
                     logicEditor.a(" ", "videoAdCreate");
                     logicEditor.a(" ", "videoAdLoad");
@@ -1142,7 +1140,7 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "videoAdPause");
                     logicEditor.a(" ", "videoAdDestroy");
                 }
-                if (extraBlocks.isComponentUsed(23)
+                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG)
                         || extraBlocks.isCustomVarUsed("ProgressDialog")
                         || eventName.equals("onPreExecute") || eventName.equals("onProgressUpdate")
                         || eventName.equals("onPostExecute")) {

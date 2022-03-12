@@ -647,7 +647,7 @@ public class yq {
                         N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
                         break;
 
-                    case 29:
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                         N.isDynamicLinkUsed = true;
                         break;
 
@@ -661,6 +661,7 @@ public class yq {
                     N.x.setParams(bean.parameters, e, opCode);
 
                     switch (opCode) {
+                        case "FirebaseDynamicLink setDataHost":
                         case "setDynamicLinkDataHost":
                             N.dlDataList.add(new Pair<>(bean.parameters.get(0), bean.parameters.get(1)));
                             break;
