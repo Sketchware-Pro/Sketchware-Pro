@@ -193,75 +193,75 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 DesignActivity designActivity = (DesignActivity) context;
                 switch ((Integer) view.getTag()) {
                     case 1:
-                        designActivity.t();
+                        designActivity.toCollectionManager();
                         return;
 
                     case 3:
-                        designActivity.w();
+                        designActivity.toLibraryManager();
                         return;
 
                     case 4:
-                        designActivity.x();
+                        designActivity.toViewManager();
                         return;
 
                     case 5:
-                        designActivity.v();
+                        designActivity.toImageManager();
                         return;
 
                     case 6:
-                        designActivity.y();
+                        designActivity.toSoundManager();
                         return;
 
                     case 7:
-                        designActivity.u();
+                        designActivity.toFontManager();
                         return;
 
                     case 8:
-                        designActivity.toJava();
+                        designActivity.toJavaManager();
                         return;
 
                     case 9:
-                        designActivity.toResource();
+                        designActivity.toResourceManager();
                         return;
 
                     case 10:
-                        designActivity.toAssets();
+                        designActivity.toAssetManager();
                         return;
 
                     case 11:
-                        designActivity.toPermission();
+                        designActivity.toPermissionManager();
                         return;
 
                     case 12:
-                        designActivity.toAppCompatInjection();
+                        designActivity.toAppCompatInjectionManager();
                         return;
 
                     case 13:
-                        designActivity.toAndroidManifest();
+                        designActivity.toAndroidManifestManager();
                         return;
 
                     case 14:
-                        designActivity.toLocalLibrary();
+                        designActivity.toLocalLibraryManager();
                         return;
 
                     case 16:
-                        designActivity.z();
+                        designActivity.toSourceCodeViewer();
                         return;
 
                     case 17:
-                        designActivity.toProguard();
+                        designActivity.toProGuardManager();
                         return;
 
                     case 18:
-                        designActivity.toStringfog();
+                        designActivity.toStringFogManager();
                         return;
 
                     case 19:
-                        designActivity.toNativelibs();
+                        designActivity.toNativeLibraryManager();
                         return;
 
                     case 20:
-                        designActivity.toCustomBlocks();
+                        designActivity.toCustomBlocksViewer();
                         return;
 
                     case 2:

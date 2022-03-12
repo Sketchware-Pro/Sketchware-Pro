@@ -2,6 +2,7 @@ package com.besome.sketch.design;
 
 import static mod.SketchwareUtil.getDip;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +46,6 @@ import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
-import com.besome.sketch.tools.ExportApkActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.Resources;
@@ -128,7 +129,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
      */
-    private void A() {
+    private void saveVersionCodeInformationToProject() {
         HashMap<String, Object> projectMetadata = lC.b(sc_id);
         if (projectMetadata != null) {
             projectMetadata.put("sketchware_ver", GB.d(getApplicationContext()));
@@ -150,13 +151,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    /**
-     * Sets the activity's title in the Toolbar.
-     */
-    private void b(String newTitle) {
-        d().a(newTitle);
-    }
-
     public void b(boolean var1) {
         if (var1) {
             viewPager.l();
@@ -170,7 +164,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      *
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
-    private void d(String error) {
+    private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(q.b).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.a(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_show), v -> {
@@ -206,18 +200,18 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
     private void l() {
         if (jC.c(sc_id).g() || jC.b(sc_id).g() || jC.d(sc_id).q() || jC.a(sc_id).d() || jC.a(sc_id).c()) {
-            s();
+            askIfToRestoreOldUnsavedProjectData();
         }
     }
 
-    private void n() {
+    private void generateProjectDebugFiles() {
         q.b(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
     }
 
     /**
      * Opens the debug APK to install.
      */
-    private void o() {
+    private void installBuiltApk() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (Build.VERSION.SDK_INT >= 24) {
             Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.H));
@@ -322,7 +316,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 k();
                 new e(getApplicationContext()).execute();
             } else {
-                q();
+                showSaveBeforeQuittingDialog();
             }
         }
     }
@@ -368,7 +362,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         case 4:
                             if (FileUtil.isExistFile(q.H)) {
-                                o();
+                                installBuiltApk();
                             } else {
                                 SketchwareUtil.toast("APK doesn't exist anymore");
                             }
@@ -540,7 +534,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         k();
 
         HashMap<String, Object> projectInfo = lC.b(sc_id);
-        b(yB.c(projectInfo, "my_ws_name"));
+        d().a(yB.c(projectInfo, "my_ws_name"));
         q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
         try {
@@ -559,7 +553,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         long freeMegabytes = GB.c();
         if (freeMegabytes < 100L && freeMegabytes > 0L) {
-            r();
+            warnAboutInsufficientStorageSpace();
         }
     }
 
@@ -585,7 +579,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Show a dialog asking about saving the project before quitting.
      */
-    private void q() {
+    private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_quit_title_exit_projet));
         dialog.a(Resources.drawable.exit_96);
@@ -622,7 +616,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Show a dialog warning the user about low free space.
      */
-    private void r() {
+    private void warnAboutInsufficientStorageSpace() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
         dialog.a(Resources.drawable.break_warning_96_red);
@@ -632,7 +626,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         dialog.show();
     }
 
-    private void s() {
+    private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
         dialog.a(Resources.drawable.data_backup_96);
@@ -722,204 +716,158 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Opens {@link ManageCollectionActivity}.
      */
-    public void t() {
-        Intent intent = new Intent(getApplicationContext(), ManageCollectionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 233);
+    void toCollectionManager() {
+        launchActivity(ManageCollectionActivity.class, 233);
     }
 
     /**
      * Opens {@link AndroidManifestInjection}.
      */
-    public void toAndroidManifest() {
-        Intent intent = new Intent(getApplicationContext(), AndroidManifestInjection.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        intent.putExtra("file_name", projectFileSelector.g);
-        startActivity(intent);
+    void toAndroidManifestManager() {
+        launchActivity(AndroidManifestInjection.class, null,
+                new Pair<>("file_name", projectFileSelector.g));
     }
 
     /**
      * Opens {@link ManageCustomAttributeActivity}.
      */
-    public void toAppCompatInjection() {
-        Intent intent = new Intent(getApplicationContext(), ManageCustomAttributeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        intent.putExtra("file_name", projectFileSelector.f);
-        startActivity(intent);
+    void toAppCompatInjectionManager() {
+        launchActivity(ManageCustomAttributeActivity.class, null,
+                new Pair<>("file_name", projectFileSelector.f));
     }
 
     /**
      * Opens {@link ManageAssetsActivity}.
      */
-    public void toAssets() {
-        Intent intent = new Intent(getApplicationContext(), ManageAssetsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toAssetManager() {
+        launchActivity(ManageAssetsActivity.class, null);
     }
 
     /**
      * Shows a {@link CustomBlocksDialog}.
      */
-    public void toCustomBlocks() {
+    void toCustomBlocksViewer() {
         CustomBlocksDialog.show(this, sc_id);
-    }
-
-    /**
-     * Opens {@link ExportApkActivity}.
-     */
-    public void toExportApk() {
-        Intent intent = new Intent(getApplicationContext(), ExportApkActivity.class);
-        intent.putExtra("scId", sc_id);
-        startActivity(intent);
     }
 
     /**
      * Opens {@link ManageJavaActivity}.
      */
-    public void toJava() {
-        Intent intent = new Intent(getApplicationContext(), ManageJavaActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        intent.putExtra("pkgName", q.e);
-        startActivity(intent);
+    void toJavaManager() {
+        launchActivity(ManageJavaActivity.class, null,
+                new Pair<>("pkgName", q.e));
     }
 
     /**
      * Opens {@link ManageLocalLibraryActivity}.
      */
-    public void toLocalLibrary() {
-        Intent intent = new Intent(getApplicationContext(), ManageLocalLibraryActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toLocalLibraryManager() {
+        launchActivity(ManageLocalLibraryActivity.class, null);
     }
 
     /**
      * Opens {@link ManageNativelibsActivity}.
      */
-    public void toNativelibs() {
-        Intent intent = new Intent(getApplicationContext(), ManageNativelibsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toNativeLibraryManager() {
+        launchActivity(ManageNativelibsActivity.class, null);
     }
 
     /**
      * Opens {@link ManagePermissionActivity}.
      */
-    public void toPermission() {
-        Intent intent = new Intent(getApplicationContext(), ManagePermissionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toPermissionManager() {
+        launchActivity(ManagePermissionActivity.class, null);
     }
 
     /**
      * Opens {@link ManageProguardActivity}.
      */
-    public void toProguard() {
-        Intent intent = new Intent(getApplicationContext(), ManageProguardActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toProGuardManager() {
+        launchActivity(ManageProguardActivity.class, null);
     }
 
     /**
      * Opens {@link ManageResourceActivity}.
      */
-    public void toResource() {
-        Intent intent = new Intent(getApplicationContext(), ManageResourceActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toResourceManager() {
+        launchActivity(ManageResourceActivity.class, null);
     }
 
     /**
      * Opens {@link ManageStringfogActivity}.
      */
-    public void toStringfog() {
-        Intent intent = new Intent(getApplicationContext(), ManageStringfogActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
+    void toStringFogManager() {
+        launchActivity(ManageStringfogActivity.class, null);
     }
 
     /**
      * Opens {@link ManageFontActivity}.
      */
-    public void u() {
-        Intent intent = new Intent(getApplicationContext(), ManageFontActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 228);
+    void toFontManager() {
+        launchActivity(ManageFontActivity.class, 228);
     }
 
     /**
      * Opens {@link ManageImageActivity}.
      */
-    public void v() {
-        Intent intent = new Intent(getApplicationContext(), ManageImageActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 209);
+    void toImageManager() {
+        launchActivity(ManageImageActivity.class, 209);
     }
 
     /**
      * Opens {@link ManageLibraryActivity}.
      */
-    public void w() {
-        Intent intent = new Intent(getApplicationContext(), ManageLibraryActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 226);
+    void toLibraryManager() {
+        launchActivity(ManageLibraryActivity.class, 226);
     }
 
     /**
      * Opens {@link ManageViewActivity}.
      */
-    public void x() {
-        Intent intent = new Intent(getApplicationContext(), ManageViewActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 208);
+    void toViewManager() {
+        launchActivity(ManageViewActivity.class, 208);
     }
 
     /**
      * Opens {@link ManageSoundActivity}.
      */
-    public void y() {
-        Intent intent = new Intent(getApplicationContext(), ManageSoundActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivityForResult(intent, 217);
+    void toSoundManager() {
+        launchActivity(ManageSoundActivity.class, 217);
     }
 
     /**
      * Opens {@link SrcViewerActivity}.
      */
-    public void z() {
-        Intent intent = new Intent(getApplicationContext(), SrcViewerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
+    void toSourceCodeViewer() {
+        String current = "";
         if (viewPager.getCurrentItem() == 0) {
             try {
-                intent.putExtra("current", viewTabAdapter.d().getXmlName());
+                current = viewTabAdapter.d().getXmlName();
             } catch (Exception ignored) {
             }
-        } else if (viewPager.getCurrentItem() != 1) {
-            intent.putExtra("current", "");
-        } else {
+        } else if (viewPager.getCurrentItem() == 1) {
             try {
-                intent.putExtra("current", eventTabAdapter.d().getJavaName());
+                current = eventTabAdapter.d().getJavaName();
             } catch (Exception ignored) {
             }
         }
+        launchActivity(SrcViewerActivity.class, 240, new Pair<>("current", current));
+    }
 
-        startActivityForResult(intent, 240);
+    @SafeVarargs
+    private final void launchActivity(Class<? extends Activity> toLaunch, Integer optionalRequestCode, Pair<String, String>... extras) {
+        Intent intent = new Intent(getApplicationContext(), toLaunch);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
+        for (Pair<String, String> extra : extras) {
+            intent.putExtra(extra.first, extra.second);
+        }
+
+        if (optionalRequestCode == null) {
+            startActivity(intent);
+        } else {
+            startActivityForResult(intent, optionalRequestCode);
+        }
     }
 
     public class a extends MA implements OnCancelListener {
@@ -1015,7 +963,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     kC.c(q.w + File.separator + "raw");
                     kC = jC.d(sc_id);
                     kC.a(q.A + File.separator + "fonts");
-                    n();
+                    generateProjectDebugFiles();
                     q.f();
                     q.e();
 
@@ -1052,7 +1000,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         IncrementalCompiler incrementalCompiler = new IncrementalCompiler(q);
                         incrementalCompiler.setResultListener((success, compileType, args) -> {
                             if (!success) {
-                                DesignActivity.this.d(String.valueOf(args[0]));
+                                indicateCompileErrorOccurred(String.valueOf(args[0]));
                             } else {
 
                                 switch (compileType) {
@@ -1072,7 +1020,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                                 publishProgress("Signing apk...");
                                 mDp.k();
 
-                                o();
+                                installBuiltApk();
                             }
                         });
                         incrementalCompiler.performCompilation();
@@ -1143,12 +1091,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
-                        /* Launch Intent to install APK */
-                        o();
+                        installBuiltApk();
                     }
                 } catch (Throwable e) {
                     LogUtil.e("DesignActivity$a", "Failed to build project", e);
-                    DesignActivity.this.d(e.getMessage());
+                    indicateCompileErrorOccurred(e.getMessage());
                 }
             }
         }
@@ -1313,7 +1260,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
-            A();
+            saveVersionCodeInformationToProject();
             h();
             jC.d(sc_id).f();
             jC.d(sc_id).g();
@@ -1355,7 +1302,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
-            A();
+            saveVersionCodeInformationToProject();
             h();
             finish();
         }
