@@ -661,6 +661,7 @@ public class yq {
                     N.x.setParams(bean.parameters, e, opCode);
 
                     switch (opCode) {
+                        case "FirebaseDynamicLink setDataHost":
                         case "setDynamicLinkDataHost":
                             N.dlDataList.add(new Pair<>(bean.parameters.get(0), bean.parameters.get(1)));
                             break;
