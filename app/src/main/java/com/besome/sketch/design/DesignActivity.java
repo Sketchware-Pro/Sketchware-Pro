@@ -106,6 +106,14 @@ import mod.tyron.compiler.IncrementalCompiler;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
+    private static final int REQUEST_CODE_VIEW_MANAGER = 208;
+    private static final int REQUEST_CODE_IMAGE_MANAGER = 209;
+    private static final int REQUEST_CODE_SOUND_MANAGER = 217;
+    private static final int REQUEST_CODE_LIBRARY_MANAGER = 226;
+    private static final int REQUEST_CODE_FONT_MANAGER = 228;
+    private static final int REQUEST_CODE_COLLECTION_MANAGER = 233;
+    private static final int REQUEST_CODE_SOURCE_CODE_VIEWER = 240;
+
     private ImageView xmlLayoutOrientation;
     private boolean B = false;
     private int currentTabNumber;
@@ -235,7 +243,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 new a(getApplicationContext()).execute();
                 break;
 
-            case 208:
+            case REQUEST_CODE_VIEW_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (projectFileSelector != null) {
                         projectFileSelector.a();
@@ -246,7 +254,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
                 break;
 
-            case 209:
+            case REQUEST_CODE_IMAGE_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (viewTabAdapter != null) {
                         viewTabAdapter.i();
@@ -254,8 +262,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
                 break;
 
-            case 217:
-            case 228:
+            case REQUEST_CODE_SOUND_MANAGER:
+            case REQUEST_CODE_FONT_MANAGER:
                 break;
 
             case 223:
@@ -274,7 +282,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
                 break;
 
-            case 226:
+            case REQUEST_CODE_LIBRARY_MANAGER:
                 if (resultCode == RESULT_OK) {
                     if (projectFileSelector != null) {
                         projectFileSelector.a();
@@ -282,7 +290,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
                 break;
 
-            case 233:
+            case REQUEST_CODE_COLLECTION_MANAGER:
                 if (resultCode == RESULT_OK) {
                     viewTabAdapter.j();
                 }
@@ -717,7 +725,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Opens {@link ManageCollectionActivity}.
      */
     void toCollectionManager() {
-        launchActivity(ManageCollectionActivity.class, 233);
+        launchActivity(ManageCollectionActivity.class, REQUEST_CODE_COLLECTION_MANAGER);
     }
 
     /**
@@ -804,35 +812,35 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * Opens {@link ManageFontActivity}.
      */
     void toFontManager() {
-        launchActivity(ManageFontActivity.class, 228);
+        launchActivity(ManageFontActivity.class, REQUEST_CODE_FONT_MANAGER);
     }
 
     /**
      * Opens {@link ManageImageActivity}.
      */
     void toImageManager() {
-        launchActivity(ManageImageActivity.class, 209);
+        launchActivity(ManageImageActivity.class, REQUEST_CODE_IMAGE_MANAGER);
     }
 
     /**
      * Opens {@link ManageLibraryActivity}.
      */
     void toLibraryManager() {
-        launchActivity(ManageLibraryActivity.class, 226);
+        launchActivity(ManageLibraryActivity.class, REQUEST_CODE_LIBRARY_MANAGER);
     }
 
     /**
      * Opens {@link ManageViewActivity}.
      */
     void toViewManager() {
-        launchActivity(ManageViewActivity.class, 208);
+        launchActivity(ManageViewActivity.class, REQUEST_CODE_VIEW_MANAGER);
     }
 
     /**
      * Opens {@link ManageSoundActivity}.
      */
     void toSoundManager() {
-        launchActivity(ManageSoundActivity.class, 217);
+        launchActivity(ManageSoundActivity.class, REQUEST_CODE_SOUND_MANAGER);
     }
 
     /**
@@ -851,7 +859,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             } catch (Exception ignored) {
             }
         }
-        launchActivity(SrcViewerActivity.class, 240, new Pair<>("current", current));
+        launchActivity(SrcViewerActivity.class, REQUEST_CODE_SOURCE_CODE_VIEWER, new Pair<>("current", current));
     }
 
     @SafeVarargs
