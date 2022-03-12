@@ -16,6 +16,7 @@ import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
+import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 
 /**
@@ -44,7 +45,7 @@ public class ResourceCompiler {
         this.dp = dp;
     }
 
-    public void compile() throws IOException, zy {
+    public void compile() throws IOException, zy, MissingFileException {
         Compiler resourceCompiler;
         resourceCompiler = new Aapt2Compiler(dp, aaptFile, willBuildAppBundle);
 
@@ -65,7 +66,7 @@ public class ResourceCompiler {
         /**
          * Compile a project's resources fully.
          */
-        void compile() throws zy;
+        void compile() throws zy, MissingFileException;
 
         /**
          * Set a progress listener to compiling.
@@ -107,7 +108,7 @@ public class ResourceCompiler {
         }
 
         @Override
-        public void compile() throws zy {
+        public void compile() throws zy, MissingFileException {
             String outputPath = buildHelper.f.t + File.separator + "res";
             emptyOrCreateDirectory(outputPath);
 
@@ -137,7 +138,7 @@ public class ResourceCompiler {
          *
          * @throws zy Thrown to be caught by DesignActivity to show an error Snackbar.
          */
-        public void link() throws zy {
+        public void link() throws zy, MissingFileException {
             String resourcesPath = buildHelper.f.t + File.separator + "res";
             if (progressListener != null)
                 progressListener.onProgressUpdate("Linking resources with AAPT2...");
@@ -168,28 +169,39 @@ public class ResourceCompiler {
 
             args.add("-I");
             String customAndroidSdk = buildHelper.build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, "");
-            args.add(customAndroidSdk.isEmpty() ? buildHelper.o : customAndroidSdk);
+            if (customAndroidSdk.isEmpty()) {
+                args.add(buildHelper.o);
+            } else {
+                linkingAssertFileExists(customAndroidSdk);
+                args.add(customAndroidSdk);
+            }
 
             /* Add assets imported by vanilla method */
+            linkingAssertDirectoryExists(buildHelper.f.A);
             args.add("-A");
             args.add(buildHelper.f.A);
 
             /* Add imported assets */
-            if (FileUtil.isExistFile(buildHelper.fpu.getPathAssets(buildHelper.f.b))) {
+            String importedAssetsPath = buildHelper.fpu.getPathAssets(buildHelper.f.b);
+            if (FileUtil.isExistFile(importedAssetsPath)) {
                 args.add("-A");
-                args.add(buildHelper.fpu.getPathAssets(buildHelper.f.b));
+                args.add(importedAssetsPath);
             }
 
             /* Add built-in libraries' assets */
             for (Jp library : buildHelper.n.a()) {
                 if (library.d()) {
+                    String assetsPath = buildHelper.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "assets";
+
+                    linkingAssertDirectoryExists(assetsPath);
                     args.add("-A");
-                    args.add(buildHelper.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "assets");
+                    args.add(assetsPath);
                 }
             }
 
             /* Add local libraries' assets */
             for (String localLibraryAssetsDirectory : new ManageLocalLibrary(buildHelper.f.b).getAssets()) {
+                linkingAssertDirectoryExists(localLibraryAssetsDirectory);
                 args.add("-A");
                 args.add(localLibraryAssetsDirectory);
             }
@@ -230,14 +242,17 @@ public class ResourceCompiler {
             }
 
             /* Add R.java */
+            linkingAssertFileExists(buildHelper.f.v);
             args.add("--java");
             args.add(buildHelper.f.v);
 
             /* Output AAPT2's generated ProGuard rules to a.a.a.yq.aapt_rules */
+            linkingAssertFileExists(buildHelper.f.aapt_rules);
             args.add("--proguard");
             args.add(buildHelper.f.aapt_rules);
 
             /* Add AndroidManifest.xml */
+            linkingAssertFileExists(buildHelper.f.r);
             args.add("--manifest");
             args.add(buildHelper.f.r);
 
@@ -261,7 +276,9 @@ public class ResourceCompiler {
             }
         }
 
-        private void compileProjectResources(String outputPath) throws zy {
+        private void compileProjectResources(String outputPath) throws zy, MissingFileException {
+            compilingAssertDirectoryExists(buildHelper.f.w);
+
             ArrayList<String> commands = new ArrayList<>();
             commands.add(aapt2.getAbsolutePath());
             commands.add("compile");
@@ -285,13 +302,15 @@ public class ResourceCompiler {
             FileUtil.makeDir(path);
         }
 
-        private void compileLocalLibraryResources(String outputPath) throws zy {
+        private void compileLocalLibraryResources(String outputPath) throws zy, MissingFileException {
             int localLibrariesCount = buildHelper.mll.getResLocalLibrary().size();
             LogUtil.d(TAG + ":cLLR", "About to compile " + localLibrariesCount
                     + " local " + (localLibrariesCount == 1 ? "library" : "libraries"));
             for (String localLibraryResDirectory : buildHelper.mll.getResLocalLibrary()) {
                 File localLibraryDirectory = new File(localLibraryResDirectory).getParentFile();
                 if (localLibraryDirectory != null) {
+                    compilingAssertDirectoryExists(localLibraryResDirectory);
+
                     ArrayList<String> commands = new ArrayList<>();
                     commands.add(aapt2.getAbsolutePath());
                     commands.add("compile");
@@ -311,13 +330,15 @@ public class ResourceCompiler {
             }
         }
 
-        private void compileBuiltInLibraryResources() throws zy {
+        private void compileBuiltInLibraryResources() throws zy, MissingFileException {
             new File(compiledBuiltInLibraryResourcesDirectory).mkdirs();
             for (Jp builtInLibrary : buildHelper.n.a()) {
                 if (builtInLibrary.c()) {
                     File cachedCompiledResources = new File(compiledBuiltInLibraryResourcesDirectory, builtInLibrary.a() + ".zip");
                     String libraryResources = buildHelper.l.getAbsolutePath() + File.separator + "libs"
                             + File.separator + builtInLibrary.a() + File.separator + "res";
+
+                    compilingAssertDirectoryExists(libraryResources);
 
                     if (isBuiltInLibraryRecompilingNeeded(cachedCompiledResources)) {
                         ArrayList<String> commands = new ArrayList<>();
@@ -374,6 +395,27 @@ public class ResourceCompiler {
                     LogUtil.e(TAG, executor.getLog());
                     throw new zy(executor.getLog());
                 }
+            }
+        }
+
+        private void compilingAssertDirectoryExists(String directoryPath) throws MissingFileException {
+            File directory = new File(directoryPath);
+            if (!directory.exists()) {
+                throw new MissingFileException(directory, MissingFileException.STEP_RESOURCE_COMPILING, true);
+            }
+        }
+
+        public void linkingAssertFileExists(String filePath) throws MissingFileException {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                throw new MissingFileException(file, MissingFileException.STEP_RESOURCE_LINKING, false);
+            }
+        }
+
+        public void linkingAssertDirectoryExists(String filePath) throws MissingFileException {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                throw new MissingFileException(file, MissingFileException.STEP_RESOURCE_LINKING, true);
             }
         }
 
