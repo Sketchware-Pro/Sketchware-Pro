@@ -1,5 +1,7 @@
 package mod.hilal.saif.asd.asdforall;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -18,8 +20,6 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.sketchware.remod.Resources;
 
 import a.a.a.Ss;
-
-import static mod.SketchwareUtil.getDip;
 
 public class AsdAll extends Dialog {
 
