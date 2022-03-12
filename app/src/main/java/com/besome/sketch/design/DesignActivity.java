@@ -100,6 +100,7 @@ import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
+import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
@@ -1101,6 +1102,31 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         installBuiltApk();
                     }
+                } catch (MissingFileException e) {
+                    runOnUiThread(() -> {
+                        boolean isMissingDirectory = e.isMissingDirectory();
+
+                        aB dialog = new aB(DesignActivity.this);
+                        if (isMissingDirectory) {
+                            dialog.b("Missing directory detected");
+                            dialog.a("A directory important for building is missing. " +
+                                    "Sketchware Pro can try creating " + e.getMissingFile().getAbsolutePath() +
+                                    " if you'd like to.");
+                            dialog.configureDefaultButton("Create", v -> {
+                                dialog.dismiss();
+                                if (!e.getMissingFile().mkdirs()) {
+                                    SketchwareUtil.toastError("Failed to create directory / directories!");
+                                }
+                            });
+                        } else {
+                            dialog.b("Missing file detected");
+                            dialog.a("A file needed for building is missing. " +
+                                    "Put the correct file back to " + e.getMissingFile().getAbsolutePath() +
+                                    " and try building again.");
+                        }
+                        dialog.b("Dismiss", Helper.getDialogDismissListener(dialog));
+                        dialog.show();
+                    });
                 } catch (Throwable e) {
                     LogUtil.e("DesignActivity$a", "Failed to build project", e);
                     indicateCompileErrorOccurred(e.getMessage());
