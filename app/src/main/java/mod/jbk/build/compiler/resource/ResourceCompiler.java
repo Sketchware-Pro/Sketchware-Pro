@@ -242,12 +242,11 @@ public class ResourceCompiler {
             }
 
             /* Add R.java */
-            linkingAssertFileExists(buildHelper.f.v);
+            linkingAssertDirectoryExists(buildHelper.f.v);
             args.add("--java");
             args.add(buildHelper.f.v);
 
             /* Output AAPT2's generated ProGuard rules to a.a.a.yq.aapt_rules */
-            linkingAssertFileExists(buildHelper.f.aapt_rules);
             args.add("--proguard");
             args.add(buildHelper.f.aapt_rules);
 
