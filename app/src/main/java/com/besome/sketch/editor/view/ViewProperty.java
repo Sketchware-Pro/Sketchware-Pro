@@ -73,6 +73,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         initialize(context);
     }
 
+    @Override
     public void a(String str, Object obj) {
     }
 
@@ -123,7 +124,6 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     public void d() {
-        ViewPropertyItems viewPropertyItems = this.viewPropertyItems;
         if (viewPropertyItems != null) {
             viewPropertyItems.b();
         }
@@ -224,32 +224,26 @@ public class ViewProperty extends LinearLayout implements Kw {
         LinearLayout propertyContents = findViewById(Resources.id.property_contents);
         layoutPropertySeeAll = findViewById(Resources.id.layout_property_see_all);
         viewEvent = findViewById(Resources.id.view_event);
-        hcvProperty.setOnScrollChangedListener(new CustomHorizontalScrollView.a() {
-            @Override
-            public void a(int i, int i1, int i2, int i3) {
-                if (Math.abs(i - i3) <= 5) {
-                    return;
-                }
-                if (i > i3) {
-                    if (v) {
-                        v = false;
-                        b();
-                        u.start();
-                    }
-                } else if (!(v)) {
-                    v = true;
+        hcvProperty.setOnScrollChangedListener((i, i1, i2, i3) -> {
+            if (Math.abs(i - i3) <= 5) {
+                return;
+            }
+            if (i > i3) {
+                if (v) {
+                    v = false;
                     b();
-                    t.start();
+                    u.start();
                 }
+            } else if (!(v)) {
+                v = true;
+                b();
+                t.start();
             }
         });
         imgSave = findViewById(Resources.id.img_save);
-        imgSave.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    f();
-                }
+        imgSave.setOnClickListener(v -> {
+            if (!mB.a()) {
+                f();
             }
         });
         spnWidget = findViewById(Resources.id.spn_widget);
@@ -275,9 +269,8 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     private void b(ViewBean viewBean) {
-        Jw jw = g;
-        if (jw != null) {
-            jw.a(viewBean.id);
+        if (g != null) {
+            g.a(viewBean.id);
         }
         if ("_fab".equals(viewBean.id)) {
             imgSave.setVisibility(GONE);
@@ -325,15 +318,14 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     public void a(ViewBean viewBean) {
-        b bVar = l;
-        if (bVar == null) {
+        if (l == null) {
             l = new b(getContext());
             l.a("see_all", Resources.drawable.color_more_96, Resources.string.common_word_see_all);
             l.a(viewBean);
             layoutPropertySeeAll.addView(l);
             return;
         }
-        bVar.a(viewBean);
+        l.a(viewBean);
     }
 
     class c extends BaseAdapter {
