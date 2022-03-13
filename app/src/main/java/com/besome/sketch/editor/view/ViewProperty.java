@@ -43,28 +43,25 @@ import mod.hey.studios.util.Helper;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
-    public String b;
-    public ProjectFileBean c;
-    public Spinner spnWidget;
-    public ArrayList<ViewBean> e = new ArrayList<>();
-    public c f;
-    public Jw g = null;
-    public CustomHorizontalScrollView hcvProperty;
-    public LinearLayout propertyContents;
-    public LinearLayout layoutPropertySeeAll;
-    public ViewPropertyItems viewPropertyItems;
-    public b l;
-    public View propertyLayout;
-    public ViewEvents viewEvent;
-    public Iw o = null;
-    public Lw p;
-    public LinearLayout layoutPropertyGroup;
-    public int r;
-    public ImageView imgSave;
-    public ObjectAnimator t;
-    public ObjectAnimator u;
-    public boolean v = true;
-    private String a = "see_all";
+    private String b;
+    private ProjectFileBean c;
+    private Spinner spnWidget;
+    private final ArrayList<ViewBean> e = new ArrayList<>();
+    private c f;
+    private Jw g = null;
+    private LinearLayout layoutPropertySeeAll;
+    private ViewPropertyItems viewPropertyItems;
+    private b l;
+    private View propertyLayout;
+    private ViewEvents viewEvent;
+    private Iw o = null;
+    private Lw p;
+    private LinearLayout layoutPropertyGroup;
+    private int r;
+    private ImageView imgSave;
+    private ObjectAnimator t;
+    private ObjectAnimator u;
+    private boolean v = true;
 
     public ViewProperty(Context context) {
         super(context);
@@ -222,9 +219,9 @@ public class ViewProperty extends LinearLayout implements Kw {
         layoutPropertyGroup = findViewById(Resources.id.layout_property_group);
         //OnClickListener was empty inside Sketchware 3.10.0, replaced with null to save a class
         layoutPropertyGroup.setOnClickListener(null);
-        hcvProperty = findViewById(Resources.id.hcv_property);
+        CustomHorizontalScrollView hcvProperty = findViewById(Resources.id.hcv_property);
         propertyLayout = findViewById(Resources.id.property_layout);
-        propertyContents = findViewById(Resources.id.property_contents);
+        LinearLayout propertyContents = findViewById(Resources.id.property_contents);
         layoutPropertySeeAll = findViewById(Resources.id.layout_property_see_all);
         viewEvent = findViewById(Resources.id.view_event);
         hcvProperty.setOnScrollChangedListener(new CustomHorizontalScrollView.a() {
