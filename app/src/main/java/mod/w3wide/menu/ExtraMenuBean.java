@@ -627,8 +627,8 @@ public class ExtraMenuBean {
         asdOr.a(root);
         asdOr.carry(logicEditor, ss, false, edittext);
 
-        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, false, ss, asdOr));
-        asdOr.a(Helper.getResString(Resources.string.common_word_cancel), new AsdHandlerCancel(logicEditor, edittext, asdOr));
+        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, ss, asdOr));
+        asdOr.a(Helper.getResString(Resources.string.common_word_cancel), new AsdHandlerCancel(edittext, asdOr));
         asdOr.show();
     }
 
