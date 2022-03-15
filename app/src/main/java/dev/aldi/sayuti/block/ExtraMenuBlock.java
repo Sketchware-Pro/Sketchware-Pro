@@ -16,21 +16,17 @@ import a.a.a.jC;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 import mod.hilal.saif.blocks.BlocksMenu;
-import mod.w3wide.menu.MenuBean;
 
 public class ExtraMenuBlock {
 
     private final LogicEditorActivity a;
-    private final MenuBean menuBean;
 
     public ExtraMenuBlock(LogicEditorActivity logicEditorActivity) {
         this.a = logicEditorActivity;
-        this.menuBean = new MenuBean(logicEditorActivity);
     }
 
     public void a(Ss ss, AsdAll asdAll, ArrayList<String> arrayList) {
         BlocksMenu.extraBlockMenu(ss, asdAll, arrayList);
-        this.menuBean.projectMenu(ss, asdAll, arrayList);
         String menuName = ss.getMenuName();
         try {
             JSONArray jSONArray = new JSONArray(ExtraBlockFile.getMenuBlockFile());
