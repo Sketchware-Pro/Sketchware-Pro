@@ -20,14 +20,12 @@ import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
 import mod.w3wide.control.logic.PermissionManager;
-import mod.w3wide.control.logic.SourceHandler;
 
 public class Jx {
 
     public static String a = "\r\n";
     private final ProjectSettings settings;
     private final PermissionManager permissionManager;
-    private final SourceHandler sourceHandler;
     /**
      * Currently generating class' package name,
      * e.g. com.jbk.internal.demo
@@ -96,12 +94,37 @@ public class Jx {
         mll = new ManageLocalLibrary(eCVar.a);
         settings = new ProjectSettings(eCVar.a);
         permissionManager = new PermissionManager(eCVar.a, projectFileBean.getJavaName());
-        sourceHandler = new SourceHandler(eCVar.a, projectFileBean.getJavaName());
+    }
+
+    public String activityResult() {
+        ArrayList<BlockBean> blocks = jC.a(projectDataManager.a).a(projectFileBean.getJavaName(), "onActivityResult_onActivityResult");
+        return Lx.j(new Fx(projectFileBean.getActivityName(), f, "", blocks).a());
+    }
+
+    public String initializeLogic() {
+        ArrayList<BlockBean> blocks = jC.a(projectDataManager.a).a(projectFileBean.getJavaName(), "initializeLogic_initializeLogic");
+        return Lx.j(new Fx(projectFileBean.getActivityName(), f, "", blocks).a());
     }
 
     private void extraVariables() {
-        i.addAll(sourceHandler.customVariables());
-        m.addAll(sourceHandler.viewBinds());
+        for (Map.Entry<String, ArrayList<BlockBean>> blocks : jC.a(projectDataManager.a).b(projectFileBean.getJavaName()).entrySet()) {
+            for (BlockBean block : blocks.getValue()) {
+                switch (block.opCode) {
+                    case "addCustomVariable":
+                        if (!block.parameters.get(0).trim().isEmpty()) {
+                            i.add(block.parameters.get(0));
+                        }
+                        break;
+
+                    case "addInitializer":
+                        if (!block.parameters.get(0).trim().isEmpty()) {
+                            m.add(block.parameters.get(0));
+
+                        }
+                        break;
+                }
+            }
+        }
     }
 
     /**
@@ -380,7 +403,7 @@ public class Jx {
         } else {
             sb.append("private void initialize(Bundle _savedInstanceState) {");
         }
-        sb.append(sourceHandler.initializeLogic(f, projectFileBean.getActivityName()));
+        sb.append(initializeLogic());
 
         for (String value : m) {
             if (value.length() > 0) {
@@ -434,7 +457,7 @@ public class Jx {
         sb.append("}").append(a);
 
         String agusComponentsOnActivityResultCode = CodeResult.c(f.x);
-        String onActivityResultLogic = sourceHandler.activityResult(f, projectFileBean.getActivityName());
+        String onActivityResultLogic = activityResult();
         String onActivityResultSwitchLogic = e.a();
         if (!agusComponentsOnActivityResultCode.isEmpty() || !onActivityResultLogic.isEmpty() || !onActivityResultSwitchLogic.isEmpty()) {
             sb.append(a);
