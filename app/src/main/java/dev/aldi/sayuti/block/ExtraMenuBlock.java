@@ -15,23 +15,31 @@ import a.a.a.Ss;
 import a.a.a.jC;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.asd.asdforall.AsdAll;
-import mod.hilal.saif.blocks.BlocksMenu;
-import mod.w3wide.menu.MenuBean;
 
 public class ExtraMenuBlock {
 
     private final LogicEditorActivity a;
-    private final MenuBean menuBean;
 
     public ExtraMenuBlock(LogicEditorActivity logicEditorActivity) {
         this.a = logicEditorActivity;
-        this.menuBean = new MenuBean(logicEditorActivity);
     }
 
     public void a(Ss ss, AsdAll asdAll, ArrayList<String> arrayList) {
-        BlocksMenu.extraBlockMenu(ss, asdAll, arrayList);
-        this.menuBean.projectMenu(ss, asdAll, arrayList);
         String menuName = ss.getMenuName();
+        if (menuName.equals("LayoutParam")) {
+            asdAll.b("LayoutParams");
+            arrayList.add("MATCH_PARENT");
+            arrayList.add("WRAP_CONTENT");
+        }
+        if (menuName.equals("Command")) {
+            asdAll.b("commands");
+            arrayList.add("insert");
+            arrayList.add("add");
+            arrayList.add("replace");
+            arrayList.add("find-replace");
+            arrayList.add("find-replace-first");
+            arrayList.add("find-replace-all");
+        }
         try {
             JSONArray jSONArray = new JSONArray(ExtraBlockFile.getMenuBlockFile());
             for (int i = 0; i < jSONArray.length(); i++) {

@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.besome.sketch.beans.AdTestDeviceBean;
+import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
@@ -20,8 +22,11 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.sketchware.remod.Resources;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import a.a.a.Ss;
 import a.a.a.eC;
@@ -54,9 +59,22 @@ public class ExtraMenuBean {
     public static final int LIST_TYPE_MAP = 3;
     public static final int LIST_TYPE_STRING = 2;
 
+    public static final String[] adSize = new String[]{"AUTO_HEIGHT", "BANNER", "FLUID", "FULL_BANNER", "FULL_WIDTH", "INVALID", "LARGE_BANNER", "LEADERBOARD", "MEDIUM_RECTANGLE", "SEARCH", "SMART_BANNER", "WIDE_SKYSCRAPER"};
+    public static final String[] intentKey = new String[]{"EXTRA_ALLOW_MULTIPLE", "EXTRA_EMAIL", "EXTRA_INDEX", "EXTRA_INTENT", "EXTRA_PHONE_NUMBER", "EXTRA_STREAM", "EXTRA_SUBJECT", "EXTRA_TEXT", "EXTRA_TITLE"};
+    public static final String[] pixelFormat = new String[]{"OPAQUE", "RGBA_1010102", "RGBA_8888", "RGBA_F16", "RGBX_8888", "RGB_565", "RGB_888", "TRANSLUCENT", "TRANSPARENT", "UNKNOWN"};
+    public static final String[] patternFlags = new String[]{"CANON_EQ", "CASE_INSENSITIVE", "COMMENTS", "DOTALL", "LITERAL", "MULTILINE", "UNICODE_CASE", "UNIX_LINES"};
+    public static final String[] permission;
+
+    static {
+        ArrayList<String> permissions = new ArrayList<>();
+        for (Field permissionField : android.Manifest.permission.class.getDeclaredFields()) {
+            permissions.add(permissionField.getName());
+        }
+        permission = permissions.toArray(new String[0]);
+    }
+
     private final String ASSETS_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/assets/";
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
-
     private final ExtraMenuBlock extraMenuBlock;
     private final FilePathUtil fpu;
     private final FilePickerDialog fpd;
@@ -65,7 +83,7 @@ public class ExtraMenuBean {
     private final DialogProperties mProperty = new DialogProperties();
     private final eC projectDataManager;
     private final String sc_id;
-
+    private final String javaName;
     private String splitter;
 
     public ExtraMenuBean(LogicEditorActivity logicA) {
@@ -76,6 +94,7 @@ public class ExtraMenuBean {
         frc = new FileResConfig(logicA.B);
         extraMenuBlock = new ExtraMenuBlock(logicA);
         projectDataManager = jC.a(logicA.B);
+        javaName = logicA.M.getJavaName();
     }
 
     private void codeMenu(Ss menu) {
@@ -257,7 +276,7 @@ public class ExtraMenuBean {
 
             case "list":
                 title = Helper.getResString(Resources.string.logic_editor_title_select_list);
-                menus = projectDataManager.c(logicEditor.M.getJavaName());
+                menus = projectDataManager.c(javaName);
                 break;
 
             case "intent":
@@ -557,12 +576,119 @@ public class ExtraMenuBean {
                     menus.add(projectFileBean.fileName);
                 }
                 break;
+            case "SignButtonColor":
+                title = "Select a SignInButton Color";
+                menus.add("COLOR_AUTO");
+                menus.add("COLOR_DARK");
+                menus.add("COLOR_LIGHT");
+                break;
+
+            case "SignButtonSize":
+                title = "Select SignInButton Size";
+                menus.add("SIZE_ICON_ONLY");
+                menus.add("SIZE_STANDARD");
+                menus.add("SIZE_WIDE");
+                break;
+
+            case "ResString":
+            case "ResStyle":
+            case "ResColor":
+            case "ResArray":
+            case "ResDimen":
+            case "ResBool":
+            case "ResInteger":
+            case "ResAttr":
+            case "ResXml":
+                title = "Deprecated";
+                asdAll.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
+                break;
+
+            case "AdUnit":
+                asdAll.a(Resources.drawable.unit_96);
+                title = "Select an Ad Unit";
+                for (AdUnitBean bean : jC.c(sc_id).e.adUnits) {
+                    menus.add(bean.id);
+                }
+                break;
+
+            case "TestDevice":
+                asdAll.a(Resources.drawable.ic_test_device_48dp);
+                title = "Select a Test device";
+                for (AdTestDeviceBean testDevice : jC.c(sc_id).e.testDevices) {
+                    menus.add(testDevice.deviceId);
+                }
+                break;
+
+            case "IntentKey":
+                title = "Select an Intent key";
+                menus.addAll(new ArrayList<>(Arrays.asList(intentKey)));
+                break;
+
+            case "PatternFlag":
+                title = "Select a Pattern Flags";
+                menus.addAll(new ArrayList<>(Arrays.asList(patternFlags)));
+                break;
+
+            case "Permission":
+                title = "Select a Permission";
+                menus.addAll(new ArrayList<>(Arrays.asList(permission)));
+                break;
+
+            case "AdSize":
+                title = "Select an Ad size";
+                menus.addAll(new ArrayList<>(Arrays.asList(adSize)));
+                break;
+
+            case "PixelFormat":
+                title = "Select a PixelFormat";
+                menus.addAll(new ArrayList<>(Arrays.asList(pixelFormat)));
+                break;
+
+            case "Variable":
+                title = "Select a Variable";
+                for (Pair<Integer, String> integerStringPair : projectDataManager.k(javaName)) {
+                    menus.add(integerStringPair.second.replaceFirst("^\\w+[\\s]+(\\w+)", "$1"));
+                }
+                break;
+
+            case "Component":
+                title = "Select a Component";
+                for (ComponentBean componentBean : projectDataManager.e(javaName)) {
+                    menus.add(componentBean.componentId);
+                }
+                break;
+
+            case "CustomVar":
+                title = "Select a Custom Variable";
+                for (String s : projectDataManager.e(javaName, 5)) {
+                    Matcher matcher = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
+                    while (matcher.find()) {
+                        menus.add(matcher.group(2));
+                    }
+                }
+                break;
 
             default:
                 Pair<String, String[]> menuPair = BlockMenu.getMenu(menu.getMenuName());
                 title = menuPair.first;
                 menus = new ArrayList<>(Arrays.asList(menuPair.second));
                 extraMenuBlock.a(menu, asdAll, menus);
+
+                for (String s : projectDataManager.e(javaName, 5)) {
+                    Matcher matcher2 = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
+                    while (matcher2.find()) {
+                        if (menuName.equals(matcher2.group(1))) {
+                            title = "Select a " + matcher2.group(1) + " Variable";
+                            menus.add(matcher2.group(2));
+                        }
+                    }
+                }
+                for (ComponentBean componentBean : projectDataManager.e(javaName)) {
+                    if (componentBean.type > 36 && menuName.equals(ComponentBean.getComponentTypeName(componentBean.type))) {
+                        title = "Select a " + ComponentBean.getComponentTypeName(componentBean.type);
+                        menus.add(componentBean.componentId);
+                    }
+                }
         }
 
         for (String menuArg : menus) {
@@ -597,15 +723,15 @@ public class ExtraMenuBean {
     }
 
     private ArrayList<String> getVarMenus(int type) {
-        return projectDataManager.e(logicEditor.M.getJavaName(), type);
+        return projectDataManager.e(javaName, type);
     }
 
     private ArrayList<String> getListMenus(int type) {
-        return projectDataManager.d(logicEditor.M.getJavaName(), type);
+        return projectDataManager.d(javaName, type);
     }
 
     private ArrayList<String> getComponentMenus(int type) {
-        return projectDataManager.b(logicEditor.M.getJavaName(), type);
+        return projectDataManager.b(javaName, type);
     }
 
     private void asdDialog(Ss ss, String message) {
@@ -627,8 +753,8 @@ public class ExtraMenuBean {
         asdOr.a(root);
         asdOr.carry(logicEditor, ss, false, edittext);
 
-        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, false, ss, asdOr));
-        asdOr.a(Helper.getResString(Resources.string.common_word_cancel), new AsdHandlerCancel(logicEditor, edittext, asdOr));
+        asdOr.b(Helper.getResString(Resources.string.common_word_save), new AsdHandler(logicEditor, edittext, ss, asdOr));
+        asdOr.a(Helper.getResString(Resources.string.common_word_cancel), new AsdHandlerCancel(edittext, asdOr));
         asdOr.show();
     }
 
