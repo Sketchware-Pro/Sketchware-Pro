@@ -1,6 +1,5 @@
 package mod.w3wide.menu;
 
-import android.net.Uri;
 import android.util.Pair;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
@@ -18,7 +17,6 @@ import java.util.regex.Pattern;
 import a.a.a.Ss;
 import a.a.a.eC;
 import a.a.a.jC;
-import mod.agus.jcoderz.lib.FileUtil;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 
 public class MenuBean {
@@ -45,19 +43,6 @@ public class MenuBean {
         javaName = activity.M.getJavaName();
         sc_id = activity.B;
         projectDataManager = jC.a(activity.B);
-    }
-
-    public static ArrayList<String> getProjectFiles(String path, String extension) {
-        ArrayList<String> files = new ArrayList<>();
-        ArrayList<String> projectFiles = new ArrayList<>();
-        FileUtil.listDir(path, files);
-        for (String file : files) {
-            String lastPathSegment = Uri.parse(file).getLastPathSegment();
-            if (file.endsWith(extension)) {
-                projectFiles.add(lastPathSegment.substring(0, lastPathSegment.indexOf(extension)));
-            }
-        }
-        return projectFiles;
     }
 
     public void projectMenu(Ss ss, AsdAll asdAll, ArrayList<String> selectableItems) {
