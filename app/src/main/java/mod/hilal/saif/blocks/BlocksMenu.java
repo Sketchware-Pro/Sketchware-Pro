@@ -6,7 +6,7 @@ import a.a.a.Ss;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 
 public class BlocksMenu {
-    public static void extraBlockMenu(Ss ss, AsdAll asdAll, ArrayList arrayList) {
+    public static void extraBlockMenu(Ss ss, AsdAll asdAll, ArrayList<String> arrayList) {
         String menuName = ss.getMenuName();
         if (menuName.equals("LayoutParam")) {
             asdAll.b("LayoutParams");
