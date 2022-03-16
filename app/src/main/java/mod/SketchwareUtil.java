@@ -2,32 +2,19 @@ package mod;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import a.a.a.bB;
@@ -35,135 +22,30 @@ import mod.jbk.util.LogUtil;
 
 public class SketchwareUtil {
 
-    public static final int TOP = 1;
-    public static final int CENTER = 2;
-    public static final int BOTTOM = 3;
-
-    public static void CustomToast(String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity) {
-        Toast toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
-        View view = toast.getView();
-        TextView textView = view.findViewById(android.R.id.message);
-        textView.setTextSize(_textSize);
-        textView.setTextColor(_textColor);
-        textView.setGravity(Gravity.CENTER);
-
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(_bgColor);
-        drawable.setCornerRadius(_radius);
-        view.setBackground(drawable);
-        view.setPadding(15, 10, 15, 10);
-        view.setElevation(10);
-
-        switch (_gravity) {
-            case TOP:
-                toast.setGravity(Gravity.TOP, 0, 150);
-                break;
-
-            case CENTER:
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                break;
-
-            case BOTTOM:
-                toast.setGravity(Gravity.BOTTOM, 0, 150);
-                break;
-        }
-        toast.show();
-    }
-
-    public static void CustomToastWithIcon(String _message, int _textColor, int _textSize, int _bgColor, int _radius, int _gravity, int _icon) {
-        Toast toast = Toast.makeText(getContext(), _message, Toast.LENGTH_SHORT);
-        View view = toast.getView();
-        TextView textView = view.findViewById(android.R.id.message);
-        textView.setTextSize(_textSize);
-        textView.setTextColor(_textColor);
-        textView.setCompoundDrawablesWithIntrinsicBounds(_icon, 0, 0, 0);
-        textView.setGravity(Gravity.CENTER);
-        textView.setCompoundDrawablePadding(10);
-
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(_bgColor);
-        drawable.setCornerRadius(_radius);
-        view.setBackground(drawable);
-        view.setPadding(10, 10, 10, 10);
-        view.setElevation(10);
-
-        switch (_gravity) {
-            case TOP:
-                toast.setGravity(Gravity.TOP, 0, 150);
-                break;
-
-            case CENTER:
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                break;
-
-            case BOTTOM:
-                toast.setGravity(Gravity.BOTTOM, 0, 150);
-                break;
-        }
-        toast.show();
-    }
-
     public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
-        Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
-            @Override
-            public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
-                if (isNumber) {
-                    int _count1 = Integer.parseInt(_compareMap1.get(key).toString());
-                    int _count2 = Integer.parseInt(_compareMap2.get(key).toString());
-                    if (ascending) {
-                        return _count1 < _count2 ? -1 : 0;
-                    } else {
-                        return _count1 > _count2 ? -1 : 0;
-                    }
+        Collections.sort(listMap, (_compareMap1, _compareMap2) -> {
+            if (isNumber) {
+                int _count1 = Integer.parseInt(_compareMap1.get(key).toString());
+                int _count2 = Integer.parseInt(_compareMap2.get(key).toString());
+                if (ascending) {
+                    return _count1 < _count2 ? -1 : 0;
                 } else {
-                    if (ascending) {
-                        return (_compareMap1.get(key).toString()).compareTo(_compareMap2.get(key).toString());
-                    } else {
-                        return (_compareMap2.get(key).toString()).compareTo(_compareMap1.get(key).toString());
-                    }
+                    return _count1 > _count2 ? -1 : 0;
+                }
+            } else {
+                if (ascending) {
+                    return (_compareMap1.get(key).toString()).compareTo(_compareMap2.get(key).toString());
+                } else {
+                    return (_compareMap2.get(key).toString()).compareTo(_compareMap1.get(key).toString());
                 }
             }
         });
-    }
-
-    public static void CropImage(Activity _activity, String _path, int _requestCode) {
-        try {
-            Intent intent = new Intent("com.android.camera.action.CROP");
-            File _file = new File(_path);
-            Uri _contentUri = Uri.fromFile(_file);
-            intent.setDataAndType(_contentUri, "image/*");
-            intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            intent.putExtra("outputX", 280);
-            intent.putExtra("outputY", 280);
-            intent.putExtra("return-data", false);
-            _activity.startActivityForResult(intent, _requestCode);
-        } catch (ActivityNotFoundException _e) {
-            Toast.makeText(_activity, "Your device doesn't support the crop action!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public static boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    public static String copyFromInputStream(InputStream _inputStream) {
-        ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
-        byte[] _buf = new byte[1024];
-        int _i;
-        try {
-            while ((_i = _inputStream.read(_buf)) != -1) {
-                _outputStream.write(_buf, 0, _i);
-            }
-            _outputStream.close();
-            _inputStream.close();
-        } catch (IOException ignored) {
-        }
-
-        return _outputStream.toString();
     }
 
     /**
@@ -244,15 +126,6 @@ public class SketchwareUtil {
         return getContext().getResources().getDisplayMetrics().heightPixels;
     }
 
-    public static void getAllKeysFromMap(Map<String, Object> _map, ArrayList<String> _output) {
-        if (_output == null) return;
-        _output.clear();
-        if (_map == null || _map.size() < 1) return;
-        for (Map.Entry<String, Object> stringObjectEntry : _map.entrySet()) {
-            _output.add((String) ((Map.Entry<?, ?>) stringObjectEntry).getKey());
-        }
-    }
-
     /**
      * Show a Toast styled Sketchware-like.
      *
@@ -311,7 +184,4 @@ public class SketchwareUtil {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
 
-    public static int dpToSp(float dp) {
-        return (int) (dpToPx(dp) / getContext().getResources().getDisplayMetrics().scaledDensity);
-    }
 }
