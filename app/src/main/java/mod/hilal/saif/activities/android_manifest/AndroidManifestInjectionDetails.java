@@ -85,12 +85,9 @@ public class AndroidManifestInjectionDetails extends Activity {
 
     private void setupViews() {
         FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ///fab pressed
-                showAddDial();
-            }
+        fab.setOnClickListener(v -> {
+            ///fab pressed
+            showAddDial();
         });
         listView = findViewById(Resources.id.add_attr_listview);
         refreshList();
@@ -147,15 +144,11 @@ public class AndroidManifestInjectionDetails extends Activity {
         textView.setText("Edit Value");
         editText.setText((String) listMap.get(pos).get("value"));
         editText.setHint("android:attr=\"value\"");
-        final int position = pos;
-        textsave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                listMap.get(position).put("value", editText.getText().toString());
-                applyChange();
-                create.dismiss();
-                SketchwareUtil.toast("saved");
-            }
+        textsave.setOnClickListener(view -> {
+            listMap.get(pos).put("value", editText.getText().toString());
+            applyChange();
+            create.dismiss();
+            SketchwareUtil.toast("saved");
         });
 
         textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
@@ -198,18 +191,15 @@ public class AndroidManifestInjectionDetails extends Activity {
         //editText.setText("");
         //editText.setHint("value");
 
-        textsave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                String fstr = editText3.getText().toString().trim() + ":" + editText2.getText().toString().trim() + "=\"" + editText.getText().toString().trim() + "\"";
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("name", constant);
-                map.put("value", fstr);
-                listMap.add(map);
-                applyChange();
-                create.dismiss();
-                SketchwareUtil.toast("added");
-            }
+        textsave.setOnClickListener(_view -> {
+            String fstr = editText3.getText().toString().trim() + ":" + editText2.getText().toString().trim() + "=\"" + editText.getText().toString().trim() + "\"";
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("name", constant);
+            map.put("value", fstr);
+            listMap.add(map);
+            applyChange();
+            create.dismiss();
+            SketchwareUtil.toast("added");
         });
 
         textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
@@ -283,12 +273,9 @@ public class AndroidManifestInjectionDetails extends Activity {
             TextView actComponent = newText("Components ASD", 15, Color.parseColor("#ffffff"), -2, -2, 0);
             actComponent.setTypeface(Typeface.DEFAULT_BOLD);
             par.addView(actComponent);
-            actComponent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActComponentsDialog acd = new ActComponentsDialog(AndroidManifestInjectionDetails.this, src_id, activityName);
-                    acd.show();
-                }
+            actComponent.setOnClickListener(v -> {
+                ActComponentsDialog acd = new ActComponentsDialog(AndroidManifestInjectionDetails.this, src_id, activityName);
+                acd.show();
             });
         }
     }
@@ -341,45 +328,39 @@ public class AndroidManifestInjectionDetails extends Activity {
             textView.setTextSize(16);
             linearLayout.setVisibility(View.VISIBLE);
 
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ///activity pressed
-                    showDial(position);
-                }
+            linearLayout.setOnClickListener(v -> {
+                ///activity pressed
+                showDial(position);
             });
 
-            linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    ////activity long pressed
+            linearLayout.setOnLongClickListener(v -> {
+                ////activity long pressed
 
-                    dia = new AlertDialog.Builder(AndroidManifestInjectionDetails.this);
+                dia = new AlertDialog.Builder(AndroidManifestInjectionDetails.this);
 
-                    dia.setTitle("Attribute");
+                dia.setTitle("Attribute");
 
-                    dia.setMessage("do you want to delete this attribute?");
+                dia.setMessage("do you want to delete this attribute?");
 
-                    dia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            listMap.remove(position);
-                            applyChange();
-                            SketchwareUtil.toast("deleted");
-                        }
-                    });
+                dia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        listMap.remove(position);
+                        applyChange();
+                        SketchwareUtil.toast("deleted");
+                    }
+                });
 
-                    dia.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                dia.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    dia.show();
+                    }
+                });
+                dia.show();
 
 
-                    return true;
-                }
+                return true;
             });
 
             ///end
