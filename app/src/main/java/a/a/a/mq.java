@@ -5,7 +5,6 @@ import com.besome.sketch.beans.ComponentBean;
 import java.util.ArrayList;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
-import dev.aldi.sayuti.editor.manage.ImportClass;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.hilal.saif.events.EventsHandler;
 
@@ -687,8 +686,177 @@ public class mq {
                 importList.add("android.location.LocationListener");
                 return importList;
 
+            case "ViewPager":
+                importList.add("androidx.viewpager.widget.ViewPager");
+                importList.add("androidx.viewpager.widget.PagerAdapter");
+                importList.add("androidx.viewpager.widget.ViewPager.OnPageChangeListener");
+                importList.add("androidx.viewpager.widget.ViewPager.OnAdapterChangeListener");
+                return importList;
+
+            case "CollapsingToolbarLayout":
+                importList.add("com.google.android.material.appbar.CollapsingToolbarLayout");
+                return importList;
+
+            case "SwipeRefreshLayout":
+                importList.add("androidx.swiperefreshlayout.widget.SwipeRefreshLayout");
+                importList.add("androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener");
+                return importList;
+
+            case "PatternLockView":
+                importList.add("com.andrognito.patternlockview.PatternLockView");
+                importList.add("com.andrognito.patternlockview.utils.*");
+                importList.add("com.andrognito.patternlockview.listener.*");
+                return importList;
+
+            case "WaveSideBar":
+                importList.add("com.sayuti.lib.WaveSideBar");
+                importList.add("com.sayuti.lib.WaveSideBar.OnLetterSelectedListener");
+                return importList;
+
+            case "CodeView":
+                importList.add("br.tiagohm.codeview.CodeView");
+                importList.add("br.tiagohm.codeview.Theme");
+                importList.add("br.tiagohm.codeview.Language");
+                importList.add("br.tiagohm.codeview.CodeView.OnHighlightListener");
+                return importList;
+
+            case "BottomSheetDialog":
+                importList.add("com.google.android.material.bottomsheet.BottomSheetDialog");
+                return importList;
+
+            case "LottieAnimationView":
+                importList.add("com.airbnb.lottie.*");
+                return importList;
+
+            case "CircleImageView":
+                importList.add("de.hdodenhof.circleimageview.*");
+                return importList;
+
+            case "YouTubePlayerView":
+                importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.*");
+                importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener");
+                importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerUtils");
+                importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView");
+                importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer");
+                importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener");
+                return importList;
+
+            case "OTPView":
+                importList.add("affan.ahmad.otp.*");
+                return importList;
+
+            case "MaterialButton":
+                importList.add("com.google.android.material.button.*");
+                return importList;
+
+            case "MaterialCardView":
+                importList.add("com.google.android.material.card.*");
+                return importList;
+
+            case "Chip":
+                importList.add("com.google.android.material.chip.*");
+                return importList;
+
+            case "NavigationView":
+                importList.add("com.google.android.material.navigation.NavigationView");
+                importList.add("com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener");
+                return importList;
+
+            case "TabLayout":
+                importList.add("com.google.android.material.tabs.TabLayout");
+                importList.add("com.google.android.material.tabs.TabLayout.OnTabSelectedListener");
+                return importList;
+
+            case "CardView":
+                importList.add("androidx.cardview.widget.CardView");
+                return importList;
+
+            case "TextInputLayout":
+            case "TextInputEditText":
+                importList.add("com.google.android.material.textfield.*");
+                return importList;
+
+            case "SignInButton":
+                importList.add("com.google.android.gms.common.SignInButton");
+                return importList;
+
+            case "RecyclerView":
+                importList.add("androidx.recyclerview.widget.*");
+                importList.add("androidx.recyclerview.widget.RecyclerView");
+                importList.add("androidx.recyclerview.widget.RecyclerView.Adapter");
+                importList.add("androidx.recyclerview.widget.RecyclerView.ViewHolder");
+                return importList;
+
+            case "BottomNavigationView":
+                importList.add("com.google.android.material.bottomnavigation.BottomNavigationView");
+                importList.add("com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener");
+                return importList;
+
+            case "FirebaseCloudMessage":
+                importList.add("com.google.android.gms.tasks.OnCompleteListener");
+                importList.add("com.google.android.gms.tasks.Task");
+                importList.add("com.google.firebase.iid.FirebaseInstanceId");
+                importList.add("com.google.firebase.iid.InstanceIdResult");
+                importList.add("com.google.firebase.messaging.FirebaseMessaging");
+                return importList;
+
+            case "OSSubscriptionObserver":
+                importList.add("com.onesignal.OSSubscriptionObserver");
+                importList.add("com.onesignal.OneSignal");
+                importList.add("org.json.JSONObject");
+                return importList;
+
+            case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
+                importList.add("com.google.android.gms.tasks.OnCompleteListener");
+                importList.add("com.google.android.gms.tasks.Task");
+                importList.add("com.google.firebase.FirebaseException");
+                importList.add("com.google.firebase.FirebaseTooManyRequestsException");
+                importList.add("com.google.firebase.auth.AuthResult");
+                importList.add("com.google.firebase.auth.FirebaseAuth");
+                importList.add("com.google.firebase.auth.FirebaseAuthInvalidCredentialsException");
+                importList.add("com.google.firebase.auth.FirebaseUser");
+                importList.add("com.google.firebase.auth.PhoneAuthCredential");
+                importList.add("com.google.firebase.auth.PhoneAuthProvider");
+                importList.add("java.util.concurrent.TimeUnit");
+                return importList;
+
+            case "GoogleSignInClient":
+                importList.add("com.google.android.gms.auth.api.signin.GoogleSignIn");
+                importList.add("com.google.android.gms.auth.api.signin.GoogleSignInAccount");
+                importList.add("com.google.android.gms.auth.api.signin.GoogleSignInClient");
+                importList.add("com.google.android.gms.auth.api.signin.GoogleSignInOptions");
+                importList.add("com.google.android.gms.common.api.ApiException");
+                importList.add("com.google.android.gms.tasks.Task");
+                importList.add("com.google.firebase.auth.AuthCredential");
+                importList.add("com.google.firebase.auth.AuthResult");
+                importList.add("com.google.firebase.auth.FirebaseAuth");
+                importList.add("com.google.firebase.auth.FirebaseUser");
+                importList.add("com.google.firebase.auth.GoogleAuthProvider");
+                return importList;
+
+            case "DynamicLink":
+                importList.add("com.google.android.gms.tasks.OnSuccessListener");
+                importList.add("com.google.android.gms.tasks.OnFailureListener");
+                importList.add("com.google.firebase.dynamiclinks.DynamicLink");
+                importList.add("com.google.firebase.dynamiclinks.FirebaseDynamicLinks");
+                importList.add("com.google.firebase.dynamiclinks.PendingDynamicLinkData");
+                importList.add("com.google.firebase.dynamiclinks.ShortDynamicLink");
+                return importList;
+
+            case "RewardedVideoAd":
+                importList.add("com.google.android.gms.ads.MobileAds");
+                importList.add("com.google.android.gms.ads.reward.RewardItem");
+                importList.add("com.google.android.gms.ads.reward.RewardedVideoAd");
+                importList.add("com.google.android.gms.ads.reward.RewardedVideoAdListener");
+                return importList;
+
+            case "com.facebook.ads.AdView":
+            case "com.facebook.ads.InterstitialAd":
+                importList.add("com.facebook.ads.*");
+                return importList;
+
             default:
-                ImportClass.a(name, importList);
+                ComponentsHandler.getImports(name, importList);
                 return importList;
         }
     }
