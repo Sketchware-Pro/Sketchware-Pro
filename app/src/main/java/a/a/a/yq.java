@@ -663,7 +663,9 @@ public class yq {
                     switch (opCode) {
                         case "FirebaseDynamicLink setDataHost":
                         case "setDynamicLinkDataHost":
-                            N.dlDataList.add(new Pair<>(bean.parameters.get(0), bean.parameters.get(1)));
+                            if (bean.parameters.size() >= 2) {
+                                N.dlDataList.add(new Pair<>(bean.parameters.get(0), bean.parameters.get(1)));
+                            }
                             break;
 
                         case "setAdmobAppId":
