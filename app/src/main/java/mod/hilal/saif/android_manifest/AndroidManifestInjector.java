@@ -261,9 +261,9 @@ public class AndroidManifestInjector {
 
                                             if (hasShortClosing) {
                                                 manifestLines.set(q - 1, manifestLines.get(q - 1).replace(spaceBeforeClosing ? "\" />" : "\"/>", "\">"));
-                                                manifestLines.set(q - 1, manifestLines.get(q - 1) + "\r\n" + ((String) value) + "\r\n" + "</activity>");
+                                                manifestLines.set(q - 1, manifestLines.get(q - 1) + "\r\n" + value + "\r\n" + "</activity>");
                                             } else {
-                                                manifestLines.set(q - 2, manifestLines.get(q - 2) + "\r\n" + ((String) value));
+                                                manifestLines.set(q - 2, manifestLines.get(q - 2) + "\r\n" + value);
                                             }
                                             break;
                                         }

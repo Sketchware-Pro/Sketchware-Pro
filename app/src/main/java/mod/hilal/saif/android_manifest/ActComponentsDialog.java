@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -52,20 +51,10 @@ public class ActComponentsDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.view_code);
         codeEditor = findViewById(Resources.id.text_content);
-        TextView zoom_in = (TextView) findViewById(Resources.id.code_editor_zoomin);
-        zoom_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                codeEditor.increaseTextSize();
-            }
-        });
-        TextView zoom_out = (TextView) findViewById(Resources.id.code_editor_zoomout);
-        zoom_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                codeEditor.decreaseTextSize();
-            }
-        });
+        TextView zoom_in = findViewById(Resources.id.code_editor_zoomin);
+        zoom_in.setOnClickListener(v -> codeEditor.increaseTextSize());
+        TextView zoom_out = findViewById(Resources.id.code_editor_zoomout);
+        zoom_out.setOnClickListener(v -> codeEditor.decreaseTextSize());
         codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,
@@ -73,7 +62,7 @@ public class ActComponentsDialog extends Dialog {
         base = (ViewGroup) codeEditor.getParent();
         base.setBackground(new DialogButtonGradientDrawable()
                 .getIns((int) getDip(4), 0, Color.WHITE, Color.WHITE));
-        TextView title = (TextView) findViewById(Resources.id.text_title);
+        TextView title = findViewById(Resources.id.text_title);
         title.setText(activityName + " Components");
         addControl();
         setListeners();
@@ -173,23 +162,20 @@ public class ActComponentsDialog extends Dialog {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (codeEditor.dark_theme) {
-                            linearLayout.setBackgroundColor(0xff292929);
-                            save.setBackground(new DialogButtonGradientDrawable()
-                                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                            cancel.setBackground(new DialogButtonGradientDrawable()
-                                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                            return;
-                        }
-                        linearLayout.setBackgroundColor(Color.WHITE);
+                activity.runOnUiThread(() -> {
+                    if (codeEditor.dark_theme) {
+                        linearLayout.setBackgroundColor(0xff292929);
                         save.setBackground(new DialogButtonGradientDrawable()
-                                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                                .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
                         cancel.setBackground(new DialogButtonGradientDrawable()
-                                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                                .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                        return;
                     }
+                    linearLayout.setBackgroundColor(Color.WHITE);
+                    save.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                    cancel.setBackground(new DialogButtonGradientDrawable()
+                            .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
                 });
             }
         };
@@ -197,48 +183,42 @@ public class ActComponentsDialog extends Dialog {
     }
 
     private void setListeners() {
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
-                if (FileUtil.isExistFile(ACTIVITIES_COMPONENTS_FILE_PATH)) {
-                    ArrayList<HashMap<String, Object>> activitiesComponents = new Gson()
-                            .fromJson(FileUtil.readFile(ACTIVITIES_COMPONENTS_FILE_PATH), Helper.TYPE_MAP_LIST);
-                    for (int i = 0; i < activitiesComponents.size(); i++) {
-                        if (((String) activitiesComponents.get(i).get("name")).equals(activityName)) {
-                            activitiesComponents.get(i).put("value", codeEditor.getText());
-                            FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
-                                    .toJson(activitiesComponents));
-                            SketchwareUtil.hideKeyboard(editor);
-                            SketchwareUtil.toast("Saved");
-                            dismiss();
-                            return;
-                        }
+        save.setOnClickListener(v -> {
+            ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
+            if (FileUtil.isExistFile(ACTIVITIES_COMPONENTS_FILE_PATH)) {
+                ArrayList<HashMap<String, Object>> activitiesComponents = new Gson()
+                        .fromJson(FileUtil.readFile(ACTIVITIES_COMPONENTS_FILE_PATH), Helper.TYPE_MAP_LIST);
+                for (int i = 0; i < activitiesComponents.size(); i++) {
+                    if (activitiesComponents.get(i).get("name").equals(activityName)) {
+                        activitiesComponents.get(i).put("value", codeEditor.getText());
+                        FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
+                                .toJson(activitiesComponents));
+                        SketchwareUtil.hideKeyboard(editor);
+                        SketchwareUtil.toast("Saved");
+                        dismiss();
+                        return;
                     }
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("name", activityName);
-                    map.put("value", codeEditor.getText());
-                    activitiesComponents.add(map);
-                    FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
-                            .toJson(activitiesComponents));
-                } else {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("name", activityName);
-                    map.put("value", codeEditor.getText());
-                    arrayList.add(map);
-                    FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
-                            .toJson(arrayList));
                 }
-                SketchwareUtil.hideKeyboard(editor);
-                dismiss();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("name", activityName);
+                map.put("value", codeEditor.getText());
+                activitiesComponents.add(map);
+                FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
+                        .toJson(activitiesComponents));
+            } else {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("name", activityName);
+                map.put("value", codeEditor.getText());
+                arrayList.add(map);
+                FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
+                        .toJson(arrayList));
             }
+            SketchwareUtil.hideKeyboard(editor);
+            dismiss();
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SketchwareUtil.hideKeyboard(editor);
-                dismiss();
-            }
+        cancel.setOnClickListener(v -> {
+            SketchwareUtil.hideKeyboard(editor);
+            dismiss();
         });
     }
 

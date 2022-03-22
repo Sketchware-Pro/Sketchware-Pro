@@ -1,8 +1,9 @@
 package mod.hilal.saif.activities.android_manifest;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -35,8 +36,6 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.android_manifest.AppComponentsDialog;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
-
-import static mod.SketchwareUtil.getDip;
 
 public class AndroidManifestInjection extends Activity {
 
@@ -105,16 +104,13 @@ public class AndroidManifestInjection extends Activity {
         makeup(application_skin, 2131166366, "Application", "Default properties for the app");
         base.addView(application_card);
         //application pressed
-        application_skin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                intent.putExtra("sc_id", src_id);
-                intent.putExtra("file_name", activityName);
-                intent.putExtra("type", "application");
-                startActivity(intent);
-            }
+        application_skin.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+            intent.putExtra("sc_id", src_id);
+            intent.putExtra("file_name", activityName);
+            intent.putExtra("type", "application");
+            startActivity(intent);
         });
 
         {
@@ -124,16 +120,13 @@ public class AndroidManifestInjection extends Activity {
             makeup(permission_skin, 0x7f07019b, "Permissions", "Add custom Permissions to the app");
             base.addView(permission_card);
             //application pressed
-            permission_skin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View _view) {
-                    Intent inta = new Intent();
-                    inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                    inta.putExtra("sc_id", src_id);
-                    inta.putExtra("file_name", activityName);
-                    inta.putExtra("type", "permission");
-                    startActivity(inta);
-                }
+            permission_skin.setOnClickListener(_view -> {
+                Intent inta = new Intent();
+                inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+                inta.putExtra("sc_id", src_id);
+                inta.putExtra("file_name", activityName);
+                inta.putExtra("type", "permission");
+                startActivity(inta);
             });
         }
 
@@ -144,12 +137,7 @@ public class AndroidManifestInjection extends Activity {
             makeup(permission_skin, 0x7f07035b, "Launcher Activity", "Change the default Launcher Activity");
             base.addView(permission_card);
             //that pressed
-            permission_skin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(src_id));
-                }
-            });
+            permission_skin.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(src_id)));
         }
 
         CardView allAct_card = newCard(-1, -2, 0);
@@ -158,16 +146,13 @@ public class AndroidManifestInjection extends Activity {
         makeup(allAct_skin, 0x7f07049d, "All Activities", "Add attributes for all Activities");
         base.addView(allAct_card);
         /// all activities pressed
-        allAct_skin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent inta = new Intent();
-                inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                inta.putExtra("sc_id", src_id);
-                inta.putExtra("file_name", activityName);
-                inta.putExtra("type", "all");
-                startActivity(inta);
-            }
+        allAct_skin.setOnClickListener(v -> {
+            Intent inta = new Intent();
+            inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+            inta.putExtra("sc_id", src_id);
+            inta.putExtra("file_name", activityName);
+            inta.putExtra("type", "all");
+            startActivity(inta);
         });
 
         CardView appCom_card = newCard(-1, -2, 0);
@@ -176,12 +161,7 @@ public class AndroidManifestInjection extends Activity {
         makeup(appCom_skin, 0x7f07049f, "App Components", "Add extra components");
         base.addView(appCom_card);
         ///app component pressed
-        appCom_skin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAppComponentDialog();
-            }
-        });
+        appCom_skin.setOnClickListener(v -> showAppComponentDialog());
 
         LinearLayout sub_skin = newLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -245,12 +225,7 @@ public class AndroidManifestInjection extends Activity {
         addnew.setElevation((int) getDip(1));
         base.addView(addnew);
         /// add new clicked
-        addnew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddActivityDialog();
-            }
-        });
+        addnew.setOnClickListener(v -> showAddActivityDialog());
     }
 
     private void showAppComponentDialog() {
@@ -278,19 +253,13 @@ public class AndroidManifestInjection extends Activity {
         inputValue.setText(actnamr);
         inputValue.setHint("Activity name");
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                create.dismiss();
-
-                AndroidManifestInjector.setLauncherActivity(src_id, inputValue.getText().toString());
-
-                SketchwareUtil.toast("Saved");
-            }
+        btnSave.setOnClickListener(v -> {
+            create.dismiss();
+            AndroidManifestInjector.setLauncherActivity(src_id, inputValue.getText().toString());
+            SketchwareUtil.toast("Saved");
         });
 
         btnCancel.setOnClickListener(Helper.getDialogDismissListener(create));
-
         create.show();
     }
 
@@ -315,14 +284,11 @@ public class AndroidManifestInjection extends Activity {
         inputValue.setText(activityName);
         inputValue.setHint("Activity name");
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewActivity(inputValue.getText().toString());
+        btnSave.setOnClickListener(v -> {
+            addNewActivity(inputValue.getText().toString());
 
-                create.dismiss();
-                SketchwareUtil.toast("New Activity added");
-            }
+            create.dismiss();
+            SketchwareUtil.toast("New Activity added");
         });
 
         btnCancel.setOnClickListener(Helper.getDialogDismissListener(create));
@@ -449,7 +415,7 @@ public class AndroidManifestInjection extends Activity {
 
     private void removeComponents(String str) {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(src_id).concat("/Injection/androidmanifest/activities_components.json");
-        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
             data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = data.size() - 1; i > -1; i--) {
@@ -584,39 +550,28 @@ public class AndroidManifestInjection extends Activity {
             textView.setTypeface(Typeface.DEFAULT);
             linearLayout.setVisibility(View.VISIBLE);
             ///activity pressed
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                    intent.putExtra("sc_id", src_id);
-                    intent.putExtra("file_name", (String) _data.get(position).get("act_name"));
-                    intent.putExtra("type", "activity");
-                    startActivity(intent);
-                }
+            linearLayout.setOnClickListener(v -> {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+                intent.putExtra("sc_id", src_id);
+                intent.putExtra("file_name", (String) _data.get(position).get("act_name"));
+                intent.putExtra("type", "activity");
+                startActivity(intent);
             });
             ////activity long pressed
-            linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    dia = new AlertDialog.Builder(AndroidManifestInjection.this);
+            linearLayout.setOnLongClickListener(v -> {
+                dia = new AlertDialog.Builder(AndroidManifestInjection.this);
 
-                    dia.setTitle((String) _data.get(position).get("act_name"));
+                dia.setTitle((String) _data.get(position).get("act_name"));
 
-                    dia.setMessage("do you want to delete all attributes related to this activity?");
+                dia.setMessage("do you want to delete all attributes related to this activity?");
 
-                    dia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            deleteActivity(position);
-                        }
-                    });
+                dia.setPositiveButton("Yes", (dialog, which) -> deleteActivity(position));
 
-                    dia.setNegativeButton("No", null);
-                    dia.show();
+                dia.setNegativeButton("No", null);
+                dia.show();
 
-                    return true;
-                }
+                return true;
             });
 
             ///end

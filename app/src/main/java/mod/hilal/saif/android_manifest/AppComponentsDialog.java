@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,20 +45,10 @@ public class AppComponentsDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.view_code);
         codeEditor = findViewById(Resources.id.text_content);
-        TextView zoom_in = (TextView) findViewById(Resources.id.code_editor_zoomin);
-        zoom_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                codeEditor.increaseTextSize();
-            }
-        });
-        TextView zoom_out = (TextView) findViewById(Resources.id.code_editor_zoomout);
-        zoom_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                codeEditor.decreaseTextSize();
-            }
-        });
+        TextView zoom_in = findViewById(Resources.id.code_editor_zoomin);
+        zoom_in.setOnClickListener(v -> codeEditor.increaseTextSize());
+        TextView zoom_out = findViewById(Resources.id.code_editor_zoomout);
+        zoom_out.setOnClickListener(v -> codeEditor.decreaseTextSize());
         codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,
@@ -67,7 +56,7 @@ public class AppComponentsDialog extends Dialog {
         base = (ViewGroup) codeEditor.getParent();
         base.setBackground(new DialogButtonGradientDrawable()
                 .getIns((int) getDip(4), 0, Color.WHITE, Color.WHITE));
-        TextView title = (TextView) findViewById(Resources.id.text_title);
+        TextView title = findViewById(Resources.id.text_title);
         title.setText("App Components");
         addControl();
         setListeners();
@@ -167,21 +156,19 @@ public class AppComponentsDialog extends Dialog {
         TimerTask uu = new TimerTask() {
             @Override
             public void run() {
-                act.runOnUiThread(new Runnable() {
-                    public void run() {
-                        if (codeEditor.dark_theme) {
-                            linearLayout.setBackgroundColor(0xff292929);
-                            save.setBackground(new DialogButtonGradientDrawable()
-                                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                            cancel.setBackground(new DialogButtonGradientDrawable()
-                                    .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                        } else {
-                            linearLayout.setBackgroundColor(Color.WHITE);
-                            save.setBackground(new DialogButtonGradientDrawable()
-                                    .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-                            cancel.setBackground(new DialogButtonGradientDrawable()
-                                    .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-                        }
+                act.runOnUiThread(() -> {
+                    if (codeEditor.dark_theme) {
+                        linearLayout.setBackgroundColor(0xff292929);
+                        save.setBackground(new DialogButtonGradientDrawable()
+                                .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                        cancel.setBackground(new DialogButtonGradientDrawable()
+                                .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                    } else {
+                        linearLayout.setBackgroundColor(Color.WHITE);
+                        save.setBackground(new DialogButtonGradientDrawable()
+                                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                        cancel.setBackground(new DialogButtonGradientDrawable()
+                                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
                     }
                 });
             }
@@ -190,21 +177,15 @@ public class AppComponentsDialog extends Dialog {
     }
 
     private void setListeners() {
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FileUtil.writeFile(APP_COMPONENTS_PATH, codeEditor.getText());
-                SketchwareUtil.hideKeyboard(editor);
-                SketchwareUtil.toast("Saved");
-                dismiss();
-            }
+        save.setOnClickListener(v -> {
+            FileUtil.writeFile(APP_COMPONENTS_PATH, codeEditor.getText());
+            SketchwareUtil.hideKeyboard(editor);
+            SketchwareUtil.toast("Saved");
+            dismiss();
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SketchwareUtil.hideKeyboard(editor);
-                dismiss();
-            }
+        cancel.setOnClickListener(v -> {
+            SketchwareUtil.hideKeyboard(editor);
+            dismiss();
         });
     }
 
