@@ -26,9 +26,9 @@ import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.xB;
 import a.a.a.yq;
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
-import io.github.rosemoe.editor.widget.EditorColorScheme;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 
 @SuppressLint("ResourceType")
 public class SrcViewerActivity extends AppCompatActivity {
@@ -45,9 +45,7 @@ public class SrcViewerActivity extends AppCompatActivity {
 
         codeViewer = new CodeEditor(this);
         codeViewer.setTypefaceText(Typeface.MONOSPACE);
-        codeViewer.setOverScrollEnabled(false);
         codeViewer.setEditable(false);
-        codeViewer.setAutoCompletionEnabled(false);
         codeViewer.setColorScheme(new EditorColorScheme());
         codeViewer.setTextSize(sourceCodeFontSize);
         codeViewer.setEditorLanguage(new JavaLanguage());
