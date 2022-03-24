@@ -24,12 +24,14 @@ public class PermissionManager {
         ArrayList<String> permList = new ArrayList<>();
         for (Entry<String, ArrayList<BlockBean>> blocks : jC.a(sc_id).b(javaName).entrySet()) {
             for (BlockBean block : blocks.getValue()) {
-                String firstParam = block.parameters.get(0);
-                if (block.opCode.equals("addPermission") && !firstParam.trim().isEmpty()) {
-                    if (firstParam.startsWith("Manifest")) {
-                        permList.add(firstParam);
-                    } else {
-                        permList.add("Manifest.permission." + firstParam);
+                if (block.opCode.equals("addPermission")) {
+                    String firstParam = block.parameters.get(0);
+                    if (!firstParam.trim().isEmpty()) {
+                        if (firstParam.startsWith("Manifest")) {
+                            permList.add(firstParam);
+                        } else {
+                            permList.add("Manifest.permission." + firstParam);
+                        }
                     }
                 }
             }
