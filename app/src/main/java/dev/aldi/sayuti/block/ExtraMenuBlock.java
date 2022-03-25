@@ -66,28 +66,23 @@ public class ExtraMenuBlock {
     }
 
     public final void b(JSONObject json, AsdAll asdAll, ArrayList<String> selectableItems, String sc_id) {
-        ArrayList<String> menus = new ArrayList<>();
-        ArrayList<String> layouts = new ArrayList<>();
-        ArrayList<String> animations = new ArrayList<>();
-        ArrayList<String> drawables = new ArrayList<>();
-        ArrayList<String> drawables_xhdpi = new ArrayList<>();
-        FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/menu/"), menus);
-        FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/layout/"), layouts);
-        FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/anim/"), animations);
-        FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable/"), drawables);
-        FileUtil.listDir(FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable-xhdpi/"), drawables_xhdpi);
+        String menus = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/menu/");
+        String layouts = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/layout/");
+        String animations = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/anim/");
+        String drawables = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable/");
+        String drawables_xhdpi = FileUtil.getExternalStorageDir().concat("/.sketchware/data/" + sc_id + "/files/resource/drawable-xhdpi/");
         try {
             switch (json.getString("id")) {
                 case "menu":
                     asdAll.b("Select a menu");
-                    for (String menu : menus) {
+                    for (String menu : FileUtil.listFiles(menus, ".xml")) {
                         selectableItems.add(Uri.parse(menu).getLastPathSegment().substring(0, Uri.parse(menu).getLastPathSegment().indexOf(".xml")));
                     }
                     break;
 
                 case "layout":
                     asdAll.b("Select a layout");
-                    for (String layout : layouts) {
+                    for (String layout : FileUtil.listFiles(layouts, ".xml")) {
                         selectableItems.add(Uri.parse(layout).getLastPathSegment().substring(0, Uri.parse(layout).getLastPathSegment().indexOf(".xml")));
                     }
                     for (String str4 : jC.b(sc_id).e()) {
@@ -97,21 +92,21 @@ public class ExtraMenuBlock {
 
                 case "anim":
                     asdAll.b("Select an animation");
-                    for (String animation : animations) {
+                    for (String animation : FileUtil.listFiles(animations, ".xml")) {
                         selectableItems.add(Uri.parse(animation).getLastPathSegment().substring(0, Uri.parse(animation).getLastPathSegment().indexOf(".xml")));
                     }
                     break;
 
                 case "drawable":
                     asdAll.b("Select a drawable");
-                    for (String drawable : drawables) {
+                    for (String drawable : FileUtil.listFiles(drawables, ".xml")) {
                         selectableItems.add(Uri.parse(drawable).getLastPathSegment().substring(0, Uri.parse(drawable).getLastPathSegment().indexOf(".xml")));
                     }
                     break;
 
                 case "image":
                     asdAll.b("Select an image");
-                    for (String drawable_xhdpi : drawables_xhdpi) {
+                    for (String drawable_xhdpi : FileUtil.listFiles(drawables_xhdpi, "")) {
                         if (drawable_xhdpi.contains(".png") || drawable_xhdpi.contains(".jpg")) {
                             if (drawable_xhdpi.contains(".png")) {
                                 selectableItems.add(Uri.parse(drawable_xhdpi).getLastPathSegment().substring(0, Uri.parse(drawable_xhdpi).getLastPathSegment().indexOf(".png")));
