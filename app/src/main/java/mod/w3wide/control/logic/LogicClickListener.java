@@ -1,10 +1,10 @@
 package mod.w3wide.control.logic;
 
+import static android.text.TextUtils.isEmpty;
 import static com.besome.sketch.SketchApplication.getContext;
 import static mod.SketchwareUtil.getDip;
 
 import android.text.InputType;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
@@ -29,10 +30,6 @@ import a.a.a.uq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import mod.w3wide.dialog.SketchDialog;
-import mod.w3wide.variable.DialogCustomList;
-import mod.w3wide.variable.DialogCustomVariable;
-import mod.w3wide.variable.DialogRemoveList;
-import mod.w3wide.variable.DialogRemoveVariable;
 
 public class LogicClickListener implements View.OnClickListener {
 
@@ -57,7 +54,7 @@ public class LogicClickListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         String tag = (String) v.getTag();
-        if (!TextUtils.isEmpty(tag)) {
+        if (!isEmpty(tag)) {
             switch (tag) {
                 case "listAddCustom":
                     addCustomList();
@@ -101,11 +98,44 @@ public class LogicClickListener implements View.OnClickListener {
         initializerLayout.addView(initializer);
         root.addView(initializerLayout);
 
-        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
+        ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(Resources.string.common_word_add),
-                new DialogCustomVariable(logicEditor, typeLayout, nameLayout, initializerLayout, zb, dialog));
+        dialog.b(Helper.getResString(Resources.string.common_word_add), view -> {
+            String variableType = type.getText().toString();
+            String variableName = name.getText().toString();
+            String variableInitializer = initializer.getText().toString();
+
+            boolean validType = !isEmpty(variableType);
+            boolean validName = !isEmpty(variableName);
+            boolean getsInitialized = !isEmpty(variableInitializer);
+
+            if (validType) {
+                typeLayout.setError(null);
+            } else {
+                if (validName) typeLayout.requestFocus();
+                typeLayout.setError("Type can't be empty");
+            }
+
+            CharSequence nameError = nameLayout.getError();
+            if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
+                if (validName) {
+                    nameLayout.setError(null);
+                } else {
+                    nameLayout.requestFocus();
+                    nameLayout.setError("Name can't be empty");
+                }
+            }
+
+            if (validName && validType && validator.b()) {
+                String toAdd = variableType + " " + variableName;
+                if (getsInitialized) {
+                    toAdd += " = " + variableInitializer;
+                }
+                logicEditor.b(5, toAdd);
+                dialog.dismiss();
+            }
+        });
         dialog.a(Helper.getResString(Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
@@ -119,7 +149,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.setTitle(Helper.getResString(2131625527));
         dialog.setIcon(2131165524);
         View var2 = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = (ViewGroup) var2.findViewById(2131231668);
+        ViewGroup viewGroup = var2.findViewById(2131231668);
 
         ArrayList<String> bools = getUsedVariable(0);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
@@ -152,7 +182,30 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.setView(var2);
-        dialog.setPositiveButton(Helper.getResString(2131625026), new DialogRemoveVariable(logicEditor, viewGroup, dialog));
+        dialog.setPositiveButton(Helper.getResString(2131625026), view -> {
+            int childCount = viewGroup.getChildCount();
+            String eventName = logicEditor.C + "_" + logicEditor.D;
+            String javaName = logicEditor.M.getJavaName();
+
+            for (int i = 0; i < childCount; i++) {
+                if (viewGroup.getChildAt(i) instanceof RadioButton) {
+                    RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
+                    String variable = radioButton.getText().toString();
+                    if (radioButton.isChecked()) {
+                        if (!logicEditor.o.c(variable)) {
+                            if (!projectDataManager.c(javaName, variable, eventName)) {
+                                logicEditor.m(variable);
+                                dialog.dismiss();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), Helper.getResString(2131625493), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                }
+            }
+            dialog.dismiss();
+        });
         dialog.setNegativeButton(Helper.getResString(2131624974), null);
         dialog.show();
     }
@@ -176,11 +229,38 @@ public class LogicClickListener implements View.OnClickListener {
         root.addView(typeLayout);
         root.addView(nameLayout);
 
-        ZB zb = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
+        ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(Resources.string.common_word_add),
-                new DialogCustomList(logicEditor, zb, typeLayout, nameLayout, dialog));
+        dialog.b(Helper.getResString(Resources.string.common_word_add), view -> {
+            String variableType = type.getText().toString();
+            String variableName = name.getText().toString();
+
+            boolean validType = !isEmpty(variableType);
+            boolean validName = !isEmpty(variableName);
+
+            if (validType) {
+                typeLayout.setError(null);
+            } else {
+                if (validName) typeLayout.requestFocus();
+                typeLayout.setError("Type can't be empty");
+            }
+
+            CharSequence nameError = nameLayout.getError();
+            if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
+                if (validName) {
+                    nameLayout.setError(null);
+                } else {
+                    nameLayout.requestFocus();
+                    nameLayout.setError("Name can't be empty");
+                }
+            }
+
+            if (validType && validName && validator.b()) {
+                logicEditor.a(4, variableType + " " + variableName + " = new ArrayList<>()");
+                dialog.dismiss();
+            }
+        });
         dialog.a(Helper.getResString(Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
@@ -194,7 +274,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.b(Helper.getResString(2131625526));
         dialog.a(2131165524);
         View var2 = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = (ViewGroup) var2.findViewById(2131231668);
+        ViewGroup viewGroup = var2.findViewById(2131231668);
 
         ArrayList<String> listInts = getUsedList(1);
         for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
@@ -221,7 +301,30 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.a(var2);
-        dialog.b(Helper.getResString(2131625026), new DialogRemoveList(logicEditor, viewGroup, dialog));
+        dialog.b(Helper.getResString(2131625026), view -> {
+            String javaName = logicEditor.M.getJavaName();
+            String eventName = logicEditor.C + "_" + logicEditor.D;
+
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                if (viewGroup.getChildAt(i) instanceof RadioButton) {
+                    RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
+                    String list = radioButton.getText().toString();
+
+                    if (radioButton.isChecked()) {
+                        if (!logicEditor.o.b(list)) {
+                            if (!projectDataManager.b(javaName, list, eventName)) {
+                                logicEditor.l(list);
+                                dialog.dismiss();
+                            }
+                        } else {
+                            Toast.makeText(logicEditor.getApplicationContext(), Helper.getResString(2131625492), Toast.LENGTH_LONG).show();
+                        }
+                        return;
+                    }
+                }
+            }
+            dialog.dismiss();
+        });
         dialog.a(Helper.getResString(2131624974),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
