@@ -294,14 +294,25 @@ public class Ox {
             d(nx2, viewBean);
         }
         if (viewBean.getClassInfo().b("WaveSideBar")) {
-            o(nx2, viewBean);
+            int textSize = viewBean.text.textSize;
+            if (textSize > 0) {
+                nx2.a("app", "sidebar_text_size", textSize + "sp");
+            }
+
+            int textColor = viewBean.text.textColor;
+            if (textColor != 0) {
+                nx2.a("app", "sidebar_text_color", String.format("#%06X", textColor & 0xffffff));
+            }
         }
         k(nx2, viewBean);
         int i4 = viewBean.parentType;
         if (!viewBean.convert.equals("include")) {
             if (i4 == 0) {
                 f(nx2, viewBean);
-                l(nx2, viewBean);
+                int weight = viewBean.layout.weight;
+                if (weight > 0) {
+                    nx2.a("android", "layout_weight", String.valueOf(weight));
+                }
             } else if (i4 == 2 || i4 == 12) {
                 f(nx2, viewBean);
             }
@@ -766,16 +777,6 @@ public class Ox {
     }
 
     /**
-     * Handles a view's <code>android:layout_weight</code> property.
-     */
-    public void l(Nx nx, ViewBean viewBean) {
-        int weight = viewBean.layout.weight;
-        if (weight > 0) {
-            nx.a("android", "layout_weight", String.valueOf(weight));
-        }
-    }
-
-    /**
      * Handles a view's <code>android:weightSum</code> property.
      */
     public void m(Nx nx, ViewBean viewBean) {
@@ -804,15 +805,4 @@ public class Ox {
         return Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find();
     }
 
-    public void o(Nx nx, ViewBean viewBean) {
-        int textSize = viewBean.text.textSize;
-        if (textSize > 0) {
-            nx.a("app", "sidebar_text_size", textSize + "sp");
-        }
-
-        int textColor = viewBean.text.textColor;
-        if (textColor != 0) {
-            nx.a("app", "sidebar_text_color", String.format("#%06X", textColor & 0xffffff));
-        }
-    }
 }
