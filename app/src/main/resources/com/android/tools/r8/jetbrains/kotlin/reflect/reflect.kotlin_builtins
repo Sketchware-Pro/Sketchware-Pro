@@ -1,0 +1,245 @@
+// IntelliJ API Decompiler stub source generated from a class file
+// Implementation of methods is not available
+
+package kotlin.reflect
+
+interface KAnnotatedElement {
+    val annotations: kotlin.collections.List<kotlin.Annotation>
+}
+
+interface KCallable<out R> : kotlin.reflect.KAnnotatedElement {
+    @kotlin.SinceKotlin val isAbstract: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isFinal: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isOpen: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isSuspend: kotlin.Boolean
+
+    val name: kotlin.String
+
+    val parameters: kotlin.collections.List<kotlin.reflect.KParameter>
+
+    val returnType: kotlin.reflect.KType
+
+    @kotlin.SinceKotlin val typeParameters: kotlin.collections.List<kotlin.reflect.KTypeParameter>
+
+    @kotlin.SinceKotlin val visibility: kotlin.reflect.KVisibility?
+
+    fun call(vararg args: kotlin.Any?): R
+
+    fun callBy(args: kotlin.collections.Map<kotlin.reflect.KParameter, kotlin.Any?>): R
+}
+
+interface KClass<T : kotlin.Any> : kotlin.reflect.KDeclarationContainer, kotlin.reflect.KAnnotatedElement, kotlin.reflect.KClassifier {
+    val constructors: kotlin.collections.Collection<kotlin.reflect.KFunction<T>>
+
+    @kotlin.SinceKotlin val isAbstract: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isCompanion: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isData: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isFinal: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isInner: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isOpen: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isSealed: kotlin.Boolean
+
+    val members: kotlin.collections.Collection<kotlin.reflect.KCallable<*>>
+
+    val nestedClasses: kotlin.collections.Collection<kotlin.reflect.KClass<*>>
+
+    val objectInstance: T?
+
+    val qualifiedName: kotlin.String?
+
+    @kotlin.SinceKotlin val sealedSubclasses: kotlin.collections.List<kotlin.reflect.KClass<out T>>
+
+    val simpleName: kotlin.String?
+
+    @kotlin.SinceKotlin val supertypes: kotlin.collections.List<kotlin.reflect.KType>
+
+    @kotlin.SinceKotlin val typeParameters: kotlin.collections.List<kotlin.reflect.KTypeParameter>
+
+    @kotlin.SinceKotlin val visibility: kotlin.reflect.KVisibility?
+
+    operator fun equals(other: kotlin.Any?): kotlin.Boolean
+
+    fun hashCode(): kotlin.Int
+
+    @kotlin.SinceKotlin fun isInstance(value: kotlin.Any?): kotlin.Boolean
+}
+
+@kotlin.SinceKotlin interface KClassifier
+
+interface KDeclarationContainer {
+    val members: kotlin.collections.Collection<kotlin.reflect.KCallable<*>>
+}
+
+interface KFunction<out R> : kotlin.reflect.KCallable<R>, kotlin.Function<R> {
+    @kotlin.SinceKotlin val isExternal: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isInfix: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isInline: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isOperator: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isSuspend: kotlin.Boolean
+}
+
+interface KMutableProperty<R> : kotlin.reflect.KProperty<R> {
+    val setter: kotlin.reflect.KMutableProperty.Setter<R>
+
+    interface Setter<R> : kotlin.reflect.KProperty.Accessor<R>, kotlin.reflect.KFunction<kotlin.Unit>
+}
+
+interface KMutableProperty0<R> : kotlin.reflect.KProperty0<R>, kotlin.reflect.KMutableProperty<R> {
+    val setter: kotlin.reflect.KMutableProperty0.Setter<R>
+
+    fun set(value: R): kotlin.Unit
+
+    interface Setter<R> : kotlin.reflect.KMutableProperty.Setter<R>, (R) -> kotlin.Unit
+}
+
+interface KMutableProperty1<T, R> : kotlin.reflect.KProperty1<T, R>, kotlin.reflect.KMutableProperty<R> {
+    val setter: kotlin.reflect.KMutableProperty1.Setter<T, R>
+
+    fun set(receiver: T, value: R): kotlin.Unit
+
+    interface Setter<T, R> : kotlin.reflect.KMutableProperty.Setter<R>, (T, R) -> kotlin.Unit
+}
+
+interface KMutableProperty2<D, E, R> : kotlin.reflect.KProperty2<D, E, R>, kotlin.reflect.KMutableProperty<R> {
+    val setter: kotlin.reflect.KMutableProperty2.Setter<D, E, R>
+
+    fun set(receiver1: D, receiver2: E, value: R): kotlin.Unit
+
+    interface Setter<D, E, R> : kotlin.reflect.KMutableProperty.Setter<R>, (D, E, R) -> kotlin.Unit
+}
+
+interface KParameter : kotlin.reflect.KAnnotatedElement {
+    val index: kotlin.Int
+
+    val isOptional: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isVararg: kotlin.Boolean
+
+    val kind: kotlin.reflect.KParameter.Kind
+
+    val name: kotlin.String?
+
+    val type: kotlin.reflect.KType
+
+    enum class Kind() : kotlin.Enum<kotlin.reflect.KParameter.Kind> {
+        INSTANCE,
+
+        EXTENSION_RECEIVER,
+
+        VALUE;
+    }
+}
+
+interface KProperty<out R> : kotlin.reflect.KCallable<R> {
+    val getter: kotlin.reflect.KProperty.Getter<R>
+
+    @kotlin.SinceKotlin val isConst: kotlin.Boolean
+
+    @kotlin.SinceKotlin val isLateinit: kotlin.Boolean
+
+    interface Accessor<out R> {
+        val property: kotlin.reflect.KProperty<R>
+    }
+
+    interface Getter<out R> : kotlin.reflect.KProperty.Accessor<R>, kotlin.reflect.KFunction<R>
+}
+
+interface KProperty0<out R> : kotlin.reflect.KProperty<R>, () -> R {
+    val getter: kotlin.reflect.KProperty0.Getter<R>
+
+    fun get(): R
+
+    @kotlin.SinceKotlin fun getDelegate(): kotlin.Any?
+
+    interface Getter<out R> : kotlin.reflect.KProperty.Getter<R>, () -> R
+}
+
+interface KProperty1<T, out R> : kotlin.reflect.KProperty<R>, (T) -> R {
+    val getter: kotlin.reflect.KProperty1.Getter<T, R>
+
+    fun get(receiver: T): R
+
+    @kotlin.SinceKotlin fun getDelegate(receiver: T): kotlin.Any?
+
+    interface Getter<T, out R> : kotlin.reflect.KProperty.Getter<R>, (T) -> R
+}
+
+interface KProperty2<D, E, out R> : kotlin.reflect.KProperty<R>, (D, E) -> R {
+    val getter: kotlin.reflect.KProperty2.Getter<D, E, R>
+
+    fun get(receiver1: D, receiver2: E): R
+
+    @kotlin.SinceKotlin fun getDelegate(receiver1: D, receiver2: E): kotlin.Any?
+
+    interface Getter<D, E, out R> : kotlin.reflect.KProperty.Getter<R>, (D, E) -> R
+}
+
+interface KType : kotlin.reflect.KAnnotatedElement {
+    @kotlin.SinceKotlin val arguments: kotlin.collections.List<kotlin.reflect.KTypeProjection>
+
+    @kotlin.SinceKotlin val classifier: kotlin.reflect.KClassifier?
+
+    val isMarkedNullable: kotlin.Boolean
+}
+
+@kotlin.SinceKotlin interface KTypeParameter : kotlin.reflect.KClassifier {
+    val isReified: kotlin.Boolean
+
+    val name: kotlin.String
+
+    val upperBounds: kotlin.collections.List<kotlin.reflect.KType>
+
+    val variance: kotlin.reflect.KVariance
+}
+
+@kotlin.SinceKotlin   data class KTypeProjection(variance: kotlin.reflect.KVariance?, type: kotlin.reflect.KType?) {
+    companion object {
+        val STAR: kotlin.reflect.KTypeProjection /* compiled code */
+
+        fun contravariant(type: kotlin.reflect.KType): kotlin.reflect.KTypeProjection { /* compiled code */ }
+
+        fun covariant(type: kotlin.reflect.KType): kotlin.reflect.KTypeProjection { /* compiled code */ }
+
+        fun invariant(type: kotlin.reflect.KType): kotlin.reflect.KTypeProjection { /* compiled code */ }
+    }
+
+    val type: kotlin.reflect.KType? /* compiled code */
+
+    val variance: kotlin.reflect.KVariance? /* compiled code */
+
+    operator fun component1(): kotlin.reflect.KVariance? { /* compiled code */ }
+
+    operator fun component2(): kotlin.reflect.KType? { /* compiled code */ }
+}
+
+@kotlin.SinceKotlin   enum class KVariance() : kotlin.Enum<kotlin.reflect.KVariance> {
+    INVARIANT,
+
+    IN,
+
+    OUT;
+}
+
+@kotlin.SinceKotlin   enum class KVisibility() : kotlin.Enum<kotlin.reflect.KVisibility> {
+    PUBLIC,
+
+    PROTECTED,
+
+    INTERNAL,
+
+    PRIVATE;
+}
+

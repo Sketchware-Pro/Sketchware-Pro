@@ -1,0 +1,1078 @@
+<migration-map>
+    <!-- element name: migrate
+         attr old-name refers to the old class or package name
+         attr new-name refers to the new classname
+         attr type indicates whether the migration is a class or package migration
+    -->
+
+    <!-- Material Design Classes -->
+    <migrate old-name="android.support.design.animation.AnimatorSetCompat"
+        new-name="com.google.android.material.animation.AnimatorSetCompat" type="CLASS" />
+    <migrate old-name="android.support.design.animation.ArgbEvaluatorCompat"
+        new-name="com.google.android.material.animation.ArgbEvaluatorCompat" type="CLASS" />
+    <migrate old-name="android.support.design.animation.ChildrenAlphaProperty"
+        new-name="com.google.android.material.animation.ChildrenAlphaProperty" type="CLASS" />
+    <migrate old-name="android.support.design.animation.DrawableAlphaProperty"
+        new-name="com.google.android.material.animation.DrawableAlphaProperty" type="CLASS" />
+    <migrate old-name="android.support.design.animation.ImageMatrixProperty"
+        new-name="com.google.android.material.animation.ImageMatrixProperty" type="CLASS" />
+    <migrate old-name="android.support.design.animation.MatrixEvaluator"
+        new-name="com.google.android.material.animation.MatrixEvaluator" type="CLASS" />
+    <migrate old-name="android.support.design.animation.MotionSpec"
+        new-name="com.google.android.material.animation.MotionSpec" type="CLASS" />
+    <migrate old-name="android.support.design.animation.MotionTiming"
+        new-name="com.google.android.material.animation.MotionTiming" type="CLASS" />
+    <migrate old-name="android.support.design.animation.Positioning"
+        new-name="com.google.android.material.animation.Positioning" type="CLASS" />
+    <migrate old-name="android.support.design.bottomappbar.BottomAppBar"
+        new-name="com.google.android.material.bottomappbar.BottomAppBar" type="CLASS" />
+    <migrate old-name="android.support.design.bottomappbar.BottomAppBarTopEdgeTreatment"
+        new-name="com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment"
+        type="CLASS" />
+    <migrate old-name="android.support.design.bottomnavigation.LabelVisibilityMode"
+        new-name="com.google.android.material.bottomnavigation.LabelVisibilityMode" type="CLASS" />
+    <migrate old-name="android.support.design.button.MaterialButton"
+        new-name="com.google.android.material.button.MaterialButton" type="CLASS" />
+    <migrate old-name="android.support.design.card.MaterialCardView"
+        new-name="com.google.android.material.card.MaterialCardView" type="CLASS" />
+    <migrate old-name="android.support.design.chip.Chip"
+        new-name="com.google.android.material.chip.Chip" type="CLASS" />
+    <migrate old-name="android.support.design.chip.ChipDrawable"
+        new-name="com.google.android.material.chip.ChipDrawable" type="CLASS" />
+    <migrate old-name="android.support.design.chip.ChipGroup"
+        new-name="com.google.android.material.chip.ChipGroup" type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealCompat"
+        new-name="com.google.android.material.circularreveal.CircularRevealCompat" type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealFrameLayout"
+        new-name="com.google.android.material.circularreveal.CircularRevealFrameLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealGridLayout"
+        new-name="com.google.android.material.circularreveal.CircularRevealGridLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealHelper"
+        new-name="com.google.android.material.circularreveal.CircularRevealHelper" type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealLinearLayout"
+        new-name="com.google.android.material.circularreveal.CircularRevealLinearLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealRelativeLayout"
+        new-name="com.google.android.material.circularreveal.CircularRevealRelativeLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.CircularRevealWidget"
+        new-name="com.google.android.material.circularreveal.CircularRevealWidget" type="CLASS" />
+    <migrate old-name="android.support.design.circularreveal.cardview.CircularRevealCardView"
+        new-name="com.google.android.material.circularreveal.cardview.CircularRevealCardView"
+        type="CLASS" />
+    <migrate
+        old-name="android.support.design.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout"
+        new-name="com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.design.expandable.ExpandableTransformationWidget"
+        new-name="com.google.android.material.expandable.ExpandableTransformationWidget"
+        type="CLASS" />
+    <migrate old-name="android.support.design.expandable.ExpandableWidget"
+        new-name="com.google.android.material.expandable.ExpandableWidget" type="CLASS" />
+    <migrate old-name="android.support.design.expandable.ExpandableWidgetHelper"
+        new-name="com.google.android.material.expandable.ExpandableWidgetHelper" type="CLASS" />
+    <migrate old-name="android.support.design.internal.BaselineLayout"
+        new-name="com.google.android.material.internal.BaselineLayout" type="CLASS" />
+    <migrate old-name="android.support.design.math.MathUtils"
+        new-name="com.google.android.material.math.MathUtils" type="CLASS" />
+    <migrate old-name="android.support.design.resources.TextAppearance"
+        new-name="com.google.android.material.resources.TextAppearance" type="CLASS" />
+    <migrate old-name="android.support.design.snackbar.ContentViewCallback"
+        new-name="com.google.android.material.snackbar.ContentViewCallback" type="CLASS" />
+    <migrate old-name="android.support.design.stateful.ExtendableSavedState"
+        new-name="com.google.android.material.stateful.ExtendableSavedState" type="CLASS" />
+    <migrate old-name="android.support.design.theme.MaterialComponentsViewInflater"
+        new-name="com.google.android.material.theme.MaterialComponentsViewInflater" type="CLASS" />
+    <migrate old-name="android.support.design.transformation.ExpandableBehavior"
+        new-name="com.google.android.material.transformation.ExpandableBehavior" type="CLASS" />
+    <migrate old-name="android.support.design.transformation.ExpandableTransformationBehavior"
+        new-name="com.google.android.material.transformation.ExpandableTransformationBehavior"
+        type="CLASS" />
+    <migrate old-name="android.support.design.transformation.FabTransformationBehavior"
+        new-name="com.google.android.material.transformation.FabTransformationBehavior"
+        type="CLASS" />
+    <migrate old-name="android.support.design.transformation.FabTransformationScrimBehavior"
+        new-name="com.google.android.material.transformation.FabTransformationScrimBehavior"
+        type="CLASS" />
+    <migrate old-name="android.support.design.transformation.FabTransformationSheetBehavior"
+        new-name="com.google.android.material.transformation.FabTransformationSheetBehavior"
+        type="CLASS" />
+    <migrate old-name="android.support.design.transformation.TransformationChildCard"
+        new-name="com.google.android.material.transformation.TransformationChildCard"
+        type="CLASS" />
+    <migrate old-name="android.support.design.transformation.TransformationChildLayout"
+        new-name="com.google.android.material.transformation.TransformationChildLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.design.widget.AppBarLayout"
+        new-name="com.google.android.material.appbar.AppBarLayout" type="CLASS" />
+    <migrate old-name="android.support.design.widget.BaseTransientBottomBar"
+        new-name="com.google.android.material.snackbar.BaseTransientBottomBar" type="CLASS" />
+    <migrate old-name="android.support.design.widget.BottomNavigationView"
+        new-name="com.google.android.material.bottomnavigation.BottomNavigationView" type="CLASS" />
+    <migrate old-name="android.support.design.widget.BottomSheetBehavior"
+        new-name="com.google.android.material.bottomsheet.BottomSheetBehavior" type="CLASS" />
+    <migrate old-name="android.support.design.widget.BottomSheetDialog"
+        new-name="com.google.android.material.bottomsheet.BottomSheetDialog" type="CLASS" />
+    <migrate old-name="android.support.design.widget.BottomSheetDialogFragment"
+        new-name="com.google.android.material.bottomsheet.BottomSheetDialogFragment" type="CLASS" />
+    <migrate old-name="android.support.design.widget.CheckableImageButton"
+        new-name="com.google.android.material.internal.CheckableImageButton" type="CLASS" />
+    <migrate old-name="android.support.design.widget.CircularBorderDrawable"
+        new-name="com.google.android.material.internal.CircularBorderDrawable" type="CLASS" />
+    <migrate old-name="android.support.design.widget.CircularBorderDrawableLollipop"
+        new-name="com.google.android.material.internal.CircularBorderDrawableLollipop"
+        type="CLASS" />
+    <migrate old-name="android.support.design.widget.CollapsingTextHelper"
+        new-name="com.google.android.material.internal.CollapsingTextHelper" type="CLASS" />
+    <migrate old-name="android.support.design.widget.CollapsingToolbarLayout"
+        new-name="com.google.android.material.appbar.CollapsingToolbarLayout" type="CLASS" />
+    <migrate old-name="android.support.design.widget.DrawableUtils"
+        new-name="com.google.android.material.internal.DrawableUtils" type="CLASS" />
+    <migrate old-name="android.support.design.widget.FloatingActionButton"
+        new-name="com.google.android.material.floatingactionbutton.FloatingActionButton"
+        type="CLASS" />
+    <migrate old-name="android.support.design.widget.FloatingActionButtonImpl"
+        new-name="com.google.android.material.floatingactionbutton.FloatingActionButtonImpl"
+        type="CLASS" />
+    <migrate old-name="android.support.design.widget.FloatingActionButtonImplLollipop"
+        new-name="com.google.android.material.floatingactionbutton.FloatingActionButtonImplLollipop"
+        type="CLASS" />
+    <migrate old-name="android.support.design.widget.HeaderBehavior"
+        new-name="com.google.android.material.appbar.HeaderBehavior" type="CLASS" />
+    <migrate old-name="android.support.design.widget.HeaderScrollingViewBehavior"
+        new-name="com.google.android.material.appbar.HeaderScrollingViewBehavior" type="CLASS" />
+    <migrate old-name="android.support.design.widget.NavigationView"
+        new-name="com.google.android.material.navigation.NavigationView" type="CLASS" />
+    <migrate old-name="android.support.design.widget.ShadowDrawableWrapper"
+        new-name="com.google.android.material.shadow.ShadowDrawableWrapper" type="CLASS" />
+    <migrate old-name="android.support.design.widget.ShadowViewDelegate"
+        new-name="com.google.android.material.shadow.ShadowViewDelegate" type="CLASS" />
+    <migrate old-name="android.support.design.widget.Snackbar"
+        new-name="com.google.android.material.snackbar.Snackbar" type="CLASS" />
+    <migrate old-name="android.support.design.widget.SnackbarManager"
+        new-name="com.google.android.material.snackbar.SnackbarManager" type="CLASS" />
+    <migrate old-name="android.support.design.widget.StateListAnimator"
+        new-name="com.google.android.material.internal.StateListAnimator" type="CLASS" />
+    <migrate old-name="android.support.design.widget.SwipeDismissBehavior"
+        new-name="com.google.android.material.behavior.SwipeDismissBehavior" type="CLASS" />
+    <migrate old-name="android.support.design.widget.TabItem"
+        new-name="com.google.android.material.tabs.TabItem" type="CLASS" />
+    <migrate old-name="android.support.design.widget.TabLayout"
+        new-name="com.google.android.material.tabs.TabLayout" type="CLASS" />
+    <migrate old-name="android.support.design.widget.TextInputEditText"
+        new-name="com.google.android.material.textfield.TextInputEditText" type="CLASS" />
+    <migrate old-name="android.support.design.widget.TextInputLayout"
+        new-name="com.google.android.material.textfield.TextInputLayout" type="CLASS" />
+    <migrate old-name="android.support.design.widget.ViewOffsetBehavior"
+        new-name="com.google.android.material.appbar.ViewOffsetBehavior" type="CLASS" />
+    <migrate old-name="android.support.design.widget.ViewOffsetHelper"
+        new-name="com.google.android.material.appbar.ViewOffsetHelper" type="CLASS" />
+    <migrate old-name="android.support.design.widget.ViewUtilsLollipop"
+        new-name="com.google.android.material.appbar.ViewUtilsLollipop" type="CLASS" />
+    <migrate old-name="android.support.design.widget.VisibilityAwareImageButton"
+        new-name="com.google.android.material.internal.VisibilityAwareImageButton" type="CLASS" />
+    <migrate old-name="android.support.design.R" new-name="com.google.android.material.R"
+        type="CLASS" />
+
+
+    <!-- Support Library Classes and Packages -->
+    <migrate old-name="android.support.v17.internal.widget.OutlineOnlyWithChildrenFrameLayout"
+        new-name="androidx.leanback.preference.internal.OutlineOnlyWithChildrenFrameLayout"
+        type="CLASS" />
+    <migrate old-name="android.support.v7.widget.RecyclerViewAccessibilityDelegate"
+        new-name="androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate" type="CLASS" />
+    <migrate old-name="android.support.text.emoji.bundled.BundledEmojiCompatConfig"
+        new-name="androidx.emoji.bundled.BundledEmojiCompatConfig" type="CLASS" />
+    <migrate old-name="android.support.v4.view.animation.PathInterpolatorApi14"
+        new-name="androidx.core.view.animation.PathInterpolatorApi14" type="CLASS" />
+    <migrate old-name="android.support.v4.view.animation.PathInterpolatorCompat"
+        new-name="androidx.core.view.animation.PathInterpolatorCompat" type="CLASS" />
+    <migrate old-name="android.support.v7.internal.widget.PreferenceImageView"
+        new-name="androidx.preference.internal.PreferenceImageView" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.RoundRectDrawableWithShadow"
+        new-name="androidx.cardview.widget.RoundRectDrawableWithShadow" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.StaggeredGridLayoutManager"
+        new-name="androidx.recyclerview.widget.StaggeredGridLayoutManager" type="CLASS" />
+    <migrate old-name="android.support.v4.media.MediaBrowserServiceCompatApi21"
+        new-name="androidx.media.MediaBrowserServiceCompatApi21" type="CLASS" />
+    <migrate old-name="android.support.v4.media.MediaBrowserServiceCompatApi23"
+        new-name="androidx.media.MediaBrowserServiceCompatApi23" type="CLASS" />
+    <migrate old-name="android.support.v4.media.MediaBrowserServiceCompatApi26"
+        new-name="androidx.media.MediaBrowserServiceCompatApi26" type="CLASS" />
+    <migrate old-name="android.support.v4.media.MediaBrowserServiceCompat"
+        new-name="androidx.media.MediaBrowserServiceCompat" type="CLASS" />
+    <migrate old-name="android.support.v4.media.session.MediaButtonReceiver"
+        new-name="androidx.media.session.MediaButtonReceiver" type="CLASS" />
+    <migrate old-name="android.support.v4.content.WakefulBroadcastReceiver"
+        new-name="androidx.legacy.content.WakefulBroadcastReceiver" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.CircularProgressDrawable"
+        new-name="androidx.swiperefreshlayout.widget.CircularProgressDrawable" type="CLASS" />
+    <migrate old-name="android.support.v4.provider.DocumentsContractApi19"
+        new-name="androidx.documentfile.provider.DocumentsContractApi19" type="CLASS" />
+    <migrate old-name="android.support.v13.app.FragmentStatePagerAdapter"
+        new-name="androidx.legacy.app.FragmentStatePagerAdapter" type="CLASS" />
+    <migrate old-name="android.support.v4.media.AudioAttributesCompatApi21"
+        new-name="androidx.media.AudioAttributesCompatApi21" type="CLASS" />
+    <migrate old-name="android.support.v4.media.AudioAttributesCompat"
+        new-name="androidx.media.AudioAttributesCompat" type="CLASS" />
+    <migrate old-name="android.support.v4.content.LocalBroadcastManager"
+        new-name="androidx.localbroadcastmanager.content.LocalBroadcastManager" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.DividerItemDecoration"
+        new-name="androidx.recyclerview.widget.DividerItemDecoration" type="CLASS" />
+    <migrate old-name="android.support.v4.media.app.NotificationCompat"
+        new-name="androidx.media.app.NotificationCompat" type="CLASS" />
+    <migrate old-name="android.support.v4.media.VolumeProviderCompatApi21"
+        new-name="androidx.media.VolumeProviderCompatApi21" type="CLASS" />
+    <migrate old-name="android.support.v4.media.VolumeProviderCompat"
+        new-name="androidx.media.VolumeProviderCompat" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.ResourceCursorAdapter"
+        new-name="androidx.cursoradapter.widget.ResourceCursorAdapter" type="CLASS" />
+    <migrate old-name="android.support.design.widget.CoordinatorLayout"
+        new-name="androidx.coordinatorlayout.widget.CoordinatorLayout" type="CLASS" />
+    <migrate old-name="android.support.constraint.ConstraintSet"
+        new-name="androidx.constraintlayout.widget.ConstraintSet" type="CLASS" />
+    <migrate old-name="android.support.constraint.ConstraintLayout"
+        new-name="androidx.constraintlayout.widget.ConstraintLayout" type="CLASS" />
+    <migrate old-name="android.support.constraint.Guideline"
+        new-name="androidx.constraintlayout.widget.Guideline" type="CLASS" />
+    <migrate old-name="android.support.constraint.Barrier"
+        new-name="androidx.constraintlayout.widget.Barrier" type="CLASS" />
+    <migrate old-name="android.support.constraint.Group"
+        new-name="androidx.constraintlayout.widget.Group" type="CLASS" />
+    <migrate old-name="android.support.constraint.Placeholder"
+        new-name="androidx.constraintlayout.widget.Placeholder" type="CLASS" />
+    <migrate old-name="android.support.constraint.ConstraintHelper"
+        new-name="androidx.constraintlayout.widget.ConstraintHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.LinearSmoothScroller"
+        new-name="androidx.recyclerview.widget.LinearSmoothScroller" type="CLASS" />
+    <migrate old-name="android.support.customtabs.ICustomTabsCallback"
+        new-name="android.support.customtabs.ICustomTabsCallback" type="CLASS" />
+    <migrate old-name="android.support.customtabs.IPostMessageService"
+        new-name="android.support.customtabs.IPostMessageService" type="CLASS" />
+    <migrate old-name="android.support.v4.app.SuperNotCalledException"
+        new-name="androidx.fragment.app.SuperNotCalledException" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.DirectedAcyclicGraph"
+        new-name="androidx.coordinatorlayout.widget.DirectedAcyclicGraph" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.ExploreByTouchHelper"
+        new-name="androidx.customview.widget.ExploreByTouchHelper" type="CLASS" />
+    <migrate old-name="android.support.v4.provider.SingleDocumentFile"
+        new-name="androidx.documentfile.provider.SingleDocumentFile" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.DefaultItemAnimator"
+        new-name="androidx.recyclerview.widget.DefaultItemAnimator" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.LinearLayoutManager"
+        new-name="androidx.recyclerview.widget.LinearLayoutManager" type="CLASS" />
+    <migrate old-name="android.support.v7.graphics.ColorCutQuantizer"
+        new-name="androidx.palette.graphics.ColorCutQuantizer" type="CLASS" />
+    <migrate old-name="android.support.customtabs.ICustomTabsService"
+        new-name="android.support.customtabs.ICustomTabsService" type="CLASS" />
+    <migrate old-name="android.support.v4.app.OneShotPreDrawListener"
+        new-name="androidx.fragment.app.OneShotPreDrawListener" type="CLASS" />
+    <migrate old-name="android.support.v4.media.MediaBrowserCompatUtils"
+        new-name="androidx.media.MediaBrowserCompatUtils" type="CLASS" />
+    <migrate old-name="android.support.v4.media.MediaBrowserProtocol"
+        new-name="androidx.media.MediaBrowserProtocol" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.SimpleCursorAdapter"
+        new-name="androidx.cursoradapter.widget.SimpleCursorAdapter" type="CLASS" />
+    <migrate old-name="android.support.v4.app.ActionBarDrawerToggle"
+        new-name="androidx.legacy.app.ActionBarDrawerToggle" type="CLASS" />
+    <migrate old-name="android.support.v13.app.FragmentPagerAdapter"
+        new-name="androidx.legacy.app.FragmentPagerAdapter" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.SimpleItemAnimator"
+        new-name="androidx.recyclerview.widget.SimpleItemAnimator" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.SwipeRefreshLayout"
+        new-name="androidx.swiperefreshlayout.widget.SwipeRefreshLayout" type="CLASS" />
+    <migrate old-name="android.support.v4.provider.TreeDocumentFile"
+        new-name="androidx.documentfile.provider.TreeDocumentFile" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.GridLayoutManager"
+        new-name="androidx.recyclerview.widget.GridLayoutManager" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.OrientationHelper"
+        new-name="androidx.recyclerview.widget.OrientationHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.RoundRectDrawable"
+        new-name="androidx.cardview.widget.RoundRectDrawable" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.SlidingPaneLayout"
+        new-name="androidx.slidingpanelayout.widget.SlidingPaneLayout" type="CLASS" />
+    <migrate old-name="android.support.v4.view.AsyncLayoutInflater"
+        new-name="androidx.asynclayoutinflater.view.AsyncLayoutInflater" type="CLASS" />
+    <migrate old-name="android.support.v4.provider.RawDocumentFile"
+        new-name="androidx.documentfile.provider.RawDocumentFile" type="CLASS" />
+    <migrate old-name="android.support.v7.recyclerview.extensions"
+        new-name="androidx.recyclerview.widget" type="PACKAGE" />
+    <migrate old-name="android.support.v7.widget.LinearSnapHelper"
+        new-name="androidx.recyclerview.widget.LinearSnapHelper" type="CLASS" />
+    <migrate old-name="android.support.v4.content.AsyncTaskLoader"
+        new-name="androidx.loader.content.AsyncTaskLoader" type="CLASS" />
+    <migrate old-name="android.support.v4.content.ModernAsyncTask"
+        new-name="androidx.loader.content.ModernAsyncTask" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.PagerSnapHelper"
+        new-name="androidx.recyclerview.widget.PagerSnapHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.ScrollbarHelper"
+        new-name="androidx.recyclerview.widget.ScrollbarHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.ViewBoundsCheck"
+        new-name="androidx.recyclerview.widget.ViewBoundsCheck" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.CircleImageView"
+        new-name="androidx.swiperefreshlayout.widget.CircleImageView" type="CLASS" />
+    <migrate old-name="android.support.v4.util.SparseArrayCompat"
+        new-name="androidx.collection.SparseArrayCompat" type="CLASS" />
+    <migrate old-name="android.support.v4.app.LoaderManagerImpl"
+        new-name="androidx.loader.app.LoaderManagerImpl" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.ViewGroupUtils"
+        new-name="androidx.coordinatorlayout.widget.ViewGroupUtils" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.ViewDragHelper"
+        new-name="androidx.customview.widget.ViewDragHelper" type="CLASS" />
+    <migrate old-name="android.support.v4.util.CircularIntArray"
+        new-name="androidx.collection.CircularIntArray" type="CLASS" />
+    <migrate old-name="android.support.v4.util.ContainerHelpers"
+        new-name="androidx.collection.ContainerHelpers" type="CLASS" />
+    <migrate old-name="android.support.v4.provider.DocumentFile"
+        new-name="androidx.documentfile.provider.DocumentFile" type="CLASS" />
+    <migrate old-name="android.support.v13.app.FragmentTabHost"
+        new-name="androidx.legacy.app.FragmentTabHost" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.AdapterHelper"
+        new-name="androidx.recyclerview.widget.AdapterHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.ViewInfoStore"
+        new-name="androidx.recyclerview.widget.ViewInfoStore" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.CursorAdapter"
+        new-name="androidx.cursoradapter.widget.CursorAdapter" type="CLASS" />
+    <migrate old-name="android.support.v4.content.CursorLoader"
+        new-name="androidx.loader.content.CursorLoader" type="CLASS" />
+    <migrate old-name="android.support.v4.view.PagerTitleStrip"
+        new-name="androidx.viewpager.widget.PagerTitleStrip" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.FocusStrategy"
+        new-name="androidx.customview.widget.FocusStrategy" type="CLASS" />
+    <migrate old-name="android.support.v4.util.LongSparseArray"
+        new-name="androidx.collection.LongSparseArray" type="CLASS" />
+    <migrate old-name="android.support.v13.app.ActivityCompat"
+        new-name="androidx.legacy.app.ActivityCompat" type="CLASS" />
+    <migrate old-name="android.support.v13.app.FragmentCompat"
+        new-name="androidx.legacy.app.FragmentCompat" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.FastScroller"
+        new-name="androidx.recyclerview.widget.FastScroller" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.RecyclerView"
+        new-name="androidx.recyclerview.widget.RecyclerView" type="CLASS" />
+    <migrate old-name="android.support.v7.app.OverlayListView"
+        new-name="androidx.mediarouter.app.OverlayListView" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.CursorFilter"
+        new-name="androidx.cursoradapter.widget.CursorFilter" type="CLASS" />
+    <migrate old-name="android.support.v4.widget.DrawerLayout"
+        new-name="androidx.drawerlayout.widget.DrawerLayout" type="CLASS" />
+    <migrate old-name="android.support.v4.util.MapCollections"
+        new-name="androidx.collection.MapCollections" type="CLASS" />
+    <migrate old-name="android.support.v4.util.SimpleArrayMap"
+        new-name="androidx.collection.SimpleArrayMap" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.ChildHelper"
+        new-name="androidx.recyclerview.widget.ChildHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.LayoutState"
+        new-name="androidx.recyclerview.widget.LayoutState" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.OpReorderer"
+        new-name="androidx.recyclerview.widget.OpReorderer" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.PositionMap"
+        new-name="androidx.recyclerview.widget.PositionMap" type="CLASS" />
+    <migrate old-name="android.support.v4.app.BaseFragmentActivityApi14"
+        new-name="androidx.fragment.app.BaseFragmentActivityApi14" type="CLASS" />
+    <migrate old-name="android.support.v4.app.BaseFragmentActivityApi16"
+        new-name="androidx.fragment.app.BaseFragmentActivityApi16" type="CLASS" />
+    <migrate old-name="android.support.v4.app.BaseFragment"
+        new-name="androidx.fragment.app.BaseFragment" type="CLASS" />
+    <migrate old-name="android.support.v4.app.DialogFragment"
+        new-name="androidx.fragment.app.DialogFragment" type="CLASS" />
+    <migrate old-name="android.support.v4.view.PagerTabStrip"
+        new-name="androidx.viewpager.widget.PagerTabStrip" type="CLASS" />
+    <migrate old-name="android.support.v4.view.AbsSavedState"
+        new-name="androidx.customview.view.AbsSavedState" type="CLASS" />
+    <migrate old-name="android.support.v4.util.CircularArray"
+        new-name="androidx.collection.CircularArray" type="CLASS" />
+    <migrate old-name="android.support.coordinatorlayout.R" new-name="androidx.coordinatorlayout.R"
+        type="CLASS" />
+    <migrate old-name="android.support.v7.widget.SnapHelper"
+        new-name="androidx.recyclerview.widget.SnapHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.CardViewApi17Impl"
+        new-name="androidx.cardview.widget.CardViewApi17Impl" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.CardViewApi21Impl"
+        new-name="androidx.cardview.widget.CardViewApi21Impl" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.CardViewBaseImpl"
+        new-name="androidx.cardview.widget.CardViewBaseImpl" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.CardViewDelegate"
+        new-name="androidx.cardview.widget.CardViewDelegate" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.CardViewImpl"
+        new-name="androidx.cardview.widget.CardViewImpl" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.CardView"
+        new-name="androidx.cardview.widget.CardView" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.GridLayout"
+        new-name="androidx.gridlayout.widget.GridLayout" type="CLASS" />
+    <migrate old-name="android.support.v4.app.LoaderManager"
+        new-name="androidx.loader.app.LoaderManager" type="CLASS" />
+    <migrate old-name="android.support.v4.view.PagerAdapter"
+        new-name="androidx.viewpager.widget.PagerAdapter" type="CLASS" />
+    <migrate old-name="android.support.v4.os.ResultReceiver"
+        new-name="android.support.v4.os.ResultReceiver" type="CLASS" />
+    <migrate old-name="android.support.v13.view.ViewCompat"
+        new-name="androidx.legacy.view.ViewCompat" type="CLASS" />
+    <migrate old-name="android.support.v7.widget.GapWorker"
+        new-name="androidx.recyclerview.widget.GapWorker" type="CLASS" />
+    <migrate old-name="android.support.v7.graphics.Palette"
+        new-name="androidx.palette.graphics.Palette" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteActionProvider"
+        new-name="androidx.mediarouter.app.MediaRouteActionProvider" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteButton"
+        new-name="androidx.mediarouter.app.MediaRouteButton" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteChooserDialogFragment"
+        new-name="androidx.mediarouter.app.MediaRouteChooserDialogFragment" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteChooserDialog"
+        new-name="androidx.mediarouter.app.MediaRouteChooserDialog" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteControllerDialogFragment"
+        new-name="androidx.mediarouter.app.MediaRouteControllerDialogFragment" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteControllerDialog"
+        new-name="androidx.mediarouter.app.MediaRouteControllerDialog" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteDialogFactory"
+        new-name="androidx.mediarouter.app.MediaRouteDialogFactory" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteDialogHelper"
+        new-name="androidx.mediarouter.app.MediaRouteDialogHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteDiscoveryFragment"
+        new-name="androidx.mediarouter.app.MediaRouteDiscoveryFragment" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteExpandCollapseButton"
+        new-name="androidx.mediarouter.app.MediaRouteExpandCollapseButton" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouteVolumeSlider"
+        new-name="androidx.mediarouter.app.MediaRouteVolumeSlider" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRouterThemeHelper"
+        new-name="androidx.mediarouter.app.MediaRouterThemeHelper" type="CLASS" />
+    <migrate old-name="android.support.v7.app.MediaRoute"
+        new-name="androidx.mediarouter.app.MediaRoute" type="CLASS" />
+    <migrate old-name="android.support.media.ExifInterface"
+        new-name="androidx.exifinterface.media.ExifInterface" type="CLASS" />
+    <migrate old-name="android.support.v4.app.ListFragment"
+        new-name="androidx.fragment.app.ListFragment" type="CLASS" />
+    <migrate old-name="android.support.v7.recyclerview.R" new-name="androidx.recyclerview.R"
+        type="CLASS" />
+    <migrate old-name="android.support.v7.graphics.Target"
+        new-name="androidx.palette.graphics.Target" type="CLASS" />
+    <migrate old-name="android.support.app.recommendation" new-name="androidx.recommendation.app"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.app.BackStackRecord"
+        new-name="androidx.fragment.app.BackStackRecord" type="CLASS" />
+    <migrate old-name="android.support.v4.app.BackStackState"
+        new-name="androidx.fragment.app.BackStackState" type="CLASS" />
+    <migrate old-name="android.support.v4.app.BackStack" new-name="androidx.fragment.app.BackStack"
+        type="CLASS" />
+    <migrate old-name="android.support.v7.mediarouter.R" new-name="androidx.mediarouter.R"
+        type="CLASS" />
+    <migrate old-name="android.support.graphics.drawable"
+        new-name="androidx.vectordrawable.graphics.drawable" type="PACKAGE" />
+    <migrate old-name="android.support.text.emoji.widget" new-name="androidx.emoji.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.app.FragmentActivity"
+        new-name="androidx.fragment.app.FragmentActivity" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentContainer"
+        new-name="androidx.fragment.app.FragmentContainer" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentController"
+        new-name="androidx.fragment.app.FragmentController" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentHostCallback"
+        new-name="androidx.fragment.app.FragmentHostCallback" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentManagerImpl"
+        new-name="androidx.fragment.app.FragmentManagerImpl" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentManagerNonConfig"
+        new-name="androidx.fragment.app.FragmentManagerNonConfig" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentManagerState"
+        new-name="androidx.fragment.app.FragmentManagerState" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentManager"
+        new-name="androidx.fragment.app.FragmentManager" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentPagerAdapter"
+        new-name="androidx.fragment.app.FragmentPagerAdapter" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentStatePagerAdapter"
+        new-name="androidx.fragment.app.FragmentStatePagerAdapter" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentState"
+        new-name="androidx.fragment.app.FragmentState" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentTabHost"
+        new-name="androidx.fragment.app.FragmentTabHost" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentTransaction"
+        new-name="androidx.fragment.app.FragmentTransaction" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentTransitionCompat21"
+        new-name="androidx.fragment.app.FragmentTransitionCompat21" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentTransitionImpl"
+        new-name="androidx.fragment.app.FragmentTransitionImpl" type="CLASS" />
+    <migrate old-name="android.support.v4.app.FragmentTransition"
+        new-name="androidx.fragment.app.FragmentTransition" type="CLASS" />
+    <migrate old-name="android.support.v4.app.Fragment" new-name="androidx.fragment.app.Fragment"
+        type="CLASS" />
+    <migrate old-name="android.support.v4.content.Loader" new-name="androidx.loader.content.Loader"
+        type="CLASS" />
+    <migrate old-name="android.support.v4.view.ViewPager"
+        new-name="androidx.viewpager.widget.ViewPager" type="CLASS" />
+    <migrate old-name="android.support.v4.view.animation"
+        new-name="androidx.interpolator.view.animation" type="PACKAGE" />
+    <migrate old-name="android.support.v7.gridlayout.R" new-name="androidx.gridlayout.R"
+        type="CLASS" />
+    <migrate old-name="android.support.v7.widget.helper" new-name="androidx.recyclerview.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.util.ArrayMap" new-name="androidx.collection.ArrayMap"
+        type="CLASS" />
+    <migrate old-name="android.support.v4.util.ArraySet" new-name="androidx.collection.ArraySet"
+        type="CLASS" />
+    <migrate old-name="android.support.v4.util.LruCache" new-name="androidx.collection.LruCache"
+        type="CLASS" />
+    <migrate old-name="android.support.v7.appcompat.R" new-name="androidx.appcompat.R"
+        type="CLASS" />
+    <migrate old-name="android.support.v4.widget.Space" new-name="androidx.legacy.widget.Space"
+        type="CLASS" />
+    <migrate old-name="android.support.mediacompat.R" new-name="androidx.media.R" type="CLASS" />
+    <migrate old-name="android.support.v7.cardview.R" new-name="androidx.cardview.R" type="CLASS" />
+    <migrate old-name="android.support.v8.renderscript" new-name="androidx.renderscript"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7.widget.util" new-name="androidx.recyclerview.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v14.preference" new-name="androidx.preference"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.preference" new-name="androidx.leanback.preference"
+        type="PACKAGE" />
+    <migrate old-name="android.support.text.emoji.R" new-name="androidx.emoji.R" type="CLASS" />
+    <migrate old-name="android.support.customtabs.R" new-name="androidx.browser.R" type="CLASS" />
+    <migrate old-name="android.support.v4.app.SupportActivity"
+        new-name="androidx.core.app.ComponentActivity" type="CLASS" />
+    <migrate old-name="android.support.v7.preference.internal"
+        new-name="androidx.preference.internal" type="PACKAGE" />
+    <migrate old-name="android.support.v7.preference" new-name="androidx.preference"
+        type="PACKAGE" />
+    <migrate old-name="android.arch.persistence.room" new-name="androidx.room" type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.animation"
+        new-name="androidx.leanback.animation" type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.app" new-name="androidx.leanback.app"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.database" new-name="androidx.leanback.database"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.graphics" new-name="androidx.leanback.graphics"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.media" new-name="androidx.leanback.media"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.system" new-name="androidx.leanback.system"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.transition"
+        new-name="androidx.leanback.transition" type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.util" new-name="androidx.leanback.util"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.widget.picker"
+        new-name="androidx.leanback.widget.picker" type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback.widget" new-name="androidx.leanback.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v17.leanback" new-name="androidx.leanback" type="PACKAGE" />
+    <migrate old-name="android.support.percent.R" new-name="androidx.percentlayout.R"
+        type="CLASS" />
+    <migrate old-name="android.support.customtabs" new-name="androidx.browser.customtabs"
+        type="PACKAGE" />
+    <migrate old-name="android.support.annotation" new-name="androidx.annotation" type="PACKAGE" />
+    <migrate old-name="android.support.transition" new-name="androidx.transition" type="PACKAGE" />
+    <migrate old-name="android.support.text.emoji.bundled" new-name="androidx.emoji.text.bundled"
+        type="PACKAGE" />
+    <migrate old-name="android.support.text.emoji" new-name="androidx.emoji.text" type="PACKAGE" />
+    <migrate old-name="android.support.compat.R" new-name="androidx.core.R" type="CLASS" />
+    <migrate old-name="android.support.constraint" new-name="androidx.constraintlayout"
+        type="PACKAGE" />
+    <migrate old-name="android.support.animation" new-name="androidx.dynamicanimation.animation"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7.media" new-name="androidx.mediarouter.media"
+        type="PACKAGE" />
+    <migrate old-name="android.support.media.tv" new-name="androidx.tvprovider.media.tv"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.media.app" new-name="android.support.v4.media.app"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.media.session" new-name="android.support.v4.media.session"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.media" new-name="android.support.v4.media"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.print" new-name="androidx.print" type="PACKAGE" />
+    <migrate old-name="android.support.multidex" new-name="androidx.multidex" type="PACKAGE" />
+    <migrate old-name="android.arch.persistence" new-name="androidx.sqlite" type="PACKAGE" />
+    <migrate old-name="android.support.v7.util" new-name="androidx.recyclerview.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.percent" new-name="androidx.percentlayout.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.content" new-name="androidx.contentpager.content"
+        type="PACKAGE" />
+    <migrate old-name="android.arch.lifecycle" new-name="androidx.lifecycle" type="PACKAGE" />
+    <migrate old-name="android.support.wearable" new-name="android.support.wearable"
+        type="PACKAGE" />
+    <migrate old-name="android.support.wear.ambient" new-name="androidx.wear.ambient"
+        type="PACKAGE" />
+    <migrate old-name="android.support.wear.internal.widget.drawer"
+        new-name="androidx.wear.internal.widget.drawer" type="PACKAGE" />
+    <migrate old-name="android.support.wear.internal.widget"
+        new-name="androidx.wear.internal.widget" type="PACKAGE" />
+    <migrate old-name="android.support.wear.utils" new-name="androidx.wear.utils" type="PACKAGE" />
+    <migrate old-name="android.support.wear.widget.drawer" new-name="androidx.wear.widget.drawer"
+        type="PACKAGE" />
+    <migrate old-name="android.support.wear.widget" new-name="androidx.wear.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.wear" new-name="androidx.wear" type="PACKAGE" />
+    <migrate old-name="android.support.test" new-name="androidx.test" type="PACKAGE" />
+    <migrate old-name="android.support.v13.app" new-name="androidx.core.app" type="PACKAGE" />
+    <migrate old-name="android.support.v13.view.inputmethod"
+        new-name="androidx.core.view.inputmethod" type="PACKAGE" />
+    <migrate old-name="android.support.v13.view" new-name="androidx.core.view" type="PACKAGE" />
+    <migrate old-name="android.support.v13" new-name="androidx.core" type="PACKAGE" />
+    <migrate old-name="android.databinding" new-name="androidx.databinding" type="PACKAGE" />
+    <migrate old-name="android.arch.paging" new-name="androidx.paging" type="PACKAGE" />
+    <migrate old-name="android.support.v7.app" new-name="androidx.appcompat.app" type="PACKAGE" />
+    <migrate old-name="android.support.v7.content.res" new-name="androidx.appcompat.content.res"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7.graphics.drawable"
+        new-name="androidx.appcompat.graphics.drawable" type="PACKAGE" />
+    <migrate old-name="android.support.v7.graphics" new-name="androidx.appcompat.graphics"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7.internal.widget"
+        new-name="androidx.appcompat.internal.widget" type="PACKAGE" />
+    <migrate old-name="android.support.v7.internal" new-name="androidx.appcompat.internal"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7.text" new-name="androidx.appcompat.text" type="PACKAGE" />
+    <migrate old-name="android.support.v7.view.menu" new-name="androidx.appcompat.view.menu"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7.view" new-name="androidx.appcompat.view" type="PACKAGE" />
+    <migrate old-name="android.support.v7.widget" new-name="androidx.appcompat.widget"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v7" new-name="androidx.appcompat" type="PACKAGE" />
+    <migrate old-name="android.support.v4.accessibilityservice"
+        new-name="androidx.core.accessibilityservice" type="PACKAGE" />
+    <migrate old-name="android.support.v4.app" new-name="androidx.core.app" type="PACKAGE" />
+    <migrate old-name="android.support.v4.content.pm" new-name="androidx.core.content.pm"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.content.res" new-name="androidx.core.content.res"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.content" new-name="androidx.core.content"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.database" new-name="androidx.core.database"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.graphics.drawable"
+        new-name="androidx.core.graphics.drawable" type="PACKAGE" />
+    <migrate old-name="android.support.v4.graphics" new-name="androidx.core.graphics"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.hardware.display"
+        new-name="androidx.core.hardware.display" type="PACKAGE" />
+    <migrate old-name="android.support.v4.hardware.fingerprint"
+        new-name="androidx.core.hardware.fingerprint" type="PACKAGE" />
+    <migrate old-name="android.support.v4.internal.view" new-name="androidx.core.internal.view"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.internal" new-name="androidx.core.internal"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.math" new-name="androidx.core.math" type="PACKAGE" />
+    <migrate old-name="android.support.v4.net" new-name="androidx.core.net" type="PACKAGE" />
+    <migrate old-name="android.support.v4.os" new-name="androidx.core.os" type="PACKAGE" />
+    <migrate old-name="android.support.v4.provider" new-name="androidx.core.provider"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.text.util" new-name="androidx.core.text.util"
+        type="PACKAGE" />
+    <migrate old-name="android.support.v4.text" new-name="androidx.core.text" type="PACKAGE" />
+    <migrate old-name="android.support.v4.util" new-name="androidx.core.util" type="PACKAGE" />
+    <migrate old-name="android.support.v4.view.accessibility"
+        new-name="androidx.core.view.accessibility" type="PACKAGE" />
+    <migrate old-name="android.support.v4.view" new-name="androidx.core.view" type="PACKAGE" />
+    <migrate old-name="android.support.v4.widget" new-name="androidx.core.widget" type="PACKAGE" />
+    <migrate old-name="android.support.v4" new-name="androidx.core" type="PACKAGE" />
+    <migrate old-name="android.arch.core" new-name="androidx.arch.core" type="PACKAGE" />
+
+    <!-- Migrate dependencies in build.gradle -->
+
+    <!-- Support Library Gradle Artifacts -->
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="animated-vector-drawable" new-group-name="androidx.vectordrawable"
+        new-artifact-name="vectordrawable-animated" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="appcompat-v7"
+        new-group-name="androidx.appcompat" new-artifact-name="appcompat"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="cardview-v7"
+        new-group-name="androidx.cardview" new-artifact-name="cardview"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="customtabs"
+        new-group-name="androidx.browser" new-artifact-name="browser" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="design"
+        new-group-name="com.google.android.material" new-artifact-name="material"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="exifinterface"
+        new-group-name="androidx.exifinterface" new-artifact-name="exifinterface"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="gridlayout-v7"
+        new-group-name="androidx.gridlayout" new-artifact-name="gridlayout"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="leanback-v17"
+        new-group-name="androidx.leanback" new-artifact-name="leanback"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="mediarouter-v7"
+        new-group-name="androidx.mediarouter" new-artifact-name="mediarouter"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="multidex"
+        new-group-name="androidx.multidex" new-artifact-name="multidex" base-version="2.0.0" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="multidex-instrumentation" new-group-name="androidx.multidex"
+        new-artifact-name="multidex-instrumentation" base-version="2.0.0" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="palette-v7"
+        new-group-name="androidx.palette" new-artifact-name="palette" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="percent"
+        new-group-name="androidx.percentlayout" new-artifact-name="percentlayout"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="preference-leanback-v17" new-group-name="androidx.leanback"
+        new-artifact-name="leanback-preference" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="preference-v14"
+        new-group-name="androidx.legacy" new-artifact-name="legacy-preference-v14"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="preference-v7"
+        new-group-name="androidx.preference" new-artifact-name="preference"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="recommendation"
+        new-group-name="androidx.recommendation" new-artifact-name="recommendation"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="recyclerview-v7"
+        new-group-name="androidx.recyclerview" new-artifact-name="recyclerview"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-annotations"
+        new-group-name="androidx.annotation" new-artifact-name="annotation"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-compat"
+        new-group-name="androidx.core" new-artifact-name="core" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-content"
+        new-group-name="androidx.contentpaging" new-artifact-name="contentpaging"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-core-ui"
+        new-group-name="androidx.legacy" new-artifact-name="legacy-support-core-ui"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-core-utils"
+        new-group-name="androidx.legacy" new-artifact-name="legacy-support-core-utils"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="support-dynamic-animation" new-group-name="androidx.dynamicanimation"
+        new-artifact-name="dynamicanimation" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-emoji"
+        new-group-name="androidx.emoji" new-artifact-name="emoji" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="support-emoji-appcompat" new-group-name="androidx.emoji"
+        new-artifact-name="emoji-appcompat" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="support-emoji-bundled" new-group-name="androidx.emoji"
+        new-artifact-name="emoji-bundled" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-fragment"
+        new-group-name="androidx.fragment" new-artifact-name="fragment"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="support-media-compat" new-group-name="androidx.media"
+        new-artifact-name="media" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-tv-provider"
+        new-group-name="androidx.tvprovider" new-artifact-name="tvprovider"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-v13"
+        new-group-name="androidx.legacy" new-artifact-name="legacy-support-v13"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="support-v4"
+        new-group-name="androidx.legacy" new-artifact-name="legacy-support-v4"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="support-vector-drawable" new-group-name="androidx.vectordrawable"
+        new-artifact-name="vectordrawable" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="textclassifier"
+        new-group-name="androidx.textclassifier" new-artifact-name="textclassifier"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="transition"
+        new-group-name="androidx.transition" new-artifact-name="transition"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="wear"
+        new-group-name="androidx.wear" new-artifact-name="wear" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="asynclayoutinflater"
+        new-group-name="androidx.asynclayoutinflater" new-artifact-name="asynclayoutinflater"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="collection"
+        new-group-name="androidx.collection" new-artifact-name="collection"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="coordinatorlayout"
+        new-group-name="androidx.coordinatorlayout" new-artifact-name="coordinatorlayout"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="cursoradapter"
+        new-group-name="androidx.cursoradapter" new-artifact-name="cursoradapter"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="customview"
+        new-group-name="androidx.customview" new-artifact-name="customview"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="documentfile"
+        new-group-name="androidx.documentfile" new-artifact-name="documentfile"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="drawerlayout"
+        new-group-name="androidx.drawerlayout" new-artifact-name="drawerlayout"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="interpolator"
+        new-group-name="androidx.interpolator" new-artifact-name="interpolator"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="loader"
+        new-group-name="androidx.loader" new-artifact-name="loader" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support"
+        old-artifact-name="localbroadcastmanager" new-group-name="androidx.localbroadcastmanager"
+        new-artifact-name="localbroadcastmanager" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="print"
+        new-group-name="androidx.print" new-artifact-name="print" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="slidingpanelayout"
+        new-group-name="androidx.slidingpanelayout" new-artifact-name="slidingpanelayout"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="swiperefreshlayout"
+        new-group-name="androidx.swiperefreshlayout" new-artifact-name="swiperefreshlayout"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="viewpager"
+        new-group-name="androidx.viewpager" new-artifact-name="viewpager"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="slices-core"
+        new-group-name="androidx.slice" new-artifact-name="slice-core"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="slices-builders"
+        new-group-name="androidx.slice" new-artifact-name="slice-builders"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support" old-artifact-name="slices-view"
+        new-group-name="androidx.slice" new-artifact-name="slice-view"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.databinding" old-artifact-name="adapters"
+        new-group-name="androidx.databinding" new-artifact-name="databinding-adapters"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.databinding" old-artifact-name="baseLibrary"
+        new-group-name="androidx.databinding" new-artifact-name="databinding-common"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.databinding" old-artifact-name="compiler"
+        new-group-name="androidx.databinding" new-artifact-name="databinding-compiler"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.databinding" old-artifact-name="compilerCommon"
+        new-group-name="androidx.databinding" new-artifact-name="databinding-compiler-common"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.databinding" old-artifact-name="library"
+        new-group-name="androidx.databinding" new-artifact-name="databinding-runtime"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.background.workmanager"
+        old-artifact-name="workmanager" new-group-name="androidx.work"
+        new-artifact-name="work-runtime" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.background.workmanager"
+        old-artifact-name="workmanager-firebase" new-group-name="androidx.work"
+        new-artifact-name="work-runtime-firebase" base-version="1.0.0-alpha1" />
+    <!-- TODO: navigation isn't being released as an androidx group yet
+    <migrate-dependency old-group-name="android.arch.navigation" old-artifact-name="navigation-common" new-group-name="androidx.navigation" new-artifact-name="navigation-common" base-version="1.0.0-alpha01"/>
+    <migrate-dependency old-group-name="android.arch.navigation" old-artifact-name="navigation-runtime" new-group-name="androidx.navigation" new-artifact-name="navigation-runtime" base-version="1.0.0-alpha01"/>
+    <migrate-dependency old-group-name="android.arch.navigation" old-artifact-name="navigation-fragment" new-group-name="androidx.navigation" new-artifact-name="navigation-fragment" base-version="1.0.0-alpha01"/-->
+    <migrate-dependency old-group-name="android.arch.core" old-artifact-name="common"
+        new-group-name="androidx.arch.core" new-artifact-name="core-common"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.core" old-artifact-name="core-testing"
+        new-group-name="androidx.arch.core" new-artifact-name="core-testing"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.core" old-artifact-name="runtime"
+        new-group-name="androidx.arch.core" new-artifact-name="core-runtime"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="common"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-common"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="common-java8"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-common-java8"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="compiler"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-compiler"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="extensions"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-extensions"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="reactivestreams"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-reactivestreams"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="runtime"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-runtime"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="viewmodel"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-viewmodel"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="livedata"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-livedata"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.lifecycle" old-artifact-name="livedata-core"
+        new-group-name="androidx.lifecycle" new-artifact-name="lifecycle-livedata-core"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.paging" old-artifact-name="common"
+        new-group-name="androidx.paging" new-artifact-name="paging-common"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.paging" old-artifact-name="runtime"
+        new-group-name="androidx.paging" new-artifact-name="paging-runtime"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence" old-artifact-name="db"
+        new-group-name="androidx.sqlite" new-artifact-name="sqlite" base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence" old-artifact-name="db-framework"
+        new-group-name="androidx.sqlite" new-artifact-name="sqlite-framework"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="common"
+        new-group-name="androidx.room" new-artifact-name="room-common"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="compiler"
+        new-group-name="androidx.room" new-artifact-name="room-compiler"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="migration"
+        new-group-name="androidx.room" new-artifact-name="room-migration"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="runtime"
+        new-group-name="androidx.room" new-artifact-name="room-runtime"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="rxjava2"
+        new-group-name="androidx.room" new-artifact-name="room-rxjava2"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="testing"
+        new-group-name="androidx.room" new-artifact-name="room-testing"
+        base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="android.arch.persistence.room" old-artifact-name="guava"
+        new-group-name="androidx.room" new-artifact-name="room-guava" base-version="2.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.constraint"
+        old-artifact-name="constraint-layout" new-group-name="androidx.constraintlayout"
+        new-artifact-name="constraintlayout" base-version="1.1.2" />
+    <migrate-dependency old-group-name="com.android.support.constraint"
+        old-artifact-name="constraint-layout-solver" new-group-name="androidx.constraintlayout"
+        new-artifact-name="constraintlayout-solver" base-version="1.1.2" />
+    <!-- Testing Support Library -->
+    <migrate-dependency old-group-name="com.android.support.test" old-artifact-name="monitor"
+        new-group-name="androidx.test" new-artifact-name="monitor" base-version="1.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test" old-artifact-name="orchestrator"
+        new-group-name="androidx.test" new-artifact-name="orchestrator"
+        base-version="1.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test" old-artifact-name="rules"
+        new-group-name="androidx.test" new-artifact-name="rules" base-version="1.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test" old-artifact-name="runner"
+        new-group-name="androidx.test" new-artifact-name="runner" base-version="1.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-accessibility" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-accessibility" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-contrib" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-contrib" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-core" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-core" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-idling-resource" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-idling-resource" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-intents" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-intents" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-remote" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-remote" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso"
+        old-artifact-name="espresso-web" new-group-name="androidx.test.espresso"
+        new-artifact-name="espresso-web" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso.idling"
+        old-artifact-name="idling-concurrent" new-group-name="androidx.test.espresso.idling"
+        new-artifact-name="idling-concurrent" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.espresso.idling"
+        old-artifact-name="idling-net" new-group-name="androidx.test.espresso.idling"
+        new-artifact-name="idling-net" base-version="3.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.janktesthelper"
+        old-artifact-name="janktesthelper-v23" new-group-name="androidx.test.jank"
+        new-artifact-name="janktesthelper" base-version="1.1.0-alpha3" />
+    <migrate-dependency old-group-name="com.android.support.test.services"
+        old-artifact-name="test-services" new-group-name="androidx.test"
+        new-artifact-name="test-services" base-version="1.1.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.test.uiautomator"
+        old-artifact-name="uiautomator-v18" new-group-name="androidx.test.uiautomator"
+        new-artifact-name="uiautomator" base-version="2.2.0-alpha3" />
+    <!-- Material Design Gradle Artifacts -->
+    <migrate-dependency old-group-name="com.android.support.design" old-artifact-name="design"
+        new-group-name="com.google.android.material" new-artifact-name="material"
+        base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.animation"
+        old-artifact-name="design-animation" new-group-name="com.google.android.material.animation"
+        new-artifact-name="material-animation" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.bottomappbar"
+        old-artifact-name="design-bottomappbar"
+        new-group-name="com.google.android.material.bottomappbar"
+        new-artifact-name="material-bottomappbar" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.bottomnavigation"
+        old-artifact-name="design-bottomnavigation"
+        new-group-name="com.google.android.material.bottomnavigation"
+        new-artifact-name="material-bottomnavigation" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.bottomsheet"
+        old-artifact-name="design-bottomsheet"
+        new-group-name="com.google.android.material.bottomsheet"
+        new-artifact-name="material-bottomsheet" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.button"
+        old-artifact-name="design-button" new-group-name="com.google.android.material.button"
+        new-artifact-name="material-button" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.canvas"
+        old-artifact-name="design-canvas" new-group-name="com.google.android.material.canvas"
+        new-artifact-name="material-canvas" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.card"
+        old-artifact-name="design-card" new-group-name="com.google.android.material.card"
+        new-artifact-name="material-card" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.chip"
+        old-artifact-name="design-chip" new-group-name="com.google.android.material.chip"
+        new-artifact-name="material-chip" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.circularreveal"
+        old-artifact-name="design-circularreveal"
+        new-group-name="com.google.android.material.circularreveal"
+        new-artifact-name="material-circularreveal" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.circularreveal.cardview"
+        old-artifact-name="design-circularreveal-cardview"
+        new-group-name="com.google.android.material.circularreveal.cardview"
+        new-artifact-name="material-circularreveal-cardview" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.circularreveal.coordinatorlayout"
+        old-artifact-name="design-circularreveal-coordinatorlayout"
+        new-group-name="com.google.android.material.circularreveal.coordinatorlayout"
+        new-artifact-name="material-circularreveal-coordinatorlayout" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.color"
+        old-artifact-name="design-color" new-group-name="com.google.android.material.color"
+        new-artifact-name="material-color" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.dialog"
+        old-artifact-name="design-dialog" new-group-name="com.google.android.material.dialog"
+        new-artifact-name="material-dialog" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.drawable"
+        old-artifact-name="design-drawable" new-group-name="com.google.android.material.drawable"
+        new-artifact-name="material-drawable" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.expandable"
+        old-artifact-name="design-expandable"
+        new-group-name="com.google.android.material.expandable"
+        new-artifact-name="material-expandable" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.floatingactionbutton"
+        old-artifact-name="design-floatingactionbutton"
+        new-group-name="com.google.android.material.floatingactionbutton"
+        new-artifact-name="material-floatingactionbutton" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.internal"
+        old-artifact-name="design-internal" new-group-name="com.google.android.material.internal"
+        new-artifact-name="material-internal" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.math"
+        old-artifact-name="design-math" new-group-name="com.google.android.material.math"
+        new-artifact-name="material-math" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.navigation"
+        old-artifact-name="design-navigation"
+        new-group-name="com.google.android.material.navigation"
+        new-artifact-name="material-navigation" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.resources"
+        old-artifact-name="design-resources" new-group-name="com.google.android.material.resources"
+        new-artifact-name="material-resources" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.ripple"
+        old-artifact-name="design-ripple" new-group-name="com.google.android.material.ripple"
+        new-artifact-name="material-ripple" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.snackbar"
+        old-artifact-name="design-shape" new-group-name="com.google.android.material.snackbar"
+        new-artifact-name="material-shape" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.stateful"
+        old-artifact-name="design-snackbar" new-group-name="com.google.android.material.stateful"
+        new-artifact-name="material-snackbar" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.shape"
+        old-artifact-name="design-stateful" new-group-name="com.google.android.material.shape"
+        new-artifact-name="material-stateful" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.tabs"
+        old-artifact-name="design-tabs" new-group-name="com.google.android.material.tabs"
+        new-artifact-name="material-tabs" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.textfield"
+        old-artifact-name="design-textfield" new-group-name="com.google.android.material.textfield"
+        new-artifact-name="material-textfield" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.theme"
+        old-artifact-name="design-theme" new-group-name="com.google.android.material.theme"
+        new-artifact-name="material-theme" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.transformation"
+        old-artifact-name="design-transformation"
+        new-group-name="com.google.android.material.transformation"
+        new-artifact-name="material-transformation" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.typography"
+        old-artifact-name="design-typography"
+        new-group-name="com.google.android.material.typography"
+        new-artifact-name="material-typography" base-version="1.0.0-alpha1" />
+    <migrate-dependency old-group-name="com.android.support.design.widget"
+        old-artifact-name="design-widget" new-group-name="com.google.android.material.widget"
+        new-artifact-name="material-widget" base-version="1.0.0-alpha1" />
+
+    <upgrade-dependency group-name="androidx.core" artifact-name="core-ktx"
+        base-version="1.0.0-alpha1" />
+</migration-map>
+
