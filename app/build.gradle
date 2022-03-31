@@ -7,11 +7,12 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId 'com.sketchware.remod.sources'
-        minSdkVersion 25
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId 'com.sketchware.remod'
+        minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
+        targetSdkVersion 28
+        versionCode 150
+        versionName "v6.4.0-rc02"
     }
 
     buildTypes {
@@ -20,13 +21,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    aaptOptions {
+        additionalParameters("--stable-ids", "public-stable-ids.txt")
+    }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar'])
-    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

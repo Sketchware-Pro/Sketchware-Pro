@@ -1,0 +1,183 @@
+// IntelliJ API Decompiler stub source generated from a class file
+// Implementation of methods is not available
+
+package kotlin.ranges
+
+open class CharProgression internal constructor(start: kotlin.Char, endInclusive: kotlin.Char, step: kotlin.Int) : kotlin.collections.Iterable<kotlin.Char> {
+    companion object {
+        fun fromClosedRange(rangeStart: kotlin.Char, rangeEnd: kotlin.Char, step: kotlin.Int): kotlin.ranges.CharProgression { /* compiled code */ }
+    }
+
+    val first: kotlin.Char /* compiled code */
+
+    val last: kotlin.Char /* compiled code */
+
+    val step: kotlin.Int /* compiled code */
+
+    open operator fun equals(other: kotlin.Any?): kotlin.Boolean { /* compiled code */ }
+
+    open fun hashCode(): kotlin.Int { /* compiled code */ }
+
+    open fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+
+    open operator fun iterator(): kotlin.collections.CharIterator { /* compiled code */ }
+
+    open fun toString(): kotlin.String { /* compiled code */ }
+}
+
+internal class CharProgressionIterator(first: kotlin.Char, last: kotlin.Char, step: kotlin.Int) : kotlin.collections.CharIterator {
+    private val finalElement: kotlin.Int /* compiled code */
+
+    private var hasNext: kotlin.Boolean /* compiled code */
+
+    private var next: kotlin.Int /* compiled code */
+
+    val step: kotlin.Int /* compiled code */
+
+    open operator fun hasNext(): kotlin.Boolean { /* compiled code */ }
+
+    open fun nextChar(): kotlin.Char { /* compiled code */ }
+}
+
+class CharRange(start: kotlin.Char, endInclusive: kotlin.Char) : kotlin.ranges.CharProgression, kotlin.ranges.ClosedRange<kotlin.Char> {
+    companion object {
+        val EMPTY: kotlin.ranges.CharRange /* compiled code */
+    }
+
+    open val endInclusive: kotlin.Char /* compiled code */
+
+    open val start: kotlin.Char /* compiled code */
+
+    open operator fun contains(value: kotlin.Char): kotlin.Boolean { /* compiled code */ }
+
+    open operator fun equals(other: kotlin.Any?): kotlin.Boolean { /* compiled code */ }
+
+    open fun hashCode(): kotlin.Int { /* compiled code */ }
+
+    open fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+
+    open fun toString(): kotlin.String { /* compiled code */ }
+}
+
+interface ClosedRange<T : kotlin.Comparable<T>> {
+    val endInclusive: T
+
+    val start: T
+
+    operator fun contains(value: T): kotlin.Boolean { /* compiled code */ }
+
+    fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+}
+
+open class IntProgression internal constructor(start: kotlin.Int, endInclusive: kotlin.Int, step: kotlin.Int) : kotlin.collections.Iterable<kotlin.Int> {
+    companion object {
+        fun fromClosedRange(rangeStart: kotlin.Int, rangeEnd: kotlin.Int, step: kotlin.Int): kotlin.ranges.IntProgression { /* compiled code */ }
+    }
+
+    val first: kotlin.Int /* compiled code */
+
+    val last: kotlin.Int /* compiled code */
+
+    val step: kotlin.Int /* compiled code */
+
+    open operator fun equals(other: kotlin.Any?): kotlin.Boolean { /* compiled code */ }
+
+    open fun hashCode(): kotlin.Int { /* compiled code */ }
+
+    open fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+
+    open operator fun iterator(): kotlin.collections.IntIterator { /* compiled code */ }
+
+    open fun toString(): kotlin.String { /* compiled code */ }
+}
+
+internal class IntProgressionIterator(first: kotlin.Int, last: kotlin.Int, step: kotlin.Int) : kotlin.collections.IntIterator {
+    private val finalElement: kotlin.Int /* compiled code */
+
+    private var hasNext: kotlin.Boolean /* compiled code */
+
+    private var next: kotlin.Int /* compiled code */
+
+    val step: kotlin.Int /* compiled code */
+
+    open operator fun hasNext(): kotlin.Boolean { /* compiled code */ }
+
+    open fun nextInt(): kotlin.Int { /* compiled code */ }
+}
+
+class IntRange(start: kotlin.Int, endInclusive: kotlin.Int) : kotlin.ranges.IntProgression, kotlin.ranges.ClosedRange<kotlin.Int> {
+    companion object {
+        val EMPTY: kotlin.ranges.IntRange /* compiled code */
+    }
+
+    open val endInclusive: kotlin.Int /* compiled code */
+
+    open val start: kotlin.Int /* compiled code */
+
+    open operator fun contains(value: kotlin.Int): kotlin.Boolean { /* compiled code */ }
+
+    open operator fun equals(other: kotlin.Any?): kotlin.Boolean { /* compiled code */ }
+
+    open fun hashCode(): kotlin.Int { /* compiled code */ }
+
+    open fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+
+    open fun toString(): kotlin.String { /* compiled code */ }
+}
+
+open class LongProgression internal constructor(start: kotlin.Long, endInclusive: kotlin.Long, step: kotlin.Long) : kotlin.collections.Iterable<kotlin.Long> {
+    companion object {
+        fun fromClosedRange(rangeStart: kotlin.Long, rangeEnd: kotlin.Long, step: kotlin.Long): kotlin.ranges.LongProgression { /* compiled code */ }
+    }
+
+    val first: kotlin.Long /* compiled code */
+
+    val last: kotlin.Long /* compiled code */
+
+    val step: kotlin.Long /* compiled code */
+
+    open operator fun equals(other: kotlin.Any?): kotlin.Boolean { /* compiled code */ }
+
+    open fun hashCode(): kotlin.Int { /* compiled code */ }
+
+    open fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+
+    open operator fun iterator(): kotlin.collections.LongIterator { /* compiled code */ }
+
+    open fun toString(): kotlin.String { /* compiled code */ }
+}
+
+internal class LongProgressionIterator(first: kotlin.Long, last: kotlin.Long, step: kotlin.Long) : kotlin.collections.LongIterator {
+    private val finalElement: kotlin.Long /* compiled code */
+
+    private var hasNext: kotlin.Boolean /* compiled code */
+
+    private var next: kotlin.Long /* compiled code */
+
+    val step: kotlin.Long /* compiled code */
+
+    open operator fun hasNext(): kotlin.Boolean { /* compiled code */ }
+
+    open fun nextLong(): kotlin.Long { /* compiled code */ }
+}
+
+class LongRange(start: kotlin.Long, endInclusive: kotlin.Long) : kotlin.ranges.LongProgression, kotlin.ranges.ClosedRange<kotlin.Long> {
+    companion object {
+        val EMPTY: kotlin.ranges.LongRange /* compiled code */
+    }
+
+    open val endInclusive: kotlin.Long /* compiled code */
+
+    open val start: kotlin.Long /* compiled code */
+
+    open operator fun contains(value: kotlin.Long): kotlin.Boolean { /* compiled code */ }
+
+    open operator fun equals(other: kotlin.Any?): kotlin.Boolean { /* compiled code */ }
+
+    open fun hashCode(): kotlin.Int { /* compiled code */ }
+
+    open fun isEmpty(): kotlin.Boolean { /* compiled code */ }
+
+    open fun toString(): kotlin.String { /* compiled code */ }
+}
+

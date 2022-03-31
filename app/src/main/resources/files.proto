@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package android.bundle;
+
+import "targeting.proto";
+
+option java_package = "com.android.bundle";
+
+// Describes the assets in the App Bundle.
+message Assets {
+  // List of all the directories (and subdirectories recursively) under
+  // "assets/" that contain at least one file. They may be explicitly targeted
+  // or not.
+  repeated TargetedAssetsDirectory directory = 1;
+}
+
+// Describes the native libraries in the App Bundle.
+message NativeLibraries {
+  // List of all the directories in under "lib/" that contain at least one file.
+  repeated TargetedNativeDirectory directory = 1;
+}
+
+// Describes the APEX images in the App Bundle.
+message ApexImages {
+  reserved 2;
+
+  // List of all the image files under "apex/".
+  repeated TargetedApexImage image = 1;
+}
+
+// An assets directory in the module that contains targeting information.
+// This information will be used when generating the APKs to determine how to
+// best split them.
+message TargetedAssetsDirectory {
+  // Path of the directory relative to the root of the module.
+  // Required.
+  string path = 1;
+
+  // Targeting of the directory.
+  // Required.
+  AssetsDirectoryTargeting targeting = 2;
+}
+
+// A native directory in the module that contains targeting information.
+// This information will be used when generating the APKs to determine how to
+// best split them.
+message TargetedNativeDirectory {
+  // Path of the directory relative to the root of the module.
+  // Required.
+  string path = 1;
+
+  // Targeting of the directory.
+  // Required.
+  NativeDirectoryTargeting targeting = 2;
+}
+
+// An APEX image file in the module that contains targeting information.
+// This information will be used when generating the APK to determine which
+// image it contains.
+message TargetedApexImage {
+  string path = 1;
+
+  // Path to binary protocol buffer file containing apex.proto.ApexBuildInfo
+  // with metadata about how the individual APEX filesystem image was built.
+  // May be empty if APEX build info was not provided for this image.
+  string build_info_path = 3;
+
+  ApexImageTargeting targeting = 2;
+}

@@ -1,0 +1,853 @@
+.TH ecj 1 "10 August 2015"
+.LP
+.SH NAME
+ecj \- the eclipse JDT Batch Compiler
+.SH SYNOPSIS
+.B ecj [OPTION]... [SOURCEFILE]...
+.B ...
+.SH DESCRIPTION
+.B ecj is the batch compiler from Eclipse and is available as ecj.jar.
+Since 3.3, this jar also contains the support for jsr199 (Compiler API) 
+and the support for jsr269 (Annotation processing). In order to use the 
+annotations processing support, a 1.6 VM is required.
+
+.SH OPTIONS SUMMARY
+.sp
+Here is a summary of all the options, grouped by type.  Explanations are in the \fBOPTIONS\fR section.
+.sp
+.ul
+ClassPath Options
+.sp
+.B \-bootclasspath \-cp|\-classpath \-extdirs \-endorseddirs \-sourcepath \-d \-encoding
+.sp
+.ul
+Compliance Options
+.sp
+.B \-target \-1.3 \-1.4 \-1.5 \-1.6 \-1.7 \-1.8 \-source 
+.sp
+.ul
+Warning Options
+.sp
+.B \-?:warn \-help:warn \-warn:... \-nowarn \-err:... \-deprecation \-properties 
+.sp
+.ul 
+Debug Options
+.sp
+\fB\-g \-preserveAllLocals \-parameters
+.sp
+.ul 
+Annotation Processing Options
+.sp
+\-Akey[=\fIvalue\fB] \-proc:[only|none] \-processor \-processorpath \-s \-XprintProcessorInfo \-XprintRounds \-classNames\fR
+.sp
+.ul 
+Ignored Options (for compatibility with javac options)
+.sp
+.B \-J \-X \-O
+.sp
+.ul 
+Advanced Options
+.sp
+\fB@<file> \-maxProblems \-log \-Xemacs \-proceedOnError \-verbose \-referenceInfo \-progress \-time \-noExit \-repeat \-inlineJSR \-enableJavaDoc \-missingNullDefault 
+.sp
+.ul 
+Helping Options
+.sp
+\-? \-help \-v \-version \-showversion
+
+.SH OPTIONS
+.sp
+.ul
+ClassPath Options
+
+.B
+.IP "\-bootclasspath <dir 1>;<dir 2>;...;<dir P>"
+This is a list of directories or jar files used to bootstrap the class files used by the compiler. By default the libraries of the running VM are used. Entries are separated by the platform path separator.
+Each directory or file can specify access rules for types between '[' and ']'. 
+If no bootclasspath is specified, the compiler will infer it using the following system properties sun.boot.class.path, vm.boot.class.path or org.apache.harmony.boot.class.path in this order respectively
+
+.B
+.IP "\-cp|\-classpath <dir 1>;dir2;...<dir P>"
+This is a list of directories or jar files used to compile the source files. The default value is the value of the property "java.class.path". Entries are separated by the platform path separator.
+Each directory or file can specify access rules for types between '[' and ']' (e.g. [\-X] to forbid access to type X, [~X] to discourage access to type X, [+p/X:\-p/*] to forbid access to all types in package p but allow access to p/X).
+The compiler follows the Class-Path clauses of jar files' manifests recursively and appends each referenced jar file to the end of the classpath, provided it is not on the classpath yet.
+
+.B
+.IP "\-extdirs <dir 1>;<dir 2>;...;<dir P>"
+This is a list of directories used to specify the location of extension zip/jar files. Entries are separated by the platform path separator.
+
+.B
+.IP "\-endorseddirs <dir 1>;<dir 2>;...;<dir P>"
+This is a list of directories used to specify the location of endorsed zip/jar files. Entries are separated by the platform path separator.
+
+.B
+.IP "\-sourcepath <dir 1>;<dir 2>;...;<dir P>"
+This is a list of directories used to specify the source files. Entries are separated by the platform path separator.  Each directory can specify access rules for types between '[' and ']'.
+
+.B
+.IP "\-d <dir 1>|none"
+This is used to specify in which directory the generated .class files should be dumped. If it is omitted, no package directory structure is created.
+If you want to generate no .class file at all, use \-d none.
+
+.B
+.IP "\-encoding <encoding name>"
+Specify default encoding for all source files. Custom encoding can also be specified on a per file basis by suffixing each input source file/folder name with [<encoding name>]. For example X.java[UTF-8] would specify the UTF-8 encoding for the compilation unit X.java located in the current user directory. 
+If multiple default source file encodings are specified, the last one will be used.
+
+For example:
+.B ... \-encoding UTF-8 X.java[Cp1252] Y.java[UTF-16] Z.java ....
+.br
+All source files will be read using UTF-8 encoding (this includes Z.java). X.java will be read using Cp1252 encoding and Y.java will be read using UTF-16 encoding.
+.sp
+.B ... \-encoding UTF-8 -encoding UTF-16 ....
+.br
+All source files will be read using UTF-16 encoding. The \-encoding option for UTF-8 is ignored.
+.sp
+.B ... \-encoding Cp1252 /foo/bar/X.java[UTF-16] /foo/bar[UTF-8] ....
+.br
+All source files will be read using Cp1252 encoding. X.java is the only file inside the /foo/bar directory to be read using the encoding UTF-16. All other files in that directory will use UTF-8 encoding.
+
+.P
+.ul
+Compliance Options
+
+.B
+.IP "\-target 1.1 to 1.8 (or 8, 8.0, etc.)"
+This specifies the .class file target setting. The possible value are: 
+.br
+.B 1.1
+(major version: 45 minor: 3)
+.br
+.B 1.2
+(major version: 46 minor: 0)
+.br
+.B 1.3
+(major version: 47 minor: 0)
+.br
+.B 1.4
+(major version: 48 minor: 0)
+.br
+.B 1.5, 5 or 5.0
+(major version: 49 minor: 0)
+.br
+.B 1.6, 6 or 6.0
+(major version: 50 minor: 0)
+.br
+.B 1.7, 7 or 7.0
+(major version: 51 minor: 0)
+.br
+.B 1.8, 8 or 8.0
+(major version: 52 minor: 0)
+
+Defaults are: 
+.br
+1.1 in \-1.3 mode
+.br
+1.2 in \-1.4 mode
+.br
+1.5 in \-1.5 mode
+.br
+1.6 in \-1.6 mode
+.br
+1.7 in \-1.7 mode
+.br
+1.8 in \-1.8 mode
+clcd1.1 can be used to generate the StackMap attribute.
+
+.B
+.IP \-1.3
+Set compliance level to 1.3. Implicit \-source 1.3 \-target 1.1.
+
+.B
+.IP \-1.4
+Set compliance level to 1.4 (default). Implicit \-source 1.3 \-target 1.2.
+
+.B
+.IP \-1.5
+Set compliance level to 1.5. Implicit \-source 1.5 \-target 1.5.
+
+.B
+.IP \-1.6
+Set compliance level to 1.6. Implicit \-source 1.6 \-target 1.6.
+
+.B
+.IP \-1.7
+Set compliance level to 1.7. Implicit \-source 1.7 \-target 1.7.
+
+.B
+.IP \-1.8
+Set compliance level to 1.8. Implicit \-source 1.8 \-target 1.8.
+
+.B
+.IP "\-source 1.1 to 1.8 (or 8, 8.0, etc.)"
+This is used to specify the source level expected by the compiler.
+The possible value are: 
+.br
+.B 1.3
+.br
+.B 1.4
+.br
+.B 1.5, 5 or 5.0
+.br
+.B 1.6, 6 or 6.0
+.br
+.B 1.7, 7 or 7.0
+.br
+.B 1.8, 8 or 8.0
+
+Defaults are: 
+.br
+1.3 in \-1.3 mode
+.br
+1.3 in \-1.4 mode
+.br
+1.5 in \-1.5 mode
+.br
+1.6 in \-1.6 mode
+.br
+1.7 in \-1.7 mode
+.br
+1.8 in \-1.8 mode
+.br
+In 1.4, assert is treated as a keyword. In 1.5 and 1.6, enum and assert are treated as keywords.
+
+.P
+.ul
+Warning Options
+
+.B
+.IP "\-?:warn \-help:warn"
+Display advanced warning options
+
+.B
+.IP "\-warn:..."
+Specify the set of enabled warnings.
+.br
+.B \-warn:none\fR \t\t\t\t\t\tdisable all warnings
+.br
+.B \-warn:\fI<warning tokens separated by ,>\fR \tenable exactly the listed warnings
+.br
+.B \-warn:+\fI<warning tokens separated by ,>\fR \tenable additional warnings
+.br
+.B \-warn:\-\fI<warning tokens separated by ,>\fR \tdisable specific warnings
+
+Examples:
+
+.B\-warn:unusedLocal,deprecation
+.br
+enables only the given two warning options and disables all the other options
+.sp
+.B\-warn:\-unusedLocal,deprecation,+fallthrough
+.br
+disables unusedLocal and deprecation, enables fallthrough, and leaves the other warning options untouched
+.sp
+The first column below shows the default state for an option. A mark "+/-" indicates that an option covers several fine grained warning variants, some of which are enabled by default, others disabled. This means that specifying the given option with "+" will enable more warnings than the default, and specifying "-" disables some that are enabled by default. 
+.sp
+
++/-
+.B allDeadCode
+dead code including trivial if (DEBUG) check
+.sp
++/-
+.B allDeprecation
+deprecation even inside deprecated code
+.sp
+\ -\ 
+.B allJavadoc
+invalid or missing Javadoc
+.sp 
+\ -\ 
+.B allOver-ann
+all missing @Override annotations (superclass and superinterfaces)
+.sp 
+\ -\ 
+.B all-static-method
+all method can be declared as static warnings
+.sp 
+\ +\ 
+.B assertIdentifier
+occurrence of assert used as identifier
+.sp 
+\ -\ 
+.B boxing
+autoboxing conversion
+.sp 
+\ +\ 
+.B charConcat
+when a char array is used in a string concatenation without being converted explicitly to a string
+.sp 
+\ +\ 
+.B compareIdentical
+comparing identical expressions
+.sp 
+\ -\ 
+.B conditionAssign
+possible accidental boolean assignment
+.sp 
+\ +\ 
+.B constructorName
+method with constructor name
+.sp 
+\ +\ 
+.B deadCode
+dead code excluding trivial if (DEBUG) check
+.sp 
+\ -\ 
+.B dep\-ann
+missing @Deprecated annotation
+.sp 
++/-
+.B deprecation
+usage of deprecated type or member outside deprecated code
+.sp 
+\ +\ 
+.B discouraged
+use of types matching a discouraged access rule
+.sp 
+\ -\ 
+.B emptyBlock
+undocumented empty block
+.sp 
+\ +\ 
+.B enumIdentifier
+occurrence of enum used as identifier
+.sp 
+\ +\ 
+.B enumSwitch
+incomplete enum switch
+.sp 
+\ -\ 
+.B enumSwitchPedantic
+report missing enum switch cases even in the presence of a default case
+.sp 
+\ -\ 
+.B fallthrough
+possible fall-through case
+.sp 
+\ -\ 
+.B fieldHiding
+field hiding another variable
+.sp 
+\ +\ 
+.B finalBound
+type parameter with final bound
+.sp 
+\ +\ 
+.B finally
+finally block not completing normally
+.sp 
+\ +\ 
+.B forbidden
+use of types matching a forbidden access rule
+.sp 
+\ -\ 
+.B hashCode
+missing hashCode() method when overriding equals()
+.sp 
++/-
+.B hiding
+macro for fieldHiding, localHiding, maskedCatchBlock, and typeHiding
+.sp 
+\ -\ 
+.B includeAssertNull
+raise null warnings for variables that got tainted in an assert expression
+.sp 
+\ -\ 
+.B indirectStatic
+indirect reference to static member
+.sp 
+\ -\ 
+.B inheritNullAnnot
+consider null annotations as being inherited from an overridden method to any overriding methods
+.sp 
+\ +\ 
+.B intfAnnotation
+annotation type used as super interface
+.sp 
+\ +\ 
+.B intfNonInherited
+interface non-inherited method compatibility
+.sp 
+\ -\ 
+.B intfRedundant
+find redundant superinterfaces
+.sp 
+\ -\ 
+.B invalidJavadoc
+macro to toggle the 'malformed Javadoc comments' option and all its sub-options listed below
+.sp 
+\ -\ 
+.B invalidJavadocTag
+report invalid Javadoc tags in Javadoc comments.
+.sp 
+\ -\ 
+.B invalidJavadocTagDep
+report invalid deprecated references in Javadoc tag arguments
+.sp 
+\ -\ 
+.B invalidJavadocTagNotVisible
+report invalid non-visible references in Javadoc tag arguments
+.sp 
+\ -\ 
+.B invalidJavadocVisibility(\fI<visibility>\fB)
+specify visibility modifier ("public", "protected" or "private") for malformed Javadoc tag warnings. Usage example: invalidJavadocVisibility(public)
+.sp 
+\ -\ 
+.B javadoc
+invalid Javadoc
+.sp 
+\ -\ 
+.B localHiding
+local variable hiding another variable
+.sp 
+\ +\ 
+.B maskedCatchBlock
+hidden catch block
+.sp 
+\ -\ 
+.B missingJavadocTags
+macro to toggle the 'missing Javadoc tags' option and all its sub-options listed below
+.sp 
+\ -\ 
+.B missingJavadocTagsMethod
+report missing Javadoc tags for a method's type parameters
+.sp 
+\ -\ 
+.B missingJavadocTagsOverriding
+report missing Javadoc tags in overriding methods
+.sp 
+\ -\ 
+.B missingJavadocTagsVisibility(\fI<visibility>\fB)
+specify visibility modifier ("public", "protected" or "private") for missing Javadoc tags warnings. Usage example: missingJavadocTagsVisibility(public)
+.sp 
+\ -\ 
+.B missingJavadocComments
+macro to toggle the 'missing Javadoc comments' option and all its sub-options listed below
+.sp 
+\ -\ 
+.B missingJavadocCommentsOverriding
+report missing Javadoc comments in overriding methods
+.sp 
+\ -\ 
+.B missingJavadocCommentsVisibility(\fI<visibility>\fB)
+specify visibility modifier ("public", "protected" or "private") for missing Javadoc comments warnings. Usage example: missingJavadocCommentsVisibility(public)
+.sp 
+\ -\ 
+.B nls
+non-nls string literals (lacking of tags //$NON-NLS-<n>)
+.sp 
+\ +\ 
+.B noEffectAssign
+assignment with no effect
+.sp 
+\ +\ 
+.B nonnullNotRepeated
+nonnull parameter annotation from overridden method is not repeated in an overriding method. Is effective only with the nullAnnot option enabled.
+.sp 
++/-
+.B null
+potential missing or redundant null check
+.sp 
+\ -\ 
+.B nullAnnot
+enable annotation based null analysis.
+If desired, the annotation types to be interpreted by the compiler can be specified by appending (nullable|nonnull|nonnullbydefault), where each annotation type is specified using its fully qualified name.
+Usage example: nullAnnot(p.Nullable|p.NonNull|p.NonNullByDefault)
+.sp 
+Enabling this option enables all null-annotation related sub-options. These can be individually controlled using options listed below 
+.sp 
+\ -\ 
+.B nullAnnotConflict
+report conflicts between null annotation specified and nullness inferred. Is effective only with the nullAnnot option enabled.
+.sp 
+\ -\ 
+.B nullAnnotRedundant
+report redundant specification of null annotation. Is effective only with the nullAnnot option enabled.
+.sp 
+\ -\ 
+.B nullDereference
+missing null check
+.sp 
+\ -\ 
+.B nullUncheckedConversion
+report unchecked conversion from unannotated type to @NonNull type. Is effective only with the nullAnnot option enabled.
+.sp 
+\ -\ 
+.B over-ann
+missing @Override annotation (superclass only)
+.sp 
+\ -\ 
+.B paramAssign
+assignment to a parameter
+.sp 
+\ +\ 
+.B pkgDefaultMethod
+attempt to override package-default method
+.sp 
+\ +\ 
+.B raw
+usage a of raw type (instead of a parameterized type)
+.sp 
++/-
+.B resource
+(potentially) unsafe usage of resource of type Closeable
+.sp 
+\ -\ 
+.B semicolon
+unnecessary semicolon or empty statement
+.sp 
+\ +\ 
+.B serial
+missing serialVersionUID
+.sp 
+\ -\ 
+.B specialParamHiding
+constructor or setter parameter hiding another field
+.sp 
++/-
+.B static-access
+macro for indirectStatic and staticReceiver
+.sp 
+\ -\ 
+.B static-method
+an instance method that could be as a static method
+.sp 
+\ +\ 
+.B staticReceiver
+if a non static receiver is used to get a static field or call a static method
+.sp 
+\ -\ 
+.B super
+overriding a method without making a super invocation
+.sp 
+\ +\ 
+.B suppress
+enable @SuppressWarnings
+.sp 
+\ -\ 
+.B switchDefault
+switch statement lacking a default case
+.sp 
+\ -\ 
+.B syncOverride
+missing synchronized in synchronized method override
+.sp 
+\ -\ 
+.B syntacticAnalysis
+perform syntax-based null analysis for fields
+.sp 
+\ -\ 
+.B syntheticAccess
+when performing synthetic access for innerclass
+.sp 
+\ -\ 
+.B tasks
+enable support for tasks tags in source code
+.sp 
+\ +\ 
+.B typeHiding
+type parameter hiding another type
+.sp 
+\ +\ 
+.B unavoidableGenericProblems
+report even unavoidable type safety problems due to raw APIs
+.sp 
+\ +\ 
+.B unchecked
+unchecked type operation
+.sp 
+\ -\ 
+.B unnecessaryElse
+unnecessary else clause
+.sp 
+\ -\ 
+.B unqualifiedField
+unqualified reference to field
+.sp 
++/-
+.B unused
+macro for unusedImport, unusedLabel, unusedLocal, unusedPrivate, unusedThrown, unusedTypeArgs, and unusedTypeParameter
+.sp 
+\ -\ 
+.B unusedAllocation
+allocating an object that is not used
+.sp 
+\ -\ 
+.B unusedArgument
+unused method parameter (deprecated option; use unusedParam instead)
+.sp 
+\ +\ 
+.B unusedImport
+unused import reference
+.sp 
+\ +\ 
+.B unusedLabel
+unused label
+.sp 
+\ +\ 
+.B unusedLocal
+unused local variable
+.sp 
+\ +\ 
+.B unusedParam
+unused method parameter
+.sp 
+\ +\ 
+.B unusedParamImplementing
+unused parameter for implementing method
+.sp 
+\ +\ 
+.B unusedParamIncludeDoc
+unused parameter documented in a Javadoc comment tag
+.sp 
+\ +\ 
+.B unusedParamOverriding
+unused parameter for overriding method
+.sp 
+\ +\ 
+.B unusedPrivate
+unused private member declaration
+.sp 
+\ -\ 
+.B unusedThrown
+unused declared thrown exception
+.sp 
+\ -\ 
+.B unusedThrownIncludeDocComment
+unused declared thrown exception documented in a Javadoc comment tag
+.sp 
+\ -\ 
+.B unusedThrownExemptExceptionThrowable
+report unused declared thrown exception but exempt Exception and Throwable
+.sp 
+\ -\ 
+.B unusedThrownWhenOverriding
+unused declared thrown exception in overriding method
+.sp 
+\ +\ 
+.B unusedTypeArgs
+unused type arguments for method and constructor
+.sp 
+\ +\ 
+.B unusedTypeParameter
+unused type parameter
+.sp 
+\ -\ 
+.B uselessTypeCheck
+unnecessary cast/instanceof operation
+.sp 
+\ +\ 
+.B varargsCast
+varargs argument need explicit cast
+.sp 
++/-
+.B warningToken
+unhandled or unused warning token in @SuppressWarnings
+.in
+
+.B
+.IP "\-nowarn"
+No warning (equivalent to \-warn:none) 
+.B
+.IP "\-err:..."
+Specify the set of enabled warnings that are converted to errors.
+.br
+E.g.
+.br
+.B \-err:unusedLocal,deprecation
+.br
+unusedLocal and deprecation warnings will be converted to errors. All other warnings are still reported as warnings.
+
+.B \-err:\fI<warning tokens separated by ,>\fR \tconvert exactly the listed warnings to errors
+.br
+.B \-err:+\fI<warning tokens separated by ,>\fR \tconvert additional warnings to errors
+.br
+.B \-err:\-\fI<warning tokens separated by ,>\fR \tremove specific warnings from being converted to errors
+
+.B
+.IP \-deprecation 
+Equivalent to \-warn:+deprecation. 
+.B
+.IP "\-properties <file>"
+Set warnings/errors option based on the properties file contents. This option can be used with \-nowarn, \-err:.. or \-warn:.. options, but the last one on the command line sets the options to be used.
+
+The properties file contents can be generated by setting project specific settings on an existing java project and using the file in .settings/org.eclipse.jdt.core.prefs file as a properties file, or a simple text file that is defined entry/value pairs using the constants defined in the org.eclipse.jdt.core.JavaCore class. Of those constants declared in this class, all options starting with "org.eclipse.jdt.core.compiler." are interpreted by the batch compiler.
+
+ ...
+.br
+org.eclipse.jdt.core.compiler.problem.annotationSuperInterface=warning
+.br
+org.eclipse.jdt.core.compiler.problem.assertIdentifier=warning
+.br
+org.eclipse.jdt.core.compiler.problem.autoboxing=ignore
+.br
+ ...
+.sp
+To ensure that a property file has the same effect when used in the IDE and for the batch compiler, use of the \-properties option will change the defaults for a few options:
+
+.br
+.B \-g\fR \t\t\t\t\tdefault changed to all enabled
+.br
+.B \-preserveAllLocals\fR \t\tdefault changed to enabled
+.br
+.B \-enableJavadoc\fR \t\tdefault changed to enabled
+.br
+error/warning \fBforbidden\fR \tdefault changed to error
+
+.P
+.ul
+Debug Options
+
+.B
+.IP "\-g[:none|:lines,vars,source]"
+Set the debug attributes level
+.br
+.B \-g\fR \t\t\t\t\tAll debug info (equivalent to \-g:lines,vars,source) 
+.br
+.B \-g:none\fR \t\t\t\tNo debug info 
+.br
+.B \-g:[lines,vars,source]\fR \tSelective debug info 
+.br
+Not specifying this option is equivalent to setting \-g:lines,source.
+
+.B
+.IP "\-preserveAllLocals"
+Explicitly request the compiler to preserve all local variables (for debug purpose). If omitted, the compiler will remove unused locals. 
+.B
+.IP "\-parameters"
+Explicitly request the compiler to preserve information about the formal parameters of a method (such as their names) to be accessed from reflection libraries, annotation processing, code weaving, and in the debugger. This option is supported from target level 1.8 and later.
+Annotation processing options (require a 1.6 VM or above and are used only if the compliance is 1.6) 
+
+.P
+.ul
+Annotation Processing Options
+
+.B
+.IP "\-Akey[=value]"
+Annotation processors options that are passed to annotation processors. key is made of identifiers separated by dots 
+
+.B
+.IP "\-proc:[only|none]"
+If \-proc:only is specified, the annotation processors will run but no compilation will be performed. If \-proc:none is specified, annotation processors will not be discovered or run; compilation will proceed as if no annotation processors were found. By default the compiler must search the classpath for annotation processors, so specifying \-proc:none may speed compilation if annotation processing is not required. 
+.B
+.IP "\-processor <class1[,class2,...]>"
+Qualified class names of annotation processors to run. If specified, the normal processor discovery process will be skipped. 
+.B
+.IP "\-processorpath <dir 1>;<dir 2>;...;<dir P>"
+A list of directories or jar files which will be searched for annotation processors. Entries are separated by the platform path separator. If not specified, the classpath will be searched instead. 
+.B
+.IP "\-s <dir>"
+The directory where generated source files will be created. 
+.B
+.IP "\-XprintProcessorInfo"
+Print information about which annotations and which elements a processor is asked to process 
+.B
+.IP "\-XprintRounds"
+Print information about annotation processing rounds 
+.B
+.IP "\-classNames <class1[,class2,...]>"
+Qualified names of binary types that need to be processed 
+
+.P
+.ul
+Ignored Options (for compatibility with javac options)
+
+.B
+.IP "\-J<option>"
+Pass option to the virtual machine 
+.B
+.IP "\-X<option>"
+Specify non-standard option. \-Xemacs is not ignored. 
+.B
+.IP "\-X"
+Print non-standard options and exit 
+.B
+.IP "\-O"
+Optimize for execution time 
+
+.P
+.ul
+Advanced Options
+
+.B
+.IP "@<file>"
+Read command-line arguments from file 
+.B
+.IP "\-maxProblems <n>"
+Max number of problems per compilation unit (100 by default) 
+.B
+.IP "\-log <filename>"
+Specify a log file in which all output from the compiler will be dumped. This is really useful if you want to debug the batch compiler or get a file which contains all errors and warnings from a batch build. If the extension is .xml, the generated log will be an xml file. 
+.B
+.IP "\-genericsignature"
+Explicitly request the compiler to preserve information about generic signature of lambda expressions. 
+.B
+.IP "\-Xemacs"
+Use emacs style to present errors and warnings locations into the console and regular text logs. XML logs are unaffected by this option. With this option active, the message:
+.br
+\ \ \ \ 2. WARNING in /workspace/X.java
+.br
+\ \ \ \ (at line 8)...
+.br
+is presented as:
+.br
+\ \ \ \ /workspace/X.java:8: warning: The method... 
+.br
+
+.B
+.IP "\-proceedOnError[:Fatal]"
+Keep compiling in spite of errors, dumping class files with problem methods or problem types. This is recommended only if you want to be able to run your application even if you have remaining errors.
+With ":Fatal", all optional errors are treated as fatal and this leads to code that will abort if an error is reached at runtime. Without ":Fatal", optional errors don't prevent the proper code generation and the produced .class files can be run without a problem. 
+.B
+.IP "\-verbose"
+Print accessed/processed compilation units in the console or the log file if specified. 
+.B
+.IP "\-referenceInfo"
+Compute reference info. This is useful only if connected to the builder. The reference infos are useless otherwise. 
+.B
+.IP "\-progress"
+Show progress (only in \-log mode). 
+.B
+.IP "\-time"
+Display speed information. 
+.B
+.IP "\-noExit"
+Do not call System.exit(n) at end of compilation (n=0 if no error). 
+.B
+.IP "\-repeat <n>"
+Repeat compilation process <n> times (perf analysis). 
+.B
+.IP "\-inlineJSR"
+Inline JSR bytecode (implicit if target >= 1.5). 
+.B
+.IP "\-enableJavadoc"
+Consider references inside Javadoc. The Javadoc options are effective only when this option is enabled. 
+.B
+.IP "\-missingNullDefault"
+When annotation based null analysis is enabled (using "nullAnnot", above), this option will raise a warning whenever there is no default annotation on a package or a type. 
+.B
+.IP "\-annotationpath"
+When annotation based null analysis is enabled (using "nullAnnot", above), this option defines locations where to find external annotations to support annotation-based null analysis.
+The value of this options is a list of directories or zip files. Entries are separated by the platform path separator.
+The special name CLASSPATH will cause lookup of external annotations from the classpath and sourcepath. 
+
+.P
+.ul
+Helping Options
+
+.B
+.IP "\-? \-help"
+Display the help message. 
+.B
+.IP "\-v \-version"
+Display the build number of the compiler. This is very useful to report a bug. 
+.B
+.IP "\-showversion"
+Display the build number of the compiler and continue. This is very useful to report a bug. 
+
+.SH SEE ALSO
+<\fBhttp://help.eclipse.org/topic/org.eclipse.jdt.doc.user/tasks/task-using_batch_compiler.htm\fR>
+.SH BUGS
+To report bugs, use <\fBhttps://bugs.eclipse.org/bugs/enter_bug.cgi?product=JDT&component=Core\fR>
+.SH AUTHOR
+For details on Eclipse committers, see <\fBhttp://www.eclipse.org/committers/\fR>
