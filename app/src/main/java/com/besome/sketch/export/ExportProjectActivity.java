@@ -2,7 +2,6 @@ package com.besome.sketch.export;
 
 import static mod.SketchwareUtil.getDip;
 
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -36,10 +34,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.besome.sketch.beans.UploadFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.tools.ExportApkActivity;
-import com.google.common.net.MediaType;
 import com.sketchware.remod.Resources;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -53,7 +49,6 @@ import a.a.a.Dp;
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.QA;
-import a.a.a.RA;
 import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.hC;
@@ -85,12 +80,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private final oB file_utility = new oB();
     private TextView tv_apk_url_expire;
     private ImageView img_copy_apk_url;
-    private Button btn_export_data;
-    private LottieAnimationView loading_export_data;
-    private LinearLayout layout_export_data;
-    private TextView tv_data_url;
-    private TextView tv_data_url_expire;
-    private ImageView img_copy_data_url;
     private Button btn_export_src;
     private LottieAnimationView loading_export_src;
     private LinearLayout layout_export_src;
@@ -140,7 +129,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         clipboard_manager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         initializeOutputDirectories();
         initializeSignApkViews();
-        initializeExportDataViews();
         initializeExportSrcViews();
         initializeAppBundleExportViews();
     }
@@ -506,35 +494,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     }
 
     /**
-     * Initialize Project Data Export views
-     */
-    private void initializeExportDataViews() {
-        TextView title_export_data = findViewById(Resources.id.title_export_data);
-        btn_export_data = findViewById(Resources.id.btn_export_data);
-        loading_export_data = findViewById(Resources.id.loading_export_data);
-        layout_export_data = findViewById(Resources.id.layout_export_data);
-        TextView title_data_url = findViewById(Resources.id.title_data_url);
-        tv_data_url = findViewById(Resources.id.tv_data_url);
-        tv_data_url_expire = findViewById(Resources.id.tv_data_url_expire);
-        img_copy_data_url = findViewById(Resources.id.img_copy_data_url);
-        title_export_data.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_export_data));
-        btn_export_data.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_button_generate_url));
-        title_data_url.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_download_url));
-        loading_export_data.setVisibility(View.GONE);
-        layout_export_data.setVisibility(View.GONE);
-        btn_export_data.setOnClickListener(v -> {
-            btn_export_data.setVisibility(View.GONE);
-            layout_export_data.setVisibility(View.GONE);
-            loading_export_data.setVisibility(View.VISIBLE);
-            loading_export_data.j();
-            new UploadAsyncTask(getBaseContext()).execute();
-        });
-    }
-
-    /**
      * Initialize Export to Android Studio views
      */
     private void initializeExportSrcViews() {
@@ -677,51 +636,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         startActivity(intent);
-    }
-
-    public final void c(String str) {
-        layout_apk_url.setVisibility(View.VISIBLE);
-        btn_sign_apk.setVisibility(View.GONE);
-        if (loading_sign_apk.h()) {
-            loading_sign_apk.e();
-        }
-        loading_sign_apk.setVisibility(View.GONE);
-        tv_apk_url.setText("http://sketchware.io/download.jsp?id=" + str);
-        SketchwareUtil.toast(Helper.getResString(
-                Resources.string.myprojects_export_project_message_complete_export), Toast.LENGTH_LONG);
-        this.img_copy_apk_url.setOnClickListener(v -> {
-            clipboard_manager.setPrimaryClip(ClipData.newPlainText("Download APK URL", tv_apk_url.getText()));
-            SketchwareUtil.toast(Helper.getResString(
-                    Resources.string.common_message_complete_copy_to_clipborad));
-        });
-    }
-
-    public final void d(String id) {
-        String valid_dt;
-        if (loading_export_data.h()) {
-            loading_export_data.e();
-        }
-        loading_export_data.setVisibility(View.GONE);
-        layout_export_data.setVisibility(View.VISIBLE);
-        btn_export_data.setVisibility(View.GONE);
-        tv_data_url.setText("http://sketchware.io/import.jsp?id=" + id);
-        SketchwareUtil.toast(Helper.getResString(
-                Resources.string.myprojects_export_project_message_complete_export), Toast.LENGTH_LONG);
-        if (j.h()) {
-            valid_dt = "30 " + Helper.getResString(
-                    Resources.string.myprojects_export_project_word_remain_days);
-        } else {
-            valid_dt = "7 " + Helper.getResString(
-                    Resources.string.myprojects_export_project_word_remain_days);
-        }
-        tv_data_url_expire.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_word_valid_dt)
-                + " : " + valid_dt);
-        img_copy_data_url.setOnClickListener(v -> {
-            clipboard_manager.setPrimaryClip(ClipData.newPlainText("Download Data URL", tv_data_url.getText()));
-            SketchwareUtil.toast(Helper.getResString(
-                    Resources.string.common_message_complete_copy_to_clipborad));
-        });
     }
 
     /**
@@ -1163,98 +1077,4 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
     }
 
-    private class UploadAsyncTask extends MA {
-
-        private String result = null;
-
-        public UploadAsyncTask(Context context) {
-            super(context);
-            ExportProjectActivity.this.a(this);
-        }
-
-        @Override // a.a.a.MA
-        public void a() {
-            if (result.equals("fail")) {
-                btn_export_data.setVisibility(View.VISIBLE);
-                if (loading_export_data.h()) {
-                    loading_export_data.e();
-                }
-                loading_export_data.setVisibility(View.GONE);
-                SketchwareUtil.toastError(Helper.getResString(
-                        Resources.string.myprojects_export_project_message_failed_to_export));
-            } else if (result.equals("limit")) {
-                btn_export_data.setVisibility(View.VISIBLE);
-                if (loading_export_data.h()) {
-                    loading_export_data.e();
-                }
-                loading_export_data.setVisibility(View.GONE);
-                SketchwareUtil.toastError(Helper.getResString(
-                        Resources.string.myprojects_export_project_message_exceed_limit), Toast.LENGTH_LONG);
-            } else {
-                d(result);
-            }
-        }
-
-        @Override // a.a.a.MA
-        public void b() {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("login_id", i.e());
-            hashMap.put("session_id", i.f());
-            hashMap.put("has_purchase", j.h() ? "Y" : "N");
-            hashMap.put("pkg_name", project_metadata.e);
-            hashMap.put("app_name", project_metadata.f);
-            result = new rB().X(hashMap);
-            if (!(result.equals("fail") || result.equals("limit"))) {
-                HashMap<String, Object> hashMap2 = new HashMap<>();
-                hashMap2.put("login_id", i.e());
-                hashMap2.put("session_id", i.f());
-                hashMap2.put("url_id", result);
-                KB kb = new KB();
-                ArrayList<UploadFileBean> arrayList = new ArrayList<>();
-                arrayList.add(new UploadFileBean(MediaType.PLAIN_TEXT_UTF_8, "project", wq.c(sc_id) + File.separator + "project"));
-                arrayList.add(new UploadFileBean(MediaType.PNG, "icon.png", wq.e() + File.separator + sc_id + File.separator + "icon.png"));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "data.zip", wq.b(sc_id)));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_image.zip", wq.g() + File.separator + sc_id));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_sound.zip", wq.t() + File.separator + sc_id));
-                arrayList.add(new UploadFileBean(MediaType.ZIP, "res_font.zip", wq.d() + File.separator + sc_id));
-                for (int i = 0; i < arrayList.size(); i++) {
-                    UploadFileBean uploadFileBean = arrayList.get(i);
-                    byte[] bArr = null;
-                    if (uploadFileBean.contentType.equals(MediaType.PLAIN_TEXT_UTF_8.toString())) {
-                        bArr = file_utility.h(uploadFileBean.path);
-                    } else if (uploadFileBean.contentType.equals(MediaType.PNG.toString())) {
-                        bArr = file_utility.h(uploadFileBean.path);
-                    } else if (uploadFileBean.contentType.equals(MediaType.ZIP.toString())) {
-                        bArr = kb.a(uploadFileBean.path);
-                    }
-                    if (bArr == null) {
-                        bArr = new byte[0];
-                    }
-                    result = new RA((l, l1) -> {
-                    })
-                            .c(hashMap2, uploadFileBean, bArr);
-                    if (!result.equals("success")) {
-                        result = "fail";
-                        return;
-                    }
-                }
-            }
-        }
-
-        @Override // a.a.a.MA
-        public void a(String str) {
-            btn_export_data.setVisibility(View.VISIBLE);
-            if (loading_export_data.h()) {
-                loading_export_data.e();
-            }
-            loading_export_data.setVisibility(View.GONE);
-            SketchwareUtil.toastError(Helper.getResString(
-                    Resources.string.myprojects_export_project_message_failed_to_export));
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-    }
 }
