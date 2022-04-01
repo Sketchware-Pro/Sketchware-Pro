@@ -14,6 +14,9 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
 
+/**
+ * Legacy code editor
+ */
 public class SrcCodeEditor extends Activity {
 
     private CodeEditorLayout codeEditor;
