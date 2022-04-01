@@ -35,9 +35,9 @@ import java.util.Objects;
 
 import a.a.a.jC;
 import a.a.a.yq;
-import io.github.rosemoe.editor.langs.java.JavaLanguage;
-import io.github.rosemoe.editor.widget.CodeEditor;
-import io.github.rosemoe.editor.widget.EditorColorScheme;
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -510,9 +510,7 @@ public class AndroidManifestInjection extends Activity {
 
                 CodeEditor editor = new CodeEditor(this);
                 editor.setTypefaceText(Typeface.MONOSPACE);
-                editor.setOverScrollEnabled(false);
                 editor.setEditable(false);
-                editor.setAutoCompletionEnabled(false);
                 editor.setEditorLanguage(new JavaLanguage());
                 editor.setColorScheme(new EditorColorScheme());
                 editor.setTextSize(14);
