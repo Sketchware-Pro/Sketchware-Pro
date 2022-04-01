@@ -5,42 +5,17 @@ import static com.besome.sketch.SketchApplication.getContext;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Random;
 
 import a.a.a.bB;
 import mod.jbk.util.LogUtil;
 
 public class SketchwareUtil {
-
-    public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
-        Collections.sort(listMap, (_compareMap1, _compareMap2) -> {
-            if (isNumber) {
-                int _count1 = Integer.parseInt(_compareMap1.get(key).toString());
-                int _count2 = Integer.parseInt(_compareMap2.get(key).toString());
-                if (ascending) {
-                    return _count1 < _count2 ? -1 : 0;
-                } else {
-                    return _count1 > _count2 ? -1 : 0;
-                }
-            } else {
-                if (ascending) {
-                    return (_compareMap1.get(key).toString()).compareTo(_compareMap2.get(key).toString());
-                } else {
-                    return (_compareMap2.get(key).toString()).compareTo(_compareMap1.get(key).toString());
-                }
-            }
-        });
-    }
 
     public static boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -88,42 +63,12 @@ public class SketchwareUtil {
         Toast.makeText(context, _s, Toast.LENGTH_SHORT).show();
     }
 
-    public static int getLocationX(View view) {
-        int[] location = new int[2];
-        view.getLocationInWindow(location);
-        return location[0];
-    }
-
-    public static int getLocationY(View view) {
-        int[] location = new int[2];
-        view.getLocationInWindow(location);
-        return location[1];
-    }
-
     public static int getRandom(int _min, int _max) {
         return new Random().nextInt(_max - _min + 1) + _min;
     }
 
-    public static ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {
-        ArrayList<Double> _result = new ArrayList<>();
-        SparseBooleanArray _arr = _list.getCheckedItemPositions();
-        for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
-            if (_arr.valueAt(_iIdx))
-                _result.add((double) _arr.keyAt(_iIdx));
-        }
-        return _result;
-    }
-
     public static float getDip(int input) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, input, getContext().getResources().getDisplayMetrics());
-    }
-
-    public static int getDisplayWidthPixels() {
-        return getContext().getResources().getDisplayMetrics().widthPixels;
-    }
-
-    public static int getDisplayHeightPixels() {
-        return getContext().getResources().getDisplayMetrics().heightPixels;
     }
 
     /**
