@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import dev.aldi.sayuti.editor.injection.AppCompatInjection;
+import mod.agus.jcoderz.beans.ViewBeans;
 
 public class Ox {
 
@@ -45,7 +46,7 @@ public class Ox {
     /**
      * @return The parameter String escaped properly for XML strings
      */
-    public final String a(String str) {
+    private String escapeXML(String str) {
         CharBuffer buffer = CharBuffer.wrap(str);
         StringBuilder result = new StringBuilder(str.length());
         while (buffer.hasRemaining()) {
@@ -87,7 +88,7 @@ public class Ox {
         return result.toString();
     }
 
-    public final void a() {
+    private void writeRootLayout() {
         Nx nx = new Nx("LinearLayout");
         nx.a("android", "layout_width", "match_parent");
         nx.a("android", "layout_height", "match_parent");
@@ -95,7 +96,7 @@ public class Ox {
         for (ViewBean viewBean : d) {
             String parent = viewBean.parent;
             if (parent == null || parent.length() <= 0 || parent.equals("root")) {
-                b(nx, viewBean);
+                writeWidget(nx, viewBean);
             }
         }
         if (a.g) {
@@ -133,10 +134,10 @@ public class Ox {
                     }
                 }
                 if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-                    c(e, c);
+                    writeFabView(e, c);
                 }
-                if (c.type == 32) {
-                    b(e, c);
+                if (c.type == ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW) {
+                    writeWidget(e, c);
                 }
                 if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                     Nx drawerLayoutTag = new Nx("androidx.drawerlayout.widget.DrawerLayout");
@@ -166,7 +167,7 @@ public class Ox {
     /**
      * Handles a view's background resource.
      */
-    public void a(Nx nx, ViewBean viewBean) {
+    public void writeBackgroundResource(Nx nx, ViewBean viewBean) {
         String backgroundResource = viewBean.layout.backgroundResource;
         if (backgroundResource == null || "NONE".equalsIgnoreCase(backgroundResource)) {
             int backgroundColor = viewBean.layout.backgroundColor;
@@ -206,23 +207,23 @@ public class Ox {
     public void a(ArrayList<ViewBean> arrayList, ViewBean viewBean) {
         c = viewBean;
         d = arrayList;
-        a();
+        writeRootLayout();
     }
 
     public String b() {
         return e.b();
     }
 
-    public void b(Nx nx, ViewBean viewBean) {
+    public void writeWidget(Nx nx, ViewBean viewBean) {
         viewBean.getClassInfo().a();
         String convert = viewBean.convert;
 
-        Nx nx2 = convert.equals("") ? new Nx(viewBean.getClassInfo().a()) :
+        Nx widgetTag = convert.equals("") ? new Nx(viewBean.getClassInfo().a()) :
                 new Nx(convert.replaceAll(" ", ""));
         if (convert.equals("include")) {
-            nx2.a("", "layout", "@layout/" + viewBean.id);
+            widgetTag.a("", "layout", "@layout/" + viewBean.id);
         } else {
-            nx2.a("android", "id", "@+id/" + viewBean.id);
+            widgetTag.a("android", "id", "@+id/" + viewBean.id);
             int type = viewBean.type;
             if (b.fileType == ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW) {
                 switch (type) {
@@ -240,7 +241,7 @@ public class Ox {
                     case 24:
                     case 32:
                         if (!hasAttr("focusable", viewBean))
-                            nx2.a("android", "focusable", "false");
+                            widgetTag.a("android", "focusable", "false");
                         break;
 
                     default:
@@ -250,100 +251,108 @@ public class Ox {
 
             int width = viewBean.layout.width;
             if (width == ViewGroup.LayoutParams.MATCH_PARENT) {
-                nx2.a("android", "layout_width", "match_parent");
+                widgetTag.a("android", "layout_width", "match_parent");
             } else if (width == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                nx2.a("android", "layout_width", "wrap_content");
+                widgetTag.a("android", "layout_width", "wrap_content");
             } else {
-                nx2.a("android", "layout_width", width + "dp");
+                widgetTag.a("android", "layout_width", width + "dp");
             }
 
             int height = viewBean.layout.height;
             if (height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                nx2.a("android", "layout_height", "match_parent");
+                widgetTag.a("android", "layout_height", "match_parent");
             } else if (height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                nx2.a("android", "layout_height", "wrap_content");
+                widgetTag.a("android", "layout_height", "wrap_content");
             } else {
-                nx2.a("android", "layout_height", height + "dp");
+                widgetTag.a("android", "layout_height", height + "dp");
             }
-            g(nx2, viewBean);
-            i(nx2, viewBean);
-            a(nx2, viewBean);
+            writeLayoutMargin(widgetTag, viewBean);
+            writeViewPadding(widgetTag, viewBean);
+            writeBackgroundResource(widgetTag, viewBean);
             if (viewBean.getClassInfo().a("ViewGroup")) {
-                d(nx2, viewBean);
+                writeViewGravity(widgetTag, viewBean);
             }
         }
         a.x.handleWidget(x(viewBean.convert));
-        if (viewBean.getClassInfo().b("LinearLayout") && !nx2.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
-            h(nx2, viewBean);
-            m(nx2, viewBean);
+        if (viewBean.getClassInfo().b("LinearLayout") && !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
+            int orientation = viewBean.layout.orientation;
+            if (orientation == LinearLayout.HORIZONTAL) {
+                widgetTag.a("android", "orientation", "horizontal");
+            } else if (orientation == LinearLayout.VERTICAL) {
+                widgetTag.a("android", "orientation", "vertical");
+            }
+            int weightSum = viewBean.layout.weightSum;
+            if (weightSum > 0) {
+                widgetTag.a("android", "weightSum", String.valueOf(weightSum));
+            }
         }
         if (viewBean.getClassInfo().a("TextView")) {
-            d(nx2, viewBean);
-            j(nx2, viewBean);
+            writeViewGravity(widgetTag, viewBean);
+            writeTextAttributes(widgetTag, viewBean);
         }
         if (viewBean.getClassInfo().a("ImageView")) {
-            e(nx2, viewBean);
-            if (!nx2.b().contains(".")) {
-                ea(nx2, viewBean);
+            writeImgSrcAttr(widgetTag, viewBean);
+            if (!widgetTag.b().contains(".")) {
+                writeImageScaleType(widgetTag, viewBean);
             }
         }
         if (viewBean.getClassInfo().b("SeekBar")) {
-            d(nx2, viewBean);
+            writeViewGravity(widgetTag, viewBean);
         }
         if (viewBean.getClassInfo().b("ProgressBar")) {
-            d(nx2, viewBean);
+            writeViewGravity(widgetTag, viewBean);
         }
         if (viewBean.getClassInfo().b("WaveSideBar")) {
             int textSize = viewBean.text.textSize;
             if (textSize > 0) {
-                nx2.a("app", "sidebar_text_size", textSize + "sp");
+                widgetTag.a("app", "sidebar_text_size", textSize + "sp");
             }
 
             int textColor = viewBean.text.textColor;
             if (textColor != 0) {
-                nx2.a("app", "sidebar_text_color", String.format("#%06X", textColor & 0xffffff));
+                widgetTag.a("app", "sidebar_text_color", String.format("#%06X", textColor & 0xffffff));
             }
         }
-        k(nx2, viewBean);
-        int i4 = viewBean.parentType;
+        k(widgetTag, viewBean);
+        int parentViewType = viewBean.parentType;
         if (!viewBean.convert.equals("include")) {
-            if (i4 == 0) {
-                f(nx2, viewBean);
+            if (parentViewType == 0) {
+                writeLayoutGravity(widgetTag, viewBean);
                 int weight = viewBean.layout.weight;
                 if (weight > 0) {
-                    nx2.a("android", "layout_weight", String.valueOf(weight));
+                    widgetTag.a("android", "layout_weight", String.valueOf(weight));
                 }
-            } else if (i4 == 2 || i4 == 12) {
-                f(nx2, viewBean);
+            } else if (parentViewType == 2 || parentViewType == 12) {
+                writeLayoutGravity(widgetTag, viewBean);
             }
         }
         if (viewBean.getClassInfo().a("ViewGroup")) {
             for (ViewBean bean : d) {
                 if (bean.parent != null && bean.parent.equals(viewBean.id)) {
-                    b(nx2, bean);
+                    writeWidget(widgetTag, bean);
                 }
             }
         }
         if (!viewBean.inject.equals("")) {
-            nx2.b(viewBean.inject.replaceAll(" ", ""));
+            widgetTag.b(viewBean.inject.replaceAll(" ", ""));
         }
-        if (nx2.c().equals("CollapsingToolbarLayout")) {
-            f = nx2;
+        if (widgetTag.c().equals("CollapsingToolbarLayout")) {
+            f = widgetTag;
         } else {
-            nx.a(nx2);
+            nx.a(widgetTag);
         }
     }
 
     /**
      * Adds a FAB.
      */
-    public void c(Nx nx, ViewBean viewBean) {
+    public void writeFabView(Nx nx, ViewBean viewBean) {
         Nx floatingActionButtonTag = new Nx("com.google.android.material.floatingactionbutton.FloatingActionButton");
         floatingActionButtonTag.a("android", "id", "@+id/" + viewBean.id);
         floatingActionButtonTag.a("android", "layout_width", "wrap_content");
         floatingActionButtonTag.a("android", "layout_height", "wrap_content");
-        g(floatingActionButtonTag, viewBean);
-        f(floatingActionButtonTag, viewBean);
+        writeLayoutMargin(floatingActionButtonTag, viewBean);
+        writeLayoutGravity(floatingActionButtonTag, viewBean);
 
         String resName = viewBean.image.resName;
         if (resName != null && resName.length() > 0 && !resName.equals("NONE")) {
@@ -359,7 +368,7 @@ public class Ox {
     /**
      * Handles a view's <code>android:gravity</code> property.
      */
-    public void d(Nx nx, ViewBean viewBean) {
+    public void writeViewGravity(Nx nx, ViewBean viewBean) {
         int gravity = viewBean.layout.gravity;
         if (gravity != 0) {
             String attrValue = "";
@@ -405,7 +414,7 @@ public class Ox {
      * Handles an image container's image, the property can either be <code>android:src</code>
      * or <code>app:srcCompat</code>.
      */
-    public void e(Nx nx, ViewBean viewBean) {
+    public void writeImgSrcAttr(Nx nx, ViewBean viewBean) {
         String resName = viewBean.image.resName;
         if (resName.length() > 0 && !"NONE".equals(resName)) {
             String value = "@drawable/" + resName.toLowerCase();
@@ -422,7 +431,7 @@ public class Ox {
      *
      * @see ImageView.ScaleType
      */
-    public void ea(Nx nx, ViewBean viewBean) {
+    public void writeImageScaleType(Nx nx, ViewBean viewBean) {
         if (viewBean.image.scaleType.equals(ImageBean.SCALE_TYPE_CENTER)) {
             nx.a("android", "scaleType", "center");
         } else if (viewBean.image.scaleType.equals(ImageBean.SCALE_TYPE_FIT_XY)) {
@@ -445,7 +454,7 @@ public class Ox {
      *
      * @see Gravity
      */
-    public void f(Nx nx, ViewBean viewBean) {
+    public void writeLayoutGravity(Nx nx, ViewBean viewBean) {
         int gravity = viewBean.layout.layoutGravity;
         if (gravity != 0) {
             String attrValue = "";
@@ -492,7 +501,7 @@ public class Ox {
      *
      * @see ViewGroup.MarginLayoutParams
      */
-    public void g(Nx nx, ViewBean viewBean) {
+    public void writeLayoutMargin(Nx nx, ViewBean viewBean) {
         LayoutBean layoutBean = viewBean.layout;
         int marginLeft = layoutBean.marginLeft;
         int marginTop = layoutBean.marginTop;
@@ -519,20 +528,6 @@ public class Ox {
     }
 
     /**
-     * Handles a view's orientation.
-     *
-     * @see LinearLayout#getOrientation()
-     */
-    public void h(Nx nx, ViewBean viewBean) {
-        int orientation = viewBean.layout.orientation;
-        if (orientation == LinearLayout.HORIZONTAL) {
-            nx.a("android", "orientation", "horizontal");
-        } else if (orientation == LinearLayout.VERTICAL) {
-            nx.a("android", "orientation", "vertical");
-        }
-    }
-
-    /**
      * Handles a view's padding.
      *
      * @see View#getPaddingLeft()
@@ -540,7 +535,7 @@ public class Ox {
      * @see View#getPaddingRight()
      * @see View#getPaddingBottom()
      */
-    public void i(Nx nx, ViewBean viewBean) {
+    public void writeViewPadding(Nx nx, ViewBean viewBean) {
         LayoutBean layoutBean = viewBean.layout;
         int paddingLeft = layoutBean.paddingLeft;
         int paddingTop = layoutBean.paddingTop;
@@ -570,10 +565,10 @@ public class Ox {
      * Handles properties for text-related views, such as <code>android:text</code>,
      * <code>android:textSize</code> and <code>android:textStyle</code>.
      */
-    public void j(Nx nx, ViewBean viewBean) {
+    public void writeTextAttributes(Nx nx, ViewBean viewBean) {
         String text = viewBean.text.text;
         if (text != null && text.length() > 0) {
-            nx.a("android", "text", a(text));
+            nx.a("android", "text", escapeXML(text));
         }
 
         int textSize = viewBean.text.textSize;
@@ -598,7 +593,7 @@ public class Ox {
             case 24:
                 String hint = viewBean.text.hint;
                 if (hint != null && hint.length() > 0) {
-                    nx.a("android", "hint", a(hint));
+                    nx.a("android", "hint", escapeXML(hint));
                 }
                 if (viewBean.text.hintColor != 0) {
                     if (!hasAttr("textColorHint", viewBean))
@@ -776,16 +771,6 @@ public class Ox {
         }
     }
 
-    /**
-     * Handles a view's <code>android:weightSum</code> property.
-     */
-    public void m(Nx nx, ViewBean viewBean) {
-        int weightSum = viewBean.layout.weightSum;
-        if (weightSum > 0) {
-            nx.a("android", "weightSum", String.valueOf(weightSum));
-        }
-    }
-
     public void n(Nx nx, ViewBean viewBean) {
         nx.a("app", "tabGravity", "fill");
         nx.a("app", "tabMode", "fixed");
@@ -797,7 +782,7 @@ public class Ox {
     }
 
     /**
-     * check whether the atrribute (attrName) is injected to the ViewBean or not.
+     * check whether the attribute (attrName) is injected to the ViewBean or not.
      */
     public boolean hasAttr(String attrName, ViewBean bean) {
         final String inject = bean.inject;
