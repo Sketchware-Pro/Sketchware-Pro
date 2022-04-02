@@ -220,16 +220,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 FileUtil.copyDirectory(pathNativeLibraries, new File(project_metadata.c, "jni"));
             }
 
-            ArrayList<String> arrayList = new ArrayList<>();
-            arrayList.add(project_metadata.c);
-            String str = yB.c(sc_metadata, "my_ws_name") + ".zip";
-            project_metadata.J = wq.s() + File.separator + "export_src" + File.separator + str;
+            ArrayList<String> toCompress = new ArrayList<>();
+            toCompress.add(project_metadata.c);
+            String exportedFilename = yB.c(sc_metadata, "my_ws_name") + ".zip";
+            project_metadata.J = wq.s() + File.separator + "export_src" + File.separator + exportedFilename;
             if (file_utility.e(project_metadata.J)) {
                 file_utility.c(project_metadata.J);
             }
-            new KB().a(project_metadata.J, arrayList, project_metadata.K);
+            new KB().a(project_metadata.J, toCompress, project_metadata.K);
             project_metadata.e();
-            runOnUiThread(() -> e(str));
+            runOnUiThread(() -> e(exportedFilename));
         } catch (Exception e) {
             runOnUiThread(() -> {
                 Log.e("ProjectExporter", "While trying to export project's sources: "
