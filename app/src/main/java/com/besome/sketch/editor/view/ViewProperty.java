@@ -3,10 +3,13 @@ package com.besome.sketch.editor.view;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -43,25 +46,25 @@ import mod.hey.studios.util.Helper;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
-    private String b;
-    private ProjectFileBean c;
+    private String sc_id;
+    private ProjectFileBean projectFile;
     private Spinner spnWidget;
-    private final ArrayList<ViewBean> e = new ArrayList<>();
-    private c f;
-    private Jw g = null;
+    private final ArrayList<ViewBean> projectActivityViews = new ArrayList<>();
+    private ViewIdsAdapter idsAdapter;
+    private Jw propertyTargetChangeListener = null;
     private LinearLayout layoutPropertySeeAll;
     private ViewPropertyItems viewPropertyItems;
-    private b l;
+    private SeeAllPropertiesFloatingItem seeAll;
     private View propertyLayout;
     private ViewEvents viewEvent;
-    private Iw o = null;
-    private Lw p;
+    private Iw propertyListener = null;
+    private Lw propertyValueChangedListener;
     private LinearLayout layoutPropertyGroup;
-    private int r;
+    private int selectedGroupId;
     private ImageView imgSave;
-    private ObjectAnimator t;
-    private ObjectAnimator u;
-    private boolean v = true;
+    private ObjectAnimator showAllShower;
+    private ObjectAnimator showAllHider;
+    private boolean showAllVisible = true;
 
     public ViewProperty(Context context) {
         super(context);
@@ -82,44 +85,44 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     public void setOnPropertyListener(Iw onPropertyListener) {
-        o = onPropertyListener;
+        propertyListener = onPropertyListener;
     }
 
     public void setOnPropertyTargetChangeListener(Jw onPropertyTargetChangeListener) {
-        g = onPropertyTargetChangeListener;
+        propertyTargetChangeListener = onPropertyTargetChangeListener;
     }
 
     public void setOnPropertyValueChangedListener(Lw onPropertyValueChangedListener) {
-        p = onPropertyValueChangedListener;
+        propertyValueChangedListener = onPropertyValueChangedListener;
         viewPropertyItems.setOnPropertyValueChangedListener(new Lw() {
             @Override
             public void a(ViewBean viewBean) {
-                if (p != null) {
-                    p.a(viewBean);
+                if (propertyValueChangedListener != null) {
+                    propertyValueChangedListener.a(viewBean);
                 }
             }
         });
     }
 
-    private void b() {
-        if (t.isRunning()) {
-            t.cancel();
+    private void cancelSeeAllAnimations() {
+        if (showAllShower.isRunning()) {
+            showAllShower.cancel();
         }
-        if (u.isRunning()) {
-            u.cancel();
+        if (showAllHider.isRunning()) {
+            showAllHider.cancel();
         }
     }
 
-    private void c() {
-        if (t == null) {
-            t = ObjectAnimator.ofFloat(layoutPropertySeeAll, View.TRANSLATION_Y, 0.0f);
-            t.setDuration(400L);
-            t.setInterpolator(new DecelerateInterpolator());
+    private void initializeSeeAllAnimations() {
+        if (showAllShower == null) {
+            showAllShower = ObjectAnimator.ofFloat(layoutPropertySeeAll, View.TRANSLATION_Y, 0.0f);
+            showAllShower.setDuration(400L);
+            showAllShower.setInterpolator(new DecelerateInterpolator());
         }
-        if (u == null) {
-            u = ObjectAnimator.ofFloat(layoutPropertySeeAll, View.TRANSLATION_Y, wB.a(getContext(), 84.0f));
-            u.setDuration(200L);
-            u.setInterpolator(new DecelerateInterpolator());
+        if (showAllHider == null) {
+            showAllHider = ObjectAnimator.ofFloat(layoutPropertySeeAll, View.TRANSLATION_Y, wB.a(getContext(), 84.0f));
+            showAllHider.setDuration(200L);
+            showAllHider.setInterpolator(new DecelerateInterpolator());
         }
     }
 
@@ -130,39 +133,40 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     public void e() {
-        for (int i2 = 0; i2 < layoutPropertyGroup.getChildCount(); i2++) {
-            a aVar = (a) layoutPropertyGroup.getChildAt(i2);
-            if (r == (Integer) aVar.getTag()) {
-                aVar.setSelected(true);
-                aVar.tvTitle.setTextColor(-1);
-                aVar.animate().scaleX(1.0f).scaleY(1.0f).alpha(1.0f).start();
+        for (int i = 0; i < layoutPropertyGroup.getChildCount(); i++) {
+            GroupItem item = (GroupItem) layoutPropertyGroup.getChildAt(i);
+
+            if (selectedGroupId == (Integer) item.getTag()) {
+                item.setSelected(true);
+                item.title.setTextColor(Color.WHITE);
+                item.animate().scaleX(1).scaleY(1).alpha(1).start();
             } else {
-                aVar.setSelected(false);
-                aVar.tvTitle.setTextColor(-14868183);
-                aVar.animate().scaleX(0.8f).scaleY(0.8f).alpha(0.6f).start();
+                item.setSelected(false);
+                item.title.setTextColor(0xff1d2129);
+                item.animate().scaleX(0.8f).scaleY(0.8f).alpha(0.6f).start();
             }
         }
-        if (f.getLayoutPosition() < e.size()) {
-            ViewBean viewBean = e.get(f.getLayoutPosition());
-            if (r == 0) {
+        if (idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+            ViewBean viewBean = projectActivityViews.get(idsAdapter.getSelectedItemPosition());
+            if (selectedGroupId == 0) {
                 propertyLayout.setVisibility(VISIBLE);
                 layoutPropertySeeAll.setVisibility(VISIBLE);
-                viewPropertyItems.a(b, viewBean);
+                viewPropertyItems.a(sc_id, viewBean);
                 a(viewBean);
                 viewEvent.setVisibility(GONE);
-            } else if (r == 1) {
+            } else if (selectedGroupId == 1) {
                 propertyLayout.setVisibility(VISIBLE);
                 viewPropertyItems.e(viewBean);
                 layoutPropertySeeAll.setVisibility(GONE);
-            } else if (r == 2) {
+            } else if (selectedGroupId == 2) {
                 propertyLayout.setVisibility(GONE);
                 viewEvent.setVisibility(VISIBLE);
-                viewEvent.a(b, c, viewBean);
+                viewEvent.a(sc_id, projectFile, viewBean);
             }
         }
     }
 
-    private void f() {
+    private void showSaveToCollectionDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(xB.b().a(getContext(), Resources.string.view_widget_favorites_save_title));
         dialog.a(Resources.drawable.ic_bookmark_red_48dp);
@@ -171,42 +175,40 @@ public class ViewProperty extends LinearLayout implements Kw {
         EditText editText = view.findViewById(Resources.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
-        editText.setInputType(524289);
-        editText.setImeOptions(6);
-        NB nb = new NB(getContext(), view.findViewById(Resources.id.ti_input), Rp.h().g());
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        NB validator = new NB(getContext(), view.findViewById(Resources.id.ti_input), Rp.h().g());
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), 2131625031), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a() && nb.b()) {
-                    String obj = editText.getText().toString();
-                    ArrayList<ViewBean> viewBeans = jC.a(b).b(c.getXmlName(), e.get(f.getLayoutPosition()));
-                    for (ViewBean viewBean : viewBeans) {
-                        String backgroundResource = viewBean.layout.backgroundResource;
-                        String resName = viewBean.image.resName;
-                        if (backgroundResource != null && !backgroundResource.equals("NONE") && jC.d(b).l(backgroundResource) && !Op.g().b(backgroundResource)) {
-                            try {
-                                Op.g().a(b, jC.d(b).g(backgroundResource));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                bB.b(getContext(), e.getMessage(), 0).show();
-                            }
-                        }
-                        if (resName != null && !resName.equals("default_image") && !resName.equals("NONE") && jC.d(b).l(resName) && !Op.g().b(resName)) {
-                            try {
-                                Op.g().a(b, jC.d(b).g(resName));
-                            } catch (Exception e2) {
-                                bB.b(getContext(), e2.getMessage(), 0).show();
-                            }
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (!mB.a() && validator.b()) {
+                String widgetName = editText.getText().toString();
+                ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
+                for (ViewBean viewBean : viewBeans) {
+                    String backgroundResource = viewBean.layout.backgroundResource;
+                    String resName = viewBean.image.resName;
+                    if (backgroundResource != null && !backgroundResource.equals("NONE") && jC.d(sc_id).l(backgroundResource) && !Op.g().b(backgroundResource)) {
+                        try {
+                            Op.g().a(sc_id, jC.d(sc_id).g(backgroundResource));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            bB.b(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    Rp.h().a(obj, viewBeans, true);
-                    if (o != null) {
-                        o.a();
+                    if (resName != null && !resName.equals("default_image") && !resName.equals("NONE") && jC.d(sc_id).l(resName) && !Op.g().b(resName)) {
+                        try {
+                            Op.g().a(sc_id, jC.d(sc_id).g(resName));
+                        } catch (Exception e) {
+                            bB.b(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    bB.a(getContext(), xB.b().a(getContext(), Resources.string.common_message_complete_save), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
                 }
+                Rp.h().a(widgetName, viewBeans, true);
+                if (propertyListener != null) {
+                    propertyListener.a();
+                }
+                bB.a(getContext(), xB.b().a(getContext(), Resources.string.common_message_complete_save), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
@@ -217,145 +219,147 @@ public class ViewProperty extends LinearLayout implements Kw {
     private void initialize(Context context) {
         wB.a(context, this, Resources.layout.view_property);
         layoutPropertyGroup = findViewById(Resources.id.layout_property_group);
-        //OnClickListener was empty inside Sketchware 3.10.0, replaced with null to save a class
-        layoutPropertyGroup.setOnClickListener(null);
         CustomHorizontalScrollView hcvProperty = findViewById(Resources.id.hcv_property);
         propertyLayout = findViewById(Resources.id.property_layout);
         LinearLayout propertyContents = findViewById(Resources.id.property_contents);
         layoutPropertySeeAll = findViewById(Resources.id.layout_property_see_all);
         viewEvent = findViewById(Resources.id.view_event);
-        hcvProperty.setOnScrollChangedListener((i, i1, i2, i3) -> {
-            if (Math.abs(i - i3) <= 5) {
+        hcvProperty.setOnScrollChangedListener((l, t, oldl, oldt) -> {
+            if (Math.abs(l - oldt) <= 5) {
                 return;
             }
-            if (i > i3) {
-                if (v) {
-                    v = false;
-                    b();
-                    u.start();
+            if (l > oldt) {
+                if (showAllVisible) {
+                    showAllVisible = false;
+                    cancelSeeAllAnimations();
+                    showAllHider.start();
                 }
-            } else if (!(v)) {
-                v = true;
-                b();
-                t.start();
+            } else if (!(showAllVisible)) {
+                showAllVisible = true;
+                cancelSeeAllAnimations();
+                showAllShower.start();
             }
         });
         imgSave = findViewById(Resources.id.img_save);
         imgSave.setOnClickListener(v -> {
             if (!mB.a()) {
-                f();
+                showSaveToCollectionDialog();
             }
         });
         spnWidget = findViewById(Resources.id.spn_widget);
-        f = new c(context, e);
-        spnWidget.setAdapter(f);
+        idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
+        spnWidget.setAdapter(idsAdapter);
         spnWidget.setSelection(0);
         spnWidget.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                f.a(position);
-                b(e.get(position));
+                idsAdapter.setPosition(position);
+                selectView(projectActivityViews.get(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        a();
-        c();
+        initializeGroups();
+        initializeSeeAllAnimations();
         viewPropertyItems = new ViewPropertyItems(getContext());
         viewPropertyItems.setOrientation(HORIZONTAL);
         propertyContents.addView(viewPropertyItems);
     }
 
-    private void b(ViewBean viewBean) {
-        if (g != null) {
-            g.a(viewBean.id);
+    private void selectView(ViewBean viewBean) {
+        if (propertyTargetChangeListener != null) {
+            propertyTargetChangeListener.a(viewBean.id);
         }
         if ("_fab".equals(viewBean.id)) {
             imgSave.setVisibility(GONE);
         } else {
             imgSave.setVisibility(VISIBLE);
         }
-        viewPropertyItems.setProjectFileBean(c);
+        viewPropertyItems.setProjectFileBean(projectFile);
         e();
     }
 
-    public void a(String str, ProjectFileBean projectFileBean) {
-        b = str;
-        c = projectFileBean;
+    public void a(String sc_id, ProjectFileBean projectFileBean) {
+        this.sc_id = sc_id;
+        projectFile = projectFileBean;
     }
 
     public void a(String str) {
-        for (int i = 0; i < e.size(); i++) {
-            if (e.get(i).id.equals(str)) {
+        for (int i = 0; i < projectActivityViews.size(); i++) {
+            if (projectActivityViews.get(i).id.equals(str)) {
                 spnWidget.setSelection(i);
                 return;
             }
         }
     }
 
-    public void a(ArrayList<ViewBean> arrayList, ViewBean viewBean) {
-        e.clear();
-        e.addAll(arrayList);
-        if (viewBean != null) {
-            e.add(0, viewBean);
+    public void a(ArrayList<ViewBean> activityViews, ViewBean fab) {
+        projectActivityViews.clear();
+        projectActivityViews.addAll(activityViews);
+        if (fab != null) {
+            projectActivityViews.add(0, fab);
         }
-        f.notifyDataSetChanged();
+        idsAdapter.notifyDataSetChanged();
     }
 
-    private void a() {
-        a(0, Resources.string.property_group_basic);
-        a(1, Resources.string.property_group_recent);
-        a(2, Resources.string.property_group_event);
+    private void initializeGroups() {
+        addGroup(0, Resources.string.property_group_basic);
+        addGroup(1, Resources.string.property_group_recent);
+        addGroup(2, Resources.string.property_group_event);
     }
 
-    private void a(int i2, int i3) {
-        a aVar = new a(getContext());
-        aVar.a(i2, i3);
-        aVar.setTag(i2);
-        layoutPropertyGroup.addView(aVar);
+    private void addGroup(int id, int labelResId) {
+        GroupItem group = new GroupItem(getContext());
+        group.configure(id, labelResId);
+        group.setTag(id);
+        layoutPropertyGroup.addView(group);
     }
 
-    public void a(ViewBean viewBean) {
-        if (l == null) {
-            l = new b(getContext());
-            l.a("see_all", Resources.drawable.color_more_96, Resources.string.common_word_see_all);
-            l.a(viewBean);
-            layoutPropertySeeAll.addView(l);
+    private void a(ViewBean viewBean) {
+        if (seeAll == null) {
+            seeAll = new SeeAllPropertiesFloatingItem(getContext());
+            seeAll.configure(Resources.drawable.color_more_96, Resources.string.common_word_see_all);
+            seeAll.setView(viewBean);
+            layoutPropertySeeAll.addView(seeAll);
             return;
         }
-        l.a(viewBean);
+        seeAll.setView(viewBean);
     }
 
-    class c extends BaseAdapter {
+    private static class ViewIdsAdapter extends BaseAdapter {
 
-        public Context a;
-        public int layoutPosition;
-        public ArrayList<ViewBean> viewBeanList;
+        private final Context context;
+        private int selectedItemPosition;
+        private final ArrayList<ViewBean> views;
 
-        public c(Context context, ArrayList<ViewBean> arrayList) {
-            a = context;
-            viewBeanList = arrayList;
+        public ViewIdsAdapter(Context context, ArrayList<ViewBean> arrayList) {
+            this.context = context;
+            views = arrayList;
         }
 
-        public void a(int position) {
-            layoutPosition = position;
+        private void setPosition(int position) {
+            selectedItemPosition = position;
         }
 
         @Override
         public int getCount() {
-            if (viewBeanList == null) return 0;
-            return viewBeanList.size();
+            if (views == null) {
+                return 0;
+            } else {
+                return views.size();
+            }
         }
 
-        public View getDropDownView(int position, View view, ViewGroup viewGroup) {
-            return a(position, view, viewGroup, layoutPosition == position, true);
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return getSpinnerItem(position, convertView, selectedItemPosition == position, true);
         }
 
         @Override
         public ViewBean getItem(int position) {
-            return viewBeanList.get(position);
+            return views.get(position);
         }
 
         @Override
@@ -365,93 +369,88 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return a(position, convertView, parent, false, false);
+            return getSpinnerItem(position, convertView, false, false);
         }
 
-        public int getLayoutPosition() {
-            return layoutPosition;
+        private int getSelectedItemPosition() {
+            return selectedItemPosition;
         }
 
-        private ViewIdSpinnerItem a(int position, View convertView, ViewGroup parent, boolean z, boolean z2) {
-            ViewIdSpinnerItem viewIdSpinnerItem;
+        private ViewIdSpinnerItem getSpinnerItem(int position, View convertView, boolean isSelected, boolean isDropDownView) {
+            ViewIdSpinnerItem item;
             if (convertView != null) {
-                viewIdSpinnerItem = (ViewIdSpinnerItem) convertView;
+                item = (ViewIdSpinnerItem) convertView;
             } else {
-                viewIdSpinnerItem = new ViewIdSpinnerItem(a);
-                viewIdSpinnerItem.setTextSize(Resources.dimen.text_size_body_small);
+                item = new ViewIdSpinnerItem(context);
+                item.setTextSize(Resources.dimen.text_size_body_small);
             }
-            viewIdSpinnerItem.setDropDown(z2);
-            ViewBean viewBean = viewBeanList.get(position);
-            viewIdSpinnerItem.a(ViewBean.getViewTypeResId(viewBean.type), viewBean.id, z);
-            return viewIdSpinnerItem;
+            item.setDropDown(isDropDownView);
+
+            ViewBean view = views.get(position);
+            item.a(ViewBean.getViewTypeResId(view.type), view.id, isSelected);
+            return item;
         }
     }
 
-    class a extends LinearLayout implements View.OnClickListener {
+    private class GroupItem extends LinearLayout implements View.OnClickListener {
 
-        public int a;
-        public View propertyGroupItem;
-        public TextView tvTitle;
+        private TextView title;
 
-        public a(Context context) {
+        public GroupItem(Context context) {
             super(context);
-            a(context);
+            initialize(context);
         }
 
-        private void a(Context context) {
+        private void initialize(Context context) {
             wB.a(context, this, Resources.layout.property_group_item);
-            propertyGroupItem = findViewById(Resources.id.property_group_item);
-            tvTitle = findViewById(Resources.id.tv_title);
-        }
-
-        public void onClick(View view) {
-            r = (Integer) view.getTag();
-            e();
-        }
-
-        public void a(int i, int i2) {
-            a = i;
-            setTag(i);
-            tvTitle.setText(xB.b().a(getContext(), i2));
-            setOnClickListener(this);
-        }
-    }
-
-    class b extends LinearLayout implements View.OnClickListener {
-
-        public String a;
-        public View propertyMenuItem;
-        public ImageView imgIcon;
-        public TextView tvTitle;
-        public TextView tvSubtitle;
-        public ViewBean viewBean;
-
-        public b(Context context) {
-            super(context);
-            wB.a(context, this, Resources.layout.property_grid_item);
-            propertyMenuItem = findViewById(Resources.id.property_menu_item);
-            imgIcon = findViewById(Resources.id.img_icon);
-            tvTitle = findViewById(Resources.id.tv_title);
-            tvSubtitle = findViewById(Resources.id.tv_sub_title);
+            title = findViewById(Resources.id.tv_title);
         }
 
         @Override
         public void onClick(View view) {
-            if (o != null) {
-                o.a(ViewProperty.this.c.getXmlName(), viewBean);
+            selectedGroupId = (Integer) view.getTag();
+            e();
+        }
+
+        private void configure(int id, int labelResId) {
+            setTag(id);
+            title.setText(xB.b().a(getContext(), labelResId));
+            setOnClickListener(this);
+        }
+    }
+
+    private class SeeAllPropertiesFloatingItem extends LinearLayout implements View.OnClickListener {
+
+        private final View propertyMenuItem;
+        private final ImageView icon;
+        private final TextView title;
+        private ViewBean viewBean;
+
+        public SeeAllPropertiesFloatingItem(Context context) {
+            super(context);
+
+            wB.a(context, this, Resources.layout.property_grid_item);
+            propertyMenuItem = findViewById(Resources.id.property_menu_item);
+            icon = findViewById(Resources.id.img_icon);
+            title = findViewById(Resources.id.tv_title);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (propertyListener != null) {
+                propertyListener.a(projectFile.getXmlName(), viewBean);
             }
         }
 
-        public void a(String str, int i, int i2) {
+        private void configure(int imageResId, int propertyNameResId) {
             propertyMenuItem.setVisibility(VISIBLE);
-            a = str;
-            imgIcon.setImageResource(i);
-            tvTitle.setText(xB.b().a(getContext(), i2));
-            tvTitle.setTextColor(0xffff951b);
+            icon.setImageResource(imageResId);
+            title.setText(xB.b().a(getContext(), propertyNameResId));
+            title.setTextColor(0xffff951b);
             setOnClickListener(this);
         }
 
-        public void a(ViewBean viewBean) {
+        private void setView(ViewBean viewBean) {
             this.viewBean = viewBean;
         }
     }
