@@ -24,8 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.besome.sketch.acc.MyPageSettingsActivity;
-import com.besome.sketch.acc.ProfileActivity;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.ads.consent.ConsentForm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -70,7 +68,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public l n;
     public MainDrawer o;
     public ViewPager p;
-    public String[] r;
     public int[] s = {Resources.drawable.android_os_96, Resources.drawable.ic_class_48, Resources.drawable.globe_96};
     public DB t;
     public DB u;
@@ -126,18 +123,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         invalidateOptionsMenu();
         if (resultCode == -1) {
             switch (requestCode) {
-                case 100:
-                    invalidateOptionsMenu();
-                    if (i.g().isEmpty()) {
-                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivityForResult(intent, 108);
-                    } else {
-                        toMyPageSettingsActivity();
-                    }
-                    if (o != null) o.i();
-                    break;
-
                 case 105:
                     l(0);
                     sB.a(this, data.getBooleanExtra("onlyConfig", true));
@@ -198,8 +183,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(C + 1));
         }
         D = u.a("U1I2", true);
-        r = new String[]{xB.b().a(this,
-                Resources.string.main_tab_title_myproject)};
         l = findViewById(Resources.id.toolbar);
         a(l);
         d().d(true);
@@ -387,12 +370,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    private void toMyPageSettingsActivity() {
-        Intent intent = new Intent(getApplicationContext(), MyPageSettingsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, 111);
-    }
-
     @Override // androidx.viewpager.widget.ViewPager.e
     public void b(int i) {
         if (i == 0) {
@@ -442,7 +419,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
         @Override // a.a.a.kk
         public CharSequence a(int i) {
-            return r[i];
+            return xB.b().a(MainActivity.this,
+                    Resources.string.main_tab_title_myproject);
         }
     }
 }
