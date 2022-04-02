@@ -4,9 +4,7 @@ import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,94 +13,48 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
-import com.besome.sketch.acc.GoogleSignActivity;
 import com.besome.sketch.language.LanguageActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.sketchware.remod.Resources;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Locale;
 
 import a.a.a.BB;
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.nd;
 import a.a.a.oB;
-import a.a.a.rB;
-import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
-import a.a.a.yB;
-import a.a.a.zd;
 import mod.hey.studios.util.Helper;
 
 public class InitActivity extends BaseAppCompatActivity {
 
-    private final HashMap<String, String> u = new HashMap<>();
     private DB sharedPreferenceP1;
-    private DB sharedPreferenceP16;
-    private String loginId;
-    private String accessToken;
-    private long expireTime;
-    private boolean q;
     private boolean r;
-    private String t;
 
     private void continueToMainActivity() {
         sharedPreferenceP1.a("P1I0", Integer.valueOf(GB.d(getApplicationContext())));
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        if (t != null) {
-            intent.putExtra("auto_run_activity", t);
-        }
-        if (!u.isEmpty()) {
-            for (String key : u.keySet()) {
-                intent.putExtra(key, u.get(key));
-            }
-        }
         startActivity(intent);
         finish();
-    }
-
-    private boolean m() {
-        return false;
-    }
-
-    private void onLoginFail() {
-        i.q();
-        bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.account_error_failed_login), 0).show();
-        z();
     }
 
     @Override // androidx.fragment.app.FragmentActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 101) {
-            if (resultCode == -1) {
-                loginId = data.getStringExtra("sns_id");
-                accessToken = data.getStringExtra("access_token");
-                expireTime = data.getLongExtra("expire_time", 0);
-                q = true;
-                new LoginAsyncTask(getApplicationContext()).execute();
-            } else {
-                i.q();
-                z();
-            }
-        } else if (requestCode == 190) {
+        if (requestCode == 190) {
             if (resultCode != -1) {
                 showUpdateAvailableDialog();
             }
         } else if (requestCode == 221) {
             finish();
-        } else if (requestCode == 507) {
-            new a(getApplicationContext()).execute();
         } else if (requestCode != 9501) {
             z();
         } else if (n()) {
@@ -114,25 +66,12 @@ public class InitActivity extends BaseAppCompatActivity {
     // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (!isTaskRoot()) {
             finish();
             return;
         }
-
         setContentView(Resources.layout.init);
-        try {
-            Uri data = getIntent().getData();
-            for (String str : data.getQueryParameterNames()) {
-                u.put(str, data.getQueryParameter(str));
-            }
-            if (data.getLastPathSegment().equals("deeplink.jsp")) {
-                t = data.getQueryParameter("activity");
-            }
-        } catch (Exception ignored) {
-        }
         sharedPreferenceP1 = new DB(getApplicationContext(), "P1");
-        sharedPreferenceP16 = new DB(getApplicationContext(), "P16");
         ImageView img_bi = findViewById(Resources.id.img_bi);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet
@@ -143,24 +82,6 @@ public class InitActivity extends BaseAppCompatActivity {
         animatorSet.start();
         // Removed binding of no-op AnimatorListenerAdapter to animatorSet
         new BB().a(this);
-        new a(getApplicationContext()).execute();
-    }
-
-    @Override // androidx.fragment.app.FragmentActivity
-    public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        try {
-            Uri data = intent.getData();
-            for (String str : data.getQueryParameterNames()) {
-                u.put(str, data.getQueryParameter(str));
-            }
-            if ("deeplink.jsp".equals(data.getLastPathSegment())) {
-                t = data.getQueryParameter("activity");
-            }
-            z();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override // a.a.a.nd.a, androidx.fragment.app.FragmentActivity
@@ -226,21 +147,6 @@ public class InitActivity extends BaseAppCompatActivity {
 
     private void s() {
         lC.d();
-    }
-
-    private void showAccountSuspendedDialog() {
-        aB dialog = new aB(this);
-        dialog.a(Resources.drawable.color_ban_96);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.account_dialog_suspended_title));
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.account_dialog_suspended_description, i.e()));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
-            if (!mB.a()) {
-                dialog.dismiss();
-                i.q();
-                sB.a(InitActivity.this, true);
-            }
-        });
-        dialog.show();
     }
 
     private void showLanguageSettingsDialog() {
@@ -331,29 +237,12 @@ public class InitActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void loginWithGoogleAccount() {
-        if (!i.n()) {
-            onLoginFail();
-        } else if (zd.a(this, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(getApplicationContext(), GoogleSignActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("google_account", i.e());
-            startActivityForResult(intent, 101);
-        } else {
-            onLoginFail();
-        }
-    }
-
     private boolean n() {
         boolean hasStorageAccess = super.j();
         if (!hasStorageAccess) {
             int p1I0Value = sharedPreferenceP1.a("P1I0", 0);
             if (p1I0Value <= 0 || p1I0Value >= 71) {
-                if (i.a()) {
-                    loginWithGoogleAccount();
-                } else {
-                    z();
-                }
+                z();
             } else if (nd.a((Activity) this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 showStorageDialog();
             } else {
@@ -363,124 +252,4 @@ public class InitActivity extends BaseAppCompatActivity {
         return hasStorageAccess;
     }
 
-    private class LoginAsyncTask extends MA {
-
-        private HashMap<String, Object> loginReturnMap;
-        private String d;
-
-        public LoginAsyncTask(Context context) {
-            super(context);
-            InitActivity.this.a(this);
-        }
-
-        @Override // a.a.a.MA
-        public void a() {
-            if (loginReturnMap == null) {
-                /* Clean up stored metadata about account */
-                i.q();
-            }
-            if (i.l()) {
-                showAccountSuspendedDialog();
-            } else {
-                z();
-            }
-        }
-
-        @Override // a.a.a.MA
-        public void b() {
-            rB rBVar = new rB();
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("login_id", loginId);
-            hashMap.put("is_sns_user", "Y");
-            hashMap.put("sns_kind", "google");
-            hashMap.put("access_token", accessToken);
-            loginReturnMap = rBVar.b(hashMap);
-            if (loginReturnMap != null) {
-                i.a(loginReturnMap);
-                if (!i.l()) {
-                    if (!i.b().equals(GB.b(getApplicationContext()))) {
-                        HashMap<String, Object> hashMap2 = new HashMap<>();
-                        hashMap2.put("login_id", loginId);
-                        hashMap2.put("session_id", yB.c(loginReturnMap, "session_id"));
-                        hashMap2.put("device_id", GB.b(getApplicationContext()));
-                        rBVar.Rb(hashMap2);
-                    }
-                    String p16I1Value = sharedPreferenceP16.f("P16I1");
-                    if (p16I1Value.isEmpty() && !yB.c(loginReturnMap, "gcm_id").equals(p16I1Value)) {
-                        hashMap.clear();
-                        if (loginId == null) {
-                            loginId = i.e();
-                        }
-                        hashMap.put("login_id", loginId);
-                        hashMap.put("session_id", yB.c(loginReturnMap, "session_id"));
-                        hashMap.put("gcm_id", p16I1Value);
-                        d = rBVar.Sb(hashMap);
-                    }
-                }
-            }
-        }
-
-        @Override // a.a.a.MA
-        public void a(String str) {
-            i.q();
-            z();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            b(s);
-        }
-    }
-
-    class a extends MA {
-
-        public boolean c = false;
-
-        public a(Context context) {
-            super(context);
-            InitActivity.this.a(this);
-        }
-
-        @Override // a.a.a.MA
-        public void a() {
-            if (!GB.h(getApplicationContext())) {
-                z();
-                i.q();
-            } else if (c) {
-                showUpdateAvailableDialog();
-            } else if (n()) {
-                r();
-            }
-        }
-
-        @Override // a.a.a.MA
-        public void b() {
-            if (GB.h(getApplicationContext())) {
-                c = m();
-                if (sharedPreferenceP16.f("P16I1").isEmpty()) {
-                    FirebaseInstanceId.c().a();
-                }
-            }
-        }
-
-        @Override // a.a.a.MA
-        public void a(String str) {
-            z();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            b(s);
-        }
-    }
 }
