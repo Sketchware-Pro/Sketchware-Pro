@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:id="@id/layout_main_drawer_header" android:background="#fffafafa" android:layout_width="320.0dip" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/layout_main_drawer_header"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="#fffafafa"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="200.0dip"
+        android:layout_height="200dp"
         android:background="@drawable/side_menu_bg_puzzle"
         android:clickable="true"
-        android:elevation="8.0dip"
+        android:elevation="8dp"
+        android:focusable="true"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:paddingStart="16.0dip"
-        android:paddingLeft="16.0dip"
-        android:paddingTop="8.0dip"
-        android:paddingEnd="16.0dip"
-        android:paddingRight="16.0dip"
-        android:paddingBottom="8.0dip">
-
-    </LinearLayout>
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp" />
 </LinearLayout>
