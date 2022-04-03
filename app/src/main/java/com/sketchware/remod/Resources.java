@@ -354,6 +354,7 @@ public class Resources {
         public static final int img_theme_color_help = 0x7f0801d4;
         public static final int img_title_logo = 0x7f0801d9;
         public static final int img_user_icon = 0x7f0801df;
+        public static final int imgv_src_size = 0x7f0801e9;
         public static final int layout_ads = 0x7f08024e;
         public static final int layout_apk_path = 0x7f080253;
         public static final int layout_apk_url = 0x7f080254;
@@ -403,6 +404,7 @@ public class Resources {
         public static final int moreblock_create = 0x7f08033a;
         public static final int name = 0x7f080349;
         public static final int page_title = 0x7f08035e;
+        public static final int pager_soruce_code = 0x7f080362;
         public static final int pane = 0x7f080368;
         public static final int project_buttons = 0x7f08037c;
         public static final int property_contents = 0x7f080387;
@@ -425,6 +427,7 @@ public class Resources {
         public static final int social_fb = 0x7f0803ff;
         public static final int social_medium = 0x7f080400;
         public static final int social_slack = 0x7f080401;
+        public static final int spn_src_list = 0x7f08040a;
         public static final int spn_widget = 0x7f08040c;
         public static final int sub_separator = 0x7f080419;
         public static final int sub_items = 0x7f080417;
@@ -725,6 +728,7 @@ public class Resources {
         public static final int property_subheader = 0x7f0b0141;
         public static final int property_switch_item = 0x7f0b0142;
         public static final int property_switch_item_singleline = 0x7f0b0143;
+        public static final int src_viewer = 0x7f0b0199;
         public static final int view_events = 0x7f0b01bf;
         public static final int view_properties = 0x7f0b01c0;
         public static final int view_property = 0x7f0b01c1;
@@ -793,6 +797,7 @@ public class Resources {
         public static final int block_category_view_func = 0x7f0e00aa;
         public static final int common_error_an_error_occurred = 0x7f0e03cc;
         public static final int common_error_failed_to_save = 0x7f0e03d3;
+        public static final int common_error_unknown = 0x7f0e03d4;
         public static final int common_message_check_network = 0x7f0e03e4;
         /* That typo exists in Sketchware from Google Play. */
         public static final int common_message_complete_copy_to_clipborad = 0x7f0e03e6;

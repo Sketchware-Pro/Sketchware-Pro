@@ -1,6 +1,5 @@
 package com.besome.sketch.common;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +30,6 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 
-@SuppressLint("ResourceType")
 public class SrcViewerActivity extends AppCompatActivity {
     public String sc_id;
     public Spinner filesListSpinner;
@@ -41,7 +40,7 @@ public class SrcViewerActivity extends AppCompatActivity {
 
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(2131427737);  //src_viewer.xml
+        setContentView(Resources.layout.src_viewer);
 
         codeViewer = new CodeEditor(this);
         codeViewer.setTypefaceText(Typeface.MONOSPACE);
@@ -50,7 +49,7 @@ public class SrcViewerActivity extends AppCompatActivity {
         codeViewer.setTextSize(sourceCodeFontSize);
         codeViewer.setEditorLanguage(new JavaLanguage());
 
-        LinearLayout contentLayout = (LinearLayout) (findViewById(2131231586).getParent());
+        LinearLayout contentLayout = (LinearLayout) (findViewById(Resources.id.pager_soruce_code).getParent());
         contentLayout.removeAllViews();
         contentLayout.addView(codeViewer);
 
@@ -61,10 +60,10 @@ public class SrcViewerActivity extends AppCompatActivity {
         currentPageFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
         sc_id = (bundle != null) ? bundle.getString("sc_id") : getIntent().getStringExtra("sc_id");
 
-        ImageView changeFontSize = findViewById(2131231209);
+        ImageView changeFontSize = findViewById(Resources.id.imgv_src_size);
         changeFontSize.setOnClickListener((v -> showChangeFontSizeDialog()));
 
-        filesListSpinner = findViewById(2131231754);
+        filesListSpinner = findViewById(Resources.id.spn_src_list);
         filesListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -87,7 +86,7 @@ public class SrcViewerActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
 
                     if (srcCodeBean == null) {
-                        bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624916), 0).show();
+                        bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.common_error_unknown), Toast.LENGTH_SHORT).show();
                     } else {
                         filesListSpinner.setAdapter(new filesListSpinnerAdapter());
                         for (SrcCodeBean src : srcCodeBean) {
