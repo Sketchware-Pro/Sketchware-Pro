@@ -31,15 +31,17 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 
 public class SrcViewerActivity extends AppCompatActivity {
-    public String sc_id;
-    public Spinner filesListSpinner;
-    public ArrayList<SrcCodeBean> srcCodeBean;
-    public String currentPageFileName;
-    public int sourceCodeFontSize = 12;
-    public CodeEditor codeViewer;
 
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    private String sc_id;
+    private Spinner filesListSpinner;
+    private ArrayList<SrcCodeBean> srcCodeBean;
+    private String currentPageFileName;
+    private int sourceCodeFontSize = 12;
+    private CodeEditor codeViewer;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(Resources.layout.src_viewer);
 
         codeViewer = new CodeEditor(this);
@@ -58,7 +60,7 @@ public class SrcViewerActivity extends AppCompatActivity {
          * currentPageFileName corresponds to the filename of which layout or activity the user is currently in.
          */
         currentPageFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
-        sc_id = (bundle != null) ? bundle.getString("sc_id") : getIntent().getStringExtra("sc_id");
+        sc_id = (savedInstanceState != null) ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
 
         ImageView changeFontSize = findViewById(Resources.id.imgv_src_size);
         changeFontSize.setOnClickListener((v -> showChangeFontSizeDialog()));
@@ -72,7 +74,6 @@ public class SrcViewerActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -80,7 +81,7 @@ public class SrcViewerActivity extends AppCompatActivity {
 
 
         new Thread(() -> {
-            srcCodeBean = (new yq(getBaseContext(), sc_id)).a(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            srcCodeBean = new yq(getBaseContext(), sc_id).a(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             try {
                 runOnUiThread(() -> {
@@ -88,7 +89,7 @@ public class SrcViewerActivity extends AppCompatActivity {
                     if (srcCodeBean == null) {
                         bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.common_error_unknown), Toast.LENGTH_SHORT).show();
                     } else {
-                        filesListSpinner.setAdapter(new filesListSpinnerAdapter());
+                        filesListSpinner.setAdapter(new FilesListSpinnerAdapter());
                         for (SrcCodeBean src : srcCodeBean) {
                             if (src.srcFileName.equals(currentPageFileName)) {
                                 filesListSpinner.setSelection(srcCodeBean.indexOf(src));
@@ -99,18 +100,18 @@ public class SrcViewerActivity extends AppCompatActivity {
                     }
                 });
             } catch (Exception ignored) {
-                //May occur if the activity is killed
+                // May occur if the activity is killed
             }
         }).start();
     }
 
-
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString("sc_id", this.sc_id);
-        super.onSaveInstanceState(bundle);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
     }
 
-    public void showChangeFontSizeDialog() {
+    private void showChangeFontSizeDialog() {
         NumberPicker picker = new NumberPicker(this);
         picker.setMinValue(8);
         picker.setMaxValue(30);
@@ -124,10 +125,10 @@ public class SrcViewerActivity extends AppCompatActivity {
                 Gravity.CENTER));
 
         new AlertDialog.Builder(this)
-                .setTitle("Change Font Size")
+                .setTitle("Select font size")
                 .setIcon(Resources.drawable.ic_font_48dp)
                 .setView(layout)
-                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     sourceCodeFontSize = picker.getValue();
                     codeViewer.setTextSize(sourceCodeFontSize);
                 })
@@ -135,15 +136,12 @@ public class SrcViewerActivity extends AppCompatActivity {
                 .show();
     }
 
-    public class filesListSpinnerAdapter extends BaseAdapter {
+    public class FilesListSpinnerAdapter extends BaseAdapter {
 
-        public filesListSpinnerAdapter() {
-        }
-
-        private View getCustomSpinnerView(int position, View _view, boolean isCheckmarkVisible) {
-            CommonSpinnerItem spinnerItem = (_view != null) ? (CommonSpinnerItem) _view :
+        private View getCustomSpinnerView(int position, View view, boolean isCurrentlyViewingFile) {
+            CommonSpinnerItem spinnerItem = (view != null) ? (CommonSpinnerItem) view :
                     new CommonSpinnerItem(SrcViewerActivity.this);
-            spinnerItem.a((srcCodeBean.get(position)).srcFileName, isCheckmarkVisible);
+            spinnerItem.a((srcCodeBean.get(position)).srcFileName, isCurrentlyViewingFile);
             return spinnerItem;
         }
 
@@ -169,10 +167,8 @@ public class SrcViewerActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup var3) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             return getCustomSpinnerView(position, convertView, false);
         }
-
     }
-
 }
