@@ -1,13 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout_srclist" android:layout_width="fill_parent" android:layout_height="48.0dip">
-        <Spinner android:id="@id/spn_src_list" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" android:spinnerMode="dialog" />
-        <ImageView android:id="@id/imgv_src_size" android:background="#50828282" android:clickable="true" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_margin="8.0dip" android:src="@drawable/selector_ic_format_size_white_24" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/layout_srclist"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@id/spn_src_list"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:spinnerMode="dialog" />
+
+        <ImageView
+            android:id="@id/imgv_src_size"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="8dp"
+            android:background="#50828282"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/selector_ic_format_size_white_24" />
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
-        <com.besome.sketch.lib.ui.CustomViewPager android:id="@id/pager_soruce_code" android:scrollbars="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-        <TextView android:id="@id/tv_loading" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="16.0dip" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.besome.sketch.lib.ui.CustomViewPager
+            android:id="@id/pager_soruce_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@id/tv_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp" />
     </LinearLayout>
-    <LinearLayout android:orientation="vertical" android:id="@id/layout_ads" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@id/layout_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" />
 </LinearLayout>
