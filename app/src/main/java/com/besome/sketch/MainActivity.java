@@ -143,10 +143,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                         y.g();
                     }
                     break;
-
-                case 505:
-                    if (o != null) o.i();
-                    break;
             }
         }
     }
