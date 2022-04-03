@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.AttributeSet;
@@ -35,10 +34,10 @@ import a.a.a.xB;
 import mod.hilal.saif.activities.tools.Tools;
 import mod.ilyasse.activities.about.AboutModActivity;
 
-public class MainDrawer extends LinearLayout {
+public class MainDrawer extends LinearLayout implements View.OnClickListener {
 
-    public Context a;
-    public a b;
+    public Context mContext;
+    public DrawerItemAdapter b;
     public ImageView c;
     public ImageView d;
     public ImageView e;
@@ -47,46 +46,16 @@ public class MainDrawer extends LinearLayout {
 
     public MainDrawer(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
     public MainDrawer(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        a(context);
+        initialize(context);
     }
 
-    /**
-     * Handle onClick of Slack icon
-     */
-    public final void g() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.a);
-        builder.setItems(new String[]{
-                        xB.b().a(getContext(), Resources.string.main_drawer_context_menu_title_slack_invitation),
-                        xB.b().a(getContext(), Resources.string.main_drawer_context_menu_title_slack_open)},
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            f();
-                        } else {
-                            e();
-                        }
-                    }
-                });
-        AlertDialog create = builder.create();
-        create.setCanceledOnTouchOutside(true);
-        create.show();
-    }
-
-    /**
-     * Open the change log dialog (originally open Docs?)
-     */
-    public final void h() {
-        changeLogDialog(a);
-    }
-
-    public final void a(Context context) {
-        a = context;
+    public final void initialize(Context context) {
+        mContext = context;
         f = new EA(context);
         g = new Zo(context);
         wB.a(context, this, 2131427502);
@@ -97,129 +66,120 @@ public class MainDrawer extends LinearLayout {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new ci());
-        b = new a();
+        b = new DrawerItemAdapter();
         recyclerView.setAdapter(b);
         d();
-        c();
+        c.setOnClickListener(this);
+        d.setOnClickListener(this);
+        e.setOnClickListener(this);
     }
 
-    /**
-     * Handle onClick of Facebook icon
-     */
-    public final void b() {
-        String facebookUrl = a.getString(Resources.string.facebook_url);
-        try {
-            a.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookUrl)));
-        } catch (Exception unused) {
-            a.startActivity(Intent.createChooser(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)),
-                    xB.b().a(getContext(), Resources.string.common_word_choose)));
+    @Override
+    public void onClick(View view) {
+        if (!mB.a()) {
+            switch (view.getId()) {
+                case Resources.id.social_slack:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
+                    builder.setItems(new String[]{
+                                    xB.b().a(getContext(), Resources.string.main_drawer_context_menu_title_slack_invitation),
+                                    xB.b().a(getContext(), Resources.string.main_drawer_context_menu_title_slack_open)},
+                            (dialog, which) -> {
+                                if (which == 0) {
+                                    f();
+                                } else {
+                                    if (GB.h(mContext)) {
+                                        try {
+                                            mContext.startActivity(mContext.getPackageManager().getLaunchIntentForPackage("com.Slack"));
+                                        } catch (Exception e1) {
+                                            f();
+                                        }
+                                    } else {
+                                        bB.a(mContext, xB.b().a(getContext(), Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                    AlertDialog create = builder.create();
+                    create.setCanceledOnTouchOutside(true);
+                    create.show();
+                    break;
+
+                case Resources.id.social_fb:
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.besome_blog_url)));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                        mContext.startActivity(intent);
+                    } catch (ActivityNotFoundException unused1) {
+                        mContext.startActivity(Intent.createChooser(
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.besome_blog_url))),
+                                xB.b().a(getContext(), 2131624976)
+                        ));
+                    }
+                    break;
+
+                case Resources.id.social_medium:
+                    String facebookUrl = mContext.getString(Resources.string.facebook_url);
+                    try {
+                        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookUrl)));
+                    } catch (Exception unused) {
+                        mContext.startActivity(Intent.createChooser(
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)),
+                                xB.b().a(getContext(), Resources.string.common_word_choose)));
+                    }
+            }
         }
-    }
-
-    public final void c() {
-        c.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    b();
-                }
-            }
-        });
-        d.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    a();
-                }
-            }
-        });
-        e.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    g();
-                }
-            }
-        });
     }
 
     /**
      * Initialize (main) drawer items, such as Changelog
      */
     public final void d() {
-        DrawerItem aboutModdersItem = DrawerItem.eMenu_orders;
-        aboutModdersItem.i = Resources.drawable.side_menu_info_icon_over_white;
-        aboutModdersItem.h = "About Modders";
+        DrawerItem menuAboutModders = DrawerItem.MENU_ABOUT_MODDERS;
+        menuAboutModders.i = Resources.drawable.side_menu_info_icon_over_white;
+        menuAboutModders.h = "About Modders";
 
-        DrawerItem docsItem = DrawerItem.eMenu_docs;
-        docsItem.i = Resources.drawable.icon_file_white_96;
-        docsItem.h = "Changelog";
+        DrawerItem menuChangelog = DrawerItem.MENU_CHANGELOG;
+        menuChangelog.i = Resources.drawable.icon_file_white_96;
+        menuChangelog.h = "Changelog";
 
-        DrawerItem changelogItem = DrawerItem.eMenu_system_settings;
-        changelogItem.i = Resources.drawable.side_menu_setting_icon_over_white;
-        changelogItem.h = xB.b().a(getContext(), Resources.string.main_drawer_title_system_settings);
+        DrawerItem menuSystemSettings = DrawerItem.MENU_SYSTEM_SETTINGS;
+        menuSystemSettings.i = Resources.drawable.side_menu_setting_icon_over_white;
+        menuSystemSettings.h = xB.b().a(getContext(), Resources.string.main_drawer_title_system_settings);
 
-        DrawerItem programInfoItem = DrawerItem.eMenu_program_info;
-        programInfoItem.i = Resources.drawable.side_menu_info_icon_over_white;
-        programInfoItem.h = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
+        DrawerItem menuProgramInfo = DrawerItem.MENU_PROGRAM_INFO;
+        menuProgramInfo.i = Resources.drawable.side_menu_info_icon_over_white;
+        menuProgramInfo.h = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
 
-        DrawerItem exportUrlsItem = DrawerItem.eMenu_export_urls;
-        exportUrlsItem.i = Resources.drawable.ic_export_his_white_48dp;
-        exportUrlsItem.h = "Developer Tools";
+        DrawerItem menuDeveloperTools = DrawerItem.MENU_DEVELOPER_TOOLS;
+        menuDeveloperTools.i = Resources.drawable.ic_export_his_white_48dp;
+        menuDeveloperTools.h = "Developer Tools";
 
-        DrawerItem createKeystoreItem = DrawerItem.eMenu_create_keystore;
-        createKeystoreItem.i = Resources.drawable.new_96;
-        createKeystoreItem.h = "Create Release Keystore";
-    }
-
-    public final void e() {
-        if (GB.h(a)) {
-            try {
-                a.startActivity(a.getPackageManager().getLaunchIntentForPackage("com.Slack"));
-            } catch (Exception e) {
-                f();
-            }
-        } else {
-            bB.a(a, xB.b().a(getContext(), Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
-        }
+        DrawerItem menuCreateKeystore = DrawerItem.MENU_CREATE_KEYSTORE;
+        menuCreateKeystore.i = Resources.drawable.new_96;
+        menuCreateKeystore.h = "Create Release Keystore";
     }
 
     public final void f() {
-        if (GB.h(a)) {
+        if (GB.h(mContext)) {
             try {
                 Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getContext(), Resources.string.slack_url_primary)));
                 chooser.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                a.startActivity(Intent.createChooser(
+                mContext.startActivity(Intent.createChooser(
                         chooser,
                         xB.b().a(getContext(), Resources.string.common_word_choose)
                 ));
             } catch (Exception e) {
-                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(a.getString(Resources.string.slack_url_secondary)));
+                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.slack_url_secondary)));
                 chooser.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                a.startActivity(Intent.createChooser(
+                mContext.startActivity(Intent.createChooser(
                         chooser,
                         xB.b().a(getContext(), Resources.string.common_word_choose)
                 ));
             }
         } else {
-            bB.a(a, xB.b().a(getContext(), Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public final void a() {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(a.getString(Resources.string.besome_blog_url)));
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            a.startActivity(intent);
-        } catch (ActivityNotFoundException unused) {
-            a.startActivity(Intent.createChooser(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(a.getString(Resources.string.besome_blog_url))),
-                    xB.b().a(getContext(), 2131624976)
-            ));
+            bB.a(mContext, xB.b().a(getContext(), Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -234,13 +194,12 @@ public class MainDrawer extends LinearLayout {
      * A class representing an item inside the Drawer
      */
     enum DrawerItem {
-        eMenu_orders,
-        eMenu_docs,
-        eMenu_system_settings,
-        eMenu_program_info,
-        //eMenu_language_settings,
-        eMenu_export_urls,
-        eMenu_create_keystore;
+        MENU_ABOUT_MODDERS,
+        MENU_CHANGELOG,
+        MENU_SYSTEM_SETTINGS,
+        MENU_PROGRAM_INFO,
+        MENU_DEVELOPER_TOOLS,
+        MENU_CREATE_KEYSTORE;
 
         /**
          * The label of the item
@@ -260,13 +219,13 @@ public class MainDrawer extends LinearLayout {
         }
     }
 
-    class a extends RecyclerView.a<RecyclerView.v> {
+    class DrawerItemAdapter extends RecyclerView.a<RecyclerView.v> {
         /**
          * Current Drawer item's ID ({@link Enum#ordinal()})
          */
-        public int c = -1;
+        public int drawerItem = -1;
 
-        public a() {
+        public DrawerItemAdapter() {
         }
 
         public int a() {
@@ -310,7 +269,7 @@ public class MainDrawer extends LinearLayout {
             }
         }
 
-        class MenuItemHolder extends RecyclerView.v {
+        class MenuItemHolder extends RecyclerView.v implements View.OnClickListener {
 
             public ImageView t;
             public TextView u;
@@ -319,40 +278,40 @@ public class MainDrawer extends LinearLayout {
                 super(view);
                 u = view.findViewById(Resources.id.tv_menu_name);
                 t = view.findViewById(Resources.id.img_icon);
-                view.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!mB.a()) {
-                            MainDrawer.a.this.c = j() - 1;
-                            int id = MainDrawer.a.this.c;
-                            MainDrawer.a.this.c(id);
-                            Activity activity = (Activity) MainDrawer.this.getContext();
-                            if (id == DrawerItem.eMenu_orders.ordinal()) {
-                                Intent intent = new Intent(activity, AboutModActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                activity.startActivity(intent);
-                            } else if (id == DrawerItem.eMenu_docs.ordinal()) {
-                                MainDrawer.this.h();
-                            } else if (id == DrawerItem.eMenu_system_settings.ordinal()) {
-                                Intent intent = new Intent(activity, SystemSettingActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                activity.startActivityForResult(intent, 107);
-                            } else if (id == DrawerItem.eMenu_program_info.ordinal()) {
-                                Intent intent = new Intent(activity, ProgramInfoActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                activity.startActivityForResult(intent, 105);
-                            } else if (id == DrawerItem.eMenu_export_urls.ordinal()) {
-                                Intent intent = new Intent(activity, Tools.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                activity.startActivity(intent);
-                            } else if (id == DrawerItem.eMenu_create_keystore.ordinal()) {
-                                Intent intent = new Intent(activity, NewKeyStoreActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                activity.startActivity(intent);
-                            }
-                        }
+                view.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                if (!mB.a()) {
+                    drawerItem = j() - 1;
+                    int id = drawerItem;
+                    DrawerItemAdapter.this.c(id);
+                    Activity activity = (Activity) MainDrawer.this.getContext();
+                    if (id == DrawerItem.MENU_ABOUT_MODDERS.ordinal()) {
+                        Intent intent = new Intent(activity, AboutModActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        activity.startActivity(intent);
+                    } else if (id == DrawerItem.MENU_CHANGELOG.ordinal()) {
+                        changeLogDialog(mContext);
+                    } else if (id == DrawerItem.MENU_SYSTEM_SETTINGS.ordinal()) {
+                        Intent intent = new Intent(activity, SystemSettingActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        activity.startActivityForResult(intent, 107);
+                    } else if (id == DrawerItem.MENU_PROGRAM_INFO.ordinal()) {
+                        Intent intent = new Intent(activity, ProgramInfoActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        activity.startActivityForResult(intent, 105);
+                    } else if (id == DrawerItem.MENU_DEVELOPER_TOOLS.ordinal()) {
+                        Intent intent = new Intent(activity, Tools.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        activity.startActivity(intent);
+                    } else if (id == DrawerItem.MENU_CREATE_KEYSTORE.ordinal()) {
+                        Intent intent = new Intent(activity, NewKeyStoreActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        activity.startActivity(intent);
                     }
-                });
+                }
             }
         }
     }
