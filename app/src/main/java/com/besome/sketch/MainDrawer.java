@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.help.ProgramInfoActivity;
 import com.besome.sketch.help.SystemSettingActivity;
-import com.besome.sketch.language.LanguageActivity;
 import com.besome.sketch.tools.NewKeyStoreActivity;
 import com.sketchware.remod.Resources;
 
@@ -84,22 +83,6 @@ public class MainDrawer extends LinearLayout {
      */
     public final void h() {
         changeLogDialog(a);
-    }
-
-    /**
-     * Configure the drawer item that's either "Subscribe" or "Purchase List"
-     */
-    public void i() {
-        if (g.h()) {
-            DrawerItem eMenu_orders = DrawerItem.eMenu_orders;
-            eMenu_orders.i = Resources.drawable.cart_filled_48;
-            eMenu_orders.h = xB.b().a(getContext(), Resources.string.main_drawer_title_purchase_list);
-        } else {
-            DrawerItem eMenu_orders = DrawerItem.eMenu_orders;
-            eMenu_orders.i = Resources.drawable.lock_48;
-            eMenu_orders.h = xB.b().a(getContext(), Resources.string.main_drawer_title_subscribe);
-        }
-        b.c();
     }
 
     public final void a(Context context) {
@@ -181,10 +164,6 @@ public class MainDrawer extends LinearLayout {
         programInfoItem.i = Resources.drawable.side_menu_info_icon_over_white;
         programInfoItem.h = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
 
-        DrawerItem languageSettingsItem = DrawerItem.eMenu_language_settings;
-        languageSettingsItem.i = Resources.drawable.language_48;
-        languageSettingsItem.h = xB.b().a(getContext(), Resources.string.main_drawer_title_language_settings);
-
         DrawerItem exportUrlsItem = DrawerItem.eMenu_export_urls;
         exportUrlsItem.i = Resources.drawable.ic_export_his_white_48dp;
         exportUrlsItem.h = "Developer Tools";
@@ -259,7 +238,7 @@ public class MainDrawer extends LinearLayout {
         eMenu_docs,
         eMenu_system_settings,
         eMenu_program_info,
-        eMenu_language_settings,
+        //eMenu_language_settings,
         eMenu_export_urls,
         eMenu_create_keystore;
 
@@ -300,76 +279,43 @@ public class MainDrawer extends LinearLayout {
 
         public RecyclerView.v b(ViewGroup viewGroup, int i) {
             if (i == 0) {
-                return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
+                return new EmptyViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
                         Resources.layout.main_drawer_header,
                         viewGroup,
                         false
                 ));
             }
-            return new b(LayoutInflater.from(viewGroup.getContext()).inflate(
+            return new MenuItemHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
                     Resources.layout.main_drawer_item,
                     viewGroup,
                     false
             ));
         }
 
-        public void b(RecyclerView.v vh, int i) {
-            if (vh instanceof ViewHolder) {
-                ViewHolder viewHolder = (ViewHolder) vh;
-                if (f.a()) {
-                    viewHolder.u.setVisibility(VISIBLE);
-                    viewHolder.t.setVisibility(VISIBLE);
-                    if (f.g().isEmpty()) {
-                        viewHolder.u.setText(f.e());
-                    } else {
-                        viewHolder.u.setText(f.g());
-                    }
-                    if (f.m()) {
-                        viewHolder.t.setImageResource(Resources.drawable.facebook_50);
-                    } else if (f.n()) {
-                        viewHolder.t.setImageResource(Resources.drawable.google_96);
-                    } else {
-                        viewHolder.t.setVisibility(GONE);
-                    }
-                } else {
-                    viewHolder.u.setVisibility(GONE);
-                    viewHolder.t.setVisibility(GONE);
+        public void b(RecyclerView.v viewHolder, int i) {
+            if (!(viewHolder instanceof EmptyViewHolder)) {
+                if (viewHolder instanceof MenuItemHolder) {
+                    MenuItemHolder menuItemHolder = (MenuItemHolder) viewHolder;
+                    menuItemHolder.t.setImageResource(DrawerItem.values()[i > 0 ? i - 1 : i].d());
+                    DrawerItem[] values = DrawerItem.values();
+                    if (i > 0) i--;
+                    menuItemHolder.u.setText(values[i].e());
                 }
-            } else if (vh instanceof b) {
-                b bVar = (b) vh;
-                bVar.t.setImageResource(DrawerItem.values()[i > 0 ? i - 1 : i].d());
-                TextView textView = bVar.u;
-                DrawerItem[] values = DrawerItem.values();
-                if (i > 0) {
-                    i--;
-                }
-                textView.setText(values[i].e());
             }
         }
 
-        /* renamed from: com.besome.sketch.MainDrawer$a$a  reason: collision with other inner class name */
-        /* renamed from: C0000a  reason: C0000a is a weird name, also no references to it outside
-         * MainDrawer.java, so it's easy to rename */
-        class ViewHolder extends RecyclerView.v {
-
-            public ImageView t;
-            public TextView u;
-            public TextView v;
-
-            public ViewHolder(View view) {
+        class EmptyViewHolder extends RecyclerView.v {
+            public EmptyViewHolder(View view) {
                 super(view);
-                t = view.findViewById(Resources.id.img_user_icon);
-                u = view.findViewById(Resources.id.tv_login_id);
-                v = view.findViewById(Resources.id.tv_expire_date);
             }
         }
 
-        class b extends RecyclerView.v {
+        class MenuItemHolder extends RecyclerView.v {
 
             public ImageView t;
             public TextView u;
 
-            public b(View view) {
+            public MenuItemHolder(View view) {
                 super(view);
                 u = view.findViewById(Resources.id.tv_menu_name);
                 t = view.findViewById(Resources.id.img_icon);
@@ -395,10 +341,6 @@ public class MainDrawer extends LinearLayout {
                                 Intent intent = new Intent(activity, ProgramInfoActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 activity.startActivityForResult(intent, 105);
-                            } else if (id == DrawerItem.eMenu_language_settings.ordinal()) {
-                                Intent intent = new Intent(activity, LanguageActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                activity.startActivity(intent);
                             } else if (id == DrawerItem.eMenu_export_urls.ordinal()) {
                                 Intent intent = new Intent(activity, Tools.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
