@@ -23,9 +23,7 @@ import com.besome.sketch.help.SystemSettingActivity;
 import com.besome.sketch.tools.NewKeyStoreActivity;
 import com.sketchware.remod.Resources;
 
-import a.a.a.EA;
 import a.a.a.GB;
-import a.a.a.Zo;
 import a.a.a.bB;
 import a.a.a.ci;
 import a.a.a.mB;
@@ -37,12 +35,10 @@ import mod.ilyasse.activities.about.AboutModActivity;
 public class MainDrawer extends LinearLayout implements View.OnClickListener {
 
     public Context mContext;
-    public DrawerItemAdapter b;
-    public ImageView c;
-    public ImageView d;
-    public ImageView e;
-    public EA f;
-    public Zo g;
+    public DrawerItemAdapter drawerItemAdapter;
+    public ImageView social_fb;
+    public ImageView social_medium;
+    public ImageView social_slack;
 
     public MainDrawer(Context context) {
         super(context);
@@ -54,24 +50,22 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         initialize(context);
     }
 
-    public final void initialize(Context context) {
+    private void initialize(Context context) {
         mContext = context;
-        f = new EA(context);
-        g = new Zo(context);
         wB.a(context, this, 2131427502);
-        c = findViewById(Resources.id.social_fb);
-        d = findViewById(Resources.id.social_medium);
-        e = findViewById(Resources.id.social_slack);
+        social_fb = findViewById(Resources.id.social_fb);
+        social_medium = findViewById(Resources.id.social_medium);
+        social_slack = findViewById(Resources.id.social_slack);
         RecyclerView recyclerView = findViewById(Resources.id.menu_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new ci());
-        b = new DrawerItemAdapter();
-        recyclerView.setAdapter(b);
-        d();
-        c.setOnClickListener(this);
-        d.setOnClickListener(this);
-        e.setOnClickListener(this);
+        drawerItemAdapter = new DrawerItemAdapter();
+        recyclerView.setAdapter(drawerItemAdapter);
+        initializeDrawerItems();
+        social_fb.setOnClickListener(this);
+        social_medium.setOnClickListener(this);
+        social_slack.setOnClickListener(this);
     }
 
     @Override
@@ -135,33 +129,33 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
     /**
      * Initialize (main) drawer items, such as Changelog
      */
-    public final void d() {
+    private void initializeDrawerItems() {
         DrawerItem menuAboutModders = DrawerItem.MENU_ABOUT_MODDERS;
-        menuAboutModders.i = Resources.drawable.side_menu_info_icon_over_white;
-        menuAboutModders.h = "About Modders";
+        menuAboutModders.icon = Resources.drawable.side_menu_info_icon_over_white;
+        menuAboutModders.title = "About Modders";
 
         DrawerItem menuChangelog = DrawerItem.MENU_CHANGELOG;
-        menuChangelog.i = Resources.drawable.icon_file_white_96;
-        menuChangelog.h = "Changelog";
+        menuChangelog.icon = Resources.drawable.icon_file_white_96;
+        menuChangelog.title = "Changelog";
 
         DrawerItem menuSystemSettings = DrawerItem.MENU_SYSTEM_SETTINGS;
-        menuSystemSettings.i = Resources.drawable.side_menu_setting_icon_over_white;
-        menuSystemSettings.h = xB.b().a(getContext(), Resources.string.main_drawer_title_system_settings);
+        menuSystemSettings.icon = Resources.drawable.side_menu_setting_icon_over_white;
+        menuSystemSettings.title = xB.b().a(getContext(), Resources.string.main_drawer_title_system_settings);
 
         DrawerItem menuProgramInfo = DrawerItem.MENU_PROGRAM_INFO;
-        menuProgramInfo.i = Resources.drawable.side_menu_info_icon_over_white;
-        menuProgramInfo.h = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
+        menuProgramInfo.icon = Resources.drawable.side_menu_info_icon_over_white;
+        menuProgramInfo.title = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
 
         DrawerItem menuDeveloperTools = DrawerItem.MENU_DEVELOPER_TOOLS;
-        menuDeveloperTools.i = Resources.drawable.ic_export_his_white_48dp;
-        menuDeveloperTools.h = "Developer Tools";
+        menuDeveloperTools.icon = Resources.drawable.ic_export_his_white_48dp;
+        menuDeveloperTools.title = "Developer Tools";
 
         DrawerItem menuCreateKeystore = DrawerItem.MENU_CREATE_KEYSTORE;
-        menuCreateKeystore.i = Resources.drawable.new_96;
-        menuCreateKeystore.h = "Create Release Keystore";
+        menuCreateKeystore.icon = Resources.drawable.new_96;
+        menuCreateKeystore.title = "Create Release Keystore";
     }
 
-    public final void f() {
+    private void f() {
         if (GB.h(mContext)) {
             try {
                 Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getContext(), Resources.string.slack_url_primary)));
@@ -204,18 +198,18 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         /**
          * The label of the item
          */
-        public String h;
+        public String title;
         /**
          * The resource ID for its icon
          */
-        public int i;
+        public int icon;
 
-        public int d() {
-            return i;
+        public int getIcon() {
+            return icon;
         }
 
-        public String e() {
-            return h;
+        public String getTitle() {
+            return title;
         }
     }
 
@@ -255,10 +249,10 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
             if (!(viewHolder instanceof EmptyViewHolder)) {
                 if (viewHolder instanceof MenuItemHolder) {
                     MenuItemHolder menuItemHolder = (MenuItemHolder) viewHolder;
-                    menuItemHolder.t.setImageResource(DrawerItem.values()[i > 0 ? i - 1 : i].d());
+                    menuItemHolder.t.setImageResource(DrawerItem.values()[i > 0 ? i - 1 : i].getIcon());
                     DrawerItem[] values = DrawerItem.values();
                     if (i > 0) i--;
-                    menuItemHolder.u.setText(values[i].e());
+                    menuItemHolder.u.setText(values[i].getTitle());
                 }
             }
         }
