@@ -41,11 +41,16 @@ public class DexCompiler {
             }
         }
 
+        Collection<Path> libraryFiles = new ArrayList<>();
+        for (String jarPath : compileHelper.d().split(":")) {
+            libraryFiles.add(new File(jarPath).toPath());
+        }
+
         D8.run(D8Command.builder()
                 .setMode(CompilationMode.RELEASE)
                 .setIntermediate(true)
                 .setMinApiLevel(minApiLevel)
-                .addLibraryFiles(new File(compileHelper.o).toPath())
+                .addLibraryFiles(libraryFiles)
                 .setOutput(new File(compileHelper.f.t, "dex").toPath(), OutputMode.DexIndexed)
                 .addProgramFiles(programFiles)
                 .build());
