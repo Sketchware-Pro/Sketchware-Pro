@@ -377,6 +377,7 @@ public class Resources {
         public static final int layout_property_see_all = 0x7f08029d;
         public static final int layout_qna_bottom = 0x7f08029f;
         public static final int layout_quiz = 0x7f0802a1;
+        public static final int layout_srclist = 0x7f0802ad;
         public static final int layout_switch = 0x7f0802b0;
         public static final int layout_theme_color = 0x7f0802b5;
         public static final int layout_theme_colors = 0x7f0802b6;

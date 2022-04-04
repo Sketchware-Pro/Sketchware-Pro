@@ -34,6 +34,8 @@ public class SrcViewerActivity extends AppCompatActivity {
 
     private String sc_id;
     private Spinner filesListSpinner;
+    private ImageView changeFontSize;
+    private LinearLayout progressContainer;
     private ArrayList<SrcCodeBean> srcCodeBean;
     private String currentPageFileName;
     private int sourceCodeFontSize = 12;
@@ -62,7 +64,7 @@ public class SrcViewerActivity extends AppCompatActivity {
         currentPageFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
         sc_id = (savedInstanceState != null) ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
 
-        ImageView changeFontSize = findViewById(Resources.id.imgv_src_size);
+        changeFontSize = findViewById(Resources.id.imgv_src_size);
         changeFontSize.setOnClickListener((v -> showChangeFontSizeDialog()));
 
         filesListSpinner = findViewById(Resources.id.spn_src_list);
@@ -77,15 +79,25 @@ public class SrcViewerActivity extends AppCompatActivity {
             }
         });
 
-        codeViewer.setText("Generating source code. Please Wait!");
+        LinearLayout layoutSrcList = findViewById(Resources.id.layout_srclist);
+        for (int i = 0; i < layoutSrcList.getChildCount(); i++) {
+            View child = layoutSrcList.getChildAt(i);
 
+            if (child instanceof LinearLayout) {
+                // Found the LinearLayout containing the ProgressBar and TextView!
+                progressContainer = (LinearLayout) child;
+
+                filesListSpinner.setVisibility(View.GONE);
+                changeFontSize.setVisibility(View.GONE);
+                progressContainer.setVisibility(View.VISIBLE);
+            }
+        }
 
         new Thread(() -> {
             srcCodeBean = new yq(getBaseContext(), sc_id).a(jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             try {
                 runOnUiThread(() -> {
-
                     if (srcCodeBean == null) {
                         bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), Resources.string.common_error_unknown), Toast.LENGTH_SHORT).show();
                     } else {
@@ -93,10 +105,14 @@ public class SrcViewerActivity extends AppCompatActivity {
                         for (SrcCodeBean src : srcCodeBean) {
                             if (src.srcFileName.equals(currentPageFileName)) {
                                 filesListSpinner.setSelection(srcCodeBean.indexOf(src));
-                                return;
+                                break;
                             }
                         }
                         codeViewer.setText(srcCodeBean.get(filesListSpinner.getSelectedItemPosition()).source);
+
+                        progressContainer.setVisibility(View.GONE);
+                        filesListSpinner.setVisibility(View.VISIBLE);
+                        changeFontSize.setVisibility(View.VISIBLE);
                     }
                 });
             } catch (Exception ignored) {
