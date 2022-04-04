@@ -59,11 +59,6 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.besome.sketch.fcm.SketchFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
@@ -78,34 +73,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="com.besome.sketch.DeepLinkActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:taskAffinity="">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="sketchware.io"
-                    android:pathPrefix="/purchase.jsp"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="sketchware.io"
-                    android:pathPrefix="/deeplink.jsp"
-                    android:scheme="http" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.besome.sketch.InitActivity"
             android:configChanges="orientation|screenSize"
@@ -176,9 +143,6 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name="com.besome.sketch.help.SystemInfoActivity" />
         <activity
-            android:name="com.besome.sketch.help.NoticeActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="com.besome.sketch.editor.LogicEditorActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="false"
@@ -237,9 +201,6 @@
             android:name="com.besome.sketch.shared.project.ShareConsentActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.besome.sketch.GuideActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
             android:name="com.besome.sketch.design.DesignActivity"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -267,12 +228,6 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
             android:exported="false"
             android:theme="@style/TranslucentTheme" />
-        <activity android:name="com.besome.sketch.language.LanguageActivity" />
-        <activity android:name="com.besome.sketch.language.MySharedLanguageActivity" />
-        <activity android:name="com.besome.sketch.language.LanguageUploadActivity" />
-        <activity android:name="com.besome.sketch.language.LanguageDetailActivity" />
-        <activity android:name="com.besome.sketch.language.LanguageModifyActivity" />
-        <activity android:name="com.besome.sketch.language.LanguageShowAllActivity" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.ManageViewActivity"
             android:configChanges="orientation|screenSize" />
@@ -511,22 +466,10 @@
             android:name="mod.ilyasse.activities.about.AboutModActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.besome.sketch.competition.CompetitionDetailActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.competition.CompetitionSubmitActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.competition.CompetitionTermsActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="com.besome.sketch.editor.manage.view.PresetSettingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.besome.sketch.VideoGuideActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name="com.besome.sketch.shared.views.SharedViewsListActivity"
             android:configChanges="orientation|screenSize" />
@@ -556,18 +499,6 @@
             android:name="com.besome.sketch.shared.SharedSearchCollectionListActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.besome.sketch.tutorial.TutorialShowAllActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.tutorial.TutorialRequestPublishActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.tutorial.TutorialManagementActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.tutorial.TutorialUploadActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="com.besome.sketch.shared.moreblocks.SharedMoreBlocksListActivity"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -590,12 +521,6 @@
             android:name="com.besome.sketch.shared.SharedCollectionBookmarkListActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.besome.sketch.SearchRecentActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.SearchResultActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="com.besome.sketch.tools.ImportProjectActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
@@ -612,10 +537,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.besome.sketch.MainActivity" />
         </activity>
-        <activity
-            android:name="com.besome.sketch.SketchwareForInoPopupActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
             android:excludeFromRecents="true"
