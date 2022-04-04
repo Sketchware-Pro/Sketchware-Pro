@@ -22,14 +22,15 @@ android {
         }
     }
 
-    aaptOptions {
-        additionalParameters("--stable-ids", "public-stable-ids.txt")
-    }
 
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
+    }
+
+    androidResources {
+        additionalParameters '--stable-ids', 'public-stable-ids.txt'
     }
 }
 
