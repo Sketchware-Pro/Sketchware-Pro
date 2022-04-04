@@ -172,35 +172,6 @@
             android:name="com.besome.sketch.export.ManageExportUrlActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.besome.sketch.shared.project.ShareProjectActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.project.SharedProjectDetailActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName="com.besome.sketch.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            android:windowSoftInputMode="stateAlwaysHidden|stateAlwaysVisible|adjustResize">
-            <intent-filter>
-                <action android:name="ProjectReview" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="show_project"
-                    android:scheme="sketchwareapp" />
-            </intent-filter>
-        </activity>
-        <activity android:name="com.besome.sketch.shared.project.SharedProjectShowAllActivity" />
-        <activity
-            android:name="com.besome.sketch.shared.project.ShareConsentActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="com.besome.sketch.design.DesignActivity"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -471,54 +442,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.besome.sketch.shared.views.SharedViewsListActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.views.SharedViewsDetailActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.views.ShareViewActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.views.SharedViewPreviewActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.blocks.SharedBlocksListActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.blocks.SharedBlocksDetailActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.blocks.ShareBlockActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.blocks.SharedBlockPreviewActivity"
-            android:configChanges="orientation|screenSize"
-            android:hardwareAccelerated="false" />
-        <activity
-            android:name="com.besome.sketch.shared.SharedSearchCollectionListActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.moreblocks.SharedMoreBlocksListActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.moreblocks.SharedMoreBlocksDetailActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.moreblocks.ShareMoreBlockActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.moreblocks.SharedMoreBlockPreviewActivity"
-            android:configChanges="orientation|screenSize"
-            android:hardwareAccelerated="false" />
-        <activity
             android:name="com.besome.sketch.tools.SignApkActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.IncludedCollectionDetailActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.shared.SharedCollectionBookmarkListActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.tools.ImportProjectActivity"
