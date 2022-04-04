@@ -4301,7 +4301,6 @@
     <public type="layout" name="ad_fbnative_feed_item" id="0x7f0b001e" />
     <public type="layout" name="ad_fbnative_grid" id="0x7f0b001f" />
     <public type="layout" name="ad_recommend_native" id="0x7f0b0020" />
-    <public type="layout" name="ad_shared_collection_list_item" id="0x7f0b0021" />
     <public type="layout" name="add_event_item" id="0x7f0b0022" />
     <public type="layout" name="admin_setting_popup" id="0x7f0b0023" />
     <public type="layout" name="ads" id="0x7f0b0024" />
@@ -4378,12 +4377,6 @@
     <public type="layout" name="fr_manage_sound_list" id="0x7f0b0071" />
     <public type="layout" name="fr_manage_view_list" id="0x7f0b0072" />
     <public type="layout" name="fr_recommend_collection" id="0x7f0b0073" />
-    <public type="layout" name="fr_shared_collection_detail_screen" id="0x7f0b0074" />
-    <public type="layout" name="fr_shared_list" id="0x7f0b0075" />
-    <public type="layout" name="fr_shared_list_viewpage" id="0x7f0b0076" />
-    <public type="layout" name="fr_shared_list_viewpage_ad" id="0x7f0b0077" />
-    <public type="layout" name="fr_shared_list_viewpage_fb" id="0x7f0b0078" />
-    <public type="layout" name="fr_shared_list_viewpage_recommend" id="0x7f0b0079" />
     <public type="layout" name="fr_src_viewer" id="0x7f0b007a" />
     <public type="layout" name="fr_xml_viewer" id="0x7f0b007b" />
     <public type="layout" name="guide_main" id="0x7f0b007c" />
@@ -4495,7 +4488,6 @@
     <public type="layout" name="mypage" id="0x7f0b00f7" />
     <public type="layout" name="mypage_favorite_projects" id="0x7f0b00f8" />
     <public type="layout" name="mypage_settings" id="0x7f0b00f9" />
-    <public type="layout" name="mypage_shared_projects" id="0x7f0b00fa" />
     <public type="layout" name="mypage_tab" id="0x7f0b00fb" />
     <public type="layout" name="myproject_button" id="0x7f0b00fc" />
     <public type="layout" name="myproject_buttons" id="0x7f0b00fd" />
@@ -4732,9 +4724,6 @@
     <public type="menu" name="property_menu" id="0x7f0c0015" />
     <public type="menu" name="publish_account_setting_menu" id="0x7f0c0016" />
     <public type="menu" name="share_all_menu" id="0x7f0c0017" />
-    <public type="menu" name="share_detail_menu" id="0x7f0c0018" />
-    <public type="menu" name="shared_collection_detail_menu" id="0x7f0c0019" />
-    <public type="menu" name="shared_collection_list_menu" id="0x7f0c001a" />
     <public type="menu" name="tutorial_design_menu" id="0x7f0c001b" />
     <public type="menu" name="tutorial_list_menu" id="0x7f0c001c" />
     <public type="menu" name="popup_menu_double" id="0x7f0c001d" />
