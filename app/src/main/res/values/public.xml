@@ -4406,23 +4406,6 @@
     <public type="layout" name="item_textview" id="0x7f0b008d" />
     <public type="layout" name="item_widget" id="0x7f0b008e" />
     <public type="layout" name="keystore_new" id="0x7f0b008f" />
-    <public type="layout" name="language" id="0x7f0b0090" />
-    <public type="layout" name="language_check_item" id="0x7f0b0091" />
-    <public type="layout" name="language_detail" id="0x7f0b0092" />
-    <public type="layout" name="language_detail_about" id="0x7f0b0093" />
-    <public type="layout" name="language_detail_comment_item" id="0x7f0b0094" />
-    <public type="layout" name="language_detail_comments" id="0x7f0b0095" />
-    <public type="layout" name="language_detail_tab" id="0x7f0b0096" />
-    <public type="layout" name="language_item" id="0x7f0b0097" />
-    <public type="layout" name="language_myshared" id="0x7f0b0098" />
-    <public type="layout" name="language_myshared_button" id="0x7f0b0099" />
-    <public type="layout" name="language_myshared_buttons" id="0x7f0b009a" />
-    <public type="layout" name="language_popup_selector" id="0x7f0b009b" />
-    <public type="layout" name="language_popup_update" id="0x7f0b009c" />
-    <public type="layout" name="language_popup_uploadnoti" id="0x7f0b009d" />
-    <public type="layout" name="language_share" id="0x7f0b009e" />
-    <public type="layout" name="language_show_all" id="0x7f0b009f" />
-    <public type="layout" name="language_upload" id="0x7f0b00a0" />
     <public type="layout" name="loading_3balls" id="0x7f0b00a1" />
     <public type="layout" name="loading_3dots" id="0x7f0b00a2" />
     <public type="layout" name="logic_editor" id="0x7f0b00a3" />
@@ -4638,25 +4621,6 @@
     <public type="layout" name="share_consent" id="0x7f0b0177" />
     <public type="layout" name="share_moreblock_select_list_item" id="0x7f0b0178" />
     <public type="layout" name="share_project" id="0x7f0b0179" />
-    <public type="layout" name="shared_block_preview" id="0x7f0b017a" />
-    <public type="layout" name="shared_collection" id="0x7f0b017b" />
-    <public type="layout" name="shared_collection_detail" id="0x7f0b017c" />
-    <public type="layout" name="shared_collection_included_collection_detail" id="0x7f0b017d" />
-    <public type="layout" name="shared_collection_list" id="0x7f0b017e" />
-    <public type="layout" name="shared_collection_list_item" id="0x7f0b017f" />
-    <public type="layout" name="shared_detail_screen_list_item" id="0x7f0b0180" />
-    <public type="layout" name="shared_examples_list_item" id="0x7f0b0181" />
-    <public type="layout" name="shared_project_detail" id="0x7f0b0182" />
-    <public type="layout" name="shared_project_detail_about" id="0x7f0b0183" />
-    <public type="layout" name="shared_project_detail_comment" id="0x7f0b0184" />
-    <public type="layout" name="shared_project_list_ad_whitebg" id="0x7f0b0185" />
-    <public type="layout" name="shared_project_list_all_item" id="0x7f0b0186" />
-    <public type="layout" name="shared_project_list_all_item_whitebg" id="0x7f0b0187" />
-    <public type="layout" name="shared_project_list_fb_whitebg" id="0x7f0b0188" />
-    <public type="layout" name="shared_project_list_item" id="0x7f0b0189" />
-    <public type="layout" name="shared_project_list_item_whitebg" id="0x7f0b018a" />
-    <public type="layout" name="shared_screen_list_item" id="0x7f0b018b" />
-    <public type="layout" name="shared_view_preview" id="0x7f0b018c" />
     <public type="layout" name="show_all_project" id="0x7f0b018d" />
     <public type="layout" name="show_file_picker_types" id="0x7f0b018e" />
     <public type="layout" name="show_fr_graphic_editor" id="0x7f0b018f" />
