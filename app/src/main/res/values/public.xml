@@ -4322,12 +4322,6 @@
     <public type="layout" name="common_grid_tiem" id="0x7f0b0033" />
     <public type="layout" name="common_spinner_item" id="0x7f0b0034" />
     <public type="layout" name="common_switch_item_singleline" id="0x7f0b0035" />
-    <public type="layout" name="competition_detail" id="0x7f0b0036" />
-    <public type="layout" name="competition_list_item" id="0x7f0b0037" />
-    <public type="layout" name="competition_project_list_item" id="0x7f0b0038" />
-    <public type="layout" name="competition_submit" id="0x7f0b0039" />
-    <public type="layout" name="competition_terms" id="0x7f0b003a" />
-    <public type="layout" name="competitions" id="0x7f0b003b" />
     <public type="layout" name="compile_log" id="0x7f0b003c" />
     <public type="layout" name="component_add_item" id="0x7f0b003d" />
     <public type="layout" name="component_item" id="0x7f0b003e" />
@@ -4527,8 +4521,6 @@
     <public type="layout" name="myprojects" id="0x7f0b0100" />
     <public type="layout" name="myprojects_item" id="0x7f0b0101" />
     <public type="layout" name="no_connection" id="0x7f0b0102" />
-    <public type="layout" name="notice" id="0x7f0b0103" />
-    <public type="layout" name="notice_item" id="0x7f0b0104" />
     <public type="layout" name="notification_action" id="0x7f0b0105" />
     <public type="layout" name="notification_action_tombstone" id="0x7f0b0106" />
     <public type="layout" name="notification_media_action" id="0x7f0b0107" />
@@ -4689,23 +4681,6 @@
     <public type="layout" name="toolbar" id="0x7f0b01a2" />
     <public type="layout" name="tooltip_item" id="0x7f0b01a3" />
     <public type="layout" name="tooltip_viewer" id="0x7f0b01a4" />
-    <public type="layout" name="tutorial" id="0x7f0b01a5" />
-    <public type="layout" name="tutorial_list_card_item_video" id="0x7f0b01a6" />
-    <public type="layout" name="tutorial_list_item_category" id="0x7f0b01a7" />
-    <public type="layout" name="tutorial_list_item_channel" id="0x7f0b01a8" />
-    <public type="layout" name="tutorial_list_item_native_ad" id="0x7f0b01a9" />
-    <public type="layout" name="tutorial_list_item_req_publish" id="0x7f0b01aa" />
-    <public type="layout" name="tutorial_list_item_see_more" id="0x7f0b01ab" />
-    <public type="layout" name="tutorial_list_item_video" id="0x7f0b01ac" />
-    <public type="layout" name="tutorial_list_item_warning" id="0x7f0b01ad" />
-    <public type="layout" name="tutorial_list_new_item" id="0x7f0b01ae" />
-    <public type="layout" name="tutorial_management" id="0x7f0b01af" />
-    <public type="layout" name="tutorial_management_list_item_button" id="0x7f0b01b0" />
-    <public type="layout" name="tutorial_management_list_item_button_layout" id="0x7f0b01b1" />
-    <public type="layout" name="tutorial_management_list_item_video" id="0x7f0b01b2" />
-    <public type="layout" name="tutorial_request_publish" id="0x7f0b01b3" />
-    <public type="layout" name="tutorial_show_all" id="0x7f0b01b4" />
-    <public type="layout" name="tutorial_upload" id="0x7f0b01b5" />
     <public type="layout" name="user_grade" id="0x7f0b01b6" />
     <public type="layout" name="user_grade_item" id="0x7f0b01b7" />
     <public type="layout" name="var_id_spinner_item" id="0x7f0b01b8" />
