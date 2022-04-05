@@ -50,6 +50,7 @@ public class SrcViewerActivity extends AppCompatActivity {
         codeViewer.setColorScheme(new EditorColorScheme());
         codeViewer.setTextSize(sourceCodeFontSize);
         codeViewer.setEditorLanguage(new JavaLanguage());
+        codeViewer.setPinLineNumber(true);
 
         LinearLayout contentLayout = (LinearLayout) (findViewById(Resources.id.pager_soruce_code).getParent());
         contentLayout.removeAllViews();
