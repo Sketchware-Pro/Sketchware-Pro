@@ -6,23 +6,6 @@ import java.util.HashMap;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
 
 public class CodeResult {
-
-    /**
-     * @return Code to be added to <code>onActivityResult</code> by a component added by Agus
-     */
-    public static String a(int componentId, String componentName) {
-        switch (componentId) {
-            case 31:
-                return "Task<GoogleSignInAccount> _task = GoogleSignIn.getSignedInAccountFromIntent(_data);\r\n";
-
-            case 35:
-                return "String _filePath = file_" + componentName + ".getAbsolutePath();\r\n";
-
-            default:
-                return "";
-        }
-    }
-
     /**
      * Simply calls {@link FormatterCode#a(int, String, String, String)}.
      */
