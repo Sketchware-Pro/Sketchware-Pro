@@ -20,13 +20,4 @@ public class CodeResult {
                 "break;";
     }
 
-    public static String c(ConstVarComponent component) {
-        HashMap<String, ArrayList<String>> param = component.param;
-        if (param == null || !param.containsKey("OnResultBillingResponse")) {
-            return "";
-        }
-
-        ArrayList<String> arrayList = param.get("OnResultBillingResponse");
-        return "if (!" + arrayList.get(0) + ".handleActivityResult(_requestCode, _resultCode, _data))";
-    }
 }

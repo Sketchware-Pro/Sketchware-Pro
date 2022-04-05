@@ -9,11 +9,12 @@ import com.besome.sketch.beans.ViewBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.agus.jcoderz.handle.code.CodeResult;
+import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
@@ -153,6 +154,16 @@ public class Jx {
         }
 
         return theImport;
+    }
+
+    private String getBillingResponseCode(ConstVarComponent component) {
+        HashMap<String, ArrayList<String>> param = component.param;
+        if (param == null || !param.containsKey("OnResultBillingResponse")) {
+            return "";
+        }
+
+        ArrayList<String> arrayList = param.get("OnResultBillingResponse");
+        return "if (!" + arrayList.get(0) + ".handleActivityResult(_requestCode, _resultCode, _data))";
     }
 
     /**
@@ -456,7 +467,7 @@ public class Jx {
         }
         sb.append("}").append(a);
 
-        String agusComponentsOnActivityResultCode = CodeResult.c(f.x);
+        String agusComponentsOnActivityResultCode = getBillingResponseCode(f.x);
         String onActivityResultLogic = activityResult();
         String onActivityResultSwitchLogic = e.a();
         if (!agusComponentsOnActivityResultCode.isEmpty() || !onActivityResultLogic.isEmpty() || !onActivityResultSwitchLogic.isEmpty()) {
