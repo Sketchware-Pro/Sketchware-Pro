@@ -83,6 +83,13 @@ public class LogicClickListener implements View.OnClickListener {
         LinearLayout root = new LinearLayout(logicEditor);
         root.setOrientation(LinearLayout.VERTICAL);
 
+        TextInputLayout modifierLayout = commonTextInputLayout();
+        EditText modifier = commonEditText("public or public static (optional)");
+        modifierLayout.addView(modifier);
+        modifierLayout.setHelperText("Enter modifier e.g. public, public static, or empty (package private).");
+        modifierLayout.setPadding(0, 0, 0, (int) getDip(8));
+        root.addView(modifierLayout);
+
         TextInputLayout typeLayout = commonTextInputLayout();
         EditText type = commonEditText("Type, e.g. File");
         typeLayout.addView(type);
@@ -102,6 +109,8 @@ public class LogicClickListener implements View.OnClickListener {
 
         dialog.a(root);
         dialog.b(Helper.getResString(Resources.string.common_word_add), view -> {
+            String variableModifier = modifier.getText().toString();
+            variableModifier = isEmpty(variableModifier) ? "" : variableModifier + " ";
             String variableType = type.getText().toString();
             String variableName = name.getText().toString();
             String variableInitializer = initializer.getText().toString();
@@ -128,7 +137,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
 
             if (validName && validType && validator.b()) {
-                String toAdd = variableType + " " + variableName;
+                String toAdd = variableModifier + variableType + " " + variableName;
                 if (getsInitialized) {
                     toAdd += " = " + variableInitializer;
                 }
@@ -149,7 +158,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.setTitle(Helper.getResString(2131625527));
         dialog.setIcon(2131165524);
         View var2 = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = var2.findViewById(2131231668);
+        ViewGroup viewGroup = var2.findViewById(Resources.id.rg_content);
 
         ArrayList<String> bools = getUsedVariable(0);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
@@ -274,7 +283,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.b(Helper.getResString(2131625526));
         dialog.a(2131165524);
         View var2 = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = var2.findViewById(2131231668);
+        ViewGroup viewGroup = var2.findViewById(Resources.id.rg_content);
 
         ArrayList<String> listInts = getUsedList(1);
         for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
