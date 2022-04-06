@@ -9,11 +9,12 @@ import com.besome.sketch.beans.ViewBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.agus.jcoderz.handle.code.CodeResult;
+import mod.agus.jcoderz.handle.component.ConstVarComponent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
@@ -155,6 +156,16 @@ public class Jx {
         return theImport;
     }
 
+    private String getBillingResponseCode(ConstVarComponent component) {
+        HashMap<String, ArrayList<String>> param = component.param;
+        if (param == null || !param.containsKey("OnResultBillingResponse")) {
+            return "";
+        }
+
+        ArrayList<String> arrayList = param.get("OnResultBillingResponse");
+        return "if (!" + arrayList.get(0) + ".handleActivityResult(_requestCode, _resultCode, _data))";
+    }
+
     /**
      * @return Generated Java code of the current View (not Widget)
      */
@@ -189,31 +200,33 @@ public class Jx {
             if (f.f) addImport("com.google.android.gms.ads.RequestConfiguration");
         }
 
-        removeExtraImports();
-        Collections.sort(g);//just
-        for (String anImport : g) {
-            sb.append("import ").append(anImport).append(";").append(a);
-        }
         if (f.g) {
-            sb.append("import androidx.fragment.app.Fragment;").append(a);
-            sb.append("import androidx.fragment.app.FragmentManager;").append(a);
-            sb.append("import androidx.fragment.app.DialogFragment;").append(a);
+            addImport("androidx.fragment.app.Fragment");
+            addImport("androidx.fragment.app.FragmentManager");
+            addImport("androidx.fragment.app.DialogFragment");
             if (isBottomDialogFragment) {
-                sb.append("import com.google.android.material.bottomsheet.BottomSheetDialogFragment;").append(a);
+                addImport("com.google.android.material.bottomsheet.BottomSheetDialogFragment");
             }
         } else {
-            sb.append("import android.app.Fragment;").append(a);
-            sb.append("import android.app.FragmentManager;").append(a);
-            sb.append("import android.app.DialogFragment;").append(a);
+            addImport("android.app.Fragment");
+            addImport("android.app.FragmentManager");
+            addImport("android.app.DialogFragment");
         }
         if (permissionManager.hasNewPermission() || f.a(projectFileBean.getActivityName()).a()) {
             if (f.g) {
-                sb.append("import androidx.core.content.ContextCompat;").append(a);
-                sb.append("import androidx.core.app.ActivityCompat;").append(a);
+                addImport("androidx.core.content.ContextCompat");
+                addImport("androidx.core.app.ActivityCompat");
             }
-            sb.append("import android.Manifest;").append(a);
-            sb.append("import android.content.pm.PackageManager;").append(a);
+            addImport("android.Manifest");
+            addImport("android.content.pm.PackageManager");
         }
+
+        removeExtraImports();
+        Collections.sort(g);
+        for (String anImport : g) {
+            sb.append("import ").append(anImport).append(";").append(a);
+        }
+
         String importsAddedByImportBlocks = LogicHandler.imports(e.b());
         if (!importsAddedByImportBlocks.isEmpty()) {
             sb.append(importsAddedByImportBlocks).append(a);
@@ -456,7 +469,7 @@ public class Jx {
         }
         sb.append("}").append(a);
 
-        String agusComponentsOnActivityResultCode = CodeResult.c(f.x);
+        String agusComponentsOnActivityResultCode = getBillingResponseCode(f.x);
         String onActivityResultLogic = activityResult();
         String onActivityResultSwitchLogic = e.a();
         if (!agusComponentsOnActivityResultCode.isEmpty() || !onActivityResultLogic.isEmpty() || !onActivityResultSwitchLogic.isEmpty()) {
@@ -789,7 +802,7 @@ public class Jx {
             } else if (viewBean.type == ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW) {
                 adapterCode = Lx.recyclerViewAdapter(viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
             } else {
-                adapterCode = Lx.a(viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
+                adapterCode = Lx.getListAdapterCode(viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
             }
             q.add(adapterCode);
         }
@@ -928,6 +941,8 @@ public class Jx {
             String str = next.second;
             if (intValue == 9) {
                 addImport(str);
+            } else if (intValue == 5) {
+                i.add(str);
             } else {
                 i.add(getVariableDeclarationAndAddImports(intValue, str));
             }
