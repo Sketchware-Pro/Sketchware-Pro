@@ -764,7 +764,7 @@ public class Lx {
     /**
      * @return Code of an adapter for a ListView
      */
-    public static String a(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
+    public static String getListAdapterCode(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
         String className = a(widgetName);
 
         String initializers = "";
