@@ -200,31 +200,33 @@ public class Jx {
             if (f.f) addImport("com.google.android.gms.ads.RequestConfiguration");
         }
 
-        removeExtraImports();
-        Collections.sort(g);//just
-        for (String anImport : g) {
-            sb.append("import ").append(anImport).append(";").append(a);
-        }
         if (f.g) {
-            sb.append("import androidx.fragment.app.Fragment;").append(a);
-            sb.append("import androidx.fragment.app.FragmentManager;").append(a);
-            sb.append("import androidx.fragment.app.DialogFragment;").append(a);
+            addImport("androidx.fragment.app.Fragment");
+            addImport("androidx.fragment.app.FragmentManager");
+            addImport("androidx.fragment.app.DialogFragment");
             if (isBottomDialogFragment) {
-                sb.append("import com.google.android.material.bottomsheet.BottomSheetDialogFragment;").append(a);
+                addImport("com.google.android.material.bottomsheet.BottomSheetDialogFragment");
             }
         } else {
-            sb.append("import android.app.Fragment;").append(a);
-            sb.append("import android.app.FragmentManager;").append(a);
-            sb.append("import android.app.DialogFragment;").append(a);
+            addImport("android.app.Fragment");
+            addImport("android.app.FragmentManager");
+            addImport("android.app.DialogFragment");
         }
         if (permissionManager.hasNewPermission() || f.a(projectFileBean.getActivityName()).a()) {
             if (f.g) {
-                sb.append("import androidx.core.content.ContextCompat;").append(a);
-                sb.append("import androidx.core.app.ActivityCompat;").append(a);
+                addImport("androidx.core.content.ContextCompat");
+                addImport("androidx.core.app.ActivityCompat");
             }
-            sb.append("import android.Manifest;").append(a);
-            sb.append("import android.content.pm.PackageManager;").append(a);
+            addImport("android.Manifest");
+            addImport("android.content.pm.PackageManager");
         }
+
+        removeExtraImports();
+        Collections.sort(g);
+        for (String anImport : g) {
+            sb.append("import ").append(anImport).append(";").append(a);
+        }
+
         String importsAddedByImportBlocks = LogicHandler.imports(e.b());
         if (!importsAddedByImportBlocks.isEmpty()) {
             sb.append(importsAddedByImportBlocks).append(a);
