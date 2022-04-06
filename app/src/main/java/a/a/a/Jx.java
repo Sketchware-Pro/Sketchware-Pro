@@ -941,6 +941,8 @@ public class Jx {
             String str = next.second;
             if (intValue == 9) {
                 addImport(str);
+            } else if (intValue == 5) {
+                i.add(str);
             } else {
                 i.add(getVariableDeclarationAndAddImports(intValue, str));
             }
