@@ -57,6 +57,7 @@ import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
 import proguard.Configuration;
 import proguard.ConfigurationParser;
+import proguard.ParseException;
 import proguard.ProGuard;
 
 public class Dp {
@@ -796,9 +797,9 @@ public class Dp {
     /**
      * Extracts AAPT2 binaries (if they need to be extracted).
      *
-     * @throws Exception If anything goes wrong while extracting
+     * @throws By If anything goes wrong while extracting
      */
-    public void i() throws Exception {
+    public void i() throws By {
         String aapt2PathInAssets = "aapt/";
         if (GB.a().toLowerCase().contains("x86")) {
             aapt2PathInAssets += "aapt2-x86";
@@ -993,7 +994,7 @@ public class Dp {
         args.add(f.rules_generated);
     }
 
-    public void runProguard() throws Exception {
+    public void runProguard() throws IOException {
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
 
@@ -1048,6 +1049,8 @@ public class Dp {
 
         try {
             parser.parse(configuration);
+        } catch (ParseException e) {
+            throw new IOException(e);
         } finally {
             parser.close();
         }
