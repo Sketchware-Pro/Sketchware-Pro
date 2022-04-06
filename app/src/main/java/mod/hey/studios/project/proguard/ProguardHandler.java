@@ -3,6 +3,7 @@ package mod.hey.studios.project.proguard;
 import com.besome.sketch.design.DesignActivity.a;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,7 +144,7 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
-    public void start(a dialog, Dp dp) throws Exception {
+    public void start(a dialog, Dp dp) throws IOException {
         if (isProguardEnabled()) {
             if (dialog != null) dialog.c("ProGuarding classes...");
             dp.runProguard();
