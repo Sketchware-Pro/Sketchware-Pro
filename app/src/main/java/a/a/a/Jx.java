@@ -802,7 +802,7 @@ public class Jx {
             } else if (viewBean.type == ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW) {
                 adapterCode = Lx.recyclerViewAdapter(viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
             } else {
-                adapterCode = Lx.a(viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
+                adapterCode = Lx.getListAdapterCode(viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
             }
             q.add(adapterCode);
         }
