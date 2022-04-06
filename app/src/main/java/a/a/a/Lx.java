@@ -10,7 +10,6 @@ import java.util.Iterator;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.editor.event.ManageEventComponent;
-import mod.agus.jcoderz.handle.code.CodeResult;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
@@ -119,8 +118,12 @@ public class Lx {
                     "}";
         } else if (componentId == ComponentBean.COMPONENT_TYPE_CAMERA) {
             componentLogic = " String _filePath = _file_" + componentName + ".getAbsolutePath();\r\n";
+        } else if (componentId == 31) {
+            componentLogic = "Task<GoogleSignInAccount> _task = GoogleSignIn.getSignedInAccountFromIntent(_data);\r\n";
+        } else if (componentId == 35) {
+            componentLogic = "String _filePath = file_" + componentName + ".getAbsolutePath();\r\n";
         } else {
-            componentLogic = CodeResult.a(componentId, componentName);
+            componentLogic = "";
         }
 
         return "case REQ_CD_" + componentName.toUpperCase() + ":\r\n" +
@@ -761,7 +764,7 @@ public class Lx {
     /**
      * @return Code of an adapter for a ListView
      */
-    public static String a(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
+    public static String getListAdapterCode(String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
         String className = a(widgetName);
 
         String initializers = "";
