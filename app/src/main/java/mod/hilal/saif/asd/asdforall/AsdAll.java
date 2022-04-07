@@ -105,16 +105,13 @@ public class AsdAll extends Dialog {
                 0.0f
         ));
         codeE.setGravity(17);
-        codeE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AsdAllEditor asdAllEditor = new AsdAllEditor(activity);
-                asdAllEditor.setCon(ss.getArgValue().toString());
-                asdAllEditor.show();
-                asdAllEditor.saveLis(lea, ss, asdAllEditor);
-                asdAllEditor.cancelLis(lea, asdAllEditor);
-                dismiss();
-            }
+        codeE.setOnClickListener(v -> {
+            AsdAllEditor asdAllEditor = new AsdAllEditor(activity);
+            asdAllEditor.setCon(ss.getArgValue().toString());
+            asdAllEditor.show();
+            asdAllEditor.saveLis(lea, ss, asdAllEditor);
+            asdAllEditor.cancelLis(lea, asdAllEditor);
+            dismiss();
         });
         base.addView(space, 0);
         base.addView(codeE, 0);

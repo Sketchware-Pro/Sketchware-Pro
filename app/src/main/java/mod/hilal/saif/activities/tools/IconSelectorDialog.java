@@ -5,12 +5,9 @@ import static mod.SketchwareUtil.getDip;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -54,12 +51,9 @@ public class IconSelectorDialog extends Dialog {
         );
         gridView.setNumColumns(6);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ed.setText(String.valueOf(data.get(position)));
-                dismiss();
-            }
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            ed.setText(String.valueOf(data.get(position)));
+            dismiss();
         });
         base.addView(gridView);
         for (int i = 2131165190; i < 2131166368; i++) {

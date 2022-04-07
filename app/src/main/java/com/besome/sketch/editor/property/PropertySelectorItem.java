@@ -162,20 +162,17 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
-                    RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
-                    if (radioButton.isChecked()) {
-                        setValue(Integer.parseInt(radioButton.getTag().toString()));
-                    }
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+            for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
+                RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    setValue(Integer.parseInt(radioButton.getTag().toString()));
                 }
-                if (valueChangeListener != null) {
-                    valueChangeListener.a(key, value);
-                }
-                dialog.dismiss();
             }
+            if (valueChangeListener != null) {
+                valueChangeListener.a(key, value);
+            }
+            dialog.dismiss();
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));

@@ -50,19 +50,9 @@ public class AsdAllEditor extends Dialog {
         setContentView(Resources.layout.view_code);
         code_editor = findViewById(Resources.id.text_content);
         zoom_in = findViewById(Resources.id.code_editor_zoomin);
-        zoom_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                code_editor.increaseTextSize();
-            }
-        });
+        zoom_in.setOnClickListener(v -> code_editor.increaseTextSize());
         zoom_out = findViewById(Resources.id.code_editor_zoomout);
-        zoom_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                code_editor.decreaseTextSize();
-            }
-        });
+        zoom_out.setOnClickListener(v -> code_editor.decreaseTextSize());
         code_editor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,

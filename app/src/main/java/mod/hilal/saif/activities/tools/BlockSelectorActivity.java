@@ -4,13 +4,11 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,7 +26,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.button.MaterialButton;
@@ -139,34 +136,27 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        listview1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                if (current_item == 0) {
-                    return true;
-                }
-                dialog_warn.setTitle(contents.get(position))
-                        .setMessage("Delete this item?")
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                contents.remove(position);
-                                map.put("data", contents);
-                                _save_item();
-                                _showItem(current_item);
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .setNeutralButton("Copy item", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                BlockSelectorActivity blockSelectorActivity = BlockSelectorActivity.this;
-                                getApplicationContext();
-                                ((ClipboardManager) blockSelectorActivity.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", contents.get(position)));
-                                SketchwareUtil.toast("Copied to clipboard");
-                            }
-                        })
-                        .create().show();
+        listview1.setOnItemLongClickListener((parent, view, position, id) -> {
+            if (current_item == 0) {
                 return true;
             }
+            dialog_warn.setTitle(contents.get(position))
+                    .setMessage("Delete this item?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        contents.remove(position);
+                        map.put("data", contents);
+                        _save_item();
+                        _showItem(current_item);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .setNeutralButton("Copy item", (dialog, which) -> {
+                        BlockSelectorActivity blockSelectorActivity = BlockSelectorActivity.this;
+                        getApplicationContext();
+                        ((ClipboardManager) blockSelectorActivity.getSystemService(Context.CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", contents.get(position)));
+                        SketchwareUtil.toast("Copied to clipboard");
+                    })
+                    .create().show();
+            return true;
         });
 
         options_menu = new ImageView(this);
@@ -177,11 +167,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
                 (int) SketchwareUtil.getDip(9));
         options_menu.setLayoutParams(new LinearLayout.LayoutParams((int) SketchwareUtil.getDip(40), (int) SketchwareUtil.getDip(40), 0.0f));
         options_menu.setScaleType(ImageView.ScaleType.FIT_XY);
-        options_menu.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                showOptionsMenu();
-            }
-        });
+        options_menu.setOnClickListener(v -> showOptionsMenu());
         toolbar.addView(options_menu);
         applyRippleToView(back_icon, delete, edit, add, cancel, save, add_value, options_menu);
     }
@@ -243,30 +229,28 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         menu.add("Import block selector menus");
         menu.add("Export current block selector menu");
         menu.add("Export all block selector menus");
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getTitle().toString()) {
-                    case "Export current block selector menu":
-                        ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
-                        arrayList.add(data.get((int) current_item));
-                        FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + data.get((int) current_item).get("name") + ".json", new Gson().toJson(arrayList));
-                        SketchwareUtil.toast("Successfully exported block menu to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
-                        break;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getTitle().toString()) {
+                case "Export current block selector menu":
+                    ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
+                    arrayList.add(data.get((int) current_item));
+                    FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + data.get((int) current_item).get("name") + ".json", new Gson().toJson(arrayList));
+                    SketchwareUtil.toast("Successfully exported block menu to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
+                    break;
 
-                    case "Import block selector menus":
-                        openFileExplorerImport();
-                        break;
+                case "Import block selector menus":
+                    openFileExplorerImport();
+                    break;
 
-                    case "Export all block selector menus":
-                        FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + "All_Menus.json", new Gson().toJson(data));
-                        SketchwareUtil.toast("Successfully exported block menus to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
-                        break;
+                case "Export all block selector menus":
+                    FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + "All_Menus.json", new Gson().toJson(data));
+                    SketchwareUtil.toast("Successfully exported block menus to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
+                    break;
 
-                    default:
-                        return false;
-                }
-                return true;
+                default:
+                    return false;
             }
+            return true;
         });
         popupMenu.show();
     }
@@ -307,15 +291,13 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             case 2131232604://delete
                 if (current_item != 0) {
                     warn.setMessage("Remove this menu and its items?")
-                            .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    data.remove(spinner1.getSelectedItemPosition());
-                                    _save_item();
-                                    _refresh_display();
-                                    _fabVisibility(true);
-                                    isNewGroup = false;
-                                    spinner1.setSelection(0);
-                                }
+                            .setPositiveButton("Remove", (dialog, which) -> {
+                                data.remove(spinner1.getSelectedItemPosition());
+                                _save_item();
+                                _refresh_display();
+                                _fabVisibility(true);
+                                isNewGroup = false;
+                                spinner1.setSelection(0);
                             })
                             .setNegativeButton("Cancel", null)
                             .create().show();
@@ -386,19 +368,16 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         dialogProperties.extensions = new String[]{"json"};
         FilePickerDialog filePickerDialog = new FilePickerDialog(this, dialogProperties);
         filePickerDialog.setTitle("Select a JSON file");
-        filePickerDialog.setDialogSelectionListener(new DialogSelectionListener() {
-            @Override
-            public void onSelectedFilePaths(String[] selections) {
-                if (FileUtil.readFile(selections[0]).equals("")) {
-                    SketchwareUtil.toastError("The selected file is empty!");
-                } else if (FileUtil.readFile(selections[0]).equals("[]")) {
-                    SketchwareUtil.toastError("The selected file is empty!");
-                } else {
-                    try {
-                        _importMenu(new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST));
-                    } catch (Exception e) {
-                        SketchwareUtil.toastError("Invalid JSON file");
-                    }
+        filePickerDialog.setDialogSelectionListener(selections -> {
+            if (FileUtil.readFile(selections[0]).equals("")) {
+                SketchwareUtil.toastError("The selected file is empty!");
+            } else if (FileUtil.readFile(selections[0]).equals("[]")) {
+                SketchwareUtil.toastError("The selected file is empty!");
+            } else {
+                try {
+                    _importMenu(new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST));
+                } catch (Exception e) {
+                    SketchwareUtil.toastError("Invalid JSON file");
                 }
             }
         });

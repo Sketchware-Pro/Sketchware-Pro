@@ -150,27 +150,24 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
 
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int childCount = radioGroupContent.getChildCount();
-                int counter = 0;
-                while (true) {
-                    if (counter >= childCount) {
-                        break;
-                    }
-                    RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(counter);
-                    if (radioButton.isChecked()) {
-                        setValue(radioButton.getTag().toString());
-                        break;
-                    }
-                    counter++;
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+            int childCount = radioGroupContent.getChildCount();
+            int counter = 0;
+            while (true) {
+                if (counter >= childCount) {
+                    break;
                 }
-                if (valueChangeListener != null) {
-                    valueChangeListener.a(key, value);
+                RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(counter);
+                if (radioButton.isChecked()) {
+                    setValue(radioButton.getTag().toString());
+                    break;
                 }
-                dialog.dismiss();
+                counter++;
             }
+            if (valueChangeListener != null) {
+                valueChangeListener.a(key, value);
+            }
+            dialog.dismiss();
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));

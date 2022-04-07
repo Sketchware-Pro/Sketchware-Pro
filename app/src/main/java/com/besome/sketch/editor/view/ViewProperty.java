@@ -46,10 +46,10 @@ import mod.hey.studios.util.Helper;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
+    private final ArrayList<ViewBean> projectActivityViews = new ArrayList<>();
     private String sc_id;
     private ProjectFileBean projectFile;
     private Spinner spnWidget;
-    private final ArrayList<ViewBean> projectActivityViews = new ArrayList<>();
     private ViewIdsAdapter idsAdapter;
     private Jw propertyTargetChangeListener = null;
     private LinearLayout layoutPropertySeeAll;
@@ -94,12 +94,9 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     public void setOnPropertyValueChangedListener(Lw onPropertyValueChangedListener) {
         propertyValueChangedListener = onPropertyValueChangedListener;
-        viewPropertyItems.setOnPropertyValueChangedListener(new Lw() {
-            @Override
-            public void a(ViewBean viewBean) {
-                if (propertyValueChangedListener != null) {
-                    propertyValueChangedListener.a(viewBean);
-                }
+        viewPropertyItems.setOnPropertyValueChangedListener(viewBean -> {
+            if (propertyValueChangedListener != null) {
+                propertyValueChangedListener.a(viewBean);
             }
         });
     }
@@ -331,8 +328,8 @@ public class ViewProperty extends LinearLayout implements Kw {
     private static class ViewIdsAdapter extends BaseAdapter {
 
         private final Context context;
-        private int selectedItemPosition;
         private final ArrayList<ViewBean> views;
+        private int selectedItemPosition;
 
         public ViewIdsAdapter(Context context, ArrayList<ViewBean> arrayList) {
             this.context = context;

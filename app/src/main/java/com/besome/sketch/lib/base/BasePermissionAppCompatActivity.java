@@ -1,8 +1,6 @@
 package com.besome.sketch.lib.base;
 
 import android.Manifest;
-import android.content.DialogInterface;
-import android.view.View;
 
 import com.sketchware.remod.Resources;
 
@@ -36,34 +34,23 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.a(xB.b().a(getApplicationContext(),
                     Resources.string.common_message_permission_storage));
             dialog.b(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_ok), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!mB.a()) {
-                        nd.a(BasePermissionAppCompatActivity.this,
-                                new String[]{
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE
-                                },
-                                i);
-                        dialog.dismiss();
-                    }
-                }
-            });
-            dialog.a(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_cancel), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    l();
+                    Resources.string.common_word_ok), v -> {
+                if (!mB.a()) {
+                    nd.a(BasePermissionAppCompatActivity.this,
+                            new String[]{
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                            },
+                            i);
                     dialog.dismiss();
                 }
             });
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    Sp.a = false;
-                }
+            dialog.a(xB.b().a(getApplicationContext(),
+                    Resources.string.common_word_cancel), v -> {
+                l();
+                dialog.dismiss();
             });
+            dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
@@ -107,29 +94,18 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
             dialog.a(xB.b().a(getApplicationContext(),
                     Resources.string.common_message_permission_storage1));
             dialog.b(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_settings), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!mB.a()) {
-                        h(i);
-                        dialog.dismiss();
-                    }
-                }
-            });
-            dialog.a(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_cancel), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    m();
+                    Resources.string.common_word_settings), v -> {
+                if (!mB.a()) {
+                    h(i);
                     dialog.dismiss();
                 }
             });
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    Sp.a = false;
-                }
+            dialog.a(xB.b().a(getApplicationContext(),
+                    Resources.string.common_word_cancel), v -> {
+                m();
+                dialog.dismiss();
             });
+            dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import mod.SketchwareUtil;
-import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
