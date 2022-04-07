@@ -4,7 +4,6 @@ import static mod.SketchwareUtil.getDip;
 
 import android.text.TextUtils;
 import android.text.method.DigitsKeyListener;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -131,33 +130,30 @@ public class VersionDialog {
         }
         dialog.setView(root);
         dialog.setPositiveButton(activity.getString(Resources.string.common_word_save),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final String versionCode = version_code.getText().toString();
-                        final String versionName = version_name1.getText().toString();
-                        final String versionNamePostfix = version_name2.getText().toString();
+                v -> {
+                    final String versionCode = version_code.getText().toString();
+                    final String versionName = version_name1.getText().toString();
+                    final String versionNamePostfix = version_name2.getText().toString();
 
-                        boolean validVersionCode = !TextUtils.isEmpty(versionCode);
-                        boolean validVersionName = !TextUtils.isEmpty(versionName);
+                    boolean validVersionCode = !TextUtils.isEmpty(versionCode);
+                    boolean validVersionName = !TextUtils.isEmpty(versionName);
 
-                        if (validVersionCode) {
-                            version_code.setError(null);
-                        } else {
-                            version_code.setError("Invalid Version Code");
-                        }
+                    if (validVersionCode) {
+                        version_code.setError(null);
+                    } else {
+                        version_code.setError("Invalid Version Code");
+                    }
 
-                        if (validVersionName) {
-                            version_name1.setError(null);
-                        } else {
-                            version_name1.setError("Invalid Version Name");
-                        }
+                    if (validVersionName) {
+                        version_name1.setError(null);
+                    } else {
+                        version_name1.setError("Invalid Version Name");
+                    }
 
-                        if (!mB.a() && validVersionCode && validVersionName) {
-                            activity.projectVersionCodeView.setText(versionCode);
-                            activity.projectVersionNameView.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
-                            dialog.dismiss();
-                        }
+                    if (!mB.a() && validVersionCode && validVersionName) {
+                        activity.projectVersionCodeView.setText(versionCode);
+                        activity.projectVersionNameView.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
+                        dialog.dismiss();
                     }
                 });
         dialog.setNegativeButton(activity.getString(Resources.string.common_word_cancel),

@@ -107,24 +107,21 @@ public class AsdOrigin extends Dialog {
                 0.0f
         ));
         title.setGravity(Gravity.CENTER);
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ConfigActivity.isLegacyCeEnabled()) {
-                    AsdOldDialog asdOldDialog = new AsdOldDialog(activity);
-                    asdOldDialog.setCon(editText.getText().toString());
-                    asdOldDialog.show();
-                    asdOldDialog.saveLis(logicEditorActivity, boo, ss, asdOldDialog);
-                    asdOldDialog.cancelLis(logicEditorActivity, asdOldDialog);
-                } else {
-                    AsdDialog asdDialog = new AsdDialog(activity);
-                    asdDialog.setCon(editText.getText().toString());
-                    asdDialog.show();
-                    asdDialog.saveLis(logicEditorActivity, boo, ss, asdDialog);
-                    asdDialog.cancelLis(asdDialog);
-                }
-                dismiss();
+        title.setOnClickListener(v -> {
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                AsdOldDialog asdOldDialog = new AsdOldDialog(activity);
+                asdOldDialog.setCon(editText.getText().toString());
+                asdOldDialog.show();
+                asdOldDialog.saveLis(logicEditorActivity, boo, ss, asdOldDialog);
+                asdOldDialog.cancelLis(logicEditorActivity, asdOldDialog);
+            } else {
+                AsdDialog asdDialog = new AsdDialog(activity);
+                asdDialog.setCon(editText.getText().toString());
+                asdDialog.show();
+                asdDialog.saveLis(logicEditorActivity, boo, ss, asdDialog);
+                asdDialog.cancelLis(asdDialog);
             }
+            dismiss();
         });
         base.addView(space, 0);
         base.addView(title, 0);

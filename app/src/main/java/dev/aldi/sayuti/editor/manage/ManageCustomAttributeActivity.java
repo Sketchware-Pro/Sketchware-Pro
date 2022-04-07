@@ -116,14 +116,12 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
             makeup(linearLayout);
             ((ImageView) convertView.findViewById(2131232442)).setImageResource(2131166315);
             ((TextView) convertView.findViewById(2131232441)).setText(_data.get(position).get("type").toString());
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);
-                    i.putExtra("sc_id", str);
-                    i.putExtra("file_name", str2);
-                    i.putExtra("widget_type", _data.get(position).get("type").toString().toLowerCase());
-                    startActivity(i);
-                }
+            linearLayout.setOnClickListener(v -> {
+                i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);
+                i.putExtra("sc_id", str);
+                i.putExtra("file_name", str2);
+                i.putExtra("widget_type", _data.get(position).get("type").toString().toLowerCase());
+                startActivity(i);
             });
             return convertView;
         }

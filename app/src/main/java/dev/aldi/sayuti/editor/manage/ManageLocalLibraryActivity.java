@@ -2,16 +2,13 @@ package dev.aldi.sayuti.editor.manage;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -63,18 +60,8 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         new AlertDialog.Builder(this)
                 .setTitle("Dexer")
                 .setMessage("Would you like to use Dx or D8 to dex the library?\nD8 supports Java 8, whereas Dx does not. Limitation: D8 only works on Android 8 and above.")
-                .setPositiveButton("D8", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        new LibraryDownloader(ManageLocalLibraryActivity.this, true).showDialog(ManageLocalLibraryActivity.this);
-                    }
-                })
-                .setNegativeButton("Dx", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        new LibraryDownloader(ManageLocalLibraryActivity.this, false).showDialog(ManageLocalLibraryActivity.this);
-                    }
-                })
+                .setPositiveButton("D8", (dialogInterface, i) -> new LibraryDownloader(ManageLocalLibraryActivity.this, true).showDialog(ManageLocalLibraryActivity.this))
+                .setNegativeButton("Dx", (dialogInterface, i) -> new LibraryDownloader(ManageLocalLibraryActivity.this, false).showDialog(ManageLocalLibraryActivity.this))
                 .setNeutralButton("Cancel", null)
                 .create()
                 .show();
@@ -154,46 +141,43 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
             }
             final CheckBox checkBox = convertView.findViewById(2131232370);
             checkBox.setText((main_list.get(position)).get("name").toString());
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("name", checkBox.getText().toString());
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/config"))) {
-                        hashMap.put("packageName", FileUtil.readFile(local_libs_path.concat(checkBox.getText().toString()).concat("/config")));
-                    }
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/res"))) {
-                        hashMap.put("resPath", local_libs_path.concat(checkBox.getText().toString()).concat("/res"));
-                    }
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/classes.jar"))) {
-                        hashMap.put("jarPath", local_libs_path.concat(checkBox.getText().toString()).concat("/classes.jar"));
-                    }
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/classes.dex"))) {
-                        hashMap.put("dexPath", local_libs_path.concat(checkBox.getText().toString()).concat("/classes.dex"));
-                    }
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/AndroidManifest.xml"))) {
-                        hashMap.put("manifestPath", local_libs_path.concat(checkBox.getText().toString()).concat("/AndroidManifest.xml"));
-                    }
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/proguard.txt"))) {
-                        hashMap.put("pgRulesPath", local_libs_path.concat(checkBox.getText().toString()).concat("/proguard.txt"));
-                    }
-                    if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/assets"))) {
-                        hashMap.put("assetsPath", local_libs_path.concat(checkBox.getText().toString()).concat("/assets"));
-                    }
-                    if (!isChecked) {
-                        project_used_libs.remove(hashMap);
-                    } else {
-                        n = 0;
-                        while (n < project_used_libs.size()) {
-                            if (project_used_libs.get(n).get("name").toString().equals(checkBox.getText().toString())) {
-                                project_used_libs.remove(hashMap);
-                            }
-                            n = n + 1;
-                        }
-                        project_used_libs.add(hashMap);
-                    }
-                    FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("name", checkBox.getText().toString());
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/config"))) {
+                    hashMap.put("packageName", FileUtil.readFile(local_libs_path.concat(checkBox.getText().toString()).concat("/config")));
                 }
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/res"))) {
+                    hashMap.put("resPath", local_libs_path.concat(checkBox.getText().toString()).concat("/res"));
+                }
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/classes.jar"))) {
+                    hashMap.put("jarPath", local_libs_path.concat(checkBox.getText().toString()).concat("/classes.jar"));
+                }
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/classes.dex"))) {
+                    hashMap.put("dexPath", local_libs_path.concat(checkBox.getText().toString()).concat("/classes.dex"));
+                }
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/AndroidManifest.xml"))) {
+                    hashMap.put("manifestPath", local_libs_path.concat(checkBox.getText().toString()).concat("/AndroidManifest.xml"));
+                }
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/proguard.txt"))) {
+                    hashMap.put("pgRulesPath", local_libs_path.concat(checkBox.getText().toString()).concat("/proguard.txt"));
+                }
+                if (FileUtil.isExistFile(local_libs_path.concat(checkBox.getText().toString()).concat("/assets"))) {
+                    hashMap.put("assetsPath", local_libs_path.concat(checkBox.getText().toString()).concat("/assets"));
+                }
+                if (!isChecked) {
+                    project_used_libs.remove(hashMap);
+                } else {
+                    n = 0;
+                    while (n < project_used_libs.size()) {
+                        if (project_used_libs.get(n).get("name").toString().equals(checkBox.getText().toString())) {
+                            project_used_libs.remove(hashMap);
+                        }
+                        n = n + 1;
+                    }
+                    project_used_libs.add(hashMap);
+                }
+                FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
             });
             lookup_list = new Gson().fromJson(FileUtil.readFile(local_lib_file), Helper.TYPE_MAP_LIST);
             n = 0;
@@ -204,22 +188,16 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 }
                 n = n + 1;
             }
-            convertView.findViewById(2131231132).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
-                    popupMenu.getMenu().add(0, 0, 0, "Delete");
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
-                            bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
-                            loadFiles();
-                            return true;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            convertView.findViewById(2131231132).setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
+                popupMenu.getMenu().add(0, 0, 0, "Delete");
+                popupMenu.setOnMenuItemClickListener(menuItem -> {
+                    FileUtil.deleteFile(local_libs_path.concat(checkBox.getText().toString()));
+                    bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
+                    loadFiles();
+                    return true;
+                });
+                popupMenu.show();
             });
             return convertView;
         }

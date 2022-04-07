@@ -41,7 +41,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PRDownloader {
 
-    private PRDownloader() { }
+    private PRDownloader() {
+    }
 
     public static void initialize(Context context) {
         initialize(context, PRDownloaderConfig.newBuilder().build());
@@ -366,7 +367,8 @@ public class PRDownloader {
         public static final int HTTP_TEMPORARY_REDIRECT = 307;
         public static final int HTTP_PERMANENT_REDIRECT = 308;
 
-        private Constants() { }
+        private Constants() {
+        }
     }
 
     public static class Error {
@@ -477,7 +479,8 @@ public class PRDownloader {
         }
 
         @Override
-        public void close() { }
+        public void close() {
+        }
 
         private void addHeaders(DownloadRequest request) {
             final HashMap<String, List<String>> headers = request.getHeaders();
@@ -859,7 +862,8 @@ public class PRDownloader {
 
         private final static int MAX_REDIRECTION = 10;
 
-        private Utils() { }
+        private Utils() {
+        }
 
         public static String getPath(String dirPath, String fileName) {
             return dirPath + File.separator + fileName;
@@ -1019,16 +1023,13 @@ public class PRDownloader {
 
         @Override
         public Thread newThread(final Runnable runnable) {
-            Runnable wrapperRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        android.os.Process.setThreadPriority(mThreadPriority);
-                    } catch (Throwable ignored) {
+            Runnable wrapperRunnable = () -> {
+                try {
+                    android.os.Process.setThreadPriority(mThreadPriority);
+                } catch (Throwable ignored) {
 
-                    }
-                    runnable.run();
                 }
+                runnable.run();
             };
             return new Thread(wrapperRunnable);
         }

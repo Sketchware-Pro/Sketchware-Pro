@@ -2,8 +2,8 @@ package com.besome.sketch.editor.property;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.inputmethod.EditorInfo;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -213,14 +213,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         _B validator = new _B(context, a2.findViewById(Resources.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.a(a2);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validator.b()) {
-                    setValue(editText.getText().toString());
-                    if (valueChangeListener != null) valueChangeListener.a(key, value);
-                    dialog.dismiss();
-                }
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (validator.b()) {
+                setValue(editText.getText().toString());
+                if (valueChangeListener != null) valueChangeListener.a(key, value);
+                dialog.dismiss();
             }
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
@@ -249,14 +246,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         ? 0x7fffffff : 999
         );
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validator.b()) {
-                    setValue(editText.getText().toString());
-                    if (valueChangeListener != null) valueChangeListener.a(key, value);
-                    dialog.dismiss();
-                }
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (validator.b()) {
+                setValue(editText.getText().toString());
+                if (valueChangeListener != null) valueChangeListener.a(key, value);
+                dialog.dismiss();
             }
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
@@ -272,14 +266,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         SB lengthValidator = new SB(context, view.findViewById(Resources.id.ti_input), minValue, maxValue);
         lengthValidator.a(value);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (lengthValidator.b()) {
-                    setValue(((EditText) view.findViewById(Resources.id.ed_input)).getText().toString());
-                    if (valueChangeListener != null) valueChangeListener.a(key, value);
-                    dialog.dismiss();
-                }
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (lengthValidator.b()) {
+                setValue(((EditText) view.findViewById(Resources.id.ed_input)).getText().toString());
+                if (valueChangeListener != null) valueChangeListener.a(key, value);
+                dialog.dismiss();
             }
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
@@ -297,14 +288,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         editText.setText(value);
         OB validator = new OB(context, view.findViewById(Resources.id.ti_input), minValue, maxValue);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validator.b()) {
-                    setValue(editText.getText().toString());
-                    if (valueChangeListener != null) valueChangeListener.a(key, value);
-                    dialog.dismiss();
-                }
+        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+            if (validator.b()) {
+                setValue(editText.getText().toString());
+                if (valueChangeListener != null) valueChangeListener.a(key, value);
+                dialog.dismiss();
             }
         });
         dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),

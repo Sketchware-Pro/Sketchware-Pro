@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.manage.library.googlemap;
 
-import a.a.a.*;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +7,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.v;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
 
@@ -34,9 +32,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.GB;
+import a.a.a.aB;
+import a.a.a.bB;
+import a.a.a.ci;
+import a.a.a.iC;
+import a.a.a.lC;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.wq;
+import a.a.a.yB;
 import mod.hey.studios.util.Helper;
-
-import com.besome.sketch.editor.manage.library.ProjectComparator;
 
 public class ManageGoogleMapActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -106,16 +112,13 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         projectRecyclerView.setItemAnimator(new ci());
         initializeProjectList();
         dialog.a(rootView);
-        dialog.b(Helper.getResString(2131625035), new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!mB.a()) {
-                    if (projectAdapter.c >= 0) {
-                        HashMap<String, Object> projectMap = projectsList.get(projectAdapter.c);
-                        googleMapLibraryBean = (ProjectLibraryBean) projectMap.get("google_map");
-                        configure();
-                        dialog.dismiss();
-                    }
+        dialog.b(Helper.getResString(2131625035), view -> {
+            if (!mB.a()) {
+                if (projectAdapter.c >= 0) {
+                    HashMap<String, Object> projectMap = projectsList.get(projectAdapter.c);
+                    googleMapLibraryBean = (ProjectLibraryBean) projectMap.get("google_map");
+                    configure();
+                    dialog.dismiss();
                 }
             }
         });
@@ -128,14 +131,12 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         dialog.a(2131165415);
         dialog.b(Helper.getResString(2131626412));
         dialog.a(Helper.getResString(2131625629));
-        dialog.b(Helper.getResString(2131625010), new View.OnClickListener() {
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    Intent intent = new Intent("android.intent.action.VIEW");
-                    intent.setData(Uri.parse("market://details?id=com.android.chrome"));
-                    startActivity(intent);
-                    dialog.dismiss();
-                }
+        dialog.b(Helper.getResString(2131625010), v -> {
+            if (!mB.a()) {
+                Intent intent = new Intent("android.intent.action.VIEW");
+                intent.setData(Uri.parse("market://details?id=com.android.chrome"));
+                startActivity(intent);
+                dialog.dismiss();
             }
         });
         dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
@@ -224,19 +225,13 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         dialog.a(2131165524);
         dialog.a(Helper.getResString(2131625246));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(2131624986), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                libSwitch.setChecked(false);
-                dialog.dismiss();
-            }
+        dialog.b(Helper.getResString(2131624986), v -> {
+            libSwitch.setChecked(false);
+            dialog.dismiss();
         });
-        dialog.a(Helper.getResString(2131624974), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                libSwitch.setChecked(true);
-                dialog.dismiss();
-            }
+        dialog.a(Helper.getResString(2131624974), v -> {
+            libSwitch.setChecked(true);
+            dialog.dismiss();
         });
         dialog.show();
     }

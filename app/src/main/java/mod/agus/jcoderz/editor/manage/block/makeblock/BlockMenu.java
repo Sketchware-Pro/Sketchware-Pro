@@ -3,8 +3,6 @@ package mod.agus.jcoderz.editor.manage.block.makeblock;
 import android.os.Environment;
 import android.util.Pair;
 
-import com.besome.sketch.editor.LogicEditorActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

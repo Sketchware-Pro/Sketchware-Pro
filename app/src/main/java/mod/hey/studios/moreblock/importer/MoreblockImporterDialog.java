@@ -132,18 +132,15 @@ public class MoreblockImporterDialog {
 
         dialog.a(ln); //init custom view
 
-        dialog.b(act.getString(Resources.string.common_word_select), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MoreBlockCollectionBean selectedBean = la.getSelectedItem();
+        dialog.b(act.getString(Resources.string.common_word_select), v -> {
+            MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
-                if (selectedBean == null) {
-                    SketchwareUtil.toastError("Select a More Block");
-                } else {
-                    callback.onSelected(selectedBean);
+            if (selectedBean == null) {
+                SketchwareUtil.toastError("Select a More Block");
+            } else {
+                callback.onSelected(selectedBean);
 
-                    dialog.dismiss();
-                }
+                dialog.dismiss();
             }
         }); //positive button
 
@@ -213,12 +210,9 @@ public class MoreblockImporterDialog {
                     ImportMoreblockHelper.optimizedBlockView(act.getBaseContext(), getItem(position).spec)
             );
 
-            View.OnClickListener listener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedPos = position;
-                    notifyDataSetChanged();
-                }
+            View.OnClickListener listener = v -> {
+                selectedPos = position;
+                notifyDataSetChanged();
             };
 
             convertView.findViewById(Resources.id.layout_item).setOnClickListener(listener);

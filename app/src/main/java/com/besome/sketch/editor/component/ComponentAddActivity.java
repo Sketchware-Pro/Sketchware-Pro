@@ -442,15 +442,12 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         dialog.a(Resources.drawable.chrome_96);
         dialog.b(Helper.getResString(Resources.string.title_compatible_chrome_browser));
         dialog.a(Helper.getResString(Resources.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mB.a()) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://details?id=com.android.chrome"));
-                    startActivity(intent);
-                    dialog.dismiss();
-                }
+        dialog.b(Helper.getResString(Resources.string.common_word_ok), v -> {
+            if (!mB.a()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=com.android.chrome"));
+                startActivity(intent);
+                dialog.dismiss();
             }
         });
         dialog.a(Helper.getResString(Resources.string.common_word_cancel),

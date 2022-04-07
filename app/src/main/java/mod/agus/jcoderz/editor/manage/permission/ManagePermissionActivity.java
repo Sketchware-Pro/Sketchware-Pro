@@ -2,14 +2,12 @@ package mod.agus.jcoderz.editor.manage.permission;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -81,24 +79,18 @@ public class ManagePermissionActivity extends Activity {
         ImageView resetPermissions = findViewById(2131232459);
         resetPermissions.setVisibility(View.VISIBLE);
         resetPermissions.setImageResource(2131165836);
-        resetPermissions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ManagePermissionActivity.this);
-                builder.setTitle("Reset permissions");
-                builder.setMessage("Are you sure you want to reset all permissions? This cannot be undone!");
-                builder.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
-                        //As FileResConfig only refreshes permissions during <init>()V, this is required.
-                        frc = new FileResConfig(numProj);
-                        setItems();
-                    }
-                });
-                builder.setNegativeButton("Cancel", null);
-                builder.create().show();
-            }
+        resetPermissions.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ManagePermissionActivity.this);
+            builder.setTitle("Reset permissions");
+            builder.setMessage("Are you sure you want to reset all permissions? This cannot be undone!");
+            builder.setPositiveButton("Reset", (dialog, which) -> {
+                FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
+                //As FileResConfig only refreshes permissions during <init>()V, this is required.
+                frc = new FileResConfig(numProj);
+                setItems();
+            });
+            builder.setNegativeButton("Cancel", null);
+            builder.create().show();
         });
     }
 
@@ -152,16 +144,13 @@ public class ManagePermissionActivity extends Activity {
 
             CheckBox checkBox = (CheckBox) convertView.findViewById(2131232370);
             checkBox.setText(namePerm.get(position));
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton button, boolean checked) {
-                    if (checked) {
-                        if (!frc.getPermissionList().contains(button.getText().toString())) {
-                            frc.listFilePermission.add(button.getText().toString());
-                        }
-                    } else {
-                        frc.listFilePermission.remove(button.getText().toString());
+            checkBox.setOnCheckedChangeListener((button, checked) -> {
+                if (checked) {
+                    if (!frc.getPermissionList().contains(button.getText().toString())) {
+                        frc.listFilePermission.add(button.getText().toString());
                     }
+                } else {
+                    frc.listFilePermission.remove(button.getText().toString());
                 }
             });
             handleChecked(checkBox, position);
