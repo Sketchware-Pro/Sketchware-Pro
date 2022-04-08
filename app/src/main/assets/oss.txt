@@ -95,7 +95,8 @@ Libraries added with Sketchware Pro
 
 	https://github.com/Rosemoe/sora-editor
 	GNU Lesser General Public License v2.1
-	Changes made can be found at: https://github.com/Sketchware-Pro/CodeEditor
+	Changes made can be found at: https://github.com/Sketchware-Pro/sora-editor
+	Used version: v0.10.11
 
 * Angads25/android-filepicker
 
