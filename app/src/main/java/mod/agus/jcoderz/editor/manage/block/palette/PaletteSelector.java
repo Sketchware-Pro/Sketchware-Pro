@@ -25,7 +25,7 @@ public class PaletteSelector {
                     setPaletteData(start, item.get("name").toString(), Color.parseColor(item.get("color").toString()));
                     start++;
                 }
-            } catch (JSONException e) {
+            } catch (JSONException ignored) {
             }
         }
         return list;
@@ -33,9 +33,9 @@ public class PaletteSelector {
 
     public void setPaletteData(int index, String name, int color) {
         HashMap<String, Object> palette = new HashMap<>();
-        palette.put("index", Integer.valueOf(index));
+        palette.put("index", index);
         palette.put("text", name);
-        palette.put("color", Integer.valueOf(color));
+        palette.put("color", color);
         list.add(palette);
     }
 }
