@@ -107,17 +107,14 @@ public class TutorialBean extends nA implements Parcelable {
 
     public void resetTutorial() {
         this.progress = 0;
-        Iterator<HashMap<String, Object>> it = this.listHash.iterator();
-        while (it.hasNext()) {
-            it.next().put("completed", ProjectLibraryBean.LIB_USE_N);
+        for (HashMap<String, Object> hash : this.listHash) {
+            hash.put("completed", ProjectLibraryBean.LIB_USE_N);
         }
-        Iterator<HashMap<String, Object>> it2 = this.listAdvancedHash.iterator();
-        while (it2.hasNext()) {
-            it2.next().put("completed", ProjectLibraryBean.LIB_USE_N);
+        for (HashMap<String, Object> advancedHash : this.listAdvancedHash) {
+            advancedHash.put("completed", ProjectLibraryBean.LIB_USE_N);
         }
-        Iterator<HashMap<String, Object>> it3 = this.listDocHash.iterator();
-        while (it3.hasNext()) {
-            it3.next().put("completed", ProjectLibraryBean.LIB_USE_N);
+        for (HashMap<String, Object> docHash : this.listDocHash) {
+            docHash.put("completed", ProjectLibraryBean.LIB_USE_N);
         }
     }
 
@@ -126,25 +123,19 @@ public class TutorialBean extends nA implements Parcelable {
         if (!str.isEmpty()) {
             String[] split = str.split(",");
             for (String str2 : split) {
-                Iterator<HashMap<String, Object>> it = this.listHash.iterator();
-                while (it.hasNext()) {
-                    HashMap<String, Object> next = it.next();
+                for (HashMap<String, Object> next : this.listHash) {
                     if (yB.c(next, "sc_id").equals(str2)) {
                         next.put("completed", ProjectLibraryBean.LIB_USE_Y);
                         this.progress++;
                     }
                 }
-                Iterator<HashMap<String, Object>> it2 = this.listAdvancedHash.iterator();
-                while (it2.hasNext()) {
-                    HashMap<String, Object> next2 = it2.next();
+                for (HashMap<String, Object> next2 : this.listAdvancedHash) {
                     if (yB.c(next2, "sc_id").equals(str2)) {
                         next2.put("completed", ProjectLibraryBean.LIB_USE_Y);
                         this.progress++;
                     }
                 }
-                Iterator<HashMap<String, Object>> it3 = this.listDocHash.iterator();
-                while (it3.hasNext()) {
-                    HashMap<String, Object> next3 = it3.next();
+                for (HashMap<String, Object> next3 : this.listDocHash) {
                     if (yB.c(next3, "sc_id").equals(str2)) {
                         next3.put("completed", ProjectLibraryBean.LIB_USE_Y);
                         this.progress++;
@@ -153,17 +144,14 @@ public class TutorialBean extends nA implements Parcelable {
             }
             return;
         }
-        Iterator<HashMap<String, Object>> it4 = this.listHash.iterator();
-        while (it4.hasNext()) {
-            it4.next().put("completed", ProjectLibraryBean.LIB_USE_N);
+        for (HashMap<String, Object> hash : this.listHash) {
+            hash.put("completed", ProjectLibraryBean.LIB_USE_N);
         }
-        Iterator<HashMap<String, Object>> it5 = this.listAdvancedHash.iterator();
-        while (it5.hasNext()) {
-            it5.next().put("completed", ProjectLibraryBean.LIB_USE_N);
+        for (HashMap<String, Object> advancedHash : this.listAdvancedHash) {
+            advancedHash.put("completed", ProjectLibraryBean.LIB_USE_N);
         }
-        Iterator<HashMap<String, Object>> it6 = this.listDocHash.iterator();
-        while (it6.hasNext()) {
-            it6.next().put("completed", ProjectLibraryBean.LIB_USE_N);
+        for (HashMap<String, Object> docHash : this.listDocHash) {
+            docHash.put("completed", ProjectLibraryBean.LIB_USE_N);
         }
     }
 
