@@ -33,9 +33,8 @@ public class HistoryBlockBean extends nA {
         this.addedData = new ArrayList<>();
         this.prevParentData = blockBean;
         this.currentParentData = blockBean2;
-        Iterator<BlockBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            this.addedData.add(it.next().clone());
+        for (BlockBean bean : arrayList) {
+            this.addedData.add(bean.clone());
         }
     }
 
@@ -60,9 +59,8 @@ public class HistoryBlockBean extends nA {
         this.prevParentData = blockBean;
         this.currentParentData = blockBean2;
         this.removedData = new ArrayList<>();
-        Iterator<BlockBean> it = arrayList.iterator();
-        while (it.hasNext()) {
-            this.removedData.add(it.next().clone());
+        for (BlockBean bean : arrayList) {
+            this.removedData.add(bean.clone());
         }
     }
 
@@ -84,30 +82,26 @@ public class HistoryBlockBean extends nA {
         }
         if (historyBlockBean.beforeMove != null) {
             this.beforeMove = new ArrayList<>();
-            Iterator<BlockBean> it = historyBlockBean.beforeMove.iterator();
-            while (it.hasNext()) {
-                this.beforeMove.add(it.next().clone());
+            for (BlockBean bean : historyBlockBean.beforeMove) {
+                this.beforeMove.add(bean.clone());
             }
         }
         if (historyBlockBean.afterMove != null) {
             this.afterMove = new ArrayList<>();
-            Iterator<BlockBean> it2 = historyBlockBean.afterMove.iterator();
-            while (it2.hasNext()) {
-                this.afterMove.add(it2.next().clone());
+            for (BlockBean bean : historyBlockBean.afterMove) {
+                this.afterMove.add(bean.clone());
             }
         }
         if (historyBlockBean.addedData != null) {
             this.addedData = new ArrayList<>();
-            Iterator<BlockBean> it3 = historyBlockBean.addedData.iterator();
-            while (it3.hasNext()) {
-                this.addedData.add(it3.next().clone());
+            for (BlockBean addedDatum : historyBlockBean.addedData) {
+                this.addedData.add(addedDatum.clone());
             }
         }
         if (historyBlockBean.removedData != null) {
             this.removedData = new ArrayList<>();
-            Iterator<BlockBean> it4 = historyBlockBean.removedData.iterator();
-            while (it4.hasNext()) {
-                this.removedData.add(it4.next().clone());
+            for (BlockBean removedDatum : historyBlockBean.removedData) {
+                this.removedData.add(removedDatum.clone());
             }
         }
         this.prevX = historyBlockBean.prevX;

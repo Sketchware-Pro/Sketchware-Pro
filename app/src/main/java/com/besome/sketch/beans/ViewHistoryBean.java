@@ -20,10 +20,9 @@ public class ViewHistoryBean extends nA {
     public void actionAdd(ArrayList<ViewBean> arrayList) {
         this.actionType = 0;
         this.addedData = new ArrayList<>();
-        Iterator<ViewBean> it = arrayList.iterator();
-        while (it.hasNext()) {
+        for (ViewBean bean : arrayList) {
             ViewBean viewBean = new ViewBean();
-            viewBean.copy(it.next());
+            viewBean.copy(bean);
             this.addedData.add(viewBean);
         }
     }
@@ -37,10 +36,9 @@ public class ViewHistoryBean extends nA {
     public void actionRemove(ArrayList<ViewBean> arrayList) {
         this.actionType = 2;
         this.removedData = new ArrayList<>();
-        Iterator<ViewBean> it = arrayList.iterator();
-        while (it.hasNext()) {
+        for (ViewBean bean : arrayList) {
             ViewBean viewBean = new ViewBean();
-            viewBean.copy(it.next());
+            viewBean.copy(bean);
             this.removedData.add(viewBean);
         }
     }
@@ -69,19 +67,17 @@ public class ViewHistoryBean extends nA {
         }
         if (viewHistoryBean.addedData != null) {
             this.addedData = new ArrayList<>();
-            Iterator<ViewBean> it = viewHistoryBean.addedData.iterator();
-            while (it.hasNext()) {
+            for (ViewBean addedDatum : viewHistoryBean.addedData) {
                 ViewBean viewBean = new ViewBean();
-                viewBean.copy(it.next());
+                viewBean.copy(addedDatum);
                 this.addedData.add(viewBean);
             }
         }
         if (viewHistoryBean.removedData != null) {
             this.removedData = new ArrayList<>();
-            Iterator<ViewBean> it2 = viewHistoryBean.removedData.iterator();
-            while (it2.hasNext()) {
+            for (ViewBean removedDatum : viewHistoryBean.removedData) {
                 ViewBean viewBean2 = new ViewBean();
-                viewBean2.copy(it2.next());
+                viewBean2.copy(removedDatum);
                 this.removedData.add(viewBean2);
             }
         }
