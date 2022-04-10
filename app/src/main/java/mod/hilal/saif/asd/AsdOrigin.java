@@ -21,6 +21,8 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.sketchware.remod.Resources;
 
 import a.a.a.Ss;
+import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.hilal.saif.asd.old.AsdOldDialog;
 
 public class AsdOrigin extends Dialog {
 
@@ -106,11 +108,19 @@ public class AsdOrigin extends Dialog {
         ));
         title.setGravity(Gravity.CENTER);
         title.setOnClickListener(v -> {
-            AsdDialog asdDialog = new AsdDialog(activity);
-            asdDialog.setCon(editText.getText().toString());
-            asdDialog.show();
-            asdDialog.saveLis(logicEditorActivity, boo, ss, asdDialog);
-            asdDialog.cancelLis(asdDialog);
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                AsdOldDialog asdOldDialog = new AsdOldDialog(activity);
+                asdOldDialog.setCon(editText.getText().toString());
+                asdOldDialog.show();
+                asdOldDialog.saveLis(logicEditorActivity, boo, ss, asdOldDialog);
+                asdOldDialog.cancelLis(logicEditorActivity, asdOldDialog);
+            } else {
+                AsdDialog asdDialog = new AsdDialog(activity);
+                asdDialog.setCon(editText.getText().toString());
+                asdDialog.show();
+                asdDialog.saveLis(logicEditorActivity, boo, ss, asdDialog);
+                asdDialog.cancelLis(asdDialog);
+            }
             dismiss();
         });
         base.addView(space, 0);
