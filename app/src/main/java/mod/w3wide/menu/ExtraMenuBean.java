@@ -45,7 +45,6 @@ import mod.hilal.saif.asd.AsdHandler;
 import mod.hilal.saif.asd.AsdHandlerCancel;
 import mod.hilal.saif.asd.AsdOrigin;
 import mod.hilal.saif.asd.asdforall.AsdAll;
-import mod.hilal.saif.asd.old.AsdOldDialog;
 import mod.w3wide.highlighter.SimpleHighlighter;
 
 public class ExtraMenuBean {
@@ -98,21 +97,12 @@ public class ExtraMenuBean {
     }
 
     private void codeMenu(Ss menu) {
-        if (ConfigActivity.isLegacyCeEnabled()) {
-            AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
-            asdOldDialog.setCon(menu.getArgValue().toString());
-            asdOldDialog.show();
-            /* p2 as true is for number */
-            asdOldDialog.saveLis(logicEditor, false, menu, asdOldDialog);
-            asdOldDialog.cancelLis(logicEditor, asdOldDialog);
-        } else {
-            AsdDialog asdDialog = new AsdDialog(logicEditor);
-            asdDialog.setCon(menu.getArgValue().toString());
-            asdDialog.show();
-            /* p2 as true is for number */
-            asdDialog.saveLis(logicEditor, false, menu, asdDialog);
-            asdDialog.cancelLis(asdDialog);
-        }
+        AsdDialog asdDialog = new AsdDialog(logicEditor);
+        asdDialog.setCon(menu.getArgValue().toString());
+        asdDialog.show();
+        /* p2 as true is for number */
+        asdDialog.saveLis(logicEditor, false, menu, asdDialog);
+        asdDialog.cancelLis(asdDialog);
     }
 
     public void defineMenuSelector(Ss ss) {

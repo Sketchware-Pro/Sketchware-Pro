@@ -39,8 +39,8 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class ManageJavaActivity extends Activity {
 
@@ -414,13 +414,7 @@ public class ManageJavaActivity extends Activity {
 
         public void goEditFile(int position) {
             Intent intent = new Intent();
-
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
-            } else {
-                intent.setClass(getApplicationContext(), mod.hey.studios.code.SrcCodeEditor.class);
-            }
-
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("java", "");
             intent.putExtra("title", getFileName(position));
             intent.putExtra("content", getItem(position));

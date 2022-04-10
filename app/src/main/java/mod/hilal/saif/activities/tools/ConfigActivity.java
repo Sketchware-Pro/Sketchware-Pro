@@ -38,7 +38,6 @@ public class ConfigActivity extends Activity {
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
     public static final String SETTING_BACKUP_DIRECTORY = "backup-dir";
-    public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
     public static final String SETTING_SHOW_EVERY_SINGLE_BLOCK = "show-every-single-block";
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
@@ -82,28 +81,6 @@ public class ConfigActivity extends Activity {
 
             return toReturnAndSetIfNotFound;
         }
-    }
-
-    public static boolean isLegacyCeEnabled() {
-        /* The legacy Code Editor is specifically opt-in */
-        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            return false;
-        }
-
-        HashMap<String, Object> settings = readSettings();
-        if (settings.containsKey(SETTING_LEGACY_CODE_EDITOR)) {
-            Object value = settings.get(SETTING_LEGACY_CODE_EDITOR);
-            if (value instanceof Boolean) {
-                return (Boolean) value;
-            } else {
-                SketchwareUtil.toastError("Detected invalid preference for legacy "
-                                + " Code Editor. Restoring defaults",
-                        Toast.LENGTH_LONG);
-                settings.remove(SETTING_LEGACY_CODE_EDITOR);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-            }
-        }
-        return false;
     }
 
     public static boolean isSettingEnabled(String keyName) {
@@ -166,7 +143,6 @@ public class ConfigActivity extends Activity {
         settings.clear();
         settings.put(SETTING_ALWAYS_SHOW_BLOCKS, false);
         settings.put(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
-        settings.put(SETTING_LEGACY_CODE_EDITOR, false);
         settings.put(SETTING_SHOW_BUILT_IN_BLOCKS, false);
         settings.put(SETTING_SHOW_EVERY_SINGLE_BLOCK, false);
         settings.put(SETTING_USE_NEW_VERSION_CONTROL, false);
@@ -266,10 +242,6 @@ public class ConfigActivity extends Activity {
                             })
                             .show();
                 });
-        addSwitchPreference("Use legacy Code Editor",
-                "Enables old Code Editor from v6.2.0.",
-                SETTING_LEGACY_CODE_EDITOR,
-                false);
         addSwitchPreference("Use new Version Control",
                 "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
