@@ -36,6 +36,7 @@ import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 
 @SuppressLint({"ResourceType", "SetTextI18n"})
 public class ManageResourceActivity extends Activity implements View.OnClickListener {
@@ -276,7 +277,11 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
     public void goEdit(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
+            } else {
+                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
+            }
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
             intent.putExtra("content", frc.listFileResource.get(position));
             intent.putExtra("xml", "");
