@@ -120,7 +120,6 @@ public class Jx {
                     case "addInitializer":
                         if (!block.parameters.get(0).trim().isEmpty()) {
                             m.add(block.parameters.get(0));
-
                         }
                         break;
                 }
@@ -942,7 +941,7 @@ public class Jx {
             if (intValue == 9) {
                 addImport(str);
             } else if (intValue == 5) {
-                i.add(str);
+                i.add(str + (str.contains(";") ? "" : ";"));
             } else {
                 i.add(getVariableDeclarationAndAddImports(intValue, str));
             }
