@@ -378,9 +378,6 @@
             android:name="mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hey.studios.activity.SrcCodeEditor"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="mod.hey.studios.code.SrcCodeEditor"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
