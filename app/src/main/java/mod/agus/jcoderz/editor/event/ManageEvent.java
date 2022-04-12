@@ -325,12 +325,14 @@ public class ManageEvent {
                 return 2131166348;
 
             case "FBAdsBanner_onLoggingImpression":
+            case "FBAdsInterstitial_onLoggingImpression":
                 return 2131166342;
 
             case "onEmailVerificationSent":
                 return 2131166335;
 
             case "onDateChanged":
+            case "onDateSet":
                 return 2131165572;
 
             case "onFailureLink":
@@ -338,9 +340,6 @@ public class ManageEvent {
 
             case "onDeleteUserComplete":
                 return 2131166333;
-
-            case "onDateSet":
-                return 2131165572;
 
             case "onCompletion":
                 return 2131165579;
@@ -406,9 +405,6 @@ public class ManageEvent {
 
             case "FBAdsInterstitial_onInterstitialDisplayed":
                 return 2131166340;
-
-            case "FBAdsInterstitial_onLoggingImpression":
-                return 2131166342;
 
             case "onPatternLockStarted":
             case "onPatternLockComplete":
