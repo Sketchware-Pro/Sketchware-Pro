@@ -5,19 +5,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class ViewEditor {
-    public static Iterator a() {
+
+    public static Iterator<?> a() {
         return Collections.emptyIterator();
     }
 
-    public static HashMap b(String str, String str2, String str3) {
-        return new HashMap();
+    public static HashMap<?, ?> b(String unused1, String unused2, String unused3) {
+        return new HashMap<>();
     }
 
-    public static Iterator c() {
+    public static Iterator<?> c() {
         return Collections.emptyIterator();
     }
 
-    public static HashMap d(String str, String str2) {
-        return new HashMap();
+    public static HashMap<?, ?> d(String unused1, String unused2) {
+        return new HashMap<>();
     }
 }
