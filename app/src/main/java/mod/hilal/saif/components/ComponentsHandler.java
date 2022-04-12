@@ -1,6 +1,7 @@
 package mod.hilal.saif.components;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import a.a.a.Lx;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -419,7 +421,7 @@ public class ComponentsHandler {
 
     /**
      * Adds Custom Components to available Components section.
-     * Used at {@link mod.agus.jcoderz.component.ManageComponent#a(ArrayList)}.
+     * Used at {@link com.besome.sketch.editor.component.ComponentAddActivity#onPostCreate(Bundle)}.
      */
     // √ add components to sk
     //structure : list.add(new ComponentBean(27));
@@ -514,7 +516,7 @@ public class ComponentsHandler {
     }
 
     /**
-     * Used at {@link mod.agus.jcoderz.editor.event.ManageEventComponent#a(String, String, String)}
+     * Used at {@link Lx#a(String, String, Lx.AccessModifier, String...)}
      * to get Custom Components' fields.
      */
     //√√

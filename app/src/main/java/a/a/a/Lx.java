@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
-import mod.agus.jcoderz.editor.event.ManageEventComponent;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
+import mod.hilal.saif.components.ComponentsHandler;
 
 public class Lx {
 
@@ -685,8 +685,43 @@ public class Lx {
                     fieldDeclaration += "\r\nprivate GoogleMapController _" + typeInstanceName + "_controller;";
                     break;
 
+                case "Videos":
+                    fieldDeclaration += "\r\nprivate File file_" + typeInstanceName + ";";
+                    break;
+
+                case "FirebaseCloudMessage":
+                    fieldDeclaration += "\r\nprivate OnCompleteListener " + typeInstanceName + "_onCompleteListener;";
+                    break;
+
+                case "com.facebook.ads.InterstitialAd":
+                    fieldDeclaration += "\r\nprivate InterstitialAdListener " + typeInstanceName + "_InterstitialAdListener;";
+                    break;
+
+                case "PhoneAuthProvider.OnVerificationStateChangedCallbacks":
+                    fieldDeclaration += "private PhoneAuthProvider.ForceResendingToken " + typeInstanceName + "_resendToken;";
+                    break;
+
+                case "DynamicLink":
+                    fieldDeclaration += "\r\nprivate OnSuccessListener " + typeInstanceName + "_onSuccessLink;"
+                            + "\r\nprivate OnFailureListener " + typeInstanceName + "_onFailureLink;";
+                    break;
+
+                case "com.facebook.ads.AdView":
+                    fieldDeclaration += "\r\nprivate AdListener " + typeInstanceName + "_AdListener;";
+                    break;
+
+                case "RewardedVideoAd":
+                    // Shouldn't it be "private RewardedVideoAdListener _"?
+                    fieldDeclaration += "\r\nprivate RewardedVideoAdListener  " + typeInstanceName + "_listener;";
+                    break;
+
+                case "TimePickerDialog":
+                    fieldDeclaration += "\r\nprivate TimePickerDialog.OnTimeSetListener " + typeInstanceName + "_listener;";
+                    break;
+
                 default:
-                    fieldDeclaration = ManageEventComponent.a(typeName, fieldDeclaration, typeInstanceName);
+                    fieldDeclaration += ComponentsHandler.extraVar(typeName, fieldDeclaration, typeInstanceName);
+                    break;
             }
         }
 
@@ -1171,8 +1206,24 @@ public class Lx {
             case "FragmentStatePagerAdapter":
                 return componentName + " = new " + a(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
 
+            case "Videos":
+                return "file_" + componentName + " = FileUtil.createNewPictureFile(getApplicationContext());\r\n"
+                        + "Uri _uri_" + componentName + " = null;\r\n"
+                        + "if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {\r\n"
+                        + "_uri_" + componentName + " = FileProvider.getUriForFile(getApplicationContext(), " +
+                        "getApplicationContext().getPackageName() + \".provider\", file_" + componentName + ");\r\n"
+                        + "}\r\n"
+                        + "else {\r\n"
+                        + "_uri_" + componentName + " = Uri.fromFile(file_" + componentName + ");\r\n"
+                        + componentName + ".putExtra(MediaStore.EXTRA_OUTPUT, _uri_" + componentName + ");\r\n"
+                        + componentName + ".addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);";
+
+            case "DatePickerDialog":
+                return componentName + " = new DatePickerDialog(this);";
+
             default:
-                return ManageEventComponent.b(componentNameId, componentName);
+                return ComponentsHandler.defineExtraVar(componentNameId, componentName);
+
         }
     }
 
