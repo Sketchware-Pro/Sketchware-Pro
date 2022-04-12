@@ -198,14 +198,6 @@ public class ManageEvent {
                 list.add("onFragmentAdded");
                 return;
 
-            case "OnVideoAdListener":
-                list.add("onRewarded");
-                list.add("onRewardedVideoAdLoaded");
-                list.add("onRewardedVideoAdFailedToLoad");
-                list.add("onRewardedVideoAdOpened");
-                list.add("onRewardedVideoAdClosed");
-                return;
-
             case "OnTimeSetListener":
                 list.add("onTimeSet");
                 return;
@@ -341,17 +333,11 @@ public class ManageEvent {
             case "onDateChanged":
                 return 2131165572;
 
-            case "onRewarded":
-                return 2131166301;
-
             case "onFailureLink":
                 return 2131166336;
 
             case "onDeleteUserComplete":
                 return 2131166333;
-
-            case "onRewardedVideoAdFailedToLoad":
-                return 2131165552;
 
             case "onDateSet":
                 return 2131165572;
@@ -381,9 +367,6 @@ public class ManageEvent {
             case "onRestoreInstanceState":
                 return 2131165548;
 
-            case "onRewardedVideoAdClosed":
-                return 2131165551;
-
             case "onSuccessLink":
                 return 2131166337;
 
@@ -393,12 +376,6 @@ public class ManageEvent {
 
             case "FBAdsInterstitial_onAdClicked":
                 return 2131166338;
-
-            case "onRewardedVideoAdLoaded":
-                return 2131165553;
-
-            case "onRewardedVideoAdOpened":
-                return 2131165554;
 
             case "onAccountPickerCancelled":
                 return 2131166345;
@@ -508,9 +485,6 @@ public class ManageEvent {
             case "onFailureLink":
                 return "onFailure";
 
-            case "onRewardedVideoAdFailedToLoad":
-                return "onVideoAdFailedToLoad";
-
             case "onSaveInstanceState":
                 return "On activity save instance state";
 
@@ -534,17 +508,8 @@ public class ManageEvent {
             case "onContextItemSelected":
                 return "On context menu selected";
 
-            case "onRewardedVideoAdClosed":
-                return "onVideoAdClosed";
-
             case "onSuccessLink":
                 return "onSuccess";
-
-            case "onRewardedVideoAdLoaded":
-                return "onVideoAdLoaded";
-
-            case "onRewardedVideoAdOpened":
-                return "onVideoAdOpened";
 
             case "onAccountPickerCancelled":
                 return "onAccountCancelled";
@@ -594,7 +559,6 @@ public class ManageEvent {
             case "onUpdateProfileComplete":
             case "onEmailVerificationSent":
             case "onDateChanged":
-            case "onRewarded":
             case "onDeleteUserComplete":
             case "onNavigationItemSelected":
             case "onDateSet":
@@ -664,13 +628,6 @@ public class ManageEvent {
                         eventLogic + "\r\n" +
                         "}";
 
-            case "onRewarded":
-                return "@Override\r\n" +
-                        "public void onRewarded(RewardItem rewardItem) {\r\n" +
-                        "final int _rewardItem = rewardItem.getAmount();\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
             case "onFailureLink":
                 return "@Override\r\n" +
                         "public void onFailure(Exception _e) {\r\n" +
@@ -684,13 +641,6 @@ public class ManageEvent {
                         "final int _itemId = item.getItemId();\r\n" +
                         eventLogic + "\r\n" +
                         "return true;\r\n" +
-                        "}";
-
-            case "onRewardedVideoAdFailedToLoad":
-                return "@Override\r\n" +
-                        "public void onRewardedVideoAdFailedToLoad(int errorCode) {\r\n" +
-                        "final int _errorCode = errorCode;\r\n" +
-                        eventLogic + "\r\n" +
                         "}";
 
             case "onDateSet":
@@ -790,14 +740,6 @@ public class ManageEvent {
             case "FBAdsInterstitial_onAdClicked":
                 return "@Override\r\n" +
                         "public void onAdClicked(Ad ad) {\r\n" +
-                        eventLogic + "\r\n" +
-                        "}";
-
-            case "onRewardedVideoAdClosed":
-            case "onRewardedVideoAdLoaded":
-            case "onRewardedVideoAdOpened":
-                return "@Override\r\n" +
-                        "public void " + eventName + "() {\r\n" +
                         eventLogic + "\r\n" +
                         "}";
 
@@ -1113,7 +1055,7 @@ public class ManageEvent {
 
             case "FragmentStatePagerAdapter":
                 String className = Lx.a(targetId + "Fragment");
-                return "public class " + className +" extends FragmentStatePagerAdapter {\r\n" +
+                return "public class " + className + " extends FragmentStatePagerAdapter {\r\n" +
                         "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
                         "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +
                         "Context context;\r\n" +
@@ -1135,23 +1077,6 @@ public class ManageEvent {
                         "\r\n" +
                         listenerLogic + "\r\n" +
                         "}";
-
-            case "OnVideoAdListener":
-                return targetId + "_listener = new RewardedVideoAdListener() {\r\n" +
-                        listenerLogic + "\r\n" +
-                        "\r\n" +
-                        "@Override\r\n" +
-                        "public void onRewardedVideoAdLeftApplication() {\r\n" +
-                        "}\r\n" +
-                        "\r\n" +
-                        "@Override\r\n" +
-                        "public void onRewardedVideoStarted() {\r\n" +
-                        "}\r\n" +
-                        "\r\n" +
-                        "@Override\r\n" +
-                        "public void onRewardedVideoCompleted() {\r\n" +
-                        "}\r\n" +
-                        "};";
 
             case "OnTimeSetListener":
                 return targetId + "_listener = new TimePickerDialog.OnTimeSetListener() {\r\n" +
@@ -1317,17 +1242,11 @@ public class ManageEvent {
             case "onDateChanged":
                 return "%d.year %d.month %d.day";
 
-            case "onRewarded":
-                return "%d.rewardItem";
-
             case "onFailureLink":
                 return "%s.errorMessage";
 
             case "onNavigationItemSelected":
                 return "%d.itemId";
-
-            case "onRewardedVideoAdFailedToLoad":
-                return "%d.errorCode";
 
             case "onDateSet":
                 return "%m.datepicker.datePicker %d.year %d.month %d.day";
@@ -1428,13 +1347,6 @@ public class ManageEvent {
         if (gx.a("DatePickerDialog")) {
             list.add("onDateSet");
         }
-        if (gx.a("RewardedVideoAd")) {
-            list.add("onRewarded");
-            list.add("onRewardedVideoAdLoaded");
-            list.add("onRewardedVideoAdFailedToLoad");
-            list.add("onRewardedVideoAdOpened");
-            list.add("onRewardedVideoAdClosed");
-        }
         if (gx.a("FirebaseAuth")) {
             list.add("onUpdateEmailComplete");
             list.add("onUpdatePasswordComplete");
@@ -1495,17 +1407,11 @@ public class ManageEvent {
             case "onDateSet":
                 return "When " + targetId + " " + eventName + " %d.year %d.month %d.day";
 
-            case "onRewarded":
-                return "onRewarded " + "%d.rewardItem";
-
             case "onFailureLink":
                 return "When " + targetId + " " + eventName + " %s.errorMessage";
 
             case "onNavigationItemSelected":
                 return "When " + targetId + " " + eventName + " %d.itemId";
-
-            case "onRewardedVideoAdFailedToLoad":
-                return "onRewardedVideoAdFailedToLoad " + "%d.errorCode";
 
             case "onPrepared":
             case "onCompletion":
@@ -1537,17 +1443,8 @@ public class ManageEvent {
             case "onRecyclerScrolled":
                 return "When " + " " + targetId + " " + eventName + " %d.offsetX %d.offsetY";
 
-            case "onRewardedVideoAdClosed":
-                return "onRewardedVideoAdClosed";
-
             case "onSuccessLink":
                 return "When " + targetId + " " + eventName + " %s.link";
-
-            case "onRewardedVideoAdLoaded":
-                return "onRewardedVideoAdLoaded";
-
-            case "onRewardedVideoAdOpened":
-                return "onRewardedVideoAdOpened";
 
             case "onPageScrolled":
                 return "When " + targetId + " " + eventName + " %d.position %d.positionOffset %d.positionOffsetPixels";
