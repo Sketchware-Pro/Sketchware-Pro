@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.testing.R;
 
@@ -22,11 +21,9 @@ import a.a.a.Xf;
 import a.a.a.Zt;
 import a.a.a.gg;
 import a.a.a.mB;
-import a.a.a.to;
 import a.a.a.xB;
-import a.a.a.xo;
 
-public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.e, to {
+public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.e {
 
     private String sc_id;
     private ViewPager pager;
@@ -66,11 +63,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         k();
         try {
-            if (j.h()) {
-                new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
-            } else {
-                xo.a(getApplicationContext());
-            }
+            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
         } catch (Exception e) {
             e.printStackTrace();
             h();
@@ -109,13 +102,6 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         pager.setOffscreenPageLimit(2);
         pager.a(this);
         tabLayout.setupWithViewPager(pager);
-        xo.a((to) this);
-    }
-
-    @Override
-    public void onDestroy() {
-        xo.i();
-        super.onDestroy();
     }
 
     @Override
@@ -124,19 +110,12 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         if (!super.j()) {
             finish();
         }
-        d.setScreenName(ManageFontActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void d(int i) {
-        new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
     }
 
     private class TabLayoutAdapter extends gg {
