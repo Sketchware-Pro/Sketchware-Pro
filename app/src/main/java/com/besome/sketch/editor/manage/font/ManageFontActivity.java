@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.material.tabs.TabLayout;
+import com.sketchware.remod.testing.R;
 
 import a.a.a.MA;
 import a.a.a.Np;
@@ -81,16 +82,16 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427520);
+        setContentView(R.layout.manage_font);
 
         if (!super.j()) {
             finish();
         }
 
-        m = findViewById(2131231847);
+        m = findViewById(R.id.toolbar);
         a(m);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), 2131625135));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_font));
         d().e(true);
         d().d(true);
         m.setNavigationOnClickListener(v -> {
@@ -104,8 +105,8 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         } else {
             l = savedInstanceState.getString("sc_id");
         }
-        o = findViewById(2131231781);
-        n = findViewById(2131232325);
+        o = findViewById(R.id.tab_layout);
+        n = findViewById(R.id.view_pager);
         n.setAdapter(new a(getSupportFragmentManager()));
         n.setOffscreenPageLimit(2);
         n.a(this);
@@ -151,8 +152,8 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         public a(Xf xf) {
             super(xf);
-            f[0] = xB.b().a(getApplicationContext(), 2131625288).toUpperCase();
-            f[1] = xB.b().a(getApplicationContext(), 2131625287).toUpperCase();
+            f[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            f[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -195,7 +196,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         @Override
         public void a() {
             h();
-            setResult(-1);
+            setResult(RESULT_OK);
             finish();
             Np.g().d();
         }
