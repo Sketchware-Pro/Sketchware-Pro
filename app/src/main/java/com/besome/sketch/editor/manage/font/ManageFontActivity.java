@@ -28,13 +28,10 @@ import a.a.a.xo;
 
 public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.e, to {
 
-    public final int k = 2;
-    public String l;
-    public Toolbar m;
-    public ViewPager n;
-    public TabLayout o;
-    public Zt p;
-    public St q;
+    private String sc_id;
+    private ViewPager pager;
+    private Zt myCollectionFontsFragment;
+    private St thisProjectFontsFragment;
 
     @Override
     public void a(int i) {
@@ -49,27 +46,28 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     }
 
     public void f(int i) {
-        n.setCurrentItem(i);
+        pager.setCurrentItem(i);
     }
 
     public St l() {
-        return q;
+        return thisProjectFontsFragment;
     }
 
     public Zt m() {
-        return p;
+        return myCollectionFontsFragment;
     }
 
     @Override
     public void onBackPressed() {
-        if (p.l) {
-            p.a(false);
+        if (myCollectionFontsFragment.l) {
+            myCollectionFontsFragment.a(false);
             return;
         }
+
         k();
         try {
             if (j.h()) {
-                new Handler().postDelayed(() -> new b(e).execute(), 500L);
+                new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
             } else {
                 xo.a(getApplicationContext());
             }
@@ -88,29 +86,29 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
             finish();
         }
 
-        m = findViewById(R.id.toolbar);
-        a(m);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().a(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_font));
         d().e(true);
         d().d(true);
-        m.setNavigationOnClickListener(v -> {
+        toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
         });
 
         if (savedInstanceState == null) {
-            l = getIntent().getStringExtra("sc_id");
+            sc_id = getIntent().getStringExtra("sc_id");
         } else {
-            l = savedInstanceState.getString("sc_id");
+            sc_id = savedInstanceState.getString("sc_id");
         }
-        o = findViewById(R.id.tab_layout);
-        n = findViewById(R.id.view_pager);
-        n.setAdapter(new a(getSupportFragmentManager()));
-        n.setOffscreenPageLimit(2);
-        n.a(this);
-        o.setupWithViewPager(n);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        pager = findViewById(R.id.view_pager);
+        pager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
+        pager.setOffscreenPageLimit(2);
+        pager.a(this);
+        tabLayout.setupWithViewPager(pager);
         xo.a((to) this);
     }
 
@@ -118,11 +116,6 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     public void onDestroy() {
         xo.i();
         super.onDestroy();
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
     }
 
     @Override
@@ -137,23 +130,23 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("sc_id", l);
+        outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void d(int i) {
-        new Handler().postDelayed(() -> new b(e).execute(), 500L);
+        new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
     }
 
-    class a extends gg {
+    private class TabLayoutAdapter extends gg {
 
-        public String[] f = new String[2];
+        private final String[] labels = new String[2];
 
-        public a(Xf xf) {
+        public TabLayoutAdapter(Xf xf) {
             super(xf);
-            f[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            f[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            labels[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
+            labels[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override
@@ -165,9 +158,9 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         public Object a(ViewGroup viewGroup, int i) {
             Fragment fragment = (Fragment) super.a(viewGroup, i);
             if (i != 0) {
-                q = (St) fragment;
+                thisProjectFontsFragment = (St) fragment;
             } else {
-                p = (Zt) fragment;
+                myCollectionFontsFragment = (Zt) fragment;
             }
             return fragment;
         }
@@ -176,19 +169,20 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         public Fragment c(int i) {
             if (i != 0) {
                 return new St();
+            } else {
+                return new Zt();
             }
-            return new Zt();
         }
 
         @Override
         public CharSequence a(int i) {
-            return f[i];
+            return labels[i];
         }
     }
 
-    class b extends MA {
+    private class SaveAsyncTask extends MA {
 
-        public b(Context context) {
+        public SaveAsyncTask(Context context) {
             super(context);
             ManageFontActivity.this.a(this);
         }
@@ -205,7 +199,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         public void b() {
             try {
                 publishProgress("Now processing..");
-                p.g();
+                myCollectionFontsFragment.g();
             } catch (Exception e) {
                 e.printStackTrace();
                 // removed as not compilable (thanks, checked exceptions)
