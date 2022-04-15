@@ -140,16 +140,6 @@ public class Jx {
         g = newImports;
     }
 
-    private void removeDuplicateVariables() {
-        ArrayList<String> newVariables = new ArrayList<>();
-        for (String value : i) {
-            if (!newVariables.contains(value) && !value.trim().isEmpty()) {
-                newVariables.add(value);
-            }
-        }
-        i = newVariables;
-    }
-
     /**
      * @return Import to be added to the currently generating class
      * (includes import of default launcher activity)
@@ -292,7 +282,6 @@ public class Jx {
             if (activityHasFields) sb.append(a);
             activityHasFields = true;
 
-            removeDuplicateVariables();
             for (String field : i) {
                 if (field.length() > 0) {
                     sb.append(a);
