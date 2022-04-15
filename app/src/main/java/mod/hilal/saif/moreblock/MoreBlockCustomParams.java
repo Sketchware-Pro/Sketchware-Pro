@@ -44,7 +44,7 @@ public class MoreBlockCustomParams {
         });
 
         add.setOnClickListener(v -> {
-            if (!err && !name.equals("") && !parameter.equals("")) {
+            if (!err && !name.getText().toString().equals("") && !parameter.getText().toString().equals("")) {
                 dt.l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
                 dt.a(dt.b, dt.c, dt.p, dt.g.getText().toString(), dt.l);
                 parameter.setText("");
