@@ -720,7 +720,7 @@ public class Lx {
                     break;
 
                 default:
-                    fieldDeclaration += ComponentsHandler.extraVar(typeName, fieldDeclaration, typeInstanceName);
+                    fieldDeclaration = ComponentsHandler.extraVar(typeName, fieldDeclaration, typeInstanceName);
                     break;
             }
         }
