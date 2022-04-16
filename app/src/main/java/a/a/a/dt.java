@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,10 +28,13 @@ import java.util.Iterator;
 
 import mod.hey.studios.moreblock.MoreblockValidator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
-import mod.hilal.saif.moreblock.MoreBlockCustomParams;
+import mod.w3wide.lib.BaseTextWatcher;
 
 @SuppressLint("ViewConstructor")
 public class dt extends LinearLayout {
+
+    public static boolean err = false;
+
     public Activity a;
     public RelativeLayout b;
     public LinearLayout c;
@@ -97,15 +100,7 @@ public class dt extends LinearLayout {
         g.setPrivateImeOptions("defaultInputmode=english;");
         h.setPrivateImeOptions("defaultInputmode=english;");
         i.setPrivateImeOptions("defaultInputmode=english;");
-        g.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
+        g.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void afterTextChanged(Editable var1) {
                 if (var1.toString().equals("") || o.b()) {
@@ -143,7 +138,45 @@ public class dt extends LinearLayout {
         });
         var4 = findViewById(2131230757);
         var4.setText(xB.b().a(activity, 2131625499));
-        MoreBlockCustomParams.customParams(this);
+
+        final EditText parameter = findViewById(Resources.id.parameter);
+        final EditText name = findViewById(Resources.id.name);
+        final Button add = findViewById(Resources.id.add);
+
+        final TextInputLayout p_input = (TextInputLayout) parameter.getParent().getParent();
+        p_input.setHint("Parameter: m.name");
+        final TextInputLayout n_input = (TextInputLayout) name.getParent().getParent();
+        n_input.setHint("Variable name");
+        parameter.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                final String s = sequence.toString();
+
+                if (s.matches("[mldb]\\.[a-zA-Z]+")) {
+                    err = false;
+                } else {
+                    err = !s.equals("");
+                }
+                p_input.setError("Invalid format");
+                p_input.setErrorEnabled(err);
+            }
+        });
+
+        add.setOnClickListener(v -> {
+            if (!err && !name.getText().toString().equals("") && !parameter.getText().toString().equals("")) {
+                l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
+                a(b, c, p, g.getText().toString(), l);
+                parameter.setText("");
+                name.setText("");
+                ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(uq.a()));
+                for (Pair<String, String> next : l) {
+                    if (!(next.first).equals("t")) {
+                        arrayList.add(next.second);
+                    }
+                }
+                m.a(arrayList.toArray(new String[0]));
+            }
+        });
         var4.setOnClickListener(view -> {
             if (!mB.a()) {
                 if (n.b() && o.b()) {
