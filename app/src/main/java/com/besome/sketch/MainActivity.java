@@ -77,29 +77,29 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public GC y = null;
     public zI z = null;
 
-    @Override // androidx.viewpager.widget.ViewPager.e
+    @Override
     public void a(int i) {
     }
 
-    @Override // androidx.viewpager.widget.ViewPager.e
+    @Override
     public void a(int i, float f, int i2) {
     }
 
-    @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
+    @Override
     public void g(int i) {
         if (i == 9501 && p.getCurrentItem() == 0 && y != null) {
             y.g();
         }
     }
 
-    @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
+    @Override
     public void h(int i) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
         startActivityForResult(intent, i);
     }
 
-    @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
+    @Override
     public void l() {
     }
 
@@ -107,7 +107,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (p != null) p.a(i, true);
     }
 
-    @Override // com.besome.sketch.lib.base.BasePermissionAppCompatActivity
+    @Override
     public void m() {
     }
 
@@ -117,7 +117,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         invalidateOptionsMenu();
@@ -147,7 +147,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity
+    @Override
     public void onBackPressed() {
         if (o.isShown()) {
             m.b();
@@ -156,14 +156,13 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         n.a(newConfig);
     }
 
     @Override
-    // androidx.core.app.ComponentActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.main);
@@ -266,7 +265,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
-    // androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onDestroy() {
         super.onDestroy();
         xB.b().a();
@@ -274,18 +272,20 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (n.a(item)) return true;
-        return super.onOptionsItemSelected(item);
+        if (n.a(item)) {
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
-    @Override // androidx.appcompat.app.AppCompatActivity
+    @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         n.b();
     }
 
     @Override
-    // androidx.fragment.app.FragmentActivity, com.besome.sketch.lib.base.BaseAppCompatActivity
     public void onResume() {
         super.onResume();
         /* Check if the device is running low on storage space */
@@ -366,7 +366,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    @Override // androidx.viewpager.widget.ViewPager.e
+    @Override
     public void b(int i) {
         if (i == 0) {
             if (j() && y != null && y.f() == 0) {
@@ -396,24 +396,24 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             super(xf);
         }
 
-        @Override // a.a.a.kk
+        @Override
         public int a() {
             return 1;
         }
 
-        @Override // a.a.a.gg, a.a.a.kk
+        @Override
         public Object a(ViewGroup viewGroup, int i) {
             Fragment fragment = (Fragment) super.a(viewGroup, i);
             y = (GC) fragment;
             return fragment;
         }
 
-        @Override // a.a.a.gg
+        @Override
         public Fragment c(int i) {
             return new GC();
         }
 
-        @Override // a.a.a.kk
+        @Override
         public CharSequence a(int i) {
             return xB.b().a(MainActivity.this,
                     Resources.string.main_tab_title_myproject);
