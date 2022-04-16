@@ -76,9 +76,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     }
 
     @Override
+    // onRequestPermissionsResult but for Storage access only, and only when granted
     public void g(int i) {
-        if (i == 9501 && viewPager.getCurrentItem() == 0 && projectsFragment != null) {
-            projectsFragment.g();
+        if (i == 9501) {
+            allFilesAccessCheck();
+
+            if (viewPager.getCurrentItem() == 0 && projectsFragment != null) {
+                projectsFragment.g();
+            }
         }
     }
 
