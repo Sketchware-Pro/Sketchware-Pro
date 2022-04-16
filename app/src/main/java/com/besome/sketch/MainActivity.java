@@ -27,7 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -165,7 +165,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.main);
+        setContentView(R.layout.main);
 
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
@@ -177,27 +177,27 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             u.a("U1I0", Integer.valueOf(u1I0 + 1));
         }
 
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         d().d(true);
         d().e(true);
-        ImageView logo = findViewById(Resources.id.img_title_logo);
+        ImageView logo = findViewById(R.id.img_title_logo);
         logo.setOnClickListener(v -> invalidateOptionsMenu());
-        drawer = findViewById(Resources.id.left_drawer);
-        drawerLayout = findViewById(Resources.id.drawer_layout);
-        drawerToggle = new l(this, drawerLayout, Resources.string.app_name, Resources.string.app_name);
+        drawer = findViewById(R.id.left_drawer);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerToggle = new l(this, drawerLayout, R.string.app_name, R.string.app_name);
         // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
         drawerLayout.a((DrawerLayout.c) drawerToggle);
         d().a("");
 
-        viewPager = findViewById(Resources.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
         viewPager.a(this);
 
-        qnaLayout = findViewById(Resources.id.layout_qna_bottom);
-        fab = findViewById(Resources.id.fab);
-        coordinator = findViewById(Resources.id.layout_coordinator);
+        qnaLayout = findViewById(R.id.layout_qna_bottom);
+        fab = findViewById(R.id.fab);
+        coordinator = findViewById(R.id.layout_coordinator);
 
         boolean hasStorageAccess = j();
         if (u1I0 > 0 && !hasStorageAccess) {
@@ -231,7 +231,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                                         .setMessage(BackupRestoreManager.getRestoreIntegratedLocalLibrariesMessage(false, -1, -1, null))
                                         .setPositiveButton("Copy", (dialog, which) -> manager.doRestore(path, true))
                                         .setNegativeButton("Don't copy", (dialog, which) -> manager.doRestore(path, false))
-                                        .setNeutralButton(Resources.string.common_word_cancel, null)
+                                        .setNeutralButton(R.string.common_word_cancel, null)
                                         .show();
                             } else {
                                 manager.doRestore(path, true);
@@ -312,12 +312,12 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
             if (!optOutFile.exists() && !granted) {
                 aB dialog = new aB(this);
-                dialog.a(Resources.drawable.ic_expire_48dp);
+                dialog.a(R.drawable.ic_expire_48dp);
                 dialog.b("Android 11 storage access");
                 dialog.a("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
                         "taking ages to build projects. Don't worry, we can't do more to storage than " +
                         "with current granted permissions.");
-                dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
+                dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     dialog.dismiss();
                 });
@@ -338,10 +338,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void showNoticeNeedStorageAccess() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_title_storage));
-        dialog.a(Resources.drawable.color_about_96);
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_permission_need_load_project));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok), v -> {
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_permission_title_storage));
+        dialog.a(R.drawable.color_about_96);
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_need_load_project));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
             dialog.dismiss();
             s();
         });
@@ -350,18 +350,18 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void showNoticeNotEnoughFreeStorageSpace() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space_title));
-        dialog.a(Resources.drawable.high_priority_96_red);
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_insufficient_storage_space_title));
+        dialog.a(R.drawable.high_priority_96_red);
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_insufficient_storage_space));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     public void s() {
         if (storageAccessDenied == null || !storageAccessDenied.j()) {
-            storageAccessDenied = Snackbar.a(coordinator, xB.b().a(getApplicationContext(), Resources.string.common_message_permission_denied), -2);
-            storageAccessDenied.a(xB.b().a(getApplicationContext(), Resources.string.common_word_settings), v -> {
+            storageAccessDenied = Snackbar.a(coordinator, xB.b().a(getApplicationContext(), R.string.common_message_permission_denied), -2);
+            storageAccessDenied.a(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
                 storageAccessDenied.c();
                 nd.a(MainActivity.this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -424,7 +424,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         @Override
         public CharSequence a(int i) {
             return xB.b().a(MainActivity.this,
-                    Resources.string.main_tab_title_myproject);
+                    R.string.main_tab_title_myproject);
         }
     }
 }
