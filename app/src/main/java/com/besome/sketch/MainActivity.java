@@ -194,7 +194,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         qnaLayout = findViewById(Resources.id.layout_qna_bottom);
         fab = findViewById(Resources.id.fab);
         coordinator = findViewById(Resources.id.layout_coordinator);
-        selectPageZero();
 
         boolean hasStorageAccess = j();
         if (c1 > 0 && !hasStorageAccess) {
