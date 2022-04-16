@@ -247,7 +247,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             }
         }
 
-        if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
+        if (j() && !ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
             aB dialog = new aB(this);
             dialog.b("New changes in v6.4.0");
             dialog.a("Just as a reminder; There have been many changes since v6.3.0 fix1, " +
