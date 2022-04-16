@@ -195,10 +195,14 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         fab = findViewById(Resources.id.fab);
         coordinator = findViewById(Resources.id.layout_coordinator);
         selectPageZero();
-        if (c1 > 0 && !j()) {
+
+        boolean hasStorageAccess = j();
+        if (c1 > 0 && !hasStorageAccess) {
             showNoticeNeedStorageAccess();
         }
-        allFilesAccessCheck();
+        if (hasStorageAccess) {
+            allFilesAccessCheck();
+        }
 
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             Uri data = getIntent().getData();
