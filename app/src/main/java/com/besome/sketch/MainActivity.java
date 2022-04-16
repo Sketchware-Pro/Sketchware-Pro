@@ -93,10 +93,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void l() {
     }
 
-    public void l(int i) {
+    private void selectPageZero() {
         if (viewPager != null) {
             // ViewPager#setCurrentItem(int, boolean)
-            viewPager.a(i, true);
+            viewPager.a(0, true);
         }
     }
 
@@ -117,7 +117,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 105:
-                    l(0);
+                    selectPageZero();
                     sB.a(this, data.getBooleanExtra("onlyConfig", true));
                     break;
 
@@ -161,6 +161,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.main);
+
         u = new DB(getApplicationContext(), "U1");
         int c1 = u.a("U1I0", -1);
         long u1I1Long = u.e("U1I1");
@@ -170,27 +171,30 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (System.currentTimeMillis() - u1I1Long > 1000 * 24 * 60 * 60) {
             u.a("U1I0", Integer.valueOf(c1 + 1));
         }
-        Toolbar l = findViewById(Resources.id.toolbar);
-        a(l);
+
+        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        a(toolbar);
         d().d(true);
         d().e(true);
-        ImageView a1 = findViewById(Resources.id.img_title_logo);
-        a1.setOnClickListener(v -> invalidateOptionsMenu());
+        ImageView logo = findViewById(Resources.id.img_title_logo);
+        logo.setOnClickListener(v -> invalidateOptionsMenu());
         drawer = findViewById(Resources.id.left_drawer);
         drawerLayout = findViewById(Resources.id.drawer_layout);
         drawerToggle = new l(this, drawerLayout, Resources.string.app_name, Resources.string.app_name);
         // DrawerLayout#addDrawerListener(DrawerLayout.DrawerListener)
         drawerLayout.a((DrawerLayout.c) drawerToggle);
         d().a("");
+
         viewPager = findViewById(Resources.id.viewpager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
         viewPager.a(this);
+
         qnaLayout = findViewById(Resources.id.layout_qna_bottom);
         fab = findViewById(Resources.id.fab);
         coordinator = findViewById(Resources.id.layout_coordinator);
-        l(0);
+        selectPageZero();
         if (c1 > 0 && !j()) {
             showNoticeNeedStorageAccess();
         }
