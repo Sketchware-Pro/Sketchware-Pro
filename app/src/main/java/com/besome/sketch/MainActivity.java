@@ -25,7 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
-import com.google.ads.consent.ConsentForm;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.sketchware.remod.Resources;
@@ -43,7 +42,6 @@ import a.a.a.l;
 import a.a.a.nd;
 import a.a.a.sB;
 import a.a.a.xB;
-import a.a.a.zI;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
@@ -56,26 +54,16 @@ import mod.tyron.backup.SingleCopyAsyncTask;
 
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
 
-    public final int k = 2;
-    public ImageView A;
-    public int C;
-    public boolean D;
-    public LinearLayout E;
-    public FloatingActionButton F;
-    public ConsentForm G = null;
-    public Toolbar l;
-    public DrawerLayout m;
-    public l n;
-    public MainDrawer o;
-    public ViewPager p;
-    public int[] s = {Resources.drawable.android_os_96, Resources.drawable.ic_class_48, Resources.drawable.globe_96};
-    public DB t;
-    public DB u;
-    public DB v;
-    public CoordinatorLayout w;
-    public Snackbar x;
-    public GC y = null;
-    public zI z = null;
+    private LinearLayout E;
+    private FloatingActionButton F;
+    private DrawerLayout m;
+    private l n;
+    private MainDrawer o;
+    private ViewPager p;
+    private DB u;
+    private CoordinatorLayout w;
+    private Snackbar x;
+    private GC y = null;
 
     @Override
     public void a(int i) {
@@ -166,24 +154,21 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Resources.layout.main);
-        t = new DB(getApplicationContext(), "P1");
         u = new DB(getApplicationContext(), "U1");
-        v = new DB(getApplicationContext(), "P25");
-        C = u.a("U1I0", -1);
+        int c1 = u.a("U1I0", -1);
         long u1I1Long = u.e("U1I1");
         if (u1I1Long <= 0) {
             u.a("U1I1", System.currentTimeMillis());
         }
         if (System.currentTimeMillis() - u1I1Long > 1000 * 24 * 60 * 60) {
-            u.a("U1I0", Integer.valueOf(C + 1));
+            u.a("U1I0", Integer.valueOf(c1 + 1));
         }
-        D = u.a("U1I2", true);
-        l = findViewById(Resources.id.toolbar);
+        Toolbar l = findViewById(Resources.id.toolbar);
         a(l);
         d().d(true);
         d().e(true);
-        A = findViewById(Resources.id.img_title_logo);
-        A.setOnClickListener(v -> invalidateOptionsMenu());
+        ImageView a1 = findViewById(Resources.id.img_title_logo);
+        a1.setOnClickListener(v -> invalidateOptionsMenu());
         o = findViewById(Resources.id.left_drawer);
         m = findViewById(Resources.id.drawer_layout);
         n = new l(this, m, Resources.string.app_name, Resources.string.app_name);
@@ -197,7 +182,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         F = findViewById(Resources.id.fab);
         w = findViewById(Resources.id.layout_coordinator);
         l(0);
-        if (C > 0 && !j()) {
+        if (c1 > 0 && !j()) {
             showNoticeNeedStorageAccess();
         }
         allFilesAccessCheck();
