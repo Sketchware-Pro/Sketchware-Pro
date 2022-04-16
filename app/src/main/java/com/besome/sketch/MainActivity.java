@@ -168,13 +168,13 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         setContentView(Resources.layout.main);
 
         u = new DB(getApplicationContext(), "U1");
-        int c1 = u.a("U1I0", -1);
-        long u1I1Long = u.e("U1I1");
-        if (u1I1Long <= 0) {
+        int u1I0 = u.a("U1I0", -1);
+        long u1I1 = u.e("U1I1");
+        if (u1I1 <= 0) {
             u.a("U1I1", System.currentTimeMillis());
         }
-        if (System.currentTimeMillis() - u1I1Long > 1000 * 24 * 60 * 60) {
-            u.a("U1I0", Integer.valueOf(c1 + 1));
+        if (System.currentTimeMillis() - u1I1 > /* (a day) */ 1000 * 60 * 60 * 24) {
+            u.a("U1I0", Integer.valueOf(u1I0 + 1));
         }
 
         Toolbar toolbar = findViewById(Resources.id.toolbar);
@@ -200,7 +200,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         coordinator = findViewById(Resources.id.layout_coordinator);
 
         boolean hasStorageAccess = j();
-        if (c1 > 0 && !hasStorageAccess) {
+        if (u1I0 > 0 && !hasStorageAccess) {
             showNoticeNeedStorageAccess();
         }
         if (hasStorageAccess) {
