@@ -191,7 +191,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         d().a("");
 
         viewPager = findViewById(Resources.id.viewpager);
-        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
         viewPager.a(this);
