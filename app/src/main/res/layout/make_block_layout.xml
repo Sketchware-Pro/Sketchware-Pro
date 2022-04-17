@@ -20,13 +20,13 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@id/remove_area"
+                android:id="@+id/remove_area"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:orientation="horizontal" />
 
             <RelativeLayout
-                android:id="@id/block_area"
+                android:id="@+id/block_area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -43,7 +43,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@id/tv_title_blockname"
+                android:id="@+id/tv_title_blockname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -53,7 +53,7 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@id/ti_name"
+                android:id="@+id/ti_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -61,7 +61,7 @@
                 android:importantForAutofill="noExcludeDescendants">
 
                 <EditText
-                    android:id="@id/ed_name"
+                    android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -78,7 +78,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@id/tv_title_select_mb_type"
+                    android:id="@+id/tv_title_select_mb_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -94,57 +94,57 @@
                     android:layout_height="wrap_content">
 
                     <RadioGroup
-                        android:id="@id/radio_mb_type"
+                        android:id="@+id/radio_mb_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="6dp">
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_void"
+                            android:id="@+id/radio_mb_type_void"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
                             android:text="Void" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_string"
+                            android:id="@+id/radio_mb_type_string"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="String" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_number"
+                            android:id="@+id/radio_mb_type_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Number" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_boolean"
+                            android:id="@+id/radio_mb_type_boolean"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Boolean" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_map"
+                            android:id="@+id/radio_mb_type_map"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Map" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_liststring"
+                            android:id="@+id/radio_mb_type_liststring"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="List String" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_listmap"
+                            android:id="@+id/radio_mb_type_listmap"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="List Map" />
 
                         <RadioButton
-                            android:id="@id/radio_mb_type_view"
+                            android:id="@+id/radio_mb_type_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="View" />
@@ -152,7 +152,7 @@
                 </HorizontalScrollView>
 
                 <TextView
-                    android:id="@id/tv_title_add_variable"
+                    android:id="@+id/tv_title_add_variable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -172,7 +172,7 @@
                     android:paddingRight="16dp">
 
                     <LinearLayout
-                        android:id="@id/var_type_spinner"
+                        android:id="@+id/var_type_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_outline"
@@ -188,7 +188,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@id/ti_variable_name"
+                            android:id="@+id/ti_variable_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
@@ -196,7 +196,7 @@
                             android:importantForAutofill="noExcludeDescendants">
 
                             <EditText
-                                android:id="@id/ed_variable_name"
+                                android:id="@+id/ed_variable_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:imeOptions="actionNext"
@@ -206,7 +206,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <Button
-                            android:id="@id/add_variable"
+                            android:id="@+id/add_variable"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:gravity="center"
@@ -239,7 +239,7 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@id/ti_label"
+                        android:id="@+id/ti_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
@@ -247,7 +247,7 @@
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
-                            android:id="@id/ed_label"
+                            android:id="@+id/ed_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:imeOptions="actionDone"
@@ -257,7 +257,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
-                        android:id="@id/add_label"
+                        android:id="@+id/add_label"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:gravity="center"
@@ -307,7 +307,7 @@
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
-                            android:id="@id/parameter"
+                            android:id="@+id/parameter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="parameter (without %)"
@@ -325,7 +325,7 @@
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
-                            android:id="@id/name"
+                            android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="name"
@@ -336,7 +336,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
-                        android:id="@id/add"
+                        android:id="@+id/add"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:gravity="center"
