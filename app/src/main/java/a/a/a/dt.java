@@ -35,27 +35,20 @@ public class dt extends LinearLayout {
 
     public static boolean err = false;
 
-    public Activity a;
-    public RelativeLayout b;
-    public LinearLayout c;
-    public TextInputLayout d;
-    public TextInputLayout e;
-    public TextInputLayout f;
-    public EditText g;
-    public EditText h;
-    public EditText i;
-    public LinearLayout j;
-    public gt k;
-    public ArrayList<Pair<String, String>> l = new ArrayList<>();
-    public ZB m;
-    public ZB n;
-    public MoreblockValidator o;
-    public Rs p;
-    public RadioGroup radio_mb_type;
-    public RadioButton radio_mb_type_boolean;
-    public RadioButton radio_mb_type_number;
-    public RadioButton radio_mb_type_string;
-    public RadioButton radio_mb_type_void;
+    private Activity a;
+    private RelativeLayout b;
+    private LinearLayout c;
+    private TextInputLayout d;
+    private EditText g;
+    private EditText h;
+    private EditText i;
+    private gt k;
+    private final ArrayList<Pair<String, String>> l = new ArrayList<>();
+    private ZB m;
+    private ZB n;
+    private MoreblockValidator o;
+    private Rs p;
+    private RadioGroup radio_mb_type;
 
     public dt(Activity activity) {
         super(activity);
@@ -74,18 +67,14 @@ public class dt extends LinearLayout {
         LayoutInflater.from(activity).inflate(2131427506, this);
         radio_mb_type = findViewById(2131232432);
         initRefresh();
-        radio_mb_type_void = findViewById(2131232433);
-        radio_mb_type_string = findViewById(2131232434);
-        radio_mb_type_number = findViewById(2131232435);
-        radio_mb_type_boolean = findViewById(2131232436);
-        j = findViewById(2131232305);
+        LinearLayout j = findViewById(2131232305);
         b = findViewById(2131230793);
         c = findViewById(2131231664);
         k = new gt(activity);
         j.addView(k);
         d = findViewById(2131231825);
-        e = findViewById(2131231823);
-        f = findViewById(2131231833);
+        TextInputLayout e = findViewById(2131231823);
+        TextInputLayout f = findViewById(2131231833);
         ((TextView) findViewById(2131232204)).setText(xB.b().a(activity, 2131625508));
         ((TextView) findViewById(2131232196)).setText(xB.b().a(activity, 2131625506));
         o = new MoreblockValidator(activity, d, uq.b, uq.a(), new ArrayList<>());
