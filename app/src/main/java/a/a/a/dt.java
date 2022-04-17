@@ -125,8 +125,8 @@ public class dt extends LinearLayout {
 
             }
         });
-        var4 = findViewById(R.id.add_label);
-        var4.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
+        Button addLabel = findViewById(R.id.add_label);
+        addLabel.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
 
         final EditText parameter = findViewById(R.id.parameter);
         final EditText name = findViewById(R.id.name);
@@ -166,7 +166,7 @@ public class dt extends LinearLayout {
                 variableNameValidator.a(arrayList.toArray(new String[0]));
             }
         });
-        var4.setOnClickListener(view -> {
+        addLabel.setOnClickListener(view -> {
             if (!mB.a()) {
                 if (labelTextValidator.b() && blockNameValidator.b()) {
                     l.add(new Pair<>("t", labelText.getText().toString()));
