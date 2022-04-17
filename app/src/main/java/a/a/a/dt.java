@@ -13,14 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
-import com.sketchware.remod.Resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,19 +34,19 @@ public class dt extends LinearLayout {
 
     public static boolean err = false;
 
-    private Activity a;
-    private RelativeLayout b;
-    private LinearLayout c;
-    private TextInputLayout d;
-    private EditText g;
-    private EditText h;
-    private EditText i;
-    private gt k;
+    private Activity activity;
+    private RelativeLayout blockContainer;
+    private LinearLayout removeArea;
+    private TextInputLayout tilBlockName;
+    private EditText blockName;
+    private EditText labelText;
+    private EditText variableName;
+    private gt addVariable;
     private final ArrayList<Pair<String, String>> l = new ArrayList<>();
-    private ZB m;
-    private ZB n;
-    private MoreblockValidator o;
-    private Rs p;
+    private ZB variableNameValidator;
+    private ZB labelTextValidator;
+    private MoreblockValidator blockNameValidator;
+    private Rs block;
     private RadioGroup radio_mb_type;
 
     public dt(Activity activity) {
@@ -61,56 +60,57 @@ public class dt extends LinearLayout {
         return rect.width();
     }
 
-    @SuppressLint("ResourceType")
     private void initialize(Activity activity) {
-        a = activity;
-        LayoutInflater.from(activity).inflate(2131427506, this);
-        radio_mb_type = findViewById(2131232432);
+        this.activity = activity;
+        LayoutInflater.from(activity).inflate(R.layout.make_block_layout, this);
+
+        radio_mb_type = findViewById(R.id.radio_mb_type);
         initRefresh();
-        LinearLayout j = findViewById(2131232305);
-        b = findViewById(2131230793);
-        c = findViewById(2131231664);
-        k = new gt(activity);
-        j.addView(k);
-        d = findViewById(2131231825);
-        TextInputLayout e = findViewById(2131231823);
-        TextInputLayout f = findViewById(2131231833);
-        ((TextView) findViewById(2131232204)).setText(xB.b().a(activity, 2131625508));
-        ((TextView) findViewById(2131232196)).setText(xB.b().a(activity, 2131625506));
-        o = new MoreblockValidator(activity, d, uq.b, uq.a(), new ArrayList<>());
-        n = new ZB(activity, e, uq.b, uq.a(), new ArrayList<>());
-        m = new ZB(activity, f, uq.b, uq.a(), new ArrayList<>());
-        g = findViewById(2131231007);
-        h = findViewById(2131231006);
-        i = findViewById(2131231011);
-        d.setHint(xB.b().a(activity, 2131625503));
-        f.setHint(xB.b().a(activity, 2131625504));
-        e.setHint(xB.b().a(activity, 2131625502));
-        g.setPrivateImeOptions("defaultInputmode=english;");
-        h.setPrivateImeOptions("defaultInputmode=english;");
-        i.setPrivateImeOptions("defaultInputmode=english;");
-        g.addTextChangedListener(new BaseTextWatcher() {
+
+        LinearLayout addVariableContainer = findViewById(R.id.var_type_spinner);
+        blockContainer = findViewById(R.id.block_area);
+        removeArea = findViewById(R.id.remove_area);
+        addVariable = new gt(activity);
+        addVariableContainer.addView(addVariable);
+        tilBlockName = findViewById(R.id.ti_name);
+        TextInputLayout tilLabelText = findViewById(R.id.ti_label);
+        TextInputLayout tilVariableName = findViewById(R.id.ti_variable_name);
+        ((TextView) findViewById(R.id.tv_title_blockname)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_name_of_block));
+        ((TextView) findViewById(R.id.tv_title_add_variable)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_add_variable));
+        blockNameValidator = new MoreblockValidator(activity, tilBlockName, uq.b, uq.a(), new ArrayList<>());
+        labelTextValidator = new ZB(activity, tilLabelText, uq.b, uq.a(), new ArrayList<>());
+        variableNameValidator = new ZB(activity, tilVariableName, uq.b, uq.a(), new ArrayList<>());
+        blockName = findViewById(R.id.ed_name);
+        labelText = findViewById(R.id.ed_label);
+        variableName = findViewById(R.id.ed_variable_name);
+        tilBlockName.setHint(xB.b().a(activity, R.string.logic_editor_more_block_hint_enter_new_block_name));
+        tilVariableName.setHint(xB.b().a(activity, R.string.logic_editor_more_block_hint_enter_variable_name));
+        tilLabelText.setHint(xB.b().a(activity, R.string.logic_editor_more_block_hint_enter_block_label));
+        blockName.setPrivateImeOptions("defaultInputmode=english;");
+        labelText.setPrivateImeOptions("defaultInputmode=english;");
+        variableName.setPrivateImeOptions("defaultInputmode=english;");
+        blockName.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void afterTextChanged(Editable var1) {
-                if (var1.toString().equals("") || o.b()) {
-                    a(b, c, p, var1.toString(), l);
+                if (var1.toString().equals("") || blockNameValidator.b()) {
+                    a(blockContainer, removeArea, block, var1.toString(), l);
                 }
             }
         });
-        Button var4 = findViewById(2131230758);
-        var4.setText(xB.b().a(activity, 2131625499));
+        Button var4 = findViewById(R.id.add_variable);
+        var4.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
         var4.setOnClickListener(view -> {
             if (!mB.a()) {
-                if (m.b() && o.b()) {
-                    Pair<String, String> var21 = k.getSelectedItem();
+                if (variableNameValidator.b() && blockNameValidator.b()) {
+                    Pair<String, String> var21 = addVariable.getSelectedItem();
                     String var3 = var21.first;
                     String var41 = var3;
                     if (var21.second.length() > 0) {
                         var41 = var3 + "." + var21.second;
                     }
 
-                    l.add(new Pair<>(var41, i.getText().toString()));
-                    a(b, c, p, g.getText().toString(), l);
+                    l.add(new Pair<>(var41, variableName.getText().toString()));
+                    a(blockContainer, removeArea, block, blockName.getText().toString(), l);
                     ArrayList<String> var6 = new ArrayList<>(Arrays.asList(uq.a()));
 
                     for (Pair<String, String> stringStringPair : l) {
@@ -119,18 +119,18 @@ public class dt extends LinearLayout {
                         }
                     }
 
-                    m.a(var6.toArray(new String[0]));
-                    i.setText("");
+                    variableNameValidator.a(var6.toArray(new String[0]));
+                    variableName.setText("");
                 }
 
             }
         });
-        var4 = findViewById(2131230757);
-        var4.setText(xB.b().a(activity, 2131625499));
+        var4 = findViewById(R.id.add_label);
+        var4.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
 
-        final EditText parameter = findViewById(Resources.id.parameter);
-        final EditText name = findViewById(Resources.id.name);
-        final Button add = findViewById(Resources.id.add);
+        final EditText parameter = findViewById(R.id.parameter);
+        final EditText name = findViewById(R.id.name);
+        final Button add = findViewById(R.id.add);
 
         final TextInputLayout p_input = (TextInputLayout) parameter.getParent().getParent();
         p_input.setHint("Parameter: m.name");
@@ -154,7 +154,7 @@ public class dt extends LinearLayout {
         add.setOnClickListener(v -> {
             if (!err && !name.getText().toString().equals("") && !parameter.getText().toString().equals("")) {
                 l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
-                a(b, c, p, g.getText().toString(), l);
+                a(blockContainer, removeArea, block, blockName.getText().toString(), l);
                 parameter.setText("");
                 name.setText("");
                 ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(uq.a()));
@@ -163,20 +163,20 @@ public class dt extends LinearLayout {
                         arrayList.add(next.second);
                     }
                 }
-                m.a(arrayList.toArray(new String[0]));
+                variableNameValidator.a(arrayList.toArray(new String[0]));
             }
         });
         var4.setOnClickListener(view -> {
             if (!mB.a()) {
-                if (n.b() && o.b()) {
-                    l.add(new Pair<>("t", h.getText().toString()));
-                    a(b, c, p, g.getText().toString(), l);
-                    h.setText("");
+                if (labelTextValidator.b() && blockNameValidator.b()) {
+                    l.add(new Pair<>("t", labelText.getText().toString()));
+                    a(blockContainer, removeArea, block, blockName.getText().toString(), l);
+                    labelText.setText("");
                 }
             }
         });
-        p = new Rs(activity, 0, "", " ", "definedFunc");
-        b.addView(p);
+        block = new Rs(activity, 0, "", " ", "definedFunc");
+        blockContainer.addView(block);
     }
 
     public final void a(ViewGroup blockArea, ViewGroup removeArea, Rs var3, String var4, ArrayList<Pair<String, String>> var5) {
@@ -248,9 +248,9 @@ public class dt extends LinearLayout {
                 Pair<String, String> var16 = var5.get(var12);
                 Rs var17;
                 if (var16.first.equals("b")) {
-                    var17 = new Rs(a, var5.indexOf(var16) + 1, var16.second, "b", "getArg");
+                    var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, "b", "getArg");
                 } else if (var16.first.equals("d")) {
-                    var17 = new Rs(a, var5.indexOf(var16) + 1, var16.second, "d", "getArg");
+                    var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, "d", "getArg");
                 } else {
                     if (!var16.first.equals("s")) {
                         var14 = var13;
@@ -258,7 +258,7 @@ public class dt extends LinearLayout {
                             var10 = var16.first;
                             String var18 = var10.substring(var10.indexOf(".") + 1);
                             var10 = kq.a(var18);
-                            var17 = new Rs(a, var5.indexOf(var16) + 1, var16.second, var10, kq.b(var18), "getArg");
+                            var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, var10, kq.b(var18), "getArg");
                             blockArea.addView(var17);
                             var3.a((Ts) var3.V.get(var13), var17);
                             var14 = var13 + 1;
@@ -266,7 +266,7 @@ public class dt extends LinearLayout {
                         break lol;
                     }
 
-                    var17 = new Rs(a, var5.indexOf(var16) + 1, var16.second, "s", "getArg");
+                    var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, "s", "getArg");
                 }
 
                 blockArea.addView(var17);
@@ -293,20 +293,20 @@ public class dt extends LinearLayout {
                 var14 = ((Rs) var20).getWidthSum();
             }
 
-            var14 = (int) ((float) var14 + wB.a(a, 4.0F));
-            ImageView removeIcon = new ImageView(a);
+            var14 = (int) ((float) var14 + wB.a(activity, 4.0F));
+            ImageView removeIcon = new ImageView(activity);
             removeIcon.setImageResource(R.drawable.ic_remove_grey600_24dp);
             removeIcon.setScaleType(ScaleType.CENTER_INSIDE);
-            removeIcon.setPadding(0, (int) wB.a(a, 4.0F), 0, (int) wB.a(a, 4.0F));
+            removeIcon.setPadding(0, (int) wB.a(activity, 4.0F), 0, (int) wB.a(activity, 4.0F));
             removeIcon.setLayoutParams(new LayoutParams(var14, -1));
             removeArea.addView(removeIcon);
-            if (var12 == 0 && g.getText().length() > 0) {
+            if (var12 == 0 && blockName.getText().length() > 0) {
                 removeIcon.setVisibility(View.INVISIBLE);
                 removeIcon.setEnabled(false);
             } else {
                 removeIcon.setOnClickListener(view -> {
                     int indexOfChild;
-                    if (g.getText().length() > 0) {
+                    if (blockName.getText().length() > 0) {
                         indexOfChild = removeArea.indexOfChild(view) - 1;
                     } else {
                         indexOfChild = removeArea.indexOfChild(view);
@@ -321,7 +321,7 @@ public class dt extends LinearLayout {
                         }
                     }
 
-                    m.a(reservedTypes.toArray(new String[0]));
+                    variableNameValidator.a(reservedTypes.toArray(new String[0]));
                     a(blockArea, removeArea, var3, var4, var5);
                 });
             }
@@ -330,21 +330,21 @@ public class dt extends LinearLayout {
     }
 
     public boolean a() {
-        return g.getText().toString().isEmpty() && l.size() == 0;
+        return blockName.getText().toString().isEmpty() && l.size() == 0;
     }
 
     public boolean b() {
-        if (!g.getText().toString().isEmpty() && o.b()) {
+        if (!blockName.getText().toString().isEmpty() && blockNameValidator.b()) {
             return true;
         } else {
-            bB.b(getContext(), xB.b().a(getContext(), 2131625494), 0).show();
+            bB.b(getContext(), xB.b().a(getContext(), R.string.logic_editor_message_name_requied), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
     public Pair<String, String> getBlockInformation() {
-        String var1 = g.getText().toString().trim();
-        return new Pair<>(ReturnMoreblockManager.injectMbType(var1, var1, getType()), ReturnMoreblockManager.injectMbType(p.T, var1, getType()));
+        String var1 = blockName.getText().toString().trim();
+        return new Pair<>(ReturnMoreblockManager.injectMbType(var1, var1, getType()), ReturnMoreblockManager.injectMbType(block.T, var1, getType()));
     }
 
     public String getType() {
@@ -357,13 +357,13 @@ public class dt extends LinearLayout {
 
     public void refresh(String var1) {
         var1 = ReturnMoreblockManager.getPreviewType(var1);
-        Rs var2 = new Rs(a, 0, "", var1, "definedFunc");
-        p = var2;
-        a(b, c, var2, g.getText().toString(), l);
+        Rs var2 = new Rs(activity, 0, "", var1, "definedFunc");
+        block = var2;
+        a(blockContainer, removeArea, var2, blockName.getText().toString(), l);
     }
 
     public void setFuncNameValidator(ArrayList<String> var1) {
-        o = new MoreblockValidator(a, d, uq.b, uq.a(), var1);
+        blockNameValidator = new MoreblockValidator(activity, tilBlockName, uq.b, uq.a(), var1);
     }
 
 }
