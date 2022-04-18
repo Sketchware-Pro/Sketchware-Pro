@@ -23,7 +23,6 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import mod.hey.studios.moreblock.MoreblockValidator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -42,7 +41,7 @@ public class dt extends LinearLayout {
     private EditText labelText;
     private EditText variableName;
     private gt addVariable;
-    private final ArrayList<Pair<String, String>> l = new ArrayList<>();
+    private final ArrayList<Pair<String, String>> variablesSpecAndNamePair = new ArrayList<>();
     private ZB variableNameValidator;
     private ZB labelTextValidator;
     private MoreblockValidator blockNameValidator;
@@ -52,12 +51,6 @@ public class dt extends LinearLayout {
     public dt(Activity activity) {
         super(activity);
         initialize(activity);
-    }
-
-    public final int a(TextView textView) {
-        Rect rect = new Rect();
-        textView.getPaint().getTextBounds(textView.getText().toString(), 0, textView.getText().length(), rect);
-        return rect.width();
     }
 
     private void initialize(Activity activity) {
@@ -91,35 +84,37 @@ public class dt extends LinearLayout {
         variableName.setPrivateImeOptions("defaultInputmode=english;");
         blockName.addTextChangedListener(new BaseTextWatcher() {
             @Override
-            public void afterTextChanged(Editable var1) {
-                if (var1.toString().equals("") || blockNameValidator.b()) {
-                    a(blockContainer, removeArea, block, var1.toString(), l);
+            public void afterTextChanged(Editable s) {
+                if (s.toString().equals("") || blockNameValidator.b()) {
+                    updateBlockPreview(blockContainer, removeArea, block, s.toString(), variablesSpecAndNamePair);
                 }
             }
         });
-        Button var4 = findViewById(R.id.add_variable);
-        var4.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
-        var4.setOnClickListener(view -> {
+
+        Button addVariable = findViewById(R.id.add_variable);
+        addVariable.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
+        addVariable.setOnClickListener(view -> {
             if (!mB.a()) {
                 if (variableNameValidator.b() && blockNameValidator.b()) {
-                    Pair<String, String> var21 = addVariable.getSelectedItem();
-                    String var3 = var21.first;
-                    String var41 = var3;
-                    if (var21.second.length() > 0) {
-                        var41 = var3 + "." + var21.second;
+                    Pair<String, String> variableSpec = this.addVariable.getSelectedItem();
+                    String variableType = variableSpec.first;
+                    String fullSpec = variableType;
+                    if (variableSpec.second.length() > 0) {
+                        fullSpec = variableType + "." + variableSpec.second;
                     }
 
-                    l.add(new Pair<>(var41, variableName.getText().toString()));
-                    a(blockContainer, removeArea, block, blockName.getText().toString(), l);
-                    ArrayList<String> var6 = new ArrayList<>(Arrays.asList(uq.a()));
+                    variablesSpecAndNamePair.add(new Pair<>(fullSpec, variableName.getText().toString()));
+                    updateBlockPreview(blockContainer, removeArea, block, blockName.getText().toString(), variablesSpecAndNamePair);
 
-                    for (Pair<String, String> stringStringPair : l) {
-                        if (!stringStringPair.first.equals("t")) {
-                            var6.add(stringStringPair.second);
+                    ArrayList<String> reservedVariableNames = new ArrayList<>(Arrays.asList(uq.a()));
+
+                    for (Pair<String, String> variable : variablesSpecAndNamePair) {
+                        if (!variable.first.equals("t")) {
+                            reservedVariableNames.add(variable.second);
                         }
                     }
 
-                    variableNameValidator.a(var6.toArray(new String[0]));
+                    variableNameValidator.a(reservedVariableNames.toArray(new String[0]));
                     variableName.setText("");
                 }
 
@@ -128,15 +123,15 @@ public class dt extends LinearLayout {
         Button addLabel = findViewById(R.id.add_label);
         addLabel.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
 
-        final EditText parameter = findViewById(R.id.parameter);
-        final EditText name = findViewById(R.id.name);
-        final Button add = findViewById(R.id.add);
+        final EditText customVariableSpec = findViewById(R.id.parameter);
+        final EditText customVariableName = findViewById(R.id.name);
+        final Button addCustomVariable = findViewById(R.id.add);
 
-        final TextInputLayout p_input = (TextInputLayout) parameter.getParent().getParent();
+        final TextInputLayout p_input = (TextInputLayout) customVariableSpec.getParent().getParent();
         p_input.setHint("Parameter: m.name");
-        final TextInputLayout n_input = (TextInputLayout) name.getParent().getParent();
+        final TextInputLayout n_input = (TextInputLayout) customVariableName.getParent().getParent();
         n_input.setHint("Variable name");
-        parameter.addTextChangedListener(new BaseTextWatcher() {
+        customVariableSpec.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
                 final String s = sequence.toString();
@@ -151,26 +146,27 @@ public class dt extends LinearLayout {
             }
         });
 
-        add.setOnClickListener(v -> {
-            if (!err && !name.getText().toString().equals("") && !parameter.getText().toString().equals("")) {
-                l.add(new Pair<>(parameter.getText().toString(), name.getText().toString()));
-                a(blockContainer, removeArea, block, blockName.getText().toString(), l);
-                parameter.setText("");
-                name.setText("");
-                ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(uq.a()));
-                for (Pair<String, String> next : l) {
-                    if (!(next.first).equals("t")) {
-                        arrayList.add(next.second);
+        addCustomVariable.setOnClickListener(v -> {
+            if (!err && !customVariableName.getText().toString().equals("") && !customVariableSpec.getText().toString().equals("")) {
+                variablesSpecAndNamePair.add(new Pair<>(customVariableSpec.getText().toString(), customVariableName.getText().toString()));
+                updateBlockPreview(blockContainer, removeArea, block, blockName.getText().toString(), variablesSpecAndNamePair);
+                customVariableSpec.setText("");
+                customVariableName.setText("");
+
+                ArrayList<String> prohibitedVariableNames = new ArrayList<>(Arrays.asList(uq.a()));
+                for (Pair<String, String> variable : variablesSpecAndNamePair) {
+                    if (!(variable.first).equals("t")) {
+                        prohibitedVariableNames.add(variable.second);
                     }
                 }
-                variableNameValidator.a(arrayList.toArray(new String[0]));
+                variableNameValidator.a(prohibitedVariableNames.toArray(new String[0]));
             }
         });
-        addLabel.setOnClickListener(view -> {
+        addLabel.setOnClickListener(v -> {
             if (!mB.a()) {
                 if (labelTextValidator.b() && blockNameValidator.b()) {
-                    l.add(new Pair<>("t", labelText.getText().toString()));
-                    a(blockContainer, removeArea, block, blockName.getText().toString(), l);
+                    variablesSpecAndNamePair.add(new Pair<>("t", labelText.getText().toString()));
+                    updateBlockPreview(blockContainer, removeArea, block, blockName.getText().toString(), variablesSpecAndNamePair);
                     labelText.setText("");
                 }
             }
@@ -179,150 +175,117 @@ public class dt extends LinearLayout {
         blockContainer.addView(block);
     }
 
-    public final void a(ViewGroup blockArea, ViewGroup removeArea, Rs var3, String var4, ArrayList<Pair<String, String>> var5) {
+    private void updateBlockPreview(ViewGroup blockArea, ViewGroup removeArea, Rs rs, String blockName, ArrayList<Pair<String, String>> variables) {
         blockArea.removeAllViews();
-        blockArea.addView(var3);
-        Iterator<Pair<String, String>> var6 = var5.iterator();
+        blockArea.addView(rs);
 
-        String var7;
-        String var10;
-        StringBuilder var15;
-        for (var7 = var4; var6.hasNext(); var7 = var15.toString()) {
-            Pair<String, String> var8;
-            idk:
-            {
-                var8 = var6.next();
-                StringBuilder var9;
-                switch (var8.first) {
-                    case "b":
-                        var9 = new StringBuilder();
-                        var9.append(var7);
-                        var10 = " %b.";
-                        var15 = var9;
-                        break;
-                    case "d":
-                        var9 = new StringBuilder();
-                        var9.append(var7);
-                        var10 = " %d.";
-                        var15 = var9;
-                        break;
-                    case "s":
-                        var9 = new StringBuilder();
-                        var9.append(var7);
-                        var10 = " %s.";
-                        var15 = var9;
-                        break;
-                    default:
-                        if (var8.first.length() > 2 && var8.first.contains(".")) {
-                            StringBuilder var19 = new StringBuilder();
-                            var19.append(var7);
-                            var19.append(" %");
-                            var19.append(var8.first);
-                            var19.append(".");
-                            var15 = var19;
-                            break idk;
-                        }
+        StringBuilder fullSpec = new StringBuilder(blockName);
+        for (Pair<String, String> parameter : variables) {
+            String parameterType = parameter.first;
+            String parameterName = parameter.second;
 
-                        var9 = new StringBuilder();
-                        var9.append(var7);
-                        var10 = " ";
-                        var15 = var9;
-                        break;
-                }
+            switch (parameter.first) {
+                case "b":
+                    fullSpec.append(" %b.").append(parameterName);
+                    break;
 
-                var15.append(var10);
-            }
+                case "d":
+                    fullSpec.append(" %d.").append(parameterName);
+                    break;
 
-            var15.append(var8.second);
-        }
+                case "s":
+                    fullSpec.append(" %s.").append(parameterName);
+                    break;
 
-        var3.setSpec(var7);
-        int var11 = var5.size();
-        int var12 = 0;
-
-        int var13;
-        int var14;
-        for (var13 = var12; var12 < var11; var13 = var14) {
-            lol:
-            {
-                Pair<String, String> var16 = var5.get(var12);
-                Rs var17;
-                if (var16.first.equals("b")) {
-                    var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, "b", "getArg");
-                } else if (var16.first.equals("d")) {
-                    var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, "d", "getArg");
-                } else {
-                    if (!var16.first.equals("s")) {
-                        var14 = var13;
-                        if (var16.first.length() > 2) {
-                            var10 = var16.first;
-                            String var18 = var10.substring(var10.indexOf(".") + 1);
-                            var10 = kq.a(var18);
-                            var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, var10, kq.b(var18), "getArg");
-                            blockArea.addView(var17);
-                            var3.a((Ts) var3.V.get(var13), var17);
-                            var14 = var13 + 1;
-                        }
-                        break lol;
+                default:
+                    if (parameterType.length() > 2 && parameterType.contains(".")) {
+                        fullSpec.append(" %").append(parameterType).append(".").append(parameterName);
+                    } else {
+                        fullSpec.append(" ").append(parameterName);
                     }
+                    break;
+            }
+        }
+        rs.setSpec(fullSpec.toString());
 
-                    var17 = new Rs(activity, var5.indexOf(var16) + 1, var16.second, "s", "getArg");
-                }
+        int validParametersI = 0;
+        for (int i = 0; i < variables.size(); ) {
+            Pair<String, String> parameter = variables.get(i);
+            String parameterType = parameter.first;
 
-                blockArea.addView(var17);
-                var3.a((Ts) var3.V.get(var13), var17);
-                var14 = var13 + 1;
+            Rs block;
+            if (parameterType.equals("b")) {
+                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, "b", "getArg");
+            } else if (parameterType.equals("d")) {
+                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, "d", "getArg");
+            } else if (parameterType.equals("s")) {
+                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, "s", "getArg");
+            } else if (parameterType.length() > 2) {
+                String customType = parameterType.substring(parameterType.indexOf(".") + 1);
+                String letter = kq.a(customType);
+                block = new Rs(activity, variables.indexOf(parameter) + 1, parameter.second, letter, kq.b(customType), "getArg");
+            } else {
+                ++i;
+                continue;
             }
 
-            ++var12;
+            blockArea.addView(block);
+            rs.a((Ts) rs.V.get(validParametersI), block);
+            ++validParametersI;
+
+            ++i;
         }
 
-        var3.k();
+        rs.k();
         removeArea.removeAllViews();
-        var13 = var3.ka.size();
 
-        for (var12 = 0; var12 < var13; ++var12) {
-            View var20 = var3.ka.get(var12);
-            if (var3.la.get(var12).equals("label")) {
-                var14 = a((TextView) var20);
+        for (int i = 0; i < rs.ka.size(); ++i) {
+            View view = rs.ka.get(i);
+
+            int width;
+            if (rs.la.get(i).equals("label")) {
+                TextView textView = (TextView) view;
+
+                Rect rect = new Rect();
+                textView.getPaint().getTextBounds(textView.getText().toString(), 0, textView.getText().length(), rect);
+                width = rect.width();
+            } else if (view instanceof Rs) {
+                width = ((Rs) view).getWidthSum();
             } else {
-                var14 = 0;
+                width = 0;
             }
 
-            if (var20 instanceof Rs) {
-                var14 = ((Rs) var20).getWidthSum();
-            }
+            width += wB.a(activity, 4.0f);
 
-            var14 = (int) ((float) var14 + wB.a(activity, 4.0F));
             ImageView removeIcon = new ImageView(activity);
             removeIcon.setImageResource(R.drawable.ic_remove_grey600_24dp);
             removeIcon.setScaleType(ScaleType.CENTER_INSIDE);
             removeIcon.setPadding(0, (int) wB.a(activity, 4.0F), 0, (int) wB.a(activity, 4.0F));
-            removeIcon.setLayoutParams(new LayoutParams(var14, -1));
+            removeIcon.setLayoutParams(new LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));
             removeArea.addView(removeIcon);
-            if (var12 == 0 && blockName.getText().length() > 0) {
+            if (i == 0 && this.blockName.getText().length() > 0) {
                 removeIcon.setVisibility(View.INVISIBLE);
                 removeIcon.setEnabled(false);
             } else {
-                removeIcon.setOnClickListener(view -> {
+                removeIcon.setOnClickListener(v -> {
                     int indexOfChild;
-                    if (blockName.getText().length() > 0) {
-                        indexOfChild = removeArea.indexOfChild(view) - 1;
+                    if (this.blockName.getText().length() > 0) {
+                        indexOfChild = removeArea.indexOfChild(v) - 1;
                     } else {
-                        indexOfChild = removeArea.indexOfChild(view);
+                        indexOfChild = removeArea.indexOfChild(v);
                     }
 
-                    var5.remove(indexOfChild);
-                    ArrayList<String> reservedTypes = new ArrayList<>(Arrays.asList(uq.a()));
+                    variables.remove(indexOfChild);
+                    ArrayList<String> reservedVariableNames = new ArrayList<>(Arrays.asList(uq.a()));
 
-                    for (Pair<String, String> stringStringPair : var5) {
-                        if (!stringStringPair.first.equals("t")) {
-                            reservedTypes.add(stringStringPair.second);
+                    for (Pair<String, String> parameter : variables) {
+                        if (!parameter.first.equals("t")) {
+                            reservedVariableNames.add(parameter.second);
                         }
                     }
 
-                    variableNameValidator.a(reservedTypes.toArray(new String[0]));
-                    a(blockArea, removeArea, var3, var4, var5);
+                    variableNameValidator.a(reservedVariableNames.toArray(new String[0]));
+                    updateBlockPreview(blockArea, removeArea, rs, blockName, variables);
                 });
             }
         }
@@ -330,7 +293,7 @@ public class dt extends LinearLayout {
     }
 
     public boolean a() {
-        return blockName.getText().toString().isEmpty() && l.size() == 0;
+        return blockName.getText().toString().isEmpty() && variablesSpecAndNamePair.size() == 0;
     }
 
     public boolean b() {
@@ -347,19 +310,19 @@ public class dt extends LinearLayout {
         return new Pair<>(ReturnMoreblockManager.injectMbType(var1, var1, getType()), ReturnMoreblockManager.injectMbType(block.T, var1, getType()));
     }
 
-    public String getType() {
+    private String getType() {
         return ReturnMoreblockManager.getMbTypeFromRadioButton(radio_mb_type);
     }
 
-    public void initRefresh() {
+    private void initRefresh() {
         radio_mb_type.setOnCheckedChangeListener((radioGroup, i) -> refresh(getType()));
     }
 
-    public void refresh(String var1) {
-        var1 = ReturnMoreblockManager.getPreviewType(var1);
-        Rs var2 = new Rs(activity, 0, "", var1, "definedFunc");
+    private void refresh(String type) {
+        type = ReturnMoreblockManager.getPreviewType(type);
+        Rs var2 = new Rs(activity, 0, "", type, "definedFunc");
         block = var2;
-        a(blockContainer, removeArea, var2, blockName.getText().toString(), l);
+        updateBlockPreview(blockContainer, removeArea, var2, blockName.getText().toString(), variablesSpecAndNamePair);
     }
 
     public void setFuncNameValidator(ArrayList<String> var1) {
