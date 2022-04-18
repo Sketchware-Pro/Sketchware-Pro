@@ -31,7 +31,7 @@ import mod.w3wide.lib.BaseTextWatcher;
 @SuppressLint("ViewConstructor")
 public class dt extends LinearLayout {
 
-    public static boolean err = false;
+    private boolean customVariableInvalid = false;
 
     private Activity activity;
     private RelativeLayout blockContainer;
@@ -137,17 +137,17 @@ public class dt extends LinearLayout {
                 final String s = sequence.toString();
 
                 if (s.matches("[mldb]\\.[a-zA-Z]+")) {
-                    err = false;
+                    customVariableInvalid = false;
                 } else {
-                    err = !s.equals("");
+                    customVariableInvalid = !s.equals("");
                 }
                 p_input.setError("Invalid format");
-                p_input.setErrorEnabled(err);
+                p_input.setErrorEnabled(customVariableInvalid);
             }
         });
 
         addCustomVariable.setOnClickListener(v -> {
-            if (!err && !customVariableName.getText().toString().equals("") && !customVariableSpec.getText().toString().equals("")) {
+            if (!customVariableInvalid && !customVariableName.getText().toString().equals("") && !customVariableSpec.getText().toString().equals("")) {
                 variablesSpecAndNamePair.add(new Pair<>(customVariableSpec.getText().toString(), customVariableName.getText().toString()));
                 updateBlockPreview(blockContainer, removeArea, block, blockName.getText().toString(), variablesSpecAndNamePair);
                 customVariableSpec.setText("");
