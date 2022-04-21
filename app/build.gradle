@@ -22,7 +22,7 @@ android {
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdkVersion 28
         versionCode 150
-        versionName 'v6.4.0-' + getCommitHash()
+        versionName 'v6.4.0-SNAPSHOT-' + getCommitHash()
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
