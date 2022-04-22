@@ -97,7 +97,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                     create.show();
                     break;
 
-                case Resources.id.social_fb:
+                case Resources.id.social_medium:
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.besome_blog_url)));
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -113,7 +113,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                     }
                     break;
 
-                case Resources.id.social_medium:
+                case Resources.id.social_fb:
                     String facebookUrl = mContext.getString(Resources.string.facebook_url);
                     try {
                         mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookUrl)));
