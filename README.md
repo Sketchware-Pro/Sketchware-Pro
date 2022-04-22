@@ -8,34 +8,22 @@
 Here you'll find the source code of many classes in Sketchware Pro, and more importantly, **the**
 place to contribute to Sketchware Pro.
 
-There are a few things that you should consider before contributing to Sketchware Pro:
+## Building the app
 
- - Make sure that you're capable to mod.
- - Showing off on other contributors is seriously **not** allowed. We're a community.
- - Tell why exactly you've made a change to something, at best in the commit's extended description.
+You must use Gradle to build the app. It's recommended to use Android Studio, though.
 
-## How to contribute
+There are two build variants:
 
-- Fork the repository to your GitHub account
-- Make a branch if necessary
-- Clone the forked repository to your local device (optional, you can edit files through GitHub's
-  web interface)
-- Make changes to files
-- (IMPORTANT) Test out those changes
-- Create a pull request in this repository
-- The repository members will review your pull request, and merge it when they are accepted.
+ - one with support for exporting AABs from projects, (and only supports Android O and above)
+ - and one without. Supports Android 5 though.
 
-### Note
-This repository can't create a working APK, and you also can't use Android Studio's Run button to test out your changes.
-This is due to an issue with resource IDs being regenerated, and most classes still use the older ones made during
-vanilla Sketchware's compilation. In the future, this might be fixed, but it's sadly rather unrealistic.  
-We might make a tutorial on how to build working APKs, but for now we'll only link the tool we use to build
-Sketchware Pro: [apktool](https://ibotpeaches.github.io/Apktool/).
+You must select the appropriate build variant in Android Studio using the Build Variants tab
+or use the appropriate build Gradle command.
 
 ### Source code map
 
 | Class | Role |
-| --- | --- |
+| ----- | ---- |
 | `La/a/a/Dp;` | Helper for compiling an entire project |
 | `La/a/a/Ix;` | Responsible for generating AndroidManifest.xml |
 | `La/a/a/Jx;` | Generates source code of activities |
@@ -54,6 +42,17 @@ Fork this repository and contribute back using
 
 Any contributions, large or small, major features, bug fixes, are welcomed and appreciated, but will
 be thoroughly reviewed.
+
+### How to contribute
+
+- Fork the repository to your GitHub account
+- Make a branch if necessary
+- Clone the forked repository to your local device (optional, you can edit files through GitHub's
+  web interface)
+- Make changes to files
+- (IMPORTANT) Test out those changes
+- Create a pull request in this repository
+- The repository members will review your pull request, and merge it when they are accepted.
 
 ### What changes we'll (most likely) not accept
 
