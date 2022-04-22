@@ -148,7 +148,7 @@ public class RequestNetworkController {
                 }
 
                 @Override
-                public void onResponse(Call call, final Response response) {
+                public void onResponse(Call call, final Response response) throws IOException {
                     final String responseBody = response.body().string().trim();
                     requestNetwork.getActivity().runOnUiThread(() -> {
                         Headers b = response.headers();

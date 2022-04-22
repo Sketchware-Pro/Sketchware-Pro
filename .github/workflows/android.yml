@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Original at https://github.com/tyron12233/CodeAssist/blob/main/.github/workflows/build-apk.yml
-# Changes: Minor adjustments, removal of Cancel previous runs step, every change can be found with a simple diff.
+# Changes: Minor adjustments, removal of Cancel previous runs step, but every change can be found with a simple diff.
 
 name: Android CI
 
@@ -26,17 +26,30 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
 
-      - name: Build debug APK
+      - name: Build debug APK with AAB support
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: assembleDebug
+          arguments: assembleWithAabOutputSupportDebug
           distributions-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
 
-      - name: Upload debug APK
+      - name: Upload debug APK with AAB support
         uses: actions/upload-artifact@v2
         with:
           name: apk-debug
-          path: app/build/outputs/apk/debug
+          path: app/build/outputs/apk/withAabOutputSupport/debug
 
+      - name: Build debug APK without AAB support
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: assembleWithoutAabOutputSupportDebug
+          distributions-cache-enabled: true
+          dependencies-cache-enabled: true
+          configuration-cache-enabled: true
+
+      - name: Upload debug APK without AAB support
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk-debug
+          path: app/build/outputs/apk/withoutAabOutputSupport/debug

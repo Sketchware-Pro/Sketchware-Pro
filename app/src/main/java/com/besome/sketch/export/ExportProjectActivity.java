@@ -36,6 +36,7 @@ import androidx.core.content.FileProvider;
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.tools.ExportApkActivity;
+import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.Resources;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -458,10 +459,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         btnExportAppBundle.setOnClickListener(v -> {
             aB dialog = new aB(ExportProjectActivity.this);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            if (BuildConfig.FLAVOR.equals(BuildConfig.FLAVOR_NAME_WITHOUT_AABS)) {
                 dialog.a(Resources.drawable.break_warning_96_red);
-                dialog.b("Can't generate Bundle");
-                dialog.a("Generating an .aab file currently requires an Android 8 or higher device. We're sorry for any inconvenience.");
+                dialog.b("Can't generate App Bundle");
+                dialog.a("This Sketchware Pro version doesn't support building AABs as it must work on " +
+                        "Android 7.1.1 and earlier. Use a Sketchware Pro " + BuildConfig.VERSION_NAME.split(" ")[0] + " " +
+                        "build with AAB support.");
                 dialog.b(Helper.getResString(Resources.string.common_word_close),
                         Helper.getDialogDismissListener(dialog));
                 dialog.show();
