@@ -52,6 +52,10 @@ android {
         }
     }
 
+    packagingOptions {
+        resources.excludes += "license/*"
+    }
+
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_11
