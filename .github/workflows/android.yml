@@ -37,7 +37,7 @@ jobs:
       - name: Upload debug APK with AAB support
         uses: actions/upload-artifact@v2
         with:
-          name: apk-debug
+          name: apk-withAabOutputSupport-debug
           path: app/build/outputs/apk/withAabOutputSupport/debug
 
       - name: Build debug APK without AAB support
@@ -51,5 +51,5 @@ jobs:
       - name: Upload debug APK without AAB support
         uses: actions/upload-artifact@v2
         with:
-          name: apk-debug
+          name: apk-withoutAabOutputSupport-debug
           path: app/build/outputs/apk/withoutAabOutputSupport/debug
