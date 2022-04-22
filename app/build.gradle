@@ -35,13 +35,13 @@ android {
         withAabOutputSupport {
             dimension 'api'
             minSdkVersion 26
-            versionNameSuffix " without AAB support"
+            versionNameSuffix " with AAB support"
         }
 
         withoutAabOutputSupport {
             dimension 'api'
             minSdkVersion 21
-            versionNameSuffix " with AAB support"
+            versionNameSuffix " without AAB support"
         }
     }
 
