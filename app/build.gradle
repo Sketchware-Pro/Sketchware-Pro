@@ -71,5 +71,15 @@ dependencies {
     withoutAabOutputSupportImplementation 'com.google.guava:guava:30.1-jre'
     withAabOutputSupportImplementation fileTree(dir: 'libs', include: 'bundletool-*')
 
+    def codeEditorVersion = "0.10.11"
+    def excludeAnnotation = { exclude group: 'androidx.annotation', module: 'annotation' }
+    def editorGroupId = "io.github.Rosemoe.sora-editor"
+
+    implementation "$editorGroupId:editor:$codeEditorVersion", excludeAnnotation
+    implementation "$editorGroupId:language-java:$codeEditorVersion", excludeAnnotation
+    implementation("$editorGroupId:language-textmate:$codeEditorVersion") {
+        exclude group: 'com.google.code.gson', module: 'gson'
+    }
+
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
