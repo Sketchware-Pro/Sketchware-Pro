@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Spanned;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -38,20 +39,13 @@ public class MoreblockValidator extends MB {
         boolean z;
         boolean z2;
         int length = charSequence.toString().trim().length();
-        int num = 1;
         if (length < 1) {
             b.setErrorEnabled(true);
-            xB b = xB.b();
-            Object[] objArr = new Object[1];
-            objArr[0] = num;
-            this.b.setError(b.a(a, 2131625433, objArr));
+            this.b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
             d = false;
         } else if (charSequence.toString().trim().length() > 60) {
             b.setErrorEnabled(true);
-            xB b2 = xB.b();
-            Object[] objArr2 = new Object[1];
-            objArr2[0] = 60;
-            b.setError(b2.a(a, 2131625432, objArr2));
+            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 60));
             d = false;
         } else {
             if (i != null && i.length() > 0 && charSequence.toString().equals(i)) {
@@ -108,15 +102,12 @@ public class MoreblockValidator extends MB {
                         d = true;
                     } else {
                         b.setErrorEnabled(true);
-                        b.setError(xB.b().a(a, 2131625436, new Object[0]));
+                        b.setError(xB.b().a(a, R.string.invalid_value_rule_3, new Object[0]));
                         d = false;
                     }
                     if (charSequence.toString().trim().length() < 1) {
                         b.setErrorEnabled(true);
-                        xB b3 = xB.b();
-                        Object[] objArr3 = new Object[1];
-                        objArr3[0] = num;
-                        b.setError(b3.a(a, 2131625433, objArr3));
+                        b.setError(xB.b().a(a, 2131625433, 1));
                         d = false;
                     }
                 }
