@@ -443,6 +443,8 @@ public class qq {
             return "androidx.swiperefreshlayout";
         } else if (name.equals(BuiltInLibraries.ANDROIDX_TRANSITION)) {
             return "androidx.transition";
+        } else if (name.equals(BuiltInLibraries.ANDROIDX_VIEWPAGER2)) {
+            return "androidx.viewpager2";
         } else if (name.equals(BuiltInLibraries.ANDROIDX_WORK_RUNTIME)) {
             return "androidx.work";
         } else if (name.equals(BuiltInLibraries.CIRCLE_IMAGEVIEW)) {
