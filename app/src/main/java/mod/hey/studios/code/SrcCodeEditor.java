@@ -351,6 +351,8 @@ public class SrcCodeEditor extends AppCompatActivity {
         toolbar.setVisibility(View.GONE);
 
         setTitle(getIntent().getStringExtra("title"));
+editor.setNonPrintablePaintingFlags(CodeEditor.FLAG_DRAW_WHITESPACE_LEADING | CodeEditor.FLAG_DRAW_LINE_SEPARATOR);
+
 
         editor.setTypefaceText(Typeface.MONOSPACE);
 
