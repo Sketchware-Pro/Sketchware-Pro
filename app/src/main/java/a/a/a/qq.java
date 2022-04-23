@@ -389,13 +389,13 @@ public class qq {
                 name.equals(BuiltInLibraries.ANDROIDX_CONSTRAINTLAYOUT) || name.equals(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT) ||
                 name.equals(BuiltInLibraries.ANDROIDX_CORE) || name.equals(BuiltInLibraries.ANDROIDX_DRAWERLAYOUT) ||
                 name.equals(BuiltInLibraries.ANDROIDX_FRAGMENT) || name.equals(BuiltInLibraries.ANDROIDX_LIFECYCLE_RUNTIME) ||
-                name.equals(BuiltInLibraries.ANDROIDX_LIFECYCLE_VIEWMODEL) || name.equals(BuiltInLibraries.MATERIAL) ||
-                name.equals(BuiltInLibraries.ANDROIDX_MEDIA) || name.equals(BuiltInLibraries.PLAY_SERVICES_ADS) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_ADS_LITE) || name.equals(BuiltInLibraries.PLAY_SERVICES_BASE) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_BASEMENT) || name.equals(BuiltInLibraries.PLAY_SERVICES_MAPS) ||
+                name.equals(BuiltInLibraries.ANDROIDX_LIFECYCLE_VIEWMODEL) || name.equals(BuiltInLibraries.ANDROIDX_MEDIA) ||
                 name.equals(BuiltInLibraries.ANDROIDX_RECYCLERVIEW) || name.equals(BuiltInLibraries.ANDROIDX_SAVEDSTATE) ||
                 name.equals(BuiltInLibraries.ANDROIDX_SWIPEREFRESHLAYOUT) || name.equals(BuiltInLibraries.ANDROIDX_TRANSITION) ||
-                name.equals(BuiltInLibraries.ANDROIDX_WORK_RUNTIME) || name.equals(BuiltInLibraries.ANDROIDX_VIEWPAGER2)) {
+                name.equals(BuiltInLibraries.ANDROIDX_WORK_RUNTIME) || name.equals(BuiltInLibraries.ANDROIDX_VIEWPAGER2) ||
+                name.equals(BuiltInLibraries.MATERIAL) || name.equals(BuiltInLibraries.PLAY_SERVICES_ADS) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_ADS_LITE) || name.equals(BuiltInLibraries.PLAY_SERVICES_BASE) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_BASEMENT) || name.equals(BuiltInLibraries.PLAY_SERVICES_MAPS)) {
             return true;
         } else {
             return ExtLibSelection.c(name);
