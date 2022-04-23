@@ -42,7 +42,7 @@ public class ExtLibSelected {
             kp.a(BuiltInLibraries.CODE_VIEW);
         }
         if (component.isPatternLockViewUsed) {
-            kp.a(BuiltInLibraries.PATTERNLOCKVIEW);
+            kp.a(BuiltInLibraries.PATTERN_LOCK_VIEW);
         }
         if (component.isWaveSideBarUsed) {
             kp.a(BuiltInLibraries.WAVE_SIDE_BAR);

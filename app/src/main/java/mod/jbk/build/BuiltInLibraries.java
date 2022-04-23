@@ -104,7 +104,7 @@ public class BuiltInLibraries {
     public static String OKIO = "Okio-1.17.4";
     public static String ONESIGNAL = "OneSignal-3.14.0";
     public static String OTPVIEW = "OTPView-0.1.0";
-    public static String PATTERNLOCKVIEW = "pattern-lock-view";
+    public static String PATTERN_LOCK_VIEW = "pattern-lock-view";
     public static String PLAY_SERVICES_ADS = "play-services-ads-18.2.0";
     public static String PLAY_SERVICES_ADS_BASE = "play-services-ads-base-18.2.0";
     public static String PLAY_SERVICES_ADS_IDENTIFIER = "play-services-ads-identifier-17.0.0";
