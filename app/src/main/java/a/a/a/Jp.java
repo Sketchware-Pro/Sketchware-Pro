@@ -1,6 +1,6 @@
 package a.a.a;
 
-import mod.agus.jcoderz.manage.library.ExtLibSelection;
+import mod.jbk.build.BuiltInLibraries;
 
 /**
  * An object representing a built-in library, e.g. the MDC library (nicknamed material-1.0.0)
@@ -27,7 +27,7 @@ public class Jp {
     public Jp(String libraryName) {
         a = libraryName;
         c = qq.c(libraryName);
-        d = ExtLibSelection.d(libraryName);
+        d = libraryName.equals(BuiltInLibraries.CODE_VIEW);
         if (c || d) {
             b = qq.b(libraryName);
         }
