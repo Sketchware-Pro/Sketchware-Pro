@@ -33,6 +33,7 @@ import com.besome.sketch.projects.MyProjectButtonLayout;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.besome.sketch.publish.account.PublishAccountSettingActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public final void a(ViewGroup parent) {
-        f = parent.findViewById(2131231774);
+        f = parent.findViewById(R.id.swipe_refresh);
         f.setOnRefreshListener(() -> {
             if (f.d()) f.setRefreshing(false);
 
@@ -113,27 +114,27 @@ public class GC extends DA implements View.OnClickListener {
             }
 
         });
-        x = getActivity().findViewById(2131231054);
+        x = getActivity().findViewById(R.id.fab);
         x.setOnClickListener(this);
-        h = parent.findViewById(2131231557);
+        h = parent.findViewById(R.id.myprojects);
         h.setHasFixedSize(true);
         h.setLayoutManager(new LinearLayoutManager(getContext()));
         v = new ProjectsAdapter(this, h);
         h.setAdapter(v);
         h.setItemAnimator(new ci());
-        i = parent.findViewById(2131230945);
-        j = parent.findViewById(2131230936);
-        k = j.findViewById(2131231228);
-        l = j.findViewById(2131231929);
+        i = parent.findViewById(R.id.cv_create_new);
+        j = parent.findViewById(R.id.create_new_project);
+        k = j.findViewById(R.id.iv_create_new);
+        l = j.findViewById(R.id.tv_create_new);
         j.setOnClickListener(this);
         q = false;
-        m = parent.findViewById(2131230947);
-        n = parent.findViewById(2131231371);
-        o = parent.findViewById(2131231231);
-        p = parent.findViewById(2131232041);
+        m = parent.findViewById(R.id.cv_manage_publish);
+        n = parent.findViewById(R.id.layout_manage_publish);
+        o = parent.findViewById(R.id.iv_manage_publish);
+        p = parent.findViewById(R.id.tv_manage_publish);
         p.setText("Restore project");
         n.setOnClickListener(this);
-        ((TextView) parent.findViewById(2131231929)).setText(xB.b().a(getContext(), 2131625662));
+        ((TextView) parent.findViewById(R.id.tv_create_new)).setText(xB.b().a(getContext(), R.string.myprojects_list_menu_title_create_a_new_project));
         r = new AnimatorSet();
         s = new AnimatorSet();
         t = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
@@ -246,10 +247,10 @@ public class GC extends DA implements View.OnClickListener {
 
     public final void g(int position) {
         aB dialog = new aB(getActivity());
-        dialog.b(xB.b().a(getActivity(), 2131625988));
-        dialog.a(2131165391);
-        dialog.a(xB.b().a(getActivity(), 2131625906));
-        dialog.b(xB.b().a(getActivity(), 2131625010), view -> {
+        dialog.b(xB.b().a(getActivity(), R.string.publish_title_dialog_authorization_error));
+        dialog.a(R.drawable.break_warning_96_red);
+        dialog.a(xB.b().a(getActivity(), R.string.publish_message_dialog_authorization_error));
+        dialog.b(xB.b().a(getActivity(), R.string.common_word_ok), view -> {
             Intent intent = new Intent(getActivity(), PublishAccountSettingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("isNewSetting", true);
@@ -273,10 +274,10 @@ public class GC extends DA implements View.OnClickListener {
 
     public final void h(int var1) {
         aB dialog = new aB(getActivity());
-        dialog.b(xB.b().a(getActivity(), 2131625995));
-        dialog.a(2131165391);
-        dialog.a(xB.b().a(getActivity(), 2131625912));
-        dialog.b(xB.b().a(getActivity(), 2131625010), view -> {
+        dialog.b(xB.b().a(getActivity(), R.string.publish_title_dialog_invalid_json));
+        dialog.a(R.drawable.break_warning_96_red);
+        dialog.a(xB.b().a(getActivity(), R.string.publish_message_dialog_invalid_json));
+        dialog.b(xB.b().a(getActivity(), R.string.common_word_ok), view -> {
             Intent intent = new Intent(getActivity(), PublishAccountSettingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("isNewSetting", true);
@@ -413,9 +414,9 @@ public class GC extends DA implements View.OnClickListener {
 
     public void onClick(View var1) {
         int var2 = var1.getId();
-        if (var2 != 2131230936) {
-            if (var2 != 2131231054) {
-                if (var2 == 2131231371 && super.a(700)) {
+        if (var2 != R.id.create_new_project) {
+            if (var2 != R.id.fab) {
+                if (var2 == R.id.layout_manage_publish && super.a(700)) {
                     j();
                 }
 
@@ -431,13 +432,14 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        ViewGroup var4 = (ViewGroup) inflater.inflate(2131427584, parent, false);
+        ViewGroup var4 = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
         y = new ro(getContext());
         a(var4);
         w = new DB(getContext(), "P25");
         return var4;
     }
 
+    @SuppressLint("StaticFieldLeak")
     public static class c extends MA {
         public final GC f;
         public int c;
@@ -543,7 +545,7 @@ public class GC extends DA implements View.OnClickListener {
                 viewHolder.C.a();
             }
 
-            viewHolder.v.setImageResource(2131165521);
+            viewHolder.v.setImageResource(R.drawable.default_icon);
             if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
                 projectMap.put("sc_ver_code", "1");
                 projectMap.put("sc_ver_name", "1.0");
@@ -581,7 +583,7 @@ public class GC extends DA implements View.OnClickListener {
         }
 
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(this, LayoutInflater.from(parent.getContext()).inflate(2131427585, parent, false));
+            return new ViewHolder(this, LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
         }
 
         public class ViewHolder extends RecyclerView.v {
@@ -602,17 +604,17 @@ public class GC extends DA implements View.OnClickListener {
             public ViewHolder(ProjectsAdapter var1, View itemView) {
                 super(itemView);
                 F = var1;
-                t = itemView.findViewById(2131231615);
-                w = itemView.findViewById(2131231614);
-                u = itemView.findViewById(2131230779);
-                v = itemView.findViewById(2131231151);
-                x = itemView.findViewById(2131230780);
-                y = itemView.findViewById(2131231579);
-                z = itemView.findViewById(2131231618);
-                A = itemView.findViewById(2131232095);
-                B = itemView.findViewById(2131231051);
-                D = itemView.findViewById(2131231617);
-                E = itemView.findViewById(2131231616);
+                t = itemView.findViewById(R.id.project_one);
+                w = itemView.findViewById(R.id.project_name);
+                u = itemView.findViewById(R.id.app_icon_layout);
+                v = itemView.findViewById(R.id.img_icon);
+                x = itemView.findViewById(R.id.app_name);
+                y = itemView.findViewById(R.id.package_name);
+                z = itemView.findViewById(R.id.project_version);
+                A = itemView.findViewById(R.id.tv_published);
+                B = itemView.findViewById(R.id.expand);
+                D = itemView.findViewById(R.id.project_option_layout);
+                E = itemView.findViewById(R.id.project_option);
                 C = new MyProjectButtonLayout(var1.d.getContext());
                 E.addView(C);
                 C.setButtonOnClickListener(view -> {
@@ -651,8 +653,8 @@ public class GC extends DA implements View.OnClickListener {
 
                             } else {
                                 int viewId = view.getId();
-                                if (viewId != 2131230923) {
-                                    if (viewId == 2131230927) {
+                                if (viewId != R.id.confirm_no) {
+                                    if (viewId == R.id.confirm_yes) {
                                         var7.put("confirmation", false);
                                         var7.put("expand", false);
                                         GC var4 = F.d;
