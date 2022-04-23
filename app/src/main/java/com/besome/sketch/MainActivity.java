@@ -381,7 +381,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 projectsFragment.g();
             }
             qnaLayout.setVisibility(View.GONE);
-            projectsFragment.h();
+            projectsFragment.showCreateNewProjectLayout();
         } else if (position == 1) {
             qnaLayout.setVisibility(View.GONE);
             fab.c();
