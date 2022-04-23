@@ -31,7 +31,6 @@ import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
 import com.besome.sketch.projects.MyProjectButtonLayout;
 import com.besome.sketch.projects.MyProjectSettingActivity;
-import com.besome.sketch.publish.account.PublishAccountSettingActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -47,65 +46,46 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 @SuppressLint("ResourceType")
 public class GC extends DA implements View.OnClickListener {
 
-    public SwipeRefreshLayout f;
-    public ArrayList<HashMap<String, Object>> g;
-    public RecyclerView h;
-    public CardView i;
-    public LinearLayout j;
-    public ImageView k;
-    public TextView l;
-    public CardView m;
-    public LinearLayout n;
-    public ImageView o;
-    public TextView p;
+    public SwipeRefreshLayout swipeRefresh;
+    public ArrayList<HashMap<String, Object>> projectsList;
+    public RecyclerView myProjects;
+    public CardView cvCreateNew;
+    public LinearLayout createNewProject;
+    public ImageView ivCreateNew;
+    public TextView tvCreateNew;
+    public CardView cvManagePublish;
+    public LinearLayout layoutManagePublish;
+    public ImageView ivManagePublish;
+    public TextView tvManagePublish;
     public Boolean q;
     public AnimatorSet r;
     public AnimatorSet s;
     public ValueAnimator t;
     public ValueAnimator u;
-    public ProjectsAdapter v;
+    public ProjectsAdapter projectsAdapter;
     public DB w;
-    public FloatingActionButton x;
+    public FloatingActionButton floatingActionButton;
     public ro y;
 
-    // $FF: synthetic method
-    public static EA k(GC var0) {
-        return var0.d;
-    }
-
-    // $FF: synthetic method
-    public static EA l(GC var0) {
-        return var0.d;
-    }
-
-    // $FF: synthetic method
-    public static Zo n(GC var0) {
-        return var0.e;
-    }
-
-    public final void a(int position, boolean advancedOpen) {
-        a(position, advancedOpen, 206);
-    }
-
-    public final void a(int position, boolean advancedOpen, int requestCode) {
+    private void toProjectSettingOrRequestPermission(int position) {
         if (super.c()) {
             Intent intent = new Intent(getContext(), MyProjectSettingActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("sc_id", yB.c(g.get(position), "sc_id"));
+            intent.putExtra("sc_id", yB.c(projectsList.get(position), "sc_id"));
             intent.putExtra("is_update", true);
-            intent.putExtra("advanced_open", advancedOpen);
+            intent.putExtra("advanced_open", false);
             intent.putExtra("index", position);
-            startActivityForResult(intent, requestCode);
+            startActivityForResult(intent, 206);
         } else if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
 
     }
 
-    public final void a(ViewGroup parent) {
-        f = parent.findViewById(R.id.swipe_refresh);
-        f.setOnRefreshListener(() -> {
-            if (f.d()) f.setRefreshing(false);
+    private void a(ViewGroup parent) {
+        swipeRefresh = parent.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(() -> {
+            if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
 
             if (c()) {
                 g();
@@ -114,76 +94,76 @@ public class GC extends DA implements View.OnClickListener {
             }
 
         });
-        x = getActivity().findViewById(R.id.fab);
-        x.setOnClickListener(this);
-        h = parent.findViewById(R.id.myprojects);
-        h.setHasFixedSize(true);
-        h.setLayoutManager(new LinearLayoutManager(getContext()));
-        v = new ProjectsAdapter(this, h);
-        h.setAdapter(v);
-        h.setItemAnimator(new ci());
-        i = parent.findViewById(R.id.cv_create_new);
-        j = parent.findViewById(R.id.create_new_project);
-        k = j.findViewById(R.id.iv_create_new);
-        l = j.findViewById(R.id.tv_create_new);
-        j.setOnClickListener(this);
+        floatingActionButton = getActivity().findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(this);
+        myProjects = parent.findViewById(R.id.myprojects);
+        myProjects.setHasFixedSize(true);
+        myProjects.setLayoutManager(new LinearLayoutManager(getContext()));
+        projectsAdapter = new ProjectsAdapter(this, myProjects);
+        myProjects.setAdapter(projectsAdapter);
+        myProjects.setItemAnimator(new ci());
+        cvCreateNew = parent.findViewById(R.id.cv_create_new);
+        createNewProject = parent.findViewById(R.id.create_new_project);
+        ivCreateNew = createNewProject.findViewById(R.id.iv_create_new);
+        tvCreateNew = createNewProject.findViewById(R.id.tv_create_new);
+        createNewProject.setOnClickListener(this);
         q = false;
-        m = parent.findViewById(R.id.cv_manage_publish);
-        n = parent.findViewById(R.id.layout_manage_publish);
-        o = parent.findViewById(R.id.iv_manage_publish);
-        p = parent.findViewById(R.id.tv_manage_publish);
-        p.setText("Restore project");
-        n.setOnClickListener(this);
+        cvManagePublish = parent.findViewById(R.id.cv_manage_publish);
+        layoutManagePublish = parent.findViewById(R.id.layout_manage_publish);
+        ivManagePublish = parent.findViewById(R.id.iv_manage_publish);
+        tvManagePublish = parent.findViewById(R.id.tv_manage_publish);
+        tvManagePublish.setText("Restore project");
+        layoutManagePublish.setOnClickListener(this);
         ((TextView) parent.findViewById(R.id.tv_create_new)).setText(xB.b().a(getContext(), R.string.myprojects_list_menu_title_create_a_new_project));
         r = new AnimatorSet();
         s = new AnimatorSet();
         t = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
         t.addUpdateListener(var11 -> {
-            m.getLayoutParams().height = (int) var11.getAnimatedValue();
-            m.requestLayout();
+            cvManagePublish.getLayoutParams().height = (int) var11.getAnimatedValue();
+            cvManagePublish.requestLayout();
         });
         u = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
         u.addUpdateListener(var1 -> {
-            m.getLayoutParams().height = (int) var1.getAnimatedValue();
-            m.requestLayout();
+            cvManagePublish.getLayoutParams().height = (int) var1.getAnimatedValue();
+            cvManagePublish.requestLayout();
         });
         r.playTogether(t,
-                ObjectAnimator.ofFloat(p, View.TRANSLATION_Y, 0.0F, -100.0F),
-                ObjectAnimator.ofFloat(p, View.ALPHA, 1.0F, 0.0F),
-                ObjectAnimator.ofFloat(o, View.SCALE_X, 1.0F, 0.5F),
-                ObjectAnimator.ofFloat(o, View.SCALE_Y, 1.0F, 0.5F));
+                ObjectAnimator.ofFloat(tvManagePublish, View.TRANSLATION_Y, 0.0F, -100.0F),
+                ObjectAnimator.ofFloat(tvManagePublish, View.ALPHA, 1.0F, 0.0F),
+                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_X, 1.0F, 0.5F),
+                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_Y, 1.0F, 0.5F));
         s.playTogether(u,
-                ObjectAnimator.ofFloat(p, View.TRANSLATION_Y, -100.0F, 0.0F),
-                ObjectAnimator.ofFloat(p, View.ALPHA, 0.0F, 1.0F),
-                ObjectAnimator.ofFloat(o, View.SCALE_X, 0.5F, 1.0F),
-                ObjectAnimator.ofFloat(o, View.SCALE_Y, 0.5F, 1.0F));
+                ObjectAnimator.ofFloat(tvManagePublish, View.TRANSLATION_Y, -100.0F, 0.0F),
+                ObjectAnimator.ofFloat(tvManagePublish, View.ALPHA, 0.0F, 1.0F),
+                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_X, 0.5F, 1.0F),
+                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_Y, 0.5F, 1.0F));
         r.setDuration(300L);
         s.setDuration(300L);
         g();
     }
 
-    public void a(boolean var1) {
-        g = lC.a();
-        if (g.size() > 0) {
-            Collections.sort(g,
+    public void a(boolean isEmpty) {
+        projectsList = lC.a();
+        if (projectsList.size() > 0) {
+            Collections.sort(projectsList,
                     (first, second) -> Integer.compare(Integer.parseInt(yB.c(first, "sc_id")),
                             Integer.parseInt(yB.c(second, "sc_id"))) * -1);
         }
 
-        h.getAdapter().c();
-        if (var1) h();
+        myProjects.getAdapter().c();
+        if (isEmpty) showCreateNewProjectLayout();
 
     }
 
     public void b(int requestCode) {
         if (requestCode == 206) {
-            i();
+            toProjectSettingsActivity();
         } else if (requestCode == 700) {
-            j();
+            restoreProject();
         }
     }
 
-    public final void b(String sc_id) {
+    private void toDesignActivity(String sc_id) {
         Intent intent = new Intent(getContext(), DesignActivity.class);
         ProjectTracker.setScId(sc_id);
         intent.putExtra("sc_id", sc_id);
@@ -201,19 +181,19 @@ public class GC extends DA implements View.OnClickListener {
         int var2 = 0;
 
         while (true) {
-            if (var2 >= g.size()) {
+            if (var2 >= projectsList.size()) {
                 var2 = 0;
                 break;
             }
 
-            if (yB.c(g.get(var2), "sc_id").equals(var1)) {
+            if (yB.c(projectsList.get(var2), "sc_id").equals(var1)) {
                 break;
             }
 
             ++var2;
         }
 
-        a(var2, false);
+        toProjectSettingOrRequestPermission(var2);
     }
 
     public void d() {
@@ -231,13 +211,13 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public int f() {
-        return g.size();
+        return projectsList.size();
     }
 
-    public final void f(int position) {
+    private void toExportProjectActivity(int position) {
         Intent intent = new Intent(getContext(), ExportProjectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", yB.c(g.get(position), "sc_id"));
+        intent.putExtra("sc_id", yB.c(projectsList.get(position), "sc_id"));
         startActivity(intent);
     }
 
@@ -245,95 +225,63 @@ public class GC extends DA implements View.OnClickListener {
         a(true);
     }
 
-    public final void g(int position) {
-        aB dialog = new aB(getActivity());
-        dialog.b(xB.b().a(getActivity(), R.string.publish_title_dialog_authorization_error));
-        dialog.a(R.drawable.break_warning_96_red);
-        dialog.a(xB.b().a(getActivity(), R.string.publish_message_dialog_authorization_error));
-        dialog.b(xB.b().a(getActivity(), R.string.common_word_ok), view -> {
-            Intent intent = new Intent(getActivity(), PublishAccountSettingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("isNewSetting", true);
-            intent.putExtra("index", position);
-            startActivityForResult(intent, 702);
-            dialog.dismiss();
-        });
-        dialog.show();
-    }
-
-    public void h() {
-        if (g.size() > 0) {
-            i.setVisibility(View.GONE);
-            x.f();
+    public void showCreateNewProjectLayout() {
+        if (projectsList.size() > 0) {
+            cvCreateNew.setVisibility(View.GONE);
+            floatingActionButton.f();
         } else {
-            i.setVisibility(View.VISIBLE);
-            x.c();
+            cvCreateNew.setVisibility(View.VISIBLE);
+            floatingActionButton.c();
         }
 
     }
 
-    public final void h(int var1) {
-        aB dialog = new aB(getActivity());
-        dialog.b(xB.b().a(getActivity(), R.string.publish_title_dialog_invalid_json));
-        dialog.a(R.drawable.break_warning_96_red);
-        dialog.a(xB.b().a(getActivity(), R.string.publish_message_dialog_invalid_json));
-        dialog.b(xB.b().a(getActivity(), R.string.common_word_ok), view -> {
-            Intent intent = new Intent(getActivity(), PublishAccountSettingActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("isNewSetting", true);
-            intent.putExtra("index", var1);
-            startActivityForResult(intent, 702);
-            dialog.dismiss();
-        });
-        dialog.show();
-    }
-
-    public final void i() {
-        Intent var1 = new Intent(getActivity(), MyProjectSettingActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(var1, 206);
+    private void toProjectSettingsActivity() {
+        Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivityForResult(intent, 206);
     }
 
 
-    public final void j() {
+    private void restoreProject() {
         (new BackupRestoreManager(getActivity(), this)).restore();
     }
 
-    public final void k(int position) {
-        (new ProjectSettingsDialog(getActivity(), yB.c(g.get(position), "sc_id"))).show();
+    private void showProjectSettingDialog(int position) {
+        (new ProjectSettingsDialog(getActivity(), yB.c(projectsList.get(position), "sc_id"))).show();
     }
 
-    public final void kbckp(int position) {
-        String var3 = yB.c(g.get(position), "sc_id");
-        String var4 = yB.c(g.get(position), "my_ws_name");
-        (new BackupRestoreManager(getActivity())).backup(var3, var4);
+    private void backupProject(int position) {
+        String sc_id = yB.c(projectsList.get(position), "sc_id");
+        String appName = yB.c(projectsList.get(position), "my_ws_name");
+        (new BackupRestoreManager(getActivity())).backup(sc_id, appName);
     }
 
 
     @Override
-    public void onActivityResult(int var1, int var2, Intent data) {
-        super.onActivityResult(var1, var2, data);
-        if (var1 == 239) {
-            if (var2 != -1) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 239) {
+            if (resultCode != -1) {
                 return;
             }
 
-            var1 = v.c;
+            requestCode = projectsAdapter.c;
         } else {
-            if (var1 == 508) {
-                if (var2 == -1) {
+            if (requestCode == 508) {
+                if (resultCode == -1) {
                     data = new Intent(getContext(), ExportProjectActivity.class);
                     data.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    data.putExtra("sc_id", yB.c(g.get(v.c), "sc_id"));
+                    data.putExtra("sc_id", yB.c(projectsList.get(projectsAdapter.c), "sc_id"));
                     startActivity(data);
                 }
 
                 return;
             }
 
-            if (var1 == 712) {
-                if (var2 == -1 && data != null && data.hasExtra("index")) {
-                    f(data.getIntExtra("index", -1));
+            if (requestCode == 712) {
+                if (resultCode == -1 && data != null && data.hasExtra("index")) {
+                    toExportProjectActivity(data.getIntExtra("index", -1));
                 }
 
                 return;
@@ -341,17 +289,17 @@ public class GC extends DA implements View.OnClickListener {
 
             label142:
             {
-                if (var1 != 708) {
-                    if (var1 == 709) {
-                        if (var2 != -1 || data == null || !data.hasExtra("index")) {
+                if (requestCode != 708) {
+                    if (requestCode == 709) {
+                        if (resultCode != -1 || data == null || !data.hasExtra("index")) {
                             return;
                         }
                         break label142;
                     }
 
-                    switch (var1) {
+                    switch (requestCode) {
                         case 204:
-                            if (super.a(var1) && !super.e.h()) {
+                            if (super.a(requestCode) && !super.e.h()) {
                                 xo.k();
                             }
 
@@ -359,25 +307,25 @@ public class GC extends DA implements View.OnClickListener {
                         case 205:
                             return;
                         case 206:
-                            if (var2 == -1) {
+                            if (resultCode == -1) {
                                 g();
                                 if (data.getBooleanExtra("is_new", false)) {
-                                    b(data.getStringExtra("sc_id"));
+                                    toDesignActivity(data.getStringExtra("sc_id"));
                                     return;
                                 }
                             }
 
                             return;
                         default:
-                            switch (var1) {
+                            switch (requestCode) {
                                 case 700:
-                                    if (var2 == -1) {
+                                    if (resultCode == -1) {
                                         g();
                                     }
 
                                     return;
                                 case 701:
-                                    if (var2 != -1) {
+                                    if (resultCode != -1) {
                                         return;
                                     }
 
@@ -387,7 +335,7 @@ public class GC extends DA implements View.OnClickListener {
                                     }
                                     break label142;
                                 case 702:
-                                    if (var2 == -1) {
+                                    if (resultCode == -1) {
                                         if (data != null && data.hasExtra("index")) {
                                             break label142;
                                         }
@@ -400,43 +348,44 @@ public class GC extends DA implements View.OnClickListener {
                             }
 
                     }
-                } else if (var2 != -1) {
+                } else if (resultCode != -1) {
                     return;
                 }
 
-                j();
+                restoreProject();
                 return;
             }
 
-            var1 = data.getIntExtra("index", -1);
+            requestCode = data.getIntExtra("index", -1);
         }
     }
 
-    public void onClick(View var1) {
-        int var2 = var1.getId();
-        if (var2 != R.id.create_new_project) {
-            if (var2 != R.id.fab) {
-                if (var2 == R.id.layout_manage_publish && super.a(700)) {
-                    j();
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
+        if (viewId != R.id.create_new_project) {
+            if (viewId != R.id.fab) {
+                if (viewId == R.id.layout_manage_publish && super.a(700)) {
+                    restoreProject();
                 }
 
                 return;
             }
 
         }
-        if (!super.a(206)) {
+        if (super.a(206)) {
             return;
         }
 
-        i();
+        toProjectSettingsActivity();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        ViewGroup var4 = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
         y = new ro(getContext());
-        a(var4);
+        a(viewGroup);
         w = new DB(getContext(), "P25");
-        return var4;
+        return viewGroup;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -456,10 +405,10 @@ public class GC extends DA implements View.OnClickListener {
         }
 
         public void a() {
-            if (c < f.g.size()) {
-                f.g.remove(c);
-                f.v.e(c);
-                f.v.a(c, f.v.a());
+            if (c < f.projectsList.size()) {
+                f.projectsList.remove(c);
+                f.projectsAdapter.e(c);
+                f.projectsAdapter.a(c, f.projectsAdapter.a());
             }
 
             f.a();
@@ -470,8 +419,8 @@ public class GC extends DA implements View.OnClickListener {
         }
 
         public void b() {
-            if (c < f.g.size()) {
-                d = yB.c(f.g.get(c), "sc_id");
+            if (c < f.projectsList.size()) {
+                d = yB.c(f.projectsList.get(c), "sc_id");
                 lC.a(super.a, d);
             }
 
@@ -522,11 +471,11 @@ public class GC extends DA implements View.OnClickListener {
         }
 
         public int a() {
-            return g.size();
+            return projectsList.size();
         }
 
         public void b(ViewHolder viewHolder, int position) {
-            HashMap<String, Object> projectMap = d.g.get(position);
+            HashMap<String, Object> projectMap = d.projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
             float rotation;
             int visibility;
@@ -537,15 +486,15 @@ public class GC extends DA implements View.OnClickListener {
                 visibility = 8;
                 rotation = 0.0F;
             }
-            viewHolder.D.setVisibility(visibility);
-            viewHolder.B.setRotation(rotation);
+            viewHolder.projectOptionLayout.setVisibility(visibility);
+            viewHolder.expand.setRotation(rotation);
             if (yB.a(projectMap, "confirmation")) {
-                viewHolder.C.b();
+                viewHolder.projectButtonLayout.b();
             } else {
-                viewHolder.C.a();
+                viewHolder.projectButtonLayout.a();
             }
 
-            viewHolder.v.setImageResource(R.drawable.default_icon);
+            viewHolder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
                 projectMap.put("sc_ver_code", "1");
                 projectMap.put("sc_ver_name", "1.0");
@@ -569,16 +518,16 @@ public class GC extends DA implements View.OnClickListener {
                     uri = Uri.fromFile(new File(var11, "icon.png"));
                 }
 
-                viewHolder.v.setImageURI(uri);
+                viewHolder.imgIcon.setImageURI(uri);
             }
 
-            viewHolder.x.setText(yB.c(projectMap, "my_ws_name"));
-            viewHolder.w.setText(yB.c(projectMap, "my_app_name"));
-            viewHolder.y.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            viewHolder.appName.setText(yB.c(projectMap, "my_ws_name"));
+            viewHolder.projectName.setText(yB.c(projectMap, "my_app_name"));
+            viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
             String var12 = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
-            viewHolder.z.setText(var12);
-            viewHolder.A.setVisibility(0);
-            viewHolder.A.setText(yB.c(projectMap, "sc_id"));
+            viewHolder.projectVersion.setText(var12);
+            viewHolder.tvPublished.setVisibility(0);
+            viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
             viewHolder.b.setTag("custom");
         }
 
@@ -588,40 +537,40 @@ public class GC extends DA implements View.OnClickListener {
 
         public class ViewHolder extends RecyclerView.v {
             public final ProjectsAdapter F;
-            public TextView A;
-            public ImageView B;
-            public MyProjectButtonLayout C;
-            public LinearLayout D;
-            public LinearLayout E;
-            public LinearLayout t;
-            public View u;
-            public CircleImageView v;
-            public TextView w;
-            public TextView x;
-            public TextView y;
-            public TextView z;
+            public TextView tvPublished;
+            public ImageView expand;
+            public MyProjectButtonLayout projectButtonLayout;
+            public LinearLayout projectOptionLayout;
+            public LinearLayout projectOption;
+            public LinearLayout projectOne;
+            public View appIconLayout;
+            public CircleImageView imgIcon;
+            public TextView projectName;
+            public TextView appName;
+            public TextView packageName;
+            public TextView projectVersion;
 
             public ViewHolder(ProjectsAdapter var1, View itemView) {
                 super(itemView);
                 F = var1;
-                t = itemView.findViewById(R.id.project_one);
-                w = itemView.findViewById(R.id.project_name);
-                u = itemView.findViewById(R.id.app_icon_layout);
-                v = itemView.findViewById(R.id.img_icon);
-                x = itemView.findViewById(R.id.app_name);
-                y = itemView.findViewById(R.id.package_name);
-                z = itemView.findViewById(R.id.project_version);
-                A = itemView.findViewById(R.id.tv_published);
-                B = itemView.findViewById(R.id.expand);
-                D = itemView.findViewById(R.id.project_option_layout);
-                E = itemView.findViewById(R.id.project_option);
-                C = new MyProjectButtonLayout(var1.d.getContext());
-                E.addView(C);
-                C.setButtonOnClickListener(view -> {
+                projectOne = itemView.findViewById(R.id.project_one);
+                projectName = itemView.findViewById(R.id.project_name);
+                appIconLayout = itemView.findViewById(R.id.app_icon_layout);
+                imgIcon = itemView.findViewById(R.id.img_icon);
+                appName = itemView.findViewById(R.id.app_name);
+                packageName = itemView.findViewById(R.id.package_name);
+                projectVersion = itemView.findViewById(R.id.project_version);
+                tvPublished = itemView.findViewById(R.id.tv_published);
+                expand = itemView.findViewById(R.id.expand);
+                projectOptionLayout = itemView.findViewById(R.id.project_option_layout);
+                projectOption = itemView.findViewById(R.id.project_option);
+                projectButtonLayout = new MyProjectButtonLayout(var1.d.getContext());
+                projectOption.addView(projectButtonLayout);
+                projectButtonLayout.setButtonOnClickListener(view -> {
                     if (!mB.a()) {
                         F.c = j();
-                        if (F.c <= F.d.g.size()) {
-                            HashMap<String, Object> var7 = GC.this.g.get(F.c);
+                        if (F.c <= F.d.projectsList.size()) {
+                            HashMap<String, Object> var7 = GC.this.projectsList.get(F.c);
                             int var3;
                             ProjectsAdapter projectsAdapter;
                             if (view instanceof MyProjectButton) {
@@ -632,23 +581,23 @@ public class GC extends DA implements View.OnClickListener {
                                             if (var3 != 3) {
                                                 if (var3 == 4) {
                                                     projectsAdapter = F;
-                                                    projectsAdapter.d.k(projectsAdapter.c);
+                                                    showProjectSettingDialog(projectsAdapter.c);
                                                 }
                                             } else {
                                                 var7.put("confirmation", true);
-                                                C.b();
+                                                projectButtonLayout.b();
                                             }
                                         } else {
                                             projectsAdapter = F;
-                                            projectsAdapter.d.f(projectsAdapter.c);
+                                            toExportProjectActivity(projectsAdapter.c);
                                         }
                                     } else {
                                         projectsAdapter = F;
-                                        projectsAdapter.d.kbckp(projectsAdapter.c);
+                                        backupProject(projectsAdapter.c);
                                     }
                                 } else {
                                     projectsAdapter = F;
-                                    projectsAdapter.d.a(projectsAdapter.c, false);
+                                    toProjectSettingOrRequestPermission(projectsAdapter.c);
                                 }
 
                             } else {
@@ -670,16 +619,16 @@ public class GC extends DA implements View.OnClickListener {
                         }
                     }
                 });
-                t.setOnClickListener(view -> {
+                projectOne.setOnClickListener(view -> {
                     if (!mB.a()) {
                         F.c = j();
-                        String var3 = yB.c(F.d.g.get(F.c), "sc_id");
-                        F.d.b(var3);
+                        String var3 = yB.c(F.d.projectsList.get(F.c), "sc_id");
+                        F.d.toDesignActivity(var3);
                     }
                 });
-                t.setOnLongClickListener(view -> {
+                projectOne.setOnLongClickListener(view -> {
                     F.c = j();
-                    if (yB.a(F.d.g.get(F.c), "expand")) {
+                    if (yB.a(F.d.projectsList.get(F.c), "expand")) {
                         D();
                     } else {
                         E();
@@ -687,15 +636,15 @@ public class GC extends DA implements View.OnClickListener {
 
                     return true;
                 });
-                u.setOnClickListener(view -> {
+                appIconLayout.setOnClickListener(view -> {
                     mB.a(view);
                     F.c = j();
-                    F.d.a(F.c, false);
+                    toProjectSettingOrRequestPermission(F.c);
                 });
-                B.setOnClickListener(view -> {
+                expand.setOnClickListener(view -> {
                     if (!mB.a()) {
                         F.c = j();
-                        if (yB.a(F.d.g.get(F.c), "expand")) {
+                        if (yB.a(F.d.projectsList.get(F.c), "expand")) {
                             D();
                         } else {
                             E();
@@ -706,14 +655,14 @@ public class GC extends DA implements View.OnClickListener {
             }
 
             public void D() {
-                F.d.g.get(F.c).put("expand", false);
-                gB.a(B, 0.0F, null);
-                gB.a(D, 300, new AnimatorListener() {
+                F.d.projectsList.get(F.c).put("expand", false);
+                gB.a(expand, 0.0F, null);
+                gB.a(projectOptionLayout, 300, new AnimatorListener() {
                     public void onAnimationCancel(Animator var1) {
                     }
 
                     public void onAnimationEnd(Animator var1) {
-                        D.setVisibility(8);
+                        projectOptionLayout.setVisibility(8);
                     }
 
                     public void onAnimationRepeat(Animator var1) {
@@ -725,10 +674,10 @@ public class GC extends DA implements View.OnClickListener {
             }
 
             public void E() {
-                D.setVisibility(0);
-                F.d.g.get(F.c).put("expand", true);
-                gB.a(B, -180.0F, null);
-                gB.b(D, 300, null);
+                projectOptionLayout.setVisibility(0);
+                F.d.projectsList.get(F.c).put("expand", true);
+                gB.a(expand, -180.0F, null);
+                gB.b(projectOptionLayout, 300, null);
             }
         }
     }
