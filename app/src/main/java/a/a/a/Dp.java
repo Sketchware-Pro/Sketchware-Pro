@@ -52,6 +52,7 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.dex.DexCompiler;
 import mod.jbk.build.compiler.resource.ResourceCompiler;
 import mod.jbk.util.LogUtil;
@@ -315,20 +316,12 @@ public class Dp {
         /* Add HTTP legacy files if wanted */
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY,
                 BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            classpath.append(":").append(l.getAbsolutePath()).append(File.separator).append(m).append(File.separator)
-                    .append("http-legacy-android-28").append(File.separator).append("classes.jar");
+            classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
         }
 
         /* Include MultiDex library if needed */
         if (settings.getMinSdkVersion() < 21) {
-            classpath.append(":")
-                    .append(l.getAbsolutePath())
-                    .append(File.separator)
-                    .append(m)
-                    .append(File.separator)
-                    .append("multidex-2.0.1")
-                    .append(File.separator)
-                    .append("classes.jar");
+            classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(BuiltInLibraries.ANDROIDX_MULTIDEX));
         }
 
         /* Add lambda helper classes */
@@ -340,8 +333,7 @@ public class Dp {
 
         /* Add used built-in libraries to the classpath */
         for (Jp library : n.a()) {
-            classpath.append(":").append(l.getAbsolutePath()).append(File.separator).append(m).append(File.separator)
-                    .append(library.a()).append(File.separator).append("classes.jar");
+            classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(library.a()));
         }
 
         /* Add local libraries to the classpath */
@@ -349,15 +341,13 @@ public class Dp {
 
         /* Append user's custom classpath */
         if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
-            classpath.append(":");
-            classpath.append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
+            classpath.append(":").append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
 
         /* Add JARs from project's classpath */
         String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (f.b) + "/files/classpath/";
         ArrayList<String> jars = FileUtil.listFiles(path, "jar");
-        classpath.append(":")
-                .append(TextUtils.join(":", jars));
+        classpath.append(":").append(TextUtils.join(":", jars));
 
         return classpath.toString();
     }
@@ -369,28 +359,12 @@ public class Dp {
         StringBuilder baseClasses = new StringBuilder(o);
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            baseClasses
-                    .append(":")
-                    .append(l.getAbsolutePath())
-                    .append(File.separator)
-                    .append(m)
-                    .append(File.separator)
-                    .append("http-legacy-android-28")
-                    .append(File.separator)
-                    .append("classes.jar");
+            baseClasses.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
         }
 
         StringBuilder builtInLibrariesClasses = new StringBuilder();
         for (Jp builtInLibrary : n.a()) {
-            builtInLibrariesClasses
-                    .append(":")
-                    .append(l.getAbsolutePath())
-                    .append(File.separator)
-                    .append(m)
-                    .append(File.separator)
-                    .append(builtInLibrary.a())
-                    .append(File.separator)
-                    .append("classes.jar");
+            builtInLibrariesClasses.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(builtInLibrary.a()));
         }
 
         StringBuilder localLibraryClasses = new StringBuilder();
@@ -401,18 +375,14 @@ public class Dp {
                 String name = (String) nameObject;
                 String jarPath = (String) jarPathObject;
                 if (hashMap.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(name)) {
-                    localLibraryClasses
-                            .append(":")
-                            .append(jarPath);
+                    localLibraryClasses.append(":").append(jarPath);
                 }
             }
         }
 
         String customClasspath = build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "");
         if (!TextUtils.isEmpty(customClasspath)) {
-            localLibraryClasses
-                    .append(":")
-                    .append(customClasspath);
+            localLibraryClasses.append(":").append(customClasspath);
         }
 
         return baseClasses.toString()
@@ -655,7 +625,7 @@ public class Dp {
         ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(firstDexPath), null, null, System.out);
 
         for (Jp library : n.a()) {
-            apkBuilder.addResourcesFromJar(new File(l, m + File.separator + library.a() + File.separator + "classes.jar"));
+            apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
         }
 
         for (String jarPath : mll.getJarLocalLibrary().split(":")) {
@@ -729,18 +699,18 @@ public class Dp {
 
         /* Add AndroidX MultiDex library if needed */
         if (settings.getMinSdkVersion() < 21) {
-            dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + "multidex-2.0.1.dex");
+            dexes.add(BuiltInLibraries.getLibraryDexFilePath(BuiltInLibraries.ANDROIDX_MULTIDEX));
         }
 
         /* Add HTTP legacy files if wanted */
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, ProjectSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + "http-legacy-android-28.dex");
+            dexes.add(BuiltInLibraries.getLibraryDexFilePath(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
         }
 
         /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : n.a()) {
-            dexes.add(l.getAbsolutePath() + File.separator + "dexs" + File.separator + builtInLibrary.a() + ".dex");
+            dexes.add(BuiltInLibraries.getLibraryDexFilePath(builtInLibrary.a()));
         }
 
         /* Add local libraries' main DEX files */
@@ -890,39 +860,39 @@ public class Dp {
             new KB().a(testkeyArchivePath, testkeyDirectoryPath);
         }
         if (f.N.g) {
-            n.a("appcompat-1.0.0");
-            n.a("coordinatorlayout-1.0.0");
-            n.a("material-1.0.0");
+            n.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
+            n.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
+            n.a(BuiltInLibraries.MATERIAL);
         }
         if (f.N.h) {
-            n.a("firebase-common-19.0.0");
+            n.a(BuiltInLibraries.FIREBASE_COMMON);
         }
         if (f.N.i) {
-            n.a("firebase-auth-19.0.0");
+            n.a(BuiltInLibraries.FIREBASE_AUTH);
         }
         if (f.N.j) {
-            n.a("firebase-database-19.0.0");
+            n.a(BuiltInLibraries.FIREBASE_DATABASE);
         }
         if (f.N.k) {
-            n.a("firebase-storage-19.0.0");
+            n.a(BuiltInLibraries.FIREBASE_STORAGE);
         }
         if (f.N.m) {
-            n.a("play-services-maps-17.0.0");
+            n.a(BuiltInLibraries.PLAY_SERVICES_MAPS);
         }
         if (f.N.l) {
-            n.a("play-services-ads-18.2.0");
+            n.a(BuiltInLibraries.PLAY_SERVICES_ADS);
         }
         if (f.N.o) {
-            n.a("gson-2.8.0");
+            n.a(BuiltInLibraries.GSON);
         }
         if (f.N.n) {
-            n.a("glide-4.11.0");
+            n.a(BuiltInLibraries.GLIDE);
         }
         if (f.N.p) {
-            n.a("okhttp-3.9.1");
+            n.a(BuiltInLibraries.OKHTTP);
         }
         if (f.N.isDynamicLinkUsed) {
-            n.a("firebase-dynamic-links-19.0.0");
+            n.a(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
         }
         ExtLibSelected.addUsedDependencies(f.N.x, n);
     }
