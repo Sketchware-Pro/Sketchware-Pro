@@ -46,6 +46,10 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 @SuppressLint("ResourceType")
 public class GC extends DA implements View.OnClickListener {
 
+    public static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
+    public static final int REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY = 206;
+    public static final int REQUEST_CODE_RESTORE_PROJECT = 700;
+
     public SwipeRefreshLayout swipeRefresh;
     public ArrayList<HashMap<String, Object>> projectsList;
     public RecyclerView myProjects;
@@ -58,14 +62,12 @@ public class GC extends DA implements View.OnClickListener {
     public ImageView ivManagePublish;
     public TextView tvManagePublish;
     public Boolean q;
-    public AnimatorSet r;
-    public AnimatorSet s;
-    public ValueAnimator t;
-    public ValueAnimator u;
+    public AnimatorSet collapseAnimatorSet;
+    public AnimatorSet expandAnimatorSet;
+    public ValueAnimator collapseValueAnimator;
+    public ValueAnimator expandValueAnimator;
     public ProjectsAdapter projectsAdapter;
-    public DB w;
     public FloatingActionButton floatingActionButton;
-    public ro y;
 
     private void toProjectSettingOrRequestPermission(int position) {
         if (super.c()) {
@@ -75,7 +77,7 @@ public class GC extends DA implements View.OnClickListener {
             intent.putExtra("is_update", true);
             intent.putExtra("advanced_open", false);
             intent.putExtra("index", position);
-            startActivityForResult(intent, 206);
+            startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
         } else if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
@@ -115,32 +117,32 @@ public class GC extends DA implements View.OnClickListener {
         tvManagePublish.setText("Restore project");
         layoutManagePublish.setOnClickListener(this);
         ((TextView) parent.findViewById(R.id.tv_create_new)).setText(xB.b().a(getContext(), R.string.myprojects_list_menu_title_create_a_new_project));
-        r = new AnimatorSet();
-        s = new AnimatorSet();
-        t = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
-        t.addUpdateListener(valueAnimator -> {
+        collapseAnimatorSet = new AnimatorSet();
+        expandAnimatorSet = new AnimatorSet();
+        collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
+        collapseValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvManagePublish.getLayoutParams().height = (int) value;
             cvManagePublish.requestLayout();
         });
-        u = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
-        u.addUpdateListener(valueAnimator -> {
+        expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
+        expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvManagePublish.getLayoutParams().height = (int) value;
             cvManagePublish.requestLayout();
         });
-        r.playTogether(t,
+        collapseAnimatorSet.playTogether(collapseValueAnimator,
                 ObjectAnimator.ofFloat(tvManagePublish, View.TRANSLATION_Y, 0.0F, -100.0F),
                 ObjectAnimator.ofFloat(tvManagePublish, View.ALPHA, 1.0F, 0.0F),
                 ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_X, 1.0F, 0.5F),
                 ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_Y, 1.0F, 0.5F));
-        s.playTogether(u,
+        expandAnimatorSet.playTogether(expandValueAnimator,
                 ObjectAnimator.ofFloat(tvManagePublish, View.TRANSLATION_Y, -100.0F, 0.0F),
                 ObjectAnimator.ofFloat(tvManagePublish, View.ALPHA, 0.0F, 1.0F),
                 ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_X, 0.5F, 1.0F),
                 ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_Y, 0.5F, 1.0F));
-        r.setDuration(300L);
-        s.setDuration(300L);
+        collapseAnimatorSet.setDuration(300L);
+        expandAnimatorSet.setDuration(300L);
         g();
     }
 
@@ -159,9 +161,9 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public void b(int requestCode) {
-        if (requestCode == 206) {
+        if (requestCode == REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY) {
             toProjectSettingsActivity();
-        } else if (requestCode == 700) {
+        } else if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
             restoreProject();
         }
     }
@@ -171,7 +173,7 @@ public class GC extends DA implements View.OnClickListener {
         ProjectTracker.setScId(sc_id);
         intent.putExtra("sc_id", sc_id);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, 204);
+        startActivityForResult(intent, REQUEST_CODE_DESIGN_ACTIVITY);
     }
 
     public void c(int requestCode) {
@@ -242,7 +244,7 @@ public class GC extends DA implements View.OnClickListener {
     private void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, 206);
+        startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
     }
 
 
@@ -301,7 +303,7 @@ public class GC extends DA implements View.OnClickListener {
                     }
 
                     switch (requestCode) {
-                        case 204:
+                        case REQUEST_CODE_DESIGN_ACTIVITY:
                             if (super.a(requestCode) && !super.e.h()) {
                                 xo.k();
                             }
@@ -309,7 +311,7 @@ public class GC extends DA implements View.OnClickListener {
                             return;
                         case 205:
                             return;
-                        case 206:
+                        case REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY:
                             if (resultCode == -1) {
                                 g();
                                 if (data.getBooleanExtra("is_new", false)) {
@@ -321,7 +323,7 @@ public class GC extends DA implements View.OnClickListener {
                             return;
                         default:
                             switch (requestCode) {
-                                case 700:
+                                case REQUEST_CODE_RESTORE_PROJECT:
                                     if (resultCode == -1) {
                                         g();
                                     }
@@ -368,7 +370,7 @@ public class GC extends DA implements View.OnClickListener {
         int viewId = view.getId();
         if (viewId != R.id.create_new_project) {
             if (viewId != R.id.fab) {
-                if (viewId == R.id.layout_manage_publish && super.a(700)) {
+                if (viewId == R.id.layout_manage_publish && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
                     restoreProject();
                 }
 
@@ -376,7 +378,7 @@ public class GC extends DA implements View.OnClickListener {
             }
 
         }
-        if (!super.a(206)) {
+        if (!super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
             return;
         }
 
@@ -385,9 +387,7 @@ public class GC extends DA implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
-        y = new ro(getContext());
         a(viewGroup);
-        w = new DB(getContext(), "P25");
         return viewGroup;
     }
 
@@ -451,7 +451,7 @@ public class GC extends DA implements View.OnClickListener {
                                 return;
                             }
 
-                            projectsFragment.r.start();
+                            collapseAnimatorSet.start();
                             var5 = projectsFragment;
                             var4 = true;
                         } else {
@@ -459,7 +459,7 @@ public class GC extends DA implements View.OnClickListener {
                                 return;
                             }
 
-                            projectsFragment.s.start();
+                            expandAnimatorSet.start();
                             var5 = projectsFragment;
                             var4 = false;
                         }
