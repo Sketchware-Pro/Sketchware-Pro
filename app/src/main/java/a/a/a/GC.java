@@ -118,13 +118,15 @@ public class GC extends DA implements View.OnClickListener {
         r = new AnimatorSet();
         s = new AnimatorSet();
         t = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
-        t.addUpdateListener(var11 -> {
-            cvManagePublish.getLayoutParams().height = (int) var11.getAnimatedValue();
+        t.addUpdateListener(valueAnimator -> {
+            float value = (Float) valueAnimator.getAnimatedValue();
+            cvManagePublish.getLayoutParams().height = (int) value;
             cvManagePublish.requestLayout();
         });
         u = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
-        u.addUpdateListener(var1 -> {
-            cvManagePublish.getLayoutParams().height = (int) var1.getAnimatedValue();
+        u.addUpdateListener(valueAnimator -> {
+            float value = (Float) valueAnimator.getAnimatedValue();
+            cvManagePublish.getLayoutParams().height = (int) value;
             cvManagePublish.requestLayout();
         });
         r.playTogether(t,
