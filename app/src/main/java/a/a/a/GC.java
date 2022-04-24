@@ -375,7 +375,7 @@ public class GC extends DA implements View.OnClickListener {
             }
 
         }
-        if (super.a(206)) {
+        if (!super.a(206)) {
             return;
         }
 
