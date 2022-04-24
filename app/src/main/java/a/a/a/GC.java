@@ -181,6 +181,25 @@ public class GC extends DA implements View.OnClickListener {
         startActivityForResult(intent, requestCode);
     }
 
+    public void c(String var1) {
+        int var2 = 0;
+
+        while (true) {
+            if (var2 >= projectsList.size()) {
+                var2 = 0;
+                break;
+            }
+
+            if (yB.c(projectsList.get(var2), "sc_id").equals(var1)) {
+                break;
+            }
+
+            ++var2;
+        }
+
+        toProjectSettingOrRequestPermission(var2);
+    }
+
     public void d() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
