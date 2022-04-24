@@ -430,7 +430,7 @@ public class GC extends DA implements View.OnClickListener {
 
         @Override
         protected String doInBackground(Void... voids) {
-            return null;
+            return a(voids);
         }
     }
 
