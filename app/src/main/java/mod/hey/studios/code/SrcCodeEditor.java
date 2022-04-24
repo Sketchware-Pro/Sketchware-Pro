@@ -409,6 +409,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Switch theme");
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete")
+                menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Neat line")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ac", true));
 
@@ -505,7 +506,13 @@ public class SrcCodeEditor extends AppCompatActivity {
                 editor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
                 pref.edit().putBoolean("act_ac", item.isChecked()).apply();
                 break;
+             case "Neat line":
+              item.setChecked(!item.isChecked());
+              editor.    setNonPrintablePaintingFlags(CodeEditor.FLAG_DRAW_WHITESPACE_LEADING | CodeEditor.FLAG_DRAW_LINE_SEPARATOR);
+              pref.edit().putBoolean("act_ac", item.isChecked()).apply();
+                break;
 
+              
             case "Paste":
                 editor.setText(paste(this));
                 break;
