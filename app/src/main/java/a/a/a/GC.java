@@ -147,6 +147,7 @@ public class GC extends DA implements View.OnClickListener {
     public void a(boolean isEmpty) {
         projectsList = lC.a();
         if (projectsList.size() > 0) {
+            //noinspection Java8ListSort
             Collections.sort(projectsList,
                     (first, second) -> Integer.compare(Integer.parseInt(yB.c(first, "sc_id")),
                             Integer.parseInt(yB.c(second, "sc_id"))) * -1);

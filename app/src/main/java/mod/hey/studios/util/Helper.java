@@ -156,7 +156,9 @@ public class Helper {
         }
 
         // ignore the warnings, we need this for compatibility with pre-API level 24
+        //noinspection Java8ListSort
         Collections.sort(directories, String.CASE_INSENSITIVE_ORDER);
+        //noinspection Java8ListSort
         Collections.sort(files, String.CASE_INSENSITIVE_ORDER);
         paths.clear();
         paths.addAll(directories);

@@ -73,6 +73,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         }
 
         if (projectsList.size() > 0) {
+            //noinspection Java8ListSort
             Collections.sort(projectsList, new ProjectComparator());
         }
 
