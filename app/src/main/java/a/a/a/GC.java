@@ -1,7 +1,7 @@
 package a.a.a;
 
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -268,13 +268,13 @@ public class GC extends DA implements View.OnClickListener {
                 return;
             }
 
-            requestCode = projectsAdapter.c;
+            requestCode = projectsAdapter.layoutPosition;
         } else {
             if (requestCode == 508) {
                 if (resultCode == -1) {
                     data = new Intent(getContext(), ExportProjectActivity.class);
                     data.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    data.putExtra("sc_id", yB.c(projectsList.get(projectsAdapter.c), "sc_id"));
+                    data.putExtra("sc_id", yB.c(projectsList.get(projectsAdapter.layoutPosition), "sc_id"));
                     startActivity(data);
                 }
 
@@ -391,38 +391,36 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public static class c extends MA {
-        public final GC f;
-        public int c;
+    public class DeleteProjectTask extends MA {
+        public int position;
         public String d;
         public String e;
 
-        public c(GC projectsFragment, Context var2, int position) {
-            super(var2);
-            f = projectsFragment;
+        public DeleteProjectTask(int position) {
+            super(getContext());
             e = "";
-            c = position;
-            projectsFragment.b();
-            projectsFragment.a(this);
+            this.position = position;
+            GC.this.b();
+            GC.this.a(this);
         }
 
         public void a() {
-            if (c < f.projectsList.size()) {
-                f.projectsList.remove(c);
-                f.projectsAdapter.e(c);
-                f.projectsAdapter.a(c, f.projectsAdapter.a());
+            if (position < projectsList.size()) {
+                projectsList.remove(position);
+                projectsAdapter.e(position);
+                projectsAdapter.a(position, projectsAdapter.a());
             }
 
-            f.a();
+            GC.this.a();
         }
 
-        public void a(String var1) {
-            f.a();
+        public void a(String idk) {
+            GC.this.a();
         }
 
         public void b() {
-            if (c < f.projectsList.size()) {
-                d = yB.c(f.projectsList.get(c), "sc_id");
+            if (position < projectsList.size()) {
+                d = yB.c(projectsList.get(position), "sc_id");
                 lC.a(super.a, d);
             }
 
@@ -435,12 +433,12 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
-        public final GC d;
-        public int c;
+        public final GC projectsFragment;
+        public int layoutPosition;
 
         public ProjectsAdapter(GC var1, RecyclerView recyclerView) {
-            d = var1;
-            c = -1;
+            projectsFragment = var1;
+            layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.a(new RecyclerView.m() {
                     public void a(RecyclerView recyclerView1, int var2, int var3) {
@@ -448,20 +446,20 @@ public class GC extends DA implements View.OnClickListener {
                         boolean var4;
                         GC var5;
                         if (var3 > 4) {
-                            if (d.q) {
+                            if (projectsFragment.q) {
                                 return;
                             }
 
-                            d.r.start();
-                            var5 = d;
+                            projectsFragment.r.start();
+                            var5 = projectsFragment;
                             var4 = true;
                         } else {
-                            if (var3 >= -4 || !d.q) {
+                            if (var3 >= -4 || !projectsFragment.q) {
                                 return;
                             }
 
-                            d.s.start();
-                            var5 = d;
+                            projectsFragment.s.start();
+                            var5 = projectsFragment;
                             var4 = false;
                         }
 
@@ -472,20 +470,21 @@ public class GC extends DA implements View.OnClickListener {
 
         }
 
+        @Override
         public int a() {
             return projectsList.size();
         }
 
         public void b(ViewHolder viewHolder, int position) {
-            HashMap<String, Object> projectMap = d.projectsList.get(position);
+            HashMap<String, Object> projectMap = projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
             float rotation;
             int visibility;
             if (yB.a(projectMap, "expand")) {
-                visibility = 0;
+                visibility = View.VISIBLE;
                 rotation = -180.0F;
             } else {
-                visibility = 8;
+                visibility = View.GONE;
                 rotation = 0.0F;
             }
             viewHolder.projectOptionLayout.setVisibility(visibility);
@@ -511,8 +510,8 @@ public class GC extends DA implements View.OnClickListener {
             if (yB.a(projectMap, "custom_icon")) {
                 Uri uri;
                 if (VERSION.SDK_INT >= 24) {
-                    Context var9 = d.getContext();
-                    String providerPath = d.getContext().getPackageName() + ".provider";
+                    Context var9 = projectsFragment.getContext();
+                    String providerPath = projectsFragment.getContext().getPackageName() + ".provider";
                     String iconPath = wq.e() + File.separator + scId;
                     uri = FileProvider.a(var9, providerPath, new File(iconPath, "icon.png"));
                 } else {
@@ -528,17 +527,17 @@ public class GC extends DA implements View.OnClickListener {
             viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
             String var12 = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
             viewHolder.projectVersion.setText(var12);
-            viewHolder.tvPublished.setVisibility(0);
+            viewHolder.tvPublished.setVisibility(View.VISIBLE);
             viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
             viewHolder.b.setTag("custom");
         }
 
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(this, LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
+            return new ViewHolder(
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
         }
 
         public class ViewHolder extends RecyclerView.v {
-            public final ProjectsAdapter F;
             public TextView tvPublished;
             public ImageView expand;
             public MyProjectButtonLayout projectButtonLayout;
@@ -552,9 +551,8 @@ public class GC extends DA implements View.OnClickListener {
             public TextView packageName;
             public TextView projectVersion;
 
-            public ViewHolder(ProjectsAdapter var1, View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
-                F = var1;
                 projectOne = itemView.findViewById(R.id.project_one);
                 projectName = itemView.findViewById(R.id.project_name);
                 appIconLayout = itemView.findViewById(R.id.app_icon_layout);
@@ -566,55 +564,44 @@ public class GC extends DA implements View.OnClickListener {
                 expand = itemView.findViewById(R.id.expand);
                 projectOptionLayout = itemView.findViewById(R.id.project_option_layout);
                 projectOption = itemView.findViewById(R.id.project_option);
-                projectButtonLayout = new MyProjectButtonLayout(var1.d.getContext());
+                projectButtonLayout = new MyProjectButtonLayout(getContext());
                 projectOption.addView(projectButtonLayout);
                 projectButtonLayout.setButtonOnClickListener(view -> {
                     if (!mB.a()) {
-                        F.c = j();
-                        if (F.c <= F.d.projectsList.size()) {
-                            HashMap<String, Object> var7 = GC.this.projectsList.get(F.c);
-                            int var3;
-                            ProjectsAdapter projectsAdapter;
+                        layoutPosition = j();
+                        if (layoutPosition <= projectsList.size()) {
+                            HashMap<String, Object> projectMap = projectsList.get(layoutPosition);
                             if (view instanceof MyProjectButton) {
-                                var3 = ((MyProjectButton) view).b;
-                                if (var3 != 0) {
-                                    if (var3 != 1) {
-                                        if (var3 != 2) {
-                                            if (var3 != 3) {
-                                                if (var3 == 4) {
-                                                    projectsAdapter = F;
-                                                    showProjectSettingDialog(projectsAdapter.c);
-                                                }
-                                            } else {
-                                                var7.put("confirmation", true);
-                                                projectButtonLayout.b();
-                                            }
-                                        } else {
-                                            projectsAdapter = F;
-                                            toExportProjectActivity(projectsAdapter.c);
-                                        }
-                                    } else {
-                                        projectsAdapter = F;
-                                        backupProject(projectsAdapter.c);
-                                    }
-                                } else {
-                                    projectsAdapter = F;
-                                    toProjectSettingOrRequestPermission(projectsAdapter.c);
-                                }
+                                switch (((MyProjectButton) view).b) {
+                                    case 0:
+                                        toProjectSettingOrRequestPermission(layoutPosition);
+                                        break;
 
+                                    case 1:
+                                        backupProject(layoutPosition);
+                                        break;
+
+                                    case 2:
+                                        toExportProjectActivity(layoutPosition);
+                                        break;
+
+                                    case 3:
+                                        projectMap.put("confirmation", true);
+                                        projectButtonLayout.b();
+                                        break;
+
+                                    case 4:
+                                        showProjectSettingDialog(layoutPosition);
+                                        break;
+                                }
                             } else {
-                                int viewId = view.getId();
-                                if (viewId != R.id.confirm_no) {
-                                    if (viewId == R.id.confirm_yes) {
-                                        var7.put("confirmation", false);
-                                        var7.put("expand", false);
-                                        GC var4 = F.d;
-                                        (new c(var4, var4.getContext(), F.c)).execute();
-                                    }
-                                } else {
-                                    var7.put("confirmation", false);
-                                    projectsAdapter = F;
-                                    projectsAdapter.c(projectsAdapter.c);
+                                if (view.getId() == R.id.confirm_yes) {
+                                    projectMap.put("confirmation", false);
+                                    projectMap.put("expand", false);
+                                    (new DeleteProjectTask(layoutPosition)).execute();
+                                } else if (view.getId() == R.id.confirm_no) {
+                                    projectMap.put("confirmation", false);
+                                    ProjectsAdapter.this.c(layoutPosition);
                                 }
 
                             }
@@ -623,61 +610,51 @@ public class GC extends DA implements View.OnClickListener {
                 });
                 projectOne.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        F.c = j();
-                        String var3 = yB.c(F.d.projectsList.get(F.c), "sc_id");
-                        F.d.toDesignActivity(var3);
+                        layoutPosition = j();
+                        toDesignActivity(yB.c(projectsList.get(layoutPosition), "sc_id"));
                     }
                 });
                 projectOne.setOnLongClickListener(view -> {
-                    F.c = j();
-                    if (yB.a(F.d.projectsList.get(F.c), "expand")) {
-                        D();
+                    layoutPosition = j();
+                    if (yB.a(projectsList.get(layoutPosition), "expand")) {
+                        collapse();
                     } else {
-                        E();
+                        expand();
                     }
 
                     return true;
                 });
                 appIconLayout.setOnClickListener(view -> {
                     mB.a(view);
-                    F.c = j();
-                    toProjectSettingOrRequestPermission(F.c);
+                    layoutPosition = j();
+                    toProjectSettingOrRequestPermission(layoutPosition);
                 });
                 expand.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        F.c = j();
-                        if (yB.a(F.d.projectsList.get(F.c), "expand")) {
-                            D();
+                        layoutPosition = j();
+                        if (yB.a(projectsList.get(layoutPosition), "expand")) {
+                            collapse();
                         } else {
-                            E();
+                            expand();
                         }
 
                     }
                 });
             }
 
-            public void D() {
-                F.d.projectsList.get(F.c).put("expand", false);
+            public void collapse() {
+                projectsList.get(layoutPosition).put("expand", false);
                 gB.a(expand, 0.0F, null);
-                gB.a(projectOptionLayout, 300, new AnimatorListener() {
-                    public void onAnimationCancel(Animator var1) {
-                    }
-
+                gB.a(projectOptionLayout, 300, new AnimatorListenerAdapter() {
                     public void onAnimationEnd(Animator var1) {
-                        projectOptionLayout.setVisibility(8);
-                    }
-
-                    public void onAnimationRepeat(Animator var1) {
-                    }
-
-                    public void onAnimationStart(Animator var1) {
+                        projectOptionLayout.setVisibility(View.GONE);
                     }
                 });
             }
 
-            public void E() {
-                projectOptionLayout.setVisibility(0);
-                F.d.projectsList.get(F.c).put("expand", true);
+            public void expand() {
+                projectOptionLayout.setVisibility(View.VISIBLE);
+                projectsList.get(layoutPosition).put("expand", true);
                 gB.a(expand, -180.0F, null);
                 gB.b(projectOptionLayout, 300, null);
             }
