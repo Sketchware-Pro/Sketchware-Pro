@@ -2,6 +2,7 @@ package mod.agus.jcoderz.editor.library;
 
 import a.a.a.Kp;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
+import mod.jbk.build.BuiltInLibraries;
 
 public class ExtLibSelected {
 
@@ -13,38 +14,38 @@ public class ExtLibSelected {
 
     public static void addUsedDependencies(ConstVarComponent component, Kp kp) {
         if (component.isFCMUsed) {
-            kp.a("firebase-messaging-19.0.0");
+            kp.a(BuiltInLibraries.FIREBASE_MESSAGING);
         }
         if (component.isOneSignalUsed) {
-            kp.a("OneSignal-3.14.0");
-            kp.a("play-services-gcm-17.0.0");
+            kp.a(BuiltInLibraries.ONESIGNAL);
+            kp.a(BuiltInLibraries.PLAY_SERVICES_GCM);
         }
         if (component.isFBAdsUsed) {
-            kp.a("audience-network-sdk-5.9.0");
+            kp.a(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK);
         }
         if (component.isLottieUsed) {
-            kp.a("Lottie-3.4.0");
+            kp.a(BuiltInLibraries.LOTTIE);
         }
         if (component.isYoutubePlayerUsed) {
-            kp.a("android-youtube-player-10.0.5");
+            kp.a(BuiltInLibraries.YOUTUBE_PLAYER);
         }
         if (component.isCircleImageViewUsed) {
-            kp.a("circle-imageview-v3.1.0");
+            kp.a(BuiltInLibraries.CIRCLE_IMAGEVIEW);
         }
         if (component.isFBGoogleUsed) {
-            kp.a("play-services-auth-17.0.0");
+            kp.a(BuiltInLibraries.PLAY_SERVICES_AUTH);
         }
         if (component.isOTPViewUsed) {
-            kp.a("OTPView-0.1.0");
+            kp.a(BuiltInLibraries.OTPVIEW);
         }
         if (component.isCodeViewUsed) {
-            kp.a("code-view");
+            kp.a(BuiltInLibraries.CODE_VIEW);
         }
         if (component.isPatternLockViewUsed) {
-            kp.a("pattern-lock-view");
+            kp.a(BuiltInLibraries.PATTERN_LOCK_VIEW);
         }
         if (component.isWaveSideBarUsed) {
-            kp.a("wave-side-bar");
+            kp.a(BuiltInLibraries.WAVE_SIDE_BAR);
         }
     }
 }
