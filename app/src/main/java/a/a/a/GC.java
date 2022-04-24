@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
@@ -42,7 +41,6 @@ import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 
-@SuppressLint("ResourceType")
 public class GC extends DA implements View.OnClickListener {
 
     public static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
@@ -204,14 +202,12 @@ public class GC extends DA implements View.OnClickListener {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
-
     }
 
     public void e() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
-
     }
 
     public int f() {
@@ -237,7 +233,6 @@ public class GC extends DA implements View.OnClickListener {
             cvCreateNew.setVisibility(View.VISIBLE);
             floatingActionButton.c();
         }
-
     }
 
     private void toProjectSettingsActivity() {
@@ -326,7 +321,6 @@ public class GC extends DA implements View.OnClickListener {
             if (position < projectsList.size()) {
                 lC.a(super.a, yB.c(projectsList.get(position), "sc_id"));
             }
-
         }
 
         @Override
