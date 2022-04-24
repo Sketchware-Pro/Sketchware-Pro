@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
@@ -61,7 +60,7 @@ public class GC extends DA implements View.OnClickListener {
     public LinearLayout layoutManagePublish;
     public ImageView ivManagePublish;
     public TextView tvManagePublish;
-    public Boolean q;
+    public Boolean isCollapsed;
     public AnimatorSet collapseAnimatorSet;
     public AnimatorSet expandAnimatorSet;
     public ValueAnimator collapseValueAnimator;
@@ -101,7 +100,7 @@ public class GC extends DA implements View.OnClickListener {
         myProjects = parent.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
         myProjects.setLayoutManager(new LinearLayoutManager(getContext()));
-        projectsAdapter = new ProjectsAdapter(this, myProjects);
+        projectsAdapter = new ProjectsAdapter(myProjects);
         myProjects.setAdapter(projectsAdapter);
         myProjects.setItemAnimator(new ci());
         cvCreateNew = parent.findViewById(R.id.cv_create_new);
@@ -109,7 +108,7 @@ public class GC extends DA implements View.OnClickListener {
         ivCreateNew = createNewProject.findViewById(R.id.iv_create_new);
         tvCreateNew = createNewProject.findViewById(R.id.tv_create_new);
         createNewProject.setOnClickListener(this);
-        q = false;
+        isCollapsed = false;
         cvManagePublish = parent.findViewById(R.id.cv_manage_publish);
         layoutManagePublish = parent.findViewById(R.id.layout_manage_publish);
         ivManagePublish = parent.findViewById(R.id.iv_manage_publish);
@@ -182,25 +181,6 @@ public class GC extends DA implements View.OnClickListener {
         startActivityForResult(intent, requestCode);
     }
 
-    public void c(String var1) {
-        int var2 = 0;
-
-        while (true) {
-            if (var2 >= projectsList.size()) {
-                var2 = 0;
-                break;
-            }
-
-            if (yB.c(projectsList.get(var2), "sc_id").equals(var1)) {
-                break;
-            }
-
-            ++var2;
-        }
-
-        toProjectSettingOrRequestPermission(var2);
-    }
-
     public void d() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
@@ -266,123 +246,30 @@ public class GC extends DA implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 239) {
-            if (resultCode != -1) {
-                return;
-            }
-
-            requestCode = projectsAdapter.layoutPosition;
-        } else {
-            if (requestCode == 508) {
-                if (resultCode == -1) {
-                    data = new Intent(getContext(), ExportProjectActivity.class);
-                    data.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    data.putExtra("sc_id", yB.c(projectsList.get(projectsAdapter.layoutPosition), "sc_id"));
-                    startActivity(data);
+        if (requestCode == REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY) {
+            if (resultCode == -1) {
+                g();
+                if (data.getBooleanExtra("is_new", false)) {
+                    toDesignActivity(data.getStringExtra("sc_id"));
                 }
-
-                return;
             }
-
-            if (requestCode == 712) {
-                if (resultCode == -1 && data != null && data.hasExtra("index")) {
-                    toExportProjectActivity(data.getIntExtra("index", -1));
-                }
-
-                return;
-            }
-
-            label142:
-            {
-                if (requestCode != 708) {
-                    if (requestCode == 709) {
-                        if (resultCode != -1 || data == null || !data.hasExtra("index")) {
-                            return;
-                        }
-                        break label142;
-                    }
-
-                    switch (requestCode) {
-                        case REQUEST_CODE_DESIGN_ACTIVITY:
-                            if (super.a(requestCode) && !super.e.h()) {
-                                xo.k();
-                            }
-
-                            return;
-                        case 205:
-                            return;
-                        case REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY:
-                            if (resultCode == -1) {
-                                g();
-                                if (data.getBooleanExtra("is_new", false)) {
-                                    toDesignActivity(data.getStringExtra("sc_id"));
-                                    return;
-                                }
-                            }
-
-                            return;
-                        default:
-                            switch (requestCode) {
-                                case REQUEST_CODE_RESTORE_PROJECT:
-                                    if (resultCode == -1) {
-                                        g();
-                                    }
-
-                                    return;
-                                case 701:
-                                    if (resultCode != -1) {
-                                        return;
-                                    }
-
-                                    g();
-                                    if (data == null || !data.hasExtra("index")) {
-                                        return;
-                                    }
-                                    break label142;
-                                case 702:
-                                    if (resultCode == -1) {
-                                        if (data != null && data.hasExtra("index")) {
-                                            break label142;
-                                        }
-                                        break;
-                                    }
-
-                                    return;
-                                default:
-                                    return;
-                            }
-
-                    }
-                } else if (resultCode != -1) {
-                    return;
-                }
-
+        } else if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
+            if (resultCode == -1) {
+                g();
                 restoreProject();
-                return;
             }
-
-            requestCode = data.getIntExtra("index", -1);
         }
     }
 
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        if (viewId != R.id.create_new_project) {
-            if (viewId != R.id.fab) {
-                if (viewId == R.id.layout_manage_publish && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
-                    restoreProject();
-                }
-
-                return;
-            }
-
-        }
-        if (!super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
-            return;
+        if (viewId == R.id.create_new_project || viewId == R.id.fab && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
+            toProjectSettingsActivity();
+        } else if (viewId == R.id.layout_manage_publish && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
+            restoreProject();
         }
 
-        toProjectSettingsActivity();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -394,12 +281,9 @@ public class GC extends DA implements View.OnClickListener {
     @SuppressLint("StaticFieldLeak")
     public class DeleteProjectTask extends MA {
         public int position;
-        public String d;
-        public String e;
 
         public DeleteProjectTask(int position) {
             super(getContext());
-            e = "";
             this.position = position;
             GC.this.b();
             GC.this.a(this);
@@ -421,8 +305,7 @@ public class GC extends DA implements View.OnClickListener {
 
         public void b() {
             if (position < projectsList.size()) {
-                d = yB.c(projectsList.get(position), "sc_id");
-                lC.a(super.a, d);
+                lC.a(super.a, yB.c(projectsList.get(position), "sc_id"));
             }
 
         }
@@ -434,41 +317,26 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
-        public final GC projectsFragment;
         public int layoutPosition;
 
-        public ProjectsAdapter(GC var1, RecyclerView recyclerView) {
-            projectsFragment = var1;
+        public ProjectsAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.a(new RecyclerView.m() {
                     public void a(RecyclerView recyclerView1, int var2, int var3) {
                         super.a(recyclerView1, var2, var3);
-                        boolean var4;
-                        GC var5;
                         if (var3 > 4) {
-                            if (projectsFragment.q) {
-                                return;
-                            }
-
+                            if (isCollapsed) return;
                             collapseAnimatorSet.start();
-                            var5 = projectsFragment;
-                            var4 = true;
+                            isCollapsed = true;
                         } else {
-                            if (var3 >= -4 || !projectsFragment.q) {
-                                return;
-                            }
-
+                            if (var3 >= -4 || !isCollapsed) return;
                             expandAnimatorSet.start();
-                            var5 = projectsFragment;
-                            var4 = false;
+                            isCollapsed = false;
                         }
-
-                        var5.q = var4;
                     }
                 });
             }
-
         }
 
         @Override
@@ -510,14 +378,12 @@ public class GC extends DA implements View.OnClickListener {
 
             if (yB.a(projectMap, "custom_icon")) {
                 Uri uri;
+                String iconFolder = wq.e() + File.separator + scId;
                 if (VERSION.SDK_INT >= 24) {
-                    Context var9 = projectsFragment.getContext();
-                    String providerPath = projectsFragment.getContext().getPackageName() + ".provider";
-                    String iconPath = wq.e() + File.separator + scId;
-                    uri = FileProvider.a(var9, providerPath, new File(iconPath, "icon.png"));
+                    String providerPath = getContext().getPackageName() + ".provider";
+                    uri = FileProvider.a(getContext(), providerPath, new File(iconFolder, "icon.png"));
                 } else {
-                    String var11 = wq.e() + File.separator + scId;
-                    uri = Uri.fromFile(new File(var11, "icon.png"));
+                    uri = Uri.fromFile(new File(iconFolder, "icon.png"));
                 }
 
                 viewHolder.imgIcon.setImageURI(uri);
@@ -526,8 +392,8 @@ public class GC extends DA implements View.OnClickListener {
             viewHolder.appName.setText(yB.c(projectMap, "my_ws_name"));
             viewHolder.projectName.setText(yB.c(projectMap, "my_app_name"));
             viewHolder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
-            String var12 = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
-            viewHolder.projectVersion.setText(var12);
+            String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
+            viewHolder.projectVersion.setText(version);
             viewHolder.tvPublished.setVisibility(View.VISIBLE);
             viewHolder.tvPublished.setText(yB.c(projectMap, "sc_id"));
             viewHolder.b.setTag("custom");
