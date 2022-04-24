@@ -16,6 +16,7 @@ import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 
@@ -191,7 +192,7 @@ public class ResourceCompiler {
             /* Add built-in libraries' assets */
             for (Jp library : buildHelper.n.a()) {
                 if (library.d()) {
-                    String assetsPath = buildHelper.l.getAbsolutePath() + File.separator + "libs" + File.separator + library.a() + File.separator + "assets";
+                    String assetsPath = BuiltInLibraries.getLibraryAssetsPath(library.a());
 
                     linkingAssertDirectoryExists(assetsPath);
                     args.add("-A");
@@ -334,8 +335,7 @@ public class ResourceCompiler {
             for (Jp builtInLibrary : buildHelper.n.a()) {
                 if (builtInLibrary.c()) {
                     File cachedCompiledResources = new File(compiledBuiltInLibraryResourcesDirectory, builtInLibrary.a() + ".zip");
-                    String libraryResources = buildHelper.l.getAbsolutePath() + File.separator + "libs"
-                            + File.separator + builtInLibrary.a() + File.separator + "res";
+                    String libraryResources = BuiltInLibraries.getLibraryResourcesPath(builtInLibrary.a());
 
                     compilingAssertDirectoryExists(libraryResources);
 
