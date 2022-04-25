@@ -33,6 +33,7 @@ public class Ix {
     public FilePathUtil fpu = new FilePathUtil();
     public FileResConfig frc;
     public ProjectSettings settings;
+    private boolean isTargetSdk31 = false;
 
     public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans) {
         c = jq;
@@ -170,6 +171,9 @@ public class Ix {
         Nx actionTag = new Nx("action");
         actionTag.a("android", "name", receiverName);
         intentFilterTag.a(actionTag);
+        if (isTargetSdk31) {
+            receiverTag.a("android", "exported", "true");
+        }
         receiverTag.a(intentFilterTag);
         applicationTag.a(receiverTag);
     }
@@ -220,6 +224,7 @@ public class Ix {
 
     public void setYq(yq yqVar) {
         settings = new ProjectSettings(yqVar.b);
+        isTargetSdk31 = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 31;
     }
 
     /**
@@ -331,6 +336,9 @@ public class Ix {
                     }
                 }
                 if (c.isDynamicLinkUsed) {
+                    if (isTargetSdk31) {
+                        activityTag.a("android", "exported", "false");
+                    }
                     writeDLIntentFilter(activityTag);
                 }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
@@ -347,6 +355,9 @@ public class Ix {
                     Nx categoryTag = new Nx("category");
                     categoryTag.a("android", "name", Intent.CATEGORY_LAUNCHER);
                     intentFilterTag.a(categoryTag);
+                    if (isTargetSdk31) {
+                        activityTag.a("android", "exported", "true");
+                    }
                     activityTag.a(intentFilterTag);
                 }
                 applicationTag.a(activityTag);
