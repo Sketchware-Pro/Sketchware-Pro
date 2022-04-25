@@ -4389,7 +4389,6 @@
     <public type="layout" name="in_app_item" id="0x7f0b0083" />
     <public type="layout" name="inapp" id="0x7f0b0084" />
     <public type="layout" name="inapp_viewpager_page" id="0x7f0b0085" />
-    <public type="layout" name="init" id="0x7f0b0086" />
     <public type="layout" name="item_button" id="0x7f0b0087" />
     <public type="layout" name="item_edittext" id="0x7f0b0088" />
     <public type="layout" name="item_imageview" id="0x7f0b0089" />
@@ -7892,13 +7891,5 @@
     <public type="xml" name="provider_paths" id="0x7f110001" />
     <public type="xml" name="remote_config_defaults" id="0x7f110002" />
     <public type="xml" name="splits0" id="0x7f110003" />
-    <public type="font" name="androidexpandingview_muli" id="0x7f120000" />
-    <public type="font" name="androidexpandingview_muli_light" id="0x7f120001" />
-    <public type="font" name="androidexpandingview_muli_regular" id="0x7f120002" />
-    <public type="font" name="manropemedium" id="0x7f120003" />
-    <public type="font" name="titillium" id="0x7f120004" />
-    <public type="font" name="facebooksans" id="0x7f120005" />
-    <public type="font" name="FolksNormal" id="0x7f120006" />
-    <public type="font" name="FolksBold" id="0x7f120007" />
     <public type="array" name="java_keywords" id="0x7f130000" />
 </resources>
