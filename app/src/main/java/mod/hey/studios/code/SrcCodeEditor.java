@@ -349,8 +349,12 @@ public class SrcCodeEditor extends AppCompatActivity {
 
     private void initializeLogic() {
         toolbar.setVisibility(View.GONE);
+       /// You can use this code to adjust the keyboard screen size
 
-        setTitle(getIntent().getStringExtra("title"));
+     
+       getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+       setTitle(getIntent().getStringExtra("title"));
 
         editor.setTypefaceText(Typeface.MONOSPACE);
 
