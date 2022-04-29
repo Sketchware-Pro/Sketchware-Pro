@@ -1,4 +1,4 @@
-package mod.w3wide.control.logic;
+package mod.hasrat.control.logic;
 
 import com.besome.sketch.beans.BlockBean;
 

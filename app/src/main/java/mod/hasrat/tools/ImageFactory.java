@@ -1,4 +1,4 @@
-package mod.w3wide.tools;
+package mod.hasrat.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

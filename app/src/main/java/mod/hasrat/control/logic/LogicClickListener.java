@@ -1,4 +1,4 @@
-package mod.w3wide.control.logic;
+package mod.hasrat.control.logic;
 
 import static android.text.TextUtils.isEmpty;
 import static com.besome.sketch.SketchApplication.getContext;
@@ -28,8 +28,8 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
+import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.util.Helper;
-import mod.w3wide.dialog.SketchDialog;
 
 public class LogicClickListener implements View.OnClickListener {
 

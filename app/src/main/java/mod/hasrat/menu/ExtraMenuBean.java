@@ -1,4 +1,4 @@
-package mod.w3wide.menu;
+package mod.hasrat.menu;
 
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
@@ -38,6 +38,7 @@ import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
@@ -46,7 +47,6 @@ import mod.hilal.saif.asd.AsdHandlerCancel;
 import mod.hilal.saif.asd.AsdOrigin;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 import mod.hilal.saif.asd.old.AsdOldDialog;
-import mod.w3wide.highlighter.SimpleHighlighter;
 
 public class ExtraMenuBean {
 

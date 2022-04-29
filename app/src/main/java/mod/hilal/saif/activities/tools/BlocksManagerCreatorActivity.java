@@ -43,10 +43,10 @@ import java.util.regex.Pattern;
 import a.a.a.Zx;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.highlighter.SimpleHighlighter;
+import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
-import mod.w3wide.highlighter.SimpleHighlighter;
-import mod.w3wide.lib.BaseTextWatcher;
 
 public class BlocksManagerCreatorActivity extends AppCompatActivity {
 

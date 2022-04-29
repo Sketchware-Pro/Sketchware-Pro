@@ -16,12 +16,12 @@ import a.a.a.kq;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.lib.FileResConfig;
+import mod.hasrat.blocks.ExtraBlocks;
+import mod.hasrat.control.logic.LogicClickListener;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.blocks.BlocksHandler;
-import mod.w3wide.blocks.ExtraBlocks;
-import mod.w3wide.control.logic.LogicClickListener;
 
 public class ExtraPaletteBlock {
 

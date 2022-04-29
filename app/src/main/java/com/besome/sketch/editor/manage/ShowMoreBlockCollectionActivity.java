@@ -35,8 +35,8 @@ import a.a.a.bB;
 import a.a.a.kq;
 import a.a.a.xB;
 import mod.SketchwareUtil;
+import mod.hasrat.tools.ImageFactory;
 import mod.hey.studios.util.Helper;
-import mod.w3wide.tools.ImageFactory;
 
 public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -144,7 +144,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
         actionSection.measure(0, 0);
         blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ((height - GB.a((Context) this)) - GB.f((Context) this)) - actionSection.getMeasuredHeight()));
+                ((height - GB.a((Context) this)) - GB.f(this)) - actionSection.getMeasuredHeight()));
         blockCollectionEditor.requestLayout();
     }
 

@@ -1,4 +1,4 @@
-package mod.w3wide.validator;
+package mod.hasrat.validator;
 
 import android.content.Context;
 import android.text.Spanned;

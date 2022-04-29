@@ -1,4 +1,4 @@
-package mod.w3wide.control;
+package mod.hasrat.control;
 
 import static mod.SketchwareUtil.getDip;
 
@@ -14,9 +14,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.Resources;
 
 import a.a.a.mB;
+import mod.hasrat.dialog.SketchDialog;
+import mod.hasrat.validator.VersionNamePostfixValidator;
 import mod.hey.studios.util.Helper;
-import mod.w3wide.dialog.SketchDialog;
-import mod.w3wide.validator.VersionNamePostfixValidator;
 
 public class VersionDialog {
 

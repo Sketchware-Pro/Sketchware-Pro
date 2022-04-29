@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.blocks.ExtraBlocks;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.w3wide.blocks.ExtraBlocks;
 
 public class BlocksHandler {
 
