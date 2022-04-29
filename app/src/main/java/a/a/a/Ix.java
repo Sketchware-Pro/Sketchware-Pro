@@ -34,6 +34,7 @@ public class Ix {
     public FileResConfig frc;
     public ProjectSettings settings;
     private boolean isTargetSdk31 = false;
+    private String packageName;
 
     public Ix(jq jq, ArrayList<ProjectFileBean> projectFileBeans) {
         c = jq;
@@ -251,6 +252,7 @@ public class Ix {
     public void setYq(yq yqVar) {
         settings = new ProjectSettings(yqVar.b);
         isTargetSdk31 = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 31;
+        packageName = yqVar.e;
     }
 
     /**
@@ -442,7 +444,9 @@ public class Ix {
             }
         }
         a.a(applicationTag);
-        return AndroidManifestInjector.mHolder(a.b(), c.sc_id);
+        // Needed, as crashing on my SM-A526B with Android 12 / One UI 4.1 / firmware build A526BFXXS1CVD1 otherwise
+        //noinspection RegExpRedundantEscape
+        return AndroidManifestInjector.mHolder(a.b(), c.sc_id).replaceAll("\\$\\{applicationId\\}", packageName);
     }
 
     private void writeJava(Nx applicationTag, String activityName, ArrayList<HashMap<String, Object>> activityAttrs) {
