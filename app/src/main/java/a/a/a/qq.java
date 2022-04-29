@@ -439,6 +439,8 @@ public class qq {
             return "androidx.recyclerview";
         } else if (name.equals(BuiltInLibraries.ANDROIDX_SAVEDSTATE)) {
             return "androidx.savedstate";
+        } else if (name.equals(BuiltInLibraries.ANDROIDX_STARTUP_RUNTIME)) {
+            return "androidx.startup";
         } else if (name.equals(BuiltInLibraries.ANDROIDX_SWIPEREFRESHLAYOUT)) {
             return "androidx.swiperefreshlayout";
         } else if (name.equals(BuiltInLibraries.ANDROIDX_TRANSITION)) {
@@ -498,16 +500,16 @@ public class qq {
                 name.equals(BuiltInLibraries.ANDROIDX_FRAGMENT) || name.equals(BuiltInLibraries.ANDROIDX_LIFECYCLE_RUNTIME) ||
                 name.equals(BuiltInLibraries.ANDROIDX_LIFECYCLE_VIEWMODEL) || name.equals(BuiltInLibraries.ANDROIDX_MEDIA) ||
                 name.equals(BuiltInLibraries.ANDROIDX_RECYCLERVIEW) || name.equals(BuiltInLibraries.ANDROIDX_SAVEDSTATE) ||
-                name.equals(BuiltInLibraries.ANDROIDX_SWIPEREFRESHLAYOUT) || name.equals(BuiltInLibraries.ANDROIDX_TRANSITION) ||
-                name.equals(BuiltInLibraries.ANDROIDX_WORK_RUNTIME) || name.equals(BuiltInLibraries.ANDROIDX_VIEWPAGER2) ||
-                name.equals(BuiltInLibraries.CIRCLE_IMAGEVIEW) || name.equals(BuiltInLibraries.CODE_VIEW) ||
-                name.equals(BuiltInLibraries.FIREBASE_MESSAGING) || name.equals(BuiltInLibraries.LOTTIE) ||
-                name.equals(BuiltInLibraries.MATERIAL) || name.equals(BuiltInLibraries.ONESIGNAL) ||
-                name.equals(BuiltInLibraries.OTPVIEW) || name.equals(BuiltInLibraries.PATTERN_LOCK_VIEW) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_ADS) || name.equals(BuiltInLibraries.PLAY_SERVICES_ADS_LITE) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_AUTH) || name.equals(BuiltInLibraries.PLAY_SERVICES_BASE) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_BASEMENT) || name.equals(BuiltInLibraries.PLAY_SERVICES_GCM) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_MAPS) || name.equals(BuiltInLibraries.WAVE_SIDE_BAR) ||
-                name.equals(BuiltInLibraries.YOUTUBE_PLAYER);
+                name.equals(BuiltInLibraries.ANDROIDX_STARTUP_RUNTIME) || name.equals(BuiltInLibraries.ANDROIDX_SWIPEREFRESHLAYOUT) ||
+                name.equals(BuiltInLibraries.ANDROIDX_TRANSITION) || name.equals(BuiltInLibraries.ANDROIDX_WORK_RUNTIME) ||
+                name.equals(BuiltInLibraries.ANDROIDX_VIEWPAGER2) || name.equals(BuiltInLibraries.CIRCLE_IMAGEVIEW) ||
+                name.equals(BuiltInLibraries.CODE_VIEW) || name.equals(BuiltInLibraries.FIREBASE_MESSAGING) ||
+                name.equals(BuiltInLibraries.LOTTIE) || name.equals(BuiltInLibraries.MATERIAL) ||
+                name.equals(BuiltInLibraries.ONESIGNAL) || name.equals(BuiltInLibraries.OTPVIEW) ||
+                name.equals(BuiltInLibraries.PATTERN_LOCK_VIEW) || name.equals(BuiltInLibraries.PLAY_SERVICES_ADS) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_ADS_LITE) || name.equals(BuiltInLibraries.PLAY_SERVICES_AUTH) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_BASE) || name.equals(BuiltInLibraries.PLAY_SERVICES_BASEMENT) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_GCM) || name.equals(BuiltInLibraries.PLAY_SERVICES_MAPS) ||
+                name.equals(BuiltInLibraries.WAVE_SIDE_BAR) || name.equals(BuiltInLibraries.YOUTUBE_PLAYER);
     }
 }
