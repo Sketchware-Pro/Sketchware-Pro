@@ -15,8 +15,8 @@ import java.util.HashMap;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
-import mod.w3wide.tools.ComponentHelper;
 
 public class ComponentsMakerCreator extends Activity implements View.OnClickListener {
 

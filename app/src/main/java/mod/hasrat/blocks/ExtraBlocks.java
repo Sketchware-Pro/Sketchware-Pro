@@ -1,4 +1,4 @@
-package mod.w3wide.blocks;
+package mod.hasrat.blocks;
 
 import android.util.Pair;
 

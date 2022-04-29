@@ -1,4 +1,4 @@
-package mod.w3wide.highlighter;
+package mod.hasrat.highlighter;
 
 import android.graphics.Color;
 

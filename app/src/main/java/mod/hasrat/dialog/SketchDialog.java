@@ -1,4 +1,4 @@
-package mod.w3wide.dialog;
+package mod.hasrat.dialog;
 
 import static android.text.TextUtils.isEmpty;
 

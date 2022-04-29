@@ -1,4 +1,4 @@
-package mod.w3wide.lib;
+package mod.hasrat.lib;
 
 import android.text.Editable;
 import android.text.TextWatcher;

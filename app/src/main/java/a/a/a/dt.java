@@ -24,15 +24,15 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.moreblock.MoreblockValidator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
-import mod.w3wide.lib.BaseTextWatcher;
 
 @SuppressLint("ViewConstructor")
 public class dt extends LinearLayout {
 
+    private final ArrayList<Pair<String, String>> variablesSpecAndNamePair = new ArrayList<>();
     private boolean customVariableInvalid = false;
-
     private Activity activity;
     private RelativeLayout blockContainer;
     private LinearLayout removeArea;
@@ -41,7 +41,6 @@ public class dt extends LinearLayout {
     private EditText labelText;
     private EditText variableName;
     private gt addVariable;
-    private final ArrayList<Pair<String, String>> variablesSpecAndNamePair = new ArrayList<>();
     private ZB variableNameValidator;
     private ZB labelTextValidator;
     private MoreblockValidator blockNameValidator;

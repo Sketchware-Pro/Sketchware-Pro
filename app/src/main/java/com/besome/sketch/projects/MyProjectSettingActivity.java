@@ -52,9 +52,9 @@ import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.yB;
 import mod.SketchwareUtil;
+import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.w3wide.control.VersionDialog;
 
 public class MyProjectSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -62,6 +62,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private static final int REQUEST_CODE_PICK_ICON = 207;
     private final String[] themeColorKeys = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
     private final String[] themeColorLabels = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
+    private final int[] projectThemeColors = new int[themeColorKeys.length];
+    public TextView projectVersionCodeView;
+    public TextView projectVersionNameView;
     private EditText projectAppName;
     private EditText projectPackageName;
     private EditText projectName;
@@ -69,8 +72,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private ImageView colorGuide;
     private LinearLayout advancedSettingsContainer;
     private ImageView appIcon;
-    public TextView projectVersionCodeView;
-    public TextView projectVersionNameView;
     private UB projectPackageNameValidator;
     private VB projectNameValidator;
     private LB projectAppNameValidator;
@@ -80,7 +81,6 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private int projectVersionNameFirstPart;
     private int projectVersionNameSecondPart;
     private boolean shownPackageNameChangeWarning;
-    private final int[] projectThemeColors = new int[themeColorKeys.length];
     private String sc_id;
 
     @Override
