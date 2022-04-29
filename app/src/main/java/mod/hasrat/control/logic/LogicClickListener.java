@@ -150,7 +150,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        typeLayout.requestFocus();
+        modifierLayout.requestFocus();
     }
 
     private void removeVariable() {
