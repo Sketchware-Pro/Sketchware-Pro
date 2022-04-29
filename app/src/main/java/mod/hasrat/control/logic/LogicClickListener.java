@@ -84,9 +84,9 @@ public class LogicClickListener implements View.OnClickListener {
         root.setOrientation(LinearLayout.VERTICAL);
 
         TextInputLayout modifierLayout = commonTextInputLayout();
-        EditText modifier = commonEditText("public or public static (optional)");
+        EditText modifier = commonEditText("private, public or public static (optional)");
         modifierLayout.addView(modifier);
-        modifierLayout.setHelperText("Enter modifier e.g. public, public static, or empty (package private).");
+        modifierLayout.setHelperText("Enter modifier e.g. private, public, public static, or empty (package private).");
         modifierLayout.setPadding(0, 0, 0, (int) getDip(8));
         root.addView(modifierLayout);
 
