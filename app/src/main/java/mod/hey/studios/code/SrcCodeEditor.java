@@ -356,7 +356,7 @@ public class SrcCodeEditor extends AppCompatActivity {
 	getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         } catch (Exception e) {
 	 
-            د      }       
+                  }       
 
        setTitle(getIntent().getStringExtra("title"));
 
