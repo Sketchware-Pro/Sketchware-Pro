@@ -415,6 +415,7 @@ public class Jx {
         } else {
             sb.append("private void initialize(Bundle _savedInstanceState) {");
         }
+        sb.append(a);
         sb.append(initializeLogic());
 
         for (String value : m) {
