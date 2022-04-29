@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.text.TextUtils;
 import android.util.Pair;
 
 import com.besome.sketch.beans.BlockBean;
@@ -415,8 +416,10 @@ public class Jx {
         } else {
             sb.append("private void initialize(Bundle _savedInstanceState) {");
         }
-        sb.append(a);
-        sb.append(initializeLogic());
+        if (!TextUtils.isEmpty(initializeLogic())) {
+            sb.append(a);
+            sb.append(initializeLogic());
+        }
 
         for (String value : m) {
             if (value.length() > 0) {
