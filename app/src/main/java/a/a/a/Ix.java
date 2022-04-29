@@ -199,32 +199,6 @@ public class Ix {
         applicationTag.a(serviceTag);
     }
 
-    private void writeAndroidXStartupInitializationProvider(Nx applicationTag) {
-        Nx providerTag = new Nx("provider");
-        providerTag.a("android", "name", "androidx.startup.InitializationProvider");
-        providerTag.a("android", "authorities", "${applicationId}.androidx-startup");
-        providerTag.a("android", "exported", "false");
-        if (c.g) {
-            writeAndroidXEmoji2InitializerMetadata(providerTag);
-            writeAndroidXLifecycleInitializerMetadata(providerTag);
-        }
-        applicationTag.a(providerTag);
-    }
-
-    private void writeAndroidXEmoji2InitializerMetadata(Nx providerTag) {
-        Nx metadataTag = new Nx("meta-data");
-        metadataTag.a("android", "name", "androidx.emoji2.text.EmojiCompatInitializer");
-        metadataTag.a("android", "value", "androidx.startup");
-        providerTag.a(metadataTag);
-    }
-
-    private void writeAndroidXLifecycleInitializerMetadata(Nx providerTag) {
-        Nx metadataTag = new Nx("meta-data");
-        metadataTag.a("android", "name", "androidx.lifecycle.ProcessLifecycleInitializer");
-        metadataTag.a("android", "value", "androidx.startup");
-        providerTag.a(metadataTag);
-    }
-
     private void writeDLIntentFilter(Nx activityTag) {
         Nx intentFilterTag = new Nx("intent-filter");
         Nx intentFilterActionTag = new Nx("action");
@@ -418,9 +392,6 @@ public class Ix {
         }
         if (c.m) {
             writeGoogleMapMetaData(applicationTag);
-        }
-        if (c.g) {
-            writeAndroidXStartupInitializationProvider(applicationTag);
         }
         ConstVarManifest.handleBgTaskComponent(applicationTag, c.x);
         if (FileUtil.isExistFile(fpu.getManifestJava(c.sc_id))) {
