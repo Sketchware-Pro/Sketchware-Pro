@@ -1,13 +1,5 @@
 package com.besome.sketch.editor.manage.font;
 
-import a.a.a.HB;
-import a.a.a.Np;
-import a.a.a.WB;
-import a.a.a.bB;
-import a.a.a.mB;
-import a.a.a.uq;
-import a.a.a.xB;
-import a.a.a.yy;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -18,14 +10,26 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.google.android.gms.analytics.HitBuilders;
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 
-/* loaded from: classes.dex */
+import a.a.a.HB;
+import a.a.a.Np;
+import a.a.a.WB;
+import a.a.a.bB;
+import a.a.a.mB;
+import a.a.a.uq;
+import a.a.a.xB;
+import a.a.a.yy;
+
 public class AddFontActivity extends BaseDialogActivity implements View.OnClickListener {
+
     public TextView A;
     public TextView B;
     public CheckBox C;
@@ -40,9 +44,9 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     public ImageView z;
 
     public final void n() {
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, 2131624976)), 229);
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 229);
     }
 
     /* JADX WARN: Removed duplicated region for block: B:29:0x0077  */
@@ -52,16 +56,16 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     */
     public final void o() {
         char c;
-        if (a(this.y)) {
-            String obj = this.v.getText().toString();
-            String a2 = HB.a(this, this.D);
+        if (a(y)) {
+            String obj = v.getText().toString();
+            String a2 = HB.a(this, D);
             if (a2 != null) {
                 ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
                 projectResourceBean.savedPos = 1;
                 projectResourceBean.isNew = true;
-                if (this.C.isChecked()) {
+                if (C.isChecked()) {
                     try {
-                        Np.g().a(this.t, projectResourceBean);
+                        Np.g().a(t, projectResourceBean);
                     } catch (Exception e) {
                         // Well, (parts of) the bytecode's lying, yy can be thrown.
                         //noinspection ConstantConditions
@@ -117,99 +121,101 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
-    public void onActivityResult(int i, int i2, Intent intent) {
-        Uri data;
-        super.onActivityResult(i, i2, intent);
-        if (i == 229 && this.z != null && i2 == -1 && (data = intent.getData()) != null) {
-            this.D = data;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Uri intentData = data.getData();
+        if (requestCode == 229 && resultCode == RESULT_OK && intentData != null && z != null) {
+            D = intentData;
             try {
-                String a2 = HB.a(this, this.D);
-                if (a2 != null) {
-                    a2.substring(a2.lastIndexOf("."));
-                    this.E = true;
-                    this.A.setTypeface(Typeface.createFromFile(a2));
-                    if (this.v.getText() == null || this.v.getText().length() <= 0) {
-                        int lastIndexOf = a2.lastIndexOf("/");
-                        int lastIndexOf2 = a2.lastIndexOf(".");
+                String pickedFilePath = HB.a(this, D);
+                if (pickedFilePath != null) {
+                    pickedFilePath.substring(pickedFilePath.lastIndexOf("."));
+                    E = true;
+                    A.setTypeface(Typeface.createFromFile(pickedFilePath));
+                    if (v.getText() == null || v.getText().length() <= 0) {
+                        int lastIndexOf = pickedFilePath.lastIndexOf("/");
+                        int lastIndexOf2 = pickedFilePath.lastIndexOf(".");
                         if (lastIndexOf2 <= 0) {
-                            lastIndexOf2 = a2.length();
+                            lastIndexOf2 = pickedFilePath.length();
                         }
-                        this.v.setText(a2.substring(lastIndexOf + 1, lastIndexOf2));
+                        v.setText(pickedFilePath.substring(lastIndexOf + 1, lastIndexOf2));
                     }
-                    this.A.setVisibility(0);
+                    A.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
-                this.E = false;
-                this.A.setVisibility(8);
+                E = false;
+                A.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }
     }
 
-    @Override // android.view.View.OnClickListener
-    public void onClick(View view) {
-        int id2 = view.getId();
-        if (id2 == 2131230909) {
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.common_dialog_cancel_button) {
             finish();
-        } else if (id2 == 2131230914) {
+        } else if (id == R.id.common_dialog_ok_button) {
             o();
         }
     }
 
-    @Override // com.besome.sketch.lib.base.BaseDialogActivity, com.besome.sketch.lib.base.BaseAppCompatActivity, androidx.appcompat.app.AppCompatActivity, androidx.fragment.app.FragmentActivity, androidx.core.app.ComponentActivity, android.app.Activity
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        e(xB.b().a(this, 2131625261));
-        d(xB.b().a(this, 2131625031));
-        b(xB.b().a(this, 2131624974));
-        setContentView(2131427521);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        e(xB.b().a(this, R.string.design_manager_font_title_add_font));
+        d(xB.b().a(this, R.string.common_word_save));
+        b(xB.b().a(this, R.string.common_word_cancel));
+        setContentView(R.layout.manage_font_add);
         Intent intent = getIntent();
-        this.t = intent.getStringExtra("sc_id");
-        this.x = intent.getStringArrayListExtra("font_names");
-        this.u = intent.getIntExtra("request_code", -1);
-        this.C = (CheckBox) findViewById(2131230887);
-        this.B = (TextView) findViewById(2131231913);
-        this.w = (EasyDeleteEditText) findViewById(2131230990);
-        this.z = (ImageView) findViewById(2131231710);
-        this.A = (TextView) findViewById(2131231069);
-        this.v = this.w.getEditText();
-        this.w.setHint(xB.b().a(this, 2131625259));
-        this.y = new WB(this, this.w.getTextInputLayout(), uq.b, this.x);
-        this.v.setPrivateImeOptions("defaultInputmode=english;");
-        this.A.setText(xB.b().a(this, 2131625258));
-        this.B.setText(xB.b().a(this, 2131625289));
-        this.z.setOnClickListener(v -> {
+        t = intent.getStringExtra("sc_id");
+        x = intent.getStringArrayListExtra("font_names");
+        u = intent.getIntExtra("request_code", -1);
+        C = findViewById(R.id.chk_collection);
+        B = findViewById(R.id.tv_collection);
+        w = findViewById(R.id.ed_input);
+        z = findViewById(R.id.select_file);
+        A = findViewById(R.id.font_preview);
+        v = w.getEditText();
+        w.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
+        y = new WB(this, w.getTextInputLayout(), uq.b, x);
+        v.setPrivateImeOptions("defaultInputmode=english;");
+        A.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
+        B.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
+        z.setOnClickListener(v -> {
             if (!mB.a()) {
                 n();
             }
         });
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
-        if (this.u == 272) {
-            e(xB.b().a(this, 2131625263));
-            this.y = new WB(this, this.w.getTextInputLayout(), uq.b, new ArrayList());
-            this.v.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
-            this.v.setEnabled(false);
-            this.C.setEnabled(false);
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
+        if (u == 272) {
+            e(xB.b().a(this, R.string.design_manager_font_title_edit_font));
+            y = new WB(this, w.getTextInputLayout(), uq.b, new ArrayList<>());
+            v.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
+            v.setEnabled(false);
+            C.setEnabled(false);
         }
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity, androidx.fragment.app.FragmentActivity, android.app.Activity
+    @Override
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(AddFontActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
+        d.setScreenName(AddFontActivity.class.getSimpleName());
+        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public boolean a(WB wb) {
         if (!wb.b()) {
             return false;
         }
-        if (this.E && this.D != null) {
+        if (E && D != null) {
             return true;
         }
-        this.z.startAnimation(AnimationUtils.loadAnimation(this, 2130771980));
+        z.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 }
