@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -196,13 +195,6 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
             fontName.setEnabled(false);
             addOrAddedToCollection.setEnabled(false);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(AddFontActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private boolean a(WB wb) {
