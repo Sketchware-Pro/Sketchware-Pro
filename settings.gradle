@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Sketchware Pro"
-include ':app'
+include ":app"
