@@ -14,6 +14,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.util.LogUtil;
 
 public class ManageLocalLibrary {
 
@@ -22,17 +23,28 @@ public class ManageLocalLibrary {
 
     public ManageLocalLibrary(String sc_id) {
         projectId = sc_id;
-        FilePathUtil filePathUtil = new FilePathUtil();
-        if (FileUtil.isExistFile(filePathUtil.getPathLocalLibrary(projectId))) {
+        String localLibraryConfigPath = new FilePathUtil().getPathLocalLibrary(projectId);
+        if (FileUtil.isExistFile(localLibraryConfigPath)) {
             try {
-                list = new Gson().fromJson(FileUtil.readFile(filePathUtil.getPathLocalLibrary(projectId)), Helper.TYPE_MAP_LIST);
+                list = new Gson().fromJson(FileUtil.readFile(localLibraryConfigPath), Helper.TYPE_MAP_LIST);
+
+                if (list == null) {
+                    LogUtil.w(getClass().getSimpleName(), "Read null from file " + localLibraryConfigPath + ", deleting invalid configuration.");
+                    if (!new File(localLibraryConfigPath).delete()) {
+                        LogUtil.e(getClass().getSimpleName(), "Couldn't delete file " + localLibraryConfigPath);
+                    }
+
+                    // fall-through to shared error handler
+                } else {
+                    return;
+                }
             } catch (JsonParseException e) {
-                SketchwareUtil.toastError("Invalid Local library configuration found! Temporarily using none");
-                list = new ArrayList<>();
+                // fall-through to shared error handler
             }
-        } else {
-            list = new ArrayList<>();
+
+            SketchwareUtil.toastError("Invalid Local library configuration found! Temporarily using none");
         }
+        list = new ArrayList<>();
     }
 
     public ArrayList<String> getAssets() {
