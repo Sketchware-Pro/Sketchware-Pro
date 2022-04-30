@@ -40,12 +40,6 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private WB fontNameValidator;
     private ImageView selectFile;
 
-    private void n() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
-    }
-
     /* JADX WARN: Removed duplicated region for block: B:29:0x0077  */
     /* JADX WARN: Removed duplicated region for block: B:33:0x00a2  */
     /*
@@ -157,6 +151,12 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
             finish();
         } else if (id == R.id.common_dialog_ok_button) {
             o();
+        } else if (id == R.id.select_file) {
+            if (!mB.a()) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
+            }
         }
     }
 
@@ -181,11 +181,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         fontName.setPrivateImeOptions("defaultInputmode=english;");
         fontPreview.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
         addOrAddedToCollectionLabel.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
-        selectFile.setOnClickListener(v -> {
-            if (!mB.a()) {
-                n();
-            }
-        });
+        selectFile.setOnClickListener(this);
         r.setOnClickListener(this);
         s.setOnClickListener(this);
         if (intent.getIntExtra("request_code", -1) == 272) {
