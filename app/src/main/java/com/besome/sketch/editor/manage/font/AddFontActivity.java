@@ -30,23 +30,21 @@ import a.a.a.yy;
 
 public class AddFontActivity extends BaseDialogActivity implements View.OnClickListener {
 
-    public TextView A;
-    public TextView B;
-    public CheckBox C;
-    public Uri D = null;
-    public boolean E;
-    public String t;
-    public int u;
-    public EditText v;
-    public EasyDeleteEditText w;
-    public ArrayList<String> x;
-    public WB y;
-    public ImageView z;
+    private static final int REQUEST_CODE_FONT_PICKER = 229;
 
-    public final void n() {
+    private TextView fontPreview;
+    private CheckBox addOrAddedToCollection;
+    private Uri fontUri = null;
+    private boolean validFontPicked;
+    private String sc_id;
+    private EditText fontName;
+    private WB fontNameValidator;
+    private ImageView selectFile;
+
+    private void n() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), 229);
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
     }
 
     /* JADX WARN: Removed duplicated region for block: B:29:0x0077  */
@@ -54,18 +52,18 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     /*
         Code decompiled incorrectly, please refer to instructions dump.
     */
-    public final void o() {
+    private void o() {
         char c;
-        if (a(y)) {
-            String obj = v.getText().toString();
-            String a2 = HB.a(this, D);
+        if (a(fontNameValidator)) {
+            String obj = fontName.getText().toString();
+            String a2 = HB.a(this, fontUri);
             if (a2 != null) {
                 ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
                 projectResourceBean.savedPos = 1;
                 projectResourceBean.isNew = true;
-                if (C.isChecked()) {
+                if (addOrAddedToCollection.isChecked()) {
                     try {
-                        Np.g().a(t, projectResourceBean);
+                        Np.g().a(sc_id, projectResourceBean);
                     } catch (Exception e) {
                         // Well, (parts of) the bytecode's lying, yy can be thrown.
                         //noinspection ConstantConditions
@@ -126,27 +124,27 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
 
         Uri intentData = data.getData();
-        if (requestCode == 229 && resultCode == RESULT_OK && intentData != null && z != null) {
-            D = intentData;
+        if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK && intentData != null && selectFile != null) {
+            fontUri = intentData;
             try {
-                String pickedFilePath = HB.a(this, D);
+                String pickedFilePath = HB.a(this, fontUri);
                 if (pickedFilePath != null) {
                     pickedFilePath.substring(pickedFilePath.lastIndexOf("."));
-                    E = true;
-                    A.setTypeface(Typeface.createFromFile(pickedFilePath));
-                    if (v.getText() == null || v.getText().length() <= 0) {
+                    validFontPicked = true;
+                    fontPreview.setTypeface(Typeface.createFromFile(pickedFilePath));
+                    if (fontName.getText() == null || fontName.getText().length() <= 0) {
                         int lastIndexOf = pickedFilePath.lastIndexOf("/");
                         int lastIndexOf2 = pickedFilePath.lastIndexOf(".");
                         if (lastIndexOf2 <= 0) {
                             lastIndexOf2 = pickedFilePath.length();
                         }
-                        v.setText(pickedFilePath.substring(lastIndexOf + 1, lastIndexOf2));
+                        fontName.setText(pickedFilePath.substring(lastIndexOf + 1, lastIndexOf2));
                     }
-                    A.setVisibility(View.VISIBLE);
+                    fontPreview.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
-                E = false;
-                A.setVisibility(View.GONE);
+                validFontPicked = false;
+                fontPreview.setVisibility(View.GONE);
                 e.printStackTrace();
             }
         }
@@ -170,34 +168,33 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         d(xB.b().a(this, R.string.common_word_save));
         b(xB.b().a(this, R.string.common_word_cancel));
         setContentView(R.layout.manage_font_add);
+
         Intent intent = getIntent();
-        t = intent.getStringExtra("sc_id");
-        x = intent.getStringArrayListExtra("font_names");
-        u = intent.getIntExtra("request_code", -1);
-        C = findViewById(R.id.chk_collection);
-        B = findViewById(R.id.tv_collection);
-        w = findViewById(R.id.ed_input);
-        z = findViewById(R.id.select_file);
-        A = findViewById(R.id.font_preview);
-        v = w.getEditText();
-        w.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
-        y = new WB(this, w.getTextInputLayout(), uq.b, x);
-        v.setPrivateImeOptions("defaultInputmode=english;");
-        A.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
-        B.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
-        z.setOnClickListener(v -> {
+        sc_id = intent.getStringExtra("sc_id");
+        addOrAddedToCollection = findViewById(R.id.chk_collection);
+        TextView addOrAddedToCollectionLabel = findViewById(R.id.tv_collection);
+        EasyDeleteEditText edFontName = findViewById(R.id.ed_input);
+        selectFile = findViewById(R.id.select_file);
+        fontPreview = findViewById(R.id.font_preview);
+        fontName = edFontName.getEditText();
+        edFontName.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
+        fontNameValidator = new WB(this, edFontName.getTextInputLayout(), uq.b, intent.getStringArrayListExtra("font_names"));
+        fontName.setPrivateImeOptions("defaultInputmode=english;");
+        fontPreview.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
+        addOrAddedToCollectionLabel.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
+        selectFile.setOnClickListener(v -> {
             if (!mB.a()) {
                 n();
             }
         });
         r.setOnClickListener(this);
         s.setOnClickListener(this);
-        if (u == 272) {
+        if (intent.getIntExtra("request_code", -1) == 272) {
             e(xB.b().a(this, R.string.design_manager_font_title_edit_font));
-            y = new WB(this, w.getTextInputLayout(), uq.b, new ArrayList<>());
-            v.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
-            v.setEnabled(false);
-            C.setEnabled(false);
+            fontNameValidator = new WB(this, edFontName.getTextInputLayout(), uq.b, new ArrayList<>());
+            fontName.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
+            fontName.setEnabled(false);
+            addOrAddedToCollection.setEnabled(false);
         }
     }
 
@@ -208,14 +205,14 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public boolean a(WB wb) {
+    private boolean a(WB wb) {
         if (!wb.b()) {
             return false;
         }
-        if (E && D != null) {
+        if (validFontPicked && fontUri != null) {
             return true;
         }
-        z.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
+        selectFile.startAnimation(AnimationUtils.loadAnimation(this, R.anim.ani_1));
         return false;
     }
 }
