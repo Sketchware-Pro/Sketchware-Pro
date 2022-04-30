@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
@@ -40,73 +41,47 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private WB fontNameValidator;
     private ImageView selectFile;
 
-    /* JADX WARN: Removed duplicated region for block: B:29:0x0077  */
-    /* JADX WARN: Removed duplicated region for block: B:33:0x00a2  */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
-    private void o() {
-        char c;
+    private void addToCollectionIfNeeded() {
         if (a(fontNameValidator)) {
-            String obj = fontName.getText().toString();
-            String a2 = HB.a(this, fontUri);
-            if (a2 != null) {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, obj, a2);
-                projectResourceBean.savedPos = 1;
-                projectResourceBean.isNew = true;
+            String fontName = this.fontName.getText().toString();
+            String pickedFontFilePath = HB.a(this, fontUri);
+            if (pickedFontFilePath != null) {
+                ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
+                resourceBean.savedPos = 1;
+                resourceBean.isNew = true;
                 if (addOrAddedToCollection.isChecked()) {
                     try {
-                        Np.g().a(sc_id, projectResourceBean);
+                        Np.g().a(sc_id, resourceBean);
                     } catch (Exception e) {
                         // Well, (parts of) the bytecode's lying, yy can be thrown.
                         //noinspection ConstantConditions
                         if (e instanceof yy) {
-                            String message = e.getMessage();
-                            int hashCode = message.hashCode();
-                            if (hashCode == -2111590760) {
-                                if (message.equals("fail_to_copy")) {
-                                    c = 2;
-                                    if (c != 0) {
-                                    }
-                                }
-                                c = 65535;
-                                if (c != 0) {
-                                }
-                            } else if (hashCode != -1587253668) {
-                                if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                                    c = 0;
-                                    if (c != 0) {
-                                        bB.b(this, xB.b().a(this, 2131624903), 1).show();
-                                        return;
-                                    } else if (c == 1) {
-                                        bB.b(this, xB.b().a(this, 2131624905), 1).show();
-                                        return;
-                                    } else if (c == 2) {
-                                        bB.b(this, xB.b().a(this, 2131624904), 1).show();
-                                        return;
-                                    } else {
-                                        return;
-                                    }
-                                }
-                                c = 65535;
-                                if (c != 0) {
-                                }
-                            } else {
-                                if (message.equals("file_no_exist")) {
-                                    c = 1;
-                                    if (c != 0) {
-                                    }
-                                }
-                                c = 65535;
-                                if (c != 0) {
-                                }
+                            switch (e.getMessage()) {
+                                case "duplicate_name":
+                                    bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
+                                    break;
+
+                                case "file_no_exist":
+                                    bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
+                                    break;
+
+                                case "fail_to_copy":
+                                    bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
+                                    break;
+
+                                default:
                             }
+
+                            return;
+                        } else {
+                            throw e;
                         }
                     }
                 }
+
                 Intent intent = new Intent();
-                intent.putExtra("resource_bean", projectResourceBean);
-                setResult(-1, intent);
+                intent.putExtra("resource_bean", resourceBean);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         }
@@ -150,7 +125,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         if (id == R.id.common_dialog_cancel_button) {
             finish();
         } else if (id == R.id.common_dialog_ok_button) {
-            o();
+            addToCollectionIfNeeded();
         } else if (id == R.id.select_file) {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
