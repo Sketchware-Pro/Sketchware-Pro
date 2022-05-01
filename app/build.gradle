@@ -76,7 +76,7 @@ dependencies {
 
     withAabOutputSupportImplementation fileTree(dir: "libs", include: "bundletool-*")
 
-    def codeEditorVersion = "0.11.0"
+    def codeEditorVersion = "0.11.1"
     def excludeAnnotation = { exclude group: "androidx.annotation", module: "annotation" }
     def editorGroupId = "io.github.Rosemoe.sora-editor"
 
