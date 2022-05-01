@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -17,6 +18,11 @@ import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.sketchware.remod.R;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import a.a.a.HB;
@@ -27,6 +33,8 @@ import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
 import a.a.a.yy;
+import mod.SketchwareUtil;
+import mod.jbk.util.LogUtil;
 
 public class AddFontActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -93,28 +101,48 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
         Uri intentData = data.getData();
         if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK && intentData != null && selectFile != null) {
-            fontUri = intentData;
-            try {
-                String pickedFilePath = HB.a(this, fontUri);
-                if (pickedFilePath != null) {
-                    pickedFilePath.substring(pickedFilePath.lastIndexOf("."));
-                    validFontPicked = true;
-                    fontPreview.setTypeface(Typeface.createFromFile(pickedFilePath));
-                    if (fontName.getText() == null || fontName.getText().length() <= 0) {
-                        int lastIndexOf = pickedFilePath.lastIndexOf("/");
-                        int lastIndexOf2 = pickedFilePath.lastIndexOf(".");
-                        if (lastIndexOf2 <= 0) {
-                            lastIndexOf2 = pickedFilePath.length();
+            new Thread(() -> {
+                try {
+                    try (ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(intentData, "r")) {
+                        try (FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
+                            File temporaryFile = File.createTempFile("font", null);
+                            fontUri = Uri.fromFile(temporaryFile);
+                            try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {
+                                try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
+                                    byte[] buffer = new byte[4096];
+                                    int length;
+                                    while ((length = inputStream.read(buffer)) > 0) {
+                                        bufferedOutputStream.write(buffer, 0, length);
+                                    }
+                                }
+                            }
+
+                            validFontPicked = true;
+                            runOnUiThread(() -> {
+                                try {
+                                    Typeface typeface = Typeface.createFromFile(temporaryFile);
+                                    if (typeface.equals(Typeface.DEFAULT)) {
+                                        SketchwareUtil.toastError("Warning: Font doesn't seem to be valid");
+                                    }
+                                    fontPreview.setTypeface(typeface);
+                                    fontName.requestFocus();
+                                    fontPreview.setVisibility(View.VISIBLE);
+                                } catch (Exception e) {
+                                    validFontPicked = false;
+                                    fontPreview.setVisibility(View.GONE);
+                                    SketchwareUtil.toast("Couldn't load font: " + e.getMessage());
+                                    LogUtil.e("AddFontActivity", "Failed to load font", e);
+                                }
+                            });
                         }
-                        fontName.setText(pickedFilePath.substring(lastIndexOf + 1, lastIndexOf2));
                     }
-                    fontPreview.setVisibility(View.VISIBLE);
+                } catch (IOException e) {
+                    runOnUiThread(() -> {
+                        SketchwareUtil.toastError("Error while loading font: " + e.getMessage());
+                        LogUtil.e("AddFontActivity", "Failed to load font", e);
+                    });
                 }
-            } catch (Exception e) {
-                validFontPicked = false;
-                fontPreview.setVisibility(View.GONE);
-                e.printStackTrace();
-            }
+            }).start();
         }
     }
 
