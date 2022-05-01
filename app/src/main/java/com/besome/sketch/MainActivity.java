@@ -405,26 +405,29 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
 
         @Override
+        // PagerAdapter#getCount()
         public int a() {
             return 1;
         }
 
         @Override
-        public Object a(ViewGroup viewGroup, int i) {
-            Fragment fragment = (Fragment) super.a(viewGroup, i);
+        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
+        public Object a(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.a(container, position);
             projectsFragment = (GC) fragment;
             return fragment;
         }
 
         @Override
-        public Fragment c(int i) {
+        // FragmentPagerAdapter#getItem(int)
+        public Fragment c(int position) {
             return new GC();
         }
 
         @Override
-        public CharSequence a(int i) {
-            return xB.b().a(MainActivity.this,
-                    R.string.main_tab_title_myproject);
+        // PagerAdapter#getPageTitle(int)
+        public CharSequence a(int position) {
+            return xB.b().a(MainActivity.this, R.string.main_tab_title_myproject);
         }
     }
 }
