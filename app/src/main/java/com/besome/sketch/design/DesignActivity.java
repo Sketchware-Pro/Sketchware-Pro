@@ -460,7 +460,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         });
         viewPager = findViewById(Resources.id.viewpager);
-        viewPager.setAdapter(new DesignActivity.g(getSupportFragmentManager(), this));
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), this));
         viewPager.setOffscreenPageLimit(3);
         viewPager.a(new ViewPager.e() {
 
@@ -1395,16 +1395,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public class g extends gg {
+    private class ViewPagerAdapter extends gg {
 
-        public final int f = 3;
-        public String[] g;
-        public Context h;
+        private final String[] labels;
 
-        public g(Xf xf, Context context) {
+        public ViewPagerAdapter(Xf xf, Context context) {
             super(xf);
-            h = context;
-            g = new String[]{
+            labels = new String[]{
                     xB.b().a(context, Resources.string.design_tab_title_view),
                     xB.b().a(context, Resources.string.design_tab_title_event),
                     xB.b().a(context, Resources.string.design_tab_title_component)};
@@ -1419,7 +1416,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         // PagerAdapter#getPageTitle(int)
         public CharSequence a(int position) {
-            return g[position];
+            return labels[position];
         }
 
         @Override
