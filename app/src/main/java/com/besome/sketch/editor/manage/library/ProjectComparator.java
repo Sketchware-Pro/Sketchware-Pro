@@ -7,9 +7,13 @@ import a.a.a.yB;
 
 public class ProjectComparator implements Comparator<HashMap<String, Object>> {
 
-    public ProjectComparator() {}
+    public ProjectComparator() {
+    }
 
-    public int compare(HashMap<String, Object> map1, HashMap<String, Object> map2) {
-        return yB.c(map1, "sc_id").compareTo(yB.c(map2, "sc_id")) * -1;
+    @Override
+    public int compare(HashMap<String, Object> first, HashMap<String, Object> second) {
+        return Integer.compare(
+                Integer.parseInt(yB.c(first, "sc_id")),
+                Integer.parseInt(yB.c(second, "sc_id"))) * -1;
     }
 }
