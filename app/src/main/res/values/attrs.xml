@@ -888,18 +888,4 @@
     <attr name="windowMinWidthMajor" format="dimension|fraction" />
     <attr name="windowMinWidthMinor" format="dimension|fraction" />
     <attr name="windowNoTitle" format="boolean" />
-    <attr name="selection_mode">
-        <enum name="multi_mode" value="1" />
-        <enum name="single_mode" value="0" />
-    </attr>
-    <attr name="selection_type">
-        <enum name="dir_select" value="1" />
-        <enum name="file_dir_select" value="2" />
-        <enum name="file_select" value="0" />
-    </attr>
-    <attr name="root_dir" format="string" />
-    <attr name="error_dir" format="string" />
-    <attr name="offset_dir" format="string" />
-    <attr name="extensions" format="string" />
-    <attr name="title_text" format="string" />
 </resources>

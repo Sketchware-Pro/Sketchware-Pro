@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="cancel_button_label">Cancelar</string>
-    <string name="choose_button_label">Seleccionar</string>
-    <string name="label_parent_directory">Directorio Padre</string>
-    <string name="last_edit">Ult. edición:</string>
-    <string name="error_dir_access">No se puede acceder al directorio</string>
-</resources>

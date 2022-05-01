@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.besome.sketch.MainActivity;
 import com.besome.sketch.design.DesignActivity;
+import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.export.ExportProjectActivity;
 import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectButton;
@@ -148,9 +149,7 @@ public class GC extends DA implements View.OnClickListener {
         projectsList = lC.a();
         if (projectsList.size() > 0) {
             //noinspection Java8ListSort
-            Collections.sort(projectsList,
-                    (first, second) -> Integer.compare(Integer.parseInt(yB.c(first, "sc_id")),
-                            Integer.parseInt(yB.c(second, "sc_id"))) * -1);
+            Collections.sort(projectsList, new ProjectComparator());
         }
 
         myProjects.getAdapter().c();
