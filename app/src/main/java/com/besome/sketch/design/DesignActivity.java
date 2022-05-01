@@ -1410,21 +1410,25 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     xB.b().a(context, Resources.string.design_tab_title_component)};
         }
 
+        @Override
+        // PagerAdapter#getCount()
         public int a() {
             return 3;
         }
 
         @Override
-        public CharSequence a(int var1) {
-            return g[var1];
+        // PagerAdapter#getPageTitle(int)
+        public CharSequence a(int position) {
+            return g[position];
         }
 
         @Override
-        public Object a(ViewGroup viewGroup, int i) {
-            Fragment fragment = (Fragment) super.a(viewGroup, i);
-            if (i == 0) {
+        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
+        public Object a(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.a(container, position);
+            if (position == 0) {
                 viewTabAdapter = (jr) fragment;
-            } else if (i == 1) {
+            } else if (position == 1) {
                 eventTabAdapter = (rs) fragment;
             } else {
                 componentTabAdapter = (br) fragment;
@@ -1434,11 +1438,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
 
         @Override
-        public Fragment c(int i) {
-            if (i == 0) {
+        // FragmentPagerAdapter#getItem(int)
+        public Fragment c(int position) {
+            if (position == 0) {
                 return new jr();
             } else {
-                return i == 1 ? new rs() : new br();
+                return position == 1 ? new rs() : new br();
             }
         }
     }

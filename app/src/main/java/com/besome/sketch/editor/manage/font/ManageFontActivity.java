@@ -31,15 +31,18 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
     private St thisProjectFontsFragment;
 
     @Override
-    public void a(int i) {
+    // ViewPager.OnPageChangeListener#onPageScrollStateChanged(int)
+    public void a(int state) {
     }
 
     @Override
-    public void a(int i, float f, int i2) {
+    // ViewPager.OnPageChangeListener#onPageScrolled(int, float, int)
+    public void a(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
-    public void b(int i) {
+    // ViewPager.OnPageChangeListener#onPageSelected(int)
+    public void b(int position) {
     }
 
     public void f(int i) {
@@ -129,14 +132,16 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
+        // PagerAdapter#getCount()
         public int a() {
             return 2;
         }
 
         @Override
-        public Object a(ViewGroup viewGroup, int i) {
-            Fragment fragment = (Fragment) super.a(viewGroup, i);
-            if (i != 0) {
+        // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
+        public Object a(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.a(container, position);
+            if (position != 0) {
                 thisProjectFontsFragment = (St) fragment;
             } else {
                 myCollectionFontsFragment = (Zt) fragment;
@@ -145,8 +150,9 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
-        public Fragment c(int i) {
-            if (i != 0) {
+        // FragmentPagerAdapter#getItem(int)
+        public Fragment c(int position) {
+            if (position != 0) {
                 return new St();
             } else {
                 return new Zt();
@@ -154,8 +160,9 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         }
 
         @Override
-        public CharSequence a(int i) {
-            return labels[i];
+        // PagerAdapter#getPageTitle(int)
+        public CharSequence a(int position) {
+            return labels[position];
         }
     }
 
