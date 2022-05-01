@@ -141,10 +141,10 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         // FragmentPagerAdapter#instantiateItem(ViewGroup, int)
         public Object a(ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.a(container, position);
-            if (position != 0) {
-                thisProjectFontsFragment = (St) fragment;
-            } else {
+            if (position == 0) {
                 myCollectionFontsFragment = (Zt) fragment;
+            } else {
+                thisProjectFontsFragment = (St) fragment;
             }
             return fragment;
         }
@@ -152,10 +152,10 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         @Override
         // FragmentPagerAdapter#getItem(int)
         public Fragment c(int position) {
-            if (position != 0) {
-                return new St();
-            } else {
+            if (position == 0) {
                 return new Zt();
+            } else {
+                return new St();
             }
         }
 
