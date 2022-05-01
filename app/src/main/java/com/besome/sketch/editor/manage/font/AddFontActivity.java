@@ -50,7 +50,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private ImageView selectFile;
 
     private void addToCollectionIfNeeded() {
-        if (a(fontNameValidator)) {
+        if (shouldAddToCollectionElseShowAnimation(fontNameValidator)) {
             String fontName = this.fontName.getText().toString();
             String pickedFontFilePath = HB.a(this, fontUri);
             if (pickedFontFilePath != null) {
@@ -196,7 +196,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         }
     }
 
-    private boolean a(WB wb) {
+    private boolean shouldAddToCollectionElseShowAnimation(WB wb) {
         if (!wb.b()) {
             return false;
         }
