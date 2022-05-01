@@ -149,7 +149,7 @@ public class GC extends DA implements View.OnClickListener {
         projectsList = lC.a();
         if (projectsList.size() > 0) {
             //noinspection Java8ListSort
-            Collections.sort(projectsList, new ProjectComparator();
+            Collections.sort(projectsList, new ProjectComparator());
         }
 
         myProjects.getAdapter().c();
