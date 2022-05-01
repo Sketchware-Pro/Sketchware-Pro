@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="cancel_button_label">Abbrechen</string>
-    <string name="choose_button_label">Auswählen</string>
-    <string name="label_parent_directory">Verzeichnis hoch</string>
-    <string name="last_edit">Zuletzt bearbeitet:</string>
-    <string name="error_dir_access">Verzeichnis kann nicht zugegriffen werden</string>
-</resources>
