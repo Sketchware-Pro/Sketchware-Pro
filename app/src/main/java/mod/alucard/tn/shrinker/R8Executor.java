@@ -17,17 +17,17 @@ import a.a.a.zy;
 public class R8Executor {
 
     private static final String TAG = "R8Executor";
-    private final DesignActivity.a buildingDialog;
+    private final DesignActivity.BuildAsyncTask buildingDialog;
     private final Dp mDp;
 
-    public R8Executor(Dp dp, DesignActivity.a Dialog) {
+    public R8Executor(Dp dp, DesignActivity.BuildAsyncTask Dialog) {
         buildingDialog = Dialog;
         mDp = dp;
     }
 
     public void preparingEnvironment() {
         long savedTimeMillis = System.currentTimeMillis();
-        buildingDialog.c("Compiling classes with R8...");
+        buildingDialog.setProgress("Compiling classes with R8...");
         Log.d(TAG + ":c", "Compiling classes with R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
@@ -84,7 +84,7 @@ public class R8Executor {
         } catch (Exception e) {
             StringWriter stringWriter = new StringWriter();
             e.printStackTrace(new PrintWriter(stringWriter));
-            buildingDialog.c(stringWriter.toString());
+            buildingDialog.setProgress(stringWriter.toString());
             Log.d(TAG, stringWriter.toString());
         }
     }

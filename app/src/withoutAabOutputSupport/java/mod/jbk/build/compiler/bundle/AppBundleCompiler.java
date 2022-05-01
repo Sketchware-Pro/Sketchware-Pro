@@ -2,7 +2,7 @@ package mod.jbk.build.compiler.bundle;
 
 import android.content.Context;
 
-import com.besome.sketch.design.DesignActivity;
+import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class AppBundleCompiler {
     public File appBundle;
     public File apkSet;
 
-    public AppBundleCompiler(Dp dp, DesignActivity.a designActivityA) {
+    public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityBuildAsyncTask) {
         mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
         appBundle = new File(dp.f.t, getBundleFilename(dp.f.d));
         apkSet = new File(dp.f.t, getApkSetFilename(dp.f.d));

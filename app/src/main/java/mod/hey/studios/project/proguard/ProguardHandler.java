@@ -1,6 +1,6 @@
 package mod.hey.studios.project.proguard;
 
-import com.besome.sketch.design.DesignActivity.a;
+import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -210,9 +210,9 @@ public class ProguardHandler {
         FileUtil.writeFile(fm_config_path, new Gson().toJson(fullModeLibs));
     }
 
-    public void start(a dialog, Dp dp) throws IOException {
+    public void start(BuildAsyncTask dialog, Dp dp) throws IOException {
         if (isProguardEnabled()) {
-            if (dialog != null) dialog.c("ProGuarding classes...");
+            if (dialog != null) dialog.setProgress("ProGuarding classes...");
             dp.runProguard();
         }
     }

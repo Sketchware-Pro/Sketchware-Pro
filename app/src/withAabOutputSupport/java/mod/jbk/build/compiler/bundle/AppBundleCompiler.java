@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.android.apksigner.ApkSignerTool;
 import com.android.tools.build.bundletool.BundleToolMain;
-import com.besome.sketch.design.DesignActivity;
+import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -35,13 +35,13 @@ public class AppBundleCompiler {
     public static final String MODULE_MANIFEST = "manifest";
 
     private static final String TAG = AppBundleCompiler.class.getSimpleName();
-    private final DesignActivity.a buildingDialog;
+    private final BuildAsyncTask buildingDialog;
     private final Dp mDp;
     public File mainModuleArchive;
     public File appBundle;
     public File apkSet;
 
-    public AppBundleCompiler(Dp dp, DesignActivity.a designActivityA) {
+    public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityA) {
         buildingDialog = designActivityA;
         mDp = dp;
         mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
@@ -76,7 +76,7 @@ public class AppBundleCompiler {
         try {
             BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
+            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
             LogUtil.e(TAG, "Failed to build APK Set: " + e.getMessage(), e);
         }
         LogUtil.d(TAG, "Building APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -98,7 +98,7 @@ public class AppBundleCompiler {
                 }
             }
         } catch (IOException e) {
-            if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
+            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
             LogUtil.e(TAG, "Failed to extract Install APK from APK Set: " + e.getMessage(), e);
         }
         LogUtil.d(TAG, "Extracting universal.apk from APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -124,7 +124,7 @@ public class AppBundleCompiler {
         try {
             BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
+            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
             LogUtil.e(TAG, "Failed to build bundle: " + e.getMessage(), e);
         }
         LogUtil.d(TAG, "Building app bundle took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -297,7 +297,7 @@ public class AppBundleCompiler {
         try {
             ApkSignerTool.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.aWithMessage(e.getMessage());
+            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
             LogUtil.e(TAG, "Failed to sign Install-APK: " + e.getMessage(), e);
         }
         LogUtil.d(TAG, "Signing Install-APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");

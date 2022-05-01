@@ -194,7 +194,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void e(int i) {
         if (i == 188) {
-            new a(getApplicationContext()).execute();
+            new BuildAsyncTask(getApplicationContext()).execute();
         }
     }
 
@@ -241,7 +241,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         switch (requestCode) {
             case 188:
-                new a(getApplicationContext()).execute();
+                new BuildAsyncTask(getApplicationContext()).execute();
                 break;
 
             case REQUEST_CODE_VIEW_MANAGER:
@@ -334,7 +334,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void onClick(View v) {
         if (!mB.a()) {
             if (v.getId() == Resources.id.btn_execute) {
-                new DesignActivity.a(getApplicationContext()).execute();
+                new BuildAsyncTask(getApplicationContext()).execute();
             } else if (v.getId() == Resources.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(Resources.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
@@ -879,23 +879,17 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    public class a extends MA implements OnCancelListener {
+    public class BuildAsyncTask extends MA implements OnCancelListener {
 
-        /**
-         * The actual BuildingDialog class
-         */
-        public Ep c;
-        /**
-         * Boolean indicating if building got cancelled and we should stop continuing
-         */
-        public boolean d = false;
+        private final Ep dialog;
+        private boolean canceled = false;
 
-        public a(Context context) {
+        public BuildAsyncTask(Context context) {
             super(context);
             DesignActivity.this.a((MA) this);
-            c = new Ep(DesignActivity.this);
-            d();
-            c.a(false);
+            dialog = new Ep(DesignActivity.this);
+            maybeShow();
+            dialog.a(false);
         }
 
         /**
@@ -908,7 +902,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             q.b();
-            c();
+            dismiss();
             runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
             runProject.setClickable(true);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -924,7 +918,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void a(String str) {
             runOnUiThread(() -> {
                 q.b();
-                c();
+                dismiss();
                 SketchwareUtil.toastError("APK build failed");
                 runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
                 runProject.setClickable(true);
@@ -932,7 +926,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             });
         }
 
-        public void aWithMessage(String message) {
+        public void showErrorToast(String message) {
             runOnUiThread(() -> {
                 a();
                 SketchwareUtil.toastError("APK build failed: " + message, Toast.LENGTH_LONG);
@@ -941,12 +935,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         protected void onProgressUpdate(String... values) {
-            c(values[0]);
+            setProgress(values[0]);
         }
 
         @Override
         public void b() {
-            if (d) {
+            if (canceled) {
                 cancel(true);
             } else {
                 BuildSettings buildSettings = new BuildSettings(q.b);
@@ -980,21 +974,21 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.i();
-                    if (d) {
+                    if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Extracting built-in libraries...");
                     mDp.j();
-                    if (d) {
+                    if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("AAPT2 is running...");
                     mDp.a();
-                    if (d) {
+                    if (canceled) {
                         cancel(true);
                         return;
                     }
@@ -1037,7 +1031,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Compile the regular, old way */
                         /* Compile Java classes */
                         mDp.f();
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
@@ -1045,7 +1039,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Encrypt Strings in classes if enabled */
                         StringfogHandler stringfogHandler = new StringfogHandler(q.b);
                         stringfogHandler.start(this, mDp);
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
@@ -1053,7 +1047,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Obfuscate classes if enabled */
                         ProguardHandler proguardHandler = new ProguardHandler(q.b);
                         proguardHandler.start(this, mDp);
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
@@ -1061,7 +1055,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Create DEX file(s) */
                         publishProgress(mDp.getDxRunningText());
                         mDp.c();
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
@@ -1069,21 +1063,21 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         /* Merge DEX file(s) with libraries' dexes */
                         publishProgress("Merging libraries' DEX files...");
                         mDp.h();
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
 
                         publishProgress("Building APK...");
                         mDp.g();
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
 
                         publishProgress("Aligning APK...");
                         mDp.runZipalign();
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
@@ -1095,7 +1089,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         } else {
                             mDp.k();
                         }
-                        if (d) {
+                        if (canceled) {
                             cancel(true);
                             return;
                         }
@@ -1137,10 +1131,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         /**
          * Dismiss this dialog, if DesignActivity hasn't been destroyed.
          */
-        public void c() {
+        private void dismiss() {
             if (!isDestroyed()) {
-                if (c.isShowing()) {
-                    c.dismiss();
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
                 }
             }
         }
@@ -1150,27 +1144,27 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          *
          * @param progressText The new text to display as progress
          */
-        public void c(String progressText) {
-            runOnUiThread(new DesignActRunnable(c, progressText));
+        public void setProgress(String progressText) {
+            runOnUiThread(new DesignActRunnable(dialog, progressText));
         }
 
         /**
          * Try to set this dialog's OnCancelListener as this, then show, unless already showing.
          */
-        public void d() {
-            if (!c.isShowing()) {
-                c.setOnCancelListener(this);
-                c.show();
+        private void maybeShow() {
+            if (!dialog.isShowing()) {
+                dialog.setOnCancelListener(this);
+                dialog.show();
             }
         }
 
         @Override
-        public void onCancel(DialogInterface dialog) {
-            if (!c.a()) {
-                c.a(true);
-                d();
+        public void onCancel(DialogInterface dialogInterface) {
+            if (!dialog.a()) {
+                dialog.a(true);
+                maybeShow();
                 publishProgress("Canceling build...");
-                d = true;
+                canceled = true;
             }
         }
 
@@ -1183,7 +1177,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
             q.b();
-            c();
+            dismiss();
         }
 
         @Override
