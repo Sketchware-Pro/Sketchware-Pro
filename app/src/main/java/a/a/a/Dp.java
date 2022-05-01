@@ -11,7 +11,7 @@ import android.text.format.Formatter;
 import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
-import com.besome.sketch.design.DesignActivity;
+import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 
@@ -81,7 +81,7 @@ public class Dp {
     private final File zipalignBinaryPath;
     public File aapt2Dir;
     public BuildSettings build_settings;
-    public DesignActivity.a buildingDialog;
+    public BuildAsyncTask buildingDialog;
     public Context e;
     public yq f;
     public FilePathUtil fpu;
@@ -161,9 +161,9 @@ public class Dp {
         o = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, o);
     }
 
-    public Dp(DesignActivity.a anA, Context context, yq yqVar) {
+    public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
         this(context, yqVar);
-        buildingDialog = anA;
+        buildingDialog = buildAsyncTask;
     }
 
     public Dp(Context context, yq yq, boolean buildAppBundle) {
@@ -814,7 +814,7 @@ public class Dp {
         /* If necessary, update android.jar.zip */
         if (a(m + File.separator + androidJarArchiveName, androidJarPath)) {
             if (buildingDialog != null) {
-                buildingDialog.c("Extracting built-in android.jar...");
+                buildingDialog.setProgress("Extracting built-in android.jar...");
             }
             /* Delete android.jar */
             g.c(l.getAbsolutePath() + c + "android.jar");
@@ -824,7 +824,7 @@ public class Dp {
         /* If necessary, update dexs.zip */
         if (a(m + File.separator + dexsArchiveName, dexsArchivePath)) {
             if (buildingDialog != null) {
-                buildingDialog.c("Extracting built-in libraries' DEX files...");
+                buildingDialog.setProgress("Extracting built-in libraries' DEX files...");
             }
             /* Delete the directory */
             g.b(dexsDirectoryPath);
@@ -836,7 +836,7 @@ public class Dp {
         /* If necessary, update libs.zip */
         if (a(m + File.separator + libsArchiveName, libsArchivePath)) {
             if (buildingDialog != null) {
-                buildingDialog.c("Extracting built-in libraries' resources...");
+                buildingDialog.setProgress("Extracting built-in libraries' resources...");
             }
             /* Delete the directory */
             g.b(libsDirectoryPath);
@@ -850,7 +850,7 @@ public class Dp {
         /* If necessary, update testkey.zip */
         if (a(m + File.separator + testkeyArchiveName, testkeyArchivePath)) {
             if (buildingDialog != null) {
-                buildingDialog.c("Extracting built-in signing keys...");
+                buildingDialog.setProgress("Extracting built-in signing keys...");
             }
             /* Delete the directory */
             g.b(testkeyDirectoryPath);

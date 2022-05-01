@@ -36,10 +36,10 @@ public class ResourceCompiler {
     private static final String TAG = "AppBuilder";
     private final boolean willBuildAppBundle;
     private final File aaptFile;
-    private final DesignActivity.a buildingDialog;
+    private final DesignActivity.BuildAsyncTask buildingDialog;
     private final Dp dp;
 
-    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, DesignActivity.a dialog) {
+    public ResourceCompiler(Dp dp, File aapt, boolean willBuildAppBundle, DesignActivity.BuildAsyncTask dialog) {
         this.willBuildAppBundle = willBuildAppBundle;
         aaptFile = aapt;
         buildingDialog = dialog;
@@ -53,7 +53,7 @@ public class ResourceCompiler {
         resourceCompiler.setProgressListener(new Compiler.ProgressListener() {
             @Override
             void onProgressUpdate(String newProgress) {
-                if (buildingDialog != null) buildingDialog.c(newProgress);
+                if (buildingDialog != null) buildingDialog.setProgress(newProgress);
             }
         });
         resourceCompiler.compile();

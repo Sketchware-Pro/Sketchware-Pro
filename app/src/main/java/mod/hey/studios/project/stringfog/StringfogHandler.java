@@ -1,6 +1,6 @@
 package mod.hey.studios.project.stringfog;
 
-import com.besome.sketch.design.DesignActivity.a;
+import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -58,12 +58,12 @@ public class StringfogHandler {
     /**
      * Check if StringFog is enabled for the project, and run it if it is.
      *
-     * @param dialog An optional {@link a} object, to update progress to the user
+     * @param dialog An optional {@link BuildAsyncTask} object, to update progress to the user
      * @param dp     The {@link Dp} object that's building the project
      */
-    public void start(a dialog, Dp dp) {
+    public void start(BuildAsyncTask dialog, Dp dp) {
         if (isStringfogEnabled()) {
-            if (dialog != null) dialog.c("Running StringFog...");
+            if (dialog != null) dialog.setProgress("Running StringFog...");
             dp.runStringfog();
         }
     }
