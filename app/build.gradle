@@ -85,5 +85,7 @@ dependencies {
         exclude group: "com.google.code.gson", module: "gson"
     }
 
+    implementation "de.hdodenhof:circleimageview:3.1.0"
+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
