@@ -25,9 +25,9 @@ public class AppBundleCompiler {
     public File apkSet;
 
     public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityBuildAsyncTask) {
-        mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.f.t, getBundleFilename(dp.f.d));
-        apkSet = new File(dp.f.t, getApkSetFilename(dp.f.d));
+        mainModuleArchive = new File(dp.yq.t, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(dp.yq.t, getBundleFilename(dp.yq.d));
+        apkSet = new File(dp.yq.t, getApkSetFilename(dp.yq.d));
     }
 
     public static String getApkSetFilename(String sc_id) {
