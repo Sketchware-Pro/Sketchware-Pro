@@ -69,7 +69,7 @@ public class Dp {
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
     private final File zipalignBinaryPath;
-    public File aapt2Dir;
+    private final File aapt2Dir;
     public BuildSettings build_settings;
     private BuildAsyncTask buildingDialog;
     private final Context context;
@@ -81,7 +81,7 @@ public class Dp {
      */
     public File tmpDirectory;
     private final Fp commandExecutor;
-    public File extractedBuiltInLibrariesDirectory;
+    private final File extractedBuiltInLibrariesDirectory;
     public ManageLocalLibrary mll;
     public Kp builtInLibraryManager;
     /**

@@ -100,14 +100,14 @@ public class ResourceCompiler {
 
         private final File aapt2;
         private final Dp buildHelper;
-        private final String compiledBuiltInLibraryResourcesDirectory;
+        private final File compiledBuiltInLibraryResourcesDirectory;
         private ProgressListener progressListener;
 
         public Aapt2Compiler(Dp buildHelper, File aapt2, boolean buildAppBundle) {
             this.buildHelper = buildHelper;
             this.aapt2 = aapt2;
             this.buildAppBundle = buildAppBundle;
-            compiledBuiltInLibraryResourcesDirectory = new File(buildHelper.tmpDirectory, "compiledLibs").getAbsolutePath();
+            compiledBuiltInLibraryResourcesDirectory = new File(SketchApplication.getContext().getCacheDir(), "compiledLibs");
         }
 
         @Override
@@ -333,7 +333,7 @@ public class ResourceCompiler {
         }
 
         private void compileBuiltInLibraryResources() throws zy, MissingFileException {
-            new File(compiledBuiltInLibraryResourcesDirectory).mkdirs();
+            compiledBuiltInLibraryResourcesDirectory.mkdirs();
             for (Jp builtInLibrary : buildHelper.builtInLibraryManager.a()) {
                 if (builtInLibrary.c()) {
                     File cachedCompiledResources = new File(compiledBuiltInLibraryResourcesDirectory, builtInLibrary.a() + ".zip");
