@@ -80,9 +80,6 @@ public class Dp {
     private final File extractedBuiltInLibrariesDirectory;
     public ManageLocalLibrary mll;
     public Kp builtInLibraryManager;
-    /**
-     * Path of the android.jar to use
-     */
     public String androidJarPath;
     public ProguardHandler proguard;
     public ProjectSettings settings;
@@ -125,13 +122,13 @@ public class Dp {
         zipalignBinary = new File(context.getCacheDir(), "zipalign");
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         builtInLibraryManager = new Kp();
-        androidJarPath = new File(extractedBuiltInLibrariesDirectory, "android.jar").getAbsolutePath();
+        File defaultAndroidJar = new File(extractedBuiltInLibrariesDirectory, "android.jar");
+        androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
         mll = new ManageLocalLibrary(yq.b);
         fpu = new FilePathUtil();
         settings = new ProjectSettings(yq.b);
         proguard = new ProguardHandler(yq.b);
         build_settings = new BuildSettings(yq.b);
-        androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, androidJarPath);
     }
 
     public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
