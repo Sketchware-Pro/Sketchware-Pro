@@ -22,6 +22,7 @@ import a.a.a.yq;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 
 public class AppBundleCompiler {
@@ -243,10 +244,8 @@ public class AppBundleCompiler {
                     ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.b).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
-                    String prependToLibraryName = mDp.extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + "libs" + File.separator;
-                    String appendToLibraryName = File.separator + "classes.jar";
                     for (Jp library : mDp.builtInLibraryManager.a()) {
-                        jars.add(new File(prependToLibraryName + library.a() + appendToLibraryName));
+                        jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
                     }
 
                     for (File jar : jars) {
