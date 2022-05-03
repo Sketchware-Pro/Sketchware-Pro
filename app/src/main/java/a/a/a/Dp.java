@@ -114,21 +114,21 @@ public class Dp {
             LogUtil.e(TAG, "Somehow failed to get package info about us!", e);
         }
 
+        zipalignBinary = new File(context.getCacheDir(), "zipalign");
+        aapt2Binary = new File(context.getCacheDir(), "aapt2");
+        build_settings = new BuildSettings(yq.b);
         this.context = context;
         yq = yqVar;
+        fpu = new FilePathUtil();
         fileUtil = new oB(false);
         commandExecutor = new Fp();
-        aapt2Binary = new File(context.getCacheDir(), "aapt2");
-        zipalignBinary = new File(context.getCacheDir(), "zipalign");
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
+        mll = new ManageLocalLibrary(yq.b);
         builtInLibraryManager = new Kp();
         File defaultAndroidJar = new File(extractedBuiltInLibrariesDirectory, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
-        mll = new ManageLocalLibrary(yq.b);
-        fpu = new FilePathUtil();
-        settings = new ProjectSettings(yq.b);
         proguard = new ProguardHandler(yq.b);
-        build_settings = new BuildSettings(yq.b);
+        settings = new ProjectSettings(yq.b);
     }
 
     public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
