@@ -44,9 +44,9 @@ public class AppBundleCompiler {
     public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityA) {
         buildingDialog = designActivityA;
         mDp = dp;
-        mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.f.t, getBundleFilename(dp.f.d));
-        apkSet = new File(dp.f.t, getApkSetFilename(dp.f.d));
+        mainModuleArchive = new File(dp.yq.t, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(dp.yq.t, getBundleFilename(dp.yq.d));
+        apkSet = new File(dp.yq.t, getApkSetFilename(dp.yq.d));
     }
 
     public static String getApkSetFilename(String sc_id) {
@@ -90,7 +90,7 @@ public class AppBundleCompiler {
 
                 while (entryInApkSet != null) {
                     if (entryInApkSet.getName().equals("universal.apk")) {
-                        FileUtil.writeBytes(new File(mDp.f.G), FileUtil.readFromInputStream(apkSetStream));
+                        FileUtil.writeBytes(new File(mDp.yq.G), FileUtil.readFromInputStream(apkSetStream));
                     }
 
                     apkSetStream.closeEntry();
@@ -113,7 +113,7 @@ public class AppBundleCompiler {
         args.add("--output=" + appBundle.getAbsolutePath());
         if (mDp.proguard.isDebugFilesEnabled()) {
             /* Add ProGuard mapping if available for automatic import to ProGuard mappings in Google Play */
-            File mapping = new File(mDp.f.printmapping);
+            File mapping = new File(mDp.yq.printmapping);
             if (mapping.exists()) {
                 args.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
                         mapping.getAbsolutePath());
@@ -143,12 +143,12 @@ public class AppBundleCompiler {
                 /* Finally, use it as ZipOutputStream */
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
                     /* Get an automatically closed FileInputStream of <project name>.apk.res */
-                    try (FileInputStream apkResStream = new FileInputStream(mDp.f.C)) {
+                    try (FileInputStream apkResStream = new FileInputStream(mDp.yq.C)) {
                         /* Create an automatically closed ZipInputStream of <project name>.apk.res */
                         try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
 
                             /* First, compress DEX files into module-main.zip */
-                            File[] binDirectoryContent = new File(mDp.f.t).listFiles();
+                            File[] binDirectoryContent = new File(mDp.yq.t).listFiles();
                             if (binDirectoryContent != null) {
                                 for (File file : binDirectoryContent) {
                                     if (file.isFile() && file.getName().endsWith(".dex")) {
@@ -212,7 +212,7 @@ public class AppBundleCompiler {
                         }
                     }
 
-                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.f.b));
+                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.yq.b));
                     File[] architectures = nativeLibrariesDirectory.listFiles();
 
                     if (architectures != null) {
@@ -240,12 +240,12 @@ public class AppBundleCompiler {
                     }
 
                     /* Start with enabled Local libraries' JARs */
-                    ArrayList<File> jars = new ManageLocalLibrary(mDp.f.b).getLocalLibraryJars();
+                    ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.b).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
-                    String prependToLibraryName = mDp.l.getAbsolutePath() + File.separator + mDp.m + File.separator;
+                    String prependToLibraryName = mDp.extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + "libs" + File.separator;
                     String appendToLibraryName = File.separator + "classes.jar";
-                    for (Jp library : mDp.n.a()) {
+                    for (Jp library : mDp.builtInLibraryManager.a()) {
                         jars.add(new File(prependToLibraryName + library.a() + appendToLibraryName));
                     }
 
@@ -285,13 +285,13 @@ public class AppBundleCompiler {
         ArrayList<String> args = new ArrayList<>();
         args.add("sign");
         args.add("--in");
-        args.add(mDp.f.G);
+        args.add(mDp.yq.G);
         args.add("--out");
-        args.add(mDp.f.H);
+        args.add(mDp.yq.H);
         args.add("--key");
-        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.pk8");
+        args.add((new File(mDp.extractedBuiltInLibrariesDirectory, "testkey")).getAbsolutePath() + File.separator + "testkey.pk8");
         args.add("--cert");
-        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.x509.pem");
+        args.add((new File(mDp.extractedBuiltInLibrariesDirectory, "testkey")).getAbsolutePath() + File.separator + "testkey.x509.pem");
 
         LogUtil.d(TAG, "Running ApkSignerTool with these arguments: " + args);
         try {

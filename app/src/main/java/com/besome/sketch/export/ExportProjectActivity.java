@@ -900,12 +900,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     if (signWithTestkey) {
                         ZipSigner signer = new ZipSigner();
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(c.f.alignedApkPath, c.f.I);
+                        signer.signZip(c.yq.alignedApkPath, c.yq.I);
                     } else {
                         if (isResultJarSigningEnabled()) {
                             c.b(new String(signingKeystorePassword), signingAliasName, signingAlgorithm);
                         } else {
-                            FileUtil.copyFile(c.f.G, getCorrectResultFilename(c.f.I));
+                            FileUtil.copyFile(c.yq.G, getCorrectResultFilename(c.yq.I));
                         }
                     }
                 }

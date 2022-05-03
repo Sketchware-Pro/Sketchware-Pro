@@ -1085,7 +1085,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         publishProgress("Signing APK...");
                         if (Build.VERSION.SDK_INT >= 26) {
                             ApkSigner signer = new ApkSigner(a);
-                            signer.signWithTestKey(mDp.f.alignedApkPath, mDp.f.H, null);
+                            signer.signWithTestKey(mDp.yq.alignedApkPath, mDp.yq.H, null);
                         } else {
                             mDp.k();
                         }
