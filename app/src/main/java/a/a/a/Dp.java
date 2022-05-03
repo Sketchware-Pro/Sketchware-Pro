@@ -76,10 +76,6 @@ public class Dp {
     public yq yq;
     public FilePathUtil fpu;
     private final oB fileUtil;
-    /**
-     * Directory "tmp" in files directory, where libs are extracted and compiled
-     */
-    public File tmpDirectory;
     private final Fp commandExecutor;
     private final File extractedBuiltInLibrariesDirectory;
     public ManageLocalLibrary mll;
@@ -125,14 +121,8 @@ public class Dp {
         yq = yqVar;
         fileUtil = new oB(false);
         commandExecutor = new Fp();
-        tmpDirectory = new File(context.getFilesDir(), "tmp");
-        if (!tmpDirectory.exists()) {
-            if (!tmpDirectory.mkdir()) {
-                throw new IllegalStateException("Couldn't create directory " + tmpDirectory.getAbsolutePath());
-            }
-        }
-        aapt2Dir = new File(tmpDirectory, "aapt2");
-        zipalignBinaryPath = new File(tmpDirectory, "zipalign");
+        aapt2Dir = new File(context.getCacheDir(), "aapt2");
+        zipalignBinaryPath = new File(context.getCacheDir(), "zipalign");
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         builtInLibraryManager = new Kp();
         androidJarPath = new File(extractedBuiltInLibrariesDirectory, "android.jar").getAbsolutePath();
