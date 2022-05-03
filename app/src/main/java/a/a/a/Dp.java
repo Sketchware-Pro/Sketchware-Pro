@@ -116,19 +116,19 @@ public class Dp {
 
         zipalignBinary = new File(context.getCacheDir(), "zipalign");
         aapt2Binary = new File(context.getCacheDir(), "aapt2");
-        build_settings = new BuildSettings(yq.b);
+        build_settings = new BuildSettings(yqVar.b);
         this.context = context;
         yq = yqVar;
         fpu = new FilePathUtil();
         fileUtil = new oB(false);
         commandExecutor = new Fp();
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
-        mll = new ManageLocalLibrary(yq.b);
+        mll = new ManageLocalLibrary(yqVar.b);
         builtInLibraryManager = new Kp();
         File defaultAndroidJar = new File(extractedBuiltInLibrariesDirectory, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
-        proguard = new ProguardHandler(yq.b);
-        settings = new ProjectSettings(yq.b);
+        proguard = new ProguardHandler(yqVar.b);
+        settings = new ProjectSettings(yqVar.b);
     }
 
     public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
