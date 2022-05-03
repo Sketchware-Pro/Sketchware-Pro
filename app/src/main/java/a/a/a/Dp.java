@@ -68,8 +68,8 @@ public class Dp {
      * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
-    private final File zipalignBinaryPath;
-    private final File aapt2Dir;
+    private final File zipalignBinary;
+    private final File aapt2Binary;
     public BuildSettings build_settings;
     private BuildAsyncTask buildingDialog;
     private final Context context;
@@ -121,8 +121,8 @@ public class Dp {
         yq = yqVar;
         fileUtil = new oB(false);
         commandExecutor = new Fp();
-        aapt2Dir = new File(context.getCacheDir(), "aapt2");
-        zipalignBinaryPath = new File(context.getCacheDir(), "zipalign");
+        aapt2Binary = new File(context.getCacheDir(), "aapt2");
+        zipalignBinary = new File(context.getCacheDir(), "zipalign");
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         builtInLibraryManager = new Kp();
         androidJarPath = new File(extractedBuiltInLibrariesDirectory, "android.jar").getAbsolutePath();
@@ -202,7 +202,7 @@ public class Dp {
     public void b() throws Exception {
         ResourceCompiler compiler = new ResourceCompiler(
                 this,
-                aapt2Dir,
+                aapt2Binary,
                 buildAppBundle,
                 buildingDialog);
         compiler.compile();
@@ -757,8 +757,8 @@ public class Dp {
         }
         try {
             /* Check if we need to update AAPT2's binary */
-            if (a(aapt2PathInAssets, aapt2Dir.getAbsolutePath())) {
-                makeExecutableCommand[2] = aapt2Dir.getAbsolutePath();
+            if (a(aapt2PathInAssets, aapt2Binary.getAbsolutePath())) {
+                makeExecutableCommand[2] = aapt2Binary.getAbsolutePath();
                 commandExecutor.a(makeExecutableCommand);
             }
         } catch (Exception e) {
@@ -1033,7 +1033,7 @@ public class Dp {
         maybeExtractZipalignBinary();
 
         ArrayList<String> args = new ArrayList<>();
-        args.add(zipalignBinaryPath.getAbsolutePath());
+        args.add(zipalignBinary.getAbsolutePath());
         args.add("-f");
         args.add("-p");
         args.add("4");
@@ -1055,8 +1055,8 @@ public class Dp {
 
         try {
             /* Check if we need to update zipalign's binary */
-            if (a(zipalignPathInAssets, zipalignBinaryPath.getAbsolutePath())) {
-                makeExecutableCommand[2] = zipalignBinaryPath.getAbsolutePath();
+            if (a(zipalignPathInAssets, zipalignBinary.getAbsolutePath())) {
+                makeExecutableCommand[2] = zipalignBinary.getAbsolutePath();
                 commandExecutor.a(makeExecutableCommand);
             }
         } catch (Exception e) {
