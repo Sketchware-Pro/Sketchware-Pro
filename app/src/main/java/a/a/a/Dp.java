@@ -784,8 +784,8 @@ public class Dp {
         String coreLambdaStubsJarPath = new File(extractedBuiltInLibrariesDirectory, coreLambdaStubsJarName).getAbsolutePath();
         String libsArchivePath = new File(extractedBuiltInLibrariesDirectory, libsArchiveName).getAbsolutePath();
         String testkeyArchivePath = new File(extractedBuiltInLibrariesDirectory, testkeyArchiveName).getAbsolutePath();
-        String dexsDirectoryPath = new File(extractedBuiltInLibrariesDirectory, "dexs").getAbsolutePath();
-        String libsDirectoryPath = new File(extractedBuiltInLibrariesDirectory, "libs").getAbsolutePath();
+        String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
+        String libsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH.getAbsolutePath();
         String testkeyDirectoryPath = new File(extractedBuiltInLibrariesDirectory, "testkey").getAbsolutePath();
 
         /* If necessary, update android.jar.zip */
