@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.help.ProgramInfoActivity;
 import com.besome.sketch.help.SystemSettingActivity;
 import com.besome.sketch.tools.NewKeyStoreActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.GB;
 import a.a.a.bB;
@@ -52,11 +51,11 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
 
     private void initialize(Context context) {
         mContext = context;
-        wB.a(context, this, 2131427502);
-        social_fb = findViewById(Resources.id.social_fb);
-        social_medium = findViewById(Resources.id.social_medium);
-        social_slack = findViewById(Resources.id.social_slack);
-        RecyclerView recyclerView = findViewById(Resources.id.menu_list);
+        wB.a(context, this, R.layout.main_drawer);
+        social_fb = findViewById(R.id.social_fb);
+        social_medium = findViewById(R.id.social_medium);
+        social_slack = findViewById(R.id.social_slack);
+        RecyclerView recyclerView = findViewById(R.id.menu_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new ci());
@@ -71,57 +70,53 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (!mB.a()) {
-            switch (view.getId()) {
-                case Resources.id.social_slack:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
-                    builder.setItems(new String[]{
-                                    xB.b().a(getContext(), Resources.string.main_drawer_context_menu_title_slack_invitation),
-                                    xB.b().a(getContext(), Resources.string.main_drawer_context_menu_title_slack_open)},
-                            (dialog, which) -> {
-                                if (which == 0) {
-                                    f();
-                                } else {
-                                    if (GB.h(mContext)) {
-                                        try {
-                                            mContext.startActivity(mContext.getPackageManager().getLaunchIntentForPackage("com.Slack"));
-                                        } catch (Exception e1) {
-                                            f();
-                                        }
-                                    } else {
-                                        bB.a(mContext, xB.b().a(getContext(), Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
+            int id = view.getId();
+            if (id == R.id.social_slack) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
+                builder.setItems(new String[]{
+                                xB.b().a(getContext(), R.string.main_drawer_context_menu_title_slack_invitation),
+                                xB.b().a(getContext(), R.string.main_drawer_context_menu_title_slack_open)},
+                        (dialog, which) -> {
+                            if (which == 0) {
+                                f();
+                            } else {
+                                if (GB.h(mContext)) {
+                                    try {
+                                        mContext.startActivity(mContext.getPackageManager().getLaunchIntentForPackage("com.Slack"));
+                                    } catch (Exception e1) {
+                                        f();
                                     }
+                                } else {
+                                    bB.a(mContext, xB.b().a(getContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
                                 }
-                            });
-                    AlertDialog create = builder.create();
-                    create.setCanceledOnTouchOutside(true);
-                    create.show();
-                    break;
-
-                case Resources.id.social_medium:
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.besome_blog_url)));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                        mContext.startActivity(intent);
-                    } catch (ActivityNotFoundException unused1) {
-                        mContext.startActivity(Intent.createChooser(
-                                new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.besome_blog_url))),
-                                xB.b().a(getContext(), 2131624976)
-                        ));
-                    }
-                    break;
-
-                case Resources.id.social_fb:
-                    String facebookUrl = mContext.getString(Resources.string.facebook_url);
-                    try {
-                        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookUrl)));
-                    } catch (Exception unused) {
-                        mContext.startActivity(Intent.createChooser(
-                                new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)),
-                                xB.b().a(getContext(), Resources.string.common_word_choose)));
-                    }
+                            }
+                        });
+                AlertDialog create = builder.create();
+                create.setCanceledOnTouchOutside(true);
+                create.show();
+            } else if (id == R.id.social_medium) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(R.string.besome_blog_url)));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                    mContext.startActivity(intent);
+                } catch (ActivityNotFoundException unused1) {
+                    mContext.startActivity(Intent.createChooser(
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(R.string.besome_blog_url))),
+                            xB.b().a(getContext(), R.string.common_word_choose)
+                    ));
+                }
+            } else if (id == R.id.social_fb) {
+                String facebookUrl = mContext.getString(R.string.facebook_url);
+                try {
+                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookUrl)));
+                } catch (Exception unused) {
+                    mContext.startActivity(Intent.createChooser(
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)),
+                            xB.b().a(getContext(), R.string.common_word_choose)));
+                }
             }
         }
     }
@@ -131,49 +126,49 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
      */
     private void initializeDrawerItems() {
         DrawerItem menuAboutModders = DrawerItem.MENU_ABOUT_MODDERS;
-        menuAboutModders.icon = Resources.drawable.side_menu_info_icon_over_white;
+        menuAboutModders.icon = R.drawable.side_menu_info_icon_over_white;
         menuAboutModders.title = "About Modders";
 
         DrawerItem menuChangelog = DrawerItem.MENU_CHANGELOG;
-        menuChangelog.icon = Resources.drawable.icon_file_white_96;
+        menuChangelog.icon = R.drawable.icon_file_white_96;
         menuChangelog.title = "Changelog";
 
         DrawerItem menuSystemSettings = DrawerItem.MENU_SYSTEM_SETTINGS;
-        menuSystemSettings.icon = Resources.drawable.side_menu_setting_icon_over_white;
-        menuSystemSettings.title = xB.b().a(getContext(), Resources.string.main_drawer_title_system_settings);
+        menuSystemSettings.icon = R.drawable.side_menu_setting_icon_over_white;
+        menuSystemSettings.title = xB.b().a(getContext(), R.string.main_drawer_title_system_settings);
 
         DrawerItem menuProgramInfo = DrawerItem.MENU_PROGRAM_INFO;
-        menuProgramInfo.icon = Resources.drawable.side_menu_info_icon_over_white;
-        menuProgramInfo.title = xB.b().a(getContext(), Resources.string.main_drawer_title_program_information);
+        menuProgramInfo.icon = R.drawable.side_menu_info_icon_over_white;
+        menuProgramInfo.title = xB.b().a(getContext(), R.string.main_drawer_title_program_information);
 
         DrawerItem menuDeveloperTools = DrawerItem.MENU_DEVELOPER_TOOLS;
-        menuDeveloperTools.icon = Resources.drawable.ic_export_his_white_48dp;
+        menuDeveloperTools.icon = R.drawable.ic_export_his_white_48dp;
         menuDeveloperTools.title = "Developer Tools";
 
         DrawerItem menuCreateKeystore = DrawerItem.MENU_CREATE_KEYSTORE;
-        menuCreateKeystore.icon = Resources.drawable.new_96;
+        menuCreateKeystore.icon = R.drawable.new_96;
         menuCreateKeystore.title = "Create Release Keystore";
     }
 
     private void f() {
         if (GB.h(mContext)) {
             try {
-                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getContext(), Resources.string.slack_url_primary)));
+                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getContext(), R.string.slack_url_primary)));
                 chooser.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 mContext.startActivity(Intent.createChooser(
                         chooser,
-                        xB.b().a(getContext(), Resources.string.common_word_choose)
+                        xB.b().a(getContext(), R.string.common_word_choose)
                 ));
             } catch (Exception e) {
-                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(Resources.string.slack_url_secondary)));
+                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getString(R.string.slack_url_secondary)));
                 chooser.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 mContext.startActivity(Intent.createChooser(
                         chooser,
-                        xB.b().a(getContext(), Resources.string.common_word_choose)
+                        xB.b().a(getContext(), R.string.common_word_choose)
                 ));
             }
         } else {
-            bB.a(mContext, xB.b().a(getContext(), Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
+            bB.a(mContext, xB.b().a(getContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -233,13 +228,13 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
         public RecyclerView.v b(ViewGroup viewGroup, int i) {
             if (i == 0) {
                 return new EmptyViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
-                        Resources.layout.main_drawer_header,
+                        R.layout.main_drawer_header,
                         viewGroup,
                         false
                 ));
             }
             return new MenuItemHolder(LayoutInflater.from(viewGroup.getContext()).inflate(
-                    Resources.layout.main_drawer_item,
+                    R.layout.main_drawer_item,
                     viewGroup,
                     false
             ));
@@ -270,13 +265,13 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
 
             public MenuItemHolder(View view) {
                 super(view);
-                u = view.findViewById(Resources.id.tv_menu_name);
-                t = view.findViewById(Resources.id.img_icon);
+                u = view.findViewById(R.id.tv_menu_name);
+                t = view.findViewById(R.id.img_icon);
                 view.setOnClickListener(this);
             }
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 if (!mB.a()) {
                     drawerItem = j() - 1;
                     int id = drawerItem;

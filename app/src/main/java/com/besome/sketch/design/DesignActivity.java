@@ -48,7 +48,7 @@ import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.HashMap;
@@ -176,7 +176,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(q.b).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.a(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(xB.b().a(getApplicationContext(), Resources.string.common_word_show), v -> {
+        snackbar.a(xB.b().a(getApplicationContext(), R.string.common_word_show), v -> {
             if (!mB.a()) {
                 snackbar.c();
                 Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
@@ -333,10 +333,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            if (v.getId() == Resources.id.btn_execute) {
+            if (v.getId() == R.id.btn_execute) {
                 new BuildAsyncTask(getApplicationContext()).execute();
-            } else if (v.getId() == Resources.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, findViewById(Resources.id.btn_compiler_opt));
+            } else if (v.getId() == R.id.btn_compiler_opt) {
+                PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
 
                 // TODO: Add nice title item(s) which are smaller, can't be selected, etc.
@@ -355,14 +355,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 2:
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    FileUtil.deleteFile(q.c);
-                                    runOnUiThread(() ->
-                                            SketchwareUtil.toast("Done cleaning temporary files!"));
-                                }
-                            }.start();
+                            new Thread(() -> {
+                                FileUtil.deleteFile(q.c);
+                                runOnUiThread(() ->
+                                        SketchwareUtil.toast("Done cleaning temporary files!"));
+                            }).start();
                             break;
 
                         case 3:
@@ -396,7 +393,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.design);
+        setContentView(R.layout.design);
         if (!j()) {
             finish();
         }
@@ -410,37 +407,37 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         r = new DB(getApplicationContext(), "P1");
         t = new DB(getApplicationContext(), "P12");
 
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().d(true);
         d().e(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        toolbar.setPopupTheme(Resources.style.ThemeOverlay_ToolbarMenu);
+        toolbar.setPopupTheme(R.style.ThemeOverlay_ToolbarMenu);
 
         // Replaced empty anonymous class with null
         getSupportFragmentManager().a((Xf.c) null);
-        drawer = findViewById(Resources.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(1 /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
-        coordinatorLayout = findViewById(Resources.id.layout_coordinator);
-        runProject = findViewById(Resources.id.btn_execute);
-        runProject.setText(xB.b().a(this, Resources.string.common_word_run));
+        coordinatorLayout = findViewById(R.id.layout_coordinator);
+        runProject = findViewById(R.id.btn_execute);
+        runProject.setText(xB.b().a(this, R.string.common_word_run));
         runProject.setOnClickListener(this);
-        findViewById(Resources.id.btn_compiler_opt).setOnClickListener(this);
-        xmlLayoutOrientation = findViewById(Resources.id.img_orientation);
-        projectFileSelector = findViewById(Resources.id.file_selector);
+        findViewById(R.id.btn_compiler_opt).setOnClickListener(this);
+        xmlLayoutOrientation = findViewById(R.id.img_orientation);
+        projectFileSelector = findViewById(R.id.file_selector);
         projectFileSelector.setScId(sc_id);
         projectFileSelector.setOnSelectedFileChangeListener((i, projectFileBean) -> {
             if (i == 0) {
                 if (viewTabAdapter != null && projectFileBean != null) {
                     int orientation = projectFileBean.orientation;
                     if (orientation == ProjectFileBean.ORIENTATION_PORTRAIT) {
-                        xmlLayoutOrientation.setImageResource(Resources.drawable.ic_screen_portrait_grey600_24dp);
+                        xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_portrait_grey600_24dp);
                     } else if (orientation == ProjectFileBean.ORIENTATION_LANDSCAPE) {
-                        xmlLayoutOrientation.setImageResource(Resources.drawable.ic_screen_landscape_grey600_24dp);
+                        xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_landscape_grey600_24dp);
                     } else {
-                        xmlLayoutOrientation.setImageResource(Resources.drawable.ic_screen_rotation_grey600_24dp);
+                        xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_rotation_grey600_24dp);
                     }
                     viewTabAdapter.a(projectFileBean);
                 }
@@ -459,7 +456,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        viewPager = findViewById(Resources.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), this));
         viewPager.setOffscreenPageLimit(3);
         viewPager.a(new ViewPager.e() {
@@ -513,25 +510,25 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             }
         });
         viewPager.getAdapter().b();
-        ((TabLayout) findViewById(Resources.id.tab_layout)).setupWithViewPager(viewPager);
+        ((TabLayout) findViewById(R.id.tab_layout)).setupWithViewPager(viewPager);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(Resources.menu.design_menu, menu);
+        getMenuInflater().inflate(R.menu.design_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId != Resources.id.design_actionbar_titleopen_drawer) {
-            if (itemId == Resources.id.design_option_menu_title_save_project) {
-                k();
-                new d(getApplicationContext()).execute();
+        if (itemId == R.id.design_actionbar_titleopen_drawer) {
+            if (!drawer.f(Gravity.END)) {
+                drawer.h(Gravity.END);
             }
-        } else if (!drawer.f(Gravity.END)) {
-            drawer.h(Gravity.END);
+        } else if (itemId == R.id.design_option_menu_title_save_project) {
+            k();
+            new d(getApplicationContext()).execute();
         }
 
         return super.onOptionsItemSelected(item);
@@ -590,10 +587,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_quit_title_exit_projet));
-        dialog.a(Resources.drawable.exit_96);
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.design_quit_message_confirm_save));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_quit_button_save_and_exit), v -> {
+        dialog.b(xB.b().a(getApplicationContext(), R.string.design_quit_title_exit_projet));
+        dialog.a(R.drawable.exit_96);
+        dialog.a(xB.b().a(getApplicationContext(), R.string.design_quit_message_confirm_save));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.design_quit_button_save_and_exit), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 try {
@@ -605,7 +602,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_exit), v -> {
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_exit), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 try {
@@ -617,7 +614,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        dialog.configureDefaultButton(xB.b().a(getApplicationContext(), Resources.string.common_word_cancel),
+        dialog.configureDefaultButton(xB.b().a(getApplicationContext(), R.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
@@ -627,10 +624,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void warnAboutInsufficientStorageSpace() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
-        dialog.a(Resources.drawable.break_warning_96_red);
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_message_insufficient_storage_space));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_ok),
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_warning));
+        dialog.a(R.drawable.break_warning_96_red);
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_insufficient_storage_space));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
@@ -638,10 +635,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.data_backup_96);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.design_restore_data_title));
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.design_restore_data_message_confirm));
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_restore), v -> {
+        dialog.a(R.drawable.data_backup_96);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.design_restore_data_title));
+        dialog.a(xB.b().a(getApplicationContext(), R.string.design_restore_data_message_confirm));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_restore), v -> {
             if (!mB.a()) {
                 boolean g = jC.c(sc_id).g();
                 boolean g2 = jC.b(sc_id).g();
@@ -680,7 +677,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), Resources.string.common_word_no), v -> {
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_no), v -> {
             B = false;
             dialog.dismiss();
         });
@@ -903,7 +900,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void a() {
             q.b();
             dismiss();
-            runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
+            runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
             runProject.setClickable(true);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -920,7 +917,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 q.b();
                 dismiss();
                 SketchwareUtil.toastError("APK build failed");
-                runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
+                runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
                 runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
@@ -1172,7 +1169,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void onCancelled() {
             super.onCancelled();
             runOnUiThread(() -> {
-                runProject.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_run));
+                runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
                 runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
@@ -1287,7 +1284,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a() {
-            bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
+            bB.a(a, xB.b().a(a, R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
             saveVersionCodeInformationToProject();
             h();
             jC.d(sc_id).f();
@@ -1297,7 +1294,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a(String str) {
-            bB.b(a, xB.b().a(a, Resources.string.common_error_failed_to_save), 0).show();
+            bB.b(a, xB.b().a(a, R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
             DesignActivity.this.h();
         }
 
@@ -1329,7 +1326,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a() {
-            bB.a(a, xB.b().a(a, Resources.string.common_message_complete_save), 0).show();
+            bB.a(a, xB.b().a(a, R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
             saveVersionCodeInformationToProject();
             h();
             finish();
@@ -1337,7 +1334,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a(String str) {
-            bB.b(a, xB.b().a(a, Resources.string.common_error_failed_to_save), 0).show();
+            bB.b(a, xB.b().a(a, R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
             h();
         }
 
@@ -1396,9 +1393,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public ViewPagerAdapter(Xf xf, Context context) {
             super(xf);
             labels = new String[]{
-                    xB.b().a(context, Resources.string.design_tab_title_view),
-                    xB.b().a(context, Resources.string.design_tab_title_event),
-                    xB.b().a(context, Resources.string.design_tab_title_component)};
+                    xB.b().a(context, R.string.design_tab_title_view),
+                    xB.b().a(context, R.string.design_tab_title_event),
+                    xB.b().a(context, R.string.design_tab_title_component)};
         }
 
         @Override
