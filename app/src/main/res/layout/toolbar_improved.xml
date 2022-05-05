@@ -11,7 +11,7 @@
     android:paddingBottom="8dp">
 
     <ImageView
-        android:id="@id/ig_toolbar_back"
+         android:id="@+id/ig_toolbar_back"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="8dp"
@@ -19,7 +19,7 @@
         android:src="@drawable/arrow_back_white_48dp" />
 
     <TextView
-        android:id="@id/tx_toolbar_title"
+        android:id="@+id/tx_toolbar_title"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
@@ -35,7 +35,7 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@id/ig_toolbar_load_file"
+        android:id="@+id/ig_toolbar_load_file"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="9dp"
