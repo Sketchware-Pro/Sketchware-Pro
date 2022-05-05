@@ -105,6 +105,7 @@ public class ManageEvent {
         }
         if (gx.a("RewardedVideoAd")) {
             listeners.add("rewardedAdLoadCallback");
+            listeners.add("fullScreenContentCallback");
         }
         if (gx.a("ListView")) {
             listeners.add("OnScrollListener");
@@ -1360,6 +1361,9 @@ public class ManageEvent {
         if (gx.a("RewardedVideoAd")) {
             list.add("onRewardAdFailedToLoad");
             list.add("onRewardAdLoaded");
+            list.add("onAdDismissedFullScreenContent");
+            list.add("onAdFailedToShowFullScreenContent");
+            list.add("onAdShowedFullScreenContent");
         }
         if (gx.a("FragmentAdapter")) {
             list.add("onTabAdded");
