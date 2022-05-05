@@ -1646,6 +1646,9 @@ public class Lx {
             case "InterstitialAd":
                 return "private String _ad_unit_id;";
 
+            case "RewardedVideoAd":
+                return "private String _reward_ad_unit_id;";
+
             default:
                 return "";
         }
