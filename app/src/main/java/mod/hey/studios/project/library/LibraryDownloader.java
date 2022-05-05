@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.android.tools.r8.D8;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -108,18 +108,18 @@ public class LibraryDownloader {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = context.getLayoutInflater();
-        View view = inflater.inflate(Resources.layout.library_downloader_dialog, null);
+        View view = inflater.inflate(R.layout.library_downloader_dialog, null);
 
-        final LinearLayout linear1 = view.findViewById(Resources.id.linear1);
-        final LinearLayout progressBarContainer = view.findViewById(Resources.id.linear3);
-        final ProgressBar progressbar1 = view.findViewById(Resources.id.progressbar1);
-        final LinearLayout libraryContainer = view.findViewById(Resources.id.linear4);
-        final TextView message = view.findViewById(Resources.id.textview3);
-        final LinearLayout start = view.findViewById(Resources.id.linear8);
-        final LinearLayout pause = view.findViewById(Resources.id.linear9);
-        final LinearLayout resume = view.findViewById(Resources.id.linear10);
-        final LinearLayout cancel = view.findViewById(Resources.id.linear11);
-        final EditText library = view.findViewById(Resources.id.edittext1);
+        final LinearLayout linear1 = view.findViewById(R.id.linear1);
+        final LinearLayout progressBarContainer = view.findViewById(R.id.linear3);
+        final ProgressBar progressbar1 = view.findViewById(R.id.progressbar1);
+        final LinearLayout libraryContainer = view.findViewById(R.id.linear4);
+        final TextView message = view.findViewById(R.id.textview3);
+        final LinearLayout start = view.findViewById(R.id.linear8);
+        final LinearLayout pause = view.findViewById(R.id.linear9);
+        final LinearLayout resume = view.findViewById(R.id.linear10);
+        final LinearLayout cancel = view.findViewById(R.id.linear11);
+        final EditText library = view.findViewById(R.id.edittext1);
 
         linear1.removeView(progressBarContainer);
 

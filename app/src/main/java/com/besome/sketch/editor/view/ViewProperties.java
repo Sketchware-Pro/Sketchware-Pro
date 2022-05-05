@@ -11,7 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.besome.sketch.ctrls.ViewIdSpinnerItem;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -41,9 +41,9 @@ public class ViewProperties extends RelativeLayout implements AdapterView.OnItem
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, Resources.layout.view_properties);
-        ((TextView) findViewById(Resources.id.btn_editproperties)).setText(xB.b().a(context, Resources.string.design_button_properties));
-        spnWidget = findViewById(Resources.id.spn_widget);
+        wB.a(context, this, R.layout.view_properties);
+        ((TextView) findViewById(R.id.btn_editproperties)).setText(xB.b().a(context, R.string.design_button_properties));
+        spnWidget = findViewById(R.id.spn_widget);
         spinnerItemAdapter = new SpinnerItemAdapter(context, viewsIdList);
         spnWidget.setAdapter(spinnerItemAdapter);
         spnWidget.setSelection(0);
@@ -109,7 +109,7 @@ public class ViewProperties extends RelativeLayout implements AdapterView.OnItem
                 viewIdSpinnerItem = (ViewIdSpinnerItem) convertView;
             } else {
                 viewIdSpinnerItem = new ViewIdSpinnerItem(context);
-                viewIdSpinnerItem.setTextSize(Resources.dimen.text_size_body_small);
+                viewIdSpinnerItem.setTextSize(R.dimen.text_size_body_small);
             }
             viewIdSpinnerItem.a(0, data.get(position), z);
             viewIdSpinnerItem.a(false, 0xff404040, 0xff404040);

@@ -29,7 +29,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class ManageJavaActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_file);
+        setContentView(R.layout.manage_file);
 
         sc_id = getIntent().getStringExtra("sc_id");
         Helper.fixFileprovider();
@@ -101,16 +101,16 @@ public class ManageJavaActivity extends Activity {
     }
 
     private void setupUI() {
-        ImageView back = findViewById(Resources.id.ig_toolbar_back);
-        TextView title = findViewById(Resources.id.tx_toolbar_title);
-        ImageView loadFile = findViewById(Resources.id.ig_toolbar_load_file);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        TextView title = findViewById(R.id.tx_toolbar_title);
+        ImageView loadFile = findViewById(R.id.ig_toolbar_load_file);
 
-        FloatingActionButton fab = findViewById(Resources.id.fab_plus);
+        FloatingActionButton fab = findViewById(R.id.fab_plus);
         fab.setOnClickListener(v -> showCreateDialog());
 
-        gridView = findViewById(Resources.id.list_file);
+        gridView = findViewById(R.id.list_file);
         gridView.setNumColumns(1);
-        noteNoFiles = findViewById(Resources.id.text_info);
+        noteNoFiles = findViewById(R.id.text_info);
         noteNoFiles.setText("No files");
 
         Helper.applyRippleToToolbarView(back);
@@ -146,50 +146,43 @@ public class ManageJavaActivity extends Activity {
 
     private void showCreateDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        View root = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
+        View root = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
 
-        final EditText inputName = root.findViewById(Resources.id.dialog_edittext_name);
-        final RadioGroup radio_fileType = root.findViewById(Resources.id.dialog_radio_filetype);
+        final EditText inputName = root.findViewById(R.id.dialog_edittext_name);
+        final RadioGroup radio_fileType = root.findViewById(R.id.dialog_radio_filetype);
 
-        root.findViewById(Resources.id.dialog_text_cancel)
-                .setOnClickListener(Helper.getDialogDismissListener(dialog));
-        root.findViewById(Resources.id.dialog_text_save)
-                .setOnClickListener(v -> {
-                    if (inputName.getText().toString().isEmpty()) {
-                        SketchwareUtil.toastError("Invalid file name");
-                        return;
-                    }
+        root.findViewById(R.id.dialog_text_cancel).setOnClickListener(Helper.getDialogDismissListener(dialog));
+        root.findViewById(R.id.dialog_text_save).setOnClickListener(v -> {
+            if (inputName.getText().toString().isEmpty()) {
+                SketchwareUtil.toastError("Invalid file name");
+                return;
+            }
 
-                    String name = inputName.getText().toString();
-                    String packageName = getCurrentPkgName();
+            String name = inputName.getText().toString();
+            String packageName = getCurrentPkgName();
 
-                    String newFileContent;
-                    switch (radio_fileType.getCheckedRadioButtonId()) {
-                        case Resources.id.dialog_radio_filetype_class:
-                            newFileContent = String.format(CLASS_TEMPLATE, packageName, name);
-                            break;
+            String newFileContent;
+            int checkedRadioButtonId = radio_fileType.getCheckedRadioButtonId();
+            if (checkedRadioButtonId == R.id.dialog_radio_filetype_class) {
+                newFileContent = String.format(CLASS_TEMPLATE, packageName, name);
+            } else if (checkedRadioButtonId == R.id.dialog_radio_filetype_activity) {
+                newFileContent = String.format(ACTIVITY_TEMPLATE, packageName, name);
+            } else if (checkedRadioButtonId == R.id.radio_button_folder) {
+                FileUtil.makeDir(new File(current_path, name).getAbsolutePath());
+                refresh();
+                SketchwareUtil.toast("Folder was created successfully");
+                dialog.dismiss();
+                return;
+            } else {
+                SketchwareUtil.toast("Select a file type");
+                return;
+            }
 
-                        case Resources.id.dialog_radio_filetype_activity:
-                            newFileContent = String.format(ACTIVITY_TEMPLATE, packageName, name);
-                            break;
-
-                        case Resources.id.radio_button_folder:
-                            FileUtil.makeDir(new File(current_path, name).getAbsolutePath());
-                            refresh();
-                            SketchwareUtil.toast("Folder was created successfully");
-                            dialog.dismiss();
-                            return;
-
-                        default:
-                            SketchwareUtil.toast("Select a file type");
-                            return;
-                    }
-
-                    FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
-                    refresh();
-                    SketchwareUtil.toast("File was created successfully");
-                    dialog.dismiss();
-                });
+            FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
+            refresh();
+            SketchwareUtil.toast("File was created successfully");
+            dialog.dismiss();
+        });
 
         dialog.setView(root);
         dialog.show();
@@ -238,9 +231,9 @@ public class ManageJavaActivity extends Activity {
     private void showRenameDialog(final int position) {
         boolean isFolder = adapter.isFolder(position);
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        LinearLayout root = (LinearLayout) getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
+        LinearLayout root = (LinearLayout) getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
 
-        final EditText filename = root.findViewById(Resources.id.edittext_change_name);
+        final EditText filename = root.findViewById(R.id.edittext_change_name);
         filename.setText(adapter.getFileName(position));
 
         CheckBox renameOccurrences = null;
@@ -269,33 +262,31 @@ public class ManageJavaActivity extends Activity {
         }
         CheckBox finalRenameOccurrences = renameOccurrences;
 
-        root.findViewById(Resources.id.text_cancel)
-                .setOnClickListener(Helper.getDialogDismissListener(dialog));
-        root.findViewById(Resources.id.text_save)
-                .setOnClickListener(view -> {
-                    if (!filename.getText().toString().isEmpty()) {
-                        if (!adapter.isFolder(position)) {
-                            if (frc.getJavaManifestList().contains(adapter.getFullName(position))) {
-                                frc.getJavaManifestList().remove(adapter.getFullName(position));
-                                FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                                SketchwareUtil.toast("NOTE: Removed Activity from manifest");
-                            }
-
-                            if (finalRenameOccurrences != null && finalRenameOccurrences.isChecked()) {
-                                String fileContent = FileUtil.readFile(adapter.getItem(position));
-                                FileUtil.writeFile(adapter.getItem(position),
-                                        fileContent.replaceAll(adapter.getFileNameWoExt(position),
-                                                FileUtil.getFileNameNoExtension(filename.getText().toString())));
-                            }
-                        }
-
-                        FileUtil.renameFile(adapter.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
-                        refresh();
-                        SketchwareUtil.toast("Renamed successfully");
+        root.findViewById(R.id.text_cancel).setOnClickListener(Helper.getDialogDismissListener(dialog));
+        root.findViewById(R.id.text_save).setOnClickListener(view -> {
+            if (!filename.getText().toString().isEmpty()) {
+                if (!adapter.isFolder(position)) {
+                    if (frc.getJavaManifestList().contains(adapter.getFullName(position))) {
+                        frc.getJavaManifestList().remove(adapter.getFullName(position));
+                        FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                        SketchwareUtil.toast("NOTE: Removed Activity from manifest");
                     }
 
-                    dialog.dismiss();
-                });
+                    if (finalRenameOccurrences != null && finalRenameOccurrences.isChecked()) {
+                        String fileContent = FileUtil.readFile(adapter.getItem(position));
+                        FileUtil.writeFile(adapter.getItem(position),
+                                fileContent.replaceAll(adapter.getFileNameWoExt(position),
+                                        FileUtil.getFileNameNoExtension(filename.getText().toString())));
+                    }
+                }
+
+                FileUtil.renameFile(adapter.getItem(position), new File(current_path, filename.getText().toString()).getAbsolutePath());
+                refresh();
+                SketchwareUtil.toast("Renamed successfully");
+            }
+
+            dialog.dismiss();
+        });
 
         dialog.setView(root);
         dialog.show();
@@ -312,7 +303,7 @@ public class ManageJavaActivity extends Activity {
                 .setMessage("Are you sure you want to delete this " + (adapter.isFolder(position) ? "folder" : "file") + "? "
                         + (isInManifest ? "This will also remove it from AndroidManifest. " : "")
                         + "This action cannot be reversed!")
-                .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> {
+                .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                     if (!adapter.isFolder(position) && isInManifest) {
                         frc.getJavaManifestList().remove(adapter.getFullName(position));
                         FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
@@ -322,7 +313,7 @@ public class ManageJavaActivity extends Activity {
                     refresh();
                     SketchwareUtil.toast("Deleted successfully");
                 })
-                .setNegativeButton(Resources.string.common_word_cancel, null)
+                .setNegativeButton(R.string.common_word_cancel, null)
                 .show();
     }
 
@@ -436,15 +427,15 @@ public class ManageJavaActivity extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.manage_java_item_hs, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
             }
 
-            TextView name = convertView.findViewById(Resources.id.title);
-            ImageView icon = convertView.findViewById(Resources.id.icon);
-            ImageView more = convertView.findViewById(Resources.id.more);
+            TextView name = convertView.findViewById(R.id.title);
+            ImageView icon = convertView.findViewById(R.id.icon);
+            ImageView more = convertView.findViewById(R.id.more);
 
             name.setText(getFileName(position));
-            icon.setImageResource(isFolder(position) ? Resources.drawable.ic_folder_48dp : Resources.drawable.java_96);
+            icon.setImageResource(isFolder(position) ? R.drawable.ic_folder_48dp : R.drawable.java_96);
 
             Helper.applyRipple(ManageJavaActivity.this, more);
 
@@ -455,7 +446,7 @@ public class ManageJavaActivity extends Activity {
 
         private void itemContextMenu(View v, int position, int gravity) {
             PopupMenu popupMenu = new PopupMenu(ManageJavaActivity.this, v, gravity);
-            popupMenu.inflate(Resources.menu.popup_menu_double);
+            popupMenu.inflate(R.menu.popup_menu_double);
 
             Menu popupMenuMenu = popupMenu.getMenu();
             popupMenuMenu.clear();

@@ -27,7 +27,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,8 +58,8 @@ public class AndroidManifestInjection extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.view_events);
-        RecyclerView dump = findViewById(Resources.id.list_events);
+        setContentView(R.layout.view_events);
+        RecyclerView dump = findViewById(R.id.list_events);
         base = (ViewGroup) dump.getParent();
         base.removeView(dump);
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
@@ -247,17 +247,17 @@ public class AndroidManifestInjection extends Activity {
 
     private void showLauncherActDialog(String actnamr) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.custom_dialog_attribute, null);
+        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
-        create.getWindow().setBackgroundDrawableResource(0x106000d);
-        final TextView btnSave = inflate.findViewById(Resources.id.dialog_btn_save);
-        final TextView btnCancel = inflate.findViewById(Resources.id.dialog_btn_cancel);
+        create.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        final TextView btnSave = inflate.findViewById(R.id.dialog_btn_save);
+        final TextView btnCancel = inflate.findViewById(R.id.dialog_btn_cancel);
 
-        final EditText inputRes = inflate.findViewById(Resources.id.dialog_input_res);
+        final EditText inputRes = inflate.findViewById(R.id.dialog_input_res);
         inputRes.setVisibility(View.GONE);
-        final EditText inputAttr = inflate.findViewById(Resources.id.dialog_input_attr);
+        final EditText inputAttr = inflate.findViewById(R.id.dialog_input_attr);
         inputAttr.setVisibility(View.GONE);
-        final EditText inputValue = inflate.findViewById(Resources.id.dialog_input_value);
+        final EditText inputValue = inflate.findViewById(R.id.dialog_input_value);
         final TextView textView = (TextView) ((ViewGroup) inputAttr.getParent()).getChildAt(0);
         textView.setText("Launcher Activity (e.g. main)");
         inputValue.setText(actnamr);
@@ -275,17 +275,17 @@ public class AndroidManifestInjection extends Activity {
 
     private void showAddActivityDialog() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.custom_dialog_attribute, null);
+        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
-        create.getWindow().setBackgroundDrawableResource(0x106000d);
-        final TextView btnSave = inflate.findViewById(Resources.id.dialog_btn_save);
-        final TextView btnCancel = inflate.findViewById(Resources.id.dialog_btn_cancel);
+        create.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        final TextView btnSave = inflate.findViewById(R.id.dialog_btn_save);
+        final TextView btnCancel = inflate.findViewById(R.id.dialog_btn_cancel);
 
-        final EditText inputRes = inflate.findViewById(Resources.id.dialog_input_res);
+        final EditText inputRes = inflate.findViewById(R.id.dialog_input_res);
         inputRes.setVisibility(View.GONE);
-        final EditText inputAttr = inflate.findViewById(Resources.id.dialog_input_attr);
+        final EditText inputAttr = inflate.findViewById(R.id.dialog_input_attr);
         inputAttr.setVisibility(View.GONE);
-        final EditText inputValue = inflate.findViewById(Resources.id.dialog_input_value);
+        final EditText inputValue = inflate.findViewById(R.id.dialog_input_value);
         final TextView textView = (TextView) ((ViewGroup) inputAttr.getParent()).getChildAt(0);
         textView.setText("Activity name");
         inputValue.setText(activityName);
@@ -472,18 +472,17 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void createToolbar(View v) {
-        View toolbar = getLayoutInflater().inflate(Resources.layout.toolbar_improved, null);
+        View toolbar = getLayoutInflater().inflate(R.layout.toolbar_improved, null);
 
-        ImageView _back = toolbar.findViewById(Resources.id.ig_toolbar_back);
+        ImageView _back = toolbar.findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(_back);
-        ImageView _quickSource = toolbar.findViewById(Resources.id.ig_toolbar_load_file);
+        ImageView _quickSource = toolbar.findViewById(R.id.ig_toolbar_load_file);
 
-        TextView _title = toolbar.findViewById(Resources.id.tx_toolbar_title);
+        TextView _title = toolbar.findViewById(R.id.tx_toolbar_title);
         _title.setText("AndroidManifest Manager");
         _back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        //todo:add & use actual resource id
-        _quickSource.setImageResource(this.getResources().getIdentifier("code_white_48", "drawable", this.getPackageName()));
+        _quickSource.setImageResource(R.drawable.code_white_48);
         _quickSource.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(_quickSource);
         _quickSource.setOnClickListener((v1 -> showQuickManifestSourceDialog()));
@@ -529,11 +528,11 @@ public class AndroidManifestInjection extends Activity {
     }
 
     private void makeup(View v, int icon, String title, String desc) {
-        View _view = getLayoutInflater().inflate(Resources.layout.manage_library_base_item, null);
-        ImageView _img = _view.findViewById(Resources.id.lib_icon);
-        TextView _title = _view.findViewById(Resources.id.lib_title);
-        TextView _desc = _view.findViewById(Resources.id.lib_desc);
-        TextView _un = _view.findViewById(Resources.id.tv_enable);
+        View _view = getLayoutInflater().inflate(R.layout.manage_library_base_item, null);
+        ImageView _img = _view.findViewById(R.id.lib_icon);
+        TextView _title = _view.findViewById(R.id.lib_title);
+        TextView _desc = _view.findViewById(R.id.lib_desc);
+        TextView _un = _view.findViewById(R.id.tv_enable);
 
         _un.setVisibility(View.GONE);
         _img.setImageResource(icon);
@@ -570,11 +569,11 @@ public class AndroidManifestInjection extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.custom_view_attribute, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, null);
             }
-            LinearLayout linearLayout = convertView.findViewById(Resources.id.cus_attr_layout);
-            TextView textView = convertView.findViewById(Resources.id.cus_attr_text);
-            final ImageView imageView = convertView.findViewById(Resources.id.cus_attr_btn);
+            LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
+            TextView textView = convertView.findViewById(R.id.cus_attr_text);
+            final ImageView imageView = convertView.findViewById(R.id.cus_attr_btn);
             imageView.setVisibility(View.GONE);
             a(linearLayout, (int) getDip(4), (int) getDip(2));
             textView.setText((String) list_map.get(position).get("act_name"));

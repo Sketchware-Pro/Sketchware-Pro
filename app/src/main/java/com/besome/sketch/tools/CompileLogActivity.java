@@ -20,7 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.besome.sketch.lib.base.BaseActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
@@ -42,15 +42,15 @@ public class CompileLogActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.compile_log);
+        setContentView(R.layout.compile_log);
 
         logViewerPreferences = getPreferences(Context.MODE_PRIVATE);
 
         View rootLayout = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-        ImageView back = findViewById(Resources.id.ig_toolbar_back);
-        TextView title = findViewById(Resources.id.tx_toolbar_title);
-        ImageView menu = findViewById(Resources.id.ig_toolbar_load_file);
-        tv_compile_log = findViewById(Resources.id.tv_compile_log);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
+        TextView title = findViewById(R.id.tx_toolbar_title);
+        ImageView menu = findViewById(R.id.ig_toolbar_load_file);
+        tv_compile_log = findViewById(R.id.tv_compile_log);
         err_hScroll = rootLayout.findViewWithTag("err_hScroll");
         err_vScroll = rootLayout.findViewWithTag("err_vScroll");
 
@@ -76,7 +76,7 @@ public class CompileLogActivity extends BaseActivity {
                     dpToPx(9),
                     dpToPx(9)
             );
-            delete.setImageResource(Resources.drawable.ic_delete_white_24dp);
+            delete.setImageResource(R.drawable.ic_delete_white_24dp);
             delete.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             ((ViewGroup) menu.getParent()).addView(delete, ((ViewGroup) menu.getParent()).indexOfChild(menu));
             Helper.applyRippleToToolbarView(delete);
@@ -93,7 +93,7 @@ public class CompileLogActivity extends BaseActivity {
             });
         }
 
-        menu.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
+        menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
         menu.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(menu);
 

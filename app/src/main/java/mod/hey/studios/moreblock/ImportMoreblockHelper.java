@@ -6,32 +6,32 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 public class ImportMoreblockHelper {
 
     public static TextView optimizedBlockView(Context context, String str) {
         TextView textView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                .inflate(Resources.layout.block_customview, null).findViewById(Resources.id.spec);
+                .inflate(R.layout.block_customview, null).findViewById(R.id.spec);
 
         textView.setText(ReturnMoreblockManager.getMbName(str));
         String moreblockChar = ReturnMoreblockManager.getMoreblockChar(str);
 
         switch (moreblockChar) {
             case "s":
-                textView.setBackgroundResource(Resources.drawable.block_string);
+                textView.setBackgroundResource(R.drawable.block_string);
                 break;
 
             case "b":
-                textView.setBackgroundResource(Resources.drawable.block_boolean);
+                textView.setBackgroundResource(R.drawable.block_boolean);
                 break;
 
             case "d":
-                textView.setBackgroundResource(Resources.drawable.block_num);
+                textView.setBackgroundResource(R.drawable.block_num);
                 break;
 
             default:
-                textView.setBackgroundResource(Resources.drawable.block_ori);
+                textView.setBackgroundResource(R.drawable.block_ori);
                 break;
         }
 

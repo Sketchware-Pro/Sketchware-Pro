@@ -2,6 +2,7 @@ package com.besome.sketch.editor.property;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.aB;
@@ -49,20 +50,20 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             tvName.setText(xB.b().a(getResources(), identifier));
             switch (key) {
                 case "property_ad_size":
-                    icon = Resources.drawable.widget_admob;
+                    icon = R.drawable.widget_admob;
                     break;
 
                 case "property_indeterminate":
-                    icon = Resources.drawable.event_on_accuracy_changed_48dp;
+                    icon = R.drawable.event_on_accuracy_changed_48dp;
                     break;
 
                 case "property_scale_type":
-                    icon = Resources.drawable.enlarge_48;
+                    icon = R.drawable.enlarge_48;
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -100,12 +101,12 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, Resources.layout.property_selector_item);
-        tvName = findViewById(Resources.id.tv_name);
-        tvValue = findViewById(Resources.id.tv_value);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_selector_item);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -116,8 +117,8 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
-        radioGroupContent = view.findViewById(Resources.id.rg_content);
+        View view = wB.a(getContext(), R.layout.property_popup_selector_single);
+        radioGroupContent = view.findViewById(R.id.rg_content);
 
         String[] items;
         switch (key) {
@@ -150,7 +151,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
 
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             int childCount = radioGroupContent.getChildCount();
             int counter = 0;
             while (true) {
@@ -169,14 +170,13 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private RadioButton a(String str) {
         RadioButton radioButton = new RadioButton(getContext());
-        radioButton.setTextSize(2, 12.0f);
+        radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.0f);
         radioButton.setText(str);
         radioButton.setTag(str);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(

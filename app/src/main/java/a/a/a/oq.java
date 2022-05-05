@@ -2,7 +2,7 @@ package a.a.a;
 
 import android.content.Context;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -30,168 +30,168 @@ public class oq {
             case "onResume":
             case "onPause":
             case "moreBlock":
-                return Resources.drawable.bg_event_type_activity;
+                return R.drawable.bg_event_type_activity;
 
             case "onBannerAdClicked":
             case "onClick":
-                return Resources.drawable.event_on_click_48dp;
+                return R.drawable.event_on_click_48dp;
 
             case "onCheckedChange":
-                return Resources.drawable.event_on_check_changed_48dp;
+                return R.drawable.event_on_check_changed_48dp;
 
             case "onItemSelected":
-                return Resources.drawable.event_on_item_selected_48dp;
+                return R.drawable.event_on_item_selected_48dp;
 
             case "onItemClicked":
-                return Resources.drawable.event_on_item_clicked_48dp;
+                return R.drawable.event_on_item_clicked_48dp;
 
             case "onItemLongClicked":
-                return Resources.drawable.event_on_item_long_clicked_48dp;
+                return R.drawable.event_on_item_long_clicked_48dp;
 
             case "onTextChanged":
-                return Resources.drawable.event_on_text_changed_48dp;
+                return R.drawable.event_on_text_changed_48dp;
 
             case "onPageStarted":
-                return Resources.drawable.event_on_page_started_48dp;
+                return R.drawable.event_on_page_started_48dp;
 
             case "onPageFinished":
-                return Resources.drawable.event_on_page_finished_48dp;
+                return R.drawable.event_on_page_finished_48dp;
 
             case "onProgressChanged":
-                return Resources.drawable.event_on_progress_changed_48dp;
+                return R.drawable.event_on_progress_changed_48dp;
 
             case "onStartTrackingTouch":
-                return Resources.drawable.event_on_start_tracking_touch_48dp;
+                return R.drawable.event_on_start_tracking_touch_48dp;
 
             case "onStopTrackingTouch":
-                return Resources.drawable.event_on_stop_tracking_touch_48dp;
+                return R.drawable.event_on_stop_tracking_touch_48dp;
 
             case "onAnimationStart":
-                return Resources.drawable.event_on_animation_start_48dp;
+                return R.drawable.event_on_animation_start_48dp;
 
             case "onAnimationEnd":
-                return Resources.drawable.event_on_animation_end_48dp;
+                return R.drawable.event_on_animation_end_48dp;
 
             case "onAnimationCancel":
-                return Resources.drawable.event_on_animation_cancel_48dp;
+                return R.drawable.event_on_animation_cancel_48dp;
 
             case "onAnimationRepeat":
-                return Resources.drawable.event_animation_repeat_48dp;
+                return R.drawable.event_animation_repeat_48dp;
 
             case "onBindCustomView":
-                return Resources.drawable.event_on_bind_custom_view_48dp;
+                return R.drawable.event_on_bind_custom_view_48dp;
 
             case "onDateChange":
-                return Resources.drawable.event_on_date_changed_48dp;
+                return R.drawable.event_on_date_changed_48dp;
 
             case "onChildAdded":
-                return Resources.drawable.event_on_child_added_48dp;
+                return R.drawable.event_on_child_added_48dp;
 
             case "onChildChanged":
-                return Resources.drawable.event_on_child_changed_48dp;
+                return R.drawable.event_on_child_changed_48dp;
 
             case "onChildMoved":
-                return Resources.drawable.event_on_child_moved_48dp;
+                return R.drawable.event_on_child_moved_48dp;
 
             case "onChildRemoved":
             case "onDeleteSuccess":
-                return Resources.drawable.event_on_child_removed_48dp;
+                return R.drawable.event_on_child_removed_48dp;
 
             case "onCancelled":
-                return Resources.drawable.event_on_cancelled_48dp;
+                return R.drawable.event_on_cancelled_48dp;
 
             case "onCreateUserComplete":
-                return Resources.drawable.event_on_create_user_complete_48dp;
+                return R.drawable.event_on_create_user_complete_48dp;
 
             case "onSignInUserComplete":
-                return Resources.drawable.event_on_signin_complete_48dp;
+                return R.drawable.event_on_signin_complete_48dp;
 
             case "onResetPasswordEmailSent":
-                return Resources.drawable.event_on_reset_password_email_sent_48dp;
+                return R.drawable.event_on_reset_password_email_sent_48dp;
 
             case "onSensorChanged":
-                return Resources.drawable.event_on_sensor_changed_48dp;
+                return R.drawable.event_on_sensor_changed_48dp;
 
             case "onAccuracyChanged":
-                return Resources.drawable.event_on_accuracy_changed_48dp;
+                return R.drawable.event_on_accuracy_changed_48dp;
 
             case "onInterstitialAdLoaded":
             case "onBannerAdLoaded":
-                return Resources.drawable.event_on_ad_loaded;
+                return R.drawable.event_on_ad_loaded;
 
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
             case "onFailure":
-                return Resources.drawable.event_on_ad_failed_to_load;
+                return R.drawable.event_on_ad_failed_to_load;
 
             case "onAdShowedFullScreenContent":
             case "onBannerAdOpened":
-                return Resources.drawable.event_on_ad_opened;
+                return R.drawable.event_on_ad_opened;
 
             case "onAdDismissedFullScreenContent":
             case "onBannerAdClosed":
-                return Resources.drawable.event_on_ad_closed;
+                return R.drawable.event_on_ad_closed;
 
             case "onUploadProgress":
-                return Resources.drawable.event_on_upload_progress_48dp;
+                return R.drawable.event_on_upload_progress_48dp;
 
             case "onDownloadProgress":
-                return Resources.drawable.event_on_download_progress_48dp;
+                return R.drawable.event_on_download_progress_48dp;
 
             case "onUploadSuccess":
-                return Resources.drawable.event_on_upload_success_48dp;
+                return R.drawable.event_on_upload_success_48dp;
 
             case "onDownloadSuccess":
-                return Resources.drawable.event_on_download_success_48dp;
+                return R.drawable.event_on_download_success_48dp;
 
             case "onPictureTaken":
-                return Resources.drawable.event_on_picture_taken_48dp;
+                return R.drawable.event_on_picture_taken_48dp;
 
             case "onPictureTakenCancel":
-                return Resources.drawable.event_on_picture_taken_cancel_48dp;
+                return R.drawable.event_on_picture_taken_cancel_48dp;
 
             case "onFilesPicked":
-                return Resources.drawable.event_on_file_picked_48dp;
+                return R.drawable.event_on_file_picked_48dp;
 
             case "onFilesPickedCancel":
-                return Resources.drawable.event_on_file_picked_cancel_48dp;
+                return R.drawable.event_on_file_picked_cancel_48dp;
 
             case "onResponse":
-                return Resources.drawable.event_on_response_48dp;
+                return R.drawable.event_on_response_48dp;
 
             case "onErrorResponse":
-                return Resources.drawable.event_on_error_response_48dp;
+                return R.drawable.event_on_error_response_48dp;
 
             case "onSpeechResult":
-                return Resources.drawable.event_on_speech_result;
+                return R.drawable.event_on_speech_result;
 
             case "onSpeechError":
-                return Resources.drawable.event_on_speech_error;
+                return R.drawable.event_on_speech_error;
 
             case "onConnected":
-                return Resources.drawable.event_on_connected_96;
+                return R.drawable.event_on_connected_96;
 
             case "onDataReceived":
-                return Resources.drawable.event_on_data_received_96;
+                return R.drawable.event_on_data_received_96;
 
             case "onDataSent":
-                return Resources.drawable.event_on_data_sent_96;
+                return R.drawable.event_on_data_sent_96;
 
             case "onConnectionError":
-                return Resources.drawable.event_on_connection_error_96;
+                return R.drawable.event_on_connection_error_96;
 
             case "onConnectionStopped":
-                return Resources.drawable.event_on_connection_stopped_96;
+                return R.drawable.event_on_connection_stopped_96;
 
             case "onLocationChanged":
-                return Resources.drawable.event_on_location_changed_96;
+                return R.drawable.event_on_location_changed_96;
 
             case "onMapReady":
-                return Resources.drawable.event_on_map_ready_96;
+                return R.drawable.event_on_map_ready_96;
 
             case "onMarkerClicked":
-                return Resources.drawable.event_on_marker_clicked_96;
+                return R.drawable.event_on_marker_clicked_96;
 
             case "onNothingSelected":
             case "beforeTextChanged":

@@ -32,7 +32,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,7 +58,7 @@ public class EventsMaker extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.add_custom_attribute);
+        setContentView(R.layout.add_custom_attribute);
         setToolbar();
         setupViews();
     }
@@ -76,8 +76,8 @@ public class EventsMaker extends Activity {
     }
 
     private void setupViews() {
-        FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
-        listView = findViewById(Resources.id.add_attr_listview);
+        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
+        listView = findViewById(R.id.add_attr_listview);
         ViewGroup base = (ViewGroup) listView.getParent();
         LinearLayout newLayout = newLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -118,7 +118,7 @@ public class EventsMaker extends Activity {
 
     private void showAddDial() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.add_new_listener, null);
+        View inflate = getLayoutInflater().inflate(R.layout.add_new_listener, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
         create.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -126,12 +126,12 @@ public class EventsMaker extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         create.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        TextView save = inflate.findViewById(Resources.id.save);
-        TextView cancel = inflate.findViewById(Resources.id.cancel);
-        final EditText customImport = inflate.findViewById(Resources.id.customimport);
-        final EditText code = inflate.findViewById(Resources.id.code);
-        final EditText name = inflate.findViewById(Resources.id.name);
-        final CheckBox separate = inflate.findViewById(Resources.id.separate);
+        TextView save = inflate.findViewById(R.id.save);
+        TextView cancel = inflate.findViewById(R.id.cancel);
+        final EditText customImport = inflate.findViewById(R.id.customimport);
+        final EditText code = inflate.findViewById(R.id.code);
+        final EditText name = inflate.findViewById(R.id.name);
+        final CheckBox separate = inflate.findViewById(R.id.separate);
         save.setOnClickListener(v -> {
             if (!name.getText().toString().equals("")) {
                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -183,7 +183,7 @@ public class EventsMaker extends Activity {
 
     private void editItemDialog(final int position) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.add_new_listener, null);
+        View inflate = getLayoutInflater().inflate(R.layout.add_new_listener, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
         create.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -191,12 +191,12 @@ public class EventsMaker extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         create.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        TextView save = inflate.findViewById(Resources.id.save);
-        TextView cancel = inflate.findViewById(Resources.id.cancel);
-        final EditText customImport = inflate.findViewById(Resources.id.customimport);
-        final EditText code = inflate.findViewById(Resources.id.code);
-        final EditText name = inflate.findViewById(Resources.id.name);
-        final CheckBox separate = inflate.findViewById(Resources.id.separate);
+        TextView save = inflate.findViewById(R.id.save);
+        TextView cancel = inflate.findViewById(R.id.cancel);
+        final EditText customImport = inflate.findViewById(R.id.customimport);
+        final EditText code = inflate.findViewById(R.id.code);
+        final EditText name = inflate.findViewById(R.id.name);
+        final CheckBox separate = inflate.findViewById(R.id.separate);
         name.setText(listMap.get(position).get("name").toString());
         code.setText(listMap.get(position).get("code").toString());
         customImport.setText(listMap.get(position).get("imports").toString());
@@ -365,13 +365,13 @@ public class EventsMaker extends Activity {
     }
 
     private void makeup(View view, int resIcon, String title, String description) {
-        View inflate = getLayoutInflater().inflate(Resources.layout.manage_library_base_item, null);
-        ImageView icon = inflate.findViewById(Resources.id.lib_icon);
-        inflate.findViewById(Resources.id.tv_enable).setVisibility(View.GONE);
+        View inflate = getLayoutInflater().inflate(R.layout.manage_library_base_item, null);
+        ImageView icon = inflate.findViewById(R.id.lib_icon);
+        inflate.findViewById(R.id.tv_enable).setVisibility(View.GONE);
         icon.setImageResource(resIcon);
         ((LinearLayout) icon.getParent()).setGravity(Gravity.CENTER);
-        ((TextView) inflate.findViewById(Resources.id.lib_title)).setText(title);
-        ((TextView) inflate.findViewById(Resources.id.lib_desc)).setText(description);
+        ((TextView) inflate.findViewById(R.id.lib_title)).setText(title);
+        ((TextView) inflate.findViewById(R.id.lib_desc)).setText(description);
         ((ViewGroup) view).addView(inflate);
     }
 
@@ -432,13 +432,13 @@ public class EventsMaker extends Activity {
     }
 
     private void setToolbar() {
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Event manager");
-        ImageView back_icon = findViewById(Resources.id.ig_toolbar_back);
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Event manager");
+        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
-        final ImageView more_icon = findViewById(Resources.id.ig_toolbar_load_file);
+        final ImageView more_icon = findViewById(R.id.ig_toolbar_load_file);
         more_icon.setVisibility(View.VISIBLE);
-        more_icon.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
+        more_icon.setImageResource(R.drawable.ic_more_vert_white_24dp);
         more_icon.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, more_icon);
             final Menu menu = popupMenu.getMenu();
@@ -492,16 +492,16 @@ public class EventsMaker extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.custom_view_pro, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, null);
             }
-            LinearLayout linearLayout = convertView.findViewById(Resources.id.custom_view_pro_background);
+            LinearLayout linearLayout = convertView.findViewById(R.id.custom_view_pro_background);
             a(linearLayout, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView imageView = convertView.findViewById(Resources.id.custom_view_pro_img);
-            TextView textView = convertView.findViewById(Resources.id.custom_view_pro_title);
-            imageView.setImageResource(Resources.drawable.event_on_response_48dp);
+            ImageView imageView = convertView.findViewById(R.id.custom_view_pro_img);
+            TextView textView = convertView.findViewById(R.id.custom_view_pro_title);
+            imageView.setImageResource(R.drawable.event_on_response_48dp);
             ((LinearLayout) imageView.getParent()).setGravity(Gravity.CENTER);
             textView.setText((String) _data.get(position).get("name"));
-            ((TextView) convertView.findViewById(Resources.id.custom_view_pro_subtitle)).setText(getNumOfEvents(textView.getText().toString()));
+            ((TextView) convertView.findViewById(R.id.custom_view_pro_subtitle)).setText(getNumOfEvents(textView.getText().toString()));
             linearLayout.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), EventsMakerDetails.class);

@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
-@SuppressLint({"ResourceType", "SetTextI18n"})
+@SuppressLint("SetTextI18n")
 public class ManageResourceActivity extends Activity implements View.OnClickListener {
 
     public CustomAdapter adapter;
@@ -93,11 +93,11 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
     }
 
     public void initToolbar() {
-        ((TextView) findViewById(2131232458)).setText("Resource Manager");
-        ImageView back = findViewById(2131232457);
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Resource Manager");
+        ImageView back = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        load_file = findViewById(2131232459);
+        load_file = findViewById(R.id.ig_toolbar_load_file);
         Helper.applyRippleToToolbarView(load_file);
         load_file.setOnClickListener(view -> dialog.show());
     }
@@ -125,18 +125,18 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     private void createNewDialog(final boolean isFolder) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427800, null);
-        final EditText editText = (EditText) inflate.findViewById(2131232463);
-        TextView cancel = (TextView) inflate.findViewById(2131232464);
-        TextView save = (TextView) inflate.findViewById(2131232465);
-        ((RadioGroup) inflate.findViewById(2131232460)).setVisibility(View.GONE);
-        ((TextView) inflate.findViewById(2131232509)).setText(isFolder ? "Create a new folder" : "Create a new file");
+        View inflate = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        final EditText editText = inflate.findViewById(R.id.dialog_edittext_name);
+        TextView cancel = inflate.findViewById(R.id.dialog_text_cancel);
+        TextView save = inflate.findViewById(R.id.dialog_text_save);
+        inflate.findViewById(R.id.dialog_radio_filetype).setVisibility(View.GONE);
+        ((TextView) inflate.findViewById(R.id.dialog_create_new_file_layoutTitle)).setText(isFolder ? "Create a new folder" : "Create a new file");
         if (!isFolder) editText.setText(".xml");
         cancel.setOnClickListener(v -> create.dismiss());
         save.setOnClickListener(v -> {
             String path;
             if (editText.getText().toString().isEmpty()) {
-                bB.b(getApplicationContext(), "Invalid name", 0).show();
+                bB.b(getApplicationContext(), "Invalid name", bB.TOAST_NORMAL).show();
                 return;
             }
             String name = editText.getText().toString();
@@ -146,7 +146,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                 path = new File(temp + File.separator + name).getAbsolutePath();
             }
             if (FileUtil.isExistFile(path)) {
-                bB.b(getApplicationContext(), "File exists already", 0).show();
+                bB.b(getApplicationContext(), "File exists already", bB.TOAST_NORMAL).show();
                 return;
             }
             if (isFolder) {
@@ -155,7 +155,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                 FileUtil.writeFile(path, "<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             }
             handleAdapter(temp);
-            bB.a(getApplicationContext(), "Created file successfully", 0).show();
+            bB.a(getApplicationContext(), "Created file successfully", bB.TOAST_NORMAL).show();
             create.dismiss();
         });
         create.setOnDismissListener(dialogInterface -> SketchwareUtil.hideKeyboard());
@@ -168,15 +168,15 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427785);
+        setContentView(R.layout.manage_file);
         if (getIntent().hasExtra("sc_id")) {
             numProj = getIntent().getStringExtra("sc_id");
         }
         Helper.fixFileprovider();
-        gridView = findViewById(2131232359);
+        gridView = findViewById(R.id.list_file);
         gridView.setNumColumns(1);
-        fab = findViewById(2131232360);
-        tv = findViewById(2131232361);
+        fab = findViewById(R.id.fab_plus);
+        tv = findViewById(R.id.text_info);
         tv.setVisibility(View.GONE);
         frc = new FileResConfig(numProj);
         fpu = new FilePathUtil();
@@ -222,7 +222,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                 try {
                     FileUtil.copyDirectory(new File(path), new File(temp + File.separator + Uri.parse(path).getLastPathSegment()));
                 } catch (IOException e) {
-                    bB.b(getApplicationContext(), "Couldn't import resource! [" + e.getMessage() + "]", 0).show();
+                    bB.b(getApplicationContext(), "Couldn't import resource! [" + e.getMessage() + "]", bB.TOAST_NORMAL).show();
                 }
             }
             handleAdapter(temp);
@@ -232,20 +232,20 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     public void showDialog(final String path) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(2131427790, null);
-        final EditText editText = (EditText) inflate.findViewById(2131232375);
+        View inflate = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
+        final EditText editText = inflate.findViewById(R.id.edittext_change_name);
         try {
             editText.setText(path.substring(path.lastIndexOf("/") + 1));
         } catch (IndexOutOfBoundsException e) {
             editText.setText(path);
         }
-        ((TextView) inflate.findViewById(2131232376)).setOnClickListener(v -> create.dismiss());
-        ((TextView) inflate.findViewById(2131232377)).setOnClickListener(v -> {
+        inflate.findViewById(R.id.text_cancel).setOnClickListener(v -> create.dismiss());
+        inflate.findViewById(R.id.text_save).setOnClickListener(v -> {
             if (!editText.getText().toString().isEmpty()) {
                 if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf("/")) + "/" + editText.getText().toString())) {
-                    bB.a(getApplicationContext(), "Renamed successfully", 0).show();
+                    bB.a(getApplicationContext(), "Renamed successfully", bB.TOAST_NORMAL).show();
                 } else {
-                    bB.b(getApplicationContext(), "Renaming failed", 0).show();
+                    bB.b(getApplicationContext(), "Renaming failed", bB.TOAST_NORMAL).show();
                 }
                 handleAdapter(temp);
                 handleFab();
@@ -268,7 +268,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                 .setPositiveButton("Delete", (dialog, which) -> {
                     FileUtil.deleteFile(frc.listFileResource.get(position));
                     handleAdapter(temp);
-                    bB.a(getApplicationContext(), "Deleted", 0).show();
+                    bB.a(getApplicationContext(), "Deleted", bB.TOAST_NORMAL).show();
                 })
                 .setNegativeButton("Cancel", null)
                 .create().show();
@@ -288,7 +288,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
             startActivity(intent);
             return;
         }
-        bB.a(getApplicationContext(), "Only XML files can be edited", 0).show();
+        bB.a(getApplicationContext(), "Only XML files can be edited", bB.TOAST_NORMAL).show();
     }
 
     public class CustomAdapter extends BaseAdapter {
@@ -311,37 +311,37 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
         @Override
         public long getItemId(int position) {
-            return (long) position;
+            return position;
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427823, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
             }
-            TextView name = (TextView) convertView.findViewById(2131231837);
-            ImageView icon = (ImageView) convertView.findViewById(2131231090);
-            ImageView more = (ImageView) convertView.findViewById(2131232627);
+            TextView name = convertView.findViewById(R.id.title);
+            ImageView icon = convertView.findViewById(R.id.icon);
+            ImageView more = convertView.findViewById(R.id.more);
             more.setVisibility(FileUtil.isDirectory(getItem(position)) ? View.GONE : View.VISIBLE);
             name.setText(Uri.parse(getItem(position)).getLastPathSegment());
 
             if (FileUtil.isDirectory(getItem(position))) {
-                icon.setImageResource(Resources.drawable.ic_folder_48dp);
+                icon.setImageResource(R.drawable.ic_folder_48dp);
             } else {
                 try {
                     if (FileUtil.isImageFile(getItem(position))) {
                         Glide.with(ManageResourceActivity.this).load(new File(getItem(position))).into(icon);
                     } else {
-                        icon.setImageResource(Resources.drawable.file_48_blue);
+                        icon.setImageResource(R.drawable.file_48_blue);
                     }
                 } catch (Exception ignored) {
-                    icon.setImageResource(Resources.drawable.file_48_blue);
+                    icon.setImageResource(R.drawable.file_48_blue);
                 }
             }
 
             more.setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageResourceActivity.this, v);
-                popupMenu.inflate(2131492893);
+                popupMenu.inflate(R.menu.popup_menu_double);
                 popupMenu.getMenu().getItem(0).setVisible(false);
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getTitle().toString()) {

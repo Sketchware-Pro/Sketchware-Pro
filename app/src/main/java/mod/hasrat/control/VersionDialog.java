@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.mB;
 import mod.hasrat.dialog.SketchDialog;
@@ -29,7 +29,7 @@ public class VersionDialog {
     public void show() {
         final SketchDialog dialog = new SketchDialog(activity);
         dialog.setTitle("Advanced Version Control");
-        dialog.setIcon(Resources.drawable.numbers_48);
+        dialog.setIcon(R.drawable.numbers_48);
         final LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.VERTICAL);
 
@@ -129,35 +129,33 @@ public class VersionDialog {
             version_name2.setText(activity.projectVersionNameView.getText().toString().split(" ")[1]);
         }
         dialog.setView(root);
-        dialog.setPositiveButton(activity.getString(Resources.string.common_word_save),
-                v -> {
-                    final String versionCode = version_code.getText().toString();
-                    final String versionName = version_name1.getText().toString();
-                    final String versionNamePostfix = version_name2.getText().toString();
+        dialog.setPositiveButton(activity.getString(R.string.common_word_save), v -> {
+            final String versionCode = version_code.getText().toString();
+            final String versionName = version_name1.getText().toString();
+            final String versionNamePostfix = version_name2.getText().toString();
 
-                    boolean validVersionCode = !TextUtils.isEmpty(versionCode);
-                    boolean validVersionName = !TextUtils.isEmpty(versionName);
+            boolean validVersionCode = !TextUtils.isEmpty(versionCode);
+            boolean validVersionName = !TextUtils.isEmpty(versionName);
 
-                    if (validVersionCode) {
-                        version_code.setError(null);
-                    } else {
-                        version_code.setError("Invalid Version Code");
-                    }
+            if (validVersionCode) {
+                version_code.setError(null);
+            } else {
+                version_code.setError("Invalid Version Code");
+            }
 
-                    if (validVersionName) {
-                        version_name1.setError(null);
-                    } else {
-                        version_name1.setError("Invalid Version Name");
-                    }
+            if (validVersionName) {
+                version_name1.setError(null);
+            } else {
+                version_name1.setError("Invalid Version Name");
+            }
 
-                    if (!mB.a() && validVersionCode && validVersionName) {
-                        activity.projectVersionCodeView.setText(versionCode);
-                        activity.projectVersionNameView.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
-                        dialog.dismiss();
-                    }
-                });
-        dialog.setNegativeButton(activity.getString(Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+            if (!mB.a() && validVersionCode && validVersionName) {
+                activity.projectVersionCodeView.setText(versionCode);
+                activity.projectVersionNameView.setText(versionNamePostfix.length() > 0 ? (versionName + " " + versionNamePostfix) : versionName);
+                dialog.dismiss();
+            }
+        });
+        dialog.setNegativeButton(activity.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

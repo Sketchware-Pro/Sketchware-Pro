@@ -23,7 +23,7 @@ import com.android.annotations.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.HashMap;
@@ -206,14 +206,14 @@ public class ConfigActivity extends Activity {
         _base.setOrientation(LinearLayout.VERTICAL);
         _base.setLayoutParams(_lp);
 
-        View toolbar = getLayoutInflater().inflate(Resources.layout.toolbar_improved, root, false);
+        View toolbar = getLayoutInflater().inflate(R.layout.toolbar_improved, root, false);
         _base.addView(toolbar);
         _base.addView(_scroll);
         _scroll.addView(root);
         setContentView(_base);
 
-        ImageView toolbar_back = toolbar.findViewById(Resources.id.ig_toolbar_back);
-        TextView toolbar_title = toolbar.findViewById(Resources.id.tx_toolbar_title);
+        ImageView toolbar_back = toolbar.findViewById(R.id.ig_toolbar_back);
+        TextView toolbar_title = toolbar.findViewById(R.id.tx_toolbar_title);
         toolbar_back.setClickable(true);
         toolbar_back.setFocusable(true);
         Helper.applyRippleToToolbarView(toolbar_back);
@@ -260,7 +260,7 @@ public class ConfigActivity extends Activity {
                     new AlertDialog.Builder(this)
                             .setTitle("Backup directory")
                             .setView(container)
-                            .setPositiveButton(Resources.string.common_word_save, (dialogInterface, which) -> {
+                            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
                                 ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
                                 SketchwareUtil.toast("Saved");
                             })

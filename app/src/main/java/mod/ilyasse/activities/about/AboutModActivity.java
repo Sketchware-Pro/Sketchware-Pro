@@ -40,7 +40,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.LongSerializationPolicy;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,26 +78,26 @@ public class AboutModActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.about);
+        setContentView(R.layout.about);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        fabLabel = findViewById(Resources.id.fab_label);
-        fab = findViewById(Resources.id.fab);
-        LinearLayout loading = findViewById(Resources.id.loading_view);
-        tablayout = findViewById(Resources.id.tab_layout);
-        ImageView back = findViewById(Resources.id.img_back);
-        root = findViewById(Resources.id.root);
-        trash = findViewById(Resources.id.trash);
+        fabLabel = findViewById(R.id.fab_label);
+        fab = findViewById(R.id.fab);
+        LinearLayout loading = findViewById(R.id.loading_view);
+        tablayout = findViewById(R.id.tab_layout);
+        ImageView back = findViewById(R.id.img_back);
+        root = findViewById(R.id.root);
+        trash = findViewById(R.id.trash);
         //TODO: Rename layout1, layout2, etc. resource IDs to more descriptive names
-        moddersRecyclerContainer = findViewById(Resources.id.layout1);
-        changelogRecyclerContainer = findViewById(Resources.id.layout2);
-        moddersRecycler = findViewById(Resources.id.recyclerview1);
-        changelogRecycler = findViewById(Resources.id.recyclerview2);
-        loadingTitle = findViewById(Resources.id.tv_loading);
-        loadingDescription = findViewById(Resources.id.tv_loading_desc);
+        moddersRecyclerContainer = findViewById(R.id.layout1);
+        changelogRecyclerContainer = findViewById(R.id.layout2);
+        moddersRecycler = findViewById(R.id.recyclerview1);
+        changelogRecycler = findViewById(R.id.recyclerview2);
+        loadingTitle = findViewById(R.id.tv_loading);
+        loadingDescription = findViewById(R.id.tv_loading_desc);
         requestData = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
 
@@ -278,7 +278,7 @@ public class AboutModActivity extends AppCompatActivity {
     private void circularImage(final ImageView image, final String url) {
         Glide.with(this)
                 .load(url)
-                .placeholder(Resources.drawable.ic_user)
+                .placeholder(R.drawable.ic_user)
                 .into(image);
     }
 
@@ -333,9 +333,9 @@ public class AboutModActivity extends AppCompatActivity {
         @Override
         public Object a(ViewGroup container, int position) {
             LayoutInflater inflater = getLayoutInflater();
-            View v = inflater.inflate(Resources.layout.about_empty_viewpager, null);
+            View v = inflater.inflate(R.layout.about_empty_viewpager, null);
 
-            LinearLayout viewContainer = v.findViewById(Resources.id.linearLayout);
+            LinearLayout viewContainer = v.findViewById(R.id.linearLayout);
 
             if (position == 0) {
                 ViewGroup parent = (ViewGroup) moddersRecyclerContainer.getParent();
@@ -366,7 +366,7 @@ public class AboutModActivity extends AppCompatActivity {
                     majorChanges.setPadding(eightDp, eightDp, eightDp, eightDp);
 
                     majorChanges.setTextColor(ContextCompat.getColor(AboutModActivity.this,
-                            Resources.color.primary_text_default_material_light));
+                            R.color.primary_text_default_material_light));
                     majorChanges.setTextSize(14);
                 }
 
@@ -431,7 +431,7 @@ public class AboutModActivity extends AppCompatActivity {
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            View v = getLayoutInflater().inflate(Resources.layout.about_moddersview, null);
+            View v = getLayoutInflater().inflate(R.layout.about_moddersview, null);
             v.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -445,11 +445,11 @@ public class AboutModActivity extends AppCompatActivity {
             // RecyclerView$ViewHolder.itemView got obfuscated to RecyclerView$c.b
             View itemView = holder.b;
 
-            final TextView title = itemView.findViewById(Resources.id.tv_title);
-            final LinearLayout sidebar = itemView.findViewById(Resources.id.view_leftline);
-            final ImageView userIcon = itemView.findViewById(Resources.id.img_user_icon);
-            final TextView userName = itemView.findViewById(Resources.id.tv_user_name);
-            final TextView description = itemView.findViewById(Resources.id.tv_description);
+            final TextView title = itemView.findViewById(R.id.tv_title);
+            final LinearLayout sidebar = itemView.findViewById(R.id.view_leftline);
+            final ImageView userIcon = itemView.findViewById(R.id.img_user_icon);
+            final TextView userName = itemView.findViewById(R.id.tv_user_name);
+            final TextView description = itemView.findViewById(R.id.tv_description);
 
             Object modder_img = modders.get(position).get("modder_img");
             if (modder_img instanceof String) {
@@ -532,7 +532,7 @@ public class AboutModActivity extends AppCompatActivity {
         // got obfuscated to RecyclerView$a<VH extends RecyclerView.v>.b(ViewGroup, int)
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            View aboutChangelog = getLayoutInflater().inflate(Resources.layout.about_changelog, null);
+            View aboutChangelog = getLayoutInflater().inflate(R.layout.about_changelog, null);
             aboutChangelog.setLayoutParams(new RecyclerView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -551,10 +551,10 @@ public class AboutModActivity extends AppCompatActivity {
             //<del>i'll let you guys fix resources issue cuz idk what the hell is this.<\del>
             //get less lazy when.
             final TextView variant = itemView.findViewWithTag("tv_variant");
-            final LinearLayout leftLine = itemView.findViewById(Resources.id.view_leftline);
-            final TextView title = itemView.findViewById(Resources.id.tv_title);
-            final TextView releasedOn = itemView.findViewById(Resources.id.tv_release_note);
-            final TextView subtitle = itemView.findViewById(Resources.id.tv_sub_title);
+            final LinearLayout leftLine = itemView.findViewById(R.id.view_leftline);
+            final TextView title = itemView.findViewById(R.id.tv_title);
+            final TextView releasedOn = itemView.findViewById(R.id.tv_release_note);
+            final TextView subtitle = itemView.findViewById(R.id.tv_sub_title);
             final LinearLayout log_background = itemView.findViewWithTag("log_background");
             final LinearLayout view_additional_info = itemView.findViewWithTag("view_additional_info");
             final ImageButton arrow = itemView.findViewWithTag("ic_arrow");

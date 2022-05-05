@@ -28,7 +28,7 @@ import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -49,11 +49,11 @@ import mod.SketchwareUtil;
 
 public class CodeEditorLayout extends LinearLayout implements TextWatcher {
 
-    private static final int DEFAULT_LAYOUT = Resources.layout.code_editor_layout; //7F0B01D6
-    private static final int NOWRAP_LAYOUT = Resources.layout.code_editor_layout_nowrap; //7F0B01DD
+    private static final int DEFAULT_LAYOUT = R.layout.code_editor_layout;
+    private static final int NOWRAP_LAYOUT = R.layout.code_editor_layout_nowrap;
 
-    private static final int EDITTEXT_RES = Resources.id.code_editor_edittext; //7F0806C6
-    private static final int SCROLLVIEW_RES = Resources.id.code_editor_layoutScrollView; //7F0806F9
+    private static final int EDITTEXT_RES = R.id.code_editor_edittext;
+    private static final int SCROLLVIEW_RES = R.id.code_editor_layoutScrollView;
 
     private static final boolean INDENTABLE = true;
     private static final String INDENT_STR = "    ";
@@ -168,11 +168,11 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
 
                     builder.setView(numPicker)
                             .setTitle("Select font size")
-                            .setPositiveButton(Resources.string.common_word_save, (dialog, which) -> {
+                            .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                                 setTextSize(numPicker.getValue());
                                 dialog.dismiss();
                             })
-                            .setNegativeButton(Resources.string.common_word_cancel, null)
+                            .setNegativeButton(R.string.common_word_cancel, null)
                             .show();
                     break;
 

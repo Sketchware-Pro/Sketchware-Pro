@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.Zx;
@@ -45,10 +45,10 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(xB.b().a(getResources(), identifier));
-            icon = Resources.drawable.color_palette_48;
+            icon = R.drawable.color_palette_48;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -96,13 +96,13 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, Resources.layout.property_color_item);
-        tvName = findViewById(Resources.id.tv_name);
-        tvValue = findViewById(Resources.id.tv_value);
-        viewColor = findViewById(Resources.id.view_color);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_color_item);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
+        viewColor = findViewById(R.id.view_color);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -112,8 +112,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     private void showColorPicker() {
         boolean z;
         boolean z2;
-        View view = wB.a(context, Resources.layout.color_picker);
-        view.setAnimation(AnimationUtils.loadAnimation(context, Resources.anim.abc_fade_in));
+        View view = wB.a(context, R.layout.color_picker);
+        view.setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
         if (key.equals("property_background_color")) {
             z2 = true;
             z = true;
@@ -128,7 +128,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
                 valueChangeListener.a(key, value);
             }
         });
-        colorPicker.setAnimationStyle(Resources.anim.abc_fade_in);
+        colorPicker.setAnimationStyle(R.anim.abc_fade_in);
         colorPicker.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 }

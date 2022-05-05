@@ -24,7 +24,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class ComponentsMaker extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.add_custom_attribute);
+        setContentView(R.layout.add_custom_attribute);
         setToolbar();
         setupViews();
     }
@@ -67,10 +67,10 @@ public class ComponentsMaker extends Activity {
     }
 
     private void setupViews() {
-        FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
+        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
         fab.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), ComponentsMakerCreator.class)));
-        this.listView = findViewById(Resources.id.add_attr_listview);
+        this.listView = findViewById(R.id.add_attr_listview);
         refreshList();
     }
 
@@ -147,13 +147,13 @@ public class ComponentsMaker extends Activity {
     }
 
     private void setToolbar() {
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Component manager");
-        final ImageView back_icon = findViewById(Resources.id.ig_toolbar_back);
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Component manager");
+        final ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
-        final ImageView more_icon = findViewById(Resources.id.ig_toolbar_load_file);
+        final ImageView more_icon = findViewById(R.id.ig_toolbar_load_file);
         more_icon.setVisibility(View.VISIBLE);
-        more_icon.setImageResource(Resources.drawable.ic_more_vert_white_24dp);
+        more_icon.setImageResource(R.drawable.ic_more_vert_white_24dp);
         more_icon.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(ComponentsMaker.this, more_icon);
             Menu menu = popupMenu.getMenu();
@@ -208,15 +208,15 @@ public class ComponentsMaker extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.custom_view_pro, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, null);
             }
-            LinearLayout root = convertView.findViewById(Resources.id.custom_view_pro_background);
+            LinearLayout root = convertView.findViewById(R.id.custom_view_pro_background);
             a(root, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView icon = convertView.findViewById(Resources.id.custom_view_pro_img);
+            ImageView icon = convertView.findViewById(R.id.custom_view_pro_img);
             icon.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
             ((LinearLayout) icon.getParent()).setGravity(17);
-            ((TextView) convertView.findViewById(Resources.id.custom_view_pro_title)).setText(_data.get(position).get("name").toString());
-            ((TextView) convertView.findViewById(Resources.id.custom_view_pro_subtitle)).setText(_data.get(position).get("description").toString());
+            ((TextView) convertView.findViewById(R.id.custom_view_pro_title)).setText(_data.get(position).get("name").toString());
+            ((TextView) convertView.findViewById(R.id.custom_view_pro_subtitle)).setText(_data.get(position).get("description").toString());
             root.setOnClickListener(v -> {
                 Intent intent = new Intent(getApplicationContext(), ComponentsMakerCreator.class);
                 intent.putExtra("pos", String.valueOf(position));

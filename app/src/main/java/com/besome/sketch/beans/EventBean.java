@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 public class EventBean extends CollapsibleBean implements Parcelable {
 
@@ -58,7 +58,7 @@ public class EventBean extends CollapsibleBean implements Parcelable {
     public static int getEventIconResource(int eventType, int targetType) {
         switch (eventType) {
             case EVENT_TYPE_ACTIVITY:
-                return Resources.drawable.widget_source;
+                return R.drawable.widget_source;
 
             case EVENT_TYPE_VIEW:
             case EVENT_TYPE_DRAWER_VIEW:
@@ -68,23 +68,23 @@ public class EventBean extends CollapsibleBean implements Parcelable {
                 return ComponentBean.getIconResource(targetType);
 
             default:
-                return Resources.drawable.widget_module;
+                return R.drawable.widget_module;
         }
     }
 
     public static int getEventTypeBgRes(int eventType) {
         switch (eventType) {
             case EVENT_TYPE_VIEW:
-                return Resources.drawable.bg_event_type_view;
+                return R.drawable.bg_event_type_view;
 
             case EVENT_TYPE_COMPONENT:
-                return Resources.drawable.bg_event_type_component;
+                return R.drawable.bg_event_type_component;
 
             case EVENT_TYPE_ACTIVITY:
-                return Resources.drawable.bg_event_type_activity;
+                return R.drawable.bg_event_type_activity;
 
             case EVENT_TYPE_DRAWER_VIEW:
-                return Resources.drawable.bg_event_type_drawer_view;
+                return R.drawable.bg_event_type_drawer_view;
 
             default:
                 return 0;

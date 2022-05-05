@@ -4,7 +4,7 @@ import android.util.Pair;
 import android.widget.RadioGroup;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.Iterator;
 
@@ -91,50 +91,23 @@ public class ReturnMoreblockManager {
 
     public static String getMbTypeFromRadioButton(RadioGroup radioGroup) {
         String type;
-        switch (radioGroup.getCheckedRadioButtonId()) {
-            case Resources.id.radio_mb_type_string:
-                type = "s";
-                break;
-
-            case Resources.id.radio_mb_type_number:
-                type = "d";
-                break;
-
-            case Resources.id.radio_mb_type_boolean:
-                type = "b";
-                break;
-
-            case Resources.id.radio_mb_type_map:
-                type = "a|Map";
-                break;
-
-            case Resources.id.radio_mb_type_liststring:
-                type = "l|List String";
-                break;
-
-            case Resources.id.radio_mb_type_listmap:
-                type = "l|List Map";
-                break;
-
-            case Resources.id.radio_mb_type_view:
-                type = "v|View";
-                break;
-
-            // What?
-            case Resources.id.manage_attr_listview:
-            case Resources.id.add_attr_listview:
-            case Resources.id.add_attr_fab:
-            case Resources.id.cus_attr_layout:
-            case Resources.id.cus_attr_text:
-            case Resources.id.cus_attr_btn:
-            case Resources.id.dialog_input_attr:
-            case Resources.id.dialog_btn_cancel:
-            case Resources.id.dialog_btn_save:
-            case Resources.id.dialog_input_res:
-            case Resources.id.dialog_input_value:
-            default:
-                type = " ";
-                break;
+        int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+        if (checkedRadioButtonId == R.id.radio_mb_type_string) {
+            type = "s";
+        } else if (checkedRadioButtonId == R.id.radio_mb_type_number) {
+            type = "d";
+        } else if (checkedRadioButtonId == R.id.radio_mb_type_boolean) {
+            type = "b";
+        } else if (checkedRadioButtonId == R.id.radio_mb_type_map) {
+            type = "a|Map";
+        } else if (checkedRadioButtonId == R.id.radio_mb_type_liststring) {
+            type = "l|List String";
+        } else if (checkedRadioButtonId == R.id.radio_mb_type_listmap) {
+            type = "l|List Map";
+        } else if (checkedRadioButtonId == R.id.radio_mb_type_view) {
+            type = "v|View";
+        } else {
+            type = " ";
         }
         return type;
     }
