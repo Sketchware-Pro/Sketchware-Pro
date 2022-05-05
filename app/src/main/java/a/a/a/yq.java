@@ -12,7 +12,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -329,16 +329,11 @@ public class yq {
         l = yB.c(metadata, "sc_ver_code");
         m = yB.c(metadata, "sc_ver_name");
 
-        g = yB.a(metadata, "color_accent",
-                ContextCompat.getColor(context, Resources.color.color_accent));
-        h = yB.a(metadata, "color_primary",
-                ContextCompat.getColor(context, Resources.color.color_primary));
-        i = yB.a(metadata, "color_primary_dark",
-                ContextCompat.getColor(context, Resources.color.color_primary_dark));
-        j = yB.a(metadata, "color_control_highlight",
-                ContextCompat.getColor(context, Resources.color.color_control_highlight));
-        k = yB.a(metadata, "color_control_normal",
-                ContextCompat.getColor(context, Resources.color.color_control_normal));
+        g = yB.a(metadata, "color_accent", ContextCompat.getColor(context, R.color.color_accent));
+        h = yB.a(metadata, "color_primary", ContextCompat.getColor(context, R.color.color_primary));
+        i = yB.a(metadata, "color_primary_dark", ContextCompat.getColor(context, R.color.color_primary_dark));
+        j = yB.a(metadata, "color_control_highlight", ContextCompat.getColor(context, R.color.color_control_highlight));
+        k = yB.a(metadata, "color_control_normal", ContextCompat.getColor(context, R.color.color_control_normal));
         projectSettings = new ProjectSettings(b);
         b(context);
     }

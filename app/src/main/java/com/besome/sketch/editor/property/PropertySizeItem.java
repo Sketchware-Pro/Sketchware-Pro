@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.TB;
@@ -45,10 +45,10 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(xB.b().a(getResources(), identifier));
-            icon = Resources.drawable.expand_48;
+            icon = R.drawable.expand_48;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
             } else {
                 imgLeftIcon.setImageResource(icon);
             }
@@ -90,12 +90,12 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, Resources.layout.property_input_item);
-        tvName = findViewById(Resources.id.tv_name);
-        tvValue = findViewById(Resources.id.tv_value);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_input_item);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setSoundEffectsEnabled(true);
             setOnClickListener(this);
@@ -106,21 +106,20 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_input_size);
-        TB validator = new TB(context, view.findViewById(Resources.id.ti_input), 0, 999);
+        View view = wB.a(getContext(), R.layout.property_popup_input_size);
+        TB validator = new TB(context, view.findViewById(R.id.ti_input), 0, 999);
         validator.a(String.valueOf(value));
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(Integer.parseInt(((EditText) view.findViewById(Resources.id.et_input)).getText().toString()));
+                setValue(Integer.parseInt(((EditText) view.findViewById(R.id.et_input)).getText().toString()));
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);
                 }
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,7 +17,7 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,10 +117,9 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == Resources.id.save_button && blockNameValidator.b()) {
+        if (v.getId() == R.id.save_button && blockNameValidator.b()) {
             Mp.h().a(blockName, blockNameEditorText.getText().toString(), true);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
-                    Resources.string.design_manager_message_edit_complete), Toast.LENGTH_SHORT).show();
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }
     }
@@ -135,32 +133,32 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_collection_show_block);
+        setContentView(R.layout.manage_collection_show_block);
 
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), Resources.string.design_manager_block_detail_actionbar_title));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(getApplicationContext(), R.string.design_manager_block_detail_actionbar_title));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         blockName = getIntent().getStringExtra("block_name");
-        blockCollectionEditor = findViewById(Resources.id.editor);
+        blockCollectionEditor = findViewById(R.id.editor);
         blockCollectionEditor.setScrollEnabled(true);
         pane = blockCollectionEditor.getBlockPane();
 
-        EasyDeleteEditText input = findViewById(Resources.id.ed_input);
+        EasyDeleteEditText input = findViewById(R.id.ed_input);
         blockNameEditorText = input.getEditText();
         blockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
         blockNameEditorText.setText(blockName);
-        input.setHint(xB.b().a(this, Resources.string.design_manager_block_hint_enter_block_name));
+        input.setHint(xB.b().a(this, R.string.design_manager_block_hint_enter_block_name));
 
-        Button save = findViewById(Resources.id.save_button);
-        save.setText(xB.b().a(getApplicationContext(), Resources.string.common_word_save));
+        Button save = findViewById(R.id.save_button);
+        save.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
         save.setOnClickListener(this);
         blockNameValidator = new NB(this, input.getTextInputLayout(), Mp.h().g());
-        actionSection = findViewById(Resources.id.layout_button);
+        actionSection = findViewById(R.id.layout_button);
     }
 
     @Override
@@ -177,7 +175,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem saveImageItem = menu.add(0, 12, 0, "Save image");
-        saveImageItem.setIcon(Resources.drawable.full_image_48);
+        saveImageItem.setIcon(R.drawable.full_image_48);
         saveImageItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);

@@ -11,7 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.aB;
 import mod.hey.studios.util.Helper;
@@ -24,23 +24,23 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
 
     private void showFirebaseNeedDisableDialog() {
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.chrome_96);
-        dialog.a(Helper.getResString(Resources.string.design_library_appcompat_need_firebase_disable));
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        dialog.a(R.drawable.chrome_96);
+        dialog.a(Helper.getResString(R.string.design_library_appcompat_need_firebase_disable));
+        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void configureLibraryDialog() {
         aB dialog = new aB(this);
-        dialog.b(Helper.getResString(Resources.string.common_word_warning));
-        dialog.a(Resources.drawable.delete_96);
-        dialog.a(Helper.getResString(Resources.string.design_library_message_confirm_uncheck_appcompat_and_design));
+        dialog.b(Helper.getResString(R.string.common_word_warning));
+        dialog.a(R.drawable.delete_96);
+        dialog.a(Helper.getResString(R.string.design_library_message_confirm_uncheck_appcompat_and_design));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(Resources.string.common_word_delete), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             libSwitch.setChecked(false);
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
             libSwitch.setChecked(true);
             dialog.dismiss();
         });
@@ -62,7 +62,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == Resources.id.layout_switch) {
+        if (v.getId() == R.id.layout_switch) {
             libSwitch.setChecked(!libSwitch.isChecked());
             if (!libSwitch.isChecked() && "Y".equals(firebaseLibraryBean.useYn)) {
                 showFirebaseNeedDisableDialog();
@@ -79,24 +79,24 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_library_manage_compat);
+        setContentView(R.layout.manage_library_manage_compat);
 
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(Resources.string.design_library_title_appcompat_and_design));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(Helper.getResString(R.string.design_library_title_appcompat_and_design));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         compatLibraryBean = getIntent().getParcelableExtra("compat");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
-        LinearLayout switchLayout = findViewById(Resources.id.layout_switch);
+        LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
-        libSwitch = findViewById(Resources.id.lib_switch);
-        ((TextView) findViewById(Resources.id.tv_desc)).setText(Helper.getResString(Resources.string.design_library_appcompat_description));
-        ((TextView) findViewById(Resources.id.tv_enable)).setText(Helper.getResString(Resources.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(Resources.id.tv_warning)).setText(Helper.getResString(Resources.string.design_library_message_slow_down_compilation_time));
+        libSwitch = findViewById(R.id.lib_switch);
+        ((TextView) findViewById(R.id.tv_desc)).setText(Helper.getResString(R.string.design_library_appcompat_description));
+        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_warning)).setText(Helper.getResString(R.string.design_library_message_slow_down_compilation_time));
         configure();
     }
 }

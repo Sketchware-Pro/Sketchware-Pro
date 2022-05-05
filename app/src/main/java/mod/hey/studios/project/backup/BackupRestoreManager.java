@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -61,7 +61,7 @@ public class BackupRestoreManager {
         backupDialogStates.put(1, false);
 
         aB dialog = new aB(act);
-        dialog.a(Resources.drawable.ic_backup);
+        dialog.a(R.drawable.ic_backup);
         dialog.b("Backup Options");
 
         LinearLayout checkboxContainer = new LinearLayout(act);
@@ -115,8 +115,7 @@ public class BackupRestoreManager {
             dialog.dismiss();
             doBackup(sc_id, project_name);
         });
-        dialog.a(xB.b().a(act.getApplicationContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(act, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -153,7 +152,7 @@ public class BackupRestoreManager {
                                     doRestore(backupFilePath, true))
                             .setNegativeButton("Don't copy", (dialog, which) ->
                                     doRestore(backupFilePath, false))
-                            .setNeutralButton(Resources.string.common_word_cancel, null)
+                            .setNeutralButton(R.string.common_word_cancel, null)
                             .show();
                 } else {
                     doRestore(backupFilePath, false);

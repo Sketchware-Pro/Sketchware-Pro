@@ -20,7 +20,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,12 +89,12 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
     }
 
     private void initToolbar() {
-        ImageView back = findViewById(Resources.id.ig_toolbar_back);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back);
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Native library Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Native library Manager");
 
-        loadFile = findViewById(Resources.id.ig_toolbar_load_file);
+        loadFile = findViewById(R.id.ig_toolbar_load_file);
         Helper.applyRippleToToolbarView(loadFile);
         loadFile.setOnClickListener(v -> filePicker.show());
     }
@@ -120,21 +120,20 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
 
     private void createNewDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View root = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
+        final View root = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
 
-        final TextView title = root.findViewById(Resources.id.dialog_create_new_file_layoutTitle);
-        final RadioGroup fileType = root.findViewById(Resources.id.dialog_radio_filetype);
+        final TextView title = root.findViewById(R.id.dialog_create_new_file_layoutTitle);
+        final RadioGroup fileType = root.findViewById(R.id.dialog_radio_filetype);
         final TextInputLayout filenameLayout;
-        final EditText filename = root.findViewById(Resources.id.dialog_edittext_name);
+        final EditText filename = root.findViewById(R.id.dialog_edittext_name);
         filenameLayout = (TextInputLayout) filename.getParent().getParent();
 
         title.setText("Create a new folder");
         fileType.setVisibility(View.GONE);
         filenameLayout.setHint("Folder name");
 
-        root.findViewById(Resources.id.dialog_text_cancel).setOnClickListener(
-                Helper.getDialogDismissListener(dialog));
-        root.findViewById(Resources.id.dialog_text_save).setOnClickListener(save -> {
+        root.findViewById(R.id.dialog_text_cancel).setOnClickListener(Helper.getDialogDismissListener(dialog));
+        root.findViewById(R.id.dialog_text_save).setOnClickListener(save -> {
             String name = filename.getText().toString();
 
             if (name.isEmpty()) {
@@ -168,18 +167,18 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_file);
+        setContentView(R.layout.manage_file);
 
         if (getIntent().hasExtra("sc_id")) {
             numProj = getIntent().getStringExtra("sc_id");
         }
 
-        gridView = findViewById(Resources.id.list_file);
+        gridView = findViewById(R.id.list_file);
         gridView.setNumColumns(1);
 
-        fab = findViewById(Resources.id.fab_plus);
+        fab = findViewById(R.id.fab_plus);
 
-        TextView tv = findViewById(Resources.id.text_info);
+        TextView tv = findViewById(R.id.text_info);
         tv.setVisibility(View.GONE);
 
         frc = new FileResConfig(numProj);
@@ -247,12 +246,12 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
 
     private void showDialog(final String path) {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        final View root = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
+        final View root = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
 
-        final TextInputLayout filenameLayout = root.findViewById(Resources.id.dialoginputlayoutLinearLayout2);
-        final EditText filename = root.findViewById(Resources.id.edittext_change_name);
-        final TextView cancel = root.findViewById(Resources.id.text_cancel);
-        final TextView save = root.findViewById(Resources.id.text_save);
+        final TextInputLayout filenameLayout = root.findViewById(R.id.dialoginputlayoutLinearLayout2);
+        final EditText filename = root.findViewById(R.id.edittext_change_name);
+        final TextView cancel = root.findViewById(R.id.text_cancel);
+        final TextView save = root.findViewById(R.id.text_save);
 
         try {
             filename.setText(path.substring(path.lastIndexOf("/") + 1));
@@ -313,12 +312,12 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.manage_java_item_hs, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
             }
 
-            TextView name = convertView.findViewById(Resources.id.title);
-            ImageView icon = convertView.findViewById(Resources.id.icon);
-            ImageView more = convertView.findViewById(Resources.id.more);
+            TextView name = convertView.findViewById(R.id.title);
+            ImageView icon = convertView.findViewById(R.id.icon);
+            ImageView more = convertView.findViewById(R.id.more);
 
             if (FileUtil.isDirectory(getItem(position))) {
                 more.setVisibility(View.GONE);
@@ -331,7 +330,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
 
             more.setOnClickListener(v -> {
                 PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, v);
-                menu.inflate(Resources.menu.popup_menu_double);
+                menu.inflate(R.menu.popup_menu_double);
 
                 menu.getMenu().getItem(0).setVisible(false);
                 menu.getMenu().getItem(1).setVisible(false);
@@ -363,8 +362,7 @@ public class ManageNativelibsActivity extends Activity implements View.OnClickLi
         }
 
         private int getImageRes(int position) {
-            return FileUtil.isDirectory(getItem(position)) ? Resources.drawable.ic_folder_48dp
-                    : Resources.drawable.file_96;
+            return FileUtil.isDirectory(getItem(position)) ? R.drawable.ic_folder_48dp : R.drawable.file_96;
         }
     }
 }

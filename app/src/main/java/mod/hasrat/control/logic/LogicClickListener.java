@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -77,7 +77,7 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomVariable() {
         aB dialog = new aB(logicEditor);
-        dialog.a(Resources.drawable.abc_96_color);
+        dialog.a(R.drawable.abc_96_color);
         dialog.b("Add a new custom variable");
 
         LinearLayout root = new LinearLayout(logicEditor);
@@ -108,7 +108,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(Resources.string.common_word_add), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), view -> {
             String variableModifier = modifier.getText().toString();
             variableModifier = isEmpty(variableModifier) ? "" : variableModifier + " ";
             String variableType = type.getText().toString();
@@ -145,7 +145,7 @@ public class LogicClickListener implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
+        dialog.a(Helper.getResString(R.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
 
@@ -155,10 +155,10 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void removeVariable() {
         SketchDialog dialog = new SketchDialog(logicEditor);
-        dialog.setTitle(Helper.getResString(2131625527));
-        dialog.setIcon(2131165524);
-        View var2 = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = var2.findViewById(Resources.id.rg_content);
+        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
+        dialog.setIcon(R.drawable.delete_96);
+        View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
+        ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
 
         ArrayList<String> bools = getUsedVariable(0);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
@@ -191,7 +191,7 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.setView(var2);
-        dialog.setPositiveButton(Helper.getResString(2131625026), view -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), view -> {
             int childCount = viewGroup.getChildCount();
             String eventName = logicEditor.C + "_" + logicEditor.D;
             String javaName = logicEditor.M.getJavaName();
@@ -207,7 +207,7 @@ public class LogicClickListener implements View.OnClickListener {
                                 dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(getContext(), Helper.getResString(2131625493), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), Helper.getResString(R.string.logic_editor_message_currently_used_variable), Toast.LENGTH_LONG).show();
                             return;
                         }
                     }
@@ -215,13 +215,13 @@ public class LogicClickListener implements View.OnClickListener {
             }
             dialog.dismiss();
         });
-        dialog.setNegativeButton(Helper.getResString(2131624974), null);
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void addCustomList() {
         aB dialog = new aB(logicEditor);
-        dialog.a(Resources.drawable.add_96_blue);
+        dialog.a(R.drawable.add_96_blue);
         dialog.b("Add a new custom List");
 
         LinearLayout root = new LinearLayout(logicEditor);
@@ -241,7 +241,7 @@ public class LogicClickListener implements View.OnClickListener {
         ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
         dialog.a(root);
-        dialog.b(Helper.getResString(Resources.string.common_word_add), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), view -> {
             String variableType = type.getText().toString();
             String variableName = name.getText().toString();
 
@@ -270,8 +270,7 @@ public class LogicClickListener implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -280,10 +279,10 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void removeList() {
         aB dialog = new aB(logicEditor);
-        dialog.b(Helper.getResString(2131625526));
-        dialog.a(2131165524);
-        View var2 = wB.a(logicEditor, 2131427643);
-        ViewGroup viewGroup = var2.findViewById(Resources.id.rg_content);
+        dialog.b(Helper.getResString(R.string.logic_editor_title_remove_list));
+        dialog.a(R.drawable.delete_96);
+        View var2 = wB.a(logicEditor, R.layout.property_popup_selector_single);
+        ViewGroup viewGroup = var2.findViewById(R.id.rg_content);
 
         ArrayList<String> listInts = getUsedList(1);
         for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
@@ -310,7 +309,7 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         dialog.a(var2);
-        dialog.b(Helper.getResString(2131625026), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_remove), view -> {
             String javaName = logicEditor.M.getJavaName();
             String eventName = logicEditor.C + "_" + logicEditor.D;
 
@@ -326,7 +325,7 @@ public class LogicClickListener implements View.OnClickListener {
                                 dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(logicEditor.getApplicationContext(), Helper.getResString(2131625492), Toast.LENGTH_LONG).show();
+                            Toast.makeText(logicEditor.getApplicationContext(), Helper.getResString(R.string.logic_editor_message_currently_used_list), Toast.LENGTH_LONG).show();
                         }
                         return;
                     }
@@ -334,8 +333,7 @@ public class LogicClickListener implements View.OnClickListener {
             }
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(2131624974),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

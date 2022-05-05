@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.DB;
 import a.a.a.GB;
@@ -56,7 +56,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                 downloadChromeDialog();
             }
         } else {
-            bB.a(getApplicationContext(), Helper.getResString(Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
+            bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -77,31 +77,31 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
     private void downloadChromeDialog() {
         final aB dialog = new aB(this);
-        dialog.a(Resources.drawable.chrome_96);
-        dialog.b(Helper.getResString(Resources.string.title_compatible_chrome_browser));
-        dialog.a(Helper.getResString(Resources.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), v -> {
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=com.android.chrome"));
             startActivity(intent);
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void configureLibraryDialog() {
         final aB dialog = new aB(this);
-        dialog.b(Helper.getResString(Resources.string.common_word_warning));
-        dialog.a(2131165524);
-        dialog.a(Helper.getResString(Resources.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
+        dialog.b(Helper.getResString(R.string.common_word_warning));
+        dialog.a(R.drawable.delete_96);
+        dialog.a(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(Resources.string.common_word_delete), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             firebaseLibraryBean.useYn = "N";
             libSwitch.setChecked(false);
             dialog.dismiss();
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
             libSwitch.setChecked(true);
             dialog.dismiss();
         });
@@ -124,72 +124,69 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case Resources.id.btn_console:
-                goToConsole();
-                break;
-
-            case Resources.id.layout_switch:
-                libSwitch.setChecked(!libSwitch.isChecked());
-                if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
-                    configureLibraryDialog();
-                } else {
-                    firebaseLibraryBean.useYn = "Y";
-                }
+        int id = view.getId();
+        if (id == R.id.btn_console) {
+            goToConsole();
+        } else if (id == R.id.layout_switch) {
+            libSwitch.setChecked(!libSwitch.isChecked());
+            if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
+                configureLibraryDialog();
+            } else {
+                firebaseLibraryBean.useYn = "Y";
+            }
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_library_manage_firebase);
+        setContentView(R.layout.manage_library_manage_firebase);
 
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(this, Resources.string.design_library_firebase_title_firebase_manager));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(this, R.string.design_library_firebase_title_firebase_manager));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         s = new DB(getApplicationContext(), "P1");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
-        LinearLayout switchLayout = findViewById(Resources.id.layout_switch);
+        LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
-        libSwitch = findViewById(Resources.id.lib_switch);
-        ((TextView) findViewById(Resources.id.tv_enable)).setText(Helper.getResString(Resources.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(Resources.id.tv_title_project_id)).setText(
-                xB.b().a(this, Resources.string.design_library_firebase_title_project_id));
-        ((TextView) findViewById(Resources.id.tv_title_app_id)).setText(
-                xB.b().a(this, Resources.string.design_library_firebase_title_app_id));
-        ((TextView) findViewById(Resources.id.tv_title_api_key)).setText(
-                xB.b().a(this, Resources.string.design_library_firebase_title_api_key));
-        ((TextView) findViewById(Resources.id.tv_title_storage_url)).setText(
-                xB.b().a(this, Resources.string.design_library_firebase_title_storage_bucket_url));
-        tvProjectId = findViewById(Resources.id.tv_project_id);
-        tvAppId = findViewById(Resources.id.tv_app_id);
-        tvApiKey = findViewById(Resources.id.tv_api_key);
-        tvStorageUrl = findViewById(Resources.id.tv_storage_url);
-        Button btnConsole = findViewById(Resources.id.btn_console);
-        btnConsole.setText(Helper.getResString(Resources.string.design_library_firebase_button_goto_firebase_console));
+        libSwitch = findViewById(R.id.lib_switch);
+        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_title_project_id)).setText(
+                xB.b().a(this, R.string.design_library_firebase_title_project_id));
+        ((TextView) findViewById(R.id.tv_title_app_id)).setText(
+                xB.b().a(this, R.string.design_library_firebase_title_app_id));
+        ((TextView) findViewById(R.id.tv_title_api_key)).setText(
+                xB.b().a(this, R.string.design_library_firebase_title_api_key));
+        ((TextView) findViewById(R.id.tv_title_storage_url)).setText(
+                xB.b().a(this, R.string.design_library_firebase_title_storage_bucket_url));
+        tvProjectId = findViewById(R.id.tv_project_id);
+        tvAppId = findViewById(R.id.tv_app_id);
+        tvApiKey = findViewById(R.id.tv_api_key);
+        tvStorageUrl = findViewById(R.id.tv_storage_url);
+        Button btnConsole = findViewById(R.id.btn_console);
+        btnConsole.setText(Helper.getResString(R.string.design_library_firebase_button_goto_firebase_console));
         btnConsole.setOnClickListener(this);
         configure();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(Resources.menu.manage_firebase_menu, menu);
+        getMenuInflater().inflate(R.menu.manage_firebase_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case Resources.id.menu_firebase_help:
-                openDoc();
-                break;
-            case Resources.id.menu_firebase_settings:
-                toFirebaseActivity();
+        int itemId = menuItem.getItemId();
+        if (itemId == R.id.menu_firebase_help) {
+            openDoc();
+        } else if (itemId == R.id.menu_firebase_settings) {
+            toFirebaseActivity();
         }
         return super.onOptionsItemSelected(menuItem);
     }

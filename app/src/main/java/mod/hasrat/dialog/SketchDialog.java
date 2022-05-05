@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.hey.studios.util.Helper;
 
@@ -59,21 +59,21 @@ public class SketchDialog extends Dialog {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(Resources.layout.dialog);
+        setContentView(R.layout.dialog);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        sdialog_root = findViewById(Resources.id.sdialog_root);
-        dialog_img = findViewById(Resources.id.dialog_img);
-        dialog_title = findViewById(Resources.id.dialog_title);
-        dialog_msg = findViewById(Resources.id.dialog_msg);
-        custom_view = findViewById(Resources.id.custom_view);
-        layout_button = findViewById(Resources.id.layout_button);
-        dialog_btn_no = findViewById(Resources.id.dialog_btn_no);
-        dialog_btn_yes = findViewById(Resources.id.dialog_btn_yes);
-        dialog_btn_neutral = findViewById(Resources.id.common_dialog_default_button);
+        sdialog_root = findViewById(R.id.sdialog_root);
+        dialog_img = findViewById(R.id.dialog_img);
+        dialog_title = findViewById(R.id.dialog_title);
+        dialog_msg = findViewById(R.id.dialog_msg);
+        custom_view = findViewById(R.id.custom_view);
+        layout_button = findViewById(R.id.layout_button);
+        dialog_btn_no = findViewById(R.id.dialog_btn_no);
+        dialog_btn_yes = findViewById(R.id.dialog_btn_yes);
+        dialog_btn_neutral = findViewById(R.id.common_dialog_default_button);
 
         dialog_img_right = new ImageView(mContext);
         dialog_img_right.setLayoutParams(dialog_img.getLayoutParams());

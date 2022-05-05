@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,19 +27,13 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case 0x7f0806c9:
-                finish();
-                break;
-
-            case 0x7f08076e:
-                new ProguardRulesDialog(ManageProguardActivity.this, pg).show();
-                break;
-
-            case 0x7F080777:
-                fmDialog();
-                break;
-
+        int id = v.getId();
+        if (id == R.id.ig_toolbar_back) {
+            finish();
+        } else if (id == R.id.ln_pg_rules) {
+            new ProguardRulesDialog(ManageProguardActivity.this, pg).show();
+        } else if (id == R.id.ln_pg_fm) {
+            fmDialog();
         }
     }
 
@@ -65,7 +59,7 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
         AlertDialog.Builder bld = new AlertDialog.Builder(this);
         bld.setTitle("Select Local libraries");
         bld.setMultiChoiceItems(libraries, enabledLibraries, (dialog, which, isChecked) -> enabledLibraries[which] = isChecked);
-        bld.setPositiveButton(Resources.string.common_word_save, (dialog, which) -> {
+        bld.setPositiveButton(R.string.common_word_save, (dialog, which) -> {
 
             ArrayList<String> finalList = new ArrayList<>();
 
@@ -79,39 +73,36 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
 
             dialog.dismiss();
         });
-        bld.setNegativeButton(Resources.string.common_word_cancel, null);
+        bld.setNegativeButton(R.string.common_word_cancel, null);
         bld.create().show();
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case 0x7f08076f:
-                pg.setProguardEnabled(isChecked);
-                break;
-
-            case 0x7f08076d:
-                pg.setDebugEnabled(isChecked);
-                break;
+        int id = buttonView.getId();
+        if (id == R.id.sw_pg_enabled) {
+            pg.setProguardEnabled(isChecked);
+        } else if (id == R.id.sw_pg_debug) {
+            pg.setDebugEnabled(isChecked);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_proguard);
+        setContentView(R.layout.manage_proguard);
 
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        sw_pg_enabled = findViewById(Resources.id.sw_pg_enabled);
+        sw_pg_enabled = findViewById(R.id.sw_pg_enabled);
 
-        LinearLayout ln_pg_rules = findViewById(Resources.id.ln_pg_rules);
-        sw_pg_debug = findViewById(Resources.id.sw_pg_debug);
+        LinearLayout ln_pg_rules = findViewById(R.id.ln_pg_rules);
+        sw_pg_debug = findViewById(R.id.sw_pg_debug);
 
-        LinearLayout ln_pg_fm = findViewById(Resources.id.ln_pg_fm);
+        LinearLayout ln_pg_fm = findViewById(R.id.ln_pg_fm);
 
         sw_pg_enabled.setOnCheckedChangeListener(this);
         ln_pg_rules.setOnClickListener(this);
@@ -128,9 +119,9 @@ public class ManageProguardActivity extends Activity implements View.OnClickList
     }
 
     private void _initToolbar() {
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("ProGuard Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("ProGuard Manager");
 
-        ImageView back = findViewById(Resources.id.ig_toolbar_back);
+        ImageView back = findViewById(R.id.ig_toolbar_back);
         back.setOnClickListener(this);
         Helper.applyRippleToToolbarView(back);
     }

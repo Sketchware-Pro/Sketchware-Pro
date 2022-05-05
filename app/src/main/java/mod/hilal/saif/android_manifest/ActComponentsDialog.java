@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,11 +49,11 @@ public class ActComponentsDialog extends Dialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.view_code);
-        codeEditor = findViewById(Resources.id.text_content);
-        TextView zoom_in = findViewById(Resources.id.code_editor_zoomin);
+        setContentView(R.layout.view_code);
+        codeEditor = findViewById(R.id.text_content);
+        TextView zoom_in = findViewById(R.id.code_editor_zoomin);
         zoom_in.setOnClickListener(v -> codeEditor.increaseTextSize());
-        TextView zoom_out = findViewById(Resources.id.code_editor_zoomout);
+        TextView zoom_out = findViewById(R.id.code_editor_zoomout);
         zoom_out.setOnClickListener(v -> codeEditor.decreaseTextSize());
         codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -62,7 +62,7 @@ public class ActComponentsDialog extends Dialog {
         base = (ViewGroup) codeEditor.getParent();
         base.setBackground(new DialogButtonGradientDrawable()
                 .getIns((int) getDip(4), 0, Color.WHITE, Color.WHITE));
-        TextView title = findViewById(Resources.id.text_title);
+        TextView title = findViewById(R.id.text_title);
         title.setText(activityName + " Components");
         addControl();
         setListeners();
@@ -73,7 +73,7 @@ public class ActComponentsDialog extends Dialog {
         codeEditor.start(ColorScheme.XML());
         setCodeEditorText();
         editor = codeEditor.getEditText();
-        codeEditor.onCreateOptionsMenu(findViewById(Resources.id.codeeditor_more_options));
+        codeEditor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
         editor.setInputType(655361);
         editor.setImeOptions(1);
     }
@@ -105,7 +105,7 @@ public class ActComponentsDialog extends Dialog {
                 (int) getDip(8),
                 (int) getDip(8),
                 (int) getDip(8));
-        cancel.setText(Resources.string.common_word_cancel);
+        cancel.setText(R.string.common_word_cancel);
         cancel.setTextColor(Color.WHITE);
         cancel.setPadding(
                 (int) getDip(8),
@@ -130,7 +130,7 @@ public class ActComponentsDialog extends Dialog {
                 (int) getDip(8),
                 (int) getDip(8),
                 (int) getDip(8));
-        save.setText(Resources.string.common_word_save);
+        save.setText(R.string.common_word_save);
         save.setTextColor(Color.WHITE);
         save.setPadding(
                 (int) getDip(8),

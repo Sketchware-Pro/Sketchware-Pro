@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
@@ -37,15 +37,15 @@ public class BuildSettingsDialog {
     public void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        View inflate = activity.getLayoutInflater().inflate(Resources.layout.project_config_layout, null);
+        View inflate = activity.getLayoutInflater().inflate(R.layout.project_config_layout, null);
 
-        ImageView icon = inflate.findViewById(Resources.id.project_config_icon);
-        TextView title = inflate.findViewById(Resources.id.project_config_title);
-        LinearLayout contentView = inflate.findViewById(Resources.id.project_config_pref_layout);
-        TextView cancel = inflate.findViewById(Resources.id.text_cancel);
-        TextView save = inflate.findViewById(Resources.id.text_save);
+        ImageView icon = inflate.findViewById(R.id.project_config_icon);
+        TextView title = inflate.findViewById(R.id.project_config_title);
+        LinearLayout contentView = inflate.findViewById(R.id.project_config_pref_layout);
+        TextView cancel = inflate.findViewById(R.id.text_cancel);
+        TextView save = inflate.findViewById(R.id.text_save);
 
-        icon.setImageResource(Resources.drawable.side_menu_setting_icon_over);
+        icon.setImageResource(R.drawable.side_menu_setting_icon_over);
         title.setText("Build Settings");
 
         View[] viewArr = {

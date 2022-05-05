@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
@@ -41,35 +42,28 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case 0x7f0806c7:
-                codeEditor.increaseTextSize();
-                break;
-
-            case 0x7f0806c8:
-                codeEditor.decreaseTextSize();
-                break;
-
-            case save_id:
-                FileUtil.writeFile(pg.getCustomProguardRules(), codeEditor.getText());
-                dismiss();
-                break;
-
-            case cancel_id:
-                dismiss();
-                break;
+        int id = v.getId();
+        if (id == R.id.code_editor_zoomin) {
+            codeEditor.increaseTextSize();
+        } else if (id == R.id.code_editor_zoomout) {
+            codeEditor.decreaseTextSize();
+        } else if (id == save_id) {
+            FileUtil.writeFile(pg.getCustomProguardRules(), codeEditor.getText());
+            dismiss();
+        } else if (id == cancel_id) {
+            dismiss();
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.view_code);
+        setContentView(R.layout.view_code);
 
 
-        ((TextView) findViewById(Resources.id.text_title)).setText("proguard-rules.pro");
+        ((TextView) findViewById(R.id.text_title)).setText("proguard-rules.pro");
 
-        codeEditor = findViewById(Resources.id.text_content);
+        codeEditor = findViewById(R.id.text_content);
 
         codeEditor.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -81,12 +75,12 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
 
         addControl();
 
-        findViewById(Resources.id.code_editor_zoomin).setOnClickListener(this);
-        findViewById(Resources.id.code_editor_zoomout).setOnClickListener(this);
+        findViewById(R.id.code_editor_zoomin).setOnClickListener(this);
+        findViewById(R.id.code_editor_zoomout).setOnClickListener(this);
 
         codeEditor.start(ColorScheme.JAVA());
 
-        codeEditor.onCreateOptionsMenu(findViewById(Resources.id.codeeditor_more_options));
+        codeEditor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
 
         codeEditor.setText(FileUtil.readFile(pg.getCustomProguardRules()));
 
@@ -131,7 +125,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
                 (int) getDip(8),
                 (int) getDip(8)
         );
-        cancel.setText(Resources.string.common_word_cancel);
+        cancel.setText(R.string.common_word_cancel);
         cancel.setTextColor(Color.WHITE);
         cancel.setPadding(
                 (int) getDip(8),
@@ -139,7 +133,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
                 (int) getDip(8),
                 (int) getDip(8)
         );
-        cancel.setGravity(17);
+        cancel.setGravity(Gravity.CENTER);
         cancel.setId(cancel_id);
         if (codeEditor.dark_theme) {
             cancel.setBackgroundColor(0xff333333);
@@ -160,7 +154,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
                 (int) getDip(8),
                 (int) getDip(8)
         );
-        save.setText(Resources.string.common_word_save);
+        save.setText(R.string.common_word_save);
         save.setTextColor(Color.WHITE);
         save.setPadding(
                 (int) getDip(8),
@@ -168,7 +162,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
                 (int) getDip(8),
                 (int) getDip(8)
         );
-        save.setGravity(17);
+        save.setGravity(Gravity.CENTER);
         save.setId(save_id);
         if (codeEditor.dark_theme) {
             save.setBackgroundColor(0xff333333);
@@ -197,7 +191,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
             @Override
             public void run() {
                 if (codeEditor.dark_theme) {
-                    layout.setBackgroundColor(Color.parseColor("#FF292929"));
+                    layout.setBackgroundColor(0xff292929);
 
                     save.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
 
@@ -205,7 +199,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
 
 
                 } else {
-                    layout.setBackgroundColor(-1);
+                    layout.setBackgroundColor(Color.WHITE);
 
                     save.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
 
@@ -220,7 +214,6 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
         handler.postDelayed(task, 500L);
     }
 
-    //class GDHelper extends GradientDrawable {
     public GradientDrawable getGD(int var1, int var2, int var3, int var4) {
         GradientDrawable gd = new GradientDrawable();
         gd.setCornerRadius((float) var1);
