@@ -160,7 +160,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.ge ^ tDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }
