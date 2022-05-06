@@ -447,44 +447,45 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         dialog.show();
     }
 
-    public class ComponentsAdapter extends RecyclerView.a<ComponentsAdapter.ViewHolder> {
+    // RecyclerView$Adapter<VH extends RecyclerView$ViewHolder> got obfuscated to RecyclerView$a<VH extends RecyclerView$v>
+    private class ComponentsAdapter extends RecyclerView.a<ComponentsAdapter.ViewHolder> {
 
         private int layoutPosition = -1;
         private RecyclerView recyclerView;
 
-        public ComponentsAdapter() {
+        @Override
+        // RecyclerView.Adapter#getItemId(int)
+        public long a(int position) {
+            return position;
         }
 
         @Override
-        public long a(int i) {
-            return i;
-        }
-
-        @Override
+        // RecyclerView.Adapter#onAttachedToRecyclerView(RecyclerView)
         public void a(RecyclerView recyclerView) {
             super.a(recyclerView);
             this.recyclerView = recyclerView;
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int position) {
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
             String componentName = ComponentBean.getComponentName(getApplicationContext(), componentList.get(position).type);
-            viewHolder.b.setAlpha(1.0f);
-            viewHolder.b.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
-            viewHolder.b.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
-            viewHolder.itemName.setAlpha(1.0f);
-            viewHolder.itemName.setText(componentName);
-            viewHolder.itemIcon.setImageResource(ComponentBean.getIconResource(componentList.get(position).type));
+            holder.b.setAlpha(1.0f);
+            holder.b.setTranslationX(FlexItem.FLEX_GROW_DEFAULT);
+            holder.b.setTranslationY(FlexItem.FLEX_GROW_DEFAULT);
+            holder.itemName.setAlpha(1.0f);
+            holder.itemName.setText(componentName);
+            holder.itemIcon.setImageResource(ComponentBean.getIconResource(componentList.get(position).type));
             if (!x) {
                 return;
             }
             if (position == this.layoutPosition) {
                 Pair<Integer, Integer> pair = w.get(position);
-                viewHolder.itemName.animate()
+                holder.itemName.animate()
                         .setDuration(100)
                         .alpha(FlexItem.FLEX_GROW_DEFAULT)
                         .start();
-                viewHolder.b.animate()
+                holder.b.animate()
                         .setStartDelay(300)
                         .translationX((float) (-pair.first))
                         .translationY((float) (-pair.second))
@@ -499,44 +500,46 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                         }).start();
                 return;
             }
-            viewHolder.b.animate()
+            holder.b.animate()
                     .alpha(FlexItem.FLEX_GROW_DEFAULT)
                     .start();
         }
 
         @Override
-        public ViewHolder b(ViewGroup viewGroup, int i) {
-            View itemView = wB.a(viewGroup.getContext(), R.layout.component_add_item);
-            int lengthAndWidth = (int) wB.a(viewGroup.getContext(), 76.0f);
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            View itemView = wB.a(parent.getContext(), R.layout.component_add_item);
+            int lengthAndWidth = (int) wB.a(parent.getContext(), 76.0f);
             itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
             return new ViewHolder(itemView);
         }
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return componentList.size();
         }
 
-        public class ViewHolder extends RecyclerView.v implements View.OnClickListener {
+        private class ViewHolder extends RecyclerView.v implements View.OnClickListener {
 
-            public ImageView itemIcon;
-            public TextView itemName;
+            private final ImageView itemIcon;
+            private final TextView itemName;
 
-            public ViewHolder(View view) {
-                super(view);
-                itemIcon = view.findViewById(R.id.icon);
-                itemName = view.findViewById(R.id.name);
-                view.setOnClickListener(this);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                itemIcon = itemView.findViewById(R.id.icon);
+                itemName = itemView.findViewById(R.id.name);
+                itemView.setOnClickListener(this);
             }
 
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 if (!y) {
                     y = true;
                     layoutPosition = j();
                     x = true;
                     int[] itemViewLocationInWindow = new int[2];
-                    view.getLocationInWindow(itemViewLocationInWindow);
+                    v.getLocationInWindow(itemViewLocationInWindow);
                     int[] recyclerViewLocationInWindow = new int[2];
                     recyclerView.getLocationInWindow(recyclerViewLocationInWindow);
                     int i = itemViewLocationInWindow[0] - recyclerViewLocationInWindow[0];

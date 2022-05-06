@@ -310,32 +310,35 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         testDeviceAdapter.c();
     }
 
-    public class TestDeviceAdapter extends RecyclerView.a<TestDeviceAdapter.ViewHolder> {
+    private class TestDeviceAdapter extends RecyclerView.a<TestDeviceAdapter.ViewHolder> {
 
         @Override
+        // RecyclerView.Adapter#getItemCount()
         public int a() {
             return testDeviceList.size();
         }
 
         @Override
-        public void b(ViewHolder viewHolder, int index) {
-            viewHolder.tvDeviceId.setText(testDeviceList.get(index).deviceId);
+        // RecyclerView.Adapter#onBindViewHolder(VH, int)
+        public void b(ViewHolder holder, int position) {
+            holder.tvDeviceId.setText(testDeviceList.get(position).deviceId);
         }
 
         @Override
+        // RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.v {
 
             private final TextView tvDeviceId;
 
-            public ViewHolder(View view) {
-                super(view);
-                tvDeviceId = view.findViewById(R.id.tv_device_id);
-                ImageView imgDelete = view.findViewById(R.id.img_delete);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                tvDeviceId = itemView.findViewById(R.id.tv_device_id);
+                ImageView imgDelete = itemView.findViewById(R.id.img_delete);
 
                 imgDelete.setVisibility(View.GONE);
             }
