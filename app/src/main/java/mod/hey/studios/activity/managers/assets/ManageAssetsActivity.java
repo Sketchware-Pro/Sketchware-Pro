@@ -236,6 +236,10 @@ public class ManageAssetsActivity extends Activity {
 
             myAdapter.goEditFile(position);
         });
+        gridView.setOnItemLongClickListener((parent, view, position, id) -> {
+            view.findViewById(R.id.more).performClick();
+            return true;
+        });
 
         if (currentTree.size() == 0) {
             tv_noFileExist.setVisibility(View.VISIBLE);
