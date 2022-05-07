@@ -200,6 +200,11 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                     return true;
                 });
                 popupMenu.show();
+            } else {
+                ImageView more = view.findViewById(R.id.more);
+                if (more != null) {
+                    more.performClick();
+                }
             }
             return true;
         });
