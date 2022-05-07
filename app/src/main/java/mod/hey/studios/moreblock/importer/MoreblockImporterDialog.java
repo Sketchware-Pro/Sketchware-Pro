@@ -136,7 +136,7 @@ public class MoreblockImporterDialog {
         dialog.show();
     }
 
-    private interface CallBack {
+    public interface CallBack {
         void onSelected(MoreBlockCollectionBean bean);
     }
 
