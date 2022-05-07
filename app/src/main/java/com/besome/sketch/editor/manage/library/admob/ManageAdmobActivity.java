@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,6 +34,8 @@ import mod.hey.studios.util.Helper;
 
 public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_ENABLE_ADMOB = 8001;
+    private static final int REQUEST_CODE_ADMOB_SETTINGS = 8002;
     private DB A = null;
     private TestDeviceAdapter testDeviceAdapter;
     private ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList<>();
@@ -44,12 +45,10 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     private TextView tvInterName;
     private TextView tvInterId;
     private ProjectLibraryBean admobLibraryBean;
-    private final int n = 8001;
-    private final int o = 8002;
 
     @Override
     public void a(int requestCode, String idk) {
-        if (requestCode == 8001 || requestCode == 8002) {
+        if (requestCode == REQUEST_CODE_ENABLE_ADMOB || requestCode == REQUEST_CODE_ADMOB_SETTINGS) {
             n(requestCode);
         }
     }
@@ -121,7 +120,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     }
 
     private void n(int requestCode) {
-        if (requestCode == 8001) {
+        if (requestCode == REQUEST_CODE_ENABLE_ADMOB) {
             libSwitch.setChecked(true);
             admobLibraryBean.useYn = "Y";
         } else {
@@ -151,17 +150,20 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
                 case 236:
                     initializeLibrary(data.getParcelableExtra("admob"));
                     break;
-                case 8001:
+
+                case REQUEST_CODE_ENABLE_ADMOB:
                     libSwitch.setChecked(true);
                     admobLibraryBean.useYn = "Y";
                     break;
-                case 8002:
+
+                case REQUEST_CODE_ADMOB_SETTINGS:
                     toAdmobActivity();
                     break;
             }
         }
     }
 
+    @Override
     public void onBackPressed() {
         getIntent().putExtra("admob", admobLibraryBean);
         setResult(RESULT_OK, getIntent());
@@ -245,20 +247,10 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         if (itemId == R.id.menu_admob_help) {
             o();
         } else if (itemId == R.id.menu_admob_settings) {
-            i(8002);
+            i(REQUEST_CODE_ADMOB_SETTINGS);
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void configureLibrary() {
