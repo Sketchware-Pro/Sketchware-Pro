@@ -60,18 +60,13 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_code);
 
-
         ((TextView) findViewById(R.id.text_title)).setText("proguard-rules.pro");
-
         codeEditor = findViewById(R.id.text_content);
-
         codeEditor.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,
                 1.0f));
-
         base = (ViewGroup) codeEditor.getParent();
-
 
         addControl();
 
@@ -79,20 +74,14 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
         findViewById(R.id.code_editor_zoomout).setOnClickListener(this);
 
         codeEditor.start(ColorScheme.JAVA());
-
         codeEditor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
-
         codeEditor.setText(FileUtil.readFile(pg.getCustomProguardRules()));
 
-
         save.setOnClickListener(this);
-
         cancel.setOnClickListener(this);
-
         getWindow().setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT);
-
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
@@ -194,17 +183,12 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
                     layout.setBackgroundColor(0xff292929);
 
                     save.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
-
                     cancel.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
-
-
                 } else {
                     layout.setBackgroundColor(Color.WHITE);
 
                     save.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-
                     cancel.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-
                 }
 
                 handler.postDelayed(this, 500L);
