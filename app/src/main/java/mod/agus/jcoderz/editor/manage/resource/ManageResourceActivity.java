@@ -14,9 +14,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -41,20 +39,17 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 @SuppressLint("SetTextI18n")
 public class ManageResourceActivity extends Activity implements View.OnClickListener {
 
-    public CustomAdapter adapter;
-    public FilePickerDialog dialog;
-    public FloatingActionButton fab;
-    public FilePathUtil fpu;
-    public FileResConfig frc;
-    public GridView gridView;
-    public Toolbar k;
-    public String numProj;
-    public DialogProperties properties;
-    public String temp;
-    public TextView tv;
+    private CustomAdapter adapter;
+    private FilePickerDialog dialog;
+    private FloatingActionButton fab;
+    private FilePathUtil fpu;
+    private FileResConfig frc;
+    private GridView gridView;
+    private String numProj;
+    private String temp;
     private ImageView load_file;
 
-    public void checkDir() {
+    private void checkDir() {
         if (FileUtil.isExistFile(fpu.getPathResource(numProj))) {
             temp = fpu.getPathResource(numProj);
             handleAdapter(temp);
@@ -71,7 +66,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         checkDir();
     }
 
-    public void handleAdapter(String str) {
+    private void handleAdapter(String str) {
         ArrayList<String> resourceFile = frc.getResourceFile(str);
         Collections.sort(resourceFile, String.CASE_INSENSITIVE_ORDER);
         adapter = new CustomAdapter(resourceFile);
@@ -82,7 +77,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         return temp.equals(fpu.getPathResource(numProj));
     }
 
-    public void handleFab() {
+    private void handleFab() {
         if (isInMainDirectory()) {
             if (load_file != null) {
                 load_file.setVisibility(View.GONE);
@@ -92,7 +87,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         }
     }
 
-    public void initToolbar() {
+    private void initToolbar() {
         ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Resource Manager");
         ImageView back = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back);
@@ -102,6 +97,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         load_file.setOnClickListener(view -> dialog.show());
     }
 
+    @Override
     public void onBackPressed() {
         try {
             temp = temp.substring(0, temp.lastIndexOf("/"));
@@ -116,8 +112,8 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
     }
 
     @Override
-    public void onClick(View view) {
-        if (view != fab) {
+    public void onClick(View v) {
+        if (v != fab) {
             return;
         }
         createNewDialog(isInMainDirectory());
@@ -166,7 +162,8 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         SketchwareUtil.showKeyboard();
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_file);
         if (getIntent().hasExtra("sc_id")) {
@@ -176,7 +173,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         gridView = findViewById(R.id.list_file);
         gridView.setNumColumns(1);
         fab = findViewById(R.id.fab_plus);
-        tv = findViewById(R.id.text_info);
+        TextView tv = findViewById(R.id.text_info);
         tv.setVisibility(View.GONE);
         frc = new FileResConfig(numProj);
         fpu = new FilePathUtil();
@@ -207,8 +204,8 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         initToolbar();
     }
 
-    public void setupDialog() {
-        properties = new DialogProperties();
+    private void setupDialog() {
+        DialogProperties properties = new DialogProperties();
         properties.selection_mode = 1;
         properties.selection_type = 2;
         properties.root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -230,7 +227,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         });
     }
 
-    public void showDialog(final String path) {
+    private void showDialog(final String path) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
         View inflate = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
         final EditText editText = inflate.findViewById(R.id.edittext_change_name);
@@ -259,7 +256,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         SketchwareUtil.showKeyboard();
     }
 
-    public void showDeleteDialog(final int position) {
+    private void showDeleteDialog(final int position) {
         new AlertDialog.Builder(this)
                 .setTitle(Uri.fromFile(new File(adapter.getItem(position))).getLastPathSegment())
                 .setMessage("Are you sure you want to delete this "
@@ -274,7 +271,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
                 .create().show();
     }
 
-    public void goEdit(int position) {
+    private void goEdit(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
@@ -291,7 +288,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         bB.a(getApplicationContext(), "Only XML files can be edited", bB.TOAST_NORMAL).show();
     }
 
-    public class CustomAdapter extends BaseAdapter {
+    private class CustomAdapter extends BaseAdapter {
 
         private final ArrayList<String> data;
 
