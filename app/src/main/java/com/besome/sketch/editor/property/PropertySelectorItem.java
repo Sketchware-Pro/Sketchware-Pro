@@ -3,6 +3,7 @@ package com.besome.sketch.editor.property;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,16 +24,16 @@ import mod.hey.studios.util.Helper;
 
 public class PropertySelectorItem extends RelativeLayout implements View.OnClickListener {
 
-    public String key = "";
-    public int value = -1;
-    public TextView tvName;
-    public TextView tvValue;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public ViewGroup radioGroupContent;
-    public Kw valueChangeListener;
+    private String key = "";
+    private int value = -1;
+    private TextView tvName;
+    private TextView tvValue;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ViewGroup radioGroupContent;
+    private Kw valueChangeListener;
 
     public PropertySelectorItem(Context context, boolean z) {
         super(context);
@@ -96,6 +97,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         tvValue.setText(sq.a(key, value));
     }
 
+    @Override
     public void onClick(View v) {
         if (!mB.a()) {
             switch (key) {
@@ -120,10 +122,10 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         if (orientationItem == 0) {
             propertyItem.setVisibility(GONE);
             propertyMenuItem.setVisibility(VISIBLE);
-            return;
+        } else {
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
-        propertyItem.setVisibility(VISIBLE);
-        propertyMenuItem.setVisibility(GONE);
     }
 
     private void initialize(Context context, boolean z) {
@@ -153,7 +155,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             desc.setVisibility(GONE);
         }
         for (Pair<Integer, String> pair : sq.a(key)) {
-            radioGroupContent.addView(a(pair));
+            radioGroupContent.addView(getOption(pair));
         }
         for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
             RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
@@ -178,14 +180,14 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         dialog.show();
     }
 
-    private RadioButton a(Pair<Integer, String> pair) {
+    private RadioButton getOption(Pair<Integer, String> pair) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText(pair.second);
         radioButton.setTag(pair.first);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) (wB.a(getContext(), 1.0f) * 40.0f));
-        radioButton.setGravity(19);
+        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
     }

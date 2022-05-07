@@ -3,6 +3,7 @@ package com.besome.sketch.editor.property;
 import android.app.Activity;
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,16 +24,16 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyStringSelectorItem extends RelativeLayout implements View.OnClickListener {
 
-    public String key = "";
-    public String value = "";
-    public TextView tvName;
-    public TextView tvValue;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public ViewGroup radioGroupContent;
-    public Kw valueChangeListener;
+    private String key = "";
+    private String value = "";
+    private TextView tvName;
+    private TextView tvValue;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ViewGroup radioGroupContent;
+    private Kw valueChangeListener;
 
     public PropertyStringSelectorItem(Context context, boolean z) {
         super(context);
@@ -80,9 +81,9 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (!mB.a()) {
-            a();
+            showDialog();
         }
     }
 
@@ -113,7 +114,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
     }
 
-    private void a() {
+    private void showDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
@@ -139,7 +140,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
 
         for (String item : items) {
-            radioGroupContent.addView(a(item));
+            radioGroupContent.addView(getOption(item));
         }
 
         for (int counter = 0; counter < radioGroupContent.getChildCount(); counter++) {
@@ -174,7 +175,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         dialog.show();
     }
 
-    private RadioButton a(String str) {
+    private RadioButton getOption(String str) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.0f);
         radioButton.setText(str);
@@ -184,7 +185,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) wB.a(getContext(), 4.0f);
         layoutParams.bottomMargin = (int) wB.a(getContext(), 4.0f);
-        radioButton.setGravity(19);
+        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
     }

@@ -21,15 +21,15 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyGravityItem extends RelativeLayout implements View.OnClickListener {
 
-    public String key = "";
-    public int gravityValue = -1;
-    public TextView tvName;
-    public TextView tvValue;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public Kw valueChangeListener;
+    private String key = "";
+    private int gravityValue = -1;
+    private TextView tvName;
+    private TextView tvValue;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private Kw valueChangeListener;
 
     public PropertyGravityItem(Context context, boolean z) {
         super(context);
@@ -70,7 +70,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             switch (key) {
                 case "property_gravity":
                 case "property_layout_gravity":
-                    a();
+                    showDialog();
                     break;
             }
         }
@@ -103,7 +103,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         }
     }
 
-    public final void a() {
+    private void showDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
