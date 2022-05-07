@@ -104,7 +104,8 @@ public class ManageEvent {
             listeners.add("FragmentStatePagerAdapter");
         }
         if (gx.a("RewardedVideoAd")) {
-            listeners.add("OnVideoAdListener");
+            listeners.add("rewardedAdLoadCallback");
+            listeners.add("fullScreenContentCallback");
         }
         if (gx.a("ListView")) {
             listeners.add("OnScrollListener");
@@ -165,6 +166,11 @@ public class ManageEvent {
      */
     public static void c(String eventName, ArrayList<String> list) {
         switch (eventName) {
+            case "rewardedAdLoadCallabck":
+                list.add("onRewardAdFailedToLoad");
+                list.add("onRewardAdLoaded");
+                return;
+
             case "OnCompletionListener":
                 list.add("onCompletion");
                 return;
@@ -950,6 +956,7 @@ public class ManageEvent {
 
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
+            case "onRewardAdFailedToLoad":
                 return "@Override\r\n" +
                         "public void onAdFailedToLoad(LoadAdError _param1) {\r\n" +
                         "final int _errorCode = _param1.getCode();\r\n" +
@@ -999,6 +1006,19 @@ public class ManageEvent {
                 return "@Override\r\n" +
                         "public void onAdOpened() {\r\n" +
                         eventLogic + "\r\n" +
+                        "}";
+
+            case "onRewardAdLoaded":
+                String rewardEventCode;
+                if (targetId.equals("")) {
+                    rewardEventCode = "\r\n";
+                } else {
+                    rewardEventCode = targetId + " = _param1;\r\n" +
+                            eventLogic + "\r\n";
+                }
+                return "@Override\r\n" +
+                        "public void onAdLoaded(RewardedAd _param1) {\r\n" +
+                        rewardEventCode +
                         "}";
 
             default:
@@ -1216,6 +1236,11 @@ public class ManageEvent {
                         listenerLogic + "\r\n" +
                         "});";
 
+            case "rewardedAdLoadCallback":
+                return "_" + targetId + "_rewarded_ad_load_callback = RewardedAdLoadCallback() {\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
             default:
                 return EventsHandler.getListenerCode(listenerName, targetId, listenerLogic);
         }
@@ -1333,6 +1358,13 @@ public class ManageEvent {
     }
 
     public static void h(Gx gx, ArrayList<String> list) {
+        if (gx.a("RewardedVideoAd")) {
+            list.add("onRewardAdFailedToLoad");
+            list.add("onRewardAdLoaded");
+            list.add("onAdDismissedFullScreenContent");
+            list.add("onAdFailedToShowFullScreenContent");
+            list.add("onAdShowedFullScreenContent");
+        }
         if (gx.a("FragmentAdapter")) {
             list.add("onTabAdded");
             list.add("onFragmentAdded");
