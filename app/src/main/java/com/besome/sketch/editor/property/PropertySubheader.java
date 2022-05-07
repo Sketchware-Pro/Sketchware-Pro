@@ -12,15 +12,15 @@ import a.a.a.wB;
 
 public class PropertySubheader extends RelativeLayout {
 
-    public ImageView imgAdd;
-    public TextView tvName;
+    private ImageView imgAdd;
+    private TextView tvName;
 
     public PropertySubheader(Context context) {
         super(context);
-        a(context);
+        initialize(context);
     }
 
-    private void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, R.layout.property_subheader);
         tvName = findViewById(R.id.tv_name);
         imgAdd = findViewById(R.id.img_add);

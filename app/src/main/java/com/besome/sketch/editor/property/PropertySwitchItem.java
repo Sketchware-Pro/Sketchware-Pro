@@ -13,11 +13,11 @@ import a.a.a.wB;
 
 public class PropertySwitchItem extends RelativeLayout implements View.OnClickListener {
 
-    public int key = -1;
-    public boolean value = false;
-    public TextView tvName;
-    public TextView tvDesc;
-    public Switch switchValue;
+    private int key = -1;
+    private boolean value = false;
+    private TextView tvName;
+    private TextView tvDesc;
+    private Switch switchValue;
 
     public PropertySwitchItem(Context context) {
         super(context);
@@ -50,7 +50,8 @@ public class PropertySwitchItem extends RelativeLayout implements View.OnClickLi
         switchValue.setChecked(value);
     }
 
-    public void onClick(View view) {
+    @Override
+    public void onClick(View v) {
         setValue(!value);
     }
 
