@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -101,25 +102,27 @@ public class ManageAssetsActivity extends Activity {
 
     @SuppressLint("SetTextI18n")
     private void showCreateDialog() {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
 
-        View inflate = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
-        final EditText fileName = inflate.findViewById(R.id.dialog_edittext_name);
-        TextView cancel = inflate.findViewById(R.id.dialog_text_cancel);
-        TextView save = inflate.findViewById(R.id.dialog_text_save);
-        final RadioGroup folderOrFile = inflate.findViewById(R.id.dialog_radio_filetype);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        final RadioGroup folderOrFile = view.findViewById(R.id.dialog_radio_filetype);
+        final RadioButton file = view.findViewById(R.id.dialog_radio_filetype_class);
+        final RadioButton activity = view.findViewById(R.id.dialog_radio_filetype_activity);
+        final EditText filename = view.findViewById(R.id.dialog_edittext_name);
+        final TextView cancel = view.findViewById(R.id.dialog_text_cancel);
+        final TextView save = view.findViewById(R.id.dialog_text_save);
 
-        inflate.findViewById(R.id.dialog_radio_filetype_activity).setVisibility(View.GONE);
-        ((RadioButton) inflate.findViewById(R.id.dialog_radio_filetype_class)).setText("File");
+        file.setText("File");
+        activity.setVisibility(View.GONE);
 
-        cancel.setOnClickListener(v -> create.dismiss());
+        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
         save.setOnClickListener(v -> {
-            if (fileName.getText().toString().isEmpty()) {
-                SketchwareUtil.toastError("Invalid file name");
+            if (filename.getText().toString().isEmpty()) {
+                SketchwareUtil.toastError("Invalid filename");
                 return;
             }
 
-            String editable = fileName.getText().toString();
+            String editable = filename.getText().toString();
 
             int checkedRadioButtonId = folderOrFile.getCheckedRadioButtonId();
             if (checkedRadioButtonId == R.id.dialog_radio_filetype_class) {
@@ -133,15 +136,14 @@ public class ManageAssetsActivity extends Activity {
 
             refresh();
             SketchwareUtil.toast("File was created successfully");
-            create.dismiss();
+            dialog.dismiss();
         });
 
-        create.setView(inflate);
-        create.setOnDismissListener(dialog -> SketchwareUtil.hideKeyboard());
-        create.show();
+        dialog.setView(view);
+        dialog.show();
 
-        fileName.requestFocus();
-        SketchwareUtil.showKeyboard();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        filename.requestFocus();
     }
 
     private void showLoadDialog() {
@@ -172,29 +174,30 @@ public class ManageAssetsActivity extends Activity {
     }
 
     private void showRenameDialog(final int position) {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
-        final EditText newFileName = inflate.findViewById(R.id.edittext_change_name);
-        newFileName.setText(myAdapter.getFileName(position));
-        TextView cancel = inflate.findViewById(R.id.text_cancel);
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        final View view = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
+        final EditText newFileName = view.findViewById(R.id.edittext_change_name);
+        final TextView cancel = view.findViewById(R.id.text_cancel);
+        final TextView save = view.findViewById(R.id.text_save);
 
-        inflate.findViewById(R.id.text_save).setOnClickListener(v -> {
+        newFileName.setText(myAdapter.getFileName(position));
+
+        cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
+        save.setOnClickListener(v -> {
             if (!newFileName.getText().toString().isEmpty()) {
                 FileUtil.renameFile(myAdapter.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
                 refresh();
                 SketchwareUtil.toast("Renamed successfully");
             }
 
-            create.dismiss();
+            dialog.dismiss();
         });
 
-        cancel.setOnClickListener(v -> create.dismiss());
-        create.setView(inflate);
-        create.setOnDismissListener(dialog -> SketchwareUtil.hideKeyboard());
-        create.show();
+        dialog.setView(view);
+        dialog.show();
 
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         newFileName.requestFocus();
-        SketchwareUtil.showKeyboard();
     }
 
     private void showDeleteDialog(final int position) {
