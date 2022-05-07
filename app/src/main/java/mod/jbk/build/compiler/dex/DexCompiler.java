@@ -34,9 +34,9 @@ public class DexCompiler {
         assert Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
         Collection<Path> programFiles = new ArrayList<>();
         if (compileHelper.proguard.isProguardEnabled()) {
-            programFiles.add(new File(compileHelper.f.classes_proguard).toPath());
+            programFiles.add(new File(compileHelper.yq.classes_proguard).toPath());
         } else {
-            for (String filePath : ProcessingFiles.getListResource(compileHelper.f.u)) {
+            for (String filePath : ProcessingFiles.getListResource(compileHelper.yq.u)) {
                 programFiles.add(new File(filePath).toPath());
             }
         }
@@ -51,7 +51,7 @@ public class DexCompiler {
                 .setIntermediate(true)
                 .setMinApiLevel(minApiLevel)
                 .addLibraryFiles(libraryFiles)
-                .setOutput(new File(compileHelper.f.t, "dex").toPath(), OutputMode.DexIndexed)
+                .setOutput(new File(compileHelper.yq.t, "dex").toPath(), OutputMode.DexIndexed)
                 .addProgramFiles(programFiles)
                 .build());
     }

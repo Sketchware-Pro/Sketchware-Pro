@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.wB;
 
@@ -21,9 +21,9 @@ public class PropertySubheader extends RelativeLayout {
     }
 
     private void a(Context context) {
-        wB.a(context, this, Resources.layout.property_subheader);
-        tvName = findViewById(Resources.id.tv_name);
-        imgAdd = findViewById(Resources.id.img_add);
+        wB.a(context, this, R.layout.property_subheader);
+        tvName = findViewById(R.id.tv_name);
+        imgAdd = findViewById(R.id.img_add);
     }
 
     public void setHeaderName(String str) {

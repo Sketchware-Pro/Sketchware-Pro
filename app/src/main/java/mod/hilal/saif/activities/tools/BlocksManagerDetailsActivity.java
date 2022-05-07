@@ -32,7 +32,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -66,18 +66,18 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.blocks_managers_details);
+        setContentView(R.layout.blocks_managers_details);
         initialize();
         _receive_intents();
     }
 
     private void initialize() {
-        _fab = findViewById(Resources.id.fab);
-        listview1 = findViewById(Resources.id.listview);
-        ImageView back_icon = findViewById(Resources.id.backicon);
-        page_title = findViewById(Resources.id.pagetitle);
-        import_export = findViewById(Resources.id.import_export);
-        swap = findViewById(Resources.id.swap);
+        _fab = findViewById(R.id.fab);
+        listview1 = findViewById(R.id.listview);
+        ImageView back_icon = findViewById(R.id.backicon);
+        page_title = findViewById(R.id.pagetitle);
+        import_export = findViewById(R.id.import_export);
+        swap = findViewById(R.id.swap);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
         import_export.setOnClickListener(v -> {
@@ -112,12 +112,12 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         Helper.applyRippleToToolbarView(import_export);
         swap.setOnClickListener(v -> {
             if (mode.equals("normal")) {
-                swap.setImageResource(Resources.drawable.icon_checkbox_white_96);
+                swap.setImageResource(R.drawable.icon_checkbox_white_96);
                 mode = "editor";
                 import_export.setVisibility(View.GONE);
                 _fabVisibility(false);
             } else {
-                swap.setImageResource(Resources.drawable.ic_menu_white_24dp);
+                swap.setImageResource(R.drawable.ic_menu_white_24dp);
                 mode = "normal";
                 import_export.setVisibility(View.VISIBLE);
                 _fabVisibility(true);
@@ -189,7 +189,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (mode.equals("editor")) {
-            swap.setImageResource(Resources.drawable.ic_menu_white_24dp);
+            swap.setImageResource(R.drawable.ic_menu_white_24dp);
             mode = "normal";
             Parcelable savedState = listview1.onSaveInstanceState();
             listview1.setAdapter(new Adapter(filtered_list));
@@ -337,7 +337,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                             .setTitle("Delete block?")
                             .setMessage("Are you sure you want to delete this block?")
                             .setPositiveButton("Recycle bin", (dialog, which) -> _moveToRecycleBin(position))
-                            .setNegativeButton(Resources.string.common_word_cancel, null)
+                            .setNegativeButton(R.string.common_word_cancel, null)
                             .setNeutralButton("Delete permanently", (dialog, which) -> _deleteBlock(position))
                             .show();
                     break;
@@ -393,7 +393,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setNegativeButton(Resources.string.common_word_cancel, null);
+                .setNegativeButton(R.string.common_word_cancel, null);
         if (palette == -1) {
             AtomicInteger restoreToChoice = new AtomicInteger(-1);
             builder.setTitle("Restore to")
@@ -516,18 +516,18 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.block_customview, null);
+                convertView = getLayoutInflater().inflate(R.layout.block_customview, null);
             }
 
             final HashMap<String, Object> block = blocks.get(position);
 
-            final LinearLayout background = convertView.findViewById(Resources.id.background);
-            final TextView name = convertView.findViewById(Resources.id.name);
-            final TextView spec = convertView.findViewById(Resources.id.spec);
-            final CardView upLayout = convertView.findViewById(Resources.id.up_layout);
-            final CardView downLayout = convertView.findViewById(Resources.id.down_layout);
-            final LinearLayout down = convertView.findViewById(Resources.id.down);
-            final LinearLayout up = convertView.findViewById(Resources.id.up);
+            final LinearLayout background = convertView.findViewById(R.id.background);
+            final TextView name = convertView.findViewById(R.id.name);
+            final TextView spec = convertView.findViewById(R.id.spec);
+            final CardView upLayout = convertView.findViewById(R.id.up_layout);
+            final CardView downLayout = convertView.findViewById(R.id.down_layout);
+            final LinearLayout down = convertView.findViewById(R.id.down);
+            final LinearLayout up = convertView.findViewById(R.id.up);
 
             if (mode.equals("normal")) {
                 downLayout.setVisibility(View.GONE);
@@ -563,32 +563,32 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                 switch ((String) blockType) {
                     case " ":
                     case "regular":
-                        spec.setBackgroundResource(Resources.drawable.block_ori);
+                        spec.setBackgroundResource(R.drawable.block_ori);
                         break;
 
                     case "b":
-                        spec.setBackgroundResource(Resources.drawable.block_boolean);
+                        spec.setBackgroundResource(R.drawable.block_boolean);
                         break;
 
                     case "c":
                     case "e":
-                        spec.setBackgroundResource(Resources.drawable.if_else);
+                        spec.setBackgroundResource(R.drawable.if_else);
                         break;
 
                     case "d":
-                        spec.setBackgroundResource(Resources.drawable.block_num);
+                        spec.setBackgroundResource(R.drawable.block_num);
                         break;
 
                     case "f":
-                        spec.setBackgroundResource(Resources.drawable.block_stop);
+                        spec.setBackgroundResource(R.drawable.block_stop);
                         break;
 
                     default:
-                        spec.setBackgroundResource(Resources.drawable.block_string);
+                        spec.setBackgroundResource(R.drawable.block_string);
                         break;
                 }
             } else {
-                spec.setBackgroundResource(Resources.drawable.block_string);
+                spec.setBackgroundResource(R.drawable.block_string);
             }
 
             if (palette == -1) {

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class EventsMakerCreator extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.events_creator);
+        setContentView(R.layout.events_creator);
         if (getIntent().hasExtra("lis_name")) {
             lisName = getIntent().getStringExtra("lis_name");
             isActivityEvent = lisName.equals("");
@@ -95,21 +95,21 @@ public class EventsMakerCreator extends Activity {
     }
 
     private void getViewsById() {
-        eventName = findViewById(Resources.id.events_creator_eventname);
-        eventVar = findViewById(Resources.id.events_creator_varname);
-        EditText eventListener = findViewById(Resources.id.events_creator_listenername);
+        eventName = findViewById(R.id.events_creator_eventname);
+        eventVar = findViewById(R.id.events_creator_varname);
+        EditText eventListener = findViewById(R.id.events_creator_listenername);
         ((View) eventListener.getParent().getParent()).setVisibility(View.GONE);
-        eventIcon = findViewById(Resources.id.events_creator_icon);
-        eventDesc = findViewById(Resources.id.events_creator_desc);
-        eventParams = findViewById(Resources.id.events_creator_params);
-        eventSpec = findViewById(Resources.id.events_creator_spec);
-        eventCode = findViewById(Resources.id.events_creator_code);
-        selectIcon = findViewById(Resources.id.events_creator_chooseicon);
-        selectIcon.setImageResource(Resources.drawable.add_96_blue);
-        CheckBox check = findViewById(Resources.id.events_creator_checkbox);
+        eventIcon = findViewById(R.id.events_creator_icon);
+        eventDesc = findViewById(R.id.events_creator_desc);
+        eventParams = findViewById(R.id.events_creator_params);
+        eventSpec = findViewById(R.id.events_creator_spec);
+        eventCode = findViewById(R.id.events_creator_code);
+        selectIcon = findViewById(R.id.events_creator_chooseicon);
+        selectIcon.setImageResource(R.drawable.add_96_blue);
+        CheckBox check = findViewById(R.id.events_creator_checkbox);
         check.setVisibility(View.GONE);
-        cancel = findViewById(Resources.id.events_creator_cancel);
-        save = findViewById(Resources.id.events_creator_save);
+        cancel = findViewById(R.id.events_creator_cancel);
+        save = findViewById(R.id.events_creator_save);
         if (isActivityEvent) {
             eventVar.setText("");
             ((View) eventVar.getParent().getParent()).setVisibility(View.GONE);
@@ -178,7 +178,7 @@ public class EventsMakerCreator extends Activity {
     }
 
     private void setToolbar() {
-        TextView tx_toolbar_title = findViewById(Resources.id.tx_toolbar_title);
+        TextView tx_toolbar_title = findViewById(R.id.tx_toolbar_title);
         if (isEdit) {
             tx_toolbar_title.setText(event_name);
         } else if (isActivityEvent) {
@@ -186,7 +186,7 @@ public class EventsMakerCreator extends Activity {
         } else {
             tx_toolbar_title.setText(lisName + "Create a new event");
         }
-        ImageView back_icon = findViewById(Resources.id.ig_toolbar_back);
+        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
     }

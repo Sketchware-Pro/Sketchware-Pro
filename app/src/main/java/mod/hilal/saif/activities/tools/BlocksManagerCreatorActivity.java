@@ -30,7 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,31 +77,31 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.blocks_manager_creator);
+        setContentView(R.layout.blocks_manager_creator);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        ScrollView vscroll1 = findViewById(Resources.id.vscroll1);
-        ImageView backIcon = findViewById(Resources.id.back_ico);
-        pageTitle = findViewById(Resources.id.page_title);
-        TextInputLayout nameLayout = findViewById(Resources.id.name_lay);
-        name = findViewById(Resources.id.name);
-        LinearLayout selectType = findViewById(Resources.id.select_type);
-        type = findViewById(Resources.id.type);
-        typename = findViewById(Resources.id.type_name);
-        spec = findViewById(Resources.id.spec);
-        hscroll1 = findViewById(Resources.id.hscroll1);
-        spec2InputLayout = findViewById(Resources.id.spec_2lay);
-        LinearLayout colorSelector = findViewById(Resources.id.colour_selector);
-        colour = findViewById(Resources.id.color);
-        parametersHolder = findViewById(Resources.id.parameter_holder);
-        spec2 = findViewById(Resources.id.spec2);
-        code = findViewById(Resources.id.code);
-        MaterialButton cancel = findViewById(Resources.id.cancel);
-        MaterialButton save = findViewById(Resources.id.save);
-        LinearLayout reset = findViewById(Resources.id.reset);
+        ScrollView vscroll1 = findViewById(R.id.vscroll1);
+        ImageView backIcon = findViewById(R.id.back_ico);
+        pageTitle = findViewById(R.id.page_title);
+        TextInputLayout nameLayout = findViewById(R.id.name_lay);
+        name = findViewById(R.id.name);
+        LinearLayout selectType = findViewById(R.id.select_type);
+        type = findViewById(R.id.type);
+        typename = findViewById(R.id.type_name);
+        spec = findViewById(R.id.spec);
+        hscroll1 = findViewById(R.id.hscroll1);
+        spec2InputLayout = findViewById(R.id.spec_2lay);
+        LinearLayout colorSelector = findViewById(R.id.colour_selector);
+        colour = findViewById(R.id.color);
+        parametersHolder = findViewById(R.id.parameter_holder);
+        spec2 = findViewById(R.id.spec2);
+        code = findViewById(R.id.code);
+        MaterialButton cancel = findViewById(R.id.cancel);
+        MaterialButton save = findViewById(R.id.save);
+        LinearLayout reset = findViewById(R.id.reset);
 
         AlertDialog.Builder blockTypeDialog = new AlertDialog.Builder(this);
 
@@ -164,8 +164,8 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
             blockTypeDialog.setTitle("Block type")
                     .setSingleChoiceItems(choices.toArray(new String[0]),
                             types.indexOf(type.getText().toString()), (dialog, which) -> choice.set(which))
-                    .setPositiveButton(Resources.string.common_word_save, (dialog, which) -> type.setText(types.get(choice.get())))
-                    .setNegativeButton(Resources.string.common_word_cancel, null)
+                    .setPositiveButton(R.string.common_word_save, (dialog, which) -> type.setText(types.get(choice.get())))
+                    .setNegativeButton(R.string.common_word_cancel, null)
                     .create().show();
         });
 
@@ -215,10 +215,10 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         });
 
         colorSelector.setOnClickListener(v -> {
-            View inflate = getLayoutInflater().inflate(Resources.layout.color_picker, null);
+            View inflate = getLayoutInflater().inflate(R.layout.color_picker, null);
             Zx zx = new Zx(inflate, BlocksManagerCreatorActivity.this, 0, true, false);
             zx.a(new PCP(colour));
-            zx.setAnimationStyle(Resources.anim.abc_fade_in);
+            zx.setAnimationStyle(R.anim.abc_fade_in);
             zx.showAtLocation(inflate, Gravity.CENTER, 0, 0);
         });
 
@@ -451,28 +451,28 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         switch (specId) {
             case " ":
             case "regular":
-                spec.setBackgroundResource(Resources.drawable.block_ori);
+                spec.setBackgroundResource(R.drawable.block_ori);
                 break;
 
             case "b":
-                spec.setBackgroundResource(Resources.drawable.block_boolean);
+                spec.setBackgroundResource(R.drawable.block_boolean);
                 break;
 
             case "c":
             case "e":
-                spec.setBackgroundResource(Resources.drawable.if_else);
+                spec.setBackgroundResource(R.drawable.if_else);
                 break;
 
             case "d":
-                spec.setBackgroundResource(Resources.drawable.block_num);
+                spec.setBackgroundResource(R.drawable.block_num);
                 break;
 
             case "f":
-                spec.setBackgroundResource(Resources.drawable.block_stop);
+                spec.setBackgroundResource(R.drawable.block_stop);
                 break;
 
             default:
-                spec.setBackgroundResource(Resources.drawable.block_string);
+                spec.setBackgroundResource(R.drawable.block_string);
                 break;
         }
         try {

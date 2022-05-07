@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.aB;
@@ -49,11 +49,11 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         if (identifier > 0) {
             tvName.setText(xB.b().a(getResources(), identifier));
             if (key.equals("property_progressbar_style")) {
-                icon = Resources.drawable.style_48dp;
+                icon = R.drawable.style_48dp;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -91,12 +91,12 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, Resources.layout.property_selector_item);
-        tvName = findViewById(Resources.id.tv_name);
-        tvValue = findViewById(Resources.id.tv_value);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_selector_item);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -107,8 +107,8 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
-        radioGroupContent = view.findViewById(Resources.id.rg_content);
+        View view = wB.a(getContext(), R.layout.property_popup_selector_single);
+        radioGroupContent = view.findViewById(R.id.rg_content);
         int counter = 0;
         for (Pair<String, String> pair : sq.b(key)) {
             radioGroupContent.addView(a(pair));
@@ -126,7 +126,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
             counter++;
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             int childCount1 = radioGroupContent.getChildCount();
             int counter1 = 0;
             while (true) {
@@ -145,8 +145,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

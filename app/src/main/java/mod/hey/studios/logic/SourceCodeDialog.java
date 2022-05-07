@@ -6,7 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -26,8 +26,8 @@ public class SourceCodeDialog {
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Source code")
-                .setIcon(Resources.drawable.code_icon)
-                .setPositiveButton(Resources.string.common_word_close, null)
+                .setIcon(R.drawable.code_icon)
+                .setPositiveButton(R.string.common_word_close, null)
                 .create();
 
         dialog.setView(codeEditor,

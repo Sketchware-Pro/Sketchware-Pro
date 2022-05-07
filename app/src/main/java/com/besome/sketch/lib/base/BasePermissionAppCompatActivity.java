@@ -2,7 +2,7 @@ package com.besome.sketch.lib.base;
 
 import android.Manifest;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Sp;
 import a.a.a.aB;
@@ -28,13 +28,10 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public void i(int i) {
         if (!Sp.a) {
             aB dialog = new aB(this);
-            dialog.b(xB.b().a(getApplicationContext(),
-                    Resources.string.common_message_permission_title_storage));
-            dialog.a(Resources.drawable.break_warning_96_red);
-            dialog.a(xB.b().a(getApplicationContext(),
-                    Resources.string.common_message_permission_storage));
-            dialog.b(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_ok), v -> {
+            dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_permission_title_storage));
+            dialog.a(R.drawable.break_warning_96_red);
+            dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_storage));
+            dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
                 if (!mB.a()) {
                     nd.a(BasePermissionAppCompatActivity.this,
                             new String[]{
@@ -45,8 +42,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
                     dialog.dismiss();
                 }
             });
-            dialog.a(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_cancel), v -> {
+            dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
                 l();
                 dialog.dismiss();
             });
@@ -58,12 +54,11 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
         }
     }
 
-    @Override // com.besome.sketch.lib.base.BaseAppCompatActivity
+    @Override
     public boolean j() {
-        return
-                zd.a(getApplicationContext(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0
-                        && zd.a(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
+        return zd.a(getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == 0
+                && zd.a(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == 0;
     }
 
     public abstract void l();
@@ -88,20 +83,16 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public void j(int i) {
         if (!Sp.a) {
             aB dialog = new aB(this);
-            dialog.b(xB.b().a(getApplicationContext(),
-                    Resources.string.common_message_permission_title_storage));
-            dialog.a(Resources.drawable.break_warning_96_red);
-            dialog.a(xB.b().a(getApplicationContext(),
-                    Resources.string.common_message_permission_storage1));
-            dialog.b(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_settings), v -> {
+            dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_permission_title_storage));
+            dialog.a(R.drawable.break_warning_96_red);
+            dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_storage1));
+            dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
                 if (!mB.a()) {
                     h(i);
                     dialog.dismiss();
                 }
             });
-            dialog.a(xB.b().a(getApplicationContext(),
-                    Resources.string.common_word_cancel), v -> {
+            dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
                 m();
                 dialog.dismiss();
             });

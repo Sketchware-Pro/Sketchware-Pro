@@ -23,7 +23,7 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class ManageAssetsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_file);
+        setContentView(R.layout.manage_file);
 
         sc_id = getIntent().getStringExtra("sc_id");
         Helper.fixFileprovider();
@@ -63,21 +63,21 @@ public class ManageAssetsActivity extends Activity {
 
     @SuppressLint("SetTextI18n")
     private void setupUI() {
-        gridView = findViewById(Resources.id.list_file);
+        gridView = findViewById(R.id.list_file);
         gridView.setNumColumns(1);
 
-        FloatingActionButton fab = findViewById(Resources.id.fab_plus);
+        FloatingActionButton fab = findViewById(R.id.fab_plus);
         fab.setOnClickListener(v -> showCreateDialog());
 
-        tv_noFileExist = findViewById(Resources.id.text_info);
+        tv_noFileExist = findViewById(R.id.text_info);
         tv_noFileExist.setText("No files");
 
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("Asset Manager");
-        ImageView imageView = findViewById(Resources.id.ig_toolbar_back);
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Asset Manager");
+        ImageView imageView = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(imageView);
         imageView.setOnClickListener(Helper.getBackPressedClickListener(this));
 
-        ImageView ig_load_file = findViewById(Resources.id.ig_toolbar_load_file);
+        ImageView ig_load_file = findViewById(R.id.ig_toolbar_load_file);
         ig_load_file.setVisibility(View.VISIBLE);
 
         Helper.applyRippleToToolbarView(ig_load_file);
@@ -103,14 +103,14 @@ public class ManageAssetsActivity extends Activity {
     private void showCreateDialog() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
 
-        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_create_new_file_layout, null);
-        final EditText fileName = inflate.findViewById(Resources.id.dialog_edittext_name);
-        TextView cancel = inflate.findViewById(Resources.id.dialog_text_cancel);
-        TextView save = inflate.findViewById(Resources.id.dialog_text_save);
-        final RadioGroup folderOrFile = inflate.findViewById(Resources.id.dialog_radio_filetype);
+        View inflate = getLayoutInflater().inflate(R.layout.dialog_create_new_file_layout, null);
+        final EditText fileName = inflate.findViewById(R.id.dialog_edittext_name);
+        TextView cancel = inflate.findViewById(R.id.dialog_text_cancel);
+        TextView save = inflate.findViewById(R.id.dialog_text_save);
+        final RadioGroup folderOrFile = inflate.findViewById(R.id.dialog_radio_filetype);
 
-        inflate.findViewById(Resources.id.dialog_radio_filetype_activity).setVisibility(View.GONE);
-        ((RadioButton) inflate.findViewById(Resources.id.dialog_radio_filetype_class)).setText("File");
+        inflate.findViewById(R.id.dialog_radio_filetype_activity).setVisibility(View.GONE);
+        ((RadioButton) inflate.findViewById(R.id.dialog_radio_filetype_class)).setText("File");
 
         cancel.setOnClickListener(v -> create.dismiss());
         save.setOnClickListener(v -> {
@@ -121,22 +121,16 @@ public class ManageAssetsActivity extends Activity {
 
             String editable = fileName.getText().toString();
 
-            switch (folderOrFile.getCheckedRadioButtonId()) {
-                case Resources.id.dialog_radio_filetype_class:
-                    FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
-                    break;
-
-                case Resources.id.radio_button_folder:
-                    FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
-                    break;
-
-                default:
-                    SketchwareUtil.toast("Select a file type");
-                    return;
+            int checkedRadioButtonId = folderOrFile.getCheckedRadioButtonId();
+            if (checkedRadioButtonId == R.id.dialog_radio_filetype_class) {
+                FileUtil.writeFile(new File(current_path, editable).getAbsolutePath(), "");
+            } else if (checkedRadioButtonId == R.id.radio_button_folder) {
+                FileUtil.makeDir(new File(current_path, editable).getAbsolutePath());
+            } else {
+                SketchwareUtil.toast("Select a file type");
+                return;
             }
 
-            // This piece of code will be executed when the switch is
-            // Resources.id.dialog_radio_filetype_class or Resources.id.radio_button_folder
             refresh();
             SketchwareUtil.toast("File was created successfully");
             create.dismiss();
@@ -179,12 +173,12 @@ public class ManageAssetsActivity extends Activity {
 
     private void showRenameDialog(final int position) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.dialog_input_layout, null);
-        final EditText newFileName = inflate.findViewById(Resources.id.edittext_change_name);
+        View inflate = getLayoutInflater().inflate(R.layout.dialog_input_layout, null);
+        final EditText newFileName = inflate.findViewById(R.id.edittext_change_name);
         newFileName.setText(myAdapter.getFileName(position));
-        TextView cancel = inflate.findViewById(Resources.id.text_cancel);
+        TextView cancel = inflate.findViewById(R.id.text_cancel);
 
-        inflate.findViewById(Resources.id.text_save).setOnClickListener(v -> {
+        inflate.findViewById(R.id.text_save).setOnClickListener(v -> {
             if (!newFileName.getText().toString().isEmpty()) {
                 FileUtil.renameFile(myAdapter.getItem(position), new File(current_path, newFileName.getText().toString()).getAbsolutePath());
                 refresh();
@@ -208,12 +202,12 @@ public class ManageAssetsActivity extends Activity {
                 .setTitle(myAdapter.getFileName(position))
                 .setMessage("Are you sure you want to delete this " + (myAdapter.isFolder(position) ? "folder" : "file") + "? "
                         + "This action cannot be reversed!")
-                .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> {
+                .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                     FileUtil.deleteFile(myAdapter.getItem(position));
                     refresh();
                     SketchwareUtil.toast("Deleted successfully");
                 })
-                .setNegativeButton(Resources.string.common_word_cancel, null)
+                .setNegativeButton(R.string.common_word_cancel, null)
                 .create()
                 .show();
     }
@@ -268,25 +262,25 @@ public class ManageAssetsActivity extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.manage_java_item_hs, null);
+                convertView = getLayoutInflater().inflate(R.layout.manage_java_item_hs, null);
             }
 
-            TextView name = convertView.findViewById(Resources.id.title);
-            ImageView icon = convertView.findViewById(Resources.id.icon);
-            ImageView more = convertView.findViewById(Resources.id.more);
+            TextView name = convertView.findViewById(R.id.title);
+            ImageView icon = convertView.findViewById(R.id.icon);
+            ImageView more = convertView.findViewById(R.id.more);
 
             name.setText(getFileName(position));
             if (isFolder(position)) {
-                icon.setImageResource(Resources.drawable.ic_folder_48dp);
+                icon.setImageResource(R.drawable.ic_folder_48dp);
             } else {
                 try {
                     if (FileUtil.isImageFile(getItem(position))) {
                         Glide.with(ManageAssetsActivity.this).load(new File(getItem(position))).into(icon);
                     } else {
-                        icon.setImageResource(Resources.drawable.file_48_blue);
+                        icon.setImageResource(R.drawable.file_48_blue);
                     }
                 } catch (Exception ignored) {
-                    icon.setImageResource(Resources.drawable.file_48_blue);
+                    icon.setImageResource(R.drawable.file_48_blue);
                 }
             }
             Helper.applyRipple(ManageAssetsActivity.this, more);

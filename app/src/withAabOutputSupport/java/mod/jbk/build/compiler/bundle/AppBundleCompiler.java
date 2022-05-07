@@ -2,7 +2,6 @@ package mod.jbk.build.compiler.bundle;
 
 import android.content.Context;
 
-import com.android.apksigner.ApkSignerTool;
 import com.android.tools.build.bundletool.BundleToolMain;
 import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 
@@ -21,36 +20,30 @@ import a.a.a.Jp;
 import a.a.a.yq;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 
 public class AppBundleCompiler {
 
-    public static final String MODULE_ARCHIVE_FILE_NAME = "module-main.zip";
-    public static final String MODULE_ASSETS = "assets";
-    public static final String MODULE_DEX = "dex";
-    public static final String MODULE_LIB = "lib";
-    public static final String MODULE_RES = "res";
-    public static final String MODULE_ROOT = "root";
-    public static final String MODULE_MANIFEST = "manifest";
+    private static final String MODULE_ARCHIVE_FILE_NAME = "module-main.zip";
+    private static final String MODULE_ASSETS = "assets";
+    private static final String MODULE_DEX = "dex";
+    private static final String MODULE_LIB = "lib";
+    private static final String MODULE_RES = "res";
+    private static final String MODULE_ROOT = "root";
+    private static final String MODULE_MANIFEST = "manifest";
 
     private static final String TAG = AppBundleCompiler.class.getSimpleName();
     private final BuildAsyncTask buildingDialog;
     private final Dp mDp;
-    public File mainModuleArchive;
-    public File appBundle;
-    public File apkSet;
+    private final File mainModuleArchive;
+    private final File appBundle;
 
     public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityA) {
         buildingDialog = designActivityA;
         mDp = dp;
-        mainModuleArchive = new File(dp.f.t, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.f.t, getBundleFilename(dp.f.d));
-        apkSet = new File(dp.f.t, getApkSetFilename(dp.f.d));
-    }
-
-    public static String getApkSetFilename(String sc_id) {
-        return sc_id + ".apks";
+        mainModuleArchive = new File(dp.yq.t, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(dp.yq.t, getBundleFilename(dp.yq.d));
     }
 
     public static String getBundleFilename(String sc_id) {
@@ -62,48 +55,6 @@ public class AppBundleCompiler {
         return new File(projectMetadata.t, projectMetadata.d + ".aab");
     }
 
-    public void buildApkSet() {
-        long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> args = new ArrayList<>();
-        args.add("build-apks");
-        args.add("--bundle=" + appBundle.getAbsolutePath());
-        args.add("--overwrite");
-        args.add("--output=" + apkSet.getAbsolutePath());
-        args.add("--mode=universal");
-        args.add("--aapt2=" + mDp.aapt2Dir.getAbsolutePath());
-
-        LogUtil.d(TAG, "Running BundleToolMain with these arguments: " + args);
-        try {
-            BundleToolMain.main(args.toArray(new String[0]));
-        } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
-            LogUtil.e(TAG, "Failed to build APK Set: " + e.getMessage(), e);
-        }
-        LogUtil.d(TAG, "Building APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-    }
-
-    public void extractInstallApkFromApkSet() {
-        long savedTimeMillis = System.currentTimeMillis();
-        try (FileInputStream apkSetInputStream = new FileInputStream(apkSet)) {
-            try (ZipInputStream apkSetStream = new ZipInputStream(apkSetInputStream)) {
-                ZipEntry entryInApkSet = apkSetStream.getNextEntry();
-
-                while (entryInApkSet != null) {
-                    if (entryInApkSet.getName().equals("universal.apk")) {
-                        FileUtil.writeBytes(new File(mDp.f.G), FileUtil.readFromInputStream(apkSetStream));
-                    }
-
-                    apkSetStream.closeEntry();
-                    entryInApkSet = apkSetStream.getNextEntry();
-                }
-            }
-        } catch (IOException e) {
-            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
-            LogUtil.e(TAG, "Failed to extract Install APK from APK Set: " + e.getMessage(), e);
-        }
-        LogUtil.d(TAG, "Extracting universal.apk from APK Set took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-    }
-
     public void buildBundle() {
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
@@ -113,7 +64,7 @@ public class AppBundleCompiler {
         args.add("--output=" + appBundle.getAbsolutePath());
         if (mDp.proguard.isDebugFilesEnabled()) {
             /* Add ProGuard mapping if available for automatic import to ProGuard mappings in Google Play */
-            File mapping = new File(mDp.f.printmapping);
+            File mapping = new File(mDp.yq.printmapping);
             if (mapping.exists()) {
                 args.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
                         mapping.getAbsolutePath());
@@ -143,12 +94,12 @@ public class AppBundleCompiler {
                 /* Finally, use it as ZipOutputStream */
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
                     /* Get an automatically closed FileInputStream of <project name>.apk.res */
-                    try (FileInputStream apkResStream = new FileInputStream(mDp.f.C)) {
+                    try (FileInputStream apkResStream = new FileInputStream(mDp.yq.C)) {
                         /* Create an automatically closed ZipInputStream of <project name>.apk.res */
                         try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
 
                             /* First, compress DEX files into module-main.zip */
-                            File[] binDirectoryContent = new File(mDp.f.t).listFiles();
+                            File[] binDirectoryContent = new File(mDp.yq.t).listFiles();
                             if (binDirectoryContent != null) {
                                 for (File file : binDirectoryContent) {
                                     if (file.isFile() && file.getName().endsWith(".dex")) {
@@ -212,7 +163,7 @@ public class AppBundleCompiler {
                         }
                     }
 
-                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.f.b));
+                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.yq.b));
                     File[] architectures = nativeLibrariesDirectory.listFiles();
 
                     if (architectures != null) {
@@ -240,13 +191,11 @@ public class AppBundleCompiler {
                     }
 
                     /* Start with enabled Local libraries' JARs */
-                    ArrayList<File> jars = new ManageLocalLibrary(mDp.f.b).getLocalLibraryJars();
+                    ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.b).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
-                    String prependToLibraryName = mDp.l.getAbsolutePath() + File.separator + mDp.m + File.separator;
-                    String appendToLibraryName = File.separator + "classes.jar";
-                    for (Jp library : mDp.n.a()) {
-                        jars.add(new File(prependToLibraryName + library.a() + appendToLibraryName));
+                    for (Jp library : mDp.builtInLibraryManager.a()) {
+                        jars.add(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
                     }
 
                     for (File jar : jars) {
@@ -278,28 +227,5 @@ public class AppBundleCompiler {
                 }
             }
         }
-    }
-
-    public void signInstallApk() {
-        long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> args = new ArrayList<>();
-        args.add("sign");
-        args.add("--in");
-        args.add(mDp.f.G);
-        args.add("--out");
-        args.add(mDp.f.H);
-        args.add("--key");
-        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.pk8");
-        args.add("--cert");
-        args.add((new File(mDp.l, "testkey")).getAbsolutePath() + mDp.c + "testkey.x509.pem");
-
-        LogUtil.d(TAG, "Running ApkSignerTool with these arguments: " + args);
-        try {
-            ApkSignerTool.main(args.toArray(new String[0]));
-        } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
-            LogUtil.e(TAG, "Failed to sign Install-APK: " + e.getMessage(), e);
-        }
-        LogUtil.d(TAG, "Signing Install-APK took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 }

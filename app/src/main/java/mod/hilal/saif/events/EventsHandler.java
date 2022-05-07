@@ -2,7 +2,7 @@ package mod.hilal.saif.events;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -210,25 +210,25 @@ public class EventsHandler {
             case "onStop":
             case "onDestroy":
             case "onTabLayoutNewTabAdded":
-                return Resources.drawable.widget_source;
+                return R.drawable.widget_source;
 
             case " onLongClick":
-                return Resources.drawable.check_upload_apk_48dp;
+                return R.drawable.check_upload_apk_48dp;
 
             case "onSwipeRefreshLayout":
-                return Resources.drawable.widget_swipe_refresh;
+                return R.drawable.widget_swipe_refresh;
 
             case "onPreExecute":
-                return Resources.drawable.event_on_stop_tracking_touch_48dp;
+                return R.drawable.event_on_stop_tracking_touch_48dp;
 
             case "doInBackground":
-                return Resources.drawable.event_on_animation_start_48dp;
+                return R.drawable.event_on_animation_start_48dp;
 
             case "onProgressUpdate":
-                return Resources.drawable.event_on_page_started_48dp;
+                return R.drawable.event_on_page_started_48dp;
 
             case "onPostExecute":
-                return Resources.drawable.event_on_progress_changed_48dp;
+                return R.drawable.event_on_progress_changed_48dp;
 
             default:
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
@@ -244,7 +244,7 @@ public class EventsHandler {
                                     return Integer.parseInt((String) icon);
                                 } catch (NumberFormatException e) {
                                     SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
-                                    return Resources.drawable.android_icon;
+                                    return R.drawable.android_icon;
                                 }
                             } else {
                                 SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
@@ -255,7 +255,7 @@ public class EventsHandler {
                     }
                 }
 
-                return Resources.drawable.android_icon;
+                return R.drawable.android_icon;
         }
     }
 

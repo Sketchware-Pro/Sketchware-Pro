@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.HashMap;
 
@@ -68,23 +68,23 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
     }
 
     private void initializePalettes() {
-        addPalette(0, xB.b().a(getResources(), Resources.string.block_category_var),
+        addPalette(0, xB.b().a(getResources(), R.string.block_category_var),
                 0xffee7d16);
-        addPalette(1, xB.b().a(getResources(), Resources.string.block_category_list),
+        addPalette(1, xB.b().a(getResources(), R.string.block_category_list),
                 0xffcc5b22);
-        addPalette(2, xB.b().a(getResources(), Resources.string.block_category_control),
+        addPalette(2, xB.b().a(getResources(), R.string.block_category_control),
                 0xffe1a92a);
-        addPalette(3, xB.b().a(getResources(), Resources.string.block_category_operator),
+        addPalette(3, xB.b().a(getResources(), R.string.block_category_operator),
                 0xff5cb722);
-        addPalette(4, xB.b().a(getResources(), Resources.string.block_category_math),
+        addPalette(4, xB.b().a(getResources(), R.string.block_category_math),
                 0xff23b9a9);
-        addPalette(5, xB.b().a(getResources(), Resources.string.block_category_file),
+        addPalette(5, xB.b().a(getResources(), R.string.block_category_file),
                 0xffa1887f);
-        addPalette(6, xB.b().a(getResources(), Resources.string.block_category_view_func),
+        addPalette(6, xB.b().a(getResources(), R.string.block_category_view_func),
                 0xff4a6cd4);
-        addPalette(7, xB.b().a(getResources(), Resources.string.block_category_component_func),
+        addPalette(7, xB.b().a(getResources(), R.string.block_category_component_func),
                 0xff2ca5e2);
-        addPalette(8, xB.b().a(getResources(), Resources.string.block_category_moreblock),
+        addPalette(8, xB.b().a(getResources(), R.string.block_category_moreblock),
                 0xff8a55d7);
 
         for (HashMap<String, Object> palette : new mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector().getPaletteSelector()) {

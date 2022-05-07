@@ -18,7 +18,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Ss;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -71,16 +71,16 @@ public class AsdOrigin extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (code_editor_theme == 0) {
-            getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_white);
+            getWindow().setBackgroundDrawableResource(R.drawable.custom_dialog_inset_white);
         } else if (code_editor_theme == 1) {
-            getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_light_grey);
+            getWindow().setBackgroundDrawableResource(R.drawable.custom_dialog_inset_light_grey);
         } else if (code_editor_theme == 2) {
-            getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_black);
+            getWindow().setBackgroundDrawableResource(R.drawable.custom_dialog_inset_black);
         }
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(attributes);
-        setContentView(Resources.layout.dialog);
+        setContentView(R.layout.dialog);
 
         space = new Space(getContext());
         space.setLayoutParams(new LinearLayout.LayoutParams(
@@ -89,7 +89,7 @@ public class AsdOrigin extends Dialog {
                 1.0f
         ));
 
-        LinearLayout base = findViewById(Resources.id.layout_button);
+        LinearLayout base = findViewById(R.id.layout_button);
 
         title = new TextView(getContext());
         title.setText("Code Editor");
@@ -126,16 +126,16 @@ public class AsdOrigin extends Dialog {
         base.addView(space, 0);
         base.addView(title, 0);
 
-        b = findViewById(Resources.id.sdialog_root);
-        d = findViewById(Resources.id.dialog_img);
-        dialog_title = findViewById(Resources.id.dialog_title);
-        dialog_msg = findViewById(Resources.id.dialog_msg);
-        custom_view = findViewById(Resources.id.custom_view);
+        b = findViewById(R.id.sdialog_root);
+        d = findViewById(R.id.dialog_img);
+        dialog_title = findViewById(R.id.dialog_title);
+        dialog_msg = findViewById(R.id.dialog_msg);
+        custom_view = findViewById(R.id.custom_view);
         layout_button = base;
-        dialog_btn_yes = findViewById(Resources.id.dialog_btn_yes);
+        dialog_btn_yes = findViewById(R.id.dialog_btn_yes);
         dialog_btn_yes.setText(dialog_btn_yes_str);
         dialog_btn_yes.setOnClickListener(dialog_btn_yes_listener);
-        dialog_btn_no = findViewById(Resources.id.dialog_btn_no);
+        dialog_btn_no = findViewById(R.id.dialog_btn_no);
         dialog_btn_no.setText(dialog_btn_no_str);
         dialog_btn_no.setOnClickListener(dialog_btn_no_listener);
         if (dialog_title_str.isEmpty()) {

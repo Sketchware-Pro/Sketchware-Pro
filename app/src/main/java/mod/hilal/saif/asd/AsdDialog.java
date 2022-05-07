@@ -21,7 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Ss;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
@@ -50,20 +50,20 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.code_editor_hs);
+        setContentView(R.layout.code_editor_hs);
 
-        codeEditor = findViewById(Resources.id.editor);
+        codeEditor = findViewById(R.id.editor);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
         codeEditor.setEditorLanguage(new JavaLanguage());
         codeEditor.setText(str);
         SrcCodeEditor.loadCESettings(act, codeEditor, "dlg");
         pref = SrcCodeEditor.pref;
 
-        ImageView redo = findViewById(Resources.id.menu_view_redo);
+        ImageView redo = findViewById(R.id.menu_view_redo);
         redo.setOnClickListener(v -> codeEditor.undo());
-        ImageView undo = findViewById(Resources.id.menu_view_undo);
+        ImageView undo = findViewById(R.id.menu_view_undo);
         undo.setOnClickListener(v -> codeEditor.redo());
-        ImageView more = findViewById(Resources.id.more);
+        ImageView more = findViewById(R.id.more);
         more.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(act, v);
             populateMenu(popupMenu.getMenu());
@@ -130,7 +130,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                                             }
                                             dialog.dismiss();
                                         })
-                                .setNegativeButton(Resources.string.common_word_cancel, null)
+                                .setNegativeButton(R.string.common_word_cancel, null)
                                 .show();
                         break;
 
@@ -160,7 +160,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         Helper.applyRipple(getContext(), redo);
         Helper.applyRipple(getContext(), undo);
         Helper.applyRipple(getContext(), more);
-        findViewById(Resources.id.save).setVisibility(View.GONE);
+        findViewById(R.id.save).setVisibility(View.GONE);
         codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,
@@ -228,7 +228,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 (int) getDip(8),
                 (int) getDip(8)
         );
-        cancel.setText(Resources.string.common_word_cancel);
+        cancel.setText(R.string.common_word_cancel);
         cancel.setTextColor(-1);
         cancel.setPadding(
                 (int) getDip(8),
@@ -256,7 +256,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 (int) getDip(8),
                 (int) getDip(8)
         );
-        save.setText(Resources.string.common_word_save);
+        save.setText(R.string.common_word_save);
         save.setTextColor(Color.WHITE);
         save.setPadding(
                 (int) getDip(8),

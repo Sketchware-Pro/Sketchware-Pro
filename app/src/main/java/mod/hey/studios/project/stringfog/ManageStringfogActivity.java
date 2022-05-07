@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.hey.studios.util.Helper;
 
@@ -24,13 +24,13 @@ public class ManageStringfogActivity extends Activity implements CompoundButton.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_stringfog);
+        setContentView(R.layout.manage_stringfog);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        sw_pg_enabled = findViewById(Resources.id.sw_pg_enabled);
+        sw_pg_enabled = findViewById(R.id.sw_pg_enabled);
         sw_pg_enabled.setOnCheckedChangeListener(this);
     }
 
@@ -42,9 +42,9 @@ public class ManageStringfogActivity extends Activity implements CompoundButton.
     }
 
     private void initToolbar() {
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText("StringFog Manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("StringFog Manager");
 
-        ImageView ig_toolbar_back = findViewById(Resources.id.ig_toolbar_back);
+        ImageView ig_toolbar_back = findViewById(R.id.ig_toolbar_back);
         ig_toolbar_back.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         Helper.applyRippleToToolbarView(ig_toolbar_back);

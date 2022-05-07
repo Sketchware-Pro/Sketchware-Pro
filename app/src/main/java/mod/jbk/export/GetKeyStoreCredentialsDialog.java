@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 
@@ -40,9 +40,8 @@ public class GetKeyStoreCredentialsDialog {
         dialog.a(iconResourceId);
         dialog.b(title);
         dialog.a(noticeText);
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(Resources.string.common_word_next), next -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_next), next -> {
             if (signOrNot.isChecked()) {
                 // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
                 if (new File(wq.j()).exists()) {

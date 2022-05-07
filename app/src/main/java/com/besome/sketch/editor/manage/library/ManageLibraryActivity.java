@@ -17,7 +17,7 @@ import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseSessionAppCompatActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.MA;
 import a.a.a.aB;
@@ -72,7 +72,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
 
     private void addLibraryItem(ProjectLibraryBean libraryBean) {
         qu libraryItemView = new qu(this);
-        libraryItemView.a(Resources.layout.manage_library_common_item);
+        libraryItemView.a(R.layout.manage_library_common_item);
         libraryItemView.setTag(libraryBean.libType);
         libraryItemView.setData(libraryBean);
         libraryItemView.setOnClickListener(this);
@@ -251,15 +251,15 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
             sc_id = savedInstanceState.getString("sc_id");
         }
 
-        setContentView(Resources.layout.manage_library);
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        setContentView(R.layout.manage_library);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(Resources.string.design_actionbar_title_library));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(Helper.getResString(R.string.design_actionbar_title_library));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        libraryItemLayout = findViewById(Resources.id.contents);
+        libraryItemLayout = findViewById(R.id.contents);
     }
 
     @Override
@@ -330,10 +330,10 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
 
     private void showFirebaseNeedCompatDialog() {
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.widget_firebase);
-        dialog.b(Helper.getResString(Resources.string.common_word_warning));
-        dialog.a(Helper.getResString(Resources.string.design_library_firebase_message_need_compat));
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        dialog.a(R.drawable.widget_firebase);
+        dialog.b(Helper.getResString(R.string.common_word_warning));
+        dialog.a(Helper.getResString(R.string.design_library_firebase_message_need_compat));
+        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

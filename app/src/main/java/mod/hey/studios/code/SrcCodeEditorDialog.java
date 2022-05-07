@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.bB;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
@@ -33,10 +33,9 @@ public class SrcCodeEditorDialog {
     }
 
     public void show() {
-        View ed = LayoutInflater.from(c)
-                .inflate(Resources.layout.code_editor_hs, null);
+        View ed = LayoutInflater.from(c).inflate(R.layout.code_editor_hs, null);
 
-        editor = ed.findViewById(Resources.id.editor);
+        editor = ed.findViewById(R.id.editor);
         editor.setTypefaceText(Typeface.MONOSPACE);
 
         editor.setEditorLanguage(new JavaLanguage());
@@ -47,10 +46,10 @@ public class SrcCodeEditorDialog {
         pref = SrcCodeEditor.pref;
         final ImageView ig_undo, ig_redo, ig_save, ig_more;
 
-        ig_undo = ed.findViewById(Resources.id.menu_view_undo);
-        ig_redo = ed.findViewById(Resources.id.menu_view_redo);
-        ig_save = ed.findViewById(Resources.id.save);
-        ig_more = ed.findViewById(Resources.id.more);
+        ig_undo = ed.findViewById(R.id.menu_view_undo);
+        ig_redo = ed.findViewById(R.id.menu_view_redo);
+        ig_save = ed.findViewById(R.id.save);
+        ig_more = ed.findViewById(R.id.more);
 
         Helper.applyRipple(c, ig_undo);
         Helper.applyRipple(c, ig_redo);

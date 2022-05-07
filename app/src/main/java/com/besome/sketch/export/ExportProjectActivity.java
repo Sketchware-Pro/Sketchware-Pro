@@ -37,7 +37,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.tools.ExportApkActivity;
 import com.sketchware.remod.BuildConfig;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -112,11 +112,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.export_project);
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        setContentView(R.layout.export_project);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(Resources.string.myprojects_export_project_actionbar_title));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(Helper.getResString(R.string.myprojects_export_project_actionbar_title));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
@@ -160,19 +160,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             loading_sign_apk.e();
         }
         loading_sign_apk.setVisibility(View.GONE);
-        SketchwareUtil.toast(Helper.getResString(
-                Resources.string.sign_apk_title_export_apk_file));
+        SketchwareUtil.toast(Helper.getResString(R.string.sign_apk_title_export_apk_file));
         tv_apk_path.setText(signed_apk_postfix + File.separator + filePath);
         if (j.h()) {
-            valid_dt = "30 " + Helper.getResString(
-                    Resources.string.myprojects_export_project_word_remain_days);
+            valid_dt = "30 " + Helper.getResString(R.string.myprojects_export_project_word_remain_days);
         } else {
-            valid_dt = "7 " + Helper.getResString(
-                    Resources.string.myprojects_export_project_word_remain_days);
+            valid_dt = "7 " + Helper.getResString(R.string.myprojects_export_project_word_remain_days);
         }
-        tv_apk_url_expire.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_word_valid_dt)
-                + " : " + valid_dt);
+        tv_apk_url_expire.setText(Helper.getResString(R.string.myprojects_export_project_word_valid_dt) + " : " + valid_dt);
     }
 
     private void exportSrc() {
@@ -272,7 +267,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         ImageView imgAppBundle = new ImageView(this);
         {
-            imgAppBundle.setId(Resources.id.icon_src);
+            imgAppBundle.setId(R.id.icon_src);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     (int) getDip(24),
                     (int) getDip(24)
@@ -280,7 +275,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
             imgAppBundle.setLayoutParams(params);
-            imgAppBundle.setImageResource(Resources.drawable.open_box_48);
+            imgAppBundle.setImageResource(R.drawable.open_box_48);
         }
         relativeLayout.addView(imgAppBundle);
 
@@ -291,10 +286,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             titleExportAppBundleParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
             titleExportAppBundleParams.leftMargin = (int) getDip(8);
-            titleExportAppBundleParams.addRule(RelativeLayout.RIGHT_OF, Resources.id.icon_src);
+            titleExportAppBundleParams.addRule(RelativeLayout.RIGHT_OF, R.id.icon_src);
             titleExportAppBundle.setLayoutParams(titleExportAppBundleParams);
-            titleExportAppBundle.setTextColor(ContextCompat.getColor(this,
-                    Resources.color.scolor_black_01));
+            titleExportAppBundle.setTextColor(ContextCompat.getColor(this, R.color.scolor_black_01));
             titleExportAppBundle.setTextSize(16f);
             titleExportAppBundle.setTypeface(Typeface.DEFAULT_BOLD);
         }
@@ -352,7 +346,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             var2.setLayoutParams(new LinearLayout.LayoutParams(
                     (int) getDip(24),
                     (int) getDip(24)));
-            var2.setImageResource(Resources.drawable.ic_folder_48dp);
+            var2.setImageResource(R.drawable.ic_folder_48dp);
         }
         var1.addView(var2);
 
@@ -379,7 +373,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             var3Params.topMargin = (int) getDip(4);
             var3Params.rightMargin = (int) getDip(16);
             var3.setLayoutParams(var3Params);
-            var3.setBackgroundResource(Resources.drawable.bg_round_light_grey);
+            var3.setBackgroundResource(R.drawable.bg_round_light_grey);
             var3.setOrientation(LinearLayout.HORIZONTAL);
         }
 
@@ -403,8 +397,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     (int) getDip(8),
                     (int) getDip(0)
             );
-            tvAppBundlePath.setTextColor(ContextCompat.getColor(this,
-                    Resources.color.scolor_black_01));
+            tvAppBundlePath.setTextColor(ContextCompat.getColor(this, R.color.scolor_black_01));
             tvAppBundlePath.setTextSize(13f);
         }
         var4.addView(tvAppBundlePath);
@@ -433,10 +426,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 btnSendAppBundle.setLayoutParams(btnSendAppBundleParams);
                 btnSendAppBundle.setTextColor(Color.WHITE);
                 btnSendAppBundle.setTextSize(12f);
-                btnSendAppBundle.setBackgroundColor(ContextCompat.getColor(this,
-                        Resources.color.scolor_green_normal));
-                btnSendAppBundle.setHighlightColor(ContextCompat.getColor(this,
-                        Resources.color.color_btn_green_highlight));
+                btnSendAppBundle.setBackgroundColor(ContextCompat.getColor(this, R.color.scolor_green_normal));
+                btnSendAppBundle.setHighlightColor(ContextCompat.getColor(this, R.color.color_btn_green_highlight));
             }
             btnSendAppBundleContainer.addView(btnSendAppBundle);
 
@@ -445,32 +436,30 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         relativeLayout.addView(layoutExportAppBundle);
 
-        ViewParent plannedParent = findViewById(Resources.id.icon_apk).getParent().getParent().getParent();
+        ViewParent plannedParent = findViewById(R.id.icon_apk).getParent().getParent().getParent();
         if (plannedParent instanceof LinearLayout) {
             ((LinearLayout) plannedParent).addView(exportAppBundleRoot);
         }
 
         titleExportAppBundle.setText("Export Android App Bundle");
         btnExportAppBundle.setText("Export AAB");
-        titleAppBundlePath.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_local_path));
+        titleAppBundlePath.setText(Helper.getResString(R.string.myprojects_export_project_title_local_path));
         btnSendAppBundle.setText("Send AAB");
         layoutExportAppBundle.setVisibility(View.GONE);
 
         btnExportAppBundle.setOnClickListener(v -> {
             aB dialog = new aB(ExportProjectActivity.this);
             if (BuildConfig.FLAVOR.equals(BuildConfig.FLAVOR_NAME_WITHOUT_AABS)) {
-                dialog.a(Resources.drawable.break_warning_96_red);
+                dialog.a(R.drawable.break_warning_96_red);
                 dialog.b("Can't generate App Bundle");
                 dialog.a("This Sketchware Pro version doesn't support building AABs as it must work on " +
                         "Android 7.1.1 and earlier. Use a Sketchware Pro " + BuildConfig.VERSION_NAME.split(" ")[0] + " " +
                         "build with AAB support.");
-                dialog.b(Helper.getResString(Resources.string.common_word_close),
-                        Helper.getDialogDismissListener(dialog));
+                dialog.b(Helper.getResString(R.string.common_word_close), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             } else {
                 GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
-                        Resources.drawable.color_about_96, "Sign outputted AAB", "The generated .aab file must be signed.\n" +
+                        R.drawable.color_about_96, "Sign outputted AAB", "The generated .aab file must be signed.\n" +
                         "Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
                         "and enter the alias' password.");
                 credentialsDialog.setListener(credentials -> {
@@ -500,21 +489,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      * Initialize Export to Android Studio views
      */
     private void initializeExportSrcViews() {
-        TextView title_export_src = findViewById(Resources.id.title_export_src);
-        btn_export_src = findViewById(Resources.id.btn_export_src);
-        loading_export_src = findViewById(Resources.id.loading_export_src);
-        layout_export_src = findViewById(Resources.id.layout_export_src);
-        TextView title_src_path = findViewById(Resources.id.title_src_path);
-        tv_src_path = findViewById(Resources.id.tv_src_path);
-        Button btn_send_src = findViewById(Resources.id.btn_send_src);
-        title_export_src.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_export_src));
-        btn_export_src.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_button_export_src));
-        title_src_path.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_local_path));
-        btn_send_src.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_button_send_src_zip));
+        TextView title_export_src = findViewById(R.id.title_export_src);
+        btn_export_src = findViewById(R.id.btn_export_src);
+        loading_export_src = findViewById(R.id.loading_export_src);
+        layout_export_src = findViewById(R.id.layout_export_src);
+        TextView title_src_path = findViewById(R.id.title_src_path);
+        tv_src_path = findViewById(R.id.tv_src_path);
+        Button btn_send_src = findViewById(R.id.btn_send_src);
+        title_export_src.setText(Helper.getResString(R.string.myprojects_export_project_title_export_src));
+        btn_export_src.setText(Helper.getResString(R.string.myprojects_export_project_button_export_src));
+        title_src_path.setText(Helper.getResString(R.string.myprojects_export_project_title_local_path));
+        btn_send_src.setText(Helper.getResString(R.string.myprojects_export_project_button_send_src_zip));
         loading_export_src.setVisibility(View.GONE);
         layout_export_src.setVisibility(View.GONE);
         btn_export_src.setOnClickListener(v -> {
@@ -537,34 +522,29 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      * Initialize APK Export views
      */
     private void initializeSignApkViews() {
-        TextView title_sign_apk = findViewById(Resources.id.title_sign_apk);
-        btn_sign_apk = findViewById(Resources.id.btn_sign_apk);
-        loading_sign_apk = findViewById(Resources.id.loading_sign_apk);
-        layout_apk_path = findViewById(Resources.id.layout_apk_path);
-        TextView title_apk_path = findViewById(Resources.id.title_apk_path);
-        tv_apk_path = findViewById(Resources.id.tv_apk_path);
-        Button btn_export_apk = findViewById(Resources.id.btn_export_apk);
-        layout_apk_url = findViewById(Resources.id.layout_apk_url);
-        TextView title_apk_url = findViewById(Resources.id.title_apk_url);
-        tv_apk_url = findViewById(Resources.id.tv_apk_url);
-        tv_apk_url_expire = findViewById(Resources.id.tv_apk_url_expire);
-        img_copy_apk_url = findViewById(Resources.id.img_copy_apk_url);
-        title_sign_apk.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_sign_apk));
-        btn_sign_apk.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_button_sign_apk));
-        title_apk_path.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_local_path));
-        btn_export_apk.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_button_generate_url));
-        title_apk_url.setText(Helper.getResString(
-                Resources.string.myprojects_export_project_title_download_url));
+        TextView title_sign_apk = findViewById(R.id.title_sign_apk);
+        btn_sign_apk = findViewById(R.id.btn_sign_apk);
+        loading_sign_apk = findViewById(R.id.loading_sign_apk);
+        layout_apk_path = findViewById(R.id.layout_apk_path);
+        TextView title_apk_path = findViewById(R.id.title_apk_path);
+        tv_apk_path = findViewById(R.id.tv_apk_path);
+        Button btn_export_apk = findViewById(R.id.btn_export_apk);
+        layout_apk_url = findViewById(R.id.layout_apk_url);
+        TextView title_apk_url = findViewById(R.id.title_apk_url);
+        tv_apk_url = findViewById(R.id.tv_apk_url);
+        tv_apk_url_expire = findViewById(R.id.tv_apk_url_expire);
+        img_copy_apk_url = findViewById(R.id.img_copy_apk_url);
+        title_sign_apk.setText(Helper.getResString(R.string.myprojects_export_project_title_sign_apk));
+        btn_sign_apk.setText(Helper.getResString(R.string.myprojects_export_project_button_sign_apk));
+        title_apk_path.setText(Helper.getResString(R.string.myprojects_export_project_title_local_path));
+        btn_export_apk.setText(Helper.getResString(R.string.myprojects_export_project_button_generate_url));
+        title_apk_url.setText(Helper.getResString(R.string.myprojects_export_project_title_download_url));
         loading_sign_apk.setVisibility(View.GONE);
         layout_apk_path.setVisibility(View.GONE);
         layout_apk_url.setVisibility(View.GONE);
         btn_sign_apk.setOnClickListener(v -> {
             GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
-                    Resources.drawable.color_about_96,
+                    R.drawable.color_about_96,
                     "Sign an APK",
                     "To sign an APK, you need a keystore. Use your already created one, and copy it to " +
                             "/Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.\n" +
@@ -614,10 +594,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         if (export_src_filename.length() > 0) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
-            intent.putExtra(Intent.EXTRA_SUBJECT, Helper.getResString(
-                    Resources.string.myprojects_export_src_title_email_subject, export_src_filename));
-            intent.putExtra(Intent.EXTRA_TEXT, Helper.getResString(
-                    Resources.string.myprojects_export_src_title_email_body, export_src_filename));
+            intent.putExtra(Intent.EXTRA_SUBJECT, Helper.getResString(R.string.myprojects_export_src_title_email_subject, export_src_filename));
+            intent.putExtra(Intent.EXTRA_TEXT, Helper.getResString(R.string.myprojects_export_src_title_email_body, export_src_filename));
             String filePath = export_src_full_path + File.separator + export_src_filename;
             if (Build.VERSION.SDK_INT >= 24) {
                 intent.putExtra(Intent.EXTRA_STREAM, FileProvider.a(getApplicationContext(),
@@ -629,8 +607,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + filePath));
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(Intent.createChooser(intent, Helper.getResString(
-                    Resources.string.myprojects_export_src_chooser_title_email)));
+            startActivity(Intent.createChooser(intent, Helper.getResString(R.string.myprojects_export_src_chooser_title_email)));
         }
     }
 
@@ -659,8 +636,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      */
     public final void b(String errorMessage) {
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.break_warning_96_red);
-        dialog.b(Helper.getResString(Resources.string.common_error_an_error_occurred));
+        dialog.a(R.drawable.break_warning_96_red);
+        dialog.b(Helper.getResString(R.string.common_error_an_error_occurred));
 
         ScrollView scrollView = new ScrollView(this);
         scrollView.setLayoutParams(new FrameLayout.LayoutParams(
@@ -675,7 +652,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         scrollView.addView(errorMessageThingy);
 
         dialog.a(scrollView);
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
             }
@@ -726,8 +703,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 publishProgress("Deleting temporary files...");
                 FileUtil.deleteFile(project_metadata.c);
 
-                publishProgress(Helper.getResString(
-                        Resources.string.design_run_title_ready_to_build));
+                publishProgress(Helper.getResString(R.string.design_run_title_ready_to_build));
                 oB oBVar = new oB();
                 /* Check if /Internal storage/sketchware/signed_apk/ exists */
                 if (!oBVar.e(wq.o())) {
@@ -900,12 +876,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     if (signWithTestkey) {
                         ZipSigner signer = new ZipSigner();
                         signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(c.f.alignedApkPath, c.f.I);
+                        signer.signZip(c.yq.alignedApkPath, c.yq.I);
                     } else {
                         if (isResultJarSigningEnabled()) {
                             c.b(new String(signingKeystorePassword), signingAliasName, signingAlgorithm);
                         } else {
-                            FileUtil.copyFile(c.f.G, getCorrectResultFilename(c.f.I));
+                            FileUtil.copyFile(c.yq.G, getCorrectResultFilename(c.yq.I));
                         }
                     }
                 }
@@ -993,12 +969,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(),
                     "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
                 aB dialog = new aB(ExportProjectActivity.this);
-                dialog.a(Resources.drawable.open_box_48);
+                dialog.a(R.drawable.open_box_48);
                 dialog.b("Finished exporting AAB");
                 dialog.a("You can find the generated, signed AAB file at:\n" +
                         "/Internal storage/sketchware/signed_aab/" + aabFilename);
-                dialog.b(Helper.getResString(Resources.string.common_word_ok),
-                        Helper.getDialogDismissListener(dialog));
+                dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             }
         }
@@ -1079,5 +1054,4 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
         }
     }
-
 }

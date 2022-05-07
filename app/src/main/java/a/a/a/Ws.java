@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 public class Ws extends RelativeLayout {
 
@@ -27,9 +27,9 @@ public class Ws extends RelativeLayout {
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, Resources.layout.palette_selector_item);
-        tv_category = findViewById(Resources.id.tv_category);
-        background = findViewById(Resources.id.bg);
+        wB.a(context, this, R.layout.palette_selector_item);
+        tv_category = findViewById(R.id.tv_category);
+        background = findViewById(R.id.bg);
         unselectedBackgroundWidth = (int) wB.a(context, 4f);
         tv_category.setText(name);
         background.setBackgroundColor(color);

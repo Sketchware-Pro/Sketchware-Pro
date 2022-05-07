@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.add_custom_attribute);
+        setContentView(R.layout.add_custom_attribute);
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("type")) {
             src_id = getIntent().getStringExtra("sc_id");
@@ -84,12 +84,12 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void setupViews() {
-        FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
+        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
         fab.setOnClickListener(v -> {
             ///fab pressed
             showAddDial();
         });
-        listView = findViewById(Resources.id.add_attr_listview);
+        listView = findViewById(R.id.add_attr_listview);
         refreshList();
 
     }
@@ -126,20 +126,19 @@ public class AndroidManifestInjectionDetails extends Activity {
 
     private void showDial(int pos) {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.custom_dialog_attribute, null);
+        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
         ///create.setCancelable(true);
-        // ???
-        create.getWindow().setBackgroundDrawableResource(17170445);
-        final TextView textsave = inflate.findViewById(Resources.id.dialog_btn_save);
-        final TextView textcancel = inflate.findViewById(Resources.id.dialog_btn_cancel);
+        create.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        final TextView textsave = inflate.findViewById(R.id.dialog_btn_save);
+        final TextView textcancel = inflate.findViewById(R.id.dialog_btn_cancel);
 
-        final EditText editText3 = inflate.findViewById(Resources.id.dialog_input_res);
+        final EditText editText3 = inflate.findViewById(R.id.dialog_input_res);
         editText3.setVisibility(View.GONE);
-        final EditText editText2 = inflate.findViewById(Resources.id.dialog_input_attr);
+        final EditText editText2 = inflate.findViewById(R.id.dialog_input_attr);
         editText2.setVisibility(View.GONE);
-        final EditText editText = inflate.findViewById(Resources.id.dialog_input_value);
+        final EditText editText = inflate.findViewById(R.id.dialog_input_value);
         final TextView textView = (TextView) ((ViewGroup) editText2.getParent()).getChildAt(0);
         textView.setText("Edit Value");
         editText.setText((String) listMap.get(pos).get("value"));
@@ -158,26 +157,25 @@ public class AndroidManifestInjectionDetails extends Activity {
 
     private void showAddDial() {
         final AlertDialog create = new AlertDialog.Builder(this).create();
-        View inflate = getLayoutInflater().inflate(Resources.layout.custom_dialog_attribute, null);
+        View inflate = getLayoutInflater().inflate(R.layout.custom_dialog_attribute, null);
         create.setView(inflate);
         create.setCanceledOnTouchOutside(true);
         ///create.setCancelable(true);
-        // ???
-        create.getWindow().setBackgroundDrawableResource(17170445);
-        final TextView textsave = inflate.findViewById(Resources.id.dialog_btn_save);
-        final TextView textcancel = inflate.findViewById(Resources.id.dialog_btn_cancel);
+        create.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        final TextView textsave = inflate.findViewById(R.id.dialog_btn_save);
+        final TextView textcancel = inflate.findViewById(R.id.dialog_btn_cancel);
 
-        final EditText editText3 = inflate.findViewById(Resources.id.dialog_input_res);
+        final EditText editText3 = inflate.findViewById(R.id.dialog_input_res);
         //editText3.setVisibility(View.GONE);
         if (type.equals("permission")) {
             editText3.setText("android");
         }
-        final EditText editText2 = inflate.findViewById(Resources.id.dialog_input_attr);
+        final EditText editText2 = inflate.findViewById(R.id.dialog_input_attr);
         //editText2.setVisibility(View.GONE);
         if (type.equals("permission")) {
             editText2.setText("name");
         }
-        final EditText editText = inflate.findViewById(Resources.id.dialog_input_value);
+        final EditText editText = inflate.findViewById(R.id.dialog_input_value);
         if (type.equals("permission")) {
             editText3.setHint("permission");
         }
@@ -262,9 +260,9 @@ public class AndroidManifestInjectionDetails extends Activity {
                 str = activityName;
                 break;
         }
-        ((TextView) findViewById(Resources.id.tx_toolbar_title)).setText(str);
-        ViewGroup par = (ViewGroup) findViewById(Resources.id.tx_toolbar_title).getParent();
-        ImageView _img = findViewById(Resources.id.ig_toolbar_back);
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText(str);
+        ViewGroup par = (ViewGroup) findViewById(R.id.tx_toolbar_title).getParent();
+        ImageView _img = findViewById(R.id.ig_toolbar_back);
         _img.setOnClickListener(Helper.getBackPressedClickListener(this));
         //(String str , float size, int color, int width, int height, float weight){
         if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
@@ -306,11 +304,11 @@ public class AndroidManifestInjectionDetails extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.custom_view_attribute, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, null);
             }
-            LinearLayout linearLayout = convertView.findViewById(Resources.id.cus_attr_layout);
-            TextView textView = convertView.findViewById(Resources.id.cus_attr_text);
-            final ImageView imageView = convertView.findViewById(Resources.id.cus_attr_btn);
+            LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
+            TextView textView = convertView.findViewById(R.id.cus_attr_text);
+            final ImageView imageView = convertView.findViewById(R.id.cus_attr_btn);
             imageView.setVisibility(View.GONE);
             a(linearLayout, (int) getDip(4), (int) getDip(2));
 

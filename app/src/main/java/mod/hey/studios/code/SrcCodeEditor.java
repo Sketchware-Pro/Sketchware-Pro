@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -336,15 +336,15 @@ public class SrcCodeEditor extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.code_editor_hs);
+        setContentView(R.layout.code_editor_hs);
 
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        toolbar = findViewById(Resources.id.toolbar);
-        editor = findViewById(Resources.id.editor);
+        toolbar = findViewById(R.id.toolbar);
+        editor = findViewById(R.id.editor);
     }
 
     private void initializeLogic() {
@@ -376,8 +376,8 @@ public class SrcCodeEditor extends AppCompatActivity {
             new AlertDialog.Builder(this)
                     .setTitle("Warning")
                     .setMessage("You have unsaved changes. Are you sure you want to exit?")
-                    .setPositiveButton(Resources.string.common_word_exit, (dialog, which) -> finish())
-                    .setNegativeButton(Resources.string.common_word_cancel, null)
+                    .setPositiveButton(R.string.common_word_exit, (dialog, which) -> finish())
+                    .setNegativeButton(R.string.common_word_cancel, null)
                     .create()
                     .show();
         }
@@ -390,13 +390,13 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.clear();
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo")
-                .setIcon(getDrawable(Resources.drawable.ic_undo_white_48dp))
+                .setIcon(getDrawable(R.drawable.ic_undo_white_48dp))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo")
-                .setIcon(getDrawable(Resources.drawable.ic_redo_white_48dp))
+                .setIcon(getDrawable(R.drawable.ic_redo_white_48dp))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save")
-                .setIcon(getDrawable(Resources.drawable.save_white_48))
+                .setIcon(getDrawable(R.drawable.save_white_48))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Paste");
@@ -488,7 +488,7 @@ public class SrcCodeEditor extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                         )
-                        .setNegativeButton(Resources.string.common_word_cancel, null)
+                        .setNegativeButton(R.string.common_word_cancel, null)
                         .show();
                 break;
 

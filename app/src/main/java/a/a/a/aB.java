@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 /**
  * A Sketchware-styled dialog.
@@ -87,28 +87,28 @@ public class aB extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawableResource(Resources.drawable.custom_dialog_inset_white);
+        getWindow().setBackgroundDrawableResource(R.drawable.custom_dialog_inset_white);
 
         {
             LayoutParams attributes = getWindow().getAttributes();
             attributes.width = ViewGroup.LayoutParams.MATCH_PARENT;
             getWindow().setAttributes(attributes);
         }
-        setContentView(Resources.layout.dialog);
+        setContentView(R.layout.dialog);
 
-        ImageView dialogImage = findViewById(Resources.id.dialog_img);
-        TextView dialogTitle = findViewById(Resources.id.dialog_title);
-        TextView dialogMessage = findViewById(Resources.id.dialog_msg);
-        FrameLayout dialogCustomViewContainer = findViewById(Resources.id.custom_view);
+        ImageView dialogImage = findViewById(R.id.dialog_img);
+        TextView dialogTitle = findViewById(R.id.dialog_title);
+        TextView dialogMessage = findViewById(R.id.dialog_msg);
+        FrameLayout dialogCustomViewContainer = findViewById(R.id.custom_view);
 
-        dialogButtonsContainer = findViewById(Resources.id.layout_button);
-        TextView dialogDefault = findViewById(Resources.id.common_dialog_default_button);
+        dialogButtonsContainer = findViewById(R.id.layout_button);
+        TextView dialogDefault = findViewById(R.id.common_dialog_default_button);
         dialogDefault.setText(dialogDefaultText);
         dialogDefault.setOnClickListener(dialogDefaultListener);
-        TextView dialogNo = findViewById(Resources.id.dialog_btn_no);
+        TextView dialogNo = findViewById(R.id.dialog_btn_no);
         dialogNo.setText(dialogNoText);
         dialogNo.setOnClickListener(dialogNoListener);
-        TextView dialogYes = findViewById(Resources.id.dialog_btn_yes);
+        TextView dialogYes = findViewById(R.id.dialog_btn_yes);
         dialogYes.setText(dialogYesText);
         dialogYes.setOnClickListener(dialogYesListener);
 

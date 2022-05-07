@@ -65,46 +65,22 @@ public class Dp {
 
     public static final String TAG = "AppBuilder";
     /**
-     * Default minSdkVersion (?)
-     */
-    public final String a = "21";
-    /**
-     * Default targetSdkVersion (?)
-     */
-    public final String b = "28";
-    public final String c = File.separator;
-    public final String m = "libs";
-    /**
      * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
-    private final File zipalignBinaryPath;
-    public File aapt2Dir;
+    private final File zipalignBinary;
+    private final File aapt2Binary;
     public BuildSettings build_settings;
-    public BuildAsyncTask buildingDialog;
-    public Context e;
-    public yq f;
+    private BuildAsyncTask buildingDialog;
+    private final Context context;
+    public yq yq;
     public FilePathUtil fpu;
-    public oB g;
-    /**
-     * Directory "tmp" in files directory, where libs are extracted and compiled
-     */
-    public File h;
-    public Fp j;
-    /**
-     * A StringBuffer with System.err of Eclipse compiler. If compilation succeeds, it doesn't have any content, if it doesn't, there is.
-     */
-    public StringBuffer k = new StringBuffer();
-    /**
-     * Extracted built-in libraries directory
-     */
-    public File l;
+    private final oB fileUtil;
+    private final Fp commandExecutor;
+    private final File extractedBuiltInLibrariesDirectory;
     public ManageLocalLibrary mll;
-    public Kp n;
-    /**
-     * Path of the android.jar to use
-     */
-    public String o;
+    public Kp builtInLibraryManager;
+    public String androidJarPath;
     public ProguardHandler proguard;
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
@@ -138,27 +114,21 @@ public class Dp {
             LogUtil.e(TAG, "Somehow failed to get package info about us!", e);
         }
 
-        e = context;
-        f = yqVar;
-        g = new oB(false);
-        j = new Fp();
-        h = new File(context.getFilesDir(), "tmp");
-        if (!h.exists()) {
-            if (!h.mkdir()) {
-                throw new IllegalStateException("Couldn't create directory " + h.getAbsolutePath());
-            }
-        }
-        aapt2Dir = new File(h, "aapt2");
-        zipalignBinaryPath = new File(h, "zipalign");
-        l = new File(context.getFilesDir(), "libs");
-        n = new Kp();
-        o = new File(l, "android.jar").getAbsolutePath();
-        mll = new ManageLocalLibrary(f.b);
+        zipalignBinary = new File(context.getCacheDir(), "zipalign");
+        aapt2Binary = new File(context.getCacheDir(), "aapt2");
+        build_settings = new BuildSettings(yqVar.b);
+        this.context = context;
+        yq = yqVar;
         fpu = new FilePathUtil();
-        settings = new ProjectSettings(f.b);
-        proguard = new ProguardHandler(f.b);
-        build_settings = new BuildSettings(f.b);
-        o = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, o);
+        fileUtil = new oB(false);
+        commandExecutor = new Fp();
+        extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
+        mll = new ManageLocalLibrary(yqVar.b);
+        builtInLibraryManager = new Kp();
+        File defaultAndroidJar = new File(extractedBuiltInLibrariesDirectory, "android.jar");
+        androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
+        proguard = new ProguardHandler(yqVar.b);
+        settings = new ProjectSettings(yqVar.b);
     }
 
     public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
@@ -185,7 +155,7 @@ public class Dp {
     public void a(iI iIVar, String str) {
         ZipSigner signer = iIVar.b(new CB().a(str));
         try {
-            signer.signZip(f.G, f.I);
+            signer.signZip(yq.G, yq.I);
         } catch (IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
@@ -204,7 +174,7 @@ public class Dp {
     public final boolean a(String fileInAssets, String targetFile) {
         long length;
         File compareToFile = new File(targetFile);
-        long lengthOfFileInAssets = g.a(e, fileInAssets);
+        long lengthOfFileInAssets = fileUtil.a(context, fileInAssets);
         if (compareToFile.exists()) {
             length = compareToFile.length();
         } else {
@@ -215,9 +185,9 @@ public class Dp {
         }
 
         /* Delete the file */
-        g.a(compareToFile);
+        fileUtil.a(compareToFile);
         /* Copy the file from assets to local storage */
-        g.a(e, fileInAssets, targetFile);
+        fileUtil.a(context, fileInAssets, targetFile);
         return true;
     }
 
@@ -229,7 +199,7 @@ public class Dp {
     public void b() throws Exception {
         ResourceCompiler compiler = new ResourceCompiler(
                 this,
-                aapt2Dir,
+                aapt2Binary,
                 buildAppBundle,
                 buildingDialog);
         compiler.compile();
@@ -244,8 +214,8 @@ public class Dp {
                 alias,
                 password.toCharArray(),
                 signingAlgorithm,
-                f.G,
-                f.I
+                yq.G,
+                yq.I
         );
     }
 
@@ -266,7 +236,7 @@ public class Dp {
      * @throws Exception Thrown if the compiler has any problems compiling
      */
     public void c() throws Exception {
-        FileUtil.makeDir(f.t + File.separator + "dex");
+        FileUtil.makeDir(yq.t + File.separator + "dex");
         if (isD8Enabled()) {
             long savedTimeMillis = System.currentTimeMillis();
             try {
@@ -282,8 +252,8 @@ public class Dp {
                     "--debug",
                     "--verbose",
                     "--multi-dex",
-                    "--output=" + f.t + File.separator + "dex",
-                    proguard.isProguardEnabled() ? f.classes_proguard : f.u
+                    "--output=" + yq.t + File.separator + "dex",
+                    proguard.isProguardEnabled() ? yq.classes_proguard : yq.u
             );
 
             try {
@@ -311,7 +281,7 @@ public class Dp {
         StringBuilder classpath = new StringBuilder();
 
         /* Add android.jar */
-        classpath.append(o);
+        classpath.append(androidJarPath);
 
         /* Add HTTP legacy files if wanted */
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY,
@@ -328,11 +298,11 @@ public class Dp {
         if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
                 BuildSettings.SETTING_JAVA_VERSION_1_7)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
-            classpath.append(":").append(l.getAbsolutePath()).append(File.separator).append("core-lambda-stubs.jar");
+            classpath.append(":").append(extractedBuiltInLibrariesDirectory.getAbsolutePath()).append(File.separator).append("core-lambda-stubs.jar");
         }
 
         /* Add used built-in libraries to the classpath */
-        for (Jp library : n.a()) {
+        for (Jp library : builtInLibraryManager.a()) {
             classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(library.a()));
         }
 
@@ -345,7 +315,7 @@ public class Dp {
         }
 
         /* Add JARs from project's classpath */
-        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (f.b) + "/files/classpath/";
+        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (yq.b) + "/files/classpath/";
         ArrayList<String> jars = FileUtil.listFiles(path, "jar");
         classpath.append(":").append(TextUtils.join(":", jars));
 
@@ -356,14 +326,14 @@ public class Dp {
      * @return Similar to {@link Dp#d()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
      */
     public final String classpath() {
-        StringBuilder baseClasses = new StringBuilder(o);
+        StringBuilder baseClasses = new StringBuilder(androidJarPath);
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             baseClasses.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
         }
 
         StringBuilder builtInLibrariesClasses = new StringBuilder();
-        for (Jp builtInLibrary : n.a()) {
+        for (Jp builtInLibrary : builtInLibraryManager.a()) {
             builtInLibrariesClasses.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(builtInLibrary.a()));
         }
 
@@ -520,7 +490,7 @@ public class Dp {
      */
     public String e() {
         StringBuilder extraPackages = new StringBuilder();
-        for (Jp library : n.a()) {
+        for (Jp library : builtInLibraryManager.a()) {
             if (library.c()) {
                 extraPackages.append(library.b()).append(":");
             }
@@ -552,9 +522,15 @@ public class Dp {
 
         class EclipseErrOutputStream extends OutputStream {
 
+            private final StringBuffer mBuffer = new StringBuffer();
+
             @Override
-            public void write(int b) throws IOException {
-                k.append((char) b);
+            public void write(int b) {
+                mBuffer.append(b);
+            }
+
+            public String getOut() {
+                return mBuffer.toString();
             }
         }
 
@@ -572,27 +548,27 @@ public class Dp {
                     args.add("-deprecation");
                 }
                 args.add("-d");
-                args.add(f.u);
+                args.add(yq.u);
                 args.add("-cp");
                 args.add(d());
                 args.add("-proc:none");
-                args.add(f.y);
-                args.add(f.v);
-                String pathJava = fpu.getPathJava(f.b);
+                args.add(yq.y);
+                args.add(yq.v);
+                String pathJava = fpu.getPathJava(yq.b);
                 if (FileUtil.isExistFile(pathJava)) {
                     args.add(pathJava);
                 }
-                String pathBroadcast = fpu.getPathBroadcast(f.b);
+                String pathBroadcast = fpu.getPathBroadcast(yq.b);
                 if (FileUtil.isExistFile(pathBroadcast)) {
                     args.add(pathBroadcast);
                 }
-                String pathService = fpu.getPathService(f.b);
+                String pathService = fpu.getPathService(yq.b);
                 if (FileUtil.isExistFile(pathService)) {
                     args.add(pathService);
                 }
 
                 /* Avoid "package ;" line in that file causing issues while compiling */
-                File rJavaFileWithoutPackage = new File(f.v, "R.java");
+                File rJavaFileWithoutPackage = new File(yq.v, "R.java");
                 if (rJavaFileWithoutPackage.exists() && !rJavaFileWithoutPackage.delete()) {
                     LogUtil.w(TAG, "Failed to delete file " + rJavaFileWithoutPackage.getAbsolutePath());
                 }
@@ -604,10 +580,10 @@ public class Dp {
 
                 if (main.globalErrorsCount <= 0) {
                     LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
-                    LogUtil.d(TAG, "System.err of Eclipse compiler: " + k);
+                    LogUtil.d(TAG, "System.err of Eclipse compiler: " + errOutputStream.getOut());
                     LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
                 } else {
-                    throw new zy(k.toString());
+                    throw new zy(errOutputStream.getOut());
                 }
             } catch (Exception e) {
                 LogUtil.e(TAG, "Failed to compile Java files", e);
@@ -620,11 +596,11 @@ public class Dp {
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
     public void g() {
-        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? f.E : dexesToAddButNotMerge.remove(0);
+        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.E : dexesToAddButNotMerge.remove(0);
 
-        ApkBuilder apkBuilder = new ApkBuilder(new File(f.G), new File(f.C), new File(firstDexPath), null, null, System.out);
+        ApkBuilder apkBuilder = new ApkBuilder(new File(yq.G), new File(yq.C), new File(firstDexPath), null, null, System.out);
 
-        for (Jp library : n.a()) {
+        for (Jp library : builtInLibraryManager.a()) {
             apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
         }
 
@@ -635,7 +611,7 @@ public class Dp {
         }
 
         /* Add project's native libraries */
-        File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(f.b));
+        File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(yq.b));
         if (nativeLibrariesDirectory.exists()) {
             apkBuilder.addNativeLibraries(nativeLibrariesDirectory);
         }
@@ -646,7 +622,7 @@ public class Dp {
         }
 
         if (dexesToAddButNotMerge.isEmpty()) {
-            List<String> dexFiles = FileUtil.listFiles(f.t, "dex");
+            List<String> dexFiles = FileUtil.listFiles(yq.t, "dex");
             for (String dexFile : dexFiles) {
                 if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
                     apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
@@ -678,12 +654,12 @@ public class Dp {
     public String getJava() {
         if (proguard.isProguardEnabled()) {
             ArrayList<String> arrayList = new ArrayList<>();
-            FileUtil.listDir(f.classes_proguard, arrayList);
+            FileUtil.listDir(yq.classes_proguard, arrayList);
             if (arrayList.size() > 0) {
-                return f.classes_proguard;
+                return yq.classes_proguard;
             }
         }
-        return f.u;
+        return yq.u;
     }
 
     /**
@@ -709,7 +685,7 @@ public class Dp {
         }
 
         /* Add used built-in libraries' DEX files */
-        for (Jp builtInLibrary : n.a()) {
+        for (Jp builtInLibrary : builtInLibraryManager.a()) {
             dexes.add(BuiltInLibraries.getLibraryDexFilePath(builtInLibrary.a()));
         }
 
@@ -751,12 +727,12 @@ public class Dp {
             }
         }
 
-        dexes.addAll(FileUtil.listFiles(f.t + File.separator + "dex", "dex"));
+        dexes.addAll(FileUtil.listFiles(yq.t + File.separator + "dex", "dex"));
 
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
 
-        if (settings.getMinSdkVersion() < 21 || !f.N.f) {
-            dexLibraries(f.E, dexes);
+        if (settings.getMinSdkVersion() < 21 || !yq.N.f) {
+            dexLibraries(yq.E, dexes);
         } else {
             dexesToAddButNotMerge = dexes;
         }
@@ -778,9 +754,9 @@ public class Dp {
         }
         try {
             /* Check if we need to update AAPT2's binary */
-            if (a(aapt2PathInAssets, aapt2Dir.getAbsolutePath())) {
-                makeExecutableCommand[2] = aapt2Dir.getAbsolutePath();
-                j.a(makeExecutableCommand);
+            if (a(aapt2PathInAssets, aapt2Binary.getAbsolutePath())) {
+                makeExecutableCommand[2] = aapt2Binary.getAbsolutePath();
+                commandExecutor.a(makeExecutableCommand);
             }
         } catch (Exception e) {
             LogUtil.e(TAG, "Failed to extract AAPT2 binaries", e);
@@ -794,8 +770,8 @@ public class Dp {
      */
     public void j() {
         /* If l doesn't exist, create it */
-        if (!g.e(l.getAbsolutePath())) {
-            g.f(l.getAbsolutePath());
+        if (!fileUtil.e(extractedBuiltInLibrariesDirectory.getAbsolutePath())) {
+            fileUtil.f(extractedBuiltInLibrariesDirectory.getAbsolutePath());
         }
         String androidJarArchiveName = "android.jar.zip";
         String dexsArchiveName = "dexs.zip";
@@ -803,98 +779,100 @@ public class Dp {
         String libsArchiveName = "libs.zip";
         String testkeyArchiveName = "testkey.zip";
 
-        String androidJarPath = new File(l, androidJarArchiveName).getAbsolutePath();
-        String dexsArchivePath = new File(l, dexsArchiveName).getAbsolutePath();
-        String coreLambdaStubsJarPath = new File(l, coreLambdaStubsJarName).getAbsolutePath();
-        String libsArchivePath = new File(l, libsArchiveName).getAbsolutePath();
-        String testkeyArchivePath = new File(l, testkeyArchiveName).getAbsolutePath();
-        String dexsDirectoryPath = new File(l, "dexs").getAbsolutePath();
-        String libsDirectoryPath = new File(l, "libs").getAbsolutePath();
-        String testkeyDirectoryPath = new File(l, "testkey").getAbsolutePath();
+        String androidJarPath = new File(extractedBuiltInLibrariesDirectory, androidJarArchiveName).getAbsolutePath();
+        String dexsArchivePath = new File(extractedBuiltInLibrariesDirectory, dexsArchiveName).getAbsolutePath();
+        String coreLambdaStubsJarPath = new File(extractedBuiltInLibrariesDirectory, coreLambdaStubsJarName).getAbsolutePath();
+        String libsArchivePath = new File(extractedBuiltInLibrariesDirectory, libsArchiveName).getAbsolutePath();
+        String testkeyArchivePath = new File(extractedBuiltInLibrariesDirectory, testkeyArchiveName).getAbsolutePath();
+        String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
+        String libsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH.getAbsolutePath();
+        String testkeyDirectoryPath = new File(extractedBuiltInLibrariesDirectory, "testkey").getAbsolutePath();
+
         /* If necessary, update android.jar.zip */
-        if (a(m + File.separator + androidJarArchiveName, androidJarPath)) {
+        String baseAssetsPath = "libs" + File.separator;
+        if (a(baseAssetsPath + androidJarArchiveName, androidJarPath)) {
             if (buildingDialog != null) {
                 buildingDialog.setProgress("Extracting built-in android.jar...");
             }
             /* Delete android.jar */
-            g.c(l.getAbsolutePath() + c + "android.jar");
+            fileUtil.c(extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + "android.jar");
             /* Extract android.jar.zip to android.jar */
-            new KB().a(androidJarPath, l.getAbsolutePath());
+            new KB().a(androidJarPath, extractedBuiltInLibrariesDirectory.getAbsolutePath());
         }
         /* If necessary, update dexs.zip */
-        if (a(m + File.separator + dexsArchiveName, dexsArchivePath)) {
+        if (a(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
             if (buildingDialog != null) {
                 buildingDialog.setProgress("Extracting built-in libraries' DEX files...");
             }
             /* Delete the directory */
-            g.b(dexsDirectoryPath);
+            fileUtil.b(dexsDirectoryPath);
             /* Create the directories */
-            g.f(dexsDirectoryPath);
+            fileUtil.f(dexsDirectoryPath);
             /* Extract dexs.zip to dexs/ */
             new KB().a(dexsArchivePath, dexsDirectoryPath);
         }
         /* If necessary, update libs.zip */
-        if (a(m + File.separator + libsArchiveName, libsArchivePath)) {
+        if (a(baseAssetsPath + libsArchiveName, libsArchivePath)) {
             if (buildingDialog != null) {
                 buildingDialog.setProgress("Extracting built-in libraries' resources...");
             }
             /* Delete the directory */
-            g.b(libsDirectoryPath);
+            fileUtil.b(libsDirectoryPath);
             /* Create the directories */
-            g.f(libsDirectoryPath);
+            fileUtil.f(libsDirectoryPath);
             /* Extract libs.zip to libs/ */
             new KB().a(libsArchivePath, libsDirectoryPath);
         }
         /* If necessary, update core-lambda-stubs.jar */
-        a(m + File.separator + coreLambdaStubsJarName, coreLambdaStubsJarPath);
+        a(baseAssetsPath + coreLambdaStubsJarName, coreLambdaStubsJarPath);
         /* If necessary, update testkey.zip */
-        if (a(m + File.separator + testkeyArchiveName, testkeyArchivePath)) {
+        if (a(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
             if (buildingDialog != null) {
                 buildingDialog.setProgress("Extracting built-in signing keys...");
             }
             /* Delete the directory */
-            g.b(testkeyDirectoryPath);
+            fileUtil.b(testkeyDirectoryPath);
             /* Create the directories */
-            g.f(testkeyDirectoryPath);
+            fileUtil.f(testkeyDirectoryPath);
             /* Extract testkey.zip to testkey/ */
             new KB().a(testkeyArchivePath, testkeyDirectoryPath);
         }
-        if (f.N.g) {
-            n.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
-            n.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
-            n.a(BuiltInLibraries.MATERIAL);
+        if (yq.N.g) {
+            builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
+            builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
+            builtInLibraryManager.a(BuiltInLibraries.MATERIAL);
         }
-        if (f.N.h) {
-            n.a(BuiltInLibraries.FIREBASE_COMMON);
+        if (yq.N.h) {
+            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_COMMON);
         }
-        if (f.N.i) {
-            n.a(BuiltInLibraries.FIREBASE_AUTH);
+        if (yq.N.i) {
+            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_AUTH);
         }
-        if (f.N.j) {
-            n.a(BuiltInLibraries.FIREBASE_DATABASE);
+        if (yq.N.j) {
+            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DATABASE);
         }
-        if (f.N.k) {
-            n.a(BuiltInLibraries.FIREBASE_STORAGE);
+        if (yq.N.k) {
+            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_STORAGE);
         }
-        if (f.N.m) {
-            n.a(BuiltInLibraries.PLAY_SERVICES_MAPS);
+        if (yq.N.m) {
+            builtInLibraryManager.a(BuiltInLibraries.PLAY_SERVICES_MAPS);
         }
-        if (f.N.l) {
-            n.a(BuiltInLibraries.PLAY_SERVICES_ADS);
+        if (yq.N.l) {
+            builtInLibraryManager.a(BuiltInLibraries.PLAY_SERVICES_ADS);
         }
-        if (f.N.o) {
-            n.a(BuiltInLibraries.GSON);
+        if (yq.N.o) {
+            builtInLibraryManager.a(BuiltInLibraries.GSON);
         }
-        if (f.N.n) {
-            n.a(BuiltInLibraries.GLIDE);
+        if (yq.N.n) {
+            builtInLibraryManager.a(BuiltInLibraries.GLIDE);
         }
-        if (f.N.p) {
-            n.a(BuiltInLibraries.OKHTTP);
+        if (yq.N.p) {
+            builtInLibraryManager.a(BuiltInLibraries.OKHTTP);
         }
-        if (f.N.isDynamicLinkUsed) {
-            n.a(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
+        if (yq.N.isDynamicLinkUsed) {
+            builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
         }
-        ExtLibSelected.addUsedDependencies(f.N.x, n);
+        ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
     }
 
     /**
@@ -906,7 +884,7 @@ public class Dp {
             ZipSigner zipSigner = new ZipSigner();
             KeyStoreFileManager.setProvider(new BouncyCastleProvider());
             zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(f.alignedApkPath, f.H);
+            zipSigner.signZip(yq.alignedApkPath, yq.H);
             return true;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
@@ -925,8 +903,8 @@ public class Dp {
      * @param args List of arguments to add built-in libraries' ProGuard roles to.
      */
     private void proguardAddLibConfigs(List<String> args) {
-        for (Jp jp : n.a()) {
-            String str = l.getAbsolutePath() + c + jp.a() + c + "proguard.txt";
+        for (Jp jp : builtInLibraryManager.a()) {
+            String str = extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + jp.a() + File.separator + "proguard.txt";
             if (FileUtil.isExistFile(str)) {
                 args.add("-include");
                 args.add(str);
@@ -941,7 +919,7 @@ public class Dp {
      */
     private void proguardAddRjavaRules(List<String> args) {
         StringBuilder sb = new StringBuilder("# R.java rules");
-        for (Jp jp : n.a()) {
+        for (Jp jp : builtInLibraryManager.a()) {
             if (jp.c() && !jp.b().isEmpty()) {
                 sb.append("\n");
                 sb.append("-keep class ");
@@ -959,9 +937,9 @@ public class Dp {
             }
         }
         sb.append("\n");
-        FileUtil.writeFile(f.rules_generated, sb.toString());
+        FileUtil.writeFile(yq.rules_generated, sb.toString());
         args.add("-include");
-        args.add(f.rules_generated);
+        args.add(yq.rules_generated);
     }
 
     public void runProguard() throws IOException {
@@ -974,7 +952,7 @@ public class Dp {
 
         /* Include ProGuard rules generated by AAPT2 */
         args.add("-include");
-        args.add(f.aapt_rules);
+        args.add(yq.aapt_rules);
 
         /* Include custom ProGuard rules */
         args.add("-include");
@@ -991,7 +969,7 @@ public class Dp {
 
         /* Include compiled Java classes (?) IT SAYS -in*jar*s, so why include .class es? */
         args.add("-injars");
-        args.add(f.u);
+        args.add(yq.u);
 
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
@@ -1003,14 +981,14 @@ public class Dp {
         args.add("-libraryjars");
         args.add(classpath());
         args.add("-outjars");
-        args.add(f.classes_proguard);
+        args.add(yq.classes_proguard);
         if (proguard.isDebugFilesEnabled()) {
             args.add("-printseeds");
-            args.add(f.printseeds);
+            args.add(yq.printseeds);
             args.add("-printusage");
-            args.add(f.printusage);
+            args.add(yq.printusage);
             args.add("-printmapping");
-            args.add(f.printmapping);
+            args.add(yq.printmapping);
         }
         LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
 
@@ -1032,7 +1010,7 @@ public class Dp {
 
     public void runStringfog() {
         try {
-            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(f.t,
+            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(yq.t,
                     "stringFogMapping.txt"));
             StringFogClassInjector stringFogClassInjector = new StringFogClassInjector(new String[0],
                     "UTF-8",
@@ -1041,8 +1019,8 @@ public class Dp {
                     stringFogMappingPrinter);
             stringFogMappingPrinter.startMappingOutput();
             stringFogMappingPrinter.ouputInfo("UTF-8", "com.github.megatronking.stringfog.xor.StringFogImpl");
-            stringFogClassInjector.doFog2ClassInDir(new File(f.u));
-            KB.a(e, "stringfog/stringfog.zip", f.u);
+            stringFogClassInjector.doFog2ClassInDir(new File(yq.u));
+            KB.a(context, "stringfog/stringfog.zip", yq.u);
         } catch (Exception e) {
             LogUtil.e("Stringfog", e.toString());
         }
@@ -1052,12 +1030,12 @@ public class Dp {
         maybeExtractZipalignBinary();
 
         ArrayList<String> args = new ArrayList<>();
-        args.add(zipalignBinaryPath.getAbsolutePath());
+        args.add(zipalignBinary.getAbsolutePath());
         args.add("-f");
         args.add("-p");
         args.add("4");
-        args.add(f.G);
-        args.add(f.alignedApkPath);
+        args.add(yq.G);
+        args.add(yq.alignedApkPath);
 
         LogUtil.d(TAG, "About to run zipalign with this cmdline: " + args);
 
@@ -1074,9 +1052,9 @@ public class Dp {
 
         try {
             /* Check if we need to update zipalign's binary */
-            if (a(zipalignPathInAssets, zipalignBinaryPath.getAbsolutePath())) {
-                makeExecutableCommand[2] = zipalignBinaryPath.getAbsolutePath();
-                j.a(makeExecutableCommand);
+            if (a(zipalignPathInAssets, zipalignBinary.getAbsolutePath())) {
+                makeExecutableCommand[2] = zipalignBinary.getAbsolutePath();
+                commandExecutor.a(makeExecutableCommand);
             }
         } catch (Exception e) {
             LogUtil.e(TAG, "Failed to extract the zipalign binary", e);
