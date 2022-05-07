@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseSessionAppCompatActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -116,7 +116,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
                 downloadChromeDialog();
             }
         } else {
-            bB.a(getApplicationContext(), Helper.getResString(Resources.string.common_message_check_network), Toast.LENGTH_SHORT).show();
+            bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
         }
     }
 
@@ -171,23 +171,20 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            switch (v.getId()) {
-                case Resources.id.btn_console:
-                    n();
-                    break;
-
-                case Resources.id.layout_switch:
-                    if (!libSwitch.isChecked()) {
-                        i(8001);
+            int id = v.getId();
+            if (id == R.id.btn_console) {
+                n();
+            } else if (id == R.id.layout_switch) {
+                if (!libSwitch.isChecked()) {
+                    i(8001);
+                } else {
+                    libSwitch.setChecked(!libSwitch.isChecked());
+                    if ("Y".equals(admobLibraryBean.useYn) && !libSwitch.isChecked()) {
+                        configureLibrary();
                     } else {
-                        libSwitch.setChecked(!libSwitch.isChecked());
-                        if ("Y".equals(admobLibraryBean.useYn) && !libSwitch.isChecked()) {
-                            configureLibrary();
-                        } else {
-                            admobLibraryBean.useYn = "Y";
-                        }
+                        admobLibraryBean.useYn = "Y";
                     }
-                    break;
+                }
             }
         }
     }
@@ -195,42 +192,42 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.manage_library_manage_admob);
+        setContentView(R.layout.manage_library_manage_admob);
 
-        Toolbar toolbar = findViewById(Resources.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
-        findViewById(Resources.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(Helper.getResString(Resources.string.design_library_admob_title_admob_manager));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(Helper.getResString(R.string.design_library_admob_title_admob_manager));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         A = new DB(this.getApplicationContext(), "P1");
         admobLibraryBean = getIntent().getParcelableExtra("admob");
-        ((TextView) findViewById(Resources.id.tv_enable)).setText(Helper.getResString(Resources.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(Resources.id.tv_title_banner)).setText(Helper.getResString(Resources.string.design_library_admob_title_banner));
-        ((TextView) findViewById(Resources.id.tv_title_banner_name)).setText(Helper.getResString(Resources.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(Resources.id.tv_title_banner_id)).setText(Helper.getResString(Resources.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(Resources.id.tv_title_inter)).setText(Helper.getResString(Resources.string.design_library_admob_title_interstitial));
-        ((TextView) findViewById(Resources.id.tv_title_inter_name)).setText(Helper.getResString(Resources.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(Resources.id.tv_title_inter_id)).setText(Helper.getResString(Resources.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(Resources.id.tv_title_test_device)).setText(Helper.getResString(Resources.string.design_library_admob_dialog_set_test_device_title));
-        tvBannerId = findViewById(Resources.id.tv_banner_id);
-        tvBannerName = findViewById(Resources.id.tv_banner_name);
-        tvInterId = findViewById(Resources.id.tv_inter_id);
-        tvInterName = findViewById(Resources.id.tv_inter_name);
+        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
+        ((TextView) findViewById(R.id.tv_title_banner_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_title_banner_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_inter)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
+        ((TextView) findViewById(R.id.tv_title_inter_name)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_title_inter_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
+        tvBannerId = findViewById(R.id.tv_banner_id);
+        tvBannerName = findViewById(R.id.tv_banner_name);
+        tvInterId = findViewById(R.id.tv_inter_id);
+        tvInterName = findViewById(R.id.tv_inter_name);
 
-        RecyclerView listTestDevice = findViewById(Resources.id.list_test_device);
+        RecyclerView listTestDevice = findViewById(R.id.list_test_device);
         listTestDevice.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
         testDeviceAdapter = new TestDeviceAdapter();
         listTestDevice.setAdapter(testDeviceAdapter);
 
-        libSwitch = findViewById(Resources.id.lib_switch);
-        LinearLayout switchLayout = findViewById(Resources.id.layout_switch);
+        libSwitch = findViewById(R.id.lib_switch);
+        LinearLayout switchLayout = findViewById(R.id.layout_switch);
         switchLayout.setOnClickListener(this);
 
-        Button btnConsole = findViewById(Resources.id.btn_console);
-        btnConsole.setText(Helper.getResString(Resources.string.design_library_admob_button_goto_console));
+        Button btnConsole = findViewById(R.id.btn_console);
+        btnConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_console));
         btnConsole.setOnClickListener(this);
 
         configure();
@@ -238,18 +235,17 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(Resources.menu.manage_admob_menu, menu);
+        getMenuInflater().inflate(R.menu.manage_admob_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case Resources.id.menu_admob_help:
-                o();
-                break;
-            case Resources.id.menu_admob_settings:
-                i(8002);
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_admob_help) {
+            o();
+        } else if (itemId == R.id.menu_admob_settings) {
+            i(8002);
         }
 
         return super.onOptionsItemSelected(item);
@@ -267,27 +263,27 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
 
     private void configureLibrary() {
         final aB dialog = new aB(this);
-        dialog.a(Resources.drawable.delete_96);
-        dialog.b(Helper.getResString(Resources.string.common_word_warning));
-        dialog.a(Helper.getResString(Resources.string.design_library_admob_dialog_description_confirm_uncheck));
+        dialog.a(R.drawable.delete_96);
+        dialog.b(Helper.getResString(R.string.common_word_warning));
+        dialog.a(Helper.getResString(R.string.design_library_admob_dialog_description_confirm_uncheck));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(Resources.string.common_word_delete), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             if (!mB.a()) {
                 admobLibraryBean.useYn = "N";
                 libSwitch.setChecked(false);
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void downloadChromeDialog() {
         final aB dialog = new aB(this);
-        dialog.a(Resources.drawable.chrome_96);
-        dialog.b(Helper.getResString(Resources.string.title_compatible_chrome_browser));
-        dialog.a(Helper.getResString(Resources.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), v -> {
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -295,7 +291,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -329,7 +325,7 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(Resources.layout.manage_library_setting_admob_test_device_item, parent, false));
+                    .inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
         public class ViewHolder extends RecyclerView.v {
@@ -338,8 +334,8 @@ public class ManageAdmobActivity extends BaseSessionAppCompatActivity implements
 
             public ViewHolder(View view) {
                 super(view);
-                tvDeviceId = view.findViewById(Resources.id.tv_device_id);
-                ImageView imgDelete = view.findViewById(Resources.id.img_delete);
+                tvDeviceId = view.findViewById(R.id.tv_device_id);
+                ImageView imgDelete = view.findViewById(R.id.img_delete);
 
                 imgDelete.setVisibility(View.GONE);
             }

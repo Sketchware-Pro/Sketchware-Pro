@@ -2,6 +2,7 @@ package com.besome.sketch.editor.property;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -10,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.OB;
@@ -48,55 +49,55 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private void setIcon(ImageView imageView) {
         switch (key) {
             case "property_id":
-                icon = Resources.drawable.rename_96_blue;
+                icon = R.drawable.rename_96_blue;
                 break;
 
             case "property_text":
-                icon = Resources.drawable.abc_96;
+                icon = R.drawable.abc_96;
                 break;
 
             case "property_hint":
-                icon = Resources.drawable.help_96_blue;
+                icon = R.drawable.help_96_blue;
                 break;
 
             case "property_weight":
             case "property_weight_sum":
-                icon = Resources.drawable.one_to_many_48;
+                icon = R.drawable.one_to_many_48;
                 break;
 
             case "property_rotate":
-                icon = Resources.drawable.ic_reset_color_32dp;
+                icon = R.drawable.ic_reset_color_32dp;
                 break;
 
             case "property_lines":
             case "property_max":
             case "property_progress":
-                icon = Resources.drawable.numbers_48;
+                icon = R.drawable.numbers_48;
                 break;
 
             case "property_alpha":
-                icon = Resources.drawable.opacity_48;
+                icon = R.drawable.opacity_48;
                 break;
 
             case "property_translation_x":
-                icon = Resources.drawable.swipe_right_48;
+                icon = R.drawable.swipe_right_48;
                 break;
 
             case "property_translation_y":
-                icon = Resources.drawable.swipe_down_48;
+                icon = R.drawable.swipe_down_48;
                 break;
 
             case "property_scale_x":
             case "property_scale_y":
-                icon = Resources.drawable.resize_48;
+                icon = R.drawable.resize_48;
                 break;
 
             case "property_inject":
-                icon = Resources.drawable.ic_property_inject;
+                icon = R.drawable.ic_property_inject;
                 break;
 
             case "property_convert":
-                icon = Resources.drawable.ic_property_convert;
+                icon = R.drawable.ic_property_convert;
                 break;
         }
         imageView.setImageResource(icon);
@@ -112,8 +113,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (identifier > 0) {
             tvName.setText(xB.b().a(getResources(), identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                setIcon(findViewById(Resources.id.img_icon));
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                setIcon(findViewById(R.id.img_icon));
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             setIcon(imgLeftIcon);
@@ -188,12 +189,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void initialize(Context context, boolean z) {
         this.context = context;
-        wB.a(context, this, Resources.layout.property_input_item);
-        tvName = findViewById(Resources.id.tv_name);
-        tvValue = findViewById(Resources.id.tv_value);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_input_item);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setSoundEffectsEnabled(true);
             setOnClickListener(this);
@@ -204,24 +205,23 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View a2 = wB.a(getContext(), Resources.layout.property_popup_input_text);
-        EditText editText = a2.findViewById(Resources.id.ed_input);
+        View a2 = wB.a(getContext(), R.layout.property_popup_input_text);
+        EditText editText = a2.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
-        editText.setInputType(524289);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        _B validator = new _B(context, a2.findViewById(Resources.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
+        _B validator = new _B(context, a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.a(a2);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(editText.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -234,27 +234,26 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_input_text);
-        EditText editText = view.findViewById(Resources.id.ed_input);
+        View view = wB.a(getContext(), R.layout.property_popup_input_text);
+        EditText editText = view.findViewById(R.id.ed_input);
         editText.setInputType(4098);
         editText.setText(value);
         TB validator = new TB(
                 context,
-                view.findViewById(Resources.id.ti_input),
+                view.findViewById(R.id.ti_input),
                 0,
                 (key.equals("property_max") || key.equals("property_progress"))
                         ? 0x7fffffff : 999
         );
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(editText.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -262,19 +261,18 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_input_text);
-        SB lengthValidator = new SB(context, view.findViewById(Resources.id.ti_input), minValue, maxValue);
+        View view = wB.a(getContext(), R.layout.property_popup_input_text);
+        SB lengthValidator = new SB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
         lengthValidator.a(value);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (lengthValidator.b()) {
-                setValue(((EditText) view.findViewById(Resources.id.ed_input)).getText().toString());
+                setValue(((EditText) view.findViewById(R.id.ed_input)).getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -282,21 +280,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_input_text);
-        EditText editText = view.findViewById(Resources.id.ed_input);
-        editText.setInputType(minValue < 0 ? 12290 : 8194);
+        View view = wB.a(getContext(), R.layout.property_popup_input_text);
+        EditText editText = view.findViewById(R.id.ed_input);
+        editText.setInputType(minValue < 0 ?
+                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL
+                : InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         editText.setText(value);
-        OB validator = new OB(context, view.findViewById(Resources.id.ti_input), minValue, maxValue);
+        OB validator = new OB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(editText.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

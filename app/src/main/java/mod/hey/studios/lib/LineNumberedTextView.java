@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.wB;
 
@@ -36,10 +36,10 @@ public class LineNumberedTextView extends LinearLayout {
     }
 
     private void initialize() {
-        View view = wB.a(context, this, Resources.layout.line_numbered_textview_layout); //View.inflate(context, 0x7F0B01D9, this);
+        View view = wB.a(context, this, R.layout.line_numbered_textview_layout); //View.inflate(context, 0x7F0B01D9, this);
 
-        line_numbered_textview_main = view.findViewById(Resources.id.line_numbered_textview_main);
-        line_numbered_textview_lines = view.findViewById(Resources.id.line_numbered_textview_lines);
+        line_numbered_textview_main = view.findViewById(R.id.line_numbered_textview_main);
+        line_numbered_textview_lines = view.findViewById(R.id.line_numbered_textview_lines);
     }
 
     public void setText(CharSequence c) {

@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.aB;
 import a.a.a.xB;
@@ -31,7 +31,7 @@ public class ProjectSettingsDialog {
 
     public void show() {
         aB dialog = new aB(activity);
-        dialog.a(Resources.drawable.services_48);
+        dialog.a(R.drawable.services_48);
         dialog.b("Project Configuration");
 
         ScrollView preferenceScroller = new ScrollView(dialog.getContext());
@@ -95,9 +95,8 @@ public class ProjectSettingsDialog {
                 useNewMaterialComponentsAppTheme
         };
 
-        dialog.a(xB.b().a(activity.getApplicationContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
-        dialog.b(xB.b().a(activity.getApplicationContext(), Resources.string.common_word_save), v -> {
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
             settings.setValues(preferences);
             dialog.dismiss();
         });

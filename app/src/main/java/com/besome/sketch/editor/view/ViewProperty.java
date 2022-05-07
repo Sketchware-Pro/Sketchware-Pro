@@ -17,14 +17,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.ctrls.ViewIdSpinnerItem;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -165,19 +164,19 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private void showSaveToCollectionDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), Resources.string.view_widget_favorites_save_title));
-        dialog.a(Resources.drawable.ic_bookmark_red_48dp);
-        View view = wB.a(getContext(), Resources.layout.property_popup_save_to_favorite);
-        ((TextView) view.findViewById(Resources.id.tv_favorites_guide)).setText(xB.b().a(getContext(), Resources.string.view_widget_favorites_save_guide_new));
-        EditText editText = view.findViewById(Resources.id.ed_input);
+        dialog.b(xB.b().a(getContext(), R.string.view_widget_favorites_save_title));
+        dialog.a(R.drawable.ic_bookmark_red_48dp);
+        View view = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
+        ((TextView) view.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.view_widget_favorites_save_guide_new));
+        EditText editText = view.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        NB validator = new NB(getContext(), view.findViewById(Resources.id.ti_input), Rp.h().g());
+        NB validator = new NB(getContext(), view.findViewById(R.id.ti_input), Rp.h().g());
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = editText.getText().toString();
                 ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
@@ -189,14 +188,14 @@ public class ViewProperty extends LinearLayout implements Kw {
                             Op.g().a(sc_id, jC.d(sc_id).g(backgroundResource));
                         } catch (Exception e) {
                             e.printStackTrace();
-                            bB.b(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            bB.b(getContext(), e.getMessage(), bB.TOAST_NORMAL).show();
                         }
                     }
                     if (resName != null && !resName.equals("default_image") && !resName.equals("NONE") && jC.d(sc_id).l(resName) && !Op.g().b(resName)) {
                         try {
                             Op.g().a(sc_id, jC.d(sc_id).g(resName));
                         } catch (Exception e) {
-                            bB.b(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            bB.b(getContext(), e.getMessage(), bB.TOAST_NORMAL).show();
                         }
                     }
                 }
@@ -204,23 +203,22 @@ public class ViewProperty extends LinearLayout implements Kw {
                 if (propertyListener != null) {
                     propertyListener.a();
                 }
-                bB.a(getContext(), xB.b().a(getContext(), Resources.string.common_message_complete_save), Toast.LENGTH_SHORT).show();
+                bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void initialize(Context context) {
-        wB.a(context, this, Resources.layout.view_property);
-        layoutPropertyGroup = findViewById(Resources.id.layout_property_group);
-        CustomHorizontalScrollView hcvProperty = findViewById(Resources.id.hcv_property);
-        propertyLayout = findViewById(Resources.id.property_layout);
-        LinearLayout propertyContents = findViewById(Resources.id.property_contents);
-        layoutPropertySeeAll = findViewById(Resources.id.layout_property_see_all);
-        viewEvent = findViewById(Resources.id.view_event);
+        wB.a(context, this, R.layout.view_property);
+        layoutPropertyGroup = findViewById(R.id.layout_property_group);
+        CustomHorizontalScrollView hcvProperty = findViewById(R.id.hcv_property);
+        propertyLayout = findViewById(R.id.property_layout);
+        LinearLayout propertyContents = findViewById(R.id.property_contents);
+        layoutPropertySeeAll = findViewById(R.id.layout_property_see_all);
+        viewEvent = findViewById(R.id.view_event);
         hcvProperty.setOnScrollChangedListener((l, t, oldl, oldt) -> {
             if (Math.abs(l - oldt) <= 5) {
                 return;
@@ -237,13 +235,13 @@ public class ViewProperty extends LinearLayout implements Kw {
                 showAllShower.start();
             }
         });
-        imgSave = findViewById(Resources.id.img_save);
+        imgSave = findViewById(R.id.img_save);
         imgSave.setOnClickListener(v -> {
             if (!mB.a()) {
                 showSaveToCollectionDialog();
             }
         });
-        spnWidget = findViewById(Resources.id.spn_widget);
+        spnWidget = findViewById(R.id.spn_widget);
         idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
         spnWidget.setAdapter(idsAdapter);
         spnWidget.setSelection(0);
@@ -302,9 +300,9 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     private void initializeGroups() {
-        addGroup(0, Resources.string.property_group_basic);
-        addGroup(1, Resources.string.property_group_recent);
-        addGroup(2, Resources.string.property_group_event);
+        addGroup(0, R.string.property_group_basic);
+        addGroup(1, R.string.property_group_recent);
+        addGroup(2, R.string.property_group_event);
     }
 
     private void addGroup(int id, int labelResId) {
@@ -317,7 +315,7 @@ public class ViewProperty extends LinearLayout implements Kw {
     private void a(ViewBean viewBean) {
         if (seeAll == null) {
             seeAll = new SeeAllPropertiesFloatingItem(getContext());
-            seeAll.configure(Resources.drawable.color_more_96, Resources.string.common_word_see_all);
+            seeAll.configure(R.drawable.color_more_96, R.string.common_word_see_all);
             seeAll.setView(viewBean);
             layoutPropertySeeAll.addView(seeAll);
             return;
@@ -379,7 +377,7 @@ public class ViewProperty extends LinearLayout implements Kw {
                 item = (ViewIdSpinnerItem) convertView;
             } else {
                 item = new ViewIdSpinnerItem(context);
-                item.setTextSize(Resources.dimen.text_size_body_small);
+                item.setTextSize(R.dimen.text_size_body_small);
             }
             item.setDropDown(isDropDownView);
 
@@ -399,8 +397,8 @@ public class ViewProperty extends LinearLayout implements Kw {
         }
 
         private void initialize(Context context) {
-            wB.a(context, this, Resources.layout.property_group_item);
-            title = findViewById(Resources.id.tv_title);
+            wB.a(context, this, R.layout.property_group_item);
+            title = findViewById(R.id.tv_title);
         }
 
         @Override
@@ -426,10 +424,10 @@ public class ViewProperty extends LinearLayout implements Kw {
         public SeeAllPropertiesFloatingItem(Context context) {
             super(context);
 
-            wB.a(context, this, Resources.layout.property_grid_item);
-            propertyMenuItem = findViewById(Resources.id.property_menu_item);
-            icon = findViewById(Resources.id.img_icon);
-            title = findViewById(Resources.id.tv_title);
+            wB.a(context, this, R.layout.property_grid_item);
+            propertyMenuItem = findViewById(R.id.property_menu_item);
+            icon = findViewById(R.id.img_icon);
+            title = findViewById(R.id.tv_title);
         }
 
         @Override

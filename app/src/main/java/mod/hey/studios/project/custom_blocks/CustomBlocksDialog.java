@@ -1,5 +1,7 @@
 package mod.hey.studios.project.custom_blocks;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.ViewGroup;
@@ -9,14 +11,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.BlockBean;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
 import a.a.a.Rs;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
-
-import static mod.SketchwareUtil.getDip;
 
 public class CustomBlocksDialog {
 
@@ -74,7 +74,7 @@ public class CustomBlocksDialog {
 
         new AlertDialog.Builder(c)
                 .setTitle("Used Custom Blocks")
-                .setPositiveButton(Resources.string.common_word_close, null)
+                .setPositiveButton(R.string.common_word_close, null)
                 .setView(background)
                 .show();
     }

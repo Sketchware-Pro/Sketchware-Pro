@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.aB;
@@ -50,37 +50,37 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             tvName.setText(xB.b().a(getResources(), identifier));
             switch (this.key) {
                 case "property_orientation":
-                    icon = Resources.drawable.grid_3_48;
+                    icon = R.drawable.grid_3_48;
                     break;
 
                 case "property_text_style":
-                    icon = Resources.drawable.abc_96_color;
+                    icon = R.drawable.abc_96_color;
                     break;
 
                 case "property_text_size":
-                    icon = Resources.drawable.text_width_96;
+                    icon = R.drawable.text_width_96;
                     break;
 
                 case "property_ime_option":
                 case "property_input_type":
-                    icon = Resources.drawable.keyboard_48;
+                    icon = R.drawable.keyboard_48;
                     break;
 
                 case "property_spinner_mode":
-                    icon = Resources.drawable.pull_down_48;
+                    icon = R.drawable.pull_down_48;
                     break;
 
                 case "property_choice_mode":
-                    icon = Resources.drawable.multiple_choice_48;
+                    icon = R.drawable.multiple_choice_48;
                     break;
 
                 case "property_first_day_of_week":
-                    icon = Resources.drawable.monday_48;
+                    icon = R.drawable.monday_48;
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -127,12 +127,12 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, Resources.layout.property_selector_item);
-        tvName = findViewById(Resources.id.tv_name);
-        tvValue = findViewById(Resources.id.tv_value);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_selector_item);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -143,11 +143,11 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), Resources.layout.property_popup_selector_single);
-        radioGroupContent = view.findViewById(Resources.id.rg_content);
-        TextView desc = view.findViewById(Resources.id.desc);
+        View view = wB.a(getContext(), R.layout.property_popup_selector_single);
+        radioGroupContent = view.findViewById(R.id.rg_content);
+        TextView desc = view.findViewById(R.id.desc);
         if (key.equals("property_ime_option")) {
-            desc.setText(xB.b().a(getContext(), Resources.string.property_description_edittext_ime_options));
+            desc.setText(xB.b().a(getContext(), R.string.property_description_edittext_ime_options));
             desc.setVisibility(VISIBLE);
         } else {
             desc.setVisibility(GONE);
@@ -162,7 +162,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), Resources.string.common_word_select), v -> {
+        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
             for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
                 RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -174,8 +174,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

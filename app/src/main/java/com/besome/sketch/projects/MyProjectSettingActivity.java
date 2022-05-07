@@ -25,7 +25,7 @@ import androidx.core.content.FileProvider;
 
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -122,53 +122,37 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case Resources.id.advanced_setting:
-                showHideAdvancedSettings();
-                return;
-
-            case Resources.id.app_icon_layout:
-                showCustomIconOptions();
-                return;
-
-            case Resources.id.common_dialog_cancel_button:
-                finish();
-                return;
-
-            case Resources.id.common_dialog_ok_button:
-                mB.a(v);
-                if (isInputValid()) {
-                    new SaveProjectAsyncTask(getApplicationContext()).execute();
-                    return;
-                }
-                return;
-
-            case Resources.id.contents:
-            default:
-                return;
-
-            case Resources.id.img_theme_color_help:
-                if (colorGuide.getVisibility() == View.VISIBLE) {
-                    colorGuide.setVisibility(View.GONE);
-                } else {
-                    colorGuide.setVisibility(View.VISIBLE);
-                }
-                return;
-
-            case Resources.id.ver_code:
-            case Resources.id.ver_name:
-                if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
-                    new VersionDialog(this).show();
-                } else {
-                    showOldVersionControlDialog();
-                }
+        int id = v.getId();
+        if (id == R.id.advanced_setting) {
+            showHideAdvancedSettings();
+        } else if (id == R.id.app_icon_layout) {
+            showCustomIconOptions();
+        } else if (id == R.id.common_dialog_cancel_button) {
+            finish();
+        } else if (id == R.id.common_dialog_ok_button) {
+            mB.a(v);
+            if (isInputValid()) {
+                new SaveProjectAsyncTask(getApplicationContext()).execute();
+            }
+        } else if (id == R.id.img_theme_color_help) {
+            if (colorGuide.getVisibility() == View.VISIBLE) {
+                colorGuide.setVisibility(View.GONE);
+            } else {
+                colorGuide.setVisibility(View.VISIBLE);
+            }
+        } else if (id == R.id.ver_code || id == R.id.ver_name) {
+            if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_NEW_VERSION_CONTROL)) {
+                new VersionDialog(this).show();
+            } else {
+                showOldVersionControlDialog();
+            }
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.myproject_setting);
+        setContentView(R.layout.myproject_setting);
         if (!j()) {
             finish();
         }
@@ -176,30 +160,25 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
         boolean expandAdvancedOptions = getIntent().getBooleanExtra("advanced_open", false);
 
-        ((TextView) findViewById(Resources.id.tv_change_icon))
-                .setText(xB.b().a(this, Resources.string.myprojects_settings_description_change_icon));
-        findViewById(Resources.id.contents).setOnClickListener(this);
-        findViewById(Resources.id.app_icon_layout).setOnClickListener(this);
-        findViewById(Resources.id.advanced_setting).setOnClickListener(this);
-        projectVersionCodeView = findViewById(Resources.id.ver_code);
+        ((TextView) findViewById(R.id.tv_change_icon)).setText(xB.b().a(this, R.string.myprojects_settings_description_change_icon));
+        findViewById(R.id.contents).setOnClickListener(this);
+        findViewById(R.id.app_icon_layout).setOnClickListener(this);
+        findViewById(R.id.advanced_setting).setOnClickListener(this);
+        projectVersionCodeView = findViewById(R.id.ver_code);
         projectVersionCodeView.setOnClickListener(this);
-        projectVersionNameView = findViewById(Resources.id.ver_name);
+        projectVersionNameView = findViewById(R.id.ver_name);
         projectVersionNameView.setOnClickListener(this);
-        TextInputLayout appName = findViewById(Resources.id.ti_app_name);
-        TextInputLayout packageName = findViewById(Resources.id.ti_package_name);
-        TextInputLayout projectName = findViewById(Resources.id.ti_project_name);
-        appName.setHint(xB.b().a(this,
-                Resources.string.myprojects_settings_hint_enter_application_name));
-        packageName.setHint(xB.b().a(this,
-                Resources.string.myprojects_settings_hint_enter_package_name));
-        projectName.setHint(xB.b().a(this,
-                Resources.string.myprojects_settings_hint_enter_project_name));
-        projectAppName = findViewById(Resources.id.et_app_name);
-        projectPackageName = findViewById(Resources.id.et_package_name);
-        this.projectName = findViewById(Resources.id.et_project_name);
-        ((TextView) findViewById(Resources.id.tv_advanced_settings))
-                .setText(xB.b().a(this, Resources.string.myprojects_settings_title_advanced_settings));
-        appIcon = findViewById(Resources.id.app_icon);
+        TextInputLayout appName = findViewById(R.id.ti_app_name);
+        TextInputLayout packageName = findViewById(R.id.ti_package_name);
+        TextInputLayout projectName = findViewById(R.id.ti_project_name);
+        appName.setHint(xB.b().a(this, R.string.myprojects_settings_hint_enter_application_name));
+        packageName.setHint(xB.b().a(this, R.string.myprojects_settings_hint_enter_package_name));
+        projectName.setHint(xB.b().a(this, R.string.myprojects_settings_hint_enter_project_name));
+        projectAppName = findViewById(R.id.et_app_name);
+        projectPackageName = findViewById(R.id.et_package_name);
+        this.projectName = findViewById(R.id.et_project_name);
+        ((TextView) findViewById(R.id.tv_advanced_settings)).setText(xB.b().a(this, R.string.myprojects_settings_title_advanced_settings));
+        appIcon = findViewById(R.id.app_icon);
 
         projectAppNameValidator = new LB(getApplicationContext(), appName);
         projectPackageNameValidator = new UB(getApplicationContext(), packageName);
@@ -213,19 +192,19 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 }
             }
         });
-        themeColorsContainer = findViewById(Resources.id.layout_theme_colors);
-        findViewById(Resources.id.img_theme_color_help).setOnClickListener(this);
-        colorGuide = findViewById(Resources.id.img_color_guide);
-        advancedSettingsContainer = findViewById(Resources.id.advanced_setting_layout);
+        themeColorsContainer = findViewById(R.id.layout_theme_colors);
+        findViewById(R.id.img_theme_color_help).setOnClickListener(this);
+        colorGuide = findViewById(R.id.img_color_guide);
+        advancedSettingsContainer = findViewById(R.id.advanced_setting_layout);
         /* Save & Cancel buttons */
         r.setOnClickListener(this);
         s.setOnClickListener(this);
 
-        projectThemeColors[0] = getResources().getColor(Resources.color.color_accent);
-        projectThemeColors[1] = getResources().getColor(Resources.color.color_primary);
-        projectThemeColors[2] = getResources().getColor(Resources.color.color_primary_dark);
-        projectThemeColors[3] = getResources().getColor(Resources.color.color_control_highlight);
-        projectThemeColors[4] = getResources().getColor(Resources.color.color_control_normal);
+        projectThemeColors[0] = getResources().getColor(R.color.color_accent);
+        projectThemeColors[1] = getResources().getColor(R.color.color_primary);
+        projectThemeColors[2] = getResources().getColor(R.color.color_primary_dark);
+        projectThemeColors[3] = getResources().getColor(R.color.color_control_highlight);
+        projectThemeColors[4] = getResources().getColor(R.color.color_control_normal);
         for (int i = 0; i < themeColorKeys.length; i++) {
             ThemeColorView colorView = new ThemeColorView(getApplicationContext(), i);
             colorView.name.setText(themeColorLabels[i]);
@@ -238,12 +217,12 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             });
         }
         /* Set the cancel button's label */
-        b(xB.b().a(this, Resources.string.common_word_cancel));
+        b(xB.b().a(this, R.string.common_word_cancel));
 
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
-            e(xB.b().a(getApplicationContext(), Resources.string.myprojects_settings_actionbar_title_project_settings));
-            d(xB.b().a(this, Resources.string.myprojects_settings_button_save));
+            e(xB.b().a(getApplicationContext(), R.string.myprojects_settings_actionbar_title_project_settings));
+            d(xB.b().a(this, R.string.myprojects_settings_button_save));
 
             HashMap<String, Object> metadata = lC.b(sc_id);
             projectPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
@@ -267,8 +246,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             }
         } else {
             /* Set the dialog's title & create button label */
-            e(xB.b().a(getApplicationContext(), Resources.string.myprojects_settings_actionbar_title_new_projet));
-            d(xB.b().a(this, Resources.string.myprojects_settings_button_create_app));
+            e(xB.b().a(getApplicationContext(), R.string.myprojects_settings_actionbar_title_new_projet));
+            d(xB.b().a(this, R.string.myprojects_settings_button_create_app));
 
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
@@ -340,17 +319,15 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     private void showOldVersionControlDialog() {
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.numbers_48);
-        dialog.b(xB.b().a(this, Resources.string.myprojects_settings_version_control_title));
-        View view = wB.a(getApplicationContext(), Resources.layout.property_popup_version_control);
-        ((TextView) view.findViewById(Resources.id.tv_code))
-                .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_code));
-        ((TextView) view.findViewById(Resources.id.tv_name))
-                .setText(xB.b().a(this, Resources.string.myprojects_settings_version_control_title_name));
+        dialog.a(R.drawable.numbers_48);
+        dialog.b(xB.b().a(this, R.string.myprojects_settings_version_control_title));
+        View view = wB.a(getApplicationContext(), R.layout.property_popup_version_control);
+        ((TextView) view.findViewById(R.id.tv_code)).setText(xB.b().a(this, R.string.myprojects_settings_version_control_title_code));
+        ((TextView) view.findViewById(R.id.tv_name)).setText(xB.b().a(this, R.string.myprojects_settings_version_control_title_name));
 
-        NumberPicker versionCodePicker = view.findViewById(Resources.id.version_code);
-        NumberPicker versionNameFirstPartPicker = view.findViewById(Resources.id.version_name1);
-        NumberPicker versionNameSecondPartPicker = view.findViewById(Resources.id.version_name2);
+        NumberPicker versionCodePicker = view.findViewById(R.id.version_code);
+        NumberPicker versionNameFirstPartPicker = view.findViewById(R.id.version_name1);
+        NumberPicker versionNameSecondPartPicker = view.findViewById(R.id.version_name2);
 
         versionCodePicker.setWrapSelectorWheel(false);
         versionNameFirstPartPicker.setWrapSelectorWheel(false);
@@ -404,15 +381,14 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 picker.setValue(projectVersionNameSecondPart);
             }
         });
-        dialog.b(xB.b().a(this, Resources.string.common_word_save), v -> {
+        dialog.b(xB.b().a(this, R.string.common_word_save), v -> {
             if (!mB.a()) {
                 projectVersionCodeView.setText(String.valueOf(versionCodePicker.getValue()));
                 projectVersionNameView.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(this, Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(this, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -458,28 +434,28 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     }
 
     private void pickColor(int colorIndex) {
-        View view = wB.a(this, Resources.layout.color_picker);
-        view.setAnimation(AnimationUtils.loadAnimation(this, Resources.anim.abc_fade_in));
+        View view = wB.a(this, R.layout.color_picker);
+        view.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in));
         Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
         zx.a(pickedColor -> {
             projectThemeColors[colorIndex] = pickedColor;
             syncThemeColors();
         });
-        zx.setAnimationStyle(Resources.anim.abc_fade_in);
+        zx.setAnimationStyle(R.anim.abc_fade_in);
         zx.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
     private void showResetIconConfirmation() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_settings));
-        dialog.a(Resources.drawable.default_icon);
-        dialog.a(xB.b().a(this, Resources.string.myprojects_settings_confirm_reset_icon));
-        dialog.b(xB.b().a(this, Resources.string.common_word_reset), v -> {
-            appIcon.setImageResource(Resources.drawable.default_icon);
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_settings));
+        dialog.a(R.drawable.default_icon);
+        dialog.a(xB.b().a(this, R.string.myprojects_settings_confirm_reset_icon));
+        dialog.b(xB.b().a(this, R.string.common_word_reset), v -> {
+            appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(this, Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(this, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -508,9 +484,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         intent.putExtra("output", uri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
         intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(
-                intent,
-                xB.b().a(this, Resources.string.common_word_choose)),
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)),
                 REQUEST_CODE_PICK_ICON);
     }
 
@@ -537,19 +511,17 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         intent.putExtra("output", uri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
         intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(
-                intent,
-                xB.b().a(this, Resources.string.common_word_choose)),
+        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)),
                 REQUEST_CODE_PICK_CROPPED_ICON);
     }
 
     private void showCustomIconOptions() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose));
+        builder.setTitle(xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose));
         builder.setItems(new String[]{
-                xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery),
-                xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
-                xB.b().a(this, Resources.string.myprojects_settings_context_menu_title_choose_gallery_default)
+                xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose_gallery),
+                xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
+                xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose_gallery_default)
         }, (dialog, which) -> {
             switch (which) {
                 case 0:
@@ -573,11 +545,10 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private void showPackageNameChangeWarning() {
         shownPackageNameChangeWarning = true;
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), Resources.string.common_word_warning));
-        dialog.a(Resources.drawable.break_warning_96_red);
-        dialog.a(xB.b().a(this, Resources.string.myprojects_settings_message_package_rename));
-        dialog.b(xB.b().a(this, Resources.string.common_word_ok),
-                Helper.getDialogDismissListener(dialog));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_warning));
+        dialog.a(R.drawable.break_warning_96_red);
+        dialog.a(xB.b().a(this, R.string.myprojects_settings_message_package_rename));
+        dialog.b(xB.b().a(this, R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -609,9 +580,9 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
         private void initialize(Context context, int tag) {
             setTag(tag);
-            wB.a(context, this, Resources.layout.myproject_color);
-            color = findViewById(Resources.id.color);
-            name = findViewById(Resources.id.name);
+            wB.a(context, this, R.layout.myproject_color);
+            color = findViewById(R.id.color);
+            name = findViewById(R.id.name);
         }
     }
 

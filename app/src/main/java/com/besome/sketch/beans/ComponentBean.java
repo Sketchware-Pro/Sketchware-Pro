@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;
@@ -514,106 +514,106 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static int getDescStrResource(int type) {
         switch (type) {
             case COMPONENT_TYPE_INTENT:
-                return Resources.string.component_description_intent;
+                return R.string.component_description_intent;
 
             case COMPONENT_TYPE_SHAREDPREF:
-                return Resources.string.component_description_file;
+                return R.string.component_description_file;
 
             case COMPONENT_TYPE_CALENDAR:
-                return Resources.string.component_description_calendar;
+                return R.string.component_description_calendar;
 
             case COMPONENT_TYPE_VIBRATOR:
-                return Resources.string.component_description_vibrator;
+                return R.string.component_description_vibrator;
 
             case COMPONENT_TYPE_TIMERTASK:
-                return Resources.string.component_description_timer;
+                return R.string.component_description_timer;
 
             case COMPONENT_TYPE_FIREBASE:
-                return Resources.string.design_library_firebase_description_about_firebase;
+                return R.string.design_library_firebase_description_about_firebase;
 
             case COMPONENT_TYPE_DIALOG:
-                return Resources.string.component_description_dialog;
+                return R.string.component_description_dialog;
 
             case COMPONENT_TYPE_MEDIAPLAYER:
-                return Resources.string.component_description_mediaplayer;
+                return R.string.component_description_mediaplayer;
 
             case COMPONENT_TYPE_SOUNDPOOL:
-                return Resources.string.component_description_soundpool;
+                return R.string.component_description_soundpool;
 
             case COMPONENT_TYPE_OBJECTANIMATOR:
-                return Resources.string.component_description_objectanimator;
+                return R.string.component_description_objectanimator;
 
             case COMPONENT_TYPE_GYROSCOPE:
-                return Resources.string.component_description_gyrosope;
+                return R.string.component_description_gyrosope;
 
             case COMPONENT_TYPE_FIREBASE_AUTH:
-                return Resources.string.component_description_firebase_auth;
+                return R.string.component_description_firebase_auth;
 
             case COMPONENT_TYPE_INTERSTITIAL_AD:
-                return Resources.string.component_description_interstitial_ad;
+                return R.string.component_description_interstitial_ad;
 
             case COMPONENT_TYPE_FIREBASE_STORAGE:
-                return Resources.string.component_description_firebase_storage;
+                return R.string.component_description_firebase_storage;
 
             case COMPONENT_TYPE_CAMERA:
-                return Resources.string.component_description_camera;
+                return R.string.component_description_camera;
 
             case COMPONENT_TYPE_FILE_PICKER:
-                return Resources.string.component_description_file_picker;
+                return R.string.component_description_file_picker;
 
             case COMPONENT_TYPE_REQUEST_NETWORK:
-                return Resources.string.component_description_request_network;
+                return R.string.component_description_request_network;
 
             case COMPONENT_TYPE_TEXT_TO_SPEECH:
-                return Resources.string.component_description_text_to_speech;
+                return R.string.component_description_text_to_speech;
 
             case COMPONENT_TYPE_SPEECH_TO_TEXT:
-                return Resources.string.component_description_speech_to_text;
+                return R.string.component_description_speech_to_text;
 
             case COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                return Resources.string.component_description_bluetooth_connect;
+                return R.string.component_description_bluetooth_connect;
 
             case COMPONENT_TYPE_LOCATION_MANAGER:
-                return Resources.string.component_description_location_manager;
+                return R.string.component_description_location_manager;
 
             case COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                return Resources.string.component_description_video_ad;
+                return R.string.component_description_video_ad;
 
             case COMPONENT_TYPE_PROGRESS_DIALOG:
-                return Resources.string.component_description_progress_dialog;
+                return R.string.component_description_progress_dialog;
 
             case COMPONENT_TYPE_DATE_PICKER_DIALOG:
-                return Resources.string.component_description_date_picker_dialog;
+                return R.string.component_description_date_picker_dialog;
 
             case COMPONENT_TYPE_TIME_PICKER_DIALOG:
-                return Resources.string.component_description_time_picker_dialog;
+                return R.string.component_description_time_picker_dialog;
 
             case COMPONENT_TYPE_NOTIFICATION:
-                return Resources.string.component_description_notification;
+                return R.string.component_description_notification;
 
             case COMPONENT_TYPE_FRAGMENT_ADAPTER:
-                return Resources.string.component_description_fragment_adapter;
+                return R.string.component_description_fragment_adapter;
 
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
-                return Resources.string.component_description_fb_phone_auth;
+                return R.string.component_description_fb_phone_auth;
 
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                return Resources.string.component_description_fb_dynamic;
+                return R.string.component_description_fb_dynamic;
 
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
-                return Resources.string.component_description_fb_fcm;
+                return R.string.component_description_fb_fcm;
 
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
-                return Resources.string.component_description_fb_google;
+                return R.string.component_description_fb_google;
 
             case COMPONENT_TYPE_ONESIGNAL:
-                return Resources.string.component_description_fb_admin;
+                return R.string.component_description_fb_admin;
 
             case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
-                return Resources.string.component_description_fb_ads_banner;
+                return R.string.component_description_fb_ads_banner;
 
             case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
-                return Resources.string.component_description_fb_ads_interstitial;
+                return R.string.component_description_fb_ads_interstitial;
 
             default:
                 return 0;
@@ -623,102 +623,102 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static int getIconResource(int type) {
         switch (type) {
             case COMPONENT_TYPE_INTENT:
-                return Resources.drawable.widget_intent;
+                return R.drawable.widget_intent;
 
             case COMPONENT_TYPE_SHAREDPREF:
-                return Resources.drawable.widget_shared_preference;
+                return R.drawable.widget_shared_preference;
 
             case COMPONENT_TYPE_CALENDAR:
-                return Resources.drawable.widget_calendar;
+                return R.drawable.widget_calendar;
 
             case COMPONENT_TYPE_VIBRATOR:
-                return Resources.drawable.widget_vibrator;
+                return R.drawable.widget_vibrator;
 
             case COMPONENT_TYPE_TIMERTASK:
-                return Resources.drawable.widget_timer;
+                return R.drawable.widget_timer;
 
             case COMPONENT_TYPE_FIREBASE:
             case COMPONENT_TYPE_FIREBASE_AUTH:
             case COMPONENT_TYPE_FIREBASE_STORAGE:
-                return Resources.drawable.widget_firebase;
+                return R.drawable.widget_firebase;
 
             case COMPONENT_TYPE_DIALOG:
-                return Resources.drawable.widget_alertdialog;
+                return R.drawable.widget_alertdialog;
 
             case COMPONENT_TYPE_MEDIAPLAYER:
-                return Resources.drawable.widget_mediaplayer;
+                return R.drawable.widget_mediaplayer;
 
             case COMPONENT_TYPE_SOUNDPOOL:
-                return Resources.drawable.widget_soundpool;
+                return R.drawable.widget_soundpool;
 
             case COMPONENT_TYPE_OBJECTANIMATOR:
-                return Resources.drawable.widget_objectanimator;
+                return R.drawable.widget_objectanimator;
 
             case COMPONENT_TYPE_GYROSCOPE:
-                return Resources.drawable.widget_gyroscope;
+                return R.drawable.widget_gyroscope;
 
             case COMPONENT_TYPE_INTERSTITIAL_AD:
-                return Resources.drawable.widget_admob;
+                return R.drawable.widget_admob;
 
             case COMPONENT_TYPE_CAMERA:
-                return Resources.drawable.widget_camera;
+                return R.drawable.widget_camera;
 
             case COMPONENT_TYPE_FILE_PICKER:
-                return Resources.drawable.widget_file;
+                return R.drawable.widget_file;
 
             case COMPONENT_TYPE_REQUEST_NETWORK:
-                return Resources.drawable.widget_network_request;
+                return R.drawable.widget_network_request;
 
             case COMPONENT_TYPE_TEXT_TO_SPEECH:
-                return Resources.drawable.widget_text_to_speech;
+                return R.drawable.widget_text_to_speech;
 
             case COMPONENT_TYPE_SPEECH_TO_TEXT:
-                return Resources.drawable.widget_speech_to_text;
+                return R.drawable.widget_speech_to_text;
 
             case COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                return Resources.drawable.widget_bluetooth;
+                return R.drawable.widget_bluetooth;
 
             case COMPONENT_TYPE_LOCATION_MANAGER:
-                return Resources.drawable.widget_location;
+                return R.drawable.widget_location;
 
             case COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                return Resources.drawable.widget_media_controller;
+                return R.drawable.widget_media_controller;
 
             case COMPONENT_TYPE_PROGRESS_DIALOG:
-                return Resources.drawable.widget_progress_dialog;
+                return R.drawable.widget_progress_dialog;
 
             case COMPONENT_TYPE_DATE_PICKER_DIALOG:
-                return Resources.drawable.widget_date_picker_dialog;
+                return R.drawable.widget_date_picker_dialog;
 
             case COMPONENT_TYPE_TIME_PICKER_DIALOG:
-                return Resources.drawable.widget_time_picker_dialog;
+                return R.drawable.widget_time_picker_dialog;
 
             case COMPONENT_TYPE_NOTIFICATION:
-                return Resources.drawable.widget_notification;
+                return R.drawable.widget_notification;
 
             case COMPONENT_TYPE_FRAGMENT_ADAPTER:
-                return Resources.drawable.widget_fragment;
+                return R.drawable.widget_fragment;
 
             case COMPONENT_TYPE_FIREBASE_AUTH_PHONE:
-                return Resources.drawable.widget_phone_auth;
+                return R.drawable.widget_phone_auth;
 
             case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
-                return Resources.drawable.component_dynamic_link;
+                return R.drawable.component_dynamic_link;
 
             case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE:
-                return Resources.drawable.component_fcm;
+                return R.drawable.component_fcm;
 
             case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
-                return Resources.drawable.component_firebase_google;
+                return R.drawable.component_firebase_google;
 
             case COMPONENT_TYPE_ONESIGNAL:
-                return Resources.drawable.component_firebase_admin;
+                return R.drawable.component_firebase_admin;
 
             case COMPONENT_TYPE_FACEBOOK_ADS_BANNER:
-                return Resources.drawable.component_fbads_banner;
+                return R.drawable.component_fbads_banner;
 
             case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL:
-                return Resources.drawable.component_fbads_interstitial;
+                return R.drawable.component_fbads_interstitial;
 
             default:
                 return ComponentsHandler.icon(type);

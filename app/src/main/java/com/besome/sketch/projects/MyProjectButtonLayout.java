@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.wB;
 import a.a.a.xB;
@@ -49,48 +49,38 @@ public class MyProjectButtonLayout extends FrameLayout {
 
     private void initialize(Context context) {
         this.context = context;
-        wB.a(context, this, Resources.layout.myproject_buttons);
+        wB.a(context, this, R.layout.myproject_buttons);
 
-        buttonContainer = findViewById(Resources.id.project_buttons);
-        confirmLayout = findViewById(Resources.id.confirm_layout);
-        TextView confirmDelete = findViewById(Resources.id.confirm_title);
-        confirmDelete.setText(xB.b().a(getContext(), Resources.string.language_message_confirm_delete));
-        confirmYes = findViewById(Resources.id.confirm_yes);
-        confirmNo = findViewById(Resources.id.confirm_no);
-        TextView confirmYesText = findViewById(Resources.id.confirm_yes_text);
-        confirmYesText.setText(xB.b().a(getContext(), Resources.string.common_word_delete));
-        TextView confirmNoText = findViewById(Resources.id.confirm_no_text);
-        confirmNoText.setText(xB.b().a(getContext(), Resources.string.common_word_cancel));
-        confirmDelete.setText(xB.b().a(context, Resources.string.myprojects_confirm_project_delete));
-        confirmYesText.setText(xB.b().a(context, Resources.string.common_word_delete));
-        confirmNoText.setText(xB.b().a(context, Resources.string.common_word_cancel));
+        buttonContainer = findViewById(R.id.project_buttons);
+        confirmLayout = findViewById(R.id.confirm_layout);
+        TextView confirmDelete = findViewById(R.id.confirm_title);
+        confirmDelete.setText(xB.b().a(getContext(), R.string.language_message_confirm_delete));
+        confirmYes = findViewById(R.id.confirm_yes);
+        confirmNo = findViewById(R.id.confirm_no);
+        TextView confirmYesText = findViewById(R.id.confirm_yes_text);
+        confirmYesText.setText(xB.b().a(getContext(), R.string.common_word_delete));
+        TextView confirmNoText = findViewById(R.id.confirm_no_text);
+        confirmNoText.setText(xB.b().a(getContext(), R.string.common_word_cancel));
+        confirmDelete.setText(xB.b().a(context, R.string.myprojects_confirm_project_delete));
+        confirmYesText.setText(xB.b().a(context, R.string.common_word_delete));
+        confirmNoText.setText(xB.b().a(context, R.string.common_word_cancel));
         confirmLayout.setVisibility(INVISIBLE);
 
-        settings = createButton(0,
-                Resources.drawable.settings_96,
-                xB.b().a(context, Resources.string.myprojects_list_menu_title_settings));
-        backUp = createButton(1,
-                Resources.drawable.ic_backup,
-                "Back up");
-        signExport = createButton(2,
-                Resources.drawable.ic_export_grey_48dp,
-                xB.b().a(context, Resources.string.myprojects_list_menu_title_sign_export));
-        delete = createButton(3,
-                Resources.drawable.ic_delete_grey_48dp,
-                xB.b().a(context, Resources.string.myprojects_list_menu_title_delete));
-        config = createButton(4,
-                Resources.drawable.settings_96,
-                "Config");
+        settings = createButton(0, R.drawable.settings_96, xB.b().a(context, R.string.myprojects_list_menu_title_settings));
+        backUp = createButton(1, R.drawable.ic_backup, "Back up");
+        signExport = createButton(2, R.drawable.ic_export_grey_48dp, xB.b().a(context, R.string.myprojects_list_menu_title_sign_export));
+        delete = createButton(3, R.drawable.ic_delete_grey_48dp, xB.b().a(context, R.string.myprojects_list_menu_title_delete));
+        config = createButton(4, R.drawable.settings_96, "Config");
         buttonContainer.addView(settings);
         buttonContainer.addView(backUp);
         buttonContainer.addView(signExport);
         buttonContainer.addView(delete);
         buttonContainer.addView(config);
 
-        flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_top_in);
-        flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_top_out);
-        flipBottomIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_bottom_in);
-        flipBottomOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, Resources.animator.flip_bottom_out);
+        flipTopIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_in);
+        flipTopOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_top_out);
+        flipBottomIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_in);
+        flipBottomOut = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.flip_bottom_out);
     }
 
     /*

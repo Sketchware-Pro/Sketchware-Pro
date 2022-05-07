@@ -14,7 +14,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.MoreBlockCollectionBean;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,7 @@ public class MoreblockImporterDialog {
     public void show() {
         final aB dialog = new aB(act);
         dialog.b("Select a More Block");
-        dialog.a(Resources.drawable.more_block_96dp);
+        dialog.a(R.drawable.more_block_96dp);
 
         SearchView searchView = new SearchView(act);
 
@@ -132,7 +132,7 @@ public class MoreblockImporterDialog {
 
         dialog.a(ln); //init custom view
 
-        dialog.b(act.getString(Resources.string.common_word_select), v -> {
+        dialog.b(act.getString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
             if (selectedBean == null) {
@@ -144,7 +144,7 @@ public class MoreblockImporterDialog {
             }
         }); //positive button
 
-        dialog.a(act.getString(Resources.string.common_word_cancel), Helper.getDialogDismissListener(dialog)); //negative button
+        dialog.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog)); //negative button
 
         dialog.show();
     }
@@ -185,12 +185,12 @@ public class MoreblockImporterDialog {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = act.getLayoutInflater().inflate(Resources.layout.manage_collection_popup_import_more_block_list_item, null);
+                convertView = act.getLayoutInflater().inflate(R.layout.manage_collection_popup_import_more_block_list_item, null);
             }
 
-            ViewGroup container = convertView.findViewById(Resources.id.block_area);
-            TextView title = convertView.findViewById(Resources.id.tv_block_name);
-            ImageView selected = convertView.findViewById(Resources.id.img_selected);
+            ViewGroup container = convertView.findViewById(R.id.block_area);
+            TextView title = convertView.findViewById(R.id.tv_block_name);
+            ImageView selected = convertView.findViewById(R.id.img_selected);
 
             if (position == selectedPos) {
                 selected.setVisibility(View.VISIBLE);
@@ -215,7 +215,7 @@ public class MoreblockImporterDialog {
                 notifyDataSetChanged();
             };
 
-            convertView.findViewById(Resources.id.layout_item).setOnClickListener(listener);
+            convertView.findViewById(R.id.layout_item).setOnClickListener(listener);
             container.setOnClickListener(listener);
             title.setOnClickListener(listener);
 

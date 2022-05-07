@@ -30,7 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +59,7 @@ public class BlocksManager extends AppCompatActivity {
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setContentView(Resources.layout.blocks_manager);
+        setContentView(R.layout.blocks_manager);
         initialize();
         initializeLogic();
     }
@@ -72,31 +72,31 @@ public class BlocksManager extends AppCompatActivity {
     }
 
     private void initialize() {
-        FloatingActionButton _fab = findViewById(Resources.id.fab);
-        listview1 = findViewById(Resources.id.list_pallete);
-        ImageView back_icon = findViewById(Resources.id.back_icon);
-        ImageView arrange_icon = findViewById(Resources.id.dirs);
-        card2 = findViewById(Resources.id.recycle_bin);
-        card2_sub = findViewById(Resources.id.recycle_sub);
+        FloatingActionButton _fab = findViewById(R.id.fab);
+        listview1 = findViewById(R.id.list_pallete);
+        ImageView back_icon = findViewById(R.id.back_icon);
+        ImageView arrange_icon = findViewById(R.id.dirs);
+        card2 = findViewById(R.id.recycle_bin);
+        card2_sub = findViewById(R.id.recycle_sub);
 
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
 
         arrange_icon.setOnClickListener(v -> {
             final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
             LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(Resources.layout.settings_popup, null);
+            final View convertView = inflater.inflate(R.layout.settings_popup, null);
             dialog.setView(convertView);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText pallet = convertView.findViewById(Resources.id.pallet_dir);
+            final EditText pallet = convertView.findViewById(R.id.pallet_dir);
             pallet.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-            final EditText block = convertView.findViewById(Resources.id.blocks_dir);
+            final EditText block = convertView.findViewById(R.id.blocks_dir);
             block.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-            final TextInputLayout extra = convertView.findViewById(Resources.id.extra_input_layout);
+            final TextInputLayout extra = convertView.findViewById(R.id.extra_input_layout);
             extra.setVisibility(View.GONE);
-            final TextView save = convertView.findViewById(Resources.id.save);
-            final TextView cancel = convertView.findViewById(Resources.id.cancel);
-            final TextView de = convertView.findViewById(Resources.id.defaults);
+            final TextView save = convertView.findViewById(R.id.save);
+            final TextView cancel = convertView.findViewById(R.id.cancel);
+            final TextView de = convertView.findViewById(R.id.defaults);
             save.setOnClickListener(saveView -> {
                 ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                         pallet.getText().toString());
@@ -125,15 +125,15 @@ public class BlocksManager extends AppCompatActivity {
             insert_n = -1;
             final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
             LayoutInflater inflater = getLayoutInflater();
-            final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
+            final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
             dialog.setView(convertView);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            final EditText name = convertView.findViewById(Resources.id.name);
-            final EditText colour = convertView.findViewById(Resources.id.color);
-            final TextView save = convertView.findViewById(Resources.id.save);
-            final TextView cancel = convertView.findViewById(Resources.id.cancel);
-            final ImageView select = convertView.findViewById(Resources.id.select);
+            final EditText name = convertView.findViewById(R.id.name);
+            final EditText colour = convertView.findViewById(R.id.color);
+            final TextView save = convertView.findViewById(R.id.save);
+            final TextView cancel = convertView.findViewById(R.id.cancel);
+            final ImageView select = convertView.findViewById(R.id.select);
 
             select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
 
@@ -229,7 +229,7 @@ public class BlocksManager extends AppCompatActivity {
                     _readSettings();
                     _refresh_list();
                 })
-                .setNegativeButton(Resources.string.common_word_cancel, null)
+                .setNegativeButton(R.string.common_word_cancel, null)
                 .setNeutralButton("Move to recycle bin", (dialog, which) -> {
                     _moveRelatedBlocksToRecycleBin(_p + 9);
                     pallet_listmap.remove((int) (_p));
@@ -273,19 +273,19 @@ public class BlocksManager extends AppCompatActivity {
     private void _showEditDial(final double _p, final String _name, final String _c) {
         final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
         LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
+        final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
         dialog.setView(convertView);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText name = convertView.findViewById(Resources.id.name);
+        final EditText name = convertView.findViewById(R.id.name);
         name.setText(_name);
-        final EditText colour = convertView.findViewById(Resources.id.color);
+        final EditText colour = convertView.findViewById(R.id.color);
         colour.setText(_c);
-        final TextView title = convertView.findViewById(Resources.id.title);
+        final TextView title = convertView.findViewById(R.id.title);
         title.setText("Edit palette");
-        final TextView save = convertView.findViewById(Resources.id.save);
-        final TextView cancel = convertView.findViewById(Resources.id.cancel);
-        final ImageView select = convertView.findViewById(Resources.id.select);
+        final TextView save = convertView.findViewById(R.id.save);
+        final TextView cancel = convertView.findViewById(R.id.cancel);
+        final ImageView select = convertView.findViewById(R.id.select);
         select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
         save.setOnClickListener(v -> {
             try {
@@ -337,7 +337,7 @@ public class BlocksManager extends AppCompatActivity {
                     .setMessage("Are you sure you want to empty the recycle bin? " +
                             "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!")
                     .setPositiveButton("Empty", (dialog, which) -> _emptyRecyclebin())
-                    .setNegativeButton(Resources.string.common_word_cancel, null)
+                    .setNegativeButton(R.string.common_word_cancel, null)
                     .show();
             return true;
         });
@@ -348,15 +348,15 @@ public class BlocksManager extends AppCompatActivity {
 
         final AlertDialog dialog = new AlertDialog.Builder(BlocksManager.this).create();
         LayoutInflater inflater = getLayoutInflater();
-        final View convertView = inflater.inflate(Resources.layout.add_new_pallete_customview, null);
+        final View convertView = inflater.inflate(R.layout.add_new_pallete_customview, null);
         dialog.setView(convertView);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final EditText name = convertView.findViewById(Resources.id.name);
-        final EditText colour = convertView.findViewById(Resources.id.color);
-        final TextView save = convertView.findViewById(Resources.id.save);
-        final TextView cancel = convertView.findViewById(Resources.id.cancel);
-        final ImageView select = convertView.findViewById(Resources.id.select);
+        final EditText name = convertView.findViewById(R.id.name);
+        final EditText colour = convertView.findViewById(R.id.color);
+        final TextView save = convertView.findViewById(R.id.save);
+        final TextView cancel = convertView.findViewById(R.id.cancel);
+        final ImageView select = convertView.findViewById(R.id.select);
         select.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colour));
         save.setOnClickListener(v -> {
             try {
@@ -461,10 +461,10 @@ public class BlocksManager extends AppCompatActivity {
     private View.OnClickListener getSharedPaletteColorPickerShower(AlertDialog dialog, EditText storePickedResultIn) {
         return v -> {
             LayoutInflater inf = getLayoutInflater();
-            final View a = inf.inflate(Resources.layout.color_picker, null);
+            final View a = inf.inflate(R.layout.color_picker, null);
             final Zx zx = new Zx(a, BlocksManager.this, 0, true, false);
             zx.a(new PCP(BlocksManager.this, storePickedResultIn, dialog));
-            zx.setAnimationStyle(Resources.anim.abc_fade_in);
+            zx.setAnimationStyle(R.anim.abc_fade_in);
             zx.showAtLocation(a, Gravity.CENTER, 0, 0);
             dialog.hide();
         };
@@ -497,13 +497,13 @@ public class BlocksManager extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater _inflater = getLayoutInflater();
             if (convertView == null) {
-                convertView = _inflater.inflate(Resources.layout.pallet_customview, null);
+                convertView = _inflater.inflate(R.layout.pallet_customview, null);
             }
 
-            final LinearLayout background = convertView.findViewById(Resources.id.background);
-            final LinearLayout color = convertView.findViewById(Resources.id.color);
-            final TextView title = convertView.findViewById(Resources.id.title);
-            final TextView sub = convertView.findViewById(Resources.id.sub);
+            final LinearLayout background = convertView.findViewById(R.id.background);
+            final LinearLayout color = convertView.findViewById(R.id.color);
+            final TextView title = convertView.findViewById(R.id.title);
+            final TextView sub = convertView.findViewById(R.id.sub);
 
             title.setText(pallet_listmap.get(position).get("name").toString());
             sub.setText("Blocks: " + (long) (_getN(position + 9)));

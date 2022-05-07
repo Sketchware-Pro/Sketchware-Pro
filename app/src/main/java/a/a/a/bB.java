@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 public class bB {
 
@@ -23,9 +23,9 @@ public class bB {
     }
 
     public static Toast a(Context context, CharSequence charSequence, int duration, int gravity, float xOffset, float yOffset) {
-        View inflate = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(Resources.layout.custom_toast, null);
-        LinearLayout linearLayout = (LinearLayout) inflate.findViewById(Resources.id.custom_toast_container);
-        ((TextView) inflate.findViewById(Resources.id.tv_stoast)).setText(charSequence.toString());
+        View inflate = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_toast, null);
+        LinearLayout linearLayout = inflate.findViewById(R.id.custom_toast_container);
+        ((TextView) inflate.findViewById(R.id.tv_stoast)).setText(charSequence.toString());
         Toast toast = new Toast(context);
         toast.setDuration(duration);
         toast.setGravity(
@@ -39,15 +39,15 @@ public class bB {
 
     public static Toast a(Context context, CharSequence charSequence, int duration, int gravity, float xOffset, float yOffset, int toastType) {
         try {
-            View inflate = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(Resources.layout.custom_toast, null);
-            LinearLayout linearLayout = (LinearLayout) inflate.findViewById(Resources.id.custom_toast_container);
-            TextView textView = (TextView) inflate.findViewById(Resources.id.tv_stoast);
+            View inflate = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_toast, null);
+            LinearLayout linearLayout = inflate.findViewById(R.id.custom_toast_container);
+            TextView textView = inflate.findViewById(R.id.tv_stoast);
             if (toastType != TOAST_WARNING) {
-                linearLayout.setBackgroundResource(Resources.drawable.bg_toast_normal);
-                textView.setTextColor(context.getResources().getColor(Resources.color.scolor_black_01));
+                linearLayout.setBackgroundResource(R.drawable.bg_toast_normal);
+                textView.setTextColor(context.getResources().getColor(R.color.scolor_black_01));
             } else {
-                linearLayout.setBackgroundResource(Resources.drawable.bg_toast_warning);
-                textView.setTextColor(context.getResources().getColor(Resources.color.scolor_red_02));
+                linearLayout.setBackgroundResource(R.drawable.bg_toast_warning);
+                textView.setTextColor(context.getResources().getColor(R.color.scolor_red_02));
             }
             textView.setText(charSequence.toString());
             Toast toast = new Toast(context);

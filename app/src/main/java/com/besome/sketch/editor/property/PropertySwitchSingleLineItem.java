@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Kw;
 import a.a.a.mB;
@@ -32,12 +32,12 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
     }
 
     private void initialize(Context context, boolean z) {
-        wB.a(context, this, Resources.layout.property_switch_item_singleline);
-        tvName = findViewById(Resources.id.tv_name);
-        switchValue = findViewById(Resources.id.switch_value);
-        imgLeftIcon = findViewById(Resources.id.img_left_icon);
-        propertyItem = findViewById(Resources.id.property_item);
-        propertyMenuItem = findViewById(Resources.id.property_menu_item);
+        wB.a(context, this, R.layout.property_switch_item_singleline);
+        tvName = findViewById(R.id.tv_name);
+        switchValue = findViewById(R.id.switch_value);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
+        propertyItem = findViewById(R.id.property_item);
+        propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -56,23 +56,23 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
             tvName.setText(xB.b().a(getResources(), identifier));
             switch (this.key) {
                 case "property_checked":
-                    icon = Resources.drawable.ok_48;
+                    icon = R.drawable.ok_48;
                     break;
 
                 case "property_single_line":
-                    icon = Resources.drawable.horizontal_line_48;
+                    icon = R.drawable.horizontal_line_48;
                     break;
 
                 case "property_enabled":
-                    icon = Resources.drawable.light_on_48;
+                    icon = R.drawable.light_on_48;
                     break;
 
                 case "property_clickable":
-                    icon = Resources.drawable.natural_user_interface2_48;
+                    icon = R.drawable.natural_user_interface2_48;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(Resources.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(Resources.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);

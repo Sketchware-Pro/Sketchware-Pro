@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class EventsMakerDetails extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.add_custom_attribute);
+        setContentView(R.layout.add_custom_attribute);
         if (getIntent().hasExtra("lis_name")) {
             lisName = getIntent().getStringExtra("lis_name");
         }
@@ -54,14 +54,14 @@ public class EventsMakerDetails extends Activity {
     }
 
     private void setupViews() {
-        FloatingActionButton fab = findViewById(Resources.id.add_attr_fab);
+        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), EventsMakerCreator.class);
             intent.putExtra("lis_name", lisName);
             startActivity(intent);
         });
-        listView = findViewById(Resources.id.add_attr_listview);
+        listView = findViewById(R.id.add_attr_listview);
         refreshList();
     }
 
@@ -109,13 +109,13 @@ public class EventsMakerDetails extends Activity {
     }
 
     private void setToolbar() {
-        TextView tx_toolbar_title = findViewById(Resources.id.tx_toolbar_title);
+        TextView tx_toolbar_title = findViewById(R.id.tx_toolbar_title);
         if (lisName.equals("")) {
             tx_toolbar_title.setText("Activity events");
         } else {
             tx_toolbar_title.setText(lisName);
         }
-        ImageView back_icon = findViewById(Resources.id.ig_toolbar_back);
+        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
         Helper.applyRippleToToolbarView(back_icon);
     }
@@ -146,15 +146,15 @@ public class EventsMakerDetails extends Activity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(Resources.layout.custom_view_pro, null);
+                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, null);
             }
-            LinearLayout root = convertView.findViewById(Resources.id.custom_view_pro_background);
+            LinearLayout root = convertView.findViewById(R.id.custom_view_pro_background);
             a(root, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView icon = convertView.findViewById(Resources.id.custom_view_pro_img);
-            TextView title = convertView.findViewById(Resources.id.custom_view_pro_title);
-            TextView subtitle = convertView.findViewById(Resources.id.custom_view_pro_subtitle);
+            ImageView icon = convertView.findViewById(R.id.custom_view_pro_img);
+            TextView title = convertView.findViewById(R.id.custom_view_pro_title);
+            TextView subtitle = convertView.findViewById(R.id.custom_view_pro_subtitle);
             if (lisName.equals("")) {
-                icon.setImageResource(Resources.drawable.widget_source);
+                icon.setImageResource(R.drawable.widget_source);
             } else {
                 icon.setImageResource(Integer.parseInt(_data.get(position).get("icon").toString()));
             }
@@ -185,8 +185,8 @@ public class EventsMakerDetails extends Activity {
                 dia = new AlertDialog.Builder(EventsMakerDetails.this)
                         .setTitle((String) _data.get(position).get("name"))
                         .setMessage("Delete this event?")
-                        .setPositiveButton(Resources.string.common_word_delete, (dialog, which) -> deleteItem(position))
-                        .setNeutralButton(Resources.string.common_word_edit, (dialog, which) -> {
+                        .setPositiveButton(R.string.common_word_delete, (dialog, which) -> deleteItem(position))
+                        .setNeutralButton(R.string.common_word_edit, (dialog, which) -> {
                             Intent intent = new Intent();
                             intent.setClass(getApplicationContext(), EventsMakerCreator.class);
                             intent.putExtra("lis_name", lisName);
@@ -202,7 +202,7 @@ public class EventsMakerDetails extends Activity {
                             intent.putExtra("_code", (String) _data.get(position).get("code"));
                             startActivity(intent);
                         })
-                        .setNegativeButton(Resources.string.common_word_cancel, null);
+                        .setNegativeButton(R.string.common_word_cancel, null);
                 dia.show();
                 return true;
             });

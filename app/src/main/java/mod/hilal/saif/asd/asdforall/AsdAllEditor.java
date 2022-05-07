@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import a.a.a.Ss;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
@@ -47,11 +47,11 @@ public class AsdAllEditor extends Dialog {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.view_code);
-        code_editor = findViewById(Resources.id.text_content);
-        zoom_in = findViewById(Resources.id.code_editor_zoomin);
+        setContentView(R.layout.view_code);
+        code_editor = findViewById(R.id.text_content);
+        zoom_in = findViewById(R.id.code_editor_zoomin);
         zoom_in.setOnClickListener(v -> code_editor.increaseTextSize());
-        zoom_out = findViewById(Resources.id.code_editor_zoomout);
+        zoom_out = findViewById(R.id.code_editor_zoomout);
         zoom_out.setOnClickListener(v -> code_editor.decreaseTextSize());
         code_editor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -64,7 +64,7 @@ public class AsdAllEditor extends Dialog {
                         0,
                         Color.WHITE,
                         Color.WHITE));
-        title = findViewById(Resources.id.text_title);
+        title = findViewById(R.id.text_title);
         title.setText("Code Editor");
         addControl();
         getWindow().setLayout(
@@ -75,7 +75,7 @@ public class AsdAllEditor extends Dialog {
         code_editor.start(ColorScheme.JAVA());
         code_editor.setText(content);
         editor = code_editor.getEditText();
-        code_editor.onCreateOptionsMenu(findViewById(Resources.id.codeeditor_more_options));
+        code_editor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
         editor.setInputType(655361);
         editor.setImeOptions(1);
     }
@@ -112,7 +112,7 @@ public class AsdAllEditor extends Dialog {
                         (int) getDip(8),
                         (int) getDip(8)
                 );
-        cancel.setText(Resources.string.common_word_cancel);
+        cancel.setText(R.string.common_word_cancel);
         cancel.setTextColor(Color.WHITE);
         cancel.setPadding(
                 (int) getDip(8),
@@ -141,7 +141,7 @@ public class AsdAllEditor extends Dialog {
                         (int) getDip(8),
                         (int) getDip(8)
                 );
-        save.setText(Resources.string.common_word_save);
+        save.setText(R.string.common_word_save);
         save.setTextColor(Color.WHITE);
         save.setPadding(
                 (int) getDip(8),

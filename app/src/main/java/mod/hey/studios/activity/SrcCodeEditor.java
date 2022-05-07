@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;
@@ -21,9 +21,9 @@ public class SrcCodeEditor extends Activity {
 
     private CodeEditorLayout codeEditor;
     private final View.OnClickListener changeTextSize = v -> {
-        if (v.getId() == Resources.id.code_editor_zoomin) {
+        if (v.getId() == R.id.code_editor_zoomin) {
             codeEditor.increaseTextSize();
-        } else if (v.getId() == Resources.id.code_editor_zoomout) {
+        } else if (v.getId() == R.id.code_editor_zoomout) {
             codeEditor.decreaseTextSize();
         }
     };
@@ -34,9 +34,9 @@ public class SrcCodeEditor extends Activity {
         super.onCreate(savedInstanceState);
         sp = getSharedPreferences("code_editor_pref", 0);
 
-        setContentView(Resources.layout.view_code);
-        TextView tv_title = findViewById(Resources.id.text_title);
-        codeEditor = findViewById(Resources.id.text_content);
+        setContentView(R.layout.view_code);
+        TextView tv_title = findViewById(R.id.text_title);
+        codeEditor = findViewById(R.id.text_content);
 
         if (getIntent().hasExtra("java")) {
             codeEditor.start(ColorScheme.JAVA());
@@ -49,10 +49,10 @@ public class SrcCodeEditor extends Activity {
             codeEditor.setText(FileUtil.readFile(getIntent().getStringExtra("content")));
         }
 
-        findViewById(Resources.id.code_editor_zoomin).setOnClickListener(changeTextSize);
-        findViewById(Resources.id.code_editor_zoomout).setOnClickListener(changeTextSize);
+        findViewById(R.id.code_editor_zoomin).setOnClickListener(changeTextSize);
+        findViewById(R.id.code_editor_zoomout).setOnClickListener(changeTextSize);
 
-        codeEditor.onCreateOptionsMenu(findViewById(Resources.id.codeeditor_more_options));
+        codeEditor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
         codeEditor.getEditText().setInputType(655361);
     }
 
@@ -63,13 +63,13 @@ public class SrcCodeEditor extends Activity {
             new AlertDialog.Builder(this)
                     .setTitle("Save Changes?")
                     .setMessage("Do you want to save your changes? If not, the file will be reverted.")
-                    .setPositiveButton(Resources.string.common_word_save, (dialog, which) -> {
+                    .setPositiveButton(R.string.common_word_save, (dialog, which) -> {
                         FileUtil.writeFile(getIntent().getStringExtra("content"), codeEditor.getText());
                         Toast.makeText(this, "File saved", Toast.LENGTH_SHORT).show();
                         finish();
                     })
                     .setNeutralButton("Discard", (dialog, which) -> finish())
-                    .setNegativeButton(Resources.string.common_word_cancel, null)
+                    .setNegativeButton(R.string.common_word_cancel, null)
                     .show();
         } else {
             super.onBackPressed();

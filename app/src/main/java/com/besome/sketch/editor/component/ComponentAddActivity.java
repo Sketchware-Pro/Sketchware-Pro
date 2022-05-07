@@ -31,7 +31,7 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.Resources;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +103,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     return false;
                 }
                 if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFirebasePath.getText().toString());
@@ -111,10 +111,10 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
                 if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 } else if (jC.c(sc_id).d().reserved2.trim().length() == 0) {
-                    bB.b(this, Helper.getResString(Resources.string.design_library_firebase_guide_setup_first), 1).show();
+                    bB.b(this, Helper.getResString(R.string.design_library_firebase_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 } else {
                     jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, edInputFirebasePath.getText().toString());
@@ -123,7 +123,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             case ComponentBean.COMPONENT_TYPE_FRAGMENT_ADAPTER:
                 if (jC.c(sc_id).c().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
@@ -131,7 +131,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
                 if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(this, Helper.getResString(Resources.string.design_library_guide_setup_first), 1).show();
+                    bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
@@ -139,7 +139,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
                 if (jC.c(sc_id).b().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
-                    bB.b(this, Helper.getResString(Resources.string.design_library_admob_component_setup_first), 1).show();
+                    bB.b(this, Helper.getResString(R.string.design_library_admob_component_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId);
@@ -179,7 +179,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(Resources.layout.logic_popup_add_component_temp);
+        setContentView(R.layout.logic_popup_add_component_temp);
         l();
         m();
         if (savedInstanceState == null) {
@@ -190,34 +190,34 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             sc_id = savedInstanceState.getString("sc_id");
             projectFileBean = savedInstanceState.getParcelable("project_file");
         }
-        tvComponentTitle = findViewById(Resources.id.tv_component_title);
-        tvDescription = findViewById(Resources.id.tv_description);
-        tvName = findViewById(Resources.id.tv_name);
-        tvWarning = findViewById(Resources.id.tv_warning);
-        tvDescFirebasePath = findViewById(Resources.id.tv_desc_firebase_path);
-        tvDescFilePicker = findViewById(Resources.id.tv_desc_file_picker);
-        edInput = findViewById(Resources.id.ed_input);
-        edInputFirebasePath = findViewById(Resources.id.ed_input_firebase_path);
-        edInputFilename = findViewById(Resources.id.ed_input_filename);
-        edInputFilePicker = findViewById(Resources.id.ed_input_file_picker);
-        inputsLayout = findViewById(Resources.id.layout_inputs);
-        imgBack = findViewById(Resources.id.img_back);
+        tvComponentTitle = findViewById(R.id.tv_component_title);
+        tvDescription = findViewById(R.id.tv_description);
+        tvName = findViewById(R.id.tv_name);
+        tvWarning = findViewById(R.id.tv_warning);
+        tvDescFirebasePath = findViewById(R.id.tv_desc_firebase_path);
+        tvDescFilePicker = findViewById(R.id.tv_desc_file_picker);
+        edInput = findViewById(R.id.ed_input);
+        edInputFirebasePath = findViewById(R.id.ed_input_firebase_path);
+        edInputFilename = findViewById(R.id.ed_input_filename);
+        edInputFilePicker = findViewById(R.id.ed_input_file_picker);
+        inputsLayout = findViewById(R.id.layout_inputs);
+        imgBack = findViewById(R.id.img_back);
         imgBack.setVisibility(View.GONE);
-        ImageView imgFilePicker = findViewById(Resources.id.img_file_picker);
-        TextInputLayout tiInput = findViewById(Resources.id.ti_input);
-        tiInputFilename = findViewById(Resources.id.ti_input_filename);
-        tiInputFirebasePath = findViewById(Resources.id.ti_input_firebase_path);
-        TextInputLayout tiInputFilePicker = findViewById(Resources.id.ti_input_file_picker);
-        imgIconLayout = findViewById(Resources.id.layout_img_icon);
-        descriptionLayout = findViewById(Resources.id.layout_description);
-        inputFilePickerLayout = findViewById(Resources.id.layout_input_file_picker);
+        ImageView imgFilePicker = findViewById(R.id.img_file_picker);
+        TextInputLayout tiInput = findViewById(R.id.ti_input);
+        tiInputFilename = findViewById(R.id.ti_input_filename);
+        tiInputFirebasePath = findViewById(R.id.ti_input_firebase_path);
+        TextInputLayout tiInputFilePicker = findViewById(R.id.ti_input_file_picker);
+        imgIconLayout = findViewById(R.id.layout_img_icon);
+        descriptionLayout = findViewById(R.id.layout_description);
+        inputFilePickerLayout = findViewById(R.id.layout_input_file_picker);
         edInput.setPrivateImeOptions("defaultInputmode=english;");
-        addButton = findViewById(Resources.id.add_button);
-        addButton.setText(Helper.getResString(Resources.string.common_word_add));
-        docsButton = findViewById(Resources.id.docs_button);
-        docsButton.setText(Helper.getResString(Resources.string.component_add_docs_button_title_go_to_docs));
-        tvComponentTitle.setText(Helper.getResString(Resources.string.component_title_add_component));
-        componentsList = findViewById(Resources.id.components_list);
+        addButton = findViewById(R.id.add_button);
+        addButton.setText(Helper.getResString(R.string.common_word_add));
+        docsButton = findViewById(R.id.docs_button);
+        docsButton.setText(Helper.getResString(R.string.component_add_docs_button_title_go_to_docs));
+        tvComponentTitle.setText(Helper.getResString(R.string.component_title_add_component));
+        componentsList = findViewById(R.id.component_list);
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
@@ -228,7 +228,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         componentsList.setHasFixedSize(true);
         componentsList.setAdapter(componentsAdapter);
         descriptionLayout.setVisibility(View.GONE);
-        imgIcon = findViewById(Resources.id.img_icon);
+        imgIcon = findViewById(R.id.img_icon);
         componentNameValidator = new ZB(
                 this,
                 tiInput,
@@ -254,12 +254,12 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 1 /* minimum amount of characters in input */,
                 50 /* maximum amount of characters in input */
         );
-        tvDescFirebasePath.setText(Helper.getResString(Resources.string.design_library_firebase_guide_path_example));
-        tvDescFilePicker.setText(Helper.getResString(Resources.string.component_description_file_picker_guide_mime_type_example));
-        tiInput.setHint(Helper.getResString(Resources.string.component_hint_enter_name));
-        tiInputFilename.setHint(Helper.getResString(Resources.string.component_file_hint_enter_file_name));
-        tiInputFirebasePath.setHint(Helper.getResString(Resources.string.design_library_firebase_hint_enter_data_location));
-        tiInputFilePicker.setHint(Helper.getResString(Resources.string.component_file_picker_hint_mime_type));
+        tvDescFirebasePath.setText(Helper.getResString(R.string.design_library_firebase_guide_path_example));
+        tvDescFilePicker.setText(Helper.getResString(R.string.component_description_file_picker_guide_mime_type_example));
+        tiInput.setHint(Helper.getResString(R.string.component_hint_enter_name));
+        tiInputFilename.setHint(Helper.getResString(R.string.component_file_hint_enter_file_name));
+        tiInputFirebasePath.setHint(Helper.getResString(R.string.design_library_firebase_hint_enter_data_location));
+        tiInputFilePicker.setHint(Helper.getResString(R.string.component_file_picker_hint_mime_type));
         w = new HashMap<>();
         imgBack.setOnClickListener(this);
         addButton.setOnClickListener(this);
@@ -269,46 +269,39 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case Resources.id.add_button:
-                if (!mB.a() && checks()) {
-                    bB.a(this, Helper.getResString(Resources.string.component_message_component_block_added), 1).show();
-                    mB.a(getApplicationContext(), edInput);
-                    setResult(RESULT_OK);
-                    finish();
+        int id = view.getId();
+        if (id == R.id.add_button) {
+            if (!mB.a() && checks()) {
+                bB.a(this, Helper.getResString(R.string.component_message_component_block_added), bB.TOAST_WARNING).show();
+                mB.a(getApplicationContext(), edInput);
+                setResult(RESULT_OK);
+                finish();
+            }
+        } else if (id == R.id.img_back) {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        } else if (id == R.id.docs_button) {
+            if (!mB.a()) {
+                String componentDocsUrlByTypeName = ComponentBean.getComponentDocsUrlByTypeName(componentList.get(componentsAdapter.layoutPosition).type);
+                if (componentDocsUrlByTypeName.equals("")) {
+                    bB.a(getApplicationContext(), Helper.getResString(R.string.component_add_message_docs_updated_soon), bB.TOAST_NORMAL).show();
+                    return;
                 }
-                break;
-
-            case Resources.id.img_back:
-                if (!mB.a()) {
-                    onBackPressed();
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setData(Uri.parse(componentDocsUrlByTypeName));
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                    startActivity(intent);
+                } catch (Exception unused) {
+                    t();
                 }
-                break;
-
-            case Resources.id.docs_button:
-                if (!mB.a()) {
-                    String componentDocsUrlByTypeName = ComponentBean.getComponentDocsUrlByTypeName(componentList.get(componentsAdapter.layoutPosition).type);
-                    if (componentDocsUrlByTypeName.equals("")) {
-                        bB.a(getApplicationContext(), Helper.getResString(Resources.string.component_add_message_docs_updated_soon), 0).show();
-                        return;
-                    }
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setData(Uri.parse(componentDocsUrlByTypeName));
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                        startActivity(intent);
-                    } catch (Exception unused) {
-                        t();
-                    }
-                }
-                break;
-
-            case Resources.id.img_file_picker:
-                startActivityForResult(new Intent(this, ShowFilePickerTypesActivity.class), 275);
-                break;
+            }
+        } else if (id == R.id.img_file_picker) {
+            startActivityForResult(new Intent(this, ShowFilePickerTypesActivity.class), 275);
         }
     }
 
@@ -384,7 +377,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                             x = false;
                             Helper.setViewsVisibility(true, descriptionLayout, tvDescription, imgBack, imgIconLayout);
                             componentsList.setVisibility(View.VISIBLE);
-                            tvComponentTitle.setText(Helper.getResString(Resources.string.component_title_add_component));
+                            tvComponentTitle.setText(Helper.getResString(R.string.component_title_add_component));
                             componentsAdapter.c();
                         }
                     }).start();
@@ -411,7 +404,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             case ComponentBean.COMPONENT_TYPE_GYROSCOPE:
                 if (!GB.b(this, Sensor.TYPE_GYROSCOPE)) {
                     tvWarning.setVisibility(View.VISIBLE);
-                    tvWarning.setText(Helper.getResString(Resources.string.message_device_not_support));
+                    tvWarning.setText(Helper.getResString(R.string.message_device_not_support));
                 }
                 break;
 
@@ -439,10 +432,10 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
      */
     public final void t() {
         aB dialog = new aB(this);
-        dialog.a(Resources.drawable.chrome_96);
-        dialog.b(Helper.getResString(Resources.string.title_compatible_chrome_browser));
-        dialog.a(Helper.getResString(Resources.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(Resources.string.common_word_ok), v -> {
+        dialog.a(R.drawable.chrome_96);
+        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -450,8 +443,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(Resources.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -514,7 +506,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
         @Override
         public ViewHolder b(ViewGroup viewGroup, int i) {
-            View itemView = wB.a(viewGroup.getContext(), Resources.layout.component_add_item);
+            View itemView = wB.a(viewGroup.getContext(), R.layout.component_add_item);
             int lengthAndWidth = (int) wB.a(viewGroup.getContext(), 76.0f);
             itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
             return new ViewHolder(itemView);
@@ -532,8 +524,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
             public ViewHolder(View view) {
                 super(view);
-                itemIcon = view.findViewById(Resources.id.icon);
-                itemName = view.findViewById(Resources.id.name);
+                itemIcon = view.findViewById(R.id.icon);
+                itemName = view.findViewById(R.id.name);
                 view.setOnClickListener(this);
             }
 
