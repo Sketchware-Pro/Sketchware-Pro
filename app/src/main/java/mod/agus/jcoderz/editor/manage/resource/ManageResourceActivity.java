@@ -132,7 +132,6 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         fileType.setVisibility(View.GONE);
         if (!isFolder) {
             filename.setText(".xml");
-            filename.setSelection(0);
         }
         cancel.setOnClickListener(Helper.getDialogDismissListener(dialog));
         save.setOnClickListener(v -> {
@@ -168,6 +167,10 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         filename.requestFocus();
+
+        if (!isFolder) {
+            filename.setSelection(0);
+        }
     }
 
     @Override
