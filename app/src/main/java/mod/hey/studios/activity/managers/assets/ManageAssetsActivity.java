@@ -93,11 +93,10 @@ public class ManageAssetsActivity extends Activity {
                 Uri.parse(fpu.getPathAssets(sc_id)).getPath()
         )) {
             super.onBackPressed();
-            return;
+        } else {
+            current_path = current_path.substring(0, current_path.lastIndexOf(DialogConfigs.DIRECTORY_SEPERATOR));
+            refresh();
         }
-
-        current_path = current_path.substring(0, current_path.lastIndexOf(DialogConfigs.DIRECTORY_SEPERATOR));
-        refresh();
     }
 
     @SuppressLint("SetTextI18n")
@@ -149,11 +148,11 @@ public class ManageAssetsActivity extends Activity {
     private void showLoadDialog() {
         DialogProperties properties = new DialogProperties();
 
-        properties.selection_mode = 1;
-        properties.selection_type = 2;
-        properties.root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        properties.error_dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-        properties.offset = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        properties.selection_mode = DialogConfigs.MULTI_MODE;
+        properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
+        properties.offset = Environment.getExternalStorageDirectory();
         properties.extensions = null;
 
         FilePickerDialog dialog = new FilePickerDialog(this, properties);
