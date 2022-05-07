@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
@@ -24,10 +23,12 @@ import java.util.ArrayList;
 
 import a.a.a.ZB;
 import a.a.a.aB;
+import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
+import mod.SketchwareUtil;
 import mod.hasrat.dialog.SketchDialog;
 import mod.hey.studios.util.Helper;
 
@@ -145,8 +146,7 @@ public class LogicClickListener implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -207,7 +207,7 @@ public class LogicClickListener implements View.OnClickListener {
                                 dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(getContext(), Helper.getResString(R.string.logic_editor_message_currently_used_variable), Toast.LENGTH_LONG).show();
+                            SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_message_currently_used_variable), bB.TOAST_WARNING);
                             return;
                         }
                     }
@@ -325,7 +325,7 @@ public class LogicClickListener implements View.OnClickListener {
                                 dialog.dismiss();
                             }
                         } else {
-                            Toast.makeText(logicEditor.getApplicationContext(), Helper.getResString(R.string.logic_editor_message_currently_used_list), Toast.LENGTH_LONG).show();
+                            SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_message_currently_used_list), bB.TOAST_WARNING);
                         }
                         return;
                     }
