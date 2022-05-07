@@ -89,5 +89,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
+    implementation "com.android.tools:r8:3.3.28"
+
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
