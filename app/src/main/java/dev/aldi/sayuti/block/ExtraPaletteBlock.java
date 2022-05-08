@@ -1075,7 +1075,7 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "interstitialAdRegisterFullScreenContentCallback");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD)) {
-                    logicEditor.a("", "rewardedVideoAdLoad");
+                    logicEditor.a(" ", "rewardedVideoAdLoad");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE)) {
                     logicEditor.a("Firebase Storage", 0xff555555);
