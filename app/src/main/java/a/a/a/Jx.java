@@ -976,20 +976,26 @@ public class Jx {
             boolean hasInterstitialAd = false;
             boolean hasRewardedVideoAd = false;
             for (ComponentBean bean : componentBeans) {
-                if (bean.type == ComponentBean.COMPONENT_TYPE_TIMERTASK) {
-                    hasTimer = true;
-                }
-                if (bean.type == ComponentBean.COMPONENT_TYPE_FIREBASE) {
-                    hasFirebaseDB = true;
-                }
-                if (bean.type == ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE) {
-                    hasFirebaseStorage = true;
-                }
-                if (bean.type == ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD) {
-                    hasInterstitialAd = true;
-                }
-                if (bean.type == ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD) {
-                    hasRewardedVideoAd = true;
+                switch (bean.type) {
+                    case ComponentBean.COMPONENT_TYPE_TIMERTASK:
+                        hasTimer = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                        hasFirebaseDB = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                        hasFirebaseStorage = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
+                        hasInterstitialAd = true;
+                        break;
+
+                    case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
+                        hasRewardedVideoAd = true;
+                        break;
                 }
             }
             if (hasTimer) {
