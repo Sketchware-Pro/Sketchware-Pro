@@ -169,21 +169,21 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    public String a() {
+    public String generateCode() {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
 
         extraVariables();
         handleAppCompat();
-        i();
-        g();
-        e();
-        d();
-        c();
-        h();
-        f();
-        j();
+        addFieldsDeclaration();
+        addDrawerComponentInitializer();
+        initializeEventsCodeGenerator();
+        addMoreBlockCodes();
+        addAdapterCode();
+        addRequestCodeConstants();
+        addImportsForBlocks();
+        addLocalLibraryImports();
 
         StringBuilder sb = new StringBuilder(8192);
         sb.append("package ").append(packageName).append(";").append(a)
@@ -797,7 +797,7 @@ public class Jx {
         return Lx.getDrawerViewInitializer(replaceAll, viewBean.id, "_nav_view");
     }
 
-    public final void c() {
+    private void addAdapterCode() {
         for (ViewBean viewBean : projectDataManager.f(projectFileBean.getXmlName())) {
             String xmlName = ProjectFileBean.getXmlName(viewBean.customView);
             this.projectFileBean.getJavaName();
@@ -829,7 +829,7 @@ public class Jx {
     /**
      * Handles the Activity's More Blocks and adds them to {@link Jx#p}.
      */
-    public final void d() {
+    private void addMoreBlockCodes() {
         String javaName = this.projectFileBean.getJavaName();
         ArrayList<Pair<String, String>> pairs = projectDataManager.i(javaName);
         for (int index = 0, pairsSize = pairs.size(); index < pairsSize; index++) {
@@ -845,7 +845,7 @@ public class Jx {
         }
     }
 
-    public final void e() {
+    private void initializeEventsCodeGenerator() {
         e = new Hx(f, projectFileBean, projectDataManager);
         addImports(e.e());
     }
@@ -853,7 +853,7 @@ public class Jx {
     /**
      * Adds imports for blocks used in the currently generated Activity.
      */
-    public final void f() {
+    private void addImportsForBlocks() {
         for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(projectFileBean.getJavaName()).entrySet()) {
             for (BlockBean blockBean : entry.getValue()) {
                 switch (blockBean.opCode) {
@@ -906,7 +906,7 @@ public class Jx {
     /**
      * Handles the Activity's Drawer Views and Components
      */
-    public final void g() {
+    private void addDrawerComponentInitializer() {
         ArrayList<ViewBean> viewBeans = projectDataManager.d(projectFileBean.getXmlName());
         for (ViewBean viewBean : viewBeans) {
             m.add(getViewInitializer(viewBean));
@@ -926,7 +926,7 @@ public class Jx {
     /**
      * Handles the file's request code constants.
      */
-    public final void h() {
+    private void addRequestCodeConstants() {
         int startValue = 100;
         for (ComponentBean next : projectDataManager.e(projectFileBean.getJavaName())) {
             switch (next.type) {
@@ -941,7 +941,7 @@ public class Jx {
         }
     }
 
-    public final void i() {
+    private void addFieldsDeclaration() {
         String javaName = projectFileBean.getJavaName();
         for (Pair<Integer, String> next : projectDataManager.k(javaName)) {
             int intValue = next.first;
@@ -1019,7 +1019,7 @@ public class Jx {
     /**
      * Adds Local libraries' imports
      */
-    public final void j() {
+    private void addLocalLibraryImports() {
         for (String value : mll.getImportLocalLibrary()) {
             addImport(value);
         }
