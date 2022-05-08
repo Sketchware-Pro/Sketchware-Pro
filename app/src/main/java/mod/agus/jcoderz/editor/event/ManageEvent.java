@@ -106,6 +106,7 @@ public class ManageEvent {
         if (gx.a("RewardedVideoAd")) {
             listeners.add("rewardedAdLoadCallback");
             listeners.add("fullScreenContentCallback");
+            listeners.add("onUserEarnedRewardListener");
         }
         if (gx.a("ListView")) {
             listeners.add("OnScrollListener");
@@ -169,6 +170,10 @@ public class ManageEvent {
             case "rewardedAdLoadCallabck":
                 list.add("onRewardAdFailedToLoad");
                 list.add("onRewardAdLoaded");
+                return;
+
+            case "onUserEarnedRewardListener":
+                list.add("onUserEarnedReward");
                 return;
 
             case "OnCompletionListener":
@@ -1021,6 +1026,9 @@ public class ManageEvent {
                         rewardEventCode +
                         "}";
 
+            case "onUserEarnedReward":
+                return eventLogic;
+
             default:
                 return EventsHandler.getEventCode(targetId, eventName, eventLogic);
         }
@@ -1241,6 +1249,14 @@ public class ManageEvent {
                         listenerLogic + "\r\n" +
                         "});";
 
+            case "onUserEarnedRewardListener":
+                return "_" + targetId + "_on_user_earned_reward_listener = new OnUserEarnedRewardListener() {\r\n" +
+                        "@Override\r\npublic void onUserEarnedReward(RewardItem _param1) {\r\n" +
+                        "int _rewardAmount = _param1.getAmount();\r\n" +
+                        "String _rewardType = _param1.getType();\r\n" +
+                        listenerLogic + "\r\n" +
+                        "});";
+
             default:
                 return EventsHandler.getListenerCode(listenerName, targetId, listenerLogic);
         }
@@ -1361,6 +1377,7 @@ public class ManageEvent {
         if (gx.a("RewardedVideoAd")) {
             list.add("onRewardAdFailedToLoad");
             list.add("onRewardAdLoaded");
+            list.add("onUserEarnedReward");
             list.add("onAdDismissedFullScreenContent");
             list.add("onAdFailedToShowFullScreenContent");
             list.add("onAdShowedFullScreenContent");
