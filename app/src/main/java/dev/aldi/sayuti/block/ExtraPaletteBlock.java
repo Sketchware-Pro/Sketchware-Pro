@@ -1077,6 +1077,7 @@ public class ExtraPaletteBlock {
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD)) {
                     logicEditor.a("RewardedVideoAd", 0xff555555);
                     logicEditor.a(" ", "rewardedVideoAdLoad");
+                    logicEditor.a(" ", "rewardedVideoAdShow");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE)) {
                     logicEditor.a("Firebase Storage", 0xff555555);

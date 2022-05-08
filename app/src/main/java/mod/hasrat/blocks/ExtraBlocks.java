@@ -75,6 +75,7 @@ public class ExtraBlocks {
         arrayList.add(addBlock("setDynamicLinkDataHost", " ", "", "", "#2ca5e2", "DynamicLink: setHost %s.inputOnly setScheme %s.inputOnly"));
         //RewardedVideoAd
         arrayList.add(addBlock("rewardedVideoAdLoad", " ", "", "RewardedAd.load(%2$s.this, _reward_ad_unit_id, new AdRequest.Builder().build(), _%1$s_rewarded_ad_load_callback);", "#2ca5e2", "RewardedAd %m.videoad load with %m.activity"));
+        arrayList.add(addBlock("rewardedVideoAdShow", " ", "", "RewardeAd.show(%2$s.this, _%1$s_on_user_earned_reward_listener);", "#2ca5e2", "RewardedAd %m.videoad show %m.activity"));
     }
 
     /**
