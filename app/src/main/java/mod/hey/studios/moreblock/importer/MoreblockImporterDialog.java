@@ -23,8 +23,6 @@ import mod.SketchwareUtil;
 import mod.hey.studios.moreblock.ImportMoreblockHelper;
 import mod.hey.studios.util.Helper;
 
-//6.3.0
-
 public class MoreblockImporterDialog {
 
     private final ArrayList<MoreBlockCollectionBean> internalList;
@@ -32,14 +30,12 @@ public class MoreblockImporterDialog {
 
     private final Activity act;
     private ArrayList<MoreBlockCollectionBean> list;
-    private ListView lw;
     private Adapter la;
 
     public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
         this.act = act;
         this.internalList = beanList;
         this.list = new ArrayList<>(beanList);
-
         this.callback = callback;
     }
 
@@ -54,7 +50,6 @@ public class MoreblockImporterDialog {
         searchView.setIconifiedByDefault(false);
         searchView.setFocusable(false);
         searchView.setFocusableInTouchMode(true);
-        //searchView.requestFocus();
 
         {
             LinearLayout.LayoutParams searchViewParams = new LinearLayout.LayoutParams(
@@ -80,9 +75,6 @@ public class MoreblockImporterDialog {
                 if (query.isEmpty()) {
                     //just return the internal list
                     list = new ArrayList<>(internalList);
-
-                    //la.query = null;
-
                 } else {
                     list = new ArrayList<>();
 
@@ -92,8 +84,6 @@ public class MoreblockImporterDialog {
                             list.add(bean);
                         }
                     }
-
-                    //la.query = query.toLowerCase();
                 }
 
                 la.resetPos();
@@ -103,7 +93,7 @@ public class MoreblockImporterDialog {
             }
         });
 
-        lw = new ListView(act);
+        ListView lw = new ListView(act);
         {
             LinearLayout.LayoutParams listViewParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -130,8 +120,7 @@ public class MoreblockImporterDialog {
         ln.addView(searchView);
         ln.addView(lw);
 
-        dialog.a(ln); //init custom view
-
+        dialog.a(ln);
         dialog.b(act.getString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = la.getSelectedItem();
 
@@ -142,10 +131,8 @@ public class MoreblockImporterDialog {
 
                 dialog.dismiss();
             }
-        }); //positive button
-
-        dialog.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog)); //negative button
-
+        });
+        dialog.a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -155,9 +142,7 @@ public class MoreblockImporterDialog {
 
     private class Adapter extends BaseAdapter {
 
-        //public String query = null;
-
-        public int selectedPos = -1;
+        private int selectedPos = -1;
 
         public MoreBlockCollectionBean getSelectedItem() {
             return selectedPos != -1 ? getItem(selectedPos) : null;

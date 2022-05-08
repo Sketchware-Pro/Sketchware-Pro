@@ -38,7 +38,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
 
     public PropertyMeasureItem(Context context, boolean z) {
         super(context);
-        a(context, z);
+        initialize(context, z);
     }
 
     private void setIcon(ImageView imageView) {
@@ -110,7 +110,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         }
     }
 
-    private void a(Context context, boolean z) {
+    private void initialize(Context context, boolean z) {
         wB.a(context, this, R.layout.property_selector_item);
         tvName = findViewById(R.id.tv_name);
         tvValue = findViewById(R.id.tv_value);

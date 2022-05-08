@@ -83,7 +83,7 @@ Libraries added with Sketchware Pro
 
 	https://r8.googlesource.com
 	Its own license, read the full text further below
-	No changes made to v2.2.64
+	No changes made to v3.3.28
 
 * hdodenhof/CircleImageView
 

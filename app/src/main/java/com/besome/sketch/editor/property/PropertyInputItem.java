@@ -28,18 +28,18 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
 
-    public Context context;
-    public String key = "";
-    public String value = "";
-    public ImageView imgLeftIcon;
-    public int icon;
-    public TextView tvName;
-    public TextView tvValue;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public String sc_id;
-    public ProjectFileBean projectFileBean;
-    public Kw valueChangeListener;
+    private Context context;
+    private String key = "";
+    private String value = "";
+    private ImageView imgLeftIcon;
+    private int icon;
+    private TextView tvName;
+    private TextView tvValue;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private String sc_id;
+    private ProjectFileBean projectFileBean;
+    private Kw valueChangeListener;
 
     public PropertyInputItem(Context context, boolean z) {
         super(context);
@@ -131,17 +131,17 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (!mB.a()) {
             switch (key) {
                 case "property_id":
-                    b();
+                    showViewIdDialog();
                     return;
 
                 case "property_text":
                 case "property_hint":
                 case "property_inject":
-                    b(0, 9999);
+                    showTextInputDialog(0, 9999);
                     return;
 
                 case "property_weight":
@@ -150,25 +150,25 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 case "property_lines":
                 case "property_max":
                 case "property_progress":
-                    a();
+                    showNumberInputDialog();
                     return;
 
                 case "property_alpha":
-                    a(0, 1);
+                    showNumberDecimalInputDialog(0, 1);
                     return;
 
                 case "property_translation_x":
                 case "property_translation_y":
-                    a(-9999, 9999);
+                    showNumberDecimalInputDialog(-9999, 9999);
                     return;
 
                 case "property_scale_x":
                 case "property_scale_y":
-                    a(0, 99);
+                    showNumberDecimalInputDialog(0, 99);
                     return;
 
                 case "property_convert":
-                    b(0, 99);
+                    showTextInputDialog(0, 99);
             }
         }
     }
@@ -181,10 +181,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (orientationItem == 0) {
             propertyItem.setVisibility(GONE);
             propertyMenuItem.setVisibility(VISIBLE);
-            return;
+        } else {
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
-        propertyItem.setVisibility(VISIBLE);
-        propertyMenuItem.setVisibility(GONE);
     }
 
     private void initialize(Context context, boolean z) {
@@ -201,22 +201,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    private void b() {
+    private void showViewIdDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View a2 = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText editText = a2.findViewById(R.id.ed_input);
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        editText.setLines(1);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        _B validator = new _B(context, a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
+        View view = wB.a(getContext(), R.layout.property_popup_input_text);
+        EditText input = view.findViewById(R.id.ed_input);
+        input.setPrivateImeOptions("defaultInputmode=english;");
+        input.setLines(1);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        _B validator = new _B(context, view.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
-        dialog.a(a2);
+        dialog.a(view);
         dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(editText.getText().toString());
+                setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -230,25 +230,20 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         this.projectFileBean = projectFileBean;
     }
 
-    private void a() {
+    private void showNumberInputDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText editText = view.findViewById(R.id.ed_input);
-        editText.setInputType(4098);
-        editText.setText(value);
-        TB validator = new TB(
-                context,
-                view.findViewById(R.id.ti_input),
-                0,
-                (key.equals("property_max") || key.equals("property_progress"))
-                        ? 0x7fffffff : 999
-        );
+        EditText input = view.findViewById(R.id.ed_input);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        input.setText(value);
+        TB validator = new TB(context, view.findViewById(R.id.ti_input), 0,
+                (key.equals("property_max") || key.equals("property_progress")) ? 0x7fffffff : 999);
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(editText.getText().toString());
+                setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -257,17 +252,18 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    private void b(int minValue, int maxValue) {
+    private void showTextInputDialog(int minValue, int maxValue) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
+        EditText input = view.findViewById(R.id.ed_input);
         SB lengthValidator = new SB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
         lengthValidator.a(value);
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (lengthValidator.b()) {
-                setValue(((EditText) view.findViewById(R.id.ed_input)).getText().toString());
+                setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -276,21 +272,21 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    private void a(int minValue, int maxValue) {
+    private void showNumberDecimalInputDialog(int minValue, int maxValue) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText editText = view.findViewById(R.id.ed_input);
-        editText.setInputType(minValue < 0 ?
+        EditText input = view.findViewById(R.id.ed_input);
+        input.setInputType(minValue < 0 ?
                 InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL
                 : InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        editText.setText(value);
+        input.setText(value);
         OB validator = new OB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
         dialog.a(view);
         dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(editText.getText().toString());
+                setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }

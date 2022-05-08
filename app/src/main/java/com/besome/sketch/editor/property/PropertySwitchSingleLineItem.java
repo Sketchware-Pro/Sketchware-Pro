@@ -16,15 +16,15 @@ import a.a.a.xB;
 
 public class PropertySwitchSingleLineItem extends LinearLayout implements View.OnClickListener {
 
-    public String key = "";
-    public boolean value = false;
-    public TextView tvName;
-    public Switch switchValue;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public Kw valueChangeListener;
+    private String key = "";
+    private boolean value = false;
+    private TextView tvName;
+    private Switch switchValue;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private Kw valueChangeListener;
 
     public PropertySwitchSingleLineItem(Context context, boolean z) {
         super(context);
@@ -88,7 +88,8 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
         switchValue.setChecked(value);
     }
 
-    public void onClick(View view) {
+    @Override
+    public void onClick(View v) {
         setValue(!value);
         if (valueChangeListener != null) {
             valueChangeListener.a(key, value);

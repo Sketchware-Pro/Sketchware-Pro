@@ -2891,6 +2891,6 @@
 
     <style name="SplashScreenTheme" parent="@style/AppTheme">
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>
