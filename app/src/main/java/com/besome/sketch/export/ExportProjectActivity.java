@@ -817,7 +817,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
 
                 if (buildingAppBundle) {
-                    AppBundleCompiler compiler = new AppBundleCompiler(c, null);
+                    AppBundleCompiler compiler = new AppBundleCompiler(c);
                     publishProgress("Creating app module...");
                     compiler.createModuleMainArchive();
                     publishProgress("Building app bundle...");

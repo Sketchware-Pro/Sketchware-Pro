@@ -512,7 +512,7 @@ public class Dp {
 
             @Override
             public void write(int b) {
-                mBuffer.append(b);
+                mBuffer.append((char) b);
             }
 
             public String getOut() {
@@ -526,7 +526,7 @@ public class Dp {
 
             @Override
             public void write(int b) {
-                mBuffer.append(b);
+                mBuffer.append((char) b);
             }
 
             public String getOut() {
@@ -538,56 +538,53 @@ public class Dp {
              PrintWriter outWriter = new PrintWriter(outOutputStream);
              EclipseErrOutputStream errOutputStream = new EclipseErrOutputStream();
              PrintWriter errWriter = new PrintWriter(errOutputStream)) {
-            try {
-                ArrayList<String> args = new ArrayList<>();
-                args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
-                        BuildSettings.SETTING_JAVA_VERSION_1_7));
-                args.add("-nowarn");
-                if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
-                        BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-                    args.add("-deprecation");
-                }
-                args.add("-d");
-                args.add(yq.u);
-                args.add("-cp");
-                args.add(d());
-                args.add("-proc:none");
-                args.add(yq.y);
-                args.add(yq.v);
-                String pathJava = fpu.getPathJava(yq.b);
-                if (FileUtil.isExistFile(pathJava)) {
-                    args.add(pathJava);
-                }
-                String pathBroadcast = fpu.getPathBroadcast(yq.b);
-                if (FileUtil.isExistFile(pathBroadcast)) {
-                    args.add(pathBroadcast);
-                }
-                String pathService = fpu.getPathService(yq.b);
-                if (FileUtil.isExistFile(pathService)) {
-                    args.add(pathService);
-                }
 
-                /* Avoid "package ;" line in that file causing issues while compiling */
-                File rJavaFileWithoutPackage = new File(yq.v, "R.java");
-                if (rJavaFileWithoutPackage.exists() && !rJavaFileWithoutPackage.delete()) {
-                    LogUtil.w(TAG, "Failed to delete file " + rJavaFileWithoutPackage.getAbsolutePath());
-                }
+            ArrayList<String> args = new ArrayList<>();
+            args.add("-" + build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
+                    BuildSettings.SETTING_JAVA_VERSION_1_7));
+            args.add("-nowarn");
+            if (!build_settings.getValue(BuildSettings.SETTING_NO_WARNINGS,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+                args.add("-deprecation");
+            }
+            args.add("-d");
+            args.add(yq.u);
+            args.add("-cp");
+            args.add(d());
+            args.add("-proc:none");
+            args.add(yq.y);
+            args.add(yq.v);
+            String pathJava = fpu.getPathJava(yq.b);
+            if (FileUtil.isExistFile(pathJava)) {
+                args.add(pathJava);
+            }
+            String pathBroadcast = fpu.getPathBroadcast(yq.b);
+            if (FileUtil.isExistFile(pathBroadcast)) {
+                args.add(pathBroadcast);
+            }
+            String pathService = fpu.getPathService(yq.b);
+            if (FileUtil.isExistFile(pathService)) {
+                args.add(pathService);
+            }
 
-                /* Start compiling */
-                org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
-                LogUtil.d(TAG, "Running Eclipse compiler with these arguments: " + args);
-                main.compile(args.toArray(new String[0]));
+            /* Avoid "package ;" line in that file causing issues while compiling */
+            File rJavaFileWithoutPackage = new File(yq.v, "R.java");
+            if (rJavaFileWithoutPackage.exists() && !rJavaFileWithoutPackage.delete()) {
+                LogUtil.w(TAG, "Failed to delete file " + rJavaFileWithoutPackage.getAbsolutePath());
+            }
 
-                if (main.globalErrorsCount <= 0) {
-                    LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
-                    LogUtil.d(TAG, "System.err of Eclipse compiler: " + errOutputStream.getOut());
-                    LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-                } else {
-                    throw new zy(errOutputStream.getOut());
-                }
-            } catch (Exception e) {
-                LogUtil.e(TAG, "Failed to compile Java files", e);
-                throw e;
+            /* Start compiling */
+            org.eclipse.jdt.internal.compiler.batch.Main main = new org.eclipse.jdt.internal.compiler.batch.Main(outWriter, errWriter, false, null, null);
+            LogUtil.d(TAG, "Running Eclipse compiler with these arguments: " + args);
+            main.compile(args.toArray(new String[0]));
+
+            LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
+            if (main.globalErrorsCount <= 0) {
+                LogUtil.d(TAG, "System.err of Eclipse compiler: " + errOutputStream.getOut());
+                LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
+            } else {
+                LogUtil.e(TAG, "Failed to compile Java files");
+                throw new zy(errOutputStream.getOut());
             }
         }
     }

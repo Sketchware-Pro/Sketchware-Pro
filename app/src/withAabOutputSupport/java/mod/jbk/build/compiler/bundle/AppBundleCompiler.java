@@ -18,6 +18,7 @@ import java.util.zip.ZipOutputStream;
 import a.a.a.Dp;
 import a.a.a.Jp;
 import a.a.a.yq;
+import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.jbk.build.BuiltInLibraries;
@@ -34,13 +35,11 @@ public class AppBundleCompiler {
     private static final String MODULE_MANIFEST = "manifest";
 
     private static final String TAG = AppBundleCompiler.class.getSimpleName();
-    private final BuildAsyncTask buildingDialog;
     private final Dp mDp;
     private final File mainModuleArchive;
     private final File appBundle;
 
-    public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityA) {
-        buildingDialog = designActivityA;
+    public AppBundleCompiler(Dp dp) {
         mDp = dp;
         mainModuleArchive = new File(dp.yq.t, MODULE_ARCHIVE_FILE_NAME);
         appBundle = new File(dp.yq.t, getBundleFilename(dp.yq.d));
@@ -55,7 +54,7 @@ public class AppBundleCompiler {
         return new File(projectMetadata.t, projectMetadata.d + ".aab");
     }
 
-    public void buildBundle() {
+    public void buildBundle() throws zy {
         long savedTimeMillis = System.currentTimeMillis();
         ArrayList<String> args = new ArrayList<>();
         args.add("build-bundle");
@@ -75,8 +74,7 @@ public class AppBundleCompiler {
         try {
             BundleToolMain.main(args.toArray(new String[0]));
         } catch (Exception e) {
-            if (buildingDialog != null) buildingDialog.showErrorToast(e.getMessage());
-            LogUtil.e(TAG, "Failed to build bundle: " + e.getMessage(), e);
+            throw new zy("Failed to build bundle: " + e.getMessage());
         }
         LogUtil.d(TAG, "Building app bundle took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }

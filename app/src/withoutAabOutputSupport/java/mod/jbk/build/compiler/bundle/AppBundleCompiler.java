@@ -2,8 +2,6 @@ package mod.jbk.build.compiler.bundle;
 
 import android.content.Context;
 
-import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
-
 import java.io.File;
 
 import a.a.a.Dp;
@@ -11,7 +9,7 @@ import a.a.a.yq;
 
 public class AppBundleCompiler {
 
-    public AppBundleCompiler(Dp dp, BuildAsyncTask designActivityBuildAsyncTask) {
+    public AppBundleCompiler(Dp dp) {
     }
 
     public static File getDefaultAppBundleOutputFile(Context context, String sc_id) {

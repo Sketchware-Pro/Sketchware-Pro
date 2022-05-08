@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.Menu;
@@ -25,7 +26,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -76,6 +76,7 @@ import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.yB;
 import a.a.a.yq;
+import a.a.a.zy;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
@@ -923,13 +924,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             });
         }
 
-        public void showErrorToast(String message) {
-            runOnUiThread(() -> {
-                a();
-                SketchwareUtil.toastError("APK build failed: " + message, Toast.LENGTH_LONG);
-            });
-        }
-
         @Override
         protected void onProgressUpdate(String... values) {
             setProgress(values[0]);
@@ -1118,9 +1112,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         dialog.b("Dismiss", Helper.getDialogDismissListener(dialog));
                         dialog.show();
                     });
-                } catch (Throwable e) {
-                    LogUtil.e("DesignActivity$a", "Failed to build project", e);
-                    indicateCompileErrorOccurred(e.getMessage());
+                } catch (Throwable tr) {
+                    LogUtil.e("DesignActivity$BuildAsyncTask", "Failed to build project", tr);
+                    indicateCompileErrorOccurred(tr instanceof zy ? tr.getMessage() : Log.getStackTraceString(tr));
                 }
             }
         }
