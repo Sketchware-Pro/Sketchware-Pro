@@ -512,7 +512,7 @@ public class Dp {
 
             @Override
             public void write(int b) {
-                mBuffer.append(b);
+                mBuffer.append((char) b);
             }
 
             public String getOut() {
@@ -526,7 +526,7 @@ public class Dp {
 
             @Override
             public void write(int b) {
-                mBuffer.append(b);
+                mBuffer.append((char) b);
             }
 
             public String getOut() {
