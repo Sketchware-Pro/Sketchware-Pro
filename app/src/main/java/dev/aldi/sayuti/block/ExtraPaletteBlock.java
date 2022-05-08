@@ -1133,16 +1133,6 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "locationManagerRequestLocationUpdates");
                     logicEditor.a(" ", "locationManagerRemoveUpdates");
                 }
-                if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD)) {
-                    logicEditor.a("Video Ad", 0xff555555);
-                    logicEditor.a(" ", "videoAdCreate");
-                    logicEditor.a(" ", "videoAdLoad");
-                    logicEditor.a("b", "videoAdIsLoaded");
-                    logicEditor.a(" ", "videoAdShow");
-                    logicEditor.a(" ", "videoAdResume");
-                    logicEditor.a(" ", "videoAdPause");
-                    logicEditor.a(" ", "videoAdDestroy");
-                }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG)
                         || extraBlocks.isCustomVarUsed("ProgressDialog")
                         || eventName.equals("onPreExecute") || eventName.equals("onProgressUpdate")
