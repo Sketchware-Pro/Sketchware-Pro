@@ -710,11 +710,6 @@ public class Lx {
                     fieldDeclaration += "\r\nprivate AdListener " + typeInstanceName + "_AdListener;";
                     break;
 
-                case "RewardedVideoAd":
-                    // Shouldn't it be "private RewardedVideoAdListener _"?
-                    fieldDeclaration += "\r\nprivate RewardedVideoAdListener  " + typeInstanceName + "_listener;";
-                    break;
-
                 case "TimePickerDialog":
                     fieldDeclaration += "\r\nprivate TimePickerDialog.OnTimeSetListener " + typeInstanceName + "_listener;";
                     break;
@@ -1199,9 +1194,6 @@ public class Lx {
 
             case "TimePickerDialog":
                 return componentName + " = new TimePickerDialog(this, " + componentName + "_listener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, false);";
-
-            case "RewardedVideoAd":
-                return componentName + " = MobileAds.getRewardedVideoAdInstance(this);";
 
             case "FragmentStatePagerAdapter":
                 return componentName + " = new " + a(componentName + "Fragment") + "(getApplicationContext(), getSupportFragmentManager());";
