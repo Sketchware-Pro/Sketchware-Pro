@@ -578,8 +578,8 @@ public class Dp {
                 LogUtil.d(TAG, "Running Eclipse compiler with these arguments: " + args);
                 main.compile(args.toArray(new String[0]));
 
+                LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
                 if (main.globalErrorsCount <= 0) {
-                    LogUtil.d(TAG, "System.out of Eclipse compiler: " + outOutputStream.getOut());
                     LogUtil.d(TAG, "System.err of Eclipse compiler: " + errOutputStream.getOut());
                     LogUtil.d(TAG, "Compiling Java files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
                 } else {
