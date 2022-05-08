@@ -819,7 +819,7 @@ public class yq {
         for (ProjectFileBean activity : projectFileManager.b()) {
             if (!javaFiles.contains(new File(javaDir + activity.getJavaName()))) {
                 srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
-                        new Jx(N, activity, projectDataManager).a()));
+                        new Jx(N, activity, projectDataManager).generateCode()));
             }
         }
 
@@ -981,7 +981,7 @@ public class yq {
               Generating every java file is necessary to make command blocks for xml work
              */
             for (ProjectFileBean file : files) {
-                CommandBlock.CBForXml(new Jx(N, file, projectDataManager).a());
+                CommandBlock.CBForXml(new Jx(N, file, projectDataManager).generateCode());
             }
         }
 
@@ -994,7 +994,7 @@ public class yq {
         for (ProjectFileBean file : files) {
             if (filename.equals(isJavaFile ? file.getJavaName() : file.getXmlName())) {
                 if (isJavaFile) {
-                    return new Jx(N, file, projectDataManager).a();
+                    return new Jx(N, file, projectDataManager).generateCode();
                 } else if (isXmlFile) {
                     Ox xmlGenerator = new Ox(N, file);
                     xmlGenerator.a(eC.a(projectDataManager.d(filename)), projectDataManager.h(filename));
