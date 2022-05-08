@@ -1147,6 +1147,7 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "progressdialogSetCancelable");
                     logicEditor.a(" ", "progressdialogSetCanceledOutside");
                     logicEditor.a(" ", "progressdialogSetStyle");
+                    logicEditor.a(" ", "ProgressDialogbackground");
                     logicEditor.a(" ", "progressdialogShow");
                     logicEditor.a(" ", "progressdialogDismiss");
                     return;
