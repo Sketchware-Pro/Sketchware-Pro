@@ -53,3 +53,13 @@ jobs:
         with:
           name: apk-withoutAabOutputSupport-debug
           path: app/build/outputs/apk/withoutAabOutputSupport/debug
+
+      # Commits all changed files to the repository
+      - name: Commit to the repo
+        run: |
+          git config --global user.name "Hasrat"
+          git config --global user.email "42956453+hasrat-ali@users.noreply.github.com"
+          git add -f app/build/outputs/apk/
+          # "echo" returns true so the build succeeds, even if no changed files
+          git commit -m 'feat: Upload/update generated apk' || echo
+          git push
