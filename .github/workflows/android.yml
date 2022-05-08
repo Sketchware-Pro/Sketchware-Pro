@@ -7,18 +7,24 @@ name: Android CI
 on:
   push:
     paths:
-      - '**.java'
-      - '**.xml'
-      - '**.gradle'
-      - '**.aar'
-      - '**.jar'
+      - 'app/**'
+      - 'gradle/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'public-stable-ids.txt'
+      - 'settings.gradle'
   pull_request:
     paths:
-      - '**.java'
-      - '**.xml'
-      - '**.gradle'
-      - '**.aar'
-      - '**.jar'
+      - 'app/**'
+      - 'gradle/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'public-stable-ids.txt'
+      - 'settings.gradle'
   workflow_dispatch:
 
 jobs:
