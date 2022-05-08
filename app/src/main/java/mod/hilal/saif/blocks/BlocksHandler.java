@@ -327,69 +327,6 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdCreate");
-        hashMap.put("type", " ");
-        hashMap.put("code", "MobileAds.initialize(this, %s);");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "VideoAd create APP_ID %s");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdLoad");
-        hashMap.put("type", " ");
-        hashMap.put("code", "%s.loadAd(%s, new com.google.android.gms.ads.AdRequest.Builder().build());");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad load REWARD_ID %s");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdIsLoaded");
-        hashMap.put("type", "b");
-        hashMap.put("code", "%s.isLoaded()");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad isLoaded");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdShow");
-        hashMap.put("type", " ");
-        hashMap.put("code", "%s.show();");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad show");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdResume");
-        hashMap.put("type", " ");
-        hashMap.put("code", "%s.resume();");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad resume");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdPause");
-        hashMap.put("type", " ");
-        hashMap.put("code", "%s.pause();");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad pause");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
-        hashMap.put("name", "videoAdDestroy");
-        hashMap.put("type", " ");
-        hashMap.put("code", "%s.destroy();");
-        hashMap.put("color", "#2AA4E2");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad destroy");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
         hashMap.put("name", "LightStatusBar");
         hashMap.put("type", " ");
         hashMap.put("code", "getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);\r\ngetWindow().setStatusBarColor(0xFFFFFFFF);");
