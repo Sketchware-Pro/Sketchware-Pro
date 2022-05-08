@@ -6,7 +6,19 @@ name: Android CI
 
 on:
   push:
+    paths:
+      - '**.java'
+      - '**.xml'
+      - '**.gradle'
+      - '**.aar'
+      - '**.jar'
   pull_request:
+    paths:
+      - '**.java'
+      - '**.xml'
+      - '**.gradle'
+      - '**.aar'
+      - '**.jar'
   workflow_dispatch:
 
 jobs:
