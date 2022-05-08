@@ -974,6 +974,7 @@ public class Jx {
             boolean hasFirebaseDB = false;
             boolean hasFirebaseStorage = false;
             boolean hasInterstitialAd = false;
+            boolean hasRewardedVideoAd = false;
             for (ComponentBean bean : componentBeans) {
                 if (bean.type == ComponentBean.COMPONENT_TYPE_TIMERTASK) {
                     hasTimer = true;
@@ -987,6 +988,9 @@ public class Jx {
                 if (bean.type == ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD) {
                     hasInterstitialAd = true;
                 }
+                if (bean.type == ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD) {
+                    hasRewardedVideoAd = true;
+                }
             }
             if (hasTimer) {
                 h.add(Lx.d("Timer"));
@@ -999,6 +1003,9 @@ public class Jx {
             }
             if (hasInterstitialAd) {
                 h.add(Lx.d("InterstitialAd"));
+            }
+            if (hasRewardedVideoAd) {
+                h.add(Lx.d("RewardedVideoAd"));
             }
         }
     }
