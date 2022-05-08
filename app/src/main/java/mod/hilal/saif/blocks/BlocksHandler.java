@@ -372,6 +372,15 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "progressdialogBackground");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.getWindow().setBackgroundDrawable(new ColorDrawable(%s));");
+        hashMap.put("color", "#2AA4E2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%m.progressdialog setBackground %m.color");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "progressdialogSetMax");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setMax((int)%s);");
