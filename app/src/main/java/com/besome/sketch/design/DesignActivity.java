@@ -25,7 +25,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -920,13 +919,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
                 runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            });
-        }
-
-        public void showErrorToast(String message) {
-            runOnUiThread(() -> {
-                a();
-                SketchwareUtil.toastError("APK build failed: " + message, Toast.LENGTH_LONG);
             });
         }
 
