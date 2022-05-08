@@ -19,17 +19,16 @@ import a.a.a.xB;
 
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
 
-    public Context context;
-    public String key;
-    public int value;
-    public TextView tvName;
-    public TextView tvValue;
-    public View viewColor;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public Kw valueChangeListener;
+    private Context context;
+    private String key;
+    private int value;
+    private TextView tvName;
+    private TextView tvValue;
+    private View viewColor;
+    private ImageView imgLeftIcon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private Kw valueChangeListener;
 
     public PropertyColorItem(Context context, boolean z) {
         super(context);
@@ -45,13 +44,12 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(xB.b().a(getResources(), identifier));
-            icon = R.drawable.color_palette_48;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(R.drawable.color_palette_48);
                 ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
                 return;
             }
-            imgLeftIcon.setImageResource(icon);
+            imgLeftIcon.setImageResource(R.drawable.color_palette_48);
         }
     }
 
@@ -74,7 +72,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         if (!mB.a()) {
             showColorPicker();
         }
@@ -110,18 +108,18 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void showColorPicker() {
-        boolean z;
-        boolean z2;
+        boolean colorNoneAvailable;
+        boolean colorTransparentAvailable;
         View view = wB.a(context, R.layout.color_picker);
         view.setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
         if (key.equals("property_background_color")) {
-            z2 = true;
-            z = true;
+            colorTransparentAvailable = true;
+            colorNoneAvailable = true;
         } else {
-            z2 = false;
-            z = false;
+            colorTransparentAvailable = false;
+            colorNoneAvailable = false;
         }
-        Zx colorPicker = new Zx(view, (Activity) context, value, z2, z);
+        Zx colorPicker = new Zx(view, (Activity) context, value, colorTransparentAvailable, colorNoneAvailable);
         colorPicker.a(i -> {
             setValue(i);
             if (valueChangeListener != null) {

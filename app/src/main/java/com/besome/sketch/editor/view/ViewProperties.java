@@ -21,10 +21,9 @@ import a.a.a.xB;
 
 public class ViewProperties extends RelativeLayout implements AdapterView.OnItemSelectedListener {
 
-    public Spinner spnWidget;
-    public ArrayList<String> viewsIdList = new ArrayList<>();
-    public SpinnerItemAdapter spinnerItemAdapter;
-    public Jw propertyTargetChangeListener = null;
+    private final ArrayList<String> viewsIdList = new ArrayList<>();
+    private SpinnerItemAdapter spinnerItemAdapter;
+    private Jw propertyTargetChangeListener = null;
 
     public ViewProperties(Context context) {
         super(context);
@@ -43,11 +42,11 @@ public class ViewProperties extends RelativeLayout implements AdapterView.OnItem
     private void initialize(Context context) {
         wB.a(context, this, R.layout.view_properties);
         ((TextView) findViewById(R.id.btn_editproperties)).setText(xB.b().a(context, R.string.design_button_properties));
-        spnWidget = findViewById(R.id.spn_widget);
+        Spinner spinner = findViewById(R.id.spn_widget);
         spinnerItemAdapter = new SpinnerItemAdapter(context, viewsIdList);
-        spnWidget.setAdapter(spinnerItemAdapter);
-        spnWidget.setSelection(0);
-        spnWidget.setOnItemSelectedListener(this);
+        spinner.setAdapter(spinnerItemAdapter);
+        spinner.setSelection(0);
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -62,11 +61,11 @@ public class ViewProperties extends RelativeLayout implements AdapterView.OnItem
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    static class SpinnerItemAdapter extends BaseAdapter {
+    private static class SpinnerItemAdapter extends BaseAdapter {
 
-        public Context context;
-        public int layoutPosition;
-        public ArrayList<String> data;
+        private final Context context;
+        private int layoutPosition;
+        private final ArrayList<String> data;
 
         public SpinnerItemAdapter(Context context, ArrayList<String> arrayList) {
             this.context = context;

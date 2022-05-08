@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.sketchware.remod">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -43,7 +42,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.sketchware.remod.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -144,6 +143,7 @@
         <activity
             android:name="com.besome.sketch.editor.LogicEditorActivity"
             android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.PropertyActivity"
@@ -278,11 +278,13 @@
         <activity
             android:name="com.besome.sketch.editor.manage.ShowBlockCollectionActivity"
             android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.manage.ShowMoreBlockCollectionActivity"
             android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -526,12 +528,12 @@
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.sketchware.remod.firebaseinitprovider"
+            android:authorities="${applicationId}.firebaseinitprovider"
             android:exported="false"
             android:initOrder="100" />
         <provider
             android:name="com.google.android.gms.ads.MobileAdsInitProvider"
-            android:authorities="com.sketchware.remod.mobileadsinitprovider"
+            android:authorities="${applicationId}.mobileadsinitprovider"
             android:exported="false"
             android:initOrder="100" />
 
@@ -581,7 +583,7 @@
 
         <provider
             android:name="com.facebook.ads.AudienceNetworkContentProvider"
-            android:authorities="com.sketchware.remod.AudienceNetworkContentProvider"
+            android:authorities="${applicationId}.AudienceNetworkContentProvider"
             android:exported="false" />
 
         <meta-data

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -27,6 +26,7 @@ import mod.hey.studios.util.Helper;
 
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_FIREBASE_SETTINGS = 237;
     private Switch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
@@ -110,7 +110,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 237 && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_FIREBASE_SETTINGS && resultCode == RESULT_OK) {
             initializeLibrary(data.getParcelableExtra("firebase"));
         }
     }
@@ -191,20 +191,11 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         return super.onOptionsItemSelected(menuItem);
     }
 
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    public void onResume() {
-        super.onResume();
-    }
-
     private void toFirebaseActivity() {
         Intent intent = new Intent(getApplicationContext(), FirebaseActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("firebase", firebaseLibraryBean);
-        startActivityForResult(intent, 237);
+        startActivityForResult(intent, REQUEST_CODE_FIREBASE_SETTINGS);
     }
 
     private void configure() {

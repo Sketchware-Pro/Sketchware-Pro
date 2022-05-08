@@ -3,6 +3,7 @@ package com.besome.sketch.editor.property;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,16 +24,16 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyStringPairSelectorItem extends RelativeLayout implements View.OnClickListener {
 
-    public String key = "";
-    public String value = "";
-    public TextView tvName;
-    public TextView tvValue;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public View propertyItem;
-    public View propertyMenuItem;
-    public ViewGroup radioGroupContent;
-    public Kw valueChangeListener;
+    private String key = "";
+    private String value = "";
+    private TextView tvName;
+    private TextView tvValue;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ViewGroup radioGroupContent;
+    private Kw valueChangeListener;
 
     public PropertyStringPairSelectorItem(Context context, boolean z) {
         super(context);
@@ -72,7 +73,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            a();
+            showDialog();
         }
     }
 
@@ -84,10 +85,10 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         if (orientationItem == 0) {
             propertyItem.setVisibility(GONE);
             propertyMenuItem.setVisibility(VISIBLE);
-            return;
+        } else {
+            propertyItem.setVisibility(VISIBLE);
+            propertyMenuItem.setVisibility(GONE);
         }
-        propertyItem.setVisibility(VISIBLE);
-        propertyMenuItem.setVisibility(GONE);
     }
 
     private void initialize(Context context, boolean z) {
@@ -103,7 +104,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         }
     }
 
-    private void a() {
+    private void showDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
@@ -111,7 +112,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         radioGroupContent = view.findViewById(R.id.rg_content);
         int counter = 0;
         for (Pair<String, String> pair : sq.b(key)) {
-            radioGroupContent.addView(a(pair));
+            radioGroupContent.addView(getOption(pair));
         }
         int childCount = radioGroupContent.getChildCount();
         while (true) {
@@ -149,14 +150,14 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         dialog.show();
     }
 
-    private RadioButton a(Pair<String, String> pair) {
+    private RadioButton getOption(Pair<String, String> pair) {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText(pair.second);
         radioButton.setTag(pair.first);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) (wB.a(getContext(), 1.0f) * 40.0f));
-        radioButton.setGravity(19);
+        radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
     }

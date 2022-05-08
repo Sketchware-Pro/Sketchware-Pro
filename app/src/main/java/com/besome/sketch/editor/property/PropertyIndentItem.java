@@ -23,20 +23,31 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyIndentItem extends RelativeLayout implements View.OnClickListener {
 
-    public Context context;
-    public String key = "";
-    public String value = "";
-    public View propertyItem;
-    public View propertyMenuItem;
-    public ImageView imgLeftIcon;
-    public int icon;
-    public TextView tvName;
-    public TextView tvValue;
+    private Context context;
+    private String key = "";
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private TextView tvName;
+    private TextView tvValue;
+    /**
+     * Left margin in dp
+     */
     public int j;
+    /**
+     * Top margin in dp
+     */
     public int k;
+    /**
+     * Right margin in dp
+     */
     public int l;
+    /**
+     * Bottom margin in dp
+     */
     public int m;
-    public Kw valueChangeListener;
+    private Kw valueChangeListener;
 
     public PropertyIndentItem(Context context, boolean z) {
         super(context);
@@ -71,7 +82,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
     }
 
     public String getValue() {
-        return value;
+        return "";
     }
 
     @Override
@@ -80,7 +91,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             switch (key) {
                 case "property_padding":
                 case "property_margin":
-                    a();
+                    showDialog();
                     break;
             }
         }
@@ -122,7 +133,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         tvValue.setText("left: " + j + ", top: " + k + ", right: " + l + ", bottom: " + m);
     }
 
-    private void a() {
+    private void showDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);

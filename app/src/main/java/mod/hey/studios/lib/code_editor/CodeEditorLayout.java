@@ -98,10 +98,6 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
 
     }
 
-	/*   private void debug(Object b) {
-	 Toast.makeText(context, b.toString(), 0).show();
-	 }   */
-
     private void setPreference(String key, boolean value) {
         sharedpref.edit().putBoolean(key, value).commit();
     }
@@ -230,61 +226,17 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
     }
 
     public void setWordWrap(boolean b) {
-		/* Editable c = editText.getEditableText();
-		 int i = (int)editText.getTextSize();
-
-		 final int cur = editText.getSelectionStart();
-		 final int scr = scrollView.getScrollY();
-
-		 this.removeAllViews();
-		 if (b) {
-		 initialize(DEFAULT_LAYOUT);
-		 } else {
-		 initialize(NOWRAP_LAYOUT);
-		 }
-
-		 setText(c);
-		 setTextSize(i);
-
-		 postDelayed(new Runnable() {
-
-		 @Override
-		 public void run() {
-		 scrollView.scrollTo(0, scr);
-		 editText.setSelection(cur);
-		 }
-
-
-		 }, 500);
-
-
-
-		 start(type);
-		 //start(highlightList);*/
-
-
-        // :) Hack.
-
         if (b) {
             if (editText.getParent() instanceof HorizontalScrollView
                     && scrollView.getChildAt(0) instanceof HorizontalScrollView) {
-
-                //Toast.makeText(context, "if", 0).show();
-
                 HorizontalScrollView hrz = (HorizontalScrollView) scrollView.getChildAt(0);
-
                 hrz.removeView(editText);
-
                 scrollView.removeView(hrz);
-
                 scrollView.addView(editText);
-
-
                 editText.invalidate();
             }
         } else if (editText.getParent() instanceof ScrollView
                 && scrollView.getChildAt(0) instanceof EditText) {
-
             HorizontalScrollView hrz = new HorizontalScrollView(context);
             hrz.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             hrz.setFillViewport(true);
@@ -292,12 +244,8 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
             hrz.setHorizontalScrollBarEnabled(false);
 
             scrollView.removeView(editText);
-
             scrollView.addView(hrz);
-
             hrz.addView(editText);
-
-
             editText.invalidate();
         }
 
@@ -350,15 +298,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         //backwards compatibility. use startHighlighting(int) instead
 
         int color = list.get(0).color;
-
         startHighlighting(color);
-
-		/*if(color == ColorScheme.JAVA) {
-		 startHighlighting(ColorScheme.JAVA);
-		 } else if (color == ColorScheme.XML) {
-		 startHighlighting(ColorScheme.XML);
-		 }*/
-
     }
 
     public void startHighlighting(int type) {
@@ -375,15 +315,9 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
             return;
         }
 
-
         initEditorColors(colorTheme);
-
-        //  this.highlightList = highlightList;
-
         checkHighlight();
-
         editText.addTextChangedListener(this);
-
         setListeners();
     }
 
@@ -413,9 +347,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         Editable e = editText.getEditableText();
 
         try {
-
             int end = editText.getLayout().getLineEnd(lineNo);
-
             return e.subSequence(
                     editText.getLayout().getLineStart(lineNo),
                     end - ((deleting && end == editText.length()) ? 0 : 1)
@@ -730,13 +662,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
             matcher.region(start, end);
             while (matcher.find()) {
                 ForegroundColorSpan span = new ForegroundColorSpan(colorScheme.color);
-
                 editable.setSpan(span, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                /*if(colorScheme.textStyle != 0) {
-                 StyleSpan span2 = new StyleSpan(colorScheme.textStyle);
-                 editable.setSpan(span2, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                 }*/
             }
         }
     }
