@@ -167,7 +167,7 @@ public class ManageEvent {
      */
     public static void c(String eventName, ArrayList<String> list) {
         switch (eventName) {
-            case "rewardedAdLoadCallabck":
+            case "rewardedAdLoadCallback":
                 list.add("onRewardAdFailedToLoad");
                 list.add("onRewardAdLoaded");
                 return;
