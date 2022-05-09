@@ -1527,13 +1527,11 @@ public class ManageEvent {
                 return "When " + targetId + " " + eventName + " %d.value";
 
             case "onPatternLockProgress":
+            case "onPatternLockComplete":
                 return "When " + targetId + " " + eventName + " %m.listStr.pattern";
 
             case "onOptionsItemSelected":
                 return "When " + targetId + " %d.id %s.title";
-
-            case "onPatternLockComplete":
-                return "When " + targetId + " " + eventName + " %m.listStr.pattern";
 
             case "onTabSelected":
             case "onTabUnselected":
@@ -1565,17 +1563,17 @@ public class ManageEvent {
 
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
-                return targetId + ": onAdFailedToLoad %d.errorCode %s.errorMessage";
+            case "onRewardAdFailedToLoad":
+            case "onAdFailedToShowFullScreenContent":
+                return targetId + ": " + eventName + " %d.errorCode %s.errorMessage";
 
             case "onInterstitialAdLoaded":
             case "onBannerAdLoaded":
                 return targetId + ": onAdLoaded";
 
-            case "onAdFailedToShowFullScreenContent":
-                return targetId + ": " + eventName + " %d.errorCode %s.errorMessage";
-
             case "onAdDismissedFullScreenContent":
             case "onAdShowedFullScreenContent":
+            case "onRewardAdLoaded":
                 return targetId + ": " + eventName;
 
             case "onBannerAdOpened":
@@ -1586,12 +1584,6 @@ public class ManageEvent {
 
             case "onBannerAdClosed":
                 return targetId + ": onAdClosed";
-
-            case "onRewardAdLoaded":
-                return targetId + ": " + eventName + "";
-
-            case "onRewardAdFailedToLoad":
-                return targetId + ": " + eventName + " %d.errorCode %s.errorMessage";
 
             default:
                 return EventsHandler.getSpec(targetId, eventName);
