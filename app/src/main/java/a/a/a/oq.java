@@ -117,11 +117,13 @@ public class oq {
 
             case "onInterstitialAdLoaded":
             case "onBannerAdLoaded":
+            case "onRewardAdLoaded":
                 return R.drawable.event_on_ad_loaded;
 
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
+            case "onRewardAdFailedToLoad":
             case "onFailure":
                 return R.drawable.event_on_ad_failed_to_load;
 

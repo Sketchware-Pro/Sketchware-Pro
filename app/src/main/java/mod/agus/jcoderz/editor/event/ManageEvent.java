@@ -595,6 +595,9 @@ public class ManageEvent {
             case "onAdDismissedFullScreenContent":
             case "onAdFailedToShowFullScreenContent":
             case "onAdShowedFullScreenContent":
+            case "onRewardAdFailedToLoad":
+            case "onRewardAdLoaded":
+            case "onUserEarnedReward":
                 return eventName;
 
             default:
@@ -1364,6 +1367,7 @@ public class ManageEvent {
                 return "%d.scrollState";
 
             case "onBannerAdFailedToLoad":
+            case "onRewardAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
                 return "%d.errorCode %d.errorMessage";
@@ -1582,6 +1586,12 @@ public class ManageEvent {
 
             case "onBannerAdClosed":
                 return targetId + ": onAdClosed";
+
+            case "onRewardAdLoaded":
+                return targetId + ": " + eventName + "";
+
+            case "onRewardAdFailedToLoad":
+                return targetId + ": " + eventName + " %d.errorCode %s.errorMessage";
 
             default:
                 return EventsHandler.getSpec(targetId, eventName);
