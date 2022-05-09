@@ -845,9 +845,9 @@ public class mq {
 
             case "RewardedVideoAd":
                 importList.add("com.google.android.gms.ads.MobileAds");
-                importList.add("com.google.android.gms.ads.reward.RewardItem");
-                importList.add("com.google.android.gms.ads.reward.RewardedVideoAd");
-                importList.add("com.google.android.gms.ads.reward.RewardedVideoAdListener");
+                importList.add("com.google.android.gms.ads.rewarded.RewardItem");
+                importList.add("com.google.android.gms.ads.rewarded.RewardedAd");
+                importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
                 return importList;
 
             case "com.facebook.ads.AdView":
