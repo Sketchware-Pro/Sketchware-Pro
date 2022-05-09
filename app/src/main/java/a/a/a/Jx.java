@@ -370,7 +370,7 @@ public class Jx {
                 sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
             }
             if (h.contains(Lx.d("RewardedVideoAd"))) {
-                sb.append("//Well, you have to set ad unit id with command block for now!");
+                sb.append("//Well, you have to set ad unit id with command block for now!").append(a);
                 sb.append("_reward_ad_unit_id = \"ca-app-pub-3940256099942544/5224354917\";").append(a);
             }
 
