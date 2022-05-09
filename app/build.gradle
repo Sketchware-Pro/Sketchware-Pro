@@ -93,7 +93,7 @@ dependencies {
     implementation "com.android.tools:r8:3.3.28"
 
     implementation "com.squareup.okhttp3:okhttp:3.10.0"
-    implementation "com.squareup.okio:okio:1.13.0"
+    implementation "com.squareup.okio:okio:1.14.0"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
