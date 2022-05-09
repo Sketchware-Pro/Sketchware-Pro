@@ -895,6 +895,7 @@ public class Jx {
                         break;
 
                     case "interstitialAdLoad":
+                    case "rewardedVideoAdLoad":
                         addImport("com.google.android.gms.ads.AdRequest");
                         addImport("com.google.android.gms.ads.LoadAdError");
                         break;
