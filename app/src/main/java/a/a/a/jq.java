@@ -186,6 +186,11 @@ public class jq {
      */
     public String s = "ca-app-pub-3940256099942544/1033173712";
 
+    /**
+     * Configured ad unit ID for RewardedAd ads. Set to demo ad unit provided by Google by default.
+     */
+    public String rewardAdUnitId = "ca-app-pub-3940256099942544/5224354917";
+
     public String appId = "";
 
     public String sc_id = "";
