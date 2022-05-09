@@ -948,6 +948,18 @@ public class mq {
                 importList.add("com.google.android.gms.ads.LoadAdError");
                 return importList;
 
+            case "fullScreenContentCallback":
+                importList.add("com.google.android.gms.ads.FullScreenContentCallback");
+                return importList;
+
+            case "onUserEarnedRewardListener":
+                importList.add("com.google.android.gms.ads.OnUserEarnedRewardListener");
+                return importList;
+
+            case "rewardedAdLoadCallback":
+                importList.add("com.google.android.gms.ads.rewarded.RewardedAdLoadCallback");
+                return importList;
+
             case "onSeekBarChangeListener":
             case "onDateChangeListener":
             default:
