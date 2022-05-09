@@ -284,6 +284,7 @@ public class jq {
         if (projectLibraryBean != null && (reserved2 = projectLibraryBean.reserved2) != null && !reserved2.isEmpty()) {
             this.s = reserved2.substring(reserved2.lastIndexOf(" : ") + 3);
         }
+        // TODO: Allow to set RewardedAd's ad units from Library Manager/Admob.
         String reserved3;
         if (projectLibraryBean != null && (reserved3 = projectLibraryBean.reserved3) != null && !reserved3.isEmpty()) {
             this.s = reserved3.substring(reserved3.lastIndexOf(" : ") + 3);
