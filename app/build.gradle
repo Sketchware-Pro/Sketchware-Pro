@@ -8,22 +8,13 @@ android {
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
 
-    def getCommitHash = { ->
-        def stdout = new ByteArrayOutputStream()
-        exec {
-            commandLine "git", "rev-parse", "--short", "HEAD"
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    }
-
     defaultConfig {
         applicationId "com.sketchware.remod"
         namespace "com.sketchware.remod"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdkVersion 28
         versionCode 150
-        versionName "v6.4.0-SNAPSHOT-" + getCommitHash()
+        versionName "v6.4.0-rc02"
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
