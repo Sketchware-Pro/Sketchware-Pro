@@ -71,6 +71,21 @@ public class ConfigActivity extends Activity {
         return "/.sketchware/backups/";
     }
 
+    public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
+        HashMap<String, Object> settings = readSettings();
+
+        Object value = settings.get(settingKey);
+        if (value instanceof String) {
+            return (String) value;
+        } else {
+            settings.put(settingKey, toReturnAndSetIfNotFound);
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+
+            return toReturnAndSetIfNotFound;
+        }
+    }
+    
+    
     public static String getBackupFileName() {
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
