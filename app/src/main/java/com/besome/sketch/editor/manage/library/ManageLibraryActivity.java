@@ -13,7 +13,6 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.admob.AdmobActivity;
 import com.besome.sketch.editor.manage.library.admob.ManageAdmobActivity;
 import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
-import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseSessionAppCompatActivity;

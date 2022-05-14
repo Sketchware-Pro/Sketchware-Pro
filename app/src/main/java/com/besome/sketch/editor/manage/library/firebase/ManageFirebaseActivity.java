@@ -17,11 +17,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.sketchware.remod.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -142,46 +141,23 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         int id = view.getId();
         if (id == R.id.btn_console) {
             goToConsole();
-        } 
-        
+        }
+
         if (id == R.id.layout_switch) {
             //Enable Disable Firebase
             if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
-
                 libSwitch.setChecked(!libSwitch.isChecked());
                 if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
                     configureLibraryDialog();
                 } else {
                     firebaseLibraryBean.useYn = "Y";
                 }
-
             } else {
                 SketchwareUtil.toastError("Please Configure Your Firebase Project Details First," +
                         " Either Using Settings Icon Or Importing From google-services.json");
             }
-        switch (view.getId()) {
-            case 2131230815:
-                goToConsole();
-                break;
-
-            case 2131231408:
-                //Enable Disable Firebase
-                if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
-
-                    libSwitch.setChecked(!libSwitch.isChecked());
-                    if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
-                        configureLibraryDialog();
-                    } else {
-                        firebaseLibraryBean.useYn = "Y";
-                    }
-
-                } else {
-                    SketchwareUtil.toastError("Please Configure Your Firebase Project Details First," +
-                            " Either Using Settings Icon Or Importing From google-services.json");
-                }
         }
     }
-}
 
 
     @Override
@@ -301,14 +277,9 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
         pickerDialog.setTitle("Select your google-services.json");
         pickerDialog.setDialogSelectionListener(selections -> {
-            for (String path : selections) {
-                String fileContent = FileUtil.readFile(path);
-                if (fileContent == null) {
-                    SketchwareUtil.toastError("The file you selected is invalid or failed to read selected file");
-                } else {
-                    parseDataFromGoogleServicesJson(fileContent);
-                }
-            }
+            // Since the picker's in single mode, only one element can exist.
+            String fileContent = FileUtil.readFile(selections[0]);
+            parseDataFromGoogleServicesJson(fileContent);
         });
 
         pickerDialog.show();
@@ -327,7 +298,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
         StringBuilder notFoundLog = new StringBuilder();
         boolean hasNullConfig = false;
-        notFoundLog.append("The google-services.json file you selected does not contains the following configurations:\n");
+        notFoundLog.append("The google-services.json file you selected does not contain the following configurations:\n");
 
         if (storageBucketMatcher.find()) {
             configureImportFirebaseConfigFromJson(storage_bucket, storageBucketMatcher.group(1));
