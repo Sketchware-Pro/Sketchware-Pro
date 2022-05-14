@@ -127,15 +127,26 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         int id = view.getId();
         if (id == R.id.btn_console) {
             goToConsole();
-        } else if (id == R.id.layout_switch) {
-            libSwitch.setChecked(!libSwitch.isChecked());
-            if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
-                configureLibraryDialog();
+        } 
+        
+        if (id == R.id.layout_switch) {
+            //Enable Disable Firebase
+            if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
+
+                libSwitch.setChecked(!libSwitch.isChecked());
+                if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
+                    configureLibraryDialog();
+                } else {
+                    firebaseLibraryBean.useYn = "Y";
+                }
+
             } else {
-                firebaseLibraryBean.useYn = "Y";
+                SketchwareUtil.toastError("Please Configure Your Firebase Project Details First," +
+                        " Either Using Settings Icon Or Importing From google-services.json");
             }
         }
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
