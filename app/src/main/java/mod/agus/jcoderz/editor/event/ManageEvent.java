@@ -1559,13 +1559,16 @@ public class ManageEvent {
                 return "When " + targetId + " " + eventName + " %d.hour %d.minute";
 
             case "onScrollChanged":
-                return "When " + targetId + " " + eventName + " %d.scrollState";
+                return "When " + targetId + ": " + eventName + " %d.scrollState";
 
             case "onBannerAdFailedToLoad":
             case "onInterstitialAdFailedToLoad":
             case "onRewardAdFailedToLoad":
             case "onAdFailedToShowFullScreenContent":
                 return targetId + ": " + eventName + " %d.errorCode %s.errorMessage";
+
+            case "onUserEarnedReward":
+                return targetId + ": " + eventName + " %d.rewardAmount %s.rewardType";
 
             case "onInterstitialAdLoaded":
             case "onBannerAdLoaded":
