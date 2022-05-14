@@ -607,7 +607,7 @@ public class Lx {
             String initializer = getInitializer(typeName, typeInstanceName, parameters);
             String builtInType = mq.e(typeName);
             if (initializer.length() <= 0) {
-                if (!(builtInType.equals("") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
+                if (!(builtInType.equals("") || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
                     fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
                     if ("FirebaseCloudMessage".equals(typeName)) {
