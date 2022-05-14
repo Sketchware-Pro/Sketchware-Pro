@@ -8,9 +8,8 @@ import a.a.a.Jp;
 
 public class BuiltInLibraries {
 
-    // TODO: Maybe change location to cache directory
-    public static final File EXTRACTED_BUILT_IN_LIBRARIES_PATH = new File(SketchApplication.getContext().getFilesDir(), "libs" + File.separator + "libs");
-    public static final File EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH = new File(SketchApplication.getContext().getFilesDir(), "libs" + File.separator + "dexs");
+    public static final File EXTRACTED_BUILT_IN_LIBRARIES_PATH = new File(SketchApplication.getContext().getCacheDir(), "libs" + File.separator + "libs");
+    public static final File EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH = new File(SketchApplication.getContext().getCacheDir(), "libs" + File.separator + "dexs");
 
     // None final so that field values won't be optimized into code, and to allow easy changing of library names due to that
 
