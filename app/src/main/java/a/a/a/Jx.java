@@ -971,48 +971,28 @@ public class Jx {
             l.add(getComponentDeclarationAndAddImports(bean));
         }
         if (componentBeans.size() > 0) {
-            boolean hasTimer = false;
-            boolean hasFirebaseDB = false;
-            boolean hasFirebaseStorage = false;
-            boolean hasInterstitialAd = false;
-            boolean hasRewardedVideoAd = false;
             for (ComponentBean bean : componentBeans) {
                 switch (bean.type) {
                     case ComponentBean.COMPONENT_TYPE_TIMERTASK:
-                        hasTimer = true;
+                        h.add(Lx.d("Timer"));
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                        hasFirebaseDB = true;
+                        h.add(Lx.d("FirebaseDB"));
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                        hasFirebaseStorage = true;
+                        h.add(Lx.d("FirebaseStorage"));
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
-                        hasInterstitialAd = true;
+                        h.add(Lx.d("InterstitialAd"));
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                        hasRewardedVideoAd = true;
+                        h.add(Lx.d("RewardedVideoAd"));
                         break;
                 }
-            }
-            if (hasTimer) {
-                h.add(Lx.d("Timer"));
-            }
-            if (hasFirebaseDB) {
-                h.add(Lx.d("FirebaseDB"));
-            }
-            if (hasFirebaseStorage) {
-                h.add(Lx.d("FirebaseStorage"));
-            }
-            if (hasInterstitialAd) {
-                h.add(Lx.d("InterstitialAd"));
-            }
-            if (hasRewardedVideoAd) {
-                h.add(Lx.d("RewardedVideoAd"));
             }
         }
     }
