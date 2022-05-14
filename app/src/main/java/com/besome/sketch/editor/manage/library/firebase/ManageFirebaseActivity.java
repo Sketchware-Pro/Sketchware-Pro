@@ -17,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.sketchware.remod.R;
+
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -62,9 +64,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(consoleUrl);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -172,6 +171,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                 }
         }
     }
+}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
