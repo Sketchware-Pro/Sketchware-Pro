@@ -974,23 +974,11 @@ public class Jx {
             for (ComponentBean bean : componentBeans) {
                 switch (bean.type) {
                     case ComponentBean.COMPONENT_TYPE_TIMERTASK:
-                        h.add(Lx.d("Timer"));
-                        break;
-
                     case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                        h.add(Lx.d("FirebaseDB"));
-                        break;
-
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                        h.add(Lx.d("FirebaseStorage"));
-                        break;
-
                     case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
-                        h.add(Lx.d("InterstitialAd"));
-                        break;
-
                     case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                        h.add(Lx.d("RewardedVideoAd"));
+                        h.add(Lx.d(ComponentBean.getComponentTypeName(bean.type)));
                         break;
                 }
             }
