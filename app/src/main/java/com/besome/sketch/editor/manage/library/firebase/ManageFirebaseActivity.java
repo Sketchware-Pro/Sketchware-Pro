@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -153,8 +154,8 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                     firebaseLibraryBean.useYn = "Y";
                 }
             } else {
-                SketchwareUtil.toastError("Please Configure Your Firebase Project Details First," +
-                        " Either Using Settings Icon Or Importing From google-services.json");
+                SketchwareUtil.toast("Configure Firebase settings first, either by importing google-services.json, " +
+                        "or by manually entering the project's details.", Toast.LENGTH_LONG);
             }
         }
     }
