@@ -132,75 +132,24 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                     if (FileUtil.isDirectory(_name)) {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("name", Uri.parse(_name).getLastPathSegment());
-                        if (FileUtil.isExistFile(_name + File.separator + "alias") && !FileUtil.readFile(_name + File.separator + "alias").equals("")) {
-                            hashMap.put("alias", FileUtil.readFile(_name + File.separator + "alias"));
-                        }
                         main_list.add(hashMap);
                     }
                 }
-                if (listview != null) { //Is null check necessary?? IDK
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listview.setVisibility(View.VISIBLE);
-                            listview.setAdapter(new LibraryAdapter(new ArrayList<>(main_list)));
-                            refreshList.setRefreshing(false);
-                        }
-                    });
 
-                }
+                if (listview == null) return;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listview.setVisibility(View.VISIBLE);
+                        listview.setAdapter(new LibraryAdapter(new ArrayList<>(main_list)));
+                        refreshList.setRefreshing(false);
+                    }
+                });      
             }
         }.start();
     }
 
-    private void ShowAliasEditorDialog(String LibraryName) {
-
-        final EditText _aliasEdittext = new EditText(this);
-        _aliasEdittext.setSingleLine(true);
-        _aliasEdittext.setHint("Alias For " + LibraryName);
-        _aliasEdittext.setPadding(getDip(8), getDip(8), getDip(8), getDip(8));
-        if (FileUtil.isExistFile(local_libs_path + LibraryName + File.separator + "alias") && !FileUtil.readFile(local_libs_path + LibraryName + File.separator + "alias").equals("")) {
-            _aliasEdittext.setText(FileUtil.readFile(local_libs_path + LibraryName + File.separator + "alias"));
-        }
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(getDip(24), getDip(8), getDip(24), getDip(8)); //TODO: Figure out why this shit doesn't have any effect
-        _aliasEdittext.setLayoutParams(lp);
-
-        final AlertDialog.Builder _dialog = new AlertDialog.Builder(this);
-        _dialog.setCancelable(false)
-                .setView(_aliasEdittext)
-                .setTitle("Set Library Alias")
-                .setMessage("Add or remove custom alias to the selected library for quick recognizing.\nCurrent Selection: " + LibraryName)
-                .setPositiveButton("Save", null)
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
-                .setNeutralButton("Remove", (dialog, which) -> {
-                    if (FileUtil.isExistFile(local_libs_path.concat(LibraryName).concat("/alias"))) {
-                        FileUtil.deleteFile(local_libs_path.concat(LibraryName).concat("/alias"));
-                        bB.a(ManageLocalLibraryActivity.this, "Removed alias successfully", 0).show();
-                        loadFiles();
-                    }
-                    dialog.dismiss();
-                });
-
-        AlertDialog dialog = _dialog.create();
-        dialog.show();
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener(v -> {
-            if (!_aliasEdittext.getText().toString().trim().equals("")) {
-                FileUtil.writeFile(local_libs_path.concat(LibraryName).concat("/alias"), _aliasEdittext.getText().toString());
-                bB.a(ManageLocalLibraryActivity.this, "Alias Added successfully", 0).show();
-                loadFiles();
-                dialog.dismiss();
-            } else {
-                bB.a(ManageLocalLibraryActivity.this, "Type Something First! Duh", 0).show();
-            }
-        });
-
-    }
-
-    public class LibraryAdapter extends BaseAdapter {
+   public class LibraryAdapter extends BaseAdapter {
 
         ArrayList<HashMap<String, Object>> _data;
 
@@ -230,12 +179,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
             final CheckBox library_selected = convertView.findViewById(2131232370);
             final String libraryName = main_list.get(position).get("name").toString();
-            String alias = "";
-            if (main_list.get(position).containsKey("alias")) {
-                alias = main_list.get(position).get("alias").toString();
-            }
+          
             library_selected.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            library_selected.setText(alias.equals("") ? libraryName : alias + " (" + libraryName + ")");
+            library_selected.setText(libraryName);
             library_selected.setSelected(true); //For Marquee
             library_selected.setSingleLine(true);
             library_selected.setChecked(libContainsInProject(project_used_libs, libraryName));
@@ -283,15 +229,10 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
 
             convertView.findViewById(2131231132).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
-                popupMenu.getMenu().add(0, 0, 0, "Alias");
-                popupMenu.getMenu().add(0, 1, 1, "Delete");
+                popupMenu.getMenu().add(0, 0, 0, "Delete");
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
                     switch (menuItem.getItemId()) {
-                        case (0): { //Alias
-                            ShowAliasEditorDialog(libraryName);
-                            break;
-                        }
-                        case (1): { //Delete
+                        case (0): { //Delete
                             FileUtil.deleteFile(local_libs_path.concat(libraryName));
                             bB.a(ManageLocalLibraryActivity.this, "Deleted successfully", 0).show();
                             loadFiles();
