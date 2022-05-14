@@ -23,14 +23,6 @@ import mod.hey.studios.util.Helper;
 
 public class PropertyIndentItem extends RelativeLayout implements View.OnClickListener {
 
-    private Context context;
-    private String key = "";
-    private View propertyItem;
-    private View propertyMenuItem;
-    private ImageView imgLeftIcon;
-    private int icon;
-    private TextView tvName;
-    private TextView tvValue;
     /**
      * Left margin in dp
      */
@@ -47,6 +39,14 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
      * Bottom margin in dp
      */
     public int m;
+    private Context context;
+    private String key = "";
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private TextView tvName;
+    private TextView tvValue;
     private Kw valueChangeListener;
 
     public PropertyIndentItem(Context context, boolean z) {
