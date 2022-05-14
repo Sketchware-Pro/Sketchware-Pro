@@ -65,11 +65,11 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             tvName.setText(xB.b().a(getResources(), identifier));
             switch (this.key) {
                 case "property_padding":
-                    icon = R.drawable.insert_white_space_48;
+                    icon = R.drawable.collect_48;
                     break;
 
                 case "property_margin":
-                    icon = R.drawable.collect_48;
+                    icon = R.drawable.insert_white_space_48;
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
