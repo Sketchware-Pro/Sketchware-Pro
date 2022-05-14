@@ -614,6 +614,8 @@ public class Lx {
                         fieldDeclaration = "";
                     } else if ("FragmentStatePagerAdapter".equals(typeName)) {
                         fieldDeclaration += " " + a(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
+                    } else if ("RewardedVideoAd".equals(typeName)) {
+                        fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
                     } else {
                         fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
                     }
