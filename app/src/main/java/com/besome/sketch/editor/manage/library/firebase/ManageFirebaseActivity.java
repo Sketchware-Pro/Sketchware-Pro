@@ -1,8 +1,10 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +19,23 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import a.a.a.DB;
 import a.a.a.GB;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.xB;
+import mod.SketchwareUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
+@SuppressLint("ResourceType")
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_FIREBASE_SETTINGS = 237;
@@ -34,6 +46,11 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private TextView tvStorageUrl;
     private DB s = null;
     private ProjectLibraryBean firebaseLibraryBean;
+
+    private final String realtime_db = "realtime_db";
+    private final String app_id = "app_id";
+    private final String api_key = "api_key";
+    private final String storage_bucket = "storage_bucket";
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         firebaseLibraryBean = libraryBean;
@@ -47,9 +64,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setData(consoleUrl);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -60,6 +74,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         }
     }
 
+    @SuppressLint("WrongConstant")
     private void openDoc() {
         try {
             s.a("P1I15", true);
@@ -127,15 +142,47 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         int id = view.getId();
         if (id == R.id.btn_console) {
             goToConsole();
-        } else if (id == R.id.layout_switch) {
-            libSwitch.setChecked(!libSwitch.isChecked());
-            if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
-                configureLibraryDialog();
+        } 
+        
+        if (id == R.id.layout_switch) {
+            //Enable Disable Firebase
+            if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
+
+                libSwitch.setChecked(!libSwitch.isChecked());
+                if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
+                    configureLibraryDialog();
+                } else {
+                    firebaseLibraryBean.useYn = "Y";
+                }
+
             } else {
-                firebaseLibraryBean.useYn = "Y";
+                SketchwareUtil.toastError("Please Configure Your Firebase Project Details First," +
+                        " Either Using Settings Icon Or Importing From google-services.json");
             }
+        switch (view.getId()) {
+            case 2131230815:
+                goToConsole();
+                break;
+
+            case 2131231408:
+                //Enable Disable Firebase
+                if (libSwitch.isChecked() || !firebaseLibraryBean.data.isEmpty()) {
+
+                    libSwitch.setChecked(!libSwitch.isChecked());
+                    if ("Y".equals(firebaseLibraryBean.useYn) && !libSwitch.isChecked()) {
+                        configureLibraryDialog();
+                    } else {
+                        firebaseLibraryBean.useYn = "Y";
+                    }
+
+                } else {
+                    SketchwareUtil.toastError("Please Configure Your Firebase Project Details First," +
+                            " Either Using Settings Icon Or Importing From google-services.json");
+                }
         }
     }
+}
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -172,6 +219,11 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         btnConsole.setText(Helper.getResString(R.string.design_library_firebase_button_goto_firebase_console));
         btnConsole.setOnClickListener(this);
         configure();
+
+        final Button importFirebaseConfigFromJsonBtn = ((LinearLayout) btnConsole.getParent()).findViewWithTag("importFirebaseConfigFromJsonBtn");
+        importFirebaseConfigFromJsonBtn.setOnClickListener(v -> {
+            showImportJsonDialog();
+        });
     }
 
     @Override
@@ -200,24 +252,118 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
 
     private void configure() {
         libSwitch.setChecked("Y".equals(firebaseLibraryBean.useYn));
-        String projectId = firebaseLibraryBean.data;
-        if (projectId != null && projectId.length() > 0) {
-            tvProjectId.setText(firebaseLibraryBean.data);
+
+        if (firebaseLibraryBean.data != null) {
+            tvProjectId.setText(firebaseLibraryBean.data); //Realtime Database Url
         }
 
-        String appId = firebaseLibraryBean.reserved1;
-        if (appId != null && appId.length() > 0) {
-            tvAppId.setText(firebaseLibraryBean.reserved1);
+        if (firebaseLibraryBean.reserved1 != null) {
+            tvAppId.setText(firebaseLibraryBean.reserved1); //APP ID
         }
 
-        String apiKey = firebaseLibraryBean.reserved2;
-        if (apiKey != null && apiKey.length() > 0) {
-            tvApiKey.setText(firebaseLibraryBean.reserved2);
+        if (firebaseLibraryBean.reserved2 != null) {
+            tvApiKey.setText(firebaseLibraryBean.reserved2); //API Key
         }
 
-        String storageUrl = firebaseLibraryBean.reserved3;
-        if (storageUrl != null && storageUrl.length() > 0) {
-            tvStorageUrl.setText(firebaseLibraryBean.reserved3);
+        if (firebaseLibraryBean.reserved3 != null) {
+            tvStorageUrl.setText(firebaseLibraryBean.reserved3); //Storage Bucket
         }
+    }
+
+    public void configureImportFirebaseConfigFromJson(String type, String value) {
+        switch (type) {
+            case realtime_db:
+                firebaseLibraryBean.data = value;
+                break;
+            case app_id:
+                firebaseLibraryBean.reserved1 = value;
+                break;
+            case api_key:
+                firebaseLibraryBean.reserved2 = value;
+                break;
+            case storage_bucket:
+                firebaseLibraryBean.reserved3 = value;
+                break;
+        }
+    }
+
+    private void showImportJsonDialog() {
+        DialogProperties properties = new DialogProperties();
+
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
+        properties.offset = Environment.getExternalStorageDirectory();
+        properties.extensions = new String[]{"json"};
+
+        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties);
+
+        pickerDialog.setTitle("Select your google-services.json");
+        pickerDialog.setDialogSelectionListener(selections -> {
+            for (String path : selections) {
+                String fileContent = FileUtil.readFile(path);
+                if (fileContent == null) {
+                    SketchwareUtil.toastError("The file you selected is invalid or failed to read selected file");
+                } else {
+                    parseDataFromGoogleServicesJson(fileContent);
+                }
+            }
+        });
+
+        pickerDialog.show();
+    }
+
+    private void parseDataFromGoogleServicesJson(String _data) {
+        final String storageBucketRegex = "\"storage_bucket\": ?\"(.*)\"";
+        final String appIdRegex = "\"mobilesdk_app_id\": ?\"(.*)\"";
+        final String apiKeyRegex = "\"current_key\": ?\"(.*)\"";
+        final String rtdbRegex = "\"firebase_url\": ?\"(.*)\"";
+
+        Matcher storageBucketMatcher = Pattern.compile(storageBucketRegex, Pattern.MULTILINE).matcher(_data);
+        Matcher appIdMatcher = Pattern.compile(appIdRegex, Pattern.MULTILINE).matcher(_data);
+        Matcher apiKeyMatcher = Pattern.compile(apiKeyRegex, Pattern.MULTILINE).matcher(_data);
+        Matcher rtdbMatcher = Pattern.compile(rtdbRegex, Pattern.MULTILINE).matcher(_data);
+
+        StringBuilder notFoundLog = new StringBuilder();
+        boolean hasNullConfig = false;
+        notFoundLog.append("The google-services.json file you selected does not contains the following configurations:\n");
+
+        if (storageBucketMatcher.find()) {
+            configureImportFirebaseConfigFromJson(storage_bucket, storageBucketMatcher.group(1));
+        } else {
+            notFoundLog.append("StorageBucket, ");
+            configureImportFirebaseConfigFromJson(storage_bucket, "");
+            hasNullConfig = true;
+        }
+        if (appIdMatcher.find()) {
+            configureImportFirebaseConfigFromJson(app_id, appIdMatcher.group(1));
+        } else {
+            notFoundLog.append("App ID, ");
+            configureImportFirebaseConfigFromJson(app_id, "");
+            hasNullConfig = true;
+        }
+        if (apiKeyMatcher.find()) {
+            configureImportFirebaseConfigFromJson(api_key, apiKeyMatcher.group(1));
+        } else {
+            notFoundLog.append("API Key, ");
+            configureImportFirebaseConfigFromJson(api_key, "");
+            hasNullConfig = true;
+        }
+        if (rtdbMatcher.find()) {
+            configureImportFirebaseConfigFromJson(realtime_db, rtdbMatcher.group(1).replace("https://", ""));
+        } else {
+            notFoundLog.append("Realtime Database, ");
+            configureImportFirebaseConfigFromJson(realtime_db, "");
+            hasNullConfig = true;
+
+            //Disable Firebase in case it was enabled
+            libSwitch.setChecked(false);
+            firebaseLibraryBean.useYn = "N";
+
+        }
+
+        if (hasNullConfig) SketchwareUtil.toastError(notFoundLog.toString());
+        configure();
     }
 }

@@ -132,13 +132,7 @@ public class ManageLibraryActivity extends BaseSessionAppCompatActivity implemen
     }
 
     private void toFirebaseActivity(ProjectLibraryBean libraryBean) {
-        Intent intent;
-        if (!libraryBean.data.isEmpty()) {
-            intent = new Intent(getApplicationContext(), ManageFirebaseActivity.class);
-        } else {
-            intent = new Intent(getApplicationContext(), FirebaseActivity.class);
-        }
-
+        Intent intent = new Intent(getApplicationContext(), ManageFirebaseActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("firebase", libraryBean);
