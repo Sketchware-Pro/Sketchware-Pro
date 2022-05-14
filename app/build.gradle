@@ -66,6 +66,15 @@ android {
     androidResources {
         additionalParameters "--stable-ids", "public-stable-ids.txt"
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("../testkey.keystore")
+            storePassword "testkey"
+            keyAlias "testkey"
+            keyPassword "testkey"
+        }
+    }
 }
 
 dependencies {
