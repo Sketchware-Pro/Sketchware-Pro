@@ -270,7 +270,7 @@ public class ConfigActivity extends Activity {
                                 ConfigActivity.setSetting(SETTING_BACKUP_DIRECTORY, backupDirectory.getText().toString());
                                 SketchwareUtil.toast("Saved");
                             })
-                            .setNegativeButton(Resources.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
                             .show();
                 });
         addSwitchPreference("Use legacy Code Editor",
@@ -324,13 +324,13 @@ public class ConfigActivity extends Activity {
                     new AlertDialog.Builder(this)
                             .setTitle("Backup Filename Format")
                             .setView(container)
-                            .setNegativeButton(Resources.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
-                            .setPositiveButton(Resources.string.common_word_save, (dialogInterface, which) -> {
+                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
+                            .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
                                 setting_map.put(SETTING_BACKUP_FILENAME, backupFilename.getText().toString());
                                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                                 SketchwareUtil.toast("Saved");
                             })
-                            .setNeutralButton(Resources.string.common_word_reset, (dialogInterface, which) -> {
+                            .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
                                 setting_map.remove(SETTING_BACKUP_FILENAME);
                                 FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                                 SketchwareUtil.toast("Reset to default complete.");
