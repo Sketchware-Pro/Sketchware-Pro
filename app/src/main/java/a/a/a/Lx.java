@@ -610,14 +610,19 @@ public class Lx {
                 if (!(builtInType.equals("") || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
                     fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
-                    if ("FirebaseCloudMessage".equals(typeName)) {
-                        fieldDeclaration = "";
-                    } else if ("FragmentStatePagerAdapter".equals(typeName)) {
-                        fieldDeclaration += " " + a(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
-                    } else if ("RewardedVideoAd".equals(typeName)) {
-                        fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
-                    } else {
-                        fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
+                    switch (typeName) {
+                        case "FirebaseCloudMessage":
+                            fieldDeclaration = "";
+                            break;
+                        case "FragmentStatePagerAdapter":
+                            fieldDeclaration += " " + a(typeInstanceName + "Fragment") + " " + typeInstanceName + ";";
+                            break;
+                        case "RewardedVideoAd":
+                            fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
+                            break;
+                        default:
+                            fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
+                            break;
                     }
                 }
             } else {
