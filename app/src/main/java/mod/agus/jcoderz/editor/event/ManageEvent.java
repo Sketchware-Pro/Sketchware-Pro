@@ -1248,9 +1248,9 @@ public class ManageEvent {
                         "});";
 
             case "rewardedAdLoadCallback":
-                return "_" + targetId + "_rewarded_ad_load_callback = RewardedAdLoadCallback() {\r\n" +
+                return "_" + targetId + "_rewarded_ad_load_callback = new RewardedAdLoadCallback() {\r\n" +
                         listenerLogic + "\r\n" +
-                        "});";
+                        "};";
 
             case "onUserEarnedRewardListener":
                 return "_" + targetId + "_on_user_earned_reward_listener = new OnUserEarnedRewardListener() {\r\n" +
@@ -1258,7 +1258,7 @@ public class ManageEvent {
                         "int _rewardAmount = _param1.getAmount();\r\n" +
                         "String _rewardType = _param1.getType();\r\n" +
                         listenerLogic + "\r\n" +
-                        "});";
+                        "}\r\n};";
 
             default:
                 return EventsHandler.getListenerCode(listenerName, targetId, listenerLogic);
