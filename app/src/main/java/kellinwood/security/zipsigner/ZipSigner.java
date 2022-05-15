@@ -582,6 +582,7 @@ public class ZipSigner
     /**
      * @deprecated - use the version that takes the passwords as char[]
      */
+    @Deprecated
     public void signZip( URL keystoreURL,
                          String keystoreType,
                          String keystorePw,
