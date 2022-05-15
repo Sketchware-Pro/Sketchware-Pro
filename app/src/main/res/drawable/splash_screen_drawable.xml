@@ -11,10 +11,13 @@
     </item>
 
     <item
-        android:width="216sp"
-        android:height="216sp"
-        android:drawable="@drawable/splash_icon"
-        android:gravity="center" />
+        android:width="216dp"
+        android:height="216dp"
+        android:gravity="center">
+        <bitmap
+            android:gravity="fill_horizontal|fill_vertical"
+            android:src="@drawable/splash_icon" />
+    </item>
 
 
 </layer-list>
