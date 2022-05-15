@@ -865,35 +865,33 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         return;
                     }
 
-                    publishProgress("Aligning APK...");
-                    c.runZipalign();
+                    publishProgress("Signing APK...");
+                    if (signWithTestkey) {
+                        ZipSigner signer = new ZipSigner();
+                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
+                        signer.signZip(c.yq.G, c.yq.unalignedSignedApkPath);
+                    } else if (isResultJarSigningEnabled()) {
+                        Security.addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
+                        CustomKeySigner.signZip(
+                                new ZipSigner(),
+                                wq.j(),
+                                signingKeystorePassword,
+                                signingAliasName,
+                                signingKeystorePassword,
+                                signingAlgorithm,
+                                c.yq.G,
+                                c.yq.unalignedSignedApkPath
+                        );
+                    } else {
+                        FileUtil.copyFile(c.yq.G, c.yq.unalignedSignedApkPath);
+                    }
                     if (d) {
                         cancel(true);
                         return;
                     }
 
-                    publishProgress("Signing APK...");
-                    if (signWithTestkey) {
-                        ZipSigner signer = new ZipSigner();
-                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(c.yq.alignedApkPath, c.yq.I);
-                    } else {
-                        if (isResultJarSigningEnabled()) {
-                            Security.addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
-                            CustomKeySigner.signZip(
-                                    new ZipSigner(),
-                                    wq.j(),
-                                    signingKeystorePassword,
-                                    signingAliasName,
-                                    signingKeystorePassword,
-                                    signingAlgorithm,
-                                    c.yq.alignedApkPath,
-                                    c.yq.I
-                            );
-                        } else {
-                            FileUtil.copyFile(c.yq.alignedApkPath, getCorrectResultFilename(c.yq.I));
-                        }
-                    }
+                    publishProgress("Aligning APK...");
+                    c.runZipalign(c.yq.unalignedSignedApkPath, getCorrectResultFilename(c.yq.I));
                 }
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
