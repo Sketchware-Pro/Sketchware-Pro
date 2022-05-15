@@ -1007,7 +1007,14 @@ public class Dp {
         }
     }
 
+    /**
+     * Calls {@link #runZipalign(String, String)} with {@link yq#G} and {@link yq#alignedApkPath}.
+     */
     public void runZipalign() throws By {
+        runZipalign(yq.G, yq.alignedApkPath);
+    }
+
+    public void runZipalign(String inPath, String outPath) throws By {
         maybeExtractZipalignBinary();
 
         ArrayList<String> args = new ArrayList<>();
@@ -1015,8 +1022,8 @@ public class Dp {
         args.add("-f");
         args.add("-p");
         args.add("4");
-        args.add(yq.G);
-        args.add(yq.alignedApkPath);
+        args.add(inPath);
+        args.add(outPath);
 
         LogUtil.d(TAG, "About to run zipalign with this cmdline: " + args);
 
