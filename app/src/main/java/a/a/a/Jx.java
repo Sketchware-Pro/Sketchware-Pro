@@ -945,14 +945,14 @@ public class Jx {
     private void addFieldsDeclaration() {
         String javaName = projectFileBean.getJavaName();
         for (Pair<Integer, String> next : projectDataManager.k(javaName)) {
-            int intValue = next.first;
-            String str = next.second;
-            if (intValue == 9) {
-                addImport(str);
-            } else if (intValue == 5) {
-                i.add(str + (str.contains(";") ? "" : ";"));
+            int variableId = next.first;
+            String variableValue = next.second;
+            if (variableId == 9) {
+                addImport(variableValue);
+            } else if (variableId == 6) {
+                i.add(variableValue + ";");
             } else {
-                i.add(getVariableDeclarationAndAddImports(intValue, str));
+                i.add(getVariableDeclarationAndAddImports(variableId, variableValue));
             }
         }
         for (Pair<Integer, String> next2 : projectDataManager.j(javaName)) {
