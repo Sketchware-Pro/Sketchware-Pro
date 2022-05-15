@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
-import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.KeyStoreFileManager;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
@@ -203,20 +201,6 @@ public class Dp {
                 buildAppBundle,
                 buildingDialog);
         compiler.compile();
-    }
-
-    public void b(String password, String alias, String signingAlgorithm) throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
-        CustomKeySigner.signZip(
-                new ZipSigner(),
-                wq.j(),
-                password.toCharArray(),
-                alias,
-                password.toCharArray(),
-                signingAlgorithm,
-                yq.G,
-                yq.I
-        );
     }
 
     public boolean isD8Enabled() {

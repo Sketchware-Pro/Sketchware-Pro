@@ -879,7 +879,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         signer.signZip(c.yq.alignedApkPath, c.yq.I);
                     } else {
                         if (isResultJarSigningEnabled()) {
-                            c.b(new String(signingKeystorePassword), signingAliasName, signingAlgorithm);
+                            Security.addProvider(new org.spongycastle.jce.provider.BouncyCastleProvider());
+                            CustomKeySigner.signZip(
+                                    new ZipSigner(),
+                                    wq.j(),
+                                    signingKeystorePassword,
+                                    signingAliasName,
+                                    signingKeystorePassword,
+                                    signingAlgorithm,
+                                    c.yq.G,
+                                    c.yq.I
+                            );
                         } else {
                             FileUtil.copyFile(c.yq.G, getCorrectResultFilename(c.yq.I));
                         }
