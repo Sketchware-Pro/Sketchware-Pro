@@ -48,6 +48,7 @@ public class EditorManifest {
         if (!packageName.isEmpty()) {
             Nx receiverTag = new Nx("receiver");
             receiverTag.a("android", "name", "com.onesignal.GcmBroadcastReceiver");
+            receiverTag.a("android", "exported", "true");
             receiverTag.a("android", "permission", "com.google.android.c2dm.permission.SEND");
             Nx intentFilterTag = new Nx("intent-filter");
             intentFilterTag.a("android", "priority", "999");
@@ -95,6 +96,7 @@ public class EditorManifest {
         applicationTag.a(notificationRestoreServiceTag);
         Nx bootUpReceiverTag = new Nx("receiver");
         bootUpReceiverTag.a("android", "name", "com.onesignal.BootUpReceiver");
+        bootUpReceiverTag.a("android", "exported", "false");
         Nx bootUpReceiverIntentFilterTag = new Nx("intent-filter");
         Nx bootUpReceiverBootCompleteActionTag = new Nx("action");
         bootUpReceiverBootCompleteActionTag.a("android", "name", "android.intent.action.BOOT_COMPLETED");
@@ -106,6 +108,7 @@ public class EditorManifest {
         applicationTag.a(bootUpReceiverTag);
         Nx upgradeReceiverTag = new Nx("receiver");
         upgradeReceiverTag.a("android", "name", "com.onesignal.UpgradeReceiver");
+        upgradeReceiverTag.a("android", "exported", "false");
         Nx upgradeReceiverIntentFilterTag = new Nx("intent-filter");
         Nx upgradeReceiverIntentFilterActionTag = new Nx("action");
         upgradeReceiverIntentFilterActionTag.a("android", "name", "android.intent.action.MY_PACKAGE_REPLACED");
