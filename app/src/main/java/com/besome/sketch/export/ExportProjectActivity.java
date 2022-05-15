@@ -887,11 +887,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                     signingAliasName,
                                     signingKeystorePassword,
                                     signingAlgorithm,
-                                    c.yq.G,
+                                    c.yq.alignedApkPath,
                                     c.yq.I
                             );
                         } else {
-                            FileUtil.copyFile(c.yq.G, getCorrectResultFilename(c.yq.I));
+                            FileUtil.copyFile(c.yq.alignedApkPath, getCorrectResultFilename(c.yq.I));
                         }
                     }
                 }
