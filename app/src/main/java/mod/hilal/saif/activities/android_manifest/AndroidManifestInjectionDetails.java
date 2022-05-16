@@ -206,7 +206,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void applyChange() {
-        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(ATTRIBUTES_FILE_PATH)) {
             data = new Gson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
             ///int val = data.size()-1;
@@ -217,13 +217,9 @@ public class AndroidManifestInjectionDetails extends Activity {
                 }
                 ///val--;
             }
-            for (int i = 0; i < listMap.size(); i++) {
-                data.add(listMap.get(i));
-            }
+            data.addAll(listMap);
         } else {
-            for (int i = 0; i < listMap.size(); i++) {
-                data.add(listMap.get(i));
-            }
+            data = new ArrayList<>(listMap);
         }
         FileUtil.writeFile(ATTRIBUTES_FILE_PATH, new Gson().toJson(data));
         refreshList();
