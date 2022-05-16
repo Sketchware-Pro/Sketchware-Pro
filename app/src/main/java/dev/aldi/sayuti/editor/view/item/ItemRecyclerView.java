@@ -37,7 +37,7 @@ public class ItemRecyclerView extends ListView implements sy {
         this.f.add("RecyclerView item 1");
         this.f.add("RecyclerView item 2");
         this.f.add("RecyclerView item 3");
-        setAdapter((ListAdapter) new ArrayAdapter(context, 17367043, this.f));
+        setAdapter((ListAdapter) new ArrayAdapter<>(context, 17367043, this.f));
     }
 
     public ViewBean getBean() {

@@ -23,7 +23,7 @@ public class ItemGridView extends GridView implements sy {
     public boolean c;
     public Paint d;
     public float e;
-    public ArrayList f = new ArrayList();
+    public ArrayList<String> f = new ArrayList<>();
 
     public ItemGridView(Context context) {
         super(context);
@@ -45,7 +45,7 @@ public class ItemGridView extends GridView implements sy {
         this.f.add("Item 4");
         this.f.add("Item 5");
         this.f.add("Item 6");
-        setAdapter((ListAdapter) new ArrayAdapter(context, 17367043, this.f));
+        setAdapter((ListAdapter) new ArrayAdapter<>(context, 17367043, this.f));
     }
 
     public ViewBean getBean() {
