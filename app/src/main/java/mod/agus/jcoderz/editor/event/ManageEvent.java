@@ -494,8 +494,7 @@ public class ManageEvent {
 
             case "onRecyclerScrollChanged":
             case "onScrollChanged":
-                // Nice typo, Agus
-                return "onScrollStateCanged";
+                return "onScrollStateChanged";
 
             case "onCreateContextMenu":
                 return "On create context menu";
