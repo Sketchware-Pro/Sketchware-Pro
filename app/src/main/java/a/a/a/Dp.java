@@ -123,7 +123,7 @@ public class Dp {
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         mll = new ManageLocalLibrary(yqVar.b);
         builtInLibraryManager = new Kp();
-        File defaultAndroidJar = new File(extractedBuiltInLibrariesDirectory, "android.jar");
+        File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
         proguard = new ProguardHandler(yqVar.b);
         settings = new ProjectSettings(yqVar.b);
@@ -282,7 +282,7 @@ public class Dp {
         if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
                 BuildSettings.SETTING_JAVA_VERSION_1_7)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
-            classpath.append(":").append(extractedBuiltInLibrariesDirectory.getAbsolutePath()).append(File.separator).append("core-lambda-stubs.jar");
+            classpath.append(":").append(new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar").getAbsolutePath());
         }
 
         /* Add used built-in libraries to the classpath */
@@ -751,8 +751,8 @@ public class Dp {
      */
     public void j() {
         /* If l doesn't exist, create it */
-        if (!fileUtil.e(extractedBuiltInLibrariesDirectory.getAbsolutePath())) {
-            fileUtil.f(extractedBuiltInLibrariesDirectory.getAbsolutePath());
+        if (!fileUtil.e(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath())) {
+            fileUtil.f(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         String androidJarArchiveName = "android.jar.zip";
         String dexsArchiveName = "dexs.zip";
@@ -760,14 +760,14 @@ public class Dp {
         String libsArchiveName = "libs.zip";
         String testkeyArchiveName = "testkey.zip";
 
-        String androidJarPath = new File(extractedBuiltInLibrariesDirectory, androidJarArchiveName).getAbsolutePath();
-        String dexsArchivePath = new File(extractedBuiltInLibrariesDirectory, dexsArchiveName).getAbsolutePath();
-        String coreLambdaStubsJarPath = new File(extractedBuiltInLibrariesDirectory, coreLambdaStubsJarName).getAbsolutePath();
-        String libsArchivePath = new File(extractedBuiltInLibrariesDirectory, libsArchiveName).getAbsolutePath();
-        String testkeyArchivePath = new File(extractedBuiltInLibrariesDirectory, testkeyArchiveName).getAbsolutePath();
+        String androidJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
+        String dexsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, dexsArchiveName).getAbsolutePath();
+        String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
+        String libsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, libsArchiveName).getAbsolutePath();
+        String testkeyArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, testkeyArchiveName).getAbsolutePath();
         String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
         String libsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH.getAbsolutePath();
-        String testkeyDirectoryPath = new File(extractedBuiltInLibrariesDirectory, "testkey").getAbsolutePath();
+        String testkeyDirectoryPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey").getAbsolutePath();
 
         /* If necessary, update android.jar.zip */
         String baseAssetsPath = "libs" + File.separator;
@@ -776,9 +776,9 @@ public class Dp {
                 buildingDialog.setProgress("Extracting built-in android.jar...");
             }
             /* Delete android.jar */
-            fileUtil.c(extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + "android.jar");
+            fileUtil.c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
             /* Extract android.jar.zip to android.jar */
-            new KB().a(androidJarPath, extractedBuiltInLibrariesDirectory.getAbsolutePath());
+            new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         /* If necessary, update dexs.zip */
         if (a(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
@@ -885,7 +885,8 @@ public class Dp {
      */
     private void proguardAddLibConfigs(List<String> args) {
         for (Jp jp : builtInLibraryManager.a()) {
-            String str = extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + jp.a() + File.separator + "proguard.txt";
+            // TODO: Replace with new BuiltInLibraries helper method
+            String str = new File(BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH, jp.a() + File.separator + "proguard.txt").getAbsolutePath();
             if (FileUtil.isExistFile(str)) {
                 args.add("-include");
                 args.add(str);
