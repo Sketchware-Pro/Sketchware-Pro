@@ -201,7 +201,7 @@
     <item type="id" name="cv_console" />
     <item type="id" name="cv_create_new" />
     <item type="id" name="cv_item" />
-    <item type="id" name="cv_manage_publish" />
+    <item type="id" name="cv_restore_projects" />
     <item type="id" name="cv_more_block_btn" />
     <item type="id" name="cv_my_result" />
     <item type="id" name="cv_play" />
@@ -455,7 +455,7 @@
     <item type="id" name="iv_create_new" />
     <item type="id" name="iv_detail" />
     <item type="id" name="iv_icon" />
-    <item type="id" name="iv_manage_publish" />
+    <item type="id" name="iv_restore_projects" />
     <item type="id" name="iv_question_expender" />
     <item type="id" name="iv_trash" />
     <item type="id" name="language_categorylayout" />
@@ -1224,7 +1224,7 @@
     <item type="id" name="tv_long_desc_limit" />
     <item type="id" name="tv_long_desc_title" />
     <item type="id" name="tv_made_complete" />
-    <item type="id" name="tv_manage_publish" />
+    <item type="id" name="tv_restore_projects" />
     <item type="id" name="tv_manual_add_ad_unit" />
     <item type="id" name="tv_matchparent" />
     <item type="id" name="tv_menu_name" />
