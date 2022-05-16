@@ -1,5 +1,7 @@
 package mod.agus.jcoderz.editor.event;
 
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 
 import a.a.a.Gx;
@@ -333,96 +335,96 @@ public class ManageEvent {
     public static int d(String str) {
         switch (str) {
             case "onUpdateProfileComplete":
-                return 2131166348;
+                return R.drawable.event_update_profile;
 
             case "FBAdsBanner_onLoggingImpression":
             case "FBAdsInterstitial_onLoggingImpression":
-                return 2131166342;
+                return R.drawable.event_fbads_impression;
 
             case "onEmailVerificationSent":
-                return 2131166335;
+                return R.drawable.event_email_verif_sent;
 
             case "onDateChanged":
             case "onDateSet":
-                return 2131165572;
+                return R.drawable.event_on_date_changed_48dp;
 
             case "onFailureLink":
-                return 2131166336;
+                return R.drawable.event_fb_dynamic_fail;
 
             case "onDeleteUserComplete":
-                return 2131166333;
+                return R.drawable.event_delete_user;
 
             case "onCompletion":
-                return 2131165579;
+                return R.drawable.event_on_file_put_success_48dp;
 
             case "onQueryTextChanged":
-                return 2131165849;
+                return R.drawable.ic_search_color_96dp;
 
             case "onUpdateEmailComplete":
-                return 2131166334;
+                return R.drawable.event_email_updated;
 
             case "onError":
-                return 2131165548;
+                return R.drawable.error_96_yellow;
 
             case "onVerificationCompleted":
-                return 2131166350;
+                return R.drawabe.event_verif_success;
 
             case "onSaveInstanceState":
             case "onCreateOptionsMenu":
             case "onCreateContextMenu":
             case "onContextItemSelected":
             case "onOptionsItemSelected":
-                return 2131165333;
+                return R.drawable.bg_event_type_activity;
 
             case "onRestoreInstanceState":
-                return 2131165548;
+                return R.drawable.error_96_yellow;
 
             case "onSuccessLink":
-                return 2131166337;
+                return R.drawable.event_fb_dynamic_success;
 
             case "onPatternLockCleared":
             case "onPatternLockProgress":
-                return 2131166309;
+                return R.drawable.event_pattern_lock_view;
 
             case "FBAdsInterstitial_onAdClicked":
-                return 2131166338;
+                return R.drawable.event_fbads_click;
 
             case "onAccountPickerCancelled":
-                return 2131166345;
+                return R.drawable.event_google_revoke;
 
             case "onVerificationFailed":
-                return 2131166349;
+                return R.drawable.event_verif_failed;
 
             case "onGoogleSignIn":
-                return 2131166346;
+                return R.drawable.event_google_signin;
 
             case "onAccountPicker":
-                return 2131166344;
+                return R.drawable.event_google_result;
 
             case "onFragmentAdded":
-                return 2131166304;
+                return R.drawable.widget_fragment;
 
             case "onTimeSet":
-                return 2131166276;
+                return R.drawable.widget_timer;
 
             case "signInWithPhoneAuthComplete":
-                return 2131166331;
+                return R.drawable.event_code_sent;
 
             case "FBAdsInterstitial_onInterstitialDismissed":
-                return 2131166339;
+                return R.drawable.event_fbads_dismiss;
 
             case "onRatingChanged":
-                return 2131166177;
+                return R.drawable.star_filled;
 
             case "FBAdsInterstitial_onInterstitialDisplayed":
-                return 2131166340;
+                return R.drawable.event_fbads_displayed;
 
             case "onPatternLockStarted":
             case "onPatternLockComplete":
-                return 2131166309;
+                return R.drawable.event_pattern_lock_view;
 
             case "onLetterSelected":
-                return 2131166313;
+                return R.drawable.event_on_letter_selected;
 
             case "onScrollChanged":
             case "onPageChanged":
@@ -435,41 +437,41 @@ public class ManageEvent {
             case "onPageSelected":
             case "onTabSelected":
             case "onTabReselected":
-                return 2131165581;
+                return R.drawable.event_on_item_long_clicked_48dp;
 
             case "FBAdsBanner_onAdClicked":
-                return 2131166338;
+                return R.drawable.event_fbads_click;
 
             case "onPrepared":
-                return 2131165588;
+                return R.drawable.event_on_page_started_48dp;
 
             case "onQueryTextSubmit":
-                return 2131165849;
+                return R.drawable.ic_search_color_96dp;
 
             case "FBAdsInterstitial_onError":
-                return 2131166341;
+                return R.drawable.event_fbads_error;
 
             case "FBAdsInterstitial_onAdLoaded":
             case "FBAdsBanner_onAdLoaded":
-                return 2131166343;
+                return R.drawable.event_fbads_loaded;
 
             case "FBAdsBanner_onError":
-                return 2131166341;
+                return R.drawable.event_fbads_error;
 
             case "onTabAdded":
-                return 2131166303;
+                return R.drawable.widget_tab_layout;
 
             case "onCompleteRegister":
-                return 2131166332;
+                return R.drawable.event_complete_register;
 
             case "onCodeSent":
-                return 2131166331;
+                return R.drawable.event_code_sent;
 
             case "onTimeChanged":
-                return 2131166276;
+                return R.drawable.widget_timer;
 
             case "onUpdatePasswordComplete":
-                return 2131166347;
+                return R.drawable.event_password_updated;
 
             default:
                 return EventsHandler.getIcon(str);
