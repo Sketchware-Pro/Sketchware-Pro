@@ -39,6 +39,10 @@ import mod.hey.studios.util.Helper;
 public class ManageFirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_FIREBASE_SETTINGS = 237;
+    private final String realtime_db = "realtime_db";
+    private final String app_id = "app_id";
+    private final String api_key = "api_key";
+    private final String storage_bucket = "storage_bucket";
     private Switch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
@@ -46,11 +50,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private TextView tvStorageUrl;
     private DB s = null;
     private ProjectLibraryBean firebaseLibraryBean;
-
-    private final String realtime_db = "realtime_db";
-    private final String app_id = "app_id";
-    private final String api_key = "api_key";
-    private final String storage_bucket = "storage_bucket";
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
         firebaseLibraryBean = libraryBean;
@@ -198,9 +197,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         configure();
 
         final Button importFirebaseConfigFromJsonBtn = ((LinearLayout) btnConsole.getParent()).findViewWithTag("importFirebaseConfigFromJsonBtn");
-        importFirebaseConfigFromJsonBtn.setOnClickListener(v -> {
-            showImportJsonDialog();
-        });
+        importFirebaseConfigFromJsonBtn.setOnClickListener(v -> showImportJsonDialog());
     }
 
     @Override

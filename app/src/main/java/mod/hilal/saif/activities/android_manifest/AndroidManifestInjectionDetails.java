@@ -340,20 +340,14 @@ public class AndroidManifestInjectionDetails extends Activity {
 
                 dia.setMessage("do you want to delete this attribute?");
 
-                dia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listMap.remove(position);
-                        applyChange();
-                        SketchwareUtil.toast("deleted");
-                    }
+                dia.setPositiveButton("Yes", (dialog, which) -> {
+                    listMap.remove(position);
+                    applyChange();
+                    SketchwareUtil.toast("deleted");
                 });
 
-                dia.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                dia.setNegativeButton("No", (dialog, which) -> {
 
-                    }
                 });
                 dia.show();
 

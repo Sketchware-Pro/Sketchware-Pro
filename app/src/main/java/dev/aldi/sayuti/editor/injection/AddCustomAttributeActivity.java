@@ -1,7 +1,6 @@
 package dev.aldi.sayuti.editor.injection;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -9,7 +8,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -55,11 +53,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
     private void initialize(Bundle _savedInstanceState) {
         fab = findViewById(2131232439);
         listview = findViewById(2131232438);
-        fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                dialog("create", 0);
-            }
-        });
+        fab.setOnClickListener(v -> dialog("create", 0));
     }
 
     private void initializeLogic() {
@@ -116,37 +110,26 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             editText2.setText(value.substring(value.indexOf(":") + 1, value.indexOf("=")));
             editText3.setText(value.substring(value.indexOf("\"") + 1, value.length() - 1));
         }
-        save.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (!editText.getText().toString().trim().equals("") && !editText2.getText().toString().trim().equals("") && !editText3.getText().toString().trim().equals("")) {
-                    if (type.equals("create")) {
-                        map = new HashMap<>();
-                        map.put("type", AddCustomAttributeActivity.this.type);
-                        map.put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
-                        listMap.add(map);
-                        SketchwareUtil.toast("Added");
-                    } else if (type.equals("edit")) {
-                        listMap.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
-                        SketchwareUtil.toast("Saved");
-                    }
-                    listview.setAdapter(new CustomAdapter(listMap));
-                    ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
-                    dialog.dismiss();
-                    FileUtil.writeFile(path, new Gson().toJson(listMap));
+        save.setOnClickListener(v -> {
+            if (!editText.getText().toString().trim().equals("") && !editText2.getText().toString().trim().equals("") && !editText3.getText().toString().trim().equals("")) {
+                if (type.equals("create")) {
+                    map = new HashMap<>();
+                    map.put("type", AddCustomAttributeActivity.this.type);
+                    map.put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                    listMap.add(map);
+                    SketchwareUtil.toast("Added");
+                } else if (type.equals("edit")) {
+                    listMap.get(position).put("value", editText.getText().toString().concat(":".concat(editText2.getText().toString().concat("=\"".concat(editText3.getText().toString().concat("\""))))));
+                    SketchwareUtil.toast("Saved");
                 }
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+                listview.setAdapter(new CustomAdapter(listMap));
+                ((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
                 dialog.dismiss();
+                FileUtil.writeFile(path, new Gson().toJson(listMap));
             }
         });
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                SketchwareUtil.hideKeyboard();
-            }
-        });
+        cancel.setOnClickListener(v -> dialog.dismiss());
+        dialog.setOnDismissListener(dialog1 -> SketchwareUtil.hideKeyboard());
         dialog.show();
         editText.requestFocus();
         SketchwareUtil.showKeyboard();
@@ -197,26 +180,22 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                 textView.setText(spannableString);
                 linearLayout.setVisibility(View.VISIBLE);
             }
-            imageView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(getApplicationContext(), imageView);
-                    popupMenu.getMenu().add(0, 0, 0, "Edit");
-                    popupMenu.getMenu().add(0, 1, 0, "Delete");
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getItemId() == 0) {
-                                dialog("edit", position);
-                                return true;
-                            }
-                            listMap.remove(position);
-                            FileUtil.writeFile(path, new Gson().toJson(listMap));
-                            notifyDataSetChanged();
-                            SketchwareUtil.toast("Deleted successfully");
-                            return true;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            imageView.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(getApplicationContext(), imageView);
+                popupMenu.getMenu().add(0, 0, 0, "Edit");
+                popupMenu.getMenu().add(0, 1, 0, "Delete");
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == 0) {
+                        dialog("edit", position);
+                        return true;
+                    }
+                    listMap.remove(position);
+                    FileUtil.writeFile(path, new Gson().toJson(listMap));
+                    notifyDataSetChanged();
+                    SketchwareUtil.toast("Deleted successfully");
+                    return true;
+                });
+                popupMenu.show();
             });
             return convertView;
         }
