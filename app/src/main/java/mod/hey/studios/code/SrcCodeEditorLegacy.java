@@ -1,4 +1,4 @@
-package mod.hey.studios.activity;
+package mod.hey.studios.code;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,7 +17,7 @@ import mod.hey.studios.lib.code_editor.ColorScheme;
 /**
  * Legacy code editor
  */
-public class SrcCodeEditor extends Activity {
+public class SrcCodeEditorLegacy extends Activity {
 
     private CodeEditorLayout codeEditor;
     private final View.OnClickListener changeTextSize = v -> {

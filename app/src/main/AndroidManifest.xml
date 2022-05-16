@@ -380,7 +380,7 @@
             android:name="mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hey.studios.activity.SrcCodeEditor"
+            android:name="mod.hey.studios.code.SrcCodeEditorLegacy"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.hey.studios.code.SrcCodeEditor"
