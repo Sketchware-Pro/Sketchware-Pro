@@ -7,7 +7,9 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -74,8 +76,10 @@ public class ActComponentsDialog extends Dialog {
         setCodeEditorText();
         editor = codeEditor.getEditText();
         codeEditor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
-        editor.setInputType(655361);
-        editor.setImeOptions(1);
+        editor.setInputType(InputType.TYPE_CLASS_TEXT
+                | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editor.setImeOptions(EditorInfo.IME_ACTION_NONE);
     }
 
     private void addControl() {
