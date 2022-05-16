@@ -192,15 +192,15 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         menu.add(0, 4, 0, "Word wrap")
                 .setCheckable(true)
                 .setChecked(pref.getBoolean("dlg_ww", false));
-        menu.add(0, 4, 0, "Auto complete symbol pair")
-                .setCheckable(true)
-                .setChecked(pref.getBoolean("dlg_acsp", true));
         menu.add(0, 5, 0, "Pretty print");
         menu.add(0, 6, 0, "Switch language");
         menu.add(0, 7, 0, "Switch theme");
         menu.add(0, 8, 0, "Auto complete")
                 .setCheckable(true)
                 .setChecked(pref.getBoolean("dlg_ac", true));
+        menu.add(0, 9, 0, "Auto complete symbol pair")
+                .setCheckable(true)
+                .setChecked(pref.getBoolean("dlg_acsp", true));
     }
 
     private boolean isThemeDark(int theme) {

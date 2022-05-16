@@ -70,7 +70,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         int theme = pref.getInt(prefix + "_theme", 3);
         boolean word_wrap = pref.getBoolean(prefix + "_ww", false);
         boolean auto_c = pref.getBoolean(prefix + "_ac", true);
-        boolean auto_complete_symbol_pairs = pref.getBoolean(prefix + "acsp", true);
+        boolean auto_complete_symbol_pairs = pref.getBoolean(prefix + "_acsp", true);
 
         selectTheme(ed, theme);
 
@@ -411,9 +411,6 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Word wrap")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ww", false));
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair")
-                .setCheckable(true)
-                .setChecked(local_pref.getBoolean("act_acsp", true));
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Pretty print");
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Switch language");
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Switch theme");
@@ -421,6 +418,9 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ac", true));
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair")
+                .setCheckable(true)
+                .setChecked(local_pref.getBoolean("act_acsp", true));
 
         return true;
     }
@@ -513,7 +513,7 @@ public class SrcCodeEditor extends AppCompatActivity {
                 item.setChecked(!item.isChecked());
                 editor.getProps().symbolPairAutoCompletion = item.isChecked();
 
-                pref.edit().putBoolean("act_acp", item.isChecked()).apply();
+                pref.edit().putBoolean("act_acsp", item.isChecked()).apply();
                 break;
 
             case "Auto complete":
