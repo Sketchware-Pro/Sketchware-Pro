@@ -358,12 +358,14 @@ public class ManageEvent {
                 return R.drawable.event_on_file_put_success_48dp;
 
             case "onQueryTextChanged":
+            case "onQueryTextSubmit":
                 return R.drawable.ic_search_color_96dp;
 
             case "onUpdateEmailComplete":
                 return R.drawable.event_email_updated;
 
             case "onError":
+            case "onRestoreInstanceState":
                 return R.drawable.error_96_yellow;
 
             case "onVerificationCompleted":
@@ -376,17 +378,17 @@ public class ManageEvent {
             case "onOptionsItemSelected":
                 return R.drawable.bg_event_type_activity;
 
-            case "onRestoreInstanceState":
-                return R.drawable.error_96_yellow;
-
             case "onSuccessLink":
                 return R.drawable.event_fb_dynamic_success;
 
             case "onPatternLockCleared":
             case "onPatternLockProgress":
+            case "onPatternLockStarted":
+            case "onPatternLockComplete":
                 return R.drawable.event_pattern_lock_view;
 
             case "FBAdsInterstitial_onAdClicked":
+            case "FBAdsBanner_onAdClicked":
                 return R.drawable.event_fbads_click;
 
             case "onAccountPickerCancelled":
@@ -405,9 +407,11 @@ public class ManageEvent {
                 return R.drawable.widget_fragment;
 
             case "onTimeSet":
+            case "onTimeChanged":
                 return R.drawable.widget_timer;
 
             case "signInWithPhoneAuthComplete":
+            case "onCodeSent":
                 return R.drawable.event_code_sent;
 
             case "FBAdsInterstitial_onInterstitialDismissed":
@@ -418,10 +422,6 @@ public class ManageEvent {
 
             case "FBAdsInterstitial_onInterstitialDisplayed":
                 return R.drawable.event_fbads_displayed;
-
-            case "onPatternLockStarted":
-            case "onPatternLockComplete":
-                return R.drawable.event_pattern_lock_view;
 
             case "onLetterSelected":
                 return R.drawable.event_on_letter_selected;
@@ -439,36 +439,22 @@ public class ManageEvent {
             case "onTabReselected":
                 return R.drawable.event_on_item_long_clicked_48dp;
 
-            case "FBAdsBanner_onAdClicked":
-                return R.drawable.event_fbads_click;
-
             case "onPrepared":
                 return R.drawable.event_on_page_started_48dp;
 
-            case "onQueryTextSubmit":
-                return R.drawable.ic_search_color_96dp;
-
             case "FBAdsInterstitial_onError":
+            case "FBAdsBanner_onError":
                 return R.drawable.event_fbads_error;
 
             case "FBAdsInterstitial_onAdLoaded":
             case "FBAdsBanner_onAdLoaded":
                 return R.drawable.event_fbads_loaded;
 
-            case "FBAdsBanner_onError":
-                return R.drawable.event_fbads_error;
-
             case "onTabAdded":
                 return R.drawable.widget_tab_layout;
 
             case "onCompleteRegister":
                 return R.drawable.event_complete_register;
-
-            case "onCodeSent":
-                return R.drawable.event_code_sent;
-
-            case "onTimeChanged":
-                return R.drawable.widget_timer;
 
             case "onUpdatePasswordComplete":
                 return R.drawable.event_password_updated;
