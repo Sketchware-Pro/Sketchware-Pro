@@ -86,7 +86,7 @@ public class FileUtil {
         return filePath.substring(last + 1);
     }
 
-    private static void createNewFile(String path) {
+    private static void createNewFileIfNotPresent(String path) {
         int lastSep = path.lastIndexOf(File.separator);
         if (lastSep > 0) {
             String dirPath = path.substring(0, lastSep);
@@ -103,7 +103,7 @@ public class FileUtil {
     }
 
     public static String readFile(String path) {
-        createNewFile(path);
+        createNewFileIfNotPresent(path);
 
         StringBuilder sb = new StringBuilder();
         try (FileReader fr = new FileReader(path)) {
@@ -121,7 +121,7 @@ public class FileUtil {
     }
 
     public static void writeFile(String path, String str) {
-        createNewFile(path);
+        createNewFileIfNotPresent(path);
 
         try (FileWriter fileWriter = new FileWriter(path, false)) {
             fileWriter.write(str);
@@ -133,7 +133,7 @@ public class FileUtil {
 
     public static void copyFile(String sourcePath, String destPath) {
         if (!isExistFile(sourcePath)) return;
-        createNewFile(destPath);
+        createNewFileIfNotPresent(destPath);
 
         try (FileInputStream fis = new FileInputStream(sourcePath);
              FileOutputStream fos = new FileOutputStream(destPath, false)) {
@@ -399,7 +399,7 @@ public class FileUtil {
     }
 
     private static void saveBitmap(Bitmap bitmap, String destPath) {
-        FileUtil.createNewFile(destPath);
+        FileUtil.createNewFileIfNotPresent(destPath);
 
         try (FileOutputStream out = new FileOutputStream(destPath)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
