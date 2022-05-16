@@ -69,6 +69,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     private void handleAdapter(String str) {
         ArrayList<String> resourceFile = frc.getResourceFile(str);
+        //noinspection Java8ListSort
         Collections.sort(resourceFile, String.CASE_INSENSITIVE_ORDER);
         adapter = new CustomAdapter(resourceFile);
         gridView.setAdapter(adapter);
