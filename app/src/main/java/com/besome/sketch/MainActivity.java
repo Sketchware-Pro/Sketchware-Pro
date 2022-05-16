@@ -364,7 +364,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void s() {
         if (storageAccessDenied == null || !storageAccessDenied.j()) {
             storageAccessDenied = Snackbar.a(coordinator, xB.b().a(getApplicationContext(), R.string.common_message_permission_denied), -2);
-            storageAccessDenied.a(xB.b().a(getApplicationContext(), R.string.grant_permission), v -> {
+            storageAccessDenied.a(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
                 storageAccessDenied.c();
                 nd.a(MainActivity.this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
