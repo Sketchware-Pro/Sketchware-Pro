@@ -50,7 +50,7 @@ public class GC extends DA implements View.OnClickListener {
     public static final int REQUEST_CODE_RESTORE_PROJECT = 700;
 
     public SwipeRefreshLayout swipeRefresh;
-    public ArrayList<HashMap<String, Object>> projectsList;
+    public ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     public RecyclerView myProjects;
     public CardView cvCreateNew;
     public LinearLayout createNewProject;
@@ -146,6 +146,13 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public void a(boolean isEmpty) {
+
+        // Don't load project list without having permissions
+        if (!c()) {
+            showCreateNewProjectLayout();
+            return;
+        }
+
         projectsList = lC.a();
         if (projectsList.size() > 0) {
             //noinspection Java8ListSort
@@ -154,6 +161,7 @@ public class GC extends DA implements View.OnClickListener {
 
         myProjects.getAdapter().c();
         if (isEmpty) showCreateNewProjectLayout();
+
 
     }
 
@@ -278,7 +286,7 @@ public class GC extends DA implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        if (viewId == R.id.create_new_project || viewId == R.id.fab && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
+        if ((viewId == R.id.create_new_project || viewId == R.id.fab) && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
             toProjectSettingsActivity();
         } else if (viewId == R.id.layout_manage_publish && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
             restoreProject();
