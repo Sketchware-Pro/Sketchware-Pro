@@ -459,6 +459,9 @@ public class ManageEvent {
             case "onUpdatePasswordComplete":
                 return R.drawable.event_password_updated;
 
+            case "onUserEarnedReward":
+                return R.drawable.receive_cash_48;
+
             default:
                 return EventsHandler.getIcon(str);
         }
