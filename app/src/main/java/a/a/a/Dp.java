@@ -884,12 +884,11 @@ public class Dp {
      * @param args List of arguments to add built-in libraries' ProGuard roles to.
      */
     private void proguardAddLibConfigs(List<String> args) {
-        for (Jp jp : builtInLibraryManager.a()) {
-            // TODO: Replace with new BuiltInLibraries helper method
-            String str = new File(BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH, jp.a() + File.separator + "proguard.txt").getAbsolutePath();
-            if (FileUtil.isExistFile(str)) {
+        for (Jp library : builtInLibraryManager.a()) {
+            File config = BuiltInLibraries.getLibraryProGuardConfiguration(library.a());
+            if (config.exists()) {
                 args.add("-include");
-                args.add(str);
+                args.add(config.getAbsolutePath());
             }
         }
     }

@@ -186,4 +186,12 @@ public class BuiltInLibraries {
     public static String getLibraryResourcesPath(String libraryName) {
         return getLibraryResources(libraryName).getAbsolutePath();
     }
+
+    public static File getLibraryProGuardConfiguration(String libraryName) {
+        return new File(EXTRACTED_BUILT_IN_LIBRARIES_PATH, libraryName + File.separator + "proguard.txt");
+    }
+
+    public static String getLibraryProGuardConfigurationPath(String libraryName) {
+        return getLibraryProGuardConfiguration(libraryName).getAbsolutePath();
+    }
 }
