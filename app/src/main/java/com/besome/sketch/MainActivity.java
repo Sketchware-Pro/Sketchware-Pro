@@ -200,7 +200,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         coordinator = findViewById(R.id.layout_coordinator);
 
         boolean hasStorageAccess = j();
-        if (u1I0 > 0 && !hasStorageAccess) {
+        if (!hasStorageAccess) {
             showNoticeNeedStorageAccess();
         }
         if (hasStorageAccess) {
@@ -343,7 +343,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_need_load_project));
         dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
             dialog.dismiss();
-            s();
+            nd.a(MainActivity.this, new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    9501);
         });
         dialog.show();
     }
@@ -361,7 +364,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     public void s() {
         if (storageAccessDenied == null || !storageAccessDenied.j()) {
             storageAccessDenied = Snackbar.a(coordinator, xB.b().a(getApplicationContext(), R.string.common_message_permission_denied), -2);
-            storageAccessDenied.a(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
+            storageAccessDenied.a(xB.b().a(getApplicationContext(), R.string.grant_permission), v -> {
                 storageAccessDenied.c();
                 nd.a(MainActivity.this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
