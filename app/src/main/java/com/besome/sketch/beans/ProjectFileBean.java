@@ -150,7 +150,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
 
     public static String getActivityName(String name) {
         name = name.toLowerCase();
-        String activityName = "";
+        StringBuilder activityName = new StringBuilder();
         int i = 0;
         while (i < name.length()) {
             int j;
@@ -159,16 +159,16 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
                 j = i + 1;
                 char charAt2 = name.charAt(j);
                 if (Character.isLowerCase(charAt2)) {
-                    activityName += Character.toUpperCase(charAt2);
+                    activityName.append(Character.toUpperCase(charAt2));
                 } else {
-                    activityName += charAt;
+                    activityName.append(charAt);
                     j = i;
                 }
             } else if (i == 0) {
-                activityName += Character.toUpperCase(charAt);
+                activityName.append(Character.toUpperCase(charAt));
                 j = i;
             } else {
-                activityName += charAt;
+                activityName.append(charAt);
                 j = i;
             }
             i = j + 1;
