@@ -249,23 +249,23 @@ public class wq {
     }
 
     @Deprecated
-    public static final String i() {
+    public static String i() {
         return getAbsolutePathOf(C);
     }
 
-    public static final String j() {
+    public static String j() {
         return getAbsolutePathOf(D);
     }
 
-    public static final String k() {
+    public static String k() {
         return getAbsolutePathOf(y);
     }
 
-    public static final String l() {
+    public static String l() {
         return getAbsolutePathOf(z);
     }
 
-    public static final String m() {
+    public static String m() {
         return getAbsolutePathOf(A);
     }
 
@@ -273,11 +273,11 @@ public class wq {
         return getAbsolutePathOf(c);
     }
 
-    public static final String o() {
+    public static String o() {
         return getAbsolutePathOf(B);
     }
 
-    public static final String p() {
+    public static String p() {
         return getAbsolutePathOf(E);
     }
 
@@ -289,7 +289,7 @@ public class wq {
         return getAbsolutePathOf(a);
     }
 
-    public static final String s() {
+    public static String s() {
         return getAbsolutePathOf("sketchware");
     }
 

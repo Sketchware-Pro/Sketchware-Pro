@@ -20,7 +20,7 @@ public class uq {
     public static final String[] q = new String[]{"MAP_TYPE_NONE", "MAP_TYPE_NORMAL", "MAP_TYPE_SATELLITE", "MAP_TYPE_TERRAIN", "MAP_TYPE_HYBRID"};
     public static final String[] r = new String[]{"HUE_RED", "HUE_ORANGE", "HUE_YELLOW", "HUE_GREEN", "HUE_CYAN", "HUE_AZURE", "HUE_BLUE", "HUE_VIOLET", "HUE_MAGENTA", "HUE_ROSE"};
 
-    public static final String[] a() {
+    public static String[] a() {
         return m;
     }
 
