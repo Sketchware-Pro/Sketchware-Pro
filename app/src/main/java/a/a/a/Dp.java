@@ -1030,39 +1030,4 @@ public class Dp {
         LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
-    private void maybeExtractZipalignBinary() throws By {
-        String zipalignPathInAssets = "zipalign" + File.separator + getZipalignExecutableName();
-
-        try {
-            /* Check if we need to update zipalign's binary */
-            if (a(zipalignPathInAssets, zipalignBinary.getAbsolutePath())) {
-                makeExecutableCommand[2] = zipalignBinary.getAbsolutePath();
-                commandExecutor.a(makeExecutableCommand);
-            }
-        } catch (Exception e) {
-            LogUtil.e(TAG, "Failed to extract the zipalign binary", e);
-            throw new By("Couldn't extract the zipalign binary! Message: " + e.getMessage());
-        }
-    }
-
-    private String getZipalignExecutableName() {
-        String filename = "zipalign-";
-        String abi = GB.a().toLowerCase();
-
-        if (abi.contains("64")) {
-            if (abi.contains("x86")) {
-                filename += "x86_64";
-            } else {
-                filename += "arm64-v8a";
-            }
-        } else {
-            if (abi.contains("x86")) {
-                filename += "x86";
-            } else {
-                filename += "armeabi-v7a";
-            }
-        }
-
-        return filename;
-    }
 }
