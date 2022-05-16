@@ -369,7 +369,7 @@ public class ManageEvent {
                 return R.drawable.error_96_yellow;
 
             case "onVerificationCompleted":
-                return R.drawabe.event_verif_success;
+                return R.drawable.event_verif_success;
 
             case "onSaveInstanceState":
             case "onCreateOptionsMenu":
