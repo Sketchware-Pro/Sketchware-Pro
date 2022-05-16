@@ -140,6 +140,12 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
                         break;
 
+                    case "Auto complete symbol pair":
+                        item.setChecked(!item.isChecked());
+                        codeEditor.getProps().symbolPairAutoCompletion = item.isChecked();
+                        pref.edit().putBoolean("dlg_acsp", item.isChecked()).apply();
+                        break;
+
                     case "Auto complete":
                         item.setChecked(!item.isChecked());
                         codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
@@ -186,6 +192,9 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         menu.add(0, 4, 0, "Word wrap")
                 .setCheckable(true)
                 .setChecked(pref.getBoolean("dlg_ww", false));
+        menu.add(0, 4, 0, "Auto complete symbol pair")
+                .setCheckable(true)
+                .setChecked(pref.getBoolean("dlg_acsp", true));
         menu.add(0, 5, 0, "Pretty print");
         menu.add(0, 6, 0, "Switch language");
         menu.add(0, 7, 0, "Switch theme");
