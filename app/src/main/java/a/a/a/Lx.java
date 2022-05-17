@@ -666,6 +666,7 @@ public class Lx {
                 case "RewardedVideoAd":
                     fieldDeclaration += "\r\nprivate OnUserEarnedRewardListener _" + typeInstanceName + "_on_user_earned_reward_listener;";
                     fieldDeclaration += "\r\nprivate RewardedAdLoadCallback _" + typeInstanceName + "_rewarded_ad_load_callback;";
+                    fieldDeclaration += "\r\nprivate FullScreenContentCallback _" + typeInstanceName + "_full_screen_content_callback;";
                     break;
 
                 case "FirebaseStorage":
