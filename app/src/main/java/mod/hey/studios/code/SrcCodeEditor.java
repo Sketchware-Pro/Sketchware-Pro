@@ -70,11 +70,13 @@ public class SrcCodeEditor extends AppCompatActivity {
         int theme = pref.getInt(prefix + "_theme", 3);
         boolean word_wrap = pref.getBoolean(prefix + "_ww", false);
         boolean auto_c = pref.getBoolean(prefix + "_ac", true);
+        boolean auto_complete_symbol_pairs = pref.getBoolean(prefix + "_acsp", true);
 
         selectTheme(ed, theme);
 
         ed.setTextSize(text_size);
         ed.setWordwrap(word_wrap);
+        ed.getProps().symbolPairAutoCompletion = auto_complete_symbol_pairs;
         ed.getComponent(EditorAutoCompletion.class).setEnabled(auto_c);
     }
 
@@ -416,6 +418,9 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ac", true));
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair")
+                .setCheckable(true)
+                .setChecked(local_pref.getBoolean("act_acsp", true));
 
         return true;
     }
@@ -502,6 +507,13 @@ public class SrcCodeEditor extends AppCompatActivity {
                 editor.setWordwrap(item.isChecked());
 
                 pref.edit().putBoolean("act_ww", item.isChecked()).apply();
+                break;
+
+            case "Auto complete symbol pair":
+                item.setChecked(!item.isChecked());
+                editor.getProps().symbolPairAutoCompletion = item.isChecked();
+
+                pref.edit().putBoolean("act_acsp", item.isChecked()).apply();
                 break;
 
             case "Auto complete":
