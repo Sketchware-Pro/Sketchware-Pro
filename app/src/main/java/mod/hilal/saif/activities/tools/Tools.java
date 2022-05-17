@@ -39,6 +39,7 @@ import kellinwood.security.zipsigner.ZipSigner;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
+import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 
 public class Tools extends Activity {
@@ -163,7 +164,7 @@ public class Tools extends Activity {
                             switch (which) {
                                 case 0:
                                     Intent intent = new Intent(getApplicationContext(), ConfigActivity.isLegacyCeEnabled() ?
-                                            mod.hey.studios.activity.SrcCodeEditor.class
+                                            SrcCodeEditorLegacy.class
                                             : mod.hey.studios.code.SrcCodeEditor.class);
                                     intent.putExtra("title", Uri.parse(files[0]).getLastPathSegment());
                                     intent.putExtra("content", files[0]);

@@ -9,9 +9,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -76,8 +78,10 @@ public class AsdAllEditor extends Dialog {
         code_editor.setText(content);
         editor = code_editor.getEditText();
         code_editor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
-        editor.setInputType(655361);
-        editor.setImeOptions(1);
+        editor.setInputType(InputType.TYPE_CLASS_TEXT
+                | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editor.setImeOptions(EditorInfo.IME_ACTION_NONE);
     }
 
     public void addControl() {

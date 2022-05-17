@@ -743,7 +743,6 @@ public class ExtraMenuBean {
 
         View root = wB.a(logicEditor, R.layout.property_popup_input_text);
         EditText edittext = root.findViewById(R.id.ed_input);
-        edittext.setInputType(655361);
         edittext.setImeOptions(EditorInfo.IME_ACTION_NONE);
 
         if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_USE_ASD_HIGHLIGHTER)) {

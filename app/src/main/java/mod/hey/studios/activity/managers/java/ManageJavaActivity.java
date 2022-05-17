@@ -39,6 +39,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
@@ -407,7 +408,7 @@ public class ManageJavaActivity extends Activity {
             Intent intent = new Intent();
 
             if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
+                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
             } else {
                 intent.setClass(getApplicationContext(), mod.hey.studios.code.SrcCodeEditor.class);
             }

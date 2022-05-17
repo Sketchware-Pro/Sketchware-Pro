@@ -40,6 +40,8 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.code.SrcCodeEditor;
+import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
@@ -231,15 +233,16 @@ public class AndroidManifestInjection extends Activity {
     private void showAppComponentDialog() {
         Intent intent = new Intent();
         if (ConfigActivity.isLegacyCeEnabled()) {
-            intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
+            intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
         } else {
-            intent.setClass(getApplicationContext(), mod.hey.studios.code.SrcCodeEditor.class);
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
         }
 
         String APP_COMPONENTS_PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/app_components.txt");
         if (!FileUtil.isExistFile(APP_COMPONENTS_PATH)) FileUtil.writeFile(APP_COMPONENTS_PATH, "");
         intent.putExtra("content", APP_COMPONENTS_PATH);
         intent.putExtra("xml", "");
+        intent.putExtra("disableHeader", "");
         intent.putExtra("title", "App Components");
         startActivity(intent);
     }
