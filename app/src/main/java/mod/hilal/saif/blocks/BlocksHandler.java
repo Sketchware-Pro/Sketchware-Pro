@@ -2390,6 +2390,20 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.interstitialad register fullscreen content callbacks");
         arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "rewardedAdRegisterFullScreenContentCallback");
+        hashMap.put("type", " ");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "if (%1$s != null) {\r\n" +
+                "%1$s.setFullScreenContentCallback(_%1$s_full_screen_content_callback);\r\n" +
+                "} else {\r\n" +
+                "SketchwareUtil.showMessage(getApplicationContext(), \"Error: RewardedAd %1$s hasn't been loaded yet!\");\r\n" +
+                "}");
+        hashMap.put("color", "#2aa4e2");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%m.videoad register fullscreen content callbacks");
+        arrayList.add(hashMap);
     }
 
     private static void checkDir() {
