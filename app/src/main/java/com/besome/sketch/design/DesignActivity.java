@@ -689,6 +689,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void showCurrentActivitySrcCode() {
         ProgressDialog progress = new ProgressDialog(DesignActivity.this);
         progress.setMessage("Generating source...");
+        progress.setCancelable(false);
         progress.show();
 
         new Thread(() -> {
@@ -696,6 +697,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
                     .setTitle(projectFileSelector.getFileName())
+                    .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
