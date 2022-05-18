@@ -185,15 +185,10 @@ public class LogicClickListener implements View.OnClickListener {
         }
 
         ArrayList<String> vars = getUsedVariable(5);
+        vars.addAll(getUsedVariable(6));
         for (int i = 0, varsSize = vars.size(); i < varsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Custom Variable (" + varsSize + ")"));
             viewGroup.addView(commonRadioButton(vars.get(i)));
-        }
-
-        ArrayList<String> customVars = getUsedVariable(6);
-        for (int i = 0, varsSize = customVars.size(); i < varsSize; i++) {
-            if (i == 0) viewGroup.addView(commonTextView("Custom Variable (" + varsSize + ")"));
-            viewGroup.addView(commonRadioButton(customVars.get(i)));
         }
 
         dialog.setView(var2);
