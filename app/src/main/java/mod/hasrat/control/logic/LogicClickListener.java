@@ -190,6 +190,12 @@ public class LogicClickListener implements View.OnClickListener {
             viewGroup.addView(commonRadioButton(vars.get(i)));
         }
 
+        ArrayList<String> customVars = getUsedVariable(6);
+        for (int i = 0, varsSize = customVars.size(); i < varsSize; i++) {
+            if (i == 0) viewGroup.addView(commonTextView("Custom Variable (" + varsSize + ")"));
+            viewGroup.addView(commonRadioButton(customVars.get(i)));
+        }
+
         dialog.setView(var2);
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), view -> {
             int childCount = viewGroup.getChildCount();
