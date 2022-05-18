@@ -1,6 +1,5 @@
 package mod.alucard.tn.apksigner;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.annotations.NonNull;
@@ -20,11 +19,6 @@ import mod.jbk.build.BuiltInLibraries;
 public class ApkSigner {
 
     private static final File EXTRACTED_TESTKEY_FILES_DIRECTORY = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey");
-    public Context context;
-
-    public ApkSigner(Context c) {
-        context = c;
-    }
 
     /**
      * Sign an APK with testkey.
