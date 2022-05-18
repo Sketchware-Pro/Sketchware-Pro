@@ -116,6 +116,7 @@ public class BackupFactory {
 
         ArrayList<String> list = new ArrayList<>();
         FileUtil.listDir(myscList.getAbsolutePath(), list);
+        //noinspection Java8ListSort
         Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
 
         int id = list.size() == 0 ? 600 : Integer.parseInt(new File(list.get(list.size() - 1)).getName());

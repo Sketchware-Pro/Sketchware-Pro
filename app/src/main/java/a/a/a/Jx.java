@@ -945,14 +945,14 @@ public class Jx {
     private void addFieldsDeclaration() {
         String javaName = projectFileBean.getJavaName();
         for (Pair<Integer, String> next : projectDataManager.k(javaName)) {
-            int intValue = next.first;
-            String str = next.second;
-            if (intValue == 9) {
-                addImport(str);
-            } else if (intValue == 5) {
-                i.add(str + (str.contains(";") ? "" : ";"));
+            int variableId = next.first;
+            String variableValue = next.second;
+            if (variableId == 9) {
+                addImport(variableValue);
+            } else if (variableId == 6) {
+                i.add(variableValue + ";");
             } else {
-                i.add(getVariableDeclarationAndAddImports(intValue, str));
+                i.add(getVariableDeclarationAndAddImports(variableId, variableValue));
             }
         }
         for (Pair<Integer, String> next2 : projectDataManager.j(javaName)) {
@@ -970,18 +970,49 @@ public class Jx {
         for (ComponentBean bean : componentBeans) {
             l.add(getComponentDeclarationAndAddImports(bean));
         }
-        if (componentBeans.size() > 0) {
-            for (ComponentBean bean : componentBeans) {
-                switch (bean.type) {
-                    case ComponentBean.COMPONENT_TYPE_TIMERTASK:
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                    case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                    case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
-                    case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
-                        h.add(Lx.d(ComponentBean.getComponentTypeName(bean.type)));
-                        break;
-                }
+
+        boolean hasTimer = false;
+        boolean hasFirebaseDB = false;
+        boolean hasFirebaseStorage = false;
+        boolean hasInterstitialAd = false;
+        boolean hasRewardedVideoAd = false;
+        for (ComponentBean bean : componentBeans) {
+            switch (bean.type) {
+                case ComponentBean.COMPONENT_TYPE_TIMERTASK:
+                    hasTimer = true;
+                    break;
+
+                case ComponentBean.COMPONENT_TYPE_FIREBASE:
+                    hasFirebaseDB = true;
+                    break;
+
+                case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
+                    hasFirebaseStorage = true;
+                    break;
+
+                case ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD:
+                    hasInterstitialAd = true;
+                    break;
+
+                case ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD:
+                    hasRewardedVideoAd = true;
+                    break;
             }
+        }
+        if (hasTimer) {
+            h.add(Lx.d("Timer"));
+        }
+        if (hasFirebaseDB) {
+            h.add(Lx.d("FirebaseDB"));
+        }
+        if (hasFirebaseStorage) {
+            h.add(Lx.d("FirebaseStorage"));
+        }
+        if (hasInterstitialAd) {
+            h.add(Lx.d("InterstitialAd"));
+        }
+        if (hasRewardedVideoAd) {
+            h.add(Lx.d("RewardedVideoAd"));
         }
     }
 

@@ -1,9 +1,10 @@
-package mod.hey.studios.activity;
+package mod.hey.studios.code;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,9 +18,11 @@ import mod.hey.studios.lib.code_editor.ColorScheme;
 /**
  * Legacy code editor
  */
-public class SrcCodeEditor extends Activity {
+public class SrcCodeEditorLegacy extends Activity {
 
     private CodeEditorLayout codeEditor;
+    private SharedPreferences sp;
+
     private final View.OnClickListener changeTextSize = v -> {
         if (v.getId() == R.id.code_editor_zoomin) {
             codeEditor.increaseTextSize();
@@ -27,7 +30,7 @@ public class SrcCodeEditor extends Activity {
             codeEditor.decreaseTextSize();
         }
     };
-    private SharedPreferences sp;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,13 +56,15 @@ public class SrcCodeEditor extends Activity {
         findViewById(R.id.code_editor_zoomout).setOnClickListener(changeTextSize);
 
         codeEditor.onCreateOptionsMenu(findViewById(R.id.codeeditor_more_options));
-        codeEditor.getEditText().setInputType(655361);
+        codeEditor.getEditText().setInputType(InputType.TYPE_CLASS_TEXT
+                | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
     }
 
     @Override
     public void onBackPressed() {
-        boolean isDialogEnabled = sp.getBoolean("exit_confirmation_dialog", false);
-        if (isDialogEnabled) {
+        boolean exitConfirmationDialogEnabled = sp.getBoolean("exit_confirmation_dialog", false);
+        if (exitConfirmationDialogEnabled) {
             new AlertDialog.Builder(this)
                     .setTitle("Save Changes?")
                     .setMessage("Do you want to save your changes? If not, the file will be reverted.")

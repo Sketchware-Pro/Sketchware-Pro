@@ -285,6 +285,12 @@ public class yq {
     public String u;
 
     /**
+     * Path of the unaligned but signed APK,
+     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.signed.unaligned
+     */
+    public String unalignedSignedApkPath;
+
+    /**
      * Project's generated R.java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/gen
      */
@@ -396,6 +402,7 @@ public class yq {
         q += File.separator + "SketchApplication.java";
         G = t + File.separator + d + ".apk.unsigned";
         alignedApkPath = G + ".aligned";
+        unalignedSignedApkPath = t + File.separator + d + ".apk.signed.unaligned";
         H = t + File.separator + d + ".apk";
         I = wq.o() + File.separator + d + "_release.apk";
     }

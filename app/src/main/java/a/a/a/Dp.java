@@ -8,23 +8,25 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
 import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
+import com.iyxan23.zipalignjava.ZipAlign;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
-import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.KeyStoreFileManager;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
@@ -45,7 +46,6 @@ import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.agus.jcoderz.lib.BinaryExecutor;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
@@ -125,7 +125,7 @@ public class Dp {
         extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         mll = new ManageLocalLibrary(yqVar.b);
         builtInLibraryManager = new Kp();
-        File defaultAndroidJar = new File(extractedBuiltInLibrariesDirectory, "android.jar");
+        File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
         proguard = new ProguardHandler(yqVar.b);
         settings = new ProjectSettings(yqVar.b);
@@ -203,20 +203,6 @@ public class Dp {
                 buildAppBundle,
                 buildingDialog);
         compiler.compile();
-    }
-
-    public void b(String password, String alias, String signingAlgorithm) throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
-        CustomKeySigner.signZip(
-                new ZipSigner(),
-                wq.j(),
-                password.toCharArray(),
-                alias,
-                password.toCharArray(),
-                signingAlgorithm,
-                yq.G,
-                yq.I
-        );
     }
 
     public boolean isD8Enabled() {
@@ -298,7 +284,7 @@ public class Dp {
         if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
                 BuildSettings.SETTING_JAVA_VERSION_1_7)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
-            classpath.append(":").append(extractedBuiltInLibrariesDirectory.getAbsolutePath()).append(File.separator).append("core-lambda-stubs.jar");
+            classpath.append(":").append(new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar").getAbsolutePath());
         }
 
         /* Add used built-in libraries to the classpath */
@@ -767,8 +753,8 @@ public class Dp {
      */
     public void j() {
         /* If l doesn't exist, create it */
-        if (!fileUtil.e(extractedBuiltInLibrariesDirectory.getAbsolutePath())) {
-            fileUtil.f(extractedBuiltInLibrariesDirectory.getAbsolutePath());
+        if (!fileUtil.e(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath())) {
+            fileUtil.f(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         String androidJarArchiveName = "android.jar.zip";
         String dexsArchiveName = "dexs.zip";
@@ -776,14 +762,14 @@ public class Dp {
         String libsArchiveName = "libs.zip";
         String testkeyArchiveName = "testkey.zip";
 
-        String androidJarPath = new File(extractedBuiltInLibrariesDirectory, androidJarArchiveName).getAbsolutePath();
-        String dexsArchivePath = new File(extractedBuiltInLibrariesDirectory, dexsArchiveName).getAbsolutePath();
-        String coreLambdaStubsJarPath = new File(extractedBuiltInLibrariesDirectory, coreLambdaStubsJarName).getAbsolutePath();
-        String libsArchivePath = new File(extractedBuiltInLibrariesDirectory, libsArchiveName).getAbsolutePath();
-        String testkeyArchivePath = new File(extractedBuiltInLibrariesDirectory, testkeyArchiveName).getAbsolutePath();
+        String androidJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
+        String dexsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, dexsArchiveName).getAbsolutePath();
+        String coreLambdaStubsJarPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, coreLambdaStubsJarName).getAbsolutePath();
+        String libsArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, libsArchiveName).getAbsolutePath();
+        String testkeyArchivePath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, testkeyArchiveName).getAbsolutePath();
         String dexsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARY_DEX_FILES_PATH.getAbsolutePath();
         String libsDirectoryPath = BuiltInLibraries.EXTRACTED_BUILT_IN_LIBRARIES_PATH.getAbsolutePath();
-        String testkeyDirectoryPath = new File(extractedBuiltInLibrariesDirectory, "testkey").getAbsolutePath();
+        String testkeyDirectoryPath = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey").getAbsolutePath();
 
         /* If necessary, update android.jar.zip */
         String baseAssetsPath = "libs" + File.separator;
@@ -792,9 +778,9 @@ public class Dp {
                 buildingDialog.setProgress("Extracting built-in android.jar...");
             }
             /* Delete android.jar */
-            fileUtil.c(extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + "android.jar");
+            fileUtil.c(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");
             /* Extract android.jar.zip to android.jar */
-            new KB().a(androidJarPath, extractedBuiltInLibrariesDirectory.getAbsolutePath());
+            new KB().a(androidJarPath, BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
         }
         /* If necessary, update dexs.zip */
         if (a(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
@@ -900,11 +886,11 @@ public class Dp {
      * @param args List of arguments to add built-in libraries' ProGuard roles to.
      */
     private void proguardAddLibConfigs(List<String> args) {
-        for (Jp jp : builtInLibraryManager.a()) {
-            String str = extractedBuiltInLibrariesDirectory.getAbsolutePath() + File.separator + jp.a() + File.separator + "proguard.txt";
-            if (FileUtil.isExistFile(str)) {
+        for (Jp library : builtInLibraryManager.a()) {
+            File config = BuiltInLibraries.getLibraryProGuardConfiguration(library.a());
+            if (config.exists()) {
                 args.add("-include");
-                args.add(str);
+                args.add(config.getAbsolutePath());
             }
         }
     }
@@ -1023,60 +1009,25 @@ public class Dp {
         }
     }
 
+    /**
+     * Calls {@link #runZipalign(String, String)} with {@link yq#G} and {@link yq#alignedApkPath}.
+     */
     public void runZipalign() throws By {
-        maybeExtractZipalignBinary();
-
-        ArrayList<String> args = new ArrayList<>();
-        args.add(zipalignBinary.getAbsolutePath());
-        args.add("-f");
-        args.add("-p");
-        args.add("4");
-        args.add(yq.G);
-        args.add(yq.alignedApkPath);
-
-        LogUtil.d(TAG, "About to run zipalign with this cmdline: " + args);
-
-        BinaryExecutor executor = new BinaryExecutor();
-        executor.setCommands(args);
-        if (!executor.execute().isEmpty()) {
-            LogUtil.e(TAG, executor.getLog());
-            throw new By(executor.getLog());
-        }
+        runZipalign(yq.G, yq.alignedApkPath);
     }
 
-    private void maybeExtractZipalignBinary() throws By {
-        String zipalignPathInAssets = "zipalign" + File.separator + getZipalignExecutableName();
+    public void runZipalign(String inPath, String outPath) throws By {
+        LogUtil.d(TAG, "About to zipalign " + inPath + " to " + outPath);
+        long savedTimeMillis = System.currentTimeMillis();
 
-        try {
-            /* Check if we need to update zipalign's binary */
-            if (a(zipalignPathInAssets, zipalignBinary.getAbsolutePath())) {
-                makeExecutableCommand[2] = zipalignBinary.getAbsolutePath();
-                commandExecutor.a(makeExecutableCommand);
-            }
-        } catch (Exception e) {
-            LogUtil.e(TAG, "Failed to extract the zipalign binary", e);
-            throw new By("Couldn't extract the zipalign binary! Message: " + e.getMessage());
-        }
-    }
-
-    private String getZipalignExecutableName() {
-        String filename = "zipalign-";
-        String abi = GB.a().toLowerCase();
-
-        if (abi.contains("64")) {
-            if (abi.contains("x86")) {
-                filename += "x86_64";
-            } else {
-                filename += "arm64-v8a";
-            }
-        } else {
-            if (abi.contains("x86")) {
-                filename += "x86";
-            } else {
-                filename += "armeabi-v7a";
-            }
+        try (FileInputStream in = new FileInputStream(inPath);
+             FileOutputStream out = new FileOutputStream(outPath)) {
+            ZipAlign.alignZip(in, out);
+        } catch (IOException e) {
+            throw new By("Couldn't run zipalign on " + inPath + " with output path " + outPath + ": " + Log.getStackTraceString(e));
         }
 
-        return filename;
+        LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
+
 }

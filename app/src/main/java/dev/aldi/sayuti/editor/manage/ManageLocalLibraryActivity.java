@@ -97,6 +97,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         }
         ArrayList<String> arrayList = new ArrayList<>();
         FileUtil.listDir(local_libs_path, arrayList);
+        //noinspection Java8ListSort
         Collections.sort(arrayList, String.CASE_INSENSITIVE_ORDER);
         n = 0;
         while (n < arrayList.size()) {

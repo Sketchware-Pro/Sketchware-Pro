@@ -206,7 +206,7 @@ public class AndroidManifestInjectionDetails extends Activity {
     }
 
     private void applyChange() {
-        ArrayList<HashMap<String, Object>> data = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(ATTRIBUTES_FILE_PATH)) {
             data = new Gson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
             ///int val = data.size()-1;
@@ -217,13 +217,9 @@ public class AndroidManifestInjectionDetails extends Activity {
                 }
                 ///val--;
             }
-            for (int i = 0; i < listMap.size(); i++) {
-                data.add(listMap.get(i));
-            }
+            data.addAll(listMap);
         } else {
-            for (int i = 0; i < listMap.size(); i++) {
-                data.add(listMap.get(i));
-            }
+            data = new ArrayList<>(listMap);
         }
         FileUtil.writeFile(ATTRIBUTES_FILE_PATH, new Gson().toJson(data));
         refreshList();
@@ -340,20 +336,14 @@ public class AndroidManifestInjectionDetails extends Activity {
 
                 dia.setMessage("do you want to delete this attribute?");
 
-                dia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listMap.remove(position);
-                        applyChange();
-                        SketchwareUtil.toast("deleted");
-                    }
+                dia.setPositiveButton("Yes", (dialog, which) -> {
+                    listMap.remove(position);
+                    applyChange();
+                    SketchwareUtil.toast("deleted");
                 });
 
-                dia.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                dia.setNegativeButton("No", (dialog, which) -> {
 
-                    }
                 });
                 dia.show();
 

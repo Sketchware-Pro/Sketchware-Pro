@@ -142,7 +142,7 @@ public class LogicClickListener implements View.OnClickListener {
                 if (getsInitialized) {
                     toAdd += " = " + variableInitializer;
                 }
-                logicEditor.b(5, toAdd);
+                logicEditor.b(6, toAdd);
                 dialog.dismiss();
             }
         });

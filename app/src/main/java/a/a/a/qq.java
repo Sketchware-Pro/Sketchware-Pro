@@ -455,6 +455,8 @@ public class qq {
             return "br.tiagohm.codeview";
         } else if (name.equals(BuiltInLibraries.FIREBASE_MESSAGING)) {
             return "com.google.firebase.messaging";
+        } else if (name.equals(BuiltInLibraries.GLIDE)) {
+            return "com.bumptech.glide";
         } else if (name.equals(BuiltInLibraries.LOTTIE)) {
             return "com.airbnb.lottie";
         } else if (name.equals(BuiltInLibraries.ONESIGNAL)) {
@@ -504,12 +506,13 @@ public class qq {
                 name.equals(BuiltInLibraries.ANDROIDX_TRANSITION) || name.equals(BuiltInLibraries.ANDROIDX_WORK_RUNTIME) ||
                 name.equals(BuiltInLibraries.ANDROIDX_VIEWPAGER2) || name.equals(BuiltInLibraries.CIRCLE_IMAGEVIEW) ||
                 name.equals(BuiltInLibraries.CODE_VIEW) || name.equals(BuiltInLibraries.FIREBASE_MESSAGING) ||
-                name.equals(BuiltInLibraries.LOTTIE) || name.equals(BuiltInLibraries.MATERIAL) ||
-                name.equals(BuiltInLibraries.ONESIGNAL) || name.equals(BuiltInLibraries.OTPVIEW) ||
-                name.equals(BuiltInLibraries.PATTERN_LOCK_VIEW) || name.equals(BuiltInLibraries.PLAY_SERVICES_ADS) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_ADS_LITE) || name.equals(BuiltInLibraries.PLAY_SERVICES_AUTH) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_BASE) || name.equals(BuiltInLibraries.PLAY_SERVICES_BASEMENT) ||
-                name.equals(BuiltInLibraries.PLAY_SERVICES_GCM) || name.equals(BuiltInLibraries.PLAY_SERVICES_MAPS) ||
-                name.equals(BuiltInLibraries.WAVE_SIDE_BAR) || name.equals(BuiltInLibraries.YOUTUBE_PLAYER);
+                name.equals(BuiltInLibraries.GLIDE) || name.equals(BuiltInLibraries.LOTTIE) ||
+                name.equals(BuiltInLibraries.MATERIAL) || name.equals(BuiltInLibraries.ONESIGNAL) ||
+                name.equals(BuiltInLibraries.OTPVIEW) || name.equals(BuiltInLibraries.PATTERN_LOCK_VIEW) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_ADS) || name.equals(BuiltInLibraries.PLAY_SERVICES_ADS_LITE) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_AUTH) || name.equals(BuiltInLibraries.PLAY_SERVICES_BASE) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_BASEMENT) || name.equals(BuiltInLibraries.PLAY_SERVICES_GCM) ||
+                name.equals(BuiltInLibraries.PLAY_SERVICES_MAPS) || name.equals(BuiltInLibraries.WAVE_SIDE_BAR) ||
+                name.equals(BuiltInLibraries.YOUTUBE_PLAYER);
     }
 }

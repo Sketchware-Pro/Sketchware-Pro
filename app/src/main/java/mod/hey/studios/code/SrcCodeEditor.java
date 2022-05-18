@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -69,11 +70,13 @@ public class SrcCodeEditor extends AppCompatActivity {
         int theme = pref.getInt(prefix + "_theme", 3);
         boolean word_wrap = pref.getBoolean(prefix + "_ww", false);
         boolean auto_c = pref.getBoolean(prefix + "_ac", true);
+        boolean auto_complete_symbol_pairs = pref.getBoolean(prefix + "_acsp", true);
 
         selectTheme(ed, theme);
 
         ed.setTextSize(text_size);
         ed.setWordwrap(word_wrap);
+        ed.getProps().symbolPairAutoCompletion = auto_complete_symbol_pairs;
         ed.getComponent(EditorAutoCompletion.class).setEnabled(auto_c);
     }
 
@@ -110,7 +113,7 @@ public class SrcCodeEditor extends AppCompatActivity {
         ed.setColorScheme(scheme);
     }
 
-    public static String prettifyXml(String xml, int indentAmount) {
+    public static String prettifyXml(String xml, int indentAmount, Intent extras) {
         try {
             // Turn xml string into a document
             Document document = DocumentBuilderFactory.newInstance()
@@ -140,6 +143,10 @@ public class SrcCodeEditor extends AppCompatActivity {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indentAmount));
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            if (extras.hasExtra("disableHeader"))
+                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+
 
             // Return pretty print xml string
             StringWriter stringWriter = new StringWriter();
@@ -411,6 +418,9 @@ public class SrcCodeEditor extends AppCompatActivity {
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete")
                 .setCheckable(true)
                 .setChecked(local_pref.getBoolean("act_ac", true));
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Auto complete symbol pair")
+                .setCheckable(true)
+                .setChecked(local_pref.getBoolean("act_acsp", true));
 
         return true;
     }
@@ -456,7 +466,7 @@ public class SrcCodeEditor extends AppCompatActivity {
                     if (!err) editor.setText(ss);
 
                 } else if (getIntent().hasExtra("xml")) {
-                    String format = prettifyXml(editor.getText().toString(), 4);
+                    String format = prettifyXml(editor.getText().toString(), 4, getIntent());
 
                     if (format != null) {
                         editor.setText(format);
@@ -497,6 +507,13 @@ public class SrcCodeEditor extends AppCompatActivity {
                 editor.setWordwrap(item.isChecked());
 
                 pref.edit().putBoolean("act_ww", item.isChecked()).apply();
+                break;
+
+            case "Auto complete symbol pair":
+                item.setChecked(!item.isChecked());
+                editor.getProps().symbolPairAutoCompletion = item.isChecked();
+
+                pref.edit().putBoolean("act_acsp", item.isChecked()).apply();
                 break;
 
             case "Auto complete":

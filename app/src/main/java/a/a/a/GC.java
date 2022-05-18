@@ -50,16 +50,12 @@ public class GC extends DA implements View.OnClickListener {
     public static final int REQUEST_CODE_RESTORE_PROJECT = 700;
 
     public SwipeRefreshLayout swipeRefresh;
-    public ArrayList<HashMap<String, Object>> projectsList;
+    public ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     public RecyclerView myProjects;
     public CardView cvCreateNew;
-    public LinearLayout createNewProject;
-    public ImageView ivCreateNew;
-    public TextView tvCreateNew;
-    public CardView cvManagePublish;
-    public LinearLayout layoutManagePublish;
-    public ImageView ivManagePublish;
-    public TextView tvManagePublish;
+    public CardView cvRestoreProjects;
+    public ImageView ivRestoreProjects;
+    public TextView tvRestoreProjects;
     public Boolean isCollapsed;
     public AnimatorSet collapseAnimatorSet;
     public AnimatorSet expandAnimatorSet;
@@ -97,55 +93,61 @@ public class GC extends DA implements View.OnClickListener {
         });
         floatingActionButton = getActivity().findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(this);
+
         myProjects = parent.findViewById(R.id.myprojects);
         myProjects.setHasFixedSize(true);
         myProjects.setLayoutManager(new LinearLayoutManager(getContext()));
         projectsAdapter = new ProjectsAdapter(myProjects);
         myProjects.setAdapter(projectsAdapter);
         myProjects.setItemAnimator(new ci());
+
         cvCreateNew = parent.findViewById(R.id.cv_create_new);
-        createNewProject = parent.findViewById(R.id.create_new_project);
-        ivCreateNew = createNewProject.findViewById(R.id.iv_create_new);
-        tvCreateNew = createNewProject.findViewById(R.id.tv_create_new);
-        createNewProject.setOnClickListener(this);
+        cvCreateNew.setOnClickListener(this);
+
         isCollapsed = false;
-        cvManagePublish = parent.findViewById(R.id.cv_manage_publish);
-        layoutManagePublish = parent.findViewById(R.id.layout_manage_publish);
-        ivManagePublish = parent.findViewById(R.id.iv_manage_publish);
-        tvManagePublish = parent.findViewById(R.id.tv_manage_publish);
-        tvManagePublish.setText("Restore project");
-        layoutManagePublish.setOnClickListener(this);
-        ((TextView) parent.findViewById(R.id.tv_create_new)).setText(xB.b().a(getContext(), R.string.myprojects_list_menu_title_create_a_new_project));
+
+        cvRestoreProjects = parent.findViewById(R.id.cv_restore_projects);
+        cvRestoreProjects.setOnClickListener(this);
+        ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
+        tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
+
         collapseAnimatorSet = new AnimatorSet();
         expandAnimatorSet = new AnimatorSet();
         collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
         collapseValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
-            cvManagePublish.getLayoutParams().height = (int) value;
-            cvManagePublish.requestLayout();
+            cvRestoreProjects.getLayoutParams().height = (int) value;
+            cvRestoreProjects.requestLayout();
         });
         expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
         expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
-            cvManagePublish.getLayoutParams().height = (int) value;
-            cvManagePublish.requestLayout();
+            cvRestoreProjects.getLayoutParams().height = (int) value;
+            cvRestoreProjects.requestLayout();
         });
         collapseAnimatorSet.playTogether(collapseValueAnimator,
-                ObjectAnimator.ofFloat(tvManagePublish, View.TRANSLATION_Y, 0.0F, -100.0F),
-                ObjectAnimator.ofFloat(tvManagePublish, View.ALPHA, 1.0F, 0.0F),
-                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_X, 1.0F, 0.5F),
-                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_Y, 1.0F, 0.5F));
+                ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, 0.0F, -100.0F),
+                ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 1.0F, 0.0F),
+                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 1.0F, 0.5F),
+                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 1.0F, 0.5F));
         expandAnimatorSet.playTogether(expandValueAnimator,
-                ObjectAnimator.ofFloat(tvManagePublish, View.TRANSLATION_Y, -100.0F, 0.0F),
-                ObjectAnimator.ofFloat(tvManagePublish, View.ALPHA, 0.0F, 1.0F),
-                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_X, 0.5F, 1.0F),
-                ObjectAnimator.ofFloat(ivManagePublish, View.SCALE_Y, 0.5F, 1.0F));
+                ObjectAnimator.ofFloat(tvRestoreProjects, View.TRANSLATION_Y, -100.0F, 0.0F),
+                ObjectAnimator.ofFloat(tvRestoreProjects, View.ALPHA, 0.0F, 1.0F),
+                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_X, 0.5F, 1.0F),
+                ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F));
         collapseAnimatorSet.setDuration(300L);
         expandAnimatorSet.setDuration(300L);
         g();
     }
 
     public void a(boolean isEmpty) {
+
+        // Don't load project list without having permissions
+        if (!c()) {
+            showCreateNewProjectLayout();
+            return;
+        }
+
         projectsList = lC.a();
         if (projectsList.size() > 0) {
             //noinspection Java8ListSort
@@ -154,6 +156,7 @@ public class GC extends DA implements View.OnClickListener {
 
         myProjects.getAdapter().c();
         if (isEmpty) showCreateNewProjectLayout();
+
 
     }
 
@@ -278,9 +281,9 @@ public class GC extends DA implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
-        if (viewId == R.id.create_new_project || viewId == R.id.fab && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
+        if ((viewId == R.id.cv_create_new || viewId == R.id.fab) && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
             toProjectSettingsActivity();
-        } else if (viewId == R.id.layout_manage_publish && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
+        } else if (viewId == R.id.cv_restore_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
             restoreProject();
         }
 

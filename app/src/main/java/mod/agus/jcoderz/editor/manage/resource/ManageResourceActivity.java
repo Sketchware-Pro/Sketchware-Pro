@@ -33,6 +33,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -69,6 +70,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
 
     private void handleAdapter(String str) {
         ArrayList<String> resourceFile = frc.getResourceFile(str);
+        //noinspection Java8ListSort
         Collections.sort(resourceFile, String.CASE_INSENSITIVE_ORDER);
         adapter = new CustomAdapter(resourceFile);
         gridView.setAdapter(adapter);
@@ -296,7 +298,7 @@ public class ManageResourceActivity extends Activity implements View.OnClickList
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), mod.hey.studios.activity.SrcCodeEditor.class);
+                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
             } else {
                 intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             }

@@ -690,6 +690,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void showCurrentActivitySrcCode() {
         ProgressDialog progress = new ProgressDialog(DesignActivity.this);
         progress.setMessage("Generating source...");
+        progress.setCancelable(false);
         progress.show();
 
         new Thread(() -> {
@@ -697,6 +698,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DesignActivity.this)
                     .setTitle(projectFileSelector.getFileName())
+                    .setCancelable(false)
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
@@ -873,7 +875,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @SafeVarargs
-    private final void launchActivity(Class<? extends Activity> toLaunch, Integer optionalRequestCode, Pair<String, String>... extras) {
+    private void launchActivity(Class<? extends Activity> toLaunch, Integer optionalRequestCode, Pair<String, String>... extras) {
         Intent intent = new Intent(getApplicationContext(), toLaunch);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
@@ -1086,7 +1088,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         publishProgress("Signing APK...");
                         if (Build.VERSION.SDK_INT >= 26) {
-                            ApkSigner signer = new ApkSigner(a);
+                            ApkSigner signer = new ApkSigner();
                             signer.signWithTestKey(mDp.yq.alignedApkPath, mDp.yq.H, null);
                         } else {
                             mDp.k();

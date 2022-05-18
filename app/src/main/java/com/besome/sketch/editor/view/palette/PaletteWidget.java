@@ -13,6 +13,36 @@ import com.besome.sketch.lib.ui.CustomScrollView;
 
 import a.a.a.wB;
 import a.a.a.xB;
+import dev.aldi.sayuti.editor.view.palette.IconBadgeView;
+import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
+import dev.aldi.sayuti.editor.view.palette.IconCardView;
+import dev.aldi.sayuti.editor.view.palette.IconCircleImageView;
+import dev.aldi.sayuti.editor.view.palette.IconCodeView;
+import dev.aldi.sayuti.editor.view.palette.IconCollapsingToolbar;
+import dev.aldi.sayuti.editor.view.palette.IconGoogleSignInButton;
+import dev.aldi.sayuti.editor.view.palette.IconLottieAnimation;
+import dev.aldi.sayuti.editor.view.palette.IconMaterialButton;
+import dev.aldi.sayuti.editor.view.palette.IconOTPView;
+import dev.aldi.sayuti.editor.view.palette.IconPatternLockView;
+import dev.aldi.sayuti.editor.view.palette.IconRadioGroup;
+import dev.aldi.sayuti.editor.view.palette.IconRecyclerView;
+import dev.aldi.sayuti.editor.view.palette.IconSwipeRefreshLayout;
+import dev.aldi.sayuti.editor.view.palette.IconTabLayout;
+import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
+import dev.aldi.sayuti.editor.view.palette.IconViewPager;
+import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
+import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
+import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
+import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
+import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
+import mod.agus.jcoderz.editor.view.palette.IconDigitalClock;
+import mod.agus.jcoderz.editor.view.palette.IconGridView;
+import mod.agus.jcoderz.editor.view.palette.IconMultiAutoCompleteTextView;
+import mod.agus.jcoderz.editor.view.palette.IconRadioButton;
+import mod.agus.jcoderz.editor.view.palette.IconRatingBar;
+import mod.agus.jcoderz.editor.view.palette.IconSearchView;
+import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
+import mod.agus.jcoderz.editor.view.palette.IconVideoView;
 
 public class PaletteWidget extends LinearLayout {
 
@@ -181,7 +211,105 @@ public class PaletteWidget extends LinearLayout {
     }
 
     public View extraWidget(String tag, String title, String name) {
-        IconBase iconBase = (IconBase) mod.agus.jcoderz.editor.view.palette.PaletteWidget.a(tag, title, name, getContext());
+        IconBase iconBase;
+        Context context = getContext();
+        switch (title) {
+            case "DatePicker":
+                iconBase = new IconDatePicker(context);
+                break;
+
+            case "RatingBar":
+                iconBase = new IconRatingBar(context);
+                break;
+
+            case "SearchView":
+                iconBase = new IconSearchView(context);
+                break;
+
+            case "DigitalClock":
+                iconBase = new IconDigitalClock(context);
+                break;
+
+            case "RadioButton":
+                iconBase = new IconRadioButton(context);
+                break;
+
+            case "GridView":
+                iconBase = new IconGridView(context);
+                break;
+
+            case "AutoCompleteTextView":
+                iconBase = new IconAutoCompleteTextView(context);
+                break;
+
+            case "MultiAutoCompleteTextView":
+                iconBase = new IconMultiAutoCompleteTextView(context);
+                break;
+
+            case "VideoView":
+                iconBase = new IconVideoView(context);
+                break;
+
+            case "TimePicker":
+                iconBase = new IconTimePicker(context);
+                break;
+
+            case "AnalogClock":
+                iconBase = new IconAnalogClock(context);
+                break;
+
+            case "ViewPager":
+                iconBase = new IconViewPager(context);
+                break;
+
+            case "BadgeView":
+                iconBase = new IconBadgeView(context);
+                break;
+
+            case "PatternLockView":
+                iconBase = new IconPatternLockView(context);
+                break;
+
+            case "WaveSideBar":
+                iconBase = new IconWaveSideBar(context);
+                break;
+
+            case "SignInButton":
+                iconBase = new IconGoogleSignInButton(context);
+                break;
+
+            case "MaterialButton":
+                iconBase = new IconMaterialButton(context);
+                break;
+
+            case "CircleImageView":
+                iconBase = new IconCircleImageView(context);
+                break;
+
+            case "LottieAnimation":
+                iconBase = new IconLottieAnimation(context);
+                break;
+
+            case "YoutubePlayer":
+                iconBase = new IconYoutubePlayer(context);
+                break;
+
+            case "OTPView":
+                iconBase = new IconOTPView(context);
+                break;
+
+            case "CodeView":
+                iconBase = new IconCodeView(context);
+                break;
+
+            case "RecyclerView":
+                iconBase = new IconRecyclerView(context);
+                break;
+
+            default:
+                iconBase = null;
+                break;
+        }
         if (tag != null && tag.length() > 0) {
             iconBase.setTag(tag);
         }
@@ -193,7 +321,41 @@ public class PaletteWidget extends LinearLayout {
     }
 
     public View extraWidgetLayout(String tag, String name) {
-        IconBase iconBase = (IconBase) mod.agus.jcoderz.editor.view.palette.PaletteWidget.b(getContext(), tag, name);
+        IconBase iconBase;
+        Context context = getContext();
+        switch (name) {
+            case "TabLayout":
+                iconBase = new IconTabLayout(context);
+                break;
+
+            case "BottomNavigationView":
+                iconBase = new IconBottomNavigationView(context);
+                break;
+
+            case "CollapsingToolbarLayout":
+                iconBase = new IconCollapsingToolbar(context);
+                break;
+
+            case "SwipeRefreshLayout":
+                iconBase = new IconSwipeRefreshLayout(context);
+                break;
+
+            case "RadioGroup":
+                iconBase = new IconRadioGroup(context);
+                break;
+
+            case "CardView":
+                iconBase = new IconCardView(context);
+                break;
+
+            case "TextInputLayout":
+                iconBase = new IconTextInputLayout(context);
+                break;
+
+            default:
+                iconBase = null;
+                break;
+        }
         if (tag != null && tag.length() > 0) {
             iconBase.setTag(tag);
         }
