@@ -15,9 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import mod.jbk.build.BuiltInLibraries;
+
 public class ApkSigner {
 
-    private static final String TESTKEY_DIR_IN_FILES = "libs" + File.separator + "testkey" + File.separator;
+    private static final File EXTRACTED_TESTKEY_FILES_DIRECTORY = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "testkey");
     public Context context;
 
     public ApkSigner(Context c) {
@@ -43,9 +45,9 @@ public class ApkSigner {
                     "--out",
                     outputPath,
                     "--key",
-                    new File(context.getFilesDir(), TESTKEY_DIR_IN_FILES + "testkey.pk8").getAbsolutePath(),
+                    new File(EXTRACTED_TESTKEY_FILES_DIRECTORY, "testkey.pk8").getAbsolutePath(),
                     "--cert",
-                    new File(context.getFilesDir(), TESTKEY_DIR_IN_FILES + "testkey.x509.pem").getAbsolutePath()
+                    new File(EXTRACTED_TESTKEY_FILES_DIRECTORY, "testkey.x509.pem").getAbsolutePath()
             );
 
             logger.write("Signing an APK file with these arguments: " + args);
