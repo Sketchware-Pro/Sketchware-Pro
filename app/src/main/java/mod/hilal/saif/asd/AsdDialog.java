@@ -140,6 +140,12 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                         pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
                         break;
 
+                    case "Auto complete symbol pair":
+                        item.setChecked(!item.isChecked());
+                        codeEditor.getProps().symbolPairAutoCompletion = item.isChecked();
+                        pref.edit().putBoolean("dlg_acsp", item.isChecked()).apply();
+                        break;
+
                     case "Auto complete":
                         item.setChecked(!item.isChecked());
                         codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
@@ -192,6 +198,9 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         menu.add(0, 8, 0, "Auto complete")
                 .setCheckable(true)
                 .setChecked(pref.getBoolean("dlg_ac", true));
+        menu.add(0, 9, 0, "Auto complete symbol pair")
+                .setCheckable(true)
+                .setChecked(pref.getBoolean("dlg_acsp", true));
     }
 
     private boolean isThemeDark(int theme) {

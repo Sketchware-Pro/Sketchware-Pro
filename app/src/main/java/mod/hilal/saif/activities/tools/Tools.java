@@ -335,7 +335,7 @@ public class Tools extends Activity {
                 .setView(building_root)
                 .create();
 
-        ApkSigner signer = new ApkSigner(this);
+        ApkSigner signer = new ApkSigner();
         new Thread() {
             @Override
             public void run() {
