@@ -269,10 +269,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.besome.sketch.tools.SignGuideActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
             android:name="com.besome.sketch.editor.manage.ShowBlockCollectionActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="false"
@@ -436,9 +432,6 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.besome.sketch.tools.SignApkActivity"
-            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.tools.ImportProjectActivity"
             android:configChanges="orientation|screenSize">
