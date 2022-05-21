@@ -6,16 +6,12 @@ import android.os.Bundle;
 import com.besome.sketch.acc.LoginActivity;
 import com.besome.sketch.acc.ProfileActivity;
 
-import a.a.a.FA;
-import a.a.a.GA;
 import a.a.a.GB;
-import a.a.a.HA;
-import a.a.a.IA;
-import a.a.a.JA;
-import a.a.a.KA;
 import a.a.a.Sp;
 import a.a.a.aB;
 import a.a.a.bB;
+import a.a.a.mB;
+import a.a.a.nd;
 import a.a.a.xB;
 import a.a.a.zd;
 
@@ -60,9 +56,17 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
             dialog.b(xB.b().a(getApplicationContext(), 2131624962));
             dialog.a(2131165391);
             dialog.a(xB.b().a(getApplicationContext(), 2131624960));
-            dialog.b(xB.b().a(getApplicationContext(), 2131625010), new FA(this, requestCode, dialog));
-            dialog.a(xB.b().a(getApplicationContext(), 2131624974), new GA(this, dialog));
-            dialog.setOnDismissListener(new HA(this));
+            dialog.b(xB.b().a(getApplicationContext(), 2131625010), view -> {
+                if (!mB.a()) {
+                    nd.a(BaseSessionAppCompatActivity.this, new String[]{"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE"}, requestCode);
+                    dialog.dismiss();
+                }
+            });
+            dialog.a(xB.b().a(getApplicationContext(), 2131624974), view -> {
+                l();
+                dialog.dismiss();
+            });
+            dialog.setOnDismissListener(dialogInterface -> Sp.a = false);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
@@ -80,9 +84,17 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
             dialog.b(xB.b().a(getApplicationContext(), 2131624962));
             dialog.a(2131165391);
             dialog.a(xB.b().a(getApplicationContext(), 2131624961));
-            dialog.b(xB.b().a(getApplicationContext(), 2131625036), new IA(this, requestCode, dialog));
-            dialog.a(xB.b().a(getApplicationContext(), 2131624974), new JA(this, dialog));
-            dialog.setOnDismissListener(new KA(this));
+            dialog.b(xB.b().a(getApplicationContext(), 2131625036), view -> {
+                if (!mB.a()) {
+                    h(requestCode);
+                    dialog.dismiss();
+                }
+            });
+            dialog.a(xB.b().a(getApplicationContext(), 2131624974), view -> {
+                m();
+                dialog.dismiss();
+            });
+            dialog.setOnDismissListener(dialogInterface -> Sp.a = false);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
