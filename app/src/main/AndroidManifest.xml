@@ -158,9 +158,6 @@
         <activity android:name="com.besome.sketch.tools.CollectErrorActivity" />
         <activity android:name="com.besome.sketch.tools.CompileLogActivity" />
         <activity
-            android:name="com.besome.sketch.tools.ExportApkActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="com.besome.sketch.tools.NewKeyStoreActivity"
             android:configChanges="orientation|screenSize" />
         <activity
