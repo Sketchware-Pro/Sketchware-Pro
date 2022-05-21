@@ -3,9 +3,6 @@ package com.besome.sketch.lib.base;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.besome.sketch.acc.LoginActivity;
-import com.besome.sketch.acc.ProfileActivity;
-
 import a.a.a.GB;
 import a.a.a.Sp;
 import a.a.a.aB;
@@ -40,13 +37,7 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
             bB.a(getBaseContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
         } else {
             k = requestCode;
-            if (!super.i.a()) {
-                l(9001);
-            } else if (super.i.g().isEmpty()) {
-                m(9002);
-            } else {
-                a(k, super.i.f());
-            }
+            a(k, super.i.f());
         }
     }
 
@@ -104,21 +95,7 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
 
     public abstract void l();
 
-    public final void l(int requestCode) {
-        bB.a(getBaseContext(), xB.b().a(getApplicationContext(), 2131624951), 0).show();
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, requestCode);
-    }
-
     public abstract void m();
-
-    public final void m(int requestCode) {
-        bB.a(getBaseContext(), xB.b().a(getApplicationContext(), 2131624952), 0).show();
-        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, requestCode);
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -127,11 +104,7 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
                 a(k, super.i.f());
             }
         } else if (resultCode == -1) {
-            if (super.i.g().isEmpty()) {
-                m(9002);
-            } else {
-                a(k, super.i.f());
-            }
+            a(k, super.i.f());
         }
 
     }
