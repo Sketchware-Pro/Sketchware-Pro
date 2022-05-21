@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.besome.sketch.lib.base;
 
 import android.content.Intent;
@@ -34,120 +29,114 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
 
     public abstract void a(int var1, String var2);
 
-    public boolean f(int var1) {
-        boolean var2 = this.j();
-        if (!var2) {
-            this.j(var1);
-        }
-
-        return var2;
+    public boolean f(int requestCode) {
+        boolean readWriteAllowed = j();
+        if (!readWriteAllowed) j(requestCode);
+        return readWriteAllowed;
     }
 
-    public abstract void g(int var1);
+    public abstract void g(int requestCode);
 
     public abstract void h(int var1);
 
-    public void i(int var1) {
-        if (!GB.h(this.getApplicationContext())) {
-            bB.a(this.getBaseContext(), xB.b().a(this.getApplicationContext(), 2131624932), 0).show();
+    public void i(int requestCode) {
+        if (!GB.h(getApplicationContext())) {
+            bB.a(getBaseContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
         } else {
-            this.k = var1;
+            k = requestCode;
             if (!super.i.a()) {
-                this.l(9001);
+                l(9001);
             } else if (super.i.g().isEmpty()) {
-                this.m(9002);
+                m(9002);
             } else {
-                this.a(this.k, super.i.f());
+                a(k, super.i.f());
             }
         }
     }
 
-    public void j(int var1) {
+    public void j(int requestCode) {
         if (!Sp.a) {
-            aB var2 = new aB(this);
-            var2.b(xB.b().a(this.getApplicationContext(), 2131624962));
-            var2.a(2131165391);
-            var2.a(xB.b().a(this.getApplicationContext(), 2131624960));
-            var2.b(xB.b().a(this.getApplicationContext(), 2131625010), new FA(this, var1, var2));
-            var2.a(xB.b().a(this.getApplicationContext(), 2131624974), new GA(this, var2));
-            var2.setOnDismissListener(new HA(this));
-            var2.setCancelable(false);
-            var2.setCanceledOnTouchOutside(false);
-            var2.show();
+            aB dialog = new aB(this);
+            dialog.b(xB.b().a(getApplicationContext(), 2131624962));
+            dialog.a(2131165391);
+            dialog.a(xB.b().a(getApplicationContext(), 2131624960));
+            dialog.b(xB.b().a(getApplicationContext(), 2131625010), new FA(this, requestCode, dialog));
+            dialog.a(xB.b().a(getApplicationContext(), 2131624974), new GA(this, dialog));
+            dialog.setOnDismissListener(new HA(this));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
             Sp.a = true;
         }
     }
 
     public boolean j() {
-        return zd.a(this.getApplicationContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && zd.a(this.getApplicationContext(), "android.permission.READ_EXTERNAL_STORAGE") == 0;
+        return zd.a(getApplicationContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && zd.a(getApplicationContext(), "android.permission.READ_EXTERNAL_STORAGE") == 0;
     }
 
-    public void k(int var1) {
+    public void k(int requestCode) {
         if (!Sp.a) {
-            aB var2 = new aB(this);
-            var2.b(xB.b().a(this.getApplicationContext(), 2131624962));
-            var2.a(2131165391);
-            var2.a(xB.b().a(this.getApplicationContext(), 2131624961));
-            var2.b(xB.b().a(this.getApplicationContext(), 2131625036), new IA(this, var1, var2));
-            var2.a(xB.b().a(this.getApplicationContext(), 2131624974), new JA(this, var2));
-            var2.setOnDismissListener(new KA(this));
-            var2.setCancelable(false);
-            var2.setCanceledOnTouchOutside(false);
-            var2.show();
+            aB dialog = new aB(this);
+            dialog.b(xB.b().a(getApplicationContext(), 2131624962));
+            dialog.a(2131165391);
+            dialog.a(xB.b().a(getApplicationContext(), 2131624961));
+            dialog.b(xB.b().a(getApplicationContext(), 2131625036), new IA(this, requestCode, dialog));
+            dialog.a(xB.b().a(getApplicationContext(), 2131624974), new JA(this, dialog));
+            dialog.setOnDismissListener(new KA(this));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
             Sp.a = true;
         }
     }
 
     public abstract void l();
 
-    public final void l(int var1) {
-        bB.a(this.getBaseContext(), xB.b().a(this.getApplicationContext(), 2131624951), 0).show();
-        Intent var2 = new Intent(this.getApplicationContext(), LoginActivity.class);
-        var2.setFlags(536870912);
-        this.startActivityForResult(var2, var1);
+    public final void l(int requestCode) {
+        bB.a(getBaseContext(), xB.b().a(getApplicationContext(), 2131624951), 0).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivityForResult(intent, requestCode);
     }
 
     public abstract void m();
 
-    public final void m(int var1) {
-        bB.a(this.getBaseContext(), xB.b().a(this.getApplicationContext(), 2131624952), 0).show();
-        Intent var2 = new Intent(this.getApplicationContext(), ProfileActivity.class);
-        var2.setFlags(536870912);
-        this.startActivityForResult(var2, var1);
+    public final void m(int requestCode) {
+        bB.a(getBaseContext(), xB.b().a(getApplicationContext(), 2131624952), 0).show();
+        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivityForResult(intent, requestCode);
     }
 
-    public void onActivityResult(int var1, int var2, Intent var3) {
-        super.onActivityResult(var1, var2, var3);
-        if (var1 != 9001) {
-            if (var1 == 9002 && var2 == -1) {
-                this.a(this.k, super.i.f());
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != 9001) {
+            if (requestCode == 9002 && resultCode == -1) {
+                a(k, super.i.f());
             }
-        } else if (var2 == -1) {
+        } else if (resultCode == -1) {
             if (super.i.g().isEmpty()) {
-                this.m(9002);
+                m(9002);
             } else {
-                this.a(this.k, super.i.f());
+                a(k, super.i.f());
             }
         }
 
     }
 
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
-    public void onRequestPermissionsResult(int var1, String[] var2, int[] var3) {
-        super.onRequestPermissionsResult(var1, var2, var3);
-        int var4 = var2.length;
-
-        for (int var5 = 0; var5 < var4; ++var5) {
-            if ("android.permission.WRITE_EXTERNAL_STORAGE".equals(var2[var5])) {
-                if (var3.length <= 0 || var3[0] != 0 || var3[1] != 0) {
-                    this.k(var1);
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (String permission : permissions) {
+            if ("android.permission.WRITE_EXTERNAL_STORAGE".equals(permission)) {
+                if (grantResults.length <= 0 || grantResults[0] != 0 || grantResults[1] != 0) {
+                    k(requestCode);
                     break;
                 }
-
-                this.g(var1);
+                g(requestCode);
             }
         }
 
