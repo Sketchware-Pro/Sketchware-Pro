@@ -2,7 +2,6 @@ package com.besome.sketch.export;
 
 import static mod.SketchwareUtil.getDip;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +34,6 @@ import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.tools.ExportApkActivity;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
 
@@ -79,8 +77,6 @@ import mod.jbk.export.GetKeyStoreCredentialsDialog;
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
     private final oB file_utility = new oB();
-    private TextView tv_apk_url_expire;
-    private ImageView img_copy_apk_url;
     private Button btn_export_src;
     private LottieAnimationView loading_export_src;
     private LinearLayout layout_export_src;
@@ -101,13 +97,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private String sc_id;
     private HashMap<String, Object> sc_metadata = null;
     private yq project_metadata = null;
-    private ClipboardManager clipboard_manager;
     private Button btn_sign_apk;
     private LottieAnimationView loading_sign_apk;
     private LinearLayout layout_apk_path;
     private TextView tv_apk_path;
-    private LinearLayout layout_apk_url;
-    private TextView tv_apk_url;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,7 +120,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(getApplicationContext(), wq.d(sc_id), sc_metadata);
-        clipboard_manager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         initializeOutputDirectories();
         initializeSignApkViews();
         initializeExportSrcViews();
@@ -152,22 +144,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      * Sets exported signed APK file path texts' content.
      */
     private void f(String filePath) {
-        String valid_dt;
         layout_apk_path.setVisibility(View.VISIBLE);
         btn_sign_apk.setVisibility(View.GONE);
-        layout_apk_url.setVisibility(View.GONE);
         if (loading_sign_apk.h()) {
             loading_sign_apk.e();
         }
         loading_sign_apk.setVisibility(View.GONE);
         SketchwareUtil.toast(Helper.getResString(R.string.sign_apk_title_export_apk_file));
         tv_apk_path.setText(signed_apk_postfix + File.separator + filePath);
-        if (j.h()) {
-            valid_dt = "30 " + Helper.getResString(R.string.myprojects_export_project_word_remain_days);
-        } else {
-            valid_dt = "7 " + Helper.getResString(R.string.myprojects_export_project_word_remain_days);
-        }
-        tv_apk_url_expire.setText(Helper.getResString(R.string.myprojects_export_project_word_valid_dt) + " : " + valid_dt);
     }
 
     private void exportSrc() {
@@ -528,20 +512,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         layout_apk_path = findViewById(R.id.layout_apk_path);
         TextView title_apk_path = findViewById(R.id.title_apk_path);
         tv_apk_path = findViewById(R.id.tv_apk_path);
-        Button btn_export_apk = findViewById(R.id.btn_export_apk);
-        layout_apk_url = findViewById(R.id.layout_apk_url);
-        TextView title_apk_url = findViewById(R.id.title_apk_url);
-        tv_apk_url = findViewById(R.id.tv_apk_url);
-        tv_apk_url_expire = findViewById(R.id.tv_apk_url_expire);
-        img_copy_apk_url = findViewById(R.id.img_copy_apk_url);
         title_sign_apk.setText(Helper.getResString(R.string.myprojects_export_project_title_sign_apk));
         btn_sign_apk.setText(Helper.getResString(R.string.myprojects_export_project_button_sign_apk));
         title_apk_path.setText(Helper.getResString(R.string.myprojects_export_project_title_local_path));
-        btn_export_apk.setText(Helper.getResString(R.string.myprojects_export_project_button_generate_url));
-        title_apk_url.setText(Helper.getResString(R.string.myprojects_export_project_title_download_url));
         loading_sign_apk.setVisibility(View.GONE);
         layout_apk_path.setVisibility(View.GONE);
-        layout_apk_url.setVisibility(View.GONE);
         btn_sign_apk.setOnClickListener(v -> {
             GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(ExportProjectActivity.this,
                     R.drawable.color_about_96,
@@ -553,7 +528,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             credentialsDialog.setListener(credentials -> {
                 btn_sign_apk.setVisibility(View.GONE);
                 layout_apk_path.setVisibility(View.GONE);
-                layout_apk_url.setVisibility(View.GONE);
                 loading_sign_apk.setVisibility(View.VISIBLE);
                 loading_sign_apk.j();
 
@@ -573,7 +547,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             });
             credentialsDialog.show();
         });
-        btn_export_apk.setOnClickListener(v -> r());
     }
 
     private void initializeOutputDirectories() {
@@ -609,13 +582,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(Intent.createChooser(intent, Helper.getResString(R.string.myprojects_export_src_chooser_title_email)));
         }
-    }
-
-    public final void r() {
-        Intent intent = new Intent(getApplicationContext(), ExportApkActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra("sc_id", sc_id);
-        startActivity(intent);
     }
 
     /**
@@ -928,7 +894,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Dismiss the ProgressDialog
             i();
             layout_apk_path.setVisibility(View.GONE);
-            layout_apk_url.setVisibility(View.GONE);
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
             }
@@ -998,7 +963,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             i();
             ExportProjectActivity.this.b(str);
             layout_apk_path.setVisibility(View.GONE);
-            layout_apk_url.setVisibility(View.GONE);
             if (loading_sign_apk.h()) {
                 loading_sign_apk.e();
             }
