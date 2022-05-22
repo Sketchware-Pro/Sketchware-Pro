@@ -83,46 +83,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.besome.sketch.acc.GoogleSignActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
-        <activity
-            android:name="com.besome.sketch.acc.LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
-        <activity
-            android:name="com.besome.sketch.acc.MyPageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
-        <activity
-            android:name="com.besome.sketch.acc.MyPageSettingsActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.besome.sketch.acc.ProfileActivity" />
-        <activity android:name="com.besome.sketch.acc.ServiceOutActivity" />
-        <activity android:name="com.besome.sketch.acc.UserGradeActivity" />
-        <activity
-            android:name="com.besome.sketch.ads.AdsAdmobActivity"
-            android:theme="@style/TranslucentTheme" />
-        <activity
-            android:name="com.besome.sketch.builder.BuildActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
-        <activity
-            android:name="com.besome.sketch.bill.InAppActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
-            android:name="com.besome.sketch.bill.SubscribeActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.bill.PurchaseCheckActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent.FullScreen" />
-        <activity
-            android:name="com.besome.sketch.bill.OrdersActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.bill.ThanksActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
             android:name="com.besome.sketch.common.SrcViewerActivity"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -162,9 +122,6 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.export.ExportProjectActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.export.ManageExportUrlActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.design.DesignActivity"
@@ -295,39 +252,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.besome.sketch.publish.GooglePublishExceptionDialogActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
             android:name="com.besome.sketch.editor.component.ShowFilePickerTypesActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.besome.sketch.publish.PublishActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.ManagePublishActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.account.NoAccountActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.account.PublishAccountSettingActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.OneFinalStepActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.publishsteps.PublishPreviewDetailActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.publishsteps.PublishCompleteActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="com.besome.sketch.publish.PublishMailCompleteActivity"
-            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.editor.manage.library.admob.AdmobActivity"
             android:configChanges="orientation|screenSize"
