@@ -19,9 +19,8 @@ import java.util.List;
 import a.a.a.DB;
 import a.a.a.MA;
 import a.a.a.bB;
+import a.a.a.mB;
 import a.a.a.rB;
-import a.a.a.uz;
-import a.a.a.vz;
 import a.a.a.xB;
 import a.a.a.yB;
 
@@ -59,7 +58,11 @@ public class SystemSettingActivity extends BaseAdsAppCompatActivity {
                 switchItem.setTextColor(0xffc6c6c6);
             }
 
-            switchItem.setSwitchChangedListener(new vz(this));
+            switchItem.setSwitchChangedListener((compoundButton, isChecked) -> {
+                PropertySwitchItem propertySwitchItem = (PropertySwitchItem) o.getChildAt(3);
+                propertySwitchItem.setEnabled(isChecked);
+                propertySwitchItem.setValue(isChecked);
+            });
         }
 
         if (key == 3 && !super.i.a()) {
@@ -102,7 +105,9 @@ public class SystemSettingActivity extends BaseAdsAppCompatActivity {
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().a(xB.b().a(this, R.string.main_drawer_title_system_settings));
-        n.setNavigationOnClickListener(new uz(this));
+        n.setNavigationOnClickListener(view -> {
+            if (!mB.a()) onBackPressed();
+        });
         o = (LinearLayout) findViewById(R.id.content);
         u = new DB(getApplicationContext(), "P12");
         a(0, R.string.system_settings_title_setting_vibration,
