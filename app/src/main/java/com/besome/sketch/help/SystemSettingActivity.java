@@ -1,6 +1,5 @@
 package com.besome.sketch.help;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,93 +12,64 @@ import com.besome.sketch.editor.property.PropertySwitchItem;
 import com.besome.sketch.lib.base.BaseAdsAppCompatActivity;
 import com.sketchware.remod.R;
 
-import java.util.HashMap;
-import java.util.List;
-
 import a.a.a.DB;
-import a.a.a.MA;
-import a.a.a.bB;
 import a.a.a.mB;
-import a.a.a.rB;
 import a.a.a.xB;
-import a.a.a.yB;
 
 public class SystemSettingActivity extends BaseAdsAppCompatActivity {
 
-    public final int p = 0;
-    public final int q = 1;
-    public final int r = 2;
-    public final int s = 3;
-    public final int t = 5;
-    public Toolbar n;
-    public LinearLayout o;
-    public DB u;
-    public Intent v = new Intent();
-    public HashMap<String, Object> w;
+    private final Intent v = new Intent();
+    private LinearLayout o;
+    private DB u;
 
     public SystemSettingActivity() {
     }
 
-    public final void a(int key, int resName, int resDescription, boolean value) {
+    private void a(int key, int resName, int resDescription, boolean value) {
         a(key, xB.b().a(getApplicationContext(), resName), xB.b().a(getApplicationContext(), resDescription), value);
     }
 
-    public final void a(int key, String name, String description, boolean value) {
+    private void a(int key, String name, String description, boolean value) {
         PropertySwitchItem switchItem = new PropertySwitchItem(this);
         switchItem.setKey(key);
         switchItem.setName(name);
         switchItem.setDesc(description);
         switchItem.setValue(value);
         o.addView(switchItem);
-        if (key == 2) {
-            if (!super.i.a()) {
-                switchItem.setEnabled(false);
-                switchItem.setValue(false);
-                switchItem.setTextColor(0xffc6c6c6);
-            }
-
-            switchItem.setSwitchChangedListener((compoundButton, isChecked) -> {
-                PropertySwitchItem propertySwitchItem = (PropertySwitchItem) o.getChildAt(3);
-                propertySwitchItem.setEnabled(isChecked);
-                propertySwitchItem.setValue(isChecked);
-            });
-        }
-
-        if (key == 3 && !super.i.a()) {
-            switchItem.setEnabled(false);
-            switchItem.setValue(false);
-            switchItem.setTextColor(0xffc6c6c6);
-        }
-
     }
 
+    @Override
     public void g(int var1) {
     }
 
+    @Override
     public void h(int requestCode) {
         Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
         intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
         startActivityForResult(intent, requestCode);
     }
 
+    @Override
     public void l() {
     }
 
+    @Override
     public void m() {
     }
 
     @Override
     public void onBackPressed() {
-        if (!p()) {
+        if (!isSettingsSaved()) {
             setResult(-1, v);
             finish();
         }
     }
 
+    @Override
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         setContentView(R.layout.system_settings);
-        n = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar n = (Toolbar) findViewById(R.id.toolbar);
         a(n);
         d().d(true);
         d().e(true);
@@ -118,173 +88,31 @@ public class SystemSettingActivity extends BaseAdsAppCompatActivity {
                 R.string.system_settings_description_automatically_save
                 , u.a("P12I2", false));
 
-        a(2, R.string.system_settings_title_use_push_notification,
-                R.string.system_settings_description_use_push_notification,
-                u.a("P12I4", true));
-
-        a(3, R.string.system_settings_title_enable_alerts,
-                R.string.system_settings_description_use_push_notification,
-                u.a("P12I5", true));
-        if (super.i.a() && super.i.p()) {
-            (new SystemSettingActivity.a(this, getApplicationContext())).execute();
-        }
-
         o();
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         n();
     }
 
-    public final boolean p() {
-        int var1 = 0;
+    private boolean isSettingsSaved() {
+        for (int i = 0; i < o.getChildCount(); i++) {
+            View childAtView = o.getChildAt(i);
+            if (childAtView instanceof PropertySwitchItem) {
+                PropertySwitchItem propertySwitchItem = (PropertySwitchItem) childAtView;
+                switch (propertySwitchItem.getKey()) {
+                    case 0:
+                        u.a("P12I0", propertySwitchItem.getValue());
+                        return true;
 
-        boolean var2;
-        boolean var4;
-        for (var2 = false; var1 < o.getChildCount(); var2 = var4) {
-            View var3 = o.getChildAt(var1);
-            var4 = var2;
-            if (var3 instanceof PropertySwitchItem) {
-                PropertySwitchItem var6 = (PropertySwitchItem) var3;
-                int var5 = var6.getKey();
-                if (var5 != 0) {
-                    if (var5 != 1) {
-                        if (var5 != 2) {
-                            if (var5 != 3) {
-                                if (var5 != 5) {
-                                    var4 = var2;
-                                } else {
-                                    String var7;
-                                    if (var6.getValue()) {
-                                        var7 = "Y";
-                                    } else {
-                                        var7 = "N";
-                                    }
-
-                                    var4 = var2;
-                                    if (!yB.c(w, "subscribe").equals(var7)) {
-                                        (new SystemSettingActivity.b(this, getApplicationContext(), var7)).execute(new Void[0]);
-                                        var4 = true;
-                                    }
-                                }
-                            } else {
-                                u.a("P12I5", var6.getValue());
-                                var4 = var2;
-                            }
-                        } else {
-                            u.a("P12I4", var6.getValue());
-                            var4 = var2;
-                        }
-                    } else {
-                        u.a("P12I2", var6.getValue());
-                        var4 = var2;
-                    }
-                } else {
-                    u.a("P12I0", var6.getValue());
-                    var4 = var2;
+                    case 1:
+                        u.a("P12I2", propertySwitchItem.getValue());
+                        return true;
                 }
             }
-
-            ++var1;
         }
-
-        return var2;
-    }
-
-    public class a extends MA {
-        public final SystemSettingActivity d;
-        public List<Object> c;
-
-        public a(SystemSettingActivity var1, Context var2) {
-            super(var2);
-            d = var1;
-            var1.a(this);
-            var1.k();
-        }
-
-        public void a() {
-            d.h();
-            boolean var2 = true;
-            boolean var3;
-            if (c != null) {
-                var3 = true;
-            } else {
-                var3 = false;
-            }
-
-            if (c.size() != 1) {
-                var2 = false;
-            }
-
-            if (var3 & var2) {
-                d.w = (HashMap<String, Object>) c.get(0);
-                String var4 = xB.b().a(d.getApplicationContext(), 2131626403);
-                String var6 = xB.b().a(d.getApplicationContext(), 2131626398);
-                boolean var5 = "Y".equals(yB.c(d.w, "subscribe"));
-                d.a(5, var4, var6, var5);
-            }
-
-        }
-
-        public void a(String var1) {
-            d.h();
-        }
-
-        public void b() {
-            rB var1 = new rB();
-            HashMap<String, Object> var2 = new HashMap<>();
-            var2.put("user_id", SystemSettingActivity.d(d).h());
-            c = var1.k(var2);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-    }
-
-    public class b extends MA {
-        public final SystemSettingActivity e;
-        public String c;
-        public String d;
-
-        public b(SystemSettingActivity var1, Context var2, String var3) {
-            super(var2);
-            e = var1;
-            var1.a(this);
-            d = var3;
-            var1.k();
-        }
-
-        public void a() {
-            e.h();
-            if ("success".equals(c)) {
-                bB.a(super.a, xB.b().a(e.getApplicationContext(), 2131624939), 0).show();
-            }
-
-            e.setResult(-1, e.v);
-            e.finish();
-        }
-
-        public void a(String var1) {
-            e.h();
-            e.setResult(-1, e.v);
-            e.finish();
-        }
-
-        public void b() {
-            rB var1 = new rB();
-            HashMap<String, Object> userMap = new HashMap<>();
-            userMap.put("login_id", SystemSettingActivity.h(e).e());
-            userMap.put("session_id", SystemSettingActivity.i(e).f());
-            userMap.put("subscribe", d);
-            c = var1.Tb(userMap);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
+        return false;
     }
 }
