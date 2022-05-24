@@ -1,7 +1,6 @@
 package com.besome.sketch.help;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,14 +8,14 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.property.PropertySwitchItem;
-import com.besome.sketch.lib.base.BaseAdsAppCompatActivity;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 
 import a.a.a.DB;
 import a.a.a.mB;
 import a.a.a.xB;
 
-public class SystemSettingActivity extends BaseAdsAppCompatActivity {
+public class SystemSettingActivity extends BaseAppCompatActivity {
 
     private final Intent v = new Intent();
     private LinearLayout o;
@@ -36,25 +35,6 @@ public class SystemSettingActivity extends BaseAdsAppCompatActivity {
         switchItem.setDesc(description);
         switchItem.setValue(value);
         o.addView(switchItem);
-    }
-
-    @Override
-    public void g(int var1) {
-    }
-
-    @Override
-    public void h(int requestCode) {
-        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
-        intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
-        startActivityForResult(intent, requestCode);
-    }
-
-    @Override
-    public void l() {
-    }
-
-    @Override
-    public void m() {
     }
 
     @Override
@@ -87,14 +67,6 @@ public class SystemSettingActivity extends BaseAdsAppCompatActivity {
         a(1, R.string.system_settings_title_automatically_save,
                 R.string.system_settings_description_automatically_save
                 , u.a("P12I2", false));
-
-        o();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        n();
     }
 
     private boolean isSettingsSaved() {
