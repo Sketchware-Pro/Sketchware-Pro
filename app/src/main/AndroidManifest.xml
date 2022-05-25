@@ -36,10 +36,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7684160946124871~7302238434" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -146,11 +142,6 @@
                 <data android:pathPattern=".*\\..*\\..*\\..*\\.swb" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-            android:exported="false"
-            android:theme="@style/TranslucentTheme" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.ManageViewActivity"
             android:configChanges="orientation|screenSize" />
@@ -430,11 +421,6 @@
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
             android:authorities="${applicationId}.firebaseinitprovider"
-            android:exported="false"
-            android:initOrder="100" />
-        <provider
-            android:name="com.google.android.gms.ads.MobileAdsInitProvider"
-            android:authorities="${applicationId}.mobileadsinitprovider"
             android:exported="false"
             android:initOrder="100" />
 
