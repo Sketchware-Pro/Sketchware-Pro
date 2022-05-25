@@ -16,11 +16,13 @@ import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.ZipAlign;
+import com.iyxan23.zipalignjava.InvalidZipException;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.RandomAccessFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -1020,12 +1022,14 @@ public class Dp {
         LogUtil.d(TAG, "About to zipalign " + inPath + " to " + outPath);
         long savedTimeMillis = System.currentTimeMillis();
 
-        try (FileInputStream in = new FileInputStream(inPath);
+        try (RandomAccessFile in = new RandomAccessFile(inPath);
              FileOutputStream out = new FileOutputStream(outPath)) {
             ZipAlign.alignZip(in, out);
         } catch (IOException e) {
             throw new By("Couldn't run zipalign on " + inPath + " with output path " + outPath + ": " + Log.getStackTraceString(e));
-        }
+        } catch (InvalidZipException e) {
+            throw new By("Failed to zipalign due to the given zip being invalid: " + Log.getStackTraceString(e));
+	}
 
         LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
