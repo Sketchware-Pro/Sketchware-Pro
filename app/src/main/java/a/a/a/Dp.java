@@ -1022,7 +1022,7 @@ public class Dp {
         LogUtil.d(TAG, "About to zipalign " + inPath + " to " + outPath);
         long savedTimeMillis = System.currentTimeMillis();
 
-        try (RandomAccessFile in = new RandomAccessFile(inPath);
+        try (RandomAccessFile in = new RandomAccessFile(inPath, "r");
              FileOutputStream out = new FileOutputStream(outPath)) {
             ZipAlign.alignZip(in, out);
         } catch (IOException e) {
