@@ -1,9 +1,19 @@
 name: 'Delete old workflow runs'
 on:
   workflow_dispatch:
-  
+    inputs:
+      days:
+        description: 'Number of retains days.'
+        required: true
+        default: '20'
+
+      minimum_runs:
+        description: 'The minimum runs to keep for each workflow.'
+        required: true
+        default: '6'
+
 jobs:
-  del_runs:
+  deleteWorkflowRuns:
     runs-on: ubuntu-latest
     steps:
       - name: Delete workflow runs
@@ -11,5 +21,5 @@ jobs:
         with:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
-          retain_days: 2
-          keep_minimum_runs: 20
+          retain_days: ${{ github.event.inputs.days }}
+          keep_minimum_runs: ${{ github.event.inputs.minimum_runs }}
