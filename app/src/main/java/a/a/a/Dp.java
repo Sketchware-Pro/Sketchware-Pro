@@ -869,7 +869,7 @@ public class Dp {
             ZipSigner zipSigner = new ZipSigner();
             KeyStoreFileManager.setProvider(new BouncyCastleProvider());
             zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(yq.alignedApkPath, yq.H);
+            zipSigner.signZip(yq.G, yq.H);
             return true;
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
