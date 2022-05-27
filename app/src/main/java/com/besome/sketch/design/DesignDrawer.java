@@ -115,6 +115,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         /* Add Source Code Viewer */
         menusLayout.addView(addDrawerItem(16, false,
                 R.drawable.code_icon, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
+        /* Add Logcat Reader */
+        menusLayout.addView(addDrawerItem(22,false,
+                R.drawable.icons8_app_components,R.string.design_drawer_menu_title_logcat_reader,R.string.design_drawer_menu_subtitle_logcat_reader));
     }
 
     @Override
@@ -195,6 +198,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         designActivity.toCustomBlocksViewer();
                         return;
 
+                    case 22:
+                        designActivity.toLogReader();
+                        return;
                     case 2:
                     default:
                 }

@@ -41,6 +41,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
+import mod.khaled.logcat.LogReaderActivity;
 
 public class Tools extends Activity {
 
@@ -253,6 +254,14 @@ public class Tools extends Activity {
         makeup(signApkFileLayout, R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4");
         base.addView(signApkFile);
         signApkFileLayout.setOnClickListener(v -> signApkFileDialog());
+
+        CardView openLogcatReader = newCard(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.0f);
+        LinearLayout LogcatReaderLayout = newLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.0f);
+        openLogcatReader.addView(LogcatReaderLayout);
+        makeup(LogcatReaderLayout, R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader));
+        base.addView(openLogcatReader);
+        openLogcatReader.setOnClickListener(new ActivityLauncher(
+                new Intent(getApplicationContext(), LogReaderActivity.class)));
     }
 
     private void signApkFileDialog() {
