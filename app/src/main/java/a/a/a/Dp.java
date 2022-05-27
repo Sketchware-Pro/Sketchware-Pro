@@ -70,7 +70,6 @@ public class Dp {
      * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
-    private final File zipalignBinary;
     private final File aapt2Binary;
     public BuildSettings build_settings;
     private BuildAsyncTask buildingDialog;
@@ -79,7 +78,6 @@ public class Dp {
     public FilePathUtil fpu;
     private final oB fileUtil;
     private final Fp commandExecutor;
-    private final File extractedBuiltInLibrariesDirectory;
     public ManageLocalLibrary mll;
     public Kp builtInLibraryManager;
     public String androidJarPath;
@@ -116,7 +114,6 @@ public class Dp {
             LogUtil.e(TAG, "Somehow failed to get package info about us!", e);
         }
 
-        zipalignBinary = new File(context.getCacheDir(), "zipalign");
         aapt2Binary = new File(context.getCacheDir(), "aapt2");
         build_settings = new BuildSettings(yqVar.b);
         this.context = context;
@@ -124,7 +121,6 @@ public class Dp {
         fpu = new FilePathUtil();
         fileUtil = new oB(false);
         commandExecutor = new Fp();
-        extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         mll = new ManageLocalLibrary(yqVar.b);
         builtInLibraryManager = new Kp();
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
