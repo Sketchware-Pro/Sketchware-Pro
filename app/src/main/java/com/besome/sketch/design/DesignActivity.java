@@ -103,9 +103,9 @@ import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
+import mod.khaled.logcat.LogReaderActivity;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalCompiler;
-import mod.khaled.logcat.LogReaderActivity;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -1079,17 +1079,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             return;
                         }
 
-                        publishProgress("Aligning APK...");
-                        mDp.runZipalign();
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
                         publishProgress("Signing APK...");
                         if (Build.VERSION.SDK_INT >= 26) {
                             ApkSigner signer = new ApkSigner();
-                            signer.signWithTestKey(mDp.yq.alignedApkPath, mDp.yq.H, null);
+                            signer.signWithTestKey(mDp.yq.G, mDp.yq.H, null);
                         } else {
                             mDp.k();
                         }
