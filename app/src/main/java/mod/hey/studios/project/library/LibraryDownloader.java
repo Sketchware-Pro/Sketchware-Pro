@@ -42,6 +42,7 @@ import mod.hey.studios.lib.prdownloader.PRDownloader;
 import mod.hey.studios.lib.prdownloader.PRDownloader.OnDownloadListener;
 import mod.hey.studios.lib.prdownloader.PRDownloader.Status;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuiltInLibraries;
 
 //changed in 6.3.0
 
@@ -222,7 +223,7 @@ public class LibraryDownloader {
     private void _jar2dex(String _path) throws Exception {
         // 6.3.0
         if (use_d8) {
-            File libs = new File(context.getFilesDir(), "libs");
+            File libs = BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH;
 
             ArrayList<String> cm = new ArrayList<>();
             cm.add("--release");
