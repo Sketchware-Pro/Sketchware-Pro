@@ -92,14 +92,14 @@ dependencies {
 
     implementation "$editorGroupId:editor:$codeEditorVersion", excludeAnnotation
     implementation "$editorGroupId:language-java:$codeEditorVersion", excludeAnnotation
-    implementation("$editorGroupId:language-textmate:$codeEditorVersion") {
-        exclude group: "com.google.code.gson", module: "gson"
-    }
+    implementation "$editorGroupId:language-textmate:$codeEditorVersion"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
     implementation "com.android.tools:r8:3.3.28"
+
+    implementation "com.google.code.gson:gson:2.9.0"
 
     //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:3.10.0"
