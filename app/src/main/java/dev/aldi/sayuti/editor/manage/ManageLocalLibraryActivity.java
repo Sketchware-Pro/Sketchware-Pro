@@ -39,7 +39,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
     private void initToolbar() {
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Local library manager");
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Local library Manager");
         ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back_icon);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
