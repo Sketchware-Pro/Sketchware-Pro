@@ -1,6 +1,5 @@
 package mod.khaled.logcat;
 
-
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static mod.SketchwareUtil.getDip;
@@ -45,7 +44,7 @@ import mod.hasrat.lib.BaseTextWatcher;
 public class LogReaderActivity extends AppCompatActivity {
 
     private final BroadcastReceiver logger = new logger();
-    private final Pattern logPattern = Pattern.compile("^(.*\\d) (V|A|D|E|I|W) (.*): (.*)");
+    private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
     private PopupMenu options;
     private String pkgFilter = "";
     private boolean autoScroll = false;
@@ -53,7 +52,6 @@ public class LogReaderActivity extends AppCompatActivity {
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
-    private LinearLayout parent;
     private EditText filterEdittext;
     private ImageView menu;
     private ImageView back;
@@ -65,7 +63,7 @@ public class LogReaderActivity extends AppCompatActivity {
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
 
-        parent = new LinearLayout(LogReaderActivity.this);
+        LinearLayout parent = new LinearLayout(LogReaderActivity.this);
         parent.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         parent.setOrientation(LinearLayout.VERTICAL);
 
@@ -145,7 +143,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     menuItem.setChecked(!menuItem.isChecked());
                     autoScroll = menuItem.isChecked();
                     if (autoScroll) {
-                        ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition((int) (((RecyclerviewAdapter) recyclerview.getAdapter()).a() - 1));
+                        ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(recyclerview.getAdapter().a() - 1);
                     }
                     break;
                 }
@@ -224,21 +222,17 @@ public class LogReaderActivity extends AppCompatActivity {
                     } else {
                         ((RecyclerviewAdapter) recyclerview.getAdapter()).updateList(map);
                     }
-                } else {
-                    if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
-                        if (!filterEdittext.getText().toString().equals("")) {
-                            if (map.get("logRaw").toString().toLowerCase().contains(filterEdittext.getText().toString().toLowerCase())) {
-                                ((RecyclerviewAdapter) recyclerview.getAdapter()).updateList(map);
-                            }
-                        } else {
+                } else if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
+                    if (!filterEdittext.getText().toString().equals("")) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(filterEdittext.getText().toString().toLowerCase())) {
                             ((RecyclerviewAdapter) recyclerview.getAdapter()).updateList(map);
                         }
+                    } else {
+                        ((RecyclerviewAdapter) recyclerview.getAdapter()).updateList(map);
                     }
                 }
             }
         }
-
-
     }
 
     @Override
@@ -251,7 +245,6 @@ public class LogReaderActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(logger);
-
     }
 
     public class RecyclerviewAdapter extends RecyclerView.a<RecyclerviewAdapter.ViewHolder> {
@@ -265,20 +258,17 @@ public class LogReaderActivity extends AppCompatActivity {
         TextView pkgName;
 
         public void updateList(final HashMap<String, Object> _map) {
-
             _data.add(_map);
-            ((RecyclerviewAdapter) recyclerview.getAdapter()).d(_data.size() + 1);
-            //notifyItemInserted
+            recyclerview.getAdapter().d(_data.size() + 1);
 
             if (autoScroll) {
-                ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition((int) _data.size() - 1);
+                ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(_data.size() - 1);
             }
         }
 
         public void deleteAll() {
             _data.clear();
-            ((RecyclerviewAdapter) recyclerview.getAdapter()).c();
-            //notifyDataSetChanged();
+            recyclerview.getAdapter().c();
         }
 
         public RecyclerviewAdapter(ArrayList<HashMap<String, Object>> _arr) {
@@ -370,17 +360,17 @@ public class LogReaderActivity extends AppCompatActivity {
             final TextView log = _view.findViewWithTag("log");
             final TextView pkgName = _view.findViewWithTag("pkgName");
 
-            if (_data.get((int) (_position)).containsKey("pkgName")) {
-                pkgName.setText(_data.get((int) _position).get("pkgName").toString());
+            if (_data.get(_position).containsKey("pkgName")) {
+                pkgName.setText(_data.get(_position).get("pkgName").toString());
                 pkgName.setVisibility(View.VISIBLE);
             } else {
                 pkgName.setVisibility(View.GONE);
             }
-            if (_data.get((int) (_position)).containsKey("culturedLog")) {
+            if (_data.get(_position).containsKey("culturedLog")) {
                 date_header.setVisibility(View.VISIBLE);
-                type.setText(_data.get((int) _position).get("type").toString());
-                date_header.setText(_data.get((int) _position).get("date").toString().concat(" | ".concat(_data.get((int) _position).get("header").toString())));
-                switch (_data.get((int) _position).get("type").toString()) {
+                type.setText(_data.get(_position).get("type").toString());
+                date_header.setText(_data.get(_position).get("date").toString().concat(" | ".concat(_data.get(_position).get("header").toString())));
+                switch (_data.get(_position).get("type").toString()) {
                     case "A": {
                         type.setBackgroundColor(0xFF9C27B0);
                         break;
@@ -410,12 +400,12 @@ public class LogReaderActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                log.setText(_data.get((int) _position).get("body").toString());
+                log.setText(_data.get(_position).get("body").toString());
                 try {
-                    if (_data.get((int) _position).get("date").toString().equals(_data.get((int) _position + 1).get("date").toString())) {
+                    if (_data.get(_position).get("date").toString().equals(_data.get(_position + 1).get("date").toString())) {
                         divider.setVisibility(View.GONE);
                         try {
-                            if (_data.get((int) _position).get("pkgName").toString().equals(_data.get((int) _position + 1).get("pkgName").toString())) {
+                            if (_data.get(_position).get("pkgName").toString().equals(_data.get(_position + 1).get("pkgName").toString())) {
                                 pkgName.setVisibility(View.GONE);
                             } else {
                                 pkgName.setVisibility(View.VISIBLE);
@@ -424,7 +414,7 @@ public class LogReaderActivity extends AppCompatActivity {
                             pkgName.setVisibility(View.VISIBLE);
                         }
                         try {
-                            if (_data.get((int) _position).get("header").toString().equals(_data.get((int) _position + 1).get("header").toString())) {
+                            if (_data.get(_position).get("header").toString().equals(_data.get(_position + 1).get("header").toString())) {
                                 date_header.setVisibility(View.GONE);
                             } else {
                                 date_header.setVisibility(View.VISIBLE);
@@ -439,7 +429,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     divider.setVisibility(View.VISIBLE);
                 }
             } else {
-                log.setText(_data.get((int) _position).get("logRaw").toString());
+                log.setText(_data.get(_position).get("logRaw").toString());
                 type.setBackgroundColor(0xFF000000);
                 type.setText("U");
                 date_header.setVisibility(View.GONE);
@@ -452,12 +442,10 @@ public class LogReaderActivity extends AppCompatActivity {
             });
         }
 
-
         @Override
         public int a() {
             return _data.size();
         }
-
 
         public class ViewHolder extends RecyclerView.v {
             public ViewHolder(View v) {
