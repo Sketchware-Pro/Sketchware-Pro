@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -33,11 +32,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.annotations.NonNull;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -179,8 +176,8 @@ public class LogReaderActivity extends AppCompatActivity {
                 if (_charSeq.equals("") && (pkgFilterList.size() == 0)) {
                     recyclerview.setAdapter(new RecyclerviewAdapter(mainList));
                 } else {
-                    ArrayList<HashMap<String, Object>> filteredList = new ArrayList();
-                    for (HashMap m : mainList) {
+                    ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
+                    for (HashMap<String, Object> m : mainList) {
                         if (pkgFilterList.size() != 0) {
                             if (m.containsKey("pkgName") && pkgFilterList.contains(m.get("pkgName").toString())) {
                                 if (m.get("logRaw").toString().toLowerCase().contains(_charSeq.toLowerCase())) {
@@ -221,7 +218,7 @@ public class LogReaderActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
-        recyclerview.setAdapter(new RecyclerviewAdapter(new ArrayList<HashMap<String, Object>>()));
+        recyclerview.setAdapter(new RecyclerviewAdapter(new ArrayList<>()));
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         autoScroll = true;
         IntentFilter intentFilter = new IntentFilter();
@@ -232,7 +229,7 @@ public class LogReaderActivity extends AppCompatActivity {
     public class logger extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            HashMap map = new HashMap<>();
+            HashMap<String,Object> map = new HashMap<>();
             if (intent.hasExtra("log") && (intent.getStringExtra("log") != null)) {
                 if (intent.hasExtra("pkgName")) {
                     map.put("pkgName", intent.getStringExtra("pkgName"));
@@ -302,7 +299,7 @@ public class LogReaderActivity extends AppCompatActivity {
         TextView log;
         TextView pkgName;
 
-        public void updateList(final HashMap _map) {
+        public void updateList(final HashMap<String, Object> _map) {
 
             _data.add(_map);
             ((RecyclerviewAdapter) recyclerview.getAdapter()).d(_data.size() + 1);
