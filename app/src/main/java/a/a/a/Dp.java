@@ -15,18 +15,18 @@ import com.android.sdklib.build.ApkBuilder;
 import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
-import com.iyxan23.zipalignjava.ZipAlign;
 import com.iyxan23.zipalignjava.InvalidZipException;
+import com.iyxan23.zipalignjava.ZipAlign;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.RandomAccessFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -284,7 +284,7 @@ public class Dp {
 
         /* Add lambda helper classes */
         if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
-                BuildSettings.SETTING_JAVA_VERSION_1_7)
+                        BuildSettings.SETTING_JAVA_VERSION_1_7)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
             classpath.append(":").append(new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar").getAbsolutePath());
         }
@@ -864,17 +864,11 @@ public class Dp {
      * Sign the APK file with testkey.
      * This method supports APK Signature Scheme V1 (JAR signing) only.
      */
-    public boolean k() {
-        try {
-            ZipSigner zipSigner = new ZipSigner();
-            KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(yq.G, yq.H);
-            return true;
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
-            LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
-        }
-        return false;
+    public void k() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        ZipSigner zipSigner = new ZipSigner();
+        KeyStoreFileManager.setProvider(new BouncyCastleProvider());
+        zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
+        zipSigner.signZip(yq.G, yq.H);
     }
 
     private void mergeDexes(String target, ArrayList<Dex> dexes) throws IOException {
@@ -1029,7 +1023,7 @@ public class Dp {
             throw new By("Couldn't run zipalign on " + inPath + " with output path " + outPath + ": " + Log.getStackTraceString(e));
         } catch (InvalidZipException e) {
             throw new By("Failed to zipalign due to the given zip being invalid: " + Log.getStackTraceString(e));
-	}
+        }
 
         LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
