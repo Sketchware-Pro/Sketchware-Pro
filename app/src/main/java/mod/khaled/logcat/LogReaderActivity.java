@@ -40,10 +40,11 @@ import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
+import mod.hey.studios.util.Helper;
 
 public class LogReaderActivity extends AppCompatActivity {
 
-    private final BroadcastReceiver logger = new logger();
+    private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
     private PopupMenu options;
     private String pkgFilter = "";
@@ -56,8 +57,6 @@ public class LogReaderActivity extends AppCompatActivity {
     private ImageView menu;
     private ImageView back;
     private RecyclerView recyclerview;
-
-    private AlertDialog.Builder filterPkgDialog;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
@@ -119,26 +118,27 @@ public class LogReaderActivity extends AppCompatActivity {
         options.getMenu().add("Auto scroll").setCheckable(true).setChecked(true);
         options.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getTitle().toString()) {
-                case "Clear all": {
+                case "Clear all":
                     mainList.clear();
                     ((RecyclerviewAdapter) recyclerview.getAdapter()).deleteAll();
                     break;
-                }
-                case "Filter by package": {
-                    filterPkgDialog.setTitle("Filter by package name");
-                    filterPkgDialog.setMessage("For multiple package names, separate them with a comma (,).");
+
+                case "Filter by package":
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("Filter by package name")
+                            .setMessage("For multiple package names, separate them with a comma (,).");
                     final EditText _e = new EditText(LogReaderActivity.this);
                     _e.setText(pkgFilter);
-                    filterPkgDialog.setView(_e);
-                    filterPkgDialog.setPositiveButton("Apply", (_dialog, _which) -> {
+                    builder.setView(_e);
+                    builder.setPositiveButton("Apply", (dialog, which) -> {
                         pkgFilter = _e.getText().toString();
                         pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
                         filterEdittext.setText(filterEdittext.getText().toString());
                     });
-                    filterPkgDialog.setNegativeButton("Cancel", (_dialog, _which) -> _dialog.dismiss());
-                    filterPkgDialog.create().show();
+                    builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+                    builder.create().show();
                     break;
-                }
+
                 case "Auto scroll": {
                     menuItem.setChecked(!menuItem.isChecked());
                     autoScroll = menuItem.isChecked();
@@ -150,12 +150,11 @@ public class LogReaderActivity extends AppCompatActivity {
             }
             return true;
         });
-        filterPkgDialog = new AlertDialog.Builder(this);
 
         filterEdittext.addTextChangedListener(new BaseTextWatcher() {
             @Override
-            public void onTextChanged(CharSequence _param1, int _param2, int _param3, int _param4) {
-                final String _charSeq = _param1.toString();
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                final String _charSeq = s.toString();
                 if (_charSeq.equals("") && (pkgFilterList.size() == 0)) {
                     recyclerview.setAdapter(new RecyclerviewAdapter(mainList));
                 } else {
@@ -176,8 +175,8 @@ public class LogReaderActivity extends AppCompatActivity {
             }
         });
 
-        menu.setOnClickListener(_view -> options.show());
-        back.setOnClickListener(_view -> finish());
+        menu.setOnClickListener(v -> options.show());
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
     }
 
     private void initializeLogic() {
@@ -189,7 +188,8 @@ public class LogReaderActivity extends AppCompatActivity {
         registerReceiver(logger, intentFilter);
     }
 
-    public class logger extends BroadcastReceiver {
+    private class Logger extends BroadcastReceiver {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             HashMap<String, Object> map = new HashMap<>();
@@ -247,32 +247,26 @@ public class LogReaderActivity extends AppCompatActivity {
         unregisterReceiver(logger);
     }
 
-    public class RecyclerviewAdapter extends RecyclerView.a<RecyclerviewAdapter.ViewHolder> {
+    private class RecyclerviewAdapter extends RecyclerView.a<RecyclerviewAdapter.ViewHolder> {
 
-        ArrayList<HashMap<String, Object>> _data;
-        LinearLayout clickListener;
-        LinearLayout divider;
-        TextView type;
-        TextView date_header;
-        TextView log;
-        TextView pkgName;
+        private final ArrayList<HashMap<String, Object>> data;
 
         public void updateList(final HashMap<String, Object> _map) {
-            _data.add(_map);
-            recyclerview.getAdapter().d(_data.size() + 1);
+            data.add(_map);
+            recyclerview.getAdapter().d(data.size() + 1);
 
             if (autoScroll) {
-                ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(_data.size() - 1);
+                ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition(data.size() - 1);
             }
         }
 
         public void deleteAll() {
-            _data.clear();
+            data.clear();
             recyclerview.getAdapter().c();
         }
 
         public RecyclerviewAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            _data = _arr;
+            data = _arr;
         }
 
         @Override
@@ -281,18 +275,18 @@ public class LogReaderActivity extends AppCompatActivity {
             _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             _v.setOrientation(LinearLayout.VERTICAL);
 
-            clickListener = new LinearLayout(LogReaderActivity.this);
+            LinearLayout clickListener = new LinearLayout(LogReaderActivity.this);
             clickListener.setTag("clickListener");
             clickListener.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             clickListener.setOrientation(LinearLayout.HORIZONTAL);
             clickListener.setBackgroundColor(0xffffffff);
 
-            divider = new LinearLayout(LogReaderActivity.this);
+            LinearLayout divider = new LinearLayout(LogReaderActivity.this);
             divider.setTag("divider");
             divider.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(1)));
             divider.setBackgroundColor(0xffe0e0e0);
 
-            type = new TextView(LogReaderActivity.this);
+            TextView type = new TextView(LogReaderActivity.this);
             type.setTag("type");
             type.setFocusable(false);
             type.setClickable(false);
@@ -312,7 +306,7 @@ public class LogReaderActivity extends AppCompatActivity {
             detailHolder.setPadding((int) getDip(3), (int) getDip(3), (int) getDip(3), (int) getDip(3));
             detailHolder.setClickable(false);
 
-            date_header = new TextView(LogReaderActivity.this);
+            TextView date_header = new TextView(LogReaderActivity.this);
             date_header.setTag("date_header");
             date_header.setFocusable(false);
             date_header.setClickable(false);
@@ -322,7 +316,7 @@ public class LogReaderActivity extends AppCompatActivity {
             date_header.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             date_header.setTextColor(0xff757575);
 
-            log = new TextView(LogReaderActivity.this);
+            TextView log = new TextView(LogReaderActivity.this);
             log.setTag("log");
             log.setFocusable(false);
             log.setClickable(false);
@@ -330,7 +324,7 @@ public class LogReaderActivity extends AppCompatActivity {
             log.setLayoutParams(new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
             log.setTextColor(0xff000000);
 
-            pkgName = new TextView(LogReaderActivity.this);
+            TextView pkgName = new TextView(LogReaderActivity.this);
             pkgName.setTag("pkgName");
             pkgName.setFocusable(false);
             pkgName.setClickable(false);
@@ -360,17 +354,17 @@ public class LogReaderActivity extends AppCompatActivity {
             final TextView log = _view.findViewWithTag("log");
             final TextView pkgName = _view.findViewWithTag("pkgName");
 
-            if (_data.get(_position).containsKey("pkgName")) {
-                pkgName.setText(_data.get(_position).get("pkgName").toString());
+            if (data.get(_position).containsKey("pkgName")) {
+                pkgName.setText(data.get(_position).get("pkgName").toString());
                 pkgName.setVisibility(View.VISIBLE);
             } else {
                 pkgName.setVisibility(View.GONE);
             }
-            if (_data.get(_position).containsKey("culturedLog")) {
+            if (data.get(_position).containsKey("culturedLog")) {
                 date_header.setVisibility(View.VISIBLE);
-                type.setText(_data.get(_position).get("type").toString());
-                date_header.setText(_data.get(_position).get("date").toString().concat(" | ".concat(_data.get(_position).get("header").toString())));
-                switch (_data.get(_position).get("type").toString()) {
+                type.setText(data.get(_position).get("type").toString());
+                date_header.setText(data.get(_position).get("date").toString().concat(" | ".concat(data.get(_position).get("header").toString())));
+                switch (data.get(_position).get("type").toString()) {
                     case "A": {
                         type.setBackgroundColor(0xFF9C27B0);
                         break;
@@ -400,12 +394,12 @@ public class LogReaderActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                log.setText(_data.get(_position).get("body").toString());
+                log.setText(data.get(_position).get("body").toString());
                 try {
-                    if (_data.get(_position).get("date").toString().equals(_data.get(_position + 1).get("date").toString())) {
+                    if (data.get(_position).get("date").toString().equals(data.get(_position + 1).get("date").toString())) {
                         divider.setVisibility(View.GONE);
                         try {
-                            if (_data.get(_position).get("pkgName").toString().equals(_data.get(_position + 1).get("pkgName").toString())) {
+                            if (data.get(_position).get("pkgName").toString().equals(data.get(_position + 1).get("pkgName").toString())) {
                                 pkgName.setVisibility(View.GONE);
                             } else {
                                 pkgName.setVisibility(View.VISIBLE);
@@ -414,7 +408,7 @@ public class LogReaderActivity extends AppCompatActivity {
                             pkgName.setVisibility(View.VISIBLE);
                         }
                         try {
-                            if (_data.get(_position).get("header").toString().equals(_data.get(_position + 1).get("header").toString())) {
+                            if (data.get(_position).get("header").toString().equals(data.get(_position + 1).get("header").toString())) {
                                 date_header.setVisibility(View.GONE);
                             } else {
                                 date_header.setVisibility(View.VISIBLE);
@@ -429,7 +423,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     divider.setVisibility(View.VISIBLE);
                 }
             } else {
-                log.setText(_data.get(_position).get("logRaw").toString());
+                log.setText(data.get(_position).get("logRaw").toString());
                 type.setBackgroundColor(0xFF000000);
                 type.setText("U");
                 date_header.setVisibility(View.GONE);
@@ -437,17 +431,17 @@ public class LogReaderActivity extends AppCompatActivity {
             }
             clickListener.setOnLongClickListener(_view1 -> {
                 SketchwareUtil.toast("Copied to clipboard");
-                ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", _data.get(_position).get("logRaw").toString()));
+                ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", data.get(_position).get("logRaw").toString()));
                 return true;
             });
         }
 
         @Override
         public int a() {
-            return _data.size();
+            return data.size();
         }
 
-        public class ViewHolder extends RecyclerView.v {
+        private class ViewHolder extends RecyclerView.v {
             public ViewHolder(View v) {
                 super(v);
             }
