@@ -85,7 +85,7 @@ public class LogReaderActivity extends AppCompatActivity {
         filterEdittext.setPadding((int) getDip(8), (int) getDip(2), (int) getDip(8), (int) getDip(2));
         filterEdittext.setGravity(Gravity.CENTER_VERTICAL);
         filterEdittext.setTextSize((float) 15);
-        filterEdittext.setHint("Search Logs");
+        filterEdittext.setHint("Search log");
         filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
         filterEdittext.setTextColor(0xffffffff);
         filterEdittext.setSingleLine(true);
@@ -114,19 +114,19 @@ public class LogReaderActivity extends AppCompatActivity {
 
     private void initialize() {
         options = new PopupMenu(getApplicationContext(), menu);
-        options.getMenu().add("Clear All");
-        options.getMenu().add("Filter Package");
-        options.getMenu().add("Auto Scroll").setCheckable(true).setChecked(true);
+        options.getMenu().add("Clear all");
+        options.getMenu().add("Filter by package");
+        options.getMenu().add("Auto scroll").setCheckable(true).setChecked(true);
         options.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getTitle().toString()) {
-                case "Clear All": {
+                case "Clear all": {
                     mainList.clear();
                     ((RecyclerviewAdapter) recyclerview.getAdapter()).deleteAll();
                     break;
                 }
-                case "Filter Package": {
-                    filterPkgDialog.setTitle("Filter By Packages");
-                    filterPkgDialog.setMessage("Use Comma(,) for Multiple PackageName");
+                case "Filter by package": {
+                    filterPkgDialog.setTitle("Filter by package name");
+                    filterPkgDialog.setMessage("For multiple package names, separate them with a comma (,).");
                     final EditText _e = new EditText(LogReaderActivity.this);
                     _e.setText(pkgFilter);
                     filterPkgDialog.setView(_e);
@@ -139,7 +139,7 @@ public class LogReaderActivity extends AppCompatActivity {
                     filterPkgDialog.create().show();
                     break;
                 }
-                case "Auto Scroll": {
+                case "Auto scroll": {
                     menuItem.setChecked(!menuItem.isChecked());
                     autoScroll = menuItem.isChecked();
                     if (autoScroll) {
@@ -436,7 +436,7 @@ public class LogReaderActivity extends AppCompatActivity {
                 divider.setVisibility(View.VISIBLE);
             }
             clickListener.setOnLongClickListener(_view1 -> {
-                SketchwareUtil.showMessage(getApplicationContext(), "Copied To Clipboard");
+                SketchwareUtil.toast("Copied to clipboard");
                 ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", _data.get(_position).get("logRaw").toString()));
                 return true;
             });
