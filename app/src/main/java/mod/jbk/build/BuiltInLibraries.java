@@ -3,6 +3,8 @@ package mod.jbk.build;
 import com.besome.sketch.SketchApplication;
 
 import java.io.File;
+import java.util.List;
+import java.util.Optional;
 
 import a.a.a.Jp;
 
@@ -129,6 +131,213 @@ public class BuiltInLibraries {
     public static String WAVE_SIDE_BAR = "wave-side-bar";
     public static String YOUTUBE_PLAYER = "android-youtube-player-10.0.5";
 
+    public static final BuiltInLibrary[] KNOWN_BUILT_IN_LIBRARIES = {
+            new BuiltInLibrary(ANDROIDX_ACTIVITY, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_RUNTIME,
+                    ANDROIDX_LIFECYCLE_VIEWMODEL, ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE, ANDROIDX_SAVEDSTATE, ANDROIDX_TRACING)),
+
+            new BuiltInLibrary(ANDROIDX_ANNOTATION),
+            new BuiltInLibrary(ANDROIDX_ANNOTATION_EXPERIMENTAL),
+            new BuiltInLibrary(ANDROIDX_APPCOMPAT, List.of(ANDROIDX_ACTIVITY, ANDROIDX_ANNOTATION, ANDROIDX_APPCOMPAT_RESOURCES, ANDROIDX_COLLECTION,
+                    ANDROIDX_CORE, ANDROIDX_CURSORADAPTER, ANDROIDX_DRAWERLAYOUT, ANDROIDX_EMOJI2, ANDROIDX_EMOJI2_VIEWS_HELPER, ANDROIDX_FRAGMENT,
+                    ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_LIFECYCLE_VIEWMODEL, ANDROIDX_RESOURCEINSPECTION_ANNOTATION, ANDROIDX_SAVEDSTATE),
+                    "androidx.appcompat"),
+
+            new BuiltInLibrary(ANDROIDX_APPCOMPAT_RESOURCES, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_VECTORDRAWABLE,
+                    ANDROIDX_VECTORDRAWABLE_ANIMATED), "androidx.appcompat.resources"),
+
+            new BuiltInLibrary(ANDROIDX_ASYNCLAYOUTINFLATER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
+            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR,
+                    ANDROIDX_LEGACY_SUPPORT_CORE_UI), "androidx.browser"),
+
+            new BuiltInLibrary(ANDROIDX_CARDVIEW, List.of(ANDROIDX_ANNOTATION), "androidx.cardview"),
+            new BuiltInLibrary(ANDROIDX_COLLECTION, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, ANDROIDX_LISTENABLEFUTURE)),
+            new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE, ANDROIDX_CONSTRAINTLAYOUT_CORE),
+                    "androidx.constraintlayout.widget"),
+
+            new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT_CORE),
+            new BuiltInLibrary(ANDROIDX_COORDINATORLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW),
+                    "androidx.coordinatorlayout"),
+
+            new BuiltInLibrary(ANDROIDX_CORE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_COLLECTION,
+                    ANDROIDX_CONCURRENT_FUTURES, ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_VERSIONEDPARCELABLE), "androidx.core"),
+
+            new BuiltInLibrary(ANDROIDX_CORE_KTX),
+            new BuiltInLibrary(ANDROIDX_CORE_COMMON, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_CORE_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_COMMON)),
+            new BuiltInLibrary(ANDROIDX_CURSORADAPTER, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_CUSTOMVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
+            new BuiltInLibrary(ANDROIDX_DOCUMENTFILE, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_DRAWERLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW),
+                    "androidx.drawerlayout"),
+
+            new BuiltInLibrary(ANDROIDX_DYNAMIC_ANIMATION),
+            new BuiltInLibrary(ANDROIDX_EMOJI2, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_PROCESS,
+                    ANDROIDX_STARTUP_RUNTIME)),
+
+            new BuiltInLibrary(ANDROIDX_EMOJI2_VIEWS_HELPER, List.of(ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_EMOJI2)),
+            new BuiltInLibrary(ANDROIDX_EXIFINTERFACE, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_FRAGMENT, List.of(ANDROIDX_ACTIVITY, ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL,
+                    ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA_CORE, ANDROIDX_LIFECYCLE_VIEWMODEL,
+                    ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE, ANDROIDX_LOADER, ANDROIDX_SAVEDSTATE, ANDROIDX_VIEWPAGER), "androidx.fragment"),
+
+            new BuiltInLibrary(ANDROIDX_INTERPOLATOR, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_LEGACY_SUPPORT_CORE_UI, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ASYNCLAYOUTINFLATER, ANDROIDX_CONSTRAINTLAYOUT,
+                    ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_CURSORADAPTER, ANDROIDX_CUSTOMVIEW, ANDROIDX_DRAWERLAYOUT, ANDROIDX_INTERPOLATOR,
+                    ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, ANDROIDX_SLIDINGPANELAYOUT, ANDROIDX_SWIPEREFRESHLAYOUT, ANDROIDX_VIEWPAGER)),
+
+            new BuiltInLibrary(ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_DOCUMENTFILE, ANDROIDX_LOADER,
+                    ANDROIDX_LOCALBROADCASTMANAGER, ANDROIDX_PRINT)),
+
+            new BuiltInLibrary(ANDROIDX_LEGACY_SUPPORT_V13, List.of(ANDROIDX_LEGACY_SUPPORT_V4)),
+            new BuiltInLibrary(ANDROIDX_LEGACY_SUPPORT_V4, List.of(ANDROIDX_CORE, ANDROIDX_FRAGMENT, ANDROIDX_LEGACY_SUPPORT_CORE_UI,
+                    ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, ANDROIDX_MEDIA)),
+
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_COMMON, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_LIVEDATA, List.of(ANDROIDX_CORE_COMMON, ANDROIDX_CORE_RUNTIME, ANDROIDX_LIFECYCLE_LIVEDATA_CORE)),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_LIVEDATA_CORE, List.of(ANDROIDX_LIFECYCLE_COMMON, ANDROIDX_CORE_COMMON, ANDROIDX_CORE_RUNTIME)),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_PROCESS, List.of(ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_STARTUP_RUNTIME)),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_COMMON, ANDROIDX_CORE_RUNTIME,
+                    ANDROIDX_LIFECYCLE_COMMON), "androidx.lifecycle.runtime"),
+
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_VIEWMODEL, List.of(ANDROIDX_ANNOTATION), "androidx.lifecycle.viewmodel"),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_SAVEDSTATE,
+                    ANDROIDX_LIFECYCLE_LIVEDATA_CORE, ANDROIDX_LIFECYCLE_VIEWMODEL)),
+
+            new BuiltInLibrary(ANDROIDX_LISTENABLEFUTURE),
+            new BuiltInLibrary(ANDROIDX_LOADER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA, ANDROIDX_LIFECYCLE_VIEWMODEL)),
+            new BuiltInLibrary(ANDROIDX_LOCALBROADCASTMANAGER, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
+            new BuiltInLibrary(ANDROIDX_MULTIDEX),
+            new BuiltInLibrary(ANDROIDX_PRINT, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UI),
+                    "androidx.recyclerview"),
+
+            new BuiltInLibrary(ANDROIDX_RESOURCEINSPECTION_ANNOTATION, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_SAVEDSTATE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_COMMON, ANDROIDX_LIFECYCLE_COMMON),
+                    "androidx.savedstate"),
+
+            new BuiltInLibrary(ANDROIDX_SLIDINGPANELAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW)),
+            new BuiltInLibrary(ANDROIDX_STARTUP_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_TRACING), "androidx.startup"),
+            new BuiltInLibrary(ANDROIDX_SWIPEREFRESHLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR),
+                    "androidx.swiperefreshlayout"),
+
+            new BuiltInLibrary(ANDROIDX_TRACING, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_TRANSITION, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE), "androidx.transition"),
+            new BuiltInLibrary(ANDROIDX_VECTORDRAWABLE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE)),
+            new BuiltInLibrary(ANDROIDX_VECTORDRAWABLE_ANIMATED, List.of(ANDROIDX_COLLECTION, ANDROIDX_INTERPOLATOR, ANDROIDX_VECTORDRAWABLE)),
+            new BuiltInLibrary(ANDROIDX_VERSIONEDPARCELABLE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION)),
+            new BuiltInLibrary(ANDROIDX_VIEWPAGER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW)),
+            new BuiltInLibrary(ANDROIDX_VIEWPAGER2, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT,
+                    ANDROIDX_RECYCLERVIEW), "androidx.viewpager2"),
+
+            new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
+            new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
+            new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK),
+            new BuiltInLibrary(FIREBASE_AUTH, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT,
+                    ANDROIDX_LOCALBROADCASTMANAGER, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+
+            new BuiltInLibrary(FIREBASE_AUTH_INTEROP, List.of(FIREBASE_COMMON, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(FIREBASE_COMMON, List.of(GOOGLE_AUTO_VALUE_ANNOTATIONS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(FIREBASE_DATABASE, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, FIREBASE_DATABASE_COLLECTION, ANDROIDX_ANNOTATION,
+                    PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+
+            new BuiltInLibrary(FIREBASE_DATABASE_COLLECTION),
+            new BuiltInLibrary(FIREBASE_DYNAMIC_LINKS, List.of(FIREBASE_COMMON, FIREBASE_MEASUREMENT_CONNECTOR, PLAY_SERVICES_BASE,
+                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+
+            new BuiltInLibrary(FIREBASE_IID, List.of(FIREBASE_COMMON, FIREBASE_IID_INTEROP, ANDROIDX_COLLECTION, ANDROIDX_CORE,
+                    ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_STATS, PLAY_SERVICES_TASKS)),
+
+            new BuiltInLibrary(FIREBASE_IID_INTEROP, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(FIREBASE_MEASUREMENT_CONNECTOR, List.of(PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(FIREBASE_MESSAGING, List.of(FIREBASE_COMMON, FIREBASE_IID, FIREBASE_MEASUREMENT_CONNECTOR, ANDROIDX_COLLECTION,
+                    ANDROIDX_CORE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS), "com.google.firebase.messaging"),
+
+            new BuiltInLibrary(FIREBASE_STORAGE, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, ANDROIDX_ANNOTATION, PLAY_SERVICES_BASE,
+                    PLAY_SERVICES_TASKS)),
+
+            new BuiltInLibrary(GLIDE, List.of(GLIDE_ANNOTATIONS, GLIDE_DISKLRUCACHE, GLIDE_GIFDECODER, ANDROIDX_EXIFINTERFACE, ANDROIDX_FRAGMENT,
+                    ANDROIDX_VECTORDRAWABLE_ANIMATED), "com.bumptech.glide"),
+
+            new BuiltInLibrary(GLIDE_ANNOTATIONS),
+            new BuiltInLibrary(GLIDE_DISKLRUCACHE),
+            new BuiltInLibrary(GLIDE_GIFDECODER, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(GOOGLE_AUTO_VALUE_ANNOTATIONS),
+            new BuiltInLibrary(GSON),
+            new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
+            new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
+            new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
+            new BuiltInLibrary(KOTLIN_STDLIB_JDK7, List.of(KOTLIN_STDLIB)),
+            new BuiltInLibrary(LOTTIE, List.of(ANDROIDX_APPCOMPAT, OKIO), "com.airbnb.lottie"),
+            new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
+                    ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
+                    ANDROIDX_FRAGMENT, ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_RECYCLERVIEW, ANDROIDX_TRANSITION, ANDROIDX_VECTORDRAWABLE,
+                    ANDROIDX_VIEWPAGER2), "com.google.android.material"),
+
+            new BuiltInLibrary(OKHTTP, List.of(OKIO)),
+            new BuiltInLibrary(OKIO),
+            new BuiltInLibrary(ONESIGNAL, List.of(ANDROIDX_BROWSER, ANDROIDX_CARDVIEW, ANDROIDX_FRAGMENT, ANDROIDX_MEDIA, FIREBASE_MESSAGING,
+                    PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_BASE, PLAY_SERVICES_LOCATION), "com.onesignal"),
+
+            new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX, ANDROIDX_CONSTRAINTLAYOUT, KOTLIN_STDLIB_JDK7),
+                    "affan.ahmad.otp"),
+
+            new BuiltInLibrary(PATTERN_LOCK_VIEW, List.of(ANDROIDX_CORE, JETBRAINS_ANNOTATIONS), "com.andrognito.patternlockview"),
+            new BuiltInLibrary(PLAY_SERVICES_ADS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_ADS_LITE,
+                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_GASS, ANDROIDX_BROWSER, ANDROIDX_COLLECTION, ANDROIDX_CORE),
+                    "com.google.android.gms.ads.impl"),
+
+            new BuiltInLibrary(PLAY_SERVICES_ADS_BASE),
+            new BuiltInLibrary(PLAY_SERVICES_ADS_IDENTIFIER, List.of(PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(PLAY_SERVICES_ADS_LITE, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT,
+                    PLAY_SERVICES_MEASUREMENT_SDK, PLAY_SERVICES_MEASUREMENT_SDK_API), "com.google.android.gms.ads"),
+
+            new BuiltInLibrary(PLAY_SERVICES_AUTH, List.of(PLAY_SERVICES_AUTH_API_PHONE, PLAY_SERVICES_AUTH_BASE, PLAY_SERVICES_BASE,
+                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, ANDROIDX_FRAGMENT, ANDROIDX_LOADER), "com.google.android.gms.auth.api"),
+
+            new BuiltInLibrary(PLAY_SERVICES_AUTH_API_PHONE),
+            new BuiltInLibrary(PLAY_SERVICES_AUTH_BASE),
+            new BuiltInLibrary(PLAY_SERVICES_BASE, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, ANDROIDX_COLLECTION, ANDROIDX_CORE,
+                    ANDROIDX_FRAGMENT), "com.google.android.gms.base"),
+
+            new BuiltInLibrary(PLAY_SERVICES_BASEMENT, List.of(ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT),
+                    "com.google.android.gms.common"),
+
+            new BuiltInLibrary(PLAY_SERVICES_GASS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(PLAY_SERVICES_GCM, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_IID, PLAY_SERVICES_STATS,
+                    ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS), "com.google.android.gms.gcm"),
+
+            new BuiltInLibrary(PLAY_SERVICES_IID, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_STATS, PLAY_SERVICES_TASKS,
+                    ANDROIDX_COLLECTION, ANDROIDX_CORE)),
+
+            new BuiltInLibrary(PLAY_SERVICES_LOCATION, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_PLACES_PLACEREPORT,
+                    PLAY_SERVICES_TASKS)),
+
+            new BuiltInLibrary(PLAY_SERVICES_MAPS, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, ANDROIDX_FRAGMENT),
+                    "com.google.android.gms.maps"),
+
+            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT_BASE,
+                    PLAY_SERVICES_MEASUREMENT_IMPL, PLAY_SERVICES_STATS, ANDROIDX_COLLECTION, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS)),
+
+            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_BASE, List.of(PLAY_SERVICES_BASEMENT)),
+
+            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_IMPL, List.of(PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_BASEMENT,
+                    PLAY_SERVICES_MEASUREMENT_BASE, PLAY_SERVICES_STATS, ANDROIDX_COLLECTION, ANDROIDX_CORE)),
+
+            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_SDK, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT_BASE,
+                    PLAY_SERVICES_MEASUREMENT_IMPL, PLAY_SERVICES_MEASUREMENT_SDK_API, ANDROIDX_COLLECTION)),
+
+            new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_SDK_API, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_MEASUREMENT_BASE)),
+
+            new BuiltInLibrary(PLAY_SERVICES_PLACES_PLACEREPORT, List.of(PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(PLAY_SERVICES_STATS, List.of(PLAY_SERVICES_BASEMENT, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS)),
+            new BuiltInLibrary(PLAY_SERVICES_TASKS, List.of(PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(WAVE_SIDE_BAR, List.of(), "com.sayuti.lib"),
+            new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, KOTLIN_STDLIB_JDK7),
+                    "com.pierfrancescosoffritti.androidyoutubeplayer"),
+    };
+
     public static File getLibraryPath(String libraryName) {
         return new File(EXTRACTED_BUILT_IN_LIBRARIES_PATH, libraryName);
     }
@@ -193,5 +402,54 @@ public class BuiltInLibraries {
 
     public static String getLibraryProGuardConfigurationPath(String libraryName) {
         return getLibraryProGuardConfiguration(libraryName).getAbsolutePath();
+    }
+
+    public static class BuiltInLibrary {
+
+        private final String name;
+        private final List<String> dependencyNames;
+        private final String packageName;
+        private final boolean hasResources;
+
+        /**
+         * @param packageName Can be <code>null</code> for no resources, though then
+         *                    {@link #BuiltInLibrary(String, List)} is advised.
+         */
+        public BuiltInLibrary(String name, List<String> dependencyNames, String packageName) {
+            this.name = name;
+            this.dependencyNames = dependencyNames;
+            this.packageName = packageName;
+            this.hasResources = packageName != null;
+        }
+
+        /**
+         * Constructs a {@link BuiltInLibrary} with specified dependencies but no resources.
+         */
+        public BuiltInLibrary(String name, List<String> dependencyNames) {
+            this(name, dependencyNames, null);
+        }
+
+        /**
+         * Constructs a {@link BuiltInLibrary} with no dependencies and resources.
+         */
+        public BuiltInLibrary(String name) {
+            this(name, List.of());
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<String> getDependencyNames() {
+            return dependencyNames;
+        }
+
+        public Optional<String> getPackageName() {
+            return packageName == null ? Optional.empty() : Optional.of(packageName);
+        }
+
+        public boolean hasResources() {
+            return hasResources;
+        }
     }
 }
