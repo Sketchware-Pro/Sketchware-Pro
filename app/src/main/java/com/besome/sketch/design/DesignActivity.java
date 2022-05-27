@@ -90,7 +90,6 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
-import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.build.BuildSettingsDialog;
 import mod.hey.studios.project.DesignActRunnable;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
@@ -104,8 +103,6 @@ import mod.hosni.fraj.compilerlog.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.tyron.compiler.Compiler;
-import mod.tyron.compiler.IncrementalCompiler;
 
 public class DesignActivity extends BaseAppCompatActivity implements OnClickListener, uo {
 
@@ -947,8 +944,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (canceled) {
                 cancel(true);
             } else {
-                BuildSettings buildSettings = new BuildSettings(q.b);
-
                 try {
                     publishProgress("Deleting temporary files...");
                     FileUtil.deleteFile(q.c);
@@ -998,101 +993,65 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     publishProgress("Java is compiling...");
-
-                    boolean incrementalCompilationEnabled = buildSettings.
-                            getValue(BuildSettings.SETTING_INCREMENTAL_BUILD_ACTIVE, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
-                            .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
-
-                    if (incrementalCompilationEnabled) {
-                        IncrementalCompiler incrementalCompiler = new IncrementalCompiler(q);
-                        incrementalCompiler.setResultListener((success, compileType, args) -> {
-                            if (!success) {
-                                indicateCompileErrorOccurred(String.valueOf(args[0]));
-                            } else {
-
-                                switch (compileType) {
-                                    case Compiler.TYPE_JAVA:
-                                        publishProgress("Running D8...");
-                                        break;
-
-                                    case Compiler.TYPE_D8:
-                                        publishProgress("Merging dex...");
-                                        break;
-
-                                    case Compiler.TYPE_MERGE:
-                                        publishProgress("Building apk...");
-                                        break;
-                                }
-
-                                publishProgress("Signing apk...");
-                                mDp.k();
-
-                                installBuiltApk();
-                            }
-                        });
-                        incrementalCompiler.performCompilation();
-                    } else {
-                        /* Compile the regular, old way */
-                        /* Compile Java classes */
-                        mDp.f();
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        /* Encrypt Strings in classes if enabled */
-                        StringfogHandler stringfogHandler = new StringfogHandler(q.b);
-                        stringfogHandler.start(this, mDp);
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        /* Obfuscate classes if enabled */
-                        ProguardHandler proguardHandler = new ProguardHandler(q.b);
-                        proguardHandler.start(this, mDp);
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        /* Create DEX file(s) */
-                        publishProgress(mDp.getDxRunningText());
-                        mDp.c();
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        /* Merge DEX file(s) with libraries' dexes */
-                        publishProgress("Merging libraries' DEX files...");
-                        mDp.h();
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        publishProgress("Building APK...");
-                        mDp.g();
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        publishProgress("Signing APK...");
-                        if (Build.VERSION.SDK_INT >= 26) {
-                            ApkSigner signer = new ApkSigner();
-                            signer.signWithTestKey(mDp.yq.G, mDp.yq.H, null);
-                        } else {
-                            mDp.k();
-                        }
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
-
-                        installBuiltApk();
+                    /* Compile Java classes */
+                    mDp.f();
+                    if (canceled) {
+                        cancel(true);
+                        return;
                     }
+
+                    /* Encrypt Strings in classes if enabled */
+                    StringfogHandler stringfogHandler = new StringfogHandler(q.b);
+                    stringfogHandler.start(this, mDp);
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
+                    /* Obfuscate classes if enabled */
+                    ProguardHandler proguardHandler = new ProguardHandler(q.b);
+                    proguardHandler.start(this, mDp);
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
+                    /* Create DEX file(s) */
+                    publishProgress(mDp.getDxRunningText());
+                    mDp.c();
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
+                    /* Merge DEX file(s) with libraries' dexes */
+                    publishProgress("Merging libraries' DEX files...");
+                    mDp.h();
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
+                    publishProgress("Building APK...");
+                    mDp.g();
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
+                    publishProgress("Signing APK...");
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        ApkSigner signer = new ApkSigner();
+                        signer.signWithTestKey(mDp.yq.G, mDp.yq.H, null);
+                    } else {
+                        mDp.k();
+                    }
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
+                    installBuiltApk();
                 } catch (MissingFileException e) {
                     runOnUiThread(() -> {
                         boolean isMissingDirectory = e.isMissingDirectory();
