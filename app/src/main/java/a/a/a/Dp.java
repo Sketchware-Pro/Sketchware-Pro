@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
@@ -354,7 +355,7 @@ public class Dp {
     private void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
         int lastDexNumber = 1;
         String nextMergedDexFilename;
-        ArrayList<Dex> dexObjects = new ArrayList<>();
+        LinkedList<Dex> dexObjects = new LinkedList<>();
         Iterator<String> toMergeIterator = dexes.iterator();
 
         List<FieldId> mergedDexFields;
@@ -366,10 +367,10 @@ public class Dp {
             // Closable gets closed automatically
             Dex firstDex = new Dex(new FileInputStream(toMergeIterator.next()));
             dexObjects.add(firstDex);
-            mergedDexFields = new ArrayList<>(firstDex.fieldIds());
-            mergedDexMethods = new ArrayList<>(firstDex.methodIds());
-            mergedDexProtos = new ArrayList<>(firstDex.protoIds());
-            mergedDexTypes = new ArrayList<>(firstDex.typeIds());
+            mergedDexFields = new LinkedList<>(firstDex.fieldIds());
+            mergedDexMethods = new LinkedList<>(firstDex.methodIds());
+            mergedDexProtos = new LinkedList<>(firstDex.protoIds());
+            mergedDexTypes = new LinkedList<>(firstDex.typeIds());
         }
 
         while (toMergeIterator.hasNext()) {
@@ -380,10 +381,10 @@ public class Dp {
             Dex dex = new Dex(new FileInputStream(dexPath));
 
             boolean canMerge = true;
-            List<FieldId> newDexFieldIds = new ArrayList<>();
-            List<MethodId> newDexMethodIds = new ArrayList<>();
-            List<ProtoId> newDexProtoIds = new ArrayList<>();
-            List<Integer> newDexTypeIds = new ArrayList<>();
+            List<FieldId> newDexFieldIds = new LinkedList<>();
+            List<MethodId> newDexMethodIds = new LinkedList<>();
+            List<ProtoId> newDexProtoIds = new LinkedList<>();
+            List<Integer> newDexTypeIds = new LinkedList<>();
 
             bruh:
             {
@@ -867,7 +868,7 @@ public class Dp {
         zipSigner.signZip(yq.G, yq.H);
     }
 
-    private void mergeDexes(String target, ArrayList<Dex> dexes) throws IOException {
+    private void mergeDexes(String target, List<Dex> dexes) throws IOException {
         DexMerger merger = new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST, new DxContext());
         merger.merge().writeTo(new File(target));
     }
