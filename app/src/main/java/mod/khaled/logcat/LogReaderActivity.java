@@ -10,19 +10,15 @@ import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -44,6 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
+import mod.hasrat.lib.BaseTextWatcher;
 
 public class LogReaderActivity extends AppCompatActivity {
 
@@ -113,63 +110,51 @@ public class LogReaderActivity extends AppCompatActivity {
         parent.addView(recyclerview, 1);
 
         setContentView(parent);
-        initialize(_savedInstanceState);
+        initialize();
         initializeLogic();
     }
 
-    private void initialize(Bundle _savedInstanceState) {
-
+    private void initialize() {
         options = new PopupMenu(getApplicationContext(), menu);
         options.getMenu().add("Clear All");
         options.getMenu().add("Filter Package");
         options.getMenu().add("Auto Scroll").setCheckable(true).setChecked(true);
-        options.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getTitle().toString()) {
-                    case "Clear All": {
-                        mainList.clear();
-                        ((RecyclerviewAdapter) recyclerview.getAdapter()).deleteAll();
-                        break;
-                    }
-                    case "Filter Package": {
-                        filterPkgDialog.setTitle("Filter By Packages");
-                        filterPkgDialog.setMessage("Use Comma(,) for Multiple PackageName");
-                        final EditText _e = new EditText(LogReaderActivity.this);
-                        _e.setText(pkgFilter);
-                        filterPkgDialog.setView(_e);
-                        filterPkgDialog.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface _dialog, int _which) {
-                                pkgFilter = _e.getText().toString();
-                                pkgFilterList = new ArrayList<String>(Arrays.asList(pkgFilter.split(",")));
-                                filterEdittext.setText(filterEdittext.getText().toString());
-                            }
-                        });
-                        filterPkgDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface _dialog, int _which) {
-                                _dialog.dismiss();
-                            }
-                        });
-                        filterPkgDialog.create().show();
-                        break;
-                    }
-                    case "Auto Scroll": {
-                        menuItem.setChecked(!menuItem.isChecked());
-                        autoScroll = menuItem.isChecked();
-                        if (autoScroll) {
-                            ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition((int) (((RecyclerviewAdapter) recyclerview.getAdapter()).a() - 1));
-                        }
-                        break;
-                    }
+        options.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getTitle().toString()) {
+                case "Clear All": {
+                    mainList.clear();
+                    ((RecyclerviewAdapter) recyclerview.getAdapter()).deleteAll();
+                    break;
                 }
-                return true;
+                case "Filter Package": {
+                    filterPkgDialog.setTitle("Filter By Packages");
+                    filterPkgDialog.setMessage("Use Comma(,) for Multiple PackageName");
+                    final EditText _e = new EditText(LogReaderActivity.this);
+                    _e.setText(pkgFilter);
+                    filterPkgDialog.setView(_e);
+                    filterPkgDialog.setPositiveButton("Apply", (_dialog, _which) -> {
+                        pkgFilter = _e.getText().toString();
+                        pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
+                        filterEdittext.setText(filterEdittext.getText().toString());
+                    });
+                    filterPkgDialog.setNegativeButton("Cancel", (_dialog, _which) -> _dialog.dismiss());
+                    filterPkgDialog.create().show();
+                    break;
+                }
+                case "Auto Scroll": {
+                    menuItem.setChecked(!menuItem.isChecked());
+                    autoScroll = menuItem.isChecked();
+                    if (autoScroll) {
+                        ((LinearLayoutManager) recyclerview.getLayoutManager()).scrollToPosition((int) (((RecyclerviewAdapter) recyclerview.getAdapter()).a() - 1));
+                    }
+                    break;
+                }
             }
+            return true;
         });
         filterPkgDialog = new AlertDialog.Builder(this);
 
-        filterEdittext.addTextChangedListener(new TextWatcher() {
+        filterEdittext.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence _param1, int _param2, int _param3, int _param4) {
                 final String _charSeq = _param1.toString();
@@ -191,30 +176,10 @@ public class LogReaderActivity extends AppCompatActivity {
                     recyclerview.setAdapter(new RecyclerviewAdapter(filteredList));
                 }
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence _param1, int _param2, int _param3, int _param4) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable _param1) {
-
-            }
         });
 
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                options.show();
-            }
-        });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                finish();
-            }
-        });
+        menu.setOnClickListener(_view -> options.show());
+        back.setOnClickListener(_view -> finish());
     }
 
     private void initializeLogic() {
@@ -229,7 +194,7 @@ public class LogReaderActivity extends AppCompatActivity {
     public class logger extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            HashMap<String,Object> map = new HashMap<>();
+            HashMap<String, Object> map = new HashMap<>();
             if (intent.hasExtra("log") && (intent.getStringExtra("log") != null)) {
                 if (intent.hasExtra("pkgName")) {
                     map.put("pkgName", intent.getStringExtra("pkgName"));
@@ -311,7 +276,6 @@ public class LogReaderActivity extends AppCompatActivity {
         }
 
         public void deleteAll() {
-
             _data.clear();
             ((RecyclerviewAdapter) recyclerview.getAdapter()).c();
             //notifyDataSetChanged();
@@ -323,7 +287,6 @@ public class LogReaderActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-
             final LinearLayout _v = new LinearLayout(LogReaderActivity.this);
             _v.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             _v.setOrientation(LinearLayout.VERTICAL);
@@ -482,13 +445,10 @@ public class LogReaderActivity extends AppCompatActivity {
                 date_header.setVisibility(View.GONE);
                 divider.setVisibility(View.VISIBLE);
             }
-            clickListener.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View _view) {
-                    SketchwareUtil.showMessage(getApplicationContext(), "Copied To Clipboard");
-                    ((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", _data.get(_position).get("logRaw").toString()));
-                    return true;
-                }
+            clickListener.setOnLongClickListener(_view1 -> {
+                SketchwareUtil.showMessage(getApplicationContext(), "Copied To Clipboard");
+                ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("clipboard", _data.get(_position).get("logRaw").toString()));
+                return true;
             });
         }
 
