@@ -15,4 +15,7 @@ public class Tracker {
 
     public void send(Map<String, String> map) {
     }
+
+    public void setScreenName(String screenName) {
+    }
 }
