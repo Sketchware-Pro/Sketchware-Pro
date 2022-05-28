@@ -1,10 +1,11 @@
 package dev.aldi.sayuti.editor.manage;
 
+import static mod.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.gson.Gson;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,8 +30,7 @@ import mod.hey.studios.util.Helper;
 public class ManageLocalLibraryActivity extends Activity implements View.OnClickListener, LibraryDownloader.OnCompleteListener {
 
     private final ArrayList<HashMap<String, Object>> main_list = new ArrayList<>();
-    public String sc_id = "";
-    public Toolbar toolbar;
+    private String sc_id = "";
     private ListView listview;
     private String local_lib_file = "";
     private String local_libs_path = "";
@@ -38,32 +38,30 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
     private int n = 0;
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
 
-    public void initToolbar() {
-        ((TextView) findViewById(2131232458)).setText("Local library manager");
-        ImageView back_icon = findViewById(2131232457);
+    private void initToolbar() {
+        ((TextView) findViewById(R.id.tx_toolbar_title)).setText("Local library Manager");
+        ImageView back_icon = findViewById(R.id.ig_toolbar_back);
         Helper.applyRippleToToolbarView(back_icon);
         back_icon.setOnClickListener(Helper.getBackPressedClickListener(this));
-        ImageView import_library_icon = findViewById(2131232459);
-        import_library_icon.setPadding(getDip(2), getDip(2), getDip(2), getDip(2));
-        import_library_icon.setImageResource(2131166368);
+        ImageView import_library_icon = findViewById(R.id.ig_toolbar_load_file);
+        import_library_icon.setPadding((int) getDip(2), (int) getDip(2), (int) getDip(2), (int) getDip(2));
+        import_library_icon.setImageResource(R.drawable.download_80px);
         import_library_icon.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(import_library_icon);
         import_library_icon.setOnClickListener(this);
-    }
-
-    private int getDip(int i) {
-        return (int) TypedValue.applyDimension(1, (float) i, getResources().getDisplayMetrics());
     }
 
     @Override
     public void onClick(View v) {
         new AlertDialog.Builder(this)
                 .setTitle("Dexer")
-                .setMessage("Would you like to use Dx or D8 to dex the library?\nD8 supports Java 8, whereas Dx does not. Limitation: D8 only works on Android 8 and above.")
-                .setPositiveButton("D8", (dialogInterface, i) -> new LibraryDownloader(ManageLocalLibraryActivity.this, true).showDialog(ManageLocalLibraryActivity.this))
-                .setNegativeButton("Dx", (dialogInterface, i) -> new LibraryDownloader(ManageLocalLibraryActivity.this, false).showDialog(ManageLocalLibraryActivity.this))
+                .setMessage("Would you like to use Dx or D8 to dex the library?\n" +
+                        "D8 supports Java 8, whereas Dx does not. Limitation: D8 only works on Android 8 and above.")
+                .setPositiveButton("D8", (dialog, which) -> new LibraryDownloader(ManageLocalLibraryActivity.this,
+                        true).showDialog(ManageLocalLibraryActivity.this))
+                .setNegativeButton("Dx", (dialog, which) -> new LibraryDownloader(ManageLocalLibraryActivity.this,
+                        false).showDialog(ManageLocalLibraryActivity.this))
                 .setNeutralButton("Cancel", null)
-                .create()
                 .show();
     }
 
@@ -72,14 +70,15 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         loadFiles();
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(2131427786);
+        setContentView(R.layout.manage_permission);
         if (getIntent().hasExtra("sc_id")) {
             sc_id = getIntent().getStringExtra("sc_id");
         }
-        listview = findViewById(2131232364);
-        findViewById(2131232362).setVisibility(View.GONE);
+        listview = findViewById(R.id.main_content);
+        findViewById(R.id.managepermissionLinearLayout1).setVisibility(View.GONE);
         initToolbar();
         loadFiles();
     }
@@ -138,9 +137,9 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(2131427824, null);
+                convertView = getLayoutInflater().inflate(R.layout.view_item_local_lib, null);
             }
-            final CheckBox checkBox = convertView.findViewById(2131232370);
+            final CheckBox checkBox = convertView.findViewById(R.id.checkbox_content);
             checkBox.setText((main_list.get(position)).get("name").toString());
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 HashMap<String, Object> hashMap = new HashMap<>();
@@ -189,7 +188,7 @@ public class ManageLocalLibraryActivity extends Activity implements View.OnClick
                 }
                 n = n + 1;
             }
-            convertView.findViewById(2131231132).setOnClickListener(v -> {
+            convertView.findViewById(R.id.img_delete).setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(ManageLocalLibraryActivity.this, v);
                 popupMenu.getMenu().add(0, 0, 0, "Delete");
                 popupMenu.setOnMenuItemClickListener(menuItem -> {

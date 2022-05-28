@@ -15,24 +15,25 @@ import com.android.sdklib.build.ApkBuilder;
 import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
-import com.iyxan23.zipalignjava.ZipAlign;
 import com.iyxan23.zipalignjava.InvalidZipException;
+import com.iyxan23.zipalignjava.ZipAlign;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.RandomAccessFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import kellinwood.security.zipsigner.ZipSigner;
@@ -70,7 +71,6 @@ public class Dp {
      * Command(s) to execute after extracting AAPT2 (put the filename to index 2 before using)
      */
     private final String[] makeExecutableCommand = {"chmod", "700", ""};
-    private final File zipalignBinary;
     private final File aapt2Binary;
     public BuildSettings build_settings;
     private BuildAsyncTask buildingDialog;
@@ -79,7 +79,6 @@ public class Dp {
     public FilePathUtil fpu;
     private final oB fileUtil;
     private final Fp commandExecutor;
-    private final File extractedBuiltInLibrariesDirectory;
     public ManageLocalLibrary mll;
     public Kp builtInLibraryManager;
     public String androidJarPath;
@@ -116,7 +115,6 @@ public class Dp {
             LogUtil.e(TAG, "Somehow failed to get package info about us!", e);
         }
 
-        zipalignBinary = new File(context.getCacheDir(), "zipalign");
         aapt2Binary = new File(context.getCacheDir(), "aapt2");
         build_settings = new BuildSettings(yqVar.b);
         this.context = context;
@@ -124,7 +122,6 @@ public class Dp {
         fpu = new FilePathUtil();
         fileUtil = new oB(false);
         commandExecutor = new Fp();
-        extractedBuiltInLibrariesDirectory = new File(context.getFilesDir(), "libs");
         mll = new ManageLocalLibrary(yqVar.b);
         builtInLibraryManager = new Kp();
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
@@ -284,7 +281,7 @@ public class Dp {
 
         /* Add lambda helper classes */
         if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
-                BuildSettings.SETTING_JAVA_VERSION_1_7)
+                        BuildSettings.SETTING_JAVA_VERSION_1_7)
                 .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
             classpath.append(":").append(new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar").getAbsolutePath());
         }
@@ -358,7 +355,7 @@ public class Dp {
     private void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
         int lastDexNumber = 1;
         String nextMergedDexFilename;
-        ArrayList<Dex> dexObjects = new ArrayList<>();
+        LinkedList<Dex> dexObjects = new LinkedList<>();
         Iterator<String> toMergeIterator = dexes.iterator();
 
         List<FieldId> mergedDexFields;
@@ -370,10 +367,10 @@ public class Dp {
             // Closable gets closed automatically
             Dex firstDex = new Dex(new FileInputStream(toMergeIterator.next()));
             dexObjects.add(firstDex);
-            mergedDexFields = new ArrayList<>(firstDex.fieldIds());
-            mergedDexMethods = new ArrayList<>(firstDex.methodIds());
-            mergedDexProtos = new ArrayList<>(firstDex.protoIds());
-            mergedDexTypes = new ArrayList<>(firstDex.typeIds());
+            mergedDexFields = new LinkedList<>(firstDex.fieldIds());
+            mergedDexMethods = new LinkedList<>(firstDex.methodIds());
+            mergedDexProtos = new LinkedList<>(firstDex.protoIds());
+            mergedDexTypes = new LinkedList<>(firstDex.typeIds());
         }
 
         while (toMergeIterator.hasNext()) {
@@ -384,10 +381,10 @@ public class Dp {
             Dex dex = new Dex(new FileInputStream(dexPath));
 
             boolean canMerge = true;
-            List<FieldId> newDexFieldIds = new ArrayList<>();
-            List<MethodId> newDexMethodIds = new ArrayList<>();
-            List<ProtoId> newDexProtoIds = new ArrayList<>();
-            List<Integer> newDexTypeIds = new ArrayList<>();
+            List<FieldId> newDexFieldIds = new LinkedList<>();
+            List<MethodId> newDexMethodIds = new LinkedList<>();
+            List<ProtoId> newDexProtoIds = new LinkedList<>();
+            List<Integer> newDexTypeIds = new LinkedList<>();
 
             bruh:
             {
@@ -864,20 +861,14 @@ public class Dp {
      * Sign the APK file with testkey.
      * This method supports APK Signature Scheme V1 (JAR signing) only.
      */
-    public boolean k() {
-        try {
-            ZipSigner zipSigner = new ZipSigner();
-            KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-            zipSigner.signZip(yq.alignedApkPath, yq.H);
-            return true;
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | IOException | GeneralSecurityException e) {
-            LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
-        }
-        return false;
+    public void k() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        ZipSigner zipSigner = new ZipSigner();
+        KeyStoreFileManager.setProvider(new BouncyCastleProvider());
+        zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
+        zipSigner.signZip(yq.G, yq.H);
     }
 
-    private void mergeDexes(String target, ArrayList<Dex> dexes) throws IOException {
+    private void mergeDexes(String target, List<Dex> dexes) throws IOException {
         DexMerger merger = new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST, new DxContext());
         merger.merge().writeTo(new File(target));
     }
@@ -1029,7 +1020,7 @@ public class Dp {
             throw new By("Couldn't run zipalign on " + inPath + " with output path " + outPath + ": " + Log.getStackTraceString(e));
         } catch (InvalidZipException e) {
             throw new By("Failed to zipalign due to the given zip being invalid: " + Log.getStackTraceString(e));
-	}
+        }
 
         LogUtil.d(TAG, "zipalign took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
