@@ -2,6 +2,7 @@ package mod.khaled.logcat;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static mod.SketchwareUtil.dpToPx;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.AlertDialog;
@@ -12,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -53,65 +53,49 @@ public class LogReaderActivity extends AppCompatActivity {
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
     private EditText filterEdittext;
-    private ImageView menu;
-    private ImageView back;
     private RecyclerView recyclerview;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        LinearLayout parent = new LinearLayout(LogReaderActivity.this);
-        parent.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        parent.setOrientation(LinearLayout.VERTICAL);
-
-        final LinearLayout base = new LinearLayout(LogReaderActivity.this);
-        base.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(52)));
-        base.setPadding((int) getDip(10), (int) getDip(0), (int) getDip(4), (int) getDip(0));
-        base.setGravity(Gravity.CENTER_VERTICAL);
-        base.setOrientation(LinearLayout.HORIZONTAL);
-        base.setBackgroundColor(0xff008dcd);
-        base.setElevation(getDip(1));
-
-        back = new ImageView(LogReaderActivity.this);
-        back.setImageResource(R.drawable.arrow_back_white_48dp);
-        back.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(40), (int) getDip(40)));
-        back.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-
-        filterEdittext = new EditText(LogReaderActivity.this);
-        filterEdittext.setLayoutParams(new LinearLayout.LayoutParams(0, MATCH_PARENT, 1f));
-        filterEdittext.setPadding((int) getDip(8), (int) getDip(2), (int) getDip(8), (int) getDip(2));
-        filterEdittext.setGravity(Gravity.CENTER_VERTICAL);
-        filterEdittext.setTextSize(15f);
-        filterEdittext.setHint("Search log");
-        filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
-        filterEdittext.setTextColor(0xffffffff);
-        filterEdittext.setSingleLine(true);
-        base.setElevation(getDip(1));
-
-        menu = new ImageView(LogReaderActivity.this);
-        menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
-        menu.setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
-        menu.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(40), (int) getDip(40)));
-        menu.setPadding((int) getDip(8), (int) getDip(8), (int) getDip(8), (int) getDip(8));
-
-        recyclerview = new RecyclerView(LogReaderActivity.this);
-        recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        recyclerview.setPadding((int) getDip(4), 0, (int) getDip(4), 0);
-
-        base.addView(back);
-        base.addView(filterEdittext);
-        base.addView(menu);
-        parent.addView(base);
-        parent.addView(recyclerview);
-
-        setContentView(parent);
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        PopupMenu options = new PopupMenu(this, menu);
+        LinearLayout root = new LinearLayout(this);
+        root.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        root.setOrientation(LinearLayout.VERTICAL);
+        setContentView(root);
+
+        LinearLayout toolbar = (LinearLayout) getLayoutInflater().inflate(R.layout.toolbar_improved, root, false);
+        root.addView(toolbar);
+        ImageView back = toolbar.findViewById(R.id.ig_toolbar_back);
+        TextView title = toolbar.findViewById(R.id.tx_toolbar_title);
+        ImageView optionsMenu = toolbar.findViewById(R.id.ig_toolbar_load_file);
+
+        toolbar.removeView(title);
+        optionsMenu.setVisibility(View.VISIBLE);
+        optionsMenu.setImageResource(R.drawable.ic_more_vert_white_24dp);
+
+        filterEdittext = new EditText(LogReaderActivity.this);
+        {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1f);
+            params.leftMargin = dpToPx(8);
+            params.topMargin = dpToPx(2);
+            params.rightMargin = dpToPx(8);
+            params.bottomMargin = dpToPx(2);
+            params.gravity = Gravity.CENTER_VERTICAL;
+            filterEdittext.setLayoutParams(params);
+        }
+        filterEdittext.setTextSize(15f);
+        filterEdittext.setHint("Search log");
+        filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
+        filterEdittext.setTextColor(0xffffffff);
+        filterEdittext.setSingleLine(true);
+        toolbar.addView(filterEdittext, toolbar.indexOfChild(optionsMenu));
+
+        PopupMenu options = new PopupMenu(this, optionsMenu);
         options.getMenu().add("Clear all");
         options.getMenu().add("Filter by package");
         options.getMenu().add("Auto scroll").setCheckable(true).setChecked(true);
@@ -150,6 +134,14 @@ public class LogReaderActivity extends AppCompatActivity {
             return true;
         });
 
+        recyclerview = new RecyclerView(LogReaderActivity.this);
+        recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        recyclerview.setPadding((int) dpToPx(4), 0, (int) dpToPx(4), 0);
+        root.addView(recyclerview);
+
+        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        Helper.applyRippleToToolbarView(back);
+
         filterEdittext.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -174,8 +166,8 @@ public class LogReaderActivity extends AppCompatActivity {
             }
         });
 
-        menu.setOnClickListener(v -> options.show());
-        back.setOnClickListener(Helper.getBackPressedClickListener(this));
+        optionsMenu.setOnClickListener(v -> options.show());
+        Helper.applyRippleToToolbarView(optionsMenu);
     }
 
     private void initializeLogic() {
