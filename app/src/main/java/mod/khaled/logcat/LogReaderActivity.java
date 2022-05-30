@@ -3,7 +3,6 @@ package mod.khaled.logcat;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static mod.SketchwareUtil.dpToPx;
-import static mod.SketchwareUtil.getDip;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -274,7 +273,7 @@ public class LogReaderActivity extends AppCompatActivity {
 
             LinearLayout divider = new LinearLayout(LogReaderActivity.this);
             divider.setTag("divider");
-            divider.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, (int) getDip(1)));
+            divider.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, dpToPx(1)));
             divider.setBackgroundColor(0xffe0e0e0);
 
             TextView type = new TextView(LogReaderActivity.this);
@@ -285,7 +284,7 @@ public class LogReaderActivity extends AppCompatActivity {
             type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             type.setTypeface(null, Typeface.BOLD);
             type.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
-            type.setLayoutParams(new LinearLayout.LayoutParams((int) getDip(22), MATCH_PARENT));
+            type.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(22), MATCH_PARENT));
             type.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
             type.setTextColor(0xffffffff);
             type.setBackgroundColor(0xff000000);
@@ -294,7 +293,7 @@ public class LogReaderActivity extends AppCompatActivity {
             detailHolder.setTag("detailHolder");
             detailHolder.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
             detailHolder.setOrientation(LinearLayout.VERTICAL);
-            detailHolder.setPadding((int) getDip(3), (int) getDip(3), (int) getDip(3), (int) getDip(3));
+            detailHolder.setPadding(dpToPx(3), dpToPx(3), dpToPx(3), dpToPx(3));
             detailHolder.setClickable(false);
 
             TextView date_header = new TextView(LogReaderActivity.this);
