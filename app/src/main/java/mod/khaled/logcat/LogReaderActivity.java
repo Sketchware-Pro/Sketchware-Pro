@@ -46,7 +46,6 @@ public class LogReaderActivity extends AppCompatActivity {
 
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
-    private PopupMenu options;
     private String pkgFilter = "";
     private boolean autoScroll = false;
 
@@ -112,7 +111,7 @@ public class LogReaderActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        options = new PopupMenu(getApplicationContext(), menu);
+        PopupMenu options = new PopupMenu(this, menu);
         options.getMenu().add("Clear all");
         options.getMenu().add("Filter by package");
         options.getMenu().add("Auto scroll").setCheckable(true).setChecked(true);
