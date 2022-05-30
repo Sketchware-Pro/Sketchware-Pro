@@ -58,8 +58,8 @@ public class LogReaderActivity extends AppCompatActivity {
     private RecyclerView recyclerview;
 
     @Override
-    public void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         LinearLayout parent = new LinearLayout(LogReaderActivity.this);
         parent.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
@@ -71,7 +71,7 @@ public class LogReaderActivity extends AppCompatActivity {
         base.setGravity(Gravity.CENTER_VERTICAL);
         base.setOrientation(LinearLayout.HORIZONTAL);
         base.setBackgroundColor(0xff008dcd);
-        base.setElevation((float) (int) getDip(1));
+        base.setElevation(getDip(1));
 
         back = new ImageView(LogReaderActivity.this);
         back.setImageResource(R.drawable.arrow_back_white_48dp);
@@ -82,12 +82,12 @@ public class LogReaderActivity extends AppCompatActivity {
         filterEdittext.setLayoutParams(new LinearLayout.LayoutParams(0, MATCH_PARENT, 1f));
         filterEdittext.setPadding((int) getDip(8), (int) getDip(2), (int) getDip(8), (int) getDip(2));
         filterEdittext.setGravity(Gravity.CENTER_VERTICAL);
-        filterEdittext.setTextSize((float) 15);
+        filterEdittext.setTextSize(15f);
         filterEdittext.setHint("Search log");
         filterEdittext.setBackgroundTintList(ColorStateList.valueOf(0xffffffff));
         filterEdittext.setTextColor(0xffffffff);
         filterEdittext.setSingleLine(true);
-        base.setElevation((float) (int) getDip(1));
+        base.setElevation(getDip(1));
 
         menu = new ImageView(LogReaderActivity.this);
         menu.setImageResource(R.drawable.ic_more_vert_white_24dp);
@@ -99,11 +99,11 @@ public class LogReaderActivity extends AppCompatActivity {
         recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         recyclerview.setPadding((int) getDip(4), 0, (int) getDip(4), 0);
 
-        base.addView(back, 0);
-        base.addView(filterEdittext, 1);
-        base.addView(menu, 2);
-        parent.addView(base, 0);
-        parent.addView(recyclerview, 1);
+        base.addView(back);
+        base.addView(filterEdittext);
+        base.addView(menu);
+        parent.addView(base);
+        parent.addView(recyclerview);
 
         setContentView(parent);
         initialize();
@@ -135,7 +135,7 @@ public class LogReaderActivity extends AppCompatActivity {
                         filterEdittext.setText(filterEdittext.getText().toString());
                     });
                     builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-                    builder.create().show();
+                    builder.show();
                     break;
 
                 case "Auto scroll": {
