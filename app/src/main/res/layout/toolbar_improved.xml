@@ -11,7 +11,7 @@
     android:paddingBottom="8dp">
 
     <ImageView
-         android:id="@+id/ig_toolbar_back"
+        android:id="@+id/ig_toolbar_back"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="8dp"
