@@ -84,8 +84,6 @@ dependencies {
     implementation "com.android.tools:annotations:30.2.1"
     implementation "com.google.guava:guava:30.1-jre"
 
-    withAabOutputSupportImplementation fileTree(dir: "libs", include: "bundletool-*")
-
     def codeEditorVersion = "0.11.4"
     def excludeAnnotation = { exclude group: "androidx.annotation", module: "annotation" }
     def editorGroupId = "io.github.Rosemoe.sora-editor"
@@ -97,7 +95,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
-    implementation "com.android.tools.build:bundletool:1.9.1"
+    withAabOutputSupportImplementation "com.android.tools.build:bundletool:1.9.1"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0"
     implementation "com.android.tools:r8:3.3.28"
