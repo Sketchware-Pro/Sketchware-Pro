@@ -604,13 +604,13 @@ public class yq {
             N.isAdMobEnabled = true;
             N.addPermission(jq.PERMISSION_INTERNET);
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
-            N.a(adMob);
+            N.setupAdmob(adMob);
         }
         if (googleMaps.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isMapUsed = true;
             N.addPermission(jq.PERMISSION_INTERNET);
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
-            N.b(googleMaps);
+            N.setupGoogleMap(googleMaps);
         }
         for (ProjectFileBean next : projectFileManager.b()) {
             if (next.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
@@ -624,30 +624,30 @@ public class yq {
                     case 35:
                         N.isAppCompatUsed = true;
                         N.u = true;
-                        N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
-                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                        N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_CAMERA);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE:
                         N.isGsonUsed = true;
                         N.isFirebaseDatabaseUsed = true;
-                        N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
-                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
                         N.isFirebaseStorageUsed = true;
-                        N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                        N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_VIBRATOR:
-                        N.a(next.getActivityName(), jq.PERMISSION_VIBRATE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_VIBRATE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
@@ -658,21 +658,21 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
                         N.isGsonUsed = true;
                         N.isHttp3Used = true;
-                        N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
-                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_INTERNET);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT:
-                        N.a(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT:
-                        N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
-                        N.a(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_BLUETOOTH);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER:
-                        N.a(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
+                        N.addPermission(next.getActivityName(), jq.PERMISSION_ACCESS_FINE_LOCATION);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS:
@@ -703,7 +703,7 @@ public class yq {
                         case "intentSetAction":
                             // If an Intent setAction (ACTION_CALL) block is used
                             if (bean.parameters.get(1).equals(uq.c[1])) {
-                                N.a(next.getActivityName(), jq.PERMISSION_CALL_PHONE);
+                                N.addPermission(next.getActivityName(), jq.PERMISSION_CALL_PHONE);
                             }
                             break;
 
@@ -718,7 +718,7 @@ public class yq {
                         case "getJpegRotate":
                         case "setImageFilePath":
                         case "fileutilGetLastSegmentPath":
-                            N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                            N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                             break;
 
                         case "fileutilwrite":
@@ -738,8 +738,8 @@ public class yq {
                         case "setBitmapFileColorFilter":
                         case "setBitmapFileBrightness":
                         case "setBitmapFileContrast":
-                            N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
-                            N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
+                            N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
+                            N.addPermission(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                             break;
 
                         case "strToMap":
