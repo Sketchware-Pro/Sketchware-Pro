@@ -12,6 +12,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.sdklib.build.ApkBuilder;
+import com.android.sdklib.build.ApkCreationException;
+import com.android.sdklib.build.DuplicateFileException;
+import com.android.sdklib.build.SealedApkException;
 import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
@@ -577,53 +580,57 @@ public class Dp {
     /**
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
-    public void g() {
+    public void g() throws zy {
         String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.E : dexesToAddButNotMerge.remove(0);
+        try {
+            ApkBuilder apkBuilder = new ApkBuilder(new File(yq.G), new File(yq.C), new File(firstDexPath), null, null, System.out);
 
-        ApkBuilder apkBuilder = new ApkBuilder(new File(yq.G), new File(yq.C), new File(firstDexPath), null, null, System.out);
-
-        for (Jp library : builtInLibraryManager.a()) {
-            apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
-        }
-
-        for (String jarPath : mll.getJarLocalLibrary().split(":")) {
-            if (!jarPath.trim().isEmpty()) {
-                apkBuilder.addResourcesFromJar(new File(jarPath));
+            for (Jp library : builtInLibraryManager.a()) {
+                apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
             }
-        }
 
-        /* Add project's native libraries */
-        File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(yq.b));
-        if (nativeLibrariesDirectory.exists()) {
-            apkBuilder.addNativeLibraries(nativeLibrariesDirectory);
-        }
-
-        /* Add Local libraries' native libraries */
-        for (String nativeLibraryDirectory : mll.getNativeLibs()) {
-            apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
-        }
-
-        if (dexesToAddButNotMerge.isEmpty()) {
-            List<String> dexFiles = FileUtil.listFiles(yq.t, "dex");
-            for (String dexFile : dexFiles) {
-                if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
-                    apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+            for (String jarPath : mll.getJarLocalLibrary().split(":")) {
+                if (!jarPath.trim().isEmpty()) {
+                    apkBuilder.addResourcesFromJar(new File(jarPath));
                 }
             }
-        } else {
-            int dexNumber = 2;
 
-            for (String dexPath : dexesToAddButNotMerge) {
-                File dexFile = new File(dexPath);
-
-                apkBuilder.addFile(dexFile, "classes" + dexNumber + ".dex");
-                dexNumber++;
+            /* Add project's native libraries */
+            File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(yq.b));
+            if (nativeLibrariesDirectory.exists()) {
+                apkBuilder.addNativeLibraries(nativeLibrariesDirectory);
             }
+
+            /* Add Local libraries' native libraries */
+            for (String nativeLibraryDirectory : mll.getNativeLibs()) {
+                apkBuilder.addNativeLibraries(new File(nativeLibraryDirectory));
+            }
+
+            if (dexesToAddButNotMerge.isEmpty()) {
+                List<String> dexFiles = FileUtil.listFiles(yq.t, "dex");
+                for (String dexFile : dexFiles) {
+                    if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
+                        apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
+                    }
+                }
+            } else {
+                int dexNumber = 2;
+
+                for (String dexPath : dexesToAddButNotMerge) {
+                    File dexFile = new File(dexPath);
+
+                    apkBuilder.addFile(dexFile, "classes" + dexNumber + ".dex");
+                    dexNumber++;
+                }
+            }
+
+            apkBuilder.setDebugMode(false);
+            apkBuilder.sealApk();
+        } catch (ApkCreationException | SealedApkException e) {
+            throw new zy(e.getMessage());
+        } catch (DuplicateFileException e) {
+            throw new zy(e.getMessage());
         }
-
-        apkBuilder.setDebugMode(false);
-        apkBuilder.sealApk();
-
         LogUtil.d(TAG, "Time passed since starting to compile resources until building the unsigned APK: " +
                 (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
     }
