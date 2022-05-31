@@ -632,6 +632,7 @@ public class Dp {
             String message = "Duplicate files from two libraries detected \r\n";
             message += "File1: " + e.getFile1() + " \r\n";
             message += "File2: " + e.getFile2() + " \r\n";
+            message += "Archive path: " + e.getArchivePath();
             throw new By(message);
         }
         LogUtil.d(TAG, "Time passed since starting to compile resources until building the unsigned APK: " +
