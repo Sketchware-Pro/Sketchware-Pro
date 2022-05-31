@@ -585,31 +585,31 @@ public class yq {
         ProjectLibraryBean firebase = projectLibraryManager.d();
         ProjectLibraryBean googleMaps = projectLibraryManager.e();
         N = new jq();
-        N.a = e;
-        N.b = f;
-        N.c = l;
-        N.d = m;
+        N.packageName = e;
+        N.projectName = f;
+        N.versionCode = l;
+        N.versionName = m;
         N.sc_id = b;
         N.e = O.h();
-        N.f = !exportingProject;
+        N.isDebugBuild = !exportingProject;
         if (firebase.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
-            N.h = true;
-            N.a(jq.PERMISSION_INTERNET);
-            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
+            N.isFirebaseEnabled = true;
+            N.addPermission(jq.PERMISSION_INTERNET);
+            N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
         }
         if (appCompat.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
-            N.g = true;
+            N.isAppCompatUsed = true;
         }
         if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
-            N.l = true;
-            N.a(jq.PERMISSION_INTERNET);
-            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
+            N.isAdMobEnabled = true;
+            N.addPermission(jq.PERMISSION_INTERNET);
+            N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.a(adMob);
         }
         if (googleMaps.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
-            N.m = true;
-            N.a(jq.PERMISSION_INTERNET);
-            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
+            N.isMapUsed = true;
+            N.addPermission(jq.PERMISSION_INTERNET);
+            N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.b(googleMaps);
         }
         for (ProjectFileBean next : projectFileManager.b()) {
@@ -622,7 +622,7 @@ public class yq {
                 switch (component.type) {
                     case ComponentBean.COMPONENT_TYPE_CAMERA:
                     case 35:
-                        N.g = true;
+                        N.isAppCompatUsed = true;
                         N.u = true;
                         N.a(next.getActivityName(), jq.PERMISSION_CAMERA);
                         N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
@@ -634,14 +634,14 @@ public class yq {
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE:
-                        N.o = true;
-                        N.j = true;
+                        N.isGsonUsed = true;
+                        N.isFirebaseDatabaseUsed = true;
                         N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
                         N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE:
-                        N.k = true;
+                        N.isFirebaseStorageUsed = true;
                         N.a(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
                         N.a(next.getActivityName(), jq.PERMISSION_WRITE_EXTERNAL_STORAGE);
                         break;
@@ -651,13 +651,13 @@ public class yq {
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
-                        N.i = true;
+                        N.isFirebaseAuthUsed = true;
                         N.a(next.getActivityName()).b = true;
                         break;
 
                     case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK:
-                        N.o = true;
-                        N.p = true;
+                        N.isGsonUsed = true;
+                        N.isHttp3Used = true;
                         N.a(next.getActivityName(), jq.PERMISSION_INTERNET);
                         N.a(next.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                         break;
@@ -749,17 +749,17 @@ public class yq {
                         case "GsonListTojsonString":
                         case "GsonStringToListString":
                         case "GsonStringToListNumber":
-                            N.o = true;
+                            N.isGsonUsed = true;
                             break;
 
                         case "setImageUrl":
-                            N.n = true;
-                            N.a(jq.PERMISSION_INTERNET);
+                            N.isGlideUsed = true;
+                            N.addPermission(jq.PERMISSION_INTERNET);
                             break;
 
                         case "webViewLoadUrl":
-                            N.a(jq.PERMISSION_INTERNET);
-                            N.a(jq.PERMISSION_ACCESS_NETWORK_STATE);
+                            N.addPermission(jq.PERMISSION_INTERNET);
+                            N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
                             break;
 
                         default:
@@ -798,11 +798,11 @@ public class yq {
         for (SrcCodeBean bean : srcCodeBeans) {
             a(bean.srcFileName, bean.source);
         }
-        if (N.h || N.l || N.m) {
+        if (N.isFirebaseEnabled || N.isAdMobEnabled || N.isMapUsed) {
             ProjectLibraryBean firebaseLibrary = projectLibraryManager.d();
             Mx mx = new Mx();
             mx.a("google_play_services_version", 12451000);
-            if (N.h) {
+            if (N.isFirebaseEnabled) {
                 mx.a("firebase_database_url", "https://" + firebaseLibrary.data, false);
                 mx.a("project_id", firebaseLibrary.data.trim().replaceAll(FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER, ""), false);
                 mx.a("google_app_id", firebaseLibrary.reserved1, false);
@@ -813,7 +813,7 @@ public class yq {
                     mx.a("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }
-            if (N.m) {
+            if (N.isMapUsed) {
                 // if p3 is false, then "translatable="false" will be added
                 mx.a("google_maps_key", projectLibraryManager.e().data, false);
             }
@@ -897,28 +897,28 @@ public class yq {
                     Lx.e(e)));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java")) && N.p) {
+        if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java")) && N.isHttp3Used) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
                     Lx.j(Lx.h(e))));
         }
 
-        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java") && N.p) {
+        if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java") && N.isHttp3Used) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
                     Lx.j(Lx.g(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java")) && N.hasPermission(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
                     Lx.j(Lx.b(e))));
         }
 
-        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java")) && N.b(jq.PERMISSION_BLUETOOTH)) {
+        if (!javaFiles.contains(new File(javaDir + "BluetoothController.java")) && N.hasPermission(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
                     Lx.j(Lx.c(e))));
         }
 
-        if (N.m) {
-            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java")) && N.m) {
+        if (N.isMapUsed) {
+            if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java")) && N.isMapUsed) {
                 srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
                         Lx.j(Lx.f(e))));
             }
@@ -926,7 +926,7 @@ public class yq {
 
         srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml",
                 CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
-        if (N.g) {
+        if (N.isAppCompatUsed) {
             boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 

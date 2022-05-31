@@ -99,7 +99,7 @@ public class Ox {
                 writeWidget(nx, viewBean);
             }
         }
-        if (a.g) {
+        if (a.isAppCompatUsed) {
             if (b.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                 if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                     nx.a("app", "layout_behavior", "@string/appbar_scrolling_view_behavior");
@@ -741,10 +741,10 @@ public class Ox {
                     nx.a("app", "adSize", adSize);
                 }
 
-                if (a.f) {
+                if (a.isDebugBuild) {
                     nx.a("app", "adUnitId", "ca-app-pub-3940256099942544/6300978111");
                 } else {
-                    nx.a("app", "adUnitId", a.r);
+                    nx.a("app", "adUnitId", a.bannerAdUnitId);
                 }
                 break;
 

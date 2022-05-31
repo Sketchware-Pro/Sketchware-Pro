@@ -89,7 +89,7 @@ public class Jx {
     public ArrayList<String> r = new ArrayList<>();
 
     public Jx(jq jqVar, ProjectFileBean projectFileBean, eC eCVar) {
-        packageName = jqVar.a;
+        packageName = jqVar.packageName;
         this.projectFileBean = projectFileBean;
         projectDataManager = eCVar;
         f = jqVar;
@@ -192,15 +192,15 @@ public class Jx {
             sb.append(getLauncherActivity(packageName));
         }
 
-        if (f.h) addImport("com.google.firebase.FirebaseApp");
+        if (f.isFirebaseEnabled) addImport("com.google.firebase.FirebaseApp");
 
-        if (f.l) {
+        if (f.isAdMobEnabled) {
             addImport("com.google.android.gms.ads.MobileAds");
 
-            if (f.f) addImport("com.google.android.gms.ads.RequestConfiguration");
+            if (f.isDebugBuild) addImport("com.google.android.gms.ads.RequestConfiguration");
         }
 
-        if (f.g) {
+        if (f.isAppCompatUsed) {
             addImport("androidx.fragment.app.Fragment");
             addImport("androidx.fragment.app.FragmentManager");
             addImport("androidx.fragment.app.DialogFragment");
@@ -213,7 +213,7 @@ public class Jx {
             addImport("android.app.DialogFragment");
         }
         if (permissionManager.hasNewPermission() || f.a(projectFileBean.getActivityName()).a()) {
-            if (f.g) {
+            if (f.isAppCompatUsed) {
                 addImport("androidx.core.content.ContextCompat");
                 addImport("androidx.core.app.ActivityCompat");
             }
@@ -234,7 +234,7 @@ public class Jx {
         sb.append(a);
 
         sb.append("public class ").append(projectFileBean.getActivityName()).append(" extends ");
-        if (f.g) {
+        if (f.isAppCompatUsed) {
             if (isBottomDialogFragment) {
                 sb.append("BottomSheetDialogFragment");
             } else if (isDialogFragment) {
@@ -331,7 +331,7 @@ public class Jx {
 
         sb.append(a);
         if (isFragment) {
-            if (f.g) {
+            if (f.isAppCompatUsed) {
                 sb.append("@NonNull").append(a);
                 sb.append("@Override").append(a);
                 sb.append("public View onCreateView(@NonNull LayoutInflater _inflater, " +
@@ -351,7 +351,7 @@ public class Jx {
             sb.append("initialize(_savedInstanceState);");
         }
         sb.append(a);
-        if (f.h) {
+        if (f.isFirebaseEnabled) {
             if (isFragment) {
                 sb.append("FirebaseApp.initializeApp(getContext());");
             } else {
@@ -360,23 +360,23 @@ public class Jx {
             sb.append(a);
         }
 
-        if (f.l && !isFragment) {
-            if (!f.h) {
+        if (f.isAdMobEnabled && !isFragment) {
+            if (!f.isFirebaseEnabled) {
                 sb.append(a);
             }
             sb.append("MobileAds.initialize(this);");
             sb.append(a);
             if (h.contains(Lx.d("InterstitialAd"))) {
-                sb.append("_ad_unit_id = \"").append(f.f ? "ca-app-pub-3940256099942544/1033173712" : f.s).append("\";");
+                sb.append("_ad_unit_id = \"").append(f.isDebugBuild ? "ca-app-pub-3940256099942544/1033173712" : f.interstitialAdUnitId).append("\";");
             }
             if (h.contains(Lx.d("RewardedVideoAd"))) {
                 sb.append("//Well, you have to set ad unit id with command block for now!").append(a);
                 sb.append("_reward_ad_unit_id = \"ca-app-pub-3940256099942544/5224354917\";").append(a);
             }
 
-            if (f.f) {
+            if (f.isDebugBuild) {
                 StringBuilder testDevicesListCode = new StringBuilder("List<String> testDeviceIds = Arrays.asList(");
-                ArrayList<String> testDevices = f.t;
+                ArrayList<String> testDevices = f.testDeviceIds;
                 for (int j = 0, testDevicesSize = testDevices.size(); j < testDevicesSize; j++) {
                     String testDeviceId = testDevices.get(j);
 
@@ -397,7 +397,7 @@ public class Jx {
 
         if (!isFragment) {
             // Adds initializeLogic() call too, don't worry
-            sb.append(permissionManager.writePermission(f.g, f.a(projectFileBean.getActivityName()).c));
+            sb.append(permissionManager.writePermission(f.isAppCompatUsed, f.a(projectFileBean.getActivityName()).c));
         } else {
             sb.append("initializeLogic();").append(a)
                     .append("return _view;").append(a);
@@ -580,7 +580,7 @@ public class Jx {
                     .replaceAll(".setLayoutManager\\(new LinearLayoutManager\\(this", ".setLayoutManager(new LinearLayoutManager(getContext()")
                     .replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()");
         }
-        if (f.g) {
+        if (f.isAppCompatUsed) {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
 
@@ -702,13 +702,13 @@ public class Jx {
     }
 
     private void handleAppCompat() {
-        if (f.g) {
+        if (f.isAppCompatUsed) {
             addImport("androidx.appcompat.app.AppCompatActivity");
             addImport("androidx.annotation.*");
         } else {
             addImport("android.app.Activity");
         }
-        if (f.g) {
+        if (f.isAppCompatUsed) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
                 addImport("androidx.appcompat.widget.Toolbar");
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");

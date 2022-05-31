@@ -724,7 +724,7 @@ public class Dp {
 
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
 
-        if (settings.getMinSdkVersion() < 21 || !yq.N.f) {
+        if (settings.getMinSdkVersion() < 21 || !yq.N.isDebugBuild) {
             dexLibraries(yq.E, dexes);
         } else {
             dexesToAddButNotMerge = dexes;
@@ -830,36 +830,36 @@ public class Dp {
             /* Extract testkey.zip to testkey/ */
             new KB().a(testkeyArchivePath, testkeyDirectoryPath);
         }
-        if (yq.N.g) {
+        if (yq.N.isAppCompatUsed) {
             builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
             builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
             builtInLibraryManager.a(BuiltInLibraries.MATERIAL);
         }
-        if (yq.N.h) {
+        if (yq.N.isFirebaseEnabled) {
             builtInLibraryManager.a(BuiltInLibraries.FIREBASE_COMMON);
         }
-        if (yq.N.i) {
+        if (yq.N.isFirebaseAuthUsed) {
             builtInLibraryManager.a(BuiltInLibraries.FIREBASE_AUTH);
         }
-        if (yq.N.j) {
+        if (yq.N.isFirebaseDatabaseUsed) {
             builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DATABASE);
         }
-        if (yq.N.k) {
+        if (yq.N.isFirebaseStorageUsed) {
             builtInLibraryManager.a(BuiltInLibraries.FIREBASE_STORAGE);
         }
-        if (yq.N.m) {
+        if (yq.N.isMapUsed) {
             builtInLibraryManager.a(BuiltInLibraries.PLAY_SERVICES_MAPS);
         }
-        if (yq.N.l) {
+        if (yq.N.isAdMobEnabled) {
             builtInLibraryManager.a(BuiltInLibraries.PLAY_SERVICES_ADS);
         }
-        if (yq.N.o) {
+        if (yq.N.isGsonUsed) {
             builtInLibraryManager.a(BuiltInLibraries.GSON);
         }
-        if (yq.N.n) {
+        if (yq.N.isGlideUsed) {
             builtInLibraryManager.a(BuiltInLibraries.GLIDE);
         }
-        if (yq.N.p) {
+        if (yq.N.isHttp3Used) {
             builtInLibraryManager.a(BuiltInLibraries.OKHTTP);
         }
         if (yq.N.isDynamicLinkUsed) {

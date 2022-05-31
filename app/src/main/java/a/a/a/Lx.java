@@ -40,11 +40,11 @@ public class Lx {
                     "\r\n";
         }
         content += "defaultConfig {\r\n" +
-                "applicationId \"" + metadata.a + "\"\r\n" +
+                "applicationId \"" + metadata.packageName + "\"\r\n" +
                 "minSdkVersion " + minSdkVersion + "\r\n" +
                 "targetSdkVersion " + targetSdkVersion + "\r\n" +
-                "versionCode " + metadata.c + "\r\n" +
-                "versionName \"" + metadata.d + "\"\r\n" +
+                "versionCode " + metadata.versionCode + "\r\n" +
+                "versionName \"" + metadata.versionName + "\"\r\n" +
                 "}\r\n" +
                 "\r\n" +
                 "buildTypes {\r\n" +
@@ -58,40 +58,40 @@ public class Lx {
                 "dependencies {\r\n" +
                 "implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n";
 
-        if (metadata.g) {
+        if (metadata.isAppCompatUsed) {
             content += "implementation 'androidx.appcompat:appcompat:1.2.0'\r\n" +
                     "implementation 'com.google.android.material:material:1.4.0'\r\n";
         }
 
-        if (metadata.i) {
+        if (metadata.isFirebaseAuthUsed) {
             content += "implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n";
         }
 
-        if (metadata.j) {
+        if (metadata.isFirebaseDatabaseUsed) {
             content += "implementation 'com.google.firebase:firebase-database:19.0.0'\r\n";
         }
 
-        if (metadata.k) {
+        if (metadata.isFirebaseStorageUsed) {
             content += "implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n";
         }
 
-        if (metadata.l) {
+        if (metadata.isAdMobEnabled) {
             content += "implementation 'com.google.android.gms:play-services-ads:20.1.0'\r\n";
         }
 
-        if (metadata.m) {
+        if (metadata.isMapUsed) {
             content += "implementation 'com.google.android.gms:play-services-maps:17.0.1'\r\n";
         }
 
-        if (metadata.n) {
+        if (metadata.isGlideUsed) {
             content += "implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n";
         }
 
-        if (metadata.o) {
+        if (metadata.isGsonUsed) {
             content += "implementation 'com.google.code.gson:gson:2.8.7'\r\n";
         }
 
-        if (metadata.p) {
+        if (metadata.isHttp3Used) {
             content += "implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n";
         }
 

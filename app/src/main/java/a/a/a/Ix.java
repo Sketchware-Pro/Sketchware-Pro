@@ -51,7 +51,7 @@ public class Ix {
      */
     private void writeFileProvider(Nx applicationTag) {
         Nx providerTag = new Nx("provider");
-        providerTag.a("android", "authorities", c.a + ".provider");
+        providerTag.a("android", "authorities", c.packageName + ".provider");
         providerTag.a("android", "name", "androidx.core.content.FileProvider");
         providerTag.a("android", "exported", "false");
         providerTag.a("android", "grantUriPermissions", "true");
@@ -82,26 +82,26 @@ public class Ix {
     private void writeFirebaseMetaData(Nx applicationTag) {
         Nx providerTag = new Nx("provider");
         providerTag.a("android", "name", "com.google.firebase.provider.FirebaseInitProvider");
-        providerTag.a("android", "authorities", c.a + ".firebaseinitprovider");
+        providerTag.a("android", "authorities", c.packageName + ".firebaseinitprovider");
         providerTag.a("android", "exported", "false");
         providerTag.a("android", "initOrder", "100");
         applicationTag.a(providerTag);
         Nx serviceTag = new Nx("service");
         serviceTag.a("android", "name", "com.google.firebase.components.ComponentDiscoveryService");
         serviceTag.a("android", "exported", "false");
-        if (c.i) {
+        if (c.isFirebaseAuthUsed) {
             Nx metadataTag = new Nx("meta-data");
             metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar");
             metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
-        if (c.j) {
+        if (c.isFirebaseDatabaseUsed) {
             Nx metadataTag = new Nx("meta-data");
             metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.database.DatabaseRegistrar");
             metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
             serviceTag.a(metadataTag);
         }
-        if (c.k) {
+        if (c.isFirebaseStorageUsed) {
             Nx metadataTag = new Nx("meta-data");
             metadataTag.a("android", "name", "com.google.firebase.components:com.google.firebase.storage.StorageRegistrar");
             metadataTag.a("android", "value", "com.google.firebase.components.ComponentRegistrar");
@@ -236,25 +236,25 @@ public class Ix {
      */
     public String a() {
         boolean addRequestLegacyExternalStorage = false;
-        a.a("", "package", c.a);
+        a.a("", "package", c.packageName);
 
-        if (!c.a()) {
-            if (c.b(jq.PERMISSION_CALL_PHONE)) {
+        if (!c.hasPermissions()) {
+            if (c.hasPermission(jq.PERMISSION_CALL_PHONE)) {
                 writePermission(a, Manifest.permission.CALL_PHONE);
             }
-            if (c.b(jq.PERMISSION_INTERNET)) {
+            if (c.hasPermission(jq.PERMISSION_INTERNET)) {
                 writePermission(a, Manifest.permission.INTERNET);
             }
-            if (c.b(jq.PERMISSION_VIBRATE)) {
+            if (c.hasPermission(jq.PERMISSION_VIBRATE)) {
                 writePermission(a, Manifest.permission.VIBRATE);
             }
-            if (c.b(jq.PERMISSION_ACCESS_NETWORK_STATE)) {
+            if (c.hasPermission(jq.PERMISSION_ACCESS_NETWORK_STATE)) {
                 writePermission(a, Manifest.permission.ACCESS_NETWORK_STATE);
             }
-            if (c.b(jq.PERMISSION_CAMERA)) {
+            if (c.hasPermission(jq.PERMISSION_CAMERA)) {
                 writePermission(a, Manifest.permission.CAMERA);
             }
-            if (c.b(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
+            if (c.hasPermission(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
                 try {
                     if (Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 28) {
                         addRequestLegacyExternalStorage = true;
@@ -263,19 +263,19 @@ public class Ix {
                 }
                 writePermission(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
-            if (c.b(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
+            if (c.hasPermission(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
                 writePermission(a, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
-            if (c.b(jq.PERMISSION_RECORD_AUDIO)) {
+            if (c.hasPermission(jq.PERMISSION_RECORD_AUDIO)) {
                 writePermission(a, Manifest.permission.RECORD_AUDIO);
             }
-            if (c.b(jq.PERMISSION_BLUETOOTH)) {
+            if (c.hasPermission(jq.PERMISSION_BLUETOOTH)) {
                 writePermission(a, Manifest.permission.BLUETOOTH);
             }
-            if (c.b(jq.PERMISSION_BLUETOOTH_ADMIN)) {
+            if (c.hasPermission(jq.PERMISSION_BLUETOOTH_ADMIN)) {
                 writePermission(a, Manifest.permission.BLUETOOTH_ADMIN);
             }
-            if (c.b(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
+            if (c.hasPermission(jq.PERMISSION_ACCESS_FINE_LOCATION)) {
                 writePermission(a, Manifest.permission.ACCESS_FINE_LOCATION);
             }
         }
@@ -315,7 +315,7 @@ public class Ix {
                     activityTag.a("android", "supportsPictureInPicture", "true");
                 }
                 if (!AndroidManifestInjector.isActivityThemeUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
-                    if (c.g) {
+                    if (c.isAppCompatUsed) {
                         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN)) {
                             activityTag.a("android", "theme", "@style/AppTheme.FullScreen");
                         }
@@ -371,26 +371,26 @@ public class Ix {
             activityTag.a("android", "screenOrientation", "portrait");
             applicationTag.a(activityTag);
         }
-        if (c.l) {
+        if (c.isAdMobEnabled) {
             Nx activityTag = new Nx("activity");
             activityTag.a("android", "name", "com.google.android.gms.ads.AdActivity");
             activityTag.a("android", "configChanges", "keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize");
             activityTag.a("android", "theme", "@android:style/Theme.Translucent");
             applicationTag.a(activityTag);
         }
-        if (c.h || c.l || c.m) {
+        if (c.isFirebaseEnabled || c.isAdMobEnabled || c.isMapUsed) {
             writeGMSVersion(applicationTag);
         }
-        if (c.h) {
+        if (c.isFirebaseEnabled) {
             writeFirebaseMetaData(applicationTag);
         }
         if (c.u) {
             writeFileProvider(applicationTag);
         }
-        if (c.l && !isEmpty(c.appId)) {
+        if (c.isAdMobEnabled && !isEmpty(c.appId)) {
             writeAdmobAppId(applicationTag);
         }
-        if (c.m) {
+        if (c.isMapUsed) {
             writeGoogleMapMetaData(applicationTag);
         }
         ConstVarManifest.handleBgTaskComponent(applicationTag, c.x);

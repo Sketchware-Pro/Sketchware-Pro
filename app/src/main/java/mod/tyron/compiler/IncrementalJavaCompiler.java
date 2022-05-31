@@ -203,7 +203,7 @@ public class IncrementalJavaCompiler extends Compiler {
                 //workaround to exclude network request files when theres no component available
                 if (input.getName().equals("RequestNetwork.java")
                         || input.getName().equals("RequestNetworkController.java")) {
-                    if (projectConfig.N.p) {
+                    if (projectConfig.N.isHttp3Used) {
                         foundFiles.add(new JavaFile(input.getPath()));
                     }
                 } else {
@@ -369,37 +369,37 @@ public class IncrementalJavaCompiler extends Compiler {
         String path = getContext().getFilesDir() + "/libs/libs/";
         ArrayList<String> arrayList = new ArrayList<>();
 
-        if (projectConfig.N.g) {
+        if (projectConfig.N.isAppCompatUsed) {
             arrayList.add(":" + path + "appcompat-1.0.0");
             arrayList.add(":" + path + "coordinatorlayout-1.0.0");
             arrayList.add(":" + path + "material-1.0.0");
         }
-        if (projectConfig.N.h) {
+        if (projectConfig.N.isFirebaseEnabled) {
             arrayList.add(":" + path + "firebase-common-19.0.0");
         }
-        if (projectConfig.N.i) {
+        if (projectConfig.N.isFirebaseAuthUsed) {
             arrayList.add(":" + path + "firebase-auth-19.0.0");
         }
-        if (projectConfig.N.j) {
+        if (projectConfig.N.isFirebaseDatabaseUsed) {
             arrayList.add(":" + path + "firebase-database-19.0.0");
         }
-        if (projectConfig.N.k) {
+        if (projectConfig.N.isFirebaseStorageUsed) {
             arrayList.add(":" + path + "firebase-storage-19.0.0");
         }
-        if (projectConfig.N.m) {
+        if (projectConfig.N.isMapUsed) {
             arrayList.add(":" + path + "play-services-maps-17.0.0");
         }
-        if (projectConfig.N.l) {
+        if (projectConfig.N.isAdMobEnabled) {
             arrayList.add(":" + path + "play-services-ads-18.2.0");
         }
 
-        if (projectConfig.N.n) {
+        if (projectConfig.N.isGlideUsed) {
             arrayList.add(":" + path + "glide-4.11.0");
         }
-        if (projectConfig.N.p) {
+        if (projectConfig.N.isHttp3Used) {
             arrayList.add(":" + path + "okhttp-3.9.1");
         }
-        if (projectConfig.N.o) {
+        if (projectConfig.N.isGsonUsed) {
             arrayList.add(":" + path + "gson-2.8.0");
         }
 
