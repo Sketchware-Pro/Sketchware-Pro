@@ -2,8 +2,6 @@ package a.a.a;
 
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 
-import org.apache.http.client.utils.URLEncodedUtils;
-
 import java.util.ArrayList;
 
 public class Nx {
@@ -134,11 +132,11 @@ public class Nx {
 
         public String a() {
             if (str != null && str.length() > 0) {
-                return str + ":" + str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + str3 + "\"";
+                return str + ":" + str2 + "=" + "\"" + str3 + "\"";
             } else if (str2 == null || str2.length() <= 0) {
                 return str3.replaceAll("\n", Nx.this.g);
             } else {
-                return str2 + URLEncodedUtils.NAME_VALUE_SEPARATOR + "\"" + str3 + "\"";
+                return str2 + "=" + "\"" + str3 + "\"";
             }
         }
     }
