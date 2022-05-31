@@ -580,7 +580,7 @@ public class Dp {
     /**
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
-    public void g() throws zy {
+    public void g() throws By {
         String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.E : dexesToAddButNotMerge.remove(0);
         try {
             ApkBuilder apkBuilder = new ApkBuilder(new File(yq.G), new File(yq.C), new File(firstDexPath), null, null, System.out);
@@ -626,10 +626,8 @@ public class Dp {
 
             apkBuilder.setDebugMode(false);
             apkBuilder.sealApk();
-        } catch (ApkCreationException | SealedApkException e) {
-            throw new zy(e.getMessage());
-        } catch (DuplicateFileException e) {
-            throw new zy(e.getMessage());
+        } catch (ApkCreationException | SealedApkException | DuplicateFileException e) {
+            throw new By(e.getMessage());
         }
         LogUtil.d(TAG, "Time passed since starting to compile resources until building the unsigned APK: " +
                 (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
