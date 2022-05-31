@@ -33,9 +33,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -335,8 +332,9 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name="mod.khaled.logcat.LogReaderActivity"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"/>
+        <activity
+            android:name="mod.khaled.logcat.LogReaderActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
         <service
             android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
@@ -422,31 +420,6 @@
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <activity
-            android:name="com.facebook.ads.AudienceNetworkActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.facebook.ads.internal.ipc.RemoteANActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="false"
-            android:process=":adnw"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <service
-            android:name="com.facebook.ads.internal.ipc.AdsProcessPriorityService"
-            android:exported="false" />
-        <service
-            android:name="com.facebook.ads.internal.ipc.AdsMessengerService"
-            android:exported="false"
-            android:process=":adnw" />
-
-        <provider
-            android:name="com.facebook.ads.AudienceNetworkContentProvider"
-            android:authorities="${applicationId}.AudienceNetworkContentProvider"
-            android:exported="false" />
 
         <meta-data
             android:name="com.android.vending.splits"
