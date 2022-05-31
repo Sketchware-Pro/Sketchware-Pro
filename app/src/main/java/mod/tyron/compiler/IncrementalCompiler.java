@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.android.sdklib.build.ApkBuilder;
+import com.android.sdklib.build.ApkCreationException;
+import com.android.sdklib.build.DuplicateFileException;
+import com.android.sdklib.build.SealedApkException;
 
 import java.io.File;
 import java.util.HashMap;
@@ -43,8 +46,17 @@ public class IncrementalCompiler {
                     Log.d(TAG, message);
                     resultListener.onResult(true, Compiler.TYPE_MERGE, message);
                     //we are sure that the second argument is a list of string
-                    //noinspection unchecked
-                    buildApk((List<String>) args[1]);
+                    try {
+                        buildApk((List<String>) args[1]);
+                    } catch (ApkCreationException | SealedApkException e) {
+                        resultListener.onResult(false, Compiler.TYPE_APK, e.getMessage());
+                    } catch (DuplicateFileException e) {
+                        String exceptionMsg = "Duplicate files from two libraries detected \r\n";
+                        exceptionMsg += "File1: " + e.getFile1() + " \r\n";
+                        exceptionMsg += "File2: " + e.getFile2() + " \r\n";
+                        exceptionMsg += "Archive path: " + e.getArchivePath();
+                        resultListener.onResult(false, Compiler.TYPE_APK, exceptionMsg);
+                    }
                 } else {
                     Log.e(TAG, "Failed to merge dexes, reason: " + args[0]);
                     resultListener.onResult(false, compileType, args);
@@ -93,7 +105,7 @@ public class IncrementalCompiler {
         dexMerger.compile();
     }
 
-    private void buildApk(List<String> dexes) {
+    private void buildApk(List<String> dexes) throws ApkCreationException, DuplicateFileException, SealedApkException {
 
         Log.d(TAG, "Starting apk build.");
 
