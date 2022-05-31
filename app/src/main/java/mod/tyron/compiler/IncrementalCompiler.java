@@ -38,29 +38,26 @@ public class IncrementalCompiler {
         d8Compiler = new IncrementalD8Compiler(projectConfig);
         dexMerger = new IncrementalDexMerger(projectConfig, javaCompiler.getBuiltInLibraries());
 
-        dexMerger.setOnResultListener(new Compiler.Result() {
-            @Override
-            public void onResult(boolean success, int compileType, Object... args) {
-                if (success) {
-                    String message = "Dex merge successful, building APK.";
-                    Log.d(TAG, message);
-                    resultListener.onResult(true, Compiler.TYPE_MERGE, message);
-                    //we are sure that the second argument is a list of string
-                    try {
-                        buildApk((List<String>) args[1]);
-                    } catch (ApkCreationException | SealedApkException e) {
-                        resultListener.onResult(false, Compiler.TYPE_APK, e.getMessage());
-                    } catch (DuplicateFileException e) {
-                        String exceptionMsg = "Duplicate files from two libraries detected \r\n";
-                        exceptionMsg += "File1: " + e.getFile1() + " \r\n";
-                        exceptionMsg += "File2: " + e.getFile2() + " \r\n";
-                        exceptionMsg += "Archive path: " + e.getArchivePath();
-                        resultListener.onResult(false, Compiler.TYPE_APK, exceptionMsg);
-                    }
-                } else {
-                    Log.e(TAG, "Failed to merge dexes, reason: " + args[0]);
-                    resultListener.onResult(false, compileType, args);
+        dexMerger.setOnResultListener((success, compileType, args) -> {
+            if (success) {
+                String message = "Dex merge successful, building APK.";
+                Log.d(TAG, message);
+                resultListener.onResult(true, Compiler.TYPE_MERGE, message);
+                //we are sure that the second argument is a list of string
+                try {
+                    buildApk((List<String>) args[1]);
+                } catch (ApkCreationException | SealedApkException e) {
+                    resultListener.onResult(false, Compiler.TYPE_APK, e.getMessage());
+                } catch (DuplicateFileException e) {
+                    String exceptionMsg = "Duplicate files from two libraries detected \r\n";
+                    exceptionMsg += "File1: " + e.getFile1() + " \r\n";
+                    exceptionMsg += "File2: " + e.getFile2() + " \r\n";
+                    exceptionMsg += "Archive path: " + e.getArchivePath();
+                    resultListener.onResult(false, Compiler.TYPE_APK, exceptionMsg);
                 }
+            } else {
+                Log.e(TAG, "Failed to merge dexes, reason: " + args[0]);
+                resultListener.onResult(false, compileType, args);
             }
         });
     }
@@ -82,14 +79,11 @@ public class IncrementalCompiler {
     }
 
     private void compileJava() {
-        javaCompiler.setOnResultListener(new Compiler.Result() {
-            @Override
-            public void onResult(boolean success, int compileType, Object... args) {
-                if (success) {
-                    compileD8();
-                } else {
-                    resultListener.onResult(false, compileType, args);
-                }
+        javaCompiler.setOnResultListener((success, compileType, args) -> {
+            if (success) {
+                compileD8();
+            } else {
+                resultListener.onResult(false, compileType, args);
             }
         });
 
