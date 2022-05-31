@@ -792,7 +792,7 @@ public class yq {
             externalPathTag.a("", "path", ".");
             pathsTag.a(externalPathTag);
             srcCodeBeans.add(new SrcCodeBean("provider_paths.xml",
-                    CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.b())));
+                    CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.toCode())));
         }
 
         for (SrcCodeBean bean : srcCodeBeans) {
@@ -819,7 +819,7 @@ public class yq {
             }
             String filePath = "values/secrets.xml";
             L.b(w + File.separator + filePath,
-                    CommandBlock.applyCommands(filePath, mx.a()));
+                    CommandBlock.applyCommands(filePath, mx.toCode()));
         }
         h();
     }
@@ -937,7 +937,7 @@ public class yq {
             colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
             colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
             srcCodeBeans.add(new SrcCodeBean("colors.xml",
-                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode())));
 
             Mx stylesFileBuilder = new Mx();
             stylesFileBuilder.c("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
@@ -952,7 +952,7 @@ public class yq {
             stylesFileBuilder.c("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
             stylesFileBuilder.c("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
             srcCodeBeans.add(new SrcCodeBean("styles.xml",
-                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode())));
         } else {
             Mx stylesFileBuilder = new Mx();
             stylesFileBuilder.c("AppTheme", "@android:style/Theme.Material.Light.DarkActionBar");
@@ -976,7 +976,7 @@ public class yq {
             stylesFileBuilder.c("NoStatusBar", "AppTheme");
             stylesFileBuilder.a("NoStatusBar", "android:windowFullscreen", "true");
             srcCodeBeans.add(new SrcCodeBean("styles.xml",
-                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.a())));
+                    CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode())));
 
             Mx colorsFileBuilder = new Mx();
             colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
@@ -985,13 +985,13 @@ public class yq {
             colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
             colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
             srcCodeBeans.add(new SrcCodeBean("colors.xml",
-                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.a())));
+                    CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode())));
         }
 
         Mx stringsFileBuilder = new Mx();
         stringsFileBuilder.b("app_name", f);
         srcCodeBeans.add(new SrcCodeBean("strings.xml",
-                CommandBlock.applyCommands("strings.xml", stringsFileBuilder.a())));
+                CommandBlock.applyCommands("strings.xml", stringsFileBuilder.toCode())));
         CommandBlock.x();
         return srcCodeBeans;
     }

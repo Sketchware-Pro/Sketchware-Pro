@@ -417,7 +417,7 @@ public class Ix {
         a.a(applicationTag);
         // Needed, as crashing on my SM-A526B with Android 12 / One UI 4.1 / firmware build A526BFXXS1CVD1 otherwise
         //noinspection RegExpRedundantEscape
-        return AndroidManifestInjector.mHolder(a.b(), c.sc_id).replaceAll("\\$\\{applicationId\\}", packageName);
+        return AndroidManifestInjector.mHolder(a.toCode(), c.sc_id).replaceAll("\\$\\{applicationId\\}", packageName);
     }
 
     private void writeJava(Nx applicationTag, String activityName, ArrayList<HashMap<String, Object>> activityAttrs) {

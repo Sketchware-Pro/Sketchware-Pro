@@ -10,7 +10,7 @@ public class Nx {
     public int b;
     public String c;
     public boolean d;
-    public ArrayList<a> e;
+    public ArrayList<AttributeBuilder> e;
     public ArrayList<Nx> f;
     public String g;
 
@@ -27,10 +27,10 @@ public class Nx {
     }
 
     public final String a() {
-        return a(0);
+        return addIndent(0);
     }
 
-    public final String a(int indentSize) {
+    public final String addIndent(int indentSize) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < b + indentSize; i++) {
             str.append("\t");
@@ -39,7 +39,7 @@ public class Nx {
     }
 
     public void a(int position, String namespace, String attr, String value) {
-        e.add(position, new a(this, namespace, attr, value));
+        e.add(position, new AttributeBuilder(this, namespace, attr, value));
     }
 
     public void a(Nx xmlBuilder) {
@@ -52,27 +52,27 @@ public class Nx {
     }
 
     public void a(String namespace, String attr, String value) {
-        e.add(new a(this, namespace, attr, value));
+        e.add(new AttributeBuilder(this, namespace, attr, value));
     }
 
     public void b(String value) {
-        e.add(new a(this, value));
+        e.add(new AttributeBuilder(this, value));
     }
 
-    public String b() {
+    public String toCode() {
         StringBuilder resultCode = new StringBuilder();
         resultCode.append(a());
         resultCode.append("<");
         resultCode.append(a);
-        for (Nx.a attr : e) {
+        for (AttributeBuilder attr : e) {
             if (e.size() <= 1 || d) {
                 resultCode.append(MinimalPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR);
             } else {
                 resultCode.append("\r\n");
-                resultCode.append(a(1));
-                g = "\r\n" + a(1);
+                resultCode.append(addIndent(1));
+                g = "\r\n" + addIndent(1);
             }
-            resultCode.append(attr.a());
+            resultCode.append(attr.toCode());
         }
         if (f.size() <= 0) {
             if (c == null || c.length() <= 0) {
@@ -88,7 +88,7 @@ public class Nx {
             resultCode.append(">");
             resultCode.append("\r\n");
             for (Nx xmlBuilder : f) {
-                resultCode.append(xmlBuilder.b());
+                resultCode.append(xmlBuilder.toCode());
             }
             resultCode.append(a());
             resultCode.append("</");
@@ -112,31 +112,32 @@ public class Nx {
         }
     }
 
-    class a {
-        public final Nx nx;
-        public String str;
-        public String str2;
-        public String str3;
+    class AttributeBuilder {
 
-        public a(Nx xmlBuilder, String namespace, String attr, String value) {
-            nx = xmlBuilder;
-            str = namespace;
-            str2 = attr;
-            str3 = value;
+        public final Nx xmlBuilder;
+        private String namespace;
+        private String attr;
+        private final String value;
+
+        public AttributeBuilder(Nx xmlBuilder, String namespace, String attr, String value) {
+            this.xmlBuilder = xmlBuilder;
+            this.namespace = namespace;
+            this.attr = attr;
+            this.value = value;
         }
 
-        public a(Nx xmlBuilder, String value) {
-            nx = xmlBuilder;
-            str3 = value;
+        public AttributeBuilder(Nx xmlBuilder, String value) {
+            this.xmlBuilder = xmlBuilder;
+            this.value = value;
         }
 
-        public String a() {
-            if (str != null && str.length() > 0) {
-                return str + ":" + str2 + "=" + "\"" + str3 + "\"";
-            } else if (str2 == null || str2.length() <= 0) {
-                return str3.replaceAll("\n", Nx.this.g);
+        public String toCode() {
+            if (namespace != null && namespace.length() > 0) {
+                return namespace + ":" + attr + "=" + "\"" + value + "\"";
+            } else if (attr == null || attr.length() <= 0) {
+                return value.replaceAll("\n", Nx.this.g);
             } else {
-                return str2 + "=" + "\"" + str3 + "\"";
+                return attr + "=" + "\"" + value + "\"";
             }
         }
     }

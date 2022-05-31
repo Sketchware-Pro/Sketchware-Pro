@@ -211,7 +211,7 @@ public class Ox {
     }
 
     public String b() {
-        return e.b();
+        return e.toCode();
     }
 
     public void writeWidget(Nx nx, ViewBean viewBean) {
@@ -292,7 +292,7 @@ public class Ox {
         }
         if (viewBean.getClassInfo().a("ImageView")) {
             writeImgSrcAttr(widgetTag, viewBean);
-            if (!widgetTag.b().contains(".")) {
+            if (!widgetTag.toCode().contains(".")) {
                 writeImageScaleType(widgetTag, viewBean);
             }
         }

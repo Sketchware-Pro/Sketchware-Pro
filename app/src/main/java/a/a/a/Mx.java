@@ -7,8 +7,8 @@ public class Mx {
     public Nx a = new Nx("resources");
     public HashMap<String, Nx> b = new HashMap<>();
 
-    public String a() {
-        return a.b();
+    public String toCode() {
+        return a.toCode();
     }
 
     public void a(String name, int value) {
