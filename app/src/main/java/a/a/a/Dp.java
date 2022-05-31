@@ -626,8 +626,13 @@ public class Dp {
 
             apkBuilder.setDebugMode(false);
             apkBuilder.sealApk();
-        } catch (ApkCreationException | SealedApkException | DuplicateFileException e) {
+        } catch (ApkCreationException | SealedApkException e) {
             throw new By(e.getMessage());
+        } catch (DuplicateFileException e) {
+            String message = "Duplicate files from two libraries detected \r\n";
+            message += "File1: " + e.getFile1() + " \r\n";
+            message += "File2: " + e.getFile2() + " \r\n";
+            throw new By(message);
         }
         LogUtil.d(TAG, "Time passed since starting to compile resources until building the unsigned APK: " +
                 (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
