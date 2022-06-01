@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.manage.library.admob;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
@@ -48,6 +47,7 @@ import a.a.a.xB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 
+@SuppressLint("ResourceType")
 public class AdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     public final int k = 0;
@@ -241,16 +241,18 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             w = getIntent().getStringExtra("sc_id");
         }
 
-        o = xB.b().a(getApplicationContext(), 2131625185);
-        p = xB.b().a(getApplicationContext(), 2131625187);
-        q = xB.b().a(getApplicationContext(), 2131625189);
-        r = xB.b().a(getApplicationContext(), 2131625191);
-        s = xB.b().a(getApplicationContext(), 2131625184);
-        t = xB.b().a(getApplicationContext(), 2131625186);
-        u = xB.b().a(getApplicationContext(), 2131625188);
-        v = xB.b().a(getApplicationContext(), 2131625190);
-        H = new String[]{o, p, q, r};
-        I = new String[]{s, t, u, v};
+        H = new String[]{
+                xB.b().a(getApplicationContext(), 2131625185),
+                xB.b().a(getApplicationContext(), 2131625187),
+                xB.b().a(getApplicationContext(), 2131625189),
+                xB.b().a(getApplicationContext(), 2131625191)
+        };
+        I = new String[]{
+                xB.b().a(getApplicationContext(), 2131625184),
+                xB.b().a(getApplicationContext(), 2131625186),
+                xB.b().a(getApplicationContext(), 2131625188),
+                xB.b().a(getApplicationContext(), 2131625190)
+        };
         x = findViewById(2131230944);
         x.setOnClickListener(this);
         C = findViewById(2131231987);
@@ -317,15 +319,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), 2131625252));
         dialog.a(2131166234);
-        View var2 = wB.a(this, 2131427550);
-        @SuppressLint("ResourceType") RecyclerView recyclerView = var2.findViewById(2131231440);
+        View rootView = wB.a(this, 2131427550);
+        RecyclerView recyclerView = rootView.findViewById(2131231440);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Q = new ProjectsAdapter();
         recyclerView.setAdapter(Q);
         recyclerView.setItemAnimator(new ci());
         m();
-        dialog.a(var2);
+        dialog.a(rootView);
         dialog.b(xB.b().a(getApplicationContext(), 2131625035), view -> {
             if (!mB.a()) {
                 if (Q.c >= 0) {
@@ -338,7 +340,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             }
 
         });
-        dialog.a(xB.b().a(getApplicationContext(), 2131624974), view -> dialog.dismiss());
+        dialog.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -355,9 +357,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), 2131624974), view -> {
-            dialog.dismiss();
-        });
+        dialog.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -375,47 +375,36 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         @SuppressLint("ResourceType")
-        public void b(ViewHolder var1, int var2) {
-            HashMap<String, Object> var3 = P.get(var2);
-            String var4 = yB.c(var3, "sc_id");
-            var1.u.setImageResource(2131165521);
-            if (yB.a(var3, "custom_icon")) {
-                Uri var8;
+        public void b(ViewHolder viewHolder, int position) {
+            HashMap<String, Object> projectMap = P.get(position);
+            String var4 = yB.c(projectMap, "sc_id");
+            String iconDir = wq.e() + File.separator + var4;
+            viewHolder.u.setImageResource(2131165521);
+            if (yB.a(projectMap, "custom_icon")) {
+                Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
-                    Context var5 = getApplicationContext();
-                    StringBuilder var6 = new StringBuilder();
-                    var6.append(getPackageName());
-                    var6.append(".provider");
-                    String var7 = var6.toString();
-                    var6 = new StringBuilder();
-                    var6.append(wq.e());
-                    var6.append(File.separator);
-                    var6.append(var4);
-                    var8 = FileProvider.a(var5, var7, new File(var6.toString(), "icon.png"));
+                    iconUri = FileProvider.a(getApplicationContext(),
+                            getPackageName() + ".provider",
+                            new File(iconDir, "icon.png"));
                 } else {
-                    String var9 = wq.e() + File.separator + var4;
-                    var8 = Uri.fromFile(new File(var9, "icon.png"));
+                    iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
                 }
 
-                var1.u.setImageURI(var8);
+                viewHolder.u.setImageURI(iconUri);
             }
 
-            var1.w.setText(yB.c(var3, "my_app_name"));
-            var1.v.setText(yB.c(var3, "my_ws_name"));
-            var1.x.setText(yB.c(var3, "my_sc_pkg_name"));
-            var4 = String.format("%s(%s)", yB.c(var3, "sc_ver_name"), yB.c(var3, "sc_ver_code"));
-            var1.y.setText(var4);
-            if (yB.a(var3, "selected")) {
-                var1.z.setVisibility(View.VISIBLE);
-            } else {
-                var1.z.setVisibility(View.GONE);
-            }
+            viewHolder.w.setText(yB.c(projectMap, "my_app_name"));
+            viewHolder.v.setText(yB.c(projectMap, "my_ws_name"));
+            viewHolder.x.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            var4 = String.format("%s(%s)", yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
+            viewHolder.y.setText(var4);
 
+            viewHolder.z.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
         }
 
         @Override
-        public ViewHolder b(ViewGroup var1, int var2) {
-            return new ViewHolder(LayoutInflater.from(var1.getContext()).inflate(2131427549, var1, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
         }
 
         public class ViewHolder extends v {
@@ -429,15 +418,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             public ImageView z;
 
             @SuppressLint("ResourceType")
-            public ViewHolder(View var2) {
-                super(var2);
-                t = var2.findViewById(2131231613);
-                v = var2.findViewById(2131231614);
-                u = var2.findViewById(2131231151);
-                w = var2.findViewById(2131230780);
-                x = var2.findViewById(2131231579);
-                y = var2.findViewById(2131231618);
-                z = var2.findViewById(2131231181);
+            public ViewHolder(View itemView) {
+                super(itemView);
+                t = itemView.findViewById(2131231613);
+                v = itemView.findViewById(2131231614);
+                u = itemView.findViewById(2131231151);
+                w = itemView.findViewById(2131230780);
+                x = itemView.findViewById(2131231579);
+                y = itemView.findViewById(2131231618);
+                z = itemView.findViewById(2131231181);
                 t.setOnClickListener(view -> {
                     if (!mB.a()) {
                         ProjectsAdapter.this.c = ProjectsAdapter.ViewHolder.this.j();
@@ -446,14 +435,14 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 });
             }
 
-            private void c(int var1) {
+            private void c(int index) {
                 if (P.size() > 0) {
 
                     for (HashMap<String, Object> stringObjectHashMap : P) {
                         stringObjectHashMap.put("selected", false);
                     }
 
-                    P.get(var1).put("selected", true);
+                    P.get(index).put("selected", true);
                     Q.c();
                 }
             }
