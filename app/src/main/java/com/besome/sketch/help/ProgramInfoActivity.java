@@ -19,6 +19,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
 import com.besome.sketch.lib.utils.GoogleApiUtil;
+import com.sketchware.remod.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,21 +37,9 @@ import a.a.a.xB;
 
 @SuppressLint("ResourceType")
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
+
     public Toolbar k;
     public LinearLayout l;
-    public final int m = 1;
-    public final int n = 2;
-    public final int o = 4;
-    public final int p = 5;
-    public final int q = 6;
-    public final int r = 8;
-    public final int s = 9;
-    public final int t = 11;
-    public final int u = 12;
-    public final int v = 13;
-    public final int w = 14;
-    public final int x = 15;
-    public final int y = 17;
 
     private void a(int var1, int var2, int var3) {
         a(var1, getString(var2), getString(var3));
@@ -259,19 +248,19 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         var4 = findViewById(2131230808);
         var4.setText(xB.b().a(getApplicationContext(), 2131625760));
         var4.setOnClickListener(this);
-        a(4, 2131625767, 2131625320);
-        a(17, 2131625771, 2131625407);
-        a(2, xB.b().a(this, 2131625603));
-        b(5, 2131626406);
-        a(6, 2131626413, 2131625397);
-        a(8, 2131626405, 2131624004);
-        b(9, 2131626409);
-        a(11, 2131626411, 2131625053);
-        a(12, 2131626408, 2131625051);
-        a(13, 2131626410, 2131625052);
-        b(14, 2131625769);
-        b(1, 2131625772);
-        b(15, 2131625768);
+        a(4, R.string.program_information_title_docs, R.string.docs_url);
+        a(17, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
+        a(2, xB.b().a(this, R.string.main_drawer_title_share_with_friends));
+        b(5, R.string.title_community);
+        a(6, R.string.title_facebook_community, R.string.facebook_url);
+        a(8, R.string.title_besome_blog, R.string.besome_blog_url);
+        b(9, R.string.title_company_intro);
+        a(11, R.string.title_company_url, R.string.company_url);
+        a(12, R.string.title_company_email, R.string.company_email);
+        a(13, R.string.title_company_tel, R.string.company_tel);
+        b(14, R.string.program_information_title_service_terms);
+        b(1, R.string.program_information_title_system_information);
+        b(15, R.string.program_information_title_open_source_license);
     }
 
     private void checkUpdate() {
