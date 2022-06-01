@@ -50,11 +50,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     public final int x = 15;
     public final int y = 17;
 
-    public final void a(int var1, int var2, int var3) {
+    private void a(int var1, int var2, int var3) {
         a(var1, getString(var2), getString(var3));
     }
 
-    public final void a(int var1, String var2) {
+    private void a(int var1, String var2) {
         PropertyOneLineItem var3 = new PropertyOneLineItem(this);
         var3.setKey(var1);
         var3.setName(var2);
@@ -65,7 +65,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
 
     }
 
-    public final void a(int var1, String var2, String var3) {
+    private void a(int var1, String var2, String var3) {
         PropertyTwoLineItem var4 = new PropertyTwoLineItem(this);
         var4.setKey(var1);
         var4.setName(var2);
@@ -86,11 +86,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         var4.setBackgroundColor(0xffffffff);
     }
 
-    public final void b(int var1, int var2) {
+    private void b(int var1, int var2) {
         a(var1, getString(var2));
     }
 
-    public final void b(String var1) {
+    private void share(String var1) {
         Intent var2 = new Intent("android.intent.action.SEND");
         var2.addCategory("android.intent.category.DEFAULT");
         var2.putExtra("android.intent.extra.SUBJECT", "Sketchware - Create your own Android apps using block language, directly on your device!");
@@ -99,7 +99,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(Intent.createChooser(var2, "Share"));
     }
 
-    public final void l() {
+    private void l() {
         Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse(xB.b().a(getApplicationContext(), 2131624004)));
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         Intent var2 = Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976));
@@ -109,7 +109,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var2);
     }
 
-    public final void m() {
+    private void m() {
         aB var1 = new aB(this);
         var1.b(xB.b().a(getApplicationContext(), 2131625764));
         var1.a(2131166052);
@@ -123,14 +123,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         var1.show();
     }
 
-    public final void n() {
+    private void openFacebook() {
         String var1 = xB.b().a(getApplicationContext(), 2131625397);
 
         try {
-            StringBuilder var2 = new StringBuilder();
-            var2.append("fb://facewebmodal/f?href=");
-            var2.append(var1);
-            Uri var3 = Uri.parse(var2.toString());
+            Uri var3 = Uri.parse("fb://facewebmodal/f?href=" + var1);
             Intent var5 = new Intent("android.intent.action.VIEW", var3);
             startActivity(var5);
         } catch (Exception var4) {
@@ -139,7 +136,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
 
     }
 
-    public final void o() {
+    private void openIdeasSite() {
         Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse("https://ideas.sketchware.io/"));
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         Intent var2 = Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976));
@@ -161,7 +158,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                         return;
                     }
 
-                    p();
+                    checkUpdate();
             }
 
             int var2;
@@ -176,7 +173,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                                     return;
                                 }
 
-                                s();
+                                toLicenseActivity();
                             }
                         } else {
                             if (!GB.h(getApplicationContext())) {
@@ -184,7 +181,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                                 return;
                             }
 
-                            v();
+                            openTermsSite();
                         }
                     } else {
                         if (!GB.h(getApplicationContext())) {
@@ -195,7 +192,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                         (new ProgramInfoActivity.a(this, getApplicationContext())).execute();
                     }
                 } else {
-                    u();
+                    toSystemInfoActivity();
                 }
             }
 
@@ -207,7 +204,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                             if (var2 != 17) {
                                 if (var2 != 11) {
                                     if (var2 == 12) {
-                                        q();
+                                        sendMail();
                                     }
                                 } else {
                                     if (!GB.h(getApplicationContext())) {
@@ -215,16 +212,16 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                                         return;
                                     }
 
-                                    r();
+                                    openWebsite();
                                 }
                             } else {
-                                o();
+                                openIdeasSite();
                             }
                         } else {
                             l();
                         }
                     } else {
-                        n();
+                        openFacebook();
                     }
                 } else {
                     if (!GB.h(getApplicationContext())) {
@@ -232,7 +229,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                         return;
                     }
 
-                    t();
+                    openBlog();
                 }
             }
 
@@ -251,10 +248,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         k.setNavigationOnClickListener(new pz(this));
         l = findViewById(2131230932);
         TextView var2 = findViewById(2131232167);
-        StringBuilder var3 = new StringBuilder();
-        var3.append("Version ");
-        var3.append(GB.e(getApplicationContext()));
-        var2.setText(var3.toString());
+        var2.setText("Version " + GB.e(getApplicationContext()));
         Button var4 = findViewById(2131230807);
         var4.setText(xB.b().a(getApplicationContext(), 2131625761));
         var4.setOnClickListener(this);
@@ -276,7 +270,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         b(15, 2131625768);
     }
 
-    public final void p() {
+    private void checkUpdate() {
         Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=com.besome.sketch&referrer=utm_source%3Din_sketchware%26utm_medium%3Dcheck_update"));
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -286,7 +280,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var1);
     }
 
-    public final void q() {
+    private void sendMail() {
         Intent var1 = new Intent("android.intent.action.SENDTO", Uri.parse("mailto:help@sketchware.io"));
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -295,7 +289,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var1);
     }
 
-    public final void r() {
+    private void openWebsite() {
         Intent var1 = new Intent("android.intent.action.VIEW");
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         var1.setData(Uri.parse("http://sketchware.io"));
@@ -305,7 +299,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976)));
     }
 
-    public final void s() {
+    private void toLicenseActivity() {
         Intent var1 = new Intent(getApplicationContext(), LicenseActivity.class);
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -314,7 +308,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var1);
     }
 
-    public final void t() {
+    private void openBlog() {
         Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse("https://docs.sketchware.io/blog"));
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         Intent var2 = Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976));
@@ -324,7 +318,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var2);
     }
 
-    public final void u() {
+    private void toSystemInfoActivity() {
         Intent var1 = new Intent(getApplicationContext(), SystemInfoActivity.class);
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -333,7 +327,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var1);
     }
 
-    public final void v() {
+    private void openTermsSite() {
         Intent var1 = new Intent("android.intent.action.VIEW");
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         String var2 = "http://sketchware.io/terms.html";
@@ -358,7 +352,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         public void a() {
             String var1 = c;
             if (var1 != null) {
-                d.b(var1);
+                d.share(var1);
             } else {
                 bB.b(super.a, xB.b().a(super.a, 2131626337), 0).show();
             }
