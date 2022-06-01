@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,7 +55,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public final int n = 3;
     public TextView A;
     public ImageView B;
-    public TextView C;
     public ImageView D;
     public TextView E;
     public TextView F;
@@ -76,7 +74,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public String u;
     public String v;
     public String w;
-    public CardView x;
     public TextView y;
     public TextView z;
     private ProjectLibraryBean L;
@@ -107,28 +104,24 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             if (var1 != 1) {
                 if (var1 != 2) {
                     if (var1 == 3) {
-                        x.setVisibility(View.GONE);
                         Ku var2 = new Ku(this);
                         G.addView(var2);
                         var2.setData(L);
                         K = var2;
                     }
                 } else {
-                    x.setVisibility(View.GONE);
                     Tu var3 = new Tu(this);
                     G.addView(var3);
                     var3.setData(L);
                     K = var3;
                 }
             } else {
-                x.setVisibility(View.GONE);
                 Nu var4 = new Nu(this);
                 G.addView(var4);
                 var4.setData(L);
                 K = var4;
             }
         } else {
-            x.setVisibility(View.VISIBLE);
             Iu setAdUnitItem = new Iu(this);
             G.addView(setAdUnitItem);
             setAdUnitItem.setData(L);
@@ -253,10 +246,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 xB.b().a(getApplicationContext(), 2131625188),
                 xB.b().a(getApplicationContext(), 2131625190)
         };
-        x = findViewById(2131230944);
-        x.setOnClickListener(this);
-        C = findViewById(2131231987);
-        C.setText(xB.b().a(getApplicationContext(), 2131625161));
         y = findViewById(2131232081);
         y.setText(xB.b().a(getApplicationContext(), 2131625014));
         y.setOnClickListener(this);
