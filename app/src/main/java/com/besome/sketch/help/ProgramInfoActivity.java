@@ -29,11 +29,9 @@ import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.mB;
-import a.a.a.pz;
-import a.a.a.qz;
-import a.a.a.rz;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 @SuppressLint("ResourceType")
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
@@ -101,17 +99,25 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     }
 
     private void m() {
-        aB var1 = new aB(this);
-        var1.b(xB.b().a(getApplicationContext(), 2131625764));
-        var1.a(2131166052);
-        View var2 = wB.a(this, 2131427367);
-        RadioGroup var3 = var2.findViewById(2131231670);
-        ((RadioButton) var2.findViewById(2131231650)).setText(xB.b().a(getApplicationContext(), 2131625766));
-        ((RadioButton) var2.findViewById(2131231656)).setText(xB.b().a(getApplicationContext(), 2131625765));
-        var1.a(var2);
-        var1.b(xB.b().a(getApplicationContext(), 2131625050), new qz(this, var3, var1));
-        var1.a(xB.b().a(getApplicationContext(), 2131624974), new rz(this, var1));
-        var1.show();
+        aB dialog = new aB(this);
+        dialog.b(xB.b().a(getApplicationContext(), 2131625764));
+        dialog.a(2131166052);
+        View rootView = wB.a(this, 2131427367);
+        RadioGroup radioGroup = rootView.findViewById(2131231670);
+        ((RadioButton) rootView.findViewById(2131231650)).setText(xB.b().a(getApplicationContext(), 2131625766));
+        ((RadioButton) rootView.findViewById(2131231656)).setText(xB.b().a(getApplicationContext(), 2131625765));
+        dialog.a(rootView);
+        dialog.b(xB.b().a(getApplicationContext(), 2131625050), view -> {
+            if (!mB.a()) {
+                int buttonId = radioGroup.getCheckedRadioButtonId();
+                boolean onlyConfig = buttonId != 2131231650;
+                dialog.dismiss();
+                setResult(-1, getIntent().putExtra("onlyConfig", onlyConfig));
+                finish();
+            }
+        });
+        dialog.a(xB.b().a(getApplicationContext(), 2131624974), view -> dialog.dismiss());
+        dialog.show();
     }
 
     private void openFacebook() {
@@ -238,7 +244,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         d().e(true);
         findViewById(2131231370).setVisibility(View.GONE);
         d().a(xB.b().a(this, 2131625599));
-        k.setNavigationOnClickListener(new pz(this));
+        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         l = findViewById(2131230932);
         TextView var2 = findViewById(2131232167);
         var2.setText("Version " + GB.e(getApplicationContext()));
