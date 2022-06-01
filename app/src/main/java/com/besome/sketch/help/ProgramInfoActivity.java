@@ -1,7 +1,6 @@
 package com.besome.sketch.help;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,14 +17,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
-import com.besome.sketch.lib.utils.GoogleApiUtil;
 import com.sketchware.remod.R;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import a.a.a.GB;
-import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.mB;
@@ -79,15 +73,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         a(var1, getString(var2));
     }
 
-    private void share(String var1) {
-        Intent var2 = new Intent("android.intent.action.SEND");
-        var2.addCategory("android.intent.category.DEFAULT");
-        var2.putExtra("android.intent.extra.SUBJECT", "Sketchware - Create your own Android apps using block language, directly on your device!");
-        var2.putExtra("android.intent.extra.TEXT", var1);
-        var2.setType("text/plain");
-        startActivity(Intent.createChooser(var2, "Share"));
-    }
-
     private void l() {
         Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse(xB.b().a(getApplicationContext(), 2131624004)));
         var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -98,7 +83,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var2);
     }
 
-    private void m() {
+    private void resetDialog() {
         aB dialog = new aB(this);
         dialog.b(xB.b().a(getApplicationContext(), 2131625764));
         dialog.a(2131166052);
@@ -145,18 +130,8 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
 
     public void onClick(View view) {
         if (!mB.a()) {
-            switch (view.getId()) {
-                case 2131230807:
-                    m();
-                    break;
-
-                case 2131230808:
-                    if (!GB.h(getApplicationContext())) {
-                        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                        return;
-                    }
-
-                    checkUpdate();
+            if (view.getId() == 2131230807) {
+                resetDialog();
             }
 
             int key;
@@ -165,22 +140,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                 switch (key) {
                     case 1:
                         toSystemInfoActivity();
-                        break;
-
-                    case 2:
-                        if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                            return;
-                        }
-                        (new ProgramInfoActivity.a(this, getApplicationContext())).execute();
-                        break;
-
-                    case 14:
-                        if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                            return;
-                        }
-                        openTermsSite();
                         break;
 
                     case 15:
@@ -206,18 +165,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                         openBlog();
                         break;
 
-                    case 12:
-                        sendMail();
-                        break;
-
-                    case 11:
-                        if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                            return;
-                        }
-                        openWebsite();
-                        break;
-
                     case 17:
                         openIdeasSite();
                         break;
@@ -235,6 +182,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         setContentView(2131427612);
@@ -256,46 +204,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         var4.setOnClickListener(this);
         a(4, R.string.program_information_title_docs, R.string.docs_url);
         a(17, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
-        a(2, xB.b().a(this, R.string.main_drawer_title_share_with_friends));
         b(5, R.string.title_community);
         a(6, R.string.title_facebook_community, R.string.facebook_url);
         a(8, R.string.title_besome_blog, R.string.besome_blog_url);
-        b(9, R.string.title_company_intro);
-        a(11, R.string.title_company_url, R.string.company_url);
-        a(12, R.string.title_company_email, R.string.company_email);
-        a(13, R.string.title_company_tel, R.string.company_tel);
-        b(14, R.string.program_information_title_service_terms);
         b(1, R.string.program_information_title_system_information);
         b(15, R.string.program_information_title_open_source_license);
-    }
-
-    private void checkUpdate() {
-        Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=com.besome.sketch&referrer=utm_source%3Din_sketchware%26utm_medium%3Dcheck_update"));
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(var1);
-    }
-
-    private void sendMail() {
-        Intent var1 = new Intent("android.intent.action.SENDTO", Uri.parse("mailto:help@sketchware.io"));
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(var1);
-    }
-
-    private void openWebsite() {
-        Intent var1 = new Intent("android.intent.action.VIEW");
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.setData(Uri.parse("http://sketchware.io"));
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976)));
     }
 
     private void toLicenseActivity() {
@@ -326,60 +239,4 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var1);
     }
 
-    private void openTermsSite() {
-        Intent var1 = new Intent("android.intent.action.VIEW");
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        String var2 = "http://sketchware.io/terms.html";
-        Uri var3 = Uri.parse(var2);
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        var1.setData(var3);
-        startActivity(Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976)));
-    }
-
-    public class a extends MA {
-        public String c;
-        public final ProgramInfoActivity d;
-
-        public a(ProgramInfoActivity var1, Context var2) {
-            super(var2);
-            d = var1;
-            var1.a(this);
-        }
-
-        public void a() {
-            String var1 = c;
-            if (var1 != null) {
-                d.share(var1);
-            } else {
-                bB.b(super.a, xB.b().a(super.a, 2131626337), 0).show();
-            }
-
-        }
-
-        public void a(String var1) {
-            bB.b(super.a, xB.b().a(super.a, 2131626337), 0).show();
-        }
-
-        public void b() {
-            String var2 = null;
-            try {
-                var2 = "http://sketchware.io/link.jsp?id=hbyp&title=" +
-                        URLEncoder.encode("Sketchware - IDE in Your Pocket", "utf-8") +
-                        "&description=" +
-                        URLEncoder.encode("Create your own mobile applications on your smartphone", "utf-8") +
-                        "&image=" +
-                        URLEncoder.encode("http://sketchware.io/images/sketchware_meta_en.png", "utf-8");
-            } catch (UnsupportedEncodingException ex) {
-                ex.printStackTrace();
-            }
-            c = (new GoogleApiUtil()).a(var2);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return a(voids);
-        }
-    }
 }
