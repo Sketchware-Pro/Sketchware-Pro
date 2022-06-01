@@ -18,7 +18,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
 import com.besome.sketch.lib.utils.GoogleApiUtil;
-import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -98,11 +97,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         var2.putExtra("android.intent.extra.TEXT", var1);
         var2.setType("text/plain");
         startActivity(Intent.createChooser(var2, "Share"));
-        EventBuilder var3 = new EventBuilder();
-        var3.setCategory("user_campign");
-        var3.setAction("share");
-        var3.setLabel("friend");
-        super.d.send(var3.build());
     }
 
     public final void l() {
