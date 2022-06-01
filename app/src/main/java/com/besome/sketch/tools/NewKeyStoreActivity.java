@@ -1,5 +1,6 @@
 package com.besome.sketch.tools;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,11 +19,10 @@ import a.a.a.VB;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.iI;
-import a.a.a.jI;
-import a.a.a.kI;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
 
@@ -53,7 +53,19 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
             var3.a(xB.b().a(getApplicationContext(), 2131625722));
         }
 
-        var3.b(xB.b().a(getApplicationContext(), 2131624977), new kI(this, var3, var1, var2));
+        var3.b(xB.b().a(getApplicationContext(), 2131624977), view -> {
+            if (!mB.a()) {
+                var3.dismiss();
+                if (var1) {
+                    Intent intent = new Intent();
+                    intent.putExtra("pwd", var2);
+                    setResult(-1, intent);
+                    finish();
+                } else {
+                    finish();
+                }
+            }
+        });
         var3.show();
     }
 
@@ -129,11 +141,11 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         setContentView(2131427471);
         l = findViewById(2131231847);
         a(l);
-        findViewById(2131231370).setVisibility(8);
+        findViewById(2131231370).setVisibility(View.GONE);
         d().a(xB.b().a(this, 2131625739));
         d().e(true);
         d().d(true);
-        l.setNavigationOnClickListener(new jI(this));
+        l.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
         ((TextView) findViewById(2131232058)).setText(xB.b().a(this, 2131625739));
         Button var2 = findViewById(2131230834);

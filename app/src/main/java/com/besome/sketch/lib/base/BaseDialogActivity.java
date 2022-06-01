@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import a.a.a.oA;
-import a.a.a.pA;
+import a.a.a.mB;
 import a.a.a.wB;
 
 public class BaseDialogActivity extends BaseAppCompatActivity {
@@ -25,7 +24,11 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
 
     public void a(boolean var1) {
         if (var1) {
-            k.setOnClickListener(new pA(this));
+            k.setOnClickListener(view -> {
+                if (!mB.a()) {
+                    finish();
+                }
+            });
         } else {
             k.setOnClickListener(null);
         }
@@ -80,7 +83,11 @@ public class BaseDialogActivity extends BaseAppCompatActivity {
         q = findViewById(2131230912);
         r = findViewById(2131230914);
         s = findViewById(2131230909);
-        k.setOnClickListener(new oA(this));
+        k.setOnClickListener(view -> {
+            if (!mB.a()) {
+                finish();
+            }
+        });
         p.setVisibility(View.GONE);
     }
 
