@@ -123,7 +123,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             switch (requestCode) {
                 case 105:
                     selectPageZero();
-                    sB.a(this, data.getBooleanExtra("onlyConfig", true));
                     break;
 
                 case 111:
