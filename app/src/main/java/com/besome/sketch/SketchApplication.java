@@ -8,23 +8,18 @@ import android.content.Intent;
 import android.os.Process;
 import android.util.Log;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
 public class SketchApplication extends Application {
 
     private static Context mApplicationContext;
-    private Tracker mTracker;
 
     public static Context getContext() {
         return mApplicationContext;
     }
 
     public synchronized Tracker a() {
-        if (mTracker == null) {
-            mTracker = GoogleAnalytics.getInstance(this).newTracker("UA-80718117-1");
-        }
-        return mTracker;
+        return new Tracker();
     }
 
     @Override
