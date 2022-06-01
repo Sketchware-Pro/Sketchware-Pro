@@ -406,7 +406,6 @@ public class SrcCodeEditor extends AppCompatActivity {
                 .setIcon(getDrawable(R.drawable.save_white_48))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Paste");
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");
         menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Word wrap")
                 .setCheckable(true)
@@ -521,10 +520,6 @@ public class SrcCodeEditor extends AppCompatActivity {
 
                 editor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
                 pref.edit().putBoolean("act_ac", item.isChecked()).apply();
-                break;
-
-            case "Paste":
-                editor.setText(paste(this));
                 break;
 
             default:
