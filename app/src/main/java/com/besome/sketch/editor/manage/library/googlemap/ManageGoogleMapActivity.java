@@ -63,10 +63,10 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
         for (HashMap<String, Object> projectMap : lC.a()) {
             String projectScId = yB.c(projectMap, "sc_id");
             if (!sc_id.equals(projectScId)) {
-                iC projectLibraryhandler = new iC(projectScId);
-                projectLibraryhandler.i();
-                if (projectLibraryhandler.e().useYn.equals("Y")) {
-                    projectMap.put("google_map", projectLibraryhandler.e().clone());
+                iC projectLibraryHandler = new iC(projectScId);
+                projectLibraryHandler.i();
+                if (projectLibraryHandler.e().useYn.equals("Y")) {
+                    projectMap.put("google_map", projectLibraryHandler.e().clone());
                     projectsList.add(projectMap);
                 }
             }
@@ -83,13 +83,13 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     private void openDoc() {
         if (GB.h(getApplicationContext())) {
             try {
-                Uri documantationUrl = Uri.parse("https://developers.google.com/maps/documentation/android-sdk/signup");
+                Uri documentationUrl = Uri.parse("https://developers.google.com/maps/documentation/android-sdk/signup");
                 Intent openDocIntent = new Intent("android.intent.action.VIEW");
-                openDocIntent.addFlags(268435456);
-                openDocIntent.setData(documantationUrl);
-                openDocIntent.addFlags(1);
-                openDocIntent.addFlags(2);
-                openDocIntent.addFlags(64);
+                openDocIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                openDocIntent.setData(documentationUrl);
+                openDocIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                openDocIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                openDocIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivity(openDocIntent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -179,18 +179,18 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     }
 
     @Override
-    public void onCreate(Bundle svedInstanceState) {
-        super.onCreate(svedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(2131427548);
         toolbar = findViewById(2131231847);
         a(toolbar);
-        findViewById(2131231370).setVisibility(8);
-        if (svedInstanceState == null) {
+        findViewById(2131231370).setVisibility(View.GONE);
+        if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
             googleMapLibraryBean = getIntent().getParcelableExtra("google_map");
         } else {
-            sc_id = svedInstanceState.getString("sc_id");
-            googleMapLibraryBean = svedInstanceState.getParcelable("google_map");
+            sc_id = savedInstanceState.getString("sc_id");
+            googleMapLibraryBean = savedInstanceState.getParcelable("google_map");
         }
 
         d().a("GoogleMap Settings");
@@ -283,7 +283,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
                             "%s(%s)",
                             yB.c(projectMap, "sc_ver_name"), yB.c(projectMap, "sc_ver_code"));
             viewHolder.projectVersion.setText(version);
-            viewHolder.imgSelected.setVisibility(yB.a(projectMap, "selected") ? 0 : 8);
+            viewHolder.imgSelected.setVisibility(yB.a(projectMap, "selected") ? View.VISIBLE : View.GONE);
         }
 
         @Override
