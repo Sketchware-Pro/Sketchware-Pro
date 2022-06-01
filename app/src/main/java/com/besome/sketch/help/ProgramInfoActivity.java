@@ -1,5 +1,6 @@
 package com.besome.sketch.help;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import a.a.a.rz;
 import a.a.a.wB;
 import a.a.a.xB;
 
+@SuppressLint("ResourceType")
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
     public Toolbar k;
     public LinearLayout l;
@@ -146,12 +148,13 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         startActivity(var2);
     }
 
-    public void onClick(View var1) {
+    public void onClick(View view) {
         if (!mB.a()) {
-            switch (var1.getId()) {
+            switch (view.getId()) {
                 case 2131230807:
                     m();
                     break;
+
                 case 2131230808:
                     if (!GB.h(getApplicationContext())) {
                         bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
@@ -161,75 +164,76 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                     checkUpdate();
             }
 
-            int var2;
-            if (var1 instanceof PropertyOneLineItem) {
-                var2 = ((PropertyOneLineItem) var1).getKey();
-                if (var2 != 1) {
-                    if (var2 != 2) {
-                        if (var2 != 14) {
-                            if (var2 == 15) {
-                                if (!GB.h(getApplicationContext())) {
-                                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                                    return;
-                                }
+            int key;
+            if (view instanceof PropertyOneLineItem) {
+                key = ((PropertyOneLineItem) view).getKey();
+                switch (key) {
+                    case 1:
+                        toSystemInfoActivity();
+                        break;
 
-                                toLicenseActivity();
-                            }
-                        } else {
-                            if (!GB.h(getApplicationContext())) {
-                                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                                return;
-                            }
-
-                            openTermsSite();
+                    case 2:
+                        if (!GB.h(getApplicationContext())) {
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+                            return;
                         }
-                    } else {
+                        (new ProgramInfoActivity.a(this, getApplicationContext())).execute();
+                        break;
+
+                    case 14:
+                        if (!GB.h(getApplicationContext())) {
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+                            return;
+                        }
+                        openTermsSite();
+                        break;
+
+                    case 15:
                         if (!GB.h(getApplicationContext())) {
                             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
                             return;
                         }
 
-                        (new ProgramInfoActivity.a(this, getApplicationContext())).execute();
-                    }
-                } else {
-                    toSystemInfoActivity();
+                        toLicenseActivity();
+                        break;
+
                 }
             }
 
-            if (var1 instanceof PropertyTwoLineItem) {
-                var2 = ((PropertyTwoLineItem) var1).getKey();
-                if (var2 != 4) {
-                    if (var2 != 6) {
-                        if (var2 != 8) {
-                            if (var2 != 17) {
-                                if (var2 != 11) {
-                                    if (var2 == 12) {
-                                        sendMail();
-                                    }
-                                } else {
-                                    if (!GB.h(getApplicationContext())) {
-                                        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                                        return;
-                                    }
-
-                                    openWebsite();
-                                }
-                            } else {
-                                openIdeasSite();
-                            }
-                        } else {
-                            l();
+            if (view instanceof PropertyTwoLineItem) {
+                key = ((PropertyTwoLineItem) view).getKey();
+                switch (key) {
+                    case 4:
+                        if (!GB.h(getApplicationContext())) {
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+                            return;
                         }
-                    } else {
-                        openFacebook();
-                    }
-                } else {
-                    if (!GB.h(getApplicationContext())) {
-                        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                        return;
-                    }
+                        openBlog();
+                        break;
 
-                    openBlog();
+                    case 12:
+                        sendMail();
+                        break;
+
+                    case 11:
+                        if (!GB.h(getApplicationContext())) {
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+                            return;
+                        }
+                        openWebsite();
+                        break;
+
+                    case 17:
+                        openIdeasSite();
+                        break;
+
+                    case 8:
+                        l();
+                        break;
+
+                    case 6:
+                        openFacebook();
+                        break;
                 }
             }
 
