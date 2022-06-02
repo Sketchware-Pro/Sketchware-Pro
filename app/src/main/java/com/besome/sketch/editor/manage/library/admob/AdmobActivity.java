@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +66,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public Uu K;
     public Button N;
     public Button O;
+    public TextView C;
     public String o;
     public String p;
     public String q;
@@ -74,6 +76,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     public String u;
     public String v;
     public String w;
+    public CardView x;
     public TextView y;
     public TextView z;
     private ProjectLibraryBean L;
@@ -104,18 +107,21 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             if (var1 != 1) {
                 if (var1 != 2) {
                     if (var1 == 3) {
+                        x.setVisibility(View.GONE);
                         Ku var2 = new Ku(this);
                         G.addView(var2);
                         var2.setData(L);
                         K = var2;
                     }
                 } else {
+                    x.setVisibility(View.GONE);
                     Tu var3 = new Tu(this);
                     G.addView(var3);
                     var3.setData(L);
                     K = var3;
                 }
             } else {
+                x.setVisibility(View.GONE);
                 Nu var4 = new Nu(this);
                 G.addView(var4);
                 var4.setData(L);
@@ -212,11 +218,34 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             case 2131230841:
                 p();
                 break;
+            case 2131230944:
+                o();
+                break;
             case 2131232059:
                 n();
                 break;
             case 2131232081:
                 onBackPressed();
+        }
+
+    }
+
+    private void o() {
+        if (GB.h(getApplicationContext())) {
+            try {
+                Intent intent = new Intent("android.intent.action.VIEW");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse("https://apps.admob.com/v2/home"));
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                u();
+            }
+        } else {
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
         }
 
     }
@@ -234,18 +263,12 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             w = getIntent().getStringExtra("sc_id");
         }
 
-        H = new String[]{
-                xB.b().a(getApplicationContext(), 2131625185),
-                xB.b().a(getApplicationContext(), 2131625187),
-                xB.b().a(getApplicationContext(), 2131625189),
-                xB.b().a(getApplicationContext(), 2131625191)
-        };
-        I = new String[]{
-                xB.b().a(getApplicationContext(), 2131625184),
-                xB.b().a(getApplicationContext(), 2131625186),
-                xB.b().a(getApplicationContext(), 2131625188),
-                xB.b().a(getApplicationContext(), 2131625190)
-        };
+        H = new String[]{xB.b().a(getApplicationContext(), 2131625185), xB.b().a(getApplicationContext(), 2131625187), xB.b().a(getApplicationContext(), 2131625189), xB.b().a(getApplicationContext(), 2131625191)};
+        I = new String[]{xB.b().a(getApplicationContext(), 2131625184), xB.b().a(getApplicationContext(), 2131625186), xB.b().a(getApplicationContext(), 2131625188), xB.b().a(getApplicationContext(), 2131625190)};
+        x = findViewById(2131230944);
+        x.setOnClickListener(this);
+        C = findViewById(2131231987);
+        C.setText(xB.b().a(getApplicationContext(), 2131625161));
         y = findViewById(2131232081);
         y.setText(xB.b().a(getApplicationContext(), 2131625014));
         y.setOnClickListener(this);
@@ -372,9 +395,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             if (yB.a(projectMap, "custom_icon")) {
                 Uri iconUri;
                 if (VERSION.SDK_INT >= 24) {
-                    iconUri = FileProvider.a(getApplicationContext(),
-                            getPackageName() + ".provider",
-                            new File(iconDir, "icon.png"));
+                    iconUri = FileProvider.a(getApplicationContext(), getPackageName() + ".provider", new File(iconDir, "icon.png"));
                 } else {
                     iconUri = Uri.fromFile(new File(iconDir, "icon.png"));
                 }
