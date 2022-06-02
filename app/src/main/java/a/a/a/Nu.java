@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,8 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     public TextView e;
     public TextView f;
     public TextView g;
+    private String rewardAdUnit = "";
+    private TextView tvRewardName, tvRewardNameTitle;
 
     public Nu(Context context) {
         super(context);
@@ -59,8 +62,10 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
                 if (radioButton.isChecked()) {
                     if (position == 0) {
                         b(radioButton.getText().toString());
-                    } else {
+                    } else if (position == 1) {
                         c(radioButton.getText().toString());
+                    } else {
+                        setRewardAdUnit(radioButton.getText().toString());
                     }
                     break;
                 }
@@ -78,6 +83,8 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         e = findViewById(2131231887);
         f = findViewById(2131232014);
         g = findViewById(2131232012);
+        tvRewardName = findViewById(R.id.tv_reward_name);
+        tvRewardNameTitle = findViewById(R.id.tv_reward_name_title);
         ((TextView) findViewById(2131231891)).setText(xB.b().a(getContext(), 2131625196));
         ((TextView) findViewById(2131231890)).setText(xB.b().a(getContext(), 2131625192) + " : ");
         ((TextView) findViewById(2131231888)).setText(xB.b().a(getContext(), 2131625193) + " : ");
@@ -94,6 +101,20 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     public void a(ProjectLibraryBean projectLibraryBean) {
         projectLibraryBean.reserved1 = a;
         projectLibraryBean.reserved2 = b;
+    }
+
+    private void setRewardAdUnit(String adUnit) {
+        if (!adUnit.isEmpty()) {
+            rewardAdUnit = adUnit;
+            if (adUnit.contains(" : ")) {
+                int indexOfColon = adUnit.indexOf(" : ");
+                tvRewardNameTitle.setText(adUnit.substring(0, indexOfColon));
+                tvRewardName.setText(indexOfColon + 3);
+            } else {
+                tvRewardNameTitle.setText("");
+                tvRewardName.setText(adUnit);
+            }
+        }
     }
 
     private void b(String adUnit) {
@@ -146,11 +167,15 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
             case 2131231886:
                 setAdUnit(0);
                 break;
+
             case 2131231180:
             case 2131232011:
                 setAdUnit(1);
-        }
+                break;
 
+            case R.id.tv_reward_edit:
+                setAdUnit(2);
+        }
     }
 
     @Override
@@ -168,5 +193,6 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
 
         b(projectLibraryBean.reserved1);
         c(projectLibraryBean.reserved2);
+        setRewardAdUnit(projectLibraryBean.reserved3);
     }
 }

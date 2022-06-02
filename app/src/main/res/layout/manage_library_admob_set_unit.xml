@@ -215,4 +215,110 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8.0dip"
+        android:elevation="8.0dip"
+        app:cardBackgroundColor="#ffffffff">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="8.0dip"
+            android:paddingTop="16.0dip"
+            android:paddingRight="8.0dip"
+            android:paddingBottom="16.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4.0dip"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="8.0dip"
+                android:paddingRight="8.0dip">
+
+                <TextView
+                    android:id="@+id/tv_reward_title"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center|left"
+                    android:text="Rewarded Ad"
+                    android:textColor="@color/scolor_blue_01"
+                    android:textSize="16.0sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_reward_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:padding="4.0dip"
+                    android:text="EDIT"
+                    android:textSize="12.0sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img_select_reward"
+                    android:layout_width="24.0dip"
+                    android:layout_height="24.0dip"
+                    android:src="@drawable/event_on_accuracy_changed_48dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4.0dip"
+                android:orientation="horizontal"
+                android:paddingLeft="8.0dip"
+                android:paddingRight="8.0dip">
+
+                <TextView
+                    android:id="@+id/tv_reward_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textColor="#ff404040"
+                    android:textSize="14.0sp" />
+
+                <TextView
+                    android:id="@+id/tv_reward_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textColor="#ff7d7d7d"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4.0dip"
+                android:orientation="horizontal"
+                android:paddingLeft="8.0dip"
+                android:paddingRight="8.0dip">
+
+                <TextView
+                    android:id="@+id/tv_reward_id_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textColor="#ff404040"
+                    android:textSize="14.0sp" />
+
+                <TextView
+                    android:id="@+id/tv_reward_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:textColor="#ff7d7d7d"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
