@@ -37,25 +37,6 @@
             android:layout_height="1.0dip"
             android:layout_weight="1.0" />
 
-        <LinearLayout
-            android:id="@id/layout_import_ad_units"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@id/tv_import_adunits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12.0sp" />
-
-            <ImageView
-                android:layout_width="18.0dip"
-                android:layout_height="18.0dip"
-                android:src="@drawable/ic_chevron_right_grey600_24dp" />
-        </LinearLayout>
     </LinearLayout>
 
     <View

@@ -33,10 +33,10 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
     public AdmobActivity d;
     public TextView e;
 
-    public Iu(AdmobActivity var1) {
-        super(var1);
-        d = var1;
-        a(var1);
+    public Iu(AdmobActivity activity) {
+        super(activity);
+        d = activity;
+        a(activity);
     }
 
     private void a() {
@@ -70,28 +70,27 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
     }
 
     private void a(int position) {
-        aB var2 = new aB((Activity) getContext());
-        var2.b(xB.b().a(getContext(), 2131625172));
-        var2.a(2131165524);
-        var2.a(xB.b().a(getContext(), 2131625170));
-        var2.b(xB.b().a(getContext(), 2131624986), view -> {
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(xB.b().a(getContext(), 2131625172));
+        dialog.a(2131165524);
+        dialog.a(xB.b().a(getContext(), 2131625170));
+        dialog.b(xB.b().a(getContext(), 2131624986), view -> {
             adUnitBeanArrayList.remove(position);
             b.e(position);
             bB.a(getContext(), xB.b().a(getContext(), 2131624935), 0).show();
-            var2.dismiss();
+            dialog.dismiss();
         });
-        var2.a(xB.b().a(getContext(), 2131624974), view -> var2.dismiss());
-        var2.show();
+        dialog.a(xB.b().a(getContext(), 2131624974), view -> dialog.dismiss());
+        dialog.show();
     }
 
     private void a(Context var1) {
-        wB.a(var1, this, 2131427533);
+        wB.a(var1, this, 0x7f0b00cd);
         gB.b(this, 600, 200, null);
         ((TextView) findViewById(2131232042)).setText(xB.b().a(getContext(), 2131625162));
-        ((TextView) findViewById(2131232006)).setText(xB.b().a(getContext(), 2131625163));
         findViewById(2131231372).setOnClickListener(this);
-        findViewById(2131231356).setOnClickListener(this);
         e = findViewById(2131232285);
+
         a = findViewById(2131231443);
         a.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
         b = new AdUnitsAdapter();
@@ -120,10 +119,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
 
     @Override
     public void onClick(View view) {
-        int viewID = view.getId();
-        if (viewID == 2131231356) {
-            d.l();
-        } else if (viewID == 2131231372) {
+        if (view.getId() == 2131231372) {
             a();
         }
     }

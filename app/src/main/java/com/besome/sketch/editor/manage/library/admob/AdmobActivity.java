@@ -156,9 +156,6 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         overridePendingTransition(2130771982, 2130771983);
     }
 
-    public void l() {
-    }
-
     private void m() {
         P = new ArrayList<>();
 
