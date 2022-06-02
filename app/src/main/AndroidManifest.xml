@@ -45,13 +45,6 @@
         </provider>
 
         <activity
-            android:name="com.besome.sketch.InitActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:theme="@style/SplashScreenTheme">
-
-        </activity>
-        <activity
             android:name="com.besome.sketch.common.SrcViewerActivity"
             android:configChanges="orientation|screenSize" />
         <activity
