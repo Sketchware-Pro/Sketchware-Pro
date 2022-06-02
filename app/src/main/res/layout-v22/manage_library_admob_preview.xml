@@ -287,7 +287,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@id/tv_title_reward_id"
+                            android:id="@+id/tv_title_reward_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
@@ -296,7 +296,7 @@
                             android:textSize="14.0sp" />
 
                         <TextView
-                            android:id="@id/tv_reward_id"
+                            android:id="@+id/tv_reward_id"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
