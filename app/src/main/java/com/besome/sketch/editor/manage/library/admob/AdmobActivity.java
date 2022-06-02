@@ -83,16 +83,16 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private ArrayList<HashMap<String, Object>> P = new ArrayList<>();
     private ProjectsAdapter Q;
 
-    private void f(int var1) {
-        if (var1 == 3) {
-            z.setText(xB.b().a(getApplicationContext(), 2131625029));
-            A.setText(xB.b().a(getApplicationContext(), 2131625031));
+    private void f(int position) {
+        if (position == 3) {
+            z.setText(xB.b().a(this, 2131625029));
+            A.setText(xB.b().a(this, 2131625031));
         } else {
-            z.setText(xB.b().a(getApplicationContext(), 2131625040, var1 + 1));
-            A.setText(xB.b().a(getApplicationContext(), 2131625008));
+            z.setText(xB.b().a(this, 2131625040, position + 1));
+            A.setText(xB.b().a(this, 2131625008));
         }
 
-        if (var1 == 0) {
+        if (position == 0) {
             B.setVisibility(View.VISIBLE);
             y.setVisibility(View.GONE);
         } else {
@@ -100,38 +100,40 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             y.setVisibility(View.VISIBLE);
         }
 
-        E.setText(H[var1]);
-        F.setText(I[var1]);
+        E.setText(H[position]);
+        F.setText(I[position]);
         G.removeAllViews();
-        if (var1 != 0) {
-            if (var1 != 1) {
-                if (var1 != 2) {
-                    if (var1 == 3) {
-                        x.setVisibility(View.GONE);
-                        Ku var2 = new Ku(this);
-                        G.addView(var2);
-                        var2.setData(L);
-                        K = var2;
-                    }
-                } else {
-                    x.setVisibility(View.GONE);
-                    Tu var3 = new Tu(this);
-                    G.addView(var3);
-                    var3.setData(L);
-                    K = var3;
-                }
-            } else {
+        switch (position) {
+            case 0:
+                Iu setAdUnitItem = new Iu(this);
+                G.addView(setAdUnitItem);
+                setAdUnitItem.setData(L);
+                K = setAdUnitItem;
+                break;
+
+            case 1:
                 x.setVisibility(View.GONE);
                 Nu var4 = new Nu(this);
                 G.addView(var4);
                 var4.setData(L);
                 K = var4;
-            }
-        } else {
-            Iu setAdUnitItem = new Iu(this);
-            G.addView(setAdUnitItem);
-            setAdUnitItem.setData(L);
-            K = setAdUnitItem;
+                break;
+
+            case 2:
+                x.setVisibility(View.GONE);
+                Tu var3 = new Tu(this);
+                G.addView(var3);
+                var3.setData(L);
+                K = var3;
+                break;
+
+            case 3:
+                x.setVisibility(View.GONE);
+                Ku var2 = new Ku(this);
+                G.addView(var2);
+                var2.setData(L);
+                K = var2;
+                break;
         }
 
         if (K.getDocUrl().isEmpty()) {
@@ -140,7 +142,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             N.setVisibility(View.VISIBLE);
         }
 
-        if (var1 > 0) {
+        if (position > 0) {
             O.setVisibility(View.GONE);
         } else {
             O.setVisibility(View.VISIBLE);
@@ -183,33 +185,31 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
     private void n() {
         if (K.isValid()) {
             K.a(L);
-            int var1 = J;
-            if (var1 < 3) {
-                ++var1;
-                J = var1;
-                f(var1);
+            int position = J;
+            if (position < 3) {
+                ++position;
+                J = position;
+                f(position);
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("admob", L);
                 setResult(-1, intent);
                 finish();
             }
-
         }
     }
 
     @Override
     public void onBackPressed() {
-        int var1 = J;
-        if (var1 > 0) {
-            --var1;
-            J = var1;
-            f(var1);
+        int position = J;
+        if (position > 0) {
+            --position;
+            J = position;
+            f(position);
         } else {
             setResult(0);
             finish();
         }
-
     }
 
     @Override
@@ -227,11 +227,10 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             case 2131232081:
                 onBackPressed();
         }
-
     }
 
     private void o() {
-        if (GB.h(getApplicationContext())) {
+        if (GB.h(this)) {
             try {
                 Intent intent = new Intent("android.intent.action.VIEW");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -245,9 +244,8 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 u();
             }
         } else {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+            bB.a(this, xB.b().a(this, 2131624932), 0).show();
         }
-
     }
 
 
@@ -263,30 +261,40 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             w = getIntent().getStringExtra("sc_id");
         }
 
-        H = new String[]{xB.b().a(getApplicationContext(), 2131625185), xB.b().a(getApplicationContext(), 2131625187), xB.b().a(getApplicationContext(), 2131625189), xB.b().a(getApplicationContext(), 2131625191)};
-        I = new String[]{xB.b().a(getApplicationContext(), 2131625184), xB.b().a(getApplicationContext(), 2131625186), xB.b().a(getApplicationContext(), 2131625188), xB.b().a(getApplicationContext(), 2131625190)};
+        H = new String[]{
+                xB.b().a(this, 2131625185),
+                xB.b().a(this, 2131625187),
+                xB.b().a(this, 2131625189),
+                xB.b().a(this, 2131625191)
+        };
+        I = new String[]{
+                xB.b().a(this, 2131625184),
+                xB.b().a(this, 2131625186),
+                xB.b().a(this, 2131625188),
+                xB.b().a(this, 2131625190)
+        };
         x = findViewById(2131230944);
         x.setOnClickListener(this);
         C = findViewById(2131231987);
-        C.setText(xB.b().a(getApplicationContext(), 2131625161));
+        C.setText(xB.b().a(this, 2131625161));
         y = findViewById(2131232081);
-        y.setText(xB.b().a(getApplicationContext(), 2131625014));
+        y.setText(xB.b().a(this, 2131625014));
         y.setOnClickListener(this);
         D = findViewById(2131231090);
         D.setImageResource(2131166234);
         z = findViewById(2131232257);
         A = findViewById(2131232059);
-        A.setText(xB.b().a(getApplicationContext(), 2131625008));
+        A.setText(xB.b().a(this, 2131625008));
         A.setOnClickListener(this);
         B = findViewById(2131231113);
         B.setOnClickListener(Helper.getBackPressedClickListener(this));
         E = findViewById(2131232179);
         F = findViewById(2131232176);
         N = findViewById(2131230841);
-        N.setText(xB.b().a(getApplicationContext(), 2131624999));
+        N.setText(xB.b().a(this, 2131624999));
         N.setOnClickListener(this);
         O = findViewById(2131230832);
-        O.setText(xB.b().a(getApplicationContext(), 2131625201));
+        O.setText(xB.b().a(this, 2131625201));
         O.setOnClickListener(view -> s());
         G = findViewById(2131231331);
     }
@@ -306,7 +314,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     private void p() {
         if (!K.getDocUrl().isEmpty()) {
-            if (GB.h(getApplicationContext())) {
+            if (GB.h(this)) {
                 try {
                     Uri var1 = Uri.parse(K.getDocUrl());
                     Intent var2 = new Intent("android.intent.action.VIEW");
@@ -321,7 +329,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     u();
                 }
             } else {
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
+                bB.a(this, xB.b().a(this, 2131624932), 0).show();
             }
 
         }
@@ -329,7 +337,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     private void s() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), 2131625252));
+        dialog.b(xB.b().a(this, 2131625252));
         dialog.a(2131166234);
         View rootView = wB.a(this, 2131427550);
         RecyclerView recyclerView = rootView.findViewById(2131231440);
@@ -340,7 +348,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         recyclerView.setItemAnimator(new ci());
         m();
         dialog.a(rootView);
-        dialog.b(xB.b().a(getApplicationContext(), 2131625035), view -> {
+        dialog.b(xB.b().a(this, 2131625035), view -> {
             if (!mB.a()) {
                 if (Q.c >= 0) {
                     HashMap<String, Object> projectMap = P.get(Q.c);
@@ -352,16 +360,16 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             }
 
         });
-        dialog.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(this, 2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void u() {
         aB dialog = new aB(this);
         dialog.a(2131165415);
-        dialog.b(xB.b().a(getApplicationContext(), 2131626412));
-        dialog.a(xB.b().a(getApplicationContext(), 2131625629));
-        dialog.b(xB.b().a(getApplicationContext(), 2131625010), view -> {
+        dialog.b(xB.b().a(this, 2131626412));
+        dialog.a(xB.b().a(this, 2131625629));
+        dialog.b(xB.b().a(this, 2131625010), view -> {
             if (!mB.a()) {
                 Intent intent = new Intent("android.intent.action.VIEW");
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -369,7 +377,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(this, 2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -417,7 +425,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427549, parent, false));
         }
 
-        public class ViewHolder extends v {
+        public class ViewHolder extends v implements View.OnClickListener {
 
             public LinearLayout t;
             public CircleImageView u;
@@ -437,12 +445,15 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 x = itemView.findViewById(2131231579);
                 y = itemView.findViewById(2131231618);
                 z = itemView.findViewById(2131231181);
-                t.setOnClickListener(view -> {
-                    if (!mB.a()) {
-                        ProjectsAdapter.this.c = ProjectsAdapter.ViewHolder.this.j();
-                        c(ProjectsAdapter.this.c);
-                    }
-                });
+                t.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                if (!mB.a() && view.getId() == 2131231613) {
+                    ProjectsAdapter.this.c = ProjectsAdapter.ViewHolder.this.j();
+                    c(ProjectsAdapter.this.c);
+                }
             }
 
             private void c(int index) {
