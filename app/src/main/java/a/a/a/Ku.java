@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class Ku extends LinearLayout implements Uu {
     public TestDevicesAdapter h;
     public ArrayList<AdTestDeviceBean> i = new ArrayList<>();
 
+    private TextView tvRewardName, tvRewardId;
+
     public Ku(Context var1) {
         super(var1);
         a(var1);
@@ -45,6 +48,8 @@ public class Ku extends LinearLayout implements Uu {
         d = findViewById(2131231887);
         e = findViewById(2131232014);
         f = findViewById(2131232012);
+        tvRewardName = findViewById(R.id.tv_reward_name);
+        tvRewardId = findViewById(R.id.tv_reward_id);
         ((TextView) findViewById(2131231965)).setText(xB.b().a(context, 2131625249));
         ((TextView) findViewById(2131232201)).setText(xB.b().a(getContext(), 2131625196));
         TextView var3 = findViewById(2131232203);
@@ -106,6 +111,19 @@ public class Ku extends LinearLayout implements Uu {
         }
     }
 
+    private void setRewardAdUnit(String adUnit) {
+        if (!adUnit.isEmpty()) {
+            if (adUnit.contains(" : ")) {
+                int indexOfColon = adUnit.indexOf(" : ");
+                tvRewardName.setText(adUnit.substring(0, indexOfColon));
+                tvRewardId.setText(adUnit.substring(indexOfColon + 3));
+            } else {
+                tvRewardName.setText("");
+                tvRewardId.setText(adUnit);
+            }
+        }
+    }
+
     @Override
     public String getDocUrl() {
         return "";
@@ -126,6 +144,7 @@ public class Ku extends LinearLayout implements Uu {
         b.setChecked(true);
         a(projectLibraryBean.reserved1);
         b(projectLibraryBean.reserved2);
+        setRewardAdUnit(projectLibraryBean.reserved3);
         i = projectLibraryBean.testDevices;
         h.c();
     }
