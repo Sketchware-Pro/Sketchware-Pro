@@ -36,39 +36,6 @@
             android:background="@android:color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <LinearLayout
-            android:id="@id/layout_qna_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/scolor_bg_02"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="8.0dip"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@id/tv_question_register_title"
-                android:layout_width="0.0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8.0dip"
-                android:layout_weight="1.0"
-                android:textSize="12.0sp" />
-
-            <TextView
-                android:id="@id/tv_question_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_round_red"
-                android:paddingLeft="16.0dip"
-                android:paddingTop="8.0dip"
-                android:paddingRight="16.0dip"
-                android:paddingBottom="8.0dip"
-                android:textColor="#ffffffff"
-                android:textSize="12.0sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@id/fab"
             android:layout_width="wrap_content"

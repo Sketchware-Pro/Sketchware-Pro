@@ -12,10 +12,8 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -40,7 +38,6 @@ import a.a.a.aB;
 import a.a.a.gg;
 import a.a.a.l;
 import a.a.a.nd;
-import a.a.a.sB;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -54,7 +51,6 @@ import mod.tyron.backup.SingleCopyAsyncTask;
 
 public class MainActivity extends BasePermissionAppCompatActivity implements ViewPager.e {
 
-    private LinearLayout qnaLayout;
     private FloatingActionButton fab;
     private DrawerLayout drawerLayout;
     private l drawerToggle;
@@ -194,7 +190,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         // ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
         viewPager.a(this);
 
-        qnaLayout = findViewById(R.id.layout_qna_bottom);
         fab = findViewById(R.id.fab);
         coordinator = findViewById(R.id.layout_coordinator);
 
@@ -382,10 +377,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             if (j() && projectsFragment != null && projectsFragment.f() == 0) {
                 projectsFragment.g();
             }
-            qnaLayout.setVisibility(View.GONE);
             projectsFragment.showCreateNewProjectLayout();
         } else if (position == 1) {
-            qnaLayout.setVisibility(View.GONE);
             fab.c();
         }
     }
