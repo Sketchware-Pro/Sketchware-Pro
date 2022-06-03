@@ -14,11 +14,10 @@ public class SketchLogger {
     /**
      * Logcat Reader Class
      * <p>
-     * Use Cases:
-     * Use "SketchLogger.startLogging(Context)" to Start the Logger from anywhere
-     * Or, Use "SketchLogger.broadcastLog(String)" directly to Send A Log.
-     * Send Context along when logging directly when "startLogging(Context)" hasn't been called yet
-     * Use "SketchLogger.stopLogging()" to stop from anywhere
+     * Uses:
+     * <br>
+     *  - "SketchLogger.broadcastLog(String)" to manually send a debug log that's then viewable in Logcat Reader
+     *  - "SketchLogger.stopLogging()" to stop logging
      */
 
     private static Thread loggerThread = new Thread() {
@@ -35,13 +34,13 @@ public class SketchLogger {
                     do {
                         broadcastLog(logTxt);
                     } while (isRunning && ((logTxt = bufferedReader.readLine()) != null));
-                    //Thread Stopped, Restarting If Not Stopped Manually
+
+                    // Thread got stopped, restart if not stopping wantedly
                     if (isRunning) {
-                        broadcastLog("Logger Got Killed. Restarting Complete");
+                        broadcastLog("Logger got killed. Restarting.");
                         startLogging();
                     } else {
-                        broadcastLog("Logger Stopped");
-                        return;
+                        broadcastLog("Logger stopped.");
                     }
                 }
             } catch (Exception e) {
@@ -74,7 +73,7 @@ public class SketchLogger {
     public static void stopLogging() {
         if (isRunning) {
             isRunning = false;
-            Log.i("stopLogging()", "Stopping Logger By User Request");
+            broadcastLog("Stopping logger by user request.");
         } else {
             throw new IllegalStateException("Logger not running");
         }
