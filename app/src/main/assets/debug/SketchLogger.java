@@ -13,14 +13,6 @@ public class SketchLogger {
 
     /**
      * Logcat Reader Class
-     * Available Methods:
-     * SketchLogger.startLogging(Context)
-     * SketchLogger.startLogging()
-     * <p>
-     * SketchLogger.broadcastLog(Context, String)
-     * SketchLogger.broadcastLog(String)
-     * <p>
-     * SketchLogger.stopLogging()
      * <p>
      * Use Cases:
      * Use "SketchLogger.startLogging(Context)" to Start the Logger from anywhere
@@ -77,7 +69,6 @@ public class SketchLogger {
             }
         };
         loggerThread.start();
-
     }
 
     public static void startLogging(Context _context) {
@@ -102,7 +93,6 @@ public class SketchLogger {
         intent.putExtra("log", log);
         intent.putExtra("pkgName", c.getPackageName());
         c.sendBroadcast(intent);
-
     }
 
     public static void stopLogging() {
