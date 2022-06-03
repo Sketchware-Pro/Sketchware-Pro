@@ -25,7 +25,6 @@ public class SketchLogger {
      */
 
     private static Thread loggerThread;
-    private static Context context;
     private static boolean isRunning = false;
     private static String packageName = "Undefined";
 
@@ -71,28 +70,12 @@ public class SketchLogger {
         loggerThread.start();
     }
 
-    public static void startLogging(Context _context) {
-        context = _context;
-        packageName = _context.getPackageName();
-        startLogging();
-    }
-
     public static void broadcastLog(String log) {
         Intent intent = new Intent();
         intent.setAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
         intent.putExtra("log", log);
         intent.putExtra("pkgName", packageName);
-        if (context != null) {
-            context.sendBroadcast(intent);
-        }
-    }
-
-    public static void broadcastLog(Context c, String log) {
-        Intent intent = new Intent();
-        intent.setAction("RECEIVE_NUB_LOGS");
-        intent.putExtra("log", log);
-        intent.putExtra("pkgName", c.getPackageName());
-        c.sendBroadcast(intent);
+        SketchApplication.getContext().sendBroadcast(intent);
     }
 
     public static void stopLogging() {
