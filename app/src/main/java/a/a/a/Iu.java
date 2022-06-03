@@ -42,10 +42,8 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         dialog.a(R.drawable.add_96_blue);
         View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
         EditText edName = rootView.findViewById(R.id.ed_name);
-        ((TextInputLayout) rootView.findViewById(R.id.ti_name)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_hint_adunit_name));
         SB nameValidator = new SB(getContext(), rootView.findViewById(R.id.ti_name), 1, 50);
         EditText edAdUnitId = rootView.findViewById(R.id.ed_adunit_id);
-        ((TextInputLayout) rootView.findViewById(R.id.ti_adunit_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
         SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id), 1, 100);
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
@@ -84,7 +82,6 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_listing);
         gB.b(this, 600, 200, null);
-        ((TextView) findViewById(R.id.tv_manual_add_ad_unit)).setText(xB.b().a(getContext(), R.string.design_library_admob_button_manual_add_to_adunit));
         findViewById(R.id.layout_manual_add_ad_unit).setOnClickListener(this);
         tvWarning = findViewById(R.id.tv_warning);
 
