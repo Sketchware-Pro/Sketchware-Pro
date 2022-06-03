@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.v;
 
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
@@ -25,44 +24,41 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
-@SuppressLint({"ResourceType", "ViewConstructor"})
+@SuppressLint("ViewConstructor")
 public class Iu extends LinearLayout implements Uu, OnClickListener {
 
-    public RecyclerView a;
-    public AdUnitsAdapter b;
-    public ArrayList<AdUnitBean> adUnitBeanArrayList = new ArrayList<>();
-    public AdmobActivity d;
-    public TextView e;
+    private AdUnitsAdapter adUnitsAdapter;
+    private ArrayList<AdUnitBean> adUnitBeanArrayList = new ArrayList<>();
+    private TextView tvWarning;
 
     public Iu(AdmobActivity activity) {
         super(activity);
-        d = activity;
         initialize(activity);
     }
 
-    private void a() {
+    private void createAdUnit() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_title));
         dialog.a(R.drawable.add_96_blue);
-        View var2 = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
-        EditText var3 = var2.findViewById(R.id.ed_name);
-        ((TextInputLayout) var2.findViewById(R.id.ti_name)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_hint_adunit_name));
-        SB var4 = new SB(getContext(), var2.findViewById(R.id.ti_name), 1, 50);
-        EditText var5 = var2.findViewById(R.id.ed_adunit_id);
-        ((TextInputLayout) var2.findViewById(R.id.ti_adunit_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
-        SB var6 = new SB(getContext(), var2.findViewById(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id), 1, 100);
-        var3.setPrivateImeOptions("defaultInputmode=english;");
-        dialog.a(var2);
+        View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
+        EditText edName = rootView.findViewById(R.id.ed_name);
+        ((TextInputLayout) rootView.findViewById(R.id.ti_name)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_hint_adunit_name));
+        SB nameValidator = new SB(getContext(), rootView.findViewById(R.id.ti_name), 1, 50);
+        EditText edAdUnitId = rootView.findViewById(R.id.ed_adunit_id);
+        ((TextInputLayout) rootView.findViewById(R.id.ti_adunit_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_hint_adunit_id));
+        SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id), 1, 100);
+        edName.setPrivateImeOptions("defaultInputmode=english;");
+        dialog.a(rootView);
         dialog.b(xB.b().a(getContext(), R.string.common_word_add), view -> {
-            if (var4.b()) {
-                var3.requestFocus();
-            } else if (var6.b()) {
-                var5.requestFocus();
+            if (nameValidator.b()) {
+                edName.requestFocus();
+            } else if (adUnitValidator.b()) {
+                edAdUnitId.requestFocus();
             } else {
-                String name = var3.getText().toString();
-                String id = var5.getText().toString();
+                String name = edName.getText().toString();
+                String id = edAdUnitId.getText().toString();
                 adUnitBeanArrayList.add(new AdUnitBean(id, name));
-                b.d(adUnitBeanArrayList.size() - 1);
+                adUnitsAdapter.d(adUnitBeanArrayList.size() - 1);
                 dialog.dismiss();
             }
         });
@@ -70,14 +66,14 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         dialog.show();
     }
 
-    private void a(int position) {
+    private void deleteADUnit(int position) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_adunit_title));
         dialog.a(R.drawable.delete_96);
         dialog.a(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_adunit));
         dialog.b(xB.b().a(getContext(), R.string.common_word_delete), view -> {
             adUnitBeanArrayList.remove(position);
-            b.e(position);
+            adUnitsAdapter.e(position);
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
@@ -90,12 +86,12 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         gB.b(this, 600, 200, null);
         ((TextView) findViewById(R.id.tv_manual_add_ad_unit)).setText(xB.b().a(getContext(), R.string.design_library_admob_button_manual_add_to_adunit));
         findViewById(R.id.layout_manual_add_ad_unit).setOnClickListener(this);
-        e = findViewById(R.id.tv_warning);
+        tvWarning = findViewById(R.id.tv_warning);
 
-        a = findViewById(R.id.list_ad_unit);
-        a.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
-        b = new AdUnitsAdapter();
-        a.setAdapter(b);
+        RecyclerView listAdUnit = findViewById(R.id.list_ad_unit);
+        listAdUnit.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        adUnitsAdapter = new AdUnitsAdapter();
+        listAdUnit.setAdapter(adUnitsAdapter);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.layout_manual_add_ad_unit) {
-            a();
+            createAdUnit();
         }
     }
 
@@ -131,25 +127,25 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
     }
 
     @Override
-    public void setData(ProjectLibraryBean var1) {
-        adUnitBeanArrayList = var1.adUnits;
-        b.c();
+    public void setData(ProjectLibraryBean projectLibraryBean) {
+        adUnitBeanArrayList = projectLibraryBean.adUnits;
+        adUnitsAdapter.c();
     }
 
     public class AdUnitsAdapter extends androidx.recyclerview.widget.RecyclerView.a<AdUnitsAdapter.ViewHolder> {
 
-        public int c;
+        public int layoutPosition;
 
         public AdUnitsAdapter() {
-            c = -1;
+            layoutPosition = -1;
         }
 
         @Override
         public int a() {
             if (adUnitBeanArrayList.size() == 0) {
-                e.setVisibility(View.VISIBLE);
+                tvWarning.setVisibility(View.VISIBLE);
             } else {
-                e.setVisibility(View.GONE);
+                tvWarning.setVisibility(View.GONE);
             }
 
             return adUnitBeanArrayList.size();
@@ -158,28 +154,28 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         @Override
         public void b(ViewHolder viewHolder, int position) {
             AdUnitBean adUnitBean = adUnitBeanArrayList.get(position);
-            viewHolder.t.setText(adUnitBean.name);
-            viewHolder.u.setText(adUnitBean.id);
+            viewHolder.tvName.setText(adUnitBean.name);
+            viewHolder.tvUnitId.setText(adUnitBean.id);
         }
 
         @Override
-        public ViewHolder b(ViewGroup var1, int var2) {
-            return new ViewHolder(LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_library_setting_admob_adunit_item, var1, false));
+        public ViewHolder b(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_adunit_item, parent, false));
         }
 
-        public class ViewHolder extends v {
-            public TextView t;
-            public TextView u;
-            public ImageView v;
+        public class ViewHolder extends RecyclerView.v {
+            public TextView tvName;
+            public TextView tvUnitId;
+            public ImageView imgDelete;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.tv_name);
-                u = itemView.findViewById(R.id.tv_unit_id);
-                v = itemView.findViewById(R.id.img_delete);
-                v.setOnClickListener(view -> {
-                    AdUnitsAdapter.this.c = j();
-                    Iu.this.a(j());
+                tvName = itemView.findViewById(R.id.tv_name);
+                tvUnitId = itemView.findViewById(R.id.tv_unit_id);
+                imgDelete = itemView.findViewById(R.id.img_delete);
+                imgDelete.setOnClickListener(view -> {
+                    layoutPosition = j();
+                    deleteADUnit(j());
                 });
             }
         }
