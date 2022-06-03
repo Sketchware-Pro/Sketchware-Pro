@@ -2,8 +2,8 @@ package mod.jbk.build.compiler.bundle;
 
 import android.content.Context;
 
-import com.android.tools.build.bundletool.BundleToolMain;
-import com.besome.sketch.design.DesignActivity.BuildAsyncTask;
+import com.android.tools.build.bundletool.commands.BuildBundleCommand;
+import com.android.tools.build.bundletool.flags.FlagParser;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -56,23 +56,22 @@ public class AppBundleCompiler {
 
     public void buildBundle() throws zy {
         long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> args = new ArrayList<>();
-        args.add("build-bundle");
-        args.add("--modules=" + mainModuleArchive.getAbsolutePath());
-        args.add("--overwrite");
-        args.add("--output=" + appBundle.getAbsolutePath());
+        ArrayList<String> flags = new ArrayList<>();
+        flags.add("--modules=" + mainModuleArchive.getAbsolutePath());
+        flags.add("--overwrite");
+        flags.add("--output=" + appBundle.getAbsolutePath());
         if (mDp.proguard.isDebugFilesEnabled()) {
             /* Add ProGuard mapping if available for automatic import to ProGuard mappings in Google Play */
             File mapping = new File(mDp.yq.printmapping);
             if (mapping.exists()) {
-                args.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
+                flags.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
                         mapping.getAbsolutePath());
             }
         }
 
-        LogUtil.d(TAG, "Running BundleToolMain with these arguments: " + args);
+        LogUtil.d(TAG, "Running BuildBundleCommand with these flags: " + flags);
         try {
-            BundleToolMain.main(args.toArray(new String[0]));
+            BuildBundleCommand.fromFlags(new FlagParser().parse(flags.toArray(new String[0]))).execute();
         } catch (Exception e) {
             throw new zy("Failed to build bundle: " + e.getMessage());
         }

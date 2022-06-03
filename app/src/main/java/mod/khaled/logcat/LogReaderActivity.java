@@ -135,7 +135,7 @@ public class LogReaderActivity extends AppCompatActivity {
 
         recyclerview = new RecyclerView(LogReaderActivity.this);
         recyclerview.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        recyclerview.setPadding((int) dpToPx(4), 0, (int) dpToPx(4), 0);
+        recyclerview.setPadding(dpToPx(4), 0, dpToPx(4), 0);
         root.addView(recyclerview);
 
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
@@ -184,8 +184,8 @@ public class LogReaderActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             HashMap<String, Object> map = new HashMap<>();
             if (intent.hasExtra("log") && (intent.getStringExtra("log") != null)) {
-                if (intent.hasExtra("pkgName")) {
-                    map.put("pkgName", intent.getStringExtra("pkgName"));
+                if (intent.hasExtra("packageName")) {
+                    map.put("pkgName", intent.getStringExtra("packageName"));
                 }
                 map.put("logRaw", intent.getStringExtra("log"));
                 if (intent.getStringExtra("log") == null) return;

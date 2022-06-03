@@ -503,7 +503,7 @@ public class yq {
      */
     public void a(Context context) {
 
-        boolean logCatEnabled = new BuildSettings(b).getValue(
+        boolean logCatEnabled = N.isDebugBuild && new BuildSettings(b).getValue(
                 BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
         String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
@@ -531,10 +531,10 @@ public class yq {
             }
             if (logCatEnabled) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replace(
-                        "super.onCreate();", "SketchLogger.startLogging(getApplicationContext());\n" +
+                        "super.onCreate();", "SketchLogger.startLogging();\n" +
                                 "        super.onCreate();").replace(
                         "Process.killProcess(Process.myPid());",
-                        "                SketchLogger.broadcastLog(getApplicationContext(), Log.getStackTraceString(throwable));\n" +
+                        "                SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
                                 "                SketchLogger.stopLogging();\n" + "Process.killProcess(Process.myPid());"
                 );
             }
