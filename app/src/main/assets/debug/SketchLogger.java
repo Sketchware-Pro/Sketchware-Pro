@@ -53,7 +53,6 @@ public class SketchLogger {
     };
 
     private static volatile boolean isRunning = false;
-    private static String packageName = "Undefined";
 
     public static void startLogging() {
         if (!isRunning) {
@@ -64,11 +63,13 @@ public class SketchLogger {
     }
 
     public static void broadcastLog(String log) {
+        Context context = SketchApplication.getContext();
+
         Intent intent = new Intent();
         intent.setAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
         intent.putExtra("log", log);
-        intent.putExtra("pkgName", packageName);
-        SketchApplication.getContext().sendBroadcast(intent);
+        intent.putExtra("pkgName", context.getPackageName());
+        context.sendBroadcast(intent);
     }
 
     public static void stopLogging() {
