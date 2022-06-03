@@ -1,6 +1,8 @@
 package com.besome.sketch.help;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,36 +13,27 @@ import com.besome.sketch.editor.property.PropertySwitchItem;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 
-import a.a.a.DB;
 import a.a.a.mB;
 import a.a.a.xB;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
 
-    private final Intent v = new Intent();
-    private LinearLayout o;
-    private DB u;
+    private LinearLayout contentLayout;
+    private SharedPreferences.Editor preferenceEditor;
 
-    public SystemSettingActivity() {
-    }
-
-    private void a(int key, int resName, int resDescription, boolean value) {
-        a(key, xB.b().a(getApplicationContext(), resName), xB.b().a(getApplicationContext(), resDescription), value);
-    }
-
-    private void a(int key, String name, String description, boolean value) {
+    private void addPreference(int key, int resName, int resDescription, boolean value) {
         PropertySwitchItem switchItem = new PropertySwitchItem(this);
         switchItem.setKey(key);
-        switchItem.setName(name);
-        switchItem.setDesc(description);
+        switchItem.setName(xB.b().a(getApplicationContext(), resName));
+        switchItem.setDesc(xB.b().a(getApplicationContext(), resDescription));
         switchItem.setValue(value);
-        o.addView(switchItem);
+        contentLayout.addView(switchItem);
     }
 
     @Override
     public void onBackPressed() {
-        if (!isSettingsSaved()) {
-            setResult(-1, v);
+        if (isSettingsSaved()) {
+            setResult(-1, new Intent());
             finish();
         }
     }
@@ -49,42 +42,39 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
     public void onCreate(Bundle var1) {
         super.onCreate(var1);
         setContentView(R.layout.system_settings);
-        Toolbar n = (Toolbar) findViewById(R.id.toolbar);
-        a(n);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        a(toolbar);
         d().d(true);
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().a(xB.b().a(this, R.string.main_drawer_title_system_settings));
-        n.setNavigationOnClickListener(view -> {
+        toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });
-        o = (LinearLayout) findViewById(R.id.content);
-        u = new DB(getApplicationContext(), "P12");
-        a(0, R.string.system_settings_title_setting_vibration,
+        contentLayout = findViewById(R.id.content);
+        SharedPreferences preferences = getSharedPreferences("P12", Context.MODE_PRIVATE);
+        preferenceEditor = preferences.edit();
+        addPreference(0, R.string.system_settings_title_setting_vibration,
                 R.string.system_settings_description_setting_vibration,
-                u.a("P12I0", true));
+                preferences.getBoolean("P12I0", true));
 
-        a(1, R.string.system_settings_title_automatically_save,
-                R.string.system_settings_description_automatically_save
-                , u.a("P12I2", false));
+        addPreference(1, R.string.system_settings_title_automatically_save,
+                R.string.system_settings_description_automatically_save,
+                preferences.getBoolean("P12I2", false));
     }
 
     private boolean isSettingsSaved() {
-        for (int i = 0; i < o.getChildCount(); i++) {
-            View childAtView = o.getChildAt(i);
+        for (int i = 0; i < contentLayout.getChildCount(); i++) {
+            View childAtView = contentLayout.getChildAt(i);
             if (childAtView instanceof PropertySwitchItem) {
                 PropertySwitchItem propertySwitchItem = (PropertySwitchItem) childAtView;
-                switch (propertySwitchItem.getKey()) {
-                    case 0:
-                        u.a("P12I0", propertySwitchItem.getValue());
-                        return true;
-
-                    case 1:
-                        u.a("P12I2", propertySwitchItem.getValue());
-                        return true;
+                if (0 == propertySwitchItem.getKey()) {
+                    preferenceEditor.putBoolean("P12I0", propertySwitchItem.getValue());
+                } else if (1 == propertySwitchItem.getKey()) {
+                    preferenceEditor.putBoolean("P12I2", propertySwitchItem.getValue());
                 }
             }
         }
-        return false;
+        return preferenceEditor.commit();
     }
 }
