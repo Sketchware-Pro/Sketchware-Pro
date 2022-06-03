@@ -25,37 +25,29 @@ public class SketchLogger {
         @Override
         public void run() {
             isRunning = true;
-            BufferedReader bufferedReader = null;
+
             try {
                 Runtime.getRuntime().exec("logcat -c");
                 Process process = Runtime.getRuntime().exec("logcat");
-                bufferedReader = new BufferedReader(
-                        new InputStreamReader(process.getInputStream()));
-                String logTxt = bufferedReader.readLine();
-                do {
-                    broadcastLog(logTxt);
-                } while (isRunning && ((logTxt = bufferedReader.readLine()) != null));
-                //Thread Stopped, Restarting If Not Stopped Manually
-                if (isRunning) {
-                    broadcastLog("Logger Got Killed. Restarting Complete");
-                    startLogging();
-                } else {
-                    broadcastLog("Logger Stopped");
-                    return;
+
+                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String logTxt = bufferedReader.readLine();
+                    do {
+                        broadcastLog(logTxt);
+                    } while (isRunning && ((logTxt = bufferedReader.readLine()) != null));
+                    //Thread Stopped, Restarting If Not Stopped Manually
+                    if (isRunning) {
+                        broadcastLog("Logger Got Killed. Restarting Complete");
+                        startLogging();
+                    } else {
+                        broadcastLog("Logger Stopped");
+                        return;
+                    }
                 }
             } catch (Exception e) {
                 broadcastLog(e.toString());
                 //Auto Restart Logger When Crashed
                 startLogging();
-            } finally {
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        /*I don't wanna get Haunted for Keeping Open InputStream*/
-                        broadcastLog("Oh No! Failed to Close BufferedReader " + e.toString());
-                    }
-                }
             }
         }
     };
