@@ -52,7 +52,7 @@ public class SketchLogger {
         }
     };
 
-    private static boolean isRunning = false;
+    private static volatile boolean isRunning = false;
     private static String packageName = "Undefined";
 
     public static void startLogging() {
