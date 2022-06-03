@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@id/layout_manual_add_ad_unit"
+            android:id="@+id/layout_manual_add_ad_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -25,7 +25,7 @@
                 android:src="@drawable/ic_add_circle_outline_grey600_36dp" />
 
             <TextView
-                android:id="@id/tv_manual_add_ad_unit"
+                android:id="@+id/tv_manual_add_ad_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4.0dip"
@@ -48,7 +48,7 @@
         android:background="@color/color_secondary" />
 
     <TextView
-        android:id="@id/tv_warning"
+        android:id="@+id/tv_warning"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40.0dip"
@@ -57,7 +57,7 @@
         android:textSize="12.0sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@id/list_ad_unit"
+        android:id="@+id/list_ad_unit"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 </LinearLayout>
