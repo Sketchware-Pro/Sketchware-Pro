@@ -55,7 +55,7 @@ public class BuildSettingsDialog {
                 addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, new String[]{"1.7", "1.8"}, "1.7", "Java version", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, true, "Hide warnings in error log", 12, contentView),
                 addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", 12, contentView),
-                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, false, "Enable debug logcat logs viewable in Logcat Reader", 12, contentView)
+                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, false, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", 12, contentView)
         };
 
         builder.setView(inflate);
@@ -159,13 +159,6 @@ public class BuildSettingsDialog {
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     SketchwareUtil.toast("Note that this option may cause issues if RequestNetwork component is used");
-                }
-            });
-        }
-        if (key.equals(BuildSettings.SETTING_ENABLE_LOGCAT)) {
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    SketchwareUtil.toast("Use it When Debugging Only. Don't include this in the final build");
                 }
             });
         }
