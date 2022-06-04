@@ -235,7 +235,7 @@
     <string name="myprojects_list_menu_title_delete">Delete</string>
 
     <string name="myprojects_show_message_different_package_name">Please change to a different
-        package name.\nProjects starting with \"%s\" package name can not be shared
+        package name. Projects starting with \"%s\" package name can not be shared
     </string>
     <string name="myprojects_fail_share">Share failed. Please try again later</string>
 
@@ -463,7 +463,7 @@
     <string name="design_drawer_menu_description_image">Import photos and icons</string>
     <string name="design_drawer_menu_description_sound">Import music and sound efects</string>
     <string name="design_drawer_menu_description_font">Import different fonts</string>
-    <string name="design_drawer_menu_description_source_code">Show Java and Xml files</string>
+    <string name="design_drawer_menu_description_source_code">View Java and XML files</string>
 
     <string name="design_library_settings_title_enabled">Enabled</string>
 
@@ -498,8 +498,8 @@
     <string name="design_library_firebase_title_data_location">Data location</string>
     <string name="design_library_firebase_hint_enter_data_location">Enter the data location</string>
 
-    <string name="design_library_firebase_hint_enter_firebase_project_id">Enter Firebase Project
-        ID
+    <string name="design_library_firebase_hint_enter_firebase_project_id">Enter Full Firebase
+        Database URL
     </string>
     <string name="design_library_firebase_hint_enter_firebase_app_id">Enter Firebase APP ID</string>
     <string name="design_library_firebase_hint_enter_firebase_api_key">Enter Firebase API Key
@@ -547,8 +547,9 @@
     <string name="design_library_firebase_guide_path_example">Path starting from the
         root.\nex)\"users/username\"
     </string>
-    <string name="design_library_firebase_message_id_fill_out">Project ID, App ID, and API Key must
-        be filled out.
+    <string name="design_library_firebase_message_id_fill_out">Full Database URL, App ID, and API
+        Key
+        must be filled out.
     </string>
 
     <string name="design_manager_tab_title_this_project">This Project</string>
@@ -1526,12 +1527,13 @@
 
     <string name="notifiacation_description_project_like">%s liked your project</string>
     <string name="notifiacation_description_project_comment">%s commented on your project</string>
-    <string name="message_compatible_chrome_brower">The following page is compatible with Chrome
-        Browser.\nWould you like to install Chrome Browser?
+    <string name="message_compatible_chrome_brower">The following page is compatible with Google
+        Chrome.
+        Would you like to install Chrome?
     </string>
 
-    <string name="message_device_not_supported">This device is not supported.\nGoogle play service
-        not installed.
+    <string name="message_device_not_supported">This device is not supported. Google Play services
+        aren't installed.
     </string>
     <string name="title_free_trial">Free Trial</string>
     <string name="message_free_trial">Would you like to watch an advertisement to unlock the content
@@ -1569,8 +1571,8 @@
     <!-- ************************************************************************************************************************* -->
     <!-- ************************************************************************************************************************** -->
 
-    <string name="property_description_component_intent_usage">Please follow these examples.\nIt may
-        result in a runtime error if you don\'t.\n\nACTION_CALL, ACTION_DIAL\n tel:number
+    <string name="property_description_component_intent_usage">Follow these examples! It may
+        result in a runtime error if you don\'t!\n\nACTION_CALL, ACTION_DIAL\n tel:number
         (tel:12345678)\n\nACTION_VIEW\n url type (http://sketchware.io)
     </string>
     <string name="property_description_edittext_ime_options">It does not work when single_line is
@@ -2566,19 +2568,19 @@
     <string name="block_firebase_get_children_tail">then</string>
 
 
-    <string name="block_str_to_map_head">Json</string>
+    <string name="block_str_to_map_head">JSON</string>
     <string name="block_str_to_map_body_1">to</string>
     <string name="block_str_to_map_tail"></string>
 
     <string name="block_map_to_str_head"></string>
-    <string name="block_map_to_str_tail">to Json String</string>
+    <string name="block_map_to_str_tail">to JSON String</string>
 
-    <string name="block_str_to_list_map_head">Json</string>
+    <string name="block_str_to_list_map_head">JSON</string>
     <string name="block_str_to_list_map_body_1">to</string>
     <string name="block_str_to_list_map_tail"></string>
 
     <string name="block_list_map_to_str_head"></string>
-    <string name="block_list_map_to_str_tail">to Json String</string>
+    <string name="block_list_map_to_str_tail">to JSON String</string>
 
     <string name="block_firebaseauth_create_user_head"></string>
     <string name="block_firebaseauth_create_user_body_1">createUserWith Email</string>
@@ -2979,12 +2981,12 @@
     <string name="publish_account_setting_title">Publish Account Settings</string>
 
     <string name="publish_title_dialog_authorization_error">Authorization Error</string>
-    <string name="publish_message_dialog_authorization_error">This json file\'s access token
+    <string name="publish_message_dialog_authorization_error">This JSON file\'s access token
         expired. Please select a valid json file
     </string>
 
-    <string name="publish_title_dialog_invalid_json">Invalid Json File</string>
-    <string name="publish_message_dialog_invalid_json">The json file is invalid. Please double check
+    <string name="publish_title_dialog_invalid_json">Invalid JSON File</string>
+    <string name="publish_message_dialog_invalid_json">The JSON file is invalid. Please double check
         the file
     </string>
 
@@ -2994,13 +2996,13 @@
         account
     </string>
 
-    <string name="publish_select_account_json_title_json_path">Json File</string>
+    <string name="publish_select_account_json_title_json_path">JSON File</string>
     <string name="publish_select_account_json_title_client_id">Client Id</string>
     <string name="publish_select_account_json_title_client_mail">Client Email</string>
 
-    <string name="publish_select_account_json_title_dialog_json_file_desc">Select Json File</string>
+    <string name="publish_select_account_json_title_dialog_json_file_desc">Select JSON File</string>
     <string name="publish_select_account_json_message_dialog_json_file_desc">This procedure is
-        necessary for future publishing. Sketchware does not save or edit this json file. Do you
+        necessary for future publishing. Sketchware does not save or edit this JSON file. Do you
         want to continue?
     </string>
 
@@ -3047,7 +3049,7 @@
     <string name="publish_desc_choose_project">Select a project to publish or update</string>
 
     <string name="publish_message_dialog_default_package_name">Please use a different package
-        name.\nProjects starting with \"%s\" package name can not be published
+        name. Projects starting with \"%s\" package name can not be published
     </string>
 
     <string name="publish_title_dialog_invalid_version">Version Code Error</string>
@@ -3133,7 +3135,7 @@
     <string name="publish_upload_apk_title_no_update">I am not updating my APK file</string>
     <string name="publish_upload_apk_title_cert">Release Key</string>
     <string name="publish_upload_apk_title_passwd">Password</string>
-    <string name="publish_upload_apk_title_dialog_upload_apk">Upload Apk Error</string>
+    <string name="publish_upload_apk_title_dialog_upload_apk">Upload APK Error</string>
     <string name="publish_upload_apk_wrong_release_key_passwd">The password for this release key is
         incorrect.
     </string>
@@ -3312,8 +3314,8 @@
     <string name="design_library_admob_title_admob_manager">AdMob Manager</string>
 
     <string name="design_library_firebase_setting_step1_title">Project Settings</string>
-    <string name="design_library_firebase_setting_step1_desc">Enter Project ID, Web API Key, and App
-        ID
+    <string name="design_library_firebase_setting_step1_desc">Enter Full Database Url, Web API Key,
+        and App ID
     </string>
 
     <string name="design_library_firebase_setting_step2_title">Storage URL Settings</string>
@@ -3325,7 +3327,9 @@
         If they are all correct, click on \"Save\"..
     </string>
 
-    <string name="design_library_firebase_title_project_id">Project ID</string>
+    <string name="design_library_firebase_title_project_id">Full Database URL (e.g.
+        sk-pro-default-rtdb.firebaseio.com)
+    </string>
     <string name="design_library_firebase_title_app_id">App ID</string>
     <string name="design_library_firebase_title_api_key">API Key</string>
     <string name="design_library_firebase_title_storage_bucket_url">Storage Bucket URL</string>
@@ -4081,7 +4085,7 @@
     <string name="block_mapview_set_marker_visible_tail"></string>
 
     <string name="design_library_google_map_title">GoogleMap</string>
-    <string name="design_library_google_map_button_open_doc">Open Doc</string>
+    <string name="design_library_google_map_button_open_doc">Open Documentation</string>
     <string name="design_library_description_google_map">Use Google Map</string>
     <string name="design_library_message_confirm_uncheck_google_map">The existing MapView will be
         deleted. Would you like to continue?
@@ -4128,7 +4132,7 @@
     <!-- *************************************************  append 3.8.1 start    ************************************************ -->
     <!-- ************************************************************************************************************************* -->
 
-    <string name="component_add_docs_button_title_go_to_docs">Move To Docs</string>
+    <string name="component_add_docs_button_title_go_to_docs">Read Documentation</string>
     <string name="component_add_message_docs_updated_soon">The docs page will be updated soon
     </string>
 
