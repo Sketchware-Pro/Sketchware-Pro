@@ -35,9 +35,12 @@ import a.a.a.GB;
 import a.a.a.GC;
 import a.a.a.Xf;
 import a.a.a.aB;
+import a.a.a.bB;
 import a.a.a.gg;
 import a.a.a.l;
 import a.a.a.nd;
+import a.a.a.oB;
+import a.a.a.wq;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -46,6 +49,7 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.ilyasse.activities.about.AboutModActivity;
+import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
 
@@ -160,6 +164,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        tryLoadingCustomizedAppStrings();
         setContentView(R.layout.main);
 
         u = new DB(getApplicationContext(), "U1");
@@ -390,6 +396,30 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (projectsFragment != null) {
             projectsFragment.g();
             projectsFragment.c(str);
+        }
+    }
+
+    private void tryLoadingCustomizedAppStrings() {
+        // Refresh extracted provided strings file if necessary
+        oB oB = new oB();
+        try {
+            File extractedStringsProvidedXml = new File(wq.m());
+            if (oB.a(getApplicationContext(), "localization/strings.xml") !=
+                    (extractedStringsProvidedXml.exists() ? extractedStringsProvidedXml.length() : 0)) {
+                oB.a(extractedStringsProvidedXml);
+                oB.a(getApplicationContext(), "localization/strings.xml", wq.m());
+            }
+        } catch (Exception e) {
+            String message = "Couldn't extract default strings to storage";
+            SketchwareUtil.toastError(message + ": " + e.getMessage());
+            LogUtil.e("MainActivity", message, e);
+        }
+
+        // Actual loading part
+        if (xB.b().b(getApplicationContext())) {
+            bB.a(getApplicationContext(),
+                    xB.b().a(getApplicationContext(), R.string.message_strings_xml_loaded),
+                    0, 80, 0, 128).show();
         }
     }
 
