@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -105,7 +106,18 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                 try {
                     try (ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(intentData, "r")) {
                         try (FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
-                            File temporaryFile = File.createTempFile("font", null);
+                            String extension;
+                            String easyWayMimeType = getContentResolver().getType(intentData);
+
+                            // Workaround for Android 5 which doesn't detect .ttf or .jar files'
+                            // MIME type (but which did for .apk files!)
+                            if (easyWayMimeType.equals("application/octet-stream")) {
+                                extension = MimeTypeMap.getFileExtensionFromUrl(intentData.toString());
+                            } else {
+                                extension = easyWayMimeType.split("/")[1];
+                            }
+
+                            File temporaryFile = File.createTempFile("font", "." + extension);
                             fontUri = Uri.fromFile(temporaryFile);
                             try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {
                                 try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
