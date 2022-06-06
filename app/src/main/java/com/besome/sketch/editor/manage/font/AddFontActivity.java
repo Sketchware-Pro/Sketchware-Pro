@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -99,13 +100,24 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Uri intentData = data.getData();
-        if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK && intentData != null && selectFile != null) {
+        if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK) {
+            Uri intentData = data.getData();
             new Thread(() -> {
                 try {
                     try (ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(intentData, "r")) {
                         try (FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
-                            File temporaryFile = File.createTempFile("font", null);
+                            String extension;
+                            String easyWayMimeType = getContentResolver().getType(intentData);
+
+                            // Workaround for Android 5 which doesn't detect .ttf or .jar files'
+                            // MIME type (but which did for .apk files!)
+                            if (easyWayMimeType.equals("application/octet-stream")) {
+                                extension = MimeTypeMap.getFileExtensionFromUrl(intentData.toString());
+                            } else {
+                                extension = easyWayMimeType.split("/")[1];
+                            }
+
+                            File temporaryFile = File.createTempFile("font", "." + extension);
                             fontUri = Uri.fromFile(temporaryFile);
                             try (FileOutputStream outputStream = new FileOutputStream(temporaryFile)) {
                                 try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
