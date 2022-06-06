@@ -99,8 +99,8 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Uri intentData = data.getData();
-        if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK && intentData != null && selectFile != null) {
+        if (requestCode == REQUEST_CODE_FONT_PICKER && resultCode == RESULT_OK) {
+            Uri intentData = data.getData();
             new Thread(() -> {
                 try {
                     try (ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(intentData, "r")) {
