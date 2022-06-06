@@ -1,11 +1,8 @@
 package <?package_name?>;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Process;
 import android.util.Log;
 
 public class SketchApplication extends Application {
@@ -20,33 +17,21 @@ public class SketchApplication extends Application {
     @Override
     public void onCreate() {
         mApplicationContext = getApplicationContext();
-        this.uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
 
-        Thread.setDefaultUncaughtExceptionHandler(
-            new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread thread, Throwable throwable) {
-                    Intent intent = new Intent(getApplicationContext(), DebugActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.putExtra("error", Log.getStackTraceString(throwable));
+        // Setup handler for uncaught exceptions.
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable throwable) {
+                throwable.printStackTrace();
+                DebugActivity.saveErrorLog(SketchApplication.this.getApplicationContext(), Log.getStackTraceString(throwable));
+                System.exit(1);
+            }
+        });
 
-                    PendingIntent pendingIntent =
-                        PendingIntent.getActivity(
-                            getApplicationContext(),
-                            11111,
-                            intent,
-                            PendingIntent.FLAG_ONE_SHOT
-                        );
+        //Look for saved crash logs and show them
+        if (!DebugActivity.getLastSavedErrorLog(getApplicationContext()).isEmpty())
+            startActivity(new Intent(getApplicationContext(), DebugActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, pendingIntent);
-
-                    Process.killProcess(Process.myPid());
-                    System.exit(1);
-
-                    uncaughtExceptionHandler.uncaughtException(thread, throwable);
-                }
-            });
         super.onCreate();
     }
 }

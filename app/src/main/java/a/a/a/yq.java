@@ -529,14 +529,17 @@ public class yq {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
                         "Application \\{", "androidx.multidex.MultiDexApplication \\{");
             }
+
             if (logCatEnabled) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replace(
-                        "super.onCreate();", "SketchLogger.startLogging();\n" +
-                                "        super.onCreate();").replace(
-                        "Process.killProcess(Process.myPid());",
-                        "                SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
-                                "                SketchLogger.stopLogging();\n" + "Process.killProcess(Process.myPid());"
-                );
+                                "super.onCreate();",
+                                "SketchLogger.startLogging();\n"
+                                        + "        super.onCreate();")
+                        .replace("System.exit(1);",
+                                "SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n"
+                                        + "             SketchLogger.stopLogging();\n"
+                                        + "             System.exit(1);"
+                        );
             }
 
             L.b(y + File.separator
