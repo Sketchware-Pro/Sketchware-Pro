@@ -36,6 +36,7 @@ public class yq {
      * <code>/</code> at the end, e.g. <code>sk-pro-default-rtdb.firebaseio.com</code>.
      */
     private static final String FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER = "(-default-rtdb)?\\.[a-z](.?)+";
+
     /**
      * Assets directory of current project,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets
@@ -299,29 +300,7 @@ public class yq {
         j = yB.a(metadata, "color_control_highlight", ContextCompat.getColor(context, R.color.color_control_highlight));
         k = yB.a(metadata, "color_control_normal", ContextCompat.getColor(context, R.color.color_control_normal));
         projectSettings = new ProjectSettings(b);
-        b(context);
-    }
 
-    /**
-     * Deletes the directory {@link yq#w}/values-v21/.
-     */
-    public void a() {
-        File file = new File(w + File.separator + "values-v21");
-        if (file.exists()) {
-            L.a(file);
-        }
-    }
-
-    /**
-     * Does nothing.
-     */
-    public void b() {
-    }
-
-    /**
-     * Initializes fields with provided {@link Context}.
-     */
-    public final void b(Context context) {
         L = new oB(true);
         M = new Gson();
         O = new Zo(context);
@@ -356,6 +335,22 @@ public class yq {
         unalignedSignedApkPath = t + File.separator + d + ".apk.signed.unaligned";
         H = t + File.separator + d + ".apk";
         I = wq.o() + File.separator + d + "_release.apk";
+    }
+
+    /**
+     * Deletes the directory {@link yq#w}/values-v21/.
+     */
+    public void a() {
+        File file = new File(w + File.separator + "values-v21");
+        if (file.exists()) {
+            L.a(file);
+        }
+    }
+
+    /**
+     * Does nothing.
+     */
+    public void b() {
     }
 
     /**
