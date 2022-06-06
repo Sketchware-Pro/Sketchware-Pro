@@ -55,22 +55,10 @@ public class yq {
     public String C;
 
     /**
-     * DEX file called project.dex (??),
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/project.dex
-     */
-    public String D;
-
-    /**
      * DEX file called classes.dex (??),
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes.dex
      */
     public String E;
-
-    /**
-     * DEX file called classes2.dex (??),
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes2.dex
-     */
-    public String F;
 
     /**
      * Unsigned APK file's path,
@@ -104,17 +92,6 @@ public class yq {
     public Gson M;
     public jq N;
     public Zo O;
-
-    /**
-     * HashMap containing information about current project stored in
-     * /Internal storage/.sketchware/data/sc_id/project, like {custom_icon=false, sc_ver_code=1,
-     * my_ws_name=InternalDemo, color_accent=-1.6740915E7,
-     * my_app_name=Sketchware Pro Remod Remod Demo, sc_ver_name=1.0, sc_id=605,
-     * color_primary=-1.6740915E7, color_control_highlight=5.36907213E8,
-     * color_control_normal=-1.1026706E7, my_sc_reg_dt=20210130213630, sketchware_ver=150.0,
-     * my_sc_pkg_name=com.jbk.internal.demo, color_primary_dark=-1.674323E7}
-     */
-    public HashMap<String, Object> a;
 
     /**
      * ProGuard rules file's path,
@@ -214,18 +191,6 @@ public class yq {
     public String n;
 
     /**
-     * Project's compiled MainActivity.java file's path,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/java/com/jbk/internal/demo/MainActivity.java
-     */
-    public String o;
-
-    /**
-     * Project's MainActivity's full Java name,
-     * e.g. com.jbk.internal.demo.MainActivity
-     */
-    public String p;
-
-    /**
      * Path of file containing the ProGuard mapping,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/mapping.txt
      */
@@ -247,12 +212,6 @@ public class yq {
      * Current project's ProjectSettings object
      */
     public ProjectSettings projectSettings;
-
-    /**
-     * Project's compiled SketchApplication.java's path,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/java/com/jbk/internal/demo/SketchApplication.java
-     */
-    public String q;
 
     /**
      * Compiled AndroidManifest.xml's path of current project,
@@ -326,7 +285,6 @@ public class yq {
 
     public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
         N = new jq();
-        a = metadata;
         b = yB.c(metadata, "sc_id");
         c = myscFolderPath;
         e = yB.c(metadata, "my_sc_pkg_name");
@@ -392,14 +350,7 @@ public class yq {
         B = A + File.separator + "fonts";
         r = c + "app" + File.separator + "src" + File.separator + "main" + File.separator + "AndroidManifest.xml";
         C = t + File.separator + d + ".apk.res";
-        D = t + File.separator + "project.dex";
         E = t + File.separator + "classes.dex";
-        F = t + File.separator + "classes2.dex";
-        o = y + File.separator + n;
-        o += File.separator + "MainActivity.java";
-        p = e + "." + "MainActivity.java".replaceAll(".java", "");
-        q = y + File.separator + n;
-        q += File.separator + "SketchApplication.java";
         G = t + File.separator + d + ".apk.unsigned";
         alignedApkPath = G + ".aligned";
         unalignedSignedApkPath = t + File.separator + d + ".apk.signed.unaligned";
