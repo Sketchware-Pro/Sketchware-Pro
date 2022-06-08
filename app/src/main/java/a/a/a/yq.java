@@ -11,7 +11,6 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
-import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -40,47 +39,63 @@ public class yq {
     /**
      * Assets directory of current project,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets
+     * <p>
+     * Proposed new name: assetsPath
      */
-    public String A;
+    public final String A;
 
     /**
      * Imported fonts directory of current project,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets/fonts
+     * <p>
+     * Proposed new name: fontsPath
      */
-    public String B;
+    public final String B;
 
     /**
      * Path of compiled resources in a ZIP file of current project,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.res
+     * <p>
+     * Proposed new name: resourcesApkPath
      */
-    public String C;
+    public final String C;
 
     /**
      * DEX file called classes.dex (??),
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes.dex
+     * <p>
+     * Proposed new name: classesDexPath
      */
-    public String E;
+    public final String E;
 
     /**
      * Unsigned APK file's path,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned
+     * <p>
+     * Proposed new name: unsignedUnalignedApkPath
      */
-    public String G;
+    public final String G;
 
     /**
      * Signed APK file's path,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk
+     * <p>
+     * Proposed new name: finalToInstallApkPath
      */
-    public String H;
+    public final String H;
 
     /**
      * Release APK file's path,
      * e.g. /storage/emulated/0/sketchware/signed_apk/InternalDemo_release.apk
+     * <p>
+     * Proposed new name: releaseApkPath
      */
-    public String I;
+    public final String I;
 
     /**
      * Path of ZIP file containing project's sources (only used/set at {@link com.besome.sketch.export.ExportProjectActivity}).
+     * <p>
+     * Proposed new name: exportedSourcesZipPath
      */
     public String J;
 
@@ -88,11 +103,14 @@ public class yq {
      * Unknown,
      * e.g. [SketchApplication.java, DebugActivity.java]
      */
-    public ArrayList<String> K;
-    public oB L;
-    public Gson M;
+    public final ArrayList<String> K;
+
+    /**
+     * Proposed new name: fileUtil
+     */
+    public final oB L;
     public jq N;
-    public Zo O;
+    public final Zo O;
 
     /**
      * ProGuard rules file's path,
@@ -103,20 +121,23 @@ public class yq {
     /**
      * Path of the aligned, still unsigned APK,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned.aligned
+     * <p>
+     * Proposed new name: unsignedAlignedApkPath
      */
-    public String alignedApkPath;
+    public final String alignedApkPath;
 
     /**
-     * Project's sc_id,
-     * e.g. 605
+     * Proposed new name: sc_id
      */
-    public String b;
+    public final String b;
 
     /**
      * Project's mysc folder path,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/
+     *
+     * Proposed new name: projectMyscPath
      */
-    public String c;
+    public final String c;
 
     /**
      * ProGuarded classes.jar file's path of current project,
@@ -125,71 +146,63 @@ public class yq {
     public String classes_proguard;
 
     /**
-     * Project name of current project,
-     * e.g. InternalDemo
+     * Proposed new name: projectName
      */
-    public String d;
+    public final String d;
 
     /**
-     * Package name of current project,
-     * e.g. com.jbk.internal.demo
+     * Proposed new name: packageName
      */
-    public String e;
+    public final String e;
 
     /**
-     * Application's name of current project,
-     * e.g. Sketchware Pro Remod Remod Demo
+     * Proposed new name: applicationName
      */
-    public String f;
+    public final String f;
 
     /**
-     * Project/Application's accent color (as integer),
-     * e.g. -16740915
+     * Proposed new name: colorAccent
      */
-    public int g;
+    public final int g;
 
     /**
-     * Project/Application's primary color (as integer),
-     * e.g. -16740915
+     * Proposed new name: colorPrimary
      */
-    public int h;
+    public final int h;
 
     /**
-     * Project/Application's dark primary color (as integer),
-     * e.g. -16743230
+     * Proposed new name: colorPrimaryDark
      */
-    public int i;
+    public final int i;
 
     /**
-     * Project/Application's control highlight color (as integer),
-     * e.g. 36907213
+     * Proposed new name: colorControlHighlight
      */
-    public int j;
+    public final int j;
 
     /**
-     * Project/Application's normal control color (as integer),
-     * e.g. -11026706
+     * Proposed new name: colorControlNormal
      */
-    public int k;
+    public final int k;
 
     /**
-     * Version code of current project,
-     * e.g. 1
+     * Proposed new name: versionCode
      */
-    public String l;
+    public final String l;
 
     /**
-     * Version name of current project,
-     * e.g. 1.0
+     * Proposed new name: versionName
      */
-    public String m;
+    public final String m;
 
     /**
      * Package name of current project,
      * but "folders" separated with slashes (/) instead of periods (.),
      * e.g. com/jbk/internal/demo
+     *
+     * Proposed new name: packageNameAsFolders
      */
-    public String n;
+    public final String n;
 
     /**
      * Path of file containing the ProGuard mapping,
@@ -217,8 +230,10 @@ public class yq {
     /**
      * Compiled AndroidManifest.xml's path of current project,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/AndroidManifest.xml
+     *
+     * Proposed new name: androidManifestPath
      */
-    public String r;
+    public final String r;
 
     /**
      * Path of ProGuard rules generated by a resource processor,
@@ -229,56 +244,72 @@ public class yq {
     /**
      * Project's generated Java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main
+     *
+     * Proposed new name: generatedFilesPath
      */
-    public String s;
+    public final String s;
 
     /**
      * Project's compiled binary directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin
+     *
+     * Proposed new name: binDirectoryPath
      */
-    public String t;
+    public final String t;
 
     /**
      * Project's compiled Java classes directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes
+     *
+     * Proposed new name: compiledClassesPath
      */
-    public String u;
+    public final String u;
 
     /**
      * Path of the unaligned but signed APK,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.signed.unaligned
      */
-    public String unalignedSignedApkPath;
+    public final String unalignedSignedApkPath;
 
     /**
      * Project's generated R.java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/gen
+     *
+     * Proposed new name: rJavaDirectoryPath
      */
-    public String v;
+    public final String v;
 
     /**
      * Generated project resources directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/res
+     *
+     * Proposed new name: resFilesPath
      */
-    public String w;
+    public final String w;
 
     /**
      * Project's generated layout files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/layout
+     *
+     * Proposed new name: layoutFilesPath
      */
-    public String x;
+    public final String x;
 
     /**
      * Project's generated Java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/java
+     *
+     * Proposed new name: javaFilesPath
      */
-    public String y;
+    public final String y;
 
     /**
      * Project's imported sounds directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
+     *
+     * Proposed new name: importedSoundsPath
      */
-    public String z;
+    public final String z;
 
     public yq(Context context, String sc_id) {
         this(context, wq.d(sc_id), lC.b(sc_id));
@@ -287,7 +318,7 @@ public class yq {
     public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
         N = new jq();
         b = yB.c(metadata, "sc_id");
-        c = myscFolderPath;
+        c = myscFolderPath.endsWith(File.separator) ? myscFolderPath : myscFolderPath + File.separator;
         e = yB.c(metadata, "my_sc_pkg_name");
         d = yB.c(metadata, "my_ws_name");
         f = yB.c(metadata, "my_app_name");
@@ -302,14 +333,10 @@ public class yq {
         projectSettings = new ProjectSettings(b);
 
         L = new oB(true);
-        M = new Gson();
         O = new Zo(context);
         K = new ArrayList<>();
         K.add("SketchApplication.java");
         K.add("DebugActivity.java");
-        if (!c.endsWith(File.separator)) {
-            c += File.separator;
-        }
         n = e.replaceAll("\\.", File.separator);
         t = c + "bin";
         u = t + File.separator + "classes";
