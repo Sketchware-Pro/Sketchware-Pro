@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
+import mod.SketchwareUtil;
 
 public class PaletteSelector {
 
@@ -23,10 +24,21 @@ public class PaletteSelector {
                 JSONArray palettes = new JSONArray(paletteBlockFile);
                 for (int i = 0; i < palettes.length(); i++) {
                     JSONObject item = palettes.getJSONObject(i);
-                    setPaletteData(start, item.get("name").toString(), Color.parseColor(item.get("color").toString()));
+
+                    int color;
+
+                    try {
+                        color = Color.parseColor(item.get("color").toString());
+                    } catch (IllegalArgumentException e) {
+                        SketchwareUtil.toastError("Couldn't parse color of Custom Block Palette #" + (i + 1));
+                        color = 0xff8a55d7;
+                    }
+
+                    setPaletteData(start, item.get("name").toString(), color);
                     start++;
                 }
-            } catch (JSONException ignored) {
+            } catch (JSONException e) {
+                SketchwareUtil.toastError("Error occurred while loading Custom Block Palette: " + e);
             }
         }
 
