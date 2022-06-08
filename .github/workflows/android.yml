@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: temurin
@@ -45,7 +45,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build debug APK with AAB support
-        uses: eskatos/gradle-command-action@v1
+        uses: eskatos/gradle-command-action@v2
         with:
           arguments: assembleWithAabOutputSupportDebug
           distributions-cache-enabled: true
@@ -53,13 +53,13 @@ jobs:
           configuration-cache-enabled: true
 
       - name: Upload debug APK with AAB support
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk-withAabOutputSupport-debug
           path: app/build/outputs/apk/withAabOutputSupport/debug
 
       - name: Build debug APK without AAB support
-        uses: eskatos/gradle-command-action@v1
+        uses: eskatos/gradle-command-action@v2
         with:
           arguments: assembleWithoutAabOutputSupportDebug
           distributions-cache-enabled: true
@@ -67,7 +67,7 @@ jobs:
           configuration-cache-enabled: true
 
       - name: Upload debug APK without AAB support
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk-withoutAabOutputSupport-debug
           path: app/build/outputs/apk/withoutAabOutputSupport/debug
