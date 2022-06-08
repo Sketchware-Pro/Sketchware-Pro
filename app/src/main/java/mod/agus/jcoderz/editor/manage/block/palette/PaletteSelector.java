@@ -2,18 +2,19 @@ package mod.agus.jcoderz.editor.manage.block.palette;
 
 import android.graphics.Color;
 
-import dev.aldi.sayuti.block.ExtraBlockFile;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import dev.aldi.sayuti.block.ExtraBlockFile;
+
 public class PaletteSelector {
-    public ArrayList<HashMap<String, Object>> list = new ArrayList<>();
-    public int start = 9;
+
+    private final ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+    private int start = 9;
 
     public ArrayList<HashMap<String, Object>> getPaletteSelector() {
         String paletteBlockFile = ExtraBlockFile.getPaletteBlockFile();
@@ -28,6 +29,7 @@ public class PaletteSelector {
             } catch (JSONException ignored) {
             }
         }
+
         return list;
     }
 
