@@ -568,7 +568,11 @@ public class Ox {
     public void writeTextAttributes(Nx nx, ViewBean viewBean) {
         String text = viewBean.text.text;
         if (text != null && text.length() > 0) {
-            nx.a("android", "text", escapeXML(text));
+            if (text.startsWith("@")) {
+                nx.a("android", "text", text);
+            } else {
+                nx.a("android", "text", escapeXML(text));
+            }
         }
 
         int textSize = viewBean.text.textSize;
@@ -593,7 +597,11 @@ public class Ox {
             case 24:
                 String hint = viewBean.text.hint;
                 if (hint != null && hint.length() > 0) {
-                    nx.a("android", "hint", escapeXML(hint));
+                    if (hint.startsWith("@")) {
+                        nx.a("android", "hint", hint);
+                    } else {
+                        nx.a("android", "hint", escapeXML(hint));
+                    }
                 }
                 if (viewBean.text.hintColor != 0) {
                     if (!hasAttr("textColorHint", viewBean))
