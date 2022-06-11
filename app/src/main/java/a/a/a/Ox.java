@@ -676,6 +676,7 @@ public class Ox {
         switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
             case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
+            case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON:
                 if (viewBean.checked == 1) {
                     nx.a("android", "checked", "true");
                 }

@@ -32,8 +32,6 @@
     <public type="anim" name="design_snackbar_in" id="0x7f01001d" />
     <public type="anim" name="design_snackbar_out" id="0x7f01001e" />
     <public type="anim" name="shake" id="0x7f01001f" />
-    <public type="anim" name="marked_item_animation" id="0x7f010020" />
-    <public type="anim" name="unmarked_item_animation" id="0x7f010021" />
     <public type="animator" name="design_appbar_state_list_animator" id="0x7f020000" />
     <public type="animator" name="design_fab_hide_motion_spec" id="0x7f020001" />
     <public type="animator" name="design_fab_show_motion_spec" id="0x7f020002" />
@@ -624,13 +622,6 @@
     <public type="attr" name="windowMinWidthMajor" id="0x7f030238" />
     <public type="attr" name="windowMinWidthMinor" id="0x7f030239" />
     <public type="attr" name="windowNoTitle" id="0x7f03023a" />
-    <public type="attr" name="selection_mode" id="0x7f03023b" />
-    <public type="attr" name="selection_type" id="0x7f03023c" />
-    <public type="attr" name="root_dir" id="0x7f03023d" />
-    <public type="attr" name="error_dir" id="0x7f03023e" />
-    <public type="attr" name="offset_dir" id="0x7f03023f" />
-    <public type="attr" name="extensions" id="0x7f030240" />
-    <public type="attr" name="title_text" id="0x7f030241" />
     <public type="attr" name="autoCompleteEnabled" id="0x7f030242" />
     <public type="attr" name="cursorBlinkPeriod" id="0x7f030243" />
     <public type="attr" name="dividerWidth" id="0x7f030244" />
@@ -2236,7 +2227,6 @@
     <public type="drawable" name="width_96" id="0x7f070447" />
     <public type="drawable" name="xml_96" id="0x7f070448" />
     <public type="drawable" name="yellow_arrow_down" id="0x7f070449" />
-    <public type="drawable" name="bottom_shadow" id="0x7f07044a" />
     <public type="drawable" name="ic_folder_128" id="0x7f07044b" />
     <public type="drawable" name="dava" id="0x7f07044c" />
     <public type="drawable" name="folder" id="0x7f07044d" />
@@ -4650,11 +4640,6 @@
     <public type="layout" name="view_property" id="0x7f0b01c1" />
     <public type="layout" name="widget_layout" id="0x7f0b01c2" />
     <public type="layout" name="xml_viewer" id="0x7f0b01c3" />
-    <public type="layout" name="dialog_file_list" id="0x7f0b01c4" />
-    <public type="layout" name="dialog_file_list_item" id="0x7f0b01c5" />
-    <public type="layout" name="dialog_footer" id="0x7f0b01c6" />
-    <public type="layout" name="dialog_header" id="0x7f0b01c7" />
-    <public type="layout" name="dialog_main" id="0x7f0b01c8" />
     <public type="layout" name="manage_file" id="0x7f0b01c9" />
     <public type="layout" name="manage_permission" id="0x7f0b01ca" />
     <public type="layout" name="view_code" id="0x7f0b01cb" />
@@ -4695,7 +4680,6 @@
     <public type="layout" name="code_editor_hs" id="0x7f0b01f1" />
     <public type="layout" name="result_item" id="0x7f0b01f2" />
     <public type="layout" name="text_compose_panel" id="0x7f0b01f3" />
-    <public type="layout" name="default_completion_result_item" id="0x7f0b01f4" />
     <public type="layout" name="about_changelog" id="0x7f0b01f5" />
     <public type="layout" name="about_empty_viewpager" id="0x7f0b01f6" />
     <public type="layout" name="about_moddersview" id="0x7f0b01f7" />
@@ -4728,9 +4712,6 @@
     <public type="menu" name="popup_menu_double" id="0x7f0c001d" />
     <public type="menu" name="popup_menu_single" id="0x7f0c001e" />
     <public type="mipmap" name="sketch_app_icon" id="0x7f0d0000" />
-    <public type="mipmap" name="ic_directory_parent" id="0x7f0d0001" />
-    <public type="mipmap" name="ic_type_file" id="0x7f0d0002" />
-    <public type="mipmap" name="ic_type_folder" id="0x7f0d0003" />
     <public type="mipmap" name="box_red" id="0x7f0d0004" />
     <public type="string" name="abc_action_bar_home_description" id="0x7f0e0000" />
     <public type="string" name="abc_action_bar_up_description" id="0x7f0e0001" />
