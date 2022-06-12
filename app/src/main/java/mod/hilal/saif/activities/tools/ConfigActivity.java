@@ -300,7 +300,7 @@ public class ConfigActivity extends Activity {
                 "Enables syntax highlighting while editing blocks' text parameters.",
                 SETTING_USE_ASD_HIGHLIGHTER,
                 false);
-        addTextInputPreference("Backup Filename Format",
+        addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-M-dd'T'HHmmss)\"", v -> {
                     final LinearLayout container = new LinearLayout(this);
                     container.setPadding(
@@ -313,17 +313,17 @@ public class ConfigActivity extends Activity {
                     tilBackupFormat.setLayoutParams(new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
-                    tilBackupFormat.setHint("Backup Filename Format");
-                    tilBackupFormat.setHelperText("This defines how your backup files will be named.\n" +
-                            "Available Syntax:\n" +
-                            "$projectName - For Project Name" +
-                            "$versionCode - For Projects version code\n" +
-                            "$versionName -  For Projects version name\n" +
-                            "$pkgName - Package Name of the project\n" +
-                            "$timeInMs - Time of backup in milliseconds :3\n" +
-                            "Additionally you can format your own time like this(Supports All Java Time Syntax):\n" +
-                            "$time(yyyy-M-dd'T'HHmmss) \n" +
-                            "Make sure you put your time format inside those brackets like upper one.\n" +
+                    tilBackupFormat.setHint("Format");
+                    tilBackupFormat.setHelperText("This defines how SWB backup files get named.\n" +
+                            "Available variables:\n" +
+                            " - $projectName - Project name\n" +
+                            " - $versionCode - App version code\n" +
+                            " - $versionName - App version name\n" +
+                            " - $pkgName - App package name\n" +
+                            " - $timeInMs - Time during backup in milliseconds\n" +
+                            "\n" +
+                            "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
+                            "$time(yyyy-M-dd'T'HHmmss)\n" +
                             "\n" +
                             "Use them however you like. (Note: Default format will be used if there's any error with your defined format)");
                     container.addView(tilBackupFormat);
@@ -337,7 +337,7 @@ public class ConfigActivity extends Activity {
                     tilBackupFormat.addView(backupFilename);
 
                     new AlertDialog.Builder(this)
-                            .setTitle("Backup Filename Format")
+                            .setTitle("Backup filename format")
                             .setView(container)
                             .setNegativeButton(R.string.common_word_cancel, (dialogInterface, which) -> dialogInterface.dismiss())
                             .setPositiveButton(R.string.common_word_save, (dialogInterface, which) -> {
