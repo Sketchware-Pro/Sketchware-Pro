@@ -437,8 +437,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 dialog.a(R.drawable.break_warning_96_red);
                 dialog.b("Can't generate App Bundle");
                 dialog.a("This Sketchware Pro version doesn't support building AABs as it must work on " +
-                        "Android 7.1.1 and earlier. Use a Sketchware Pro " + BuildConfig.VERSION_NAME.split(" ")[0] + " " +
-                        "build with AAB support.");
+                        "Android 7.1.1 and earlier. Use Sketchware Pro " + BuildConfig.VERSION_NAME_WITHOUT_FLAVOR + "-" +
+                        BuildConfig.FLAVOR_NAME_WITH_AABS + " instead.");
                 dialog.b(Helper.getResString(R.string.common_word_close), Helper.getDialogDismissListener(dialog));
                 dialog.show();
             } else {

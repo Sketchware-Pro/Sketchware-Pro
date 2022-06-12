@@ -29,6 +29,8 @@ android {
 
         buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
+
+        buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v6.4.0-SNAPSHOT-${getCommitHash()}\"")
     }
 
     flavorDimensions "api"
