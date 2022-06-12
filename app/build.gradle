@@ -97,7 +97,7 @@ dependencies {
 
     withAabOutputSupportImplementation "com.android.tools.build:bundletool:1.9.1"
     //noinspection GradleDependency
-    implementation "com.android.tools:sdklib:25.3.0"
+    implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:3.3.28"
 
     implementation "com.google.code.gson:gson:2.9.0"
@@ -106,6 +106,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:3.10.0"
     //noinspection GradleDependency
     implementation "com.squareup.okio:okio:1.14.0"
+
+    implementation "com.guardsquare:proguard-base:7.1.1"
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
