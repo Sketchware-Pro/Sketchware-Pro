@@ -44,30 +44,30 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
 
-      - name: Build debug APK with AAB support
+      - name: Build debug APK with minApi 26
         uses: eskatos/gradle-command-action@v2
         with:
-          arguments: assembleWithAabOutputSupportDebug
+          arguments: assembleMinApi26Debug
           distributions-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
 
-      - name: Upload debug APK with AAB support
+      - name: Upload debug APK with minApi 26
         uses: actions/upload-artifact@v3
         with:
-          name: apk-withAabOutputSupport-debug
-          path: app/build/outputs/apk/withAabOutputSupport/debug
+          name: apk-minApi26-debug
+          path: app/build/outputs/apk/minApi26/debug
 
-      - name: Build debug APK without AAB support
+      - name: Build debug APK with minApi 21
         uses: eskatos/gradle-command-action@v2
         with:
-          arguments: assembleWithoutAabOutputSupportDebug
+          arguments: assembleMinApi21Debug
           distributions-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
 
-      - name: Upload debug APK without AAB support
+      - name: Upload debug APK with minApi 21
         uses: actions/upload-artifact@v3
         with:
-          name: apk-withoutAabOutputSupport-debug
-          path: app/build/outputs/apk/withoutAabOutputSupport/debug
+          name: apk-minApi21-debug
+          path: app/build/outputs/apk/minApi21/debug
