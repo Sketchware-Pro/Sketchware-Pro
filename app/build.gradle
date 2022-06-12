@@ -27,22 +27,22 @@ android {
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
-        buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"withAabOutputSupport\"")
-        buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"withoutAabOutputSupport\"")
+        buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
+        buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
     }
 
     flavorDimensions "api"
     productFlavors {
-        withAabOutputSupport {
+        minApi26 {
             dimension "api"
             minSdkVersion 26
-            versionNameSuffix " with AAB support"
+            versionNameSuffix "-minApi26"
         }
 
-        withoutAabOutputSupport {
+        minApi21 {
             dimension "api"
             minSdkVersion 21
-            versionNameSuffix " without AAB support"
+            versionNameSuffix "-minApi21"
         }
     }
 
@@ -95,7 +95,7 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
-    withAabOutputSupportImplementation "com.android.tools.build:bundletool:1.9.1"
+    minApi26Implementation "com.android.tools.build:bundletool:1.9.1"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:3.3.28"
