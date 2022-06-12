@@ -323,9 +323,7 @@ public class ConfigActivity extends Activity {
                             " - $timeInMs - Time during backup in milliseconds\n" +
                             "\n" +
                             "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
-                            "$time(yyyy-M-dd'T'HHmmss)\n" +
-                            "\n" +
-                            "Use them however you like. (Note: Default format will be used if there's any error with your defined format)");
+                            "$time(yyyy-M-dd'T'HHmmss)\n");
                     container.addView(tilBackupFormat);
 
                     final EditText backupFilename = new EditText(this);
