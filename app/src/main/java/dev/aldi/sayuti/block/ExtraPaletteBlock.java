@@ -93,7 +93,7 @@ public class ExtraPaletteBlock {
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW, str2);
 
             case "onesignal":
-                return jC.a(sc_id).d(javaName, 32, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_ONESIGNAL, str2);
 
             case "asynctask":
                 return jC.a(sc_id).d(javaName, 36, str2);
@@ -105,10 +105,10 @@ public class ExtraPaletteBlock {
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW, str2);
 
             case "phoneauth":
-                return jC.a(sc_id).d(javaName, 28, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_PHONE, str2);
 
             case "fbadbanner":
-                return jC.a(sc_id).d(javaName, 33, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, str2);
 
             case "codeview":
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW, str2);
@@ -117,10 +117,10 @@ public class ExtraPaletteBlock {
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW, str2);
 
             case "googlelogin":
-                return jC.a(sc_id).d(javaName, 31, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN, str2);
 
             case "dynamiclink":
-                return jC.a(sc_id).d(javaName, 29, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS, str2);
 
             case "youtubeview":
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW, str2);
@@ -135,7 +135,7 @@ public class ExtraPaletteBlock {
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP, str2);
 
             case "fbadinterstitial":
-                return jC.a(sc_id).d(javaName, 34, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL, str2);
 
             case "textinputlayout":
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT, str2);
@@ -144,7 +144,7 @@ public class ExtraPaletteBlock {
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT, str2);
 
             case "cloudmessage":
-                return jC.a(sc_id).d(javaName, 30, str2);
+                return jC.a(sc_id).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE, str2);
 
             case "datepicker":
                 return jC.a(sc_id).g(xmlName, ViewBeans.VIEW_TYPE_WIDGET_DATEPICKER, str2);
