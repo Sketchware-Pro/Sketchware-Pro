@@ -274,8 +274,8 @@ public class Dp {
          * Add yq#u (.sketchware/mysc/xxx/bin/classes) if it exists
          * since there might be compiled Kotlin files for ecj to use classpath as.
          */
-        if (FileUtil.isExistFile(f.u)) {
-            classpath.append(f.u);
+        if (FileUtil.isExistFile(yq.u)) {
+            classpath.append(yq.u);
             classpath.append(":");
         }
 

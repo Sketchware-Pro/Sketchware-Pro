@@ -18,7 +18,7 @@ import java.io.File
 class KotlinCompiler(
     private val builder: Dp
 ) {
-    private val workspace = builder.f
+    private val workspace = builder.yq
 
     /**
      * Invokes `kotlinc`.

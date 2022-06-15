@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -24,6 +25,7 @@ import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
@@ -35,6 +37,8 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
@@ -251,7 +255,7 @@ public class ManageJavaActivity extends Activity {
                         return;
                     }
 
-                    FileUtil.writeFile(new File(current_path, name + ".java").getAbsolutePath(), newFileContent);
+                    FileUtil.writeFile(new File(current_path, name + extension).getAbsolutePath(), newFileContent);
                     refresh();
                     SketchwareUtil.toast("File was created successfully");
                     dialog.dismiss();

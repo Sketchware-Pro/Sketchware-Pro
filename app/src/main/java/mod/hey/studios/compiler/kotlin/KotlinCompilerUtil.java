@@ -22,7 +22,7 @@ public class KotlinCompilerUtil {
      * or not.
      */
     public static boolean areAnyKtFilesPresent(Dp dp) {
-        return areAnyKtFilesPresent(dp.f);
+        return areAnyKtFilesPresent(dp.yq);
     }
 
     public static boolean areAnyKtFilesPresent(yq yq) {
