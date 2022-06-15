@@ -545,7 +545,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "menuAddItem");
         hashMap.put("type", " ");
-        hashMap.put("code", "menu.add(%s, %s);");
+        hashMap.put("code", "menu.add(0, %s, 0, %s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Menu add id %d title %s");
@@ -572,7 +572,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "submenuAddItem");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add(%s, %s);");
+        hashMap.put("code", "%s.add(0, %s, 0, %s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.submenu add id %d title %s");
