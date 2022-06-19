@@ -4,7 +4,6 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -45,8 +44,6 @@ public class AndroidManifestInjectionDetails extends Activity {
     private String type;
     private String constant;
 
-    private AlertDialog.Builder dia;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,13 +82,9 @@ public class AndroidManifestInjectionDetails extends Activity {
 
     private void setupViews() {
         FloatingActionButton fab = findViewById(R.id.add_attr_fab);
-        fab.setOnClickListener(v -> {
-            ///fab pressed
-            showAddDial();
-        });
+        fab.setOnClickListener(v -> showAddDial());
         listView = findViewById(R.id.add_attr_listview);
         refreshList();
-
     }
 
     private void refreshList() {
@@ -186,9 +179,6 @@ public class AndroidManifestInjectionDetails extends Activity {
             textView.setText("Add new Attribute");
         }
 
-        //editText.setText("");
-        //editText.setHint("value");
-
         textsave.setOnClickListener(_view -> {
             String fstr = editText3.getText().toString().trim() + ":" + editText2.getText().toString().trim() + "=\"" + editText.getText().toString().trim() + "\"";
             HashMap<String, Object> map = new HashMap<>();
@@ -201,7 +191,6 @@ public class AndroidManifestInjectionDetails extends Activity {
         });
 
         textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
-
         create.show();
     }
 
@@ -209,13 +198,11 @@ public class AndroidManifestInjectionDetails extends Activity {
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(ATTRIBUTES_FILE_PATH)) {
             data = new Gson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
-            ///int val = data.size()-1;
             for (int i = data.size() - 1; i > -1; i--) {
                 String str = (String) data.get(i).get("name");
                 if (str.equals(constant)) {
                     data.remove(i);
                 }
-                ///val--;
             }
             data.addAll(listMap);
         } else {
@@ -232,8 +219,6 @@ public class AndroidManifestInjectionDetails extends Activity {
         temp_card.setTextColor(color);
         temp_card.setText(str);
         temp_card.setTextSize(size);
-        //temp_card.setTypeface(Typeface.DEFAULT_BOLD);
-        //temp_card.setTypeface(Typeface.ITALIC);
         return temp_card;
     }
 
@@ -260,7 +245,6 @@ public class AndroidManifestInjectionDetails extends Activity {
         ViewGroup par = (ViewGroup) findViewById(R.id.tx_toolbar_title).getParent();
         ImageView _img = findViewById(R.id.ig_toolbar_back);
         _img.setOnClickListener(Helper.getBackPressedClickListener(this));
-        //(String str , float size, int color, int width, int height, float weight){
         if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
             // Feature description: allows to inject anything into the {@code activity} tag of the Activity
             // (yes, Command Blocks can do that too, but removing features is bad.)
@@ -302,63 +286,43 @@ public class AndroidManifestInjectionDetails extends Activity {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.custom_view_attribute, null);
             }
-            LinearLayout linearLayout = convertView.findViewById(R.id.cus_attr_layout);
-            TextView textView = convertView.findViewById(R.id.cus_attr_text);
-            final ImageView imageView = convertView.findViewById(R.id.cus_attr_btn);
-            imageView.setVisibility(View.GONE);
-            a(linearLayout, (int) getDip(4), (int) getDip(2));
 
+            LinearLayout root = convertView.findViewById(R.id.cus_attr_layout);
+            TextView attribute = convertView.findViewById(R.id.cus_attr_text);
+            ImageView options = convertView.findViewById(R.id.cus_attr_btn);
+            options.setVisibility(View.GONE);
+            a(root, (int) getDip(4), (int) getDip(2));
 
             try {
                 SpannableString spannableString = new SpannableString((String) _data.get(position).get("value"));
                 spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, ((String) _data.get(position).get("value")).indexOf(":"), 33);
                 spannableString.setSpan(new ForegroundColorSpan(0xff212121), ((String) _data.get(position).get("value")).indexOf(":"), ((String) _data.get(position).get("value")).indexOf("=") + 1, 33);
                 spannableString.setSpan(new ForegroundColorSpan(0xff45a245), ((String) _data.get(position).get("value")).indexOf("\""), ((String) _data.get(position).get("value")).length(), 33);
-                textView.setText(spannableString);
+                attribute.setText(spannableString);
             } catch (Exception e) {
-                textView.setText((String) _data.get(position).get("value"));
+                attribute.setText((String) _data.get(position).get("value"));
             }
-            textView.setPadding((int) getDip(12), (int) getDip(12), (int) getDip(12), (int) getDip(12));
-            textView.setTextSize(16);
-            linearLayout.setVisibility(View.VISIBLE);
+            attribute.setPadding((int) getDip(12), (int) getDip(12), (int) getDip(12), (int) getDip(12));
+            attribute.setTextSize(16);
+            root.setVisibility(View.VISIBLE);
 
-            linearLayout.setOnClickListener(v -> {
-                ///activity pressed
-                showDial(position);
-            });
-
-            linearLayout.setOnLongClickListener(v -> {
-                ////activity long pressed
-
-                dia = new AlertDialog.Builder(AndroidManifestInjectionDetails.this);
-
-                dia.setTitle("Attribute");
-
-                dia.setMessage("do you want to delete this attribute?");
-
-                dia.setPositiveButton("Yes", (dialog, which) -> {
-                    listMap.remove(position);
-                    applyChange();
-                    SketchwareUtil.toast("deleted");
-                });
-
-                dia.setNegativeButton("No", (dialog, which) -> {
-
-                });
-                dia.show();
-
+            root.setOnClickListener(v -> showDial(position));
+            root.setOnLongClickListener(v -> {
+                new AlertDialog.Builder(AndroidManifestInjectionDetails.this)
+                        .setTitle("Delete this attribute?")
+                        .setMessage("This action cannot be undone.")
+                        .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
+                            listMap.remove(position);
+                            applyChange();
+                            SketchwareUtil.toast("deleted");
+                        })
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .show();
 
                 return true;
             });
-
-            ///end
 
             return convertView;
         }
     }
 }
-
-
-
-
-
