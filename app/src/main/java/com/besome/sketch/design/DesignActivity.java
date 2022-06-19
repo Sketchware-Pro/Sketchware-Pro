@@ -81,6 +81,7 @@ import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
@@ -708,6 +709,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 editor.setColorScheme(new EditorColorScheme());
                 editor.setTextSize(14);
                 editor.setText(!source.equals("") ? source : "Failed to generate source.");
+                editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.setView(editor,

@@ -10,6 +10,7 @@ import com.sketchware.remod.R;
 
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 
 public class SourceCodeDialog {
@@ -23,6 +24,7 @@ public class SourceCodeDialog {
         codeEditor.setTextSize(12);
         codeEditor.setTypefaceText(Typeface.MONOSPACE);
         codeEditor.setWordwrap(false);
+        codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle("Source code")
