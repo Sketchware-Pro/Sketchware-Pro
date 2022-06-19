@@ -29,7 +29,6 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.ActComponentsDialog;
@@ -140,7 +139,6 @@ public class AndroidManifestInjectionDetails extends Activity {
             listMap.get(pos).put("value", editText.getText().toString());
             applyChange();
             create.dismiss();
-            SketchwareUtil.toast("saved");
         });
 
         textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
@@ -187,7 +185,6 @@ public class AndroidManifestInjectionDetails extends Activity {
             listMap.add(map);
             applyChange();
             create.dismiss();
-            SketchwareUtil.toast("added");
         });
 
         textcancel.setOnClickListener(Helper.getDialogDismissListener(create));
@@ -314,7 +311,6 @@ public class AndroidManifestInjectionDetails extends Activity {
                         .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
                             listMap.remove(position);
                             applyChange();
-                            SketchwareUtil.toast("deleted");
                         })
                         .setNegativeButton(R.string.common_word_cancel, null)
                         .show();
