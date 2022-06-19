@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/cus_attr_layout" android:background="#ffffffff" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
-        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="#ff000000" android:id="@id/cus_attr_text" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="android:fitsSystemWindows=&quot;true&quot;" android:layout_weight="1.0" />
-        <ImageView android:id="@id/cus_attr_btn" android:padding="7.0dip" android:focusable="false" android:layout_width="42.0dip" android:layout_height="42.0dip" android:src="@drawable/color_more_96" android:scaleType="centerCrop" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/cus_attr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/cus_attr_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="android:fitsSystemWindows=&quot;true&quot;"
+            android:textColor="#ff000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/cus_attr_btn"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:focusable="false"
+            android:padding="7dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/color_more_96" />
     </LinearLayout>
 </LinearLayout>
