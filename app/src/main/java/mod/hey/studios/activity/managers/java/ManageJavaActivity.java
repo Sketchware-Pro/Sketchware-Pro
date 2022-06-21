@@ -146,7 +146,7 @@ public class ManageJavaActivity extends Activity {
 
         Helper.applyRippleToToolbarView(back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
-        title.setText("Java/Kotlin Manager");
+        title.setText(getString(R.string.text_title_menu_java) + " Manager");
 
         loadFile.setVisibility(View.VISIBLE);
         Helper.applyRippleToToolbarView(loadFile);
