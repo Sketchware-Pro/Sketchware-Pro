@@ -886,7 +886,7 @@ public class Dp {
 
         // Add kotlin-stdlib if any .kt files are present in the project
         if (KotlinCompilerUtil.areAnyKtFilesPresent(this)) {
-            builtInLibraryManager.a("kotlin-stdlib-1.3.50");
+            builtInLibraryManager.a(BuiltInLibraries.KOTLIN_STDLIB);
         }
 
         ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
