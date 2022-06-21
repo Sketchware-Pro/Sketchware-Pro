@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -92,6 +91,7 @@ import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.build.BuildSettingsDialog;
+import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil;
 import mod.hey.studios.project.DesignActRunnable;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
@@ -1011,13 +1011,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    if (KotlinCompilerUtil.areAnyKtFilesPresent(mDp)) {
-                        publishProgress("Kotlin is compiling...");
-                        mDp.compileKotlin();
-                        if (canceled) {
-                            cancel(true);
-                            return;
-                        }
+                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, mDp);
+                    if (canceled) {
+                        cancel(true);
+                        return;
                     }
 
                     publishProgress("Java is compiling...");
@@ -1176,6 +1173,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             runProject.setClickable(false);
             r.a("P1I10", true);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
+        public void publicPublishProgress(String... values) {
+            publishProgress(values);
         }
     }
 
