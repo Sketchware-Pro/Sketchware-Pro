@@ -55,6 +55,7 @@ import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
+import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
@@ -267,6 +268,12 @@ public class Dp {
      */
     public final String d() {
         StringBuilder classpath = new StringBuilder();
+
+        /*
+         * Add yq#u (.sketchware/mysc/xxx/bin/classes) if it exists
+         * since there might be compiled Kotlin files for ecj to use classpath as.
+         */
+        KotlinCompilerBridge.maybeAddKotlinFilesToClasspath(classpath, yq);
 
         /* Add android.jar */
         classpath.append(androidJarPath);
@@ -865,6 +872,9 @@ public class Dp {
         if (yq.N.isDynamicLinkUsed) {
             builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
         }
+
+        KotlinCompilerBridge.maybeAddKotlinBuiltInLibraryDependenciesIfPossible(this, builtInLibraryManager);
+
         ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
     }
 

@@ -92,6 +92,7 @@ import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.build.BuildSettingsDialog;
+import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.DesignActRunnable;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
@@ -334,7 +335,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void onClick(View v) {
         if (!mB.a()) {
             if (v.getId() == R.id.btn_execute) {
-                new BuildAsyncTask(getApplicationContext()).execute();
+                if (KotlinCompilerBridge.maybeCheckIfDeviceSupportsKotlinc(this, q)) {
+                    new BuildAsyncTask(getApplicationContext()).execute();
+                }
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
@@ -994,6 +997,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
+                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, mDp);
+                    if (canceled) {
+                        cancel(true);
+                        return;
+                    }
+
                     publishProgress("Java is compiling...");
                     /* Compile Java classes */
                     mDp.f();
@@ -1150,6 +1159,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             runProject.setClickable(false);
             r.a("P1I10", true);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
+        public void publicPublishProgress(String... values) {
+            publishProgress(values);
         }
     }
 

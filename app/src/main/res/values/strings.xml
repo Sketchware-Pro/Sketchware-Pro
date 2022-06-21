@@ -2598,12 +2598,10 @@ Please check the URL again."</string>
     <string name="error_dir_access" />
     <string name="default_dir">/sdcard</string>
     <string name="label_parent_dir">...</string>
-    <string name="text_title_menu_java">Java</string>
     <string name="text_title_menu_resource">Resource</string>
     <string name="text_title_menu_assets">Asset</string>
     <string name="text_title_menu_permission">Permission</string>
     <string name="text_title_menu_local_library">Local library</string>
-    <string name="text_subtitle_menu_java">Import Java files</string>
     <string name="text_subtitle_menu_resource">Import resource files</string>
     <string name="text_subtitle_menu_assets">Import asset files</string>
     <string name="text_subtitle_menu_permission">Add custom permissions</string>

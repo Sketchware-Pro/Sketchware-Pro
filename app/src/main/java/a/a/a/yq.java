@@ -258,7 +258,7 @@ public class yq {
     public final String t;
 
     /**
-     * Project's compiled Java classes directory,
+     * Project's compiled Java/Kotlin classes directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes
      *
      * Proposed new name: compiledClassesPath

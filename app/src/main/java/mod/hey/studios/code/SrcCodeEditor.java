@@ -364,7 +364,13 @@ public class SrcCodeEditor extends AppCompatActivity {
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));
 
         editor.setText(beforeContent);
-        editor.setEditorLanguage(new JavaLanguage());
+
+        if (getIntent().getStringExtra("title").endsWith(".java")) {
+            editor.setEditorLanguage(new JavaLanguage());
+        } else if (getIntent().getStringExtra("title").endsWith(".kt")) {
+            SketchwareUtil.toastError("Kotlin syntax highlighting yet to be added");
+            editor.setEditorLanguage(new JavaLanguage());
+        }
 
         loadCESettings(this, editor, "act");
     }

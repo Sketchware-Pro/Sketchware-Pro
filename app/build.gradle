@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -110,6 +111,9 @@ dependencies {
     implementation "com.squareup.okio:okio:1.14.0"
 
     implementation "com.guardsquare:proguard-base:7.1.1"
+
+    minApi26Implementation project(path: ":kotlinc")
+    minApi26Implementation project(path: ":build-logic")
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
