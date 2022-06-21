@@ -68,7 +68,7 @@ import kellinwood.security.zipsigner.optional.LoadKeystoreException;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil;
+import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
@@ -627,7 +627,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    private class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener {
+    public class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener {
 
         public Dp c;
         /**
@@ -744,13 +744,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
 
-                if (KotlinCompilerUtil.areAnyKtFilesPresent(c)) {
-                    publishProgress("Kotlin is compiling...");
-                    c.compileKotlin();
-                    if (d) {
-                        cancel(true);
-                        return;
-                    }
+                KotlinCompilerBridge.compileKotlinCodeIfPossible(this, c);
+                if (d) {
+                    cancel(true);
+                    return;
                 }
 
                 publishProgress("Java is compiling...");
@@ -1034,6 +1031,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             } else {
                 return oldFormatFilename;
             }
+        }
+
+        public void publicPublishProgress(String... values) {
+            publicPublishProgress(values);
         }
     }
 }

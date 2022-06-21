@@ -55,8 +55,7 @@ import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
-import mod.hey.studios.compiler.kotlin.KotlinCompiler;
-import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil;
+import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.util.SystemLogPrinter;
@@ -274,10 +273,7 @@ public class Dp {
          * Add yq#u (.sketchware/mysc/xxx/bin/classes) if it exists
          * since there might be compiled Kotlin files for ecj to use classpath as.
          */
-        if (FileUtil.isExistFile(yq.u)) {
-            classpath.append(yq.u);
-            classpath.append(":");
-        }
+        KotlinCompilerBridge.maybeAddKotlinFilesToClasspath(classpath, yq);
 
         /* Add android.jar */
         classpath.append(androidJarPath);
@@ -495,13 +491,6 @@ public class Dp {
             }
         }
         return extraPackages + mll.getPackageNameLocalLibrary();
-    }
-
-    /**
-     * Run kotlinc to compile Kotlin files.
-     */
-    public void compileKotlin() throws Throwable {
-        new KotlinCompiler(this).compile();
     }
 
     /**
@@ -884,10 +873,7 @@ public class Dp {
             builtInLibraryManager.a(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS);
         }
 
-        // Add kotlin-stdlib if any .kt files are present in the project
-        if (KotlinCompilerUtil.areAnyKtFilesPresent(this)) {
-            builtInLibraryManager.a(BuiltInLibraries.KOTLIN_STDLIB);
-        }
+        KotlinCompilerBridge.maybeAddKotlinBuiltInLibraryDependenciesIfPossible(this, builtInLibraryManager);
 
         ExtLibSelected.addUsedDependencies(yq.N.x, builtInLibraryManager);
     }
