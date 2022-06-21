@@ -83,7 +83,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
     implementation fileTree(dir: "libs", include: ["*.jar"], excludes: ["kotlin-compiler-compiler_classpath.jar", "kotlin-compiler-kotlin_classpath.jar"])
-    compileOnly files(
+    minApi21CompileOnly files(
             "libs/kotlin-compiler-compiler_classpath.jar",
             "libs/kotlin-compiler-kotlin_classpath.jar"
     )
@@ -115,6 +115,9 @@ dependencies {
     implementation "com.squareup.okio:okio:1.14.0"
 
     implementation "com.guardsquare:proguard-base:7.1.1"
+
+    minApi26Implementation project(path: ":kotlinc")
+    minApi26Implementation project(path: ":build-logic")
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
