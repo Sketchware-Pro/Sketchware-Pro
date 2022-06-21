@@ -92,7 +92,6 @@ import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.build.BuildSettingsDialog;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
-import mod.hey.studios.compiler.kotlin.KotlinCompilerUtil;
 import mod.hey.studios.project.DesignActRunnable;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
@@ -335,24 +334,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void onClick(View v) {
         if (!mB.a()) {
             if (v.getId() == R.id.btn_execute) {
-
-                if (Build.VERSION.SDK_INT < 26 && KotlinCompilerUtil.areAnyKtFilesPresent(q)) {
-                    aB dialog = new aB(this);
-                    dialog.a(0x7f0701e5);
-                    dialog.b("Warning");
-                    dialog.a("It would seem that you have some Kotlin files in your project but your " +
-                            "Android version isn't compatible with kotlinc (which only works on devices " +
-                            "with Android 8 and higher)." +
-                            "\n\n" +
-                            "Please delete those to proceed with the compilation.");
-                    dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok),
-                            Helper.getDialogDismissListener(dialog));
-                    dialog.show();
-
-                    return;
+                if (KotlinCompilerBridge.maybeCheckIfDeviceSupportsKotlinc(this, q)) {
+                    new BuildAsyncTask(getApplicationContext()).execute();
                 }
-
-                new BuildAsyncTask(getApplicationContext()).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
