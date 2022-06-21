@@ -34,7 +34,7 @@ class KotlinCompiler(
             }
         }
 
-        val mKotlinHome  = File(workspace.kotlin_home).apply { mkdirs() }
+        val mKotlinHome = File(KotlinCompilerBridge.getKotlinHome(workspace)).apply { mkdirs() }
         // Output in the same place as ecj, makes everything easier
         val mClassOutput = File(workspace.u).apply { mkdirs() }
 

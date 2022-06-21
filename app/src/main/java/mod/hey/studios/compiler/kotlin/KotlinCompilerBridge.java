@@ -3,6 +3,8 @@ package mod.hey.studios.compiler.kotlin;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.export.ExportProjectActivity;
 
+import java.io.File;
+
 import a.a.a.Dp;
 import a.a.a.Kp;
 import a.a.a.yq;
@@ -36,5 +38,9 @@ public class KotlinCompilerBridge {
             classpath.append(workspace.u);
             classpath.append(":");
         }
+    }
+
+    public static String getKotlinHome(yq workspace) {
+        return workspace.t + File.separator + "kotlin_home";
     }
 }
