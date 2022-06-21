@@ -79,7 +79,10 @@ class KotlinCompiler(
             LogUtil.e(TAG, "Failed to compile Kotlin files")
             throw Exception(collector.getDiagnostics(areWarningsEnabled()))
         } else {
-            LogUtil.d(TAG, "Compiling Kotlin files took ${System.currentTimeMillis() - timeMillis} ms")
+            LogUtil.d(
+                TAG,
+                "Compiling Kotlin files took ${System.currentTimeMillis() - timeMillis} ms"
+            )
         }
     }
 

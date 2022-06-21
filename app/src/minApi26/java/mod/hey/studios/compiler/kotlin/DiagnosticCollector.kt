@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 
-class DiagnosticCollector: MessageCollector {
+class DiagnosticCollector : MessageCollector {
     private val diagnostics = mutableListOf<Diagnostic>()
 
     override fun clear() {
