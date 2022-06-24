@@ -67,7 +67,7 @@
     },
     {
       "modder_username": "Tyron",
-      "modder_description": "Easier restoring of projects, unreleased feature",
+      "modder_description": "Easier restoring of projects, kotlinc port to Android",
       "modder_img": "https://i.imgur.com/gP8jauO.png",
       "isTitled": false,
       "isMainModder": false,
