@@ -387,16 +387,6 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         }
     }
 
-    public void b(String str) {
-        if (viewPager != null) {
-            viewPager.setCurrentItem(0);
-        }
-        if (projectsFragment != null) {
-            projectsFragment.refreshProjectsList();
-            projectsFragment.c(str);
-        }
-    }
-
     private void tryLoadingCustomizedAppStrings() {
         // Refresh extracted provided strings file if necessary
         oB oB = new oB();
