@@ -47,24 +47,20 @@ import mod.hey.studios.project.backup.BackupRestoreManager;
 
 public class GC extends DA implements View.OnClickListener {
 
-    public static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
-    public static final int REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY = 206;
-    public static final int REQUEST_CODE_RESTORE_PROJECT = 700;
+    private static final int REQUEST_CODE_DESIGN_ACTIVITY = 204;
+    private static final int REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY = 206;
+    private static final int REQUEST_CODE_RESTORE_PROJECT = 700;
 
-    public SwipeRefreshLayout swipeRefresh;
-    public ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
-    public RecyclerView myProjects;
-    public CardView cvCreateNew;
-    public CardView cvRestoreProjects;
-    public ImageView ivRestoreProjects;
-    public TextView tvRestoreProjects;
-    public Boolean isCollapsed;
-    public AnimatorSet collapseAnimatorSet;
-    public AnimatorSet expandAnimatorSet;
-    public ValueAnimator collapseValueAnimator;
-    public ValueAnimator expandValueAnimator;
-    public ProjectsAdapter projectsAdapter;
-    public FloatingActionButton floatingActionButton;
+    private SwipeRefreshLayout swipeRefresh;
+    private ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
+    private RecyclerView myProjects;
+    private CardView cvCreateNew;
+    private CardView cvRestoreProjects;
+    private Boolean isCollapsed;
+    private AnimatorSet collapseAnimatorSet;
+    private AnimatorSet expandAnimatorSet;
+    private ProjectsAdapter projectsAdapter;
+    private FloatingActionButton floatingActionButton;
 
     private void toProjectSettingOrRequestPermission(int position) {
         if (super.c()) {
@@ -80,7 +76,7 @@ public class GC extends DA implements View.OnClickListener {
         }
     }
 
-    private void a(ViewGroup parent) {
+    private void initialize(ViewGroup parent) {
         swipeRefresh = parent.findViewById(R.id.swipe_refresh);
         swipeRefresh.setOnRefreshListener(() -> {
             if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
@@ -108,18 +104,18 @@ public class GC extends DA implements View.OnClickListener {
 
         cvRestoreProjects = parent.findViewById(R.id.cv_restore_projects);
         cvRestoreProjects.setOnClickListener(this);
-        ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
-        tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
+        ImageView ivRestoreProjects = parent.findViewById(R.id.iv_restore_projects);
+        TextView tvRestoreProjects = parent.findViewById(R.id.tv_restore_projects);
 
         collapseAnimatorSet = new AnimatorSet();
         expandAnimatorSet = new AnimatorSet();
-        collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
+        ValueAnimator collapseValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 96.0F), wB.a(getContext(), 48.0F));
         collapseValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvRestoreProjects.getLayoutParams().height = (int) value;
             cvRestoreProjects.requestLayout();
         });
-        expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
+        ValueAnimator expandValueAnimator = ValueAnimator.ofFloat(wB.a(getContext(), 48.0F), wB.a(getContext(), 96.0F));
         expandValueAnimator.addUpdateListener(valueAnimator -> {
             float value = (Float) valueAnimator.getAnimatedValue();
             cvRestoreProjects.getLayoutParams().height = (int) value;
@@ -272,7 +268,7 @@ public class GC extends DA implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
-        a(viewGroup);
+        initialize(viewGroup);
         return viewGroup;
     }
 
@@ -408,18 +404,18 @@ public class GC extends DA implements View.OnClickListener {
         }
 
         public class ViewHolder extends RecyclerView.v {
-            public TextView tvPublished;
-            public ImageView expand;
-            public MyProjectButtonLayout projectButtonLayout;
-            public LinearLayout projectOptionLayout;
-            public LinearLayout projectOption;
-            public LinearLayout projectOne;
-            public View appIconLayout;
-            public CircleImageView imgIcon;
-            public TextView projectName;
-            public TextView appName;
-            public TextView packageName;
-            public TextView projectVersion;
+            public final TextView tvPublished;
+            public final ImageView expand;
+            public final MyProjectButtonLayout projectButtonLayout;
+            public final LinearLayout projectOptionLayout;
+            public final LinearLayout projectOption;
+            public final LinearLayout projectOne;
+            public final View appIconLayout;
+            public final CircleImageView imgIcon;
+            public final TextView projectName;
+            public final TextView appName;
+            public final TextView packageName;
+            public final TextView projectVersion;
 
             public ViewHolder(View itemView) {
                 super(itemView);
