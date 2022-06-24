@@ -9,6 +9,8 @@ on:
     paths:
       - '.github/workflows/android.yml'
       - 'app/**'
+      - 'build-logic/**'
+      - 'kotlinc/**'
       - 'gradle/**'
       - 'build.gradle'
       - 'gradle.properties'
@@ -20,6 +22,8 @@ on:
     paths:
       - '.github/workflows/android.yml'
       - 'app/**'
+      - 'build-logic/**'
+      - 'kotlinc/**'
       - 'gradle/**'
       - 'build.gradle'
       - 'gradle.properties'
