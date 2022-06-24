@@ -6,10 +6,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +78,6 @@ public class GC extends DA implements View.OnClickListener {
         } else if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
-
     }
 
     private void a(ViewGroup parent) {
@@ -85,11 +86,10 @@ public class GC extends DA implements View.OnClickListener {
             if (swipeRefresh.d()) swipeRefresh.setRefreshing(false);
 
             if (c()) {
-                g();
+                refreshProjectsList();
             } else if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).s();
             }
-
         });
         floatingActionButton = getActivity().findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(this);
@@ -137,11 +137,10 @@ public class GC extends DA implements View.OnClickListener {
                 ObjectAnimator.ofFloat(ivRestoreProjects, View.SCALE_Y, 0.5F, 1.0F));
         collapseAnimatorSet.setDuration(300L);
         expandAnimatorSet.setDuration(300L);
-        g();
+        refreshProjectsList();
     }
 
     public void a(boolean isEmpty) {
-
         // Don't load project list without having permissions
         if (!c()) {
             showCreateNewProjectLayout();
@@ -156,10 +155,9 @@ public class GC extends DA implements View.OnClickListener {
 
         myProjects.getAdapter().c();
         if (isEmpty) showCreateNewProjectLayout();
-
-
     }
 
+    @Override
     public void b(int requestCode) {
         if (requestCode == REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY) {
             toProjectSettingsActivity();
@@ -176,8 +174,9 @@ public class GC extends DA implements View.OnClickListener {
         startActivityForResult(intent, REQUEST_CODE_DESIGN_ACTIVITY);
     }
 
+    @Override
     public void c(int requestCode) {
-        Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getContext().getPackageName()));
         startActivityForResult(intent, requestCode);
     }
@@ -201,19 +200,21 @@ public class GC extends DA implements View.OnClickListener {
         toProjectSettingOrRequestPermission(var2);
     }
 
+    @Override
     public void d() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
     }
 
+    @Override
     public void e() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).s();
         }
     }
 
-    public int f() {
+    public int getProjectsCount() {
         return projectsList.size();
     }
 
@@ -224,7 +225,7 @@ public class GC extends DA implements View.OnClickListener {
         startActivity(intent);
     }
 
-    public void g() {
+    public void refreshProjectsList() {
         a(true);
     }
 
@@ -244,7 +245,6 @@ public class GC extends DA implements View.OnClickListener {
         startActivityForResult(intent, REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY);
     }
 
-
     private void restoreProject() {
         (new BackupRestoreManager(getActivity(), this)).restore();
     }
@@ -259,36 +259,36 @@ public class GC extends DA implements View.OnClickListener {
         (new BackupRestoreManager(getActivity())).backup(sc_id, appName);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY) {
-            if (resultCode == -1) {
-                g();
+            if (resultCode == Activity.RESULT_OK) {
+                refreshProjectsList();
                 if (data.getBooleanExtra("is_new", false)) {
                     toDesignActivity(data.getStringExtra("sc_id"));
                 }
             }
         } else if (requestCode == REQUEST_CODE_RESTORE_PROJECT) {
-            if (resultCode == -1) {
-                g();
+            if (resultCode == Activity.RESULT_OK) {
+                refreshProjectsList();
                 restoreProject();
             }
         }
     }
 
     @Override
-    public void onClick(View view) {
-        int viewId = view.getId();
+    public void onClick(View v) {
+        int viewId = v.getId();
+
         if ((viewId == R.id.cv_create_new || viewId == R.id.fab) && super.a(REQUEST_CODE_PROJECT_SETTINGS_ACTIVITY)) {
             toProjectSettingsActivity();
         } else if (viewId == R.id.cv_restore_projects && super.a(REQUEST_CODE_RESTORE_PROJECT)) {
             restoreProject();
         }
-
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.myprojects, parent, false);
         a(viewGroup);
@@ -297,7 +297,7 @@ public class GC extends DA implements View.OnClickListener {
 
     @SuppressLint("StaticFieldLeak")
     public class DeleteProjectTask extends MA {
-        public int position;
+        private final int position;
 
         public DeleteProjectTask(int position) {
             super(getContext());
@@ -306,6 +306,7 @@ public class GC extends DA implements View.OnClickListener {
             GC.this.a(this);
         }
 
+        @Override
         public void a() {
             if (position < projectsList.size()) {
                 projectsList.remove(position);
@@ -316,10 +317,12 @@ public class GC extends DA implements View.OnClickListener {
             GC.this.a();
         }
 
+        @Override
         public void a(String idk) {
             GC.this.a();
         }
 
+        @Override
         public void b() {
             if (position < projectsList.size()) {
                 lC.a(super.a, yB.c(projectsList.get(position), "sc_id"));
@@ -333,12 +336,13 @@ public class GC extends DA implements View.OnClickListener {
     }
 
     public class ProjectsAdapter extends RecyclerView.a<ProjectsAdapter.ViewHolder> {
-        public int layoutPosition;
+        private int layoutPosition;
 
         public ProjectsAdapter(RecyclerView recyclerView) {
             layoutPosition = -1;
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.a(new RecyclerView.m() {
+                    @Override
                     public void a(RecyclerView recyclerView1, int var2, int var3) {
                         super.a(recyclerView1, var2, var3);
                         if (var3 > 4) {
@@ -360,6 +364,7 @@ public class GC extends DA implements View.OnClickListener {
             return projectsList.size();
         }
 
+        @Override
         public void b(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = projectsList.get(position);
             String scId = yB.c(projectMap, "sc_id");
@@ -415,6 +420,7 @@ public class GC extends DA implements View.OnClickListener {
             viewHolder.b.setTag("custom");
         }
 
+        @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
             return new ViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.myprojects_item, parent, false));
@@ -449,13 +455,13 @@ public class GC extends DA implements View.OnClickListener {
                 projectOption = itemView.findViewById(R.id.project_option);
                 projectButtonLayout = new MyProjectButtonLayout(getContext());
                 projectOption.addView(projectButtonLayout);
-                projectButtonLayout.setButtonOnClickListener(view -> {
+                projectButtonLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
                         layoutPosition = j();
                         if (layoutPosition <= projectsList.size()) {
                             HashMap<String, Object> projectMap = projectsList.get(layoutPosition);
-                            if (view instanceof MyProjectButton) {
-                                switch (((MyProjectButton) view).b) {
+                            if (v instanceof MyProjectButton) {
+                                switch (((MyProjectButton) v).b) {
                                     case 0:
                                         toProjectSettingOrRequestPermission(layoutPosition);
                                         break;
@@ -478,11 +484,11 @@ public class GC extends DA implements View.OnClickListener {
                                         break;
                                 }
                             } else {
-                                if (view.getId() == R.id.confirm_yes) {
+                                if (v.getId() == R.id.confirm_yes) {
                                     projectMap.put("confirmation", false);
                                     projectMap.put("expand", false);
                                     (new DeleteProjectTask(layoutPosition)).execute();
-                                } else if (view.getId() == R.id.confirm_no) {
+                                } else if (v.getId() == R.id.confirm_no) {
                                     projectMap.put("confirmation", false);
                                     ProjectsAdapter.this.c(layoutPosition);
                                 }
@@ -491,13 +497,13 @@ public class GC extends DA implements View.OnClickListener {
                         }
                     }
                 });
-                projectOne.setOnClickListener(view -> {
+                projectOne.setOnClickListener(v -> {
                     if (!mB.a()) {
                         layoutPosition = j();
                         toDesignActivity(yB.c(projectsList.get(layoutPosition), "sc_id"));
                     }
                 });
-                projectOne.setOnLongClickListener(view -> {
+                projectOne.setOnLongClickListener(v -> {
                     layoutPosition = j();
                     if (yB.a(projectsList.get(layoutPosition), "expand")) {
                         collapse();
@@ -507,12 +513,12 @@ public class GC extends DA implements View.OnClickListener {
 
                     return true;
                 });
-                appIconLayout.setOnClickListener(view -> {
-                    mB.a(view);
+                appIconLayout.setOnClickListener(v -> {
+                    mB.a(v);
                     layoutPosition = j();
                     toProjectSettingOrRequestPermission(layoutPosition);
                 });
-                expand.setOnClickListener(view -> {
+                expand.setOnClickListener(v -> {
                     if (!mB.a()) {
                         layoutPosition = j();
                         if (yB.a(projectsList.get(layoutPosition), "expand")) {
@@ -520,7 +526,6 @@ public class GC extends DA implements View.OnClickListener {
                         } else {
                             expand();
                         }
-
                     }
                 });
             }
@@ -529,7 +534,8 @@ public class GC extends DA implements View.OnClickListener {
                 projectsList.get(layoutPosition).put("expand", false);
                 gB.a(expand, 0.0F, null);
                 gB.a(projectOptionLayout, 300, new AnimatorListenerAdapter() {
-                    public void onAnimationEnd(Animator var1) {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
                         projectOptionLayout.setVisibility(View.GONE);
                     }
                 });

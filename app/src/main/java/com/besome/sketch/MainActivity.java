@@ -82,7 +82,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             allFilesAccessCheck();
 
             if (viewPager.getCurrentItem() == 0 && projectsFragment != null) {
-                projectsFragment.g();
+                projectsFragment.refreshProjectsList();
             }
         }
     }
@@ -137,7 +137,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
                 case 212:
                     if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && j()) {
-                        projectsFragment.g();
+                        projectsFragment.refreshProjectsList();
                     }
                     break;
             }
@@ -378,8 +378,8 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
     // ViewPager.OnPageChangeListener#onPageSelected(int)
     public void b(int position) {
         if (position == 0) {
-            if (j() && projectsFragment != null && projectsFragment.f() == 0) {
-                projectsFragment.g();
+            if (j() && projectsFragment != null && projectsFragment.getProjectsCount() == 0) {
+                projectsFragment.refreshProjectsList();
             }
             projectsFragment.showCreateNewProjectLayout();
         } else if (position == 1) {
@@ -392,7 +392,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
             viewPager.setCurrentItem(0);
         }
         if (projectsFragment != null) {
-            projectsFragment.g();
+            projectsFragment.refreshProjectsList();
             projectsFragment.c(str);
         }
     }
