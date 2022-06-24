@@ -565,99 +565,99 @@ public class ExtraPaletteBlock {
                         || multiAutoCompleteTextViewUsed || imageViewUsed || ratingBarUsed
                         || seekBarUsed || progressBarUsed || videoViewUsed || webViewUsed) {
                     logicEditor.a("Widgets", 0xff555555);
-                }
 
-                if (textViewUsed) {
-                    logicEditor.a(" ", "setText");
-                    logicEditor.a("s", "getText");
-                    logicEditor.a(" ", "setTypeface");
-                    logicEditor.a(" ", "setTextColor");
-                    logicEditor.a(" ", "setTextSize");
-                }
+                    if (textViewUsed) {
+                        logicEditor.a(" ", "setText");
+                        logicEditor.a("s", "getText");
+                        logicEditor.a(" ", "setTypeface");
+                        logicEditor.a(" ", "setTextColor");
+                        logicEditor.a(" ", "setTextSize");
+                    }
 
-                if (editTextUsed) {
-                    logicEditor.a(" ", "setHint");
-                    logicEditor.a(" ", "setHintTextColor");
-                    logicEditor.a(" ", "EditTextdiableSuggestion");
-                    logicEditor.a(" ", "EditTextLines");
-                    logicEditor.a(" ", "EditTextSingleLine");
-                    logicEditor.a(" ", "EditTextShowError");
-                    logicEditor.a(" ", "EditTextSelectAll");
-                    logicEditor.a(" ", "EditTextSetSelection");
-                    logicEditor.a(" ", "EditTextSetMaxLines");
-                    logicEditor.a("d", "EdittextGetselectionStart");
-                    logicEditor.a("d", "EdittextGetselectionEnd");
-                }
+                    if (editTextUsed) {
+                        logicEditor.a(" ", "setHint");
+                        logicEditor.a(" ", "setHintTextColor");
+                        logicEditor.a(" ", "EditTextdiableSuggestion");
+                        logicEditor.a(" ", "EditTextLines");
+                        logicEditor.a(" ", "EditTextSingleLine");
+                        logicEditor.a(" ", "EditTextShowError");
+                        logicEditor.a(" ", "EditTextSelectAll");
+                        logicEditor.a(" ", "EditTextSetSelection");
+                        logicEditor.a(" ", "EditTextSetMaxLines");
+                        logicEditor.a("d", "EdittextGetselectionStart");
+                        logicEditor.a("d", "EdittextGetselectionEnd");
+                    }
 
-                if (compoundButtonUsed) {
-                    logicEditor.a(" ", "setChecked");
-                    logicEditor.a("b", "getChecked");
-                }
+                    if (compoundButtonUsed) {
+                        logicEditor.a(" ", "setChecked");
+                        logicEditor.a("b", "getChecked");
+                    }
 
-                if (autoCompleteTextViewUsed) {
-                    logicEditor.a(" ", "autoComSetData");
-                }
+                    if (autoCompleteTextViewUsed) {
+                        logicEditor.a(" ", "autoComSetData");
+                    }
 
-                if (multiAutoCompleteTextViewUsed) {
-                    logicEditor.a(" ", "multiAutoComSetData");
-                    logicEditor.a(" ", "setThreshold");
-                    logicEditor.a(" ", "setTokenizer");
-                }
+                    if (multiAutoCompleteTextViewUsed) {
+                        logicEditor.a(" ", "multiAutoComSetData");
+                        logicEditor.a(" ", "setThreshold");
+                        logicEditor.a(" ", "setTokenizer");
+                    }
 
-                if (imageViewUsed) {
-                    logicEditor.a(" ", "setImage");
-                    logicEditor.a(" ", "setImageCustomRes");
-                    logicEditor.a(" ", "setImageIdentifier");
-                    logicEditor.a(" ", "setImageFilePath");
-                    logicEditor.a(" ", "setImageUrl");
-                    logicEditor.a(" ", "setColorFilter");
-                }
+                    if (imageViewUsed) {
+                        logicEditor.a(" ", "setImage");
+                        logicEditor.a(" ", "setImageCustomRes");
+                        logicEditor.a(" ", "setImageIdentifier");
+                        logicEditor.a(" ", "setImageFilePath");
+                        logicEditor.a(" ", "setImageUrl");
+                        logicEditor.a(" ", "setColorFilter");
+                    }
 
-                if (ratingBarUsed) {
-                    logicEditor.a("d", "getRating");
-                    logicEditor.a(" ", "setRating");
-                    logicEditor.a(" ", "setNumStars");
-                    logicEditor.a(" ", "setStepSize");
-                }
+                    if (ratingBarUsed) {
+                        logicEditor.a("d", "getRating");
+                        logicEditor.a(" ", "setRating");
+                        logicEditor.a(" ", "setNumStars");
+                        logicEditor.a(" ", "setStepSize");
+                    }
 
-                if (seekBarUsed) {
-                    logicEditor.a(" ", "seekBarSetProgress");
-                    logicEditor.a("d", "seekBarGetProgress");
-                    logicEditor.a(" ", "seekBarSetMax");
-                    logicEditor.a("d", "seekBarGetMax");
-                }
+                    if (seekBarUsed) {
+                        logicEditor.a(" ", "seekBarSetProgress");
+                        logicEditor.a("d", "seekBarGetProgress");
+                        logicEditor.a(" ", "seekBarSetMax");
+                        logicEditor.a("d", "seekBarGetMax");
+                    }
 
-                if (progressBarUsed) {
-                    logicEditor.a(" ", "progressBarSetIndeterminate");
-                }
+                    if (progressBarUsed) {
+                        logicEditor.a(" ", "progressBarSetIndeterminate");
+                    }
 
-                if (videoViewUsed) {
-                    logicEditor.a(" ", "videoviewSetVideoUri");
-                    logicEditor.a(" ", "videoviewStart");
-                    logicEditor.a(" ", "videoviewPause");
-                    logicEditor.a(" ", "videoviewStop");
-                    logicEditor.a("b", "videoviewIsPlaying");
-                    logicEditor.a("b", "videoviewCanPause");
-                    logicEditor.a("b", "videoviewCanSeekForward");
-                    logicEditor.a("b", "videoviewCanSeekBackward");
-                    logicEditor.a("d", "videoviewGetCurrentPosition");
-                    logicEditor.a("d", "videoviewGetDuration");
-                }
+                    if (videoViewUsed) {
+                        logicEditor.a(" ", "videoviewSetVideoUri");
+                        logicEditor.a(" ", "videoviewStart");
+                        logicEditor.a(" ", "videoviewPause");
+                        logicEditor.a(" ", "videoviewStop");
+                        logicEditor.a("b", "videoviewIsPlaying");
+                        logicEditor.a("b", "videoviewCanPause");
+                        logicEditor.a("b", "videoviewCanSeekForward");
+                        logicEditor.a("b", "videoviewCanSeekBackward");
+                        logicEditor.a("d", "videoviewGetCurrentPosition");
+                        logicEditor.a("d", "videoviewGetDuration");
+                    }
 
-                if (webViewUsed) {
-                    logicEditor.a(" ", "webViewLoadUrl");
-                    logicEditor.a("s", "webViewGetUrl");
-                    logicEditor.a("d", "webviewGetProgress");
-                    logicEditor.a(" ", "webViewSetCacheMode");
-                    logicEditor.a("b", "webViewCanGoBack");
-                    logicEditor.a("b", "webViewCanGoForward");
-                    logicEditor.a(" ", "webViewGoBack");
-                    logicEditor.a(" ", "webViewGoForward");
-                    logicEditor.a(" ", "webViewClearCache");
-                    logicEditor.a(" ", "webViewClearHistory");
-                    logicEditor.a(" ", "webViewStopLoading");
-                    logicEditor.a(" ", "webViewZoomIn");
-                    logicEditor.a(" ", "webViewZoomOut");
+                    if (webViewUsed) {
+                        logicEditor.a(" ", "webViewLoadUrl");
+                        logicEditor.a("s", "webViewGetUrl");
+                        logicEditor.a("d", "webviewGetProgress");
+                        logicEditor.a(" ", "webViewSetCacheMode");
+                        logicEditor.a("b", "webViewCanGoBack");
+                        logicEditor.a("b", "webViewCanGoForward");
+                        logicEditor.a(" ", "webViewGoBack");
+                        logicEditor.a(" ", "webViewGoForward");
+                        logicEditor.a(" ", "webViewClearCache");
+                        logicEditor.a(" ", "webViewClearHistory");
+                        logicEditor.a(" ", "webViewStopLoading");
+                        logicEditor.a(" ", "webViewZoomIn");
+                        logicEditor.a(" ", "webViewZoomOut");
+                    }
                 }
             }
             {
@@ -670,61 +670,61 @@ public class ExtraPaletteBlock {
 
                 if (spinnerUsed || listViewUsed || recyclerViewUsed || gridViewUsed || viewPagerUsed) {
                     logicEditor.a("List", 0xff555555);
-                }
 
-                if (spinnerUsed) {
-                    logicEditor.a(" ", "spnSetData");
-                    logicEditor.a(" ", "spnSetCustomViewData");
-                    logicEditor.a(" ", "spnRefresh");
-                    logicEditor.a(" ", "spnSetSelection");
-                    logicEditor.a("d", "spnGetSelection");
-                }
-
-                if (!inOnBindCustomView) {
-                    if (listViewUsed) {
-                        logicEditor.a(" ", "listSetData");
-                        logicEditor.a(" ", "listSetCustomViewData");
-                        logicEditor.a(" ", "listRefresh");
-                        logicEditor.a(" ", "refreshingList");
-                        logicEditor.a(" ", "listSmoothScrollTo");
-                        logicEditor.a(" ", "listViewSetSelection");
-                        logicEditor.a(" ", "listSetTranscriptMode");
-                        logicEditor.a(" ", "listSetStackFromBottom");
-                        logicEditor.a(" ", "ListViewAddHeader");
-                        logicEditor.a(" ", "listViewRemoveHeader");
-                        logicEditor.a(" ", "ListViewAddFooter");
-                        logicEditor.a(" ", "listViewRemoveFooter");
+                    if (spinnerUsed) {
+                        logicEditor.a(" ", "spnSetData");
+                        logicEditor.a(" ", "spnSetCustomViewData");
+                        logicEditor.a(" ", "spnRefresh");
+                        logicEditor.a(" ", "spnSetSelection");
+                        logicEditor.a("d", "spnGetSelection");
                     }
 
-                    if (recyclerViewUsed) {
-                        logicEditor.a(" ", "recyclerSetCustomViewData");
-                        logicEditor.a(" ", "recyclerSetLayoutManager");
-                        logicEditor.a(" ", "recyclerSetLayoutManagerHorizontal");
-                        logicEditor.a(" ", "recyclerSetHasFixedSize");
-                        logicEditor.a(" ", "recyclerSmoothScrollToPosition");
-                        logicEditor.a(" ", "recyclerScrollToPositionWithOffset");
-                    }
+                    if (!inOnBindCustomView) {
+                        if (listViewUsed) {
+                            logicEditor.a(" ", "listSetData");
+                            logicEditor.a(" ", "listSetCustomViewData");
+                            logicEditor.a(" ", "listRefresh");
+                            logicEditor.a(" ", "refreshingList");
+                            logicEditor.a(" ", "listSmoothScrollTo");
+                            logicEditor.a(" ", "listViewSetSelection");
+                            logicEditor.a(" ", "listSetTranscriptMode");
+                            logicEditor.a(" ", "listSetStackFromBottom");
+                            logicEditor.a(" ", "ListViewAddHeader");
+                            logicEditor.a(" ", "listViewRemoveHeader");
+                            logicEditor.a(" ", "ListViewAddFooter");
+                            logicEditor.a(" ", "listViewRemoveFooter");
+                        }
 
-                    if (gridViewUsed) {
-                        logicEditor.a(" ", "gridSetCustomViewData");
-                        logicEditor.a(" ", "gridSetNumColumns");
-                        logicEditor.a(" ", "gridSetColumnWidth");
-                        logicEditor.a(" ", "gridSetVerticalSpacing");
-                        logicEditor.a(" ", "gridSetHorizontalSpacing");
-                        logicEditor.a(" ", "gridSetStretchMode");
-                    }
+                        if (recyclerViewUsed) {
+                            logicEditor.a(" ", "recyclerSetCustomViewData");
+                            logicEditor.a(" ", "recyclerSetLayoutManager");
+                            logicEditor.a(" ", "recyclerSetLayoutManagerHorizontal");
+                            logicEditor.a(" ", "recyclerSetHasFixedSize");
+                            logicEditor.a(" ", "recyclerSmoothScrollToPosition");
+                            logicEditor.a(" ", "recyclerScrollToPositionWithOffset");
+                        }
 
-                    if (viewPagerUsed) {
-                        logicEditor.a(" ", "pagerSetCustomViewData");
-                        logicEditor.a(" ", "pagerSetFragmentAdapter");
-                        logicEditor.a("d", "pagerGetOffscreenPageLimit");
-                        logicEditor.a(" ", "pagerSetOffscreenPageLimit");
-                        logicEditor.a("d", "pagerGetCurrentItem");
-                        logicEditor.a(" ", "pagerSetCurrentItem");
-                        logicEditor.a(" ", "ViewPagerNotifyOnDtatChange");
+                        if (gridViewUsed) {
+                            logicEditor.a(" ", "gridSetCustomViewData");
+                            logicEditor.a(" ", "gridSetNumColumns");
+                            logicEditor.a(" ", "gridSetColumnWidth");
+                            logicEditor.a(" ", "gridSetVerticalSpacing");
+                            logicEditor.a(" ", "gridSetHorizontalSpacing");
+                            logicEditor.a(" ", "gridSetStretchMode");
+                        }
+
+                        if (viewPagerUsed) {
+                            logicEditor.a(" ", "pagerSetCustomViewData");
+                            logicEditor.a(" ", "pagerSetFragmentAdapter");
+                            logicEditor.a("d", "pagerGetOffscreenPageLimit");
+                            logicEditor.a(" ", "pagerSetOffscreenPageLimit");
+                            logicEditor.a("d", "pagerGetCurrentItem");
+                            logicEditor.a(" ", "pagerSetCurrentItem");
+                            logicEditor.a(" ", "ViewPagerNotifyOnDtatChange");
+                        }
+                    } else {
+                        logicEditor.a(" ", "setRecyclerViewLayoutParams");
                     }
-                } else {
-                    logicEditor.a(" ", "setRecyclerViewLayoutParams");
                 }
             }
             {
@@ -738,57 +738,57 @@ public class ExtraPaletteBlock {
 
                 if (drawerUsed || fabUsed || bottomNavigationViewUsed || swipeRefreshLayoutUsed || cardViewUsed || tabLayoutUsed || textInputLayoutUsed) {
                     logicEditor.a("AndroidX components", 0xff555555);
-                }
 
-                if (drawerUsed) {
-                    logicEditor.a("b", "isDrawerOpen");
-                    logicEditor.a(" ", "openDrawer");
-                    logicEditor.a(" ", "closeDrawer");
-                }
+                    if (drawerUsed) {
+                        logicEditor.a("b", "isDrawerOpen");
+                        logicEditor.a(" ", "openDrawer");
+                        logicEditor.a(" ", "closeDrawer");
+                    }
 
-                if (fabUsed) {
-                    logicEditor.a(" ", "fabIcon");
-                    logicEditor.a(" ", "fabSize");
-                    logicEditor.a(" ", "fabVisibility");
-                }
+                    if (fabUsed) {
+                        logicEditor.a(" ", "fabIcon");
+                        logicEditor.a(" ", "fabSize");
+                        logicEditor.a(" ", "fabVisibility");
+                    }
 
-                if (bottomNavigationViewUsed) {
-                    logicEditor.a(" ", "bottomMenuAddItem");
-                }
+                    if (bottomNavigationViewUsed) {
+                        logicEditor.a(" ", "bottomMenuAddItem");
+                    }
 
-                if (swipeRefreshLayoutUsed) {
-                    logicEditor.a("c", "onSwipeRefreshLayout");
-                    logicEditor.a(" ", "setRefreshing");
-                }
+                    if (swipeRefreshLayoutUsed) {
+                        logicEditor.a("c", "onSwipeRefreshLayout");
+                        logicEditor.a(" ", "setRefreshing");
+                    }
 
-                if (cardViewUsed) {
-                    logicEditor.a(" ", "setCardBackgroundColor");
-                    logicEditor.a(" ", "setCardRadius");
-                    logicEditor.a(" ", "setCardElevation");
-                    logicEditor.a(" ", "setPreventCornerOverlap");
-                    logicEditor.a(" ", "setUseCompatPadding");
-                }
+                    if (cardViewUsed) {
+                        logicEditor.a(" ", "setCardBackgroundColor");
+                        logicEditor.a(" ", "setCardRadius");
+                        logicEditor.a(" ", "setCardElevation");
+                        logicEditor.a(" ", "setPreventCornerOverlap");
+                        logicEditor.a(" ", "setUseCompatPadding");
+                    }
 
-                if (tabLayoutUsed) {
-                    logicEditor.a(" ", "addTab");
-                    logicEditor.a(" ", "setupWithViewPager");
-                    logicEditor.a(" ", "setInlineLabel");
-                    logicEditor.a(" ", "setTabTextColors");
-                    logicEditor.a(" ", "setTabRippleColor");
-                    logicEditor.a(" ", "setSelectedTabIndicatorColor");
-                    logicEditor.a(" ", "setSelectedTabIndicatorHeight");
-                }
+                    if (tabLayoutUsed) {
+                        logicEditor.a(" ", "addTab");
+                        logicEditor.a(" ", "setupWithViewPager");
+                        logicEditor.a(" ", "setInlineLabel");
+                        logicEditor.a(" ", "setTabTextColors");
+                        logicEditor.a(" ", "setTabRippleColor");
+                        logicEditor.a(" ", "setSelectedTabIndicatorColor");
+                        logicEditor.a(" ", "setSelectedTabIndicatorHeight");
+                    }
 
-                if (textInputLayoutUsed) {
-                    logicEditor.a(" ", "tilSetBoxBgColor");
-                    logicEditor.a(" ", "tilSetBoxStrokeColor");
-                    logicEditor.a(" ", "tilSetBoxBgMode");
-                    logicEditor.a(" ", "tilSetBoxCornerRadii");
-                    logicEditor.a(" ", "tilSetError");
-                    logicEditor.a(" ", "tilSetErrorEnabled");
-                    logicEditor.a(" ", "tilSetCounterEnabled");
-                    logicEditor.a(" ", "tilSetCounterMaxLength");
-                    logicEditor.a("d", "tilGetCounterMaxLength");
+                    if (textInputLayoutUsed) {
+                        logicEditor.a(" ", "tilSetBoxBgColor");
+                        logicEditor.a(" ", "tilSetBoxStrokeColor");
+                        logicEditor.a(" ", "tilSetBoxBgMode");
+                        logicEditor.a(" ", "tilSetBoxCornerRadii");
+                        logicEditor.a(" ", "tilSetError");
+                        logicEditor.a(" ", "tilSetErrorEnabled");
+                        logicEditor.a(" ", "tilSetCounterEnabled");
+                        logicEditor.a(" ", "tilSetCounterMaxLength");
+                        logicEditor.a("d", "tilGetCounterMaxLength");
+                    }
                 }
             }
             {
@@ -802,63 +802,63 @@ public class ExtraPaletteBlock {
 
                 if (waveSideBarUsed || badgeViewUsed || bubbleLayoutUsed || patternLockViewUsed || codeViewUsed || lottieAnimationViewUsed) {
                     logicEditor.a("Library", 0xff555555);
-                }
 
-                if (otpViewUsed) {
-                    logicEditor.a(" ", "otpViewSetFieldCount");
-                    logicEditor.a(" ", "otpViewSetOTPText");
-                    logicEditor.a("s", "otpViewGetOTPText");
-                    logicEditor.a("c", "otpViewSetOTPListener");
-                }
+                    if (otpViewUsed) {
+                        logicEditor.a(" ", "otpViewSetFieldCount");
+                        logicEditor.a(" ", "otpViewSetOTPText");
+                        logicEditor.a("s", "otpViewGetOTPText");
+                        logicEditor.a("c", "otpViewSetOTPListener");
+                    }
 
-                if (waveSideBarUsed) {
-                    logicEditor.a(" ", "setCustomLetter");
-                }
+                    if (waveSideBarUsed) {
+                        logicEditor.a(" ", "setCustomLetter");
+                    }
 
-                if (badgeViewUsed) {
-                    logicEditor.a("d", "getBadgeCount");
-                    logicEditor.a(" ", "setBadgeNumber");
-                    logicEditor.a(" ", "setBadgeString");
-                    logicEditor.a(" ", "setBadgeBackground");
-                    logicEditor.a(" ", "setBadgeTextColor");
-                    logicEditor.a(" ", "setBadgeTextSize");
-                }
+                    if (badgeViewUsed) {
+                        logicEditor.a("d", "getBadgeCount");
+                        logicEditor.a(" ", "setBadgeNumber");
+                        logicEditor.a(" ", "setBadgeString");
+                        logicEditor.a(" ", "setBadgeBackground");
+                        logicEditor.a(" ", "setBadgeTextColor");
+                        logicEditor.a(" ", "setBadgeTextSize");
+                    }
 
-                if (bubbleLayoutUsed) {
-                    logicEditor.a(" ", "setBubbleColor");
-                    logicEditor.a(" ", "setBubbleStrokeColor");
-                    logicEditor.a(" ", "setBubbleStrokeWidth");
-                    logicEditor.a(" ", "setBubbleCornerRadius");
-                    logicEditor.a(" ", "setBubbleArrowHeight");
-                    logicEditor.a(" ", "setBubbleArrowWidth");
-                    logicEditor.a(" ", "setBubbleArrowPosition");
-                }
+                    if (bubbleLayoutUsed) {
+                        logicEditor.a(" ", "setBubbleColor");
+                        logicEditor.a(" ", "setBubbleStrokeColor");
+                        logicEditor.a(" ", "setBubbleStrokeWidth");
+                        logicEditor.a(" ", "setBubbleCornerRadius");
+                        logicEditor.a(" ", "setBubbleArrowHeight");
+                        logicEditor.a(" ", "setBubbleArrowWidth");
+                        logicEditor.a(" ", "setBubbleArrowPosition");
+                    }
 
-                if (patternLockViewUsed) {
-                    logicEditor.a("s", "patternToString");
-                    logicEditor.a("s", "patternToMD5");
-                    logicEditor.a("s", "patternToSha1");
-                    logicEditor.a(" ", "patternSetDotCount");
-                    logicEditor.a(" ", "patternSetNormalStateColor");
-                    logicEditor.a(" ", "patternSetCorrectStateColor");
-                    logicEditor.a(" ", "patternSetWrongStateColor");
-                    logicEditor.a(" ", "patternSetViewMode");
-                    logicEditor.a(" ", "patternLockClear");
-                }
+                    if (patternLockViewUsed) {
+                        logicEditor.a("s", "patternToString");
+                        logicEditor.a("s", "patternToMD5");
+                        logicEditor.a("s", "patternToSha1");
+                        logicEditor.a(" ", "patternSetDotCount");
+                        logicEditor.a(" ", "patternSetNormalStateColor");
+                        logicEditor.a(" ", "patternSetCorrectStateColor");
+                        logicEditor.a(" ", "patternSetWrongStateColor");
+                        logicEditor.a(" ", "patternSetViewMode");
+                        logicEditor.a(" ", "patternLockClear");
+                    }
 
-                if (codeViewUsed) {
-                    logicEditor.a(" ", "codeviewSetCode");
-                    logicEditor.a(" ", "codeviewSetLanguage");
-                    logicEditor.a(" ", "codeviewSetTheme");
-                    logicEditor.a(" ", "codeviewApply");
-                }
+                    if (codeViewUsed) {
+                        logicEditor.a(" ", "codeviewSetCode");
+                        logicEditor.a(" ", "codeviewSetLanguage");
+                        logicEditor.a(" ", "codeviewSetTheme");
+                        logicEditor.a(" ", "codeviewApply");
+                    }
 
-                if (lottieAnimationViewUsed) {
-                    logicEditor.a(" ", "lottieSetAnimationFromAsset");
-                    logicEditor.a(" ", "lottieSetAnimationFromJson");
-                    logicEditor.a(" ", "lottieSetAnimationFromUrl");
-                    logicEditor.a(" ", "lottieSetRepeatCount");
-                    logicEditor.a(" ", "lottieSetSpeed");
+                    if (lottieAnimationViewUsed) {
+                        logicEditor.a(" ", "lottieSetAnimationFromAsset");
+                        logicEditor.a(" ", "lottieSetAnimationFromJson");
+                        logicEditor.a(" ", "lottieSetAnimationFromUrl");
+                        logicEditor.a(" ", "lottieSetRepeatCount");
+                        logicEditor.a(" ", "lottieSetSpeed");
+                    }
                 }
             }
             {
@@ -869,35 +869,35 @@ public class ExtraPaletteBlock {
 
                 if (signInButtonUsed || youtubePlayerViewUsed || adMobUsed || mapViewUsed) {
                     logicEditor.a("Google", 0xff555555);
-                }
 
-                if (signInButtonUsed) {
-                    logicEditor.a(" ", "signInButtonSetColorScheme");
-                    logicEditor.a(" ", "signInButtonSetSize");
-                }
+                    if (signInButtonUsed) {
+                        logicEditor.a(" ", "signInButtonSetColorScheme");
+                        logicEditor.a(" ", "signInButtonSetSize");
+                    }
 
-                if (youtubePlayerViewUsed) {
-                    logicEditor.a(" ", "YTPVLifecycle");
-                    logicEditor.a("c", "YTPVSetListener");
-                }
+                    if (youtubePlayerViewUsed) {
+                        logicEditor.a(" ", "YTPVLifecycle");
+                        logicEditor.a("c", "YTPVSetListener");
+                    }
 
-                if (adMobUsed) {
-                    logicEditor.a(" ", "bannerAdViewLoadAd");
-                    logicEditor.a(" ", "setAdmobAppId");
-                }
+                    if (adMobUsed) {
+                        logicEditor.a(" ", "bannerAdViewLoadAd");
+                        logicEditor.a(" ", "setAdmobAppId");
+                    }
 
-                if (mapViewUsed) {
-                    logicEditor.a(" ", "mapViewSetMapType");
-                    logicEditor.a(" ", "mapViewMoveCamera");
-                    logicEditor.a(" ", "mapViewZoomTo");
-                    logicEditor.a(" ", "mapViewZoomIn");
-                    logicEditor.a(" ", "mapViewZoomOut");
-                    logicEditor.a(" ", "mapViewAddMarker");
-                    logicEditor.a(" ", "mapViewSetMarkerInfo");
-                    logicEditor.a(" ", "mapViewSetMarkerPosition");
-                    logicEditor.a(" ", "mapViewSetMarkerColor");
-                    logicEditor.a(" ", "mapViewSetMarkerIcon");
-                    logicEditor.a(" ", "mapViewSetMarkerVisible");
+                    if (mapViewUsed) {
+                        logicEditor.a(" ", "mapViewSetMapType");
+                        logicEditor.a(" ", "mapViewMoveCamera");
+                        logicEditor.a(" ", "mapViewZoomTo");
+                        logicEditor.a(" ", "mapViewZoomIn");
+                        logicEditor.a(" ", "mapViewZoomOut");
+                        logicEditor.a(" ", "mapViewAddMarker");
+                        logicEditor.a(" ", "mapViewSetMarkerInfo");
+                        logicEditor.a(" ", "mapViewSetMarkerPosition");
+                        logicEditor.a(" ", "mapViewSetMarkerColor");
+                        logicEditor.a(" ", "mapViewSetMarkerIcon");
+                        logicEditor.a(" ", "mapViewSetMarkerVisible");
+                    }
                 }
             }
             {
@@ -906,20 +906,20 @@ public class ExtraPaletteBlock {
 
                 if (timePickerUsed || calendarViewUsed) {
                     logicEditor.a("Date & Time", 0xff555555);
-                }
 
-                if (timePickerUsed) {
-                    logicEditor.a(" ", "timepickerSetHour");
-                    logicEditor.a(" ", "timepickerSetMinute");
-                    logicEditor.a(" ", "timepickerSetCurrentHour");
-                    logicEditor.a(" ", "timepickerSetCurrentMinute");
-                    logicEditor.a(" ", "timepickerSetIs24Hour");
-                }
+                    if (timePickerUsed) {
+                        logicEditor.a(" ", "timepickerSetHour");
+                        logicEditor.a(" ", "timepickerSetMinute");
+                        logicEditor.a(" ", "timepickerSetCurrentHour");
+                        logicEditor.a(" ", "timepickerSetCurrentMinute");
+                        logicEditor.a(" ", "timepickerSetIs24Hour");
+                    }
 
-                if (calendarViewUsed) {
-                    logicEditor.a(" ", "calendarViewSetDate");
-                    logicEditor.a(" ", "calendarViewSetMinDate");
-                    logicEditor.a(" ", "calnedarViewSetMaxDate");
+                    if (calendarViewUsed) {
+                        logicEditor.a(" ", "calendarViewSetDate");
+                        logicEditor.a(" ", "calendarViewSetMinDate");
+                        logicEditor.a(" ", "calnedarViewSetMaxDate");
+                    }
                 }
             }
             logicEditor.a("Function", 0xff555555);
