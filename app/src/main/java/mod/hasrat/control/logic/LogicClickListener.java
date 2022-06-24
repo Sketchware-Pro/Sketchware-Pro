@@ -202,14 +202,11 @@ public class LogicClickListener implements View.OnClickListener {
                     RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                     String variable = radioButton.getText().toString();
                     if (radioButton.isChecked()) {
-                        if (!logicEditor.o.c(variable)) {
-                            if (!projectDataManager.c(javaName, variable, eventName)) {
-                                logicEditor.m(variable);
-                                dialog.dismiss();
-                            }
-                        } else {
+                        if (logicEditor.o.c(variable) || projectDataManager.c(javaName, variable, eventName)) {
                             SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_message_currently_used_variable), bB.TOAST_WARNING);
                             return;
+                        } else {
+                            logicEditor.m(variable);
                         }
                     }
                 }
@@ -320,15 +317,12 @@ public class LogicClickListener implements View.OnClickListener {
                     String list = radioButton.getText().toString();
 
                     if (radioButton.isChecked()) {
-                        if (!logicEditor.o.b(list)) {
-                            if (!projectDataManager.b(javaName, list, eventName)) {
-                                logicEditor.l(list);
-                                dialog.dismiss();
-                            }
-                        } else {
+                        if (logicEditor.o.b(list) || projectDataManager.b(javaName, list, eventName)) {
                             SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_message_currently_used_list), bB.TOAST_WARNING);
+                            return;
+                        } else {
+                            logicEditor.l(list);
                         }
-                        return;
                     }
                 }
             }
