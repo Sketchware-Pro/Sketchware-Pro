@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
-@SuppressLint("ResourceType")
 public class Ku extends LinearLayout implements Uu {
 
     public LinearLayout a;
@@ -40,39 +38,38 @@ public class Ku extends LinearLayout implements Uu {
         a(var1);
     }
 
-
     private void a(Context context) {
-        wB.a(context, this, 2131427534);
+        wB.a(context, this, R.layout.manage_library_admob_preview);
         gB.b(this, 600, 200, null);
-        c = findViewById(2131231889);
-        d = findViewById(2131231887);
-        e = findViewById(2131232014);
-        f = findViewById(2131232012);
+        c = findViewById(R.id.tv_banner_name);
+        d = findViewById(R.id.tv_banner_id);
+        e = findViewById(R.id.tv_inter_name);
+        f = findViewById(R.id.tv_inter_id);
         tvRewardName = findViewById(R.id.tv_reward_name);
         tvRewardId = findViewById(R.id.tv_reward_id);
-        ((TextView) findViewById(2131231965)).setText(xB.b().a(context, 2131625249));
-        ((TextView) findViewById(2131232201)).setText(xB.b().a(getContext(), 2131625196));
-        TextView var3 = findViewById(2131232203);
+        ((TextView) findViewById(R.id.tv_enable)).setText(xB.b().a(context, R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_title_banner)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_banner));
+        TextView var3 = findViewById(R.id.tv_title_banner_name);
         StringBuilder var2 = new StringBuilder();
-        var2.append(xB.b().a(getContext(), 2131625192));
+        var2.append(xB.b().a(getContext(), R.string.design_library_admob_title_ad_name));
         var2.append(" : ");
         var3.setText(var2.toString());
-        TextView var5 = findViewById(2131232202);
-        var5.setText(xB.b().a(getContext(), 2131625193) + " : ");
-        ((TextView) findViewById(2131232220)).setText(xB.b().a(getContext(), 2131625197));
-        var3 = findViewById(2131232222);
+        TextView var5 = findViewById(R.id.tv_title_banner_id);
+        var5.setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_inter)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_interstitial));
+        var3 = findViewById(R.id.tv_title_inter_name);
         var2 = new StringBuilder();
-        var2.append(xB.b().a(getContext(), 2131625192));
+        var2.append(xB.b().a(getContext(), R.string.design_library_admob_title_ad_name));
         var2.append(" : ");
         var3.setText(var2.toString());
-        ((TextView) findViewById(2131232221)).setText(xB.b().a(getContext(), 2131625193) + " : ");
-        ((TextView) findViewById(2131232246)).setText(xB.b().a(getContext(), 2131625177));
-        g = findViewById(2131231468);
+        ((TextView) findViewById(R.id.tv_title_inter_id)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_test_device)).setText(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
+        g = findViewById(R.id.list_test_device);
         g.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
         h = new TestDevicesAdapter();
         g.setAdapter(h);
-        b = findViewById(2131231429);
-        a = findViewById(2131231408);
+        b = findViewById(R.id.lib_switch);
+        a = findViewById(R.id.layout_switch);
         a.setOnClickListener(view -> b.setChecked(!b.isChecked()));
     }
 
@@ -169,7 +166,7 @@ public class Ku extends LinearLayout implements Uu {
 
         @Override
         public ViewHolder b(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427555, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
         }
 
         public class ViewHolder extends RecyclerView.v {
@@ -178,8 +175,8 @@ public class Ku extends LinearLayout implements Uu {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(2131231956);
-                u = itemView.findViewById(2131231132);
+                t = itemView.findViewById(R.id.tv_device_id);
+                u = itemView.findViewById(R.id.img_delete);
                 u.setVisibility(View.GONE);
             }
         }
