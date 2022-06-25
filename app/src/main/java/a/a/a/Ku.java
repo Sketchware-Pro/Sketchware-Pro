@@ -21,32 +21,30 @@ import java.util.ArrayList;
 
 public class Ku extends LinearLayout implements Uu {
 
-    public LinearLayout a;
-    public Switch b;
-    public TextView c;
-    public TextView d;
-    public TextView e;
-    public TextView f;
-    public RecyclerView g;
-    public TestDevicesAdapter h;
-    public ArrayList<AdTestDeviceBean> i = new ArrayList<>();
-
-    private TextView tvRewardName, tvRewardId;
+    private Switch adMobToggle;
+    private TextView bannerName;
+    private TextView bannerId;
+    private TextView interstitialName;
+    private TextView interstitialId;
+    private TestDevicesAdapter adapter;
+    private ArrayList<AdTestDeviceBean> testDevices = new ArrayList<>();
+    private TextView rewardedAdName;
+    private TextView rewardedAdId;
 
     public Ku(Context var1) {
         super(var1);
-        a(var1);
+        initialize(var1);
     }
 
-    private void a(Context context) {
+    private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_preview);
         gB.b(this, 600, 200, null);
-        c = findViewById(R.id.tv_banner_name);
-        d = findViewById(R.id.tv_banner_id);
-        e = findViewById(R.id.tv_inter_name);
-        f = findViewById(R.id.tv_inter_id);
-        tvRewardName = findViewById(R.id.tv_reward_name);
-        tvRewardId = findViewById(R.id.tv_reward_id);
+        bannerName = findViewById(R.id.tv_banner_name);
+        bannerId = findViewById(R.id.tv_banner_id);
+        interstitialName = findViewById(R.id.tv_inter_name);
+        interstitialId = findViewById(R.id.tv_inter_id);
+        rewardedAdName = findViewById(R.id.tv_reward_name);
+        rewardedAdId = findViewById(R.id.tv_reward_id);
         ((TextView) findViewById(R.id.tv_enable)).setText(xB.b().a(context, R.string.design_library_settings_title_enabled));
         ((TextView) findViewById(R.id.tv_title_banner)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_banner));
         TextView var3 = findViewById(R.id.tv_title_banner_name);
@@ -64,59 +62,60 @@ public class Ku extends LinearLayout implements Uu {
         var3.setText(var2.toString());
         ((TextView) findViewById(R.id.tv_title_inter_id)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
         ((TextView) findViewById(R.id.tv_title_test_device)).setText(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
-        g = findViewById(R.id.list_test_device);
-        g.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
-        h = new TestDevicesAdapter();
-        g.setAdapter(h);
-        b = findViewById(R.id.lib_switch);
-        a = findViewById(R.id.layout_switch);
-        a.setOnClickListener(view -> b.setChecked(!b.isChecked()));
+
+        RecyclerView testDevices = findViewById(R.id.list_test_device);
+        testDevices.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));
+        adapter = new TestDevicesAdapter();
+        testDevices.setAdapter(adapter);
+        adMobToggle = findViewById(R.id.lib_switch);
+        LinearLayout toggleContainer = findViewById(R.id.layout_switch);
+        toggleContainer.setOnClickListener(view -> adMobToggle.setChecked(!adMobToggle.isChecked()));
     }
 
     @Override
     public void a(ProjectLibraryBean projectLibraryBean) {
-        if (b.isChecked()) {
+        if (adMobToggle.isChecked()) {
             projectLibraryBean.useYn = "Y";
         } else {
             projectLibraryBean.useYn = "N";
         }
     }
 
-    private void a(String adUnit) {
+    private void setBannerDetails(String adUnit) {
         if (!adUnit.isEmpty()) {
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
-                c.setText(adUnit.substring(0, indexOfColon));
-                d.setText(adUnit.substring(indexOfColon + 3));
+                bannerName.setText(adUnit.substring(0, indexOfColon));
+                bannerId.setText(adUnit.substring(indexOfColon + 3));
             } else {
-                c.setText("");
-                d.setText(adUnit);
+                bannerName.setText("");
+                bannerId.setText(adUnit);
             }
         }
     }
 
-    private void b(String adUnit) {
+    private void setInterstitialDetails(String adUnit) {
         if (!adUnit.isEmpty()) {
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
-                e.setText(adUnit.substring(0, indexOfColon));
-                f.setText(adUnit.substring(indexOfColon + 3));
+                interstitialName.setText(adUnit.substring(0, indexOfColon));
+                interstitialId.setText(adUnit.substring(indexOfColon + 3));
             } else {
-                e.setText("");
-                f.setText(adUnit);
+                interstitialName.setText("");
+                interstitialId.setText(adUnit);
             }
         }
     }
 
-    private void setRewardAdUnit(String adUnit) {
+    private void setRewardedAdDetails(String adUnit) {
         if (!adUnit.isEmpty()) {
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
-                tvRewardName.setText(adUnit.substring(0, indexOfColon));
-                tvRewardId.setText(adUnit.substring(indexOfColon + 3));
+                rewardedAdName.setText(adUnit.substring(0, indexOfColon));
+                rewardedAdId.setText(adUnit.substring(indexOfColon + 3));
             } else {
-                tvRewardName.setText("");
-                tvRewardId.setText(adUnit);
+                rewardedAdName.setText("");
+                rewardedAdId.setText(adUnit);
             }
         }
     }
@@ -138,12 +137,12 @@ public class Ku extends LinearLayout implements Uu {
 
     @Override
     public void setData(ProjectLibraryBean projectLibraryBean) {
-        b.setChecked(true);
-        a(projectLibraryBean.reserved1);
-        b(projectLibraryBean.reserved2);
-        setRewardAdUnit(projectLibraryBean.reserved3);
-        i = projectLibraryBean.testDevices;
-        h.c();
+        adMobToggle.setChecked(true);
+        setBannerDetails(projectLibraryBean.reserved1);
+        setInterstitialDetails(projectLibraryBean.reserved2);
+        setRewardedAdDetails(projectLibraryBean.reserved3);
+        testDevices = projectLibraryBean.testDevices;
+        adapter.c();
     }
 
     public class TestDevicesAdapter extends RecyclerView.a<TestDevicesAdapter.ViewHolder> {
@@ -155,12 +154,12 @@ public class Ku extends LinearLayout implements Uu {
 
         @Override
         public int a() {
-            return i.size();
+            return testDevices.size();
         }
 
         @Override
         public void b(ViewHolder viewHolder, int position) {
-            AdTestDeviceBean var3 = i.get(position);
+            AdTestDeviceBean var3 = testDevices.get(position);
             viewHolder.t.setText(var3.deviceId);
         }
 
