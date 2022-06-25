@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -37,11 +37,15 @@ public class LogicClickListener implements View.OnClickListener {
     private final eC projectDataManager;
     private final LogicEditorActivity logicEditor;
     private final ProjectFileBean projectFile;
+    private final String eventName;
+    private final String javaName;
 
     public LogicClickListener(LogicEditorActivity logicEditor) {
         this.logicEditor = logicEditor;
         projectDataManager = jC.a(logicEditor.B);
         this.projectFile = logicEditor.M;
+        eventName = logicEditor.C + "_" + logicEditor.D;
+        javaName = logicEditor.M.getJavaName();
     }
 
     private ArrayList<String> getUsedVariable(int type) {
@@ -163,51 +167,46 @@ public class LogicClickListener implements View.OnClickListener {
         ArrayList<String> bools = getUsedVariable(0);
         for (int i = 0, boolsSize = bools.size(); i < boolsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Boolean (" + boolsSize + ")"));
-            viewGroup.addView(commonRadioButton(bools.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(bools.get(i)));
         }
 
         ArrayList<String> ints = getUsedVariable(1);
         for (int i = 0, intsSize = ints.size(); i < intsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Number (" + intsSize + ")"));
-            viewGroup.addView(commonRadioButton(ints.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(ints.get(i)));
         }
 
         ArrayList<String> strs = getUsedVariable(2);
         for (int i = 0, strsSize = strs.size(); i < strsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("String (" + strsSize + ")"));
-            viewGroup.addView(commonRadioButton(strs.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(strs.get(i)));
         }
 
         ArrayList<String> maps = getUsedVariable(3);
         for (int i = 0, mapSize = maps.size(); i < mapSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Map (" + mapSize + ")"));
-            viewGroup.addView(commonRadioButton(maps.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(maps.get(i)));
         }
 
         ArrayList<String> vars = getUsedVariable(5);
         vars.addAll(getUsedVariable(6));
         for (int i = 0, varsSize = vars.size(); i < varsSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("Custom Variable (" + varsSize + ")"));
-            viewGroup.addView(commonRadioButton(vars.get(i)));
+            viewGroup.addView(getRemoveVariableCheckBox(vars.get(i)));
         }
 
         dialog.setView(var2);
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), view -> {
             int childCount = viewGroup.getChildCount();
-            String eventName = logicEditor.C + "_" + logicEditor.D;
-            String javaName = logicEditor.M.getJavaName();
 
             for (int i = 0; i < childCount; i++) {
-                if (viewGroup.getChildAt(i) instanceof RadioButton) {
-                    RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
-                    String variable = radioButton.getText().toString();
-                    if (radioButton.isChecked()) {
-                        if (logicEditor.o.c(variable) || projectDataManager.c(javaName, variable, eventName)) {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_message_currently_used_variable), bB.TOAST_WARNING);
-                            return;
-                        } else {
-                            logicEditor.m(variable);
-                        }
+                if (viewGroup.getChildAt(i) instanceof CheckBox) {
+                    CheckBox variable = (CheckBox) viewGroup.getChildAt(i);
+                    String variableName = variable.getText().toString();
+
+                    if (variable.isChecked()) {
+                        // Since an in-use Variable can't be checked, just remove it
+                        logicEditor.m(variableName);
                     }
                 }
             }
@@ -285,44 +284,37 @@ public class LogicClickListener implements View.OnClickListener {
         ArrayList<String> listInts = getUsedList(1);
         for (int i = 0, listIntSize = listInts.size(); i < listIntSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Integer (" + listIntSize + ")"));
-            viewGroup.addView(commonRadioButton(listInts.get(i)));
+            viewGroup.addView(getRemoveListCheckBox(listInts.get(i)));
         }
 
         ArrayList<String> listStrs = getUsedList(2);
         for (int i = 0, listStrSize = listStrs.size(); i < listStrSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List String (" + listStrSize + ")"));
-            viewGroup.addView(commonRadioButton(listStrs.get(i)));
+            viewGroup.addView(getRemoveListCheckBox(listStrs.get(i)));
         }
 
         ArrayList<String> listMaps = getUsedList(3);
         for (int i = 0, listMapSize = listMaps.size(); i < listMapSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Map (" + listMapSize + ")"));
-            viewGroup.addView(commonRadioButton(listMaps.get(i)));
+            viewGroup.addView(getRemoveListCheckBox(listMaps.get(i)));
         }
 
         ArrayList<String> listCustom = getUsedList(4);
         for (int i = 0, listCustomSize = listCustom.size(); i < listCustomSize; i++) {
             if (i == 0) viewGroup.addView(commonTextView("List Custom (" + listCustomSize + ")"));
-            viewGroup.addView(commonRadioButton(listCustom.get(i)));
+            viewGroup.addView(getRemoveListCheckBox(listCustom.get(i)));
         }
 
         dialog.a(var2);
         dialog.b(Helper.getResString(R.string.common_word_remove), view -> {
-            String javaName = logicEditor.M.getJavaName();
-            String eventName = logicEditor.C + "_" + logicEditor.D;
-
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                if (viewGroup.getChildAt(i) instanceof RadioButton) {
-                    RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
-                    String list = radioButton.getText().toString();
+                if (viewGroup.getChildAt(i) instanceof CheckBox) {
+                    CheckBox list = (CheckBox) viewGroup.getChildAt(i);
+                    String listName = list.getText().toString();
 
-                    if (radioButton.isChecked()) {
-                        if (logicEditor.o.b(list) || projectDataManager.b(javaName, list, eventName)) {
-                            SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_message_currently_used_list), bB.TOAST_WARNING);
-                            return;
-                        } else {
-                            logicEditor.l(list);
-                        }
+                    if (list.isChecked()) {
+                        // Since an in-use List can't be checked, just remove it
+                        logicEditor.l(listName);
                     }
                 }
             }
@@ -380,16 +372,30 @@ public class LogicClickListener implements View.OnClickListener {
         return editText;
     }
 
-    private RadioButton commonRadioButton(String title) {
-        RadioButton radioButton = new RadioButton(logicEditor);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+    private CheckBox getRemoveVariableCheckBox(String variableName) {
+        return commonRemoveCheckBox(variableName, R.string.logic_editor_message_currently_used_variable);
+    }
+
+    private CheckBox getRemoveListCheckBox(String listName) {
+        return commonRemoveCheckBox(listName, R.string.logic_editor_message_currently_used_list);
+    }
+
+    private CheckBox commonRemoveCheckBox(String variableName, int toastMessageId) {
+        CheckBox checkBox = new CheckBox(logicEditor);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) getDip(40),
-                1.0f);
-        radioButton.setLayoutParams(layoutParams);
-        radioButton.setText(title);
-        radioButton.setTextColor(0xff000000);
-        radioButton.setTextSize(14f);
-        return radioButton;
+                1);
+        checkBox.setLayoutParams(params);
+        checkBox.setText(variableName);
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (buttonView.isChecked()) {
+                if (logicEditor.o.c(variableName) || projectDataManager.c(javaName, variableName, eventName)) {
+                    SketchwareUtil.toastError(Helper.getResString(toastMessageId), bB.TOAST_WARNING);
+                    buttonView.setChecked(false);
+                }
+            }
+        });
+        return checkBox;
     }
 }
