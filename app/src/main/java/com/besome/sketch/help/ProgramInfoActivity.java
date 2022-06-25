@@ -1,7 +1,7 @@
 package com.besome.sketch.help;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -27,116 +27,111 @@ import a.a.a.wB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
-@SuppressLint("ResourceType")
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
 
     public Toolbar k;
     public LinearLayout l;
 
-    private void a(int var1, int var2, int var3) {
-        a(var1, getString(var2), getString(var3));
+    private void a(int key, int name, int description) {
+        a(key, getString(name), getString(description));
     }
 
-    private void a(int var1, String var2) {
-        PropertyOneLineItem var3 = new PropertyOneLineItem(this);
-        var3.setKey(var1);
-        var3.setName(var2);
-        l.addView(var3);
-        if (var1 == 1 || var1 == 2 || var1 == 14 || var1 == 15) {
-            var3.setOnClickListener(this);
+    private void a(int key, String name) {
+        PropertyOneLineItem item = new PropertyOneLineItem(this);
+        item.setKey(key);
+        item.setName(name);
+        l.addView(item);
+        if (key == 1 || key == 2 || key == 14 || key == 15) {
+            item.setOnClickListener(this);
         }
-
     }
 
-    private void a(int var1, String var2, String var3) {
-        PropertyTwoLineItem var4 = new PropertyTwoLineItem(this);
-        var4.setKey(var1);
-        var4.setName(var2);
-        var4.setDesc(var3);
-        l.addView(var4);
-        var4.setBackgroundColor(0xfff6f6f6);
-        var4.setOnClickListener(this);
-        if (var1 != 4) {
-            if (var1 == 6 || var1 == 8) {
+    private void a(int key, String name, String description) {
+        PropertyTwoLineItem item = new PropertyTwoLineItem(this);
+        item.setKey(key);
+        item.setName(name);
+        item.setDesc(description);
+        l.addView(item);
+        item.setBackgroundColor(0xfff6f6f6);
+        item.setOnClickListener(this);
+        if (key != 4) {
+            if (key == 6 || key == 8) {
                 return;
             }
 
-            if (var1 != 17) {
+            if (key != 17) {
                 return;
             }
         }
 
-        var4.setBackgroundColor(0xffffffff);
+        item.setBackgroundColor(Color.WHITE);
     }
 
-    private void b(int var1, int var2) {
-        a(var1, getString(var2));
+    private void b(int key, int name) {
+        a(key, getString(name));
     }
 
     private void l() {
-        Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse(xB.b().a(getApplicationContext(), 2131624004)));
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Intent var2 = Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976));
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(var2);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getApplicationContext(), R.string.besome_blog_url)));
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
     }
 
     private void resetDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), 2131625764));
-        dialog.a(2131166052);
-        View rootView = wB.a(this, 2131427367);
-        RadioGroup radioGroup = rootView.findViewById(2131231670);
-        ((RadioButton) rootView.findViewById(2131231650)).setText(xB.b().a(getApplicationContext(), 2131625766));
-        ((RadioButton) rootView.findViewById(2131231656)).setText(xB.b().a(getApplicationContext(), 2131625765));
+        dialog.b(xB.b().a(getApplicationContext(), R.string.program_information_reset_system_title));
+        dialog.a(R.drawable.rollback_96);
+        View rootView = wB.a(this, R.layout.all_init_popup);
+        RadioGroup radioGroup = rootView.findViewById(R.id.rg_type);
+        ((RadioButton) rootView.findViewById(R.id.rb_all)).setText(xB.b().a(getApplicationContext(), R.string.program_information_reset_system_title_all_settings_data));
+        ((RadioButton) rootView.findViewById(R.id.rb_only_config)).setText(xB.b().a(getApplicationContext(), R.string.program_information_reset_system_title_all_settings));
         dialog.a(rootView);
-        dialog.b(xB.b().a(getApplicationContext(), 2131625050), view -> {
+        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_yes), v -> {
             if (!mB.a()) {
                 int buttonId = radioGroup.getCheckedRadioButtonId();
-                boolean onlyConfig = buttonId != 2131231650;
+                boolean resetOnlySettings = buttonId != R.id.rb_all;
                 dialog.dismiss();
-                setResult(-1, getIntent().putExtra("onlyConfig", onlyConfig));
+                setResult(RESULT_OK, getIntent().putExtra("onlyConfig", resetOnlySettings));
                 finish();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), 2131624974), view -> dialog.dismiss());
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> dialog.dismiss());
         dialog.show();
     }
 
     private void openFacebook() {
-        String var1 = xB.b().a(getApplicationContext(), 2131625397);
+        String facebookPageUrl = xB.b().a(getApplicationContext(), R.string.facebook_url);
 
         try {
-            Uri var3 = Uri.parse("fb://facewebmodal/f?href=" + var1);
-            Intent var5 = new Intent("android.intent.action.VIEW", var3);
-            startActivity(var5);
-        } catch (Exception var4) {
-            startActivity(Intent.createChooser(new Intent("android.intent.action.VIEW", Uri.parse(var1)), xB.b().a(getApplicationContext(), 2131624976)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookPageUrl)));
+        } catch (Exception e) {
+            startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl)),
+                    xB.b().a(getApplicationContext(), R.string.common_word_choose)));
         }
-
     }
 
     private void openIdeasSite() {
-        Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse("https://ideas.sketchware.io/"));
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Intent var2 = Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976));
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(var2);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ideas.sketchware.io/"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
     }
 
-    public void onClick(View view) {
+    @Override
+    public void onClick(View v) {
         if (!mB.a()) {
-            if (view.getId() == 2131230807) {
+            if (v.getId() == R.id.btn_app_init) {
                 resetDialog();
             }
 
             int key;
-            if (view instanceof PropertyOneLineItem) {
-                key = ((PropertyOneLineItem) view).getKey();
+            if (v instanceof PropertyOneLineItem) {
+                key = ((PropertyOneLineItem) v).getKey();
                 switch (key) {
                     case 1:
                         toSystemInfoActivity();
@@ -144,25 +139,25 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
 
                     case 15:
                         if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                            return;
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), 0).show();
+                        } else {
+                            toLicenseActivity();
                         }
-
-                        toLicenseActivity();
                         break;
 
+                    default:
                 }
             }
 
-            if (view instanceof PropertyTwoLineItem) {
-                key = ((PropertyTwoLineItem) view).getKey();
+            if (v instanceof PropertyTwoLineItem) {
+                key = ((PropertyTwoLineItem) v).getKey();
                 switch (key) {
                     case 4:
                         if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131624932), 0).show();
-                            return;
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), 0).show();
+                        } else {
+                            openBlog();
                         }
-                        openBlog();
                         break;
 
                     case 17:
@@ -176,32 +171,34 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                     case 6:
                         openFacebook();
                         break;
+
+                    default:
                 }
             }
-
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
-        setContentView(2131427612);
-        k = findViewById(2131231847);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.program_info);
+        k = findViewById(R.id.toolbar);
         a(k);
         d().d(true);
         d().e(true);
-        findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(this, 2131625599));
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        d().a(xB.b().a(this, R.string.main_drawer_title_program_information));
         k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        l = findViewById(2131230932);
-        TextView var2 = findViewById(2131232167);
-        var2.setText("Version " + GB.e(getApplicationContext()));
-        Button var4 = findViewById(2131230807);
-        var4.setText(xB.b().a(getApplicationContext(), 2131625761));
-        var4.setOnClickListener(this);
-        var4 = findViewById(2131230808);
-        var4.setText(xB.b().a(getApplicationContext(), 2131625760));
-        var4.setOnClickListener(this);
+        l = findViewById(R.id.content);
+
+        TextView version = findViewById(R.id.tv_sketch_ver);
+        version.setText("Version " + GB.e(getApplicationContext()));
+        Button resetSystem = findViewById(R.id.btn_app_init);
+        resetSystem.setText(xB.b().a(getApplicationContext(), R.string.program_information_button_reset_system));
+        resetSystem.setOnClickListener(this);
+        Button checkForUpdates = findViewById(R.id.btn_app_upgrade);
+        checkForUpdates.setText(xB.b().a(getApplicationContext(), R.string.program_information_button_check_update));
+        checkForUpdates.setOnClickListener(this);
         a(4, R.string.program_information_title_docs, R.string.docs_url);
         a(17, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
         b(5, R.string.title_community);
@@ -212,31 +209,29 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     }
 
     private void toLicenseActivity() {
-        Intent var1 = new Intent(getApplicationContext(), LicenseActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), LicenseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivity(intent);
     }
 
     private void openBlog() {
-        Intent var1 = new Intent("android.intent.action.VIEW", Uri.parse("https://docs.sketchware.io/blog"));
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Intent var2 = Intent.createChooser(var1, xB.b().a(getApplicationContext(), 2131624976));
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(var2);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.sketchware.io/blog"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
     }
 
     private void toSystemInfoActivity() {
-        Intent var1 = new Intent(getApplicationContext(), SystemInfoActivity.class);
-        var1.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        var1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        var1.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivity(var1);
+        Intent intent = new Intent(getApplicationContext(), SystemInfoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivity(intent);
     }
-
 }
