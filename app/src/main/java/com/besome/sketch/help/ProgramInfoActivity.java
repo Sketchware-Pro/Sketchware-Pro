@@ -29,29 +29,18 @@ import mod.hey.studios.util.Helper;
 
 public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClickListener {
 
-    public Toolbar k;
-    public LinearLayout l;
+    private LinearLayout content;
 
-    private void a(int key, int name, int description) {
-        a(key, getString(name), getString(description));
+    private void addTwoLineItem(int key, int name, int description) {
+        addTwoLineItem(key, getString(name), getString(description));
     }
 
-    private void a(int key, String name) {
-        PropertyOneLineItem item = new PropertyOneLineItem(this);
-        item.setKey(key);
-        item.setName(name);
-        l.addView(item);
-        if (key == 1 || key == 2 || key == 14 || key == 15) {
-            item.setOnClickListener(this);
-        }
-    }
-
-    private void a(int key, String name, String description) {
+    private void addTwoLineItem(int key, String name, String description) {
         PropertyTwoLineItem item = new PropertyTwoLineItem(this);
         item.setKey(key);
         item.setName(name);
         item.setDesc(description);
-        l.addView(item);
+        content.addView(item);
         item.setBackgroundColor(0xfff6f6f6);
         item.setOnClickListener(this);
         if (key != 4) {
@@ -67,11 +56,21 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         item.setBackgroundColor(Color.WHITE);
     }
 
-    private void b(int key, int name) {
-        a(key, getString(name));
+    private void addSingleLineItem(int key, int name) {
+        addSingleLineItem(key, getString(name));
     }
 
-    private void l() {
+    private void addSingleLineItem(int key, String name) {
+        PropertyOneLineItem item = new PropertyOneLineItem(this);
+        item.setKey(key);
+        item.setName(name);
+        content.addView(item);
+        if (key == 1 || key == 2 || key == 14 || key == 15) {
+            item.setOnClickListener(this);
+        }
+    }
+
+    private void openMedium() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getApplicationContext(), R.string.besome_blog_url)));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -165,7 +164,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                         break;
 
                     case 8:
-                        l();
+                        openMedium();
                         break;
 
                     case 6:
@@ -182,14 +181,14 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.program_info);
-        k = findViewById(R.id.toolbar);
-        a(k);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        a(toolbar);
         d().d(true);
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         d().a(xB.b().a(this, R.string.main_drawer_title_program_information));
-        k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        l = findViewById(R.id.content);
+        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        content = findViewById(R.id.content);
 
         TextView version = findViewById(R.id.tv_sketch_ver);
         version.setText("Version " + GB.e(getApplicationContext()));
@@ -199,13 +198,13 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         Button checkForUpdates = findViewById(R.id.btn_app_upgrade);
         checkForUpdates.setText(xB.b().a(getApplicationContext(), R.string.program_information_button_check_update));
         checkForUpdates.setOnClickListener(this);
-        a(4, R.string.program_information_title_docs, R.string.docs_url);
-        a(17, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
-        b(5, R.string.title_community);
-        a(6, R.string.title_facebook_community, R.string.facebook_url);
-        a(8, R.string.title_besome_blog, R.string.besome_blog_url);
-        b(1, R.string.program_information_title_system_information);
-        b(15, R.string.program_information_title_open_source_license);
+        addTwoLineItem(4, R.string.program_information_title_docs, R.string.docs_url);
+        addTwoLineItem(17, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
+        addSingleLineItem(5, R.string.title_community);
+        addTwoLineItem(6, R.string.title_facebook_community, R.string.facebook_url);
+        addTwoLineItem(8, R.string.title_besome_blog, R.string.besome_blog_url);
+        addSingleLineItem(1, R.string.program_information_title_system_information);
+        addSingleLineItem(15, R.string.program_information_title_open_source_license);
     }
 
     private void toLicenseActivity() {
