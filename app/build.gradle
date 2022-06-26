@@ -87,13 +87,13 @@ dependencies {
     implementation "com.android.tools:annotations:30.2.1"
     implementation "com.google.guava:guava:30.1-jre"
 
-    def codeEditorVersion = "0.12.0"
+    def codeEditorVersion = "0.13.0"
     def excludeAnnotation = { exclude group: "androidx.annotation", module: "annotation" }
     def editorGroupId = "io.github.Rosemoe.sora-editor"
 
     implementation "$editorGroupId:editor:$codeEditorVersion", excludeAnnotation
     implementation "$editorGroupId:language-java:$codeEditorVersion", excludeAnnotation
-    implementation "$editorGroupId:language-textmate:0.12.0-1"
+    implementation "$editorGroupId:language-textmate:0.13.0"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"

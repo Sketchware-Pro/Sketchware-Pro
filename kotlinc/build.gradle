@@ -35,7 +35,7 @@ dependencies {
 
     implementation 'org.jetbrains.trove4j:trove4j:20160824'
     implementation 'com.github.marschall:zipfilesystem-standalone:1.0.1'
-    runtimeOnly ('org.jetbrains.kotlin:kotlin-reflect:1.5.21')
+    runtimeOnly ('org.jetbrains.kotlin:kotlin-reflect:1.7.0')
 
     api files(
             'libs/kotlin-compiler-compiler.jar',
