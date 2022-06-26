@@ -373,24 +373,29 @@ public class LogicClickListener implements View.OnClickListener {
     }
 
     private CheckBox getRemoveVariableCheckBox(String variableName) {
-        return commonRemoveCheckBox(variableName, R.string.logic_editor_message_currently_used_variable);
+        return commonRemoveCheckBox(
+                logicEditor.o.c(variableName) || projectDataManager.c(javaName, variableName, eventName),
+                R.string.logic_editor_message_currently_used_variable)
+                .setText(variableName);
     }
 
     private CheckBox getRemoveListCheckBox(String listName) {
-        return commonRemoveCheckBox(listName, R.string.logic_editor_message_currently_used_list);
+        return commonRemoveCheckBox(
+                logicEditor.o.b(listName) || projectDataManager.b(javaName, listName, eventName),
+                R.string.logic_editor_message_currently_used_list)
+                .setText(listName);
     }
 
-    private CheckBox commonRemoveCheckBox(String variableName, int toastMessageId) {
+    private CheckBox commonRemoveCheckBox(boolean hasUses, int toastMessageId) {
         CheckBox checkBox = new CheckBox(logicEditor);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) getDip(40),
                 1);
         checkBox.setLayoutParams(params);
-        checkBox.setText(variableName);
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (buttonView.isChecked()) {
-                if (logicEditor.o.c(variableName) || projectDataManager.c(javaName, variableName, eventName)) {
+                if (hasUses) {
                     SketchwareUtil.toastError(Helper.getResString(toastMessageId), bB.TOAST_WARNING);
                     buttonView.setChecked(false);
                 }
