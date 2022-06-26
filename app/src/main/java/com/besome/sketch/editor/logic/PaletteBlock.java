@@ -71,7 +71,7 @@ public class PaletteBlock extends LinearLayout {
 
     private void initialize(Context context) {
         a = context;
-        wB.a(context, this, R.ayout.palette_block);
+        wB.a(context, this, R.layout.palette_block);
         PaletteSelector paletteSelector = (PaletteSelector) findViewById(R.id.palette_selector);
         customScrollView = (CustomScrollView) findViewById(R.id.scv);
         horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.hscv);
