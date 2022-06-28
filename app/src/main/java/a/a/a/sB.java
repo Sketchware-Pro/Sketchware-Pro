@@ -7,8 +7,9 @@ import android.content.Intent;
 import com.besome.sketch.MainActivity;
 import com.sketchware.remod.R;
 
-import java.io.File;
 import java.util.HashMap;
+
+import mod.jbk.build.BuiltInLibraries;
 
 public class sB {
     public static void a(Context context, boolean resetOnlySettings) {
@@ -23,7 +24,7 @@ public class sB {
 
         oB oBVar = new oB();
         oBVar.b(wq.r());
-        oBVar.b(context.getFilesDir() + File.separator + "libs");
+        oBVar.b(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath());
 
         if (!resetOnlySettings) {
             oBVar.b(wq.q());
