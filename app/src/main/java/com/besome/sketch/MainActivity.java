@@ -40,6 +40,7 @@ import a.a.a.gg;
 import a.a.a.l;
 import a.a.a.nd;
 import a.a.a.oB;
+import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
 import mod.SketchwareUtil;
@@ -122,6 +123,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 105:
+                    sB.a(this, data.getBooleanExtra("onlyConfig", true));
                     selectPageZero();
                     break;
 
