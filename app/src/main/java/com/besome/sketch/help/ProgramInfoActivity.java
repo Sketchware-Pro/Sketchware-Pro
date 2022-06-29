@@ -81,9 +81,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     private void openMedium() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getApplicationContext(), R.string.besome_blog_url)));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
     }
 
@@ -105,7 +102,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                 finish();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> dialog.dismiss());
+        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -123,9 +120,6 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     private void openIdeasSite() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ideas.sketchware.io/"));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
     }
 
@@ -218,27 +212,18 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     private void toLicenseActivity() {
         Intent intent = new Intent(getApplicationContext(), LicenseActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivity(intent);
     }
 
     private void openBlog() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.sketchware.io/blog"));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
     }
 
     private void toSystemInfoActivity() {
         Intent intent = new Intent(getApplicationContext(), SystemInfoActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivity(intent);
     }
 }
