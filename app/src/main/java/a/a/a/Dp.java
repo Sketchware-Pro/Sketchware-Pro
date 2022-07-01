@@ -733,11 +733,11 @@ public class Dp {
 
         if (settings.getMinSdkVersion() < 21 || !yq.N.isDebugBuild) {
             dexLibraries(yq.E, dexes);
+            LogUtil.d(TAG, "Merging DEX files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         } else {
             dexesToAddButNotMerge = dexes;
+            LogUtil.d(TAG, "Skipped merging DEX files due to debug build with minSdkVersion >= 21");
         }
-
-        LogUtil.d(TAG, "Merging project DEX file(s) and libraries' took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     /**
