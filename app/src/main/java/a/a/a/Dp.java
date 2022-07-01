@@ -90,7 +90,7 @@ public class Dp {
     public ProguardHandler proguard;
     public ProjectSettings settings;
     private boolean buildAppBundle = false;
-    private ArrayList<String> dexesToAddButNotMerge = new ArrayList<>();
+    private ArrayList<File> dexesToAddButNotMerge = new ArrayList<>();
 
     /**
      * Timestamp keeping track of when compiling the project's resources started, needed for stats of how long compiling took.
@@ -359,17 +359,15 @@ public class Dp {
     /**
      * Dexes libraries.
      *
-     * @param outputPath The output path, needs to be a folder in case merging DEX files results in multiple
-     * @param dexes      The paths of DEX files to merge
      * @return List of result DEX files which were merged or couldn't be merged with others.
      * @throws Exception Thrown if merging had problems
      */
-    private Collection<String> dexLibraries(String outputPath, List<String> dexes) throws Exception {
+    private Collection<File> dexLibraries(File outputDirectory, List<File> dexes) throws Exception {
         int lastDexNumber = 1;
         String nextMergedDexFilename;
-        Collection<String> resultDexFiles = new LinkedList<>();
+        Collection<File> resultDexFiles = new LinkedList<>();
         LinkedList<Dex> dexObjects = new LinkedList<>();
-        Iterator<String> toMergeIterator = dexes.iterator();
+        Iterator<File> toMergeIterator = dexes.iterator();
 
         List<FieldId> mergedDexFields;
         List<MethodId> mergedDexMethods;
@@ -387,11 +385,11 @@ public class Dp {
         }
 
         while (toMergeIterator.hasNext()) {
-            String dexPath = toMergeIterator.next();
+            File dexFile = toMergeIterator.next();
             nextMergedDexFilename = lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex";
 
             // Closable gets closed automatically
-            Dex dex = new Dex(new FileInputStream(dexPath));
+            Dex dex = new Dex(new FileInputStream(dexFile));
 
             boolean canMerge = true;
             List<FieldId> newDexFieldIds = new LinkedList<>();
@@ -459,16 +457,16 @@ public class Dp {
             }
 
             if (canMerge) {
-                LogUtil.d(TAG, "Merging DEX #" + dexes.indexOf(dexPath) + " as well to " + nextMergedDexFilename);
+                LogUtil.d(TAG, "Merging DEX #" + dexes.indexOf(dexFile) + " as well to " + nextMergedDexFilename);
                 dexObjects.add(dex);
                 mergedDexFields.addAll(newDexFieldIds);
                 mergedDexMethods.addAll(newDexMethodIds);
                 mergedDexProtos.addAll(newDexProtoIds);
                 mergedDexTypes.addAll(newDexTypeIds);
             } else {
-                String targetFile = outputPath.replace("classes.dex", nextMergedDexFilename);
-                mergeDexes(targetFile, dexObjects);
-                resultDexFiles.add(targetFile);
+                File target = new File(outputDirectory, nextMergedDexFilename);
+                mergeDexes(target, dexObjects);
+                resultDexFiles.add(target);
                 dexObjects.clear();
                 dexObjects.add(dex);
 
@@ -480,9 +478,9 @@ public class Dp {
             }
         }
         if (dexObjects.size() > 0) {
-            String filename = outputPath.replace("classes.dex", lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex");
-            mergeDexes(filename, dexObjects);
-            resultDexFiles.add(filename);
+            File file = new File(outputDirectory, lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex");
+            mergeDexes(file, dexObjects);
+            resultDexFiles.add(file);
         }
 
         return resultDexFiles;
@@ -596,7 +594,7 @@ public class Dp {
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
     public void g() throws By {
-        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.E : dexesToAddButNotMerge.remove(0);
+        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.E : dexesToAddButNotMerge.remove(0).getAbsolutePath();
         try {
             ApkBuilder apkBuilder = new ApkBuilder(new File(yq.G), new File(yq.C), new File(firstDexPath), null, null, System.out);
 
@@ -631,9 +629,7 @@ public class Dp {
             } else {
                 int dexNumber = 2;
 
-                for (String dexPath : dexesToAddButNotMerge) {
-                    File dexFile = new File(dexPath);
-
+                for (File dexFile : dexesToAddButNotMerge) {
                     apkBuilder.addFile(dexFile, "classes" + dexNumber + ".dex");
                     dexNumber++;
                 }
@@ -679,22 +675,22 @@ public class Dp {
      */
     public void h() throws Exception {
         long savedTimeMillis = System.currentTimeMillis();
-        ArrayList<String> dexes = new ArrayList<>();
+        ArrayList<File> dexes = new ArrayList<>();
 
         /* Add AndroidX MultiDex library if needed */
         if (settings.getMinSdkVersion() < 21) {
-            dexes.add(BuiltInLibraries.getLibraryDexFilePath(BuiltInLibraries.ANDROIDX_MULTIDEX));
+            dexes.add(BuiltInLibraries.getLibraryDexFile(BuiltInLibraries.ANDROIDX_MULTIDEX));
         }
 
         /* Add HTTP legacy files if wanted */
         if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, ProjectSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            dexes.add(BuiltInLibraries.getLibraryDexFilePath(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
+            dexes.add(BuiltInLibraries.getLibraryDexFile(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
         }
 
         /* Add used built-in libraries' DEX files */
         for (Jp builtInLibrary : builtInLibraryManager.a()) {
-            dexes.add(BuiltInLibraries.getLibraryDexFilePath(builtInLibrary.a()));
+            dexes.add(BuiltInLibraries.getLibraryDexFile(builtInLibrary.a()));
         }
 
         /* Add local libraries' main DEX files */
@@ -708,7 +704,7 @@ public class Dp {
 
                 if (localLibraryDexPath instanceof String) {
                     if (!proguard.libIsProguardFMEnabled((String) localLibraryName)) {
-                        dexes.add((String) localLibraryDexPath);
+                        dexes.add(new File((String) localLibraryDexPath));
                         /* Add library's extra DEX files */
                         File localLibraryDirectory = new File((String) localLibraryDexPath).getParentFile();
 
@@ -721,7 +717,7 @@ public class Dp {
 
                                     if (!filename.equals("classes.dex")
                                             && filename.startsWith("classes") && filename.endsWith(".dex")) {
-                                        dexes.add(localLibraryFile.getAbsolutePath());
+                                        dexes.add(localLibraryFile);
                                     }
                                 }
                             }
@@ -735,12 +731,14 @@ public class Dp {
             }
         }
 
-        dexes.addAll(FileUtil.listFiles(yq.t + File.separator + "dex", "dex"));
+        for (String file : FileUtil.listFiles(yq.t + File.separator + "dex", "dex")) {
+            dexes.add(new File(file));
+        }
 
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
 
         if (settings.getMinSdkVersion() < 21 || !yq.N.isDebugBuild) {
-            dexLibraries(yq.E, dexes);
+            dexLibraries(new File(yq.E), dexes);
             LogUtil.d(TAG, "Merging DEX files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         } else {
             dexesToAddButNotMerge = dexes;
@@ -897,9 +895,9 @@ public class Dp {
         zipSigner.signZip(yq.G, yq.H);
     }
 
-    private void mergeDexes(String target, List<Dex> dexes) throws IOException {
+    private void mergeDexes(File target, List<Dex> dexes) throws IOException {
         DexMerger merger = new DexMerger(dexes.toArray(new Dex[0]), CollisionPolicy.KEEP_FIRST, new DxContext());
-        merger.merge().writeTo(new File(target));
+        merger.merge().writeTo(target);
     }
 
     /**
