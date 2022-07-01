@@ -34,6 +34,7 @@ import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -360,11 +361,13 @@ public class Dp {
      *
      * @param outputPath The output path, needs to be a folder in case merging DEX files results in multiple
      * @param dexes      The paths of DEX files to merge
+     * @return List of result DEX files which were merged or couldn't be merged with others.
      * @throws Exception Thrown if merging had problems
      */
-    private void dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
+    private Collection<String> dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
         int lastDexNumber = 1;
         String nextMergedDexFilename;
+        Collection<String> resultDexFiles = new LinkedList<>();
         LinkedList<Dex> dexObjects = new LinkedList<>();
         Iterator<String> toMergeIterator = dexes.iterator();
 
@@ -463,7 +466,9 @@ public class Dp {
                 mergedDexProtos.addAll(newDexProtoIds);
                 mergedDexTypes.addAll(newDexTypeIds);
             } else {
-                mergeDexes(outputPath.replace("classes.dex", nextMergedDexFilename), dexObjects);
+                String targetFile = outputPath.replace("classes.dex", nextMergedDexFilename);
+                mergeDexes(targetFile, dexObjects);
+                resultDexFiles.add(targetFile);
                 dexObjects.clear();
                 dexObjects.add(dex);
 
@@ -475,9 +480,12 @@ public class Dp {
             }
         }
         if (dexObjects.size() > 0) {
-            String filename = lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex";
-            mergeDexes(outputPath.replace("classes.dex", filename), dexObjects);
+            String filename = outputPath.replace("classes.dex", lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex");
+            mergeDexes(filename, dexObjects);
+            resultDexFiles.add(filename);
         }
+
+        return resultDexFiles;
     }
 
     /**
