@@ -364,7 +364,7 @@ public class Dp {
      * @return List of result DEX files which were merged or couldn't be merged with others.
      * @throws Exception Thrown if merging had problems
      */
-    private Collection<String> dexLibraries(String outputPath, ArrayList<String> dexes) throws Exception {
+    private Collection<String> dexLibraries(String outputPath, List<String> dexes) throws Exception {
         int lastDexNumber = 1;
         String nextMergedDexFilename;
         Collection<String> resultDexFiles = new LinkedList<>();
