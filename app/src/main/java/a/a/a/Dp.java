@@ -843,7 +843,7 @@ public class Dp {
             /* Extract testkey.zip to testkey/ */
             new KB().a(testkeyArchivePath, testkeyDirectoryPath);
         }
-        if (yq.N.isAppCompatUsed) {
+        if (yq.N.g) {
             builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_APPCOMPAT);
             builtInLibraryManager.a(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
             builtInLibraryManager.a(BuiltInLibraries.MATERIAL);

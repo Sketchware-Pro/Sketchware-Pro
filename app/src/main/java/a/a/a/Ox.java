@@ -99,7 +99,7 @@ public class Ox {
                 writeWidget(nx, viewBean);
             }
         }
-        if (a.isAppCompatUsed) {
+        if (a.g) {
             if (b.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                 if (b.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                     nx.a("app", "layout_behavior", "@string/appbar_scrolling_view_behavior");

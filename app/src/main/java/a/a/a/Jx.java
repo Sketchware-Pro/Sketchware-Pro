@@ -200,7 +200,7 @@ public class Jx {
             if (f.isDebugBuild) addImport("com.google.android.gms.ads.RequestConfiguration");
         }
 
-        if (f.isAppCompatUsed) {
+        if (f.g) {
             addImport("androidx.fragment.app.Fragment");
             addImport("androidx.fragment.app.FragmentManager");
             addImport("androidx.fragment.app.DialogFragment");
@@ -213,7 +213,7 @@ public class Jx {
             addImport("android.app.DialogFragment");
         }
         if (permissionManager.hasNewPermission() || f.a(projectFileBean.getActivityName()).a()) {
-            if (f.isAppCompatUsed) {
+            if (f.g) {
                 addImport("androidx.core.content.ContextCompat");
                 addImport("androidx.core.app.ActivityCompat");
             }
@@ -234,7 +234,7 @@ public class Jx {
         sb.append(a);
 
         sb.append("public class ").append(projectFileBean.getActivityName()).append(" extends ");
-        if (f.isAppCompatUsed) {
+        if (f.g) {
             if (isBottomDialogFragment) {
                 sb.append("BottomSheetDialogFragment");
             } else if (isDialogFragment) {
@@ -331,7 +331,7 @@ public class Jx {
 
         sb.append(a);
         if (isFragment) {
-            if (f.isAppCompatUsed) {
+            if (f.g) {
                 sb.append("@NonNull").append(a);
                 sb.append("@Override").append(a);
                 sb.append("public View onCreateView(@NonNull LayoutInflater _inflater, " +
@@ -376,7 +376,7 @@ public class Jx {
 
             if (f.isDebugBuild) {
                 StringBuilder testDevicesListCode = new StringBuilder("List<String> testDeviceIds = Arrays.asList(");
-                ArrayList<String> testDevices = f.testDeviceIds;
+                ArrayList<String> testDevices = f.t;
                 for (int j = 0, testDevicesSize = testDevices.size(); j < testDevicesSize; j++) {
                     String testDeviceId = testDevices.get(j);
 
@@ -397,7 +397,7 @@ public class Jx {
 
         if (!isFragment) {
             // Adds initializeLogic() call too, don't worry
-            sb.append(permissionManager.writePermission(f.isAppCompatUsed, f.a(projectFileBean.getActivityName()).c));
+            sb.append(permissionManager.writePermission(f.g, f.a(projectFileBean.getActivityName()).c));
         } else {
             sb.append("initializeLogic();").append(a)
                     .append("return _view;").append(a);
@@ -580,7 +580,7 @@ public class Jx {
                     .replaceAll(".setLayoutManager\\(new LinearLayoutManager\\(this", ".setLayoutManager(new LinearLayoutManager(getContext()")
                     .replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()");
         }
-        if (f.isAppCompatUsed) {
+        if (f.g) {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
 
@@ -702,13 +702,13 @@ public class Jx {
     }
 
     private void handleAppCompat() {
-        if (f.isAppCompatUsed) {
+        if (f.g) {
             addImport("androidx.appcompat.app.AppCompatActivity");
             addImport("androidx.annotation.*");
         } else {
             addImport("android.app.Activity");
         }
-        if (f.isAppCompatUsed) {
+        if (f.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
                 addImport("androidx.appcompat.widget.Toolbar");
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");

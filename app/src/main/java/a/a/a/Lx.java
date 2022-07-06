@@ -58,7 +58,7 @@ public class Lx {
                 "dependencies {\r\n" +
                 "implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n";
 
-        if (metadata.isAppCompatUsed) {
+        if (metadata.g) {
             content += "implementation 'androidx.appcompat:appcompat:1.2.0'\r\n" +
                     "implementation 'com.google.android.material:material:1.4.0'\r\n";
         }

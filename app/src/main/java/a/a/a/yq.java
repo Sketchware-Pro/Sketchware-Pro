@@ -571,7 +571,7 @@ public class yq {
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
         }
         if (appCompat.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
-            N.isAppCompatUsed = true;
+            N.g = true;
         }
         if (adMob.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isAdMobEnabled = true;
@@ -595,7 +595,7 @@ public class yq {
                 switch (component.type) {
                     case ComponentBean.COMPONENT_TYPE_CAMERA:
                     case 35:
-                        N.isAppCompatUsed = true;
+                        N.g = true;
                         N.u = true;
                         N.addPermission(next.getActivityName(), jq.PERMISSION_CAMERA);
                         N.addPermission(next.getActivityName(), jq.PERMISSION_READ_EXTERNAL_STORAGE);
@@ -899,7 +899,7 @@ public class yq {
 
         srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml",
                 CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
-        if (N.isAppCompatUsed) {
+        if (N.g) {
             boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 

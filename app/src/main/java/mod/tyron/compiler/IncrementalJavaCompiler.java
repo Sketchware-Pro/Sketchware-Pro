@@ -1,5 +1,7 @@
 package mod.tyron.compiler;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 import android.util.Log;
 
 import org.eclipse.jdt.internal.compiler.batch.Main;
@@ -21,8 +23,6 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.jbk.util.LogUtil;
 import mod.tyron.compiler.file.JavaFile;
-
-import static com.besome.sketch.SketchApplication.getContext;
 
 public class IncrementalJavaCompiler extends Compiler {
 
@@ -369,7 +369,7 @@ public class IncrementalJavaCompiler extends Compiler {
         String path = getContext().getFilesDir() + "/libs/libs/";
         ArrayList<String> arrayList = new ArrayList<>();
 
-        if (projectConfig.N.isAppCompatUsed) {
+        if (projectConfig.N.g) {
             arrayList.add(":" + path + "appcompat-1.0.0");
             arrayList.add(":" + path + "coordinatorlayout-1.0.0");
             arrayList.add(":" + path + "material-1.0.0");

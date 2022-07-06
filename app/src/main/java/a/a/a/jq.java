@@ -124,7 +124,7 @@ public class jq {
      * If the built-in library AppCompat (contains the Jetpack AppCompat artefacts and
      * Material Design Components) is enabled.
      */
-    public boolean isAppCompatUsed = false;
+    public boolean g = false;
 
     /**
      * If the built-in library Firebase is enabled.
@@ -202,7 +202,7 @@ public class jq {
     /**
      * Device IDs registered as Test Devices for the current project.
      */
-    public ArrayList<String> testDeviceIds = new ArrayList<>();
+    public ArrayList<String> t = new ArrayList<>();
     public boolean u = false;
 
     /**
@@ -273,7 +273,7 @@ public class jq {
         ArrayList<AdTestDeviceBean> testDevices;
         if (!(projectLibraryBean == null || (testDevices = projectLibraryBean.testDevices) == null || testDevices.size() <= 0)) {
             for (AdTestDeviceBean adTestDeviceBean : projectLibraryBean.testDevices) {
-                this.testDeviceIds.add(adTestDeviceBean.deviceId);
+                this.t.add(adTestDeviceBean.deviceId);
             }
         }
         String reserved1;

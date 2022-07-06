@@ -315,7 +315,7 @@ public class Ix {
                     activityTag.a("android", "supportsPictureInPicture", "true");
                 }
                 if (!AndroidManifestInjector.isActivityThemeUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
-                    if (c.isAppCompatUsed) {
+                    if (c.g) {
                         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN)) {
                             activityTag.a("android", "theme", "@style/AppTheme.FullScreen");
                         }
