@@ -204,11 +204,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             ArrayList<String> toCompress = new ArrayList<>();
             toCompress.add(project_metadata.projectMyscPath);
             String exportedFilename = yB.c(sc_metadata, "my_ws_name") + ".zip";
-            project_metadata.exportedSourcesZipPath = wq.s() + File.separator + "export_src" + File.separator + exportedFilename;
-            if (file_utility.e(project_metadata.exportedSourcesZipPath)) {
-                file_utility.c(project_metadata.exportedSourcesZipPath);
+
+            String exportedSourcesZipPath = wq.s() + File.separator + "export_src" + File.separator + exportedFilename;
+            if (file_utility.e(exportedSourcesZipPath)) {
+                file_utility.c(exportedSourcesZipPath);
             }
-            new KB().a(project_metadata.exportedSourcesZipPath, toCompress, project_metadata.K);
+
+            ArrayList<String> toExclude = new ArrayList<>();
+            toExclude.add("SketchApplication.java");
+            toExclude.add("DebugActivity.java");
+
+            new KB().a(exportedSourcesZipPath, toCompress, toExclude);
             project_metadata.e();
             runOnUiThread(() -> e(exportedFilename));
         } catch (Exception e) {

@@ -73,17 +73,6 @@ public class yq {
      */
     public final String releaseApkPath;
 
-    /**
-     * Path of ZIP file containing project's sources.
-     */
-    public String exportedSourcesZipPath;
-
-    /**
-     * Unknown,
-     * e.g. [SketchApplication.java, DebugActivity.java]
-     */
-    public final ArrayList<String> K;
-
     private final oB fileUtil;
     public jq N;
     public final Zo O;
@@ -243,9 +232,6 @@ public class yq {
 
         fileUtil = new oB(true);
         O = new Zo(context);
-        K = new ArrayList<>();
-        K.add("SketchApplication.java");
-        K.add("DebugActivity.java");
         packageNameAsFolders = packageName.replaceAll("\\.", File.separator);
         binDirectoryPath = projectMyscPath + "bin";
         compiledClassesPath = binDirectoryPath + File.separator + "classes";
