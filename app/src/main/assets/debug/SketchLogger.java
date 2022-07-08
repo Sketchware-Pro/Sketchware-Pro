@@ -45,7 +45,6 @@ public class SketchLogger {
                 }
             } catch (Exception e) {
                 broadcastLog(e.toString());
-                SketchwareUtil.showMessage(SketchApplication.getContext(), "Stopping sharing debug logcat logs due to an exception.");
             }
         }
     };
