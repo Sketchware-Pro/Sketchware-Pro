@@ -738,7 +738,7 @@ public class Dp {
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
 
         if (settings.getMinSdkVersion() < 21 || !yq.N.isDebugBuild) {
-            dexLibraries(new File(yq.E), dexes);
+            dexLibraries(new File(yq.t), dexes);
             LogUtil.d(TAG, "Merging DEX files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         } else {
             dexesToAddButNotMerge = dexes;
