@@ -60,7 +60,7 @@ public class KotlinCompilerBridge {
      * but with Kotlin compilation available.
      */
     public static boolean maybeCheckIfDeviceSupportsKotlinc(Activity context, yq workspace) {
-                             //     please learn to write beautiful code!
+
         if (Build.VERSION.SDK_INT >= 26 && KotlinCompilerUtil.areAnyKtFilesPresent(workspace)) {
             aB dialog = new aB(context);
             dialog.a(R.drawable.high_priority_96_red);
