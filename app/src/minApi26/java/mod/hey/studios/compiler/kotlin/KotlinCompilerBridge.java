@@ -41,14 +41,14 @@ public class KotlinCompilerBridge {
     }
 
     public static void maybeAddKotlinFilesToClasspath(StringBuilder classpath, yq workspace) {
-        if (FileUtil.isExistFile(workspace.u)) {
-            classpath.append(workspace.u);
+        if (FileUtil.isExistFile(workspace.compiledClassesPath)) {
+            classpath.append(workspace.compiledClassesPath);
             classpath.append(":");
         }
     }
 
     public static String getKotlinHome(yq workspace) {
-        return workspace.t + File.separator + "kotlin_home";
+        return workspace.binDirectoryPath + File.separator + "kotlin_home";
     }
 
     /**

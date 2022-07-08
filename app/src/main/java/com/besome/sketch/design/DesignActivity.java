@@ -175,7 +175,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
     private void indicateCompileErrorOccurred(String error) {
-        new CompileErrorSaver(q.b).writeLogsToFile(error);
+        new CompileErrorSaver(q.sc_id).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.a(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
         snackbar.a(xB.b().a(getApplicationContext(), R.string.common_word_show), v -> {
             if (!mB.a()) {
@@ -224,13 +224,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void installBuiltApk() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (Build.VERSION.SDK_INT >= 24) {
-            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.H));
+            Uri apkUri = FileProvider.a(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
         } else {
-            intent.setDataAndType(Uri.fromFile(new File(q.H)), "application/vnd.android.package-archive");
+            intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
         }
 
         startActivity(intent);
@@ -347,7 +347,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
-                if (FileUtil.isExistFile(q.H)) {
+                if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
                 }
 
@@ -359,7 +359,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                         case 2:
                             new Thread(() -> {
-                                FileUtil.deleteFile(q.c);
+                                FileUtil.deleteFile(q.projectMyscPath);
                                 runOnUiThread(() ->
                                         SketchwareUtil.toast("Done cleaning temporary files!"));
                             }).start();
@@ -370,7 +370,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             break;
 
                         case 4:
-                            if (FileUtil.isExistFile(q.H)) {
+                            if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                                 installBuiltApk();
                             } else {
                                 SketchwareUtil.toast("APK doesn't exist anymore");
@@ -777,7 +777,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     void toJavaManager() {
         launchActivity(ManageJavaActivity.class, null,
-                new Pair<>("pkgName", q.e));
+                new Pair<>("pkgName", q.packageName));
     }
 
     /**
@@ -949,7 +949,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             } else {
                 try {
                     publishProgress("Deleting temporary files...");
-                    FileUtil.deleteFile(q.c);
+                    FileUtil.deleteFile(q.projectMyscPath);
 
                     q.c(a);
                     q.a();
@@ -962,11 +962,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     kC kC = jC.d(sc_id);
-                    kC.b(q.w + File.separator + "drawable-xhdpi");
+                    kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
                     kC = jC.d(sc_id);
-                    kC.c(q.w + File.separator + "raw");
+                    kC.c(q.resDirectoryPath + File.separator + "raw");
                     kC = jC.d(sc_id);
-                    kC.a(q.A + File.separator + "fonts");
+                    kC.a(q.assetsPath + File.separator + "fonts");
                     generateProjectDebugFiles();
                     q.f();
                     q.e();
@@ -1009,7 +1009,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     /* Encrypt Strings in classes if enabled */
-                    StringfogHandler stringfogHandler = new StringfogHandler(q.b);
+                    StringfogHandler stringfogHandler = new StringfogHandler(q.sc_id);
                     stringfogHandler.start(this, mDp);
                     if (canceled) {
                         cancel(true);
@@ -1017,7 +1017,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     /* Obfuscate classes if enabled */
-                    ProguardHandler proguardHandler = new ProguardHandler(q.b);
+                    ProguardHandler proguardHandler = new ProguardHandler(q.sc_id);
                     proguardHandler.start(this, mDp);
                     if (canceled) {
                         cancel(true);
@@ -1050,7 +1050,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     publishProgress("Signing APK...");
                     if (Build.VERSION.SDK_INT >= 26) {
                         ApkSigner signer = new ApkSigner();
-                        signer.signWithTestKey(mDp.yq.G, mDp.yq.H, null);
+                        signer.signWithTestKey(mDp.yq.unsignedUnalignedApkPath, mDp.yq.finalToInstallApkPath, null);
                     } else {
                         mDp.k();
                     }

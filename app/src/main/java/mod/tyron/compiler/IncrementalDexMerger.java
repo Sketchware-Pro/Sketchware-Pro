@@ -1,5 +1,7 @@
 package mod.tyron.compiler;
 
+import static com.besome.sketch.SketchApplication.getContext;
+
 import android.util.Log;
 
 import com.besome.sketch.SketchApplication;
@@ -15,8 +17,6 @@ import mod.agus.jcoderz.dx.command.dexer.DxContext;
 import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-
-import static com.besome.sketch.SketchApplication.getContext;
 
 public class IncrementalDexMerger extends Compiler {
 
@@ -36,8 +36,8 @@ public class IncrementalDexMerger extends Compiler {
         this.projectConfig = projectConfig;
         this.builtInLibraries = builtInLibraries;
 
-        this.manageLocalLibrary = new ManageLocalLibrary(projectConfig.b);
-        DEX_PATH = projectConfig.c + "/incremental/build";
+        this.manageLocalLibrary = new ManageLocalLibrary(projectConfig.sc_id);
+        DEX_PATH = projectConfig.projectMyscPath + "/incremental/build";
     }
 
     public void setOnResultListener(Compiler.Result listener) {
@@ -89,7 +89,7 @@ public class IncrementalDexMerger extends Compiler {
         ArrayList<Dex> dexes = getSourceFiles();
         ArrayList<Dex> dexObjects = new ArrayList<>();
         int methodsMergedFile = 0;
-        String outputPath = projectConfig.t + "/classes.dex";
+        String outputPath = projectConfig.binDirectoryPath + "/classes.dex";
 
         try {
             for (Dex dex : dexes) {

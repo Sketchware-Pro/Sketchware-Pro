@@ -121,18 +121,18 @@ public class Dp {
         }
 
         aapt2Binary = new File(context.getCacheDir(), "aapt2");
-        build_settings = new BuildSettings(yqVar.b);
+        build_settings = new BuildSettings(yqVar.sc_id);
         this.context = context;
         yq = yqVar;
         fpu = new FilePathUtil();
         fileUtil = new oB(false);
         commandExecutor = new Fp();
-        mll = new ManageLocalLibrary(yqVar.b);
+        mll = new ManageLocalLibrary(yqVar.sc_id);
         builtInLibraryManager = new Kp();
         File defaultAndroidJar = new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "android.jar");
         androidJarPath = build_settings.getValue(BuildSettings.SETTING_ANDROID_JAR_PATH, defaultAndroidJar.getAbsolutePath());
-        proguard = new ProguardHandler(yqVar.b);
-        settings = new ProjectSettings(yqVar.b);
+        proguard = new ProguardHandler(yqVar.sc_id);
+        settings = new ProjectSettings(yqVar.sc_id);
     }
 
     public Dp(BuildAsyncTask buildAsyncTask, Context context, yq yqVar) {
@@ -159,7 +159,7 @@ public class Dp {
     public void a(iI iIVar, String str) {
         ZipSigner signer = iIVar.b(new CB().a(str));
         try {
-            signer.signZip(yq.G, yq.I);
+            signer.signZip(yq.unsignedUnalignedApkPath, yq.releaseApkPath);
         } catch (IOException | GeneralSecurityException e) {
             LogUtil.e(TAG, "Failed to sign APK: " + e.getMessage(), e);
         }
@@ -226,7 +226,7 @@ public class Dp {
      * @throws Exception Thrown if the compiler has any problems compiling
      */
     public void c() throws Exception {
-        FileUtil.makeDir(yq.t + File.separator + "dex");
+        FileUtil.makeDir(yq.binDirectoryPath + File.separator + "dex");
         if (isD8Enabled()) {
             long savedTimeMillis = System.currentTimeMillis();
             try {
@@ -242,8 +242,8 @@ public class Dp {
                     "--debug",
                     "--verbose",
                     "--multi-dex",
-                    "--output=" + yq.t + File.separator + "dex",
-                    proguard.isProguardEnabled() ? yq.classes_proguard : yq.u
+                    "--output=" + yq.binDirectoryPath + File.separator + "dex",
+                    proguard.isProguardEnabled() ? yq.classes_proguard : yq.compiledClassesPath
             );
 
             try {
@@ -311,7 +311,7 @@ public class Dp {
         }
 
         /* Add JARs from project's classpath */
-        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (yq.b) + "/files/classpath/";
+        String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + (yq.sc_id) + "/files/classpath/";
         ArrayList<String> jars = FileUtil.listFiles(path, "jar");
         classpath.append(":").append(TextUtils.join(":", jars));
 
@@ -549,27 +549,27 @@ public class Dp {
                 args.add("-deprecation");
             }
             args.add("-d");
-            args.add(yq.u);
+            args.add(yq.compiledClassesPath);
             args.add("-cp");
             args.add(d());
             args.add("-proc:none");
-            args.add(yq.y);
-            args.add(yq.v);
-            String pathJava = fpu.getPathJava(yq.b);
+            args.add(yq.javaFilesPath);
+            args.add(yq.rJavaDirectoryPath);
+            String pathJava = fpu.getPathJava(yq.sc_id);
             if (FileUtil.isExistFile(pathJava)) {
                 args.add(pathJava);
             }
-            String pathBroadcast = fpu.getPathBroadcast(yq.b);
+            String pathBroadcast = fpu.getPathBroadcast(yq.sc_id);
             if (FileUtil.isExistFile(pathBroadcast)) {
                 args.add(pathBroadcast);
             }
-            String pathService = fpu.getPathService(yq.b);
+            String pathService = fpu.getPathService(yq.sc_id);
             if (FileUtil.isExistFile(pathService)) {
                 args.add(pathService);
             }
 
             /* Avoid "package ;" line in that file causing issues while compiling */
-            File rJavaFileWithoutPackage = new File(yq.v, "R.java");
+            File rJavaFileWithoutPackage = new File(yq.rJavaDirectoryPath, "R.java");
             if (rJavaFileWithoutPackage.exists() && !rJavaFileWithoutPackage.delete()) {
                 LogUtil.w(TAG, "Failed to delete file " + rJavaFileWithoutPackage.getAbsolutePath());
             }
@@ -594,9 +594,9 @@ public class Dp {
      * Builds an APK, used when clicking "Run" in DesignActivity
      */
     public void g() throws By {
-        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.E : dexesToAddButNotMerge.remove(0).getAbsolutePath();
+        String firstDexPath = dexesToAddButNotMerge.isEmpty() ? yq.classesDexPath : dexesToAddButNotMerge.remove(0).getAbsolutePath();
         try {
-            ApkBuilder apkBuilder = new ApkBuilder(new File(yq.G), new File(yq.C), new File(firstDexPath), null, null, System.out);
+            ApkBuilder apkBuilder = new ApkBuilder(new File(yq.unsignedUnalignedApkPath), new File(yq.resourcesApkPath), new File(firstDexPath), null, null, System.out);
 
             for (Jp library : builtInLibraryManager.a()) {
                 apkBuilder.addResourcesFromJar(BuiltInLibraries.getLibraryClassesJarPath(library.a()));
@@ -609,7 +609,7 @@ public class Dp {
             }
 
             /* Add project's native libraries */
-            File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(yq.b));
+            File nativeLibrariesDirectory = new File(fpu.getPathNativelibs(yq.sc_id));
             if (nativeLibrariesDirectory.exists()) {
                 apkBuilder.addNativeLibraries(nativeLibrariesDirectory);
             }
@@ -620,7 +620,7 @@ public class Dp {
             }
 
             if (dexesToAddButNotMerge.isEmpty()) {
-                List<String> dexFiles = FileUtil.listFiles(yq.t, "dex");
+                List<String> dexFiles = FileUtil.listFiles(yq.binDirectoryPath, "dex");
                 for (String dexFile : dexFiles) {
                     if (!Uri.fromFile(new File(dexFile)).getLastPathSegment().equals("classes.dex")) {
                         apkBuilder.addFile(new File(dexFile), Uri.parse(dexFile).getLastPathSegment());
@@ -663,7 +663,7 @@ public class Dp {
                 return yq.classes_proguard;
             }
         }
-        return yq.u;
+        return yq.compiledClassesPath;
     }
 
     /**
@@ -731,14 +731,14 @@ public class Dp {
             }
         }
 
-        for (String file : FileUtil.listFiles(yq.t + File.separator + "dex", "dex")) {
+        for (String file : FileUtil.listFiles(yq.binDirectoryPath + File.separator + "dex", "dex")) {
             dexes.add(new File(file));
         }
 
         LogUtil.d(TAG, "Will merge these " + dexes.size() + " DEX files to classes.dex: " + dexes);
 
         if (settings.getMinSdkVersion() < 21 || !yq.N.isDebugBuild) {
-            dexLibraries(new File(yq.t), dexes);
+            dexLibraries(new File(yq.binDirectoryPath), dexes);
             LogUtil.d(TAG, "Merging DEX files took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
         } else {
             dexesToAddButNotMerge = dexes;
@@ -892,7 +892,7 @@ public class Dp {
         ZipSigner zipSigner = new ZipSigner();
         KeyStoreFileManager.setProvider(new BouncyCastleProvider());
         zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-        zipSigner.signZip(yq.G, yq.H);
+        zipSigner.signZip(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
     }
 
     private void mergeDexes(File target, List<Dex> dexes) throws IOException {
@@ -972,7 +972,7 @@ public class Dp {
 
         /* Include compiled Java classes (?) IT SAYS -in*jar*s, so why include .class es? */
         args.add("-injars");
-        args.add(yq.u);
+        args.add(yq.compiledClassesPath);
 
         for (HashMap<String, Object> hashMap : mll.list) {
             String obj = hashMap.get("name").toString();
@@ -1013,7 +1013,7 @@ public class Dp {
 
     public void runStringfog() {
         try {
-            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(yq.t,
+            StringFogMappingPrinter stringFogMappingPrinter = new StringFogMappingPrinter(new File(yq.binDirectoryPath,
                     "stringFogMapping.txt"));
             StringFogClassInjector stringFogClassInjector = new StringFogClassInjector(new String[0],
                     "UTF-8",
@@ -1022,18 +1022,18 @@ public class Dp {
                     stringFogMappingPrinter);
             stringFogMappingPrinter.startMappingOutput();
             stringFogMappingPrinter.ouputInfo("UTF-8", "com.github.megatronking.stringfog.xor.StringFogImpl");
-            stringFogClassInjector.doFog2ClassInDir(new File(yq.u));
-            KB.a(context, "stringfog/stringfog.zip", yq.u);
+            stringFogClassInjector.doFog2ClassInDir(new File(yq.compiledClassesPath));
+            KB.a(context, "stringfog/stringfog.zip", yq.compiledClassesPath);
         } catch (Exception e) {
             LogUtil.e("Stringfog", e.toString());
         }
     }
 
     /**
-     * Calls {@link #runZipalign(String, String)} with {@link yq#G} and {@link yq#alignedApkPath}.
+     * Calls {@link #runZipalign(String, String)} with {@link yq#unsignedUnalignedApkPath} and {@link yq#unsignedAlignedApkPath}.
      */
     public void runZipalign() throws By {
-        runZipalign(yq.G, yq.alignedApkPath);
+        runZipalign(yq.unsignedUnalignedApkPath, yq.unsignedAlignedApkPath);
     }
 
     public void runZipalign(String inPath, String outPath) throws By {

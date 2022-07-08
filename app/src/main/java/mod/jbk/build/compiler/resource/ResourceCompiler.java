@@ -112,7 +112,7 @@ public class ResourceCompiler {
 
         @Override
         public void compile() throws zy, MissingFileException {
-            String outputPath = buildHelper.yq.t + File.separator + "res";
+            String outputPath = buildHelper.yq.binDirectoryPath + File.separator + "res";
             emptyOrCreateDirectory(outputPath);
 
             long savedTimeMillis = System.currentTimeMillis();
@@ -142,7 +142,7 @@ public class ResourceCompiler {
          * @throws zy Thrown to be caught by DesignActivity to show an error Snackbar.
          */
         public void link() throws zy, MissingFileException {
-            String resourcesPath = buildHelper.yq.t + File.separator + "res";
+            String resourcesPath = buildHelper.yq.binDirectoryPath + File.separator + "res";
             if (progressListener != null)
                 progressListener.onProgressUpdate("Linking resources with AAPT2...");
 
@@ -164,10 +164,10 @@ public class ResourceCompiler {
                     "28"));
 
             args.add("--version-code");
-            String versionCode = buildHelper.yq.l;
+            String versionCode = buildHelper.yq.versionCode;
             args.add((versionCode == null || versionCode.isEmpty()) ? "1" : versionCode);
             args.add("--version-name");
-            String versionName = buildHelper.yq.m;
+            String versionName = buildHelper.yq.versionName;
             args.add((versionName == null || versionName.isEmpty()) ? "1.0" : versionName);
 
             args.add("-I");
@@ -180,12 +180,12 @@ public class ResourceCompiler {
             }
 
             /* Add assets imported by vanilla method */
-            linkingAssertDirectoryExists(buildHelper.yq.A);
+            linkingAssertDirectoryExists(buildHelper.yq.assetsPath);
             args.add("-A");
-            args.add(buildHelper.yq.A);
+            args.add(buildHelper.yq.assetsPath);
 
             /* Add imported assets */
-            String importedAssetsPath = buildHelper.fpu.getPathAssets(buildHelper.yq.b);
+            String importedAssetsPath = buildHelper.fpu.getPathAssets(buildHelper.yq.sc_id);
             if (FileUtil.isExistFile(importedAssetsPath)) {
                 args.add("-A");
                 args.add(importedAssetsPath);
@@ -203,7 +203,7 @@ public class ResourceCompiler {
             }
 
             /* Add local libraries' assets */
-            for (String localLibraryAssetsDirectory : new ManageLocalLibrary(buildHelper.yq.b).getAssets()) {
+            for (String localLibraryAssetsDirectory : new ManageLocalLibrary(buildHelper.yq.sc_id).getAssets()) {
                 linkingAssertDirectoryExists(localLibraryAssetsDirectory);
                 args.add("-A");
                 args.add(localLibraryAssetsDirectory);
@@ -245,18 +245,18 @@ public class ResourceCompiler {
             }
 
             /* Add R.java */
-            linkingAssertDirectoryExists(buildHelper.yq.v);
+            linkingAssertDirectoryExists(buildHelper.yq.rJavaDirectoryPath);
             args.add("--java");
-            args.add(buildHelper.yq.v);
+            args.add(buildHelper.yq.rJavaDirectoryPath);
 
             /* Output AAPT2's generated ProGuard rules to a.a.a.yq.aapt_rules */
             args.add("--proguard");
             args.add(buildHelper.yq.aapt_rules);
 
             /* Add AndroidManifest.xml */
-            linkingAssertFileExists(buildHelper.yq.r);
+            linkingAssertFileExists(buildHelper.yq.androidManifestPath);
             args.add("--manifest");
-            args.add(buildHelper.yq.r);
+            args.add(buildHelper.yq.androidManifestPath);
 
             /* Use the generated R.java for used libraries */
             String extraPackages = buildHelper.e();
@@ -267,7 +267,7 @@ public class ResourceCompiler {
 
             /* Output the APK only with resources to a.a.a.yq.C */
             args.add("-o");
-            args.add(buildHelper.yq.C);
+            args.add(buildHelper.yq.resourcesApkPath);
 
             LogUtil.d(TAG + ":l", args.toString());
             BinaryExecutor executor = new BinaryExecutor();
@@ -279,13 +279,13 @@ public class ResourceCompiler {
         }
 
         private void compileProjectResources(String outputPath) throws zy, MissingFileException {
-            compilingAssertDirectoryExists(buildHelper.yq.w);
+            compilingAssertDirectoryExists(buildHelper.yq.resDirectoryPath);
 
             ArrayList<String> commands = new ArrayList<>();
             commands.add(aapt2.getAbsolutePath());
             commands.add("compile");
             commands.add("--dir");
-            commands.add(buildHelper.yq.w);
+            commands.add(buildHelper.yq.resDirectoryPath);
             commands.add("-o");
             commands.add(outputPath + File.separator + "project.zip");
             LogUtil.d(TAG + ":cPR", "Now executing: " + commands);
@@ -381,13 +381,13 @@ public class ResourceCompiler {
         }
 
         private void compileImportedResources(String outputPath) throws zy {
-            if (FileUtil.isExistFile(buildHelper.fpu.getPathResource(buildHelper.yq.b))
-                    && new File(buildHelper.fpu.getPathResource(buildHelper.yq.b)).length() != 0) {
+            if (FileUtil.isExistFile(buildHelper.fpu.getPathResource(buildHelper.yq.sc_id))
+                    && new File(buildHelper.fpu.getPathResource(buildHelper.yq.sc_id)).length() != 0) {
                 ArrayList<String> commands = new ArrayList<>();
                 commands.add(aapt2.getAbsolutePath());
                 commands.add("compile");
                 commands.add("--dir");
-                commands.add(buildHelper.fpu.getPathResource(buildHelper.yq.b));
+                commands.add(buildHelper.fpu.getPathResource(buildHelper.yq.sc_id));
                 commands.add("-o");
                 commands.add(outputPath + File.separator + "project-imported.zip");
                 LogUtil.d(TAG + ":cIR", "Now executing: " + commands);

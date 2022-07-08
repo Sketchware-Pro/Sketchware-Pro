@@ -224,9 +224,9 @@ public class Ix {
     }
 
     public void setYq(yq yqVar) {
-        settings = new ProjectSettings(yqVar.b);
+        settings = new ProjectSettings(yqVar.sc_id);
         isTargetSdk31 = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 31;
-        packageName = yqVar.e;
+        packageName = yqVar.packageName;
     }
 
     /**

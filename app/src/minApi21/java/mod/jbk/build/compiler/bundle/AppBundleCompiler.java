@@ -14,7 +14,7 @@ public class AppBundleCompiler {
 
     public static File getDefaultAppBundleOutputFile(Context context, String sc_id) {
         yq projectMetadata = new yq(context, sc_id);
-        return new File(projectMetadata.t, projectMetadata.d + ".aab");
+        return new File(projectMetadata.binDirectoryPath, projectMetadata.projectName + ".aab");
     }
 
     public void buildBundle() {

@@ -38,67 +38,45 @@ public class yq {
     private static final String FIREBASE_DATABASE_STORAGE_LOCATION_MATCHER = "(-default-rtdb)?\\.[a-z](.?)+";
 
     /**
-     * Assets directory of current project,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets
-     * <p>
-     * Proposed new name: assetsPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets
      */
-    public final String A;
+    public final String assetsPath;
 
     /**
-     * Imported fonts directory of current project,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets/fonts
-     * <p>
-     * Proposed new name: fontsPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/assets/fonts
      */
-    public final String B;
+    public final String fontsPath;
 
     /**
-     * Path of compiled resources in a ZIP file of current project,
+     * Path of ZIP file containing compiled resources of the current project,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.res
-     * <p>
-     * Proposed new name: resourcesApkPath
      */
-    public final String C;
+    public final String resourcesApkPath;
 
     /**
-     * DEX file called classes.dex (??),
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes.dex
-     * <p>
-     * Proposed new name: classesDexPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/bin/classes.dex
      */
-    public final String E;
+    public final String classesDexPath;
 
     /**
-     * Unsigned APK file's path,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned
-     * <p>
-     * Proposed new name: unsignedUnalignedApkPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned
      */
-    public final String G;
+    public final String unsignedUnalignedApkPath;
 
     /**
-     * Signed APK file's path,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk
-     * <p>
-     * Proposed new name: finalToInstallApkPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk
      */
-    public final String H;
+    public final String finalToInstallApkPath;
 
     /**
-     * Release APK file's path,
-     * e.g. /storage/emulated/0/sketchware/signed_apk/InternalDemo_release.apk
-     * <p>
-     * Proposed new name: releaseApkPath
+     * Example content: /storage/emulated/0/sketchware/signed_apk/InternalDemo_release.apk
      */
-    public final String I;
+    public final String releaseApkPath;
 
     /**
-     * Path of ZIP file containing project's sources (only used/set at {@link com.besome.sketch.export.ExportProjectActivity}).
-     * <p>
-     * Proposed new name: exportedSourcesZipPath
+     * Path of ZIP file containing project's sources.
      */
-    public String J;
+    public String exportedSourcesZipPath;
 
     /**
      * Unknown,
@@ -106,10 +84,7 @@ public class yq {
      */
     public final ArrayList<String> K;
 
-    /**
-     * Proposed new name: fileUtil
-     */
-    public final oB L;
+    private final oB fileUtil;
     public jq N;
     public final Zo O;
 
@@ -120,25 +95,16 @@ public class yq {
     public String aapt_rules;
 
     /**
-     * Path of the aligned, still unsigned APK,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned.aligned
-     * <p>
-     * Proposed new name: unsignedAlignedApkPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/bin/InternalDemo.apk.unsigned.aligned
      */
-    public final String alignedApkPath;
+    public final String unsignedAlignedApkPath;
+
+    public final String sc_id;
 
     /**
-     * Proposed new name: sc_id
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/
      */
-    public final String b;
-
-    /**
-     * Project's mysc folder path,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/
-     *
-     * Proposed new name: projectMyscPath
-     */
-    public final String c;
+    public final String projectMyscPath;
 
     /**
      * ProGuarded classes.jar file's path of current project,
@@ -146,64 +112,32 @@ public class yq {
      */
     public String classes_proguard;
 
-    /**
-     * Proposed new name: projectName
-     */
-    public final String d;
+    public final String projectName;
 
-    /**
-     * Proposed new name: packageName
-     */
-    public final String e;
+    public final String packageName;
 
-    /**
-     * Proposed new name: applicationName
-     */
-    public final String f;
+    public final String applicationName;
 
-    /**
-     * Proposed new name: colorAccent
-     */
-    public final int g;
+    public final int colorAccent;
 
-    /**
-     * Proposed new name: colorPrimary
-     */
-    public final int h;
+    public final int colorPrimary;
 
-    /**
-     * Proposed new name: colorPrimaryDark
-     */
-    public final int i;
+    public final int colorPrimaryDark;
 
-    /**
-     * Proposed new name: colorControlHighlight
-     */
-    public final int j;
+    public final int colorControlHighlight;
 
-    /**
-     * Proposed new name: colorControlNormal
-     */
-    public final int k;
+    public final int colorControlNormal;
 
-    /**
-     * Proposed new name: versionCode
-     */
-    public final String l;
+    public final String versionCode;
 
-    /**
-     * Proposed new name: versionName
-     */
-    public final String m;
+    public final String versionName;
 
     /**
      * Package name of current project,
      * but "folders" separated with slashes (/) instead of periods (.),
      * e.g. com/jbk/internal/demo
-     *
-     * Proposed new name: packageNameAsFolders
      */
-    public final String n;
+    public final String packageNameAsFolders;
 
     /**
      * Path of file containing the ProGuard mapping,
@@ -229,12 +163,9 @@ public class yq {
     public ProjectSettings projectSettings;
 
     /**
-     * Compiled AndroidManifest.xml's path of current project,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/AndroidManifest.xml
-     *
-     * Proposed new name: androidManifestPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/AndroidManifest.xml
      */
-    public final String r;
+    public final String androidManifestPath;
 
     /**
      * Path of ProGuard rules generated by a resource processor,
@@ -243,28 +174,19 @@ public class yq {
     public String rules_generated;
 
     /**
-     * Project's generated Java files directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main
-     *
-     * Proposed new name: generatedFilesPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main
      */
-    public final String s;
+    public final String generatedFilesPath;
 
     /**
-     * Project's compiled binary directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin
-     *
-     * Proposed new name: binDirectoryPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/bin
      */
-    public final String t;
+    public final String binDirectoryPath;
 
     /**
-     * Project's compiled Java/Kotlin classes directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/bin/classes
-     *
-     * Proposed new name: compiledClassesPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/bin/classes
      */
-    public final String u;
+    public final String compiledClassesPath;
 
     /**
      * Path of the unaligned but signed APK,
@@ -275,42 +197,28 @@ public class yq {
     /**
      * Project's generated R.java files directory,
      * e.g. /storage/emulated/0/.sketchware/mysc/605/gen
-     *
-     * Proposed new name: rJavaDirectoryPath
      */
-    public final String v;
+    public final String rJavaDirectoryPath;
 
     /**
-     * Generated project resources directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/res
-     *
-     * Proposed new name: resFilesPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res
      */
-    public final String w;
+    public final String resDirectoryPath;
 
     /**
-     * Project's generated layout files directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/layout
-     *
-     * Proposed new name: layoutFilesPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/layout
      */
-    public final String x;
+    public final String layoutFilesPath;
 
     /**
-     * Project's generated Java files directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/java
-     *
-     * Proposed new name: javaFilesPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/java
      */
-    public final String y;
+    public final String javaFilesPath;
 
     /**
-     * Project's imported sounds directory,
-     * e.g. /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
-     *
-     * Proposed new name: importedSoundsPath
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
      */
-    public final String z;
+    public final String importedSoundsPath;
 
     public yq(Context context, String sc_id) {
         this(context, wq.d(sc_id), lC.b(sc_id));
@@ -318,125 +226,125 @@ public class yq {
 
     public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
         N = new jq();
-        b = yB.c(metadata, "sc_id");
-        c = myscFolderPath.endsWith(File.separator) ? myscFolderPath : myscFolderPath + File.separator;
-        e = yB.c(metadata, "my_sc_pkg_name");
-        d = yB.c(metadata, "my_ws_name");
-        f = yB.c(metadata, "my_app_name");
-        l = yB.c(metadata, "sc_ver_code");
-        m = yB.c(metadata, "sc_ver_name");
+        sc_id = yB.c(metadata, "sc_id");
+        projectMyscPath = myscFolderPath.endsWith(File.separator) ? myscFolderPath : myscFolderPath + File.separator;
+        packageName = yB.c(metadata, "my_sc_pkg_name");
+        projectName = yB.c(metadata, "my_ws_name");
+        applicationName = yB.c(metadata, "my_app_name");
+        versionCode = yB.c(metadata, "sc_ver_code");
+        versionName = yB.c(metadata, "sc_ver_name");
 
-        g = yB.a(metadata, "color_accent", ContextCompat.getColor(context, R.color.color_accent));
-        h = yB.a(metadata, "color_primary", ContextCompat.getColor(context, R.color.color_primary));
-        i = yB.a(metadata, "color_primary_dark", ContextCompat.getColor(context, R.color.color_primary_dark));
-        j = yB.a(metadata, "color_control_highlight", ContextCompat.getColor(context, R.color.color_control_highlight));
-        k = yB.a(metadata, "color_control_normal", ContextCompat.getColor(context, R.color.color_control_normal));
-        projectSettings = new ProjectSettings(b);
+        colorAccent = yB.a(metadata, "color_accent", ContextCompat.getColor(context, R.color.color_accent));
+        colorPrimary = yB.a(metadata, "color_primary", ContextCompat.getColor(context, R.color.color_primary));
+        colorPrimaryDark = yB.a(metadata, "color_primary_dark", ContextCompat.getColor(context, R.color.color_primary_dark));
+        colorControlHighlight = yB.a(metadata, "color_control_highlight", ContextCompat.getColor(context, R.color.color_control_highlight));
+        colorControlNormal = yB.a(metadata, "color_control_normal", ContextCompat.getColor(context, R.color.color_control_normal));
+        projectSettings = new ProjectSettings(sc_id);
 
-        L = new oB(true);
+        fileUtil = new oB(true);
         O = new Zo(context);
         K = new ArrayList<>();
         K.add("SketchApplication.java");
         K.add("DebugActivity.java");
-        n = e.replaceAll("\\.", File.separator);
-        t = c + "bin";
-        u = t + File.separator + "classes";
-        classes_proguard = t + File.separator + "classes_proguard.jar";
-        aapt_rules = t + File.separator + "aapt_rules.pro";
-        printseeds = t + File.separator + "seeds.txt";
-        printusage = t + File.separator + "usage.txt";
-        printmapping = t + File.separator + "mapping.txt";
-        rules_generated = t + File.separator + "rules_generated.pro";
-        v = c + "gen";
-        s = c + "app" + File.separator + "src" + File.separator + "main";
-        y = s + File.separator + "java";
-        w = s + File.separator + "res";
-        x = w + File.separator + "layout";
-        z = w + File.separator + "raw";
-        A = s + File.separator + "assets";
-        B = A + File.separator + "fonts";
-        r = c + "app" + File.separator + "src" + File.separator + "main" + File.separator + "AndroidManifest.xml";
-        C = t + File.separator + d + ".apk.res";
-        E = t + File.separator + "classes.dex";
-        G = t + File.separator + d + ".apk.unsigned";
-        alignedApkPath = G + ".aligned";
-        unalignedSignedApkPath = t + File.separator + d + ".apk.signed.unaligned";
-        H = t + File.separator + d + ".apk";
-        I = wq.o() + File.separator + d + "_release.apk";
+        packageNameAsFolders = packageName.replaceAll("\\.", File.separator);
+        binDirectoryPath = projectMyscPath + "bin";
+        compiledClassesPath = binDirectoryPath + File.separator + "classes";
+        classes_proguard = binDirectoryPath + File.separator + "classes_proguard.jar";
+        aapt_rules = binDirectoryPath + File.separator + "aapt_rules.pro";
+        printseeds = binDirectoryPath + File.separator + "seeds.txt";
+        printusage = binDirectoryPath + File.separator + "usage.txt";
+        printmapping = binDirectoryPath + File.separator + "mapping.txt";
+        rules_generated = binDirectoryPath + File.separator + "rules_generated.pro";
+        rJavaDirectoryPath = projectMyscPath + "gen";
+        generatedFilesPath = projectMyscPath + "app" + File.separator + "src" + File.separator + "main";
+        javaFilesPath = generatedFilesPath + File.separator + "java";
+        resDirectoryPath = generatedFilesPath + File.separator + "res";
+        layoutFilesPath = resDirectoryPath + File.separator + "layout";
+        importedSoundsPath = resDirectoryPath + File.separator + "raw";
+        assetsPath = generatedFilesPath + File.separator + "assets";
+        fontsPath = assetsPath + File.separator + "fonts";
+        androidManifestPath = projectMyscPath + "app" + File.separator + "src" + File.separator + "main" + File.separator + "AndroidManifest.xml";
+        resourcesApkPath = binDirectoryPath + File.separator + projectName + ".apk.res";
+        classesDexPath = binDirectoryPath + File.separator + "classes.dex";
+        unsignedUnalignedApkPath = binDirectoryPath + File.separator + projectName + ".apk.unsigned";
+        unsignedAlignedApkPath = unsignedUnalignedApkPath + ".aligned";
+        unalignedSignedApkPath = binDirectoryPath + File.separator + projectName + ".apk.signed.unaligned";
+        finalToInstallApkPath = binDirectoryPath + File.separator + projectName + ".apk";
+        releaseApkPath = wq.o() + File.separator + projectName + "_release.apk";
     }
 
     /**
-     * Deletes the directory {@link yq#w}/values-v21/.
+     * Deletes the directory {@link yq#resDirectoryPath}/values-v21/.
      */
     public void a() {
-        File file = new File(w + File.separator + "values-v21");
+        File file = new File(resDirectoryPath + File.separator + "values-v21");
         if (file.exists()) {
-            L.a(file);
+            fileUtil.a(file);
         }
     }
 
     /**
-     * Creates needed build directories {@link yq#t}, {@link yq#u}, {@link yq#v}, {@link yq#y}, {@link yq#w},
-     * {@link yq#x}, {@link yq#z}, {@link yq#A}, and {@link yq#B}.
+     * Creates needed build directories {@link yq#binDirectoryPath}, {@link yq#compiledClassesPath}, {@link yq#rJavaDirectoryPath}, {@link yq#javaFilesPath}, {@link yq#resDirectoryPath},
+     * {@link yq#layoutFilesPath}, {@link yq#importedSoundsPath}, {@link yq#assetsPath}, and {@link yq#fontsPath}.
      */
     public void c(Context context) {
-        L.f(t);
-        L.f(u);
-        L.f(v);
-        L.f(y);
-        L.f(w);
-        L.f(x);
-        L.f(z);
-        L.f(A);
-        L.f(B);
+        fileUtil.f(binDirectoryPath);
+        fileUtil.f(compiledClassesPath);
+        fileUtil.f(rJavaDirectoryPath);
+        fileUtil.f(javaFilesPath);
+        fileUtil.f(resDirectoryPath);
+        fileUtil.f(layoutFilesPath);
+        fileUtil.f(importedSoundsPath);
+        fileUtil.f(assetsPath);
+        fileUtil.f(fontsPath);
     }
 
     /**
      * Prepares to compile and creates /Internal storage/.sketchware/mysc/&lt;sc_id&gt;/ directories,
-     * {@link yq#t}, {@link yq#u} and {@link yq#v}.
+     * {@link yq#binDirectoryPath}, {@link yq#compiledClassesPath} and {@link yq#rJavaDirectoryPath}.
      */
     public void e() {
-        L.f(t);
-        L.f(u);
-        L.f(v);
+        fileUtil.f(binDirectoryPath);
+        fileUtil.f(compiledClassesPath);
+        fileUtil.f(rJavaDirectoryPath);
     }
 
     /**
-     * Deletes temporary compile cache directories, {@link yq#t} and {@link yq#v}. The used method
+     * Deletes temporary compile cache directories, {@link yq#binDirectoryPath} and {@link yq#rJavaDirectoryPath}. The used method
      * logs all files and folders which get deleted.
      */
     public void f() {
-        L.b(t);
-        L.b(v);
+        fileUtil.b(binDirectoryPath);
+        fileUtil.b(rJavaDirectoryPath);
     }
 
     /**
      * Generates top-level build.gradle, build.gradle for module ':app' and settings.gradle files.
      */
     public void h() {
-        L.b(c + File.separator + "app" + File.separator + "build.gradle",
+        fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
                 Lx.a(28, 21, 28, N));
-        L.b(c + File.separator + "settings.gradle", Lx.a());
-        L.b(c + File.separator + "build.gradle", Lx.c("3.4.2", "4.3.3"));
+        fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
+        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("3.4.2", "4.3.3"));
     }
 
     /**
-     * Extracts a ZIP archive from assets to {@link yq#w}.
+     * Extracts a ZIP archive from assets to {@link yq#resDirectoryPath}.
      */
     public void a(Context context, String str) {
         try {
-            KB.a(context, str, w);
+            KB.a(context, str, resDirectoryPath);
         } catch (Exception e2) {
             Log.e("ERROR", e2.getMessage(), e2);
         }
     }
 
     /**
-     * Copies a file to the project's app icon path, {@link yq#w}/drawable-xhdpi/app_icon.png
+     * Copies a file to the project's app icon path, {@link yq#resDirectoryPath}/drawable-xhdpi/app_icon.png
      */
     public void a(String iconPath) {
         try {
-            L.a(iconPath, w + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
+            fileUtil.a(iconPath, resDirectoryPath + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
         } catch (Exception e2) {
             e2.printStackTrace();
         }
@@ -446,28 +354,28 @@ public class yq {
      * Generates DebugActivity.java, SketchApplication.java, and SketchLogger.java, if necessary.
      */
     public void a(Context context) {
-        boolean logcatEnabled = N.isDebugBuild && new BuildSettings(b).getValue(
+        boolean logcatEnabled = N.isDebugBuild && new BuildSettings(sc_id).getValue(
                 BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
-        String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
+        String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/java/";
         if (!new File(javaDir, "DebugActivity.java").exists()) {
-            L.b(y + File.separator
-                            + n + File.separator
+            fileUtil.b(javaFilesPath + File.separator
+                            + packageNameAsFolders + File.separator
                             + "DebugActivity.java",
-                    L.b(
+                    fileUtil.b(
                             context,
                             "debug" + File.separator
                                     + "DebugActivity.java"
-                    ).replaceAll("<\\?package_name\\?>", e));
+                    ).replaceAll("<\\?package_name\\?>", packageName));
         }
 
         if (!new File(javaDir, "SketchApplication.java").exists()) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
-            String sketchApplicationFileContent = L.b(
+            String sketchApplicationFileContent = fileUtil.b(
                     context,
                     "debug" + File.separator + "SketchApplication.java"
-            ).replaceAll("<\\?package_name\\?>", e);
+            ).replaceAll("<\\?package_name\\?>", packageName);
             if (applyMultiDex) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
                         "Application \\{", "androidx.multidex.MultiDexApplication \\{");
@@ -482,22 +390,22 @@ public class yq {
                 );
             }
 
-            L.b(y + File.separator
-                            + n + File.separator
+            fileUtil.b(javaFilesPath + File.separator
+                            + packageNameAsFolders + File.separator
                             + "SketchApplication.java",
                     sketchApplicationFileContent);
         }
 
         if (logcatEnabled) {
             if (!new File(javaDir, "SketchLogger.java").exists()) {
-                L.b(y + File.separator
-                                + n + File.separator
+                fileUtil.b(javaFilesPath + File.separator
+                                + packageNameAsFolders + File.separator
                                 + "SketchLogger.java",
-                        L.b(
+                        fileUtil.b(
                                 context,
                                 "debug" + File.separator
                                         + "SketchLogger.java"
-                        ).replaceAll("<\\?package_name\\?>", e));
+                        ).replaceAll("<\\?package_name\\?>", packageName));
             }
         }
     }
@@ -505,20 +413,20 @@ public class yq {
     /**
      * Writes a project file to its correct location. Java files, for example, get saved to
      * <pre>
-     *     {@link yq#y} + File.separator + {@link yq#n}
-     * </pre>, while AndroidManifest.xml gets saved to {@link yq#r}.
+     *     {@link yq#javaFilesPath} + File.separator + {@link yq#packageNameAsFolders}
+     * </pre>, while AndroidManifest.xml gets saved to {@link yq#androidManifestPath}.
      */
     public void a(String fileName, String fileContent) {
         if (fileName.endsWith("java")) {
-            L.b(y + File.separator + n + File.separator + fileName, fileContent);
+            fileUtil.b(javaFilesPath + File.separator + packageNameAsFolders + File.separator + fileName, fileContent);
         } else if (fileName.equals("AndroidManifest.xml")) {
-            L.b(r, fileContent);
+            fileUtil.b(androidManifestPath, fileContent);
         } else if (fileName.equals("colors.xml") || fileName.equals("styles.xml") || fileName.equals("strings.xml")) {
-            L.b(w + File.separator + "values" + File.separator + fileName, fileContent);
+            fileUtil.b(resDirectoryPath + File.separator + "values" + File.separator + fileName, fileContent);
         } else if (fileName.equals("provider_paths.xml")) {
-            L.b(w + File.separator + "xml" + File.separator + fileName, fileContent);
+            fileUtil.b(resDirectoryPath + File.separator + "xml" + File.separator + fileName, fileContent);
         } else {
-            L.b(x + File.separator + fileName, fileContent);
+            fileUtil.b(layoutFilesPath + File.separator + fileName, fileContent);
         }
     }
 
@@ -528,11 +436,11 @@ public class yq {
         ProjectLibraryBean firebase = projectLibraryManager.d();
         ProjectLibraryBean googleMaps = projectLibraryManager.e();
         N = new jq();
-        N.packageName = e;
-        N.projectName = f;
-        N.versionCode = l;
-        N.versionName = m;
-        N.sc_id = b;
+        N.packageName = packageName;
+        N.projectName = applicationName;
+        N.versionCode = versionCode;
+        N.versionName = versionName;
+        N.sc_id = sc_id;
         N.e = O.h();
         N.isDebugBuild = !exportingProject;
         if (firebase.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
@@ -629,7 +537,7 @@ public class yq {
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(next.getJavaName()).entrySet()) {
                 for (BlockBean bean : entry.getValue()) {
                     String opCode = bean.opCode;
-                    N.x.setParams(bean.parameters, e, opCode);
+                    N.x.setParams(bean.parameters, packageName, opCode);
 
                     switch (opCode) {
                         case "FirebaseDynamicLink setDataHost":
@@ -761,7 +669,7 @@ public class yq {
                 mx.a("google_maps_key", projectLibraryManager.e().data, false);
             }
             String filePath = "values/secrets.xml";
-            L.b(w + File.separator + filePath,
+            fileUtil.b(resDirectoryPath + File.separator + filePath,
                     CommandBlock.applyCommands(filePath, mx.toCode()));
         }
         h();
@@ -775,8 +683,8 @@ public class yq {
         a(SketchApplication.getContext());
         CommandBlock.x();
 
-        final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
-        final String layoutDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/resource/layout/";
+        final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/java/";
+        final String layoutDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/layout/";
         List<File> javaFiles;
         {
             File[] files = new File(javaDir).listFiles();
@@ -833,38 +741,38 @@ public class yq {
         // Make generated classes viewable
         if (!javaFiles.contains(new File(javaDir + "SketchwareUtil.java"))) {
             srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
-                    Lx.i(e)));
+                    Lx.i(packageName)));
         }
 
         if (!javaFiles.contains(new File(javaDir + "FileUtil.java"))) {
             srcCodeBeans.add(new SrcCodeBean("FileUtil.java",
-                    Lx.e(e)));
+                    Lx.e(packageName)));
         }
 
         if (!javaFiles.contains(new File(javaDir + "RequestNetwork.java")) && N.isHttp3Used) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetwork.java",
-                    Lx.j(Lx.h(e))));
+                    Lx.j(Lx.h(packageName))));
         }
 
         if (!FileUtil.isExistFile(javaDir + "RequestNetworkController.java") && N.isHttp3Used) {
             srcCodeBeans.add(new SrcCodeBean("RequestNetworkController.java",
-                    Lx.j(Lx.g(e))));
+                    Lx.j(Lx.g(packageName))));
         }
 
         if (!javaFiles.contains(new File(javaDir + "BluetoothConnect.java")) && N.hasPermission(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothConnect.java",
-                    Lx.j(Lx.b(e))));
+                    Lx.j(Lx.b(packageName))));
         }
 
         if (!javaFiles.contains(new File(javaDir + "BluetoothController.java")) && N.hasPermission(jq.PERMISSION_BLUETOOTH)) {
             srcCodeBeans.add(new SrcCodeBean("BluetoothController.java",
-                    Lx.j(Lx.c(e))));
+                    Lx.j(Lx.c(packageName))));
         }
 
         if (N.isMapUsed) {
             if (!javaFiles.contains(new File(javaDir + "GoogleMapController.java")) && N.isMapUsed) {
                 srcCodeBeans.add(new SrcCodeBean("GoogleMapController.java",
-                        Lx.j(Lx.f(e))));
+                        Lx.j(Lx.f(packageName))));
             }
         }
 
@@ -875,11 +783,11 @@ public class yq {
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
             Mx colorsFileBuilder = new Mx();
-            colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
-            colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", i & 0xffffff));
-            colorsFileBuilder.a("colorAccent", String.format("#%06X", g & 0xffffff));
-            colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
-            colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
+            colorsFileBuilder.a("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
+            colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
+            colorsFileBuilder.a("colorAccent", String.format("#%06X", colorAccent & 0xffffff));
+            colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", colorControlHighlight & 0xffffff));
+            colorsFileBuilder.a("colorControlNormal", String.format("#%06X", colorControlNormal & 0xffffff));
             srcCodeBeans.add(new SrcCodeBean("colors.xml",
                     CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode())));
 
@@ -923,17 +831,17 @@ public class yq {
                     CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode())));
 
             Mx colorsFileBuilder = new Mx();
-            colorsFileBuilder.a("colorPrimary", String.format("#%06X", h & 0xffffff));
-            colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", i & 0xffffff));
-            colorsFileBuilder.a("colorAccent", String.format("#%06X", g & 0xffffff));
-            colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", j & 0xffffff));
-            colorsFileBuilder.a("colorControlNormal", String.format("#%06X", k & 0xffffff));
+            colorsFileBuilder.a("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
+            colorsFileBuilder.a("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
+            colorsFileBuilder.a("colorAccent", String.format("#%06X", colorAccent & 0xffffff));
+            colorsFileBuilder.a("colorControlHighlight", String.format("#%06X", colorControlHighlight & 0xffffff));
+            colorsFileBuilder.a("colorControlNormal", String.format("#%06X", colorControlNormal & 0xffffff));
             srcCodeBeans.add(new SrcCodeBean("colors.xml",
                     CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode())));
         }
 
         Mx stringsFileBuilder = new Mx();
-        stringsFileBuilder.b("app_name", f);
+        stringsFileBuilder.b("app_name", applicationName);
         srcCodeBeans.add(new SrcCodeBean("strings.xml",
                 CommandBlock.applyCommands("strings.xml", stringsFileBuilder.toCode())));
         CommandBlock.x();

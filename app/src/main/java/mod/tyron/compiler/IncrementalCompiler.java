@@ -33,7 +33,7 @@ public class IncrementalCompiler {
 
     public IncrementalCompiler(yq projectConfig) {
         this.projectConfig = projectConfig;
-        this.mll = new ManageLocalLibrary(projectConfig.b);
+        this.mll = new ManageLocalLibrary(projectConfig.sc_id);
         javaCompiler = new IncrementalJavaCompiler(projectConfig);
         d8Compiler = new IncrementalD8Compiler(projectConfig);
         dexMerger = new IncrementalDexMerger(projectConfig, javaCompiler.getBuiltInLibraries());
@@ -103,7 +103,7 @@ public class IncrementalCompiler {
 
         Log.d(TAG, "Starting apk build.");
 
-        ApkBuilder builder = new ApkBuilder(new File(projectConfig.G), new File(projectConfig.c), new File(projectConfig.E), null, null, System.out);
+        ApkBuilder builder = new ApkBuilder(new File(projectConfig.unsignedUnalignedApkPath), new File(projectConfig.projectMyscPath), new File(projectConfig.classesDexPath), null, null, System.out);
         for (HashMap<String, Object> localLibraries : mll.list) {
             String jarPath = String.valueOf(localLibraries.get("jarPath"));
             if (!jarPath.equals("null")) {
@@ -111,7 +111,7 @@ public class IncrementalCompiler {
             }
         }
         File file = new File(Environment.getExternalStorageDirectory(),
-                ".sketchware/data/".concat(projectConfig.b.concat("/files/native_libs")));
+                ".sketchware/data/".concat(projectConfig.sc_id.concat("/files/native_libs")));
         if (FileUtil.isExistFile(file.getAbsolutePath())) {
             builder.addNativeLibraries(file);
         }

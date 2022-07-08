@@ -19,8 +19,8 @@ public class IncrementalD8Compiler extends Compiler {
     public IncrementalD8Compiler(yq projectConfig) {
         this.projectConfig = projectConfig;
 
-        projectSettings = new ProjectSettings(projectConfig.b);
-        CLASS_PATH = projectConfig.c + "/incremental/classes";
+        projectSettings = new ProjectSettings(projectConfig.sc_id);
+        CLASS_PATH = projectConfig.projectMyscPath + "/incremental/classes";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class IncrementalD8Compiler extends Compiler {
         ArrayList<String> args = new ArrayList<>();
         ArrayList<File> files = getSourceFiles();
 
-        File outputFile = new File(projectConfig.c + "/incremental/build");
+        File outputFile = new File(projectConfig.projectMyscPath + "/incremental/build");
 
         for (File file : files) {
             args.add(file.getAbsolutePath());

@@ -41,8 +41,8 @@ public class AppBundleCompiler {
 
     public AppBundleCompiler(Dp dp) {
         mDp = dp;
-        mainModuleArchive = new File(dp.yq.t, MODULE_ARCHIVE_FILE_NAME);
-        appBundle = new File(dp.yq.t, getBundleFilename(dp.yq.d));
+        mainModuleArchive = new File(dp.yq.binDirectoryPath, MODULE_ARCHIVE_FILE_NAME);
+        appBundle = new File(dp.yq.binDirectoryPath, getBundleFilename(dp.yq.projectName));
     }
 
     public static String getBundleFilename(String sc_id) {
@@ -51,7 +51,7 @@ public class AppBundleCompiler {
 
     public static File getDefaultAppBundleOutputFile(Context context, String sc_id) {
         yq projectMetadata = new yq(context, sc_id);
-        return new File(projectMetadata.t, projectMetadata.d + ".aab");
+        return new File(projectMetadata.binDirectoryPath, projectMetadata.projectName + ".aab");
     }
 
     public void buildBundle() throws zy {
@@ -91,12 +91,12 @@ public class AppBundleCompiler {
                 /* Finally, use it as ZipOutputStream */
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(bufferedMainModuleStream)) {
                     /* Get an automatically closed FileInputStream of <project name>.apk.res */
-                    try (FileInputStream apkResStream = new FileInputStream(mDp.yq.C)) {
+                    try (FileInputStream apkResStream = new FileInputStream(mDp.yq.resourcesApkPath)) {
                         /* Create an automatically closed ZipInputStream of <project name>.apk.res */
                         try (ZipInputStream zipInputStream = new ZipInputStream(apkResStream)) {
 
                             /* First, compress DEX files into module-main.zip */
-                            File[] binDirectoryContent = new File(mDp.yq.t).listFiles();
+                            File[] binDirectoryContent = new File(mDp.yq.binDirectoryPath).listFiles();
                             if (binDirectoryContent != null) {
                                 for (File file : binDirectoryContent) {
                                     if (file.isFile() && file.getName().endsWith(".dex")) {
@@ -160,7 +160,7 @@ public class AppBundleCompiler {
                         }
                     }
 
-                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.yq.b));
+                    File nativeLibrariesDirectory = new File(new FilePathUtil().getPathNativelibs(mDp.yq.sc_id));
                     File[] architectures = nativeLibrariesDirectory.listFiles();
 
                     if (architectures != null) {
@@ -188,7 +188,7 @@ public class AppBundleCompiler {
                     }
 
                     /* Start with enabled Local libraries' JARs */
-                    ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.b).getLocalLibraryJars();
+                    ArrayList<File> jars = new ManageLocalLibrary(mDp.yq.sc_id).getLocalLibraryJars();
 
                     /* Add built-in libraries' JARs */
                     for (Jp library : mDp.builtInLibraryManager.a()) {
