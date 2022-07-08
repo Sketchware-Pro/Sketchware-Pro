@@ -871,7 +871,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
                     runOnUiThread(() -> ExportProjectActivity.this.b(
                             "Either an incorrect password was entered, " +
-                                    "or your key store is corrupted."));
+                                    "or your key store is corrupt."));
                 } else {
                     Log.e("AppExporter", throwable.getMessage(), throwable);
                     runOnUiThread(() ->
