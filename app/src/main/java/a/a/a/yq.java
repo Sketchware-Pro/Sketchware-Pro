@@ -6,6 +6,7 @@ import android.util.Pair;
 
 import androidx.core.content.ContextCompat;
 
+import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -387,9 +388,8 @@ public class yq {
     }
 
     /**
-     * Creates {@link yq#t}, {@link yq#u}, {@link yq#v}, {@link yq#y}, {@link yq#w}, {@link yq#x},
-     * {@link yq#z}, {@link yq#A}, {@link yq#B}, then generates DebugActivity.java and
-     * SketchApplication.java.
+     * Creates needed build directories {@link yq#t}, {@link yq#u}, {@link yq#v}, {@link yq#y}, {@link yq#w},
+     * {@link yq#x}, {@link yq#z}, {@link yq#A}, and {@link yq#B}.
      */
     public void c(Context context) {
         L.f(t);
@@ -401,7 +401,6 @@ public class yq {
         L.f(z);
         L.f(A);
         L.f(B);
-        a(context);
     }
 
     /**
@@ -472,11 +471,10 @@ public class yq {
     }
 
     /**
-     * Generates DebugActivity.java and SketchApplication.java. and SketchLogger.java(If Necessary)
+     * Generates DebugActivity.java, SketchApplication.java, and SketchLogger.java, if necessary.
      */
     public void a(Context context) {
-
-        boolean logCatEnabled = N.isDebugBuild && new BuildSettings(b).getValue(
+        boolean logcatEnabled = N.isDebugBuild && new BuildSettings(b).getValue(
                 BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
 
         String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
@@ -502,7 +500,7 @@ public class yq {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
                         "Application \\{", "androidx.multidex.MultiDexApplication \\{");
             }
-            if (logCatEnabled) {
+            if (logcatEnabled) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replace(
                         "super.onCreate();", "SketchLogger.startLogging();\n" +
                                 "        super.onCreate();").replace(
@@ -518,7 +516,7 @@ public class yq {
                     sketchApplicationFileContent);
         }
 
-        if (logCatEnabled) {
+        if (logcatEnabled) {
             if (!new File(javaDir, "SketchLogger.java").exists()) {
                 L.b(y + File.separator
                                 + n + File.separator
@@ -802,6 +800,7 @@ public class yq {
      */
     public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, iC projectLibraryManager, boolean exportingProject) {
         a(projectLibraryManager, projectFileManager, projectDataManager, exportingProject);
+        a(SketchApplication.getContext());
         CommandBlock.x();
 
         final String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + b + "/files/java/";
