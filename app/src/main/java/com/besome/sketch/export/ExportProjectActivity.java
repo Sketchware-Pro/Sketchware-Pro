@@ -690,7 +690,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     cancel(true);
                     return;
                 }
-                project_metadata.c();
                 File outputFile = new File(getCorrectResultFilename(project_metadata.I));
                 if (outputFile.exists()) {
                     if (!outputFile.delete()) {
@@ -896,7 +895,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         public void onCancelled() {
             super.onCancelled();
             c = null;
-            project_metadata.b();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();
@@ -936,7 +934,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void a() {
-            project_metadata.b();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();
@@ -964,7 +961,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
          */
         @Override // a.a.a.MA
         public void a(String str) {
-            project_metadata.b();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             i();

@@ -914,7 +914,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
          */
         @Override
         public void a() {
-            q.b();
             dismiss();
             runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
             runProject.setClickable(true);
@@ -930,7 +929,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a(String str) {
             runOnUiThread(() -> {
-                q.b();
                 dismiss();
                 SketchwareUtil.toastError("APK build failed");
                 runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
@@ -953,7 +951,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     publishProgress("Deleting temporary files...");
                     FileUtil.deleteFile(q.c);
 
-                    q.c();
                     q.c(a);
                     q.a();
                     /* Extract project type template */
@@ -1143,7 +1140,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
-            q.b();
             dismiss();
         }
 

@@ -376,18 +376,6 @@ public class yq {
     }
 
     /**
-     * Does nothing.
-     */
-    public void b() {
-    }
-
-    /**
-     * Does nothing.
-     */
-    public void c() {
-    }
-
-    /**
      * Creates needed build directories {@link yq#t}, {@link yq#u}, {@link yq#v}, {@link yq#y}, {@link yq#w},
      * {@link yq#x}, {@link yq#z}, {@link yq#A}, and {@link yq#B}.
      */
@@ -401,15 +389,6 @@ public class yq {
         L.f(z);
         L.f(A);
         L.f(B);
-    }
-
-    /**
-     * Delete {@link yq#I} if it exists.
-     */
-    public void d() {
-        if (g()) {
-            new File(I).delete();
-        }
     }
 
     /**
@@ -429,13 +408,6 @@ public class yq {
     public void f() {
         L.b(t);
         L.b(v);
-    }
-
-    /**
-     * @return If {@link yq#I} exists.
-     */
-    public boolean g() {
-        return new File(I).exists();
     }
 
     /**
