@@ -62,7 +62,7 @@ public class AppBundleCompiler {
         flags.add("--output=" + appBundle.getAbsolutePath());
         if (mDp.proguard.isDebugFilesEnabled()) {
             /* Add ProGuard mapping if available for automatic import to ProGuard mappings in Google Play */
-            File mapping = new File(mDp.yq.printmapping);
+            File mapping = new File(mDp.yq.proGuardMappingPath);
             if (mapping.exists()) {
                 flags.add("--metadata-file=com.android.tools.build.obfuscation/proguard.map:" +
                         mapping.getAbsolutePath());

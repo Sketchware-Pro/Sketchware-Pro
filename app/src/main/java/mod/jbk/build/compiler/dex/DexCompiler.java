@@ -34,7 +34,7 @@ public class DexCompiler {
         assert Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
         Collection<Path> programFiles = new ArrayList<>();
         if (compileHelper.proguard.isProguardEnabled()) {
-            programFiles.add(new File(compileHelper.yq.classes_proguard).toPath());
+            programFiles.add(new File(compileHelper.yq.classesProGuardPath).toPath());
         } else {
             for (String filePath : ProcessingFiles.getListResource(compileHelper.yq.compiledClassesPath)) {
                 programFiles.add(new File(filePath).toPath());
