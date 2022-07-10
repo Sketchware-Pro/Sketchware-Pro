@@ -34,6 +34,7 @@ import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
+import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
@@ -42,8 +43,6 @@ import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
-import mod.hilal.saif.asd.AsdHandler;
-import mod.hilal.saif.asd.AsdHandlerCancel;
 import mod.hilal.saif.asd.AsdOrigin;
 import mod.hilal.saif.asd.asdforall.AsdAll;
 import mod.hilal.saif.asd.old.AsdOldDialog;
@@ -752,8 +751,19 @@ public class ExtraMenuBean {
         asdOr.a(root);
         asdOr.carry(logicEditor, ss, false, edittext);
 
-        asdOr.b(Helper.getResString(R.string.common_word_save), new AsdHandler(logicEditor, edittext, ss, asdOr));
-        asdOr.a(Helper.getResString(R.string.common_word_cancel), new AsdHandlerCancel(edittext, asdOr));
+        asdOr.b(Helper.getResString(R.string.common_word_save), view -> {
+            String content = edittext.getText().toString();
+            if (content.length() > 0 && content.charAt(0) == '@') {
+                content = " " + content;
+            }
+            logicEditor.a(ss, (Object) content);
+            SketchwareUtil.hideKeyboard(edittext);
+            asdOr.dismiss();
+        });
+        asdOr.a(Helper.getResString(R.string.common_word_cancel), view -> {
+            SketchwareUtil.hideKeyboard(edittext);
+            asdOr.dismiss();
+        });
         asdOr.show();
     }
 
