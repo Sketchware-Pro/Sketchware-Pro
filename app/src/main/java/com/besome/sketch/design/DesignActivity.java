@@ -335,9 +335,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     public void onClick(View v) {
         if (!mB.a()) {
             if (v.getId() == R.id.btn_execute) {
-                if (KotlinCompilerBridge.maybeCheckIfDeviceSupportsKotlinc(this, q)) {
-                    new BuildAsyncTask(getApplicationContext()).execute();
-                }
+                new BuildAsyncTask(getApplicationContext()).execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, findViewById(R.id.btn_compiler_opt));
                 Menu menu = popupMenu.getMenu();
