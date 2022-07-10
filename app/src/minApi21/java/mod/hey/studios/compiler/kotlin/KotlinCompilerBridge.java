@@ -26,16 +26,4 @@ public class KotlinCompilerBridge {
     public static String getKotlinHome(yq workspace) {
         return null;
     }
-
-    /**
-     * Checks if the device supports compiling Kotlin code. If not, a warning dialog telling the user
-     * to remove Kotlin source files from the project gets shown.
-     *
-     * @return <code>true</code> if flavor allows compiling Kotlin code and device is on Android 8 or above,
-     * or the flavor doesn't allow compiling Kotlin code. <code>false</code> if not on Android 8 or above
-     * but with Kotlin compilation available.
-     */
-    public static boolean maybeCheckIfDeviceSupportsKotlinc(Activity context, yq workspace) {
-        return true;
-    }
 }
