@@ -1,7 +1,6 @@
 package mod.hasrat.validator;
 
 import android.content.Context;
-import android.text.Spanned;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -17,10 +16,7 @@ public class VersionNamePostfixValidator extends MB {
         super(context, textInputLayout);
     }
 
-    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        return null;
-    }
-
+    @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String se = s.toString();
         if (VERSION_NAME_POSTFIX_PATTERN.matcher(se).matches()) {

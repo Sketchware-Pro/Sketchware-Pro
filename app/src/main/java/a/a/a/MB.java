@@ -3,6 +3,7 @@ package a.a.a;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
@@ -32,6 +33,16 @@ public abstract class MB implements TextWatcher, InputFilter {
         this.c.setText(str);
     }
 
+    @Override
+    public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+        return null;
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    }
+
+    @Override
     public void afterTextChanged(Editable editable) {
         if (editable.toString().isEmpty()) {
             this.b.setErrorEnabled(false);
@@ -45,6 +56,7 @@ public abstract class MB implements TextWatcher, InputFilter {
         return this.d;
     }
 
+    @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
     }
 }
