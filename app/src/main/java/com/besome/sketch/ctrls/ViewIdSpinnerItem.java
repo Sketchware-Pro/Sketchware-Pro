@@ -45,20 +45,20 @@ public class ViewIdSpinnerItem extends LinearLayout {
     private void initialize(Context context) {
         d = context;
         wB.a(context, this, R.layout.var_id_spinner_item);
-        a = (ImageView) findViewById(R.id.icon);
-        b = (TextView) findViewById(R.id.name);
-        c = (ImageView) findViewById(R.id.imgv_selected);
+        a = findViewById(R.id.icon);
+        b = findViewById(R.id.name);
+        c = findViewById(R.id.imgv_selected);
     }
 
     public void a(boolean notSelected, int color, int var3) {
         if (notSelected) {
             if (!e) color = var3;
             b.setTextColor(color);
-            b.setTypeface((Typeface) null, Typeface.NORMAL);
+            b.setTypeface(null, Typeface.NORMAL);
         } else {
             if (!e) color = var3;
             b.setTextColor(color);
-            b.setTypeface((Typeface) null, Typeface.BOLD_ITALIC);
+            b.setTypeface(null, Typeface.BOLD_ITALIC);
         }
     }
 

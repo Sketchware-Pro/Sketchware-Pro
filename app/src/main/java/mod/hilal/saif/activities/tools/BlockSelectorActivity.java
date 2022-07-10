@@ -211,7 +211,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             _save_item();
             _refresh_display();
             _fabVisibility(true);
-            spinner1.setSelection((int) current_item);
+            spinner1.setSelection(current_item);
             AutoTransition autoTransition2 = new AutoTransition();
             autoTransition2.setDuration(200L);
             TransitionManager.beginDelayedTransition(background, autoTransition2);
@@ -233,8 +233,8 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
             switch (item.getTitle().toString()) {
                 case "Export current block selector menu":
                     ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
-                    arrayList.add(data.get((int) current_item));
-                    FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + data.get((int) current_item).get("name") + ".json", new Gson().toJson(arrayList));
+                    arrayList.add(data.get(current_item));
+                    FileUtil.writeFile(FileUtil.getExternalStorageDir().concat("/.sketchware/resources/block/export/menu/") + data.get(current_item).get("name") + ".json", new Gson().toJson(arrayList));
                     SketchwareUtil.toast("Successfully exported block menu to:\n/Internal storage/.sketchware/resources/block/export", Toast.LENGTH_LONG);
                     break;
 

@@ -73,7 +73,7 @@ public class ManagePermissionActivity extends Activity {
 
     public void initToolbar() {
         ((TextView) findViewById(2131232458)).setText("Permission Manager");
-        ImageView back = (ImageView) findViewById(2131232457);
+        ImageView back = findViewById(2131232457);
         Helper.applyRipple(this, back);
         back.setOnClickListener(Helper.getBackPressedClickListener(this));
         ImageView resetPermissions = findViewById(2131232459);
@@ -101,8 +101,8 @@ public class ManagePermissionActivity extends Activity {
             numProj = getIntent().getStringExtra("sc_id");
             frc = new FileResConfig(numProj);
         }
-        sv = (SearchView) findViewById(2131232363);
-        lv = (ListView) findViewById(2131232364);
+        sv = findViewById(2131232363);
+        lv = findViewById(2131232364);
         arrayList = new ArrayList<>();
         checkFile();
         setItems();
@@ -134,7 +134,7 @@ public class ManagePermissionActivity extends Activity {
         }
 
         public long getItemId(int i) {
-            return (long) i;
+            return i;
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -142,7 +142,7 @@ public class ManagePermissionActivity extends Activity {
                 convertView = getLayoutInflater().inflate(2131427789, null);
             }
 
-            CheckBox checkBox = (CheckBox) convertView.findViewById(2131232370);
+            CheckBox checkBox = convertView.findViewById(2131232370);
             checkBox.setText(namePerm.get(position));
             checkBox.setOnCheckedChangeListener((button, checked) -> {
                 if (checked) {

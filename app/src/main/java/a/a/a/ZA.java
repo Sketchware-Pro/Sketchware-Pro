@@ -14,8 +14,8 @@ public class ZA extends Dialog {
     public ZA(Context context) {
         super(context, R.style.progress);
         setContentView(R.layout.progress);
-        animationView = (LottieAnimationView) findViewById(R.id.anim_sketchware);
-        TextView tvProgress = (TextView) findViewById(R.id.tv_progress);
+        animationView = findViewById(R.id.anim_sketchware);
+        TextView tvProgress = findViewById(R.id.tv_progress);
         tvProgress.setText(xB.b().a(context, R.string.common_message_loading));
         super.setCancelable(false);
     }

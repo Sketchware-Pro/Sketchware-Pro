@@ -24,8 +24,8 @@ public class CommonSpinnerItem extends LinearLayout {
     private void initialize(Context context) {
         c = context;
         wB.a(context, this, R.layout.common_spinner_item);
-        b = (TextView) findViewById(R.id.tv_spn_name);
-        a = (ImageView) findViewById(R.id.imgv_selected);
+        b = findViewById(R.id.tv_spn_name);
+        a = findViewById(R.id.imgv_selected);
     }
 
     public void a(String name, boolean isVisible) {

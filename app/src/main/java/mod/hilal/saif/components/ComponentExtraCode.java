@@ -49,7 +49,7 @@ public class ComponentExtraCode {
             if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
                 JSONArray arr = new JSONArray(FileUtil.readFile(path));
                 if (arr.length() > 0) {
-                    for (int i = 0; i < (int) (arr.length()); i++) {
+                    for (int i = 0; i < arr.length(); i++) {
                         String c = arr.getJSONObject(i).getString("code");
                         String f = getFirstLine(c);
                         if (!arr.getJSONObject(i).isNull("s") && str.contains(f)) {
@@ -88,7 +88,7 @@ public class ComponentExtraCode {
     public String getFirstLine(String con) {
         ArrayList<String> list = new ArrayList<>(Arrays.asList(con.split("\n")));
         if (list.size() > 0) {
-            for (int i = 0; i < (int) (list.size()); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 String a = list.get(i);
                 if (!a.equals("")) {
                     return a.trim();

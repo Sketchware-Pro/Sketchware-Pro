@@ -72,10 +72,10 @@ public class PaletteBlock extends LinearLayout {
     private void initialize(Context context) {
         a = context;
         wB.a(context, this, R.layout.palette_block);
-        PaletteSelector paletteSelector = (PaletteSelector) findViewById(R.id.palette_selector);
-        customScrollView = (CustomScrollView) findViewById(R.id.scv);
-        horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.hscv);
-        blockBuilder = (LinearLayout) findViewById(R.id.block_builder);
+        PaletteSelector paletteSelector = findViewById(R.id.palette_selector);
+        customScrollView = findViewById(R.id.scv);
+        horizontalScrollView = findViewById(R.id.hscv);
+        blockBuilder = findViewById(R.id.block_builder);
         f = wB.a(a, 1.0F);
     }
 
@@ -88,7 +88,7 @@ public class PaletteBlock extends LinearLayout {
         textView.setText(title);
         textView.setTextColor(-1);
         textView.setTextSize(9.0F);
-        textView.setTypeface((Typeface) null, Typeface.BOLD);
+        textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(19);
         textView.setPadding((int) (f * 12.0F), 0, (int) (f * 12.0F), 0);
         blockBuilder.addView(textView);
