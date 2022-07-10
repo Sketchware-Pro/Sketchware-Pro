@@ -11,12 +11,14 @@ public class IconCodeView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconCodeView.super.a(context);
         setWidgetImage(2131166357);
         setWidgetName("CodeView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 47;

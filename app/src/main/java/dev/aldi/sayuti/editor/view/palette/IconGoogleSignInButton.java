@@ -11,12 +11,14 @@ public class IconGoogleSignInButton extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconGoogleSignInButton.super.a(context);
         setWidgetImage(2131165650);
         setWidgetName("SignInButton");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 42;

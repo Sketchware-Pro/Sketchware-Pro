@@ -53,6 +53,7 @@ public class ManagePermissionActivity extends Activity {
         sv.setIconifiedByDefault(true);
         sv.clearFocus();
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
             public boolean onQueryTextChange(String newText) {
                 String lowerCase = newText.toLowerCase();
                 ArrayList<String> arrayList = new ArrayList<>();
@@ -65,6 +66,7 @@ public class ManagePermissionActivity extends Activity {
                 return true;
             }
 
+            @Override
             public boolean onQueryTextSubmit(String query) {
                 return true;
             }
@@ -94,6 +96,7 @@ public class ManagePermissionActivity extends Activity {
         });
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(2131427786);
@@ -125,18 +128,22 @@ public class ManagePermissionActivity extends Activity {
             numProj = str;
         }
 
+        @Override
         public int getCount() {
             return namePerm.size();
         }
 
+        @Override
         public String getItem(int i) {
             return namePerm.get(i);
         }
 
+        @Override
         public long getItemId(int i) {
             return i;
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(2131427789, null);

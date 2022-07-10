@@ -11,12 +11,14 @@ public class IconCollapsingToolbar extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconCollapsingToolbar.super.a(context);
         setWidgetImage(2131166351);
         setWidgetName("CollapsingToolbar");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 37;

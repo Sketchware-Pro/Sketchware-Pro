@@ -42,10 +42,12 @@ public class InAppBean implements Parcelable {
         return CREATOR;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.sku);
         parcel.writeString(this.title);

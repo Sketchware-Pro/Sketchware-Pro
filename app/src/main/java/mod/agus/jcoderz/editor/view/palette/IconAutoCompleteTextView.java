@@ -11,12 +11,14 @@ public class IconAutoCompleteTextView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconAutoCompleteTextView.super.a(context);
         setWidgetImage(2131166242);
         setWidgetName("AutoCompleteTextView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 23;

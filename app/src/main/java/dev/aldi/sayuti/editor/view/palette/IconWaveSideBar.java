@@ -11,12 +11,14 @@ public class IconWaveSideBar extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconWaveSideBar.super.a(context);
         setWidgetImage(2131166312);
         setWidgetName("WaveSideBar");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 35;

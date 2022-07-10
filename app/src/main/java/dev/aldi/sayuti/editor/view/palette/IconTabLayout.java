@@ -11,12 +11,14 @@ public class IconTabLayout extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconTabLayout.super.a(context);
         setWidgetImage(2131166303);
         setWidgetName("TabLayout");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 30;

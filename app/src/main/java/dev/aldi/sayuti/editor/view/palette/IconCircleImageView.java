@@ -12,12 +12,14 @@ public class IconCircleImageView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconCircleImageView.super.a(context);
         setWidgetImage(2131166354);
         setWidgetName("CircleImageView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 43;

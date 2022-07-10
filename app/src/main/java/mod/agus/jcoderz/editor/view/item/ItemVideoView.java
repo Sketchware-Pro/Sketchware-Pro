@@ -42,14 +42,17 @@ public class ItemVideoView extends LinearLayout implements sy {
         setGravity(17);
     }
 
+    @Override
     public ViewBean getBean() {
         return this.f24a;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.f24a = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.c;
     }
@@ -62,11 +65,13 @@ public class ItemVideoView extends LinearLayout implements sy {
         return this.b;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.b = z;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (this.b) {
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
@@ -74,6 +79,7 @@ public class ItemVideoView extends LinearLayout implements sy {
         super.onDraw(canvas);
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.e;
         super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));

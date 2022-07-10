@@ -14,6 +14,7 @@ public class ComponentHelper implements TextWatcher {
         mTypeClass = editText;
     }
 
+    @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String charSequence2 = s.toString();
         for (EditText editText : mEditArray) {
@@ -22,9 +23,11 @@ public class ComponentHelper implements TextWatcher {
         }
     }
 
+    @Override
     public void afterTextChanged(Editable s) {
     }
 
+    @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
 }

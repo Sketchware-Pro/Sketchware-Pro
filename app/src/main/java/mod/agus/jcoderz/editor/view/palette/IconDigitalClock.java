@@ -11,12 +11,14 @@ public class IconDigitalClock extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconDigitalClock.super.a(context);
         setWidgetImage(2131166276);
         setWidgetName("DigitalClock");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 29;

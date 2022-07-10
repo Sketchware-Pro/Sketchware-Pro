@@ -109,6 +109,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         Helper.applyRippleToToolbarView(backIcon);
 
         name.addTextChangedListener(new BaseTextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String string = s.toString();
                 if (!id_detector.contains(string)) {
@@ -170,6 +171,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         });
 
         type.addTextChangedListener(new BaseTextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("e")) {
                     AutoTransition transition = new AutoTransition();
@@ -187,6 +189,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         });
 
         spec.addTextChangedListener(new BaseTextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Matcher matcher = Pattern.compile("%[smdb]\\.?[a-zA-Z]*").matcher(s.toString());
                 while (matcher.find()) {
@@ -223,6 +226,7 @@ public class BlocksManagerCreatorActivity extends AppCompatActivity {
         });
 
         colour.addTextChangedListener(new BaseTextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 updateBlockSpec(type.getText().toString(), s.toString());
             }

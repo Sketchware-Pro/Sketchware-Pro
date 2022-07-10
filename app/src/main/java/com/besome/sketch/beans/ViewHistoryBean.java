@@ -107,6 +107,7 @@ public class ViewHistoryBean extends nA {
         return this.removedData;
     }
 
+    @Override
     public ViewHistoryBean clone() {
         ViewHistoryBean viewHistoryBean = new ViewHistoryBean();
         viewHistoryBean.copy(this);

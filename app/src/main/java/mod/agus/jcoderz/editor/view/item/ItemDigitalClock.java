@@ -33,14 +33,17 @@ public class ItemDigitalClock extends DigitalClock implements sy {
         setDrawingCacheEnabled(true);
     }
 
+    @Override
     public ViewBean getBean() {
         return this.O;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.O = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.Q;
     }
@@ -53,11 +56,13 @@ public class ItemDigitalClock extends DigitalClock implements sy {
         return this.P;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.P = z;
         invalidate();
     }
 
+    @Override
     @Deprecated
     public void onDraw(Canvas canvas) {
         if (this.P) {
@@ -66,6 +71,7 @@ public class ItemDigitalClock extends DigitalClock implements sy {
         super.onDraw(canvas);
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f = this.S;
         super.setPadding((int) (((float) i) * f), (int) (((float) i2) * f), (int) (((float) i3) * f), (int) (f * ((float) i4)));

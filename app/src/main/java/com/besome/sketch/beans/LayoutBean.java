@@ -129,6 +129,7 @@ public class LayoutBean extends nA implements Parcelable {
         this.backgroundResource = layoutBean.backgroundResource;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -147,6 +148,7 @@ public class LayoutBean extends nA implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(this.width);
         parcel.writeInt(this.height);

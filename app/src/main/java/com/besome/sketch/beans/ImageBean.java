@@ -56,6 +56,7 @@ public class ImageBean extends nA implements Parcelable {
         this.rotate = imageBean.rotate;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -85,6 +86,7 @@ public class ImageBean extends nA implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.resName);
         parcel.writeString(this.scaleType);

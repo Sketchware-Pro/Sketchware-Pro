@@ -11,12 +11,14 @@ public class IconTextInputLayout extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconTextInputLayout.super.a(context);
         setWidgetImage(2131166242);
         setWidgetName("TextInputLayout");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 38;

@@ -11,12 +11,14 @@ public class IconSearchView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconSearchView.super.a(context);
         setWidgetImage(2131165849);
         setWidgetName("SearchView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 22;

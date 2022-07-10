@@ -65,6 +65,7 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
         }
     }
 
+    @Override
     public boolean j() {
         return zd.a(getApplicationContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0 && zd.a(getApplicationContext(), "android.permission.READ_EXTERNAL_STORAGE") == 0;
     }
@@ -97,6 +98,7 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
 
     public abstract void m();
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode != 9001) {
@@ -109,10 +111,12 @@ public abstract class BaseSessionAppCompatActivity extends BaseAppCompatActivity
 
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         for (String permission : permissions) {

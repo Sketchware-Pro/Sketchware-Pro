@@ -270,6 +270,7 @@ public class AboutModActivity extends AppCompatActivity {
 
             // ViewPager$OnPageChangeListener.onPageScrollStateChanged(int) got obfuscated to
             // ViewPager$e.a(int)
+            @Override
             public void a(int state) {
             }
         });

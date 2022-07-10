@@ -36,14 +36,17 @@ public class ItemDatePicker extends DatePicker implements sy {
         setDrawingCacheEnabled(true);
     }
 
+    @Override
     public ViewBean getBean() {
         return this.f21a;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.f21a = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.c;
     }
@@ -56,11 +59,13 @@ public class ItemDatePicker extends DatePicker implements sy {
         return this.b;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.b = z;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (this.b) {
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
@@ -68,10 +73,12 @@ public class ItemDatePicker extends DatePicker implements sy {
         super.onDraw(canvas);
     }
 
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
         return true;
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f = this.e;
         super.setPadding((int) (((float) i) * f), (int) (((float) i2) * f), (int) (((float) i3) * f), (int) (f * ((float) i4)));

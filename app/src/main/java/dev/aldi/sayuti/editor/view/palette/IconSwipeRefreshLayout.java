@@ -11,12 +11,14 @@ public class IconSwipeRefreshLayout extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconSwipeRefreshLayout.super.a(context);
         setWidgetImage(2131166320);
         setWidgetName("SwipeRefreshLayout");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 39;

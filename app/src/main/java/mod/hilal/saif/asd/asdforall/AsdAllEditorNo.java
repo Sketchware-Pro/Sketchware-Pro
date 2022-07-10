@@ -19,6 +19,7 @@ public class AsdAllEditorNo implements View.OnClickListener {
         c = logicEditorActivity;
     }
 
+    @Override
     public void onClick(View v) {
         SketchwareUtil.hideKeyboard();
         b.dismiss();

@@ -42,6 +42,7 @@ public class ZA extends Dialog {
         super.setCancelable(true);
     }
 
+    @Override
     public void show() {
         super.show();
     }

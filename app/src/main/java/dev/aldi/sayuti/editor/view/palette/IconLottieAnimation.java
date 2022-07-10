@@ -11,12 +11,14 @@ public class IconLottieAnimation extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconLottieAnimation.super.a(context);
         setWidgetImage(2131166355);
         setWidgetName("Lottie");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 44;

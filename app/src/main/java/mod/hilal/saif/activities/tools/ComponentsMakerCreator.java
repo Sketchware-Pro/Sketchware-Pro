@@ -100,6 +100,7 @@ public class ComponentsMakerCreator extends Activity implements View.OnClickList
         this.coName.addTextChangedListener(new ComponentHelper(new EditText[]{this.coBuildClass, this.coVarName, this.coTypeName, this.coTypeClass}, this.coTypeClass));
     }
 
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case 2131232457://back_icon

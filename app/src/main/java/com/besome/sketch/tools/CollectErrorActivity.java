@@ -15,6 +15,7 @@ import a.a.a.xB;
 
 public class CollectErrorActivity extends Activity {
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
@@ -43,11 +44,13 @@ public class CollectErrorActivity extends Activity {
 
     class a extends AsyncTask<String, String, String> {
 
+        @Override
         public String doInBackground(String... strArr) {
             new rB().a(strArr[0]);
             return null;
         }
 
+        @Override
         public void onPostExecute(String str) {
             super.onPostExecute(str);
             finish();

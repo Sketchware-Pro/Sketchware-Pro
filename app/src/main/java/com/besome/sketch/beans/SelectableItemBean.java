@@ -147,6 +147,7 @@ public class SelectableItemBean extends nA implements Parcelable {
         this.reserved3 = selectableItemBean.reserved3;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -154,6 +155,7 @@ public class SelectableItemBean extends nA implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(this.isSelected ? 1 : 0);
         parcel.writeInt(this.type);

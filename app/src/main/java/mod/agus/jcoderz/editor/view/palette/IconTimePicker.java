@@ -11,12 +11,14 @@ public class IconTimePicker extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconTimePicker.super.a(context);
         setWidgetImage(2131166276);
         setWidgetName("TimePicker");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 28;

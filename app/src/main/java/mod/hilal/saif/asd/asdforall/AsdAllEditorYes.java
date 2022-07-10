@@ -24,6 +24,7 @@ public class AsdAllEditorYes implements View.OnClickListener {
         editt = codeEditorEditText;
     }
 
+    @Override
     public void onClick(View v) {
         e.a(s, (Object) editt.getText().toString());
         SketchwareUtil.hideKeyboard();

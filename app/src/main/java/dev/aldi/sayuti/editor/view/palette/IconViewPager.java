@@ -11,12 +11,14 @@ public class IconViewPager extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconViewPager.super.a(context);
         setWidgetImage(2131166352);
         setWidgetName("ViewPager");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 31;

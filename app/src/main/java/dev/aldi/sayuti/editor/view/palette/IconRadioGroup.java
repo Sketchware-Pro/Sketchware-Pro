@@ -11,12 +11,14 @@ public class IconRadioGroup extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconRadioGroup.super.a(context);
         setWidgetImage(2131166321);
         setWidgetName("RadioGroup");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 40;

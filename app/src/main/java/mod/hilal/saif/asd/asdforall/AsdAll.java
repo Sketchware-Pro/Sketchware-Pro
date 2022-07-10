@@ -158,6 +158,7 @@ public class AsdAll extends Dialog {
         g.setVisibility(View.GONE);
     }
 
+    @Override
     public void show() {
         super.show();
         if (p == null && q == null && r != null) {

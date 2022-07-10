@@ -86,6 +86,7 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         this.isNew = projectResourceBean.isNew;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -97,6 +98,7 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(this.resType);
         parcel.writeString(this.resName);

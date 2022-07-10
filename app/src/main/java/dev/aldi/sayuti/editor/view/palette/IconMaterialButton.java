@@ -11,12 +11,14 @@ public class IconMaterialButton extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconMaterialButton.super.a(context);
         setWidgetImage(2131166353);
         setWidgetName("MaterialButton");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 41;

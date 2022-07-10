@@ -11,12 +11,14 @@ public class IconRatingBar extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconRatingBar.super.a(context);
         setWidgetImage(2131165475);
         setWidgetName("RatingBar");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 20;

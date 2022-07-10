@@ -40,6 +40,7 @@ public class Ws extends RelativeLayout {
         return color;
     }
 
+    @Override
     public int getId() {
         return id;
     }
@@ -48,6 +49,7 @@ public class Ws extends RelativeLayout {
         return name;
     }
 
+    @Override
     public void setSelected(boolean selected) {
         if (selected) {
             tv_category.setTextColor(Color.WHITE);

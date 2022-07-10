@@ -30,6 +30,7 @@ public class ItemCircleImageView extends CircleImageView implements sy {
         setDrawingCacheEnabled(true);
     }
 
+    @Override
     public ViewBean getBean() {
         return this.c;
     }
@@ -38,6 +39,7 @@ public class ItemCircleImageView extends CircleImageView implements sy {
         this.c = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.e;
     }
@@ -50,11 +52,13 @@ public class ItemCircleImageView extends CircleImageView implements sy {
         return this.d;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.d = z;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (this.d) {
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.f);
@@ -62,6 +66,7 @@ public class ItemCircleImageView extends CircleImageView implements sy {
         ItemCircleImageView.super.onDraw(canvas);
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.g;
         ItemCircleImageView.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));

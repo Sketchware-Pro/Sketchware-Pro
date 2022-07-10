@@ -36,14 +36,17 @@ public class ItemViewPager extends AppCompatTextView implements sy {
         setDrawingCacheEnabled(true);
     }
 
+    @Override
     public ViewBean getBean() {
         return this.d;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.d = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.f;
     }
@@ -56,11 +59,13 @@ public class ItemViewPager extends AppCompatTextView implements sy {
         return this.e;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.e = z;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (this.e) {
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.g);
@@ -68,6 +73,7 @@ public class ItemViewPager extends AppCompatTextView implements sy {
         ItemViewPager.super.onDraw(canvas);
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.h;
         ItemViewPager.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));

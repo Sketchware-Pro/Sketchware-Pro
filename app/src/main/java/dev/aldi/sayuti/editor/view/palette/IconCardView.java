@@ -11,12 +11,14 @@ public class IconCardView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconCardView.super.a(context);
         setWidgetImage(2131166299);
         setWidgetName("CardView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 36;

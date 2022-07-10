@@ -11,12 +11,14 @@ public class IconOTPView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         IconOTPView.super.a(context);
         setWidgetImage(2131166346);
         setWidgetName("OTPView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 46;

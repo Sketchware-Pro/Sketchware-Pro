@@ -1227,6 +1227,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             finish();
         }
 
+        @Override
         public void b() {
             publishProgress("Now processing..");
             jC.d(sc_id).v();

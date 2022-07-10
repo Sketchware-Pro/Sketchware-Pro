@@ -98,6 +98,7 @@ public class IconSelectorDialog extends Dialog {
         return linearLayout;
     }
 
+    @Override
     public void show() {
         super.show();
     }

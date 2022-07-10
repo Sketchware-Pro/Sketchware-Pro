@@ -48,14 +48,17 @@ public class ItemGridView extends GridView implements sy {
         setAdapter(new ArrayAdapter<>(context, 17367043, this.f));
     }
 
+    @Override
     public ViewBean getBean() {
         return this.f22a;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.f22a = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.c;
     }
@@ -68,11 +71,13 @@ public class ItemGridView extends GridView implements sy {
         return this.b;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.b = z;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (this.b) {
             this.d.setColor(-1785080368);
@@ -91,6 +96,7 @@ public class ItemGridView extends GridView implements sy {
         super.onDraw(canvas);
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.e;
         super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));

@@ -186,6 +186,7 @@ public class HistoryBlockBean extends nA {
         return this.removedData;
     }
 
+    @Override
     public HistoryBlockBean clone() {
         HistoryBlockBean historyBlockBean = new HistoryBlockBean();
         historyBlockBean.copy(this);

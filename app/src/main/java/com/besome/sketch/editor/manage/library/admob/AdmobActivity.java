@@ -387,10 +387,12 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             c = -1;
         }
 
+        @Override
         public int a() {
             return P.size();
         }
 
+        @Override
         @SuppressLint("ResourceType")
         public void b(ViewHolder viewHolder, int position) {
             HashMap<String, Object> projectMap = P.get(position);

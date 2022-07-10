@@ -107,6 +107,7 @@ public class TextBean extends nA implements Parcelable {
         this.imeOption = textBean.imeOption;
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -148,6 +149,7 @@ public class TextBean extends nA implements Parcelable {
     public void print() {
     }
 
+    @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(this.text);
         parcel.writeInt(this.textSize);

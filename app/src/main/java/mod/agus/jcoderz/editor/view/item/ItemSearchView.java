@@ -35,14 +35,17 @@ public class ItemSearchView extends EditText implements sy {
         this.h = getBackground();
     }
 
+    @Override
     public ViewBean getBean() {
         return this.c;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.c = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return this.e;
     }
@@ -55,11 +58,13 @@ public class ItemSearchView extends EditText implements sy {
         return this.d;
     }
 
+    @Override
     public void setSelection(boolean z) {
         this.d = z;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (this.d) {
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.f);
@@ -67,6 +72,7 @@ public class ItemSearchView extends EditText implements sy {
         super.onDraw(canvas);
     }
 
+    @Override
     public void setBackgroundColor(int i) {
         if (i == 16777215) {
             setBackground(this.h);
@@ -75,6 +81,7 @@ public class ItemSearchView extends EditText implements sy {
         }
     }
 
+    @Override
     public void setPadding(int i, int i2, int i3, int i4) {
         float f2 = this.g;
         super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
