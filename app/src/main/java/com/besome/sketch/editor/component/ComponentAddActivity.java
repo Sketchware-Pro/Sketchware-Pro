@@ -84,6 +84,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private TextView tvComponentTitle;
 
     private boolean checks() {
+        addButton.setEnabled(false);
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
         String componentId = edInput.getText().toString();
         if (!componentNameValidator.b()) {
