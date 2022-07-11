@@ -87,7 +87,6 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -1043,12 +1042,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     publishProgress("Signing APK...");
-                    if (Build.VERSION.SDK_INT >= 26) {
-                        ApkSigner signer = new ApkSigner();
-                        signer.signWithTestKey(mDp.yq.unsignedUnalignedApkPath, mDp.yq.finalToInstallApkPath, null);
-                    } else {
-                        mDp.signDebugApkForMinApi21();
-                    }
+                    mDp.signDebugApk();
                     if (canceled) {
                         cancel(true);
                         return;

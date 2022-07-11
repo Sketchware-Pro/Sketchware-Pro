@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.StrictMode;
 import android.text.TextUtils;
 import android.text.format.Formatter;
@@ -55,6 +56,7 @@ import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
@@ -845,14 +847,20 @@ public class Dp {
     }
 
     /**
-     * Sign the APK file with testkey.
-     * This method supports APK Signature Scheme V1 (JAR signing) only.
+     * Sign the debug APK file with testkey.
+     * <p>
+     * This method uses apksigner, but kellinwood's zipsigner as fallback.
      */
-    public void signDebugApkForMinApi21() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        ZipSigner zipSigner = new ZipSigner();
-        KeyStoreFileManager.setProvider(new BouncyCastleProvider());
-        zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-        zipSigner.signZip(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
+    public void signDebugApk() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        if (Build.VERSION.SDK_INT >= 26) {
+            ApkSigner signer = new ApkSigner();
+            signer.signWithTestKey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath, null);
+        } else {
+            ZipSigner zipSigner = new ZipSigner();
+            KeyStoreFileManager.setProvider(new BouncyCastleProvider());
+            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
+            zipSigner.signZip(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
+        }
     }
 
     private void mergeDexes(File target, List<Dex> dexes) throws IOException {
