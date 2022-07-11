@@ -103,27 +103,37 @@ public class Lx {
      */
     public static String a(int componentId, String componentName, String onSuccessLogic, String onCancelledLogic) {
         String componentLogic;
-        if (componentId == ComponentBean.COMPONENT_TYPE_FILE_PICKER) {
-            componentLogic = "ArrayList<String> _filePath = new ArrayList<>();\r\n" +
-                    "if (_data != null) {\r\n" +
-                    "if (_data.getClipData() != null) {\r\n" +
-                    "for (int _index = 0; _index < _data.getClipData().getItemCount(); _index++) {\r\n" +
-                    "ClipData.Item _item = _data.getClipData().getItemAt(_index);\r\n" +
-                    "_filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _item.getUri()));\r\n" +
-                    "}\r\n" +
-                    "}\r\n" +
-                    "else {\r\n" +
-                    "_filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _data.getData()));\r\n" +
-                    "}\r\n" +
-                    "}";
-        } else if (componentId == ComponentBean.COMPONENT_TYPE_CAMERA) {
-            componentLogic = " String _filePath = _file_" + componentName + ".getAbsolutePath();\r\n";
-        } else if (componentId == 31) {
-            componentLogic = "Task<GoogleSignInAccount> _task = GoogleSignIn.getSignedInAccountFromIntent(_data);\r\n";
-        } else if (componentId == 35) {
-            componentLogic = "String _filePath = file_" + componentName + ".getAbsolutePath();\r\n";
-        } else {
-            componentLogic = "";
+        switch (componentId) {
+            case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
+                componentLogic = "ArrayList<String> _filePath = new ArrayList<>();\r\n" +
+                        "if (_data != null) {\r\n" +
+                        "if (_data.getClipData() != null) {\r\n" +
+                        "for (int _index = 0; _index < _data.getClipData().getItemCount(); _index++) {\r\n" +
+                        "ClipData.Item _item = _data.getClipData().getItemAt(_index);\r\n" +
+                        "_filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _item.getUri()));\r\n" +
+                        "}\r\n" +
+                        "}\r\n" +
+                        "else {\r\n" +
+                        "_filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _data.getData()));\r\n" +
+                        "}\r\n" +
+                        "}";
+                break;
+
+            case ComponentBean.COMPONENT_TYPE_CAMERA:
+                componentLogic = " String _filePath = _file_" + componentName + ".getAbsolutePath();\r\n";
+                break;
+
+            case 31:
+                componentLogic = "Task<GoogleSignInAccount> _task = GoogleSignIn.getSignedInAccountFromIntent(_data);\r\n";
+                break;
+
+            case 35:
+                componentLogic = "String _filePath = file_" + componentName + ".getAbsolutePath();\r\n";
+                break;
+
+            default:
+                componentLogic = "";
+                break;
         }
 
         return "case REQ_CD_" + componentName.toUpperCase() + ":\r\n" +
