@@ -1,20 +1,23 @@
 package dev.aldi.sayuti.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
 
 public class IconGoogleSignInButton extends IconBase {
+
     public IconGoogleSignInButton(Context context) {
         super(context);
     }
 
     @Override
     public void a(Context context) {
-        IconGoogleSignInButton.super.a(context);
-        setWidgetImage(2131165650);
+        super.a(context);
+        setWidgetImage(R.drawable.google_48);
         setWidgetName("SignInButton");
     }
 
@@ -23,8 +26,8 @@ public class IconGoogleSignInButton extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 42;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.orientation = 1;
-        layoutBean.width = -2;
+        layoutBean.orientation = VERTICAL;
+        layoutBean.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutBean.paddingLeft = 0;
         layoutBean.paddingTop = 0;
         layoutBean.paddingRight = 0;

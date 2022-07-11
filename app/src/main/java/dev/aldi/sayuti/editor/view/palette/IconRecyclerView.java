@@ -1,20 +1,23 @@
 package dev.aldi.sayuti.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
 
 public class IconRecyclerView extends IconBase {
+
     public IconRecyclerView(Context context) {
         super(context);
     }
 
     @Override
     public void a(Context context) {
-        IconRecyclerView.super.a(context);
-        setWidgetImage(2131165662);
+        super.a(context);
+        setWidgetImage(R.drawable.grid_3_48);
         setWidgetName("RecyclerView");
     }
 
@@ -23,9 +26,9 @@ public class IconRecyclerView extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 48;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.orientation = 1;
-        layoutBean.width = -1;
-        layoutBean.height = -2;
+        layoutBean.orientation = VERTICAL;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutBean.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutBean.paddingLeft = 8;
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;

@@ -1,20 +1,23 @@
 package dev.aldi.sayuti.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
 
 public class IconViewPager extends IconBase {
+
     public IconViewPager(Context context) {
         super(context);
     }
 
     @Override
     public void a(Context context) {
-        IconViewPager.super.a(context);
-        setWidgetImage(2131166352);
+        super.a(context);
+        setWidgetImage(R.drawable.widget_view_pager);
         setWidgetName("ViewPager");
     }
 
@@ -23,8 +26,8 @@ public class IconViewPager extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 31;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.width = -1;
-        layoutBean.height = -1;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutBean.height = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutBean.paddingLeft = 8;
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;

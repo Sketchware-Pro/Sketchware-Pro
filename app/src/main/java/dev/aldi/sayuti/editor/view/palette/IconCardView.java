@@ -1,20 +1,23 @@
 package dev.aldi.sayuti.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
 
 public class IconCardView extends IconBase {
+
     public IconCardView(Context context) {
         super(context);
     }
 
     @Override
     public void a(Context context) {
-        IconCardView.super.a(context);
-        setWidgetImage(2131166299);
+        super.a(context);
+        setWidgetImage(R.drawable.widget_cardview);
         setWidgetName("CardView");
     }
 
@@ -23,8 +26,8 @@ public class IconCardView extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 36;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.orientation = 1;
-        layoutBean.width = -1;
+        layoutBean.orientation = VERTICAL;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutBean.paddingLeft = 8;
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;

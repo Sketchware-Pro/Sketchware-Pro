@@ -1,20 +1,23 @@
 package dev.aldi.sayuti.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
 
 public class IconSwipeRefreshLayout extends IconBase {
+
     public IconSwipeRefreshLayout(Context context) {
         super(context);
     }
 
     @Override
     public void a(Context context) {
-        IconSwipeRefreshLayout.super.a(context);
-        setWidgetImage(2131166320);
+        super.a(context);
+        setWidgetImage(R.drawable.widget_swipe_refresh);
         setWidgetName("SwipeRefreshLayout");
     }
 
@@ -23,9 +26,9 @@ public class IconSwipeRefreshLayout extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 39;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.orientation = 1;
-        layoutBean.width = -1;
-        layoutBean.height = -1;
+        layoutBean.orientation = VERTICAL;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutBean.height = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutBean.paddingLeft = 8;
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;

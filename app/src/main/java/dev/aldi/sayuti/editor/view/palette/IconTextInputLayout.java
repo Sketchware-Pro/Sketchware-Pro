@@ -1,20 +1,23 @@
 package dev.aldi.sayuti.editor.view.palette;
 
 import android.content.Context;
+import android.view.ViewGroup;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.sketchware.remod.R;
 
 public class IconTextInputLayout extends IconBase {
+
     public IconTextInputLayout(Context context) {
         super(context);
     }
 
     @Override
     public void a(Context context) {
-        IconTextInputLayout.super.a(context);
-        setWidgetImage(2131166242);
+        super.a(context);
+        setWidgetImage(R.drawable.widget_edit_text);
         setWidgetName("TextInputLayout");
     }
 
@@ -23,8 +26,8 @@ public class IconTextInputLayout extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 38;
         LayoutBean layoutBean = viewBean.layout;
-        layoutBean.orientation = 1;
-        layoutBean.width = -1;
+        layoutBean.orientation = VERTICAL;
+        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
         layoutBean.paddingLeft = 0;
         layoutBean.paddingTop = 0;
         layoutBean.paddingRight = 0;
