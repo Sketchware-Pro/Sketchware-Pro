@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.sketchware.remod.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -35,7 +36,7 @@ public class ItemOTPView extends LinearLayout implements sy {
         setDrawingCacheEnabled(true);
         this.f = new ImageView(getContext());
         this.f.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-        this.f.setImageResource(2131166360);
+        this.f.setImageResource(R.drawable.item_otp_view);
         this.f.setScaleType(ImageView.ScaleType.FIT_XY);
         this.f.setPadding(0, 0, 0, 0);
         addView(this.f);

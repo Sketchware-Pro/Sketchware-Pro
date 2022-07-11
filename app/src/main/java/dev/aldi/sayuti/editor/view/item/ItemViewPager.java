@@ -14,68 +14,69 @@ import a.a.a.sy;
 import a.a.a.wB;
 
 public class ItemViewPager extends AppCompatTextView implements sy {
-    public ViewBean d;
-    public boolean e;
-    public boolean f;
-    public Paint g;
-    public float h;
+
+    private final Paint paint;
+    private final float h;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean hasFixed;
 
     public ItemViewPager(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    public void a(Context context) {
         setGravity(17);
         setTypeface(null, Typeface.BOLD);
         setText("ViewPager");
-        this.h = wB.a(context, 1.0f);
-        this.g = new Paint(1);
-        this.g.setColor(-1785080368);
+        h = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 
     @Override
     public ViewBean getBean() {
-        return this.d;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.d = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.f;
+        return hasFixed;
     }
 
     public void setFixed(boolean z) {
-        this.f = z;
+        hasFixed = z;
     }
 
     public boolean getSelection() {
-        return this.e;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.e = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.e) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.g);
+        if (hasSelection) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
-        ItemViewPager.super.onDraw(canvas);
+        super.onDraw(canvas);
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.h;
-        ItemViewPager.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
+    public void setPadding(int left, int top, int right, int bottom) {
+        float f2 = h;
+        super.setPadding(
+                (int) (((float) left) * f2),
+                (int) (((float) top) * f2),
+                (int) (((float) right) * f2),
+                (int) (f2 * ((float) bottom))
+        );
     }
 }

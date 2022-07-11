@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.besome.sketch.beans.ViewBean;
@@ -17,80 +16,81 @@ import a.a.a.wB;
 
 public class ItemRecyclerView extends ListView implements sy {
 
-    public ViewBean f18a;
-    public boolean b;
-    public boolean c;
-    public Paint d;
-    public float e;
-    public ArrayList<String> f = new ArrayList<>();
+    private final Paint paint;
+    private final float e;
+    private boolean hasSelection;
+    private boolean hasFixed;
+    private ViewBean viewBean;
 
     public ItemRecyclerView(Context context) {
         super(context);
-        a(context);
-    }
-
-    public void a(Context context) {
-        this.e = wB.a(context, 1.0f);
-        this.d = new Paint(1);
-        this.d.setStrokeWidth(wB.a(getContext(), 2.0f));
+        e = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(wB.a(getContext(), 2.0f));
         setDrawingCacheEnabled(true);
-        this.f.add("RecyclerView item 1");
-        this.f.add("RecyclerView item 2");
-        this.f.add("RecyclerView item 3");
-        setAdapter(new ArrayAdapter<>(context, 17367043, this.f));
+        ArrayList<String> itemList = new ArrayList<>();
+        itemList.add("RecyclerView item 1");
+        itemList.add("RecyclerView item 2");
+        itemList.add("RecyclerView item 3");
+        setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, itemList));
     }
 
     @Override
     public ViewBean getBean() {
-        return this.f18a;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.f18a = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.c;
+        return hasFixed;
     }
 
     public void setFixed(boolean z) {
-        this.c = z;
+        hasFixed = z;
     }
 
     public boolean getSelection() {
-        return this.b;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.b = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.b) {
-            this.d.setColor(-1785080368);
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
+        if (hasSelection) {
+            paint.setColor(0x9599d5d0);
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         } else {
-            this.d.setColor(1610612736);
+            paint.setColor(0x60000000);
             int measuredWidth = getMeasuredWidth();
             int measuredHeight = getMeasuredHeight();
             float f2 = (float) measuredWidth;
-            canvas.drawLine(0.0f, 0.0f, f2, 0.0f, this.d);
+            canvas.drawLine(0.0f, 0.0f, f2, 0.0f, paint);
             float f3 = (float) measuredHeight;
-            canvas.drawLine(0.0f, 0.0f, 0.0f, f3, this.d);
-            canvas.drawLine(f2, 0.0f, f2, f3, this.d);
-            canvas.drawLine(0.0f, f3, f2, f3, this.d);
+            canvas.drawLine(0.0f, 0.0f, 0.0f, f3, paint);
+            canvas.drawLine(f2, 0.0f, f2, f3, paint);
+            canvas.drawLine(0.0f, f3, f2, f3, paint);
         }
         super.onDraw(canvas);
     }
 
     @Override
-    public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.e;
-        super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (((float) i4) * f2));
+    public void setPadding(int left, int top, int right, int bottom) {
+        float f2 = e;
+        super.setPadding(
+                (int) (((float) left) * f2),
+                (int) (((float) top) * f2),
+                (int) (((float) right) * f2),
+                (int) (((float) bottom) * f2)
+        );
     }
 }

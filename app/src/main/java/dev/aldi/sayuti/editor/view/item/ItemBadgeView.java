@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.sketchware.remod.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -15,73 +17,69 @@ import a.a.a.wB;
 public class ItemBadgeView extends LinearLayout implements sy {
 
 
-    public ViewBean f11a;
-    public boolean b;
-    public boolean c;
-    public Paint d;
-    public float e;
-    public ImageView f;
+    private final Paint paint;
+    private final float e;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean hasFixed;
 
     public ItemBadgeView(Context context) {
         super(context);
-        a(context);
-    }
-
-    @Deprecated
-    public void a(Context context) {
-        this.e = wB.a(context, 1.0f);
-        this.d = new Paint(1);
-        this.d.setColor(-1785080368);
+        e = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
-        this.f = new ImageView(getContext());
-        this.f.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-        this.f.setImageResource(2131166319);
-        this.f.setScaleType(ImageView.ScaleType.FIT_XY);
-        this.f.setPadding(0, 0, 0, 0);
-        addView(this.f);
+        ImageView imageview = new ImageView(getContext());
+        imageview.setLayoutParams(new LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageview.setImageResource(R.drawable.item_badge_view);
+        imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageview.setPadding(0, 0, 0, 0);
+        addView(imageview);
         setGravity(17);
     }
 
     @Override
     public ViewBean getBean() {
-        return this.f11a;
+        return viewBean;
     }
 
     @Override
     public void setBean(ViewBean viewBean) {
-        this.f11a = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.c;
+        return hasFixed;
     }
 
     public void setFixed(boolean z) {
-        this.c = z;
+        hasFixed = z;
     }
 
     public boolean getSelection() {
-        return this.b;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.b = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.b) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.d);
+        if (hasSelection) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
         super.onDraw(canvas);
     }
 
     @Override
     public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.e;
+        float f2 = e;
         super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
     }
 }

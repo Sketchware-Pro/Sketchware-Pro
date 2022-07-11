@@ -12,63 +12,61 @@ import a.a.a.wB;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ItemCircleImageView extends CircleImageView implements sy {
-    public ViewBean c;
-    public boolean d;
-    public boolean e;
-    public Paint f;
-    public float g;
+
+    private final Paint paint;
+    private final float g;
+    private ViewBean viewBean;
+    private boolean hasSelection;
+    private boolean hasFixed;
 
     public ItemCircleImageView(Context context) {
         super(context);
-        a(context);
-    }
-
-    public void a(Context context) {
-        this.g = wB.a(context, 1.0f);
-        this.f = new Paint(1);
-        this.f.setColor(-1785080368);
+        g = wB.a(context, 1.0f);
+        paint = new Paint(1);
+        paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 
     @Override
     public ViewBean getBean() {
-        return this.c;
+        return viewBean;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
-        this.c = viewBean;
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.e;
+        return hasFixed;
     }
 
     public void setFixed(boolean z) {
-        this.e = z;
+        hasFixed = z;
     }
 
     public boolean getSelection() {
-        return this.d;
+        return hasSelection;
     }
 
     @Override
     public void setSelection(boolean z) {
-        this.d = z;
+        hasSelection = z;
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.d) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.f);
+        if (hasSelection) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
         ItemCircleImageView.super.onDraw(canvas);
     }
 
     @Override
     public void setPadding(int i, int i2, int i3, int i4) {
-        float f2 = this.g;
+        float f2 = g;
         ItemCircleImageView.super.setPadding((int) (((float) i) * f2), (int) (((float) i2) * f2), (int) (((float) i3) * f2), (int) (f2 * ((float) i4)));
     }
 }
