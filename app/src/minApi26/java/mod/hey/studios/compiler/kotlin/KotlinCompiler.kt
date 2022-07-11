@@ -41,7 +41,7 @@ class KotlinCompiler(
         val arguments = mutableListOf<String>().apply {
             // Classpath
             add("-cp")
-            add(builder.d())
+            add(builder.getClasspath())
 
             // Sources (.java & .kt)
             addAll(filesToCompile.map { it.absolutePath })

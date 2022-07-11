@@ -49,7 +49,7 @@ public class IncrementalJavaCompiler extends Compiler {
         this.projectConfig = projectConfig;
         buildSettings = new BuildSettings(projectConfig.sc_id);
         compileHelper = new Dp(getContext(), projectConfig);
-        compileHelper.j();
+        compileHelper.getBuiltInLibrariesReady();
         manageLocalLibrary = new ManageLocalLibrary(projectConfig.sc_id);
         fileUtil = new oB(false);
         libs = new File(getContext().getFilesDir(), "libs");
@@ -120,7 +120,7 @@ public class IncrementalJavaCompiler extends Compiler {
         args.add("-proc:none");
 
         args.add("-cp");
-        args.add(compileHelper.classpath());
+        args.add(compileHelper.getProGuardClasspath());
 
         for (File file : projectJavaFiles) {
             args.add(file.getAbsolutePath());

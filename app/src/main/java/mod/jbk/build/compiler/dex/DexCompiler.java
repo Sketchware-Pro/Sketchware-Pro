@@ -42,7 +42,7 @@ public class DexCompiler {
         }
 
         Collection<Path> libraryFiles = new ArrayList<>();
-        for (String jarPath : compileHelper.d().split(":")) {
+        for (String jarPath : compileHelper.getClasspath().split(":")) {
             libraryFiles.add(new File(jarPath).toPath());
         }
 
