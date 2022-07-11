@@ -112,6 +112,9 @@ dependencies {
 
     implementation "com.guardsquare:proguard-base:7.1.1"
 
+    minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
+
+    minApi26Implementation "org.eclipse.jdt:ecj:3.26.0"
     minApi26Implementation project(path: ":kotlinc")
     minApi26Implementation project(path: ":build-logic")
 
