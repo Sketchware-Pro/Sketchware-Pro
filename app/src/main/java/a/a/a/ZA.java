@@ -21,20 +21,20 @@ public class ZA extends Dialog {
     }
 
     public void a() {
-        if (animationView != null && animationView.isAnimating()) {
-            animationView.cancelAnimation();
+        if (animationView != null & animationView.h()) {
+            animationView.e();
         }
     }
 
     public void b() {
-        if (animationView != null && animationView.isAnimating()) {
-            animationView.pauseAnimation();
+        if (animationView != null & animationView.h()) {
+            animationView.i();
         }
     }
 
     public void c() {
-        if (animationView != null && !animationView.isAnimating()) {
-            animationView.resumeAnimation();
+        if (animationView != null & !animationView.h()) {
+            animationView.l();
         }
     }
 
