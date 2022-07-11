@@ -304,38 +304,39 @@ public class Dp {
      * @return Similar to {@link Dp#getClasspath()}, but doesn't return some local libraries' JARs if ProGuard full mode is enabled
      */
     public String getProGuardClasspath() {
-        StringBuilder baseClasses = new StringBuilder(androidJarPath);
-        if (!build_settings.getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
-                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
-            baseClasses.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(BuiltInLibraries.HTTP_LEGACY_ANDROID_28));
-        }
+        Collection<String> localLibraryJarsWithFullModeOff = new LinkedList<>();
 
-        StringBuilder builtInLibrariesClasses = new StringBuilder();
-        for (Jp builtInLibrary : builtInLibraryManager.a()) {
-            builtInLibrariesClasses.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(builtInLibrary.a()));
-        }
+        for (HashMap<String, Object> localLibrary : mll.list) {
+            Object nameObject = localLibrary.get("name");
+            Object jarPathObject = localLibrary.get("jarPath");
 
-        StringBuilder localLibraryClasses = new StringBuilder();
-        for (HashMap<String, Object> hashMap : mll.list) {
-            Object nameObject = hashMap.get("name");
-            Object jarPathObject = hashMap.get("jarPath");
             if (nameObject instanceof String && jarPathObject instanceof String) {
                 String name = (String) nameObject;
                 String jarPath = (String) jarPathObject;
-                if (hashMap.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(name)) {
-                    localLibraryClasses.append(":").append(jarPath);
+
+                if (localLibrary.containsKey("jarPath") && !proguard.libIsProguardFMEnabled(name)) {
+                    localLibraryJarsWithFullModeOff.add(jarPath);
                 }
             }
         }
 
-        String customClasspath = build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "");
-        if (!TextUtils.isEmpty(customClasspath)) {
-            localLibraryClasses.append(":").append(customClasspath);
+        String normalClasspath = getClasspath();
+        StringBuilder classpath = new StringBuilder();
+        normalClasspathLoop:
+        for (String classpathPart : normalClasspath.split(":")) {
+            for (String jarPathToExclude : localLibraryJarsWithFullModeOff) {
+                if (classpathPart.equals(jarPathToExclude)) {
+                    continue normalClasspathLoop;
+                }
+            }
+
+            classpath.append(classpathPart).append(':');
         }
 
-        return baseClasses.toString()
-                + builtInLibrariesClasses
-                + localLibraryClasses;
+        // remove trailing delimiter
+        classpath.deleteCharAt(classpath.length() - 1);
+
+        return classpath.toString();
     }
 
     /**
