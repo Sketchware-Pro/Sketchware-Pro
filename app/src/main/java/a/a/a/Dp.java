@@ -290,10 +290,13 @@ public class Dp {
             classpath.append(":").append(BuiltInLibraries.getLibraryClassesJarPathString(BuiltInLibraries.ANDROIDX_MULTIDEX));
         }
 
-        /* Add lambda helper classes */
-        if (build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
+        /*
+         * Add lambda helper classes
+         * Since all versions above java 7 supports lambdas, this should work
+         */
+        if (!build_settings.getValue(BuildSettings.SETTING_JAVA_VERSION,
                         BuildSettings.SETTING_JAVA_VERSION_1_7)
-                .equals(BuildSettings.SETTING_JAVA_VERSION_1_8)) {
+                .equals(BuildSettings.SETTING_JAVA_VERSION_1_7)) {
             classpath.append(":").append(new File(BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH, "core-lambda-stubs.jar").getAbsolutePath());
         }
 

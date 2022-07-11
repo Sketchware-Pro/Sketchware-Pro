@@ -18,6 +18,10 @@ public class BuildSettings extends ProjectSettings {
     public static final String SETTING_DEXER_DX = "Dx";
     public static final String SETTING_JAVA_VERSION_1_7 = "1.7";
     public static final String SETTING_JAVA_VERSION_1_8 = "1.8";
+    public static final String SETTING_JAVA_VERSION_1_9 = "1.9";
+    public static final String SETTING_JAVA_VERSION_10 = "10";
+    public static final String SETTING_JAVA_VERSION_11 = "11";
+    // d8 only supports desugaring till java 11
 
     public BuildSettings(String sc_id) {
         super(sc_id);
