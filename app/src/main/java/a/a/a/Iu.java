@@ -44,7 +44,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         EditText edName = rootView.findViewById(R.id.ed_name);
         SB nameValidator = new SB(getContext(), rootView.findViewById(R.id.ti_name), 1, 50);
         EditText edAdUnitId = rootView.findViewById(R.id.ed_adunit_id);
-        SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.string.design_library_admob_dialog_add_adunit_hint_adunit_id), 1, 100);
+        SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.id.ti_adunit_id), 1, 100);
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
         dialog.b(xB.b().a(getContext(), R.string.common_word_add), view -> {
