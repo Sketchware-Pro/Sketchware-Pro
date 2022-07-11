@@ -48,9 +48,9 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
         dialog.b(xB.b().a(getContext(), R.string.common_word_add), view -> {
-            if (nameValidator.b()) {
+            if (!nameValidator.b()) {
                 edName.requestFocus();
-            } else if (adUnitValidator.b()) {
+            } else if (!adUnitValidator.b()) {
                 edAdUnitId.requestFocus();
             } else {
                 String name = edName.getText().toString();
