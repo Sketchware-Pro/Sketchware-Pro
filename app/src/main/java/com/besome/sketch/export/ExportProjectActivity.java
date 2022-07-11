@@ -130,8 +130,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (loading_export_src.h()) {
-            loading_export_src.e();
+        if (loading_export_src.isAnimating()) {
+            loading_export_src.cancelAnimation();
         }
     }
 
@@ -147,8 +147,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private void f(String filePath) {
         layout_apk_path.setVisibility(View.VISIBLE);
         btn_sign_apk.setVisibility(View.GONE);
-        if (loading_sign_apk.h()) {
-            loading_sign_apk.e();
+        if (loading_sign_apk.isAnimating()) {
+            loading_sign_apk.cancelAnimation();
         }
         loading_sign_apk.setVisibility(View.GONE);
         SketchwareUtil.toast(Helper.getResString(R.string.sign_apk_title_export_apk_file));
@@ -497,7 +497,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             btn_export_src.setVisibility(View.GONE);
             layout_export_src.setVisibility(View.GONE);
             loading_export_src.setVisibility(View.VISIBLE);
-            loading_export_src.j();
+            loading_export_src.playAnimation();
             new Thread() {
                 @Override
                 public void run() {
@@ -536,7 +536,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 btn_sign_apk.setVisibility(View.GONE);
                 layout_apk_path.setVisibility(View.GONE);
                 loading_sign_apk.setVisibility(View.VISIBLE);
-                loading_sign_apk.j();
+                loading_sign_apk.playAnimation();
 
                 BuildingAsyncTask task = new BuildingAsyncTask(getBaseContext());
                 if (credentials != null) {
@@ -596,7 +596,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      */
     public final void e(String exportedSrcFilename) {
         export_src_filename = exportedSrcFilename;
-        loading_export_src.e();
+        loading_export_src.cancelAnimation();
         loading_export_src.setVisibility(View.GONE);
         layout_export_src.setVisibility(View.VISIBLE);
         tv_src_path.setText(export_src_postfix + File.separator + export_src_filename);
@@ -905,8 +905,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Dismiss the ProgressDialog
             i();
             layout_apk_path.setVisibility(View.GONE);
-            if (loading_sign_apk.h()) {
-                loading_sign_apk.e();
+            if (loading_sign_apk.isAnimating()) {
+                loading_sign_apk.cancelAnimation();
             }
             loading_sign_apk.setVisibility(View.GONE);
             btn_sign_apk.setVisibility(View.VISIBLE);
@@ -972,8 +972,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             i();
             ExportProjectActivity.this.b(str);
             layout_apk_path.setVisibility(View.GONE);
-            if (loading_sign_apk.h()) {
-                loading_sign_apk.e();
+            if (loading_sign_apk.isAnimating()) {
+                loading_sign_apk.cancelAnimation();
             }
             loading_sign_apk.setVisibility(View.GONE);
             btn_sign_apk.setVisibility(View.VISIBLE);

@@ -97,6 +97,7 @@ dependencies {
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
+    implementation "com.airbnb.android:lottie:5.2.0", { exclude group: "androidx.appcompat", module: "appcompat" }
 
     minApi26Implementation "com.android.tools.build:bundletool:1.9.1"
     //noinspection GradleDependency
