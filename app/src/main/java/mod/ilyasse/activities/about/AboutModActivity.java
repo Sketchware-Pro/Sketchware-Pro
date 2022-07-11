@@ -665,8 +665,9 @@ public class AboutModActivity extends AppCompatActivity {
                 // RecyclerView$a<VH extends RecyclerView.v>.c(int)
                 c(position);
             });
-
-            advancedCorners(leftLine, "#008dcd");
+            if (0 == position) {
+                advancedCorners(leftLine, "#008dcd");
+            }
         }
 
         // RecyclerView$Adapter<T extends RecyclerView.ViewHolder>.getItemCount() got obfuscated
