@@ -667,6 +667,8 @@ public class AboutModActivity extends AppCompatActivity {
             });
             if (0 == position) {
                 advancedCorners(leftLine, "#008dcd");
+            } else {
+                leftLine.setBackground(null);
             }
         }
 
