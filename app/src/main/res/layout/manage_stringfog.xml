@@ -1,18 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <include layout="@layout/toolbar_improved" />
-        <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <LinearLayout android:orientation="vertical" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <Switch android:textSize="16.0sp" android:textColor="#ffe53935" android:gravity="center|left" android:id="@id/sw_pg_enabled" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="12.0dip" android:checked="true" android:text="Activated" />
-                <LinearLayout android:orientation="horizontal" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <ImageView android:padding="4.0dip" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/connected_96" android:scaleType="fitXY" />
-                    <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer." />
-                </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_improved" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <Switch
+                android:id="@+id/sw_pg_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:checked="true"
+                android:gravity="center|left"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Activated"
+                android:textColor="#ffe53935"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="4dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/connected_96" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
+                    android:textColor="#ff757575"
+                    android:textSize="14sp" />
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

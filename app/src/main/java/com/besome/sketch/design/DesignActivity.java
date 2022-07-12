@@ -87,7 +87,6 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -972,21 +971,21 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     Dp mDp = new Dp(this, a, q);
 
                     publishProgress("Extracting AAPT/AAPT2 binaries...");
-                    mDp.i();
+                    mDp.maybeExtractAapt2();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Extracting built-in libraries...");
-                    mDp.j();
+                    mDp.getBuiltInLibrariesReady();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("AAPT2 is running...");
-                    mDp.a();
+                    mDp.compileResources();
                     if (canceled) {
                         cancel(true);
                         return;
@@ -999,8 +998,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     }
 
                     publishProgress("Java is compiling...");
-                    /* Compile Java classes */
-                    mDp.f();
+                    mDp.compileJavaCode();
                     if (canceled) {
                         cancel(true);
                         return;
@@ -1022,36 +1020,29 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    /* Create DEX file(s) */
                     publishProgress(mDp.getDxRunningText());
-                    mDp.c();
+                    mDp.createDexFilesFromClasses();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
-                    /* Merge DEX file(s) with libraries' dexes */
                     publishProgress("Merging libraries' DEX files...");
-                    mDp.h();
+                    mDp.getDexFilesReady();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Building APK...");
-                    mDp.g();
+                    mDp.buildApk();
                     if (canceled) {
                         cancel(true);
                         return;
                     }
 
                     publishProgress("Signing APK...");
-                    if (Build.VERSION.SDK_INT >= 26) {
-                        ApkSigner signer = new ApkSigner();
-                        signer.signWithTestKey(mDp.yq.unsignedUnalignedApkPath, mDp.yq.finalToInstallApkPath, null);
-                    } else {
-                        mDp.k();
-                    }
+                    mDp.signDebugApk();
                     if (canceled) {
                         cancel(true);
                         return;

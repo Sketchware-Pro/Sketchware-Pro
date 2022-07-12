@@ -1,5 +1,6 @@
 package com.besome.sketch.help;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,16 +34,17 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isSettingsSaved()) {
-            setResult(-1, new Intent());
+        if (saveSettings()) {
+            setResult(Activity.RESULT_OK, new Intent());
             finish();
         }
     }
 
     @Override
-    public void onCreate(Bundle var1) {
-        super.onCreate(var1);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.system_settings);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         d().d(true);
@@ -52,9 +54,11 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });
+
         contentLayout = findViewById(R.id.content);
         SharedPreferences preferences = getSharedPreferences("P12", Context.MODE_PRIVATE);
         preferenceEditor = preferences.edit();
+
         addPreference(0, R.string.system_settings_title_setting_vibration,
                 R.string.system_settings_description_setting_vibration,
                 preferences.getBoolean("P12I0", true));
@@ -64,7 +68,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
                 preferences.getBoolean("P12I2", false));
     }
 
-    private boolean isSettingsSaved() {
+    private boolean saveSettings() {
         for (int i = 0; i < contentLayout.getChildCount(); i++) {
             View childAtView = contentLayout.getChildAt(i);
             if (childAtView instanceof PropertySwitchItem) {
@@ -76,6 +80,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
                 }
             }
         }
+
         return preferenceEditor.commit();
     }
 }

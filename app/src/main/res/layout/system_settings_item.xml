@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="?selectableItemBackground" android:paddingLeft="16.0dip" android:paddingRight="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView android:textSize="16.0sp" android:textColor="#ff868686" android:id="@id/tv_name" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginRight="60.0dip" />
-    <TextView android:textSize="14.0sp" android:textColor="#ff606060" android:id="@id/tv_desc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:layout_marginRight="60.0dip" android:layout_marginBottom="16.0dip" android:layout_below="@id/tv_name" />
-    <Switch android:id="@id/sw_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="60dp"
+        android:textColor="#ff868686"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#ff606060"
+        android:textSize="14sp" />
+
+    <Switch
+        android:id="@+id/sw_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

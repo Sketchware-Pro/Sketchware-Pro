@@ -259,7 +259,7 @@ public class ResourceCompiler {
             args.add(buildHelper.yq.androidManifestPath);
 
             /* Use the generated R.java for used libraries */
-            String extraPackages = buildHelper.e();
+            String extraPackages = buildHelper.getLibraryPackageNames();
             if (!extraPackages.isEmpty()) {
                 args.add("--extra-packages");
                 args.add(extraPackages);

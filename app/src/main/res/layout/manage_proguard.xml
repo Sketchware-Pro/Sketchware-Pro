@@ -1,36 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <include layout="@layout/toolbar_improved" />
-        <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-            <LinearLayout android:orientation="vertical" android:padding="16.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <Switch android:textSize="16.0sp" android:textColor="#ffe53935" android:gravity="center|left" android:id="@id/sw_pg_enabled" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="12.0dip" android:checked="true" android:text="Activated" />
-                <LinearLayout android:orientation="horizontal" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <ImageView android:padding="4.0dip" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/connected_96" android:scaleType="fitXY" />
-                    <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Activating ProGuard will minimize and obfuscate your project by renaming existing classes and methods on compilation time." />
-                </LinearLayout>
-                <TextView android:textSize="12.0sp" android:textColor="#ffde0000" android:gravity="left" android:padding="8.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dip" android:text="Using ProGuard might be risky to some extent. Make sure to provide a proper rules configuration file in order not to break your project." />
-                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ln_pg_rules" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginBottom="12.0dip">
-                    <TextView android:textSize="16.0sp" android:textColor="#ffe53935" android:gravity="center_vertical" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="2.0dip" android:text="ProGuard Rules" android:layout_weight="1.0" />
-                    <ImageView android:padding="4.0dip" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/ic_edit_white_48dp" android:scaleType="centerInside" android:tint="@color/colorAccent" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <ImageView android:padding="4.0dip" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/side_menu_setting_icon_over" android:scaleType="fitXY" />
-                    <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Configure ProGuard by editing the rules file. This step is necessary because without a proper configuration, ProGuard might break your project." />
-                </LinearLayout>
-                <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/ln_pg_fm" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginBottom="12.0dip">
-                    <TextView android:textSize="16.0sp" android:textColor="#ffe53935" android:gravity="center_vertical" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginBottom="2.0dip" android:text="Full Mode" android:layout_weight="1.0" />
-                    <ImageView android:padding="4.0dip" android:layout_width="35.0dip" android:layout_height="35.0dip" android:src="@drawable/ic_edit_white_48dp" android:scaleType="centerInside" android:tint="@color/colorAccent" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:padding="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
-                    <ImageView android:padding="4.0dip" android:layout_width="32.0dip" android:layout_height="32.0dip" android:layout_marginRight="8.0dip" android:src="@drawable/side_menu_setting_icon_over" android:scaleType="fitXY" />
-                    <TextView android:textSize="14.0sp" android:textColor="#ff757575" android:gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Using this, you can configure specific local libs to be included in ProGuarding process. (Note: Enabling this will ignore DEX files of the local libs you select and it will force Sketchware to compile them to dex, making compilation noticeably slower.)" />
-                </LinearLayout>
-                <Switch android:textSize="16.0sp" android:textColor="#ffe53935" android:gravity="center|left" android:id="@id/sw_pg_debug" android:paddingTop="8.0dip" android:paddingBottom="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:layout_marginBottom="12.0dip" android:checked="true" android:text="Generate debug files" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_improved" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <Switch
+                android:id="@+id/sw_pg_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:checked="true"
+                android:gravity="center|left"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Activated"
+                android:textColor="#ffe53935"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="4dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/connected_96" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Activating ProGuard will minimize and obfuscate your project by renaming existing classes and methods on compilation time."
+                    android:textColor="#ff757575"
+                    android:textSize="14sp" />
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="left"
+                android:padding="8dp"
+                android:text="Using ProGuard might be risky to some extent. Make sure to provide a proper rules configuration file in order not to break your project."
+                android:textColor="#ffde0000"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:id="@+id/ln_pg_rules"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="ProGuard Rules"
+                    android:textColor="#ffe53935"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:padding="4dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_edit_white_48dp"
+                    android:tint="@color/colorAccent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="4dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/side_menu_setting_icon_over" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Configure ProGuard by editing the rules file. This step is necessary because without a proper configuration, ProGuard might break your project."
+                    android:textColor="#ff757575"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ln_pg_fm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Full Mode"
+                    android:textColor="#ffe53935"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:padding="4dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_edit_white_48dp"
+                    android:tint="@color/colorAccent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="8dp"
+                    android:padding="4dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/side_menu_setting_icon_over" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Using this, you can configure specific local libs to be included in ProGuarding process. (Note: Enabling this will ignore DEX files of the local libs you select and it will force Sketchware to compile them to dex, making compilation noticeably slower.)"
+                    android:textColor="#ff757575"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/sw_pg_debug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:checked="true"
+                android:gravity="center|left"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Generate debug files"
+                android:textColor="#ffe53935"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

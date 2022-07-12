@@ -728,7 +728,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Check AAPT/AAPT2 */
                 publishProgress("Extracting AAPT/AAPT2 binaries...");
-                c.i();
+                c.maybeExtractAapt2();
                 if (d) {
                     cancel(true);
                     return;
@@ -736,14 +736,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Check built-in libraries */
                 publishProgress("Extracting built-in libraries...");
-                c.j();
+                c.getBuiltInLibrariesReady();
                 if (d) {
                     cancel(true);
                     return;
                 }
 
                 publishProgress("AAPT2 is running...");
-                c.a();
+                c.compileResources();
                 if (d) {
                     cancel(true);
                     return;
@@ -756,7 +756,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 }
 
                 publishProgress("Java is compiling...");
-                c.f();
+                c.compileJavaCode();
                 if (d) {
                     cancel(true);
                     return;
@@ -780,7 +780,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Create DEX file(s) */
                 publishProgress(c.getDxRunningText());
-                c.c();
+                c.createDexFilesFromClasses();
                 if (d) {
                     cancel(true);
                     return;
@@ -788,7 +788,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                 /* Merge DEX file(s) with libraries' dexes */
                 publishProgress("Merging libraries' DEX files...");
-                c.h();
+                c.getDexFilesReady();
                 if (d) {
                     onCancelled();
                     return;
@@ -837,7 +837,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     }
                 } else {
                     publishProgress("Building APK...");
-                    c.g();
+                    c.buildApk();
                     if (d) {
                         cancel(true);
                         return;
