@@ -16,6 +16,8 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
+
 public class Nu extends LinearLayout implements Uu, OnClickListener {
     public String a = "";
     public String b = "";
@@ -47,14 +49,14 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         aB dialog = new aB((Activity) getContext());
         View rootView = wB.a(getContext(), R.layout.property_popup_selector_single);
         ViewGroup viewGroup = rootView.findViewById(R.id.rg_content);
-        dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_select_unit_title));
+        dialog.b(Helper.getResString(R.string.design_library_admob_dialog_select_unit_title));
 
         for (String adUnit : c) {
             viewGroup.addView(addRadioButton(adUnit));
         }
 
         dialog.a(rootView);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), view -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -70,7 +72,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
         dialog.show();
     }
 
@@ -83,12 +85,12 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         g = findViewById(R.id.tv_inter_id);
         tvRewardName = findViewById(R.id.tv_reward_name);
         tvRewardNameTitle = findViewById(R.id.tv_reward_name_title);
-        ((TextView) findViewById(R.id.tv_banner_title)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_banner));
-        ((TextView) findViewById(R.id.tv_banner_name_title)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_banner_id_title)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_inter_title)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_interstitial));
-        ((TextView) findViewById(R.id.tv_inter_name_title)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_inter_id_title)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_banner_title)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
+        ((TextView) findViewById(R.id.tv_banner_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_banner_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_inter_title)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
+        ((TextView) findViewById(R.id.tv_inter_name_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_inter_id_title)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
         findViewById(R.id.img_select_banner).setOnClickListener(this);
         findViewById(R.id.img_select_inter).setOnClickListener(this);
         findViewById(R.id.tv_banner_edit).setOnClickListener(this);
@@ -153,7 +155,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
         if (!a.isEmpty() && !b.isEmpty()) {
             return true;
         } else {
-            bB.a(getContext(), xB.b().a(getContext(), R.string.design_library_admob_message_select_ad_unit), 1).show();
+            bB.a(getContext(), Helper.getResString(R.string.design_library_admob_message_select_ad_unit), 1).show();
             return false;
         }
     }

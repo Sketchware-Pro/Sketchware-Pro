@@ -22,6 +22,7 @@ import a.a.a.Zt;
 import a.a.a.gg;
 import a.a.a.mB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class ManageFontActivity extends BaseAppCompatActivity implements ViewPager.e {
 
@@ -85,7 +86,7 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
         Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.design_actionbar_title_manager_font));
+        d().a(Helper.getResString(R.string.design_actionbar_title_manager_font));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -127,8 +128,8 @@ public class ManageFontActivity extends BaseAppCompatActivity implements ViewPag
 
         public TabLayoutAdapter(Xf xf) {
             super(xf);
-            labels[0] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_this_project).toUpperCase();
-            labels[1] = xB.b().a(getApplicationContext(), R.string.design_manager_tab_title_my_collection).toUpperCase();
+            labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project).toUpperCase();
+            labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection).toUpperCase();
         }
 
         @Override

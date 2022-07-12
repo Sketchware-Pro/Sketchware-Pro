@@ -160,7 +160,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         updatingExistingProject = getIntent().getBooleanExtra("is_update", false);
         boolean expandAdvancedOptions = getIntent().getBooleanExtra("advanced_open", false);
 
-        ((TextView) findViewById(R.id.tv_change_icon)).setText(xB.b().a(this, R.string.myprojects_settings_description_change_icon));
+        ((TextView) findViewById(R.id.tv_change_icon)).setText(Helper.getResString(R.string.myprojects_settings_description_change_icon));
         findViewById(R.id.contents).setOnClickListener(this);
         findViewById(R.id.app_icon_layout).setOnClickListener(this);
         findViewById(R.id.advanced_setting).setOnClickListener(this);
@@ -171,13 +171,13 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         TextInputLayout appName = findViewById(R.id.ti_app_name);
         TextInputLayout packageName = findViewById(R.id.ti_package_name);
         TextInputLayout projectName = findViewById(R.id.ti_project_name);
-        appName.setHint(xB.b().a(this, R.string.myprojects_settings_hint_enter_application_name));
-        packageName.setHint(xB.b().a(this, R.string.myprojects_settings_hint_enter_package_name));
-        projectName.setHint(xB.b().a(this, R.string.myprojects_settings_hint_enter_project_name));
+        appName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
+        packageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
+        projectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
         projectAppName = findViewById(R.id.et_app_name);
         projectPackageName = findViewById(R.id.et_package_name);
         this.projectName = findViewById(R.id.et_project_name);
-        ((TextView) findViewById(R.id.tv_advanced_settings)).setText(xB.b().a(this, R.string.myprojects_settings_title_advanced_settings));
+        ((TextView) findViewById(R.id.tv_advanced_settings)).setText(Helper.getResString(R.string.myprojects_settings_title_advanced_settings));
         appIcon = findViewById(R.id.app_icon);
 
         projectAppNameValidator = new LB(getApplicationContext(), appName);
@@ -217,12 +217,12 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             });
         }
         /* Set the cancel button's label */
-        b(xB.b().a(this, R.string.common_word_cancel));
+        b(Helper.getResString(R.string.common_word_cancel));
 
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
-            e(xB.b().a(getApplicationContext(), R.string.myprojects_settings_actionbar_title_project_settings));
-            d(xB.b().a(this, R.string.myprojects_settings_button_save));
+            e(Helper.getResString(R.string.myprojects_settings_actionbar_title_project_settings));
+            d(Helper.getResString(R.string.myprojects_settings_button_save));
 
             HashMap<String, Object> metadata = lC.b(sc_id);
             projectPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
@@ -246,8 +246,8 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
             }
         } else {
             /* Set the dialog's title & create button label */
-            e(xB.b().a(getApplicationContext(), R.string.myprojects_settings_actionbar_title_new_projet));
-            d(xB.b().a(this, R.string.myprojects_settings_button_create_app));
+            e(Helper.getResString(R.string.myprojects_settings_actionbar_title_new_projet));
+            d(Helper.getResString(R.string.myprojects_settings_button_create_app));
 
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
@@ -320,10 +320,10 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private void showOldVersionControlDialog() {
         aB dialog = new aB(this);
         dialog.a(R.drawable.numbers_48);
-        dialog.b(xB.b().a(this, R.string.myprojects_settings_version_control_title));
+        dialog.b(Helper.getResString(R.string.myprojects_settings_version_control_title));
         View view = wB.a(getApplicationContext(), R.layout.property_popup_version_control);
-        ((TextView) view.findViewById(R.id.tv_code)).setText(xB.b().a(this, R.string.myprojects_settings_version_control_title_code));
-        ((TextView) view.findViewById(R.id.tv_name)).setText(xB.b().a(this, R.string.myprojects_settings_version_control_title_name));
+        ((TextView) view.findViewById(R.id.tv_code)).setText(Helper.getResString(R.string.myprojects_settings_version_control_title_code));
+        ((TextView) view.findViewById(R.id.tv_name)).setText(Helper.getResString(R.string.myprojects_settings_version_control_title_name));
 
         NumberPicker versionCodePicker = view.findViewById(R.id.version_code);
         NumberPicker versionNameFirstPartPicker = view.findViewById(R.id.version_name1);
@@ -381,14 +381,14 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
                 picker.setValue(projectVersionNameSecondPart);
             }
         });
-        dialog.b(xB.b().a(this, R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a()) {
                 projectVersionCodeView.setText(String.valueOf(versionCodePicker.getValue()));
                 projectVersionNameView.setText(projectNewVersionNameFirstPart + "." + projectNewVersionNameSecondPart);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(this, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -447,15 +447,15 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
 
     private void showResetIconConfirmation() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_settings));
+        dialog.b(Helper.getResString(R.string.common_word_settings));
         dialog.a(R.drawable.default_icon);
-        dialog.a(xB.b().a(this, R.string.myprojects_settings_confirm_reset_icon));
-        dialog.b(xB.b().a(this, R.string.common_word_reset), v -> {
+        dialog.a(Helper.getResString(R.string.myprojects_settings_confirm_reset_icon));
+        dialog.b(Helper.getResString(R.string.common_word_reset), v -> {
             appIcon.setImageResource(R.drawable.default_icon);
             projectHasCustomIcon = false;
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(this, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -484,7 +484,7 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         intent.putExtra("output", uri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
         intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)),
+        startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)),
                 REQUEST_CODE_PICK_ICON);
     }
 
@@ -511,17 +511,17 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
         intent.putExtra("output", uri);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
         intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)),
+        startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)),
                 REQUEST_CODE_PICK_CROPPED_ICON);
     }
 
     private void showCustomIconOptions() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose));
+        builder.setTitle(Helper.getResString(R.string.myprojects_settings_context_menu_title_choose));
         builder.setItems(new String[]{
-                xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose_gallery),
-                xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
-                xB.b().a(this, R.string.myprojects_settings_context_menu_title_choose_gallery_default)
+                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
+                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
+                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_default)
         }, (dialog, which) -> {
             switch (which) {
                 case 0:
@@ -545,10 +545,10 @@ public class MyProjectSettingActivity extends BaseDialogActivity implements View
     private void showPackageNameChangeWarning() {
         shownPackageNameChangeWarning = true;
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_warning));
+        dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(R.drawable.break_warning_96_red);
-        dialog.a(xB.b().a(this, R.string.myprojects_settings_message_package_rename));
-        dialog.b(xB.b().a(this, R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.myprojects_settings_message_package_rename));
+        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

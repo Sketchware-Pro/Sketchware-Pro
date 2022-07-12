@@ -30,17 +30,17 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
 
     private void goBackDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), 0x7f0e061d));
+        dialog.b(Helper.getResString(0x7f0e061d));
         dialog.a(2131165604);
-        dialog.a(xB.b().a(getApplicationContext(), 2131625500));
-        dialog.b(xB.b().a(getApplicationContext(), 2131625000), view -> {
+        dialog.a(Helper.getResString(2131625500));
+        dialog.b(Helper.getResString(2131625000), view -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 finish();
             }
 
         });
-        dialog.a(xB.b().a(getApplicationContext(), 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -73,7 +73,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         k = findViewById(2131231847);
         a(k);
         findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), 2131625498));
+        d().a(Helper.getResString(2131625498));
         d().e(true);
         d().d(true);
         k.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
@@ -86,7 +86,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(2131492883, menu);
-        menu.findItem(2131231546).setTitle(xB.b().a(getApplicationContext(), 2131624983));
+        menu.findItem(2131231546).setTitle(Helper.getResString(2131624983));
         return true;
     }
 

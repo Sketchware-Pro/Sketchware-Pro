@@ -95,8 +95,8 @@ public class ProjectSettingsDialog {
                 useNewMaterialComponentsAppTheme
         };
 
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             settings.setValues(preferences);
             dialog.dismiss();
         });

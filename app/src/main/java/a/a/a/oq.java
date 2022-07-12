@@ -7,6 +7,7 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.events.EventsHandler;
 
 public class oq {
@@ -206,181 +207,181 @@ public class oq {
     public static String a(String eventName, Context context) {
         switch (eventName) {
             case "initializeLogic":
-                return xB.b().a(context.getResources(), 2131625330);
+                return Helper.getResString(2131625330);
 
             case "onBackPressed":
-                return xB.b().a(context.getResources(), 2131625354);
+                return Helper.getResString(2131625354);
 
             case "onPostCreate":
-                return xB.b().a(context.getResources(), 2131625379);
+                return Helper.getResString(2131625379);
 
             case "onStart":
-                return xB.b().a(context.getResources(), 2131625385);
+                return Helper.getResString(2131625385);
 
             case "onStop":
-                return xB.b().a(context.getResources(), 2131625387);
+                return Helper.getResString(2131625387);
 
             case "onDestroy":
-                return xB.b().a(context.getResources(), 2131625365);
+                return Helper.getResString(2131625365);
 
             case "onResume":
-                return xB.b().a(context.getResources(), 2131625382);
+                return Helper.getResString(2131625382);
 
             case "onPause":
-                return xB.b().a(context.getResources(), 2131625376);
+                return Helper.getResString(2131625376);
 
             case "onPageStarted":
-                return xB.b().a(context.getResources(), 2131625375);
+                return Helper.getResString(2131625375);
 
             case "onPageFinished":
-                return xB.b().a(context.getResources(), 2131625374);
+                return Helper.getResString(2131625374);
 
             case "moreBlock":
-                return xB.b().a(context.getResources(), 2131625325);
+                return Helper.getResString(2131625325);
 
             case "onClick":
-                return xB.b().a(context.getResources(), 2131625361);
+                return Helper.getResString(2131625361);
 
             case "onCheckedChange":
-                return xB.b().a(context.getResources(), 2131625357);
+                return Helper.getResString(2131625357);
 
             case "onItemSelected":
-                return xB.b().a(context.getResources(), 2131625373);
+                return Helper.getResString(2131625373);
 
             case "onItemClicked":
-                return xB.b().a(context.getResources(), 2131625371);
+                return Helper.getResString(2131625371);
 
             case "onItemLongClicked":
-                return xB.b().a(context.getResources(), 2131625372);
+                return Helper.getResString(2131625372);
 
             case "onTextChanged":
-                return xB.b().a(context.getResources(), 2131625389);
+                return Helper.getResString(2131625389);
 
             case "onProgressChanged":
-                return xB.b().a(context.getResources(), 2131625380);
+                return Helper.getResString(2131625380);
 
             case "onStartTrackingTouch":
-                return xB.b().a(context.getResources(), 2131625386);
+                return Helper.getResString(2131625386);
 
             case "onStopTrackingTouch":
-                return xB.b().a(context.getResources(), 2131625388);
+                return Helper.getResString(2131625388);
 
             case "onAnimationStart":
-                return xB.b().a(context.getResources(), 2131625353);
+                return Helper.getResString(2131625353);
 
             case "onAnimationEnd":
-                return xB.b().a(context.getResources(), 2131625352);
+                return Helper.getResString(2131625352);
 
             case "onAnimationCancel":
-                return xB.b().a(context.getResources(), 2131625351);
+                return Helper.getResString(2131625351);
 
             case "onBindCustomView":
-                return xB.b().a(context.getResources(), 2131625355);
+                return Helper.getResString(2131625355);
 
             case "onDateChange":
-                return xB.b().a(context.getResources(), 2131625363);
+                return Helper.getResString(2131625363);
 
             case "onChildAdded":
-                return xB.b().a(context.getResources(), 2131625358);
+                return Helper.getResString(2131625358);
 
             case "onChildChanged":
-                return xB.b().a(context.getResources(), 2131625359);
+                return Helper.getResString(2131625359);
 
             case "onChildRemoved":
-                return xB.b().a(context.getResources(), 2131625360);
+                return Helper.getResString(2131625360);
 
             case "onCancelled":
-                return xB.b().a(context.getResources(), 2131625356);
+                return Helper.getResString(2131625356);
 
             case "onSensorChanged":
-                return xB.b().a(context.getResources(), 2131625383);
+                return Helper.getResString(2131625383);
 
             case "onCreateUserComplete":
-                return xB.b().a(context.getResources(), 2131625362);
+                return Helper.getResString(2131625362);
 
             case "onSignInUserComplete":
-                return xB.b().a(context.getResources(), 2131625384);
+                return Helper.getResString(2131625384);
 
             case "onResetPasswordEmailSent":
-                return xB.b().a(context.getResources(), 2131625381);
+                return Helper.getResString(2131625381);
 
             case "onInterstitialAdLoaded":
-                return xB.b().a(context.getResources(), 2131625349);
+                return Helper.getResString(2131625349);
 
             case "onInterstitialAdFailedToLoad":
-                return xB.b().a(context.getResources(), 2131625348);
+                return Helper.getResString(2131625348);
 
             case "onBannerAdOpened":
-                return xB.b().a(context.getResources(), 2131625350);
+                return Helper.getResString(2131625350);
 
             case "onBannerAdClosed":
-                return xB.b().a(context.getResources(), 2131625347);
+                return Helper.getResString(2131625347);
 
             case "onUploadProgress":
-                return xB.b().a(context.getResources(), 2131625390);
+                return Helper.getResString(2131625390);
 
             case "onDownloadProgress":
-                return xB.b().a(context.getResources(), 2131625366);
+                return Helper.getResString(2131625366);
 
             case "onUploadSuccess":
-                return xB.b().a(context.getResources(), 2131625391);
+                return Helper.getResString(2131625391);
 
             case "onDownloadSuccess":
-                return xB.b().a(context.getResources(), 2131625367);
+                return Helper.getResString(2131625367);
 
             case "onDeleteSuccess":
-                return xB.b().a(context.getResources(), 2131625364);
+                return Helper.getResString(2131625364);
 
             case "onFailure":
-                return xB.b().a(context.getResources(), 2131625368);
+                return Helper.getResString(2131625368);
 
             case "onPictureTaken":
-                return xB.b().a(context.getResources(), 2131625377);
+                return Helper.getResString(2131625377);
 
             case "onPictureTakenCancel":
-                return xB.b().a(context.getResources(), 2131625378);
+                return Helper.getResString(2131625378);
 
             case "onFilesPicked":
-                return xB.b().a(context.getResources(), 2131625369);
+                return Helper.getResString(2131625369);
 
             case "onFilesPickedCancel":
-                return xB.b().a(context.getResources(), 2131625370);
+                return Helper.getResString(2131625370);
 
             case "onResponse":
-                return xB.b().a(context.getResources(), 2131625344);
+                return Helper.getResString(2131625344);
 
             case "onErrorResponse":
-                return xB.b().a(context.getResources(), 2131625340);
+                return Helper.getResString(2131625340);
 
             case "onSpeechResult":
-                return xB.b().a(context.getResources(), 2131625346);
+                return Helper.getResString(2131625346);
 
             case "onSpeechError":
-                return xB.b().a(context.getResources(), 2131625345);
+                return Helper.getResString(2131625345);
 
             case "onConnected":
-                return xB.b().a(context.getResources(), 2131625335);
+                return Helper.getResString(2131625335);
 
             case "onDataReceived":
-                return xB.b().a(context.getResources(), 2131625338);
+                return Helper.getResString(2131625338);
 
             case "onDataSent":
-                return xB.b().a(context.getResources(), 2131625339);
+                return Helper.getResString(2131625339);
 
             case "onConnectionError":
-                return xB.b().a(context.getResources(), 2131625336);
+                return Helper.getResString(2131625336);
 
             case "onConnectionStopped":
-                return xB.b().a(context.getResources(), 2131625337);
+                return Helper.getResString(2131625337);
 
             case "onMapReady":
-                return xB.b().a(context.getResources(), 2131625342);
+                return Helper.getResString(2131625342);
 
             case "onMarkerClicked":
-                return xB.b().a(context.getResources(), 2131625343);
+                return Helper.getResString(2131625343);
 
             case "onLocationChanged":
-                return xB.b().a(context.getResources(), 2131625341);
+                return Helper.getResString(2131625341);
 
             default:
                 return ManageEvent.e(eventName);

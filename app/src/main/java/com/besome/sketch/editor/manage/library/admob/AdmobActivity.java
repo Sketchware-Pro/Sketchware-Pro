@@ -85,11 +85,11 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     private void f(int position) {
         if (position == 3) {
-            z.setText(xB.b().a(this, 2131625029));
-            A.setText(xB.b().a(this, 2131625031));
+            z.setText(Helper.getResString(2131625029));
+            A.setText(Helper.getResString(2131625031));
         } else {
             z.setText(xB.b().a(this, 2131625040, position + 1));
-            A.setText(xB.b().a(this, 2131625008));
+            A.setText(Helper.getResString(2131625008));
         }
 
         if (position == 0) {
@@ -241,7 +241,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 u();
             }
         } else {
-            bB.a(this, xB.b().a(this, 2131624932), 0).show();
+            bB.a(this, Helper.getResString(2131624932), 0).show();
         }
     }
 
@@ -259,39 +259,39 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         }
 
         H = new String[]{
-                xB.b().a(this, 2131625185),
-                xB.b().a(this, 2131625187),
-                xB.b().a(this, 2131625189),
-                xB.b().a(this, 2131625191)
+                Helper.getResString(2131625185),
+                Helper.getResString(2131625187),
+                Helper.getResString(2131625189),
+                Helper.getResString(2131625191)
         };
         I = new String[]{
-                xB.b().a(this, 2131625184),
-                xB.b().a(this, 2131625186),
-                xB.b().a(this, 2131625188),
-                xB.b().a(this, 2131625190)
+                Helper.getResString(2131625184),
+                Helper.getResString(2131625186),
+                Helper.getResString(2131625188),
+                Helper.getResString(2131625190)
         };
         x = findViewById(2131230944);
         x.setOnClickListener(this);
         C = findViewById(2131231987);
-        C.setText(xB.b().a(this, 2131625161));
+        C.setText(Helper.getResString(2131625161));
         y = findViewById(2131232081);
-        y.setText(xB.b().a(this, 2131625014));
+        y.setText(Helper.getResString(2131625014));
         y.setOnClickListener(this);
         D = findViewById(2131231090);
         D.setImageResource(2131166234);
         z = findViewById(2131232257);
         A = findViewById(2131232059);
-        A.setText(xB.b().a(this, 2131625008));
+        A.setText(Helper.getResString(2131625008));
         A.setOnClickListener(this);
         B = findViewById(2131231113);
         B.setOnClickListener(Helper.getBackPressedClickListener(this));
         E = findViewById(2131232179);
         F = findViewById(2131232176);
         N = findViewById(2131230841);
-        N.setText(xB.b().a(this, 2131624999));
+        N.setText(Helper.getResString(2131624999));
         N.setOnClickListener(this);
         O = findViewById(2131230832);
-        O.setText(xB.b().a(this, 2131625201));
+        O.setText(Helper.getResString(2131625201));
         O.setOnClickListener(view -> s());
         G = findViewById(2131231331);
     }
@@ -326,7 +326,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                     u();
                 }
             } else {
-                bB.a(this, xB.b().a(this, 2131624932), 0).show();
+                bB.a(this, Helper.getResString(2131624932), 0).show();
             }
 
         }
@@ -334,7 +334,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
 
     private void s() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(this, 2131625252));
+        dialog.b(Helper.getResString(2131625252));
         dialog.a(2131166234);
         View rootView = wB.a(this, 2131427550);
         RecyclerView recyclerView = rootView.findViewById(2131231440);
@@ -345,7 +345,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         recyclerView.setItemAnimator(new ci());
         m();
         dialog.a(rootView);
-        dialog.b(xB.b().a(this, 2131625035), view -> {
+        dialog.b(Helper.getResString(2131625035), view -> {
             if (!mB.a()) {
                 if (Q.c >= 0) {
                     HashMap<String, Object> projectMap = P.get(Q.c);
@@ -357,16 +357,16 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
             }
 
         });
-        dialog.a(xB.b().a(this, 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void u() {
         aB dialog = new aB(this);
         dialog.a(2131165415);
-        dialog.b(xB.b().a(this, 2131626412));
-        dialog.a(xB.b().a(this, 2131625629));
-        dialog.b(xB.b().a(this, 2131625010), view -> {
+        dialog.b(Helper.getResString(2131626412));
+        dialog.a(Helper.getResString(2131625629));
+        dialog.b(Helper.getResString(2131625010), view -> {
             if (!mB.a()) {
                 Intent intent = new Intent("android.intent.action.VIEW");
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
@@ -374,7 +374,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(this, 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(2131624974), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

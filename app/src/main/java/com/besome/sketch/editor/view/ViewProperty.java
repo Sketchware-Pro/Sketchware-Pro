@@ -164,10 +164,10 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private void showSaveToCollectionDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.view_widget_favorites_save_title));
+        dialog.b(Helper.getResString(R.string.view_widget_favorites_save_title));
         dialog.a(R.drawable.ic_bookmark_red_48dp);
         View view = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
-        ((TextView) view.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(getContext(), R.string.view_widget_favorites_save_guide_new));
+        ((TextView) view.findViewById(R.id.tv_favorites_guide)).setText(Helper.getResString(R.string.view_widget_favorites_save_guide_new));
         EditText editText = view.findViewById(R.id.ed_input);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         editText.setLines(1);
@@ -176,7 +176,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         NB validator = new NB(getContext(), view.findViewById(R.id.ti_input), Rp.h().g());
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = editText.getText().toString();
                 ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
@@ -203,11 +203,11 @@ public class ViewProperty extends LinearLayout implements Kw {
                 if (propertyListener != null) {
                     propertyListener.a();
                 }
-                bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
+                bB.a(getContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -409,7 +409,7 @@ public class ViewProperty extends LinearLayout implements Kw {
 
         private void configure(int id, int labelResId) {
             setTag(id);
-            title.setText(xB.b().a(getContext(), labelResId));
+            title.setText(Helper.getResString(labelResId));
             setOnClickListener(this);
         }
     }
@@ -440,7 +440,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         private void configure(int imageResId, int propertyNameResId) {
             propertyMenuItem.setVisibility(VISIBLE);
             icon.setImageResource(imageResId);
-            title.setText(xB.b().a(getContext(), propertyNameResId));
+            title.setText(Helper.getResString(propertyNameResId));
             title.setTextColor(0xffff951b);
             setOnClickListener(this);
         }

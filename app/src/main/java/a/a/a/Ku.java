@@ -18,6 +18,8 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
+
 public class Ku extends LinearLayout implements Uu {
 
     private Switch adMobToggle;
@@ -44,18 +46,18 @@ public class Ku extends LinearLayout implements Uu {
         interstitialId = findViewById(R.id.tv_inter_id);
         rewardedAdName = findViewById(R.id.tv_reward_name);
         rewardedAdId = findViewById(R.id.tv_reward_id);
-        ((TextView) findViewById(R.id.tv_enable)).setText(xB.b().a(context, R.string.design_library_settings_title_enabled));
-        ((TextView) findViewById(R.id.tv_title_banner)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_banner));
+        ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
+        ((TextView) findViewById(R.id.tv_title_banner)).setText(Helper.getResString(R.string.design_library_admob_title_banner));
 
         TextView bannerName = findViewById(R.id.tv_title_banner_name);
-        bannerName.setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_name) + " : ");
+        bannerName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
         TextView bannerId = findViewById(R.id.tv_title_banner_id);
-        bannerId.setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_inter)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_interstitial));
+        bannerId.setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_inter)).setText(Helper.getResString(R.string.design_library_admob_title_interstitial));
         TextView interstitialName = findViewById(R.id.tv_title_inter_name);
-        interstitialName.setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_name) + " : ");
-        ((TextView) findViewById(R.id.tv_title_inter_id)).setText(xB.b().a(getContext(), R.string.design_library_admob_title_ad_unit_id) + " : ");
-        ((TextView) findViewById(R.id.tv_title_test_device)).setText(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
+        interstitialName.setText(Helper.getResString(R.string.design_library_admob_title_ad_name) + " : ");
+        ((TextView) findViewById(R.id.tv_title_inter_id)).setText(Helper.getResString(R.string.design_library_admob_title_ad_unit_id) + " : ");
+        ((TextView) findViewById(R.id.tv_title_test_device)).setText(Helper.getResString(R.string.design_library_admob_dialog_set_test_device_title));
 
         RecyclerView testDevices = findViewById(R.id.list_test_device);
         testDevices.setLayoutManager(new LinearLayoutManager(getContext(), 1, false));

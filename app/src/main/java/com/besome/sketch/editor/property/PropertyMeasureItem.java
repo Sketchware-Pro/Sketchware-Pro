@@ -58,10 +58,10 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             if (this.propertyMenuItem.getVisibility() == VISIBLE) {
                 setIcon(findViewById(R.id.img_icon));
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             setIcon(imgLeftIcon);
@@ -188,7 +188,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             tv_input_dp.setTextColor(0xffdddddd);
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             int checkedRadioButtonId = rg_width_height.getCheckedRadioButtonId();
 
             if (checkedRadioButtonId == R.id.rb_matchparent) {
@@ -205,7 +205,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

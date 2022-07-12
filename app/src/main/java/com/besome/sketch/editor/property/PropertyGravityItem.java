@@ -44,11 +44,11 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         key = str;
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             icon = R.drawable.gravity_96;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -137,7 +137,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             }
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             int value = chk_left.isChecked() ? Gravity.LEFT : Gravity.NO_GRAVITY;
             if (chk_right.isChecked()) {
                 value |= Gravity.RIGHT;
@@ -160,7 +160,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

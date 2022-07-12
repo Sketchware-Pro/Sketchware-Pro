@@ -13,6 +13,7 @@ import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class PropertySwitchSingleLineItem extends LinearLayout implements View.OnClickListener {
 
@@ -53,7 +54,7 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             switch (this.key) {
                 case "property_checked":
                     icon = R.drawable.ok_48;
@@ -72,7 +73,7 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);

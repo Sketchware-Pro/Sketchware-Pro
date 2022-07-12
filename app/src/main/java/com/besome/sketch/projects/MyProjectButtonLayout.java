@@ -14,6 +14,7 @@ import com.sketchware.remod.R;
 
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class MyProjectButtonLayout extends FrameLayout {
 
@@ -54,22 +55,22 @@ public class MyProjectButtonLayout extends FrameLayout {
         buttonContainer = findViewById(R.id.project_buttons);
         confirmLayout = findViewById(R.id.confirm_layout);
         TextView confirmDelete = findViewById(R.id.confirm_title);
-        confirmDelete.setText(xB.b().a(getContext(), R.string.language_message_confirm_delete));
+        confirmDelete.setText(Helper.getResString(R.string.language_message_confirm_delete));
         confirmYes = findViewById(R.id.confirm_yes);
         confirmNo = findViewById(R.id.confirm_no);
         TextView confirmYesText = findViewById(R.id.confirm_yes_text);
-        confirmYesText.setText(xB.b().a(getContext(), R.string.common_word_delete));
+        confirmYesText.setText(Helper.getResString(R.string.common_word_delete));
         TextView confirmNoText = findViewById(R.id.confirm_no_text);
-        confirmNoText.setText(xB.b().a(getContext(), R.string.common_word_cancel));
-        confirmDelete.setText(xB.b().a(context, R.string.myprojects_confirm_project_delete));
-        confirmYesText.setText(xB.b().a(context, R.string.common_word_delete));
-        confirmNoText.setText(xB.b().a(context, R.string.common_word_cancel));
+        confirmNoText.setText(Helper.getResString(R.string.common_word_cancel));
+        confirmDelete.setText(Helper.getResString(R.string.myprojects_confirm_project_delete));
+        confirmYesText.setText(Helper.getResString(R.string.common_word_delete));
+        confirmNoText.setText(Helper.getResString(R.string.common_word_cancel));
         confirmLayout.setVisibility(INVISIBLE);
 
-        settings = createButton(0, R.drawable.settings_96, xB.b().a(context, R.string.myprojects_list_menu_title_settings));
+        settings = createButton(0, R.drawable.settings_96, Helper.getResString(R.string.myprojects_list_menu_title_settings));
         backUp = createButton(1, R.drawable.ic_backup, "Back up");
-        signExport = createButton(2, R.drawable.ic_export_grey_48dp, xB.b().a(context, R.string.myprojects_list_menu_title_sign_export));
-        delete = createButton(3, R.drawable.ic_delete_grey_48dp, xB.b().a(context, R.string.myprojects_list_menu_title_delete));
+        signExport = createButton(2, R.drawable.ic_export_grey_48dp, Helper.getResString(R.string.myprojects_list_menu_title_sign_export));
+        delete = createButton(3, R.drawable.ic_delete_grey_48dp, Helper.getResString(R.string.myprojects_list_menu_title_delete));
         config = createButton(4, R.drawable.settings_96, "Config");
         buttonContainer.addView(settings);
         buttonContainer.addView(backUp);

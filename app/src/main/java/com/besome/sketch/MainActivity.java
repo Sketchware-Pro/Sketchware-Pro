@@ -317,7 +317,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
                 dialog.a("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
                         "taking ages to build projects. Don't worry, we can't do more to storage than " +
                         "with current granted permissions.");
-                dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
+                dialog.b(Helper.getResString(R.string.common_word_settings), v -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     dialog.dismiss();
                 });
@@ -338,10 +338,10 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void showNoticeNeedStorageAccess() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_permission_title_storage));
+        dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
         dialog.a(R.drawable.color_about_96);
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_need_load_project));
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
+        dialog.a(Helper.getResString(R.string.common_message_permission_need_load_project));
+        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
             dialog.dismiss();
             nd.a(MainActivity.this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -353,18 +353,18 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
 
     private void showNoticeNotEnoughFreeStorageSpace() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_insufficient_storage_space_title));
+        dialog.b(Helper.getResString(R.string.common_message_insufficient_storage_space_title));
         dialog.a(R.drawable.high_priority_96_red);
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_insufficient_storage_space));
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok),
+        dialog.a(Helper.getResString(R.string.common_message_insufficient_storage_space));
+        dialog.b(Helper.getResString(R.string.common_word_ok),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     public void s() {
         if (storageAccessDenied == null || !storageAccessDenied.j()) {
-            storageAccessDenied = Snackbar.a(coordinator, xB.b().a(getApplicationContext(), R.string.common_message_permission_denied), -2);
-            storageAccessDenied.a(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
+            storageAccessDenied = Snackbar.a(coordinator, Helper.getResString(R.string.common_message_permission_denied), -2);
+            storageAccessDenied.a(Helper.getResString(R.string.common_word_settings), v -> {
                 storageAccessDenied.c();
                 nd.a(MainActivity.this, new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -408,7 +408,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         // Actual loading part
         if (xB.b().b(getApplicationContext())) {
             bB.a(getApplicationContext(),
-                    xB.b().a(getApplicationContext(), R.string.message_strings_xml_loaded),
+                    Helper.getResString(R.string.message_strings_xml_loaded),
                     0, 80, 0, 128).show();
         }
     }
@@ -442,7 +442,7 @@ public class MainActivity extends BasePermissionAppCompatActivity implements Vie
         @Override
         // PagerAdapter#getPageTitle(int)
         public CharSequence a(int position) {
-            return xB.b().a(MainActivity.this, R.string.main_tab_title_myproject);
+            return Helper.getResString(R.string.main_tab_title_myproject);
         }
     }
 }

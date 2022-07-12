@@ -12,6 +12,7 @@ import com.sketchware.remod.R;
 import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
@@ -29,7 +30,7 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
     private DrawerItem addDrawerItem(int tag, boolean useSeparator, int iconResId, int titleResId, int descriptionResId) {
         DrawerItem drawerItem = new DrawerItem(context, tag);
-        drawerItem.setContent(iconResId, xB.b().a(context, titleResId), xB.b().a(context, descriptionResId));
+        drawerItem.setContent(iconResId, Helper.getResString(titleResId), Helper.getResString(descriptionResId));
         drawerItem.setTag(tag);
         drawerItem.setOnClickListener(this);
         drawerItem.setSeparatorVisibility(useSeparator);
@@ -41,8 +42,8 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         this.context = context;
         wB.a(context, this, R.layout.design_drawer);
         TextView tv_title_configuration = findViewById(R.id.tv_title_configuration);
-        tv_title_configuration.setText(xB.b().a(context, R.string.design_drawer_menu_title));
-        ((TextView) findViewById(R.id.tv_title_global)).setText(xB.b().a(context, R.string.design_drawer_menu_bottom_title));
+        tv_title_configuration.setText(Helper.getResString(R.string.design_drawer_menu_title));
+        ((TextView) findViewById(R.id.tv_title_global)).setText(Helper.getResString(R.string.design_drawer_menu_bottom_title));
         LinearLayout menusLayout = findViewById(R.id.layout_menus);
         LinearLayout bottomMenusLayout = findViewById(R.id.layout_bottom_menus);
         /* Add collection item */

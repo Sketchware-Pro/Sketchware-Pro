@@ -35,6 +35,7 @@ import a.a.a.uq;
 import a.a.a.xB;
 import a.a.a.yy;
 import mod.SketchwareUtil;
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
 public class AddFontActivity extends BaseDialogActivity implements View.OnClickListener {
@@ -67,15 +68,15 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                         if (e instanceof yy) {
                             switch (e.getMessage()) {
                                 case "duplicate_name":
-                                    bB.b(this, xB.b().a(this, R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
+                                    bB.b(this, Helper.getResString(R.string.collection_duplicated_name), Toast.LENGTH_LONG).show();
                                     break;
 
                                 case "file_no_exist":
-                                    bB.b(this, xB.b().a(this, R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
+                                    bB.b(this, Helper.getResString(R.string.collection_no_exist_file), Toast.LENGTH_LONG).show();
                                     break;
 
                                 case "fail_to_copy":
-                                    bB.b(this, xB.b().a(this, R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
+                                    bB.b(this, Helper.getResString(R.string.collection_failed_to_copy), Toast.LENGTH_LONG).show();
                                     break;
 
                                 default:
@@ -170,7 +171,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("*/*");
-                startActivityForResult(Intent.createChooser(intent, xB.b().a(this, R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
+                startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)), REQUEST_CODE_FONT_PICKER);
             }
         }
     }
@@ -178,9 +179,9 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        e(xB.b().a(this, R.string.design_manager_font_title_add_font));
-        d(xB.b().a(this, R.string.common_word_save));
-        b(xB.b().a(this, R.string.common_word_cancel));
+        e(Helper.getResString(R.string.design_manager_font_title_add_font));
+        d(Helper.getResString(R.string.common_word_save));
+        b(Helper.getResString(R.string.common_word_cancel));
         setContentView(R.layout.manage_font_add);
 
         Intent intent = getIntent();
@@ -191,16 +192,16 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         selectFile = findViewById(R.id.select_file);
         fontPreview = findViewById(R.id.font_preview);
         fontName = edFontName.getEditText();
-        edFontName.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
+        edFontName.setHint(Helper.getResString(R.string.design_manager_font_hint_enter_font_name));
         fontNameValidator = new WB(this, edFontName.getTextInputLayout(), uq.b, intent.getStringArrayListExtra("font_names"));
         fontName.setPrivateImeOptions("defaultInputmode=english;");
-        fontPreview.setText(xB.b().a(this, R.string.design_manager_font_description_look_like_this));
-        addOrAddedToCollectionLabel.setText(xB.b().a(this, R.string.design_manager_title_add_to_collection));
+        fontPreview.setText(Helper.getResString(R.string.design_manager_font_description_look_like_this));
+        addOrAddedToCollectionLabel.setText(Helper.getResString(R.string.design_manager_title_add_to_collection));
         selectFile.setOnClickListener(this);
         r.setOnClickListener(this);
         s.setOnClickListener(this);
         if (intent.getIntExtra("request_code", -1) == 272) {
-            e(xB.b().a(this, R.string.design_manager_font_title_edit_font));
+            e(Helper.getResString(R.string.design_manager_font_title_edit_font));
             fontNameValidator = new WB(this, edFontName.getTextInputLayout(), uq.b, new ArrayList<>());
             fontName.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
             fontName.setEnabled(false);

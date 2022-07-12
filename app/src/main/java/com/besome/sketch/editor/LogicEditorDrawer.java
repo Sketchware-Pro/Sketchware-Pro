@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import a.a.a.Us;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.Tools;
 
 public class LogicEditorDrawer extends LinearLayout {
@@ -47,7 +48,7 @@ public class LogicEditorDrawer extends LinearLayout {
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.logic_editor_drawer);
-        ((TextView) findViewById(R.id.tv_block_collection)).setText(xB.b().a(getContext(), R.string.logic_editor_title_block_collection));
+        ((TextView) findViewById(R.id.tv_block_collection)).setText(Helper.getResString(R.string.logic_editor_title_block_collection));
         favorite = findViewById(R.id.layout_favorite);
         scrollView = findViewById(R.id.scv);
 

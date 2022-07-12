@@ -48,7 +48,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             switch (key) {
                 case "property_ad_size":
                     icon = R.drawable.widget_admob;
@@ -64,7 +64,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -152,7 +152,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         }
 
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             int childCount = radioGroupContent.getChildCount();
             int counter = 0;
             while (true) {
@@ -171,7 +171,7 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

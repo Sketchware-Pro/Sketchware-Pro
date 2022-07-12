@@ -9,6 +9,7 @@ import com.sketchware.remod.R;
 
 import java.util.HashMap;
 
+import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 
 public class sB {
@@ -41,7 +42,7 @@ public class sB {
             new DB(context, "P15").a();
         }
 
-        bB.a(context, xB.b().a(context, R.string.program_information_reset_system_complete_initialize), bB.TOAST_NORMAL).show();
+        bB.a(context, Helper.getResString(R.string.program_information_reset_system_complete_initialize), bB.TOAST_NORMAL).show();
         lC.a(context, true);
 
         Intent intent = new Intent(context, MainActivity.class);

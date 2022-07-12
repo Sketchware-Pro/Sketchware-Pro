@@ -43,6 +43,7 @@ import mod.agus.jcoderz.editor.view.palette.IconRatingBar;
 import mod.agus.jcoderz.editor.view.palette.IconSearchView;
 import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
 import mod.agus.jcoderz.editor.view.palette.IconVideoView;
+import mod.hey.studios.util.Helper;
 
 public class PaletteWidget extends LinearLayout {
 
@@ -184,8 +185,8 @@ public class PaletteWidget extends LinearLayout {
         c = findViewById(2131230979);
         d = findViewById(2131232028);
         e = findViewById(2131232288);
-        d.setText(xB.b().a(context, 2131626466));
-        e.setText(xB.b().a(context, 2131626468));
+        d.setText(Helper.getResString(2131626466));
+        e.setText(Helper.getResString(2131626468));
         f = findViewById(2131231695);
     }
 

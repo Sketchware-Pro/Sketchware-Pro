@@ -48,7 +48,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             switch (this.key) {
                 case "property_orientation":
                     icon = R.drawable.grid_3_48;
@@ -81,7 +81,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -149,7 +149,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
         radioGroupContent = view.findViewById(R.id.rg_content);
         TextView desc = view.findViewById(R.id.desc);
         if (key.equals("property_ime_option")) {
-            desc.setText(xB.b().a(getContext(), R.string.property_description_edittext_ime_options));
+            desc.setText(Helper.getResString(R.string.property_description_edittext_ime_options));
             desc.setVisibility(VISIBLE);
         } else {
             desc.setVisibility(GONE);
@@ -164,7 +164,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
         }
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
             for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
                 RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -176,7 +176,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 

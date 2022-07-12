@@ -27,6 +27,7 @@ import java.util.Arrays;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.moreblock.MoreblockValidator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
+import mod.hey.studios.util.Helper;
 
 @SuppressLint("ViewConstructor")
 public class dt extends LinearLayout {
@@ -67,17 +68,17 @@ public class dt extends LinearLayout {
         tilBlockName = findViewById(R.id.ti_name);
         TextInputLayout tilLabelText = findViewById(R.id.ti_label);
         TextInputLayout tilVariableName = findViewById(R.id.ti_variable_name);
-        ((TextView) findViewById(R.id.tv_title_blockname)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_name_of_block));
-        ((TextView) findViewById(R.id.tv_title_add_variable)).setText(xB.b().a(activity, R.string.logic_editor_more_block_title_add_variable));
+        ((TextView) findViewById(R.id.tv_title_blockname)).setText(Helper.getResString(R.string.logic_editor_more_block_title_name_of_block));
+        ((TextView) findViewById(R.id.tv_title_add_variable)).setText(Helper.getResString(R.string.logic_editor_more_block_title_add_variable));
         blockNameValidator = new MoreblockValidator(activity, tilBlockName, uq.b, uq.a(), new ArrayList<>());
         labelTextValidator = new ZB(activity, tilLabelText, uq.b, uq.a(), new ArrayList<>());
         variableNameValidator = new ZB(activity, tilVariableName, uq.b, uq.a(), new ArrayList<>());
         blockName = findViewById(R.id.ed_name);
         labelText = findViewById(R.id.ed_label);
         variableName = findViewById(R.id.ed_variable_name);
-        tilBlockName.setHint(xB.b().a(activity, R.string.logic_editor_more_block_hint_enter_new_block_name));
-        tilVariableName.setHint(xB.b().a(activity, R.string.logic_editor_more_block_hint_enter_variable_name));
-        tilLabelText.setHint(xB.b().a(activity, R.string.logic_editor_more_block_hint_enter_block_label));
+        tilBlockName.setHint(Helper.getResString(R.string.logic_editor_more_block_hint_enter_new_block_name));
+        tilVariableName.setHint(Helper.getResString(R.string.logic_editor_more_block_hint_enter_variable_name));
+        tilLabelText.setHint(Helper.getResString(R.string.logic_editor_more_block_hint_enter_block_label));
         blockName.setPrivateImeOptions("defaultInputmode=english;");
         labelText.setPrivateImeOptions("defaultInputmode=english;");
         variableName.setPrivateImeOptions("defaultInputmode=english;");
@@ -91,7 +92,7 @@ public class dt extends LinearLayout {
         });
 
         Button addVariable = findViewById(R.id.add_variable);
-        addVariable.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
+        addVariable.setText(Helper.getResString(R.string.logic_editor_more_block_button_add));
         addVariable.setOnClickListener(view -> {
             if (!mB.a()) {
                 if (variableNameValidator.b() && blockNameValidator.b()) {
@@ -120,7 +121,7 @@ public class dt extends LinearLayout {
             }
         });
         Button addLabel = findViewById(R.id.add_label);
-        addLabel.setText(xB.b().a(activity, R.string.logic_editor_more_block_button_add));
+        addLabel.setText(Helper.getResString(R.string.logic_editor_more_block_button_add));
 
         final EditText customVariableSpec = findViewById(R.id.parameter);
         final EditText customVariableName = findViewById(R.id.name);
@@ -299,7 +300,7 @@ public class dt extends LinearLayout {
         if (!blockName.getText().toString().isEmpty() && blockNameValidator.b()) {
             return true;
         } else {
-            bB.b(getContext(), xB.b().a(getContext(), R.string.logic_editor_message_name_requied), Toast.LENGTH_SHORT).show();
+            bB.b(getContext(), Helper.getResString(R.string.logic_editor_message_name_requied), Toast.LENGTH_SHORT).show();
             return false;
         }
     }

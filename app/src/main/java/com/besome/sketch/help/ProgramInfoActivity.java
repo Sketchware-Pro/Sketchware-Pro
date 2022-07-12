@@ -79,21 +79,21 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     }
 
     private void openMedium() {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getApplicationContext(), R.string.besome_blog_url)));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Helper.getResString(R.string.besome_blog_url)));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
+        startActivity(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
     }
 
     private void resetDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.program_information_reset_system_title));
+        dialog.b(Helper.getResString(R.string.program_information_reset_system_title));
         dialog.a(R.drawable.rollback_96);
         View rootView = wB.a(this, R.layout.all_init_popup);
         RadioGroup radioGroup = rootView.findViewById(R.id.rg_type);
-        ((RadioButton) rootView.findViewById(R.id.rb_all)).setText(xB.b().a(getApplicationContext(), R.string.program_information_reset_system_title_all_settings_data));
-        ((RadioButton) rootView.findViewById(R.id.rb_only_config)).setText(xB.b().a(getApplicationContext(), R.string.program_information_reset_system_title_all_settings));
+        ((RadioButton) rootView.findViewById(R.id.rb_all)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings_data));
+        ((RadioButton) rootView.findViewById(R.id.rb_only_config)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings));
         dialog.a(rootView);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_yes), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_yes), v -> {
             if (!mB.a()) {
                 int buttonId = radioGroup.getCheckedRadioButtonId();
                 boolean resetOnlySettings = buttonId != R.id.rb_all;
@@ -102,25 +102,25 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                 finish();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void openFacebook() {
-        String facebookPageUrl = xB.b().a(getApplicationContext(), R.string.facebook_url);
+        String facebookPageUrl = Helper.getResString(R.string.facebook_url);
 
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://facewebmodal/f?href=" + facebookPageUrl)));
         } catch (Exception e) {
             startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl)),
-                    xB.b().a(getApplicationContext(), R.string.common_word_choose)));
+                    Helper.getResString(R.string.common_word_choose)));
         }
     }
 
     private void openIdeasSite() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ideas.sketchware.io/"));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
+        startActivity(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
 
                     case ITEM_OPEN_SOURCE_LICENSES:
                         if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
+                            bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
                         } else {
                             toLicenseActivity();
                         }
@@ -155,7 +155,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
                 switch (key) {
                     case ITEM_UPDATE_LOG:
                         if (!GB.h(getApplicationContext())) {
-                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
+                            bB.a(getApplicationContext(), Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
                         } else {
                             openBlog();
                         }
@@ -188,17 +188,17 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
         d().d(true);
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(this, R.string.main_drawer_title_program_information));
+        d().a(Helper.getResString(R.string.main_drawer_title_program_information));
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         content = findViewById(R.id.content);
 
         TextView version = findViewById(R.id.tv_sketch_ver);
         version.setText("Version " + GB.e(getApplicationContext()));
         Button resetSystem = findViewById(R.id.btn_app_init);
-        resetSystem.setText(xB.b().a(getApplicationContext(), R.string.program_information_button_reset_system));
+        resetSystem.setText(Helper.getResString(R.string.program_information_button_reset_system));
         resetSystem.setOnClickListener(this);
         Button checkForUpdates = findViewById(R.id.btn_app_upgrade);
-        checkForUpdates.setText(xB.b().a(getApplicationContext(), R.string.program_information_button_check_update));
+        checkForUpdates.setText(Helper.getResString(R.string.program_information_button_check_update));
         checkForUpdates.setOnClickListener(this);
         addTwoLineItem(ITEM_UPDATE_LOG, R.string.program_information_title_docs, R.string.docs_url);
         addTwoLineItem(ITEM_SUGGEST_IDEAS, R.string.program_information_title_suggest_ideas, R.string.ideas_url);
@@ -218,7 +218,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity implements OnClic
     private void openBlog() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.sketchware.io/blog"));
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(Intent.createChooser(intent, xB.b().a(getApplicationContext(), R.string.common_word_choose)));
+        startActivity(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)));
     }
 
     private void toSystemInfoActivity() {

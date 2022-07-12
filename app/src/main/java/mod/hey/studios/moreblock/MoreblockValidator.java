@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import a.a.a.MB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class MoreblockValidator extends MB {
 
@@ -60,7 +61,7 @@ public class MoreblockValidator extends MB {
                 }
                 if (z) {
                     b.setErrorEnabled(true);
-                    b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
+                    b.setError(Helper.getResString(R.string.common_message_name_unavailable));
                     d = false;
                     return;
                 }
@@ -74,11 +75,11 @@ public class MoreblockValidator extends MB {
 
                 if (isReservedKeyUsed) {
                     b.setErrorEnabled(true);
-                    b.setError(xB.b().a(a, R.string.logic_editor_message_reserved_keywords));
+                    b.setError(Helper.getResString(R.string.logic_editor_message_reserved_keywords));
                     d = false;
                 } else if (!Character.isLetter(charSequence.charAt(0))) {
                     b.setErrorEnabled(true);
-                    b.setError(xB.b().a(a, R.string.logic_editor_message_variable_name_must_start_letter));
+                    b.setError(Helper.getResString(R.string.logic_editor_message_variable_name_must_start_letter));
                     d = false;
                 } else {
                     if (j.matcher(name).matches()) {
@@ -86,7 +87,7 @@ public class MoreblockValidator extends MB {
                         d = true;
                     } else {
                         b.setErrorEnabled(true);
-                        b.setError(xB.b().a(a, R.string.invalid_value_rule_3));
+                        b.setError(Helper.getResString(R.string.invalid_value_rule_3));
                         d = false;
                     }
                     if (name.trim().length() < 1) {

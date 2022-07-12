@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class PaletteFavorite extends LinearLayout {
     public LinearLayout a;
@@ -46,7 +47,7 @@ public class PaletteFavorite extends LinearLayout {
         wB.a(context, this, 2131427607);
         a = findViewById(2131232333);
         b = findViewById(2131231695);
-        ((TextView) findViewById(2131232162)).setText(xB.b().a(getContext(), 2131626360));
+        ((TextView) findViewById(2131232162)).setText(Helper.getResString(2131626360));
     }
 
     public void setScrollEnabled(boolean scrollEnabled) {

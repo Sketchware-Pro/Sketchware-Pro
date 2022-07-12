@@ -111,10 +111,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 setIcon(findViewById(R.id.img_icon));
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             setIcon(imgLeftIcon);
@@ -214,14 +214,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         _B validator = new _B(context, view.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -241,14 +241,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         TB validator = new TB(context, view.findViewById(R.id.ti_input), 0,
                 (key.equals("property_max") || key.equals("property_progress")) ? 0x7fffffff : 999);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -261,14 +261,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         SB lengthValidator = new SB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
         lengthValidator.a(value);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (lengthValidator.b()) {
                 setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -284,14 +284,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         input.setText(value);
         OB validator = new OB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
                 setValue(input.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

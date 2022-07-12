@@ -24,6 +24,8 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
+
 @SuppressLint("ViewConstructor")
 public class Iu extends LinearLayout implements Uu, OnClickListener {
 
@@ -38,7 +40,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
 
     private void createAdUnit() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_add_adunit_title));
+        dialog.b(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_title));
         dialog.a(R.drawable.add_96_blue);
         View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
         EditText edName = rootView.findViewById(R.id.ed_name);
@@ -47,7 +49,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         SB adUnitValidator = new SB(getContext(), rootView.findViewById(R.id.ti_adunit_id), 1, 100);
         edName.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(rootView);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_add), view -> {
+        dialog.b(Helper.getResString(R.string.common_word_add), view -> {
             if (!nameValidator.b()) {
                 edName.requestFocus();
             } else if (!adUnitValidator.b()) {
@@ -60,22 +62,22 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
         dialog.show();
     }
 
     private void deleteADUnit(int position) {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_adunit_title));
+        dialog.b(Helper.getResString(R.string.design_library_admob_dialog_delete_adunit_title));
         dialog.a(R.drawable.delete_96);
-        dialog.a(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_adunit));
-        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), view -> {
+        dialog.a(Helper.getResString(R.string.design_library_admob_dialog_confirm_delete_adunit));
+        dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
             adUnitBeanArrayList.remove(position);
             adUnitsAdapter.e(position);
-            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+            bB.a(getContext(), Helper.getResString(R.string.common_message_complete_delete), 0).show();
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), view -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.common_word_cancel), view -> dialog.dismiss());
         dialog.show();
     }
 
@@ -106,7 +108,7 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         if (adUnitBeanArrayList.size() > 0) {
             return true;
         } else {
-            bB.a(getContext(), xB.b().a(getContext(), R.string.design_library_admob_setting_message_add_ad_unit), 1).show();
+            bB.a(getContext(), Helper.getResString(R.string.design_library_admob_setting_message_add_ad_unit), 1).show();
             return false;
         }
     }

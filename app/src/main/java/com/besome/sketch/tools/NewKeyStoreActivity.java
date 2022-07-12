@@ -44,16 +44,16 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
     private void a(boolean var1, String var2) {
         aB var3 = new aB(this);
-        var3.b(xB.b().a(getApplicationContext(), 2131625738));
+        var3.b(Helper.getResString(2131625738));
         if (var1) {
             var3.a(2131165404);
-            var3.a(xB.b().a(getApplicationContext(), 2131625719));
+            var3.a(Helper.getResString(2131625719));
         } else {
             var3.a(2131165548);
-            var3.a(xB.b().a(getApplicationContext(), 2131625722));
+            var3.a(Helper.getResString(2131625722));
         }
 
-        var3.b(xB.b().a(getApplicationContext(), 2131624977), view -> {
+        var3.b(Helper.getResString(2131624977), view -> {
             if (!mB.a()) {
                 var3.dismiss();
                 if (var1) {
@@ -73,7 +73,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         if (w.b() && x.b()) {
             String text = n.getText().toString();
             if (!text.equals(o.getText().toString())) {
-                bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625727), 0).show();
+                bB.b(getApplicationContext(), Helper.getResString(2131625727), 0).show();
                 n.setText("");
                 o.setText("");
                 return;
@@ -142,41 +142,41 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
         l = findViewById(2131231847);
         a(l);
         findViewById(2131231370).setVisibility(View.GONE);
-        d().a(xB.b().a(this, 2131625739));
+        d().a(Helper.getResString(2131625739));
         d().e(true);
         d().d(true);
         l.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         E = new iI();
-        ((TextView) findViewById(2131232058)).setText(xB.b().a(this, 2131625739));
+        ((TextView) findViewById(2131232058)).setText(Helper.getResString(2131625739));
         Button var2 = findViewById(2131230834);
-        var2.setText(xB.b().a(this, 2131625729));
+        var2.setText(Helper.getResString(2131625729));
         var2.setOnClickListener(this);
         var2 = findViewById(2131230833);
-        var2.setText(xB.b().a(this, 2131624974));
+        var2.setText(Helper.getResString(2131624974));
         var2.setOnClickListener(this);
         ((TextView) findViewById(2131232022)).setText(wq.D);
         m = findViewById(2131231035);
-        ((TextInputLayout) findViewById(2131231820)).setHint(xB.b().a(this, 2131625730));
+        ((TextInputLayout) findViewById(2131231820)).setHint(Helper.getResString(2131625730));
         n = findViewById(2131231036);
-        ((TextInputLayout) findViewById(2131231821)).setHint(xB.b().a(this, 2131625726));
+        ((TextInputLayout) findViewById(2131231821)).setHint(Helper.getResString(2131625726));
         o = findViewById(2131231037);
-        ((TextInputLayout) findViewById(2131231822)).setHint(xB.b().a(this, 2131625732));
+        ((TextInputLayout) findViewById(2131231822)).setHint(Helper.getResString(2131625732));
         EditText var3 = findViewById(2131231045);
-        ((TextInputLayout) findViewById(2131231832)).setHint(xB.b().a(this, 2131625740));
+        ((TextInputLayout) findViewById(2131231832)).setHint(Helper.getResString(2131625740));
         var3.setText(String.valueOf(k));
-        ((TextView) findViewById(2131231898)).setText(xB.b().a(this, 2131625738));
+        ((TextView) findViewById(2131231898)).setText(Helper.getResString(2131625738));
         p = findViewById(2131231029);
-        ((TextInputLayout) findViewById(2131231811)).setHint(xB.b().a(this, 2131625734));
+        ((TextInputLayout) findViewById(2131231811)).setHint(Helper.getResString(2131625734));
         q = findViewById(2131231032);
-        ((TextInputLayout) findViewById(2131231814)).setHint(xB.b().a(this, 2131625736));
+        ((TextInputLayout) findViewById(2131231814)).setHint(Helper.getResString(2131625736));
         r = findViewById(2131231031);
-        ((TextInputLayout) findViewById(2131231813)).setHint(xB.b().a(this, 2131625735));
+        ((TextInputLayout) findViewById(2131231813)).setHint(Helper.getResString(2131625735));
         s = findViewById(2131231030);
-        ((TextInputLayout) findViewById(2131231812)).setHint(xB.b().a(this, 2131625731));
+        ((TextInputLayout) findViewById(2131231812)).setHint(Helper.getResString(2131625731));
         t = findViewById(2131231033);
-        ((TextInputLayout) findViewById(2131231815)).setHint(xB.b().a(this, 2131625737));
+        ((TextInputLayout) findViewById(2131231815)).setHint(Helper.getResString(2131625737));
         u = findViewById(2131231028);
-        ((TextInputLayout) findViewById(2131231810)).setHint(xB.b().a(this, 2131625733));
+        ((TextInputLayout) findViewById(2131231810)).setHint(Helper.getResString(2131625733));
         v = new VB(getApplicationContext(), findViewById(2131231820));
         w = new SB(getApplicationContext(), findViewById(2131231821), 4, 32);
         x = new SB(getApplicationContext(), findViewById(2131231822), 4, 32);

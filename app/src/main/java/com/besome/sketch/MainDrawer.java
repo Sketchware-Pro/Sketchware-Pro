@@ -28,6 +28,7 @@ import a.a.a.ci;
 import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.Tools;
 import mod.ilyasse.activities.about.AboutModActivity;
 
@@ -70,8 +71,8 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
             if (id == R.id.social_slack) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setItems(new String[]{
-                                xB.b().a(getContext(), R.string.main_drawer_context_menu_title_slack_invitation),
-                                xB.b().a(getContext(), R.string.main_drawer_context_menu_title_slack_open)},
+                                Helper.getResString(R.string.main_drawer_context_menu_title_slack_invitation),
+                                Helper.getResString(R.string.main_drawer_context_menu_title_slack_open)},
                         (dialog, which) -> {
                             if (which == 0) {
                                 openSlackInvitationInBrowser();
@@ -83,7 +84,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                                         openSlackInvitationInBrowser();
                                     }
                                 } else {
-                                    bB.a(context, xB.b().a(getContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
+                                    bB.a(context, Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
                                 }
                             }
                         });
@@ -101,7 +102,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                 } catch (ActivityNotFoundException unused1) {
                     context.startActivity(Intent.createChooser(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.besome_blog_url))),
-                            xB.b().a(getContext(), R.string.common_word_choose)
+                            Helper.getResString(R.string.common_word_choose)
                     ));
                 }
             } else if (id == R.id.social_fb) {
@@ -111,7 +112,7 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
                 } catch (Exception unused) {
                     context.startActivity(Intent.createChooser(
                             new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)),
-                            xB.b().a(getContext(), R.string.common_word_choose)));
+                            Helper.getResString(R.string.common_word_choose)));
                 }
             }
         }
@@ -131,11 +132,11 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
 
         DrawerItem menuSystemSettings = DrawerItem.MENU_SYSTEM_SETTINGS;
         menuSystemSettings.icon = R.drawable.side_menu_setting_icon_over_white;
-        menuSystemSettings.title = xB.b().a(getContext(), R.string.main_drawer_title_system_settings);
+        menuSystemSettings.title = Helper.getResString(R.string.main_drawer_title_system_settings);
 
         DrawerItem menuProgramInfo = DrawerItem.MENU_PROGRAM_INFO;
         menuProgramInfo.icon = R.drawable.side_menu_info_icon_over_white;
-        menuProgramInfo.title = xB.b().a(getContext(), R.string.main_drawer_title_program_information);
+        menuProgramInfo.title = Helper.getResString(R.string.main_drawer_title_program_information);
 
         DrawerItem menuDeveloperTools = DrawerItem.MENU_DEVELOPER_TOOLS;
         menuDeveloperTools.icon = R.drawable.ic_export_his_white_48dp;
@@ -149,22 +150,22 @@ public class MainDrawer extends LinearLayout implements View.OnClickListener {
     private void openSlackInvitationInBrowser() {
         if (GB.h(context)) {
             try {
-                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(xB.b().a(getContext(), R.string.slack_url_primary)));
+                Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(Helper.getResString(R.string.slack_url_primary)));
                 chooser.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 context.startActivity(Intent.createChooser(
                         chooser,
-                        xB.b().a(getContext(), R.string.common_word_choose)
+                        Helper.getResString(R.string.common_word_choose)
                 ));
             } catch (Exception e) {
                 Intent chooser = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.slack_url_secondary)));
                 chooser.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 context.startActivity(Intent.createChooser(
                         chooser,
-                        xB.b().a(getContext(), R.string.common_word_choose)
+                        Helper.getResString(R.string.common_word_choose)
                 ));
             }
         } else {
-            bB.a(context, xB.b().a(getContext(), R.string.common_message_check_network), bB.TOAST_NORMAL).show();
+            bB.a(context, Helper.getResString(R.string.common_message_check_network), bB.TOAST_NORMAL).show();
         }
     }
 

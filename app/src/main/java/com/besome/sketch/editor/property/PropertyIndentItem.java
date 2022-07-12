@@ -62,7 +62,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             switch (this.key) {
                 case "property_padding":
                     icon = R.drawable.collect_48;
@@ -74,7 +74,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(icon);
@@ -139,7 +139,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_indent);
         CheckBox chk_pty_all = view.findViewById(R.id.chk_pty_all);
-        chk_pty_all.setText(xB.b().a(getContext(), R.string.common_word_all));
+        chk_pty_all.setText(Helper.getResString(R.string.common_word_all));
         EditText et_all = view.findViewById(R.id.et_all);
         EditText et_left = view.findViewById(R.id.et_left);
         EditText et_top = view.findViewById(R.id.et_top);
@@ -212,7 +212,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             }
         });
         dialog.a(view);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_save), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (chk_pty_all.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
                     int left = Integer.parseInt(et_left.getText().toString());
@@ -237,7 +237,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 }
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 }

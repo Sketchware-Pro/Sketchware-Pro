@@ -168,7 +168,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(this, R.string.design_library_firebase_title_firebase_manager));
+        d().a(Helper.getResString(R.string.design_library_firebase_title_firebase_manager));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
@@ -180,13 +180,13 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         libSwitch = findViewById(R.id.lib_switch);
         ((TextView) findViewById(R.id.tv_enable)).setText(Helper.getResString(R.string.design_library_settings_title_enabled));
         ((TextView) findViewById(R.id.tv_title_project_id)).setText(
-                xB.b().a(this, R.string.design_library_firebase_title_project_id));
+                Helper.getResString(R.string.design_library_firebase_title_project_id));
         ((TextView) findViewById(R.id.tv_title_app_id)).setText(
-                xB.b().a(this, R.string.design_library_firebase_title_app_id));
+                Helper.getResString(R.string.design_library_firebase_title_app_id));
         ((TextView) findViewById(R.id.tv_title_api_key)).setText(
-                xB.b().a(this, R.string.design_library_firebase_title_api_key));
+                Helper.getResString(R.string.design_library_firebase_title_api_key));
         ((TextView) findViewById(R.id.tv_title_storage_url)).setText(
-                xB.b().a(this, R.string.design_library_firebase_title_storage_bucket_url));
+                Helper.getResString(R.string.design_library_firebase_title_storage_bucket_url));
         tvProjectId = findViewById(R.id.tv_project_id);
         tvAppId = findViewById(R.id.tv_app_id);
         tvApiKey = findViewById(R.id.tv_api_key);

@@ -15,6 +15,7 @@ import com.sketchware.remod.R;
 
 import a.a.a.mB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
 
@@ -24,8 +25,8 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
     private void addPreference(int key, int resName, int resDescription, boolean value) {
         PropertySwitchItem switchItem = new PropertySwitchItem(this);
         switchItem.setKey(key);
-        switchItem.setName(xB.b().a(getApplicationContext(), resName));
-        switchItem.setDesc(xB.b().a(getApplicationContext(), resDescription));
+        switchItem.setName(Helper.getResString(resName));
+        switchItem.setDesc(Helper.getResString(resDescription));
         switchItem.setValue(value);
         contentLayout.addView(switchItem);
     }
@@ -47,7 +48,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         d().d(true);
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(this, R.string.main_drawer_title_system_settings));
+        d().a(Helper.getResString(R.string.main_drawer_title_system_settings));
         toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });

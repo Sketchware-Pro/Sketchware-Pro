@@ -28,6 +28,7 @@ import a.a.a.yq;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import mod.hey.studios.util.Helper;
 
 public class SrcViewerActivity extends AppCompatActivity {
 
@@ -99,7 +100,7 @@ public class SrcViewerActivity extends AppCompatActivity {
             try {
                 runOnUiThread(() -> {
                     if (srcCodeBean == null) {
-                        bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.common_error_unknown), bB.TOAST_NORMAL).show();
+                        bB.b(getApplicationContext(), Helper.getResString(R.string.common_error_unknown), bB.TOAST_NORMAL).show();
                     } else {
                         filesListSpinner.setAdapter(new FilesListSpinnerAdapter());
                         for (SrcCodeBean src : srcCodeBean) {

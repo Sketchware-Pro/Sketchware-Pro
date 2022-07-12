@@ -19,6 +19,7 @@ import com.sketchware.remod.R;
 import a.a.a.GB;
 import a.a.a.mB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class SystemInfoActivity extends BaseAppCompatActivity {
 
@@ -34,7 +35,7 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
         d().d(true);
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.program_information_title_system_information));
+        d().a(Helper.getResString(R.string.program_information_title_system_information));
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) onBackPressed();
         });
@@ -56,19 +57,19 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
     }
 
     private void addAndroidVersionNameInfo() {
-        addInfo(1, xB.b().a(getApplicationContext(), R.string.system_information_title_android_version),
+        addInfo(1, Helper.getResString(R.string.system_information_title_android_version),
                 GB.b() + "(" + VERSION.RELEASE + ")");
     }
 
     private void addApiLevelInfo() {
-        addInfo(0, xB.b().a(getApplicationContext(), R.string.system_information_title_android_version),
+        addInfo(0, Helper.getResString(R.string.system_information_title_android_version),
                 "API - " + VERSION.SDK_INT);
     }
 
     private void addDeveloperOptionsShortcut() {
         PropertyOneLineItem propertyOneLineItem = new PropertyOneLineItem(this);
         propertyOneLineItem.setKey(5);
-        propertyOneLineItem.setName(xB.b().a(getApplicationContext(), R.string.system_information_developer_options));
+        propertyOneLineItem.setName(Helper.getResString(R.string.system_information_developer_options));
         content.addView(propertyOneLineItem);
         propertyOneLineItem.setOnClickListener(v -> {
             if (!mB.a()) {
@@ -83,16 +84,16 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
 
     private void addScreenDpiInfo() {
         float[] dpiXY = GB.b(this);
-        addInfo(3, xB.b().a(getApplicationContext(), R.string.system_information_dpi), String.valueOf(dpiXY[0]));
+        addInfo(3, Helper.getResString(R.string.system_information_dpi), String.valueOf(dpiXY[0]));
     }
 
     private void addModelNameInfo() {
-        addInfo(4, xB.b().a(getApplicationContext(), R.string.system_information_model_name), Build.MODEL);
+        addInfo(4, Helper.getResString(R.string.system_information_model_name), Build.MODEL);
     }
 
     private void addScreenResolutionInfo() {
         int[] widthHeight = GB.c(this);
-        addInfo(2, xB.b().a(getApplicationContext(), R.string.system_information_system_resolution),
+        addInfo(2, Helper.getResString(R.string.system_information_system_resolution),
                 widthHeight[0] + " x " + widthHeight[1]);
     }
 }

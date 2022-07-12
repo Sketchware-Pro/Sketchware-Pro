@@ -10,6 +10,7 @@ import a.a.a.mB;
 import a.a.a.nd;
 import a.a.a.xB;
 import a.a.a.zd;
+import mod.hey.studios.util.Helper;
 
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {
 
@@ -28,10 +29,10 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public void i(int i) {
         if (!Sp.a) {
             aB dialog = new aB(this);
-            dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_permission_title_storage));
+            dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
             dialog.a(R.drawable.break_warning_96_red);
-            dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_storage));
-            dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok), v -> {
+            dialog.a(Helper.getResString(R.string.common_message_permission_storage));
+            dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
                 if (!mB.a()) {
                     nd.a(BasePermissionAppCompatActivity.this,
                             new String[]{
@@ -42,7 +43,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
                     dialog.dismiss();
                 }
             });
-            dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
+            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
                 l();
                 dialog.dismiss();
             });
@@ -83,16 +84,16 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
     public void j(int i) {
         if (!Sp.a) {
             aB dialog = new aB(this);
-            dialog.b(xB.b().a(getApplicationContext(), R.string.common_message_permission_title_storage));
+            dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
             dialog.a(R.drawable.break_warning_96_red);
-            dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_permission_storage1));
-            dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_settings), v -> {
+            dialog.a(Helper.getResString(R.string.common_message_permission_storage1));
+            dialog.b(Helper.getResString(R.string.common_word_settings), v -> {
                 if (!mB.a()) {
                     h(i);
                     dialog.dismiss();
                 }
             });
-            dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel), v -> {
+            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
                 m();
                 dialog.dismiss();
             });

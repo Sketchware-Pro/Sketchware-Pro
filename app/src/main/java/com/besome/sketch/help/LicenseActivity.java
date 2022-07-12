@@ -14,6 +14,7 @@ import com.sketchware.remod.R;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class LicenseActivity extends BaseAppCompatActivity {
 
@@ -27,7 +28,7 @@ public class LicenseActivity extends BaseAppCompatActivity {
         d().d(true);
         d().e(true);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.program_information_title_open_source_license));
+        d().a(Helper.getResString(R.string.program_information_title_open_source_license));
         toolbar.setNavigationOnClickListener(view -> {
             if (!mB.a()) onBackPressed();
         });

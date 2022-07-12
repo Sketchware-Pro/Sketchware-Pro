@@ -177,7 +177,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(q.sc_id).writeLogsToFile(error);
         Snackbar snackbar = Snackbar.a(coordinatorLayout, "Show compile log", -2 /* BaseTransientBottomBar.LENGTH_INDEFINITE */);
-        snackbar.a(xB.b().a(getApplicationContext(), R.string.common_word_show), v -> {
+        snackbar.a(Helper.getResString(R.string.common_word_show), v -> {
             if (!mB.a()) {
                 snackbar.c();
                 Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
@@ -423,7 +423,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         drawer.setDrawerLockMode(1 /* DrawerLayout#LOCK_MODE_LOCKED_CLOSED */);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
         runProject = findViewById(R.id.btn_execute);
-        runProject.setText(xB.b().a(this, R.string.common_word_run));
+        runProject.setText(Helper.getResString(R.string.common_word_run));
         runProject.setOnClickListener(this);
         findViewById(R.id.btn_compiler_opt).setOnClickListener(this);
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
@@ -588,10 +588,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.design_quit_title_exit_projet));
+        dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
         dialog.a(R.drawable.exit_96);
-        dialog.a(xB.b().a(getApplicationContext(), R.string.design_quit_message_confirm_save));
-        dialog.b(xB.b().a(getApplicationContext(), R.string.design_quit_button_save_and_exit), v -> {
+        dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
+        dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 try {
@@ -603,7 +603,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_exit), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_exit), v -> {
             if (!mB.a()) {
                 dialog.dismiss();
                 try {
@@ -615,7 +615,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 }
             }
         });
-        dialog.configureDefaultButton(xB.b().a(getApplicationContext(), R.string.common_word_cancel),
+        dialog.configureDefaultButton(Helper.getResString(R.string.common_word_cancel),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
@@ -625,10 +625,10 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
      */
     private void warnAboutInsufficientStorageSpace() {
         aB dialog = new aB(this);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_warning));
+        dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(R.drawable.break_warning_96_red);
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_message_insufficient_storage_space));
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_ok),
+        dialog.a(Helper.getResString(R.string.common_message_insufficient_storage_space));
+        dialog.b(Helper.getResString(R.string.common_word_ok),
                 Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
@@ -637,9 +637,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         B = true;
         aB dialog = new aB(this);
         dialog.a(R.drawable.data_backup_96);
-        dialog.b(xB.b().a(getApplicationContext(), R.string.design_restore_data_title));
-        dialog.a(xB.b().a(getApplicationContext(), R.string.design_restore_data_message_confirm));
-        dialog.b(xB.b().a(getApplicationContext(), R.string.common_word_restore), v -> {
+        dialog.b(Helper.getResString(R.string.design_restore_data_title));
+        dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
+        dialog.b(Helper.getResString(R.string.common_word_restore), v -> {
             if (!mB.a()) {
                 boolean g = jC.c(sc_id).g();
                 boolean g2 = jC.b(sc_id).g();
@@ -678,7 +678,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
             }
         });
-        dialog.a(xB.b().a(getApplicationContext(), R.string.common_word_no), v -> {
+        dialog.a(Helper.getResString(R.string.common_word_no), v -> {
             B = false;
             dialog.dismiss();
         });
@@ -913,7 +913,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         @Override
         public void a() {
             dismiss();
-            runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
+            runProject.setText(Helper.getResString(R.string.common_word_run));
             runProject.setClickable(true);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
@@ -929,7 +929,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             runOnUiThread(() -> {
                 dismiss();
                 SketchwareUtil.toastError("APK build failed");
-                runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
+                runProject.setText(Helper.getResString(R.string.common_word_run));
                 runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
@@ -1134,7 +1134,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void onCancelled() {
             super.onCancelled();
             runOnUiThread(() -> {
-                runProject.setText(xB.b().a(getApplicationContext(), R.string.common_word_run));
+                runProject.setText(Helper.getResString(R.string.common_word_run));
                 runProject.setClickable(true);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
@@ -1253,7 +1253,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a() {
-            bB.a(a, xB.b().a(a, R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
+            bB.a(a, Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
             saveVersionCodeInformationToProject();
             h();
             jC.d(sc_id).f();
@@ -1263,7 +1263,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a(String str) {
-            bB.b(a, xB.b().a(a, R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
+            bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
             DesignActivity.this.h();
         }
 
@@ -1295,7 +1295,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a() {
-            bB.a(a, xB.b().a(a, R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
+            bB.a(a, Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
             saveVersionCodeInformationToProject();
             h();
             finish();
@@ -1303,7 +1303,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
         @Override
         public void a(String str) {
-            bB.b(a, xB.b().a(a, R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
+            bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
             h();
         }
 
@@ -1362,9 +1362,9 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public ViewPagerAdapter(Xf xf, Context context) {
             super(xf);
             labels = new String[]{
-                    xB.b().a(context, R.string.design_tab_title_view),
-                    xB.b().a(context, R.string.design_tab_title_event),
-                    xB.b().a(context, R.string.design_tab_title_component)};
+                    Helper.getResString(R.string.design_tab_title_view),
+                    Helper.getResString(R.string.design_tab_title_event),
+                    Helper.getResString(R.string.design_tab_title_component)};
         }
 
         @Override

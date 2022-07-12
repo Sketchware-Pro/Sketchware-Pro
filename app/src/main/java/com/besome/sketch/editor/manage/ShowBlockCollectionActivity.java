@@ -119,7 +119,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     public void onClick(View v) {
         if (v.getId() == R.id.save_button && blockNameValidator.b()) {
             Mp.h().a(blockName, blockNameEditorText.getText().toString(), true);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
+            bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }
     }
@@ -138,7 +138,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         Toolbar toolbar = findViewById(R.id.toolbar);
         a(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        d().a(xB.b().a(getApplicationContext(), R.string.design_manager_block_detail_actionbar_title));
+        d().a(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
         d().e(true);
         d().d(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
@@ -152,10 +152,10 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
         blockNameEditorText = input.getEditText();
         blockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
         blockNameEditorText.setText(blockName);
-        input.setHint(xB.b().a(this, R.string.design_manager_block_hint_enter_block_name));
+        input.setHint(Helper.getResString(R.string.design_manager_block_hint_enter_block_name));
 
         Button save = findViewById(R.id.save_button);
-        save.setText(xB.b().a(getApplicationContext(), R.string.common_word_save));
+        save.setText(Helper.getResString(R.string.common_word_save));
         save.setOnClickListener(this);
         blockNameValidator = new NB(this, input.getTextInputLayout(), Mp.h().g());
         actionSection = findViewById(R.id.layout_button);

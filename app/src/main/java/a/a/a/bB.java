@@ -9,13 +9,15 @@ import android.widget.Toast;
 
 import com.sketchware.remod.R;
 
+import mod.hey.studios.util.Helper;
+
 public class bB {
 
     public static final int TOAST_NORMAL = 0;
     public static final int TOAST_WARNING = 1;
 
     public static Toast a(Context context, int resString, int duration) {
-        return a(context, xB.b().a(context, resString), duration, 48, 0.0f, 64.0f, TOAST_NORMAL);
+        return a(context, Helper.getResString(resString), duration, 48, 0.0f, 64.0f, TOAST_NORMAL);
     }
 
     public static Toast a(Context context, CharSequence charSequence, int duration) {
@@ -65,7 +67,7 @@ public class bB {
     }
 
     public static Toast b(Context context, int resString, int duration) {
-        return a(context, xB.b().a(context, resString), duration, 48, 0.0f, 64.0f, TOAST_WARNING);
+        return a(context, Helper.getResString(resString), duration, 48, 0.0f, 64.0f, TOAST_WARNING);
     }
 
     public static Toast b(Context context, CharSequence charSequence, int duration) {

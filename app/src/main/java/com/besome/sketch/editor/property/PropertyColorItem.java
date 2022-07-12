@@ -16,6 +16,7 @@ import a.a.a.Zx;
 import a.a.a.mB;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
 
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
 
@@ -43,10 +44,10 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         this.key = key;
         int identifier = getResources().getIdentifier(key, "string", getContext().getPackageName());
         if (identifier > 0) {
-            tvName.setText(xB.b().a(getResources(), identifier));
+            tvName.setText(Helper.getResString(identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(R.drawable.color_palette_48);
-                ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
+                ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
             imgLeftIcon.setImageResource(R.drawable.color_palette_48);

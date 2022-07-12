@@ -293,7 +293,7 @@ public class Tools extends Activity {
         chk_collection.setVisibility(View.GONE);
         apkPathDialog.a(testkey_root);
 
-        apkPathDialog.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel),
+        apkPathDialog.a(Helper.getResString(R.string.common_word_cancel),
                 Helper.getDialogDismissListener(apkPathDialog));
         apkPathDialog.b("Next", next -> {
             apkPathDialog.dismiss();
@@ -310,7 +310,7 @@ public class Tools extends Activity {
                 confirmOverwrite.a("An APK named " + output_apk_file_name + " already exists at " +
                         "/Internal storage/sketchware/signed_apk/. Overwrite it?");
 
-                confirmOverwrite.a(xB.b().a(getApplicationContext(), R.string.common_word_cancel),
+                confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel),
                         Helper.getDialogDismissListener(confirmOverwrite));
                 confirmOverwrite.b("Overwrite", overwrite -> {
                     confirmOverwrite.dismiss();
