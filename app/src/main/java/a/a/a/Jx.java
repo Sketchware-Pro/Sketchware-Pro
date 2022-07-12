@@ -578,7 +578,8 @@ public class Jx {
                     .replaceAll("MobileAds.getRewardedVideoAdInstance\\(this\\);", "MobileAds.getRewardedVideoAdInstance(getContext());")
                     .replaceAll("runOnUiThread\\(new", "getActivity().runOnUiThread(new")
                     .replaceAll(".setLayoutManager\\(new LinearLayoutManager\\(this", ".setLayoutManager(new LinearLayoutManager(getContext()")
-                    .replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()");
+                    .replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()")
+                    .replaceAll("getSupportFragmentManager\\(\\)", "getActivity().getSupportFragmentManager()");
         }
         if (f.g) {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
