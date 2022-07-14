@@ -40,7 +40,6 @@ public class CompileErrorSaver {
      */
     public void showLastErrors(Context context) {
         Intent intent = new Intent(context, CompileLogActivity.class);
-        intent.putExtra("error", getLogsFromFile());
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("showingLastError", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

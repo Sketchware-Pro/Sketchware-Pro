@@ -32,6 +32,7 @@ public class CompileLogActivity extends BaseActivity {
     private TextView tv_compile_log;
     private HorizontalScrollView err_hScroll;
     private ScrollView err_vScroll;
+    private CompileErrorSaver compileErrorSaver;
 
     private SharedPreferences logViewerPreferences;
     private static final String PREFERENCE_WRAPPED_TEXT = "wrapped_text";
@@ -63,9 +64,15 @@ public class CompileLogActivity extends BaseActivity {
             title.setText("Compile log");
         }
 
-        CompileErrorSaver compileError = new CompileErrorSaver(getIntent().getStringExtra("sc_id"));
+        String sc_id = getIntent().getStringExtra("sc_id");
+        if (sc_id == null) {
+            finish();
+            return;
+        }
 
-        if (compileError.logFileExists()) {
+        compileErrorSaver = new CompileErrorSaver(sc_id);
+
+        if (compileErrorSaver.logFileExists()) {
             ImageView delete = new ImageView(this);
             delete.setLayoutParams(new LinearLayout.LayoutParams(
                     dpToPx(40),
@@ -81,8 +88,8 @@ public class CompileLogActivity extends BaseActivity {
             ((ViewGroup) menu.getParent()).addView(delete, ((ViewGroup) menu.getParent()).indexOfChild(menu));
             Helper.applyRippleToToolbarView(delete);
             delete.setOnClickListener(v -> {
-                if (compileError.logFileExists()) {
-                    compileError.deleteSavedLogs();
+                if (compileErrorSaver.logFileExists()) {
+                    compileErrorSaver.deleteSavedLogs();
                     getIntent().removeExtra("error");
                     SketchwareUtil.toast("Compile logs have been cleared.");
                 } else {
@@ -139,11 +146,11 @@ public class CompileLogActivity extends BaseActivity {
     private void setErrorText() {
         String error = getIntent().getStringExtra("error");
         if (error == null) {
-            finish();
-        } else {
-            tv_compile_log.setText(CompileLogHelper.colorErrsAndWarnings(error));
-            tv_compile_log.setTextIsSelectable(true);
+            error = compileErrorSaver.getLogsFromFile();
         }
+
+        tv_compile_log.setText(CompileLogHelper.colorErrsAndWarnings(error));
+        tv_compile_log.setTextIsSelectable(true);
     }
 
     private void applyLogViewerPreferences() {
