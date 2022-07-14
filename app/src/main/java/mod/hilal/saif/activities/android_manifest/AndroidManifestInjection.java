@@ -509,6 +509,7 @@ public class AndroidManifestInjection extends Activity {
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
+                if (isFinishing()) return;
                 progress.dismiss();
 
                 CodeEditor editor = new CodeEditor(this);
