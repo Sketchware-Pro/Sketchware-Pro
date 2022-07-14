@@ -173,7 +173,7 @@ public class PermissionManager {
         if (permissionCode.toString().trim().isEmpty()) {
             return "initializeLogic();\r\n";
         } else {
-            return Jx.a + permissionCode;
+            return Jx.EOL + permissionCode;
         }
     }
 }
