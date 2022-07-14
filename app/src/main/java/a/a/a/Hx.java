@@ -22,7 +22,7 @@ public class Hx {
     private final ArrayList<c> f = new ArrayList<>();
     private final ArrayList<c> g = new ArrayList<>();
     private final ArrayList<b> h = new ArrayList<>();
-    private final ArrayList<String> i = new ArrayList<>();
+    private final ArrayList<String> imports = new ArrayList<>();
     private final HashMap<String, String> j = new HashMap<>();
     public String k = "";
     public String l = "";
@@ -60,7 +60,7 @@ public class Hx {
         a(eC.g(projectFileBean.getJavaName()), eC.b(projectFileBean.getJavaName()));
     }
 
-    public String a() {
+    public String getOnActivityResultSwitchCases() {
         StringBuilder sb = new StringBuilder(4096);
         for (b value : h) {
             String code = value.getCode();
@@ -119,9 +119,9 @@ public class Hx {
         target.setLogic(eventLogic);
     }
 
-    public void a(String str, String str2, String str3) {
-        if (!j.containsKey(str)) {
-            j.put(str, Lx.b(str, str2, str3));
+    public void a(String eventName, String viewType, String viewId) {
+        if (!j.containsKey(eventName)) {
+            j.put(eventName, Lx.b(eventName, viewType, viewId));
         }
     }
 
@@ -248,10 +248,10 @@ public class Hx {
     }
 
     /**
-     * @return {@link Hx#i}
+     * @return {@link Hx#imports}
      */
-    public ArrayList<String> e() {
-        return i;
+    public ArrayList<String> getImports() {
+        return imports;
     }
 
     private void e(String targetId, String eventName, String eventLogic) {
@@ -400,7 +400,7 @@ public class Hx {
                 }
 
                 if (d.b) {
-                    this.d.i.addAll(mq.d(d.a));
+                    this.d.imports.addAll(mq.d(d.a));
                 }
             }
         }

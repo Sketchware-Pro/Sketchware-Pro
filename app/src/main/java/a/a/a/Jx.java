@@ -462,7 +462,7 @@ public class Jx {
 
         String agusComponentsOnActivityResultCode = getBillingResponseCode(buildConfig.x);
         String onActivityResultLogic = activityResult();
-        String onActivityResultSwitchLogic = eventManager.a();
+        String onActivityResultSwitchLogic = eventManager.getOnActivityResultSwitchCases();
         if (!agusComponentsOnActivityResultCode.isEmpty() || !onActivityResultLogic.isEmpty() || !onActivityResultSwitchLogic.isEmpty()) {
             sb.append(EOL);
             sb.append("@Override").append(EOL);
@@ -829,7 +829,7 @@ public class Jx {
 
     private void initializeEventsCodeGenerator() {
         eventManager = new Hx(buildConfig, projectFileBean, projectDataManager);
-        addImports(eventManager.e());
+        addImports(eventManager.getImports());
     }
 
     /**
