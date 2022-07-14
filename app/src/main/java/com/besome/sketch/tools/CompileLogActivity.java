@@ -25,7 +25,7 @@ import com.sketchware.remod.R;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
-import mod.hosni.fraj.compilerlog.CompileErrorSaver;
+import mod.jbk.diagnostic.CompileErrorSaver;
 
 public class CompileLogActivity extends BaseActivity {
 

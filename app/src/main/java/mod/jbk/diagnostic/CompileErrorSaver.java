@@ -1,6 +1,5 @@
-package mod.hosni.fraj.compilerlog;
+package mod.jbk.diagnostic;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 
@@ -13,9 +12,8 @@ public class CompileErrorSaver {
 
     private static final String MESSAGE_NO_COMPILE_ERRORS_SAVED = "No compile errors have been saved yet.";
 
-    public String sc_id;
-    public FilePathUtil filePathUtil = new FilePathUtil();
-    public String path;
+    private final String sc_id;
+    private final String path;
 
     /**
      * Create this helper class for saving compile errors.
@@ -38,9 +36,7 @@ public class CompileErrorSaver {
     }
 
     /**
-     * Show an {@link AlertDialog} that displays the last saved error to the user.
-     *
-     * @param context The context to show the dialog on
+     * Opens {@link CompileLogActivity} and shows the user the last compile error.
      */
     public void showLastErrors(Context context) {
         Intent intent = new Intent(context, CompileLogActivity.class);
