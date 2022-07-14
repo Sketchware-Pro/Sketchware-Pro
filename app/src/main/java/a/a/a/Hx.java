@@ -145,7 +145,7 @@ public class Hx {
 
                         case ComponentBean.COMPONENT_TYPE_CAMERA:
                         case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                        case 31:
+                        case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                             a(eventBean.targetType, eventBean.targetId, eventBean.eventName, eventLogic);
                             break;
 

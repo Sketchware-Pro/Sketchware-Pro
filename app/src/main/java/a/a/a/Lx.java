@@ -123,7 +123,7 @@ public class Lx {
                 componentLogic = " String _filePath = _file_" + componentName + ".getAbsolutePath();\r\n";
                 break;
 
-            case 31:
+            case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN:
                 componentLogic = "Task<GoogleSignInAccount> _task = GoogleSignIn.getSignedInAccountFromIntent(_data);\r\n";
                 break;
 
