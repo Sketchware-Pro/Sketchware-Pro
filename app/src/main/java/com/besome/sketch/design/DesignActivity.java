@@ -73,7 +73,6 @@ import a.a.a.mB;
 import a.a.a.rs;
 import a.a.a.uo;
 import a.a.a.wq;
-import a.a.a.xB;
 import a.a.a.yB;
 import a.a.a.yq;
 import a.a.a.zy;
@@ -970,7 +969,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
 
                     Dp mDp = new Dp(this, a, q);
 
-                    publishProgress("Extracting AAPT/AAPT2 binaries...");
                     mDp.maybeExtractAapt2();
                     if (canceled) {
                         cancel(true);
@@ -1027,7 +1025,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         return;
                     }
 
-                    publishProgress("Merging libraries' DEX files...");
+                    publishProgress("Merging DEX files...");
                     mDp.getDexFilesReady();
                     if (canceled) {
                         cancel(true);
