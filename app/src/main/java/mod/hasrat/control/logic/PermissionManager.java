@@ -112,14 +112,17 @@ public class PermissionManager {
                     permissionCode.append(checkPerm.get(i));
                 }
 
-                permissionCode.append(") {\r\nActivityCompat.requestPermissions(this, new String[] {");
+                permissionCode.append(") {" + Jx.EOL + "ActivityCompat.requestPermissions(this, new String[] {");
 
                 for (int i = 0; i < addPerm.size(); i++) {
                     if (i != 0) permissionCode.append(", ");
                     permissionCode.append(addPerm.get(i));
                 }
 
-                permissionCode.append("}, 1000);\r\n} else {\r\ninitializeLogic();\r\n}\r\n");
+                permissionCode.append("}, 1000);" + Jx.EOL +
+                        "} else {" + Jx.EOL +
+                        "initializeLogic();" + Jx.EOL +
+                        "}" + Jx.EOL);
             }
 
         } else {
@@ -150,28 +153,34 @@ public class PermissionManager {
             removePermission(false, checkPerm, addPerm);
 
             if (checkPerm.size() != 0 && addPerm.size() != 0) {
-                permissionCode.append("if (Build.VERSION.SDK_INT >= 23) {\r\nif (");
+                permissionCode.append("if (Build.VERSION.SDK_INT >= 23) {" + Jx.EOL + "if (");
 
                 for (int i = 0; i < checkPerm.size(); i++) {
-                    if (i != 0) permissionCode.append("\r\n||");
+                    if (i != 0) permissionCode.append(Jx.EOL + "||");
                     permissionCode.append(checkPerm.get(i));
                 }
 
-                permissionCode.append(") {\r\nrequestPermissions(new String[] {");
+                permissionCode.append(") {" + Jx.EOL + "requestPermissions(new String[] {");
 
                 for (int i = 0; i < addPerm.size(); i++) {
                     if (i != 0) permissionCode.append(", ");
                     permissionCode.append(addPerm.get(i));
                 }
 
-                permissionCode.append("}, 1000);\r\n} else {\r\ninitializeLogic();\r\n}\r\n} else {\r\ninitializeLogic();\r\n}\r\n");
+                permissionCode.append("}, 1000);" + Jx.EOL +
+                        "} else {" + Jx.EOL +
+                        "initializeLogic();" + Jx.EOL +
+                        "}" + Jx.EOL +
+                        "} else {" + Jx.EOL +
+                        "initializeLogic();" + Jx.EOL +
+                        "}" + Jx.EOL);
             }
         }
 
         hasPermission = checkPerm.size() != 0 || addPerm.size() != 0;
 
         if (permissionCode.toString().trim().isEmpty()) {
-            return "initializeLogic();\r\n";
+            return "initializeLogic();" + Jx.EOL;
         } else {
             return Jx.EOL + permissionCode;
         }

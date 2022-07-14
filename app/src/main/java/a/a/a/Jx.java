@@ -532,7 +532,7 @@ public class Jx {
                 sb.append(adapterCode);
             } else {
                 sb.append(adapterCode.replace("return onTabLayoutNewTabAdded(pos);",
-                        "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method\r\n" +
+                        "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method" + EOL +
                                 "return \"page \" + String.valueOf(pos);"));
             }
             if (j != qSize - 1) {

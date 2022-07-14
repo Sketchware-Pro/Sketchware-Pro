@@ -65,8 +65,8 @@ public class Hx {
         for (b value : h) {
             String code = value.getCode();
             if (sb.length() > 0 && code.length() > 0) {
-                sb.append("\r\n");
-                sb.append("\r\n");
+                sb.append(Jx.EOL);
+                sb.append(Jx.EOL);
             }
             sb.append(code);
         }
@@ -190,8 +190,8 @@ public class Hx {
         for (a value : e) {
             String code = value.getCode();
             if (sb.length() > 0 && code.length() > 0) {
-                sb.append("\r\n");
-                sb.append("\r\n");
+                sb.append(Jx.EOL);
+                sb.append(Jx.EOL);
             }
             sb.append(code);
         }
@@ -230,8 +230,8 @@ public class Hx {
         for (c next : g) {
             String a2 = next.a();
             if (sb.length() > 0 && a2.length() > 0) {
-                sb.append("\r\n");
-                sb.append("\r\n");
+                sb.append(Jx.EOL);
+                sb.append(Jx.EOL);
             }
             sb.append(a2);
         }
@@ -269,8 +269,8 @@ public class Hx {
             next.b();
             String a2 = next.a();
             if (sb.length() > 0 && a2.length() > 0) {
-                sb.append("\r\n");
-                sb.append("\r\n");
+                sb.append(Jx.EOL);
+                sb.append(Jx.EOL);
             }
             sb.append(a2);
         }
@@ -282,8 +282,8 @@ public class Hx {
         for (c value : c) {
             String a2 = value.a();
             if (sb.length() > 0 && a2.length() > 0) {
-                sb.append("\r\n");
-                sb.append("\r\n");
+                sb.append(Jx.EOL);
+                sb.append(Jx.EOL);
             }
             sb.append(a2);
         }
@@ -381,8 +381,8 @@ public class Hx {
             for (d value : c) {
                 String a2 = value.a(a);
                 if (sb.length() > 0 && a2.length() > 0) {
-                    sb.append("\r\n");
-                    sb.append("\r\n");
+                    sb.append(Jx.EOL);
+                    sb.append(Jx.EOL);
                 }
                 sb.append(a2);
             }
@@ -434,8 +434,8 @@ public class Hx {
             for (a value : c) {
                 String code = value.getCode();
                 if (sb.length() > 0 && code.length() > 0) {
-                    sb.append("\r\n");
-                    sb.append("\r\n");
+                    sb.append(Jx.EOL);
+                    sb.append(Jx.EOL);
                 }
                 sb.append(code);
             }
