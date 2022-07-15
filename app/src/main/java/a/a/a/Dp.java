@@ -332,7 +332,9 @@ public class Dp {
                 }
             }
 
-            classpath.append(classpathPart).append(':');
+            if (!classpathPart.equals(yq.compiledClassesPath)) {
+                classpath.append(classpathPart).append(':');
+            }
         }
 
         // remove trailing delimiter
