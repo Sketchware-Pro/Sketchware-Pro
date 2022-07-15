@@ -841,6 +841,7 @@ public class yq {
      */
     public String getFileSrc(String filename, hC projectFileManager, eC projectDataManager, iC projectLibraryManager) {
         a(projectLibraryManager, projectFileManager, projectDataManager, false);
+        CommandBlock.x();
         boolean isJavaFile = filename.endsWith(".java");
         boolean isXmlFile = filename.endsWith(".xml");
         boolean isManifestFile = filename.equals("AndroidManifest.xml");
