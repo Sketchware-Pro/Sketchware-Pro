@@ -699,6 +699,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     .setPositiveButton("Dismiss", null);
 
             runOnUiThread(() -> {
+                if (isFinishing()) return;
                 progress.dismiss();
 
                 CodeEditor editor = new CodeEditor(DesignActivity.this);
