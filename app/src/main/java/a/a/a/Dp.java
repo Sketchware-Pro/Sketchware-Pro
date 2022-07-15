@@ -328,6 +328,7 @@ public class Dp {
         for (String classpathPart : normalClasspath.split(":")) {
             for (String jarPathToExclude : localLibraryJarsWithFullModeOff) {
                 if (classpathPart.equals(jarPathToExclude)) {
+                    localLibraryJarsWithFullModeOff.remove(jarPathToExclude);
                     continue normalClasspathLoop;
                 }
             }
