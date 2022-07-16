@@ -23,12 +23,14 @@ import java.util.ArrayList;
 
 import a.a.a.bB;
 import a.a.a.jC;
-import a.a.a.xB;
 import a.a.a.yq;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import mod.jbk.code.CodeEditorColorSchemes;
+import mod.jbk.code.CodeEditorLanguages;
 
 public class SrcViewerActivity extends AppCompatActivity {
 
@@ -37,6 +39,9 @@ public class SrcViewerActivity extends AppCompatActivity {
     private ImageView changeFontSize;
     private LinearLayout progressContainer;
     private ArrayList<SrcCodeBean> srcCodeBean;
+    /**
+     * Corresponds to the filename of which layout or activity the user is currently in.
+     */
     private String currentPageFileName;
     private int sourceCodeFontSize = 12;
     private CodeEditor codeViewer;
@@ -46,23 +51,19 @@ public class SrcViewerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.src_viewer);
 
+        currentPageFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
+
         codeViewer = new CodeEditor(this);
         codeViewer.setTypefaceText(Typeface.MONOSPACE);
         codeViewer.setEditable(false);
-        codeViewer.setColorScheme(new EditorColorScheme());
         codeViewer.setTextSize(sourceCodeFontSize);
-        codeViewer.setEditorLanguage(new JavaLanguage());
         codeViewer.setPinLineNumber(true);
+        setCorrectCodeEditorLanguage();
 
         LinearLayout contentLayout = (LinearLayout) (findViewById(R.id.pager_soruce_code).getParent());
         contentLayout.removeAllViews();
         contentLayout.addView(codeViewer);
 
-
-        /*
-         * currentPageFileName corresponds to the filename of which layout or activity the user is currently in.
-         */
-        currentPageFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
         sc_id = (savedInstanceState != null) ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
 
         changeFontSize = findViewById(R.id.imgv_src_size);
@@ -72,7 +73,10 @@ public class SrcViewerActivity extends AppCompatActivity {
         filesListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                codeViewer.setText(srcCodeBean.get(position).source);
+                SrcCodeBean bean = srcCodeBean.get(position);
+                codeViewer.setText(bean.source);
+                currentPageFileName = bean.srcFileName;
+                setCorrectCodeEditorLanguage();
             }
 
             @Override
@@ -126,6 +130,16 @@ public class SrcViewerActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
+    }
+
+    private void setCorrectCodeEditorLanguage() {
+        if (currentPageFileName.endsWith(".xml")) {
+            codeViewer.setColorScheme(CodeEditorColorSchemes.GITHUB);
+            codeViewer.setEditorLanguage(CodeEditorLanguages.XML);
+        } else {
+            codeViewer.setColorScheme(new EditorColorScheme());
+            codeViewer.setEditorLanguage(new JavaLanguage());
+        }
     }
 
     private void showChangeFontSizeDialog() {

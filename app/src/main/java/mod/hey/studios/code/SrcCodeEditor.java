@@ -40,6 +40,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
@@ -50,12 +51,9 @@ import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX;
 import io.github.rosemoe.sora.widget.schemes.SchemeVS2019;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.jbk.code.CodeEditorColorSchemes;
+import mod.jbk.code.CodeEditorLanguages;
 
-//6.3.0??
-
-/**
- * Sora Editor aka Rosemoe Editor
- */
 public class SrcCodeEditor extends AppCompatActivity {
 
     public static SharedPreferences pref;
@@ -83,31 +81,43 @@ public class SrcCodeEditor extends AppCompatActivity {
     public static void selectTheme(CodeEditor ed, int which) {
         EditorColorScheme scheme;
 
-        switch (which) {
-            default:
-            case 0:
-                scheme = new EditorColorScheme();
-                break;
+        if (ed.getColorScheme() instanceof TextMateColorScheme) {
+            switch (which) {
+                case 1:
+                    scheme = CodeEditorColorSchemes.GITHUB;
+                    break;
 
-            case 1:
-                scheme = new SchemeGitHub();
-                break;
+                case 3:
+                default:
+                    scheme = CodeEditorColorSchemes.DRACULA;
+            }
+        } else {
+            switch (which) {
+                default:
+                case 0:
+                    scheme = new EditorColorScheme();
+                    break;
 
-            case 2:
-                scheme = new SchemeEclipse();
-                break;
+                case 1:
+                    scheme = new SchemeGitHub();
+                    break;
 
-            case 3:
-                scheme = new SchemeDarcula();
-                break;
+                case 2:
+                    scheme = new SchemeEclipse();
+                    break;
 
-            case 4:
-                scheme = new SchemeVS2019();
-                break;
+                case 3:
+                    scheme = new SchemeDarcula();
+                    break;
 
-            case 5:
-                scheme = new SchemeNotepadXX();
-                break;
+                case 4:
+                    scheme = new SchemeVS2019();
+                    break;
+
+                case 5:
+                    scheme = new SchemeNotepadXX();
+                    break;
+            }
         }
 
         ed.setColorScheme(scheme);
@@ -357,7 +367,8 @@ public class SrcCodeEditor extends AppCompatActivity {
     private void initializeLogic() {
         toolbar.setVisibility(View.GONE);
 
-        setTitle(getIntent().getStringExtra("title"));
+        String title = getIntent().getStringExtra("title");
+        setTitle(title);
 
         editor.setTypefaceText(Typeface.MONOSPACE);
 
@@ -365,11 +376,14 @@ public class SrcCodeEditor extends AppCompatActivity {
 
         editor.setText(beforeContent);
 
-        if (getIntent().getStringExtra("title").endsWith(".java")) {
+        if (title.endsWith(".java")) {
             editor.setEditorLanguage(new JavaLanguage());
-        } else if (getIntent().getStringExtra("title").endsWith(".kt")) {
-            SketchwareUtil.toastError("Kotlin syntax highlighting yet to be added");
-            editor.setEditorLanguage(new JavaLanguage());
+        } else if (title.endsWith(".kt")) {
+            editor.setEditorLanguage(CodeEditorLanguages.KOTLIN);
+            editor.setColorScheme(CodeEditorColorSchemes.DRACULA);
+        } else if (title.endsWith(".xml")) {
+            editor.setEditorLanguage(CodeEditorLanguages.XML);
+            editor.setColorScheme(CodeEditorColorSchemes.DRACULA);
         }
 
         loadCESettings(this, editor, "act");
