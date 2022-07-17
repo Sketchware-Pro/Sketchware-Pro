@@ -113,7 +113,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
             if (adUnit.contains(" : ")) {
                 int indexOfColon = adUnit.indexOf(" : ");
                 tvRewardNameTitle.setText(adUnit.substring(0, indexOfColon));
-                tvRewardName.setText(indexOfColon + 3);
+                tvRewardName.setText(adUnit.substring(indexOfColon + 3));
             } else {
                 tvRewardNameTitle.setText("");
                 tvRewardName.setText(adUnit);
