@@ -104,6 +104,7 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
     public void a(ProjectLibraryBean projectLibraryBean) {
         projectLibraryBean.reserved1 = a;
         projectLibraryBean.reserved2 = b;
+        projectLibraryBean.reserved3 = rewardAdUnit;
     }
 
     private void setRewardAdUnit(String adUnit) {
@@ -181,11 +182,6 @@ public class Nu extends LinearLayout implements Uu, OnClickListener {
                 setAdUnit(2);
                 break;
         }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     @Override

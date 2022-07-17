@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.admob.AdmobActivity;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -118,11 +117,6 @@ public class Iu extends LinearLayout implements Uu, OnClickListener {
         if (view.getId() == R.id.layout_manual_add_ad_unit) {
             createAdUnit();
         }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     @Override
