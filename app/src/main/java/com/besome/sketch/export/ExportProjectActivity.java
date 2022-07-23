@@ -213,7 +213,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
 
             ArrayList<String> toExclude = new ArrayList<>();
-            toExclude.add("SketchApplication.java");
+            if (!new File(new FilePathUtil().getPathJava(sc_id) + File.separator + "SketchApplication.java").exists()) {
+                toExclude.add("SketchApplication.java");
+            }
             toExclude.add("DebugActivity.java");
 
             new KB().a(exportedSourcesZipPath, toCompress, toExclude);
