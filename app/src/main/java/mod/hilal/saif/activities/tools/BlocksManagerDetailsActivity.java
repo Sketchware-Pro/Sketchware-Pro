@@ -228,19 +228,32 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         String blocksFileContent = FileUtil.readFile(blocks_path);
         if (paletteFileContent.equals("")) {
             FileUtil.writeFile(pallet_path, "[]");
+            paletteFileContent = "[]";
         }
         if (blocksFileContent.equals("")) {
             FileUtil.writeFile(blocks_path, "[]");
+            blocksFileContent = "[]";
         }
-        try {
-            pallet_list = new Gson().fromJson(paletteFileContent, Helper.TYPE_MAP_LIST);
-            all_blocks_list = new Gson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
-        } catch (Exception e) {
+
+        parseLists:
+        {
+            try {
+                pallet_list = new Gson().fromJson(paletteFileContent, Helper.TYPE_MAP_LIST);
+                all_blocks_list = new Gson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
+
+                if (pallet_list != null && all_blocks_list != null) {
+                    break parseLists;
+                }
+            } catch (Exception e) {
+                // fall-through to shared error handling
+            }
+
             SketchwareUtil.toastError("Invalid file format!\n" +
                     "Make sure that block.json or palette.json file is formatted correctly.", Toast.LENGTH_LONG);
             pallet_list = new ArrayList<>();
             all_blocks_list = new ArrayList<>();
         }
+
         for (int i = 0; i < all_blocks_list.size(); i++) {
             HashMap<String, Object> block = all_blocks_list.get(i);
 
