@@ -1040,7 +1040,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
 
         public void publicPublishProgress(String... values) {
-            publicPublishProgress(values);
+            publishProgress(values);
         }
     }
 }
