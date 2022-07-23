@@ -198,7 +198,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 FileUtil.copyDirectory(pathAssets, new File(project_metadata.assetsPath));
             }
             if (pathNativeLibraries.exists()) {
-                FileUtil.copyDirectory(pathNativeLibraries, new File(project_metadata.projectMyscPath, "jni"));
+                FileUtil.copyDirectory(pathNativeLibraries, new File(project_metadata.generatedFilesPath, "jni"));
             }
 
             ArrayList<String> toCompress = new ArrayList<>();
