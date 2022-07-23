@@ -157,6 +157,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     private void exportSrc() {
         try {
+            FileUtil.deleteFile(project_metadata.projectMyscPath);
+
             hC hCVar = new hC(sc_id);
             kC kCVar = new kC(sc_id);
             eC eCVar = new eC(sc_id);
