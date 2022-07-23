@@ -189,7 +189,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             File pathNativeLibraries = new File(util.getPathNativelibs(sc_id));
 
             if (pathJava.exists()) {
-                FileUtil.copyDirectory(pathJava, new File(project_metadata.javaFilesPath));
+                FileUtil.copyDirectory(pathJava, new File(project_metadata.javaFilesPath + File.separator + project_metadata.packageNameAsFolders));
             }
             if (pathResources.exists()) {
                 FileUtil.copyDirectory(pathResources, new File(project_metadata.resDirectoryPath));
@@ -805,7 +805,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     publishProgress("Signing app bundle...");
 
                     String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(
-                            ExportProjectActivity.this, sc_id)
+                                    ExportProjectActivity.this, sc_id)
                             .getAbsolutePath();
                     String signedAppBundleDirectoryPath = FileUtil.getExternalStorageDir()
                             + File.separator + "sketchware"
