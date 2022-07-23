@@ -12,6 +12,7 @@ import android.util.Pair;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -291,8 +292,12 @@ public class Ix {
         applicationTag.a("android", "allowBackup", "true");
         applicationTag.a("android", "icon", "@drawable/app_icon");
         applicationTag.a("android", "label", "@string/app_name");
-        applicationTag.a("android", "name",
-                settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
+
+        String applicationClassName = settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication");
+        if (c.isDebugBuild || !applicationClassName.equals(".SketchApplication") ||
+                new File(fpu.getPathJava(c.sc_id), "SketchApplication.java").exists()) {
+            applicationTag.a("android", "name", applicationClassName);
+        }
         if (addRequestLegacyExternalStorage) {
             applicationTag.a("android", "requestLegacyExternalStorage", "true");
         }
