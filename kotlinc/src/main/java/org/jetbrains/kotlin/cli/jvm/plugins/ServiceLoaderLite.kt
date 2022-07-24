@@ -1,7 +1,6 @@
 package org.jetbrains.kotlin.cli.jvm.plugins
 
-import android.util.Log
-import dalvik.system.DexClassLoader
+import dalvik.system.PathClassLoader
 import org.jetbrains.kotlin.com.intellij.openapi.util.text.StringUtil.isJavaIdentifierPart
 import org.jetbrains.kotlin.com.intellij.openapi.util.text.StringUtil.isJavaIdentifierStart
 import java.io.File
@@ -9,6 +8,7 @@ import java.io.IOError
 import java.net.URLClassLoader
 import java.nio.file.FileSystemNotFoundException
 import java.nio.file.Paths
+import java.util.*
 import java.util.zip.ZipFile
 
 object ServiceLoaderLite {
@@ -34,22 +34,27 @@ object ServiceLoaderLite {
             }
         }
 
-        val classpath = classLoader.urLs.map {
-            it.path
-        }.joinToString(separator = File.pathSeparator)
-        // @changed: optimizedDirectory from null to ""
-        val loader = DexClassLoader(classpath, "", null, this::class.java.classLoader)
-
-        return loadImplementations(service, files, loader)
+        if (isDalvik() == true) {
+            val classpath = classLoader.urLs.joinToString(separator = File.pathSeparator) {
+                it.path
+            }
+            val loader = PathClassLoader(classpath, this::class.java.classLoader)
+            return loadImplementations(service, files, loader)
+        }
+        return loadImplementations(service, files, classLoader);
     }
 
     fun <Service> loadImplementations(service: Class<out Service>, files: List<File>, classLoader: ClassLoader): MutableList<Service> {
         val implementations = mutableListOf<Service>()
 
         for (className in findImplementations(service, files)) {
-            Log.d("TEST", "Loading class: {$className} size: {$classLoader.urLs}")
-            val instance = Class.forName(className, false, classLoader).newInstance()
-            implementations += service.cast(instance)
+            try {
+                val instance = classLoader.loadClass(className).getConstructor()
+                    .newInstance();
+                implementations += service.cast(instance)
+            } catch (e: ClassNotFoundException) {
+                throw ClassNotFoundException("Unable to find class $className in $files");
+            }
         }
 
         return implementations
@@ -72,7 +77,7 @@ object ServiceLoaderLite {
 
         return when {
             file.isDirectory -> findImplementationsInDirectory(classIdentifier, file)
-            file.isFile && file.extension.toLowerCase() == "jar" -> findImplementationsInJar(classIdentifier, file)
+            file.isFile && file.extension.lowercase(Locale.getDefault()) == "jar" -> findImplementationsInJar(classIdentifier, file)
             else -> emptySet()
         }
     }
@@ -117,4 +122,6 @@ object ServiceLoaderLite {
     private fun getClassIdentifier(service: Class<*>): String {
         return service.name
     }
+
+    fun isDalvik() = System.getProperty("java.vm.name")?.contains("Dalvik");
 }

@@ -8,4 +8,5 @@ dependencyResolutionManagement {
 rootProject.name = "Sketchware Pro"
 include ":app"
 include ':kotlinc'
-include ':build-logic'
+include ':jaxp:xml'
+include ':jaxp:internal'
