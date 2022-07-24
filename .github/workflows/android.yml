@@ -54,9 +54,6 @@ jobs:
         uses: eskatos/gradle-command-action@v2
         with:
           arguments: assembleMinApi26Debug
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
 
       - name: Upload debug APK with minApi 26
         uses: actions/upload-artifact@v3
@@ -68,9 +65,6 @@ jobs:
         uses: eskatos/gradle-command-action@v2
         with:
           arguments: assembleMinApi21Debug
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
 
       - name: Upload debug APK with minApi 21
         uses: actions/upload-artifact@v3
