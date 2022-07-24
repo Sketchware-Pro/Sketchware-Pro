@@ -85,7 +85,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.aar"])
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation "com.android.tools:annotations:30.2.1"
