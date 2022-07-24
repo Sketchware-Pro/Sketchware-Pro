@@ -47,11 +47,8 @@ jobs:
           distribution: temurin
           cache: gradle
 
-      - name: Grant execute permissions for gradlew
-        run: chmod +x gradlew
-
       - name: Build debug APK with minApi 26
-        uses: eskatos/gradle-command-action@v2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi26Debug
 
@@ -62,7 +59,7 @@ jobs:
           path: app/build/outputs/apk/minApi26/debug
 
       - name: Build debug APK with minApi 21
-        uses: eskatos/gradle-command-action@v2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: assembleMinApi21Debug
 
