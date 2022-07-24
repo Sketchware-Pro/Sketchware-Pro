@@ -115,9 +115,10 @@ dependencies {
 
     implementation "com.guardsquare:proguard-base:7.1.1"
 
+    //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
-
     minApi26Implementation "org.eclipse.jdt:ecj:3.26.0"
+
     minApi26Implementation project(path: ":kotlinc")
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
