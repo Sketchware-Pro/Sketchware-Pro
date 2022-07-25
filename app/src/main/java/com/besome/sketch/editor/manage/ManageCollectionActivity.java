@@ -50,6 +50,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.analytics.HitBuilders.ScreenViewBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -112,17 +113,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     public static String a(Context var0, int var1) {
         String var2;
         if (var1 == 0) {
-            var2 = xB.b().a(var0, 2131625001);
+            var2 = xB.b().a(var0, R.string.common_word_image);
         } else if (var1 == 1) {
-            var2 = xB.b().a(var0, 2131625039);
+            var2 = xB.b().a(var0, R.string.common_word_sound);
         } else if (var1 == 2) {
-            var2 = xB.b().a(var0, 2131624998);
+            var2 = xB.b().a(var0, R.string.common_word_font);
         } else if (var1 == 3) {
-            var2 = xB.b().a(var0, 2131625049);
+            var2 = xB.b().a(var0, R.string.common_word_widget);
         } else if (var1 == 4) {
-            var2 = xB.b().a(var0, 2131624973);
+            var2 = xB.b().a(var0, R.string.common_word_block);
         } else {
-            var2 = xB.b().a(var0, 2131625007);
+            var2 = xB.b().a(var0, R.string.common_word_moreblock);
         }
 
         return var2;
@@ -130,17 +131,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public static int g(int var0) {
         if (var0 == 0) {
-            var0 = 2131165811;
+            var0 = R.drawable.ic_picture_48dp;
         } else if (var0 == 1) {
-            var0 = 2131165861;
+            var0 = R.drawable.ic_sound_wave_48dp;
         } else if (var0 == 2) {
-            var0 = 2131165755;
+            var0 = R.drawable.ic_font_48dp;
         } else if (var0 == 3) {
-            var0 = 2131165450;
+            var0 = R.drawable.collage_96;
         } else if (var0 == 4) {
-            var0 = 2131165374;
+            var0 = R.drawable.block_96_blue;
         } else {
-            var0 = 2131165968;
+            var0 = R.drawable.more_block_96dp;
         }
 
         return var0;
@@ -157,17 +158,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public int a(BlockBean var1) {
         if (var1.type.equals("c")) {
-            return 2131165615;
+            return R.drawable.fav_block_c_96dp;
         } else if (var1.type.equals("b")) {
-            return 2131165614;
+            return R.drawable.fav_block_boolean_96dp;
         } else if (var1.type.equals("f")) {
-            return 2131165618;
+            return R.drawable.fav_block_final_96dp;
         } else if (var1.type.equals("e")) {
-            return 2131165617;
+            return R.drawable.fav_block_e_96dp;
         } else if (var1.type.equals("d")) {
-            return 2131165619;
+            return R.drawable.fav_block_number_96dp;
         } else {
-            return var1.type.equals("s") ? 2131165620 : 2131165616;
+            return var1.type.equals("s") ? R.drawable.fav_block_string_96dp : R.drawable.fav_block_command_96dp;
         }
     }
 
@@ -183,8 +184,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 }
             });
         } else {
-            var2.setImageResource(2131165520);
-            var2.setBackgroundResource(2131165346);
+            var2.setImageResource(R.drawable.default_album_art_200dp);
+            var2.setBackgroundResource(R.drawable.bg_outline_album);
         }
 
         var3.release();
@@ -281,12 +282,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         this.x();
         if (this.k) {
             this.a(this.r);
-            this.H.setVisibility(0);
+            this.H.setVisibility(View.VISIBLE);
         } else {
-            this.H.setVisibility(8);
+            this.H.setVisibility(View.GONE);
             int var2 = this.m.c;
             if (var2 == 3 || var2 == 4) {
-                this.x.setVisibility(8);
+                this.x.setVisibility(View.GONE);
             }
         }
 
@@ -435,7 +436,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             this.x.f();
         }
 
-        bB.a(this.getApplicationContext(), xB.b().a(this.getApplicationContext(), 2131624935), 1).show();
+        bB.a(this.getApplicationContext(), xB.b().a(this.getApplicationContext(), R.string.common_message_complete_delete), 1).show();
         this.n.c();
     }
 
@@ -492,10 +493,10 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     }
 
     public final void o() {
-        this.l = (Toolbar) this.findViewById(2131231847);
+        this.l = (Toolbar) this.findViewById(R.id.toolbar);
         this.a(this.l);
-        this.findViewById(2131231370).setVisibility(8);
-        this.d().a(xB.b().a(this.getApplicationContext(), 2131625134));
+        this.findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        this.d().a(xB.b().a(this.getApplicationContext(), R.string.design_actionbar_title_manager_collection));
         this.d().e(true);
         this.d().d(true);
         this.l.setNavigationOnClickListener(v -> {
@@ -504,25 +505,25 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             }
             onBackPressed();
         });
-        this.w = (TextView) this.findViewById(2131232061);
-        this.w.setText(xB.b().a(this.getApplicationContext(), 2131625334));
-        this.o = (RecyclerView) this.findViewById(2131230876);
+        this.w = (TextView) this.findViewById(R.id.tv_no_collections);
+        this.w.setText(xB.b().a(this.getApplicationContext(), R.string.event_message_no_events));
+        this.o = (RecyclerView) this.findViewById(R.id.category_list);
         this.o.setHasFixedSize(true);
         this.o.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), 1, false));
         ((Bi) this.o.getItemAnimator()).a(false);
         this.m = new ManageCollectionActivity.a(this);
         this.o.setAdapter(this.m);
-        this.p = (RecyclerView) this.findViewById(2131230903);
+        this.p = (RecyclerView) this.findViewById(R.id.collection_list);
         this.p.setHasFixedSize(true);
         this.n = new ManageCollectionActivity.b(this, this.p);
         this.p.setAdapter(this.n);
-        this.x = (FloatingActionButton) this.findViewById(2131231054);
+        this.x = (FloatingActionButton) this.findViewById(R.id.fab);
         this.x.setOnClickListener(this);
-        this.H = (LinearLayout) this.findViewById(2131231319);
-        this.I = (Button) this.findViewById(2131230817);
-        this.J = (Button) this.findViewById(2131230810);
-        this.I.setText(xB.b().a(this.getApplicationContext(), 2131624986));
-        this.J.setText(xB.b().a(this.getApplicationContext(), 2131624974));
+        this.H = (LinearLayout) this.findViewById(R.id.layout_btn_group);
+        this.I = (Button) this.findViewById(R.id.btn_delete);
+        this.J = (Button) this.findViewById(R.id.btn_cancel);
+        this.I.setText(xB.b().a(this.getApplicationContext(), R.string.common_word_delete));
+        this.J.setText(xB.b().a(this.getApplicationContext(), R.string.common_word_cancel));
         this.I.setOnClickListener(this);
         this.J.setOnClickListener(this);
         if (!super.j.h()) {
@@ -569,9 +570,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
     public void onClick(View var1) {
         int var2 = var1.getId();
-        if (var2 != 2131230810) {
-            if (var2 != 2131230817) {
-                if (var2 == 2131231054) {
+        if (var2 != R.id.btn_cancel) {
+            if (var2 != R.id.btn_delete) {
+                if (var2 == R.id.fab) {
                     this.a(false);
                     this.f(this.m.c);
                 }
@@ -597,16 +598,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             this.finish();
         }
 
-        this.setContentView(2131427507);
+        this.setContentView(R.layout.manage_collection);
         this.o();
     }
 
     public boolean onCreateOptionsMenu(Menu var1) {
-        this.getMenuInflater().inflate(2131492875, var1);
+        this.getMenuInflater().inflate(R.menu.manage_collection_menu, var1);
         if (this.k) {
-            var1.findItem(2131231502).setVisible(false);
+            var1.findItem(R.id.menu_collection_delete).setVisible(false);
         } else {
-            var1.findItem(2131231502).setVisible(true);
+            var1.findItem(R.id.menu_collection_delete).setVisible(true);
         }
 
         return true;
@@ -618,7 +619,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
     }
 
     public boolean onOptionsItemSelected(MenuItem var1) {
-        if (var1.getItemId() == 2131231502) {
+        if (var1.getItemId() == R.id.menu_collection_delete) {
             this.a(this.k ^ true);
         }
 
@@ -821,7 +822,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 var3.a(300L);
                 var3.a(new AccelerateInterpolator());
                 var3.c();
-                var1.v.setVisibility(0);
+                var1.v.setVisibility(View.VISIBLE);
                 var4 = new ColorMatrix();
                 var4.setSaturation(1.0F);
                 var5 = new ColorMatrixColorFilter(var4);
@@ -839,7 +840,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
                 var3.a(300L);
                 var3.a(new DecelerateInterpolator());
                 var3.c();
-                var1.v.setVisibility(8);
+                var1.v.setVisibility(View.GONE);
                 var4 = new ColorMatrix();
                 var4.setSaturation(0.0F);
                 var5 = new ColorMatrixColorFilter(var4);
@@ -848,7 +849,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         }
 
         public a2 b(ViewGroup var1, int var2) {
-            return new a2(this, LayoutInflater.from(var1.getContext()).inflate(2131427377, var1, false));
+            return new a2(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.common_category_triangle_item, var1, false));
         }
 
         public class a2 extends v implements OnClickListener {
@@ -860,9 +861,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public a2(ManageCollectionActivity.a var1, View var2) {
                 super(var2);
                 this.w = var1;
-                this.t = (ImageView) var2.findViewById(2131231151);
-                this.u = (TextView) var2.findViewById(2131232055);
-                this.v = var2.findViewById(2131231600);
+                this.t = (ImageView) var2.findViewById(R.id.img_icon);
+                this.u = (TextView) var2.findViewById(R.id.tv_name);
+                this.v = var2.findViewById(R.id.pointer_left);
                 var2.setOnClickListener(this);
             }
 
@@ -962,17 +963,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         public void a(ManageCollectionActivity.b.a var1, int var2) {
             BlockCollectionBean var3 = (BlockCollectionBean) this.e.get(var2);
             if (this.f.k) {
-                var1.y.setVisibility(0);
-                var1.v.setVisibility(8);
+                var1.y.setVisibility(View.VISIBLE);
+                var1.v.setVisibility(View.GONE);
             } else {
-                var1.v.setVisibility(0);
-                var1.y.setVisibility(8);
+                var1.v.setVisibility(View.VISIBLE);
+                var1.y.setVisibility(View.GONE);
             }
 
             if (var3.isSelected) {
-                var1.w.setImageResource(2131165707);
+                var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.w.setImageResource(2131165875);
+                var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             var1.v.setImageResource(this.f.a((BlockBean) var3.blocks.get(0)));
@@ -992,15 +993,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             var4.append(var3.resFullName);
             String var5 = var4.toString();
             if (this.f.k) {
-                var1.z.setVisibility(0);
+                var1.z.setVisibility(View.VISIBLE);
             } else {
-                var1.z.setVisibility(8);
+                var1.z.setVisibility(View.GONE);
             }
 
             if (var3.isSelected) {
-                var1.w.setImageResource(2131165707);
+                var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.w.setImageResource(2131165875);
+                var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             var1.u.setChecked(var3.isSelected);
@@ -1012,7 +1013,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
             try {
                 var1.y.setTypeface(Typeface.createFromFile(var5));
-                var1.y.setText(xB.b().a(this.f.getApplicationContext(), 2131625256));
+                var1.y.setText(xB.b().a(this.f.getApplicationContext(), R.string.design_manager_font_description_example_sentence));
             } catch (Exception var7) {
                 var7.printStackTrace();
             }
@@ -1030,24 +1031,24 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             var4.append(var3.resFullName);
             String var5 = var4.toString();
             if (this.f.k) {
-                var1.y.setVisibility(0);
+                var1.y.setVisibility(View.VISIBLE);
             } else {
-                var1.y.setVisibility(8);
+                var1.y.setVisibility(View.GONE);
             }
 
             if (var3.isNinePatch()) {
-                var1.x.setVisibility(0);
+                var1.x.setVisibility(View.VISIBLE);
             } else {
-                var1.x.setVisibility(8);
+                var1.x.setVisibility(View.GONE);
             }
 
             if (((ProjectResourceBean) this.e.get(var2)).isSelected) {
-                var1.w.setImageResource(2131165707);
+                var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.w.setImageResource(2131165875);
+                var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            Glide.with(this.f.getApplicationContext()).load(var5).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(var1.v));
+            Glide.with(this.f.getApplicationContext()).load(var5).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(var1.v));
             var1.u.setText(((ProjectResourceBean) this.e.get(var2)).resName);
             var1.t.setChecked(((ProjectResourceBean) this.e.get(var2)).isSelected);
         }
@@ -1055,15 +1056,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         public void a(ManageCollectionActivity.b.d var1, int var2) {
             MoreBlockCollectionBean var3 = (MoreBlockCollectionBean) this.e.get(var2);
             if (this.f.k) {
-                var1.w.setVisibility(0);
+                var1.w.setVisibility(View.VISIBLE);
             } else {
-                var1.w.setVisibility(8);
+                var1.w.setVisibility(View.GONE);
             }
 
             if (var3.isSelected) {
-                var1.v.setImageResource(2131165707);
+                var1.v.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.v.setImageResource(2131165875);
+                var1.v.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             var1.x.setText(var3.name);
@@ -1129,18 +1130,18 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             var4.append(var3.resFullName);
             String var7 = var4.toString();
             if (this.f.k) {
-                var1.v.setVisibility(8);
-                var1.C.setVisibility(0);
+                var1.v.setVisibility(View.GONE);
+                var1.C.setVisibility(View.VISIBLE);
             } else {
                 this.f.a(var7, var1.v);
-                var1.v.setVisibility(0);
-                var1.C.setVisibility(8);
+                var1.v.setVisibility(View.VISIBLE);
+                var1.C.setVisibility(View.GONE);
             }
 
             if (var3.isSelected) {
-                var1.w.setImageResource(2131165707);
+                var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.w.setImageResource(2131165875);
+                var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             int var5 = ((ProjectResourceBean) this.e.get(var2)).curSoundPosition / 1000;
@@ -1155,12 +1156,12 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             var1.x.setText(var3.resName);
             if (this.f.E == var2) {
                 if (this.f.C != null && this.f.C.isPlaying()) {
-                    var1.y.setImageResource(2131165804);
+                    var1.y.setImageResource(R.drawable.ic_pause_blue_circle_48dp);
                 } else {
-                    var1.y.setImageResource(2131165434);
+                    var1.y.setImageResource(R.drawable.circled_play_96_blue);
                 }
             } else {
-                var1.y.setImageResource(2131165434);
+                var1.y.setImageResource(R.drawable.circled_play_96_blue);
             }
 
             var1.A.setMax(var3.totalSoundDuration / 100);
@@ -1170,17 +1171,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         public void a(ManageCollectionActivity.b.f var1, int var2) {
             WidgetCollectionBean var3 = (WidgetCollectionBean) this.e.get(var2);
             if (this.f.k) {
-                var1.y.setVisibility(0);
-                var1.v.setVisibility(8);
+                var1.y.setVisibility(View.VISIBLE);
+                var1.v.setVisibility(View.GONE);
             } else {
-                var1.y.setVisibility(8);
-                var1.v.setVisibility(0);
+                var1.y.setVisibility(View.GONE);
+                var1.v.setVisibility(View.VISIBLE);
             }
 
             if (var3.isSelected) {
-                var1.w.setImageResource(2131165707);
+                var1.w.setImageResource(R.drawable.ic_checkmark_green_48dp);
             } else {
-                var1.w.setImageResource(2131165875);
+                var1.w.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
             var1.v.setImageResource(ViewBean.getViewTypeResId(((ViewBean) var3.widgets.get(0)).type));
@@ -1191,9 +1192,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
         public void a(ArrayList<? extends SelectableBean> var1) {
             this.e = var1;
             if (var1.size() <= 0) {
-                this.f.w.setVisibility(0);
+                this.f.w.setVisibility(View.VISIBLE);
             } else {
-                this.f.w.setVisibility(8);
+                this.f.w.setVisibility(View.GONE);
             }
         }
 
@@ -1214,15 +1215,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
 
         public v b(ViewGroup var1, int var2) {
             if (var2 == 0) {
-                return new ManageCollectionActivity.b.c(this, LayoutInflater.from(var1.getContext()).inflate(2131427529, var1, false));
+                return new ManageCollectionActivity.b.c(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_image_list_item, var1, false));
             } else if (var2 == 1) {
-                return new ManageCollectionActivity.b.e(this, LayoutInflater.from(var1.getContext()).inflate(2131427568, var1, false));
+                return new ManageCollectionActivity.b.e(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_sound_list_item, var1, false));
             } else if (var2 == 2) {
-                return new b2(this, LayoutInflater.from(var1.getContext()).inflate(2131427524, var1, false));
+                return new b2(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_font_list_item, var1, false));
             } else if (var2 == 3) {
-                return new ManageCollectionActivity.b.f(this, LayoutInflater.from(var1.getContext()).inflate(2131427514, var1, false));
+                return new ManageCollectionActivity.b.f(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_collection_widget_list_item, var1, false));
             } else {
-                return (v) (var2 == 4 ? new ManageCollectionActivity.b.a(this, LayoutInflater.from(var1.getContext()).inflate(2131427508, var1, false)) : new ManageCollectionActivity.b.d(this, LayoutInflater.from(var1.getContext()).inflate(2131427509, var1, false)));
+                return (v) (var2 == 4 ? new ManageCollectionActivity.b.a(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_collection_block_list_item, var1, false)) : new ManageCollectionActivity.b.d(this, LayoutInflater.from(var1.getContext()).inflate(R.layout.manage_collection_more_block_list_item, var1, false)));
             }
         }
 
@@ -1265,13 +1266,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public a(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
                 this.z = var1;
-                this.t = (CardView) var2.findViewById(2131231359);
-                this.u = (CheckBox) var2.findViewById(2131230893);
-                this.v = (ImageView) var2.findViewById(2131231119);
-                this.w = (ImageView) var2.findViewById(2131231132);
-                this.x = (TextView) var2.findViewById(2131231893);
-                this.y = (LinearLayout) var2.findViewById(2131230959);
-                this.u.setVisibility(8);
+                this.t = (CardView) var2.findViewById(R.id.layout_item);
+                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
+                this.v = (ImageView) var2.findViewById(R.id.img_block);
+                this.w = (ImageView) var2.findViewById(R.id.img_delete);
+                this.x = (TextView) var2.findViewById(R.id.tv_block_name);
+                this.y = (LinearLayout) var2.findViewById(R.id.delete_img_container);
+                this.u.setVisibility(View.GONE);
                 this.t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
@@ -1305,16 +1306,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public b2(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
                 this.A = var1;
-                this.t = (CardView) var2.findViewById(2131231359);
-                this.u = (CheckBox) var2.findViewById(2131230893);
-                this.v = (ImageView) var2.findViewById(2131231146);
-                this.v.setVisibility(8);
-                this.w = (ImageView) var2.findViewById(2131231132);
-                this.x = (TextView) var2.findViewById(2131231980);
-                this.z = (LinearLayout) var2.findViewById(2131230959);
-                this.y = (TextView) var2.findViewById(2131231981);
-                this.y.setText(xB.b().a(var1.f.getApplicationContext(), 2131625015));
-                this.u.setVisibility(8);
+                this.t = (CardView) var2.findViewById(R.id.layout_item);
+                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
+                this.v = (ImageView) var2.findViewById(R.id.img_font);
+                this.v.setVisibility(View.GONE);
+                this.w = (ImageView) var2.findViewById(R.id.img_delete);
+                this.x = (TextView) var2.findViewById(R.id.tv_font_name);
+                this.z = (LinearLayout) var2.findViewById(R.id.delete_img_container);
+                this.y = (TextView) var2.findViewById(R.id.tv_font_preview);
+                this.y.setText(xB.b().a(var1.f.getApplicationContext(), R.string.common_word_preview));
+                this.u.setVisibility(View.GONE);
                 this.t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
@@ -1347,13 +1348,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public c(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
                 this.z = var1;
-                this.t = (CheckBox) var2.findViewById(2131230893);
-                this.u = (TextView) var2.findViewById(2131232003);
-                this.v = (ImageView) var2.findViewById(2131231102);
-                this.w = (ImageView) var2.findViewById(2131231132);
-                this.y = (LinearLayout) var2.findViewById(2131230959);
-                this.x = (ImageView) var2.findViewById(2131231161);
-                this.t.setVisibility(8);
+                this.t = (CheckBox) var2.findViewById(R.id.chk_select);
+                this.u = (TextView) var2.findViewById(R.id.tv_image_name);
+                this.v = (ImageView) var2.findViewById(R.id.img);
+                this.w = (ImageView) var2.findViewById(R.id.img_delete);
+                this.y = (LinearLayout) var2.findViewById(R.id.delete_img_container);
+                this.x = (ImageView) var2.findViewById(R.id.img_nine_patch);
+                this.t.setVisibility(View.GONE);
                 this.v.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
@@ -1386,13 +1387,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public d(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
                 this.z = var1;
-                this.t = (CardView) var2.findViewById(2131231359);
-                this.u = (CheckBox) var2.findViewById(2131230893);
-                this.v = (ImageView) var2.findViewById(2131231132);
-                this.w = (LinearLayout) var2.findViewById(2131230959);
-                this.x = (TextView) var2.findViewById(2131231893);
-                this.y = (RelativeLayout) var2.findViewById(2131230793);
-                this.u.setVisibility(8);
+                this.t = (CardView) var2.findViewById(R.id.layout_item);
+                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
+                this.v = (ImageView) var2.findViewById(R.id.img_delete);
+                this.w = (LinearLayout) var2.findViewById(R.id.delete_img_container);
+                this.x = (TextView) var2.findViewById(R.id.tv_block_name);
+                this.y = (RelativeLayout) var2.findViewById(R.id.block_area);
+                this.u.setVisibility(View.GONE);
                 this.t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
@@ -1429,17 +1430,17 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public e(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
                 this.D = var1;
-                this.t = (CardView) var2.findViewById(2131231359);
-                this.u = (CheckBox) var2.findViewById(2131230893);
-                this.v = (ImageView) var2.findViewById(2131231106);
-                this.x = (TextView) var2.findViewById(2131232169);
-                this.y = (ImageView) var2.findViewById(2131231165);
-                this.w = (ImageView) var2.findViewById(2131231132);
-                this.z = (TextView) var2.findViewById(2131231931);
-                this.A = (ProgressBar) var2.findViewById(2131231607);
-                this.B = (TextView) var2.findViewById(2131231967);
-                this.C = (LinearLayout) var2.findViewById(2131230959);
-                this.u.setVisibility(8);
+                this.t = (CardView) var2.findViewById(R.id.layout_item);
+                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
+                this.v = (ImageView) var2.findViewById(R.id.img_album);
+                this.x = (TextView) var2.findViewById(R.id.tv_sound_name);
+                this.y = (ImageView) var2.findViewById(R.id.img_play);
+                this.w = (ImageView) var2.findViewById(R.id.img_delete);
+                this.z = (TextView) var2.findViewById(R.id.tv_currenttime);
+                this.A = (ProgressBar) var2.findViewById(R.id.prog_playtime);
+                this.B = (TextView) var2.findViewById(R.id.tv_endtime);
+                this.C = (LinearLayout) var2.findViewById(R.id.delete_img_container);
+                this.u.setVisibility(View.GONE);
                 this.y.setOnClickListener(v -> {
                     if (ManageCollectionActivity.this.k) {
                         ManageCollectionActivity.this.F = ManageCollectionActivity.b.e.this.z;
@@ -1479,13 +1480,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements O
             public f(ManageCollectionActivity.b var1, View var2) {
                 super(var2);
                 this.z = var1;
-                this.t = (CardView) var2.findViewById(2131231359);
-                this.u = (CheckBox) var2.findViewById(2131230893);
-                this.v = (ImageView) var2.findViewById(2131231205);
-                this.w = (ImageView) var2.findViewById(2131231132);
-                this.x = (TextView) var2.findViewById(2131232289);
-                this.y = (LinearLayout) var2.findViewById(2131230959);
-                this.u.setVisibility(8);
+                this.t = (CardView) var2.findViewById(R.id.layout_item);
+                this.u = (CheckBox) var2.findViewById(R.id.chk_select);
+                this.v = (ImageView) var2.findViewById(R.id.img_widget);
+                this.w = (ImageView) var2.findViewById(R.id.img_delete);
+                this.x = (TextView) var2.findViewById(R.id.tv_widget_name);
+                this.y = (LinearLayout) var2.findViewById(R.id.delete_img_container);
+                this.u.setVisibility(View.GONE);
                 this.t.setOnClickListener(v -> {
                     ManageCollectionActivity.b.this.c = j();
                     if (ManageCollectionActivity.this.k) {
