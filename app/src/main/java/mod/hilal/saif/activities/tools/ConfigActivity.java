@@ -355,8 +355,7 @@ public class ConfigActivity extends Activity {
                             .show();
                 });
         addSwitchPreference("[*] Automatic open (ROOT)",
-                "\n" +
-                        "Just opens the app automatically after auto-installation",
+                "Just opens the app automatically after auto-installation",
                 SETTING_ROOTED_AUTOOPEN,
                 true);
         addSwitchPreference("Use new Version Control",
