@@ -249,7 +249,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     /**
      * Opens the debug APK to install.
      */
-    private void installBuiltApk() { // TODO
+    private void installBuiltApk() {
         if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED)) {
             // Simple installation of package
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -275,8 +275,6 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                     SystemClock.sleep(2500);
                     SketchwareUtil.toast("Package installed successfuly!");
                     if (ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ROOTED_AUTOOPEN)) {openApp(getApplicationContext(), q.packageName);}
-
-
                 } catch (Exception e) {
                     SketchwareUtil.toast(e.toString());
                 }
