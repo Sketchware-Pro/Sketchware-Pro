@@ -114,6 +114,7 @@ dependencies {
     implementation "com.squareup.okio:okio:3.1.0"
 
     implementation "com.guardsquare:proguard-base:7.2.2"
+    implementation 'com.guardsquare:proguard-core:9.0.2'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
